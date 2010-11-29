@@ -1,0 +1,34 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<KHelpSystem>
+    <Section title="Portada" file="cover.html" />
+    <Section title="Introducci&#243;n" file="chapter0.html">
+        <SubSection title="Nuestra Visi&#243;n y Licencia" file="philosophy.html" />
+        <SubSection title="Animaci&#243;n para Principiantes" file="init.html" />
+    </Section>
+    <Section title="Tup&#205;? Qu&#233; es eso?" file="chapter1.html">
+        <SubSection title="Componentes Principales" file="components.html" />
+        <SubSection title="M&#243;dulo de Ilustraci&#243;n" file="illustration.html" />
+        <SubSection title="M&#243;dulo de Animaci&#243;n" file="animation.html" />
+        <SubSection title="M&#243;dulo de Ayuda" file="help.html" />
+    </Section>
+    <Section title="Hagamos un ejemplo!" file="chapter2.html">
+        <SubSection title="Lo primero!" file="first.html" />
+        <SubSection title="Iniciemos un proyecto" file="new.html" />
+        <SubSection title="Hora de dibujar" file="drawing.html" />
+        <SubSection title="Adicionemos nuevos marcos" file="adding_frames.html" />
+        <SubSection title="Veamos c&#243;mo est&#225; quedando" file="preview_time.html" />
+        <SubSection title="Creemos un archivo de v&#237;deo!" file="video_file.html" />
+        <SubSection title="Stop Motion? es posible?" file="stop_motion.html" />
+    </Section>
+    <Section title="Recursos Adicionales" file="chapter3.html">
+        <SubSection title="Enlaces interesantes" file="links.html" />
+        <SubSection title="Accesos directos" file="shortcuts.html" />
+    </Section>
+    <Section title="Quieres ayudarnos?" file="chapter4.html">
+        <SubSection title="C&#243;mo colaborar!" file="how_to_help.html" />
+        <SubSection title="Ayuda con traducciones" file="translations.html" />
+    </Section>
+    <Section title="Sobre Tup&#205;" file="chapter5.html">
+        <SubSection title="Qui&#233;nes somos?" file="tupi.html" />
+    </Section>
+</KHelpSystem>

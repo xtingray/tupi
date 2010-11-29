@@ -1,0 +1,25 @@
+- Check operations with grouped components: library
+
+- Groups don't save/load the transformation matriz / something is wrong
+- Elements names (frames, scenes, etc...) loading is failing 
+
+- The onion skin must be set into a deeper Z
+- JPEG load support
+- Allow to move frames through the network 
+
+- Some tools have undefined pointers when project is closed (i.e. select)+
+
+- Rulers definition is lost when transformations are done +
+- Polyline doesn't allow undo +
+- Moving an object with the selection tool without doing selection over it doesn't create an action so it can't be undo +
+- Node tool doesn't allow edition for lineTo +
+- Contour selection requires to move a node to show child nodes (wrong!) +
+- When any item is moved, don't show rotation nodes +
+
+- There's a crash around the polyline plugin when it's used in several frames and it's selected again +
+- When a network project is created, two drawing areas show up +
+- Check the pencil plugin +
+- Crash when scenes are created or deleted + 
+- Check operations with grouped components: tweening +
+- Crash copying and pasting grouped items +
+- Loading projects with items groups isn't working +

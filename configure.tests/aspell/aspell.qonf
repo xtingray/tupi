@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<qonf optional="true" >
+	<test name="Aspell">
+		<dir path="." />
+	</test>
+	<provide>
+		<defines>
+			<define value="HAVE_ASPELL" />
+		</defines>
+		<libs>
+			<lib path="-laspell" />
+		</libs>
+	</provide>
+	<solution>
+		<linux package="aspell" url="http://aspell.net/" comment="" >
+			<distribution name="gentoo" package="aspell" url="http://aspell.net/" comment="Try: emerge aspell" />
+			<distribution name="ubuntu" package="libaspell-dev aspell-LANG" url="http://aspell.net/" comment="Try: apt-get install libaspell-dev aspell-LANG (where LANG is the two-letters code of your language)" />
+		</linux>
+		<windows package="aspell" url="http://aspell.net/" comment="" />
+		<macosx package="aspell" url="http://aspell.net/" comment="" />
+	</solution>
+</qonf>

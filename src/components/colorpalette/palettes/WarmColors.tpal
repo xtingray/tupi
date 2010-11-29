@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Palette editable="false" name="Warm Colors" >
+ <Color colorName="#c40909" alpha="255" />
+ <Color colorName="#d8d508" alpha="255" />
+ <Color colorName="#ed6e00" alpha="255" />
+ <Color colorName="#e80032" alpha="255" />
+ <Color colorName="#8c0b0b" alpha="255" />
+ <Color colorName="#e4aa04" alpha="255" />
+ <Color colorName="#750000" alpha="255" />
+</Palette>

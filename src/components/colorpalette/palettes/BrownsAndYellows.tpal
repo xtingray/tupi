@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Palette editable="false" name="Browns And Yellows" >
+ <Color colorName="#bdb76b" alpha="255" />
+ <Color colorName="#f0e68c" alpha="255" />
+ <Color colorName="#eee8aa" alpha="255" />
+ <Color colorName="#fafad2" alpha="255" />
+ <Color colorName="#ffffe0" alpha="255" />
+ <Color colorName="#ffff00" alpha="255" />
+ <Color colorName="#ffd700" alpha="255" />
+ <Color colorName="#eedd82" alpha="255" />
+ <Color colorName="#daa520" alpha="255" />
+ <Color colorName="#b8860b" alpha="255" />
+ <Color colorName="#bc8f8f" alpha="255" />
+ <Color colorName="#8b4513" alpha="255" />
+ <Color colorName="#a0522d" alpha="255" />
+ <Color colorName="#cd853f" alpha="255" />
+ <Color colorName="#deb887" alpha="255" />
+ <Color colorName="#f5f5dc" alpha="255" />
+ <Color colorName="#f5deb3" alpha="255" />
+ <Color colorName="#f4a460" alpha="255" />
+ <Color colorName="#d2b48c" alpha="255" />
+ <Color colorName="#d2691e" alpha="255" />
+ <Color colorName="#ffa500" alpha="255" />
+ <Color colorName="#ff8c00" alpha="255" />
+</Palette>

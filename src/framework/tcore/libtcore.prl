@@ -1,0 +1,5 @@
+QMAKE_PRL_BUILD_DIR = /media/windows/linux/xtingray/tupi/sources/tupi/src/framework/tcore
+QMAKE_PRO_INPUT = tcore.pro
+QMAKE_PRL_TARGET = libtupifwcore.so.1.0.0
+QMAKE_PRL_CONFIG = lex yacc warn_on uic resources qt warn_on release incremental link_prl exceptions no_mocdepend release stl qt_no_framework release warn_on dll create_prl shared dll moc thread opengl
+QMAKE_PRL_VERSION = 1.0.0

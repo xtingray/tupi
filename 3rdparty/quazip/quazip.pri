@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$QUAZIP_DIR
+
+LIBS += -L$$QUAZIP_DIR -lquazip
+

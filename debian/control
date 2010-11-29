@@ -1,0 +1,17 @@
+Source: tupi
+Priority: extra
+Maintainer: Gustav Gonzalez [xtingray] <info@maefloresta.com>
+Build-Depends: debhelper (>= 7), autotools-dev, ruby, libaspell-dev, 
+ libavformat-dev, libavcodec-dev, mesa-common-dev, qt4-dev-tools (>= 4:4.6.2-0ubuntu5),
+ imagemagick, zlib1g-dev
+Standards-Version: 3.9.1
+Section: graphics 
+Homepage: http://www.maefloresta.com 
+
+Package: tupi 
+Section: graphics 
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends} 
+Description: Magic 2D 
+ Tupi is a design and authoring tool for 2D Animation for digital artists 
+ from 8 to 100 years old.

@@ -1,0 +1,97 @@
+/***************************************************************************
+ *   Project TUPI: Magia 2D                                                *
+ *   Project Contact: info@maefloresta.com                                 *
+ *   Project Website: http://www.maefloresta.com                           *
+ *   Project Leader: Gustav Gonzalez <info@maefloresta.com>                *
+ *                                                                         *
+ *   Developers:                                                           *
+ *   2010:                                                                 *
+ *    Gustavo Gonzalez / xtingray                                          *
+ *                                                                         *
+ *   KTooN's versions:                                                     * 
+ *                                                                         *
+ *   2006:                                                                 *
+ *    David Cuadrado                                                       *
+ *    Jorge Cuadrado                                                       *
+ *   2003:                                                                 *
+ *    Fernado Roldan                                                       *
+ *    Simena Dinas                                                         *
+ *                                                                         *
+ *   Copyright (C) 2010 Gustav Gonzalez - http://www.maefloresta.com       *
+ *   License:                                                              *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ ***************************************************************************/
+
+#ifndef SELECT_H
+#define SELECT_H
+
+#include <QObject>
+#include <kttoolplugin.h>
+
+#include "ktpathitem.h"
+#include "ktproject.h"
+#include "ktgraphicsscene.h"
+#include "infopanel.h"
+
+class KTItemResponse;
+
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
+
+class NodeManager;
+class Select : public KTToolPlugin
+{
+    Q_OBJECT;
+    
+    public:
+        Select();
+        virtual ~Select();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void keyPressEvent(QKeyEvent *event);
+        
+        virtual QMap<QString, KAction *>actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        
+        virtual void aboutToChangeTool();
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        
+        virtual void itemResponse(const KTItemResponse *event);
+        virtual void saveConfig();
+
+    //signals:
+    //    void itemAddedOnSelection();
+
+    private:
+        void setupActions();
+        
+    private:
+        struct Private;
+        Private *const k;
+        InfoPanel *m_configurator;
+        
+    private slots:
+        void syncNodes();
+        void updateItems(KTGraphicsScene *);
+};
+
+#endif

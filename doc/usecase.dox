@@ -1,0 +1,65 @@
+/**
+ * @if english
+ * @page usecase Use case diagrams
+ * Use case diagrams
+ *
+ * @line 
+ * @n
+ * @section ucgeneral General use case diagram
+ * @image html uc_general.png
+ * @image latex uc_general.png "" width=7cm
+ *
+ * @line 
+ * @n
+ * @section ucproject Project use case diagram
+ * @image html uc_project.png
+ * @image latex uc_project.png "" width=7cm
+ *
+ * @line 
+ * @n
+ * @section ucillustration Illustration use case diagram
+ * @image html uc_illustration.png
+ * @image latex uc_illustration.png "" width=7cm
+ *
+ * @line 
+ * @n
+ * @section ucanimation Animation use case diagram
+ * @image html uc_animation.png
+ * @image latex uc_animation.png "" width=7cm
+ *
+ * @line 
+ * @n
+ * @endif
+ * @if spanish 
+ * @page usecase Diagramas de Casos de Uso
+ * Diagramas de Casos de Uso 
+ *
+ * @line
+ * @n
+ * @section ucgeneral Digramas de Casos de Uso Generales
+ * @image html uc_general.png
+ * @image latex uc_general.png "" width=7cm
+ *
+ * @line
+ * @n
+ * @section ucproject Diagramas de Casos de Uso de Proyectos
+ * @image html uc_project.png
+ * @image latex uc_project.png "" width=7cm
+ *
+ * @line
+ * @n
+ * @section ucillustration Diagramas de Casos de Uso de Ilustracion
+ * @image html uc_illustration.png
+ * @image latex uc_illustration.png "" width=7cm
+ *
+ * @line
+ * @n
+ * @section ucanimation Diagramas de Casos de Uso de Animacion
+ * @image html uc_animation.png
+ * @image latex uc_animation.png "" width=7cm
+ *
+ * @line
+ * @n
+ * @endif
+ */
+

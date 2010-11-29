@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export RUBYLIB=.:${RUBYLIB}
+ruby configure.rb $*
