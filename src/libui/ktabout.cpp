@@ -71,7 +71,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     setWindowFlags(flags);
 
     //1: Credits
-    QFile creditsFile(DATA_DIR+"/credits.txt");
+    QFile creditsFile(DATA_DIR + "/credits.txt");
     QString creditsText;
     if (creditsFile.open(QIODevice::ReadOnly)) {
         QTextStream stream(&creditsFile);

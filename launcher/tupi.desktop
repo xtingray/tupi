@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Tupi: Magic 2D
+Name=Tupi: 2D Magic
 Name[es]=Tupí: Magia 2D
 Name[pt]=Tupí: Magia 2D
-Name[ru]=Tupi: Magic 2D
+Name[ru]=Tupi: 2D Magic
 Exec=/usr/local/tupi/bin/tupi
 Icon=tupi.png
 Type=Application

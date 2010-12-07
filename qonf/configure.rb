@@ -175,10 +175,10 @@ class Configure
 
         newfile = "[Desktop Entry]\n"
         newfile += "Encoding=UTF-8\n"
-        newfile += "Name=Tupi: Magic 2D\n"
+        newfile += "Name=Tupi: 2D Magic\n"
         newfile += "Name[es]=Tupí: Magia 2D\n"
         newfile += "Name[pt]=Tupí: Magia 2D\n"
-        newfile += "Name[ru]=Tupi: Magic 2D\n"
+        newfile += "Name[ru]=Tupi: 2D Magic\n"
         newfile += "Exec=" + launcher_bindir + "/tupi\n"
         newfile += "Icon=tupi.png\n"
         newfile += "Type=Application\n"
