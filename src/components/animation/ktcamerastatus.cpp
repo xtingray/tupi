@@ -149,8 +149,6 @@ KTCameraStatus::~KTCameraStatus()
 
 void KTCameraStatus::setFPS(int frames)
 {
-    kFatal() << "KTCameraStatus::setFPS - Setting fps -> " << frames;
-
     if (frames > 0 && frames < 100)
         fps->setCurrentIndex(frames-1);
     else
@@ -159,7 +157,6 @@ void KTCameraStatus::setFPS(int frames)
 
 int KTCameraStatus::getFPS()
 {
-    kFatal() << "KTCameraStatus::getFPS() - Returning: " << fps->currentText();
     return fps->currentText().toInt(); 
 }
 

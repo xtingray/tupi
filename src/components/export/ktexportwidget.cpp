@@ -79,7 +79,7 @@ class SelectPlugin : public KExportWizardPage
 
     public slots:
         void selectedPluginItem(QListWidgetItem *);
-        void selectedFirstItem();
+        void selectFirstItem();
         void selectedFormatItem(QListWidgetItem *);
         const char* getFileExtension();
 
@@ -142,13 +142,14 @@ void SelectPlugin::selectedPluginItem(QListWidgetItem *item)
     }
 }
 
-void SelectPlugin::selectedFirstItem()
+void SelectPlugin::selectFirstItem()
 {
-    m_exporterList->item(0)->setSelected(true);
-
-    if (m_exporterList->item(0)) {
-        emit selectedPlugin(m_exporterList->item(0)->text());
-        emit completed();
+    if (m_exporterList->count() > 0) {
+        m_exporterList->item(0)->setSelected(true);
+        if (m_exporterList->item(0)) {
+            emit selectedPlugin(m_exporterList->item(0)->text());
+            emit completed();
+        }
     }
 }
 
@@ -722,7 +723,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
 
     loadPlugins();
 
-    m_pluginSelectionPage->selectedFirstItem();
+    m_pluginSelectionPage->selectFirstItem();
 }
 
 KTExportWidget::~KTExportWidget()

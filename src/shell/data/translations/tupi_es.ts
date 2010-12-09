@@ -4,14 +4,14 @@
 <context>
     <name>Brush</name>
     <message>
-        <location filename="../../../plugins/tools/brush/brush.cpp" line="86"/>
-        <location filename="../../../plugins/tools/brush/brush.cpp" line="185"/>
-        <location filename="../../../plugins/tools/brush/brush.cpp" line="191"/>
+        <location filename="../../../plugins/tools/penciltool/brush.cpp" line="86"/>
+        <location filename="../../../plugins/tools/penciltool/brush.cpp" line="185"/>
+        <location filename="../../../plugins/tools/penciltool/brush.cpp" line="191"/>
         <source>Pencil</source>
         <translation>Lapiz</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/brush/brush.cpp" line="186"/>
+        <location filename="../../../plugins/tools/penciltool/brush.cpp" line="186"/>
         <source>P</source>
         <translation>P</translation>
     </message>
