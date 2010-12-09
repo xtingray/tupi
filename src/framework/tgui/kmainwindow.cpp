@@ -287,9 +287,9 @@ void KMainWindow::enableToolViews(bool flag)
                     KToolView *v = *it;
 
                     // SQA: Temporary code while Time Line components are fixed
-                    if (v->getObjectID().compare("KToolView-Time Line")==0)
-                        v->enableButton(false);
-                    else
+                    // if (v->getObjectID().compare("KToolView-Time Line")==0)
+                    //     v->enableButton(false);
+                    // else
                         v->enableButton(flag);
 
                     ++it;
@@ -545,12 +545,12 @@ void KMainWindow::setCurrentPerspective(int workspace)
                       if (view->perspective() & workspace) {
 
                           // SQA: Temporary code while Library and Time Line components are fixed
-                          if (view->getObjectID().compare("KToolView-Time Line")==0) {
+                          // if (view->getObjectID().compare("KToolView-Time Line")==0) {
+                          //    bar->enable(view->button());
+                          //    view->enableButton(false);
+                          // } else {
                               bar->enable(view->button());
-                              view->enableButton(false);
-                          } else {
-                              bar->enable(view->button());
-                          } 
+                          //} 
 
                           // bar->enable(view->button());
  
