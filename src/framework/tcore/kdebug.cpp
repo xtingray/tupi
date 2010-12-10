@@ -129,7 +129,7 @@ static class ConfigReader
 } configReader;
 
 // SQA: This class needs refactoring, debugging values must be taken 
-//      from the ktoon.cfg file 
+//      from the tupi.cfg file 
 
 ConfigReader::ConfigReader()
 {

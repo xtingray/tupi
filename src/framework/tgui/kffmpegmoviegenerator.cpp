@@ -382,7 +382,7 @@ void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps)
  : KMovieGenerator(width, height), k(new Private)
 {
-    k->movieFile = QDir::tempPath() + "/ktoon_video" + KAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video" + KAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
     k->exception = begin();
@@ -390,7 +390,7 @@ KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format fo
 
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps) : KMovieGenerator(size.width(), size.height()), k(new Private)
 {
-    k->movieFile = QDir::tempPath() + "/ktoon_video" + KAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video" + KAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
     k->exception = begin();
