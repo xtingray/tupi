@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QDomDocument>
 #include <QTextStream>
 #include <QImage>
 
@@ -71,7 +72,8 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     setWindowFlags(flags);
 
     //1: Credits
-    QFile creditsFile(DATA_DIR + "/credits.txt");
+    /*
+    QFile creditsFile(DATA_DIR + "credits.txt");
     QString creditsText;
     if (creditsFile.open(QIODevice::ReadOnly)) {
         QTextStream stream(&creditsFile);
@@ -84,6 +86,36 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
         #ifdef K_DEBUG
                kError() << "Error while trying to read " << creditsFile.fileName();
         #endif
+    }
+    */
+
+    QDomDocument doc;
+    QString creditsFile = DATA_DIR + "credits.xml";
+    QFile file(creditsFile);
+    QString creditsText;
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    if (!doc.setContent(&file)) {
+        kFatal() << "LEAVING!!! - Path: " << creditsFile;
+        file.close();
+        return;
+    }
+    file.close();
+
+    kFatal() << "PASSING!!!";
+
+    QDomElement docElem = doc.documentElement();
+    QDomNode n = docElem.firstChild();
+
+    while (!n.isNull()) {
+           QDomElement e = n.toElement();
+           if (!e.isNull()) {
+               if (e.tagName() == "credits")
+                   creditsText = e.text();
+           }
+           n = n.nextSibling();
     }
 
     QImage credits = QImage(THEME_DIR + "/images/credits.png");

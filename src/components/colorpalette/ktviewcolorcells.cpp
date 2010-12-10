@@ -72,7 +72,7 @@ KTViewColorCells::~KTViewColorCells()
     KCONFIG->beginGroup("ColorPalette");
     KCONFIG->setValue("LastPalette", k->chooserPalette->currentIndex());;
 
-    QDir brushesDir(CONFIG_DIR+"/palettes");
+    QDir brushesDir(CONFIG_DIR + "palettes");
 
     if (! brushesDir.exists()) 
         brushesDir.mkdir(brushesDir.path());
@@ -85,7 +85,7 @@ KTViewColorCells::~KTViewColorCells()
          KTCellsColor *palette = qobject_cast<KTCellsColor *>(k->containerPalette->widget(i));
          if (palette) {
              if(!palette->isReadOnly())
-                palette->save(CONFIG_DIR+"/palettes/"+ palette->name() + ".tpal");
+                palette->save(CONFIG_DIR + "palettes/" + palette->name() + ".tpal");
          }
     }
 
@@ -142,7 +142,7 @@ void KTViewColorCells::setupForm()
     }
 	
     readPalettes(SHARE_DIR + "data/palettes"); // Pre-installed
-    readPalettes(CONFIG_DIR + "/palettes"); // Locals
+    readPalettes(CONFIG_DIR + "palettes"); // Locals
 }
 
 void KTViewColorCells::readPalettes(const QString &paletteDir)
