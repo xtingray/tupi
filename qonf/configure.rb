@@ -39,16 +39,16 @@ class Configure
         @testsDir = dir
     end
     
-        def verifyQtVersion(minqtversion)
-                Info.info << "Checking for Qt >= " << minqtversion << "... "
+    def verifyQtVersion(minqtversion)
+        Info.info << "Checking for Qt >= " << minqtversion << "... "
 
-                if @qmake.findQMake(minqtversion, true)
-                        print "[ \033[92mOK\033[0m ]\n"
-                else
-                        print "[FAILED]\n"
-                        raise QonfException.new("Invalid Qt version.\n   Please, upgrade to #{minqtversion} or higher (Visit: http://www.trolltech.com)")
-                end
+        if @qmake.findQMake(minqtversion, true)
+           print "[ \033[92mOK\033[0m ]\n"
+        else
+           print "[ \033[91mFAILED\033[0m ]\n"
+           raise QonfException.new("\033[91mInvalid Qt version\033[0m.\n   Please, upgrade to #{minqtversion} or higher (Visit: http://qt.nokia.com)")
         end
+    end
 
     def createTests
         @tests.clear
@@ -58,7 +58,7 @@ class Configure
     def runTests(config, debug)
         @tests.each { |test|
             if not test.run(config, debug) and not test.optional
-                raise QonfException.new("Required")
+                raise QonfException.new("\033[91mMissing required dependency\033[0m")
             end
         }
     end
@@ -217,18 +217,3 @@ class Configure
     end
 end
 end # module
-
-if __FILE__ == $0
-    begin
-        conf = RQonf::Configure.new()
-        
-        conf.verifyQtVersion("4.5.0")
-        conf.createTests
-        conf.createConfig("config.pri")
-    rescue QonfException => err
-        Info.error << "Configure failed. error was: #{err.message}\n"
-    rescue => err
-        Info.error << "General failure: #{err.message}\n" << err.backtrace
-    end
-end
-

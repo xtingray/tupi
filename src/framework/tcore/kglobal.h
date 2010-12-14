@@ -53,7 +53,7 @@
 #define THEME_DIR kAppProp->themeDir()
 #define HOME_DIR kAppProp->homeDir()
 #define CONFIG_DIR kAppProp->configDir()
-#define PLUGIN_DIR kAppProp->pluginDir()
+#define PLUGINS_DIR kAppProp->pluginDir()
 
 #define CACHE_DIR kAppProp->cacheDir()
 

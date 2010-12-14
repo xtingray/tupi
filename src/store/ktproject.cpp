@@ -583,7 +583,7 @@ bool KTProject::deleteDataDir()
         if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg")) {
 
             #ifdef K_DEBUG
-                   kDebug("project") << "Removing " << dir.absolutePath() << "...";
+                   kDebug("project") << "Removing directory " << dir.absolutePath(); 
             #endif
 
             foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg") {

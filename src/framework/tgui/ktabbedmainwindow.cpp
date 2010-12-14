@@ -43,7 +43,7 @@
 
 #include <QtDebug>
 
-#ifndef KLIB_GUI
+#ifndef TUPI_GUI
 class TabWidgetPrivate : public QTabWidget
 {
     Q_OBJECT;

@@ -38,6 +38,7 @@ class Test
         end
         
         cwd = Dir.getwd
+
         if File.exists?(dir)
             if File.stat(dir).directory?
                 Dir.chdir(dir)
@@ -48,16 +49,27 @@ class Test
                 end
 
                 @qmake.run( "'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
+
                 if not @qmake.compile(debug)
                     Dir.chdir(cwd)
                     
-                    print "[ FAIL ]\n"
+                    print "[ \033[91mFAILED\033[0m ]\n"
+
+                    priority = "\033[92moptional\033[0m"
+                    flag = "\033[92mCOULD\033[0m"
+                    if @optional == false
+                       priority = "\033[91mrequired\033[0m"
+                       flag = "\033[91mMUST\033[0m"
+                    end
+
+                    Info.info << "Priority: " << priority << "\n"
+
                     
                     # Provide solution
                     solution = parser.solution
                     
-                    Info.warn << "Seems like you are running " << parser.os << $endl
-                    Info.warn << "You will need to install " << solution[:package] << $endl
+                    Info.warn << "Seems like you are running " << parser.os << "..." << $endl
+                    Info.warn << "You " << flag << " install these dependencies: " << solution[:package] << $endl
                     Info.warn << "URL: " << solution[:url] << $endl
                     Info.warn << solution[:comment] << $endl
                     
@@ -75,7 +87,7 @@ class Test
         end
         
         Dir.chdir(cwd)
-        
+
         parser.includes.each { |inc|
             config.addIncludePath(inc)
         }
@@ -93,6 +105,13 @@ class Test
         }
         
         print "[ \033[92mOK\033[0m ]\n"
+
+        priority = "\033[92moptional\033[0m"
+        if @optional == false 
+           priority = "\033[91mrequired\033[0m" 
+        end
+
+        Info.info << "Priority: " << priority << "\n"
         
         return true
     end
@@ -216,7 +235,7 @@ class Test
             @current_tag = qname
         end
         
-        def end_element( uri, localname, qname)
+        def end_element(uri, localname, qname)
             case qname
                 when ""
             end

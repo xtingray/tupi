@@ -40,7 +40,8 @@
 #include "kglobal.h"
 #include "kdebug.h"
 
-#define PLUGIN_DIR QString(KLIB_PREFIX)+"/lib/klib/plugins"
+#define KLIB_PREFIX "/pending/to/define"
+#define PLUGIN_DIR QString(KLIB_PREFIX)+"/pending/to/define"
 
 KAudioPlayer *KAudioPlayer::s_instance = 0;
 

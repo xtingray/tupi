@@ -1,6 +1,6 @@
-# Generated automatically at Fri Dec 10 10:07:24 -0500 2010! PLEASE DO NOT EDIT!
-INCLUDEPATH += /usr/include
-LIBS += -laspell -lavcodec -lavformat -ltupifwgui -ltupifwcore -ltupifwsound -lz -L/usr/lib
+# Generated automatically at Tue Dec 14 10:27:35 -0500 2010! PLEASE DO NOT EDIT!
+INCLUDEPATH += 
+LIBS += -laspell -lavcodec -lavformat -ltupifwgui -ltupifwcore -ltupifwsound -lz -L/usr/local/tupi/lib
 QT += opengl core gui svg xml network
 DEFINES += HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.1\\\" CODE_NAME=\\\"Gemo\\\" REVISION=\\\"git01\\\" K_DEBUG
 unix {

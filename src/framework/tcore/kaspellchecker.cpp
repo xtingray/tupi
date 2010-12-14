@@ -36,6 +36,7 @@
 #include "kaspellchecker.h"
 
 #ifdef HAVE_ASPELL
+
 #include <aspell.h>
 
 #include <QLocale>

@@ -144,7 +144,8 @@ SOURCES += collapsiblewidget.cpp \
 
 TARGET = tupifwgui
 
-DEFINES += KLIB_GUI
+#DEFINES += KLIB_GUI
+
 RESOURCES += tgui_images.qrc
 QT += xml
 LIBS += -ltupifwcore

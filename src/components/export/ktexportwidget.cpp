@@ -735,7 +735,7 @@ KTExportWidget::~KTExportWidget()
 
 void KTExportWidget::loadPlugins()
 {
-    QDir pluginDirectory = QDir(PLUGIN_DIR);
+    QDir pluginDirectory = QDir(PLUGINS_DIR);
 
     foreach (QString fileName, pluginDirectory.entryList(QDir::Files)) {
              QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));

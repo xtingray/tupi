@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<qonf optional="true">
+<qonf optional="false">
 	<test name="FFmpeg">
 		<dir path="." />
 	</test>

@@ -5,13 +5,13 @@
 
 require './qonf/configure'
 require './qonf/info'
-require './qonf/framework'
+require './qonf/defaults'
 
 begin
     conf = RQonf::Configure.new(ARGV)
 
     if conf.hasArgument?("help") or conf.hasArgument?("h")
-        puts <<_EOH_
+       puts <<_EOH_
 Use: ./configure [options]
     options:
         --help, -h:                             Show this message
@@ -27,7 +27,7 @@ _EOH_
     end
 
     conf.setTestDir("configure.tests")
-    conf.verifyQtVersion("4.6.2")
+    conf.verifyQtVersion("4.7.0")
     conf.createTests
     
     config = RQonf::Config.new
@@ -57,16 +57,16 @@ _EOH_
     config.addDefine('CODE_NAME=\\\\\"Gemo\\\\\"')
     config.addDefine('REVISION=\\\\\"git01\\\\\"')
 
-        Info.info << "Debug support... "
+    Info.info << "Debug support... "
 
-        if debug == 1 
-           config.addDefine("K_DEBUG")
-           print "[ \033[92mON\033[0m ]\n"
-        else
-           config.addDefine("K_NODEBUG")
-           config.addOption("silent")
-           print "[ \033[92mOFF\033[0m ]\n"
-        end
+    if debug == 1 
+       config.addDefine("K_DEBUG")
+       print "[ \033[92mON\033[0m ]\n"
+    else
+       config.addDefine("K_NODEBUG")
+       config.addOption("silent")
+       print "[ \033[91mOFF\033[0m ]\n"
+    end
     
     unix = config.addScope("unix")
     unix.addVariable("MOC_DIR", ".moc")
