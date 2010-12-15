@@ -76,19 +76,25 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
     QuaZip zip(packagePath);
 
     if (!zip.open(QuaZip::mdCreate)) {
-        kError() << "Error while create package: " << zip.getZipError();
+        #ifdef K_DEBUG
+               kError() << "Error while create package: " << zip.getZipError();
+        #endif
         return false;
     }
     
     if (! compress(&zip, projectPath)) {
-        kError() << "Error while compress project" << zip.getZipError();
+        #ifdef K_DEBUG
+               kError() << "Error while compress project" << zip.getZipError();
+        #endif
         return false;
     }
     
     zip.close();
 
     if (zip.getZipError() != 0) {
-        kError() << "Error: " << zip.getZipError();
+        #ifdef K_DEBUG
+               kError() << "Error: " << zip.getZipError();
+        #endif
         return false;
     }
     
@@ -98,7 +104,10 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 
 bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 {
-    kDebug() << "COMPRESSING: " << path;
+    #ifdef K_DEBUG
+           kDebug() << "KTPackageHandler::compress() - Compressing path: " << path;
+    #endif
+
     QFile inFile;
     QuaZipFile outFile(zip);
     char c;
@@ -122,7 +131,9 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
              inFile.setFileName(filePath);
 
              if (!inFile.open(QIODevice::ReadOnly)) {
-                 kError() << "Error opening file " << inFile.fileName() << " : " << inFile.errorString();
+                 #ifdef K_DEBUG
+                        kError() << "Error opening file " << inFile.fileName() << " : " << inFile.errorString();
+                 #endif
                  return false;
              }
 
@@ -174,12 +185,16 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
     while (next) {
 
            if (!zip.getCurrentFileInfo(&info)) {
-               kError() << "Can't get current file: " << zip.getZipError();
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Can't get current file: " << zip.getZipError();
+               #endif
                return false;
            }
         
            if (!file.open(QIODevice::ReadOnly)) {
-               kError() << "Can't open file "<< file.getZipError();
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Can't open file "<< file.getZipError();
+               #endif
                return false;
            }
         
@@ -192,7 +207,9 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
                k->importedProjectPath = QFileInfo(name).path();
         
            if (file.getZipError() != UNZ_OK) {
-               kError() << "Error while open package " << file.getZipError();
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Error while open package " << file.getZipError();
+               #endif
                return false;
            }
         
@@ -201,9 +218,11 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
                out.setFileName(name);
         
                if (! out.open(QIODevice::WriteOnly)) {
-                   kError() << "KTPackageHandler::importPackage() - Error while open file: " << out.fileName(); 
-                   kError() << "KTPackageHandler::importPackage() - Error Description: " << out.errorString();
-                   kError() << "KTPackageHandler::importPackage() - Error type: " << out.error(); 
+                   #ifdef K_DEBUG
+                          kError() << "KTPackageHandler::importPackage() - Error while open file: " << out.fileName(); 
+                          kError() << "KTPackageHandler::importPackage() - Error Description: " << out.errorString();
+                          kError() << "KTPackageHandler::importPackage() - Error type: " << out.error(); 
+                   #endif
                    return false;
                }
         
@@ -212,24 +231,32 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 
                out.close();
            } else {
-               kError() << "KTPackageHandler::importPackage() - Error creating path: " << name; 
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Error creating path: " << name; 
+               #endif
                return false;
            }
 
            if (file.getZipError()!=UNZ_OK) {
-               kError() << "Error while open package " << file.getZipError();
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Error while open package " << file.getZipError();
+               #endif
                return false;
            }
 
            if (!file.atEnd()) {
-               kError() << "Not EOF";
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Not EOF Error";
+               #endif
                return false;
            }
 
            file.close();
 
            if (file.getZipError()!=UNZ_OK) {
-               kError() << "Error while open package " << file.getZipError();
+               #ifdef K_DEBUG
+                      kError() << "KTPackageHandler::importPackage() - Error while open package " << file.getZipError();
+               #endif
                return false;
            }
             
@@ -239,7 +266,9 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
     zip.close();
 
     if (zip.getZipError() != UNZ_OK) {
-        kError() << "Error while open package " << file.getZipError();
+        #ifdef K_DEBUG
+               kError() << "KTPackageHandler::importPackage() - Error while open package " << file.getZipError();
+        #endif
         return false;
     }
     

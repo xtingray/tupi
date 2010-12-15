@@ -249,7 +249,9 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
                 case KTLibraryObject::Item:
                    {
                      if (object->data().canConvert<QGraphicsItem *>()) {
+
                          k->display->render(qvariant_cast<QGraphicsItem *>(object->data()));
+
                          /* SQA: Just a test
                          KTSymbolEditor *editor = new KTSymbolEditor;
                          editor->setSymbol(object);
@@ -575,7 +577,6 @@ void KTLibraryWidget::importBitmapArray()
                              progressDialog.setValue(index);
                              index++;
                          } else {
-                             kFatal() << "ERROR: Can't open file " << symName;
                              QMessageBox::critical(this, tr("ERROR!"), tr("ERROR: Can't open file %1. Please, check file permissions and try again.").arg(symName), QMessageBox::Ok);
                              QApplication::restoreOverrideCursor();
                              return;
@@ -691,7 +692,6 @@ void KTLibraryWidget::importSvgArray()
                              index++;
 
                          } else {
-                             kFatal() << "ERROR: Can't open file " << symName;
                              QMessageBox::critical(this, tr("ERROR!"), tr("ERROR: Can't open file %1. Please, check file permissions and try again.").arg(symName), QMessageBox::Ok);
                              QApplication::restoreOverrideCursor();
                              return;
@@ -799,7 +799,9 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                      }
 
                  } else {
-                     kFatal() << "KTLibraryWidget::libraryResponse() - No object found: " << key;
+                     #ifdef K_DEBUG
+                            kFatal() << "KTLibraryWidget::libraryResponse() - No object found: " << key;
+                     #endif
                  }
               }
             break;
@@ -807,7 +809,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             case KTProjectRequest::AddSymbolToProject:
               {
                  #ifdef K_DEBUG
-                        kFatal() << "*** KTLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
+                        kDebug() << "*** KTLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
                  #endif
               }
             break;
@@ -843,15 +845,17 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             case KTProjectRequest::Remove:
               {
                  #ifdef K_DEBUG
-                        kFatal() << "*** KTLibraryWidget::libraryResponse -> Remove : No action taken";
+                        kDebug() << "*** KTLibraryWidget::libraryResponse -> Remove : No action taken";
                  #endif
               }
             break;
   
             default:
               {
-                 kFatal() << "*** Project Code: " << response->action();
-                 qWarning("ktlibrarywidget.cpp IMPLEMENT ME");
+                 #ifdef K_DEBUG
+                        kDebug() << "*** Project Code: " << response->action();
+                        qWarning("ktlibrarywidget.cpp IMPLEMENT ME");
+                 #endif
               }
             break;
     }

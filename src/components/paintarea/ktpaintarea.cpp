@@ -402,7 +402,9 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
         }
 
     } else { 
-      kFatal() << "KTPaintArea::itemResponse - isDrawing() == true! - No action taken";
+      #ifdef K_DEBUG
+             kDebug() << "KTPaintArea::itemResponse - isDrawing() == true! - No action taken";
+      #endif
     }
 
     graphicsScene()->itemResponse(event);

@@ -475,6 +475,9 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                        QString path(object->dataPath());
                        KTSvgItem *svgItem = new KTSvgItem(path);
 
+                       //QString path(object->symbolName());
+                       //KTSvgItem *svgItem = new KTSvgItem(path);
+
                        int svgW = svgItem->boundingRect().width();
                        int svgH = svgItem->boundingRect().height();
 
@@ -526,11 +529,6 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Type type)
 {
-    #ifdef K_DEBUG
-           kFatal() << "KTProject::removeSymbolFromProject() - Find me in ktproject.cpp";
-           kFatal() << "Name: " << name;
-    #endif
-
     if (type == KTLibraryObject::Folder)
         return true;
 

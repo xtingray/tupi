@@ -97,13 +97,11 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
         case KTLibraryObject::Text:
         case KTLibraryObject::Image:
         {
-             kFatal() << "KTGraphicLibraryItem::setObject() - Setting Item/Text/Image object";
              setItem(qvariant_cast<QGraphicsItem *>(object->data()));
         }
         break;
         case KTLibraryObject::Svg:
         {
-             kFatal() << "KTGraphicLibraryItem::setObject() - Setting SVG object";
              setSvgContent(object->dataPath());
         }
         break;

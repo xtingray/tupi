@@ -75,6 +75,11 @@ QVariant KTLibraryObject::data() const
     return k->data;
 }
 
+void KTLibraryObject::setDataPath(const QString &path)
+{
+    k->dataPath = path;
+}
+
 QString KTLibraryObject::dataPath() const
 {
     return k->dataPath;
@@ -105,30 +110,52 @@ void KTLibraryObject::fromXml(const QString &xml)
 {
     QDomDocument document;
     
-    if (! document.setContent(xml))
+    if (! document.setContent(xml)) {
+        #ifdef K_DEBUG  
+               kFatal() << "KTLibraryObject::fromXml -> Invalid XML structure!";
+        #endif
         return;
+    }
     
     QDomElement objectTag = document.documentElement();
-    
+
     if (objectTag.tagName() == "object") {
-        kFatal() << "KTLibraryObject::fromXml() -> Setting Object id as: " << objectTag.attribute("id");
         setSymbolName(objectTag.attribute("id"));
         
         if (k->symbolName.isEmpty()) 
             return;
         
         k->type = objectTag.attribute("type").toInt();
-        
-        k->dataPath = objectTag.attribute("path");
-        
-        QDomElement objectData = objectTag.firstChild().toElement();
-        if (!objectTag.isNull()) {
-            QString data;
-            {
-                QTextStream ts(&data);
-                ts << objectData;
-            }
-            loadData(data.toLocal8Bit());
+
+        switch (k->type) {
+                case KTLibraryObject::Item:
+                case KTLibraryObject::Text:
+                     {
+                         QDomElement objectData = objectTag.firstChild().toElement();
+                         if (!objectTag.isNull()) {
+                             QString data;
+                             {
+                                 QTextStream ts(&data);
+                                 ts << objectData;
+                             }
+                             loadRawData(data.toLocal8Bit());
+                         } 
+                     }
+                break;
+                case KTLibraryObject::Image:
+                case KTLibraryObject::Svg:
+                case KTLibraryObject::Sound:
+                     {
+                         k->dataPath = objectTag.attribute("path");
+                     }
+                break;
+                default:
+                     {
+                         #ifdef K_DEBUG
+                                kFatal() << "KTLibraryObject::fromXml() - Unknown object type: " << k->type;
+                         #endif
+                     }
+                break;
         }
     }
 }
@@ -161,18 +188,20 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
                      if (KTAbstractSerializable *serializable = dynamic_cast<KTAbstractSerializable *>(item))
                          object.appendChild(serializable->toXml(doc));
                  }
-            
+
                  object.setAttribute("path", finfo.fileName());
             }
             break;
             case Image:
             {
+                 /*
                  QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(k->data);
             
                  if (item) {
                      if (KTAbstractSerializable *serializable = dynamic_cast<KTAbstractSerializable *>(item))
                          object.appendChild(serializable->toXml(doc));
                  }
+                 */
             
                  object.setAttribute("path", finfo.fileName());
             }
@@ -187,10 +216,14 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
     return object;
 }
 
-bool KTLibraryObject::loadData(const QByteArray &data)
+bool KTLibraryObject::loadRawData(const QByteArray &data)
 {
-    if (data.isEmpty())
+    if (data.isEmpty()) {
+        #ifdef K_DEBUG
+               kFatal() << "KTLibraryObject::loadData() - Data is null!";
+        #endif
         return false;
+    }
     
     bool ok = true;
 
@@ -202,11 +235,16 @@ bool KTLibraryObject::loadData(const QByteArray &data)
                  setData(QVariant::fromValue(item));
             }
             break;
+            case KTLibraryObject::Text:
+            {
+                 setData(QString::fromLocal8Bit(data));
+            }
+            break;
             case KTLibraryObject::Image:
             {
                  QPixmap pixmap;
                  pixmap.loadFromData(data);
-            
+
                  KTPixmapItem *item = new KTPixmapItem;
                  item->setPixmap(pixmap);
                  setData(QVariant::fromValue(static_cast<QGraphicsItem *>(item)));
@@ -216,11 +254,6 @@ bool KTLibraryObject::loadData(const QByteArray &data)
             {
                  QString item(data);
                  setData(QVariant::fromValue(item));
-            }
-            break;
-            case KTLibraryObject::Text:
-            {
-                 setData(QString::fromLocal8Bit(data));
             }
             break;
             case KTLibraryObject::Sound:
@@ -254,8 +287,13 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
             
                  QFile f(k->dataPath);
             
-                 if (f.open(QIODevice::ReadOnly))
-                     loadData(f.readAll());
+                 if (f.open(QIODevice::ReadOnly)) {
+                     loadRawData(f.readAll());
+                 } else {
+                     #ifdef K_DEBUG
+                            kFatal() << "KTLibraryObject::loadDataFromPath() - Image: Can't access file";
+                     #endif
+                 }
             }
             break;
             case KTLibraryObject::Sound:
@@ -269,8 +307,13 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
 
                  QFile f(k->dataPath);
 
-                 if (f.open(QIODevice::ReadOnly))
-                     loadData(f.readAll());
+                 if (f.open(QIODevice::ReadOnly)) {
+                     loadRawData(f.readAll());
+                 } else {
+                     #ifdef K_DEBUG
+                            kFatal() << "KTLibraryObject::loadDataFromPath() - Svg: Can't access file";
+                     #endif
+                 }
             }
             break;
             default: 

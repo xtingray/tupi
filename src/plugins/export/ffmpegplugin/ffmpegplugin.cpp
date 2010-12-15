@@ -118,7 +118,7 @@ bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
          if (!generator->movieHeaderOk()) {
              errorMsg = generator->getErrorMsg();
              #ifdef K_DEBUG
-                    kError() << "FATAL : can not create video";
+                    kError() << "FFMpegPlugin::exportToFormat() - FATAL : can't create video";
              #endif
              delete generator;
              return false;

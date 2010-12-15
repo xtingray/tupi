@@ -180,7 +180,7 @@ void KTFrame::fromXml(const QString &xml)
                    }
                } else if (e.tagName() == "svg") {
 
-                          QString path = e.attribute("itemPath");
+                          QString path = CACHE_DIR + "/" + project()->projectName() + "/svg/" + e.attribute("itemPath");
                           QDomNode n2 = e.firstChild();
 
                           while (!n2.isNull()) {

@@ -266,8 +266,7 @@ void KTProjectManager::setupProjectDir()
     if (!project.exists()) {
         if (project.mkpath(project.absolutePath())) {
             QStringList dirs;
-            dirs << "audio" << "images" << "video";
-
+            dirs << "audio" << "video" << "images" << "svg";
             foreach (QString dir, dirs)
                      project.mkdir(dir);
         }

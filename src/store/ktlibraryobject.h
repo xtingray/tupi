@@ -52,7 +52,8 @@ class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializab
     public:
         enum Type
         {
-            Item = 0x01,
+            // Item = 0x01,
+            Item = 1,
             Image,
             Sound,
             Svg,
@@ -68,13 +69,14 @@ class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializab
         
         void setData(const QVariant &data);
         QVariant data() const;
-        
+       
+        void setDataPath(const QString &path);
         QString dataPath() const;
         
         void setSymbolName(const QString &name);
         QString symbolName() const;
         
-        bool loadData(const QByteArray &data);
+        bool loadRawData(const QByteArray &data);
         bool loadDataFromPath(const QString &dataDir);
         
         void saveData(const QString &dataDir);

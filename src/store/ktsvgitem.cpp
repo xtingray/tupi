@@ -37,6 +37,7 @@
 #include "ktserializer.h"
 
 #include <QSvgRenderer>
+#include <QFileInfo>
 
 #include "kdebug.h"
 
@@ -73,8 +74,10 @@ void KTSvgItem::fromXml(const QString &xml)
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
+    QFileInfo svgName(path);
+
     QDomElement root = doc.createElement("svg");
-    root.setAttribute("itemPath", path); 
+    root.setAttribute("itemPath", svgName.fileName()); 
     root.appendChild(KTSerializer::properties(this, doc));
  
     return root;

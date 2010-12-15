@@ -56,38 +56,47 @@ KTSaveProject::~KTSaveProject()
 
 bool KTSaveProject::save(const QString &fileName, KTProject *project)
 {
-    QDir projectDir = CACHE_DIR + "/" + project->projectName();
+    int indexPath = fileName.lastIndexOf("/");
+    int indexFile = fileName.length() - indexPath;
+    QString name = fileName.right(indexFile - 1);
+    int indexDot = name.lastIndexOf(".");
+    name = name.left(indexDot);
+
+    QString oldDirName = CACHE_DIR + "/" + project->projectName();
+    QDir projectDir(oldDirName);
+
+    if (name.compare(project->projectName()) != 0) {
+        project->setProjectName(name);
+        projectDir.setPath(CACHE_DIR + "/" + name);    
+        if (!projectDir.exists()) {
+            projectDir.rename(oldDirName, projectDir.path());
+        }
+    } else {
+        if (!projectDir.exists()) {
+            if (! projectDir.mkdir(projectDir.path())) {
+                #ifdef K_DEBUG
+                       kFatal() << "KTSaveProject::save() - Can't save project";
+                #endif
+                return false;
+            }
+        }
+    }
 
     #ifdef K_DEBUG
            kDebug("project") << "Saving project to: " << projectDir.absolutePath();
     #endif
 
-    if (!projectDir.exists()) {
-        if (! projectDir.mkdir(projectDir.path())) {
-            #ifdef K_DEBUG
-                   kFatal() <<("Can't save project");
-            #endif
-            return false;
-        }
-    }
-
     {
      // Save project
-     QFile prj(projectDir.path() + "/project.tpp");
+     QFile projectFile(projectDir.path() + "/project.tpp");
 
-     int indexPath = fileName.lastIndexOf("/");
-     int indexFile = fileName.length() - indexPath;
-     QString name = fileName.right(indexFile - 1);
-     int indexDot = name.lastIndexOf(".");
-     name = name.left(indexDot);
-
-     if (prj.open(QIODevice::WriteOnly | QIODevice::Text)) {
-         QTextStream ts(&prj);
+     if (projectFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+         QTextStream ts(&projectFile);
          QDomDocument doc;
          project->setProjectName(name);
          doc.appendChild(project->toXml(doc));
          ts << doc.toString();
-         prj.close();
+         projectFile.close();
      }
     }
 
@@ -98,7 +107,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
               QDomDocument doc;
               doc.appendChild(scene->toXml(doc));
 
-              QFile scn(projectDir.path()+"/scene" + QString::number(index) + ".tps");
+              QFile scn(projectDir.path() + "/scene" + QString::number(index) + ".tps");
 
               if (scn.open(QIODevice::WriteOnly | QIODevice::Text)) {
                   QTextStream st(&scn);
@@ -111,7 +120,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
 
     {
      // Save library
-     QFile lbr(projectDir.path()+"/library.tpl");
+     QFile lbr(projectDir.path() + "/library.tpl");
 
      if (lbr.open(QIODevice::WriteOnly | QIODevice::Text)) {
          QTextStream ts(&lbr);

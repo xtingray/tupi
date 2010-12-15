@@ -41,6 +41,9 @@
 #include "ktprojectloader.h"
 #include "ktproject.h"
 
+#include <QFileInfo>
+#include <QFile>
+
 struct KTLibraryFolder::Private
 {
     QString id;
@@ -67,12 +70,12 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     object->setSymbolName(name);
     object->setParent(this);
     object->setType(type);
-    
-    if (!object->loadData(data)) {
+
+    if (!object->loadRawData(data)) {
         delete object;
         return 0;
-    } 
-    
+    }
+
     bool ret = addObject(object);
     object->saveData(k->project->dataDir());
 
@@ -120,8 +123,15 @@ bool KTLibraryFolder::addFolder(KTLibraryFolder *folder)
 bool KTLibraryFolder::removeObject(const QString &id)
 {
     foreach (QString oid, k->objects.keys()) {
-             if (oid.compare(id) == 0)
+             if (oid.compare(id) == 0) {
+                 QString path = k->objects[id]->dataPath();
+
+                 QFileInfo finfo(path);
+                 if (finfo.isFile())
+                     QFile::remove(path);
+
                  return k->objects.remove(id);
+             }
     }
 
     foreach (KTLibraryFolder *folder, k->folders) {
@@ -344,7 +354,16 @@ void KTLibraryFolder::loadItem(const QString &folder, QDomNode xml)
 
     KTLibraryObject *object = new KTLibraryObject(this);
     object->fromXml(objectDocument.toString(0));
-    object->loadDataFromPath(k->project->dataDir());
+
+    switch (object->type()) {
+            case KTLibraryObject::Image:
+            case KTLibraryObject::Svg:
+            case KTLibraryObject::Sound:
+            {
+                 object->loadDataFromPath(k->project->dataDir());
+            }
+            break;
+    }
 
     if (folder.compare("library") == 0)
         addObject(object);
