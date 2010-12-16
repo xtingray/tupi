@@ -75,7 +75,7 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 
         bool addFolder(KTLibraryFolder *folder);
 
-        bool removeObject(const QString &id);
+        bool removeObject(const QString &id, bool absolute);
 
         bool removeFolder(const QString &id);
 

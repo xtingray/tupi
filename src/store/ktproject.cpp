@@ -429,7 +429,7 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
 
 bool KTProject::removeSymbol(const QString &name)
 {
-    return k->library->removeObject(name);
+    return k->library->removeObject(name, true);
 }
 
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)

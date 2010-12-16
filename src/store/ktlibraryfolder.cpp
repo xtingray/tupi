@@ -120,15 +120,17 @@ bool KTLibraryFolder::addFolder(KTLibraryFolder *folder)
     return false;
 }
 
-bool KTLibraryFolder::removeObject(const QString &id)
+bool KTLibraryFolder::removeObject(const QString &id, bool absolute)
 {
     foreach (QString oid, k->objects.keys()) {
              if (oid.compare(id) == 0) {
                  QString path = k->objects[id]->dataPath();
 
-                 QFileInfo finfo(path);
-                 if (finfo.isFile())
-                     QFile::remove(path);
+                 if (absolute) {
+                     QFileInfo finfo(path);
+                     if (finfo.isFile())
+                         QFile::remove(path);
+                 }
 
                  return k->objects.remove(id);
              }
@@ -137,7 +139,7 @@ bool KTLibraryFolder::removeObject(const QString &id)
     foreach (KTLibraryFolder *folder, k->folders) {
              KTLibraryObject *object = folder->findObject(id);
              if (object)
-                 return folder->removeObject(id);
+                 return folder->removeObject(id, absolute);
     }
 
     return false;
@@ -154,7 +156,7 @@ bool KTLibraryFolder::moveObject(const QString &id, const QString &target)
 {
     KTLibraryObject *object = findObject(id);
     if (object) {
-        if (removeObject(id))
+        if (removeObject(id, false))
             foreach (KTLibraryFolder *folder, k->folders) {
                      if (folder->id().compare(target) == 0) {
                          folder->addObject(object);
@@ -171,7 +173,7 @@ bool KTLibraryFolder::moveObjectToRoot(const QString &id)
 {
     KTLibraryObject *object = findObject(id);
     if (object) {
-        if (removeObject(id)) {
+        if (removeObject(id, false)) {
             addObject(object);
             return true;
         }
@@ -243,7 +245,7 @@ bool KTLibraryFolder::renameObject(const QString &oldId, const QString &newId)
 {
     KTLibraryObject *object = findObject(oldId);
     if (object) {
-        removeObject(oldId);
+        removeObject(oldId, false);
         object->setSymbolName(newId);
         return addObject(object);
     }
@@ -384,14 +386,20 @@ void KTLibraryFolder::loadItem(const QString &folder, QDomNode xml)
 
 QDomElement KTLibraryFolder::toXml(QDomDocument &doc) const
 {
+    kFatal() << "KTLibraryFolder::toXml() - Saving a folder...";
+
     QDomElement folder = doc.createElement("folder");
     folder.setAttribute("id", k->id);
 
-    foreach (KTLibraryFolder *folderObject, k->folders)
+    foreach (KTLibraryFolder *folderObject, k->folders) {
+             kFatal() << "KTLibraryFolder::toXml() - Saving an inner folder...";
              folder.appendChild(folderObject->toXml(doc));
+    }
     
-    foreach (KTLibraryObject *object, k->objects.values())
+    foreach (KTLibraryObject *object, k->objects.values()) {
+             kFatal() << "KTLibraryFolder::toXml() - Saving an object!";
              folder.appendChild(object->toXml(doc));
+    }
     
     return folder;
 }
