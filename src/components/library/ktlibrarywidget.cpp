@@ -824,7 +824,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                         if ((*it)->text(2).length() > 0) {
                             if (key == (*it)->text(3)) {
                                 delete (*it);
-                                k->library->removeObject(key);
+                                k->library->removeObject(key, true);
                                 break;
                             } 
                         } else {
