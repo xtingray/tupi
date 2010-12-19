@@ -78,7 +78,7 @@ void KOsd::display(const QString &title, const QString &message, Level level, in
 
     QString htmlMessage = message;
     htmlMessage.replace('\n', "<br/>");
-    QString tail = title + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>";
+    QString tail = title + "</b></font><br><font style=\"font-size:11px\">" + htmlMessage + "</font>";
 
     //htmlMessage.replace('\n', "<br/>");
 
@@ -135,12 +135,12 @@ void KOsd::display(const QString &title, const QString &message, Level level, in
 
     QSizeF textSize = m_document->size();
 
-    int width = (int)textSize.width()+10;
-    int height = (int)textSize.height()+10;
+    int width = (int)textSize.width() + 10;
+    int height = (int)textSize.height() + 10;
 
     QDesktopWidget desktop;
     move((int) (desktop.screenGeometry().width() - textSize.width()) - 25, 
-                (int) (desktop.screenGeometry().height() - textSize.height()) - 50);
+                (int) (desktop.screenGeometry().height() - textSize.height()) - 45);
 
     QRect geometry(0, 0, width + 10, height + 8);
     QRect geometry2(0, 0, width + 9, height + 7);
@@ -186,7 +186,7 @@ KOsd *KOsd::self()
     return s_osd;
 }
 
-void KOsd::paintEvent(QPaintEvent * e)
+void KOsd::paintEvent(QPaintEvent *e)
 {
     QPainter p(this);
     p.drawPixmap(e->rect().topLeft(), m_pixmap, e->rect());

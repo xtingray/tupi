@@ -63,6 +63,7 @@
 #include <QTreeWidgetItemIterator>
 
 #include "ktlibrary.h"
+#include "ktproject.h"
 #include "ktlibraryobject.h"
 #include "ktsymboleditor.h"
 
@@ -87,6 +88,7 @@ struct KTLibraryWidget::Private
     }
 
     KTLibrary *library;
+    KTProject *project;
     KTItemPreview *display;
     KTGCTable *libraryTree;
     int childCount;
@@ -202,6 +204,7 @@ void KTLibraryWidget::resetGUI()
 void KTLibraryWidget::setLibrary(KTLibrary *library)
 {
     k->library = library;
+    k->project = library->project(); 
 }
 
 void KTLibraryWidget::addFolder()
@@ -226,11 +229,13 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
             return;
         }
 
-        KTLibraryObject *object = k->library->findObject(item->text(3));
+        // KTLibraryObject *object = k->library->findObject(item->text(3));
+
+        KTLibraryObject *object = k->library->findObject(item->text(1) + "." + item->text(2).toLower());
 
         if (!object) {
             #ifdef K_DEBUG
-                   kDebug("library") << "Cannot find the object";
+                   kFatal() << "KTLibraryWidget::previewItem() - Cannot find the object: " << item->text(1) + "." + item->text(2).toLower();
             #endif
             QGraphicsTextItem *msg = new QGraphicsTextItem(tr("No preview available"));
             k->display->render(static_cast<QGraphicsItem *>(msg));
@@ -291,7 +296,8 @@ void KTLibraryWidget::insertObjectInWorkspace()
       return;
     }
 
-    QString objectKey = k->libraryTree->currentItem()->text(3);
+    // QString objectKey = k->libraryTree->currentItem()->text(3);
+    QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, objectKey,
                                KTLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), 0, 
@@ -355,8 +361,8 @@ void KTLibraryWidget::importBitmap()
         QPixmap *pixmap = new QPixmap(image);
         int picWidth = pixmap->width();
         int picHeight = pixmap->height();
-        int projectWidth = k->library->project()->dimension().width();
-        int projectHeight = k->library->project()->dimension().height();
+        int projectWidth = k->project->dimension().width();
+        int projectHeight = k->project->dimension().height();
 
         if (picWidth > projectWidth || picHeight > projectHeight) {
             QDesktopWidget desktop;
@@ -484,8 +490,8 @@ void KTLibraryWidget::importBitmapArray()
         QPixmap *pixmap = new QPixmap(photograms.at(0).absoluteFilePath());
         int picWidth = pixmap->width();
         int picHeight = pixmap->height(); 
-        int projectWidth = k->library->project()->dimension().width();
-        int projectHeight = k->library->project()->dimension().height();
+        int projectWidth = k->project->dimension().width();
+        int projectHeight = k->project->dimension().height();
 
         if (picWidth > projectWidth || picHeight > projectHeight) {
             text = text + "\n" + tr("Files are too big, so they will be resized.") + "\n"
@@ -916,7 +922,7 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
         }
 
         item->setText(1, tag);
-        KTLibraryFolder *folder = new KTLibraryFolder(tag, k->library->project());
+        KTLibraryFolder *folder = new KTLibraryFolder(tag, k->project);
         k->library->addFolder(folder);
 
         QGraphicsTextItem *msg = new QGraphicsTextItem(tr("Directory"));
@@ -928,6 +934,7 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
     }
 
     if (k->renaming) {
+        // Renaming directory
         if (k->libraryTree->isFolder(item)) {
             QString base = item->text(1);
             if (k->oldId.length() == 0 || base.length() == 0)
@@ -954,20 +961,25 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
                 if (k->library->folderExists(k->oldId)) {
                     k->library->renameFolder(k->oldId, tag);
                     item->setText(1, tag);
+                    k->library->renameFolder(k->oldId, tag);
                 }
             } 
         } else {
+            // Renaming item
             if (k->oldId.length() == 0)
                 return;
 
+            // SQA: Make the renaming action for real here!
+
             QString newId = item->text(1);
+            QString extension = item->text(2);
             if (k->oldId.compare(newId) != 0) {
                 QList<QTreeWidgetItem *> list = k->libraryTree->findItems(newId, Qt::MatchExactly, 1);
                 if (list.size() > 1) {
                     int total = 0;
                     for (int i=0; i<list.size(); i++) {
                          QTreeWidgetItem *node = list.at(i);
-                         if (node->text(2).compare(item->text(2)) == 0) {
+                         if (node->text(2).compare(extension) == 0) {
                              total++;
                          }
                     }
@@ -988,6 +1000,30 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
 
                     } 
                 }
+
+                kFatal() << "KTLibraryWidget::refreshItem() - Renaming from OID: " << k->oldId << " to NEW: " << newId;
+                k->oldId = k->oldId + "." + extension.toLower();
+                newId = newId + "." + extension.toLower();
+
+                QTreeWidgetItem *parent = item->parent();
+
+                if (parent) {
+                    kFatal() << "KTLibraryWidget::refreshItem() - Renaming from Directory: " << parent->text(1);
+                    k->library->renameObject(parent->text(1), k->oldId, newId);
+                } else {
+                    kFatal() << "KTLibraryWidget::refreshItem() - Renaming from Root, object: " << newId;
+                    k->library->renameObject("", k->oldId, newId);
+                }
+
+                KTLibraryObject::Type type = KTLibraryObject::Image;
+                if (extension.compare("SVG")==0)
+                    type = KTLibraryObject::Svg;
+                if (extension.compare("OBJ")==0)
+                    type = KTLibraryObject::Item;
+
+                kFatal() << "";
+                kFatal() << "KTLibraryWidget::refreshItem() - calling out general update!";
+                k->project->updateSymbolId(type, k->oldId, newId);
             }
         }
 

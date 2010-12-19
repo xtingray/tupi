@@ -87,6 +87,8 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 
 bool KTLibraryFolder::addObject(KTLibraryObject *object)
 {
+    kFatal() << "KTLibraryFolder::addObject() - Adding object to root -> " << object->symbolName();
+
     if (!k->objects.contains(object->symbolName())) {
         k->objects.insert(object->symbolName(), object);
         return true;
@@ -97,6 +99,8 @@ bool KTLibraryFolder::addObject(KTLibraryObject *object)
 
 bool KTLibraryFolder::addObject(const QString &folderName, KTLibraryObject *object)
 {
+    kFatal() << "KTLibraryFolder::addObject() - Adding object " << object->symbolName() << " to folder " << folderName;
+
     foreach (KTLibraryFolder *folder, k->folders) {
              if (folder->id().compare(folderName) == 0) {
                  LibraryObjects bag = folder->objects();
@@ -196,6 +200,7 @@ QString KTLibraryFolder::id() const
 KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 {
     foreach (QString oid, k->objects.keys()) {
+             kFatal() << "KTLibraryFolder::findObject() - oid: " << oid;
              if (oid.compare(id) == 0) 
                  return k->objects[oid];
     }
@@ -241,13 +246,24 @@ bool KTLibraryFolder::folderExists(const QString &id) const
     return false;
 }
 
-bool KTLibraryFolder::renameObject(const QString &oldId, const QString &newId)
+bool KTLibraryFolder::renameObject(const QString &folder, const QString &oldId, const QString &newId)
 {
+    kFatal() << "KTLibraryFolder::renameObject() - Tracing method!";
     KTLibraryObject *object = findObject(oldId);
+
     if (object) {
         removeObject(oldId, false);
         object->setSymbolName(newId);
-        return addObject(object);
+
+        if (folder.length() > 0)
+            return addObject(folder, object);
+        else
+            return addObject(object);
+       
+    } else {
+        #ifdef K_DEBUG
+               kDebug() << "KTLibraryFolder::renameObject() - Object not found: " << oldId;
+        #endif
     }
 
     return false;

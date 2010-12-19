@@ -56,6 +56,16 @@ KTSvgItem::~KTSvgItem()
 {
 }
 
+void KTSvgItem::setSymbolName(const QString &symbolName)
+{
+    name = symbolName;
+}
+
+QString KTSvgItem::symbolName() const
+{
+    return name;
+}
+
 QString KTSvgItem::itemPath() const
 {
     return path;
@@ -74,10 +84,13 @@ void KTSvgItem::fromXml(const QString &xml)
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
-    QFileInfo svgName(path);
+    //QFileInfo svgName(path);
+
+    kFatal() << "KTSvgItem::toXml() - Name: " << name;
 
     QDomElement root = doc.createElement("svg");
-    root.setAttribute("itemPath", svgName.fileName()); 
+    //root.setAttribute("itemPath", svgName.fileName()); 
+    root.setAttribute("id", name);
     root.appendChild(KTSerializer::properties(this, doc));
  
     return root;

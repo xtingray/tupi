@@ -79,7 +79,7 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 
         bool removeFolder(const QString &id);
 
-        bool renameObject(const QString &oldId, const QString &newId);
+        bool renameObject(const QString &folder, const QString &oldId, const QString &newId);
         bool renameFolder(const QString &oldId, const QString &newId);
         
         bool moveObject(const QString &id, const QString &folder);

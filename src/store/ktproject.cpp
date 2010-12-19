@@ -401,7 +401,9 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 
 bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex)
 {
-    Q_UNUSED(name);
+    //Q_UNUSED(name);
+
+    kFatal() << "KTProject::removeSymbol() - 1 Removing item: " << name;
 
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
@@ -429,6 +431,8 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
 
 bool KTProject::removeSymbol(const QString &name)
 {
+    kFatal() << "KTProject::removeSymbol() - 1 Removing item: " << name;
+
     return k->library->removeObject(name, true);
 }
 
@@ -474,9 +478,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                      {
                        QString path(object->dataPath());
                        KTSvgItem *svgItem = new KTSvgItem(path);
-
-                       //QString path(object->symbolName());
-                       //KTSvgItem *svgItem = new KTSvgItem(path);
+                       svgItem->setSymbolName(name);
 
                        int svgW = svgItem->boundingRect().width();
                        int svgH = svgItem->boundingRect().height();
@@ -495,6 +497,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                            svgItem->moveBy(0, 0);
                        }
 
+                       kFatal() << "KTProject::addSymbolToProject() - Adding SVG item: " << name;
                        frame->addSvgItem(name, svgItem);
                      }
                 break;
@@ -529,6 +532,8 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Type type)
 {
+    kFatal() << "KTProject::removeSymbolFromProject() - 1 Removing item: " << name;
+
     if (type == KTLibraryObject::Folder)
         return true;
 
@@ -545,6 +550,32 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
 
     return true;
 }
+
+bool KTProject::updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId)
+{
+    kFatal() << "";
+    kFatal() << "KTProject::updateSymbolId() - Project: " << projectName();
+
+    foreach (KTScene *scene, k->scenes.values()) {
+             kFatal() << "KTProject::updateSymbolId() - Scanning Scene: " << scene->sceneName();
+             foreach (KTLayer *layer, scene->layers().values()) {
+                      kFatal() << "KTProject::updateSymbolId() - Scanning Layer: " << layer->layerName();
+                      foreach (KTFrame *frame, layer->frames().values()) {
+                               kFatal() << "KTProject::updateSymbolId() - Scanning frame: " << frame->frameName();
+                               if (type != KTLibraryObject::Svg) {
+                                   kFatal() << "KTProject::updateSymbolId() - Replacing Image";
+                                   frame->updateIdFromFrame(oldId, newId);
+                               } else {
+                                   kFatal() << "KTProject::updateSymbolId() - Replacing SVG";
+                                   frame->updateSvgIdFromFrame(oldId, newId);
+                               }
+                      }
+             }
+    }
+
+    return true;
+}
+
 
 KTLibrary *KTProject::library()
 {

@@ -105,6 +105,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         bool addSymbolToProject(const QString &name, int scene, int layer, int frame);
         bool removeSymbolFromProject(const QString &name, KTLibraryObject::Type type);
 
+        bool updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId);
+
         void clear();
         void loadLibrary(const QString &filename);
 

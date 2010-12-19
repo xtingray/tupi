@@ -66,6 +66,8 @@ struct KTItemFactory::Private
     QString textReaded;
 
     const KTLibrary *library;
+
+    KTItemFactory::Type type;
 };
 
 KTItemFactory::KTItemFactory() : KXmlParserBase(), k(new Private)
@@ -89,6 +91,7 @@ void KTItemFactory::setLibrary(const KTLibrary *library)
 QGraphicsItem* KTItemFactory::createItem(const QString &root)
 {
     QGraphicsItem* item = 0;
+    k->type = KTItemFactory::Vectorial;
 
     if (root == "path") {
         item = new KTPathItem;
@@ -106,6 +109,7 @@ QGraphicsItem* KTItemFactory::createItem(const QString &root)
                item = new KTItemGroup;
     } else if(root == "symbol") {
                item = new KTGraphicLibraryItem;
+               k->type = KTItemFactory::Library;
     }
 
     return item;
@@ -480,5 +484,9 @@ QString KTItemFactory::itemID(const QString &xml)
         return id;
 
     return "item";
+}
+
+KTItemFactory::Type KTItemFactory::type() {
+    return k->type;
 }
 

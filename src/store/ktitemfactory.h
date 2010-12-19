@@ -53,6 +53,12 @@ class KTLibrary;
 class STORE_EXPORT KTItemFactory : public KXmlParserBase
 {
     public:
+        enum Type
+        {
+            Vectorial = 1,
+            Library 
+        };
+
     	KTItemFactory();
     	~KTItemFactory();
     	
@@ -74,6 +80,8 @@ class STORE_EXPORT KTItemFactory : public KXmlParserBase
     	bool loadItem(QGraphicsItem *item, const QString &xml);
 
         QString itemID(const QString &xml);
+
+        KTItemFactory::Type type();
     	
     private:
     	void setItemPen(const QPen &pen);

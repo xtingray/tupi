@@ -98,9 +98,11 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        void addItem(QGraphicsItem *item);
        void addItem(const QString &key, QGraphicsItem *item);
        void removeItemFromFrame(const QString &key);
+       void updateIdFromFrame(const QString &oldId, const QString &newId);
 
        void addSvgItem(const QString &key, KTSvgItem *item);
        void removeSvgItemFromFrame(const QString &key);
+       void updateSvgIdFromFrame(const QString &oldId, const QString &newId);
 
        void insertItem(int position, QGraphicsItem *item);
        void insertSvgItem(int position, KTSvgItem *item);

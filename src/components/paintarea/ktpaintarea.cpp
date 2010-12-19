@@ -675,7 +675,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
 
     foreach (QGraphicsItem *item, selected) {
              if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
-                 QString symName = dialog.symbolName(item);
+                 QString symName = dialog.symbolName(item) + ".obj";
 
                  QDomDocument doc;
                  doc.appendChild(itemSerializable->toXml(doc));
