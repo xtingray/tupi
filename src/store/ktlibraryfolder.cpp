@@ -425,3 +425,30 @@ void KTLibraryFolder::reset()
     k->objects.clear();
     k->folders.clear();
 }
+
+void KTLibraryFolder::updatePaths(const QString &newPath)
+{
+    foreach (QString oid, k->objects.keys()) {
+             QString oldPath = k->objects[oid]->dataPath();
+             QFileInfo logicalPath(oldPath);
+             QString filename = logicalPath.fileName();
+             QString path = "";
+
+             if (k->objects[oid]->type() == KTLibraryObject::Image)
+                 path = newPath + "/images/" + filename; 
+
+             if (k->objects[oid]->type() == KTLibraryObject::Svg)
+                 path = newPath + "/svg/" + filename;
+
+             if (k->objects[oid]->type() == KTLibraryObject::Sound)
+                 path = newPath + "/audio/" + filename;
+
+             k->objects[oid]->setDataPath(path);
+
+             kFatal() << "KTLibraryFolder::updatePaths() - Updating from: " << oldPath;
+             kFatal() << "KTLibraryFolder::updatePaths() - to: " << path;
+    }
+
+    foreach (KTLibraryFolder *folder, k->folders)
+             folder->updatePaths(newPath);    
+}

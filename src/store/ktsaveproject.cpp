@@ -68,6 +68,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     if (name.compare(project->projectName()) != 0) {
         project->setProjectName(name);
         projectDir.setPath(CACHE_DIR + "/" + name);    
+        project->library()->updatePaths(CACHE_DIR + "/" + name);
         if (!projectDir.exists()) {
             projectDir.rename(oldDirName, projectDir.path());
         }

@@ -208,6 +208,7 @@ void KTFrame::fromXml(const QString &xml)
 
                                      KTSvgItem *svg = new KTSvgItem(path);
                                      KTSerializer::loadProperties(svg, e2);
+                                     k->svgIndexes[k->svg.count()] = symbol;
                                      insertSvgItem(k->svg.count(), svg);
                                  }
 
@@ -306,10 +307,22 @@ void KTFrame::removeSvgItemFromFrame(const QString &key)
 
 void KTFrame::updateSvgIdFromFrame(const QString &oldId, const QString &newId)
 {
+    kFatal() << "";
+    kFatal() << "KTFrame::updateSvgIdFromFrame() - Svg Indexes size: " << k->svgIndexes.size();
+    kFatal() << "KTFrame::updateSvgIdFromFrame() - Svg Objects bag: " << k->svg.count();
+
     foreach (int i, k->svgIndexes.keys()) {
+             kFatal() << "KTFrame::updateSvgIdFromFrame() - Key: " << k->svgIndexes[i];
+             kFatal() << "KTFrame::updateSvgIdFromFrame() - NEW: " << newId;
+             kFatal() << "KTFrame::updateSvgIdFromFrame() - OLD: " << oldId;
+
              if (k->svgIndexes[i].compare(oldId) == 0) {
                  k->svgIndexes[i] = newId;
-                 return;
+
+                 KTSvgItem *svgItem = k->svg.value(i);
+                 svgItem->setSymbolName(newId);
+
+                 k->svg.insert(i, svgItem);
              }
     }
 }
@@ -449,6 +462,8 @@ bool KTFrame::removeSvgAt(int position)
         return false;
 
     KTSvgItem *item = k->svg.takeObject(position);
+    k->objectIndexes.remove(position); 
+
     // SQA: Delete indexes here
 
     if (item) {

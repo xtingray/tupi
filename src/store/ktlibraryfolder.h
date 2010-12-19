@@ -98,6 +98,8 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 
         KTLibraryFolder *findFolder(const QString &id) const;
         bool folderExists(const QString &id) const;
+
+        void updatePaths(const QString &newPath);
         
     public:
         virtual void fromXml(const QString &xml);
