@@ -399,28 +399,27 @@ bool KTMainWindow::closeProject()
 
     }
 
-    if (colorView->isExpanded())
+    // if (colorView->isExpanded())
         colorView->expandDock(false);
 
-    if (penView->isExpanded())
+    // if (penView->isExpanded())
         penView->expandDock(false);
 
-    if (libraryView->isExpanded())
+    // if (libraryView->isExpanded())
         libraryView->expandDock(false);
 
-    if (helpView->isExpanded())
+    //if (helpView->isExpanded())
         helpView->expandDock(false);
     
-    if (timeView->isExpanded())
+    //if (timeView->isExpanded())
         timeView->expandDock(false);
 
 #if defined(QT_GUI_LIB) && defined(K_DEBUG)
-    if (debugView->isExpanded())
+    //if (debugView->isExpanded())
         debugView->expandDock(false);
 #endif
 
     setUpdatesEnabled(false);
-    //enableToolViews(false);
     setMenuItemsContext(false);
 
     if (drawingTab)

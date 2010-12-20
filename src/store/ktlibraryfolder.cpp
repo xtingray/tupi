@@ -151,9 +151,21 @@ bool KTLibraryFolder::removeObject(const QString &id, bool absolute)
 
 bool KTLibraryFolder::removeFolder(const QString &id)
 {
-    int c = k->folders.remove(id);
+    if (k->folders.contains(id)) {
+        KTLibraryFolder *folder = findFolder(id);
+        LibraryObjects objects = folder->objects();
+        foreach (QString oid, objects.keys()) {
+                 if (folder->removeObject(oid, true)) {
+                     KTLibraryObject::Type extension = static_cast<KTLibraryObject::Type>(objects[oid]->type());
+                     if (!k->project->removeSymbolFromProject(oid, extension))
+                         return false;
+                 }
+        }
+    
+        return k->folders.remove(id);
+    }
 
-    return c > 0;
+    return false;
 }
 
 bool KTLibraryFolder::moveObject(const QString &id, const QString &target)
@@ -274,9 +286,8 @@ bool KTLibraryFolder::renameFolder(const QString &oldId, const QString &newId)
     KTLibraryFolder *folder = findFolder(oldId);
 
     if (folder) {
-        removeFolder(oldId);
-        folder->setId(newId);
-        return addFolder(folder);
+        k->folders[oldId]->setId(newId);
+        return true;
     } 
 
     return false;

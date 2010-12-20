@@ -84,12 +84,15 @@ void KTSvgItem::fromXml(const QString &xml)
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
-    //QFileInfo svgName(path);
-
     kFatal() << "KTSvgItem::toXml() - Name: " << name;
 
+    if (name.length() == 0) {
+        #ifdef K_DEBUG
+               kError() << "KTFrame::fromXml() - ERROR: Object id is null!";
+        #endif
+    }
+
     QDomElement root = doc.createElement("svg");
-    //root.setAttribute("itemPath", svgName.fileName()); 
     root.setAttribute("id", name);
     root.appendChild(KTSerializer::properties(this, doc));
  

@@ -187,32 +187,39 @@ void KTFrame::fromXml(const QString &xml)
                } else if (e.tagName() == "svg") {
 
                           QString symbol = e.attribute("id");
-                          KTLibraryObject *object = project()->library()->findObject(symbol);
 
-                          kFatal() << "KTFrame::fromXml() - Svg path: " << object->dataPath();
+                          if (symbol.length() > 0) {
+                              KTLibraryObject *object = project()->library()->findObject(symbol);
 
-                          //QString path = CACHE_DIR + "/" + project()->projectName() + "/svg/" + object->dataPath();
-                          QString path(object->dataPath());
-                          QDomNode n2 = e.firstChild();
+                              kFatal() << "KTFrame::fromXml() - Svg path: " << object->dataPath();
 
-                          while (!n2.isNull()) {
-                                 QDomElement e2 = n2.toElement();
+                              QString path(object->dataPath());
+                              QDomNode n2 = e.firstChild();
 
-                                 if (e2.tagName() == "properties") {
+                              while (!n2.isNull()) {
+                                     QDomElement e2 = n2.toElement();
+
+                                     if (e2.tagName() == "properties") {
                               
-                                     QString newDoc;
-                                     {
-                                       QTextStream ts(&newDoc);
-                                       ts << n2;
+                                         QString newDoc;
+                                         {
+                                           QTextStream ts(&newDoc);
+                                           ts << n2;
+                                         }
+
+                                         KTSvgItem *svg = new KTSvgItem(path);
+                                         svg->setSymbolName(symbol);
+                                         KTSerializer::loadProperties(svg, e2);
+                                         k->svgIndexes[k->svg.count()] = symbol;
+                                         insertSvgItem(k->svg.count(), svg);
                                      }
 
-                                     KTSvgItem *svg = new KTSvgItem(path);
-                                     KTSerializer::loadProperties(svg, e2);
-                                     k->svgIndexes[k->svg.count()] = symbol;
-                                     insertSvgItem(k->svg.count(), svg);
-                                 }
-
-                                 n2 = n2.nextSibling(); 
+                                     n2 = n2.nextSibling(); 
+                              }
+                          } else {
+                              #ifdef K_DEBUG
+                                     kError() << "KTFrame::fromXml() - ERROR: Object id is null!";
+                              #endif
                           }
                }
            }
@@ -447,6 +454,7 @@ bool KTFrame::removeGraphicAt(int position)
         return false;
 
     KTGraphicObject *object = k->graphics.takeObject(position);
+    k->objectIndexes.remove(position);
 
     if (object) {
         this->scene()->removeTweenObject(object);
@@ -462,7 +470,7 @@ bool KTFrame::removeSvgAt(int position)
         return false;
 
     KTSvgItem *item = k->svg.takeObject(position);
-    k->objectIndexes.remove(position); 
+    k->svgIndexes.remove(position); 
 
     // SQA: Delete indexes here
 
