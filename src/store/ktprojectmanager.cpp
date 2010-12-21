@@ -164,6 +164,7 @@ void KTProjectManager::setupNewProject()
 
     k->project->setProjectName(k->params->projectName());
     k->project->setAuthor(k->params->author());
+    k->project->setBgColor(k->params->bgColor());
     k->project->setDimension(k->params->dimension());
     k->project->setFPS(k->params->fps());
 

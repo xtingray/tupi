@@ -36,6 +36,8 @@
 #ifndef KTANIMATIONRENDERER_H
 #define KTANIMATIONRENDERER_H
 
+#include <QColor>
+
 class QPainter;
 class KTScene;
 
@@ -45,7 +47,7 @@ class KTScene;
 class KTAnimationRenderer
 {
     public:
-        KTAnimationRenderer();
+        KTAnimationRenderer(const QColor color);
         ~KTAnimationRenderer();
 
         void setScene(KTScene *scene);

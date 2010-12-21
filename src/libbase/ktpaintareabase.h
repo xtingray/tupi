@@ -58,6 +58,7 @@ class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
         KTPaintAreaBase(QWidget * parent = 0);
         ~KTPaintAreaBase();
 
+        void setBgColor(const QColor color);
         void setAntialiasing(bool use);
         void setUseOpenGL(bool opengl);
         void setDrawGrid(bool draw);

@@ -94,6 +94,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
     K_FUNCINFO;
 
     k->project = project;
+    setBgColor(project->bgColor());
     k->currentSceneIndex = 0;
     k->deleteMode = false;
 

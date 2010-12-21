@@ -39,17 +39,16 @@
 #include "ktframe.h"
 #include "ktscene.h"
 #include "ktgraphicobject.h"
-
 #include "kdebug.h"
 
 #include <QPainter>
-
 
 struct KTAnimationRenderer::Private
 {
     KTGraphicsScene *scene;
     int totalPhotograms;
     int currentPhotogram;
+    QColor bgColor;
 
     Private() : scene(0), totalPhotograms(-1), currentPhotogram(0) {}
 
@@ -74,10 +73,11 @@ int KTAnimationRenderer::Private::calculateTotalPhotograms(KTScene *scene)
     return total;
 }
 
-KTAnimationRenderer::KTAnimationRenderer() : k(new Private)
+KTAnimationRenderer::KTAnimationRenderer(const QColor color) : k(new Private)
 {
+    k->bgColor = color;
     k->scene = new KTGraphicsScene;
-    k->scene->setBackgroundBrush(Qt::white);
+    k->scene->setBackgroundBrush(k->bgColor);
 }
 
 KTAnimationRenderer::~KTAnimationRenderer()

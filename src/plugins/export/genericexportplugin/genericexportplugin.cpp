@@ -62,7 +62,8 @@ KTExportInterface::Formats GenericExportPlugin::availableFormats()
     return KTExportInterface::PNG | KTExportInterface::JPEG | KTExportInterface::XPM;
 }
 
-bool GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool GenericExportPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, 
+                                         KTExportInterface::Format format, const QSize &size, int fps)
 {
     QFileInfo fileInfo(filePath);
 
@@ -84,7 +85,7 @@ bool GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
                  break;
     }
 
-    KTAnimationRenderer renderer;
+    KTAnimationRenderer renderer(color);
 
     foreach (KTScene *scene, scenes) {
              renderer.setScene(scene);

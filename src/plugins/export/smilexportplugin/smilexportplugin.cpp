@@ -60,7 +60,7 @@ KTExportInterface::Formats SmilExportPlugin::availableFormats()
     return KTExportInterface::SMIL;
 }
 
-bool SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool SmilExportPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
     QFileInfo fileInfo(filePath);
 

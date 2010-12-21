@@ -54,6 +54,7 @@ struct KTProject::Private
 {
     QString name;
     QString author;
+    QColor bgColor;
     QString description;
 
     QSize dimension;
@@ -74,6 +75,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
            KINIT;
     #endif
 
+    k->bgColor = QColor("#fff");
     k->sceneCounter = 0;
     k->isOpen = false;
     k->library = new KTLibrary("library", this);
@@ -137,6 +139,11 @@ void KTProject::setAuthor(const QString &author)
     k->author = author;
 }
 
+void KTProject::setBgColor(const QColor color)
+{
+    k->bgColor = color;
+}
+
 /**
  * This function sets project description
  */
@@ -175,6 +182,11 @@ QString KTProject::projectName() const
 QString KTProject::author() const
 {
     return k->author;
+}
+
+QColor KTProject::bgColor() const
+{
+    return k->bgColor;
 }
 
 /**
@@ -318,6 +330,8 @@ void KTProject::fromXml(const QString &xml)
                                   if (e1.firstChild().isText()) 
                                       setAuthor(e1.text());
 
+                              } else if (e1.tagName() == "bgcolor") {
+                                         setBgColor(QColor(e1.text()));
                               } else if (e1.tagName() == "description") {
 
                                          if (e1.firstChild().isText())
@@ -362,6 +376,9 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
     QDomElement author = doc.createElement("author");
     author.appendChild(doc.createTextNode(k->author));
 
+    QDomElement color = doc.createElement("bgcolor");
+    color.appendChild(doc.createTextNode(k->bgColor.name()));
+
     QDomElement description = doc.createElement("description");
     description.appendChild(doc.createTextNode(k->description));
 
@@ -374,6 +391,7 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
     fps.appendChild(doc.createTextNode(frames));
 
     meta.appendChild(author);
+    meta.appendChild(color);
     meta.appendChild(description);
     meta.appendChild(size);
     meta.appendChild(fps);

@@ -51,7 +51,7 @@ class FFMpegPlugin : public KTExportPluginObject
         virtual QString key() const;
         KTExportInterface::Formats availableFormats();
 
-        virtual bool exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
+        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
         virtual const char* getExceptionMsg();
         const char *errorMsg;
 };

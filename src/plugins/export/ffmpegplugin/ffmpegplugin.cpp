@@ -64,7 +64,7 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
     return KTExportInterface::OGV | KTExportInterface::MPEG | KTExportInterface::SWF | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
-bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
     KFFMpegMovieGenerator *generator = 0;
 
@@ -113,7 +113,7 @@ bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
                  return false;
     }
 
-    KTAnimationRenderer renderer;
+    KTAnimationRenderer renderer(color);
     {
          if (!generator->movieHeaderOk()) {
              errorMsg = generator->getErrorMsg();

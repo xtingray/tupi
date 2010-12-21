@@ -92,7 +92,8 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
     setAttribute(Qt::WA_StaticContents);
 
     k->renderCamera = QImage(size(), QImage::Format_RGB32);
-    k->renderCamera.fill(qRgb(255, 255, 255));
+    // k->renderCamera.fill(qRgb(255, 255, 255));
+    // k->renderCamera.fill(k->project->bgColor().rgb());
 
     k->timer = new QTimer(this);
     k->playBackTimer = new QTimer(this);
@@ -327,7 +328,7 @@ void KTAnimationArea::render()
 
     k->photograms.clear();
 
-    KTAnimationRenderer renderer;
+    KTAnimationRenderer renderer(k->project->bgColor());
     renderer.setScene(scene);
 
     QFont font = this->font();
@@ -341,12 +342,14 @@ void KTAnimationArea::render()
     progressDialog.show();
     int i = 1;
 
-   QDesktopWidget desktop;
-   progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
+    QDesktopWidget desktop;
+    progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2, 
+                        (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
 
     while (renderer.nextPhotogram()) {
            QImage renderized = QImage(size(), QImage::Format_RGB32);
-           renderized.fill(qRgb(255, 255, 255));
+           //renderized.fill(qRgb(255, 255, 255));
+           //renderized.fill(k->project->bgColor().rgb());
 
            QPainter painter(&renderized);
            painter.setRenderHint(QPainter::Antialiasing);
@@ -365,12 +368,13 @@ void KTAnimationArea::initAnimationArea()
     KTScene *scene = k->project->scene(k->currentSceneIndex);
     k->currentFramePosition = 0;
 
-    KTAnimationRenderer renderer;
+    KTAnimationRenderer renderer(k->project->bgColor());
     renderer.setScene(scene);
     renderer.renderPhotogram(0);
 
     QImage renderized = QImage(size(), QImage::Format_RGB32);
-    renderized.fill(qRgb(255, 255, 255));
+    // renderized.fill(qRgb(255, 255, 255));
+    // renderized.fill(k->project->bgColor().rgb());
 
     QPainter painter(&renderized);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -395,7 +399,8 @@ void  KTAnimationArea::resizeEvent(QResizeEvent * e)
     stop();
 
     k->renderCamera = QImage(size(), QImage::Format_RGB32);
-    k->renderCamera.fill(qRgb(255, 255, 255));
+    // k->renderCamera.fill(qRgb(255, 255, 255));
+    // k->renderCamera.fill(k->project->bgColor().rgb());
     k->isRendered = false;
 
     update();

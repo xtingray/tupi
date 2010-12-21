@@ -39,6 +39,7 @@ struct KTProjectManagerParams::Private
 {
     QString projectName;
     QString author;
+    QColor bgcolor;
     QString description;
     QSize dimension;
     int fps;
@@ -70,6 +71,16 @@ void KTProjectManagerParams::setAuthor(const QString &author)
 QString KTProjectManagerParams::author() const
 {
     return k->author;
+}
+
+void KTProjectManagerParams::setBgColor(const QColor color)
+{
+    k->bgcolor = color;
+}
+
+QColor KTProjectManagerParams::bgColor()
+{
+    return k->bgcolor;
 }
 
 void KTProjectManagerParams::setDescription(const QString &description)

@@ -1470,6 +1470,21 @@
         <translation>Autor</translation>
     </message>
     <message>
+        <location filename="../../ktnewproject.cpp" line="80"/>
+        <source>Background Color</source>
+        <translation>Color de Fondo</translation>
+    </message>
+    <message>
+        <location filename="../../ktnewproject.cpp" line="80"/>
+        <source>Click here to change background color</source>
+        <translation>Clic aquí para cambiar el color de fondo</translation>
+    </message>
+    <message>
+        <location filename="../../ktnewproject.cpp" line="80"/>
+        <source>White</source>
+        <translation>Blanco</translation>
+    </message>
+    <message>
         <location filename="../../ktnewproject.cpp" line="86"/>
         <source>Dimension</source>
         <translation>Dimensión</translation>

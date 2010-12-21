@@ -665,7 +665,7 @@ void ExportTo::exportIt()
         #endif
 
         if (scenes.count() > 0) 
-            done = m_currentExporter->exportToFormat(filename, scenes, m_currentFormat, 
+            done = m_currentExporter->exportToFormat(m_project->bgColor(), filename, scenes, m_currentFormat, 
                                                      QSize((int)m_size->x(),(int)m_size->y()), 
                                                      m_fps->value());
     } else {

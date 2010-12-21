@@ -73,12 +73,14 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 
         void setProjectName(const QString &name);
         void setAuthor(const QString &author);
+        void setBgColor(const QColor color);
         void setDescription(const QString &description);
         void setDimension(const QSize dimension);
         void setFPS(const int fps);	
 
         QString projectName() const;
         QString author() const;
+        QColor bgColor() const;
         QString description() const;
         QSize dimension() const;
         int fps() const;

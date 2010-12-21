@@ -43,12 +43,17 @@
 
 #include <QLineEdit>
 #include <QCheckBox>
-//TODO anadir un campo para ingresar la descripcion del proyecto 
+#include <QColorDialog>
+#include <QStyleOptionButton>
+
+//SQA: Add a field to define the project description 
 
 struct KTNewProject::Private
 {
     QLineEdit *projectName;
     QLineEdit *authorName;
+    QColor color;
+    QPushButton *colorButton;
     QSpinBox *fps;
 
     KXYSpinBox *size;
@@ -87,6 +92,20 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     k->authorName->setText(QString::fromLocal8Bit(::getenv("USER")));
     layout->addWidget(k->authorName, 1, 1);
 
+    QLabel *labelBgColor = new QLabel(tr("Background Color"), container);
+
+    k->color = QColor("#fff");
+    k->colorButton = new QPushButton();
+    k->colorButton->setText(tr("White"));
+    k->colorButton->setToolTip(tr("Click here to change background color"));
+    k->colorButton->setPalette(QPalette(k->color));
+    k->colorButton->setAutoFillBackground(true);
+
+    connect(k->colorButton, SIGNAL(clicked()), this, SLOT(setBgColor()));
+
+    layout->addWidget(labelBgColor, 2, 0);
+    layout->addWidget(k->colorButton, 2, 1);
+
     k->size = new KXYSpinBox(tr("Dimension"), container);
     k->size->setMaximum(5000);
     //k->size->setModifyTogether(true);;
@@ -94,7 +113,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     k->size->setX(520);
     k->size->setY(380);
 	
-    layout->addWidget(k->size, 2, 0);
+    layout->addWidget(k->size, 3, 0);
 
     QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
 	
@@ -120,7 +139,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     setupNetOptions();
     mcontly->addWidget(k->netOptions);
 
-    layout->addWidget(mcont, 2, 1);
+    layout->addWidget(mcont, 3, 1);
 
     k->netOptions->setVisible(false);
 
@@ -192,6 +211,7 @@ KTProjectManagerParams *KTNewProject::parameters()
     KTProjectManagerParams *params = new KTProjectManagerParams;
     params->setProjectName(k->projectName->text());
     params->setAuthor(k->authorName->text());
+    params->setBgColor(k->color);
     const QSize size(k->size->x(),k->size->y());
     params->setDimension(size);
     params->setFPS(k->fps->value());
@@ -225,4 +245,13 @@ void KTNewProject::focusProjectLabel()
     k->projectName->selectAll();
 }
 
+void KTNewProject::setBgColor()
+{
+     k->color = QColorDialog::getColor(Qt::white, this);
 
+     if (k->color.isValid()) {
+         k->colorButton->setText(k->color.name());
+         k->colorButton->setPalette(QPalette(k->color));
+         k->colorButton->setAutoFillBackground(true);
+     }
+}

@@ -95,6 +95,7 @@ struct KTPaintAreaBase::Private
     QGraphicsRectItem *grid;
     QRectF drawingRect;
     QPointF position;
+    QColor bgcolor;
 
     bool drawGrid;
     double angle;
@@ -123,6 +124,11 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(ne
     setMouseTracking(true); 
 
     restoreState();
+}
+
+void KTPaintAreaBase::setBgColor(const QColor color)
+{
+    k->bgcolor = color;
 }
 
 void KTPaintAreaBase::saveState()
@@ -297,7 +303,8 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(QPen(QColor(0,0,0,180), 2));
-    painter->fillRect(k->drawingRect, Qt::white);
+    // painter->fillRect(k->drawingRect, Qt::white);
+    painter->fillRect(k->drawingRect, k->bgcolor);
     painter->drawRect(k->drawingRect);
 
     //emit changedZero(painter->matrix().map(QPointF(0,0)));
