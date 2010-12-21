@@ -229,8 +229,6 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
             return;
         }
 
-        // KTLibraryObject *object = k->library->findObject(item->text(3));
-
         KTLibraryObject *object = k->library->findObject(item->text(1) + "." + item->text(2).toLower());
 
         if (!object) {
@@ -296,7 +294,6 @@ void KTLibraryWidget::insertObjectInWorkspace()
       return;
     }
 
-    // QString objectKey = k->libraryTree->currentItem()->text(3);
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, objectKey,
@@ -423,7 +420,7 @@ void KTLibraryWidget::importBitmap()
 void KTLibraryWidget::importSvg()
 {
     QString svgPath = QFileDialog::getOpenFileName (this, tr("Import a SVG file..."), QDir::homePath(),
-                                                  tr("Vectorial") + " (*.svg)");
+                                                    tr("Vectorial") + " (*.svg)");
     if (svgPath.isEmpty())
         return;
 
@@ -534,6 +531,9 @@ void KTLibraryWidget::importBitmapArray()
 
             progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , 
                                 (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
+
+            KTLibraryFolder *folder = new KTLibraryFolder(directory, k->project);
+            k->library->addFolder(folder);
 
             for (int i = 0; i < size; ++i) {
                  if (photograms.at(i).isFile()) {
@@ -664,6 +664,9 @@ void KTLibraryWidget::importSvgArray()
 
             progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , 
                                 (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
+
+            KTLibraryFolder *folder = new KTLibraryFolder(directory, k->project);
+            k->library->addFolder(folder);
 
             for (int i = 0; i < size; ++i) {
                  if (photograms.at(i).isFile()) {
@@ -1001,19 +1004,15 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
                     } 
                 }
 
-                kFatal() << "KTLibraryWidget::refreshItem() - Renaming from OID: " << k->oldId << " to NEW: " << newId;
                 k->oldId = k->oldId + "." + extension.toLower();
                 newId = newId + "." + extension.toLower();
 
                 QTreeWidgetItem *parent = item->parent();
 
-                if (parent) {
-                    kFatal() << "KTLibraryWidget::refreshItem() - Renaming from Directory: " << parent->text(1);
+                if (parent) 
                     k->library->renameObject(parent->text(1), k->oldId, newId);
-                } else {
-                    kFatal() << "KTLibraryWidget::refreshItem() - Renaming from Root, object: " << newId;
+                else
                     k->library->renameObject("", k->oldId, newId);
-                }
 
                 KTLibraryObject::Type type = KTLibraryObject::Image;
                 if (extension.compare("SVG")==0)
@@ -1021,8 +1020,6 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
                 if (extension.compare("OBJ")==0)
                     type = KTLibraryObject::Item;
 
-                kFatal() << "";
-                kFatal() << "KTLibraryWidget::refreshItem() - calling out general update!";
                 k->project->updateSymbolId(type, k->oldId, newId);
             }
         }

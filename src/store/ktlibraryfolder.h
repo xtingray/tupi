@@ -49,9 +49,10 @@ class KTProject;
 class KTLibraryFolder;
 class KTLibraryObject;
 
-typedef QHash<QString, KTLibraryFolder *> Folders;
-typedef QHash<QString, KTLibraryObject *> LibraryObjects;
+typedef QMap<QString, KTLibraryFolder *> Folders;
+typedef QMap<QString, KTLibraryObject *> LibraryObjects;
 
+//typedef QHash<QString, KTLibraryObject *> LibraryObjects;
 //typedef QMap<QString, KTLibraryFolder *> Folders;
 
 /**
@@ -68,7 +69,7 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
         void setId(const QString &id);
         QString id() const;
         
-        KTLibraryObject *createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded = false);
+        KTLibraryObject *createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, const QString &folder = QString(), bool loaded = false);
         
         bool addObject(KTLibraryObject *object); 
         bool addObject(const QString &folderName, KTLibraryObject *object);

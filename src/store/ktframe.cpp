@@ -81,8 +81,6 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), k(new Private)
 
 KTFrame::~KTFrame()
 {
-    kFatal() << "KTFrame::~KTFrame() - Cleaning arrays...";
-
     k->objectIndexes.clear();
     k->svgIndexes.clear();
     k->graphics.clear(true);
@@ -137,8 +135,6 @@ void KTFrame::fromXml(const QString &xml)
     if (! document.setContent(xml))
         return;
 
-    kFatal() << "KTFrame::fromXml() - Loading frame!";
-
     QDomElement root = document.documentElement();
     setFrameName(root.attribute("name", frameName()));
 
@@ -176,8 +172,6 @@ void KTFrame::fromXml(const QString &xml)
                                 ts << n2;
                               }
 
-                              kFatal() << "KTFrame::fromXml() - Loading object!";
-
                               createItem(k->graphics.count(), QPointF(), newDoc);
                               last = k->graphics.value(k->graphics.count()-1);
                           }
@@ -190,8 +184,6 @@ void KTFrame::fromXml(const QString &xml)
 
                           if (symbol.length() > 0) {
                               KTLibraryObject *object = project()->library()->findObject(symbol);
-
-                              kFatal() << "KTFrame::fromXml() - Svg path: " << object->dataPath();
 
                               QString path(object->dataPath());
                               QDomNode n2 = e.firstChild();
@@ -226,23 +218,16 @@ void KTFrame::fromXml(const QString &xml)
 		
            n = n.nextSibling();
     }
-
-    kFatal() << "KTFrame::fromXml() - Total NON SVG objects: " << k->graphics.count();
-    kFatal() << "KTFrame::fromXml() - Total SVG objects: " << k->svg.count();
 }
 
 QDomElement KTFrame::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTFrame::toXml() - Saving frame: " << k->name;
-
     QDomElement root = doc.createElement("frame");
     root.setAttribute("name", k->name);
     doc.appendChild(root);
 
-    foreach (KTGraphicObject *object, k->graphics.values()) {
-             kFatal() << "KTFrame::toXml() - Saving object...";
+    foreach (KTGraphicObject *object, k->graphics.values())
              root.appendChild(object->toXml(doc));
-    }
 
     foreach (KTSvgItem *object, k->svg.values())
              root.appendChild(object->toXml(doc));
@@ -272,14 +257,7 @@ void KTFrame::removeItemFromFrame(const QString &key)
 
 void KTFrame::updateIdFromFrame(const QString &oldId, const QString &newId)
 {
-    kFatal() << "";
-    kFatal() << "KTFrame::updateIdFromFrame() - Objects size: " << k->objectIndexes.size();
-    kFatal() << "KTFrame::updateIdFromFrame() - Objects bag: " << k->graphics.count();
-
     foreach (int i, k->objectIndexes.keys()) {
-             kFatal() << "KTFrame::updateIdFromFrame() - Key: " << k->objectIndexes[i];
-             kFatal() << "KTFrame::updateIdFromFrame() - NEW: " << newId;
-             kFatal() << "KTFrame::updateIdFromFrame() - OLD: " << oldId;
 
              if (k->objectIndexes[i].compare(oldId) == 0) {
                  k->objectIndexes[i] = newId;
@@ -301,7 +279,6 @@ void KTFrame::addSvgItem(const QString &key, KTSvgItem *item)
     int index = k->svg.count();
     insertSvgItem(index, item);
     k->svgIndexes[index] = key;
-    kFatal() << "KTFrame::addSvgItem() - Adding index: " << key;
 }
 
 void KTFrame::removeSvgItemFromFrame(const QString &key)
@@ -314,14 +291,7 @@ void KTFrame::removeSvgItemFromFrame(const QString &key)
 
 void KTFrame::updateSvgIdFromFrame(const QString &oldId, const QString &newId)
 {
-    kFatal() << "";
-    kFatal() << "KTFrame::updateSvgIdFromFrame() - Svg Indexes size: " << k->svgIndexes.size();
-    kFatal() << "KTFrame::updateSvgIdFromFrame() - Svg Objects bag: " << k->svg.count();
-
     foreach (int i, k->svgIndexes.keys()) {
-             kFatal() << "KTFrame::updateSvgIdFromFrame() - Key: " << k->svgIndexes[i];
-             kFatal() << "KTFrame::updateSvgIdFromFrame() - NEW: " << newId;
-             kFatal() << "KTFrame::updateSvgIdFromFrame() - OLD: " << oldId;
 
              if (k->svgIndexes[i].compare(oldId) == 0) {
                  k->svgIndexes[i] = newId;
@@ -359,8 +329,6 @@ void KTFrame::insertSvgItem(int position, KTSvgItem *item)
         if (k->zLevelIndex == -1)
             k->zLevelIndex = item->zValue();
     }
-
-    kFatal() << "KTFrame::insertSvgItem() - Svg id: " << item->symbolName();
 
     k->svg.insert(position, item);
 }
@@ -499,7 +467,6 @@ QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &
         insertItem(position, graphicItem);
         if (itemFactory.type() == KTItemFactory::Library) {
             QString tag = itemFactory.itemID(xml);
-            kFatal() << "KTFrame::createItem() <- This is an object from the library: " << tag;
             k->objectIndexes[position] = tag;
         }
     }

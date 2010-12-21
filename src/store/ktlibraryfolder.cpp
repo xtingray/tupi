@@ -64,7 +64,7 @@ KTLibraryFolder::~KTLibraryFolder()
     delete k;
 }
 
-KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded)
+KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, const QString &folder, bool loaded)
 {
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
@@ -76,7 +76,13 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
         return 0;
     }
 
-    bool ret = addObject(object);
+    bool ret;
+
+    if (folder.length() == 0)
+        ret = addObject(object);
+    else
+        ret = addObject(folder, object);
+
     object->saveData(k->project->dataDir());
 
     if (loaded && ret)
@@ -87,8 +93,6 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 
 bool KTLibraryFolder::addObject(KTLibraryObject *object)
 {
-    kFatal() << "KTLibraryFolder::addObject() - Adding object to root -> " << object->symbolName();
-
     if (!k->objects.contains(object->symbolName())) {
         k->objects.insert(object->symbolName(), object);
         return true;
@@ -99,8 +103,6 @@ bool KTLibraryFolder::addObject(KTLibraryObject *object)
 
 bool KTLibraryFolder::addObject(const QString &folderName, KTLibraryObject *object)
 {
-    kFatal() << "KTLibraryFolder::addObject() - Adding object " << object->symbolName() << " to folder " << folderName;
-
     foreach (KTLibraryFolder *folder, k->folders) {
              if (folder->id().compare(folderName) == 0) {
                  LibraryObjects bag = folder->objects();
@@ -212,7 +214,6 @@ QString KTLibraryFolder::id() const
 KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 {
     foreach (QString oid, k->objects.keys()) {
-             kFatal() << "KTLibraryFolder::findObject() - oid: " << oid;
              if (oid.compare(id) == 0) 
                  return k->objects[oid];
     }
@@ -260,7 +261,6 @@ bool KTLibraryFolder::folderExists(const QString &id) const
 
 bool KTLibraryFolder::renameObject(const QString &folder, const QString &oldId, const QString &newId)
 {
-    kFatal() << "KTLibraryFolder::renameObject() - Tracing method!";
     KTLibraryObject *object = findObject(oldId);
 
     if (object) {
@@ -413,20 +413,14 @@ void KTLibraryFolder::loadItem(const QString &folder, QDomNode xml)
 
 QDomElement KTLibraryFolder::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTLibraryFolder::toXml() - Saving a folder...";
-
     QDomElement folder = doc.createElement("folder");
     folder.setAttribute("id", k->id);
 
-    foreach (KTLibraryFolder *folderObject, k->folders) {
-             kFatal() << "KTLibraryFolder::toXml() - Saving an inner folder...";
+    foreach (KTLibraryFolder *folderObject, k->folders)
              folder.appendChild(folderObject->toXml(doc));
-    }
     
-    foreach (KTLibraryObject *object, k->objects.values()) {
-             kFatal() << "KTLibraryFolder::toXml() - Saving an object!";
+    foreach (KTLibraryObject *object, k->objects.values())
              folder.appendChild(object->toXml(doc));
-    }
     
     return folder;
 }
@@ -456,8 +450,6 @@ void KTLibraryFolder::updatePaths(const QString &newPath)
 
              k->objects[oid]->setDataPath(path);
 
-             kFatal() << "KTLibraryFolder::updatePaths() - Updating from: " << oldPath;
-             kFatal() << "KTLibraryFolder::updatePaths() - to: " << path;
     }
 
     foreach (KTLibraryFolder *folder, k->folders)

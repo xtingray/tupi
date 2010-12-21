@@ -389,21 +389,19 @@ Scenes KTProject::scenes() const
     return k->scenes;
 }
 
-bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
+bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
     if (!k->isOpen)
         return false;
 
-    bool flag = k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
+    bool flag = k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) != 0;
 
     return flag;
 }
 
 bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex)
 {
-    //Q_UNUSED(name);
-
-    kFatal() << "KTProject::removeSymbol() - 1 Removing item: " << name;
+    Q_UNUSED(name);
 
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
@@ -431,8 +429,6 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
 
 bool KTProject::removeSymbol(const QString &name)
 {
-    kFatal() << "KTProject::removeSymbol() - 1 Removing item: " << name;
-
     return k->library->removeObject(name, true);
 }
 
@@ -497,7 +493,6 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                            svgItem->moveBy(0, 0);
                        }
 
-                       kFatal() << "KTProject::addSymbolToProject() - Adding SVG item: " << name;
                        frame->addSvgItem(name, svgItem);
                      }
                 break;
@@ -532,8 +527,6 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Type type)
 {
-    kFatal() << "KTProject::removeSymbolFromProject() - 1 Removing item: " << name;
-
     if (type == KTLibraryObject::Folder)
         return true;
 
@@ -553,22 +546,13 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
 
 bool KTProject::updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId)
 {
-    kFatal() << "";
-    kFatal() << "KTProject::updateSymbolId() - Project: " << projectName();
-
     foreach (KTScene *scene, k->scenes.values()) {
-             kFatal() << "KTProject::updateSymbolId() - Scanning Scene: " << scene->sceneName();
              foreach (KTLayer *layer, scene->layers().values()) {
-                      kFatal() << "KTProject::updateSymbolId() - Scanning Layer: " << layer->layerName();
                       foreach (KTFrame *frame, layer->frames().values()) {
-                               kFatal() << "KTProject::updateSymbolId() - Scanning frame: " << frame->frameName();
-                               if (type != KTLibraryObject::Svg) {
-                                   kFatal() << "KTProject::updateSymbolId() - Replacing Image";
+                               if (type != KTLibraryObject::Svg)
                                    frame->updateIdFromFrame(oldId, newId);
-                               } else {
-                                   kFatal() << "KTProject::updateSymbolId() - Replacing SVG";
+                               else 
                                    frame->updateSvgIdFromFrame(oldId, newId);
-                               }
                       }
              }
     }

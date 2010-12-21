@@ -273,7 +273,6 @@ void KTGCTable::dropEvent(QDropEvent *event)
              // Make sure node and target are not the same
              if (extension.length() > 0) {
                  if (parentNode.length() > 0) {
-                     kFatal() << "KTGCTable::dropEvent() - Deleting item from origin!";
                      QList<QTreeWidgetItem *> nodes = findItems(parentNode, Qt::MatchExactly, 1);
                      for (int i = 0; i < nodes.size(); ++i) {
                           QTreeWidgetItem *node = nodes.at(i);
@@ -398,8 +397,6 @@ void KTGCTable::dragLeaveEvent(QDragLeaveEvent *event)
 
 void KTGCTable::keyPressEvent(QKeyEvent * event)
 {
-    // kFatal() << "KTGCTable::keyPressEvent() - Pressing: " << event->key();
-
     if (event->key() == Qt::Key_Up) {
         QTreeWidgetItem *current = currentItem();
         if (current) {
