@@ -112,7 +112,6 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 
 void KTGraphicLibraryItem::setSymbolName(const QString &name)
 {
-    kFatal() << "KTGraphicLibraryItem::setSymbolName() - Name: " << name;
     k->symbolName = name;
 }
 
