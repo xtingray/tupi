@@ -245,6 +245,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                              }
                          }
 
+                         drawBackground();
+
                          // TODO: Crashpoint when layers are deleted 
 
                          valid = true;
@@ -306,6 +308,25 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     if (k->tool)
         k->tool->updateScene(this);
+}
+
+void KTGraphicsScene::drawBackground()
+{
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
+    Q_CHECK_PTR(k->scene);
+
+    if (!k->scene)
+        return;
+
+    KTBackground *bg = k->scene->background();
+    if (bg) {
+        KTFrame *frame = bg->frame();
+        if (frame)
+            addFrame(frame, 1.0);
+    }
 }
 
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)

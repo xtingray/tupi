@@ -79,6 +79,15 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), k(new Private)
     k->zLevelIndex = -1;
 }
 
+KTFrame::KTFrame(KTBackground *bg) : QObject(bg), k(new Private)
+{
+    k->name = "Frame";
+    k->isLocked = false;
+    k->isVisible = true;
+    k->repeat = 1;
+    k->zLevelIndex = -1;
+}
+
 KTFrame::~KTFrame()
 {
     k->objectIndexes.clear();

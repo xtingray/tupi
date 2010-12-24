@@ -38,6 +38,7 @@
 
 #include "ktabstractserializable.h"
 #include "ktproject.h"
+#include "ktbackground.h"
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -53,6 +54,7 @@ class QStyleOptionGraphicsItem;
 class KTLayer;
 class KTSoundLayer;
 class KTGraphicObject;
+class KTBackground;
 
 typedef KTIntHash<KTLayer *> Layers;
 typedef KTIntHash<KTSoundLayer *> SoundLayers;
@@ -139,6 +141,8 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         int framesTotal();
 
         QList<int> layerIndexes();
+
+        KTBackground *background();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

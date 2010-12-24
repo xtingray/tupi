@@ -64,6 +64,7 @@ struct KTProject::Private
     int sceneCounter;
     KTLibrary *library;
     bool isOpen;
+    KTProject::Mode spaceMode;
 };
 
 /**
@@ -79,6 +80,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
     k->sceneCounter = 0;
     k->isOpen = false;
     k->library = new KTLibrary("library", this);
+    k->spaceMode = KTProject::FRAMES_EDITION;
 }
 
 /**
@@ -656,3 +658,14 @@ int KTProject::scenesTotal() const
 {
     return k->sceneCounter;
 }
+
+void KTProject::updateSpaceContext(int index)
+{
+    k->spaceMode = static_cast<KTProject::Mode>(index); 
+}
+
+KTProject::Mode KTProject::spaceContext()
+{
+    return k->spaceMode;
+}
+

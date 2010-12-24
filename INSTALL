@@ -15,8 +15,8 @@ already got the next list of dependencies installed in your computer:
     * build-essential: All the C/C++ free compilers, libraries and utilities
       required to create a binary from any Unix-alike C/C++ source code (gcc,
       g++, cpp, make, etc)
-    * Qt 4.6.2: The full development toolkit used to create Tupi. Remember 
-      to use the version 4.6.2, including development tools and libraries 
+    * Qt 4.7.0: The full development toolkit used to create Tupi. Remember 
+      to use the version 4.7.0, including development tools and libraries 
       (preview versions don't work at all).
     * ruby: A script language used to do the configuration process previous 
       to the compilation
@@ -27,7 +27,7 @@ already got the next list of dependencies installed in your computer:
       video manipulation
     * zlib-dev: A file-compression library
 
-For Ubuntu users (version 10.04) with some experience using the console, 
+For Ubuntu users (version 10.10) with some experience using the console, 
 these are the commands they should run to install Tupi dependencies:
 
 - Open a terminal (from Aplications -> Accesories) and type:
@@ -46,8 +46,8 @@ Linux distro
 - Get the Tupi source code from our Download section
   (http://www.maefloresta.com/portal/download_counter). Then, 
   run these commands:
-   % tar xvfz tupi-0.1-revXXXX.tar.gz    [Press enter]
-   % cd tupi-0.1-revXXX    [Press enter]
+   % tar xvfz tupi-0.1-gitXX.tar.gz    [Press enter]
+   % cd tupi-0.1-gitXX    [Press enter]
    % ./configure --prefix=/usr/local/tupi    [Press enter]
    % make    [Press enter]
    % sudo make install    [Press enter]

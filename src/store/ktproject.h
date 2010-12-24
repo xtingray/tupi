@@ -66,8 +66,16 @@ typedef KTIntHash<KTScene *> Scenes;
 
 class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
+
+        enum Mode 
+        {
+            FRAMES_EDITION = 0,
+            BACKGROUND_EDITION 
+        };
+
         KTProject(QObject *parent = 0);
         ~KTProject();
 
@@ -122,6 +130,9 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         void setOpen(bool open);
         bool isOpen();
         int scenesTotal() const;
+
+        void updateSpaceContext(int index);
+        KTProject::Mode spaceContext();
 
     signals:
         void responsed(KTProjectResponse *response);

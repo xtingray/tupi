@@ -1,8 +1,8 @@
-# Generated automatically at Tue Dec 21 00:16:42 -0500 2010! PLEASE DO NOT EDIT!
+# Generated automatically at Thu Dec 23 13:44:03 -0500 2010! PLEASE DO NOT EDIT!
 INCLUDEPATH += 
 LIBS += -laspell -lavcodec -lavformat -ltupifwgui -ltupifwcore -ltupifwsound -lz -L/usr/local/tupi/lib
 QT += opengl core gui svg xml network
-DEFINES += HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.1\\\" CODE_NAME=\\\"Gemo\\\" REVISION=\\\"git01\\\" K_DEBUG
+DEFINES += HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.1\\\" CODE_NAME=\\\"Gemo\\\" REVISION=\\\"git02\\\" K_DEBUG
 unix {
     OBJECTS_DIR = .obj
     UI_DIR = .ui

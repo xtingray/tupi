@@ -764,7 +764,7 @@ void KTMainWindow::importProjectToServer()
 void KTMainWindow::save()
 {
     #ifdef K_DEBUG
-       kDebug("project") << "Saving..";
+       kDebug("project") << "KTMainWindow::save() - Saving...";
     #endif
     QTimer::singleShot(0, this, SLOT(saveProject()));
 }

@@ -53,7 +53,7 @@ class KTProject;
 
 /**
  * @brief This class represents a layer. Layers are defined by the KTDocument class and they contain KTFrames
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado 
 */
 
 class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable

@@ -50,6 +50,7 @@
 
 struct KTScene::Private
 {
+    KTBackground *background;
     Layers layers;
     SoundLayers soundLayers;
     QString name;
@@ -67,6 +68,7 @@ KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
     k->layerCount = 0;
     k->nameIndex = 0;
     k->isVisible = true;
+    k->background = new KTBackground(this);
 }
 
 KTScene::~KTScene()
@@ -138,7 +140,7 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
     if (position < 0 || position > k->layers.count()) {
         #ifdef K_DEBUG
-               kDebug() << "Error in createLayer";
+               kDebug() << "KTScene::createLayer() - Invalid index";
         #endif
         return 0;
     }
@@ -277,6 +279,16 @@ void KTScene::fromXml(const QString &xml)
 
                        layer->fromXml(newDoc);
                    }
+               } else if (e.tagName() == "background") {
+
+                   QString newDoc;
+                   {
+                     QTextStream ts(&newDoc);
+                     ts << n;
+                   }
+
+                   k->background->fromXml(newDoc); 
+
                } else if (e.tagName() == "soundlayer") {
                           int pos = k->soundLayers.count();
                           KTSoundLayer *layer = createSoundLayer(pos, true);
@@ -303,8 +315,16 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("scene");
     root.setAttribute("name", k->name);
 
+    kFatal() << "KTScene::toXml() - Flag 1";
+
+    root.appendChild(k->background->toXml(doc));
+
+    kFatal() << "KTScene::toXml() - Flag 2";
+
     foreach (KTLayer *layer, k->layers.values())
              root.appendChild(layer->toXml(doc));
+
+    kFatal() << "KTScene::toXml() - Flag 3";
 
     foreach (KTSoundLayer *sound, k->soundLayers.values())
              root.appendChild(sound->toXml(doc));
@@ -391,4 +411,9 @@ int KTScene::framesTotal()
 QList<int> KTScene::layerIndexes()
 {
     return this->layers().indexes();
+}
+
+KTBackground* KTScene::background()
+{
+    return k->background;
 }

@@ -84,7 +84,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     }
 
     #ifdef K_DEBUG
-           kDebug("project") << "Saving project to: " << projectDir.absolutePath();
+           kDebug("project") << "KTSaveProject::save() - Saving project to: " << projectDir.absolutePath();
     #endif
 
     {

@@ -54,6 +54,7 @@
 #include "ktitemtweener.h"
 #include "ktgraphicobject.h"
 #include "ktlayer.h"
+#include "ktbackground.h"
 
 #include "kdebug.h"
 
@@ -65,56 +66,95 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
         K_FUNCINFOX("items");
     #endif
 
+    kFatal() << "KTCommandExecutor::createItem() Tracing MODE: " << m_project->spaceContext();
+
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
     KTLibraryObject::Type type = response->itemType(); 
     QPointF point = response->position();
-
     QString xml = response->arg().toString();
 
     KTScene *scene = m_project->scene(scenePosition);
-    
+  
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                if (position == -1)
-                    qFatal("DO NOT SEND -1");
 
-                if (type == KTLibraryObject::Svg) {
-                    KTSvgItem *svg = frame->createSvgItem(position, point, xml);
-                    if (svg)
-                        response->setItemIndex(frame->indexOf(svg));
-                    else
-                        return false;
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+    
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    if (position == -1)
+                        qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
+
+                    if (type == KTLibraryObject::Svg) {
+                        int index = frame->svgItemsCount();
+                        kFatal() << "KTCommandExecutor::createItem() - Tracing POS: " << index;
+                        KTSvgItem *svg = frame->createSvgItem(index, point, xml);
+                        if (svg)
+                            response->setItemIndex(frame->indexOf(svg));
+                        else
+                            return false;
+                    } else {
+                        int index = frame->graphicItemsCount();
+                        kFatal() << "KTCommandExecutor::createItem() - Tracing POS: " << index;
+
+                        QGraphicsItem *item = frame->createItem(index, point, xml);
+
+                        if (item)
+                            response->setItemIndex(frame->indexOf(item));
+                        else
+                            return false;
+                    }
+
+                    emit responsed(response);
+
                 } else {
-                    QGraphicsItem *item = frame->createItem(position, point, xml);
-                    if (item)
-                        response->setItemIndex(frame->indexOf(item));
-                    else
-                        return false;
+                    #ifdef K_DEBUG
+                           kError() << "KTCommandExecutor::createItem() - Error: " << tr("Frame doesn't exists!");
+                    #endif
+                    return false;
                 }
-
-                emit responsed(response);
-
             } else {
                 #ifdef K_DEBUG
-                    kError() << tr("Frame doesn't exists!");
+                       kError() << "KTCommandExecutor::createItem() - Error: " << tr("Layer doesn't exists!");
                 #endif
                 return false;
             }
+
         } else {
-            #ifdef K_DEBUG
-                kError() << tr("Layer doesn't exists!");
-            #endif
-            return false;
+            KTBackground *bg = scene->background();
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    if (position == -1)
+                        qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
+
+                    if (type == KTLibraryObject::Svg) {
+                        KTSvgItem *svg = frame->createSvgItem(position, point, xml);
+                        if (svg)
+                            response->setItemIndex(frame->indexOf(svg));
+                        else
+                            return false;
+                    } else {
+                        int index = frame->graphicItemsCount();
+                        kFatal() << "KTCommandExecutor::createItem() - Tracing POS: " << index;
+                        QGraphicsItem *item = frame->createItem(index, point, xml);
+                        if (item)
+                            response->setItemIndex(frame->indexOf(item));
+                        else
+                            return false;
+                    }
+
+                    emit responsed(response);
+                }
+            }
         }
     } else {
         #ifdef K_DEBUG
-            kError() << tr("Scene doesn't exists!");
+               kError() << "KTCommandExecutor::createItem() - Error: " << tr("Scene doesn't exists!");
         #endif
         return false;
     }
@@ -132,39 +172,68 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
 
-                if (type == KTLibraryObject::Svg) {
-                    frame->removeSvgAt(response->itemIndex());
-                } else {
-                    frame->removeGraphicAt(response->itemIndex());
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
 
-                    // SQA: Check this code and figure out if it's required
-                    /*
-                    QGraphicsItem *item = frame->item(response->itemIndex());
-                    if (item) {
-                        if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
-                            QDomDocument orig;
-                            orig.appendChild(itemSerializable->toXml(orig));
-                            response->setArg(orig.toString());
-                            frame->removeGraphicAt(response->itemIndex());
-                        } else {
-                            return false;
-                        }
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+
+                    if (type == KTLibraryObject::Svg) {
+                        frame->removeSvgAt(response->itemIndex());
                     } else {
-                        kFatal() << "KTCommandExecutor::removeItem - Item NOT found!";
+                         frame->removeGraphicAt(response->itemIndex());
+
+                         // SQA: Check this code and figure out if it's required
+                         /*
+                          QGraphicsItem *item = frame->item(response->itemIndex());
+                          if (item) {
+                              if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
+                                  QDomDocument orig;
+                                  orig.appendChild(itemSerializable->toXml(orig));
+                                  response->setArg(orig.toString());
+                                  frame->removeGraphicAt(response->itemIndex());
+                              } else {
+                                  return false;
+                              }
+                          } else {
+                              kFatal() << "KTCommandExecutor::removeItem - Item NOT found!";
+                          }
+                         */
                     }
-                    */
+                
+                    emit responsed(response);
+                
+                    return true;
                 }
-                
-                emit responsed(response);
-                
-                return true;
+            }
+
+        } else {
+
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+
+                    if (type == KTLibraryObject::Svg) 
+                        frame->removeSvgAt(response->itemIndex());
+                    else
+                         frame->removeGraphicAt(response->itemIndex());
+
+                    emit responsed(response);
+
+                    return true;
+                }
             }
         }
+
+    } else {
+        #ifdef K_DEBUG
+               kError() << "KTCommandExecutor::removeItem() - Error: " << tr("Scene doesn't exists!");
+        #endif
+        return false;
     }
     
     return false;
@@ -190,13 +259,29 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                if (frame->moveItem(position, newPositon)) {
-                    emit responsed(response);
-                    return true;
+
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    if (frame->moveItem(position, newPositon)) {
+                        emit responsed(response);
+                        return true;
+                    }
+                }
+            }
+        } else {
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    if (frame->moveItem(position, newPositon)) {
+                        emit responsed(response);
+                        return true;
+                    }
                 }
             }
         }
@@ -220,16 +305,33 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                QString::const_iterator itr = strList.constBegin();
-                QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-                response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    QString::const_iterator itr = strList.constBegin();
+                    QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+                    response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
                 
-                emit responsed(response);
-                return true;
+                    emit responsed(response);
+                    return true;
+                }
+            }
+        } else {
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    QString::const_iterator itr = strList.constBegin();
+                    QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+                    response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
+
+                    emit responsed(response);
+                    return true;
+                }
             }
         }
     }
@@ -251,26 +353,56 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                QString strItems = "";
-                QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
-                foreach (QGraphicsItem *item, items) {
-                         if (frame->indexOf(item) != -1) {
-                             if (strItems.isEmpty()) {
-                                 strItems += "("+ QString::number(frame->indexOf(item));
-                             } else {
-                                 strItems += " , "+ QString::number(frame->indexOf(item));
-                             }
-                         }
-                }
-                strItems+= ")";
-                response->setArg(strItems);
-                emit responsed(response);
 
-                return true;
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    QString strItems = "";
+                    QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
+                    foreach (QGraphicsItem *item, items) {
+                             if (frame->indexOf(item) != -1) {
+                                 if (strItems.isEmpty()) {
+                                     strItems += "("+ QString::number(frame->indexOf(item));
+                                 } else {
+                                     strItems += " , "+ QString::number(frame->indexOf(item));
+                                 }
+                             }
+                    }
+                    strItems+= ")";
+                    response->setArg(strItems);
+                    emit responsed(response);
+
+                    return true;
+                }
+            }
+
+        } else {
+
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    QString strItems = "";
+                    QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
+                    foreach (QGraphicsItem *item, items) {
+                             if (frame->indexOf(item) != -1) {
+                                 if (strItems.isEmpty()) {
+                                     strItems += "("+ QString::number(frame->indexOf(item));
+                                 } else {
+                                     strItems += " , "+ QString::number(frame->indexOf(item));
+                                 }
+                             }
+                    }
+                    strItems+= ")";
+                    response->setArg(strItems);
+                    emit responsed(response);
+
+                    return true;
+                }
             }
         }
     }
@@ -336,33 +468,66 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                QGraphicsItem *item = frame->item(position);
-                if (item) {
-                    kDebug("items") << item->type();
-                    
-                    if (toType == item->type()) 
-                        return false;
-                    
-                    QGraphicsItem * itemConverted = convert(item, toType);
-                    
-                    if (itemConverted) {
-                        // scene->removeItem(item); // FIXME?
-                        // scene->addItem(itemConverted); // FIXME?
-                        itemConverted->setZValue(item->zValue());
-                        frame->replaceItem(position, itemConverted);
-                        
-                        response->setArg( QString::number(item->type()));
-                        emit responsed(response);
 
-                        return true;
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    QGraphicsItem *item = frame->item(position);
+                    if (item) {
+                        kDebug("items") << item->type();
+                    
+                        if (toType == item->type()) 
+                            return false;
+                    
+                        QGraphicsItem * itemConverted = convert(item, toType);
+                    
+                        if (itemConverted) {
+                            // scene->removeItem(item); // FIXME?
+                            // scene->addItem(itemConverted); // FIXME?
+                            itemConverted->setZValue(item->zValue());
+                            frame->replaceItem(position, itemConverted);
+                        
+                            response->setArg(QString::number(item->type()));
+                            emit responsed(response);
+
+                            return true;
+                        }
                     }
                 }
             }
-        }
+
+        } else {
+
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    QGraphicsItem *item = frame->item(position);
+                    if (item) {
+                        kDebug("items") << item->type();
+
+                        if (toType == item->type())
+                            return false;
+
+                        QGraphicsItem * itemConverted = convert(item, toType);
+
+                        if (itemConverted) {
+                            itemConverted->setZValue(item->zValue());
+                            frame->replaceItem(position, itemConverted);
+
+                            response->setArg(QString::number(item->type()));
+                            emit responsed(response);
+
+                            return true;
+                        }
+                    }
+                }
+            }
+        } 
     }
 
     return false;
@@ -384,31 +549,64 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                QGraphicsItem *item;
-                if (type == KTLibraryObject::Svg)
-                    item = frame->svg(position);
-                else
-                    item = frame->item(position);
 
-                if (item) {
-                    QDomDocument orig;
-                    orig.appendChild(KTSerializer::properties(item, orig));
-                    QString current = orig.toString();
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
 
-                    QDomDocument doc;
-                    doc.setContent(xml);
-                    KTSerializer::loadProperties(item, doc.documentElement());
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    QGraphicsItem *item;
+                    if (type == KTLibraryObject::Svg)
+                        item = frame->svg(position);
+                    else
+                        item = frame->item(position);
+
+                    if (item) {
+                        QDomDocument orig;
+                        orig.appendChild(KTSerializer::properties(item, orig));
+                        QString current = orig.toString();
+
+                        QDomDocument doc;
+                        doc.setContent(xml);
+                        KTSerializer::loadProperties(item, doc.documentElement());
                    
-                    response->setArg(current); 
-                    emit responsed(response);
-                    // response->setArg(current);
+                        response->setArg(current); 
+                        emit responsed(response);
                     
-                    return true;
-                } 
+                        return true;
+                    } 
+                }
+            }
+
+        } else {
+
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    QGraphicsItem *item;
+                    if (type == KTLibraryObject::Svg)
+                        item = frame->svg(position);
+                    else
+                        item = frame->item(position);
+
+                    if (item) {
+                        QDomDocument orig;
+                        orig.appendChild(KTSerializer::properties(item, orig));
+                        QString current = orig.toString();
+
+                        QDomDocument doc;
+                        doc.setContent(xml);
+                        KTSerializer::loadProperties(item, doc.documentElement());
+
+                        response->setArg(current);
+                        emit responsed(response);
+
+                        return true;
+                    }
+                }
             }
         }
     }
@@ -435,31 +633,68 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                QGraphicsItem *item = frame->item(position);
-                if (item) {
-                    if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
-                        QDomDocument orig;
-                        
-                        if (KTPathItem *ktpath = qgraphicsitem_cast<KTPathItem *>(item))
-                            orig.appendChild(ktpath->toXml(orig));
 
-                        QString current = orig.toString();
-                        #ifdef K_DEBUG
-                            SHOW_VAR(current);
-                        #endif
-                        
-                        QDomDocument doc;
-                        doc.setContent(xml);
-                        KTItemFactory factory;
-                        factory.loadItem(item, xml);
-                        emit responsed(response);
-                        response->setArg(current);
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
 
-                        return true;
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    QGraphicsItem *item = frame->item(position);
+                    if (item) {
+                        if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
+                            QDomDocument orig;
+                        
+                            if (KTPathItem *ktpath = qgraphicsitem_cast<KTPathItem *>(item))
+                                orig.appendChild(ktpath->toXml(orig));
+
+                            QString current = orig.toString();
+                            #ifdef K_DEBUG
+                                   SHOW_VAR(current);
+                            #endif
+                        
+                            QDomDocument doc;
+                            doc.setContent(xml);
+                            KTItemFactory factory;
+                            factory.loadItem(item, xml);
+                            emit responsed(response);
+                            response->setArg(current);
+
+                           return true;
+                       }
+                    }
+                }
+            }
+
+        } else { 
+
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    QGraphicsItem *item = frame->item(position);
+                    if (item) {
+                        if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
+                            QDomDocument orig;
+
+                            if (KTPathItem *ktpath = qgraphicsitem_cast<KTPathItem *>(item))
+                                orig.appendChild(ktpath->toXml(orig));
+
+                            QString current = orig.toString();
+                            #ifdef K_DEBUG
+                                   SHOW_VAR(current);
+                            #endif
+
+                            QDomDocument doc;
+                            doc.setContent(xml);
+                            KTItemFactory factory;
+                            factory.loadItem(item, xml);
+                            emit responsed(response);
+                            response->setArg(current);
+
+                           return true;
+                       }
                     }
                 }
             }
@@ -489,18 +724,22 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                KTGraphicObject *object = frame->graphic(position);
+
+        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+            KTLayer *layer = scene->layer(layerPosition);
+            if (layer) {
+                KTFrame *frame = layer->frame(framePosition);
+                if (frame) {
+                    KTGraphicObject *object = frame->graphic(position);
                 
-                if (object == 0) 
-                    return false;
+                    if (object == 0) 
+                        return false;
                 
-                KTItemTweener *tweener = new KTItemTweener();
-                tweener->fromXml(xml);
-                object->setTweener(false, tweener);
+                    KTItemTweener *tweener = new KTItemTweener();
+                    tweener->fromXml(xml);
+                    object->setTweener(false, tweener);
+                }
             }
         }
     }

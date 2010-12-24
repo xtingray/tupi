@@ -747,6 +747,13 @@ void KTPaintArea::updatePaintArea()
     currentScene->drawCurrentPhotogram();
 }
 
+void KTPaintArea::paintBackground()
+{
+    KTGraphicsScene* currentScene = graphicsScene();
+    currentScene->clean();
+    currentScene->drawBackground();
+}
+
 void KTPaintArea::setCurrentTool(QString tool) 
 {
     k->currentTool = tool;

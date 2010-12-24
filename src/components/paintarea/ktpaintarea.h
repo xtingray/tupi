@@ -64,6 +64,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void setCurrentScene(int index);
         void setCurrentTool(QString tool);
         void updatePaintArea();
+        void paintBackground();
 
     public slots:
         void setNextFramesOnionSkinCount(int n);

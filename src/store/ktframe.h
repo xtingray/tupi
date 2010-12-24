@@ -43,10 +43,12 @@
 #include "ktabstractserializable.h"
 #include "ktinthash.h"
 #include "ktsvgitem.h"
+#include "ktbackground.h"
 #include "ktglobal_store.h"
 
 class KTFrame;
 class KTLayer;
+class KTBackground;
 class KTGraphicObject;
 class KTSvgItem;
 class KTProject;
@@ -66,6 +68,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
         * Constructor por defecto
         */
        KTFrame(KTLayer *parent);
+       KTFrame(KTBackground *bg);
        
        /**
         * Destructor

@@ -2441,6 +2441,16 @@
         <source>Zoom</source>
         <translation>Acercamiento</translation>
     </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="435"/>
+        <source>Frames Mode</source>
+        <translation>Edición de Marcos</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="435"/>
+        <source>Background Mode</source>
+        <translation>Edición de Fondo</translation>
+    </message>
 </context>
 <context>
     <name>KinasWidget</name>

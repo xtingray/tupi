@@ -67,6 +67,8 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         void drawCurrentPhotogram();
         
         void drawPhotogram(int photogram);
+        void drawBackground();
+
         void addFrame(KTFrame *frame, double opacity = 1.0);
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
         void addSvgObject(KTSvgItem *svgItem, double opacity = 1.0);

@@ -51,7 +51,8 @@ HEADERS += ktlayer.h \
            ktitemtweener.h \
            kttweenerstep.h \
            ktsoundlayer.h \
-           ktsvgitem.h
+           ktsvgitem.h \
+           ktbackground.h
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -94,7 +95,8 @@ SOURCES += ktlayer.cpp \
            ktitemtweener.cpp \
            kttweenerstep.cpp \
            ktsoundlayer.cpp \
-           ktsvgitem.cpp
+           ktsvgitem.cpp \
+           ktbackground.cpp
 
 TARGET = tupistore
 

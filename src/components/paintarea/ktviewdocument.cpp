@@ -58,6 +58,7 @@
 #include <QSpinBox>
 #include <QFrame>
 #include <QGridLayout>
+#include <QComboBox>
 
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
@@ -93,6 +94,9 @@ struct KTViewDocument::Private
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
     KTPaintAreaStatus *status;
+    QComboBox *spaceMode;
+
+    KTProject *project;
 
     QTimer *timer;
 };
@@ -105,6 +109,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     setWindowIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png"));
 
+    k->project = project;
     k->currentTool = 0;
     k->actionManager = new KActionManager(this);
 
@@ -624,6 +629,16 @@ void KTViewDocument::createToolBar()
         nextOnionSkinSpin->setValue(1);
 
     k->barGrid->addWidget(nextOnionSkinSpin);
+
+    k->barGrid->addSeparator();
+
+    k->spaceMode = new QComboBox();
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Frames Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/background_mode.png"), tr("Background Mode"));
+
+    connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
+
+    k->barGrid->addWidget(k->spaceMode);
 }
 
 void KTViewDocument::closeArea()
@@ -738,3 +753,15 @@ void KTViewDocument::updateTimer()
     }
 }
 
+void KTViewDocument::setSpaceContext()
+{
+    QString option = k->spaceMode->currentText();
+    int index = k->spaceMode->currentIndex();
+    kFatal() << "KTViewDocument::setSpaceContext() - Enabling mode: " << index;
+    k->project->updateSpaceContext(index);
+    if (index == 0)
+        k->paintArea->updatePaintArea();
+    else
+        k->paintArea->paintBackground();
+        
+}

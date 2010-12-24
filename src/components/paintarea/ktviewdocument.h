@@ -104,6 +104,7 @@ class KTViewDocument : public QMainWindow
     private slots: 
         // Plugins
         void loadPlugins();
+        void setSpaceContext();
 
     private slots:
         void showPos(const QPointF &p);	
