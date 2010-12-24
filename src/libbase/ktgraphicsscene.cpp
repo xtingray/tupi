@@ -95,6 +95,7 @@ struct KTGraphicsScene::Private
 
     QList<KTLineGuide *> lines;
     QPointF lastPoint;
+    KTProject::Mode spaceMode;
 };
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -199,6 +200,9 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                  if (layer) {
                      if (layer->isVisible()) {
 
+                         // Painting the background
+                         drawBackground();
+
                          // Painting previews frames
                          if (k->onionSkin.previous > 0 && photogram > 0) {
                              double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
@@ -244,8 +248,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                   opacity -= opacityFactor;
                              }
                          }
-
-                         drawBackground();
 
                          // TODO: Crashpoint when layers are deleted 
 
@@ -354,28 +356,33 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
        K_FUNCINFO;
     #endif
 
-    QGraphicsItem *item = object->item();
-    k->onionSkin.opacityMap.insert(item, opacity);
+        QGraphicsItem *item = object->item();
+        k->onionSkin.opacityMap.insert(item, opacity);
 
-    if (KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item))
-        group->recoverChilds();
+        if (KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item))
+            group->recoverChilds();
 
-    if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
+        if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
 
-        item->setSelected(false);
-        KTLayer *layer = k->scene->layer(k->framePosition.layer);
+            item->setSelected(false);
+            KTLayer *layer = k->scene->layer(k->framePosition.layer);
 
-        if (layer) {
-            KTFrame *frame = layer->frame(k->framePosition.frame);
-            if (frame) {
-                int factor = k->objectCounter + (k->layerCounter)*1000; 
-                k->objectCounter++;
-                item->setOpacity(opacity);
-                item->setZValue(factor);
-                addItem(item);
+            if (layer) {
+
+                KTFrame *frame = layer->frame(k->framePosition.frame);
+
+                if (frame) {
+                    if (k->spaceMode == KTProject::FRAMES_EDITION)
+                        item->setZValue(k->objectCounter + (k->layerCounter)*10000);
+                    else
+                        item->setZValue(k->objectCounter - 10000);
+
+                    item->setOpacity(opacity);
+                    k->objectCounter++;
+                    addItem(item);
+                }
             }
-        }
-    } 
+        } 
 }
 
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
@@ -389,7 +396,7 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
         if (layer) {
             KTFrame *frame = layer->frame(k->framePosition.frame);
             if (frame) {
-                int factor = k->objectCounter + (k->layerCounter)*1000;
+                int factor = k->objectCounter + (k->layerCounter)*10000;
                 k->objectCounter++;
                 svgItem->setOpacity(opacity);
                 svgItem->setZValue(factor);
@@ -763,4 +770,9 @@ void KTGraphicsScene::removeScene()
 {
     clean();
     k->scene = 0;
+}
+
+void KTGraphicsScene::updateSpaceContext(KTProject::Mode mode)
+{
+    k->spaceMode = mode;
 }

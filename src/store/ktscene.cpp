@@ -315,11 +315,7 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("scene");
     root.setAttribute("name", k->name);
 
-    kFatal() << "KTScene::toXml() - Flag 1";
-
     root.appendChild(k->background->toXml(doc));
-
-    kFatal() << "KTScene::toXml() - Flag 2";
 
     foreach (KTLayer *layer, k->layers.values())
              root.appendChild(layer->toXml(doc));

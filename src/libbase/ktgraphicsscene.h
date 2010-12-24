@@ -40,6 +40,7 @@
 
 #include "ktglobal.h"
 #include "ktsvgitem.h"
+#include "ktproject.h"
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -103,6 +104,8 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         virtual void aboutToMousePress();
 
         void includeObject(QGraphicsItem *object);
+
+        void updateSpaceContext(KTProject::Mode mode);
 
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

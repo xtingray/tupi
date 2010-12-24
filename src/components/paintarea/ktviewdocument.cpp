@@ -759,6 +759,8 @@ void KTViewDocument::setSpaceContext()
     int index = k->spaceMode->currentIndex();
     kFatal() << "KTViewDocument::setSpaceContext() - Enabling mode: " << index;
     k->project->updateSpaceContext(index);
+    k->paintArea->updateSpaceContext();
+
     if (index == 0)
         k->paintArea->updatePaintArea();
     else

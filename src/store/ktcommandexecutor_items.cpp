@@ -71,7 +71,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
-    int position = response->itemIndex();
+    // int position = response->itemIndex();
     KTLibraryObject::Type type = response->itemType(); 
     QPointF point = response->position();
     QString xml = response->arg().toString();
@@ -86,22 +86,17 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
             if (layer) {
                 KTFrame *frame = layer->frame(framePosition);
                 if (frame) {
-                    if (position == -1)
-                        qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
+                    // if (position == -1)
+                    //    qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
 
                     if (type == KTLibraryObject::Svg) {
-                        int index = frame->svgItemsCount();
-                        kFatal() << "KTCommandExecutor::createItem() - Tracing POS: " << index;
-                        KTSvgItem *svg = frame->createSvgItem(index, point, xml);
+                        KTSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
                         if (svg)
                             response->setItemIndex(frame->indexOf(svg));
                         else
                             return false;
                     } else {
-                        int index = frame->graphicItemsCount();
-                        kFatal() << "KTCommandExecutor::createItem() - Tracing POS: " << index;
-
-                        QGraphicsItem *item = frame->createItem(index, point, xml);
+                        QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
 
                         if (item)
                             response->setItemIndex(frame->indexOf(item));
@@ -129,19 +124,17 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
             if (bg) {
                 KTFrame *frame = bg->frame();
                 if (frame) {
-                    if (position == -1)
-                        qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
+                    // if (position == -1)
+                    //    qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
 
                     if (type == KTLibraryObject::Svg) {
-                        KTSvgItem *svg = frame->createSvgItem(position, point, xml);
+                        KTSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
                         if (svg)
                             response->setItemIndex(frame->indexOf(svg));
                         else
                             return false;
                     } else {
-                        int index = frame->graphicItemsCount();
-                        kFatal() << "KTCommandExecutor::createItem() - Tracing POS: " << index;
-                        QGraphicsItem *item = frame->createItem(index, point, xml);
+                        QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
                         if (item)
                             response->setItemIndex(frame->indexOf(item));
                         else
