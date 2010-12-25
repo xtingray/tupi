@@ -138,6 +138,9 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     connect(k->libraryTree, SIGNAL(itemMoved(QString, QString)), this,
                                    SLOT(updateLibrary(QString, QString)));
 
+    connect(k->libraryTree, SIGNAL(itemCreated(QTreeWidgetItem*)), this,
+                                   SLOT(activeRefresh(QTreeWidgetItem*)));
+
     QGroupBox *buttons = new QGroupBox(this);
     QHBoxLayout *buttonLayout = new QHBoxLayout(buttons);
     buttonLayout->setMargin(0);
@@ -198,7 +201,7 @@ void KTLibraryWidget::resetGUI()
 {
     k->library->reset();
     k->display->reset();
-    k->libraryTree->clear();
+    k->libraryTree->cleanUI();
 }
 
 void KTLibraryWidget::setLibrary(KTLibrary *library)
@@ -211,6 +214,12 @@ void KTLibraryWidget::addFolder()
 {
     k->libraryTree->createFolder();
     k->mkdir = true;
+}
+
+void KTLibraryWidget::activeRefresh(QTreeWidgetItem *item)
+{
+    k->mkdir = true;
+    refreshItem(item);
 }
 
 void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
@@ -906,7 +915,11 @@ void KTLibraryWidget::importGraphicObject()
 
 void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
 {
+
     if (k->mkdir) {
+
+        k->mkdir = false;
+
         QString base = item->text(1);
         if (base.length() == 0)
             return;
@@ -930,8 +943,6 @@ void KTLibraryWidget::refreshItem(QTreeWidgetItem *item)
 
         QGraphicsTextItem *msg = new QGraphicsTextItem(tr("Directory"));
         k->display->render(static_cast<QGraphicsItem *>(msg));
-
-        k->mkdir = false;
 
         return;
     }

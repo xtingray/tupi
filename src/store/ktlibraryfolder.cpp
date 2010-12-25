@@ -66,6 +66,8 @@ KTLibraryFolder::~KTLibraryFolder()
 
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, const QString &folder, bool loaded)
 {
+    kFatal() << "KTLibraryFolder::createSymbol() - Just tracing!";
+
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
     object->setParent(this);

@@ -34,18 +34,17 @@
  ***************************************************************************/
 
 #include "ktgctable.h"
-
-#include <QHeaderView>
-#include <QMenu>
-
 #include "kglobal.h"
 #include "kdebug.h"
 #include "kapplication.h"
 
+#include <QHeaderView>
+#include <QMenu>
+
 /**
  * This class provides some methods for the KTLibraryWidget.
  * Here is where folder methods are defined for the Library widget.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 //KTGCTable::KTGCTable(QWidget *parent) : QTreeWidget(parent), m_currentFolder(0)
@@ -89,8 +88,10 @@ void KTGCTable::createFolder(const QString &name)
     m_currentFolder = newFolder;
     setCurrentItem(m_currentFolder);
 
-    if (name.isNull())
+    if (name.isNull()) {
         editItem(m_currentFolder, 1);
+        emit itemCreated(newFolder);
+    } 
 }
 
 QTreeWidgetItem *KTGCTable::getFolder(const QString &folderName)
@@ -388,13 +389,6 @@ void KTGCTable::dragMoveEvent(QDragMoveEvent *event)
      }
 }
 
-/*
-void KTGCTable::dragLeaveEvent(QDragLeaveEvent *event)
-{
-    kFatal() <<  "KTGCTable::dragLeaveEvent - Just tracing...";
-}
-*/
-
 void KTGCTable::keyPressEvent(QKeyEvent * event)
 {
     if (event->key() == Qt::Key_Up) {
@@ -445,4 +439,10 @@ void KTGCTable::callInkscape()
 void KTGCTable::callGimp()
 {
     // execute /usr/bin/gimp   
+}
+
+void KTGCTable::cleanUI()
+{
+    clear();
+    foldersTotal = 1;
 }

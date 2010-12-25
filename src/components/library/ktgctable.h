@@ -44,7 +44,7 @@
 #include "ktreelistwidget.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 //class KTGCTable : public QTreeWidget
@@ -65,6 +65,7 @@ class KTGCTable : public KTreeListWidget
         int indexOf(QTreeWidgetItem *item);
         QString oldFolder();
         QTreeWidgetItem *getFolder(const QString &folderName);
+        void cleanUI();
 
         enum ObjectType 
         {
@@ -77,6 +78,7 @@ class KTGCTable : public KTreeListWidget
         void itemRemoved();
         void itemRenamed(QTreeWidgetItem *);
         void itemMoved(QString node, QString target);
+        void itemCreated(QTreeWidgetItem *);
 
     public slots:
         void createFolder(const QString &name = QString());
@@ -89,7 +91,6 @@ class KTGCTable : public KTreeListWidget
     protected:
         void dropEvent(QDropEvent *event);
         void dragEnterEvent(QDragEnterEvent *event);
-        //void dragLeaveEvent(QDragLeaveEvent *event);
         void dragMoveEvent(QDragMoveEvent *event);
         void keyPressEvent(QKeyEvent * event);
 

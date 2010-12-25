@@ -86,9 +86,6 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
             if (layer) {
                 KTFrame *frame = layer->frame(framePosition);
                 if (frame) {
-                    // if (position == -1)
-                    //    qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
-
                     if (type == KTLibraryObject::Svg) {
                         KTSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
                         if (svg)
@@ -96,6 +93,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                         else
                             return false;
                     } else {
+                        kFatal() << "KTCommandExecutor::createItem() - Adding image!";
                         QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
 
                         if (item)
@@ -163,10 +161,14 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     KTLibraryObject::Type type = response->itemType();
 
     KTScene *scene = m_project->scene(scenePosition);
+
+    kFatal() << "KTCommandExecutor::removeItem() - Just tracing!";
     
     if (scene) {
 
         if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+            kFatal() << "KTCommandExecutor::removeItem() - Deleting on frames edition mode!";
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -176,9 +178,11 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                     if (type == KTLibraryObject::Svg) {
                         frame->removeSvgAt(response->itemIndex());
                     } else {
-                         frame->removeGraphicAt(response->itemIndex());
+                        kFatal() << "KTCommandExecutor::removeItem() - Deleting IMAGE at frame: " << framePosition; 
+                        kFatal() << "KTCommandExecutor::removeItem() - Index object: " << response->itemIndex();
+                        frame->removeGraphicAt(response->itemIndex());
 
-                         // SQA: Check this code and figure out if it's required
+                        // SQA: Check this code and figure out if it's required
                          /*
                           QGraphicsItem *item = frame->item(response->itemIndex());
                           if (item) {
@@ -203,6 +207,8 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
             }
 
         } else {
+
+            kFatal() << "KTCommandExecutor::removeItem() - Deleting on background edition mode!";
 
             KTBackground *bg = scene->background();
 

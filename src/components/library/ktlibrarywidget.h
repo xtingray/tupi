@@ -76,6 +76,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
         void importGraphicObject();
         void refreshItem(QTreeWidgetItem *item);
         void updateLibrary(QString node, QString target);
+        void activeRefresh(QTreeWidgetItem *item);
 
     public slots:
         void importBitmap();

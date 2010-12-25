@@ -33,10 +33,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QtGui>
-
 #include "kttreedelegate.h"
 #include "kdebug.h"
+
+#include <QtGui>
 
 KTTreeDelegate::KTTreeDelegate(QObject *parent)
     : QItemDelegate(parent)

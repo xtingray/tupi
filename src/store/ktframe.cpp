@@ -576,6 +576,7 @@ int KTFrame::indexOf(KTSvgItem *object) const
 
 int KTFrame::indexOf(QGraphicsItem *item) const
 {
+    kFatal() << "KTFrame::indexOf() - Vector size: " << k->graphics.count();
     foreach (KTGraphicObject *object, k->graphics.values()) {
              if (object->item() == item)
                  return k->graphics.objectIndex(object);

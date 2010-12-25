@@ -38,6 +38,7 @@
 #include "ktlayer.h"
 #include "ktsoundlayer.h"
 #include "ktframe.h"
+#include "ktbackground.h"
 #include "ktlibrary.h"
 #include "ktlibraryobject.h"
 #include "ktgraphiclibraryitem.h"
@@ -414,34 +415,63 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
     if (!k->isOpen)
         return false;
 
-    bool flag = k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) != 0;
+    kFatal() << "KTProject::createSymbol() - Just tracing!";
 
-    return flag;
+    return k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) != 0;
 }
 
 bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex)
 {
     Q_UNUSED(name);
 
+    kFatal() << "KTProject::removeSymbol() - Just tracing!";
+
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
 
     if (scene) {
-        KTLayer *layer = scene->layer(layerIndex);
-        if (layer)
-            frame = layer->frame(frameIndex);
-    }
 
-    if (symbolType == KTLibraryObject::Svg) {
-        QList<int> indexes = frame->svgIndexes();
-        int lastIndex = indexes.at(indexes.size()-1);
-        if (frame->removeSvgAt(lastIndex))
-            return true;
-    } else {
-        QList<int> indexes = frame->itemIndexes();
-        int lastIndex = indexes.at(indexes.size()-1);
-        if (frame->removeGraphicAt(lastIndex))
-            return true;
+        if (k->spaceMode == KTProject::FRAMES_EDITION) {
+
+            KTLayer *layer = scene->layer(layerIndex);
+            if (layer) {
+                frame = layer->frame(frameIndex);
+                if (frame) {
+                    if (symbolType == KTLibraryObject::Svg) {
+                        QList<int> indexes = frame->svgIndexes();
+                        int lastIndex = indexes.at(indexes.size()-1);
+                        if (frame->removeSvgAt(lastIndex))
+                            return true;
+                    } else {
+                        QList<int> indexes = frame->itemIndexes();
+                        int lastIndex = indexes.at(indexes.size()-1);
+                        kFatal() << "KTProject::removeSymbol() - Removing item at index: " << lastIndex;
+                        if (frame->removeGraphicAt(lastIndex))
+                            return true;
+                    }
+                }
+            }
+        } else {
+
+            KTBackground *bg = scene->background();
+
+            if (bg) {
+                KTFrame *frame = bg->frame();
+                if (frame) {
+                    if (symbolType == KTLibraryObject::Svg) {
+                        QList<int> indexes = frame->svgIndexes();
+                        int lastIndex = indexes.at(indexes.size()-1);
+                        if (frame->removeSvgAt(lastIndex))
+                            return true;
+                    } else {
+                        QList<int> indexes = frame->itemIndexes();
+                        int lastIndex = indexes.at(indexes.size()-1);
+                        if (frame->removeGraphicAt(lastIndex))
+                            return true;
+                    }
+                }
+            }
+        }
     }
 
     return false;
@@ -454,92 +484,111 @@ bool KTProject::removeSymbol(const QString &name)
 
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
 {
+    kFatal() << "KTProject::addSymbolToProject() - Tracing the white rabbit!";
+
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
 
     if (scene) {
-        KTLayer *layer = scene->layer(layerIndex);
-        if (layer)
-            frame = layer->frame(frameIndex);
-    } else {
-        return false;
-    }
 
-    KTLibraryObject *object = k->library->findObject(name);
+        if (k->spaceMode == KTProject::FRAMES_EDITION) {
+            KTLayer *layer = scene->layer(layerIndex);
 
-    if (object && frame) {
-        switch (object->type()) {
-                case KTLibraryObject::Image:
-                     {
-                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       int imageW = libraryItem->boundingRect().width();
-                       int imageH = libraryItem->boundingRect().height();
+            if (layer)
+                frame = layer->frame(frameIndex);
+            else
+                return false;
+        } else { 
+            KTBackground *bg = scene->background();
 
-                       if (k->dimension.width() > imageW && k->dimension.height() > imageH)
-                           libraryItem->moveBy((k->dimension.width() - imageW)/2, (k->dimension.height() - imageH)/2);
-                       else
-                           libraryItem->moveBy(0, 0);
-
-                       frame->addItem(name, libraryItem);
-                     }
-                break;
-                case KTLibraryObject::Text:
-                     {
-                       // SQA: Just out of curiosity, check if this case really happens!
-                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       frame->addItem(name, libraryItem);
-                     }
-                break;
-                case KTLibraryObject::Svg:
-                     {
-                       QString path(object->dataPath());
-                       KTSvgItem *svgItem = new KTSvgItem(path);
-                       svgItem->setSymbolName(name);
-
-                       int svgW = svgItem->boundingRect().width();
-                       int svgH = svgItem->boundingRect().height();
-
-                       if (k->dimension.width() > svgW && k->dimension.height() > svgH) {
-                           svgItem->moveBy((k->dimension.width() - svgW)/2, (k->dimension.height() - svgH)/2);
-                       } else {
-                           qreal factorW = ((qreal)k->dimension.width())/((qreal)svgW);
-                           qreal factorH = ((qreal)k->dimension.height())/((qreal)svgH);
-
-                           if (factorW < factorH)                           
-                               svgItem->setScale(factorW);
-                           else
-                               svgItem->setScale(factorH);
-
-                           svgItem->moveBy(0, 0);
-                       }
-
-                       frame->addSvgItem(name, svgItem);
-                     }
-                break;
-                case KTLibraryObject::Item:
-                     {
-                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       frame->addItem(name, libraryItem);
-                     }
-                break;
-                case KTLibraryObject::Sound:
-                     {
-                       KTSoundLayer *sound = scene->createSoundLayer(scene->soundLayers().count());
-                       sound->fromSymbol(object->symbolName());
-                     }
-                break;
-                default:
-                     #ifdef K_DEBUG
-                       kFatal() << "KTProject::addSymbolToProject() -> Unknown Object Type"; 
-                     #endif
-                break;
+            if (bg)
+                frame = bg->frame();
+            else
+                return false;
         }
 
-        return true;
-    } else {
-        #ifdef K_DEBUG 
-         kFatal() << "KTProject::addSymbolToProject() - Object NOT found at library! " << name;
-        #endif
+        if (frame) {
+
+            KTLibraryObject *object = k->library->findObject(name);
+
+            if (object) {
+
+                switch (object->type()) {
+                        case KTLibraryObject::Image:
+                        {
+                             KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                             int imageW = libraryItem->boundingRect().width();
+                             int imageH = libraryItem->boundingRect().height();
+
+                             if (k->dimension.width() > imageW && k->dimension.height() > imageH)
+                                 libraryItem->moveBy((k->dimension.width() - imageW)/2, (k->dimension.height() - imageH)/2);
+                             else
+                                 libraryItem->moveBy(0, 0);
+
+                             frame->addItem(name, libraryItem);
+                        }
+                        break;
+                        case KTLibraryObject::Text:
+                        {
+                             // SQA: Just out of curiosity, check if this case really happens!
+                             KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                             frame->addItem(name, libraryItem);
+                        }
+                        break;
+                        case KTLibraryObject::Svg:
+                        {
+                             QString path(object->dataPath());
+                             KTSvgItem *svgItem = new KTSvgItem(path);
+                             svgItem->setSymbolName(name);
+
+                             int svgW = svgItem->boundingRect().width();
+                             int svgH = svgItem->boundingRect().height();
+
+                             if (k->dimension.width() > svgW && k->dimension.height() > svgH) {
+                                 svgItem->moveBy((k->dimension.width() - svgW)/2, (k->dimension.height() - svgH)/2);
+                             } else {
+                                 qreal factorW = ((qreal)k->dimension.width())/((qreal)svgW);
+                                 qreal factorH = ((qreal)k->dimension.height())/((qreal)svgH);
+
+                                 if (factorW < factorH)                           
+                                     svgItem->setScale(factorW);
+                                 else
+                                     svgItem->setScale(factorH);
+
+                                 svgItem->moveBy(0, 0);
+                             }
+
+                             frame->addSvgItem(name, svgItem);
+                        }
+                        break;
+                        case KTLibraryObject::Item:
+                        {
+                             KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                             frame->addItem(name, libraryItem);
+                        }
+                        break;
+                        case KTLibraryObject::Sound:
+                        {
+                             KTSoundLayer *sound = scene->createSoundLayer(scene->soundLayers().count());
+                             sound->fromSymbol(object->symbolName());
+                        }
+                        break;
+                        default:
+                             #ifdef K_DEBUG
+                                    kFatal() << "KTProject::addSymbolToProject() -> Unknown Object Type"; 
+                             #endif
+                        break;
+                }
+
+                return true;
+
+            } else {
+                #ifdef K_DEBUG 
+                       kFatal() << "KTProject::addSymbolToProject() - Object NOT found at library! " << name;
+                #endif
+                return false;
+            }
+        }
     }
 
     return false;
@@ -551,13 +600,26 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
         return true;
 
     foreach (KTScene *scene, k->scenes.values()) {
-             foreach (KTLayer *layer, scene->layers().values()) {
-                      foreach (KTFrame *frame, layer->frames().values()) {
-                               if (type != KTLibraryObject::Svg)
-                                   frame->removeItemFromFrame(name);
-                               else
-                                   frame->removeSvgItemFromFrame(name);
-                      }
+             if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                 foreach (KTLayer *layer, scene->layers().values()) {
+                          foreach (KTFrame *frame, layer->frames().values()) {
+                                   if (type != KTLibraryObject::Svg)
+                                       frame->removeItemFromFrame(name);
+                                   else
+                                       frame->removeSvgItemFromFrame(name);
+                          }
+                 }
+             } else {
+                 KTBackground *bg = scene->background();
+                 if (bg) {
+                     KTFrame *frame = bg->frame();
+                     if (frame) {
+                         if (type != KTLibraryObject::Svg)
+                             frame->removeItemFromFrame(name);
+                         else
+                             frame->removeSvgItemFromFrame(name);
+                     }
+                 }
              }
     }
 
@@ -567,6 +629,7 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
 bool KTProject::updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId)
 {
     foreach (KTScene *scene, k->scenes.values()) {
+
              foreach (KTLayer *layer, scene->layers().values()) {
                       foreach (KTFrame *frame, layer->frames().values()) {
                                if (type != KTLibraryObject::Svg)
@@ -575,11 +638,21 @@ bool KTProject::updateSymbolId(KTLibraryObject::Type type, const QString &oldId,
                                    frame->updateSvgIdFromFrame(oldId, newId);
                       }
              }
+
+             KTBackground *bg = scene->background();
+             if (bg) {
+                 KTFrame *frame = bg->frame();
+                 if (frame) {
+                     if (type != KTLibraryObject::Svg)
+                         frame->updateIdFromFrame(oldId, newId);
+                     else
+                         frame->updateSvgIdFromFrame(oldId, newId);
+                 }
+             }
     }
 
     return true;
 }
-
 
 KTLibrary *KTProject::library()
 {

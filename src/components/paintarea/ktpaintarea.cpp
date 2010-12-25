@@ -477,8 +477,10 @@ void KTPaintArea::deleteItems()
                          type = KTLibraryObject::Svg;
                          itemIndex = currentScene->currentFrame()->indexOf(svg);
                      } else {
+                         kFatal() << "KTPaintArea::deleteItems() - Deleting an image file!";
                          type = KTLibraryObject::Item;
                          itemIndex = currentScene->currentFrame()->indexOf(item);
+                         kFatal() << "KTPaintArea::deleteItems() - Target Index: " << itemIndex;
                      }
 
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
