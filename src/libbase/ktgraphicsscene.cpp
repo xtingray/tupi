@@ -72,8 +72,8 @@
 struct KTGraphicsScene::Private
 {
     KTToolPlugin *tool;
-
     KTScene *scene;
+
     struct OnionSkin
      {
         int previous;
@@ -87,9 +87,10 @@ struct KTGraphicsScene::Private
         int frame;
      } framePosition;
 
-    bool isDrawing;
     KTBrushManager *brushManager;
     KTInputDeviceInformation *inputInformation;
+
+    bool isDrawing;
     int layerCounter;
     int objectCounter;
 
@@ -123,7 +124,9 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 
 KTGraphicsScene::~KTGraphicsScene()
 {
-    KEND;
+    #ifdef K_DEBUG
+           KEND;
+    #endif
 
     clearFocus();
     clearSelection();
@@ -377,6 +380,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                     else
                         item->setZValue(k->objectCounter - 10000);
 
+                    kFatal() << "KTGraphicsScene::addGraphicObject() - Z Value: " << item->zValue(); 
                     item->setOpacity(opacity);
                     k->objectCounter++;
                     addItem(item);
@@ -388,20 +392,27 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
     if (svgItem) {
+
         k->onionSkin.opacityMap.insert(svgItem, opacity);
         svgItem->setSelected(false);
 
         KTLayer *layer = k->scene->layer(k->framePosition.layer);
 
         if (layer) {
+
             KTFrame *frame = layer->frame(k->framePosition.frame);
             if (frame) {
-                int factor = k->objectCounter + (k->layerCounter)*10000;
-                k->objectCounter++;
+                if (k->spaceMode == KTProject::FRAMES_EDITION)
+                    svgItem->setZValue(k->objectCounter + (k->layerCounter)*10000);
+                else
+                    svgItem->setZValue(k->objectCounter - 10000);
+
+                kFatal() << "KTGraphicsScene::addSvgObject() - Z Value: " << svgItem->zValue(); 
                 svgItem->setOpacity(opacity);
-                svgItem->setZValue(factor);
+                k->objectCounter++;
                 addItem(svgItem);
             }
+
         }
     } 
 } 

@@ -637,6 +637,7 @@ void KTViewDocument::createToolBar()
     k->spaceMode->addItem(QIcon(THEME_DIR + "icons/background_mode.png"), tr("Background Mode"));
 
     connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
+    setSpaceContext();
 
     k->barGrid->addWidget(k->spaceMode);
 }

@@ -81,7 +81,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
     k->sceneCounter = 0;
     k->isOpen = false;
     k->library = new KTLibrary("library", this);
-    k->spaceMode = KTProject::FRAMES_EDITION;
+    // k->spaceMode = KTProject::FRAMES_EDITION;
 }
 
 /**
