@@ -95,14 +95,24 @@ void Select::init(KTGraphicsScene *scene)
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
 
+                      /*
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
                       QDomElement root = dom.documentElement();
-                      // kFatal() << "Select::init() - XML: ";
-                      // kFatal() << dom.toString();
+                      kFatal() << "Select::init() - XML: ";
+                      kFatal() << dom.toString();
+                      */
 
-                      if (!qgraphicsitem_cast<Node *>(item))
-                          item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                      kFatal() << "Select::init() - MODE: " << scene->spaceMode();
+
+                      if (!qgraphicsitem_cast<Node *>(item)) {
+                          if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                              if (item->zValue() >= 10000)
+                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                          } else {
+                              item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                          }
+                      }
              }
     }
 }

@@ -751,6 +751,10 @@ void KTPaintArea::updatePaintArea()
 
 void KTPaintArea::paintBackground()
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     KTGraphicsScene* currentScene = graphicsScene();
     currentScene->clean();
     currentScene->drawBackground();
@@ -758,5 +762,19 @@ void KTPaintArea::paintBackground()
 
 void KTPaintArea::setCurrentTool(QString tool) 
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     k->currentTool = tool;
+}
+
+void KTPaintArea::updateSpaceContext()
+{
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    KTGraphicsScene* currentScene = graphicsScene();
+    currentScene->setSpaceMode(k->project->spaceContext());
 }

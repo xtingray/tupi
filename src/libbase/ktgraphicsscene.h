@@ -105,6 +105,9 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
 
         void includeObject(QGraphicsItem *object);
 
+        KTProject::Mode spaceMode();
+        void setSpaceMode(KTProject::Mode mode);
+
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

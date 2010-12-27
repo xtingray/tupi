@@ -96,6 +96,8 @@ struct KTGraphicsScene::Private
 
     QList<KTLineGuide *> lines;
     QPointF lastPoint;
+
+    KTProject::Mode spaceMode;   
 };
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -160,6 +162,10 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     int frames = layer->framesNumber();
 
@@ -445,7 +451,8 @@ int KTGraphicsScene::currentSceneIndex() const
 void KTGraphicsScene::setNextOnionSkinCount(int n)
 {
     k->onionSkin.next = n;
-    drawCurrentPhotogram();
+    if (k->spaceMode == KTProject::FRAMES_EDITION)
+        drawCurrentPhotogram();
 }
 
 void KTGraphicsScene::setPreviousOnionSkinCount(int n)
@@ -455,7 +462,8 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
     #endif
 
     k->onionSkin.previous = n;
-    drawCurrentPhotogram();
+    if (k->spaceMode == KTProject::FRAMES_EDITION)
+        drawCurrentPhotogram();
 }
 
 KTFrame *KTGraphicsScene::currentFrame()
@@ -514,7 +522,10 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
     clean();
     k->scene = scene;
 
-    drawCurrentPhotogram();
+    if (k->spaceMode == KTProject::FRAMES_EDITION)
+        drawCurrentPhotogram();
+    else
+        drawBackground();
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
@@ -536,7 +547,16 @@ KTScene *KTGraphicsScene::scene() const
 
 void KTGraphicsScene::setTool(KTToolPlugin *tool)
 {
-    drawCurrentPhotogram();
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+        drawCurrentPhotogram();
+    } else {
+        clean();
+        drawBackground();
+    }
 
     if (k->tool) {
         if (k->tool->toolType() == KTToolPlugin::Selection) {
@@ -780,3 +800,14 @@ void KTGraphicsScene::removeScene()
     clean();
     k->scene = 0;
 }
+
+KTProject::Mode KTGraphicsScene::spaceMode()
+{
+    return k->spaceMode;
+}
+
+void KTGraphicsScene::setSpaceMode(KTProject::Mode mode)
+{
+    k->spaceMode = mode;    
+}
+
