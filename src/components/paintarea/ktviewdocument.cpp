@@ -766,5 +766,8 @@ void KTViewDocument::setSpaceContext()
         k->paintArea->updatePaintArea();
     else
         k->paintArea->paintBackground();
-        
+
+   if (k->currentTool && (k->currentTool->toolType() == KTToolInterface::Selection)) {
+       k->currentTool->init(k->paintArea->graphicsScene()); 
+   }
 }

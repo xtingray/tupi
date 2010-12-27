@@ -107,8 +107,12 @@ void Select::init(KTGraphicsScene *scene)
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
-                              if (item->zValue() >= 10000)
+                              if (item->zValue() >= 10000) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                              } else {
+                                  item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                  item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                              }
                           } else {
                               item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                           }
@@ -463,8 +467,18 @@ void Select::updateItems(KTGraphicsScene *scene)
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
-                      if (!qgraphicsitem_cast<Node *>(item))
-                          item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                      if (!qgraphicsitem_cast<Node *>(item)) {
+                          if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                              if (item->zValue() >= 10000) {
+                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                              } else {
+                                  item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                  item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                              }
+                          } else {
+                              item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                          }
+                      }
              }
     }
 }

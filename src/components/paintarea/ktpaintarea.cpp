@@ -85,6 +85,7 @@ struct KTPaintArea::Private
     QStringList copiesXml;
     QString currentTool; 
     bool deleteMode;
+    KTProject::Mode spaceMode;
 };
 
 // KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
@@ -461,6 +462,7 @@ void KTPaintArea::deleteItems()
         KTGraphicsScene* currentScene = graphicsScene();
 
         if (currentScene) {
+
             int counter = 0;
             int total = selected.count();
             k->deleteMode = true;
@@ -475,11 +477,29 @@ void KTPaintArea::deleteItems()
 
                      if (svg) {
                          type = KTLibraryObject::Svg;
-                         itemIndex = currentScene->currentFrame()->indexOf(svg);
+                         if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                             itemIndex = currentScene->currentFrame()->indexOf(svg);
+                         } else {
+                             KTBackground *bg = currentScene->scene()->background();
+                             if (bg) {
+                                 KTFrame *frame = bg->frame();
+                                 if (frame)
+                                     itemIndex = frame->indexOf(svg);;
+                             }
+                         }
                      } else {
                          kFatal() << "KTPaintArea::deleteItems() - Deleting an image file!";
                          type = KTLibraryObject::Item;
-                         itemIndex = currentScene->currentFrame()->indexOf(item);
+                         if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                             itemIndex = currentScene->currentFrame()->indexOf(item);
+                         } else {
+                             KTBackground *bg = currentScene->scene()->background();
+                             if (bg) {
+                                 KTFrame *frame = bg->frame();
+                                 if (frame)
+                                     itemIndex = frame->indexOf(item);
+                             }
+                         }
                          kFatal() << "KTPaintArea::deleteItems() - Target Index: " << itemIndex;
                      }
 
@@ -491,6 +511,7 @@ void KTPaintArea::deleteItems()
                      emit requestTriggered(&event);
                      counter++;
             }
+
         }
     }
 }
@@ -777,4 +798,5 @@ void KTPaintArea::updateSpaceContext()
 
     KTGraphicsScene* currentScene = graphicsScene();
     currentScene->setSpaceMode(k->project->spaceContext());
+    k->spaceMode = k->project->spaceContext();
 }
