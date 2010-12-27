@@ -75,7 +75,7 @@
 /**
  * This class defines all the environment for the Ilustration interface.
  * Here is where all the tools for Ilustration are defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTViewDocument::Private
@@ -758,11 +758,10 @@ void KTViewDocument::setSpaceContext()
 {
     QString option = k->spaceMode->currentText();
     int index = k->spaceMode->currentIndex();
-    kFatal() << "KTViewDocument::setSpaceContext() - Enabling mode: " << index;
     k->project->updateSpaceContext(index);
     k->paintArea->updateSpaceContext();
 
-    if (index == 0)
+    if (index == KTProject::FRAMES_EDITION)
         k->paintArea->updatePaintArea();
     else
         k->paintArea->paintBackground();
@@ -770,4 +769,8 @@ void KTViewDocument::setSpaceContext()
    if (k->currentTool && (k->currentTool->toolType() == KTToolInterface::Selection)) {
        k->currentTool->init(k->paintArea->graphicsScene()); 
    }
+
+   kFatal() << "KTViewDocument::setSpaceContext() - Enabling mode: " << index;
+
+   emit modeHasChanged(index);
 }

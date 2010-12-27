@@ -450,6 +450,12 @@ int KTGraphicsScene::currentSceneIndex() const
 
 void KTGraphicsScene::setNextOnionSkinCount(int n)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
+    kFatal() << "KTGraphicsScene::setNextOnionSkinCount() - Mode: " << k->spaceMode;
+
     k->onionSkin.next = n;
     if (k->spaceMode == KTProject::FRAMES_EDITION)
         drawCurrentPhotogram();
@@ -460,6 +466,8 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
     #ifdef K_DEBUG
        K_FUNCINFO;
     #endif
+
+    kFatal() << "KTGraphicsScene::setPreviousOnionSkinCount() - Mode: " << k->spaceMode;
 
     k->onionSkin.previous = n;
     if (k->spaceMode == KTProject::FRAMES_EDITION)

@@ -41,9 +41,9 @@
 
 /**
  * @if english
- * KToon style
+ * Tupi style
  * @elseif spanish
- * Estilo KToon
+ * Estilo Tupi 
  * @endif
  */
 

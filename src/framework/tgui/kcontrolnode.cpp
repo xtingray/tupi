@@ -78,8 +78,7 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     setFlag(ItemSendsGeometryChanges, true);
     
     setPos(pos);
-    // FIXME: The Zvalue for nodes must be relative to the QGraphicsItem variable
-    setZValue(1000);
+    setZValue(graphicParent->zValue() + 1);
     setGraphicParent(graphicParent);
 }
 

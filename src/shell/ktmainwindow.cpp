@@ -260,14 +260,13 @@ void KTMainWindow::viewNewDocument()
         connectToDisplays(drawingTab);
         ui4project(drawingTab);
         ui4localRequest(drawingTab);
+        connect(drawingTab, SIGNAL(modeHasChanged(int)), this, SLOT(expandExposureView(int))); 
       
         drawingTab->setAntialiasing(true);
 
         // KTViewCamera *
         viewCamera = new KTViewCamera(m_projectManager->project());
         ui4project(viewCamera);
-
-        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
 
         animationTab = new KTAnimationspace(viewCamera);
         animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
@@ -299,6 +298,8 @@ void KTMainWindow::viewNewDocument()
             newsTab->setSource(twitterPath);
             addWidget(newsTab);
         } 
+
+        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
 
         exposureView->expandDock(true);
         connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
@@ -1202,4 +1203,16 @@ void KTMainWindow::callSave()
 {
     if (projectSaved && m_projectManager->isModified())
         saveProject();
+}
+
+
+void KTMainWindow::expandExposureView(int index) {
+    kFatal() << "KTMainWindow::expandExposureView() - Just tracing!!!";
+    if (static_cast<KTProject::Mode>(index) == KTProject::FRAMES_EDITION) {
+        exposureView->expandDock(true);
+        exposureView->enableButton(true);
+    } else {
+        exposureView->expandDock(false);
+        exposureView->enableButton(false);
+    }
 }

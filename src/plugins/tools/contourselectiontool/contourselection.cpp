@@ -75,7 +75,6 @@ ContourSelection::ContourSelection(): k(new Private)
     setupActions();
 }
 
-
 ContourSelection::~ContourSelection()
 {
     delete k;
@@ -86,11 +85,23 @@ void ContourSelection::init(KTGraphicsScene *scene)
     qDeleteAll(k->nodeGroups);
     k->nodeGroups.clear();
 
+    kFatal() << "ContourSelection::init() - MODE: " << scene->spaceMode();
+
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode (QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
-                      if (!qgraphicsitem_cast<KControlNode *>(item))
-                          item->setFlags (QGraphicsItem::ItemIsSelectable);
+                      if (!qgraphicsitem_cast<KControlNode *>(item)) {
+                          if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                              if (item->zValue() >= 10000) {
+                                  item->setFlags(QGraphicsItem::ItemIsSelectable);
+                              } else {
+                                  item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                              }
+                          } else {
+                              item->setFlags(QGraphicsItem::ItemIsSelectable);
+                          }
+                      }
+
              }
     }
 }
@@ -197,16 +208,25 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
     if (project) {
         scene = project->scene(response->sceneIndex());
         if (scene) {
-            layer = scene->layer(response->layerIndex());
-            if (layer) {
-                frame = layer->frame(response->frameIndex());
-                if (frame)
-                    item = frame->item(response->itemIndex());
+            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+                layer = scene->layer(response->layerIndex());
+                if (layer) {
+                    frame = layer->frame(response->frameIndex());
+                    if (frame)
+                        item = frame->item(response->itemIndex());
+                }
+            } else {
+                KTBackground *bg = scene->background();
+                if (bg) {
+                    KTFrame *frame = bg->frame();
+                    if (frame)
+                        item = frame->item(response->itemIndex());
+                }
             }
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "Project not exist";
+               kFatal() << "ContourSelection::itemResponse() - Project not exist";
         #endif
     }
     
@@ -235,6 +255,8 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
                                   break;
                               }
                      }
+                 } else {
+                     kFatal() << "ContourSelection::itemResponse() - No item found";
                  }
             }
             break;
@@ -281,7 +303,6 @@ void ContourSelection::setupActions()
 {
     KAction *select = new KAction(QPixmap(THEME_DIR + "icons/nodes.png"), tr("Nodes selection "), this);
     select->setShortcut(QKeySequence(tr("N")));
-    // select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
 
     k->actions.insert(tr("Contour Selection"), select);
 }

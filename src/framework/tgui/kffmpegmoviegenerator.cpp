@@ -87,7 +87,7 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
 
     st = av_new_stream(oc, 0);
     if (!st) {
-        errorMsg = "ffmpeg error: Could not alloc stream. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        errorMsg = "ffmpeg error: Could not alloc stream. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << errorMsg;
         #endif
@@ -194,7 +194,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     codec = avcodec_find_encoder(c->codec_id);
 
     if (!codec) {
-        errorMsg = "ffmpeg error: Video codec not found. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. It's very possible your system is missing codecs. More info: http://ffmpeg.org/";
+        errorMsg = "ffmpeg error: Video codec not found. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. It's very possible your system is missing codecs. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << errorMsg;
         #endif
@@ -204,7 +204,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 
     /* open the codec */
     if (avcodec_open(c, codec) < 0) {
-        errorMsg = "ffmpeg error: Could not open video codec. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        errorMsg = "ffmpeg error: Could not open video codec. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << errorMsg;
         #endif
@@ -221,7 +221,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     picture = allocPicture(c->pix_fmt, c->width, c->height);
 
     if (!picture) {
-        errorMsg = "ffmpeg error: Could not allocate m_picture. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        errorMsg = "ffmpeg error: Could not allocate m_picture. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << errorMsg;
         #endif 
@@ -233,7 +233,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     if (c->pix_fmt != PIX_FMT_YUV420P) {
         tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
         if (!tmpPicture) {
-            errorMsg = "ffmpeg error: Could not allocate temporary picture. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+            errorMsg = "ffmpeg error: Could not allocate temporary picture. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
             #ifdef K_DEBUG
                    kError() << errorMsg;
             #endif
@@ -351,7 +351,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
    }
 
    if (ret != 0) {
-       errorMsg = "ffmpeg error: Could not write video frame. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+       errorMsg = "ffmpeg error: Could not write video frame. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
 
        #ifdef K_DEBUG
               kError() << errorMsg;
@@ -413,7 +413,7 @@ bool KFFMpegMovieGenerator::begin()
          k->fmt = av_guess_format("mpeg", NULL, NULL);
 
     if (! k->fmt) {
-        k->errorMsg = "ffmpeg error: Cannot find a valid format for " + k->movieFile.toLocal8Bit() + ". This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        k->errorMsg = "ffmpeg error: Cannot find a valid format for " + k->movieFile.toLocal8Bit() + ". This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << k->errorMsg;
         #endif
@@ -423,7 +423,7 @@ bool KFFMpegMovieGenerator::begin()
     k->oc = avformat_alloc_context();
 
     if (!k->oc) {
-        k->errorMsg = "ffmpeg error: Error while doing export. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        k->errorMsg = "ffmpeg error: Error while doing export. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << k->errorMsg;
         #endif
@@ -435,7 +435,7 @@ bool KFFMpegMovieGenerator::begin()
     k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), k->fps, k->errorMsg);
 	
     if (!k->video_st) {
-        k->errorMsg = "ffmpeg error: Can't add video stream. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        k->errorMsg = "ffmpeg error: Can't add video stream. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << k->errorMsg;
         #endif
@@ -443,7 +443,7 @@ bool KFFMpegMovieGenerator::begin()
     }
 
     if (av_set_parameters(k->oc, 0) < 0) {
-        k->errorMsg = "ffmpeg error: Invalid output format parameters. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        k->errorMsg = "ffmpeg error: Invalid output format parameters. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                kError() << k->errorMsg;
         #endif
@@ -461,7 +461,7 @@ bool KFFMpegMovieGenerator::begin()
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
         if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
-            k->errorMsg = "ffmpeg error: Could not open " + k->movieFile.toLocal8Bit() + ". This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+            k->errorMsg = "ffmpeg error: Could not open " + k->movieFile.toLocal8Bit() + ". This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
             #ifdef K_DEBUG
                    kError() << k->errorMsg;
             #endif

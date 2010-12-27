@@ -48,7 +48,7 @@ class QBitmap;
 #include "kglobal.h"
 
 /**
- * @note This class was adapted to KToon by David Cuadrado <krawek@toonka.com>
+ * @note This class was adapted to Tupi by David Cuadrado
  * 
  * @short A widget for selecting two related colors.
  *

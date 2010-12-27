@@ -129,6 +129,7 @@ class KTViewDocument : public QMainWindow
         void requestTriggered(const KTProjectRequest *event);
         void localRequestTriggered(const KTProjectRequest *event);
         void autoSave();
+        void modeHasChanged(int mode);
 
     protected:
         // void closeEvent(QCloseEvent *e);
