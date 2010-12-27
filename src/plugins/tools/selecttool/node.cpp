@@ -73,7 +73,7 @@ struct Node::Private
     NodeManager *manager;
 };
 
-Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,
+Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem *parent,
         QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private(node, action, manager, parent))
 {
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
@@ -82,7 +82,7 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
     setFlag(ItemIsMovable, true);
     
     setPos(pos);
-    setZValue(1000);
+    setZValue(parent->zValue() + 1);
 }
 
 Node::~Node()
@@ -97,35 +97,35 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
     painter->setRenderHint(QPainter::Antialiasing, false);
     
-    QColor c;
+    QColor color;
     
     if ((option->state & QStyle::State_Sunken) && (k->action == Rotate)) {
-        c = QColor("green");
-        c.setAlpha(150);
+        color = QColor("green");
+        color.setAlpha(150);
     } else {
-        c = QColor("navy");
-        c.setAlpha(150);
+        color = QColor("navy");
+        color.setAlpha(150);
     }
     
     if (k->action == Rotate)
-        c.setGreen(200);
+        color.setGreen(200);
 
-    QRectF br = boundingRect();
+    QRectF square = boundingRect();
 
-    painter->setBrush(c);
-    painter->drawRoundRect(br);
+    painter->setBrush(color);
+    painter->drawRoundRect(square);
 
     //DEBUG
     #if DEBUG
-        painter->setFont(QFont( painter->font().family(), 5));
-        painter->drawText(br, QString::number(k->typeNode));
+        painter->setFont(QFont(painter->font().family(), 5));
+        painter->drawText(square, QString::number(k->typeNode));
     #endif
 
     if (k->typeNode == Center) {
         painter->save();
         painter->setPen(Qt::gray);
-        painter->drawLine(br.topLeft(), br.bottomRight());
-        painter->drawLine(br.bottomLeft(), br.topRight());
+        painter->drawLine(square.topLeft(), square.bottomRight());
+        painter->drawLine(square.bottomLeft(), square.topRight());
         painter->restore();
     }
     
@@ -190,37 +190,37 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     } else {
         if (k->action == Scale) {
             QRectF rect = k->parent->sceneBoundingRect();
-            QRectF br   = k->parent->sceneBoundingRect();
-            QRectF br1  = k->parent->boundingRect();
+            QRectF parentRect  = k->parent->sceneBoundingRect();
+            QRectF parentSquare  = k->parent->boundingRect();
             
             //Debug
             /*
             scene()->addRect(rect, QPen(Qt::red));
-            scene()->addRect(br, QPen(Qt::green));
+            scene()->addRect(parentRect, QPen(Qt::green));
             */
             
             switch (k->typeNode) {
                     case TopLeft:
                     {
-                         k->manager->setAnchor(br1.bottomRight());
+                         k->manager->setAnchor(parentSquare.bottomRight());
                          rect.setTopLeft(newPos);
                          break;
                     }
                     case TopRight:
                     {
-                         k->manager->setAnchor(br1.bottomLeft());
+                         k->manager->setAnchor(parentSquare.bottomLeft());
                          rect.setTopRight(newPos);
                          break;
                     }
                     case BottomRight:
                     {
-                         k->manager->setAnchor(br1.topLeft());
+                         k->manager->setAnchor(parentSquare.topLeft());
                          rect.setBottomRight(newPos);
                          break;
                     }
                     case BottomLeft:
                     {
-                         k->manager->setAnchor(br1.topRight());
+                         k->manager->setAnchor(parentSquare.topRight());
                          rect.setBottomLeft(newPos);
                          break;
                     }
@@ -231,8 +231,8 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             };
             
             float sx = 1, sy = 1;
-            sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-            sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+            sx = static_cast<float>(rect.width()) / static_cast<float>(parentRect.width());
+            sy = static_cast<float>(rect.height()) / static_cast<float>(parentRect.height());
             
             if (sx > 0 && sy > 0) {
                 k->manager->scale( sx,sy);

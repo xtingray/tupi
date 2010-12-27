@@ -315,18 +315,34 @@ void Select::itemResponse(const KTItemResponse *event)
         scene = project->scene(event->sceneIndex());
 
         if (scene) {
-            layer = scene->layer(event->layerIndex());
 
-            if (layer) {
-                frame = layer->frame(event->frameIndex());
-                if (frame) {
-                    if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
-                        item = frame->svg(event->itemIndex());
-                    } else if (frame->graphicItemsCount()>0) {
-                               item = frame->item(event->itemIndex());
+            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+
+                layer = scene->layer(event->layerIndex());
+
+                if (layer) {
+                    frame = layer->frame(event->frameIndex());
+                    if (frame) {
+                        if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
+                            item = frame->svg(event->itemIndex());
+                        } else if (frame->graphicItemsCount()>0) {
+                                   item = frame->item(event->itemIndex());
+                        }
+                    } else {
+                        return;
                     }
-                } else {
-                    return;
+                }
+            } else {
+                KTBackground *bg = scene->background();
+                if (bg) {
+                    KTFrame *frame = bg->frame();
+                   if (frame) {
+                       if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
+                           item = frame->svg(event->itemIndex());
+                       } else if (frame->graphicItemsCount()>0) {
+                                  item = frame->item(event->itemIndex());
+                       }
+                   }
                 }
             }
         }
@@ -354,7 +370,9 @@ void Select::itemResponse(const KTItemResponse *event)
                      }
 
                  } else {
-                     kFatal() << "Select::itemResponse - No item found";
+                     #ifdef K_DEBUG
+                            kFatal() << "Select::itemResponse - No item found";
+                     #endif
                  }
             }
             break;
