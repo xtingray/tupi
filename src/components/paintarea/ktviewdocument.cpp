@@ -761,16 +761,17 @@ void KTViewDocument::setSpaceContext()
     k->project->updateSpaceContext(index);
     k->paintArea->updateSpaceContext();
 
-    if (index == KTProject::FRAMES_EDITION)
-        k->paintArea->updatePaintArea();
-    else
-        k->paintArea->paintBackground();
+    k->paintArea->updatePaintArea();
 
-   if (k->currentTool && (k->currentTool->toolType() == KTToolInterface::Selection)) {
+   if (k->currentTool && (k->currentTool->toolType() == KTToolInterface::Selection))
        k->currentTool->init(k->paintArea->graphicsScene()); 
-   }
 
    kFatal() << "KTViewDocument::setSpaceContext() - Enabling mode: " << index;
 
    emit modeHasChanged(index);
+}
+
+KTProject::Mode KTViewDocument::spaceContext()
+{
+   return static_cast<KTProject::Mode>(k->spaceMode->currentIndex());
 }

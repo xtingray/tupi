@@ -79,6 +79,7 @@ class KTViewDocument : public QMainWindow
         KTBrushManager *brushManager() const;
         KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);
         void updatePaintArea();
+        KTProject::Mode spaceContext();
 
     public slots:
         void setNextOnionSkin(int n);

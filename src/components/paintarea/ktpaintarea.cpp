@@ -766,8 +766,12 @@ void KTPaintArea::updatePaintArea()
            K_FUNCINFO;
     #endif
 
-    KTGraphicsScene* currentScene = graphicsScene();
-    currentScene->drawCurrentPhotogram();
+    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+        KTGraphicsScene* currentScene = graphicsScene();
+        currentScene->drawCurrentPhotogram();
+    } else {
+        paintBackground();
+    }
 }
 
 void KTPaintArea::paintBackground()

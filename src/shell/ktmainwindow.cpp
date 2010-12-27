@@ -1165,6 +1165,7 @@ void KTMainWindow::updateCurrentTab(int index)
                 helpView->expandDock(false);
 
             drawingTab->updatePaintArea();
+
             lastTab = 0;
         } else {
             if (index == 2) { // Help mode
