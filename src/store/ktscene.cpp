@@ -145,10 +145,10 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
         return 0;
     }
 
-    KTLayer *layer = new KTLayer(this);
-
     k->layerCount++;
     k->nameIndex++;
+
+    KTLayer *layer = new KTLayer(this, k->layerCount);
 
     layer->setLayerName(tr("Layer %1").arg(k->nameIndex));
 

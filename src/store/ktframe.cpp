@@ -68,24 +68,27 @@ struct KTFrame::Private
     QHash<int, QString> svgIndexes;
     int repeat;
     int zLevelIndex;
+    int layerIndex;
 };
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), k(new Private)
 {
+    k->layerIndex = parent->layerIndex();
     k->name = "Frame";
     k->isLocked = false;
     k->isVisible = true;
     k->repeat = 1;
-    k->zLevelIndex = -1;
+    k->zLevelIndex = (k->layerIndex)*10000;
 }
 
 KTFrame::KTFrame(KTBackground *bg) : QObject(bg), k(new Private)
 {
+    k->layerIndex = 0;
     k->name = "Frame";
     k->isLocked = false;
     k->isVisible = true;
     k->repeat = 1;
-    k->zLevelIndex = -1;
+    k->zLevelIndex = 0;
 }
 
 KTFrame::~KTFrame()
@@ -315,14 +318,12 @@ void KTFrame::updateSvgIdFromFrame(const QString &oldId, const QString &newId)
 
 void KTFrame::insertItem(int position, QGraphicsItem *item)
 {
-    if (k->graphics.contains(position-1)) {
-        if (QGraphicsItem *lastItem = k->graphics.value(position-1)->item())
-            k->zLevelIndex = lastItem->zValue() + 1; 
-            item->setZValue(k->zLevelIndex);
-    } else {
-        if (k->zLevelIndex == -1)
-            k->zLevelIndex = item->zValue();
-    }
+    kFatal() << "KTFrame::insertItem() - Item counter: " << k->zLevelIndex;
+    kFatal() << "KTFrame::insertItem() - Layer Index: " << k->layerIndex;
+    kFatal() << "KTFrame::insertItem() - Z Index: " << item->zValue();
+
+    item->setZValue(k->zLevelIndex);
+    k->zLevelIndex++;
 
     KTGraphicObject *object = new KTGraphicObject(item, this);
     k->graphics.insert(position, object);
@@ -330,16 +331,12 @@ void KTFrame::insertItem(int position, QGraphicsItem *item)
 
 void KTFrame::insertSvgItem(int position, KTSvgItem *item)
 {
-    if (k->svg.contains(position-1)) {
-        if (KTSvgItem *lastItem = k->svg.value(position-1))
-            k->zLevelIndex = lastItem->zValue() + 1;
-            item->setZValue(k->zLevelIndex);
-    } else {
-        if (k->zLevelIndex == -1)
-            k->zLevelIndex = item->zValue();
-    }
+    item->setZValue(k->zLevelIndex);
+    k->zLevelIndex++;
 
     k->svg.insert(position, item);
+
+    kFatal() << "KTFrame::insertSvgItem() - Z Index: " << item->zValue();
 }
 
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
@@ -576,7 +573,6 @@ int KTFrame::indexOf(KTSvgItem *object) const
 
 int KTFrame::indexOf(QGraphicsItem *item) const
 {
-    kFatal() << "KTFrame::indexOf() - Vector size: " << k->graphics.count();
     foreach (KTGraphicObject *object, k->graphics.values()) {
              if (object->item() == item)
                  return k->graphics.objectIndex(object);
@@ -627,7 +623,8 @@ int KTFrame::svgItemsCount()
 
 int KTFrame::getTopZLevel()
 {
-    return k->graphics.count();
+    // return k->graphics.count();
+    return k->zLevelIndex;
 }
 
 QList<int> KTFrame::itemIndexes()

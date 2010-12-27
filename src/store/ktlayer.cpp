@@ -47,11 +47,13 @@ struct KTLayer::Private
     QString name;
     int framesCount;
     bool isLocked;
+    int index;
     //int zLevelBase;
 };
 
-KTLayer::KTLayer(KTScene *parent) : QObject(parent), k(new Private)
+KTLayer::KTLayer(KTScene *parent, int index) : QObject(parent), k(new Private)
 {
+    k->index = index;
     k->isVisible = true;
     k->name = tr("Layer");
     k->framesCount = 0;
@@ -299,6 +301,11 @@ KTScene *KTLayer::scene() const
 KTProject *KTLayer::project() const
 {
     return scene()->project();
+}
+
+int KTLayer::layerIndex()
+{
+    return k->index;
 }
 
 /*

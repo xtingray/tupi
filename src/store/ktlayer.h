@@ -63,7 +63,7 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
         /**
          * Default Constructor
          */
-        KTLayer(KTScene *parent);
+        KTLayer(KTScene *parent, int index = 0);
         
         /**
          * Destructor
@@ -126,6 +126,8 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
         
         KTScene *scene() const;
         KTProject *project() const;
+
+        int layerIndex();
         
         //int logicalIndexOf(KTFrame *frame) const;
         int visualIndexOf(KTFrame *frame) const;

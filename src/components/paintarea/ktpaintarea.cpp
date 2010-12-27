@@ -760,10 +760,3 @@ void KTPaintArea::setCurrentTool(QString tool)
 {
     k->currentTool = tool;
 }
-
-void KTPaintArea::updateSpaceContext()
-{
-    KTGraphicsScene* currentScene = graphicsScene();
-    currentScene->updateSpaceContext(k->project->spaceContext());
-}
-

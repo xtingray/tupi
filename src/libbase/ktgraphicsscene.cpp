@@ -96,7 +96,6 @@ struct KTGraphicsScene::Private
 
     QList<KTLineGuide *> lines;
     QPointF lastPoint;
-    KTProject::Mode spaceMode;
 };
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -375,12 +374,9 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                 KTFrame *frame = layer->frame(k->framePosition.frame);
 
                 if (frame) {
-                    if (k->spaceMode == KTProject::FRAMES_EDITION)
-                        item->setZValue(k->objectCounter + (k->layerCounter)*10000);
-                    else
-                        item->setZValue(k->objectCounter - 10000);
 
                     kFatal() << "KTGraphicsScene::addGraphicObject() - Z Value: " << item->zValue(); 
+
                     item->setOpacity(opacity);
                     k->objectCounter++;
                     addItem(item);
@@ -401,13 +397,11 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
         if (layer) {
 
             KTFrame *frame = layer->frame(k->framePosition.frame);
+
             if (frame) {
-                if (k->spaceMode == KTProject::FRAMES_EDITION)
-                    svgItem->setZValue(k->objectCounter + (k->layerCounter)*10000);
-                else
-                    svgItem->setZValue(k->objectCounter - 10000);
 
                 kFatal() << "KTGraphicsScene::addSvgObject() - Z Value: " << svgItem->zValue(); 
+
                 svgItem->setOpacity(opacity);
                 k->objectCounter++;
                 addItem(svgItem);
@@ -766,11 +760,15 @@ void KTGraphicsScene::aboutToMousePress()
 
 void KTGraphicsScene::includeObject(QGraphicsItem *object)
 {
+    kFatal() << "KTGraphicsScene::includeObject() - Just tracing!";
+
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
-            int zLevel = frame->getTopZLevel() + (k->framePosition.layer*1000);    
+            int zLevel = frame->getTopZLevel();
+            kFatal() << "KTGraphicsScene::includeObject() - Layer Index: " << k->framePosition.layer;
+            kFatal() << "KTGraphicsScene::includeObject() - Z Level: " << zLevel;
             object->setZValue(zLevel);
             addItem(object);
         }
@@ -781,9 +779,4 @@ void KTGraphicsScene::removeScene()
 {
     clean();
     k->scene = 0;
-}
-
-void KTGraphicsScene::updateSpaceContext(KTProject::Mode mode)
-{
-    k->spaceMode = mode;
 }
