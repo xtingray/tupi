@@ -110,6 +110,8 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 
     k->framePosition.layer = -1;
     k->framePosition.frame = -1;
+    k->spaceMode = KTProject::FRAMES_EDITION;
+
     setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
@@ -380,9 +382,6 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                 KTFrame *frame = layer->frame(k->framePosition.frame);
 
                 if (frame) {
-
-                    kFatal() << "KTGraphicsScene::addGraphicObject() - Z Value: " << item->zValue(); 
-
                     item->setOpacity(opacity);
                     k->objectCounter++;
                     addItem(item);
@@ -393,6 +392,10 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     if (svgItem) {
 
         k->onionSkin.opacityMap.insert(svgItem, opacity);
@@ -405,9 +408,6 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
             KTFrame *frame = layer->frame(k->framePosition.frame);
 
             if (frame) {
-
-                kFatal() << "KTGraphicsScene::addSvgObject() - Z Value: " << svgItem->zValue(); 
-
                 svgItem->setOpacity(opacity);
                 k->objectCounter++;
                 addItem(svgItem);
@@ -454,8 +454,6 @@ void KTGraphicsScene::setNextOnionSkinCount(int n)
        K_FUNCINFO;
     #endif
 
-    kFatal() << "KTGraphicsScene::setNextOnionSkinCount() - Mode: " << k->spaceMode;
-
     k->onionSkin.next = n;
     if (k->spaceMode == KTProject::FRAMES_EDITION)
         drawCurrentPhotogram();
@@ -466,8 +464,6 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
     #ifdef K_DEBUG
        K_FUNCINFO;
     #endif
-
-    kFatal() << "KTGraphicsScene::setPreviousOnionSkinCount() - Mode: " << k->spaceMode;
 
     k->onionSkin.previous = n;
     if (k->spaceMode == KTProject::FRAMES_EDITION)

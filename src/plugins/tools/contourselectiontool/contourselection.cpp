@@ -85,8 +85,6 @@ void ContourSelection::init(KTGraphicsScene *scene)
     qDeleteAll(k->nodeGroups);
     k->nodeGroups.clear();
 
-    kFatal() << "ContourSelection::init() - MODE: " << scene->spaceMode();
-
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode (QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
@@ -256,7 +254,9 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
                               }
                      }
                  } else {
-                     kFatal() << "ContourSelection::itemResponse() - No item found";
+                     #ifdef K_DEBUG
+                            kFatal() << "ContourSelection::itemResponse() - No item found";
+                     #endif
                  }
             }
             break;

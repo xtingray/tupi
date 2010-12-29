@@ -318,10 +318,6 @@ void KTFrame::updateSvgIdFromFrame(const QString &oldId, const QString &newId)
 
 void KTFrame::insertItem(int position, QGraphicsItem *item)
 {
-    kFatal() << "KTFrame::insertItem() - Item counter: " << k->zLevelIndex;
-    kFatal() << "KTFrame::insertItem() - Layer Index: " << k->layerIndex;
-    kFatal() << "KTFrame::insertItem() - Z Index: " << item->zValue();
-
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
 
@@ -335,8 +331,6 @@ void KTFrame::insertSvgItem(int position, KTSvgItem *item)
     k->zLevelIndex++;
 
     k->svg.insert(position, item);
-
-    kFatal() << "KTFrame::insertSvgItem() - Z Index: " << item->zValue();
 }
 
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)

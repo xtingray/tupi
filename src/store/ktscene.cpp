@@ -320,8 +320,6 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
     foreach (KTLayer *layer, k->layers.values())
              root.appendChild(layer->toXml(doc));
 
-    kFatal() << "KTScene::toXml() - Flag 3";
-
     foreach (KTSoundLayer *sound, k->soundLayers.values())
              root.appendChild(sound->toXml(doc));
 

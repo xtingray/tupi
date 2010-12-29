@@ -103,8 +103,6 @@ void Select::init(KTGraphicsScene *scene)
                       kFatal() << dom.toString();
                       */
 
-                      kFatal() << "Select::init() - MODE: " << scene->spaceMode();
-
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
                               if (item->zValue() >= 10000) {
@@ -387,7 +385,6 @@ void Select::itemResponse(const KTItemResponse *event)
             break;
             default:
             {
-                 kFatal() << "Select::itemResponse - event->action no implemented: " << event->action();
                  syncNodes();
             }
             break;

@@ -212,7 +212,7 @@ bool KTLayer::exchangeFrame(int from, int to)
 
 bool KTLayer::expandFrame(int position, int size)
 {
-    kFatal() << "KTLayer::expandFrame -> Just Tracing!";
+    // kFatal() << "KTLayer::expandFrame -> Just Tracing!";
 
     if (position < 0 || position >= k->frames.count()) {
         kFatal() << "KTLayer::expandFrame -> pos: " << position << " - size: " << size;

@@ -75,7 +75,6 @@ bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
 {
     if (m_project->scenesTotal() > 0) {
-        kFatal() << "KTCommandExecutor::addSymbolToProject() - Flag 1";
         if (m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
             emit responsed(response);
             return true;

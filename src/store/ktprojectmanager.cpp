@@ -218,7 +218,7 @@ bool KTProjectManager::loadProject(const QString &fileName)
 {
     if (! k->handler) {
         #ifdef K_DEBUG
-               kFatal() << "NO HANDLER!";
+               kFatal() << "KTProjectManager::loadProject() - NO HANDLER!";
         #endif
         return false;
     }
