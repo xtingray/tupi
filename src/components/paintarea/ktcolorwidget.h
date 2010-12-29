@@ -56,9 +56,14 @@ class KTColorWidget : public QWidget
         ~KTColorWidget() {};
         void setBrush(const QBrush &brush);
         QSize sizeHint() const;
+        QColor color();
 
     protected:
         void paintEvent(QPaintEvent *);
+        void mousePressEvent(QMouseEvent * event);
+
+    signals:
+        void clicked();        
 
     private:
         QBrush m_brush;

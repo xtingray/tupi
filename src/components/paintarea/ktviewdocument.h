@@ -80,6 +80,7 @@ class KTViewDocument : public QMainWindow
         KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);
         void updatePaintArea();
         KTProject::Mode spaceContext();
+        KTProject *project();
 
     public slots:
         void setNextOnionSkin(int n);
@@ -106,6 +107,7 @@ class KTViewDocument : public QMainWindow
         // Plugins
         void loadPlugins();
         void setSpaceContext();
+        void updateBgColor(const QColor color);
 
     private slots:
         void showPos(const QPointF &p);	
@@ -131,6 +133,7 @@ class KTViewDocument : public QMainWindow
         void localRequestTriggered(const KTProjectRequest *event);
         void autoSave();
         void modeHasChanged(int mode);
+        void expandColorPanel();
 
     protected:
         // void closeEvent(QCloseEvent *e);

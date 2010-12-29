@@ -261,6 +261,7 @@ void KTMainWindow::viewNewDocument()
         ui4project(drawingTab);
         ui4localRequest(drawingTab);
         connect(drawingTab, SIGNAL(modeHasChanged(int)), this, SLOT(expandExposureView(int))); 
+        connect(drawingTab, SIGNAL(expandColorPanel()), this, SLOT(expandColorView()));
       
         drawingTab->setAntialiasing(true);
 
@@ -1208,7 +1209,6 @@ void KTMainWindow::callSave()
 
 
 void KTMainWindow::expandExposureView(int index) {
-    kFatal() << "KTMainWindow::expandExposureView() - Just tracing!!!";
     if (static_cast<KTProject::Mode>(index) == KTProject::FRAMES_EDITION) {
         exposureView->expandDock(true);
         exposureView->enableButton(true);
@@ -1216,4 +1216,11 @@ void KTMainWindow::expandExposureView(int index) {
         exposureView->expandDock(false);
         exposureView->enableButton(false);
     }
+}
+
+void KTMainWindow::expandColorView() {
+    if (colorView->isExpanded())
+        colorView->expandDock(false); 
+    else
+        colorView->expandDock(true);
 }

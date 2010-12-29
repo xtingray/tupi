@@ -196,6 +196,7 @@ class KTMainWindow : public KTabbedMainWindow
           void createCommand(const KTPaintAreaEvent *event);
           void callSave();
           void expandExposureView(int index);
+          void expandColorView();
 
     private:
           KTProjectManager *m_projectManager;

@@ -415,16 +415,12 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
     if (!k->isOpen)
         return false;
 
-    kFatal() << "KTProject::createSymbol() - Just tracing!";
-
     return k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) != 0;
 }
 
 bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex)
 {
     Q_UNUSED(name);
-
-    kFatal() << "KTProject::removeSymbol() - Just tracing!";
 
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
@@ -445,7 +441,6 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
                     } else {
                         QList<int> indexes = frame->itemIndexes();
                         int lastIndex = indexes.at(indexes.size()-1);
-                        kFatal() << "KTProject::removeSymbol() - Removing item at index: " << lastIndex;
                         if (frame->removeGraphicAt(lastIndex))
                             return true;
                     }
@@ -484,8 +479,6 @@ bool KTProject::removeSymbol(const QString &name)
 
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
 {
-    kFatal() << "KTProject::addSymbolToProject() - Tracing the white rabbit!";
-
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
 

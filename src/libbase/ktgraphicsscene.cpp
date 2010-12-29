@@ -788,15 +788,11 @@ void KTGraphicsScene::aboutToMousePress()
 
 void KTGraphicsScene::includeObject(QGraphicsItem *object)
 {
-    kFatal() << "KTGraphicsScene::includeObject() - Just tracing!";
-
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
             int zLevel = frame->getTopZLevel();
-            kFatal() << "KTGraphicsScene::includeObject() - Layer Index: " << k->framePosition.layer;
-            kFatal() << "KTGraphicsScene::includeObject() - Z Level: " << zLevel;
             object->setZValue(zLevel);
             addItem(object);
         }

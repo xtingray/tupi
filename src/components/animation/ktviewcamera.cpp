@@ -163,7 +163,6 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 void KTViewCamera::setFPS(int fps)
 {
     fps++;
-    kFatal() << "KTViewCamera::setFPS -> Value: " << fps;
     project->setFPS(fps);
     //m_status->setFPS(fps);
     m_animationArea->setFPS(fps);
@@ -188,4 +187,3 @@ void KTViewCamera::exportDialog()
                        (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
     exportWidget->exec();
 }
-

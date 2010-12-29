@@ -61,6 +61,7 @@ struct KTPaintAreaStatus::Private
     QComboBox *rotation;
     QCheckBox *antialiasHint;
     KTBrushStatus *brushStatus;
+    KTBrushStatus *bgStatus;
     KTToolStatus *toolStatus;
     qreal scaleFactor;
 };
@@ -130,8 +131,16 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 
     connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint()));
 
-    k->brushStatus = new KTBrushStatus;
+    k->bgStatus = new KTBrushStatus(tr("Current Background"), true);
+    addPermanentWidget(k->bgStatus);
+    k->bgStatus->setColor(k->viewDocument->project()->bgColor());
+
+    connect(k->bgStatus, SIGNAL(colorUpdated(const QColor)), this, SIGNAL(colorUpdated(const QColor)));
+
+    k->brushStatus = new KTBrushStatus(tr("Current Brush"), false);
     addPermanentWidget(k->brushStatus);
+
+    connect(k->brushStatus, SIGNAL(colorRequested()), this, SIGNAL(colorRequested())); 
 
     //connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool)));
     //connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint(bool)));

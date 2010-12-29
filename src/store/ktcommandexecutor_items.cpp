@@ -66,8 +66,6 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
         K_FUNCINFOX("items");
     #endif
 
-    kFatal() << "KTCommandExecutor::createItem() Tracing MODE: " << m_project->spaceContext();
-
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
@@ -93,7 +91,6 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                         else
                             return false;
                     } else {
-                        kFatal() << "KTCommandExecutor::createItem() - Adding image!";
                         QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
 
                         if (item)
@@ -162,13 +159,9 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 
     KTScene *scene = m_project->scene(scenePosition);
 
-    kFatal() << "KTCommandExecutor::removeItem() - Just tracing!";
-    
     if (scene) {
 
         if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
-
-            kFatal() << "KTCommandExecutor::removeItem() - Deleting on frames edition mode!";
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -178,8 +171,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                     if (type == KTLibraryObject::Svg) {
                         frame->removeSvgAt(response->itemIndex());
                     } else {
-                        kFatal() << "KTCommandExecutor::removeItem() - Deleting IMAGE at frame: " << framePosition; 
-                        kFatal() << "KTCommandExecutor::removeItem() - Index object: " << response->itemIndex();
                         frame->removeGraphicAt(response->itemIndex());
 
                         // SQA: Check this code and figure out if it's required
@@ -207,8 +198,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
             }
 
         } else {
-
-            kFatal() << "KTCommandExecutor::removeItem() - Deleting on background edition mode!";
 
             KTBackground *bg = scene->background();
 
@@ -710,8 +699,6 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
         K_FUNCINFO;
         SHOW_VAR(response);
     #endif
-
-    kFatal() << "KTCommandExecutor::createTween -> Creating tweening from UI!";
 
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();

@@ -97,7 +97,6 @@ struct KTViewDocument::Private
     QComboBox *spaceMode;
 
     KTProject *project;
-
     QTimer *timer;
 };
 
@@ -147,7 +146,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
             break;
     }
     
-    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)));
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), this, SLOT(showPos(const QPointF &)));
     
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, 
                           SLOT(movePointers(const QPointF&)));
@@ -171,6 +170,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     
     k->status = new KTPaintAreaStatus(this);
     setStatusBar(k->status);
+    connect(k->status, SIGNAL(colorRequested()), this, SIGNAL(expandColorPanel()));
+    connect(k->status, SIGNAL(colorUpdated(const QColor)), this, SLOT(updateBgColor(const QColor)));
 
     // SQA: Verify if this code is doing something
     //connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
@@ -766,12 +767,21 @@ void KTViewDocument::setSpaceContext()
    if (k->currentTool && (k->currentTool->toolType() == KTToolInterface::Selection))
        k->currentTool->init(k->paintArea->graphicsScene()); 
 
-   kFatal() << "KTViewDocument::setSpaceContext() - Enabling mode: " << index;
-
    emit modeHasChanged(index);
 }
 
 KTProject::Mode KTViewDocument::spaceContext()
 {
    return static_cast<KTProject::Mode>(k->spaceMode->currentIndex());
+}
+
+KTProject *KTViewDocument::project()
+{
+   return k->project;
+}
+
+void KTViewDocument::updateBgColor(const QColor color)
+{
+   k->project->setBgColor(color);
+   k->paintArea->setBgColor(color);
 }

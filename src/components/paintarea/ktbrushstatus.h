@@ -40,6 +40,7 @@
 
 #include <QPen>
 #include <QBrush>
+#include <QColor>
 
 class KTColorWidget;
 
@@ -48,13 +49,22 @@ class KTBrushStatus : public QWidget
     Q_OBJECT
 
     public:
-        KTBrushStatus();
+        KTBrushStatus(const QString &label, bool bg);
         ~KTBrushStatus();
 
         void setForeground(const QPen &pen);
+        void setColor(const QColor &color);
+
+    signals:
+        void colorRequested();
+        void colorUpdated(const QColor);
+
+    private slots:
+        void updateColour(); 
 
     private:
         KTColorWidget *brush;
+        bool background;
 };
 
 #endif

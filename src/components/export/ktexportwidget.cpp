@@ -403,7 +403,7 @@ class ExportTo : public KExportWizardPage
         QString extension;
 };
 
-ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *kt) : KExportWizardPage(title), m_currentExporter(0), 
+ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *widget) : KExportWizardPage(title), m_currentExporter(0), 
                    m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
     if (exportImages) 
@@ -435,12 +435,12 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     if (exportImages) {
         connect(m_prefix, SIGNAL(textChanged(const QString &)), this, SLOT(updateState(const QString &)));
-        connect(kt, SIGNAL(exportArray()), this, SLOT(exportIt()));
+        connect(widget, SIGNAL(exportArray()), this, SLOT(exportIt()));
     } else {
-        connect(kt, SIGNAL(saveFile()), this, SLOT(exportIt()));
+        connect(widget, SIGNAL(saveFile()), this, SLOT(exportIt()));
     }
 
-    connect(kt, SIGNAL(setFileName()), this, SLOT(updateNameField()));
+    connect(widget, SIGNAL(setFileName()), this, SLOT(updateNameField()));
 
     filePathLayout->addWidget(m_filePath);
 
@@ -596,30 +596,30 @@ void ExportTo::exportIt()
     QString name = "";
 
     if ((extension.compare(".jpg") != 0) && (extension.compare(".png") != 0)) {
-    filename = m_filePath->text();
+        filename = m_filePath->text();
 
-    int indexPath = filename.lastIndexOf("/");
-    int indexFile = filename.length() - indexPath;
-    name = filename.right(indexFile - 1);
-    path = filename.left(indexPath + 1);
+        int indexPath = filename.lastIndexOf("/");
+        int indexFile = filename.length() - indexPath;
+        name = filename.right(indexFile - 1);
+        path = filename.left(indexPath + 1);
 
-    if (!name.toLower().endsWith(extension))    
-        name += extension;
+        if (!name.toLower().endsWith(extension))    
+            name += extension;
 
-    if (path.length() == 0) {
-        path = getenv ("HOME");
-        filename = path + "/" + name;
-    }
+        if (path.length() == 0) {
+            path = getenv ("HOME");
+            filename = path + "/" + name;
+        }
 
-    if (QFile::exists(filename)) {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, tr("Warning!"),
-                                     tr("File exists. Overwrite it?"),
-                                     QMessageBox::Yes | QMessageBox::No);
+        if (QFile::exists(filename)) {
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, tr("Warning!"),
+                                          tr("File exists. Overwrite it?"),
+                                          QMessageBox::Yes | QMessageBox::No);
 
-        if (reply == QMessageBox::No)
-            return;
-    } 
+            if (reply == QMessageBox::No)
+                return;
+        } 
 
     } else {
         name = m_prefix->text();

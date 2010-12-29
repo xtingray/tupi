@@ -434,7 +434,6 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
                  break;
             case KTProjectRequest::Remove:
             case KTProjectRequest::RemoveSymbolFromProject:
-                 kFatal() << "KTPaintArea::libraryResponse() Updating scene after Remove/Symbol!";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
                  break;
@@ -488,7 +487,6 @@ void KTPaintArea::deleteItems()
                              }
                          }
                      } else {
-                         kFatal() << "KTPaintArea::deleteItems() - Deleting an image file!";
                          type = KTLibraryObject::Item;
                          if (k->spaceMode == KTProject::FRAMES_EDITION) {
                              itemIndex = currentScene->currentFrame()->indexOf(item);
@@ -500,7 +498,6 @@ void KTPaintArea::deleteItems()
                                      itemIndex = frame->indexOf(item);
                              }
                          }
-                         kFatal() << "KTPaintArea::deleteItems() - Target Index: " << itemIndex;
                      }
 
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 

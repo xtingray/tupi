@@ -44,7 +44,6 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-    kFatal() << "KTCommandExecutor::createSymbol() - Just tracing!";
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data(), response->parent())) {
         emit responsed(response);
 
@@ -75,7 +74,6 @@ bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 
 bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
 {
-    kFatal() << "KTCommandExecutor::addSymbolToProject() - Just tracing!";
     if (m_project->scenesTotal() > 0) {
         kFatal() << "KTCommandExecutor::addSymbolToProject() - Flag 1";
         if (m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex())) {

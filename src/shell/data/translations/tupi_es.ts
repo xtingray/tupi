@@ -378,14 +378,6 @@
     </message>
 </context>
 <context>
-    <name>KTBrushStatus</name>
-    <message>
-        <location filename="../../../components/paintarea/ktbrushstatus.cpp" line="53"/>
-        <source>Current Brush</source>
-        <translation>Brocha</translation>
-    </message>
-</context>
-<context>
     <name>KTToolStatus</name>
     <message>
         <location filename="../../../components/paintarea/ktbrushstatus.cpp" line="53"/>
@@ -1694,6 +1686,16 @@
         <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="92"/>
         <source>Antialiasing</source>
         <translation>Antialiasing</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="92"/>
+        <source>Current Brush</source>
+        <translation>Brocha</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="92"/>
+        <source>Current Background</source>
+        <translation>Fondo</translation>
     </message>
 </context>
 <context>

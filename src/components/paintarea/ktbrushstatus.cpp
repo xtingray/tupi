@@ -39,19 +39,23 @@
 #include <QHBoxLayout>
 #include <QPen>
 #include <QBrush>
+#include <QColorDialog>
 
 #include "kseparator.h"
 #include "kdebug.h"
 
-KTBrushStatus::KTBrushStatus()
+KTBrushStatus::KTBrushStatus(const QString &label, bool bg)
 {
+    background = bg;
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(2);
     layout->setSpacing(2);
 
     brush = new KTColorWidget;
+    connect(brush, SIGNAL(clicked()), this, SLOT(updateColour()));
 
-    layout->addWidget(new QLabel(tr("Current Brush")));
+    layout->addWidget(new QLabel(label));
     layout->addSpacing(3);
     layout->addWidget(brush);
 }
@@ -64,3 +68,24 @@ void KTBrushStatus::setForeground(const QPen &pen)
 {
     brush->setBrush(pen.brush());
 }
+
+void KTBrushStatus::setColor(const QColor &color)
+{
+    QBrush square(color);
+    brush->setBrush(square);
+}
+
+void KTBrushStatus::updateColour()
+{
+    if (background) {
+        QColor color = QColorDialog::getColor(brush->color(), this);
+        if (color.isValid()) {
+            setColor(color);
+            emit colorUpdated(color);
+        }
+
+    } else {
+        emit colorRequested();
+    }
+}
+

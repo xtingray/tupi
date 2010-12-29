@@ -34,13 +34,14 @@
  ***************************************************************************/
 
 #include "ktcolorwidget.h"
+#include "kdebug.h"
 
 #include <QPainter>
 
 /**
  * This class defines the options panel in the bottom of the paint area.
  * Controls for Rotation, Antialising and OpenGL
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 QSize KTColorWidget::sizeHint() const
@@ -59,4 +60,14 @@ void KTColorWidget::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.fillRect(rect(), m_brush);
+}
+
+void KTColorWidget::mousePressEvent(QMouseEvent *event)
+{
+    emit clicked();
+}
+
+QColor KTColorWidget::color()
+{
+    return m_brush.color();
 }

@@ -61,6 +61,10 @@ class KTPaintAreaStatus : public QStatusBar
         void applyRotation(const QString & text);
         void applyZoom(const QString & text);
 
+    signals:
+        void colorRequested();
+        void colorUpdated(const QColor color);
+
     private:
         struct Private;
         Private *const k;
