@@ -33,6 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#ifndef Q_WS_MAC
+
 #ifndef KFLASHWIDGET_H
 #define KFLASHWIDGET_H
 
@@ -42,7 +44,7 @@
 #include "kglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado 
 */
 class K_GUI_EXPORT KFlashWidget : public QX11EmbedContainer
 {
@@ -73,4 +75,5 @@ class K_GUI_EXPORT KFlashWidget : public QX11EmbedContainer
 
 };
 
+#endif
 #endif

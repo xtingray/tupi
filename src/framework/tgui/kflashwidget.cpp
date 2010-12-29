@@ -33,9 +33,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#ifndef Q_WS_MAC
+
 #include "kflashwidget.h"
 
-#ifdef Q_WS_X11
+// #ifdef Q_WS_X11
 
 #include <QtGlobal>
 #include <QtDebug>
@@ -138,4 +140,4 @@ void KFlashWidget::paintEvent(QPaintEvent *e)
     }
 }
 
-#endif // Q_WS_X11
+#endif // Q_WS_MAC
