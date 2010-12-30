@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef Q_WS_MAC
+#ifdef Q_WS_X11
 
 #ifndef KFLASHWIDGET_H
 #define KFLASHWIDGET_H

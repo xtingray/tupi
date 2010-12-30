@@ -244,6 +244,9 @@ void KTMainWindow::viewNewDocument()
     #endif
 
     if (m_projectManager->isOpen()) {
+
+        contextMode = KTProject::FRAMES_EDITION;
+
         // Setting undo/redo actions
         setUndoRedoActions();
 
@@ -1138,6 +1141,8 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::updateCurrentTab(int index)
 {
+    // SQA: Check/Test the content of this method
+
     if (index == 1) {  // Animation mode 
 
         if (lastTab == 2)
@@ -1152,15 +1157,20 @@ void KTMainWindow::updateCurrentTab(int index)
             if (lastTab == 1)
                 viewCamera->doStop();
 
-            if (scenesView ->isExpanded()) {
+            if (scenesView->isExpanded()) {
                 helpView->expandDock(false);
                 scenesView->expandDock(true);
             }     
 
-            if (exposureView->isExpanded()) {
-                helpView->expandDock(false);
-                exposureView->expandDock(true);
-            } 
+            if (contextMode == KTProject::FRAMES_EDITION) {
+                if (exposureView->isExpanded()) {
+                    helpView->expandDock(false);
+                    exposureView->expandDock(true);
+                } 
+            } else {
+                exposureView->expandDock(false);
+                exposureView->enableButton(false);
+            }
 
             if (lastTab == 2)
                 helpView->expandDock(false);
@@ -1209,7 +1219,9 @@ void KTMainWindow::callSave()
 
 
 void KTMainWindow::expandExposureView(int index) {
-    if (static_cast<KTProject::Mode>(index) == KTProject::FRAMES_EDITION) {
+    contextMode = static_cast<KTProject::Mode>(index);
+
+    if (contextMode == KTProject::FRAMES_EDITION) {
         exposureView->expandDock(true);
         exposureView->enableButton(true);
     } else {

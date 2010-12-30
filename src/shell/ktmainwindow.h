@@ -253,6 +253,7 @@ class KTMainWindow : public KTabbedMainWindow
           bool projectSaved;
           bool internetOn;
           int lastTab;
+          KTProject::Mode contextMode;
 
     signals:
           void responsed(KTProjectResponse *);
