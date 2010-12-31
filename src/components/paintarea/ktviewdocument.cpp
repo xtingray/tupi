@@ -328,7 +328,9 @@ void KTViewDocument::loadPlugins()
                   #endif
 
                   KAction *action = tool->actions()[*it];
+                  kFatal() << "KTViewDocument::loadPlugins() - CRASH 1! : " << *it;
                   action->setIconVisibleInMenu(true);
+                  kFatal() << "KTViewDocument::loadPlugins() - CRASH 2!";
 
                   if (action) {
                       connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));

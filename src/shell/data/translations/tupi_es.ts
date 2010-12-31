@@ -71,6 +71,11 @@
 <context>
     <name>Configurator</name>
     <message>
+        <location filename="../src/plugins/tools/tweenertool/configurator.cpp" line="69"/>
+        <source>Create a new Tween</source>
+        <translation>Crear un nuevo Tween</translation>
+    </message>
+    <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="90"/>
         <source>Starting at frame</source>
         <translation>Empezando en marco</translation>
@@ -2379,6 +2384,18 @@
         <translation>Elipse</translation>
     </message>
     <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="363"/>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="459"/>
+        <source>Text</source>
+        <translation>Texto</translation>
+    </message>
+    <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="366"/>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="463"/>
+        <source>Tweener</source>
+        <translation>Tweener</translation>
+    </message>
+    <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
         <source>Object Selection</source>
         <translation>Selección de Objetos</translation>
@@ -2818,7 +2835,12 @@
     </message>
 </context>
 <context>
-    <name>Motion Tween</name>
+    <name>Tweener</name>
+    <message>
+        <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
+        <source>Tweener</source>
+        <translation>Tweener</translation>
+    </message>
     <message>
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
         <source>Motion Tween</source>
@@ -2828,6 +2850,22 @@
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
         <source>W</source>
         <translation>W</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="391"/>
+        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="391"/>
+        <source>No items selected for Tweening</source>
+        <translation>No hay objectos seleccionados para el Tweening</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
+        <source>No path created for Tweening</source>
+        <translation>No hay una ruta creada para el Tweening</translation>
     </message>
 </context>
 <context>

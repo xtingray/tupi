@@ -1,0 +1,6 @@
+<CrashHandler>
+	<Title text="Vážná chyba" />
+	<Message text="Drazí animátoři:" color="red" />
+	<Button text="Zavřít" />
+	<Default text="Tupi spadl kvůli ohavné chybě v programu! Je nám to velice líto:(&lt;br&gt;&lt;br&gt;Ale ještě není všechno ztraceno! Můžete nám pomoci při opravě příčin tohoto pádu.&lt;br&gt;Chybu, prosím, nahlašte na &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; a pomozte nám program udělat lepší.&lt;br&gt;&lt;br&gt;Díky,&lt;br&gt;&lt;br&gt;--Zahanbené &lt;i&gt;ashamed&lt;/i&gt; družstvo vývojářů" image="crash.png" />
+</CrashHandler>

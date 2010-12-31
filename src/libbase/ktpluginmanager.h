@@ -42,32 +42,33 @@
 class QPluginLoader;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
+
 class TUPI_EXPORT KTPluginManager : public QObject
 {
-	Q_OBJECT
-	private:
-		KTPluginManager(QObject *parent = 0);
-		
-	public:
-		~KTPluginManager();
-		
-	public:
-		static KTPluginManager *instance();
-		static KTPluginManager *s_instance;
-		
-		void loadPlugins();
-		void unloadPlugins();
-		
-		QObjectList tools() const;
-		QObjectList filters() const;
-		
-	private:
-		QObjectList m_tools;
-		QObjectList m_filters;
-		
-		QList<QPluginLoader *> m_loaders;
+    Q_OBJECT
+    private:
+        KTPluginManager(QObject *parent = 0);
+        
+    public:
+        ~KTPluginManager();
+        
+    public:
+        static KTPluginManager *instance();
+        static KTPluginManager *s_instance;
+        
+        void loadPlugins();
+        void unloadPlugins();
+        
+        QObjectList tools() const;
+        QObjectList filters() const;
+        
+    private:
+        QObjectList m_tools;
+        QObjectList m_filters;
+        
+        QList<QPluginLoader *> m_loaders;
 };
 
 #endif

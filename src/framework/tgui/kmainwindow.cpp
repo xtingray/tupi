@@ -455,7 +455,7 @@ void KMainWindow::relayoutViewButton(bool topLevel)
         if (KToolView *toolView = dynamic_cast<KToolView *>(sender())) {
             m_forRelayout = toolView;
 
-            QTimer::singleShot( 0, this, SLOT(relayoutToolView()));
+            QTimer::singleShot(0, this, SLOT(relayoutToolView()));
 
             // if a tool view is floating the button bar isn't exclusive
             KButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];

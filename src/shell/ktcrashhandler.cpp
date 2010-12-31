@@ -300,23 +300,24 @@ void crashTrapper(int sig)
     const pid_t pid = ::fork();
 
     if (pid <= 0) {
-        QString bt;
+        QString bt = "We are sorry. No debugging symbols were found :(";
         QString execInfo;
 
         // so we can read stderr too
         ::dup2(fileno(stdout), fileno(stderr));
 
-        QString gdb;
-        gdb  = "gdb -nw -n -ex bt -batch";
-        gdb += " " + HOME_DIR + "bin/tupi.bin ";
-        gdb += QString::number(::getppid());
+#ifdef K_DEBUG
+        if (QFile::exists("/usr/bin/sudo") && QFile::exists("/usr/bin/gdb")) {
+            QString gdb;
+            gdb = "/usr/bin/sudo /usr/bin/gdb -n -nw -batch -ex where " + HOME_DIR + "bin/tupi.bin --pid=";
+            gdb += QString::number(::getppid());
+            bt = runCommand(gdb);
 
-        bt = runCommand(gdb);
-
-        /// clean up
-        bt.remove(QRegExp("\\(no debugging symbols found\\)"));
-        bt = bt.simplified();
-
+            // clean up
+            bt.remove(QRegExp("\\(no debugging symbols found\\)"));
+            bt = bt.simplified();
+        } 
+#endif
         execInfo = runCommand("file " + HOME_DIR + "bin/tupi.bin");
 
         // Widget
@@ -334,9 +335,9 @@ void crashTrapper(int sig)
         ::exit(255);
     } else {
         // Process crashed!
-        ::alarm( 0 );
+        ::alarm(0);
         // wait for child to exit
-        ::waitpid( pid, NULL, 0 );
+        ::waitpid(pid, NULL, 0);
     }
 
     exit(128);
