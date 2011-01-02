@@ -103,39 +103,45 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         painter->restore();
         
         if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
+            /*
             QColor nc = it->pen().brush().color();
             int red = (nc.red()+254) % 255;
             int green = (nc.green()+254) % 255;
             int blue = (nc.blue()+254) % 255;
             c = QColor(red, green, blue);
+            */
+            c = QColor("white");
         } else {
             c = QColor("green");
+            c.setAlpha(200);
         }
-        c.setAlpha(150);
 
     } else {
 
         if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
+           /*
            QColor nc = it->pen().brush().color();
            int red = (nc.red()+254) % 255;
            int green = (nc.green()+254) % 255;
            int blue = (nc.blue()+254) % 255;
            c = QColor(red, green, blue);
+           */
+           c = QColor("white");
         } else {
            c = QColor("navy");
         }
-        
         c.setAlpha(150);
     }
 
-    if (k->centralNode)
-        c.setRed(100);
+    if (k->centralNode) {
+        c = QColor("green");
+        c.setAlpha(100);
+    }
 
     painter->setBrush(c);
     paintLinesToChildNodes(painter);
 
     painter->drawRoundRect(boundingRect());
-    // painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
 void KControlNode::paintLinesToChildNodes(QPainter * painter)
@@ -143,7 +149,8 @@ void KControlNode::paintLinesToChildNodes(QPainter * painter)
     QMatrix inverted = sceneMatrix().inverted();
     painter->save();
     
-    painter->setPen(QPen(QColor(0x8080FF)));
+    // painter->setPen(QPen(QColor(0x8080FF)));
+    painter->setPen(QPen(QColor(Qt::gray)));
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     if (k->rightNode) {
@@ -263,7 +270,7 @@ void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     k->nodeGroup->emitNodeClicked();
 
-    // SQA: Why this instruction makes the system crash in Qt 4.5? 
+    // SQA: Why this instruction makes the system crash in Qt 4.7? 
     // QGraphicsItem::mouseReleaseEvent(event);
 }
 

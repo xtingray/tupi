@@ -174,7 +174,10 @@ void KTGraphicsScene::drawCurrentPhotogram()
     if (k->framePosition.frame >= frames)
         k->framePosition.frame = frames - 1;
 
-    drawPhotogram(k->framePosition.frame);
+    if (k->spaceMode == KTProject::FRAMES_EDITION)
+        drawPhotogram(k->framePosition.frame);
+    else
+        drawBackground();
 }
 
 void KTGraphicsScene::drawPhotogram(int photogram)
@@ -188,7 +191,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     if (photogram < 0 || !k->scene) 
         return;
 
-    clean();
+    cleanWorkSpace();
 
     bool valid = false;
 
@@ -417,7 +420,7 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
     } 
 } 
 
-void KTGraphicsScene::clean()
+void KTGraphicsScene::cleanWorkSpace()
 {
     k->onionSkin.opacityMap.clear();
 
@@ -523,7 +526,7 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
     qDeleteAll(k->lines);
     k->lines.clear();
 
-    clean();
+    cleanWorkSpace();
     k->scene = scene;
 
     if (k->spaceMode == KTProject::FRAMES_EDITION)
@@ -558,7 +561,7 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
     if (k->spaceMode == KTProject::FRAMES_EDITION) {
         drawCurrentPhotogram();
     } else {
-        clean();
+        cleanWorkSpace();
         drawBackground();
     }
 
@@ -784,9 +787,19 @@ void KTGraphicsScene::aboutToMousePress()
 
 void KTGraphicsScene::includeObject(QGraphicsItem *object)
 {
-    KTLayer *layer = k->scene->layer(k->framePosition.layer);
-    if (layer) {
-        KTFrame *frame = layer->frame(k->framePosition.frame);
+    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+        KTLayer *layer = k->scene->layer(k->framePosition.layer);
+        if (layer) {
+            KTFrame *frame = layer->frame(k->framePosition.frame);
+            if (frame) {
+                int zLevel = frame->getTopZLevel();
+                object->setZValue(zLevel);
+                addItem(object);
+            }
+        }
+    } else {
+        KTBackground *bg = k->scene->background();
+        KTFrame *frame = bg->frame();
         if (frame) {
             int zLevel = frame->getTopZLevel();
             object->setZValue(zLevel);
@@ -797,7 +810,7 @@ void KTGraphicsScene::includeObject(QGraphicsItem *object)
 
 void KTGraphicsScene::removeScene()
 {
-    clean();
+    cleanWorkSpace();
     k->scene = 0;
 }
 

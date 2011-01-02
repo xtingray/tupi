@@ -269,7 +269,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                         KTGraphicsScene *sscene = graphicsScene();
                         if (!sscene->scene())
                             return;
-                        sscene->clean();
+                        sscene->cleanWorkSpace();
                         viewport()->update();
                     }
                  }
@@ -472,7 +472,7 @@ void KTPaintArea::deleteItems()
                      KTLibraryObject::Type type;
 
                      KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
-                     int itemIndex;
+                     int itemIndex = -1;
 
                      if (svg) {
                          type = KTLibraryObject::Svg;
@@ -778,7 +778,7 @@ void KTPaintArea::paintBackground()
     #endif
 
     KTGraphicsScene* currentScene = graphicsScene();
-    currentScene->clean();
+    currentScene->cleanWorkSpace();
     currentScene->drawBackground();
 }
 

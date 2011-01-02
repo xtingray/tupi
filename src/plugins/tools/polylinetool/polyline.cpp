@@ -83,9 +83,9 @@ PolyLine::PolyLine(): k(new Private), m_configurator(0)
     k->item = 0;
     
     k->line1 = new QGraphicsLineItem(0,0,0,0);
-    k->line1->setPen(QPen(Qt::red));
+    k->line1->setPen(QPen(QColor(55, 177, 50)));
     k->line2 = new QGraphicsLineItem(0,0,0,0);
-    k->line2->setPen(QPen(Qt::green));
+    k->line2->setPen(QPen(QColor(55, 177, 50)));
     
     setupActions();
 }
@@ -102,13 +102,9 @@ void PolyLine::init(KTGraphicsScene *scene)
              view->setDragMode(QGraphicsView::NoDrag);
         
              Q_CHECK_PTR(view->scene());
-             if (QGraphicsScene *sscene = qobject_cast<QGraphicsScene *>(view->scene())) {
-                 foreach (QGraphicsItem *item, scene->items()) {
-                          item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                          item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                 }
-                 sscene->addItem(k->line1);
-                 sscene->addItem(k->line2);
+             foreach (QGraphicsItem *item, scene->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
              }
     }
 }
@@ -120,7 +116,9 @@ QStringList PolyLine::keys() const
 
 void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    // K_FUNCINFOX("tools");
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
 
     if (input->button() == Qt::RightButton) {
         endItem();
@@ -128,21 +126,21 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     }
 
     scene->clearSelection();
+
+    // scene->addItem(k->line1);
+    // scene->addItem(k->line2);
     
     if (!k->item) {
         k->path = QPainterPath();
         k->path.moveTo(input->pos());
         k->item = new KTPathItem();
         
-        //scene->addItem(k->item);
         scene->includeObject(k->item);
 
         k->begin = true;
     } else {
-        if (!scene->items().contains(k->item)) {
-            //scene->addItem(k->item);
+        if (!scene->items().contains(k->item))
             scene->includeObject(k->item);
-        }
         
         k->begin = false;
         k->path = k->item->path();
@@ -154,17 +152,13 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     
     if (!scene->items().contains(k->line1))
         scene->includeObject(k->line1); 
-        //scene->addItem(k->line1);
 
     if (!scene->items().contains(k->line2))
         scene->includeObject(k->line2);
-        //scene->addItem(k->line2);
 }
 
 void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    // K_FUNCINFOX("tools");
-
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
     
@@ -197,6 +191,10 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 
 void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
     
@@ -235,13 +233,16 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
                } else {
                    kDebug("selection") << "position is " << position; 
                }
+
                k->nodegroup->clearChangesNodes();
     }
 }
 
 void PolyLine::itemResponse(const KTItemResponse *response)
 {
-    //K_FUNCINFOX("tools");
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
 
     KTProject *project = k->scene->scene()->project();
     QGraphicsItem *item = 0;
@@ -250,20 +251,29 @@ void PolyLine::itemResponse(const KTItemResponse *response)
     KTFrame *frame = 0;
 
     if (project) {
+
         scene = project->scene(response->sceneIndex());
         if (scene) {
-            layer = scene->layer(response->layerIndex());
-            
-            if (layer) {
-                frame = layer->frame(response->frameIndex());
-                
-                if (frame)
-                    item = frame->item(response->itemIndex());
+            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+                layer = scene->layer(response->layerIndex());
+                if (layer) {
+                    frame = layer->frame(response->frameIndex());
+                    if (frame)
+                        item = frame->item(response->itemIndex());
+                }
+            } else {
+                KTBackground *bg = scene->background();
+                if (bg) {
+                    KTFrame *frame = bg->frame();
+                    if (frame)
+                        item = frame->item(response->itemIndex());
+                }
             }
         }
+
     } else {
         #ifdef K_DEBUG
-               kFatal() << "Project not exist";
+               kFatal() << "PolyLine::itemResponse() - Project not exist";
         #endif
     }
         
@@ -271,7 +281,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 
         case KTProjectRequest::Add:
         {
-            if (KTPathItem * path = qgraphicsitem_cast<KTPathItem *>(item)) {
+            if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(item)) {
                 if (k->item != path) {
                     k->item = path;
                     if (k->nodegroup)
@@ -331,11 +341,11 @@ void PolyLine::keyPressEvent(QKeyEvent *event)
 void PolyLine::endItem()
 {
     if (k->item) {
-        // k->nodegroup->clearChangesNodes();
-        // k->nodegroup->syncNodesFromParent();
         if (k->line1 && k->line2) {
-            k->scene->removeItem(k->line1);
-            k->scene->removeItem(k->line2);
+            if (k->scene->items().contains(k->line1))
+                k->scene->removeItem(k->line1);
+            if (k->scene->items().contains(k->line2))
+                k->scene->removeItem(k->line2);
         }
 
         k->path = QPainterPath();
@@ -354,21 +364,30 @@ void PolyLine::nodeChanged()
     if (k->nodegroup) {
         // SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
         if (!k->nodegroup->changedNodes().isEmpty()) {
-            QDomDocument doc;
-            int position = k->scene->currentFrame()->indexOf(k->nodegroup->parentItem());
-            if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
-                doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
-                
-                KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                                             position, QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
-                foreach (QGraphicsView * view, k->scene->views())
-                         view->setUpdatesEnabled(false);
-
-                k->nodegroup->restoreItem();
-                emit requested(&event);
+            int position = -1;
+            KTProject *project = k->scene->scene()->project();
+            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+                position = k->scene->currentFrame()->indexOf(k->nodegroup->parentItem());
             } else {
-                kFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
+                KTBackground *bg = k->scene->scene()->background();
+                KTFrame *frame = bg->frame();
+                position = frame->indexOf(k->nodegroup->parentItem());
             }
+
+            if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
+                    QDomDocument doc;
+                    doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
+                
+                    KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
+                                                                                 position, QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
+                    foreach (QGraphicsView * view, k->scene->views())
+                             view->setUpdatesEnabled(false);
+
+                    k->nodegroup->restoreItem();
+                    emit requested(&event);
+             } else {
+                   kFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
+             }
         } else {
             kFatal() << "PolyLine::nodeChanged() -> ERROR: There are no changedNodes!";
         }

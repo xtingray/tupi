@@ -43,7 +43,7 @@
 #include "ktproject.h"
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
 
 class KTFrame;
@@ -74,7 +74,7 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
         void addSvgObject(KTSvgItem *svgItem, double opacity = 1.0);
         
-        void clean();
+        void cleanWorkSpace();
         void removeScene();
         int currentFrameIndex() const;
         int currentLayerIndex() const;

@@ -51,8 +51,10 @@ struct KNodeGroup::Private
 
 KNodeGroup::KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): k(new Private)
 {
-    KINIT;
-    
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
+
     k->parentItem = parent;
     k->scene = scene;
     
@@ -67,14 +69,21 @@ QGraphicsItem * KNodeGroup::parentItem()
 
 KNodeGroup::~KNodeGroup()
 {
-    KEND;
-    qDeleteAll(k->nodes);
-    k->nodes.clear();
+    #ifdef K_DEBUG
+           KEND;
+    #endif
+
+    // qDeleteAll(k->nodes);
+    // k->nodes.clear();
+
+    clean();
     delete k;
 }
 
 void KNodeGroup::clean()
 {
+    // kFatal() << "KNodeGroup::clean() - Deleting all the nodes!";
+
     qDeleteAll(k->nodes);
     k->nodes.clear();
 }
@@ -102,7 +111,10 @@ void KNodeGroup::syncNodesFromParent()
 
 void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 {
-    K_FUNCINFO;
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     k->parentItem = newParent;
     foreach (KControlNode *node, k->nodes) {
              if (node)
@@ -235,7 +247,6 @@ void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 
 void KNodeGroup::addControlNode(KControlNode*)
 {
-    
 }
 
 void KNodeGroup::emitNodeClicked()

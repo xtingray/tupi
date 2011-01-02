@@ -328,9 +328,7 @@ void KTViewDocument::loadPlugins()
                   #endif
 
                   KAction *action = tool->actions()[*it];
-                  kFatal() << "KTViewDocument::loadPlugins() - CRASH 1! : " << *it;
                   action->setIconVisibleInMenu(true);
-                  kFatal() << "KTViewDocument::loadPlugins() - CRASH 2!";
 
                   if (action) {
                       connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));
@@ -766,7 +764,7 @@ void KTViewDocument::setSpaceContext()
 
     k->paintArea->updatePaintArea();
 
-   if (k->currentTool && (k->currentTool->toolType() == KTToolInterface::Selection))
+   if (k->currentTool)
        k->currentTool->init(k->paintArea->graphicsScene()); 
 
    emit modeHasChanged(index);

@@ -79,7 +79,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     if (scene) {
 
         if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
-    
+
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
                 KTFrame *frame = layer->frame(framePosition);
@@ -115,13 +115,11 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
             }
 
         } else {
+
             KTBackground *bg = scene->background();
             if (bg) {
                 KTFrame *frame = bg->frame();
                 if (frame) {
-                    // if (position == -1)
-                    //    qFatal("KTCommandExecutor::createItem() - Error: Do not send item with position -1");
-
                     if (type == KTLibraryObject::Svg) {
                         KTSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
                         if (svg)
@@ -604,9 +602,11 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 
 bool KTCommandExecutor::setPathItem(KTItemResponse *response)
 {
+    /*
     #ifdef K_DEBUG
         K_FUNCINFOX("items");
     #endif
+    */
     
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
@@ -614,9 +614,11 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
     int position = response->itemIndex();
     QString xml = response->arg().toString();
 
+    /*
     #ifdef K_DEBUG
         SHOW_VAR(xml);
     #endif
+    */
 
     KTScene *scene = m_project->scene(scenePosition);
     
@@ -637,9 +639,11 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
                                 orig.appendChild(ktpath->toXml(orig));
 
                             QString current = orig.toString();
+                            /*
                             #ifdef K_DEBUG
                                    SHOW_VAR(current);
                             #endif
+                            */
                         
                             QDomDocument doc;
                             doc.setContent(xml);
@@ -670,9 +674,11 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
                                 orig.appendChild(ktpath->toXml(orig));
 
                             QString current = orig.toString();
+                            /*
                             #ifdef K_DEBUG
                                    SHOW_VAR(current);
                             #endif
+                            */
 
                             QDomDocument doc;
                             doc.setContent(xml);

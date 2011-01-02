@@ -105,6 +105,7 @@ void Select::init(KTGraphicsScene *scene)
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                              kFatal() << "Select::init() - zValue: " << item->zValue();
                               if (item->zValue() >= 10000) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
@@ -126,7 +127,7 @@ QStringList Select::keys() const
 
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    K_FUNCINFOX("tools");
+    // K_FUNCINFOX("tools");
     Q_UNUSED(brushManager);
 
     if (k->changedManager)
@@ -175,7 +176,6 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    // K_FUNCINFOX("tools");
     // Q_UNUSED(input);
     Q_UNUSED(brushManager);
     // Q_UNUSED(scene);
@@ -191,7 +191,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    K_FUNCINFOX("tools") << scene->selectedItems().count();
+    // K_FUNCINFOX("tools") << scene->selectedItems().count();
 
     Q_UNUSED(input);
     Q_UNUSED(brushManager);

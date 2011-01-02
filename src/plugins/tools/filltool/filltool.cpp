@@ -94,10 +94,12 @@ void FillTool::setupActions()
     action1->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
     m_actions.insert(tr("Internal fill"), action1);
     
-    //KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
-    // action2->setShortcut(QKeySequence(tr("Ctrl+F")));
-    //action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
-    //m_actions.insert(tr("Shape fill"), action2);
+    /*
+    KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
+    action2->setShortcut(QKeySequence(tr("Ctrl+F")));
+    action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
+    m_actions.insert(tr("Shape fill"), action2);
+    */
     
     KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
     action3->setShortcut(QKeySequence(tr("B")));
@@ -113,8 +115,12 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         if (currentTool() == tr("Shape fill")) {
             KTPathItem *item = KTItemConverter::convertToPath(clickedItem);
             
-            if (! item) 
+            if (!item) { 
+                #ifdef K_DEBUG
+                       kFatal() << "FillTool::press() - No item found";
+                #endif
                 return;
+            }
             
             QList<QGraphicsItem *> colls = clickedItem->collidingItems();
             QPainterPath res = mapPath(item);
@@ -169,22 +175,29 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
             intersection->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
             intersection->setBrush(brushManager->pen().brush());
             
-            
             QDomDocument doc;
             doc.appendChild(intersection->toXml(doc));
-        
-            KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), 
+
+            KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
                             scene->currentLayerIndex(), scene->currentFrameIndex(), 
                             scene->currentFrame()->graphics().count(), QPointF(),
                             KTLibraryObject::Item, KTProjectRequest::Add, 
                             doc.toString()); // Adds to end
             emit requested(&event);
-        }
-        else
-        {
+
+        } else {
+
             if (QAbstractGraphicsShapeItem *shape = 
                             qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem)) {
-                int position  = scene->currentFrame()->indexOf(shape);
+                int position = -1;
+
+                if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                    position = scene->currentFrame()->indexOf(shape);
+                } else {
+                    KTBackground *bg = scene->scene()->background();
+                    KTFrame *frame = bg->frame();
+                    position = frame->indexOf(shape);
+                }
                 
                 if (position >= 0) {
                     if (currentTool() == tr("Internal fill")) {
@@ -204,6 +217,10 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                                 KTProjectRequest::Transform, doc.toString());
 
                     emit requested(&event);
+                } else {
+                    #ifdef K_DEBUG
+                           kFatal() << "FillTool::press() - Invalid object index";
+                    #endif
                 }
             }
         }
