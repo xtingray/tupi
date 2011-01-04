@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/framework/tsound
 # Target is a library: tupifwsound  
 
-DEFINES += KLIB_SOUND
+#DEFINES += KLIB_SOUND
 
 INSTALLS += target  \
 headers
@@ -17,12 +17,10 @@ linux-g{
     TARGETDEPS += ../tcore/libtupifwcore.so
 }
 
-CONFIG += release \
-          warn_on \
-          dll 
-
+CONFIG += release warn_on dll create_prl
 
 TEMPLATE = lib 
+
 HEADERS += kaudioengineiface.h \
            kaudioplayer.h 
 SOURCES += kaudioplayer.cpp 

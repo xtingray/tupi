@@ -144,22 +144,16 @@ SOURCES += collapsiblewidget.cpp \
 
 TARGET = tupifwgui
 
-#DEFINES += KLIB_GUI
-
 RESOURCES += tgui_images.qrc
 QT += xml
-LIBS += -ltupifwcore
-
+LIBS += -L../tcore -ltupifwcore 
 INCLUDEPATH += ../tcore ../
 
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../src/kom/tcore -L../tcore
-CONFIG += release \
-warn_on \
-dll
+CONFIG += release warn_on dll create_prl
 TEMPLATE = lib
 QT += opengl
 QMAKE_STRIP = echo

@@ -39,8 +39,8 @@
 #include <QTimer>
 #include <QFile>
 
-#include <kcore/kalgorithm.h>
-#include <kcore/kdebug.h>
+#include "kcore/kalgorithm.h"
+#include "kcore/kdebug.h"
 
 KGstEngine *KGstEngine::s_instance = 0;
 

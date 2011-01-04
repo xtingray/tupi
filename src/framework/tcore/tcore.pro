@@ -40,7 +40,7 @@ SOURCES += kalgorithm.cpp \
 
 TARGET = tupifwcore
 
-DEFINES += KLIB_CORE
+#DEFINES += KLIB_CORE
 INCLUDEPATH += ../
 MOC_DIR = .moc
 UI_DIR = .ui

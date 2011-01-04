@@ -5,7 +5,6 @@
 
 SUBDIRS += kgstengine 
 KDEV_QTVER = 4 
-CONFIG += release \
-          warn_on 
+CONFIG += release warn_on 
 TEMPLATE = subdirs 
 QMAKE_STRIP = echo
