@@ -5,14 +5,17 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
-include(../export_config.pri)
 
-CONFIG += plugin 
-include(../../../../tupiglobal.pri)
-TEMPLATE = lib 
-HEADERS += genericexportplugin.h 
+HEADERS += genericexportplugin.h
 SOURCES += genericexportplugin.cpp
+
+CONFIG += plugin warn_on
+TEMPLATE = lib 
+TARGET = genericexportplugin
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+
+include(../export_config.pri)
+include(../../../../tupiglobal.pri)
+

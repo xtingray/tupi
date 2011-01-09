@@ -3,15 +3,15 @@
 # Subdir relative project main directory: ./src/components/scenes
 # Target is a library:  
 
-include(../components_config.pri)
-CONFIG += static
-
-TEMPLATE = lib 
 HEADERS += ktsceneslist.h \
            ktsceneswidget.h 
 SOURCES += ktsceneslist.cpp \
            ktsceneswidget.cpp 
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = scenes
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
+include(../components_config.pri)

@@ -5,27 +5,24 @@
 
 INSTALLS += target 
 target.path = /plugins/
-KDEV_QTVER = 4 
 
-include(../tools_config.pri)
+HEADERS += tweener.h \
+           configurator.h \
+           stepsviewer.h \
+           spinboxdelegate.h
+SOURCES += tweener.cpp \
+           configurator.cpp \
+           stepsviewer.cpp \
+           spinboxdelegate.cpp
 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += plugin 
-include(../../../../tupiglobal.pri)
-TEMPLATE = lib 
-HEADERS +=  \
-tweener.h \
-configurator.h \
-stepsviewer.h \
-spinboxdelegate.h
-SOURCES +=  \
-tweener.cpp \
-configurator.cpp \
-stepsviewer.cpp \
-spinboxdelegate.cpp
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tweenertool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../tools_config.pri)
+
+include(../../../../tupiglobal.pri)
+
 

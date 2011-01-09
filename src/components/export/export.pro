@@ -3,13 +3,13 @@
 # Subdir relative project main directory: ./src/components/export
 # Target is a library:  
 
-KDEV_QTVER = 4 
-include(../components_config.pri)
-
-CONFIG += static
-TEMPLATE = lib 
 HEADERS += ktexportwidget.h 
 SOURCES += ktexportwidget.cpp
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = export
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)

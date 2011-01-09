@@ -17,7 +17,9 @@ SUBDIRS += scenes \
            twitter \
            animation \
            debug
-CONFIG += release \
-warn_on
+CONFIG += release warn_on
 TEMPLATE = subdirs
-QT += qt3support xml opengl network
+
+QT += xml opengl network
+
+#QT += qt3support xml opengl network

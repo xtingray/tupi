@@ -3,8 +3,6 @@
 # Subdir relative project main directory: ./src/plugins/export
 # Target is a subdirs project 
 
-include(../../../tupiglobal.pri)
-
 SUBDIRS += genericexportplugin \
            smilexportplugin 
 
@@ -12,8 +10,7 @@ contains(DEFINES, HAVE_FFMPEG) {
         SUBDIRS += ffmpegplugin
 }
 
-KDEV_QTVER = 4
-
-CONFIG += release \
-          warn_on 
+CONFIG += release warn_on 
 TEMPLATE = subdirs 
+
+include(../../../tupiglobal.pri)

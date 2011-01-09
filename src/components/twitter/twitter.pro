@@ -3,15 +3,16 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
-include(../components_config.pri)
-
-CONFIG += static
-
-TEMPLATE = lib 
 HEADERS += ktwitter.h \  
            ktwitterwidget.h
 SOURCES += ktwitter.cpp \
            ktwitterwidget.cpp
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = twitter
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)
+

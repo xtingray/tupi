@@ -35,6 +35,7 @@ tupidata.path = /data/
 TRANSLATIONS += data/translations/tupi_es.ts \
                 data/translations/tupi_ca.ts \
                 data/translations/tupi_ru.ts
+
 HEADERS += ktmainwindow.h \
            ktstatusbar.h \
            ktnewproject.h \
@@ -56,13 +57,10 @@ SOURCES += main.cpp \
            ktmainwindow_gui.cpp \
            ktlocalprojectmanagerhandler.cpp
 
-FRAMEWORK_DIR = "../framework"
-include($$FRAMEWORK_DIR/framework.pri)
-
-include(shell_config.pri)
-include(../../tupiglobal.pri)
+CONFIG += warn_on
 TARGET = ../../bin/tupi.bin
 TEMPLATE = app
+
 linux-g{
     TARGETDEPS += ../../src/libtupi/libtupi.so \
   ../../src/libui/libui.a \
@@ -80,3 +78,8 @@ linux-g{
   ../../src/components/twitter/libtwitter.a
 }
 
+FRAMEWORK_DIR = "../framework"
+include($$FRAMEWORK_DIR/framework.pri)
+include(shell_config.pri)
+
+include(../../tupiglobal.pri)

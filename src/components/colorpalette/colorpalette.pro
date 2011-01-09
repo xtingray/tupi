@@ -25,15 +25,11 @@ SOURCES += ktcolorpicker.cpp \
            ktpaletteparser.cpp \
            ktcolorvalue.cpp
 
-FRAMEWORK_DIR = "../../framework"
-include($$FRAMEWORK_DIR/framework.pri)
-
-KDEV_QTVER = 4
-
-CONFIG += static
+CONFIG += static warn_on
 TEMPLATE = lib
-
 TARGET = colorpalette
 
+FRAMEWORK_DIR = "../../framework"
+include($$FRAMEWORK_DIR/framework.pri)
 include(../components_config.pri)
 

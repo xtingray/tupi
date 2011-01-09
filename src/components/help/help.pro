@@ -6,14 +6,16 @@
 INSTALLS += help 
 help.files += help 
 help.path = /data/ 
-include(../components_config.pri)
 
-CONFIG += static
-TEMPLATE = lib 
 HEADERS += kthelpwidget.h \
            kthelpbrowser.h 
 SOURCES += kthelpwidget.cpp \
            kthelpbrowser.cpp 
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = help
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)

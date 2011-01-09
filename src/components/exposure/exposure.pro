@@ -12,12 +12,13 @@ SOURCES += ktexposuresheet.cpp \
            ktexposuretable.cpp \
            ktscenetabwidget.cpp
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = exposure
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
 include(../components_config.pri)
 
-CONFIG += static
-TEMPLATE = lib
 
 

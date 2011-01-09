@@ -5,16 +5,16 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
-include(../export_config.pri)
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += plugin 
-TEMPLATE = lib 
-HEADERS += smilexportplugin.h 
+
+HEADERS += smilexportplugin.h
 SOURCES += smilexportplugin.cpp
-include(../../../../tupiglobal.pri)
+
+CONFIG += plugin warn_on
+TEMPLATE = lib 
+TARGET = smilexportplugin
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+
+include(../export_config.pri)
+include(../../../../tupiglobal.pri)

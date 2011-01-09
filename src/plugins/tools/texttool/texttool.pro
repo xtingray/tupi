@@ -5,16 +5,17 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
-CONFIG += plugin 
-include(../../../../tupiglobal.pri)
-TEMPLATE = lib 
+
 HEADERS += texttool.h \
            textconfigurator.h 
 SOURCES += texttool.cpp \
            textconfigurator.cpp 
 
+CONFIG += plugin warn_on
+TEMPLATE = lib
+
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
 include(../tools_config.pri)
+
+include(../../../../tupiglobal.pri)

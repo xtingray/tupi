@@ -26,11 +26,10 @@ SOURCES += ktpaintarea.cpp \
            ktbrushstatus.cpp \
            kttoolstatus.cpp
 
-FRAMEWORK_DIR = "../../framework"
-include($$FRAMEWORK_DIR/framework.pri)
-
-include(../components_config.pri)
-CONFIG += static
+CONFIG += static warn_on
 TEMPLATE = lib
 TARGET = paintarea
 
+FRAMEWORK_DIR = "../../framework"
+include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)

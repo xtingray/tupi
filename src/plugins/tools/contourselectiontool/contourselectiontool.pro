@@ -5,14 +5,17 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
+
 HEADERS += contourselection.h
 SOURCES += contourselection.cpp
 
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = contourselectiontool
+
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
-KDEV_QTVER = 4
 include(../tools_config.pri)
+
 include(../../../../tupiglobal.pri)
-CONFIG += plugin
-TEMPLATE = lib
+

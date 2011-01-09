@@ -3,11 +3,11 @@
 # Subdir relative project main directory: ./src/framework/tgui
 # Target is a library: tupifwgui 
 
-INSTALLS += include \
-            target 
+INSTALLS += include target 
 target.path = /lib/ 
 include.files += *.h 
 include.path = /include/tupigui 
+
 HEADERS += collapsiblewidget.h \
            kaction.h \
            kactionmanager.h \
@@ -142,21 +142,20 @@ SOURCES += collapsiblewidget.cpp \
            kworkspacemainwindow.cpp \
            kxyspinbox.cpp
 
-TARGET = tupifwgui
+contains(DEFINES, HAVE_FFMPEG){
+    HEADERS += kffmpegmoviegenerator.h
+    SOURCES += kffmpegmoviegenerator.cpp
+}
 
-RESOURCES += tgui_images.qrc
-QT += xml
-LIBS += -L../tcore -ltupifwcore 
+CONFIG += release warn_on dll
+TEMPLATE = lib
+TARGET = tupifwgui
+QT += xml opengl
+
+LIBS += -L../tcore -ltupifwcore
 INCLUDEPATH += ../tcore ../
 
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-
-CONFIG += release warn_on dll create_prl
-TEMPLATE = lib
-QT += opengl
-QMAKE_STRIP = echo
+RESOURCES += tgui_images.qrc
 
 !include(../tupconfig.pri){
     error("Run ./configure first!")
@@ -164,9 +163,4 @@ QMAKE_STRIP = echo
 
 linux-g{
     TARGETDEPS += ../tcore/libtupifwcore.so
-}
-
-contains(DEFINES, HAVE_FFMPEG){
-    HEADERS += kffmpegmoviegenerator.h
-    SOURCES += kffmpegmoviegenerator.cpp
 }

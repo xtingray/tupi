@@ -3,17 +3,16 @@
 # Subdir relative project main directory: ./src/components/debug
 # Target is a library:  
 
-# KDEV_QTVER = 4 
-
 HEADERS += ktdebugwidget.h \
            ktdebugterm.h
 SOURCES += ktdebugwidget.cpp \
            ktdebugterm.cpp
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = debug
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
 include(../components_config.pri)
 
-CONFIG += static
-TEMPLATE = lib

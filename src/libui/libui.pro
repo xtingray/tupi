@@ -3,12 +3,12 @@
 # Subdir relative project main directory: ./src/libui
 # Target is a library: ui
 
-INSTALLS += images \
-            images-en 
+INSTALLS += images images-en 
 images-en.files += images/en/*.png 
 images-en.path = /data/en/images 
 images.files += images/es/*.png 
 images.path = /data/es/images/ 
+
 HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h \
@@ -19,6 +19,11 @@ SOURCES += ktthemeselector.cpp \
            ktpreferences.cpp \
            ktanimationspace.cpp \
            ktpaintareaconfig.cpp 
+
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = ui
+
 STORE_DIR = ../../src/store
 LIBTUPI_DIR = ../../src/libtupi
 ANIMATION_DIR = ../components/animation
@@ -27,11 +32,7 @@ INCLUDEPATH += $$ANIMATION_DIR
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
 include($$STORE_DIR/store.pri)
 include($$LIBTUPI_DIR/libtupi.pri)
 
-TARGET = ui
-CONFIG += static
 include(../../tupiglobal.pri)
-TEMPLATE = lib

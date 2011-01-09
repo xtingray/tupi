@@ -5,27 +5,23 @@
 
 INSTALLS += target 
 target.path = /lib/tupi/plugins/ 
-INCLUDEPATH += ../../ ../../tcore
-QMAKE_STRIP = echo
 
-LIBS += -L../../tcore -ltupifwcore
-
-linux-g{
-    TARGETDEPS += ../../tcore/libtupifwcore.so
-}
-
-CONFIG += release \
-          warn_on \
-          plugin 
+CONFIG += release warn_on plugin 
 TEMPLATE = lib 
+TARGET = kgstengine
 
-!include(../../tupconfig.pri){
-    error("Please configure first")
-}
+INCLUDEPATH += ../../ ../../tcore
+LIBS += -L../../tcore -ltupifwcore
 
 contains(DEFINES, HAVE_GST10){
     HEADERS += kgstengine.h 
     SOURCES += kgstengine.cpp 
 }
 
+linux-g{
+    TARGETDEPS += ../../tcore/libtupifwcore.so
+}
 
+!include(../../tupconfig.pri){
+    error("Please configure first")
+}

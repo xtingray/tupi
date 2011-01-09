@@ -4,7 +4,6 @@
 # Target is a subdirs project 
 
 SUBDIRS += tcore tgui tsound tplugins
-CONFIG += release \
-warn_on
+CONFIG += release warn_on
 TEMPLATE = subdirs
 

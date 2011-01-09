@@ -5,13 +5,7 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += plugin 
-include(../../../../tupiglobal.pri)
-TEMPLATE = lib 
+
 HEADERS += select.h \
            node.h \
            nodemanager.h \ 
@@ -21,7 +15,12 @@ SOURCES += select.cpp \
            nodemanager.cpp \ 
            infopanel.cpp
 
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = selecttool
+
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
 include(../tools_config.pri)
+
+include(../../../../tupiglobal.pri)

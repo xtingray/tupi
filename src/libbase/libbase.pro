@@ -3,8 +3,7 @@
 # Subdir relative project main directory: ./src/libbase
 # Target is a library: tupibase
 
-INSTALLS += headers \
-            target 
+INSTALLS += headers target 
 target.path = /lib/ 
 
 headers.target = .
@@ -33,18 +32,17 @@ SOURCES += ktexportpluginobject.cpp \
            ktguideline.cpp \
            ktanimationrenderer.cpp
 
-FRAMEWORK_DIR = "../framework"
-include($$FRAMEWORK_DIR/framework.pri)
-
+CONFIG += dll warn_on
+TEMPLATE = lib
 TARGET = tupibase
 
+FRAMEWORK_DIR = "../framework"
+include($$FRAMEWORK_DIR/framework.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/
 include($$QUAZIP_DIR/quazip.pri)
 LIBTUPI_DIR = ../../src/libtupi
 include($$LIBTUPI_DIR/libtupi.pri)
 STORE_DIR = ../../src/store
 include($$STORE_DIR/store.pri)
-TARGET = tupibase
-CONFIG += dll
-TEMPLATE = lib
+
 include(../../tupiglobal.pri)

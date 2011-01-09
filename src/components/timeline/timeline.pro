@@ -16,11 +16,10 @@ SOURCES += kttimeline.cpp \
            ktlayerindex.cpp \
            ktlayercontrols.cpp
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = timeline
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
-CONFIG += static
-
-TEMPLATE = lib
-
 include(../components_config.pri)

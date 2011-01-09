@@ -46,13 +46,12 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktnoticepackage.cpp \
            ktcomunicationparser.cpp
 
+CONFIG += release warn_on staticlib
+TEMPLATE = lib
+TARGET = ntup 
+
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
 include(net_config.pri)
-TARGET = ntup 
+
 include(../../tupiglobal.pri)

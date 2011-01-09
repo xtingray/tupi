@@ -3,12 +3,6 @@
 # Subdir relative project main directory: ./src/components/kinas
 # Target is a library:  
 
-KDEV_QTVER = 4 
-include(../components_config.pri)
-
-CONFIG += static
-
-TEMPLATE = lib 
 HEADERS += ktseditor.h \
            ktsfunctionview.h \
            kinaswidget.h 
@@ -16,6 +10,12 @@ SOURCES += ktseditor.cpp \
            ktsfunctionview.cpp \
            kinaswidget.cpp 
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = kinas
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)
+
 

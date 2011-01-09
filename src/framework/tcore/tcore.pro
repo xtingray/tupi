@@ -8,7 +8,6 @@ INSTALLS += include \
 
 target.path = /lib/ 
 include.files += *.h 
-
 include.path = /include/tupicore 
 
 HEADERS += kalgorithm.h \
@@ -38,16 +37,9 @@ SOURCES += kalgorithm.cpp \
            ktipdatabase.cpp \
            kxmlparserbase.cpp
 
-TARGET = tupifwcore
-
-#DEFINES += KLIB_CORE
-INCLUDEPATH += ../
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release warn_on dll create_prl
+CONFIG += release warn_on dll
 TEMPLATE = lib
-QMAKE_STRIP = echo
+TARGET = tupifwcore
 
 !include(../tupconfig.pri){
     error("Run ./configure first")

@@ -3,14 +3,13 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
-include(../components_config.pri)
-
-CONFIG += static
-
-TEMPLATE = lib 
 HEADERS += ktpenwidget.h ktpenthicknesswidget.h
 SOURCES += ktpenwidget.cpp ktpenthicknesswidget.cpp
 
+CONFIG += static warn_on
+TEMPLATE = lib
+TARGET = pen
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
+include(../components_config.pri)

@@ -5,22 +5,18 @@
 
 target.path = /plugins/ 
 INSTALLS += target
-
-INSTALL_ROOT = /tmp/test
-
-KDEV_QTVER = 4 
-
-include(../export_config.pri)
-
-CONFIG += plugin 
-
-TEMPLATE = lib 
+#INSTALL_ROOT = /tmp/test
 
 HEADERS += ffmpegplugin.h
 SOURCES += ffmpegplugin.cpp
 
+CONFIG += plugin warn_on
+TEMPLATE = lib 
+TARGET = ffmpegplugin
+
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../export_config.pri)
 
 !include(../../../../tupiglobal.pri){
     error("Please run configure first")

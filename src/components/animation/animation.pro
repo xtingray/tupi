@@ -14,10 +14,10 @@ SOURCES += ktviewcamera.cpp \
            ktcamerawidget.cpp \
            ktcamerastatus.cpp
 
-FRAMEWORK_DIR = "../../framework"
-include($$FRAMEWORK_DIR/framework.pri)
-
-include(../components_config.pri)
-CONFIG += static
+CONFIG += static warn_on
 TEMPLATE = lib
 TARGET = animation 
+
+FRAMEWORK_DIR = "../../framework"
+include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)

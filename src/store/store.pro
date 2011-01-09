@@ -98,19 +98,16 @@ SOURCES += ktlayer.cpp \
            ktsvgitem.cpp \
            ktbackground.cpp
 
+CONFIG += dll warn_on
+TEMPLATE = lib
 TARGET = tupistore
 
 STORE_DIR = ../../src/store
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
 LIBTUPI_DIR = ../../src/libtupi
 include($$LIBTUPI_DIR/libtupi.pri)
-
-CONFIG += dll
-
-TEMPLATE = lib
 
 include(../../tupiglobal.pri)
 

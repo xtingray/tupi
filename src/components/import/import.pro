@@ -3,13 +3,13 @@
 # Subdir relative project main directory: ./src/components/import
 # Target is a library:  
 
-KDEV_QTVER = 4 
-include(../components_config.pri)
-
-CONFIG += static
-TEMPLATE = lib 
-HEADERS += ktpaletteimporter.h 
+HEADERS += ktpaletteimporter.h
 SOURCES += ktpaletteimporter.cpp
+
+CONFIG += static warn_on
+TEMPLATE = lib 
+TARGET = import
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
+include(../components_config.pri)
