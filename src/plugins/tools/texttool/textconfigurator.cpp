@@ -34,13 +34,13 @@
  ***************************************************************************/
 
 #include "textconfigurator.h"
-#include <QBoxLayout>
-#include <QFontDatabase>
-#include <QCheckBox>
-
 #include "kfontchooser.h"
 #include "kspellhighlighter.h"
 #include "kdebug.h"
+
+#include <QBoxLayout>
+#include <QFontDatabase>
+#include <QCheckBox>
 
 TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 {
@@ -53,12 +53,13 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
     m_text = new QTextEdit(this);
     layout->addWidget(m_text);
 
-    m_isHtml = new QCheckBox(tr("html"));
+    m_isHtml = new QCheckBox(tr("Html"));
     layout->addWidget(m_isHtml);
 
     layout->addStretch(1);
 
     connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
+    changeFont();
 
     new KSpellHighlighter(m_text->document());
 }
@@ -74,12 +75,16 @@ QString TextConfigurator::text() const
 
 QFont TextConfigurator::textFont() const
 {
-    return m_fontChooser->font();
+    return font;
 }
 
 void TextConfigurator::changeFont()
 {
-    QFont font = m_fontChooser->font();
+    font = m_fontChooser->currentFont();
+
+    kFatal() << "TextConfigurator::changeFont() - Font Family: " << font.family();
+    kFatal() << "TextConfigurator::changeFont() - Font Style: " << font.style(); 
+    kFatal() << "TextConfigurator::changeFont() - Font Size: " << font.pointSize();
     m_text->setFont(font);
 
     adjustSize();

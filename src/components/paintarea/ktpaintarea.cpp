@@ -92,7 +92,9 @@ struct KTPaintArea::Private
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 {
-    K_FUNCINFO;
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
 
     k->project = project;
     setBgColor(project->bgColor());
@@ -239,26 +241,32 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Select: 
             case KTProjectRequest::Reset:
                  { 
-                    KTGraphicsScene *sscene = graphicsScene();
-                    if (!sscene->scene()) 
+                    KTGraphicsScene *guiScene = graphicsScene();
+                    if (!guiScene->scene()) 
                         return;
 
                     setUpdatesEnabled(true);
-                    sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
-                    sscene->drawPhotogram(event->frameIndex());
+                    guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
+
+                    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                        guiScene->drawPhotogram(event->frameIndex());
+                    } else {
+                        guiScene->cleanWorkSpace();
+                        guiScene->drawBackground();
+                    }
 
                     // SQA: Check the init routine for the Selection plugin
                     if (k->currentTool.compare(tr("Object Selection")) == 0)
-                        graphicsScene()->currentTool()->init(graphicsScene());
+                        guiScene->currentTool()->init(graphicsScene());
                  }
                  break;
 
             case KTProjectRequest::Lock:
                  {
-                    KTGraphicsScene *sscene = graphicsScene();
-                    if (!sscene->scene()) 
+                    KTGraphicsScene *guiScene = graphicsScene();
+                    if (!guiScene->scene()) 
                         return;
-                    if (sscene->currentFrameIndex() == event->frameIndex())
+                    if (guiScene->currentFrameIndex() == event->frameIndex())
                         viewport()->update();
                  }
                  break;
@@ -266,10 +274,10 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Remove:
                  {
                     if (event->frameIndex() == 0) {
-                        KTGraphicsScene *sscene = graphicsScene();
-                        if (!sscene->scene())
+                        KTGraphicsScene *guiScene = graphicsScene();
+                        if (!guiScene->scene())
                             return;
-                        sscene->cleanWorkSpace();
+                        guiScene->cleanWorkSpace();
                         viewport()->update();
                     }
                  }
@@ -292,39 +300,58 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
     if (event->action() == KTProjectRequest::Add)
         return;
 
-    KTGraphicsScene *sscene = graphicsScene();
+    KTGraphicsScene *guiScene = graphicsScene();
 
-    if (!sscene->scene()) 
+    if (!guiScene->scene()) 
         return;
 
     if (event->action() == KTProjectRequest::View) {
-        sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
+        guiScene->setLayerVisible(event->layerIndex(), event->arg().toBool());
     }
 
     if (event->action() != KTProjectRequest::Add && event->action() != KTProjectRequest::Remove) {
-        graphicsScene()->drawCurrentPhotogram();
+        if (k->spaceMode == KTProject::FRAMES_EDITION) {
+            graphicsScene()->drawCurrentPhotogram();
+        } else {
+            graphicsScene()->cleanWorkSpace();
+            graphicsScene()->drawBackground();
+        }
+
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == KTProjectRequest::Remove) {
-            KTGraphicsScene *sscene = graphicsScene();
-            if (!sscene->scene())
+            KTGraphicsScene *guiScene = graphicsScene();
+            if (!guiScene->scene())
                 return;
 
             KTScene *scene = k->project->scene(k->currentSceneIndex);
-            int frameIndex = graphicsScene()->currentFrameIndex(); 
+            int frameIndex = guiScene->currentFrameIndex(); 
 
             if (scene->layersTotal() > 1) {
                 if (event->layerIndex() != 0)
-                    graphicsScene()->setCurrentFrame(event->layerIndex() - 1, frameIndex);
+                    guiScene->setCurrentFrame(event->layerIndex() - 1, frameIndex);
                 else
-                    graphicsScene()->setCurrentFrame(event->layerIndex() + 1, frameIndex);
+                    guiScene->setCurrentFrame(event->layerIndex() + 1, frameIndex);
 
-                graphicsScene()->drawCurrentPhotogram();
+                if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                    guiScene->drawCurrentPhotogram();
+                } else {
+                    guiScene->cleanWorkSpace();
+                    guiScene->drawBackground();
+                }
             } else {
                 if (scene->layersTotal() == 1) {
                     QList<int> indexes = scene->layerIndexes();
-                    graphicsScene()->setCurrentFrame(indexes.at(0), frameIndex);                
-                    graphicsScene()->drawCurrentPhotogram();
+                    KTGraphicsScene *guiScene = graphicsScene();
+                    if (!guiScene->scene())
+                         return;
+                    guiScene->setCurrentFrame(indexes.at(0), frameIndex);                
+                    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                        guiScene->drawCurrentPhotogram();
+                    } else {
+                        guiScene->cleanWorkSpace();
+                        guiScene->drawBackground();
+                    }
                 } 
             }
 
@@ -344,30 +371,35 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
     switch(event->action()) {
            case KTProjectRequest::Select:
-                if (event->sceneIndex() >= 0)
-                    setCurrentScene(event->sceneIndex());
-                break;
+                {
+                    if (event->sceneIndex() >= 0)
+                        setCurrentScene(event->sceneIndex());
+                    break;
+                }
            case KTProjectRequest::Remove:
-                if (k->currentSceneIndex > 0) {
-                    setCurrentScene(k->currentSceneIndex);
-                } else {
-                    if (k->currentSceneIndex == 0) {
-                        k->project->clear();
+                {
+                    if (k->currentSceneIndex > 0) {
+                        setCurrentScene(k->currentSceneIndex);
+                    } else {
+                        if (k->currentSceneIndex == 0) {
+                            k->project->clear();
 
-                        KTGraphicsScene *sscene = graphicsScene();
-                        if (!sscene->scene())
-                            return;
+                            KTGraphicsScene *guiScene = graphicsScene();
+                            if (!guiScene->scene())
+                                return;
 
-                        sscene->removeScene();
-                        viewport()->update();
+                            guiScene->removeScene();
+                            viewport()->update();
+                        }
                     }
                 }
                 break;
            default: 
-                #ifdef K_DEBUG
-                       kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
-                #endif
-
+                {
+                    #ifdef K_DEBUG
+                           kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
+                    #endif
+                }
                 break;
     }
 }
@@ -386,7 +418,17 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                case KTProjectRequest::Remove:
                     { 
                         if (!k->deleteMode) {
-                            graphicsScene()->drawCurrentPhotogram();
+                            KTGraphicsScene *guiScene = graphicsScene();
+                            if (!guiScene->scene())
+                                return;
+
+                            if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                                guiScene->drawCurrentPhotogram();
+                            } else {
+                                guiScene->cleanWorkSpace();
+                                guiScene->drawBackground();
+                            }
+
                             viewport()->update(scene()->sceneRect().toRect());
                         } 
                     }
@@ -394,11 +436,21 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                default:
                     {
-                        graphicsScene()->drawCurrentPhotogram();
+                        KTGraphicsScene *guiScene = graphicsScene();
+                        if (!guiScene->scene())
+                            return;
+
+                        if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                            guiScene->drawCurrentPhotogram();
+                        } else {
+                            guiScene->cleanWorkSpace();
+                            guiScene->drawBackground();
+                        }
+
                         viewport()->update(scene()->sceneRect().toRect());
 
                         if (k->currentTool.compare(tr("Object Selection")) == 0)
-                            graphicsScene()->currentTool()->init(graphicsScene());          
+                            guiScene->currentTool()->init(graphicsScene());          
                     }
                     break;
         }
@@ -414,7 +466,6 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
 void KTPaintArea::projectResponse(KTProjectResponse *)
 {
-
 }
 
 void KTPaintArea::libraryResponse(KTLibraryResponse *request)
@@ -425,27 +476,48 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
-                 graphicsScene()->drawCurrentPhotogram();
-                 viewport()->update(scene()->sceneRect().toRect());
+                 {
+                     KTGraphicsScene *guiScene = graphicsScene();
+                     if (!guiScene->scene())
+                         return;
+                     if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                         guiScene->drawCurrentPhotogram();
+                     } else {
+                         guiScene->cleanWorkSpace();
+                         guiScene->drawBackground();
+                     }
 
-                 if (k->currentTool.compare(tr("Object Selection")) == 0)
-                     emit itemAddedOnSelection(graphicsScene());
+                     viewport()->update(scene()->sceneRect().toRect());
 
+                     if (k->currentTool.compare(tr("Object Selection")) == 0)
+                         emit itemAddedOnSelection(guiScene);
+                 }
                  break;
             case KTProjectRequest::Remove:
             case KTProjectRequest::RemoveSymbolFromProject:
-                 graphicsScene()->drawCurrentPhotogram();
-                 viewport()->update(scene()->sceneRect().toRect());
+                 {
+                     KTGraphicsScene *guiScene = graphicsScene();
+                     if (!guiScene->scene())
+                         return;
+                     if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                         guiScene->drawCurrentPhotogram();
+                     } else {
+                         guiScene->cleanWorkSpace();
+                         guiScene->drawBackground();
+                     }
+
+                     viewport()->update(scene()->sceneRect().toRect());
+                 }
                  break;
     }
 }
 
 bool KTPaintArea::canPaint() const
 {
-    KTGraphicsScene *sscene = graphicsScene();
+    KTGraphicsScene *guiScene = graphicsScene();
 
-    if (sscene->scene()) {
-        if (sscene->currentFrameIndex() >= 0 && sscene->currentLayerIndex() >= 0) 
+    if (guiScene->scene()) {
+        if (guiScene->currentFrameIndex() >= 0 && guiScene->currentLayerIndex() >= 0) 
             return true;
     }
 
@@ -500,12 +572,20 @@ void KTPaintArea::deleteItems()
                          }
                      }
 
-                     KTProjectRequest event = KTRequestBuilder::createItemRequest( 
-                                              currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
-                                              currentScene->currentFrameIndex(), 
-                                              itemIndex, QPointF(), type,
-                                              KTProjectRequest::Remove);
-                     emit requestTriggered(&event);
+                     if (itemIndex >= 0) {
+                         kFatal() << "KTPaintArea::deleteItems() - Index target: " << itemIndex;
+                         KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+                                                  currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
+                                                  currentScene->currentFrameIndex(), 
+                                                  itemIndex, QPointF(), type,
+                                                  KTProjectRequest::Remove);
+                         emit requestTriggered(&event);
+                     } else {
+                         #ifdef K_DEBUG
+                                kFatal() << "KTPaintArea::deleteItems() - Error: Invalid item index";
+                         #endif
+                     }
+
                      counter++;
             }
 
@@ -721,7 +801,10 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
         return;
     }
 	
-    KTGraphicsScene* currentScene = graphicsScene();
+    KTGraphicsScene *currentScene = graphicsScene();
+    if (!currentScene)
+        return;
+
     KTFrame *currentFrame = currentScene->currentFrame();
 
     QList<int> positions;

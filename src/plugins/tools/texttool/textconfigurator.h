@@ -38,15 +38,16 @@
 
 #include <QWidget>
 #include <QLineEdit>
-
+#include <QFont>
 #include <QTextEdit>
 
 class KFontChooser;
 class QCheckBox;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
+
 class TextConfigurator : public QWidget
 {
     Q_OBJECT
@@ -68,6 +69,7 @@ class TextConfigurator : public QWidget
         QTextEdit *m_text;
         KFontChooser *m_fontChooser;
         QCheckBox *m_isHtml;
+        QFont font;
 };
 
 #endif

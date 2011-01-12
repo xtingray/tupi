@@ -105,7 +105,6 @@ void Select::init(KTGraphicsScene *scene)
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
-                              kFatal() << "Select::init() - zValue: " << item->zValue();
                               if (item->zValue() >= 10000) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {

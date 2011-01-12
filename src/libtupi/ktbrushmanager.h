@@ -42,7 +42,7 @@
 #include "ktglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 class TUPI_EXPORT KTBrushManager : public QObject
 {

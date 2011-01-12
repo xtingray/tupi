@@ -53,7 +53,7 @@ class KTProjectRequest;
 */
 class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 {
-    Q_OBJECT;
+    Q_OBJECT
     Q_INTERFACES(KTToolInterface);
     
     public:

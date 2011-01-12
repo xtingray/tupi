@@ -37,23 +37,22 @@
 #define BRUSH_H
 
 #include <QObject>
-#include <kttoolplugin.h>
 #include <QSpinBox>
 #include <QTimer>
 
+#include "kttoolplugin.h"
 #include "exactnessconfigurator.h"
-
 #include "ktpathitem.h"
 
 class QKeySequence;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class Brush : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         Brush();

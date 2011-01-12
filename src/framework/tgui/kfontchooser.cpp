@@ -100,16 +100,23 @@ void KFontChooser::loadFontInfo(const QFont &newFont)
         m_fontStyle->setCurrentIndex(styleIndex);
     
     m_families->blockSignals(true);
+
     m_currentFont = newFont;
     m_currentFont.setPointSize(m_fontSize->currentText().toInt());
-    m_currentFont.setStyle(QFont::Style(m_fontStyle->itemData( m_fontStyle->currentIndex() ).toInt()));
+    m_currentFont.setStyle(QFont::Style(m_fontStyle->itemData(m_fontStyle->currentIndex()).toInt()));
+
     m_families->blockSignals(false);
     
     emit fontChanged();
+    
 }
 
 void KFontChooser::emitFontChanged(int)
 {
+    m_currentFont = m_families->currentFont();
+    m_currentFont.setPointSize(m_fontSize->currentText().toInt());
+    m_currentFont.setStyle(QFont::Style(m_fontStyle->itemData(m_fontStyle->currentIndex()).toInt()));
+
     emit fontChanged();
 }
 
@@ -131,5 +138,19 @@ void KFontChooser::initFont()
 
 QFont KFontChooser::currentFont() const
 {
-    return m_currentFont;
+     return m_currentFont;
+    //return m_families->currentFont();
 }
+
+QFont::Style KFontChooser::currentStyle() const
+{
+    return QFont::Style(m_fontStyle->itemData(m_fontStyle->currentIndex()).toInt());
+}
+
+int KFontChooser::currentSize() const
+{
+    return m_fontSize->currentText().toInt();
+}
+
+
+

@@ -2789,13 +2789,13 @@
     <name>SpinControl</name>
     <message>
         <location filename="../../../libtupi/ktgradientcreator.h" line="211"/>
-        <source>radius</source>
-        <translation>radius</translation>
+        <source>Radius</source>
+        <translation>Radio</translation>
     </message>
     <message>
         <location filename="../../../libtupi/ktgradientcreator.h" line="220"/>
-        <source>angle</source>
-        <translation>angle</translation>
+        <source>Angle</source>
+        <translation>Angulo</translation>
     </message>
 </context>
 <context>
@@ -2815,8 +2815,8 @@
     <name>TextConfigurator</name>
     <message>
         <location filename="../../../plugins/tools/text/textconfigurator.cpp" line="55"/>
-        <source>html</source>
-        <translation>html</translation>
+        <source>Html</source>
+        <translation>Html</translation>
     </message>
 </context>
 <context>
@@ -2826,7 +2826,7 @@
         <location filename="../../../plugins/tools/text/texttool.cpp" line="160"/>
         <location filename="../../../plugins/tools/text/texttool.cpp" line="164"/>
         <source>Text</source>
-        <translation>Text</translation>
+        <translation>Texto</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/text/texttool.cpp" line="161"/>

@@ -33,20 +33,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ATEXTTOOL_H
-#define ATEXTTOOL_H
+#ifndef TEXTTOOL_H
+#define TEXTTOOL_H
 
-#include <kttoolplugin.h>
-#include <kttextitem.h>
-
+#include "kttoolplugin.h"
+#include "kttextitem.h"
 #include "textconfigurator.h"
+#include "ktbrushmanager.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 class TextTool : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         TextTool();
@@ -59,13 +59,9 @@ class TextTool : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual bool itemPressed(QGraphicsItem *item);
-        
         virtual QMap<QString, KAction *>actions() const;
-        
         int toolType() const;
-        
         virtual QWidget *configurator();
-        
         void aboutToChangeScene(KTGraphicsScene *scene);
         void aboutToChangeTool();
         virtual void saveConfig();

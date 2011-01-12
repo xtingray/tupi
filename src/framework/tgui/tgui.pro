@@ -3,6 +3,10 @@
 # Subdir relative project main directory: ./src/framework/tgui
 # Target is a library: tupifwgui 
 
+!include(../tupconfig.pri){
+    error("Run ./configure first!")
+}
+
 INSTALLS += include target 
 target.path = /lib/ 
 include.files += *.h 
@@ -156,10 +160,6 @@ LIBS += -L../tcore -ltupifwcore
 INCLUDEPATH += ../tcore ../
 
 RESOURCES += tgui_images.qrc
-
-!include(../tupconfig.pri){
-    error("Run ./configure first!")
-}
 
 linux-g{
     TARGETDEPS += ../tcore/libtupifwcore.so

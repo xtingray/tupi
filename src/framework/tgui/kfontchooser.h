@@ -54,6 +54,8 @@ class K_GUI_EXPORT KFontChooser : public QFrame
         void setCurrentFont(const QFont &font);
         void initFont();
         QFont currentFont() const;
+        QFont::Style currentStyle() const;
+        int currentSize() const;
         
     signals:
         void fontChanged();

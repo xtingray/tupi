@@ -80,6 +80,7 @@ void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 
     m_item = new KTTextItem;
     m_item->setPos(input->pos());
+    m_item->setDefaultTextColor(brushManager->penColor());
 }
 
 void TextTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene)
@@ -124,7 +125,6 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 
     m_item->setFont(m_configurator->textFont());
 
-    //scene->addItem(m_item);
     scene->includeObject(m_item);
 
     QDomDocument doc;
@@ -163,11 +163,11 @@ void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
 
 void TextTool::setupActions()
 {
-    KAction *pencil = new KAction(QIcon(THEME_DIR + "icons/text.png"), tr("Text"), this);
-    pencil->setShortcut(QKeySequence(tr("T")));
-    pencil->setCursor(QCursor(THEME_DIR + "cursors/text.png"));
+    KAction *text = new KAction(QIcon(THEME_DIR + "icons/text.png"), tr("Text"), this);
+    text->setShortcut(QKeySequence(tr("T")));
+    text->setCursor(QCursor(THEME_DIR + "cursors/text.png"));
 
-    m_actions.insert(tr("Text"), pencil);
+    m_actions.insert(tr("Text"), text);
 }
 
 void TextTool::saveConfig()
