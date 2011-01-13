@@ -67,12 +67,12 @@ void KTToolPlugin::updateScene(KTGraphicsScene *scene)
     Q_UNUSED(scene);
 }
 
-void KTToolPlugin::setCurrentTool(const QString &tool)
+void KTToolPlugin::setName(const QString &tool)
 {
     k->currentTool = tool;
 }
 
-QString KTToolPlugin::currentTool() const
+QString KTToolPlugin::name() const
 {
     return k->currentTool;
 }

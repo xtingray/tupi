@@ -49,8 +49,9 @@ class KTItemResponse;
 class KTProjectRequest;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 {
     Q_OBJECT
@@ -60,8 +61,8 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         explicit KTToolPlugin(QObject * parent = 0);
         ~KTToolPlugin();
         
-        void setCurrentTool(const QString &tool);
-        QString currentTool() const;
+        void setName(const QString &tool);
+        QString name() const;
         
         virtual void init(KTGraphicsScene *scene);
         virtual void updateScene(KTGraphicsScene *scene);

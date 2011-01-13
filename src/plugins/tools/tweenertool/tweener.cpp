@@ -96,6 +96,8 @@ Tweener::~Tweener()
     delete k;
 }
 
+/* This method initializes the plugin */
+
 void Tweener::init(KTGraphicsScene *scene)
 {
     delete k->path;
@@ -116,10 +118,16 @@ void Tweener::init(KTGraphicsScene *scene)
     setSelect();
 }
 
+/* This method returns the plugin name */
+
 QStringList Tweener::keys() const
 {
     return QStringList() << tr("Tweener");
 }
+
+/* This method makes an action when the mouse is pressed on the workspace 
+ * depending on the active mode: Selecting an object or Creating a path  
+*/
 
 void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
@@ -144,12 +152,18 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
     } 
 }
 
+/* This method is executed while the mouse is pressed and on movement */
+
 void Tweener::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
 }
+
+/* This method finishes the action started on the press method depending
+ * on the active mode: Selecting an object or Creating a path
+*/
 
 void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
@@ -184,19 +198,27 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 scene->addItem(k->path);
                 k->pathAdded = true;
             }
+        } else {
+            KOsd::self()->display(tr("Error"), tr("No items selected for Tweening"), KOsd::Error);
         }
     }
 }
+
+/* This method returns the list of actions defined in this plugin */
 
 QMap<QString, KAction *> Tweener::actions() const
 {
     return k->actions;
 }
 
+/* This method returns the list of actions defined in this plugin */
+
 int Tweener::toolType() const
 {
     return KTToolInterface::Brush;
 }
+
+/* This method returns the tool panel associated to this plugin */
 
 QWidget *Tweener::configurator()
 {
@@ -211,9 +233,12 @@ QWidget *Tweener::configurator()
     return k->configurator;
 }
 
+/* This method is called when there's a change on/of scene */
 void Tweener::aboutToChangeScene(KTGraphicsScene *)
 {
 }
+
+/* This method is called when this plugin is off */
 
 void Tweener::aboutToChangeTool()
 {
@@ -238,10 +263,15 @@ void Tweener::aboutToChangeTool()
     }
 }
 
+/* SQA: What is it? */
+
 bool Tweener::isComplete() const
 {
     return true;
 }
+
+
+/* This method defines the actions contained in this plugin */
 
 void Tweener::setupActions()
 {
@@ -252,6 +282,8 @@ void Tweener::setupActions()
 
     k->actions.insert("Tweener", translater);
 }
+
+/* This method initializes the "Create path" mode */
 
 void Tweener::setCreatePath()
 {
@@ -287,6 +319,8 @@ void Tweener::setCreatePath()
     }
 }
 
+/* This method initializes the "Select object" mode */
+
 void Tweener::setSelect()
 {
     if (k->path) {
@@ -315,6 +349,8 @@ void Tweener::setSelect()
     }
 
 }
+
+/* This method transforms the path created into a QString representation */
 
 QString Tweener::pathToCoords()
 {
@@ -368,6 +404,8 @@ QString Tweener::pathToCoords()
     return strPath;
 }
 
+/* This method resets this plugin */
+
 void Tweener::applyReset()
 {
     k->objects.clear();
@@ -384,6 +422,8 @@ void Tweener::applyReset()
         k->path = 0;
     }
 }
+
+/* This method applies to the project, the Tween created from this plugin */
 
 void Tweener::applyTween()
 {
@@ -411,46 +451,48 @@ void Tweener::applyTween()
 
     if (!exists) {
 
-    foreach (QGraphicsItem *item, k->objects) {   
+        foreach (QGraphicsItem *item, k->objects) {   
 
-             kFatal() << "Tweener::applyTween() - Applying tween!";
-             QString route = pathToCoords();
+                 kFatal() << "Tweener::applyTween() - Applying tween!";
+                 QString route = pathToCoords();
 
-             KTProjectRequest request = KTRequestBuilder::createItemRequest(
-                                        k->scene->currentSceneIndex(),
-                                        k->scene->currentLayerIndex(),
-                                        k->scene->currentFrameIndex(),
-                                        k->scene->currentFrame()->indexOf(item),
-                                        QPointF(), KTLibraryObject::Item,
-                                        KTProjectRequest::AddTween, 
-                                        k->configurator->tweenToXml(k->scene->currentFrameIndex(), route));
-             emit requested(&request);
+                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
+                                            k->scene->currentSceneIndex(),
+                                            k->scene->currentLayerIndex(),
+                                            k->scene->currentFrameIndex(),
+                                            k->scene->currentFrame()->indexOf(item),
+                                            QPointF(), KTLibraryObject::Item,
+                                            KTProjectRequest::AddTween, 
+                                            k->configurator->tweenToXml(k->scene->currentFrameIndex(), route));
+                 emit requested(&request);
 
-             int total = k->scene->currentFrameIndex() + k->configurator->totalSteps() - 1;
-             int start = k->scene->currentFrameIndex() + 1;
+                 int total = k->scene->currentFrameIndex() + k->configurator->totalSteps() - 1;
+                 int start = k->scene->currentFrameIndex() + 1;
 
-             for (int i = start; i <= total; i++) {
-                  KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), 
-                                                  k->scene->currentLayerIndex(), 
-                                                  i, KTProjectRequest::Add);
-                  emit requested(&requestFrame);
-             }
+                 for (int i = start; i <= total; i++) {
+                      KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), 
+                                                      k->scene->currentLayerIndex(), 
+                                                      i, KTProjectRequest::Add);
+                      emit requested(&requestFrame);
+                 }
 
-             request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                                            k->scene->currentFrameIndex(), KTProjectRequest::Select, "1");
-             emit requested(&request);
-    }
+                 request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                                                k->scene->currentFrameIndex(), KTProjectRequest::Select, "1");
+                 emit requested(&request);
+        }
 
-    int framesTotal = 1;
-    KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
-    if (layer)
-        framesTotal = layer->framesNumber();
+        int framesTotal = 1;
+        KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+        if (layer)
+            framesTotal = layer->framesNumber();
+        k->configurator->initCombo(framesTotal, k->scene->currentFrameIndex());
 
-    k->configurator->initCombo(framesTotal, k->scene->currentFrameIndex());
     } else {
-      kFatal() << "Tweener::applyTween() - Update tween right here!";
+        kFatal() << "Tweener::applyTween() - Update tween right here!";
     }
 }
+
+/* This method updates the data of the path into the tool panel */
 
 void Tweener::updatePath()
 {
@@ -458,9 +500,13 @@ void Tweener::updatePath()
     k->configurator->updateSteps(k->path);
 }
 
+/* This method saves the settings of this plugin */
+
 void Tweener::saveConfig()
 {
 }
+
+/* This method updates the workspace when the plugin changes the scene */
 
 void Tweener::updateScene(KTGraphicsScene *scene)
 {

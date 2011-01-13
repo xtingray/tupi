@@ -151,7 +151,7 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
     if ((frame != k->framePosition.frame && k->framePosition.frame >= 0) || 
         (layer != k->framePosition.layer && k->framePosition.layer >= 0)) { 
-        if (k->tool->currentTool().compare(tr("PolyLine")) == 0)
+        if (k->tool->name().compare(tr("PolyLine")) == 0)
             k->tool->aboutToChangeScene(this);
     }
 
@@ -612,19 +612,22 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             if (currentFrame()) {
                 //if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
-                if (event->buttons() == Qt::LeftButton) {
-                    k->tool->begin();
-                    k->isDrawing = true;
-                    k->tool->press(k->inputInformation, k->brushManager, this);
-                } else {
-                    if (k->tool->currentTool().compare(tr("Zoom")) || k->tool->currentTool().compare(tr("PolyLine"))) {
+                //kFatal() << "KTGraphicsScene::mousePressEvent() - FLAG: " << currentFrame()->isLocked();
+                    if (event->buttons() == Qt::LeftButton) {
+                        k->tool->begin();
+                        k->isDrawing = true;
                         k->tool->press(k->inputInformation, k->brushManager, this);
-                        return;
+                    } else {
+                        if (k->tool->name().compare(tr("Zoom")) || k->tool->name().compare(tr("PolyLine"))) {
+                            k->tool->press(k->inputInformation, k->brushManager, this);
+                            return;
+                        }
                     }
-                }
             } 
         }
     }
+
+    kFatal() << "KTGraphicsScene::mousePressEvent() - Just tracing!";
 }
 
 void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -649,6 +652,15 @@ void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
 {
+    if (currentFrame()) {
+        if (currentFrame()->isLocked()) {
+            #ifdef K_DEBUG
+                   kFatal() << "KTGraphicsScene::mouseReleased() - Frame is locked!";
+            #endif
+            return;
+        }
+    }
+
     k->inputInformation->updateFromMouseEvent(event);
 
     if (k->tool && k->isDrawing) {
@@ -657,7 +669,7 @@ void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
     } else {
         // TODO: To find the way to enhance this condition only for zoom tool
         // if (k->tool->toolType() == KTToolPlugin::View) 
-           if (k->tool->currentTool().compare(tr("Zoom")))
+           if (k->tool->name().compare(tr("Zoom")))
                k->tool->release(k->inputInformation, k->brushManager, this);
     }
 

@@ -99,7 +99,7 @@ void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     if (input->buttons() == Qt::LeftButton) {
         QPointF pos = input->pos();
         
-        if (currentTool() == tr("Eraser")) {
+        if (name() == tr("Eraser")) {
             QList<QGraphicsItem *> items = scene->items(input->pos());
     
             if (items.count() > 0) {

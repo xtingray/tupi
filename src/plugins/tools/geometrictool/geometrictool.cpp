@@ -106,16 +106,16 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
     if (input->buttons() == Qt::LeftButton) {
         QPointF pos = input->pos();
         
-        if (currentTool() == tr("Rectangle")) {
+        if (name() == tr("Rectangle")) {
             m_item = new KTRectItem;
             
             static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(brushManager->pen());
             static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brushManager->brush());
-        } else if (currentTool() == tr("Ellipse")) {
+        } else if (name() == tr("Ellipse")) {
                    m_item = new KTEllipseItem;
                    static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(brushManager->pen());
                    static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brushManager->brush());
-        } else if (currentTool() == tr("Line")) {
+        } else if (name() == tr("Line")) {
             m_item = new KTLineItem;
             static_cast<QGraphicsLineItem *>(m_item)->setPen(brushManager->pen());
             static_cast<QGraphicsLineItem *>(m_item)->setLine(QLineF(0,0,0,0));
@@ -133,7 +133,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
     
-    if (currentTool() == tr("Rectangle")) {
+    if (name() == tr("Rectangle")) {
 
         m_rect = static_cast<KTRectItem *>(m_item)->rect();
         
@@ -157,7 +157,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
         
-    } else if (currentTool() == tr("Ellipse")) {
+    } else if (name() == tr("Ellipse")) {
 
         m_rect = static_cast<KTEllipseItem *>(m_item)->rect();
         m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
@@ -179,7 +179,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
         
-    } else if (currentTool() == tr("Line")) {
+    } else if (name() == tr("Line")) {
 
         QPointF pos = m_item->mapFromScene(input->pos());
         QLineF line(static_cast<KTLineItem *>(m_item)->line().x1(), static_cast<KTLineItem *>(m_item)->line().y1(), pos.x(), pos.y());

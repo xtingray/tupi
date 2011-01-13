@@ -116,17 +116,15 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(brushManager);
 
     foreach (QGraphicsView * view, scene->views()) {
-             if (currentTool() == tr("Zoom"))
+             if (name() == tr("Zoom"))
                  view->setDragMode(QGraphicsView::NoDrag);
-             else if (currentTool() == tr("Hand"))
+             else if (name() == tr("Hand"))
                       view->setDragMode(QGraphicsView::ScrollHandDrag);
     }
 
-    if (currentTool() == tr("Hand")) {
-
+    if (name() == tr("Hand")) {
         m_scene = scene;
-
-    } else if (currentTool() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier) {
+    } else if (name() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier) {
 
                if (!added) {
                    scene->addItem(m_rect);
@@ -166,7 +164,7 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 {
     Q_UNUSED(brushManager);
 
-    if (currentTool() == tr("Zoom")) { 
+    if (name() == tr("Zoom")) { 
         // Zoom Square mode
         if (input->button() == Qt::LeftButton && input->keyModifiers() == Qt::ControlModifier) {    
 
@@ -245,7 +243,7 @@ void ViewTool::aboutToChangeScene(KTGraphicsScene *)
 
 void ViewTool::aboutToChangeTool()
 {
-    if (currentTool() == tr("Hand")) {
+    if (name() == tr("Hand")) {
        if (m_scene) {
            foreach (QGraphicsView * view, m_scene->views())
                     view->setDragMode(QGraphicsView::NoDrag);

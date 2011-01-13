@@ -186,6 +186,6 @@ void KTSymbolEditor::selectTool()
     if ( action )
     {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
-        tool->setCurrentTool( action->text() );
+        tool->setName(action->text());
     }
 }

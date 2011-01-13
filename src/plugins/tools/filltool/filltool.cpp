@@ -112,7 +112,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     if (input->buttons() == Qt::LeftButton) {
         QGraphicsItem *clickedItem = scene->itemAt(input->pos());
         
-        if (currentTool() == tr("Shape fill")) {
+        if (name() == tr("Shape fill")) {
             KTPathItem *item = KTItemConverter::convertToPath(clickedItem);
             
             if (!item) { 
@@ -200,9 +200,9 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                 }
                 
                 if (position >= 0) {
-                    if (currentTool() == tr("Internal fill")) {
+                    if (name() == tr("Internal fill")) {
                         shape->setBrush(brushManager->pen().brush());
-                    } else if (currentTool() == tr("Contour fill")) {
+                    } else if (name() == tr("Contour fill")) {
                                QPen pen = shape->pen();
                                pen.setBrush(brushManager->pen().brush());
                                shape->setPen(pen);
