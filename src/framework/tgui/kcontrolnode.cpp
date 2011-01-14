@@ -287,6 +287,9 @@ void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     }
 
     setPos(event->scenePos());
+
+    k->nodeGroup->emitNodeMoved();
+
     event->accept();
 }
 

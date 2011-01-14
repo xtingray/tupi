@@ -74,6 +74,7 @@ class KNodeGroup : public QObject
         
         void createNodes(QGraphicsPathItem *nodes);
         void emitNodeClicked();
+        void emitNodeMoved();
         
         void expandAllNodes();
         bool isSelected();
@@ -85,6 +86,7 @@ class KNodeGroup : public QObject
     signals:
         void itemChanged(QGraphicsItem *item);
         void nodeClicked();
+        void nodeMoved();
 };
 
 #endif

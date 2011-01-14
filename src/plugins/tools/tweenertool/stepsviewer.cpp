@@ -82,8 +82,8 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         //points.pop_back();
         //points.pop_front();
 
-        if (points.count() > 3)
-            points.pop_back();
+        //if (points.count() > 3)
+        //    points.pop_back();
 
         k->points = points;
 

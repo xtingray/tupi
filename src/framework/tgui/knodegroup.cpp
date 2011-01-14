@@ -254,6 +254,11 @@ void KNodeGroup::emitNodeClicked()
     emit nodeClicked();
 }
 
+void KNodeGroup::emitNodeMoved()
+{
+    emit nodeMoved();
+}
+
 void KNodeGroup::expandAllNodes()
 {
     foreach (KControlNode *node, k->nodes)
