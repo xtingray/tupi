@@ -42,12 +42,12 @@
 #include <QGraphicsScene>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 class KNodeGroup;
 class KControlNode : public QObject, public QGraphicsItem
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         

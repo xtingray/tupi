@@ -87,7 +87,6 @@ class Tweener : public KTToolPlugin
 
     public slots:
         void updatePath();
-        void updatePath2();
 };
 
 #endif

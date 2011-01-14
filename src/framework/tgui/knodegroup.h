@@ -86,7 +86,6 @@ class KNodeGroup : public QObject
     signals:
         void itemChanged(QGraphicsItem *item);
         void nodeClicked();
-        void nodeMoved();
 };
 
 #endif

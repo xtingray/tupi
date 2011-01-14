@@ -175,7 +175,6 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
         if (!k->group) {
             k->group = new KNodeGroup(k->path, scene);
             connect(k->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
-            connect(k->group, SIGNAL(nodeMoved()), SLOT(updatePath2()));
             k->group->clearChangesNodes();
         } else {
             k->group->createNodes(k->path);
@@ -300,7 +299,6 @@ void Tweener::setCreatePath()
         } else {
             k->group = new KNodeGroup(k->path, k->scene);
             connect(k->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
-            connect(k->group, SIGNAL(nodeMoved()), SLOT(updatePath2()));
             k->group->createNodes(k->path);
         }
         k->group->expandAllNodes();
@@ -500,11 +498,6 @@ void Tweener::updatePath()
 {
     kFatal() << "Tweener::updatePath() - Just tracing!";
     k->configurator->updateSteps(k->path);
-}
-
-void Tweener::updatePath2()
-{
-    kFatal() << "Tweener::updatePath2() - Moving Node!";
 }
 
 /* This method saves the settings of this plugin */
