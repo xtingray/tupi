@@ -78,39 +78,16 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 
     if (points.count() > 2) {
 
+        int count = 0; 
+
         k->points.clear();
         k->frames.clear();
-        
         k->points = points;
-
-        //kFatal() << "StepsViewer::setPath() - Total Key Dots: " << points.count();
-        
-        int count = 0;
-        setRowCount(0);
-
-        //kFatal() << "StepsViewer::setPath() - Path elements: " << path->path().elementCount();
-
-        QPointF basePoint;
         k->dots = new QList<QPointF>();
 
+        setRowCount(0);
+
         // path().elementCount(): Returns the number of path elements in the painter path.
-
-        /* for (int i = 1; i < path->path().elementCount(); i++) {
-
-             QPainterPath::Element e  = path->path().elementAt(i);
-
-             if (e.type == QPainterPath::CurveToElement) 
-                 kFatal() << "StepsViewer::setPath() - Element is curveToElement() - [" << e.x << "," << e.y << "]";
-
-             if (e.type == QPainterPath::LineToElement)
-                 kFatal() << "StepsViewer::setPath() - Element is isLineTo() - [" << e.x << "," << e.y << "]";
-
-             if (e.type == QPainterPath::CurveToDataElement)
-                 kFatal() << "StepsViewer::setPath() - Element is CurveToDataElement() - [" << e.x << "," << e.y << "]";
-
-             if (e.type == QPainterPath::MoveToElement) 
-                 kFatal() << "StepsViewer::setPath() - Element is isMoveTo() - [" << e.x << "," << e.y << "]";
-         */
 
          QList<QPointF> *keys = new QList<QPointF>();
 
@@ -142,12 +119,18 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  kFatal() << "StepsViewer::setPath() - Set counter: " << frames;
                  if (frames == 1) {
                          if (control == 0) {
-                             k->dots->append(calculateDots(points.at(0), controlKey, 11));
-                             frames = 12;
+                             k->dots->append(calculateDots(points.at(0), controlKey, 9));
+                             frames = 10;
+                             kFatal() << "StepsViewer::setPath() - Creating Line 1!";
                          } else {
-                             k->dots->append(calculateDots(keys->at(control-1), controlKey, 10));
-                             frames = 10; 
+                             k->dots->append(calculateDots(keys->at(control-1), controlKey, 9));
+                             frames = 9; 
+                             kFatal() << "StepsViewer::setPath() - Creating Line 2!";
                          }
+                 } else {
+                      kFatal() << "StepsViewer::setPath() - Counting curve dots: " << frames;
+                      if (control == 0) 
+                          frames++;
                  } 
 
                  setRowCount(rowCount() + 1);
@@ -176,75 +159,6 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              k->dots->append(point);
              frames++;
          }
-
-             /*
-            
-             if (e.type != QPainterPath::CurveToElement) {
-
-                 if ((e.type == QPainterPath::CurveToDataElement) && 
-                     (path->path().elementAt(i-1).type == QPainterPath::CurveToElement)) 
-                     continue;
-
-                 // k->stops << e;
-                
-                 int frames = 1;
-    
-                 if (count == 1) {
-                     frames = 10;
-                     //frames = 3;
-                     QPointF point1 = points.value(0);
-                     basePoint = points.value(1);
-                     k->dots->append(point1);
-                     // kFatal() << "Line #" << count;
-                     // kFatal() << "StepsViewer::setPath() - Point 1: (" << point1.x() << ", " << point1.y() << ")";
-                     // kFatal() << "StepsViewer::setPath() - Point 2: (" << basePoint.x() << ", " << basePoint.y() << ")";
-                     k->dots->append(calculateDots(point1, basePoint, 9));
-                     // kFatal() << "StepsViewer::setPath() - Total Dots: " << k->dots->count();
-                 } else {
-                     frames = 9;
-                     //frames = 2;
-                     QPointF point2 = points.value(count);
-                     // kFatal() << "Line #" << count;
-                     // kFatal() << "StepsViewer::setPath() - Point 1: (" << basePoint.x() << ", " << basePoint.y() << ")";
-                     // kFatal() << "StepsViewer::setPath() - Point 2: (" << point2.x() << ", " << point2.y() << ")";
-                     k->dots->append(calculateDots(basePoint, point2, 9));
-                     basePoint = point2;
-                     //if (points.count()-1 == count)
-                     //    k->dots->append(point2);
-                 }
-
-               
-                 //QPolygonF::iterator it = points.begin();
-                
-                 //while (it != points.end()) {
-                 //       frames++;
-                 //       if (e == (*it))
-                 //           break;
-                 //       else
-                 //           it = points.erase(it);
-                 //}
-
-                 k->frames << frames;
-
-                 setRowCount(rowCount() + 1);
-
-                 QTableWidgetItem *intervalItem = new QTableWidgetItem();
-                 intervalItem->setTextAlignment(Qt::AlignCenter);
-                 intervalItem->setText(QString::number(count));
-                 intervalItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
-
-                 QTableWidgetItem *framesItem = new QTableWidgetItem();
-                 framesItem->setTextAlignment(Qt::AlignCenter);
-                 framesItem->setText(QString::number(frames));
-                 framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
-                
-                 setItem(count-1, 0, intervalItem);
-                 setItem(count-1, 1, framesItem);
-                 setRowHeight(count-1, 20);
-
-                 count++;
-            }
-        } */
     }
 }
 
@@ -313,12 +227,13 @@ QList<QPointF> StepsViewer::calculateDots(QPointF dot1, QPointF dot2, int total)
     for (int i=1; i<total; i++) {
          x += delta;
          qreal y = m*x + b;
-         // kFatal() << "StepsViewer::calculateDots() - Calculating point: (" << x << ", " << y << ")";
          QPointF dot;
          dot.setX(x);
          dot.setY(y);
          result.append(dot);
     }
+
+    kFatal() << "StepsViewer::calculateDots() - Size: " << result.size(); 
 
     return result;
 }
