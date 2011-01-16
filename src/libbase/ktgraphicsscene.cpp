@@ -56,6 +56,7 @@
 #include "ktitemtweener.h"
 #include "ktgraphiclibraryitem.h"
 #include "ktsvgitem.h"
+#include "ktpathitem.h"
 
 #include "ktprojectresponse.h"
 
@@ -286,10 +287,23 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          if (origin == photogram) {
 
+                         if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                             kFatal() << "drawPhotogram() - Object is a KTPathItem!";
                              KTTweenerStep *stepItem = tweener->stepAt(0);
                              k->lastPoint = stepItem->position();
-                             object->item()->setPos(QPointF(0, 0));
+                             //object->item()->setPos(QPointF(0, 0));
+                             object->item()->setPos(k->lastPoint.x(), k->lastPoint.y());
                              object->item()->setToolTip(tr("Tween/Step: 0"));
+                         } else {
+                             kFatal() << "drawPhotogram() - Object is NOT a KTPathItem!";
+                             KTTweenerStep *stepItem = tweener->stepAt(0);
+                             QPointF tempo(stepItem->position().x() - (object->item()->boundingRect().width()/2), stepItem->position().y() - (object->item()->boundingRect().height()/2));
+                             // k->lastPoint = stepItem->position();
+                             k->lastPoint = tempo;
+                             kFatal() << "drawPhotogram() - Position:  [" << k->lastPoint.x() << ", " << k->lastPoint.y() << "]";
+                             object->item()->setPos(k->lastPoint.x(), k->lastPoint.y());
+                             object->item()->setToolTip(tr("Tween/Step: 0"));
+                         }
 
                          } else if ((origin < photogram) && (photogram <= origin+tweener->frames())) {
 

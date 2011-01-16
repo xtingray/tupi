@@ -41,7 +41,7 @@
 #include "ktglobal_store.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 class STORE_EXPORT KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 {

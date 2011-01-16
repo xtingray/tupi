@@ -198,9 +198,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 scene->addItem(k->path);
                 k->pathAdded = true;
             }
-        } else {
-            KOsd::self()->display(tr("Error"), tr("No items selected for Tweening"), KOsd::Error);
-        }
+        } 
     }
 }
 
