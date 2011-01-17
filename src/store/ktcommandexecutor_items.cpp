@@ -709,6 +709,7 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
+    KTLibraryObject::Type type = response->itemType();
     int position = response->itemIndex();
     
     QString xml = response->arg().toString();
@@ -720,17 +721,41 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
         if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
+
             if (layer) {
+
                 KTFrame *frame = layer->frame(framePosition);
+
                 if (frame) {
-                    KTGraphicObject *object = frame->graphic(position);
-                
-                    if (object == 0) 
-                        return false;
-                
+
                     KTItemTweener *tweener = new KTItemTweener();
                     tweener->fromXml(xml);
-                    object->setTweener(false, tweener);
+
+                    if (type == KTLibraryObject::Item) {
+
+                        KTGraphicObject *object = frame->graphic(position);
+                        if (object == 0) {
+                            #ifdef K_DEBUG
+                                   kFatal() << "KTCommandExecutor::setTween() - Invalid graphic index: " << position;
+                            #endif
+                            return false;
+                        }
+                        object->setTweener(update, tweener);
+
+                    } else {
+
+                        KTSvgItem *object = frame->svg(position); 
+                        if (object == 0) {
+                            #ifdef K_DEBUG
+                                   kFatal() << "KTCommandExecutor::setTween() - Invalid svg index: " << position;
+                            #endif
+                            return false;
+                        }
+                        object->setTweener(update, tweener);
+
+                    }
+
+                    return true;
                 }
             }
         }

@@ -35,21 +35,30 @@
 
 #include "ktsvgitem.h"
 #include "ktserializer.h"
+#include "kdebug.h"
 
 #include <QSvgRenderer>
 #include <QFileInfo>
 
-#include "kdebug.h"
+struct KTSvgItem::Private
+{
+    QString name;
+    QString path;
+    QString data;
+    KTFrame *frame;
+    KTItemTweener *tweener;
+};
 
 KTSvgItem::KTSvgItem(QGraphicsItem * parent)
-    : QGraphicsSvgItem(parent)
+    : QGraphicsSvgItem(parent), k(new Private)
 {
 }
 
-KTSvgItem::KTSvgItem(QString &file)
-    : QGraphicsSvgItem(file)
+KTSvgItem::KTSvgItem(QString &file, KTFrame *frame)
+    : QGraphicsSvgItem(file), k(new Private)
 {
-    path = file;
+    k->path = file;
+    k->frame = frame;
 }
 
 KTSvgItem::~KTSvgItem()
@@ -58,22 +67,32 @@ KTSvgItem::~KTSvgItem()
 
 void KTSvgItem::setSymbolName(const QString &symbolName)
 {
-    name = symbolName;
+    k->name = symbolName;
 }
 
 QString KTSvgItem::symbolName() const
 {
-    return name;
+    return k->name;
 }
 
 QString KTSvgItem::itemPath() const
 {
-    return path;
+    return k->path;
+}
+
+KTFrame *KTSvgItem::frame() const
+{
+    return k->frame;
+}
+
+KTItemTweener *KTSvgItem::tweener() const
+{
+    return k->tweener;
 }
 
 void KTSvgItem::rendering()
 {
-    QByteArray stream = data.toLocal8Bit(); 
+    QByteArray stream = k->data.toLocal8Bit(); 
     renderer()->load(stream);
 }
 
@@ -84,17 +103,31 @@ void KTSvgItem::fromXml(const QString &xml)
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTSvgItem::toXml() - Name: " << name;
+    kFatal() << "KTSvgItem::toXml() - Name: " << k->name;
 
-    if (name.length() == 0) {
+    if (k->name.length() == 0) {
         #ifdef K_DEBUG
                kError() << "KTFrame::fromXml() - ERROR: Object id is null!";
         #endif
     }
 
     QDomElement root = doc.createElement("svg");
-    root.setAttribute("id", name);
+    root.setAttribute("id", k->name);
     root.appendChild(KTSerializer::properties(this, doc));
+
+    if (k->tweener)
+        root.appendChild(k->tweener->toXml(doc));
  
     return root;
+}
+
+void KTSvgItem::setTweener(bool update, KTItemTweener *tweener)
+{
+    k->tweener = tweener;
+    if (!update) {
+        if (k->tweener)
+            k->frame->scene()->addTweenObject(this);
+        else
+            k->frame->scene()->removeTweenObject(this);
+    }
 }

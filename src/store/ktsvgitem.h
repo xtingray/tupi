@@ -39,29 +39,35 @@
 #include <QGraphicsSvgItem>
 #include "ktabstractserializable.h"
 #include "ktglobal_store.h"
+#include "ktitemtweener.h"
+#include "ktframe.h"
+
+class KTFrame;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSerializable
 {
     public:
         KTSvgItem(QGraphicsItem * parent = 0);
-        KTSvgItem(QString &file);
+        KTSvgItem(QString &file, KTFrame *frame);
         ~KTSvgItem();
         void setSymbolName(const QString &symbolName);
         QString symbolName() const;
         QString itemPath() const;
+        KTFrame *frame() const;
+        KTItemTweener *tweener() const;
         void rendering();
+        void setTweener(bool update, KTItemTweener *tweener);
+
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
 
     private:
-        QString name;
-        QString path;
-        QString data;
-
+        struct Private;
+        Private *const k;
 };
 
 #endif

@@ -54,6 +54,7 @@ class QStyleOptionGraphicsItem;
 class KTLayer;
 class KTSoundLayer;
 class KTGraphicObject;
+class KTSvgItem;
 class KTBackground;
 
 typedef KTIntHash<KTLayer *> Layers;
@@ -136,8 +137,14 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 
         KTProject *project() const;
         void addTweenObject(KTGraphicObject *object);
+        void addTweenObject(KTSvgItem *object);
+
         void removeTweenObject(KTGraphicObject *object);
-        QList<KTGraphicObject *> tweeningObjects() const;
+        void removeTweenObject(KTSvgItem *object);
+
+        QList<KTGraphicObject *> tweeningGraphicObjects() const;
+        QList<KTSvgItem *> tweeningSvgObjects() const;
+
         int framesTotal();
 
         QList<int> layerIndexes();

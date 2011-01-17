@@ -41,6 +41,7 @@
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
+#include "kosd.h"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -58,10 +59,12 @@ struct Configurator::Private
     QListWidget *tweensList;
     QComboBox *combo;
     QLabel *totalLabel;
+    bool selectionDone;
 };
 
 Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 {
+    k->selectionDone = false;
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
     QLineEdit *input = new QLineEdit(this);
@@ -142,7 +145,7 @@ Configurator::~Configurator()
     delete k;
 }
 
-void Configurator::initCombo(int framesTotal, int currentIndex)
+void Configurator::initStartCombo(int framesTotal, int currentIndex)
 {
     k->combo->clear();
     for (int i=1; i<=framesTotal; i++)
@@ -151,9 +154,14 @@ void Configurator::initCombo(int framesTotal, int currentIndex)
     k->combo->setCurrentIndex(currentIndex);
 }
 
-void Configurator::setComboIndex(int currentIndex)
+void Configurator::setStartFrame(int currentIndex)
 {
     k->combo->setCurrentIndex(currentIndex);
+}
+
+int Configurator::startFrame()
+{
+    return k->combo->currentIndex();
 }
 
 void Configurator::updateSteps(const QGraphicsPathItem *path)
@@ -173,7 +181,12 @@ void Configurator::emitOptionChanged(int option)
             break;
             case 1:
              {
-                 emit clickedCreatePath();
+                 if (k->selectionDone) {
+                     emit clickedCreatePath();
+                 } else {
+                     k->options->setCurrentIndex(0);
+                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);   
+                 }
              }
     }
 }
@@ -230,3 +243,9 @@ QString Configurator::currentTweenName() const
     else
         return "";
 }
+
+void Configurator::notifySelection()
+{
+    k->selectionDone = true;
+}
+

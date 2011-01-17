@@ -49,8 +49,10 @@ class Configurator : public QFrame
         Configurator(QWidget *parent = 0);
         ~Configurator();
 
-        void initCombo(int framesTotal, int currentIndex);
-        void setComboIndex(int currentIndex);
+        void initStartCombo(int framesTotal, int currentIndex);
+        void setStartFrame(int currentIndex);
+        int startFrame();
+
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentFrame, QString path);
         int totalSteps();
@@ -58,6 +60,7 @@ class Configurator : public QFrame
         void activateSelectionMode();
         void cleanData();
         QString currentTweenName() const;
+        void notifySelection();
         
     private slots:
         void emitOptionChanged(int option);

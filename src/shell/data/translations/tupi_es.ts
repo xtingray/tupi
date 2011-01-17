@@ -2867,6 +2867,11 @@
         <source>No path created for Tweening</source>
         <translation>No hay una ruta creada para el Tweening</translation>
     </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
+        <source>Select objects for Tweening first!</source>
+        <translation>Selecciona los objetos a animar primero!</translation>
+    </message>
 </context>
 <context>
     <name>ViewTool</name>

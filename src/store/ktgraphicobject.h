@@ -39,14 +39,13 @@
 #include <QObject>
 #include "ktabstractserializable.h"
 #include "ktframe.h"
-
 #include "ktglobal_store.h"
 
 class QGraphicsItem;
 class KTItemTweener;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
 class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
 {

@@ -60,6 +60,7 @@
 #include "ktgraphicalgorithm.h"
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
+#include "ktsvgitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
@@ -112,7 +113,7 @@ void Tweener::init(KTGraphicsScene *scene)
     if (layer)
         framesTotal = layer->framesNumber(); 
 
-    k->configurator->initCombo(framesTotal, k->scene->currentFrameIndex());
+    k->configurator->initStartCombo(framesTotal, k->scene->currentFrameIndex());
     k->configurator->cleanData();
     k->configurator->activateSelectionMode();
     setSelect();
@@ -186,9 +187,11 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
         if (scene->selectedItems().size() > 0) {
             k->objects = scene->selectedItems();
+            k->configurator->notifySelection();
 
             if (!k->path) {
                 k->path = new QGraphicsPathItem;
+                k->path->setZValue(maxZValue());
                 QColor color(150, 150, 150, 200);
                 QPen pen(QBrush(color), 1, Qt::DotLine);
                 k->path->setPen(pen);
@@ -436,10 +439,18 @@ void Tweener::applyTween()
     }
 
     QString name = k->configurator->currentTweenName();
-
-    KTScene *source = k->scene->scene();
     bool exists = false;
-    foreach (KTGraphicObject *object, source->tweeningObjects()) {
+    KTScene *source = k->scene->scene();
+
+    foreach (KTGraphicObject *object, source->tweeningGraphicObjects()) {
+             if (KTItemTweener *tweener = object->tweener()) {
+                 kFatal() << "Tweener::applyTween() - Item name: " << tweener->name();
+                 if (tweener->name().compare(name) == 0)
+                     exists = true;
+             }
+    }
+
+    foreach (KTSvgItem *object, source->tweeningSvgObjects()) {
              if (KTItemTweener *tweener = object->tweener()) {
                  kFatal() << "Tweener::applyTween() - Item name: " << tweener->name();
                  if (tweener->name().compare(name) == 0)
@@ -450,16 +461,24 @@ void Tweener::applyTween()
     if (!exists) {
 
         foreach (QGraphicsItem *item, k->objects) {   
-
                  kFatal() << "Tweener::applyTween() - Applying tween!";
+
+                 KTLibraryObject::Type type = KTLibraryObject::Item;
+                 int objectIndex = k->scene->currentFrame()->indexOf(item); 
+
+                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
+                     type = KTLibraryObject::Svg;
+                     objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 }
+
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
                                             k->scene->currentFrameIndex(),
-                                            k->scene->currentFrame()->indexOf(item),
-                                            QPointF(), KTLibraryObject::Item,
+                                            objectIndex,
+                                            QPointF(), type,
                                             KTProjectRequest::AddTween, 
                                             k->configurator->tweenToXml(k->scene->currentFrameIndex(), route));
                  emit requested(&request);
@@ -483,10 +502,56 @@ void Tweener::applyTween()
         KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
         if (layer)
             framesTotal = layer->framesNumber();
-        k->configurator->initCombo(framesTotal, k->scene->currentFrameIndex());
+        k->configurator->initStartCombo(framesTotal, k->scene->currentFrameIndex());
 
     } else {
         kFatal() << "Tweener::applyTween() - Update tween right here!";
+        int framesTotal = 1;
+
+        foreach (QGraphicsItem *item, k->objects) {
+                 kFatal() << "Tweener::applyTween() - Applying tween!";
+
+                 KTLibraryObject::Type type = KTLibraryObject::Item;
+                 int objectIndex = k->scene->currentFrame()->indexOf(item);
+
+                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
+                     type = KTLibraryObject::Svg;
+                     objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 }
+
+                 QString route = pathToCoords();
+
+                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
+                                            k->scene->currentSceneIndex(),
+                                            k->scene->currentLayerIndex(),
+                                            k->scene->currentFrameIndex(),
+                                            objectIndex,
+                                            QPointF(), type,
+                                            KTProjectRequest::UpdateTween,
+                                            k->configurator->tweenToXml(k->scene->currentFrameIndex(), route));
+                 emit requested(&request);
+
+                 int total = k->configurator->startFrame() + k->configurator->totalSteps() - 1;
+                 KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+                 if (layer)
+                     framesTotal = layer->framesNumber();
+
+                 if (framesTotal < total) {
+                     int limit = total - framesTotal;
+                     for (int i = framesTotal; i <= limit; i++) {
+                          KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                          k->scene->currentLayerIndex(),
+                                                          i, KTProjectRequest::Add);
+                          emit requested(&requestFrame);
+                     }
+
+                     request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                                                    k->scene->currentFrameIndex(), KTProjectRequest::Select, "1");
+                     emit requested(&request);
+                 }
+        }
+
+        k->configurator->initStartCombo(framesTotal, k->scene->currentFrameIndex());
     }
 }
 
@@ -519,6 +584,17 @@ void Tweener::updateScene(KTGraphicsScene *scene)
             k->group->expandAllNodes();
         }
     }
+}
+
+int Tweener::maxZValue()
+{
+    int max = -1;
+    foreach (QGraphicsItem *item, k->objects) {
+             if (item->zValue() > max)
+                 max = item->zValue();
+    }
+
+    return max + 1;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

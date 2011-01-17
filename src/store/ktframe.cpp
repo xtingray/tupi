@@ -199,23 +199,29 @@ void KTFrame::fromXml(const QString &xml)
 
                               QString path(object->dataPath());
                               QDomNode n2 = e.firstChild();
+                              KTSvgItem *svg = new KTSvgItem();
 
                               while (!n2.isNull()) {
                                      QDomElement e2 = n2.toElement();
 
                                      if (e2.tagName() == "properties") {
-                              
-                                         QString newDoc;
-                                         {
-                                           QTextStream ts(&newDoc);
-                                           ts << n2;
-                                         }
 
-                                         KTSvgItem *svg = new KTSvgItem(path);
+                                         svg = new KTSvgItem(path, this);
                                          svg->setSymbolName(symbol);
                                          KTSerializer::loadProperties(svg, e2);
                                          k->svgIndexes[k->svg.count()] = symbol;
                                          insertSvgItem(k->svg.count(), svg);
+
+                                     } else if (e2.tagName() == "tweening") {
+
+                                         KTItemTweener *tweener = new KTItemTweener();
+                                         QString newDoc;
+                                         {
+                                             QTextStream ts(&newDoc);
+                                             ts << n2;
+                                         }
+                                         tweener->fromXml(newDoc);
+                                         svg->setTweener(false, tweener);
                                      }
 
                                      n2 = n2.nextSibling(); 
@@ -486,7 +492,7 @@ KTSvgItem *KTFrame::createSvgItem(int position, QPointF coords, const QString &x
     QDomElement root = document.documentElement();
     QString path = root.attribute("itemPath");
 
-    KTSvgItem *item = new KTSvgItem(path);
+    KTSvgItem *item = new KTSvgItem(path, this);
     item->moveBy(coords.x(), coords.y()); 
 
     insertSvgItem(position, item);

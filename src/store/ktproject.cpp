@@ -532,7 +532,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                         case KTLibraryObject::Svg:
                         {
                              QString path(object->dataPath());
-                             KTSvgItem *svgItem = new KTSvgItem(path);
+                             KTSvgItem *svgItem = new KTSvgItem(path, frame);
                              svgItem->setSymbolName(name);
 
                              int svgW = svgItem->boundingRect().width();

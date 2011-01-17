@@ -291,7 +291,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
                      loadRawData(f.readAll());
                  } else {
                      #ifdef K_DEBUG
-                            kFatal() << "KTLibraryObject::loadDataFromPath() - Image: Can't access file";
+                            kFatal() << "KTLibraryObject::loadDataFromPath() - Image: Can't access file: " << k->dataPath;
                      #endif
                  }
             }

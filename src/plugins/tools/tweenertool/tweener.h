@@ -39,8 +39,8 @@
 #include <kttoolplugin.h>
 
 /**
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
- * experimental plugin
+ * @author Jorge Cuadrado
+ * 
 */
 
 class Tweener : public KTToolPlugin
@@ -74,6 +74,7 @@ class Tweener : public KTToolPlugin
     private:
         void setupActions();
         QString pathToCoords();
+        int maxZValue();
 
     private:
         struct Private;

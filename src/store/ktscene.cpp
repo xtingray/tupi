@@ -42,6 +42,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "ktgraphicobject.h"
+#include "ktsvgitem.h"
 #include "ktsoundlayer.h"
 
 #include "ktitemgroup.h"
@@ -59,7 +60,8 @@ struct KTScene::Private
     int nameIndex;
     bool isVisible;
 
-    QList<KTGraphicObject *> tweeningObjects;
+    QList<KTGraphicObject *> tweeningGraphicObjects;
+    QList<KTSvgItem *> tweeningSvgObjects;
 };
 
 KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
@@ -376,18 +378,34 @@ KTProject *KTScene::project() const
 
 void KTScene::addTweenObject(KTGraphicObject *object)
 {
-    k->tweeningObjects << object;
+    k->tweeningGraphicObjects << object;
+}
+
+void KTScene::addTweenObject(KTSvgItem *object)
+{
+    k->tweeningSvgObjects << object;
 }
 
 void KTScene::removeTweenObject(KTGraphicObject *object)
 {
-    if (k->tweeningObjects.size() > 0)
-        k->tweeningObjects.removeAll(object);
+    if (k->tweeningGraphicObjects.size() > 0)
+        k->tweeningGraphicObjects.removeAll(object);
 }
 
-QList<KTGraphicObject *> KTScene::tweeningObjects() const
+void KTScene::removeTweenObject(KTSvgItem *object)
 {
-    return k->tweeningObjects;
+    if (k->tweeningSvgObjects.size() > 0)
+        k->tweeningSvgObjects.removeAll(object);
+}
+
+QList<KTGraphicObject *> KTScene::tweeningGraphicObjects() const
+{
+    return k->tweeningGraphicObjects;
+}
+
+QList<KTSvgItem *> KTScene::tweeningSvgObjects() const
+{
+    return k->tweeningSvgObjects;
 }
 
 int KTScene::framesTotal()
