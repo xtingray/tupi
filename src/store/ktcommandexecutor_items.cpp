@@ -714,6 +714,9 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
     
     QString xml = response->arg().toString();
 
+    kFatal() << "KTCommandExecutor::setTween() - Object Index: " << position;
+    kFatal() << "KTCommandExecutor::setTween() - Frame Index: " << framePosition;
+
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
@@ -740,6 +743,7 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
                             #endif
                             return false;
                         }
+                        kFatal() << "KTCommandExecutor::setTween() - Updating object from index: " << position;
                         object->setTweener(update, tweener);
 
                     } else {

@@ -166,7 +166,6 @@ int Configurator::startFrame()
 
 void Configurator::updateSteps(const QGraphicsPathItem *path)
 {
-    kFatal() << "Configurator::updateSteps() - Just tracing!";
     k->stepViewer->setPath(path);
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }

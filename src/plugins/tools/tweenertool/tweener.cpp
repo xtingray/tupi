@@ -355,8 +355,6 @@ void Tweener::setSelect()
 
 QString Tweener::pathToCoords()
 {
-    kFatal() << "Tweener::pathToCoords() - Converting path to xml!";
-
     QString strPath = "";
     QChar t;
 
@@ -505,11 +503,11 @@ void Tweener::applyTween()
         k->configurator->initStartCombo(framesTotal, k->scene->currentFrameIndex());
 
     } else {
-        kFatal() << "Tweener::applyTween() - Update tween right here!";
+
+        kFatal() << "Tweener::applyTween() - Updating tween right here!";
         int framesTotal = 1;
 
         foreach (QGraphicsItem *item, k->objects) {
-                 kFatal() << "Tweener::applyTween() - Applying tween!";
 
                  KTLibraryObject::Type type = KTLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item);
@@ -519,26 +517,47 @@ void Tweener::applyTween()
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  }
 
+                 if (k->configurator->startFrame() != k->scene->currentFrameIndex()) {
+                     QDomDocument dom;
+                     dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+
+                     KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), 
+                                                                                    k->configurator->startFrame(), -1, 
+                                                                                    QPointF(), type, KTProjectRequest::Add, 
+                                                                                    dom.toString());
+                     emit requested(&request);
+
+                     request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                                                   k->scene->currentFrameIndex(),
+                                                                   objectIndex, QPointF(), type,
+                                                                   KTProjectRequest::Remove);
+                     emit requested(&request);
+                 }
+
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
-                                            k->scene->currentFrameIndex(),
+                                            k->configurator->startFrame()-1,
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::UpdateTween,
-                                            k->configurator->tweenToXml(k->scene->currentFrameIndex(), route));
+                                            k->configurator->tweenToXml(k->configurator->startFrame(), route));
                  emit requested(&request);
 
-                 int total = k->configurator->startFrame() + k->configurator->totalSteps() - 1;
+                 int total = k->configurator->startFrame() + k->configurator->totalSteps();
                  KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
                  if (layer)
                      framesTotal = layer->framesNumber();
 
+                 kFatal() << "Tweener::applyTween() - Total: " << total;
+                 kFatal() << "Tweener::applyTween() - Frames Total: " << framesTotal;
+                 kFatal() << "Tweener::applyTween() - startFrame: " << k->configurator->startFrame(); 
+                 kFatal() << "Tweener::applyTween() - Tweening long: " << k->configurator->totalSteps(); 
+
                  if (framesTotal < total) {
-                     int limit = total - framesTotal;
-                     for (int i = framesTotal; i <= limit; i++) {
+                     for (int i = framesTotal; i <= total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                           k->scene->currentLayerIndex(),
                                                           i, KTProjectRequest::Add);
@@ -546,7 +565,7 @@ void Tweener::applyTween()
                      }
 
                      request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                                                    k->scene->currentFrameIndex(), KTProjectRequest::Select, "1");
+                                                                    k->configurator->startFrame(), KTProjectRequest::Select, "1");
                      emit requested(&request);
                  }
         }

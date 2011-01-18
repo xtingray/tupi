@@ -283,6 +283,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      
                      if (KTItemTweener *tweener = object->tweener()) {
 
+                         kFatal() << "drawPhotogram() - Tracing a tween!";
+
                          object->item()->setTransformOriginPoint(QPointF(0, 0));
                          int adjustX = object->item()->boundingRect().width()/2;
                          int adjustY = object->item()->boundingRect().height()/2;
