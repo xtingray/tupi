@@ -744,7 +744,9 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
                             return false;
                         }
                         kFatal() << "KTCommandExecutor::setTween() - Updating object from index: " << position;
+                        object->setFrame(frame);
                         object->setTweener(update, tweener);
+                        scene->addTweenObject(object);
 
                     } else {
 

@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "kttweenerstep.h"
+#include "kdebug.h"
+
 #include <QVector>
 
 struct KTTweenerStep::Private

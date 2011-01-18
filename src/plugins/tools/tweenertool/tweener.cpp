@@ -431,7 +431,8 @@ void Tweener::applyTween()
         return;
     }
 
-    if (k->configurator->totalSteps() == 0) {
+    QPolygonF points = k->path->path().toFillPolygon();
+    if (points.count() <= 2) {
         KOsd::self()->display(tr("Error"), tr("No path created for Tweening"), KOsd::Error);
         return;
     }
@@ -474,15 +475,15 @@ void Tweener::applyTween()
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
-                                            k->scene->currentFrameIndex(),
+                                            k->configurator->startFrame(),
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::AddTween, 
                                             k->configurator->tweenToXml(k->scene->currentFrameIndex(), route));
                  emit requested(&request);
 
-                 int total = k->scene->currentFrameIndex() + k->configurator->totalSteps() - 1;
-                 int start = k->scene->currentFrameIndex() + 1;
+                 int total = k->configurator->startFrame() + k->configurator->totalSteps() - 1;
+                 int start = k->configurator->startFrame() + 1;
 
                  for (int i = start; i <= total; i++) {
                       KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), 
@@ -492,7 +493,7 @@ void Tweener::applyTween()
                  }
 
                  request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                                                k->scene->currentFrameIndex(), KTProjectRequest::Select, "1");
+                                                                k->configurator->startFrame(), KTProjectRequest::Select, "1");
                  emit requested(&request);
         }
 
@@ -539,7 +540,7 @@ void Tweener::applyTween()
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
-                                            k->configurator->startFrame()-1,
+                                            k->configurator->startFrame(),
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::UpdateTween,
@@ -557,17 +558,17 @@ void Tweener::applyTween()
                  kFatal() << "Tweener::applyTween() - Tweening long: " << k->configurator->totalSteps(); 
 
                  if (framesTotal < total) {
-                     for (int i = framesTotal; i <= total; i++) {
+                     for (int i = framesTotal; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                           k->scene->currentLayerIndex(),
                                                           i, KTProjectRequest::Add);
                           emit requested(&requestFrame);
                      }
-
-                     request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                                                    k->configurator->startFrame(), KTProjectRequest::Select, "1");
-                     emit requested(&request);
                  }
+
+                 request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                                                k->configurator->startFrame(), KTProjectRequest::Select, "1");
+                 emit requested(&request);
         }
 
         k->configurator->initStartCombo(framesTotal, k->scene->currentFrameIndex());

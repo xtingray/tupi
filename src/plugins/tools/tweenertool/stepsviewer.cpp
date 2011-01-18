@@ -112,16 +112,16 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              QPointF point = points.at(i);
              if (point == controlKey) {
                  if (frames == 1) {
-                         if (control == 0) {
-                             k->dots->append(calculateDots(points.at(0), controlKey, 9));
-                             frames = 10;
-                         } else {
-                             k->dots->append(calculateDots(keys->at(control-1), controlKey, 9));
-                             frames = 9; 
-                         }
+                     if (control == 0) {
+                         k->dots->append(calculateDots(points.at(0), controlKey, 9));
+                         frames = 10;
+                     } else {
+                         k->dots->append(calculateDots(keys->at(control-1), controlKey, 9));
+                         frames = 9; 
+                     }
                  } else {
-                      if (control == 0) 
-                          frames++;
+                     if (control == 0) 
+                         frames++;
                  } 
 
                  setRowCount(rowCount() + 1);
@@ -146,10 +146,13 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  }
                  frames = 0;
              }
+
              k->dots->append(point);
              frames++;
          }
     }
+
+    kFatal() << "StepsViewer::setPath() - Dots Size: " << k->dots->size();
 }
 
 QVector<KTTweenerStep *> StepsViewer::steps()
@@ -163,6 +166,8 @@ QVector<KTTweenerStep *> StepsViewer::steps()
          stepsVector << step;
          count++;
     }
+  
+    kFatal() << "StepsViewer::steps() - Tracing Tweener size: " << stepsVector.size();
 
     return stepsVector;
 }

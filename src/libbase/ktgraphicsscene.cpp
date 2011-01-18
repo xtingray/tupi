@@ -283,8 +283,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      
                      if (KTItemTweener *tweener = object->tweener()) {
 
-                         kFatal() << "drawPhotogram() - Tracing a tween!";
-
                          object->item()->setTransformOriginPoint(QPointF(0, 0));
                          int adjustX = object->item()->boundingRect().width()/2;
                          int adjustY = object->item()->boundingRect().height()/2;
@@ -293,7 +291,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                              KTTweenerStep *stepItem = tweener->stepAt(0);
                              if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                                 kFatal() << "drawPhotogram() - Object is a KTPathItem!";
                                  k->lastPoint = stepItem->position();
                                  object->item()->setPos(QPointF(0, 0));
                              } else {
@@ -304,7 +301,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                  
                              object->item()->setToolTip(tr("Tween/Step: 0"));
 
-                         } else if ((origin < photogram) && (photogram <= origin+tweener->frames())) {
+                         } else if ((origin < photogram) && (photogram < origin + tweener->frames())) {
 
                              int step = photogram - origin;
                              KTTweenerStep *stepItem = tweener->stepAt(step);
@@ -354,7 +351,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                              object->setPos(k->lastPoint.x(), k->lastPoint.y());
                              object->setToolTip(tr("Tween/Step: 0"));
 
-                         } else if ((origin < photogram) && (photogram <= origin+tweener->frames())) {
+                         } else if ((origin < photogram) && (photogram < origin+tweener->frames())) {
 
                              int step = photogram - origin;
                              KTTweenerStep *stepItem = tweener->stepAt(step);
@@ -676,8 +673,6 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             } 
         }
     }
-
-    kFatal() << "KTGraphicsScene::mousePressEvent() - Just tracing!";
 }
 
 void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

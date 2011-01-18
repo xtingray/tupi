@@ -147,8 +147,6 @@ int KTItemTweener::frames() const
 
 void KTItemTweener::fromXml(const QString &xml)
 {
-    kFatal() << "KTItemTweener::fromXml -> Reading tween!";
-
     QDomDocument doc;
 
     if (doc.setContent(xml)) {
@@ -159,8 +157,6 @@ void KTItemTweener::fromXml(const QString &xml)
         k->frames = root.attribute("frames").toInt();
         k->path = root.attribute("coords");
 
-        kFatal() << "KTItemTweener::fromXml -> " << k->name;
-        
         QDomNode node = root.firstChild();
         
         while (!node.isNull()) {
@@ -190,8 +186,6 @@ void KTItemTweener::fromXml(const QString &xml)
 
 QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTItemTweener::toXml -> " << k->name;
-
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
     root.setAttribute("init", k->initFrame);

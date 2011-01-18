@@ -145,6 +145,8 @@ void KTGraphicObject::initItemData()
 
 void KTGraphicObject::setTweener(bool update, KTItemTweener *tweener)
 {
+    kFatal() << "KTGraphicObject::setTweener() - Update var: " << update;
+
     k->tweener = tweener;
 
     if (!update) {
@@ -163,6 +165,11 @@ KTItemTweener *KTGraphicObject::tweener() const
 KTFrame *KTGraphicObject::frame() const
 {
     return k->frame;
+}
+
+void KTGraphicObject::setFrame(KTFrame *frame) 
+{
+    k->frame = frame;
 }
 
 /*

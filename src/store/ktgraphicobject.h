@@ -65,8 +65,8 @@ class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializab
         KTItemTweener *tweener() const;
         
         KTFrame *frame() const;
-        //int logicalIndex() const;
         int objectIndex() const;
+        void setFrame(KTFrame *frame);
         
     public:
         virtual void fromXml(const QString &xml);

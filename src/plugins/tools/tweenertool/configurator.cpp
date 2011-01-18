@@ -200,6 +200,8 @@ QString Configurator::tweenToXml(int currentFrame, QString path)
     root.setAttribute("frames", k->stepViewer->totalSteps());
     root.setAttribute("coords", path);
 
+    kFatal() << "Configurator::tweenToXml() - Total Steps: " << k->stepViewer->totalSteps();
+
     foreach (KTTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
 
