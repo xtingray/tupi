@@ -64,6 +64,7 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
 
     //setMinimumWidth(142);
     setMaximumWidth(120);
+    //setMinimumHeight(500);
 }
 
 StepsViewer::~StepsViewer()

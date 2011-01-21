@@ -38,6 +38,7 @@
 #include "kdebug.h"
  
 #include "configurator.h"
+#include "settings.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
@@ -47,97 +48,83 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QComboBox>
-#include <QVBoxLayout>
+#include <QBoxLayout>
 #include <QPushButton>
 #include <QHeaderView>
 #include <QGraphicsPathItem>
+#include <QMenu>
+#include <QAction>
 
 struct Configurator::Private
 {
-    KRadioButtonGroup *options;
-    StepsViewer *stepViewer;
+    QBoxLayout *layout; 
+    QBoxLayout *settingsLayout;
+    Settings *settingsPanel;
+
+    QLineEdit *input;
     QListWidget *tweensList;
-    QComboBox *combo;
-    QLabel *totalLabel;
     bool selectionDone;
+
+    KImageButton *addButton;
+    KImageButton *removeButton;
+    KImageButton *editButton;
+
+    //KRadioButtonGroup *options;
+    //StepsViewer *stepViewer;
+    //QComboBox *combo;
+    //QLabel *totalLabel;
 };
 
 Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 {
     k->selectionDone = false;
+
+    k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    QLabel *title = new QLabel(tr("Motion Tween"));
+    title->setAlignment(Qt::AlignHCenter);
+    title->setFont(QFont("Arial", 8, QFont::Bold));
+
+    k->layout->addWidget(title);
+
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
-    QLineEdit *input = new QLineEdit(this);
-    KImageButton *addButton = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22);
-    addButton->setToolTip(tr("Create a new Tween"));
-    connect(addButton, SIGNAL(clicked()), this, SLOT(addTween()));
-    // SQA: Temporary code
-    addButton->setDisabled(true);
+    k->input = new QLineEdit;
+    k->addButton = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22);
+    k->addButton->setToolTip(tr("Create a new Tween"));
+    connect(k->input, SIGNAL(returnPressed()), this, SLOT(addTween()));
+    connect(k->addButton, SIGNAL(clicked()), this, SLOT(addTween()));
 
     QHBoxLayout *lineLayout = new QHBoxLayout;
+    lineLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     lineLayout->setMargin(0);
     lineLayout->setSpacing(0);
-    lineLayout->addWidget(input);
-    lineLayout->addWidget(addButton);
+    lineLayout->addWidget(k->input);
+    lineLayout->addWidget(k->addButton);
 
-    k->tweensList = new QListWidget(this);
+    k->layout->addLayout(lineLayout);
+
+    QBoxLayout *listLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    listLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    k->tweensList = new QListWidget;
+    k->tweensList->setContextMenuPolicy(Qt::CustomContextMenu);
     k->tweensList->setViewMode(QListView::ListMode);
     k->tweensList->setFlow(QListView::TopToBottom);
     k->tweensList->setMovement(QListView::Static);
-
-    QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
-    tweenerItem->setFont(QFont("verdana", 8));
-    tweenerItem->setText("tween00");
-    tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
     k->tweensList->setFixedHeight(68);
-    k->tweensList->setCurrentRow(0);
+    connect(k->tweensList, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showMenu(const QPoint &)));
 
-    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":"); 
-    startingLabel->setAlignment(Qt::AlignHCenter);
-    k->combo = new QComboBox();
-    k->combo->setMaximumWidth(50);
-    k->combo->setEditable(false);
+    listLayout->addWidget(k->tweensList);
+    k->layout->addLayout(listLayout);
 
-    QHBoxLayout *startLayout = new QHBoxLayout;
-    startLayout->setMargin(0);
-    startLayout->setSpacing(0);
-    startLayout->addWidget(k->combo);
+    k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    k->settingsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-    k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
-    k->options->addItem(tr("Select object"), 0);
-    k->options->addItem(tr("Create path"), 1);
-    connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
-
-    k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
-    k->totalLabel->setAlignment(Qt::AlignHCenter);
-    QHBoxLayout *totalLayout = new QHBoxLayout;
-    totalLayout->setMargin(0);
-    totalLayout->setSpacing(0);
-    totalLayout->addWidget(k->totalLabel);
-
-    QPushButton *reset = new QPushButton(tr("Reset Tween"));
-    connect(reset, SIGNAL(clicked()), this, SIGNAL(clickedResetTweener()));
-
-    QPushButton *applyButton = new QPushButton(tr("Apply"));
-    connect(applyButton, SIGNAL(clicked()), this, SIGNAL(clickedApplyTweener()));
-
-    k->stepViewer = new StepsViewer;
-    k->stepViewer->verticalHeader()->hide();
-    k->stepViewer->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->setAlignment(Qt::AlignHCenter);
-    layout->addLayout(lineLayout);
-    layout->addWidget(k->tweensList);
-    layout->addWidget(startingLabel);
-    layout->addLayout(startLayout);
-    layout->addWidget(k->options);
-    layout->addWidget(k->stepViewer);
-    layout->addLayout(totalLayout);
-    layout->addWidget(reset);
-    layout->addWidget(applyButton);
-    setLayout(layout);
+    k->layout->addLayout(k->settingsLayout);
+    k->layout->addStretch(2);
+    k->layout->setSpacing(5);
 }
 
 Configurator::~Configurator()
@@ -145,29 +132,63 @@ Configurator::~Configurator()
     delete k;
 }
 
+void Configurator::loadTweenList(QList<QString> tweenList)
+{
+    for (int i=0; i < tweenList.size(); i++) {
+        QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
+        tweenerItem->setFont(QFont("verdana", 8));
+        tweenerItem->setText(tweenList.at(i));
+        tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    }
+}
+
+void Configurator::addButtonsPanel()
+{
+    k->editButton = new KImageButton(QPixmap(THEME_DIR + "icons/tweener.png"), 22);
+    k->removeButton = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
+
+    QHBoxLayout *controlLayout = new QHBoxLayout;
+    controlLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    controlLayout->setMargin(1);
+    controlLayout->setSpacing(5);
+    controlLayout->addWidget(k->editButton);
+    controlLayout->addWidget(k->removeButton);
+
+    k->settingsLayout->addLayout(controlLayout);
+}
+
 void Configurator::initStartCombo(int framesTotal, int currentIndex)
 {
+    /*
     k->combo->clear();
     for (int i=1; i<=framesTotal; i++)
          k->combo->addItem(QString::number(i));
 
     k->combo->setCurrentIndex(currentIndex);
+    */
 }
 
 void Configurator::setStartFrame(int currentIndex)
 {
-    k->combo->setCurrentIndex(currentIndex);
+    //k->combo->setCurrentIndex(currentIndex);
 }
 
 int Configurator::startFrame()
 {
-    return k->combo->currentIndex();
+    //return k->combo->currentIndex();
+    return 0;
+}
+
+int Configurator::startComboSize()
+{
+    //return k->combo->count();
+    return 1;
 }
 
 void Configurator::updateSteps(const QGraphicsPathItem *path)
 {
-    k->stepViewer->setPath(path);
-    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
+    //k->stepViewer->setPath(path);
+    //k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }
 
 void Configurator::emitOptionChanged(int option)
@@ -183,7 +204,7 @@ void Configurator::emitOptionChanged(int option)
                  if (k->selectionDone) {
                      emit clickedCreatePath();
                  } else {
-                     k->options->setCurrentIndex(0);
+                     // k->options->setCurrentIndex(0);
                      KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);   
                  }
              }
@@ -197,13 +218,12 @@ QString Configurator::tweenToXml(int currentFrame, QString path)
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
     root.setAttribute("init", currentFrame);
-    root.setAttribute("frames", k->stepViewer->totalSteps());
+    //root.setAttribute("frames", k->stepViewer->totalSteps());
+    root.setAttribute("frames", 0);
     root.setAttribute("coords", path);
 
-    kFatal() << "Configurator::tweenToXml() - Total Steps: " << k->stepViewer->totalSteps();
-
-    foreach (KTTweenerStep *step, k->stepViewer->steps())
-             root.appendChild(step->toXml(doc));
+    //foreach (KTTweenerStep *step, k->stepViewer->steps())
+    //         root.appendChild(step->toXml(doc));
 
     doc.appendChild(root);
 
@@ -212,28 +232,60 @@ QString Configurator::tweenToXml(int currentFrame, QString path)
 
 int Configurator::totalSteps()
 {
-    return k->stepViewer->totalSteps();
+    //return k->stepViewer->totalSteps();
+    return 0;
 }
 
 void Configurator::activatePathMode()
 {
-    k->options->setCurrentIndex(1);
-    k->stepViewer->cleanRows();
+    //k->options->setCurrentIndex(1);
+    //k->stepViewer->cleanRows();
 }
 
 void Configurator::activateSelectionMode()
 {
-    k->options->setCurrentIndex(0);
+    //k->options->setCurrentIndex(0);
 }
 
 void Configurator::cleanData()
 {
-    k->stepViewer->cleanRows();
+    //k->stepViewer->cleanRows();
 }
 
 void Configurator::addTween()
 {
     kFatal() << "Configurator::addTween() - Adding new Tween!";
+    QString name = k->input->text();
+
+    if (name.length() > 0) {
+        QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
+        tweenerItem->setFont(QFont("verdana", 8));
+        tweenerItem->setText(name);
+        tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        k->input->clear();
+        k->tweensList->setCurrentItem(tweenerItem);
+        k->addButton->setDisabled(true);
+
+        k->settingsPanel = new Settings;
+        connect(k->settingsPanel, SIGNAL(clickedRemoveTween()), this, SLOT(removeTween()));
+
+        k->settingsLayout->addWidget(k->settingsPanel);
+    }
+}
+
+void Configurator::removeTween()
+{
+    kFatal() << "Configurator::removeTween() - Tracing!";
+
+    QListWidgetItem *item = k->tweensList->currentItem();
+    emit clickedRemoveTween(item->text());
+    k->tweensList->takeItem(k->tweensList->row(item));
+
+    if (k->tweensList->count() == 0)
+        k->addButton->setDisabled(false);
+
+    if (k->settingsPanel)
+        k->settingsPanel->hide();
 }
 
 QString Configurator::currentTweenName() const
@@ -245,8 +297,24 @@ QString Configurator::currentTweenName() const
         return "";
 }
 
-void Configurator::notifySelection()
+void Configurator::notifySelection(bool flag)
 {
-    k->selectionDone = true;
+    k->selectionDone = flag;
 }
+
+void Configurator::showMenu(const QPoint &point)
+{
+    kFatal() << "Configurator::showMenu() - Opening menu!";
+
+    if (k->tweensList->count() > 0) {
+        QAction *remove = new QAction(tr("Remove"), this);
+        connect(remove, SIGNAL(triggered()), this, SLOT(removeTween()));
+
+        QMenu *menu = new QMenu(tr("Options"));
+        menu->addAction(remove);
+        QPoint globalPos = k->tweensList->mapToGlobal(point);
+        menu->exec(globalPos); 
+    }
+}
+
 

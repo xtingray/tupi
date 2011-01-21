@@ -33,50 +33,51 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTGRAPHICOBJECT_H
-#define KTGRAPHICOBJECT_H
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-#include <QObject>
-#include "ktabstractserializable.h"
-#include "ktframe.h"
-#include "ktglobal_store.h"
+#include <QWidget>
 
-class QGraphicsItem;
-class KTItemTweener;
+class QGraphicsPathItem;
 
 /**
- * @author David Cuadrado
+ * @author Jorge Cuadrado
 */
-class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
+
+class Settings : public QWidget 
 {
+    Q_OBJECT
+
     public:
-        enum Transformations{ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY};
+        Settings(QWidget *parent = 0);
+        ~Settings();
+
+        void initStartCombo(int framesTotal, int currentIndex);
+        void setStartFrame(int currentIndex);
+        int startFrame();
+
+        void updateSteps(const QGraphicsPathItem *path);
+        QString tweenToXml(int currentFrame, QString path);
+        int totalSteps();
+        void activatePathMode();
+        void activateSelectionMode();
+        void cleanData();
+        void notifySelection(bool flag);
+        int startComboSize();
         
-        KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
-        ~KTGraphicObject();
+    private slots:
+        void emitOptionChanged(int option);
+        void addTween();
         
-        void setItem(QGraphicsItem *item);
-        QGraphicsItem *item() const;
-        
-        void setObjectName(const QString &name);
-        QString objectName() const;
-        
-        void setTween(KTItemTweener *tween);
-        bool hasTween() const;
-        void removeTween();
-        KTItemTweener *tween() const;
-        
-        KTFrame *frame() const;
-        int objectIndex() const;
-        void setFrame(KTFrame *frame);
-        
-    public:
-        virtual void fromXml(const QString &xml);
-        virtual QDomElement toXml(QDomDocument &doc)  const;
+    signals:
+        void clickedCreatePath();
+        void clickedSelect();
+        void clickedRemoveTween();
+        void clickedResetTween();
+        void clickedApplyTween();
+        void startingPointChanged(int);
         
     private:
-        void initItemData();
-        
         struct Private;
         Private *const k;
 };

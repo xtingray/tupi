@@ -516,14 +516,9 @@ void KTProjectCommand::itemCommand()
                  k->executor->ungroupItems(response);
             }
             break;
-            case KTProjectRequest::AddTween:
+            case KTProjectRequest::SetTween:
             {
-                 k->executor->setTween(false, response);
-            }
-            break;
-            case KTProjectRequest::UpdateTween:
-            {
-                 k->executor->setTween(true, response);
+                 k->executor->setTween(response);
             }
             break;
             default: 

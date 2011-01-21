@@ -48,7 +48,10 @@
 
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
-    KINIT;
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
+
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -122,7 +125,9 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 
 ExactnessConfigurator::~ExactnessConfigurator()
 {
-    KEND;
+    #ifdef K_DEBUG
+           KEND;
+    #endif
 }
 
 double ExactnessConfigurator::exactness() const

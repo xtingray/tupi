@@ -47,7 +47,8 @@ struct KTGraphicObject::Private
 {
     QString name;
     QGraphicsItem *item;
-    KTItemTweener *tweener;
+    bool hasTween;
+    KTItemTweener *tween;
     KTFrame *frame;
 };
 
@@ -59,8 +60,9 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
     #endif
 
     k->item = item;
-    k->tweener = 0;
+    k->tween = 0;
     k->frame = parent;
+    k->hasTween = false;
 
     initItemData();
 }
@@ -75,7 +77,7 @@ KTGraphicObject::~KTGraphicObject()
         delete k->item;
 
     /*
-    if (k->tweener && k->frame->scene()) {
+    if (k->tween && k->frame->scene()) {
         k->frame->scene()->removeTweenObject(this);
     }
     */
@@ -96,8 +98,8 @@ QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
     if (KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(k->item))
         object.appendChild(is->toXml(doc));
 
-    if (k->tweener)
-        object.appendChild(k->tweener->toXml(doc));
+    if (k->tween)
+        object.appendChild(k->tween->toXml(doc));
 
     return object;
 }
@@ -143,23 +145,26 @@ void KTGraphicObject::initItemData()
         k->item->setData(TranslateY, 0.0);
 }
 
-void KTGraphicObject::setTweener(bool update, KTItemTweener *tweener)
+void KTGraphicObject::setTween(KTItemTweener *tween)
 {
-    kFatal() << "KTGraphicObject::setTweener() - Update var: " << update;
-
-    k->tweener = tweener;
-
-    if (!update) {
-        if (k->tweener)
-            k->frame->scene()->addTweenObject(this);
-        else
-            k->frame->scene()->removeTweenObject(this);
-    }
+    k->tween = tween;
+    k->hasTween = true;
 }
 
-KTItemTweener *KTGraphicObject::tweener() const
+bool KTGraphicObject::hasTween() const
 {
-    return k->tweener;
+    return k->hasTween;
+}
+
+void KTGraphicObject::removeTween()
+{
+    k->tween = 0;
+    k->hasTween = false;
+}
+
+KTItemTweener *KTGraphicObject::tween() const
+{
+    return k->tween;
 }
 
 KTFrame *KTGraphicObject::frame() const
@@ -171,13 +176,6 @@ void KTGraphicObject::setFrame(KTFrame *frame)
 {
     k->frame = frame;
 }
-
-/*
-int KTGraphicObject::logicalIndex() const
-{
-    return k->frame->logicalIndexOf(const_cast<KTGraphicObject *>(this));
-}
-*/
 
 int KTGraphicObject::objectIndex() const
 {

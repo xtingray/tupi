@@ -169,24 +169,17 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                     if (type == KTLibraryObject::Svg) {
                         frame->removeSvgAt(response->itemIndex());
                     } else {
-                        frame->removeGraphicAt(response->itemIndex());
+                        KTGraphicObject *object = frame->graphic(response->itemIndex());
+                        if (object) {
+                            if (object->hasTween())
+                                scene->removeTweenObject(object);
+                        } else {
+                            #ifdef K_DEBUG
+                                   kError() << "KTCommandExecutor::removeItem() - Error: " << tr("Invalid object index") << response->itemIndex();
+                            #endif
+                        }
 
-                        // SQA: Check this code and figure out if it's required
-                         /*
-                          QGraphicsItem *item = frame->item(response->itemIndex());
-                          if (item) {
-                              if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
-                                  QDomDocument orig;
-                                  orig.appendChild(itemSerializable->toXml(orig));
-                                  response->setArg(orig.toString());
-                                  frame->removeGraphicAt(response->itemIndex());
-                              } else {
-                                  return false;
-                              }
-                          } else {
-                              kFatal() << "KTCommandExecutor::removeItem - Item NOT found!";
-                          }
-                         */
+                        frame->removeGraphicAt(response->itemIndex());
                     }
                 
                     emit responsed(response);
@@ -699,7 +692,7 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
 }
 
 
-bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
+bool KTCommandExecutor::setTween(KTItemResponse *response)
 {
     #ifdef K_DEBUG
         K_FUNCINFO;
@@ -731,8 +724,8 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
 
                 if (frame) {
 
-                    KTItemTweener *tweener = new KTItemTweener();
-                    tweener->fromXml(xml);
+                    KTItemTweener *tween = new KTItemTweener();
+                    tween->fromXml(xml);
 
                     if (type == KTLibraryObject::Item) {
 
@@ -744,10 +737,8 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
                             return false;
                         }
                         kFatal() << "KTCommandExecutor::setTween() - Updating object from index: " << position;
-                        object->setFrame(frame);
-                        object->setTweener(update, tweener);
+                        object->setTween(tween);
                         scene->addTweenObject(object);
-
                     } else {
 
                         KTSvgItem *object = frame->svg(position); 
@@ -757,7 +748,7 @@ bool KTCommandExecutor::setTween(bool update, KTItemResponse *response)
                             #endif
                             return false;
                         }
-                        object->setTweener(update, tweener);
+                        object->setTween(tween);
 
                     }
 

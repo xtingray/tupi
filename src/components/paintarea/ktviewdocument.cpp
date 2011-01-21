@@ -463,7 +463,7 @@ void KTViewDocument::selectTool()
                      } else if (toolStr.compare(tr("PolyLine"))==0) {
                                 minWidth = 130;
                      } else if (toolStr.compare(tr("Motion Tween"))==0) {
-                                minWidth = 140;
+                                minWidth = 160;
                      } 
 
                      k->brushesMenu->setDefaultAction(action);

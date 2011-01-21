@@ -100,15 +100,22 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     QColor color;
     
     if ((option->state & QStyle::State_Sunken) && (k->action == Rotate)) {
-        color = QColor("green");
-        color.setAlpha(150);
+        color = QColor("white");
+        color.setAlpha(200);
     } else {
-        color = QColor("navy");
-        color.setAlpha(150);
+        color = QColor("green");
+        color.setAlpha(200);
     }
     
-    if (k->action == Rotate)
-        color.setGreen(200);
+    if (k->action == Rotate) {
+        if (k->typeNode != Center) {
+            color = QColor(31, 183, 180);
+            color.setAlpha(150);
+        } else {
+            color = QColor(255, 0, 0);
+            color.setAlpha(150);
+        }
+    }
 
     QRectF square = boundingRect();
 

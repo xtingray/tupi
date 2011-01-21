@@ -408,6 +408,82 @@ QList<KTSvgItem *> KTScene::tweeningSvgObjects() const
     return k->tweeningSvgObjects;
 }
 
+bool KTScene::tweenExists(const QString &name)
+{
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0)
+                     return true;
+             }
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0)
+                     return true;
+             }
+    }
+
+    return false;
+}
+
+void KTScene::removeTween(const QString &name)
+{
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0) {
+                     object->removeTween();
+                     removeTweenObject(object);
+                     return;
+                 }
+             }
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0) {
+                     object->removeTween();
+                     removeTweenObject(object);
+                     return;
+                 }
+             }
+    }
+}
+
+QList<QString> KTScene::getTweenNames()
+{
+    QList<QString> names;
+
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             if (KTItemTweener *tween = object->tween())
+                 names.append(tween->name());
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (KTItemTweener *tween = object->tween()) 
+                 names.append(tween->name());
+    }
+
+    return names;
+}
+
+int KTScene::getTotalTweens()
+{
+    int total = 0;
+
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             if (object->hasTween()) 
+                 total++;
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (object->hasTween())                    
+                 total++;
+    }
+
+    return total;
+}
+
 int KTScene::framesTotal()
 {
     int total = 0;

@@ -98,7 +98,7 @@ int KTProjectResponse::action() const
                      {
                      }
                 break;
-                case KTProjectRequest::AddTween:
+                case KTProjectRequest::SetTween:
                      {
                      }
                 break;

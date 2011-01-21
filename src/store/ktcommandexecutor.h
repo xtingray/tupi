@@ -106,7 +106,7 @@ class KTCommandExecutor : public QObject
         bool addSymbolToProject(KTLibraryResponse *response);
         bool removeSymbolFromProject(KTLibraryResponse *response);
         
-        bool setTween(bool update, KTItemResponse *response);
+        bool setTween(KTItemResponse *response);
         
         bool expandFrame(KTFrameResponse *response);
         bool pasteFrame( KTFrameResponse *response);

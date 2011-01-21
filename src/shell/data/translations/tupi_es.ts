@@ -75,40 +75,48 @@
         <source>Create a new Tween</source>
         <translation>Crear un nuevo Tween</translation>
     </message>
+</context>
+<context>
+    <name>Settings</name>
     <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="90"/>
+        <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>
         <source>Starting at frame</source>
         <translation>Empezando en marco</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="53"/>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="53"/>
         <source>Options</source>
         <translation>Opciones</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="54"/>
-        <source>Create path</source>
-        <translation>Crear ruta</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="55"/>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="55"/>
         <source>Select object</source>
         <translation>Escoger objeto</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="106"/>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="54"/>
+        <source>Create path</source>
+        <translation>Crear ruta</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
         <source>Frames Total</source>
         <translation>Total de marcos</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="58"/>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Remove Tween</source>
+        <translation>Remover Tween</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Reset Tween</source>
         <translation>Reiniciar Tween</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="58"/>
-        <source>Apply</source>
-        <translation>Aplicar</translation>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Save Tween</source>
+        <translation>Guardar Tween</translation>
     </message>
 </context>
 <context>

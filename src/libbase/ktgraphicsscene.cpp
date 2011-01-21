@@ -281,7 +281,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                  if (object->frame()->layer()->isVisible()) {
                      int origin = object->frame()->index();
                      
-                     if (KTItemTweener *tweener = object->tweener()) {
+                     if (KTItemTweener *tween = object->tween()) {
 
                          object->item()->setTransformOriginPoint(QPointF(0, 0));
                          int adjustX = object->item()->boundingRect().width()/2;
@@ -289,7 +289,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          if (origin == photogram) {
 
-                             KTTweenerStep *stepItem = tweener->stepAt(0);
+                             KTTweenerStep *stepItem = tween->stepAt(0);
                              if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
                                  k->lastPoint = stepItem->position();
                                  object->item()->setPos(QPointF(0, 0));
@@ -301,10 +301,10 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                  
                              object->item()->setToolTip(tr("Tween/Step: 0"));
 
-                         } else if ((origin < photogram) && (photogram < origin + tweener->frames())) {
+                         } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
 
                              int step = photogram - origin;
-                             KTTweenerStep *stepItem = tweener->stepAt(step);
+                             KTTweenerStep *stepItem = tween->stepAt(step);
 
                              if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
                                  qreal dx = stepItem->position().x() - k->lastPoint.x();
@@ -337,7 +337,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                  if (object->frame()->layer()->isVisible()) {
                      int origin = object->frame()->index();
 
-                     if (KTItemTweener *tweener = object->tweener()) {
+                     if (KTItemTweener *tween = object->tween()) {
 
                          object->setTransformOriginPoint(QPointF(0, 0));
                          int adjustX = object->boundingRect().width()/2;
@@ -345,16 +345,16 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          if (origin == photogram) {
 
-                             KTTweenerStep *stepItem = tweener->stepAt(0);
+                             KTTweenerStep *stepItem = tween->stepAt(0);
                              k->lastPoint = QPointF(stepItem->position().x() - adjustX,
                                                     stepItem->position().y() - adjustY);
                              object->setPos(k->lastPoint.x(), k->lastPoint.y());
                              object->setToolTip(tr("Tween/Step: 0"));
 
-                         } else if ((origin < photogram) && (photogram < origin+tweener->frames())) {
+                         } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
 
                              int step = photogram - origin;
-                             KTTweenerStep *stepItem = tweener->stepAt(step);
+                             KTTweenerStep *stepItem = tween->stepAt(step);
                              object->setPos(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
                              k->lastPoint = stepItem->position();
 

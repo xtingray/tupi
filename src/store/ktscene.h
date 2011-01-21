@@ -142,6 +142,12 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         void removeTweenObject(KTGraphicObject *object);
         void removeTweenObject(KTSvgItem *object);
 
+        bool tweenExists(const QString &name);
+        void removeTween(const QString &name);
+
+        QList<QString> getTweenNames();
+        int getTotalTweens();
+
         QList<KTGraphicObject *> tweeningGraphicObjects() const;
         QList<KTSvgItem *> tweeningSvgObjects() const;
 

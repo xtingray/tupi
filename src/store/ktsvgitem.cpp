@@ -46,7 +46,8 @@ struct KTSvgItem::Private
     QString path;
     QString data;
     KTFrame *frame;
-    KTItemTweener *tweener;
+    KTItemTweener *tween;
+    bool hasTween;
 };
 
 KTSvgItem::KTSvgItem(QGraphicsItem * parent)
@@ -59,6 +60,7 @@ KTSvgItem::KTSvgItem(QString &file, KTFrame *frame)
 {
     k->path = file;
     k->frame = frame;
+    k->hasTween = false;
 }
 
 KTSvgItem::~KTSvgItem()
@@ -85,9 +87,9 @@ KTFrame *KTSvgItem::frame() const
     return k->frame;
 }
 
-KTItemTweener *KTSvgItem::tweener() const
+KTItemTweener *KTSvgItem::tween() const
 {
-    return k->tweener;
+    return k->tween;
 }
 
 void KTSvgItem::rendering()
@@ -115,19 +117,34 @@ QDomElement KTSvgItem::toXml(QDomDocument &doc) const
     root.setAttribute("id", k->name);
     root.appendChild(KTSerializer::properties(this, doc));
 
-    if (k->tweener)
-        root.appendChild(k->tweener->toXml(doc));
+    if (k->tween)
+        root.appendChild(k->tween->toXml(doc));
  
     return root;
 }
 
-void KTSvgItem::setTweener(bool update, KTItemTweener *tweener)
+void KTSvgItem::setTween(KTItemTweener *tween)
 {
-    k->tweener = tweener;
+    k->tween = tween;
+    k->hasTween = true;
+
+    /*
     if (!update) {
-        if (k->tweener)
+        if (k->tween)
             k->frame->scene()->addTweenObject(this);
         else
             k->frame->scene()->removeTweenObject(this);
     }
+    */
+}
+
+bool KTSvgItem::hasTween()
+{
+    return k->hasTween;
+}
+
+void KTSvgItem::removeTween()
+{
+    k->tween = 0; 
+    k->hasTween = false;
 }

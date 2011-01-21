@@ -122,7 +122,7 @@ class STORE_EXPORT KTProjectRequest
             AddSymbolToProject = 13,
             RemoveSymbolFromProject = 14,
 
-            AddTween = 15,
+            SetTween = 15,
             UpdateTween = 16,
             RemoveTween = 17,
             

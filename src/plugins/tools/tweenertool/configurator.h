@@ -39,15 +39,21 @@
 #include <QFrame>
 
 class QGraphicsPathItem;
+
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class Configurator : public QFrame
 {
     Q_OBJECT
+
     public:
         Configurator(QWidget *parent = 0);
         ~Configurator();
+
+        void loadTweenList(QList<QString> tweenList);
+        void addButtonsPanel();
 
         void initStartCombo(int framesTotal, int currentIndex);
         void setStartFrame(int currentIndex);
@@ -60,17 +66,22 @@ class Configurator : public QFrame
         void activateSelectionMode();
         void cleanData();
         QString currentTweenName() const;
-        void notifySelection();
+        void notifySelection(bool flag);
+        int startComboSize();
         
     private slots:
         void emitOptionChanged(int option);
         void addTween();
+        void removeTween();
+        void showMenu(const QPoint &point);
         
     signals:
         void clickedCreatePath();
         void clickedSelect();
-        void clickedResetTweener();
-        void clickedApplyTweener();
+        void clickedRemoveTween(const QString &);
+        void clickedResetTween();
+        void clickedApplyTween();
+        void startingPointChanged(int);
         
     private:
         struct Private;

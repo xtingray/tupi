@@ -103,13 +103,6 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         painter->restore();
         
         if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
-            /*
-            QColor nc = it->pen().brush().color();
-            int red = (nc.red()+254) % 255;
-            int green = (nc.green()+254) % 255;
-            int blue = (nc.blue()+254) % 255;
-            c = QColor(red, green, blue);
-            */
             c = QColor("white");
         } else {
             c = QColor("green");
@@ -119,13 +112,6 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     } else {
 
         if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
-           /*
-           QColor nc = it->pen().brush().color();
-           int red = (nc.red()+254) % 255;
-           int green = (nc.green()+254) % 255;
-           int blue = (nc.blue()+254) % 255;
-           c = QColor(red, green, blue);
-           */
            c = QColor("white");
         } else {
            c = QColor("navy");

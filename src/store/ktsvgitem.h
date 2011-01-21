@@ -58,9 +58,11 @@ class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSeriali
         QString symbolName() const;
         QString itemPath() const;
         KTFrame *frame() const;
-        KTItemTweener *tweener() const;
+        KTItemTweener *tween() const;
+        void removeTween();
         void rendering();
-        void setTweener(bool update, KTItemTweener *tweener);
+        void setTween(KTItemTweener *tween);
+        bool hasTween();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

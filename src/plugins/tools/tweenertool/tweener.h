@@ -45,9 +45,9 @@
 
 class Tweener : public KTToolPlugin
 {
-    Q_OBJECT;
-    public:
+    Q_OBJECT
 
+    public:
         Tweener();
         virtual ~Tweener();
         virtual void init(KTGraphicsScene *scene);
@@ -57,19 +57,14 @@ class Tweener : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void updateScene(KTGraphicsScene *scene);
-
         virtual QMap<QString, KAction *>actions() const;
+        virtual QWidget *configurator();
+        virtual void aboutToChangeTool();
+        virtual void saveConfig();
 
         int toolType() const;
-
-        virtual QWidget *configurator();
-
         void aboutToChangeScene(KTGraphicsScene *scene);
-
-        virtual void aboutToChangeTool();
-
         bool isComplete() const;
-        virtual void saveConfig();
 
     private:
         void setupActions();
@@ -83,8 +78,10 @@ class Tweener : public KTToolPlugin
     private slots:
         void applyReset();
         void applyTween();
+        void removeTween(const QString &name);
         void setCreatePath();
         void setSelect();
+        void updateStartPoint(int index);
 
     public slots:
         void updatePath();
