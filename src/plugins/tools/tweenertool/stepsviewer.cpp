@@ -33,14 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QGraphicsPathItem>
-#include <QDebug>
-#include <cmath>
-
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
 #include "spinboxdelegate.h"
 #include "kdebug.h"
+
+#include <cmath>
+#include <QGraphicsPathItem>
+#include <QDebug>
 
 struct StepsViewer::Private
 {
@@ -62,14 +62,19 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
     connect(spin, SIGNAL(nodeClicked()), this, SIGNAL(updateTable()));
     */
 
-    //setMinimumWidth(142);
     setMaximumWidth(120);
-    //setMinimumHeight(500);
+    setMaximumHeight(800);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 }
 
 StepsViewer::~StepsViewer()
 {
     delete k;
+}
+
+QSize StepsViewer::sizeHint() const
+{
+    return QSize(maximumWidth(), maximumHeight());
 }
 
 void StepsViewer::setPath(const QGraphicsPathItem *path)

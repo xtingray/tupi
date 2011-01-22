@@ -49,10 +49,13 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-        Settings(QWidget *parent = 0);
+        enum Mode { Add = 1, Edit, View };
+        enum EditMode { Selection = 1, Path };
+
+        Settings(QWidget *parent = 0, Mode mode = Settings::Add, int totalFrames = 1, int startFrame = 0);
         ~Settings();
 
-        void initStartCombo(int framesTotal, int currentIndex);
+        void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
         int startFrame();
 
@@ -72,7 +75,6 @@ class Settings : public QWidget
     signals:
         void clickedCreatePath();
         void clickedSelect();
-        void clickedRemoveTween();
         void clickedResetTween();
         void clickedApplyTween();
         void startingPointChanged(int);

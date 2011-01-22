@@ -37,6 +37,7 @@
 #define CONFIGURATOR_H
 
 #include <QFrame>
+#include "settings.h"
 
 class QGraphicsPathItem;
 
@@ -68,10 +69,13 @@ class Configurator : public QFrame
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();
+        void closeSettingsPanel();
+        Settings::Mode mode();
         
     private slots:
-        void emitOptionChanged(int option);
         void addTween();
+        void editTween();
+        void resetTween();
         void removeTween();
         void showMenu(const QPoint &point);
         
@@ -82,8 +86,10 @@ class Configurator : public QFrame
         void clickedResetTween();
         void clickedApplyTween();
         void startingPointChanged(int);
+        void selectionModeOn();
         
     private:
+        bool itemExists(const QString &name);
         struct Private;
         Private *const k;
 };

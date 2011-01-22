@@ -50,7 +50,7 @@ class KTItemTweener;
 class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
 {
     public:
-        enum Transformations{ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY};
+        enum Transformations { ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY };
         
         KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
         ~KTGraphicObject();

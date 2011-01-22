@@ -60,14 +60,16 @@ struct Settings::Private
     QComboBox *combo;
     QLabel *totalLabel;
     bool selectionDone;
+    Mode mode; 
 };
 
-Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
+Settings::Settings(QWidget *parent, Mode mode, int framesTotal, int startFrame) : QWidget(parent), k(new Private)
 {
+    k->mode = mode;
     k->selectionDone = false;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-    k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
@@ -76,6 +78,11 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->combo = new QComboBox();
     k->combo->setMaximumWidth(50);
     k->combo->setEditable(false);
+    initStartCombo(framesTotal, startFrame);
+
+    if (k->mode == Settings::Add)
+        k->combo->setEnabled(false);
+
     connect(k->combo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
@@ -89,30 +96,29 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
     k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
-    k->totalLabel->setAlignment(Qt::AlignHCenter);
+    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     QHBoxLayout *totalLayout = new QHBoxLayout;
     totalLayout->setMargin(0);
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
     KImageButton *apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    apply->setToolTip(tr("Save Tween"));
+    if (k->mode == Settings::Add)
+        apply->setToolTip(tr("Save Tween"));
+    else
+        apply->setToolTip(tr("Update Tween"));
     connect(apply, SIGNAL(clicked()), this, SIGNAL(clickedApplyTween()));
 
-    KImageButton *reset = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    reset->setToolTip(tr("Reset Tween"));
-    connect(reset, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
-
-    KImageButton *remove = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
-    remove->setToolTip(tr("Remove Tween"));
-    connect(remove, SIGNAL(clicked()), this, SIGNAL(clickedRemoveTween()));
+    KImageButton *remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    remove->setToolTip(tr("Cancel Operation"));
+    connect(remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
-    buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(10);
     buttonsLayout->addWidget(apply);
-    buttonsLayout->addWidget(reset);
+    //buttonsLayout->addWidget(reset);
     buttonsLayout->addWidget(remove);
 
     k->stepViewer = new StepsViewer;
@@ -131,7 +137,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 
     k->layout->addLayout(buttonsLayout);
 
-    k->layout->addStretch(2);
     k->layout->setSpacing(5);
 
     activateSelectionMode();
@@ -235,6 +240,7 @@ void Settings::cleanData()
 
 void Settings::notifySelection(bool flag)
 {
+    kFatal() << "Settings::notifySelection() - Updating selection flag: " << flag; 
     k->selectionDone = flag;
 }
 

@@ -35,6 +35,7 @@
 
 #include "tweener.h"
 #include "configurator.h"
+#include "settings.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -71,22 +72,26 @@ struct Tweener::Private
     QMap<QString, KAction *> actions;
     Configurator *configurator;
     KTGraphicsScene *scene;
-    bool creatingPath;
-    bool selecting;
+    //bool creatingPath;
+    //bool selecting;
     QGraphicsPathItem *path;
     QList<QGraphicsItem *> objects;
     KNodeGroup *group;
     bool pathAdded;
     int startPoint;
-    bool editMode;
+    Settings::Mode mode;
+    Settings::EditMode editMode;
+    bool firstStage;
 };
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
 {
     setupActions();
+
     k->configurator = 0;
-    k->creatingPath = true;
-    k->selecting = false;
+    //k->creatingPath = true;
+    //k->selecting = false;
+    k->editMode = Settings::Selection;
     k->path = 0;
     k->group = 0;
     k->pathAdded = false;
@@ -104,7 +109,6 @@ void Tweener::init(KTGraphicsScene *scene)
 {
     kFatal() << "Tweener::init() - Tracing!";
 
-    k->editMode = false;
     delete k->path;
     k->path = 0;
     delete k->group;
@@ -112,10 +116,15 @@ void Tweener::init(KTGraphicsScene *scene)
     k->scene = scene;
     k->objects.clear();
 
-    QList<QString> tweenList = k->scene->scene()->getTweenNames();
-    if (tweenList.size() > 0) {
-        k->configurator->loadTweenList(tweenList);
-        k->configurator->addButtonsPanel();
+    if (k->firstStage) {
+        QList<QString> tweenList = k->scene->scene()->getTweenNames();
+        if (tweenList.size() > 0) {
+            k->configurator->loadTweenList(tweenList);
+            k->configurator->addButtonsPanel();
+        }
+    } else {
+        if (k->mode != Settings::View)
+            setSelect();
     }
 
     /*
@@ -161,7 +170,7 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
 
-    if (k->creatingPath) {
+    if (k->editMode == Settings::Path) {
         if (!k->path) {
             k->path = new QGraphicsPathItem;
             QColor color = Qt::lightGray;
@@ -197,7 +206,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    if (k->creatingPath) {
+    if (k->editMode == Settings::Path) {
 
         if (!k->group) {
             k->group = new KNodeGroup(k->path, scene);
@@ -252,6 +261,9 @@ QWidget *Tweener::configurator()
     kFatal() << "Tweener::configurator() - Tracing!";
 
     if (!k->configurator) {
+        k->mode = Settings::View;
+        k->firstStage = true;
+
         k->configurator = new Configurator;
 
         connect(k->configurator, SIGNAL(clickedCreatePath()), this, SLOT(setCreatePath()));
@@ -259,6 +271,10 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetTween()), this, SLOT(applyReset()));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
+        connect(k->configurator, SIGNAL(selectionModeOn()), this, SLOT(setSelect()));
+    } else {
+        k->mode = k->configurator->mode();
+        k->firstStage = false;
     }
 
     return k->configurator;
@@ -273,7 +289,7 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 
 void Tweener::aboutToChangeTool()
 {
-    if (k->selecting) {
+    if (k->editMode == Settings::Selection) {
         if (k->objects.size() > 0) {
             foreach (QGraphicsItem *item, k->objects) {
                      if (item->isSelected())
@@ -283,7 +299,7 @@ void Tweener::aboutToChangeTool()
         return;
     }
 
-    if (k->creatingPath) {
+    if (k->editMode == Settings::Path) {
         if (k->path) {
             k->scene->removeItem(k->path);
             k->pathAdded = false;
@@ -336,8 +352,10 @@ void Tweener::setCreatePath()
 
     }
 
-    k->creatingPath = true;
-    k->selecting = false;
+    //k->creatingPath = true;
+    //k->selecting = false;
+
+    k->editMode = Settings::Path;
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode (QGraphicsView::NoDrag);
@@ -361,8 +379,10 @@ void Tweener::setSelect()
         k->group = 0;
     }
 
-    k->creatingPath = false;
-    k->selecting = true;
+    //k->creatingPath = false;
+    //k->selecting = true;
+
+    k->editMode = Settings::Selection;
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
@@ -632,7 +652,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
     }
     */
 
-    if (k->creatingPath) {
+    if (k->editMode == Settings::Path) {
        int total = k->startPoint + k->configurator->totalSteps();
        if (scene->currentFrameIndex() >= k->startPoint && scene->currentFrameIndex() < total) {
            if (k->path && k->group) {

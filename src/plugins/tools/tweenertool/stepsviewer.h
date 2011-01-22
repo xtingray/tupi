@@ -42,7 +42,7 @@ class QGraphicsPathItem;
 class KTTweenerStep;
 
 /**
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
+ * @author Jorge Cuadrado 
 */
 
 class StepsViewer : public QTableWidget
@@ -56,6 +56,7 @@ class StepsViewer : public QTableWidget
         QVector<KTTweenerStep *> steps();
         int totalSteps();
         void cleanRows();
+        virtual QSize sizeHint() const;
         
     private:
         QList<QPointF> calculateDots(QPointF dot1, QPointF dot2, int total);

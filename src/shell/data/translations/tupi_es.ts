@@ -110,8 +110,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
-        <source>Reset Tween</source>
-        <translation>Reiniciar Tween</translation>
+        <source>Cancel Operation</source>
+        <translation>Cancelar operación</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>

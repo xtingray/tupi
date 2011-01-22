@@ -33,16 +33,15 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kradiobuttongroup.h"
-#include "kimagebutton.h"
-#include "kdebug.h"
- 
 #include "configurator.h"
-#include "settings.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
 #include "kosd.h"
+#include "kradiobuttongroup.h"
+#include "kimagebutton.h"
+#include "kdebug.h"
+
 
 #include <QLabel>
 #include <QLineEdit>
@@ -69,14 +68,12 @@ struct Configurator::Private
     KImageButton *removeButton;
     KImageButton *editButton;
 
-    //KRadioButtonGroup *options;
-    //StepsViewer *stepViewer;
-    //QComboBox *combo;
-    //QLabel *totalLabel;
+    Settings::Mode mode; 
 };
 
 Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 {
+    k->mode = Settings::View;
     k->selectionDone = false;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -191,26 +188,6 @@ void Configurator::updateSteps(const QGraphicsPathItem *path)
     //k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }
 
-void Configurator::emitOptionChanged(int option)
-{
-    switch (option) {
-            case 0:
-             {
-                 emit clickedSelect();
-             }
-            break;
-            case 1:
-             {
-                 if (k->selectionDone) {
-                     emit clickedCreatePath();
-                 } else {
-                     // k->options->setCurrentIndex(0);
-                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);   
-                 }
-             }
-    }
-}
-
 QString Configurator::tweenToXml(int currentFrame, QString path)
 {
     QDomDocument doc;
@@ -255,37 +232,67 @@ void Configurator::cleanData()
 void Configurator::addTween()
 {
     kFatal() << "Configurator::addTween() - Adding new Tween!";
-    QString name = k->input->text();
 
-    if (name.length() > 0) {
-        QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
-        tweenerItem->setFont(QFont("verdana", 8));
-        tweenerItem->setText(name);
-        tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    if (k->mode == Settings::View) {
+
+        QString name = k->input->text();
+
+        if (name.length() > 0) {
+
+            if (!itemExists(name)) {
+
+                QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
+                tweenerItem->setFont(QFont("verdana", 8));
+                tweenerItem->setText(name);
+                tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+                k->input->clear();
+                k->tweensList->setCurrentItem(tweenerItem);
+                k->addButton->setDisabled(true);
+
+                k->mode = Settings::Add;
+                k->settingsPanel = new Settings(this, k->mode, 1, 0);
+                connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
+                connect(k->settingsPanel, SIGNAL(clickedCreatePath()), this, SIGNAL(clickedCreatePath()));
+                connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(resetTween()));
+
+                k->settingsLayout->addWidget(k->settingsPanel);
+                emit selectionModeOn();
+
+            } else {
+                KOsd::self()->display(tr("Error"), tr("Tween name already exists!"), KOsd::Error);        
+            }
+        }
+
+    } else {
+        KOsd::self()->display(tr("Info"), tr("Save or Cancel current Tween before adding a new one"), KOsd::Info);
         k->input->clear();
-        k->tweensList->setCurrentItem(tweenerItem);
-        k->addButton->setDisabled(true);
-
-        k->settingsPanel = new Settings;
-        connect(k->settingsPanel, SIGNAL(clickedRemoveTween()), this, SLOT(removeTween()));
-
-        k->settingsLayout->addWidget(k->settingsPanel);
     }
+}
+
+void Configurator::editTween()
+{
+    kFatal() << "Configurator::editTween() - Editing the current Tween!";
+    k->mode = Settings::Edit;
+}
+
+void Configurator::resetTween()
+{
+    kFatal() << "Configurator::resetTween() - Tracing!";
+
+    if (k->mode == Settings::Add)
+        removeTween();
+
+    closeSettingsPanel();
 }
 
 void Configurator::removeTween()
 {
-    kFatal() << "Configurator::removeTween() - Tracing!";
-
     QListWidgetItem *item = k->tweensList->currentItem();
     emit clickedRemoveTween(item->text());
     k->tweensList->takeItem(k->tweensList->row(item));
 
     if (k->tweensList->count() == 0)
         k->addButton->setDisabled(false);
-
-    if (k->settingsPanel)
-        k->settingsPanel->hide();
 }
 
 QString Configurator::currentTweenName() const
@@ -299,22 +306,50 @@ QString Configurator::currentTweenName() const
 
 void Configurator::notifySelection(bool flag)
 {
-    k->selectionDone = flag;
+    kFatal() << "Configurator::notifySelection() - Updating selection flag: " << flag;
+
+    if (k->mode != Settings::View)
+        k->settingsPanel->notifySelection(flag); 
 }
 
 void Configurator::showMenu(const QPoint &point)
 {
     kFatal() << "Configurator::showMenu() - Opening menu!";
 
-    if (k->tweensList->count() > 0) {
+    if (k->tweensList->count() > 0 && (k->mode == Settings::Edit)) {
+        QAction *edit = new QAction(tr("Remove"), this);
+        connect(edit, SIGNAL(triggered()), this, SLOT(editTween()));
         QAction *remove = new QAction(tr("Remove"), this);
         connect(remove, SIGNAL(triggered()), this, SLOT(removeTween()));
 
         QMenu *menu = new QMenu(tr("Options"));
+        menu->addAction(edit);
         menu->addAction(remove);
         QPoint globalPos = k->tweensList->mapToGlobal(point);
         menu->exec(globalPos); 
     }
 }
 
+void Configurator::closeSettingsPanel()
+{
+    if (k->settingsPanel) {
+        k->settingsPanel->hide();
+        k->mode = Settings::View;
+    }
+}
 
+Settings::Mode Configurator::mode()
+{
+    return k->mode;
+}
+
+bool Configurator::itemExists(const QString &name)
+{
+     for (int i=0; i < k->tweensList->count(); i++) {
+          QListWidgetItem *item = k->tweensList->item(i);
+          if (name.compare(item->text()) == 0)
+              return true;
+     }
+
+     return false;
+}
