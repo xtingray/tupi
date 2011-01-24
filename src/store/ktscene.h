@@ -39,6 +39,7 @@
 #include "ktabstractserializable.h"
 #include "ktproject.h"
 #include "ktbackground.h"
+#include "ktitemtweener.h"
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -56,6 +57,7 @@ class KTSoundLayer;
 class KTGraphicObject;
 class KTSvgItem;
 class KTBackground;
+class KTItemTweener;
 
 typedef KTIntHash<KTLayer *> Layers;
 typedef KTIntHash<KTSoundLayer *> SoundLayers;
@@ -144,6 +146,8 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 
         bool tweenExists(const QString &name);
         void removeTween(const QString &name);
+
+        KTItemTweener *tween(const QString &name);
 
         QList<QString> getTweenNames();
         int getTotalTweens();

@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "ktitemtweener.h"
+#include "ktsvg2qt.h"
 #include "kdebug.h"
 
 #include <QGraphicsItem>
@@ -145,6 +146,11 @@ int KTItemTweener::frames() const
     return k->frames;
 }
 
+int KTItemTweener::startFrame()
+{
+    return k->initFrame;
+}
+
 void KTItemTweener::fromXml(const QString &xml)
 {
     QDomDocument doc;
@@ -196,4 +202,15 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
              root.appendChild(step->toXml(doc));
     
     return root;
+}
+
+QGraphicsPathItem *KTItemTweener::graphicsPath() const
+{
+    QGraphicsPathItem *item = new QGraphicsPathItem();
+    QPainterPath path;
+    KTSvg2Qt::svgpath2qtpath(k->path, path);
+
+    item->setPath(path);
+
+    return item;
 }

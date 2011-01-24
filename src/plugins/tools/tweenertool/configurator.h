@@ -40,6 +40,8 @@
 #include "settings.h"
 
 class QGraphicsPathItem;
+class QListWidgetItem;
+class KTItemTweener;
 
 /**
  * @author Jorge Cuadrado
@@ -50,18 +52,25 @@ class Configurator : public QFrame
     Q_OBJECT
 
     public:
+        enum GuiState { Clean = 1, Properties, Buttons };
+
         Configurator(QWidget *parent = 0);
         ~Configurator();
 
         void loadTweenList(QList<QString> tweenList);
-        void addButtonsPanel();
 
-        void initStartCombo(int framesTotal, int currentIndex);
+        void setPropertiesPanel();
+        void activePropertiesPanel(bool enable);
+
+        void setButtonsPanel();
+        void activeButtonsPanel(bool enable);
+
+        void initStartCombo(int framesTotal, int currentFrame);
         void setStartFrame(int currentIndex);
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path);
-        QString tweenToXml(int currentFrame, QString path);
+        QString tweenToXml(int currentFrame, QString &path);
         int totalSteps();
         void activatePathMode();
         void activateSelectionMode();
@@ -71,22 +80,27 @@ class Configurator : public QFrame
         int startComboSize();
         void closeSettingsPanel();
         Settings::Mode mode();
+        void resetUI();
+        void setCurretTween(KTItemTweener *currentTween);
         
     private slots:
+        void applyItem();
         void addTween();
         void editTween();
-        void resetTween();
+        void closeTweenProperties();
         void removeTween();
         void showMenu(const QPoint &point);
+        void updateTweenData(QListWidgetItem *item);
         
     signals:
         void clickedCreatePath();
         void clickedSelect();
         void clickedRemoveTween(const QString &);
-        void clickedResetTween();
+        void clickedResetInterface();
         void clickedApplyTween();
         void startingPointChanged(int);
         void selectionModeOn();
+        void getTweenData(const QString &);
         
     private:
         bool itemExists(const QString &name);

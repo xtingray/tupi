@@ -450,6 +450,27 @@ void KTScene::removeTween(const QString &name)
     }
 }
 
+KTItemTweener *KTScene::tween(const QString &name)
+{
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0) {
+                     return tween;
+                 }
+             }
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0) {
+                     return tween;
+                 }
+             }
+    }
+
+    return 0;
+}
+
 QList<QString> KTScene::getTweenNames()
 {
     QList<QString> names;

@@ -39,6 +39,7 @@
 #include <QWidget>
 
 class QGraphicsPathItem;
+class KTItemTweener;
 
 /**
  * @author Jorge Cuadrado
@@ -52,15 +53,17 @@ class Settings : public QWidget
         enum Mode { Add = 1, Edit, View };
         enum EditMode { Selection = 1, Path };
 
-        Settings(QWidget *parent = 0, Mode mode = Settings::Add, int totalFrames = 1, int startFrame = 0);
+        Settings(QWidget *parent = 0);
         ~Settings();
 
+        void setParameters(QString &name, Mode mode, int framesTotal, int startFrame);
+        void setParameters(KTItemTweener *currentTween);
         void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path);
-        QString tweenToXml(int currentFrame, QString path);
+        QString tweenToXml(int currentFrame, QString &path);
         int totalSteps();
         void activatePathMode();
         void activateSelectionMode();
@@ -71,6 +74,7 @@ class Settings : public QWidget
     private slots:
         void emitOptionChanged(int option);
         void addTween();
+        void applyTween();
         
     signals:
         void clickedCreatePath();

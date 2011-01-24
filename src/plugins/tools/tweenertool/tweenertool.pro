@@ -9,11 +9,13 @@ target.path = /plugins/
 HEADERS += tweener.h \
            configurator.h \
            settings.h \
+           buttonspanel.h \
            stepsviewer.h \
            spinboxdelegate.h
 SOURCES += tweener.cpp \
            configurator.cpp \
            settings.cpp \
+           buttonspanel.cpp \
            stepsviewer.cpp \
            spinboxdelegate.cpp
 

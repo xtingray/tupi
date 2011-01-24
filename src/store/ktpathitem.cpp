@@ -97,7 +97,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc) const
                     t = 'C';
                     strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
                 } else {
-                    strPath += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += "  " + QString::number(e.x) + " " + QString::number(e.y) + " ";
                 }
             }
             break;

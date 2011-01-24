@@ -82,6 +82,7 @@ class Tweener : public KTToolPlugin
         void setCreatePath();
         void setSelect();
         void updateStartPoint(int index);
+        void setCurretTween(const QString &name);
 
     public slots:
         void updatePath();

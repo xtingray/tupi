@@ -44,10 +44,11 @@
 #include "ktglobal_store.h"
 
 class QGraphicsItem;
+class QGraphicsPathItem;
 
 /**
  * @todo - setColorAt, setZAt
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
 
 class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
@@ -68,12 +69,16 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         KTTweenerStep * stepAt(int index);
         
         void setFrames(int frames);
+
         int frames() const;
+        int startFrame();
         
         void setStep(int step);
         
         void fromXml(const QString &xml);
         QDomElement toXml(QDomDocument &doc) const;
+
+        QGraphicsPathItem *graphicsPath() const;
         
     private:
         struct Private;

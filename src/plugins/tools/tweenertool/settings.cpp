@@ -47,7 +47,6 @@
 #include <QListWidget>
 #include <QComboBox>
 #include <QBoxLayout>
-#include <QPushButton>
 #include <QHeaderView>
 #include <QGraphicsPathItem>
 
@@ -55,17 +54,17 @@ struct Settings::Private
 {
     QBoxLayout *layout; 
     KRadioButtonGroup *options;
+    QString tweenName;
     StepsViewer *stepViewer;
-    QListWidget *tweensList;
     QComboBox *combo;
     QLabel *totalLabel;
     bool selectionDone;
     Mode mode; 
+    KImageButton *apply;
 };
 
-Settings::Settings(QWidget *parent, Mode mode, int framesTotal, int startFrame) : QWidget(parent), k(new Private)
+Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
-    k->mode = mode;
     k->selectionDone = false;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -78,10 +77,6 @@ Settings::Settings(QWidget *parent, Mode mode, int framesTotal, int startFrame) 
     k->combo = new QComboBox();
     k->combo->setMaximumWidth(50);
     k->combo->setEditable(false);
-    initStartCombo(framesTotal, startFrame);
-
-    if (k->mode == Settings::Add)
-        k->combo->setEnabled(false);
 
     connect(k->combo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
@@ -102,23 +97,20 @@ Settings::Settings(QWidget *parent, Mode mode, int framesTotal, int startFrame) 
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
-    KImageButton *apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    if (k->mode == Settings::Add)
-        apply->setToolTip(tr("Save Tween"));
-    else
-        apply->setToolTip(tr("Update Tween"));
-    connect(apply, SIGNAL(clicked()), this, SIGNAL(clickedApplyTween()));
+    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+
+    connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     KImageButton *remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
     remove->setToolTip(tr("Cancel Operation"));
+
     connect(remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(10);
-    buttonsLayout->addWidget(apply);
-    //buttonsLayout->addWidget(reset);
+    buttonsLayout->addWidget(k->apply);
     buttonsLayout->addWidget(remove);
 
     k->stepViewer = new StepsViewer;
@@ -147,8 +139,40 @@ Settings::~Settings()
     delete k;
 }
 
+void Settings::setParameters(QString &name, Mode mode, int framesTotal, int startFrame)
+{
+    k->mode = mode;
+    k->tweenName = name;
+
+    if (k->mode == Add)
+        k->combo->setEnabled(false);
+
+    if (k->mode == Add)
+        k->apply->setToolTip(tr("Save Tween"));
+    else
+        k->apply->setToolTip(tr("Update Tween"));
+
+    initStartCombo(framesTotal, startFrame);
+}
+
+void Settings::setParameters(KTItemTweener *currentTween)
+{
+    k->mode = Edit;
+    k->tweenName = currentTween->name();
+
+    k->apply->setToolTip(tr("Update Tween"));
+
+    initStartCombo(currentTween->frames(), currentTween->startFrame());
+
+    k->stepViewer->setPath(currentTween->graphicsPath());
+    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
+}
+
 void Settings::initStartCombo(int framesTotal, int currentIndex)
 {
+    kFatal() << "framesTotal: " << framesTotal;
+    kFatal() << "currentFrame: " << currentIndex;
+
     k->combo->clear();
     for (int i=1; i<=framesTotal; i++)
          k->combo->addItem(QString::number(i));
@@ -197,12 +221,12 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame, QString path)
+QString Settings::tweenToXml(int currentFrame, QString &path)
 {
     QDomDocument doc;
 
     QDomElement root = doc.createElement("tweening");
-    root.setAttribute("name", "Tween00");
+    root.setAttribute("name", k->tweenName);
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
     root.setAttribute("coords", path);
@@ -242,5 +266,16 @@ void Settings::notifySelection(bool flag)
 {
     kFatal() << "Settings::notifySelection() - Updating selection flag: " << flag; 
     k->selectionDone = flag;
+}
+
+void Settings::applyTween()
+{
+    k->mode = Edit;
+    k->apply->setToolTip(tr("Update Tween"));
+
+    if (!k->combo->isEnabled())
+        k->combo->setEnabled(true);
+
+    emit clickedApplyTween();
 }
 
