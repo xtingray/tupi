@@ -53,6 +53,7 @@
 struct Settings::Private
 {
     QBoxLayout *layout; 
+    QLineEdit *input;
     KRadioButtonGroup *options;
     QString tweenName;
     StepsViewer *stepViewer;
@@ -60,7 +61,9 @@ struct Settings::Private
     QLabel *totalLabel;
     bool selectionDone;
     Mode mode; 
+
     KImageButton *apply;
+    KImageButton *remove;
 };
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
@@ -71,6 +74,16 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
     setFont(QFont("Arial", 8, QFont::Normal, false));
+
+    QLabel *nameLabel = new QLabel(tr("Name") + ": ");
+    k->input = new QLineEdit;
+
+    QHBoxLayout *nameLayout = new QHBoxLayout;
+    nameLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    nameLayout->setMargin(0);
+    nameLayout->setSpacing(0);
+    nameLayout->addWidget(nameLabel);
+    nameLayout->addWidget(k->input);
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":"); 
     startingLabel->setAlignment(Qt::AlignHCenter);
@@ -101,21 +114,23 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
-    KImageButton *remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    remove->setToolTip(tr("Cancel Operation"));
+    k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    k->remove->setToolTip(tr("Cancel Tween"));
 
-    connect(remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
+    connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(10);
     buttonsLayout->addWidget(k->apply);
-    buttonsLayout->addWidget(remove);
+    buttonsLayout->addWidget(k->remove);
 
     k->stepViewer = new StepsViewer;
     k->stepViewer->verticalHeader()->hide();
     k->stepViewer->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+    k->layout->addLayout(nameLayout);
 
     k->layout->addWidget(startingLabel);
     k->layout->addLayout(startLayout);
@@ -139,28 +154,33 @@ Settings::~Settings()
     delete k;
 }
 
-void Settings::setParameters(QString &name, Mode mode, int framesTotal, int startFrame)
+void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
-    k->mode = mode;
+    k->mode = Add;
+
     k->tweenName = name;
+    k->input->setText(k->tweenName);
 
-    if (k->mode == Add)
-        k->combo->setEnabled(false);
+    activateSelectionMode();
+    k->stepViewer->cleanRows();
 
-    if (k->mode == Add)
-        k->apply->setToolTip(tr("Save Tween"));
-    else
-        k->apply->setToolTip(tr("Update Tween"));
+    k->combo->setEnabled(false);
+    k->apply->setToolTip(tr("Save Tween"));
 
     initStartCombo(framesTotal, startFrame);
 }
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
-    k->mode = Edit;
-    k->tweenName = currentTween->name();
+    kFatal() << "Settings::setParameters() - Edit mode ON";
 
-    k->apply->setToolTip(tr("Update Tween"));
+    setEditMode();
+
+    k->tweenName = currentTween->name();
+    k->input->setText(k->tweenName);
+
+    notifySelection(true);
+    activatePathMode();
 
     initStartCombo(currentTween->frames(), currentTween->startFrame());
 
@@ -249,7 +269,6 @@ int Settings::totalSteps()
 void Settings::activatePathMode()
 {
     k->options->setCurrentIndex(1);
-    k->stepViewer->cleanRows();
 }
 
 void Settings::activateSelectionMode()
@@ -270,8 +289,7 @@ void Settings::notifySelection(bool flag)
 
 void Settings::applyTween()
 {
-    k->mode = Edit;
-    k->apply->setToolTip(tr("Update Tween"));
+    setEditMode();
 
     if (!k->combo->isEnabled())
         k->combo->setEnabled(true);
@@ -279,3 +297,15 @@ void Settings::applyTween()
     emit clickedApplyTween();
 }
 
+void Settings::setEditMode()
+{
+    k->mode = Edit;
+    k->apply->setToolTip(tr("Update Tween"));
+    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
+    k->remove->setToolTip(tr("Close Tween properties"));
+}
+
+QString Settings::currentTweenName() const
+{
+    return k->tweenName;
+}

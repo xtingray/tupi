@@ -1058,9 +1058,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="128.00001"
-     inkscape:cx="61.858477"
-     inkscape:cy="1016.4615"
+     inkscape:zoom="8.0000006"
+     inkscape:cx="11.181337"
+     inkscape:cy="1004.5991"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -5127,5 +5127,39 @@
        inkscape:export-xdpi="715"
        inkscape:export-ydpi="715"
        sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 10.652941,47.703196 -1.2047295,1.654982 1.0100255,-0.07301 -0.01217,1.192561 0.555092,-0.06589 -0.105704,-1.13798 1.047398,0.03564 z"
+       id="path5233-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/close_properties.png"
+       inkscape:export-xdpi="689.76874"
+       inkscape:export-ydpi="689.76874" />
+    <g
+       id="g3745"
+       transform="matrix(0.72751091,0,0,0.44373562,-5.1940323,25.403853)"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/close_properties.png"
+       inkscape:export-xdpi="689.76874"
+       inkscape:export-ydpi="689.76874">
+      <path
+         inkscape:export-ydpi="712.18268"
+         inkscape:export-xdpi="712.18268"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/line.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path4558-1"
+         d="m 20.013468,49.15513 -0.273673,0.981718 4.02756,-0.314772 -0.07144,-0.628717 z"
+         style="fill:#008700;fill-opacity:1;stroke:none" />
+      <path
+         inkscape:export-ydpi="712.18268"
+         inkscape:export-xdpi="712.18268"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/line.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path4558-0-1"
+         d="m 19.940889,49.446095 -0.143591,0.436465 3.979427,-0.06226 -0.06705,-0.240841 z"
+         style="fill:#ffffff;fill-opacity:0.17307691;stroke:none" />
+    </g>
   </g>
 </svg>

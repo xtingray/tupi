@@ -150,6 +150,8 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         KTItemTweener *tween(const QString &name);
 
         QList<QString> getTweenNames();
+        QList<QGraphicsItem *> getItemsFromTween(const QString &name);
+
         int getTotalTweens();
 
         QList<KTGraphicObject *> tweeningGraphicObjects() const;

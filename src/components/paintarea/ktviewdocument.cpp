@@ -187,6 +187,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
 KTViewDocument::~KTViewDocument()
 {
+    kFatal() << "~KTViewDocument() - Killing workspace!";
+
     if (k->currentTool)
         k->currentTool->saveConfig();
 
@@ -364,7 +366,7 @@ void KTViewDocument::loadPlugins()
                                        brushTools.insert(6, action);
 
                                    if (toolStr.compare(tr("Motion Tween")) == 0) {
-                                       // action->setDisabled(true);
+                                       kFatal() << "KTViewDocument::loadPlugins() - Tracing Motion Tween tool!";
                                        brushTools.insert(7, action);
                                    }
 

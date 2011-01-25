@@ -52,7 +52,7 @@ class Configurator : public QFrame
     Q_OBJECT
 
     public:
-        enum GuiState { Clean = 1, Properties, Buttons };
+        enum GuiState { Manager = 1, Properties };
 
         Configurator(QWidget *parent = 0);
         ~Configurator();
@@ -61,6 +61,9 @@ class Configurator : public QFrame
 
         void setPropertiesPanel();
         void activePropertiesPanel(bool enable);
+
+        void setTweenManagerPanel();
+        void activeTweenManagerPanel(bool enable);
 
         void setButtonsPanel();
         void activeButtonsPanel(bool enable);
@@ -85,12 +88,12 @@ class Configurator : public QFrame
         
     private slots:
         void applyItem();
-        void addTween();
+        void addTween(const QString &name);
         void editTween();
         void closeTweenProperties();
         void removeTween();
-        void showMenu(const QPoint &point);
-        void updateTweenData(QListWidgetItem *item);
+        void removeTween(const QString &name);
+        void updateTweenData(const QString &name);
         
     signals:
         void clickedCreatePath();
@@ -100,10 +103,10 @@ class Configurator : public QFrame
         void clickedApplyTween();
         void startingPointChanged(int);
         void selectionModeOn();
+        void editModeOn();
         void getTweenData(const QString &);
         
     private:
-        bool itemExists(const QString &name);
         struct Private;
         Private *const k;
 };

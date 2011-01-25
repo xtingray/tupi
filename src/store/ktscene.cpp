@@ -476,8 +476,11 @@ QList<QString> KTScene::getTweenNames()
     QList<QString> names;
 
     foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
-             if (KTItemTweener *tween = object->tween())
+             if (KTItemTweener *tween = object->tween()) {
+                 QString value = tween->name();
+                 kFatal() << "KTScene::getTweenNames() - Tween Name: " << value;
                  names.append(tween->name());
+             }
     }
 
     foreach (KTSvgItem *object, k->tweeningSvgObjects) {
@@ -486,6 +489,29 @@ QList<QString> KTScene::getTweenNames()
     }
 
     return names;
+}
+
+QList<QGraphicsItem *> KTScene::getItemsFromTween(const QString &name)
+{
+    QList<QGraphicsItem *> items;
+
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0) {
+                     items.append(object->item());
+                 }
+             }
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->name().compare(name) == 0) {
+                     items.append(object);
+                 }
+             }
+    }
+
+    return items;
 }
 
 int KTScene::getTotalTweens()

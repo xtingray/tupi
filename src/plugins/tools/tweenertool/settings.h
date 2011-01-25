@@ -51,12 +51,12 @@ class Settings : public QWidget
 
     public:
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 1, Path };
+        enum EditMode { Selection = 1, Path, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
 
-        void setParameters(QString &name, Mode mode, int framesTotal, int startFrame);
+        void setParameters(const QString &name, int framesTotal, int startFrame);
         void setParameters(KTItemTweener *currentTween);
         void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
@@ -70,6 +70,8 @@ class Settings : public QWidget
         void cleanData();
         void notifySelection(bool flag);
         int startComboSize();
+        QString currentTweenName() const;
+        void setEditMode();
         
     private slots:
         void emitOptionChanged(int option);

@@ -10,12 +10,14 @@ HEADERS += tweener.h \
            configurator.h \
            settings.h \
            buttonspanel.h \
+           tweenmanager.h \
            stepsviewer.h \
            spinboxdelegate.h
 SOURCES += tweener.cpp \
            configurator.cpp \
            settings.cpp \
            buttonspanel.cpp \
+           tweenmanager.cpp \
            stepsviewer.cpp \
            spinboxdelegate.cpp
 
