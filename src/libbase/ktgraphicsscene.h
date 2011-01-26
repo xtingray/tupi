@@ -59,6 +59,8 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
     Q_OBJECT
 
     public:
+        enum Context { Current = 1, Preview, Next };
+
         KTGraphicsScene();
         ~KTGraphicsScene();
         
@@ -70,7 +72,7 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         void drawPhotogram(int photogram);
         void drawBackground();
 
-        void addFrame(KTFrame *frame, double opacity = 1.0);
+        void addFrame(KTFrame *frame, double opacity = 1.0, Context mode = Current);
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
         void addSvgObject(KTSvgItem *svgItem, double opacity = 1.0);
         

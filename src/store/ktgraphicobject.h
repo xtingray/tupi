@@ -69,6 +69,9 @@ class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializab
         KTFrame *frame() const;
         int objectIndex() const;
         void setFrame(KTFrame *frame);
+
+        void setLastTweenPos(QPointF point);
+        QPointF lastTweenPos();
         
     public:
         virtual void fromXml(const QString &xml);

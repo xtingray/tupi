@@ -214,31 +214,20 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
         if (scene->selectedItems().size() > 0) {
 
-            bool hasTween = false;
-            foreach (QGraphicsItem *item, k->objects) {
-                     if (item->toolTip().length() > 0)
-                         hasTween = true;
-            }
+            k->objects = scene->selectedItems();
+            k->configurator->notifySelection(true);
 
-            if (!hasTween) {
-                k->objects = scene->selectedItems();
-                k->configurator->notifySelection(true);
-
-                if (!k->path) {
-                    k->path = new QGraphicsPathItem;
-                    k->path->setZValue(maxZValue());
-                    QColor color(150, 150, 150, 200);
-                    QPen pen(QBrush(color), 1, Qt::DotLine);
-                    k->path->setPen(pen);
-                    QPainterPath path;
-                    path.moveTo(input->pos());
-                    k->path->setPath(path);
-                    scene->addItem(k->path);
-                    k->pathAdded = true;
-                }
-            } else {
-                    KOsd::self()->display(tr("Error"), tr("Item already has a Tween. Choose another!"), KOsd::Error);
-                    return;
+            if (!k->path) {
+                k->path = new QGraphicsPathItem;
+                k->path->setZValue(maxZValue());
+                QColor color(150, 150, 150, 200);
+                QPen pen(QBrush(color), 1, Qt::DotLine);
+                k->path->setPen(pen);
+                QPainterPath path;
+                path.moveTo(input->pos());
+                k->path->setPath(path);
+                scene->addItem(k->path);
+                k->pathAdded = true;
             }
         } 
     }

@@ -50,6 +50,7 @@ struct KTGraphicObject::Private
     bool hasTween;
     KTItemTweener *tween;
     KTFrame *frame;
+    QPointF lastTweenPos;
 };
 
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
@@ -180,4 +181,14 @@ void KTGraphicObject::setFrame(KTFrame *frame)
 int KTGraphicObject::objectIndex() const
 {
     return k->frame->indexOf(const_cast<KTGraphicObject *>(this));
+}
+
+void KTGraphicObject::setLastTweenPos(QPointF point)
+{
+    k->lastTweenPos = point;
+}
+
+QPointF KTGraphicObject::lastTweenPos()
+{   
+    return k->lastTweenPos;
 }
