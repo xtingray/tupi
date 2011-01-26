@@ -707,9 +707,6 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
     
     QString xml = response->arg().toString();
 
-    kFatal() << "KTCommandExecutor::setTween() - Object Index: " << position;
-    kFatal() << "KTCommandExecutor::setTween() - Frame Index: " << framePosition;
-
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
@@ -736,11 +733,10 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                             #endif
                             return false;
                         }
-                        kFatal() << "KTCommandExecutor::setTween() - Updating object from index: " << position;
                         object->setTween(tween);
                         scene->addTweenObject(object);
-                    } else {
 
+                    } else {
                         KTSvgItem *object = frame->svg(position); 
                         if (object == 0) {
                             #ifdef K_DEBUG
@@ -749,7 +745,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                             return false;
                         }
                         object->setTween(tween);
-
+                        scene->addTweenObject(object);
                     }
 
                     return true;

@@ -62,11 +62,8 @@ struct Configurator::Private
     TweenManager *tweenManager;
     ButtonsPanel *controlPanel;
 
-    // QLineEdit *input;
-    // QListWidget *tweensList;
     bool selectionDone;
 
-    // KImageButton *addButton;
     KImageButton *removeButton;
     KImageButton *editButton;
 
