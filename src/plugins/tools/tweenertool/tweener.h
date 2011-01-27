@@ -67,6 +67,7 @@ class Tweener : public KTToolPlugin
         bool isComplete() const;
 
     private:
+        int framesTotal();
         void setupActions();
         QString pathToCoords();
         int maxZValue();

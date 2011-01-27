@@ -125,12 +125,10 @@ void Tweener::init(KTGraphicsScene *scene)
         k->configurator->loadTweenList(tweenList);
         setCurretTween(tweenList.at(0));
     }
-    int framesTotal = 1;
-    KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
-    if (layer)
-        framesTotal = layer->framesNumber();
 
-    k->configurator->initStartCombo(framesTotal, k->scene->currentFrameIndex());
+    int total = framesTotal();
+
+    k->configurator->initStartCombo(total, k->scene->currentFrameIndex());
 }
 
 void Tweener::updateStartPoint(int index)
@@ -524,15 +522,12 @@ void Tweener::applyTween()
                  emit requested(&request);
         }
 
-        int framesTotal = 1;
-        KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
-        if (layer)
-            framesTotal = layer->framesNumber();
+        int framesNumber = framesTotal();
 
         int total = k->startPoint + k->configurator->totalSteps() - 1;
 
-        if (total > framesTotal) {
-            for (int i = framesTotal; i <= total; i++) {
+        if (total > framesNumber) {
+            for (int i = framesNumber; i <= total; i++) {
                  KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                                       k->scene->currentLayerIndex(),
                                                                                       i, KTProjectRequest::Add);
@@ -545,13 +540,11 @@ void Tweener::applyTween()
                                                                         k->startPoint, KTProjectRequest::Select, "1");
         emit requested(&request);
 
-        kFatal() << "Tweener::applyTween() - FramesTotal: " << framesTotal;
+        kFatal() << "Tweener::applyTween() - FramesTotal: " << framesNumber;
         kFatal() << "Tweener::applyTween() - StepsTotal: " << total;
         kFatal() << "Tweener::applyTween() - Mode: " << k->mode;
 
     } else {
-
-        int framesTotal = 1;
 
         foreach (QGraphicsItem *item, k->objects) {
 
@@ -594,12 +587,11 @@ void Tweener::applyTween()
                  emit requested(&request);
 
                  int total = k->startPoint + k->configurator->totalSteps();
-                 KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
-                 if (layer)
-                     framesTotal = layer->framesNumber();
 
-                 if (framesTotal < total) {
-                     for (int i = framesTotal; i < total; i++) {
+                 int framesNumber = framesTotal();
+
+                 if (framesNumber < total) {
+                     for (int i = framesNumber; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                           k->scene->currentLayerIndex(),
                                                           i, KTProjectRequest::Add);
@@ -637,10 +629,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
     k->mode = k->configurator->mode();
 
-    if (k->mode != Settings::View) {
+    if (k->mode == Settings::Edit) {
+
+       int total = k->startPoint + k->configurator->totalSteps();
 
        if (k->editMode == Settings::Path) {
-           int total = k->startPoint + k->configurator->totalSteps();
            if (scene->currentFrameIndex() >= k->startPoint && scene->currentFrameIndex() < total) {
                if (k->path && k->group) {
                    k->scene->addItem(k->path);            
@@ -652,15 +645,38 @@ void Tweener::updateScene(KTGraphicsScene *scene)
            kFatal() << "Tweener::updateScene() - Current Edit Mode != Path: " << k->editMode;
        }  
 
-       int framesTotal = 1;
-       KTLayer *layer = k->scene->scene()->layer(scene->currentLayerIndex());
-       if (layer)
-           framesTotal = layer->framesNumber();
+       int framesNumber = framesTotal();
 
-       if (k->configurator->startComboSize() < framesTotal)
-           k->configurator->initStartCombo(framesTotal, k->startPoint);
-    } else {
-       kFatal() << "Tweener::updateScene() - Current Mode IS View: " << k->mode;
+       if (k->configurator->startComboSize() < framesNumber)
+           k->configurator->initStartCombo(framesNumber, k->startPoint);
+
+    } else if (k->mode == Settings::Add) {
+               kFatal() << "Tweener::updateScene() - Current Mode is ADD";
+               if (k->editMode == Settings::Path) {
+                   if (scene->currentFrameIndex() != k->startPoint) {
+                       k->path = 0;
+                       k->configurator->cleanData();
+                       k->configurator->activateSelectionMode();
+                       k->objects.clear();
+                       k->configurator->notifySelection(false);
+                       kFatal() << "Tweener::updateScene() - Entering to selection mode!";
+                       setSelect();
+                   } else {
+                       kFatal() << "Tweener::updateScene() - Start point and Frame Index are the same!";
+                   }
+               } else {
+                   kFatal() << "Tweener::updateScene() - What the hell!!!";
+                   setSelect();
+               } 
+
+               int total = framesTotal();
+
+               if (k->configurator->startComboSize() < total) {
+                   k->configurator->initStartCombo(total, scene->currentFrameIndex());
+               } else {
+                   if (scene->currentFrameIndex() != k->startPoint)
+                       k->configurator->setStartFrame(scene->currentFrameIndex());
+               }
     }
 }
 
@@ -702,6 +718,16 @@ void Tweener::setEditEnv()
     k->path->setZValue(maxZValue());
 
     setCreatePath();
+}
+
+int Tweener::framesTotal()
+{
+    int total = 1;
+    KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+    if (layer)
+        total = layer->framesNumber();
+
+    return total;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

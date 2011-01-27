@@ -235,7 +235,7 @@ void Configurator::activatePathMode()
 
 void Configurator::activateSelectionMode()
 {
-    //k->options->setCurrentIndex(0);
+    k->settingsPanel->activateSelectionMode();
 }
 
 void Configurator::cleanData()
@@ -285,10 +285,9 @@ void Configurator::closeTweenProperties()
     } else if (k->mode == Settings::Edit) {
         kFatal() << "Configurator::closeTweenProperties() - edit Mode!";
         closeSettingsPanel();
-        k->mode = Settings::View;
-
-        emit clickedResetInterface();
     }
+
+    emit clickedResetInterface();
 
     closeSettingsPanel();
 }
@@ -334,6 +333,7 @@ void Configurator::closeSettingsPanel()
         activeTweenManagerPanel(true);
         activePropertiesPanel(false);
         k->mode = Settings::View;
+        k->state = Manager;
     }
 }
 
@@ -352,8 +352,6 @@ void Configurator::resetUI()
 {
     k->tweenManager->resetUI();
     closeSettingsPanel();
-
-    k->state = Manager;
 }
 
 void Configurator::updateTweenData(const QString &name)
