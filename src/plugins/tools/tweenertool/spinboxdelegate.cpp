@@ -69,7 +69,7 @@ void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
     int value = spinBox->value();
     
     model->setData(index, value);
-    kFatal() << "SpinBoxDelegate::setModelData() - Just tracing!";
+
     emit dataUpdated();
 }
 

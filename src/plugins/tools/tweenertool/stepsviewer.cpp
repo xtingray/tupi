@@ -157,8 +157,6 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              frames++;
          }
     }
-
-    kFatal() << "StepsViewer::setPath() - Dots Size: " << k->dots->size();
 }
 
 QVector<KTTweenerStep *> StepsViewer::steps()
@@ -173,8 +171,6 @@ QVector<KTTweenerStep *> StepsViewer::steps()
          count++;
     }
   
-    kFatal() << "StepsViewer::steps() - Tracing Tweener size: " << stepsVector.size();
-
     return stepsVector;
 }
 

@@ -711,7 +711,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
     
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        // if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
 
@@ -751,7 +751,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                     return true;
                 }
             }
-        }
+        // }
     }
     
     return false;

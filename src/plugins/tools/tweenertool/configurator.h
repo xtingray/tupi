@@ -84,7 +84,7 @@ class Configurator : public QFrame
         void closeSettingsPanel();
         Settings::Mode mode();
         void resetUI();
-        void setCurretTween(KTItemTweener *currentTween);
+        void setCurrentTween(KTItemTweener *currentTween);
         
     private slots:
         void applyItem();

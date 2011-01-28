@@ -171,8 +171,6 @@ void Configurator::activeTweenManagerPanel(bool enable)
 
 void Configurator::setButtonsPanel()
 {
-    kFatal() << "Configurator::setButtonsPanel() - Setting panel!";
-
     k->controlPanel = new ButtonsPanel(this);
     connect(k->controlPanel, SIGNAL(clickedEditTween()), this, SLOT(editTween()));
     connect(k->controlPanel, SIGNAL(clickedRemoveTween()), this, SLOT(removeTween()));
@@ -245,8 +243,6 @@ void Configurator::cleanData()
 
 void Configurator::addTween(const QString &name)
 {
-    kFatal() << "Configurator::addTween() - Adding new Tween!";
-
     k->mode = Settings::Add;
 
     activeTweenManagerPanel(false);
@@ -261,8 +257,6 @@ void Configurator::addTween(const QString &name)
 
 void Configurator::editTween()
 {
-    kFatal() << "Configurator::editTween() - Editing the current Tween!";
-
     activeTweenManagerPanel(false);
 
     k->mode = Settings::Edit;
@@ -276,14 +270,9 @@ void Configurator::editTween()
 
 void Configurator::closeTweenProperties()
 {
-    kFatal() << "Configurator::closeTweenProperties() - Tracing mode: " << k->mode;
-
     if (k->mode == Settings::Add) {
-        kFatal() << "Configurator::closeTweenProperties() - removing Tween!";
         k->tweenManager->removeItemFromList();
-
     } else if (k->mode == Settings::Edit) {
-        kFatal() << "Configurator::closeTweenProperties() - edit Mode!";
         closeSettingsPanel();
     }
 
@@ -296,33 +285,32 @@ void Configurator::removeTween()
 {
     QString name = k->tweenManager->currentTweenName();
     k->tweenManager->removeItemFromList();
+
+    if (k->tweenManager->listSize() == 0)
+        activeButtonsPanel(false);
+
     removeTween(name);
 }
 
 void Configurator::removeTween(const QString &name)
 {
-    kFatal() << "Configurator::removeTween() - Removing Item!";
-
-    /*
-    if (k->tweenManager->listSize() == 0) {
-        if (k->state == Buttons) {
-            activeButtonsPanel(false);
-        }
-    }
-    */
-
     emit clickedRemoveTween(name);
 }
 
 QString Configurator::currentTweenName() const
 {
-    return k->tweenManager->currentTweenName();
+    // SQA: if name has been changed... change the item at TweenManager!
+    QString oldName = k->tweenManager->currentTweenName();
+    QString newName = k->settingsPanel->currentTweenName();
+
+    if (oldName.compare(newName) != 0)
+        k->tweenManager->updateTweenName(newName);
+
+    return newName;
 }
 
 void Configurator::notifySelection(bool flag)
 {
-    kFatal() << "Configurator::notifySelection() - Updating selection flag: " << flag;
-
     if (k->mode != Settings::View)
         k->settingsPanel->notifySelection(flag); 
 }
@@ -356,13 +344,10 @@ void Configurator::resetUI()
 
 void Configurator::updateTweenData(const QString &name)
 {
-    //kFatal() << "Configurator::updateTweenData() - Item: " << item->text();
     emit getTweenData(name);
 }
 
-void Configurator::setCurretTween(KTItemTweener *currentTween)
+void Configurator::setCurrentTween(KTItemTweener *currentTween)
 {
-    kFatal() << "Configurator::setCurretTween() - Tracing VAR";
-
     k->currentTween = currentTween;
 }

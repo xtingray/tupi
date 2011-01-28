@@ -57,6 +57,7 @@ class TweenManager: public QWidget
         QString currentTweenName() const;
         int listSize(); 
         void removeItemFromList();
+        void updateTweenName(const QString &name);
 
     signals:
         void addNewTween(const QString &name);

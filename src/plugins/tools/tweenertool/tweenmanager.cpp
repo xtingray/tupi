@@ -161,8 +161,6 @@ void TweenManager::removeItemFromList()
 
 void TweenManager::showMenu(const QPoint &point)
 {
-    kFatal() << "Configurator::showMenu() - Opening menu!";
-
     if (k->tweensList->count() > 0) {
         QAction *edit = new QAction(tr("Edit"), this);
         connect(edit, SIGNAL(triggered()), this, SLOT(editTween()));
@@ -199,4 +197,11 @@ QString TweenManager::currentTweenName() const
 int TweenManager::listSize()
 {
     return k->tweensList->count();
+}
+
+void TweenManager::updateTweenName(const QString &name)
+{
+    QListWidgetItem *item = k->tweensList->currentItem();
+    item->setText(name);
+    k->target = name;
 }

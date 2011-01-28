@@ -72,12 +72,17 @@
     <name>Configurator</name>
     <message>
         <location filename="../src/plugins/tools/tweenertool/configurator.cpp" line="69"/>
-        <source>Create a new Tween</source>
-        <translation>Crear un nuevo Tween</translation>
+        <source>Motion Tween</source>
+        <translation>Motion Tween</translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>
+        <source>Name</source>
+        <translation>Nombre</translation>
+    </message>
     <message>
         <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>
         <source>Starting at frame</source>
@@ -104,19 +109,70 @@
         <translation>Total de marcos</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
-        <source>Remove Tween</source>
-        <translation>Remover Tween</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
-        <source>Cancel Operation</source>
-        <translation>Cancelar operación</translation>
+        <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>
+        <source>Cancel Tween</source>
+        <translation>Cancelar Tween</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Save Tween</source>
         <translation>Guardar Tween</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="396"/>
+        <source>Select objects for Tweening first!</source>
+        <translation>Selecciona los objetos a animar primero!</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Update Tween</source>
+        <translation>Actualizar Tween</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Close Tween properties</source>
+        <translation>Cerrar diálogo de propiedades</translation>
+    </message>
+</context>
+<context>
+    <name>ButtonsPanel</name>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/buttonspanel.cpp" line="69"/>
+        <source>Edit Tween</source>
+        <translation>Editar Tween</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/buttonspanel.cpp" line="69"/>
+        <source>Remove Tween</source>
+        <translation>Remover Tween</translation>
+    </message>
+</context>
+<context>
+    <name>TweenManager</name>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweenmanager.cpp" line="69"/>
+        <source>Create a new Tween</source>
+        <translation>Crear un nuevo Tween</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweenmanager.cpp" line="69"/>
+        <source>Tween name already exists!</source>
+        <translation>El nombre del Tween ya existe!</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweenmanager.cpp" line="69"/>
+        <source>Edit</source>
+        <translation>Editar</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweenmanager.cpp" line="69"/>
+        <source>Remove</source>
+        <translation>Remover</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/tweenmanager.cpp" line="69"/>
+        <source>Options</source>
+        <translation>Opciones</translation>
     </message>
 </context>
 <context>
@@ -2877,8 +2933,8 @@
     </message>
     <message>
         <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
-        <source>Select objects for Tweening first!</source>
-        <translation>Selecciona los objetos a animar primero!</translation>
+        <source>Tween name is missing!</source>
+        <translation>El nombre del Tween no ha sido asignado!</translation>
     </message>
 </context>
 <context>

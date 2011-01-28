@@ -84,7 +84,7 @@ class Tweener : public KTToolPlugin
         void setSelect();
         void setEditEnv();
         void updateStartPoint(int index);
-        void setCurretTween(const QString &name);
+        void setCurrentTween(const QString &name);
 
     public slots:
         void updatePath();

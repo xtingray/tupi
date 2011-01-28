@@ -55,7 +55,6 @@ struct Settings::Private
     QBoxLayout *layout; 
     QLineEdit *input;
     KRadioButtonGroup *options;
-    QString tweenName;
     StepsViewer *stepViewer;
     QComboBox *combo;
     QLabel *totalLabel;
@@ -158,8 +157,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 {
     k->mode = Add;
 
-    k->tweenName = name;
-    k->input->setText(k->tweenName);
+    k->input->setText(name);
 
     activateSelectionMode();
     k->stepViewer->cleanRows();
@@ -172,12 +170,9 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
-    kFatal() << "Settings::setParameters() - Edit mode ON";
-
     setEditMode();
 
-    k->tweenName = currentTween->name();
-    k->input->setText(k->tweenName);
+    k->input->setText(currentTween->name());
 
     notifySelection(true);
     activatePathMode();
@@ -190,9 +185,6 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
 {
-    kFatal() << "framesTotal: " << framesTotal;
-    kFatal() << "currentFrame: " << currentIndex;
-
     k->combo->clear();
     for (int i=1; i<=framesTotal; i++)
          k->combo->addItem(QString::number(i));
@@ -246,12 +238,10 @@ QString Settings::tweenToXml(int currentFrame, QString &path)
     QDomDocument doc;
 
     QDomElement root = doc.createElement("tweening");
-    root.setAttribute("name", k->tweenName);
+    root.setAttribute("name", currentTweenName());
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
     root.setAttribute("coords", path);
-
-    kFatal() << "Settings::tweenToXml() - Total Steps: " << k->stepViewer->totalSteps();
 
     foreach (KTTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
@@ -283,12 +273,12 @@ void Settings::cleanData()
 
 void Settings::notifySelection(bool flag)
 {
-    kFatal() << "Settings::notifySelection() - Updating selection flag: " << flag; 
     k->selectionDone = flag;
 }
 
 void Settings::applyTween()
 {
+    // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
 
     if (!k->combo->isEnabled())
@@ -307,5 +297,9 @@ void Settings::setEditMode()
 
 QString Settings::currentTweenName() const
 {
-    return k->tweenName;
+    QString tweenName = k->input->text();
+    if (tweenName.length() > 0)
+        k->input->setFocus();
+
+    return tweenName;
 }
