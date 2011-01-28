@@ -12,8 +12,7 @@ target.path = /lib/
 include.files += *.h 
 include.path = /include/tupigui 
 
-HEADERS += collapsiblewidget.h \
-           kaction.h \
+HEADERS += kaction.h \
            kactionmanager.h \
            kanimwidget.h \
            kapplication.h \
@@ -81,8 +80,8 @@ HEADERS += collapsiblewidget.h \
            kxyspinbox.h \
            kcolorarrow.xpm \
            kcolorreset.xpm
-SOURCES += collapsiblewidget.cpp \
-           kaction.cpp \
+
+SOURCES += kaction.cpp \
            kactionmanager.cpp \
            kanimwidget.cpp \
            kapplication.cpp \
