@@ -356,10 +356,8 @@ void Configurator::resetUI()
 
 void Configurator::updateTweenData(const QString &name)
 {
-    //if (k->mode == Settings::View) {
-        //kFatal() << "Configurator::updateTweenData() - Item: " << item->text();
-        emit getTweenData(name);
-    //}
+    //kFatal() << "Configurator::updateTweenData() - Item: " << item->text();
+    emit getTweenData(name);
 }
 
 void Configurator::setCurretTween(KTItemTweener *currentTween)
