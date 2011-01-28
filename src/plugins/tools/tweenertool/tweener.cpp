@@ -384,7 +384,7 @@ void Tweener::setSelect()
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
-                      if (item != k->path) {
+                      if ((item != k->path) && (item->zValue() >= 10000) && (item->toolTip().length()==0)) {
                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                       }
              }
