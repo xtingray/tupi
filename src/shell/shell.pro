@@ -16,8 +16,8 @@ launcher.target = ../../launcher/tupi
 launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin
 launcher.path = /bin/
 
-tupiman.target = ../components/help/help/man/tupi.1
-tupiman.commands = cp ../components/help/help/man/tupi.1 $(INSTALL_ROOT)/man1
+tupiman.target = ../components/help/help/man/tupi.1.gz
+tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
 tupiman.path = /man1/
 
 desktop.target = ../../launcher/tupi.desktop

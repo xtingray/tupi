@@ -1,5 +1,5 @@
-tupi (0.1-git04) unstable; urgency=low
+tupi (0.1-git05) unstable; urgency=low
 
   * Proof of concept for the Tupi debian package
 
- -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Tue, 31 Aug 2010 11:40:46 -0500
+ -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Fri, 28 Jan 2011 17:12:46 -0500
