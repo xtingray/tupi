@@ -242,7 +242,7 @@ QMap<QString, KAction *> Tweener::actions() const
 
 int Tweener::toolType() const
 {
-    return KTToolInterface::Brush;
+    return KTToolInterface::Tweener;
 }
 
 /* This method returns the tool panel associated to this plugin */

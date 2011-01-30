@@ -81,7 +81,7 @@
 struct KTViewDocument::Private
 {
     QActionGroup *gridGroup, *editGroup, *viewNextGroup, *viewZoomGroup, *viewPreviousGroup;
-    QMenu *brushesMenu, *selectionMenu, *fillMenu, *filterMenu, *viewToolMenu;
+    QMenu *brushesMenu, *motionMenu, *selectionMenu, *fillMenu, *filterMenu, *viewToolMenu;
     QMenu *toolsMenu, *editMenu, *viewMenu, *orderMenu;
     QAction *aUndo, *aRedo, *aClose;
     QToolBar *barGrid, *toolbar;
@@ -291,6 +291,13 @@ void KTViewDocument::createTools()
 
     k->toolbar->addAction(k->brushesMenu->menuAction());
 
+    // Motion menu
+    k->motionMenu = new QMenu(tr("Tweening"), k->toolbar);
+    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons/motion.png"));
+    connect(k->motionMenu, SIGNAL(triggered (QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
+
+    k->toolbar->addAction(k->motionMenu->menuAction());
+
     // Selection menu
     k->selectionMenu = new QMenu(tr("Selection"), k->toolbar);
     k->selectionMenu->setIcon(QPixmap(THEME_DIR + "icons/selection.png"));
@@ -365,11 +372,19 @@ void KTViewDocument::loadPlugins()
                                    if (toolStr.compare(tr("Text")) == 0)
                                        brushTools.insert(6, action);
 
+                                   /*
                                    if (toolStr.compare(tr("Motion Tween")) == 0) {
                                        kFatal() << "KTViewDocument::loadPlugins() - Tracing Motion Tween tool!";
                                        brushTools.insert(7, action);
                                    }
+                                   */
 
+                                 }
+                                 break;
+                              case KTToolInterface::Tweener:
+                                 {
+                                   k->motionMenu->addAction(action);
+                                   k->motionMenu->setDefaultAction(action);
                                  }
                                  break;
                               case KTToolInterface::Selection:
@@ -464,14 +479,22 @@ void KTViewDocument::selectTool()
                                 minWidth = 350;
                      } else if (toolStr.compare(tr("PolyLine"))==0) {
                                 minWidth = 130;
-                     } else if (toolStr.compare(tr("Motion Tween"))==0) {
-                                minWidth = 160;
                      } 
 
                      k->brushesMenu->setDefaultAction(action);
                      k->brushesMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->brushesMenu->menuAction()->setIcon(action->icon());
+                     break;
+
+                case KTToolInterface::Tweener:
+                     if (toolStr.compare(tr("Motion Tween"))==0) {
+                         minWidth = 160;
+                     }
+                     k->motionMenu->setDefaultAction(action);
+                     k->motionMenu->setActiveAction(action);
+                     if (!action->icon().isNull())
+                         k->motionMenu->menuAction()->setIcon(action->icon());
                      break;
 
                 case KTToolInterface::Fill:

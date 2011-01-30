@@ -76,12 +76,11 @@ class QMake
                     end
                 else
                     valid = false
-                    return valid
                 end
             end
         }
 
-        if verbose 
+        if verbose && valid 
             print "(Found: #{qtversion}) "
         end
 

@@ -1050,6 +1050,77 @@
        id="linearGradient5053"
        xlink:href="#linearGradient4673-4"
        inkscape:collect="always" />
+    <linearGradient
+       gradientTransform="matrix(0.25349891,-0.51554303,0.51554303,0.25349891,41.255059,28.788822)"
+       y2="16.28406"
+       x2="40.211685"
+       y1="20.75281"
+       x1="40.328125"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4609-6"
+       xlink:href="#linearGradient4548-2-3"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient4548-2-3">
+      <stop
+         style="stop-color:#008700;stop-opacity:1;"
+         offset="0"
+         id="stop4550-5-9" />
+      <stop
+         style="stop-color:#008700;stop-opacity:0;"
+         offset="1"
+         id="stop4552-9-4" />
+    </linearGradient>
+    <linearGradient
+       y2="16.28406"
+       x2="40.211685"
+       y1="20.75281"
+       x1="40.328125"
+       gradientTransform="matrix(0.25349891,-0.51554303,0.51554303,0.25349891,1.3419948,65.29895)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4453"
+       xlink:href="#linearGradient4548-2-3"
+       inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4548-2-3"
+       id="linearGradient4486"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.25349891,-0.51554303,0.51554303,0.25349891,1.3419948,65.29895)"
+       x1="40.328125"
+       y1="20.75281"
+       x2="40.211685"
+       y2="16.28406" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4548-2-3"
+       id="linearGradient5262"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.25349891,-0.51554303,0.51554303,0.25349891,1.3419948,65.29895)"
+       x1="40.328125"
+       y1="20.75281"
+       x2="40.211685"
+       y2="16.28406" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4548-2-3"
+       id="linearGradient5272"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.25349891,-0.51554303,0.51554303,0.25349891,1.3419948,65.29895)"
+       x1="40.328125"
+       y1="20.75281"
+       x2="40.211685"
+       y2="16.28406" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4548-2-3"
+       id="linearGradient5280"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.25349891,-0.51554303,0.51554303,0.25349891,1.3419948,65.29895)"
+       x1="40.328125"
+       y1="20.75281"
+       x2="40.211685"
+       y2="16.28406" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1058,9 +1129,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8.0000006"
-     inkscape:cx="11.181337"
-     inkscape:cy="1004.5991"
+     inkscape:zoom="64.000005"
+     inkscape:cx="18.461396"
+     inkscape:cy="1002.9482"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -5160,6 +5231,33 @@
          id="path4558-0-1"
          d="m 19.940889,49.446095 -0.143591,0.436465 3.979427,-0.06226 -0.06705,-0.240841 z"
          style="fill:#ffffff;fill-opacity:0.17307691;stroke:none" />
+    </g>
+    <g
+       id="g5292"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/motion.png"
+       inkscape:export-xdpi="1014"
+       inkscape:export-ydpi="1014">
+      <g
+         id="g5288">
+        <path
+           style="fill:none;stroke:#008700;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:0.2, 0.2;stroke-dashoffset:0"
+           d="m 14.180979,47.736309 c 1.095491,-0.625056 2.272274,0.171547 1.971296,1.272693 -0.300978,1.101145 -2.005831,0.227555 -1.268244,-0.808604 0.501813,-0.704945 1.841323,-1.160797 2.144354,0.159666"
+           id="path4630-2"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="czsc"
+           inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/motion.png"
+           inkscape:export-xdpi="1014.0845"
+           inkscape:export-ydpi="1014.0845" />
+        <path
+           style="fill:#30aa00;fill-opacity:1;stroke:#008700;stroke-width:0.13084352;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m 17.550406,49.013252 c 0.09239,0.328894 -0.09458,0.482553 -0.285033,0.513658 -0.190455,0.03111 -0.369642,-0.09548 -0.400224,-0.282733 -0.03058,-0.187255 0.09902,-0.364271 0.289476,-0.395376 0.137894,-0.02252 0.275721,0.03789 0.350446,0.153598"
+           id="path4545-6-8"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="csssc"
+           inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/motion.png"
+           inkscape:export-xdpi="1014.0845"
+           inkscape:export-ydpi="1014.0845" />
+      </g>
     </g>
   </g>
 </svg>
