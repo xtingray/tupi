@@ -8,6 +8,7 @@ INSTALLS += tupidata \
             desktop \
             icons \
             tupiman \
+            copyright \
             target 
 
 target.path = /bin/ 
@@ -19,6 +20,10 @@ launcher.path = /bin/
 tupiman.target = ../components/help/help/man/tupi.1.gz
 tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
 tupiman.path = /man1/
+
+copyright.target = ../components/help/help/man/copyright
+copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
+copyright.path = /tupi/
 
 desktop.target = ../../launcher/tupi.desktop
 desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
