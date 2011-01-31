@@ -72,8 +72,8 @@
     <name>Configurator</name>
     <message>
         <location filename="../src/plugins/tools/tweenertool/configurator.cpp" line="69"/>
-        <source>Motion Tween</source>
-        <translation>Motion Tween</translation>
+        <source>Position Tween</source>
+        <translation>Position Tween</translation>
     </message>
 </context>
 <context>
@@ -2907,8 +2907,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
-        <source>Motion Tween</source>
-        <translation>Motion Tween</translation>
+        <source>Position Tween</source>
+        <translation>Position Tween</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>

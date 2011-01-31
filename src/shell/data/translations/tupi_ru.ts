@@ -2410,8 +2410,8 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="350"/>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="434"/>
-        <source>Motion Tween</source>
-        <translation>Motion Tween</translation>
+        <source>Position Tween</source>
+        <translation>Position Tween</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="423"/>
@@ -2835,8 +2835,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/tweenertool/tweener.cpp" line="199"/>
-        <source>Motion Tween</source>
-        <translation>Motion Tween</translation>
+        <source>Position Tween</source>
+        <translation>Position Tween</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweenertool/tweener.cpp" line="201"/>

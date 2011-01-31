@@ -3531,7 +3531,7 @@
     </message>
     <message>
         <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="249"/>
-        <source>Motion Tween</source>
+        <source>Position Tween</source>
         <translation>Výsledný sled snímků vytvá~Yející iluzi pohybu</translation>
     </message>
     <message>

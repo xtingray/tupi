@@ -88,7 +88,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-    QLabel *title = new QLabel(tr("Motion Tween"));
+    QLabel *title = new QLabel(tr("Position Tween"));
     title->setAlignment(Qt::AlignHCenter);
     title->setFont(QFont("Arial", 8, QFont::Bold));
 

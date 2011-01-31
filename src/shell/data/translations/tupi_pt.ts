@@ -2908,7 +2908,7 @@
     <message>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="360"/>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="457"/>
-        <source>Motion Tween</source>
+        <source>Position Tween</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3497,7 +3497,7 @@
     </message>
     <message>
         <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="249"/>
-        <source>Motion Tween</source>
+        <source>Position Tween</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

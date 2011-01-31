@@ -2472,11 +2472,11 @@
     </message>
 </context>
 <context>
-    <name>Motion Tween</name>
+    <name>Position Tween</name>
     <message>
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
-        <source>Motion Tween</source>
-        <translation>Motion Tween</translation>
+        <source>Position Tween</source>
+        <translation>Position Tween</translation>
     </message>
 </context>
 <context>
