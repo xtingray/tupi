@@ -7,6 +7,6 @@ CONFIG -= moc
 INCLUDEPATH += .
 DEFINES += __STDC_CONSTANT_MACROS
 
-LIBS += -lavformat -lavcodec
+LIBS += -lavformat -lavcodec -lavutil
 # Input
 SOURCES += main.cpp
