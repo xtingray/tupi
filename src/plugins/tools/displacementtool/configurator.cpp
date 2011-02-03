@@ -151,7 +151,8 @@ void Configurator::setTweenManagerPanel()
     connect(k->tweenManager, SIGNAL(addNewTween(const QString &)), this, SLOT(addTween(const QString &)));
     connect(k->tweenManager, SIGNAL(editCurrentTween(const QString &)), this, SLOT(editTween()));
     connect(k->tweenManager, SIGNAL(removeCurrentTween(const QString &)), this, SLOT(removeTween(const QString &)));
-    connect(k->tweenManager, SIGNAL(updateTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
+    // connect(k->tweenManager, SIGNAL(updateTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
+    connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
 

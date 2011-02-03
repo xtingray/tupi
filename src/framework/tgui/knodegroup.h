@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -43,12 +43,13 @@
 #include <QHash>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 
 class KNodeGroup : public QObject
 {
     Q_OBJECT
+
     public:
         KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene);
         ~KNodeGroup();
@@ -73,8 +74,9 @@ class KNodeGroup : public QObject
         void addControlNode(KControlNode* node);
         
         void createNodes(QGraphicsPathItem *nodes);
-        void emitNodeClicked();
-        void emitNodeMoved();
+        void emitNodeClicked(KControlNode::State state);
+
+        // void emitNodeMoved();
         
         void expandAllNodes();
         bool isSelected();
@@ -85,7 +87,8 @@ class KNodeGroup : public QObject
         
     signals:
         void itemChanged(QGraphicsItem *item);
-        void nodeClicked();
+        void nodePressed();
+        void nodeReleased(); 
 };
 
 #endif

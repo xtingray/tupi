@@ -187,8 +187,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
 KTViewDocument::~KTViewDocument()
 {
-    kFatal() << "~KTViewDocument() - Killing workspace!";
-
     if (k->currentTool)
         k->currentTool->saveConfig();
 
@@ -371,14 +369,6 @@ void KTViewDocument::loadPlugins()
 
                                    if (toolStr.compare(tr("Text")) == 0)
                                        brushTools.insert(6, action);
-
-                                   /*
-                                   if (toolStr.compare(tr("Motion Tween")) == 0) {
-                                       kFatal() << "KTViewDocument::loadPlugins() - Tracing Motion Tween tool!";
-                                       brushTools.insert(7, action);
-                                   }
-                                   */
-
                                  }
                                  break;
                               case KTToolInterface::Tweener:
@@ -448,8 +438,6 @@ void KTViewDocument::selectTool()
            K_FUNCINFO;
     #endif
 
-    kFatal() << "KTViewDocument::selectTool() - Loading plugin!";
-
     if (k->currentTool) {
         k->currentTool->saveConfig();
         QWidget *toolConfigurator = k->currentTool->configurator();
@@ -488,7 +476,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Tweener:
-                     if (toolStr.compare(tr("Motion Tween"))==0) {
+                     if (toolStr.compare(tr("Position Tween"))==0) {
                          minWidth = 160;
                      }
                      k->motionMenu->setDefaultAction(action);
@@ -545,7 +533,7 @@ void KTViewDocument::selectTool()
 
         k->paintArea->viewport()->setCursor(action->cursor());
 
-        if (toolStr.compare(tr("Motion Tween"))==0 && k->spaceMode->currentIndex() != 0)
+        if (toolStr.compare(tr("Position Tween"))==0 && k->spaceMode->currentIndex() != 0)
             k->spaceMode->setCurrentIndex(0);
 
     }
@@ -788,7 +776,6 @@ void KTViewDocument::updateTimer()
 
 void KTViewDocument::setSpaceContext()
 {
-    kFatal() << "KTViewDocument::setSpaceContext() - Updating context!";
     QString option = k->spaceMode->currentText();
     int index = k->spaceMode->currentIndex();
     k->project->updateSpaceContext(index);
@@ -798,8 +785,7 @@ void KTViewDocument::setSpaceContext()
 
    if (k->currentTool) {
        k->currentTool->init(k->paintArea->graphicsScene()); 
-       kFatal() << "KTViewDocument::setSpaceContext() - Current plugin: " << k->currentTool->name();
-       if (k->currentTool->name().compare(tr("Motion Tween")) == 0 && index != 0) {
+       if (k->currentTool->name().compare(tr("Position Tween")) == 0 && index != 0) {
            QAction *pencil = k->brushesMenu->actions().at(0);
            pencil->trigger();
        }

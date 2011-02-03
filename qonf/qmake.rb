@@ -8,7 +8,7 @@ class QMake
     $found = ""
 
     def initialize
-        if not findQMake("4.7.0", true)
+        if not findQMake("4.7.0", false)
             raise QonfException.new("Can't find valid qmake - qt4")
         end
         
@@ -21,6 +21,7 @@ class QMake
         paths = [ "qmake", "qmake-qt4", "qmake4" ]
         minver = minqtversion.split(".")
         valid = true
+        count = 0
 
         paths.each { |path|
             begin
@@ -47,19 +48,19 @@ class QMake
                     version.size.times { |i|
                         if i = 0
                            if version[i] < minver[i]
-                              valid = false 
+                              return false 
                            end
                         end
 
                         if i = 1
                            if version[i] < minver[i]
-                              valid = false
+                              return false
                            end
                         end
 
                         if i = 2
                            if version[i] < minver[i]
-                              valid = false
+                              return false
                            end
                         end
                     }
@@ -68,9 +69,17 @@ class QMake
                         @path = path
                         break
                     end
+
+                else
+                    count = count + 1
                 end
+
             end
         }
+
+        if count == 3
+           return false
+        end
 
         if verbose && valid 
             print "(Found: #{qtversion}) "

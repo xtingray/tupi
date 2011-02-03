@@ -249,9 +249,21 @@ void KNodeGroup::addControlNode(KControlNode*)
 {
 }
 
-void KNodeGroup::emitNodeClicked()
+void KNodeGroup::emitNodeClicked(KControlNode::State state)
 {
-    emit nodeClicked();
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    /* SQA: Possible code for the future 
+    if (state == KControlNode::Pressed) {
+        kFatal() << "KNodeGroup::emitNodeClicked() - Click! -> PRESSED";
+        emit nodePressed();
+    }
+    */
+
+    if (state == KControlNode::Released)
+        emit nodeReleased();
 }
 
 void KNodeGroup::expandAllNodes()

@@ -79,6 +79,7 @@ struct Tweener::Private
     KTItemTweener *currentTween;
 
     KNodeGroup *group;
+
     bool pathAdded;
     int startPoint;
 
@@ -93,7 +94,6 @@ Tweener::Tweener() : KTToolPlugin(), k(new Private)
     k->configurator = 0;
     k->path = 0;
     k->group = 0;
-    k->pathAdded = false;
     k->startPoint = 0;
 }
 
@@ -106,14 +106,14 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
-    // kFatal() << "Tweener::init() - Tracing! - Mode: " << k->mode;
-
     delete k->path;
     k->path = 0;
     delete k->group;
     k->group = 0;
     k->scene = scene;
     k->objects.clear();
+
+    k->pathAdded = false;
 
     k->mode = Settings::View;
     k->editMode = Settings::None;
@@ -148,7 +148,7 @@ void Tweener::updateStartPoint(int index)
 
 QStringList Tweener::keys() const
 {
-    return QStringList() << tr("Tweener");
+    return QStringList() << tr("Position Tween");
 }
 
 /* This method makes an action when the mouse is pressed on the workspace 
@@ -157,6 +157,10 @@ QStringList Tweener::keys() const
 
 void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
 
@@ -193,20 +197,31 @@ void Tweener::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
 
 void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
     if (k->editMode == Settings::Path) {
 
+        /*
         if (!k->group) {
             k->group = new KNodeGroup(k->path, scene);
-            connect(k->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
+            connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->clearChangesNodes();
         } else {
             k->group->createNodes(k->path);
             k->group->expandAllNodes();
         }
-        k->configurator->updateSteps(k->path);
+        */
+
+        if (k->group) {
+            k->group->createNodes(k->path);
+            k->group->expandAllNodes();
+            k->configurator->updateSteps(k->path);
+        }
 
     } else {
 
@@ -218,9 +233,16 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
             if (!k->path) {
                 k->path = new QGraphicsPathItem;
                 k->path->setZValue(maxZValue());
-                QColor color(150, 150, 150, 200);
+
+                // QColor color(150, 150, 150, 200);
+                // QPen pen(QBrush(color), 1, Qt::DotLine);
+                // k->path->setPen(pen);
+
+                QColor color = Qt::lightGray;
+                color.setAlpha(200);
                 QPen pen(QBrush(color), 1, Qt::DotLine);
                 k->path->setPen(pen);
+
                 QPainterPath path;
                 path.moveTo(input->pos());
                 k->path->setPath(path);
@@ -249,8 +271,6 @@ int Tweener::toolType() const
 
 QWidget *Tweener::configurator()
 {
-    // kFatal() << "Tweener::configurator() - Tracing!";
-
     if (!k->configurator) {
         k->mode = Settings::View;
 
@@ -282,8 +302,6 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 
 void Tweener::aboutToChangeTool()
 {
-     // kFatal() << "Tweener::aboutToChangeTool() - Tracing! - Mode: " << k->mode;
-
     if (k->editMode == Settings::Selection) {
         if (k->objects.size() > 0) {
             foreach (QGraphicsItem *item, k->objects) {
@@ -312,7 +330,6 @@ bool Tweener::isComplete() const
     return true;
 }
 
-
 /* This method defines the actions contained in this plugin */
 
 void Tweener::setupActions()
@@ -322,7 +339,7 @@ void Tweener::setupActions()
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("W")));
 
-    k->actions.insert("Tweener", translater);
+    k->actions.insert("Position Tween", translater);
 }
 
 /* This method initializes the "Create path" mode */
@@ -334,17 +351,16 @@ void Tweener::setCreatePath()
         if (!k->pathAdded) {
             k->scene->addItem(k->path);
             k->pathAdded = true;
-        }
+        } 
 
         if (k->group) {
             k->group->createNodes(k->path);
         } else {
             k->group = new KNodeGroup(k->path, k->scene);
-            connect(k->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
+            connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->createNodes(k->path);
         }
         k->group->expandAllNodes();
-
     }
 
     k->editMode = Settings::Path;
@@ -553,10 +569,6 @@ void Tweener::applyTween()
                                                                         k->startPoint, KTProjectRequest::Select, "1");
         emit requested(&request);
 
-        // kFatal() << "Tweener::applyTween() - FramesTotal: " << framesNumber;
-        // kFatal() << "Tweener::applyTween() - StepsTotal: " << total;
-        // kFatal() << "Tweener::applyTween() - Mode: " << k->mode;
-
     } else {
 
         foreach (QGraphicsItem *item, k->objects) {
@@ -621,7 +633,9 @@ void Tweener::applyTween()
     setCurrentTween(name);
 }
 
-/* This method updates the data of the path into the tool panel */
+/* This method updates the data of the path into the tool panel 
+ * and disables edition mode for nodes
+*/
 
 void Tweener::updatePath()
 {
@@ -638,8 +652,6 @@ void Tweener::saveConfig()
 
 void Tweener::updateScene(KTGraphicsScene *scene)
 {
-    // kFatal() << "Tweener::updateScene() - Just tracing!";
-
     k->mode = k->configurator->mode();
 
     if (k->mode == Settings::Edit) {
@@ -671,11 +683,8 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                        k->configurator->notifySelection(false);
 
                        setSelect();
-                   } else {
-                       // kFatal() << "Tweener::updateScene() - Start point and Frame Index are the same!";
-                   }
+                   } 
                } else {
-                   // kFatal() << "Tweener::updateScene() - What the hell!!!";
                    setSelect();
                } 
 
@@ -711,8 +720,6 @@ void Tweener::removeTween(const QString &name)
 
 void Tweener::setCurrentTween(const QString &name)
 {
-    // kFatal() << "Tweener::setCurrentTween() - Tracing!";
-
     KTScene *scene = k->scene->scene();
     k->currentTween = scene->tween(name);
     if (k->currentTween)
@@ -722,10 +729,18 @@ void Tweener::setCurrentTween(const QString &name)
 void Tweener::setEditEnv()
 {
     k->mode = Settings::Edit;
+    // k->pathAdded = false;
+
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name());
     k->path = k->currentTween->graphicsPath();
+
     k->path->setZValue(maxZValue());
+
+    QColor color = Qt::lightGray;
+    color.setAlpha(200);
+    QPen pen(QBrush(color), 1, Qt::DotLine);
+    k->path->setPen(pen);
 
     setCreatePath();
 }
@@ -741,4 +756,3 @@ int Tweener::framesTotal()
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);
-

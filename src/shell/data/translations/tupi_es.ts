@@ -2456,8 +2456,8 @@
     <message>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="366"/>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="463"/>
-        <source>Tweener</source>
-        <translation>Tweener</translation>
+        <source>Position Tween</source>
+        <translation>Position Tween</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
@@ -2900,11 +2900,6 @@
 </context>
 <context>
     <name>Tweener</name>
-    <message>
-        <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
-        <source>Tweener</source>
-        <translation>Tweener</translation>
-    </message>
     <message>
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
         <source>Position Tween</source>

@@ -238,12 +238,15 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
         setSeletedChilds(false);
     }
 
-    QGraphicsItem::mousePressEvent(event);
+    // QGraphicsItem::mousePressEvent(event);
     
     k->graphicParent->setSelected(true);
     showChildNodes(true);
     
-    event->accept();
+    // event->accept();
+
+    // SQA: Possible code for the future
+    // k->nodeGroup->emitNodeClicked(Pressed);
 }
 
 void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -254,7 +257,9 @@ void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     #endif
     */
 
-    k->nodeGroup->emitNodeClicked();
+    // event->accept();
+
+    k->nodeGroup->emitNodeClicked(Released);
 
     // SQA: Why this instruction makes the system crash in Qt 4.7? 
     // QGraphicsItem::mouseReleaseEvent(event);

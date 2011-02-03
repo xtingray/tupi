@@ -44,12 +44,16 @@
 /**
  * @author Jorge Cuadrado
 */
+
 class KNodeGroup;
+
 class KControlNode : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     
     public:
+
+        enum State { Pressed = 1, Released };
         
         KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0),  
                      QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

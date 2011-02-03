@@ -226,7 +226,9 @@ void KTPaintAreaBase::mousePressEvent(QMouseEvent * event)
     #endif
 
     if (!canPaint()) { 
-        kDebug() << "KTPaintAreaBase::mousePressEvent -> I can't paint right now!";
+        #ifdef K_DEBUG
+               kDebug() << "KTPaintAreaBase::mousePressEvent -> I can't paint right now!";
+        #endif
         return;
     }
 
@@ -395,11 +397,15 @@ bool KTPaintAreaBase::canPaint() const
         KTFrame *frame = k->scene->currentFrame();
 
         if (frame) {
-            kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THE PROBLEM IS THE FRAME";
+            #ifdef K_DEBUG
+                   kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THE PROBLEM IS THE FRAME";
+            #endif
             return !frame->isLocked();
         }
     } else {
-        kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THERE'S NO SCENE";
+        #ifdef K_DEBUG
+               kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THERE'S NO SCENE";
+        #endif
     }
 
     return false;

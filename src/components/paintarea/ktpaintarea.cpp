@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -573,7 +573,6 @@ void KTPaintArea::deleteItems()
                      }
 
                      if (itemIndex >= 0) {
-                         kFatal() << "KTPaintArea::deleteItems() - Index target: " << itemIndex;
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                                   currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                                   currentScene->currentFrameIndex(), 

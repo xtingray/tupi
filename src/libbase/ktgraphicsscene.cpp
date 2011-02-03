@@ -663,8 +663,10 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // This condition locks all the tools while workspace is rotated 
     if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
         if (k->tool) {      
-            if (k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted())
+            if ((k->tool->toolType() == KTToolPlugin::Brush || k->tool->toolType() == KTToolPlugin::Tweener) 
+                 && event->isAccepted()) {
                 return;
+            }
 
             // If there's no frame... the tool is disabled 
 

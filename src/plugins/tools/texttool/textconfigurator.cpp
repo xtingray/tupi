@@ -82,9 +82,10 @@ void TextConfigurator::changeFont()
 {
     font = m_fontChooser->currentFont();
 
-    kFatal() << "TextConfigurator::changeFont() - Font Family: " << font.family();
-    kFatal() << "TextConfigurator::changeFont() - Font Style: " << font.style(); 
-    kFatal() << "TextConfigurator::changeFont() - Font Size: " << font.pointSize();
+    // kFatal() << "TextConfigurator::changeFont() - Font Family: " << font.family();
+    // kFatal() << "TextConfigurator::changeFont() - Font Style: " << font.style(); 
+    // kFatal() << "TextConfigurator::changeFont() - Font Size: " << font.pointSize();
+
     m_text->setFont(font);
 
     adjustSize();
