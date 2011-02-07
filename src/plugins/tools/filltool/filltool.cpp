@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *

@@ -51,8 +51,6 @@ void KTPixmapItem::fromXml(const QString &xml)
 
 QDomElement KTPixmapItem::toXml(QDomDocument &doc) const
 {
-    /*
     QDomElement root = doc.createElement("pixmap");
     return root;
-    */
 }
