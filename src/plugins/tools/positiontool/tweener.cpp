@@ -120,7 +120,7 @@ void Tweener::init(KTGraphicsScene *scene)
 
     k->configurator->resetUI();
 
-    QList<QString> tweenList = k->scene->scene()->getTweenNames();
+    QList<QString> tweenList = k->scene->scene()->getTweenNames(KTItemTweener::Position);
     if (tweenList.size() > 0) {
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
@@ -474,7 +474,7 @@ void Tweener::applyReset()
     k->objects.clear();
 
     if (k->group) {
-        k->group->clean();
+        k->group->clear();
         k->group = 0;
     }
 

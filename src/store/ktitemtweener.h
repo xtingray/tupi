@@ -47,17 +47,20 @@ class QGraphicsItem;
 class QGraphicsPathItem;
 
 /**
- * @todo - setColorAt, setZAt
+ * @TODO: - setColorAt, setZAt
  * @author David Cuadrado
 */
 
 class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
     public:
+        enum Type { Position = 1, Rotation, Scale, Color, Depth, All };
+
         KTItemTweener();
         ~KTItemTweener();
 
         QString name();
+        KTItemTweener::Type type();
         
         void setPosAt(int step, const QPointF & point);
         void setRotationAt(int step, double angle);

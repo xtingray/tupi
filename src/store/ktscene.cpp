@@ -471,21 +471,24 @@ KTItemTweener *KTScene::tween(const QString &name)
     return 0;
 }
 
-QList<QString> KTScene::getTweenNames()
+QList<QString> KTScene::getTweenNames(KTItemTweener::Type type)
 {
     QList<QString> names;
 
     foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
              if (KTItemTweener *tween = object->tween()) {
-                 QString value = tween->name();
-                 kFatal() << "KTScene::getTweenNames() - Tween Name: " << value;
-                 names.append(tween->name());
+                 if (tween->type() == type) {
+                     QString value = tween->name();
+                     names.append(tween->name());
+                 }
              }
     }
 
     foreach (KTSvgItem *object, k->tweeningSvgObjects) {
-             if (KTItemTweener *tween = object->tween()) 
-                 names.append(tween->name());
+             if (KTItemTweener *tween = object->tween()) {
+                 if (tween->type() == type)
+                     names.append(tween->name());
+             } 
     }
 
     return names;

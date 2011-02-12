@@ -72,10 +72,6 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         void drawPhotogram(int photogram);
         void drawBackground();
 
-        void addFrame(KTFrame *frame, double opacity = 1.0, Context mode = Current);
-        void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
-        void addSvgObject(KTSvgItem *svgItem, double opacity = 1.0);
-        
         void cleanWorkSpace();
         void removeScene();
         int currentFrameIndex() const;
@@ -109,6 +105,13 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
 
         KTProject::Mode spaceMode();
         void setSpaceMode(KTProject::Mode mode);
+
+    private:
+        void addFrame(KTFrame *frame, double opacity = 1.0, Context mode = Current);
+        void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
+        void addSvgObject(KTSvgItem *svgItem, double opacity = 1.0);
+        void addTweeningObjects(int photogram);
+        void addSvgTweeningObjects(int photogram);
 
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

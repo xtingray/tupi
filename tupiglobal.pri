@@ -1,4 +1,4 @@
-# Generated automatically at Mon Feb 07 11:36:21 -0500 2011! PLEASE DO NOT EDIT!
+# Generated automatically at Sat Feb 12 18:48:45 -0500 2011! PLEASE DO NOT EDIT!
 INCLUDEPATH += 
 LIBS += -laspell -lavcodec -lavformat -ltupifwgui -ltupifwcore -ltupifwsound -lz -L/usr/local/tupi/lib
 QT += opengl core gui svg xml network

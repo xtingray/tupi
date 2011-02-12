@@ -51,6 +51,7 @@ struct KTItemTweener::Private
     Private() : frames(0) {}
     
     QString name;
+    KTItemTweener::Type type;
     int initFrame;
     int frames;
     QString path;
@@ -83,6 +84,11 @@ KTItemTweener::~KTItemTweener()
 QString KTItemTweener::name()
 {
     return k->name;
+}
+
+KTItemTweener::Type KTItemTweener::type()
+{
+    return k->type;
 }
 
 void KTItemTweener::addStep(const KTTweenerStep &step)
@@ -159,6 +165,7 @@ void KTItemTweener::fromXml(const QString &xml)
         QDomElement root = doc.documentElement();
 
         k->name = root.attribute("name");
+        k->type = KTItemTweener::Type(root.attribute("type").toInt());
         k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();
         k->path = root.attribute("coords");
@@ -194,6 +201,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
+    root.setAttribute("type", k->type);
     root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);
     root.setAttribute("coords", k->path);

@@ -239,6 +239,7 @@ QString Settings::tweenToXml(int currentFrame, QString &path)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
+    root.setAttribute("type", KTItemTweener::Position);
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
     root.setAttribute("coords", path);

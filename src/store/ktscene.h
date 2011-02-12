@@ -64,7 +64,7 @@ typedef KTIntHash<KTSoundLayer *> SoundLayers;
 
 /**
  * @brief This class represents the scene data structure
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado 
 */
 
 class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
@@ -149,7 +149,7 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 
         KTItemTweener *tween(const QString &name);
 
-        QList<QString> getTweenNames();
+        QList<QString> getTweenNames(KTItemTweener::Type type);
         QList<QGraphicsItem *> getItemsFromTween(const QString &name);
 
         int getTotalTweens();
