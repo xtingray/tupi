@@ -50,7 +50,7 @@
 /**
  * This class implements the Tupi GUI
  * Here is where all the Tupi GUI components are defined 
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado 
 */
 
 /**

@@ -73,22 +73,23 @@ KNodeGroup::~KNodeGroup()
            KEND;
     #endif
 
-    // qDeleteAll(k->nodes);
-    // k->nodes.clear();
-
-    clean();
+    clear();
     delete k;
 }
 
-void KNodeGroup::clean()
+void KNodeGroup::clear()
 {
-    // kFatal() << "KNodeGroup::clean() - Deleting all the nodes!";
+    /* SQA: Pending for revision 
+    foreach (KControlNode *node, k->nodes) {
+             node->clear();
+    }
+    */
 
     qDeleteAll(k->nodes);
     k->nodes.clear();
 }
 
-void KNodeGroup::syncNodes(const QPainterPath & path)
+void KNodeGroup::syncNodes(const QPainterPath &path)
 {
     if (k->nodes.isEmpty())
         return;

@@ -78,6 +78,7 @@ class KControlNode : public QObject, public QGraphicsItem
         KControlNode *centralNode();
         
         void hasChanged(bool notChange);
+        void clear();
         
     protected:
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);

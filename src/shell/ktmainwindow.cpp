@@ -82,7 +82,7 @@
 /**
  * This class defines the main window application.
  * Here is where all the Tupi GUI is initialized 
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class SleeperThread : public QThread
@@ -403,6 +403,8 @@ bool KTMainWindow::closeProject()
         }
 
     }
+
+    setCurrentTab(0);
 
     // if (colorView->isExpanded())
         colorView->expandDock(false);

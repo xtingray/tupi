@@ -188,9 +188,11 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 
     } else {
 
-        qDeleteAll(k->nodeGroups);
+        foreach (KNodeGroup *group, k->nodeGroups) {
+                 group->clear();
+        }
         k->nodeGroups.clear();
-
+        qDeleteAll(k->nodeGroups);
     }
 }
 

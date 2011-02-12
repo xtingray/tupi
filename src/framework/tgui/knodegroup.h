@@ -54,7 +54,7 @@ class KNodeGroup : public QObject
         KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene);
         ~KNodeGroup();
 
-        void clean();
+        void clear();
         
         QGraphicsItem * parentItem();
         void syncNodes(const QPainterPath & path);

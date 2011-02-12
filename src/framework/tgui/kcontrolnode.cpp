@@ -98,12 +98,13 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     
     if (option->state & QStyle::State_Sunken || option->state & QStyle::State_Selected) {
 
-        painter->save();
-        painter->setPen(QPen(Qt::gray));
-        painter->restore();
+        // painter->save();
+        // painter->setPen(QPen(Qt::gray));
+        // painter->restore();
         
-        if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
-            c = QColor("white");
+        if (qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
+            c = QColor("gray");
+            c.setAlpha(100);
         } else {
             c = QColor("green");
             c.setAlpha(200);
@@ -111,7 +112,7 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     } else {
 
-        if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
+        if (qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
            c = QColor("white");
         } else {
            c = QColor("navy");
@@ -173,6 +174,7 @@ QRectF KControlNode::boundingRect() const
 QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemPositionChange) {
+
         if (!k->unchanged) {
             if (qgraphicsitem_cast<QGraphicsPathItem*>(k->graphicParent)) {
 
@@ -238,12 +240,12 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
         setSeletedChilds(false);
     }
 
-    // QGraphicsItem::mousePressEvent(event);
-    
     k->graphicParent->setSelected(true);
     showChildNodes(true);
-    
-    // event->accept();
+  
+    // These instructions are required for painting updates
+    QGraphicsItem::mousePressEvent(event); 
+    event->accept();
 
     // SQA: Possible code for the future
     // k->nodeGroup->emitNodeClicked(Pressed);
@@ -257,12 +259,13 @@ void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     #endif
     */
 
-    // event->accept();
+    Q_UNUSED(event);
 
     k->nodeGroup->emitNodeClicked(Released);
 
     // SQA: Why this instruction makes the system crash in Qt 4.7? 
     // QGraphicsItem::mouseReleaseEvent(event);
+    // event->accept();
 }
 
 void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -360,3 +363,8 @@ void KControlNode::hasChanged(bool unchanged)
 {
     k->unchanged = unchanged;
 }
+
+void KControlNode::clear()
+{
+}
+
