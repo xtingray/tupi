@@ -33,57 +33,48 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#ifndef TWEENMANAGER_H
+#define TWEENMANAGER_H
 
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
-
-#include "kttweenerstep.h"
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
-class QGraphicsPathItem;
+#include <QWidget>
 
 /**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
+ * @author Gustav Gonzalez 
 */
 
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+class QListWidgetItem;
+
+class TweenManager: public QWidget 
 {
+    Q_OBJECT
+
     public:
-        enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
 
-        KTItemTweener();
-        ~KTItemTweener();
+        TweenManager(QWidget *parent = 0);
+        ~TweenManager();
+        void loadTweenList(QList<QString> tweenList);
+        void resetUI();
+        QString currentTweenName() const;
+        int listSize(); 
+        void removeItemFromList();
+        void updateTweenName(const QString &name);
 
-        QString name();
-        KTItemTweener::Type type();
-        
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
-        
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
+    signals:
+        void addNewTween(const QString &name);
+        void editCurrentTween(const QString &name);
+        void removeCurrentTween(const QString &name);
+        void getTweenData(const QString &name);
 
-        int frames() const;
-        int startFrame();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
+    private slots:
+        void addTween();
+        void editTween();
+        void removeTween();
+        void showMenu(const QPoint &point);
+        void updateTweenData(QListWidgetItem *item);
 
-        QGraphicsPathItem *graphicsPath() const;
-        
     private:
+        bool itemExists(const QString &name);
+
         struct Private;
         Private *const k;
 };

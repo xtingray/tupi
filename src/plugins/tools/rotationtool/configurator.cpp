@@ -33,59 +33,102 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#include "configurator.h"
+#include "tweenmanager.h"
 
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
+#include "ktitemtweener.h"
+#include "kosd.h"
+#include "kdebug.h"
 
-#include "kttweenerstep.h"
-#include "ktglobal_store.h"
+#include <QLabel>
+#include <QBoxLayout>
 
-class QGraphicsItem;
-class QGraphicsPathItem;
-
-/**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
-*/
-
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+struct Configurator::Private
 {
-    public:
-        enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
+    QBoxLayout *layout;
+    QBoxLayout *settingsLayout;
+    TweenManager *tweenManager;
 
-        KTItemTweener();
-        ~KTItemTweener();
+    KTItemTweener *currentTween;
 
-        QString name();
-        KTItemTweener::Type type();
-        
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
-        
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
-
-        int frames() const;
-        int startFrame();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
-
-        QGraphicsPathItem *graphicsPath() const;
-        
-    private:
-        struct Private;
-        Private *const k;
+    Settings::Mode mode;
+    GuiState state;
 };
 
-#endif
+Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
+{
+    k->mode = Settings::View;
+    k->state = Manager;
+
+    k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    QLabel *title = new QLabel(tr("Rotation Tween"));
+    title->setAlignment(Qt::AlignHCenter);
+    title->setFont(QFont("Arial", 8, QFont::Bold));
+
+    k->layout->addWidget(title);
+
+    k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    k->settingsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    k->settingsLayout->setMargin(0);
+    k->settingsLayout->setSpacing(0);
+
+    setTweenManagerPanel();
+
+    k->layout->addLayout(k->settingsLayout);
+    k->layout->addStretch(2);
+}
+
+Configurator::~Configurator()
+{
+    delete k;
+}
+
+void Configurator::loadTweenList(QList<QString> tweenList)
+{
+    k->tweenManager->loadTweenList(tweenList);
+    // if (tweenList.count() > 0)
+    //     activeButtonsPanel(true);
+}
+
+void Configurator::setCurrentTween(KTItemTweener *currentTween)
+{
+    k->currentTween = currentTween;
+}
+
+void Configurator::setTweenManagerPanel()
+{
+    k->tweenManager = new TweenManager(this);
+
+    k->settingsLayout->addWidget(k->tweenManager);
+    k->state = Manager;
+}
+
+void Configurator::activeTweenManagerPanel(bool enable)
+{
+    if (enable)
+        k->tweenManager->show();
+    else
+        k->tweenManager->hide();
+
+    // if (k->tweenManager->listSize() > 0)
+    //     activeButtonsPanel(enable);
+}
+
+void Configurator::closeSettingsPanel()
+{
+    if (k->state == Properties) {
+        activeTweenManagerPanel(true);
+        // activePropertiesPanel(false);
+        k->mode = Settings::View;
+        k->state = Manager;
+    }
+}
+
+void Configurator::resetUI()
+{
+    k->tweenManager->resetUI();
+    closeSettingsPanel();
+}
+

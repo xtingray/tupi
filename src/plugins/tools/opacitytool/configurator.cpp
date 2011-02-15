@@ -33,59 +33,43 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#include "configurator.h"
+#include "ktitemtweener.h"
+#include "kosd.h"
+#include "kdebug.h"
 
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
+#include <QLabel>
+#include <QBoxLayout>
 
-#include "kttweenerstep.h"
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
-class QGraphicsPathItem;
-
-/**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
-*/
-
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+struct Configurator::Private
 {
-    public:
-        enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
-
-        KTItemTweener();
-        ~KTItemTweener();
-
-        QString name();
-        KTItemTweener::Type type();
-        
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
-        
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
-
-        int frames() const;
-        int startFrame();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
-
-        QGraphicsPathItem *graphicsPath() const;
-        
-    private:
-        struct Private;
-        Private *const k;
+    QBoxLayout *layout;
+    KTItemTweener *currentTween;
 };
 
-#endif
+Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
+{
+    k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    QLabel *title = new QLabel(tr("Opacity Tween"));
+    title->setAlignment(Qt::AlignHCenter);
+    title->setFont(QFont("Arial", 8, QFont::Bold));
+
+    k->layout->addWidget(title);
+    k->layout->addStretch(2);
+}
+
+Configurator::~Configurator()
+{
+    delete k;
+}
+
+void Configurator::loadTweenList(QList<QString> tweenList)
+{
+}
+
+void Configurator::setCurrentTween(KTItemTweener *currentTween)
+{
+    k->currentTween = currentTween;
+}

@@ -12,7 +12,12 @@ SUBDIRS += penciltool \
            filltool \
            erasertool  \
            polylinetool \
-           positiontool
+           positiontool \
+           rotationtool \
+           scaletool \
+           opacitytool \
+           colouringtool \
+           compoundtool
 
 # KDEV_QTVER = 4
 CONFIG += release warn_on

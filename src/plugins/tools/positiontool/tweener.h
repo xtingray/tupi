@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TWEENERTRANSLATE_H
-#define TWEENERTRANSLATE_H
+#ifndef POSITIONTWEENER_H
+#define POSITIONTWEENER_H
 
 #include <kttoolplugin.h>
 

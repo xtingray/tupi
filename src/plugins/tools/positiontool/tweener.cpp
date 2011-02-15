@@ -45,18 +45,15 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsView>
 #include <QDomDocument>
-#include <QGraphicsPathItem>
 
-#include "kalgorithm.h"
 #include "kglobal.h"
 #include "kdebug.h"
 #include "kaction.h"
 #include "knodegroup.h"
 #include "kosd.h"
-#include <ktsvg2qt.h>
+#include "ktsvg2qt.h"
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
-#include "ktgraphicalgorithm.h"
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
 #include "ktsvgitem.h"
@@ -334,12 +331,12 @@ bool Tweener::isComplete() const
 
 void Tweener::setupActions()
 {
-    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), 
+    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/position_tween.png"), 
                                       tr("Position Tween"), this);
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
-    translater->setShortcut(QKeySequence(tr("W")));
+    translater->setShortcut(QKeySequence(tr("Shift+W")));
 
-    k->actions.insert("Position Tween", translater);
+    k->actions.insert(tr("Position Tween"), translater);
 }
 
 /* This method initializes the "Create path" mode */

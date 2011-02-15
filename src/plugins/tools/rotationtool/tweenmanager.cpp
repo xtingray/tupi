@@ -148,6 +148,7 @@ void TweenManager::editTween()
 void TweenManager::removeTween()
 {
     removeItemFromList();
+
     emit removeCurrentTween(k->target);
 }
 

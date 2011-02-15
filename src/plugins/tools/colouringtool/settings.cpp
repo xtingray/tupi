@@ -33,59 +33,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
-
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
-
+#include "settings.h"
+#include "kdebug.h"
+#include "ktitemtweener.h"
 #include "kttweenerstep.h"
-#include "ktglobal_store.h"
+#include "kosd.h"
 
-class QGraphicsItem;
-class QGraphicsPathItem;
-
-/**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
-*/
-
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+struct Settings::Private
 {
-    public:
-        enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
-
-        KTItemTweener();
-        ~KTItemTweener();
-
-        QString name();
-        KTItemTweener::Type type();
-        
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
-        
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
-
-        int frames() const;
-        int startFrame();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
-
-        QGraphicsPathItem *graphicsPath() const;
-        
-    private:
-        struct Private;
-        Private *const k;
 };
 
-#endif
+Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
+{
+}
+
+Settings::~Settings()
+{
+    delete k;
+}

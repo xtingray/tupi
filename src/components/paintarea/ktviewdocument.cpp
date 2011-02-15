@@ -291,7 +291,7 @@ void KTViewDocument::createTools()
 
     // Motion menu
     k->motionMenu = new QMenu(tr("Tweening"), k->toolbar);
-    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons/motion.png"));
+    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons/tweening.png"));
     connect(k->motionMenu, SIGNAL(triggered (QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->motionMenu->menuAction());
@@ -320,7 +320,8 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
-    QList<KAction*> brushTools;
+    QVector<KAction*> brushTools(7);
+    QVector<KAction*> tweenTools(6);
 
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
@@ -345,36 +346,59 @@ void KTViewDocument::loadPlugins()
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
                                  {
-
                                    if (toolStr.compare(tr("Pencil")) == 0)
-                                       brushTools.insert(0, action);
-                                       k->brushesMenu->setDefaultAction(action);
+                                       brushTools[0] = action;
 
                                    if (toolStr.compare(tr("Eraser")) == 0) {
                                        action->setDisabled(true);
-                                       brushTools.insert(1, action);
+                                       brushTools[1] = action;
                                    }
 
                                    if (toolStr.compare(tr("PolyLine")) == 0)
-                                       brushTools.insert(2, action);
+                                       brushTools[2] = action;
 
                                    if (toolStr.compare(tr("Line")) == 0)
-                                       brushTools.insert(3, action);
+                                       brushTools[3] = action;
 
                                    if (toolStr.compare(tr("Rectangle")) == 0)
-                                       brushTools.insert(4, action);
+                                       brushTools[4] = action;
 
                                    if (toolStr.compare(tr("Ellipse")) == 0)
-                                       brushTools.insert(5, action);
+                                       brushTools[5] = action;
 
                                    if (toolStr.compare(tr("Text")) == 0)
-                                       brushTools.insert(6, action);
+                                       brushTools[6] = action;
                                  }
                                  break;
                               case KTToolInterface::Tweener:
                                  {
-                                   k->motionMenu->addAction(action);
-                                   k->motionMenu->setDefaultAction(action);
+                                   kFatal() << "Tweener Label: " << toolStr;
+
+                                   if (toolStr.compare(tr("Position Tween")) == 0)
+                                       tweenTools[0] = action;
+
+                                   if (toolStr.compare(tr("Rotation Tween")) == 0)
+                                       tweenTools[1] = action;
+
+                                   if (toolStr.compare(tr("Scale Tween")) == 0) {
+                                       // action->setDisabled(true);
+                                       tweenTools[2] = action;
+                                   }
+
+                                   if (toolStr.compare(tr("Opacity Tween")) == 0) {
+                                       // action->setDisabled(true);
+                                       tweenTools[3] = action;
+                                   }
+
+                                   if (toolStr.compare(tr("Colouring Tween")) == 0) {
+                                       // action->setDisabled(true);
+                                       tweenTools[4] = action;
+                                   }
+
+                                   if (toolStr.compare(tr("Compound Tween")) == 0) {
+                                       // action->setDisabled(true);
+                                       tweenTools[5] = action;
+                                   }
                                  }
                                  break;
                               case KTToolInterface::Selection:
@@ -406,8 +430,11 @@ void KTViewDocument::loadPlugins()
              }
     } // end foreach
 
-    for (int i = 0; i < brushTools.size(); ++i) 
+    for (int i = 0; i < brushTools.size(); ++i)
          k->brushesMenu->addAction(brushTools.at(i));
+
+    for (int i = 0; i < tweenTools.size(); ++i)
+         k->motionMenu->addAction(tweenTools.at(i));
 
     foreach (QObject *plugin, KTPluginManager::instance()->filters()) {
              AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
@@ -430,6 +457,7 @@ void KTViewDocument::loadPlugins()
     KAction *pencil = brushTools.at(0);
     pencil->trigger();
     brushTools.clear();
+    tweenTools.clear();
 }
 
 void KTViewDocument::selectTool()
@@ -476,9 +504,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Tweener:
-                     if (toolStr.compare(tr("Position Tween"))==0) {
-                         minWidth = 160;
-                     }
+                     minWidth = 160;
                      k->motionMenu->setDefaultAction(action);
                      k->motionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -533,9 +559,8 @@ void KTViewDocument::selectTool()
 
         k->paintArea->viewport()->setCursor(action->cursor());
 
-        if (toolStr.compare(tr("Position Tween"))==0 && k->spaceMode->currentIndex() != 0)
+        if ((tool->toolType() == KTToolInterface::Tweener) && (k->spaceMode->currentIndex() != 0))
             k->spaceMode->setCurrentIndex(0);
-
     }
 }
 
@@ -785,7 +810,7 @@ void KTViewDocument::setSpaceContext()
 
    if (k->currentTool) {
        k->currentTool->init(k->paintArea->graphicsScene()); 
-       if (k->currentTool->name().compare(tr("Position Tween")) == 0 && index != 0) {
+       if ((k->currentTool->toolType() == KTToolInterface::Tweener) && (index != 0)) {
            QAction *pencil = k->brushesMenu->actions().at(0);
            pencil->trigger();
        }

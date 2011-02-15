@@ -33,57 +33,43 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#ifndef CONFIGURATOR_H
+#define CONFIGURATOR_H
 
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
+#include <QFrame>
+#include "settings.h"
 
-#include "kttweenerstep.h"
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
 class QGraphicsPathItem;
+class QListWidgetItem;
+class KTItemTweener;
 
 /**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
+ * @author Gustav Gonzalez 
 */
 
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+class Configurator : public QFrame
 {
+    Q_OBJECT
+
     public:
-        enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
+        enum GuiState { Manager = 1, Properties };
 
-        KTItemTweener();
-        ~KTItemTweener();
+        Configurator(QWidget *parent = 0);
+        ~Configurator();
 
-        QString name();
-        KTItemTweener::Type type();
+        void loadTweenList(QList<QString> tweenList);
+        void setCurrentTween(KTItemTweener *currentTween);
+        void closeSettingsPanel();
+        void resetUI();
         
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
+    private slots:
         
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
-
-        int frames() const;
-        int startFrame();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
-
-        QGraphicsPathItem *graphicsPath() const;
+    signals:
         
     private:
+        void setTweenManagerPanel();
+        void activeTweenManagerPanel(bool enable);
+
         struct Private;
         Private *const k;
 };

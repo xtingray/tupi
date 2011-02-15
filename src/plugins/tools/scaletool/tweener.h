@@ -33,59 +33,50 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#ifndef ROTATIONTWEENER_H
+#define ROTATIONTWEENER_H
 
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
-
-#include "kttweenerstep.h"
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
-class QGraphicsPathItem;
+#include <kttoolplugin.h>
 
 /**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
+ * @author Gustav Gonzalez 
+ * 
 */
 
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+class Tweener : public KTToolPlugin
 {
+    Q_OBJECT
+
     public:
-        enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
+        Tweener();
+        virtual ~Tweener();
+        virtual void init(KTGraphicsScene *scene);
 
-        KTItemTweener();
-        ~KTItemTweener();
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 
-        QString name();
-        KTItemTweener::Type type();
-        
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
-        
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
+        virtual QMap<QString, KAction *>actions() const;
+        int toolType() const;
+        virtual QWidget *configurator();
 
-        int frames() const;
-        int startFrame();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
 
-        QGraphicsPathItem *graphicsPath() const;
-        
+        virtual void updateScene(KTGraphicsScene *scene);
+        virtual void saveConfig();
+
+    private:
+        void setupActions();
+
     private:
         struct Private;
         Private *const k;
+
+    private slots:
+        void setCurrentTween(const QString &name);
+
 };
 
 #endif

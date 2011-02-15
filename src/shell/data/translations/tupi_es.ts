@@ -71,9 +71,34 @@
 <context>
     <name>Configurator</name>
     <message>
-        <location filename="../src/plugins/tools/tweenertool/configurator.cpp" line="69"/>
+        <location filename="../src/plugins/tools/positiontool/configurator.cpp" line="69"/>
         <source>Position Tween</source>
-        <translation>Position Tween</translation>
+        <translation>Tween de Posición</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/rotationtool/configurator.cpp" line="69"/>
+        <source>Rotation Tween</source>
+        <translation>Tween de Rotación</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/scaletool/configurator.cpp" line="69"/>
+        <source>Scale Tween</source>
+        <translation>Tween de Escala</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/opacitytool/configurator.cpp" line="69"/>
+        <source>Opacity Tween</source>
+        <translation>Tween de Opacidad</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/colouringtool/configurator.cpp" line="69"/>
+        <source>Colouring Tween</source>
+        <translation>Tween de Color</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/compoundtool/configurator.cpp" line="69"/>
+        <source>Compound Tween</source>
+        <translation>Tween Compuesto</translation>
     </message>
 </context>
 <context>
@@ -824,22 +849,22 @@
         <source>Library</source>
         <translation>Biblioteca</translation>
     </message>
-   <message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="104"/>
         <source>Image</source>
         <translation>Imagen</translation>
     </message>
-   <message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="104"/>
         <source>Image Array</source>
         <translation>Imágenes</translation>
     </message>
-   <message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="104"/>
         <source>Svg File</source>
         <translation>Archivo Svg</translation>
     </message>
-   <message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="104"/>
         <source>Svg Array</source>
         <translation>Arreglo Svg</translation>
@@ -861,7 +886,7 @@
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="143"/>
-        <source>Adds a folder to the object's list</source>
+        <source>Adds a folder to the object&apos;s list</source>
         <translation>Adicionar una carpeta a la lista de objetos</translation>
     </message>
     <message>
@@ -2455,9 +2480,33 @@
     </message>
     <message>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="366"/>
-        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="463"/>
         <source>Position Tween</source>
-        <translation>Position Tween</translation>
+        <translation>Tween de Posición</translation>
+    </message>
+    <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="186"/>
+        <source>Rotation Tween</source>
+        <translation>Tween de Rotación</translation>
+    </message>
+    <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="186"/>
+        <source>Scale Tween</source>
+        <translation>Tween de Escala</translation>
+    </message>
+    <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="69"/>
+        <source>Opacity Tween</source>
+        <translation>Tween de Opacidad</translation>
+    </message>
+    <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="69"/>
+        <source>Colouring Tween</source>
+        <translation>Tween de Color</translation>
+    </message>
+    <message>
+        <location filename="../src/components/paintarea/ktviewdocument.cpp" line="186"/>
+        <source>Compound Tween</source>
+        <translation>Tween Compuesto</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
@@ -2901,33 +2950,83 @@
 <context>
     <name>Tweener</name>
     <message>
-        <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
+        <location filename="../../../plugins/tools/positiontool/tweener.cpp" line="186"/>
         <source>Position Tween</source>
-        <translation>Position Tween</translation>
+        <translation>Tween de Posición</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
-        <source>W</source>
-        <translation>W</translation>
+        <location filename="../../../plugins/tools/rotationtool/tweener.cpp" line="186"/>
+        <source>Rotation Tween</source>
+        <translation>Tween de Rotación</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="391"/>
-        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
+        <location filename="../../../plugins/tools/scaletool/tweener.cpp" line="186"/>
+        <source>Scale Tween</source>
+        <translation>Tween de Escala</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/opacitytool/tweener.cpp" line="69"/>
+        <source>Opacity Tween</source>
+        <translation>Tween de Opacidad</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/colouringtool/tweener.cpp" line="69"/>
+        <source>Colouring Tween</source>
+        <translation>Tween de Color</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/compoundtool/tweener.cpp" line="69"/>
+        <source>Compound Tween</source>
+        <translation>Tween Compuesto</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/positiontool/tweener.cpp" line="186"/>
+        <source>Shift+W</source>
+        <translation>Shift+W</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/rotationtool/tweener.cpp" line="186"/>
+        <source>Shift+R</source>
+        <translation>Shift+R</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/scaletool/tweener.cpp" line="186"/>
+        <source>Shift+S</source>
+        <translation>Shift+S</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/opacitytool/tweener.cpp" line="186"/>
+        <source>Shift+O</source>
+        <translation>Shift+O</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/colouringtool/tweener.cpp" line="186"/>
+        <source>Shift+U</source>
+        <translation>Shift+U</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/compoundtool/tweener.cpp" line="186"/>
+        <source>Shift+C</source>
+        <translation>Shift+C</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="391"/>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="391"/>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="391"/>
         <source>No items selected for Tweening</source>
         <translation>No hay objectos seleccionados para el Tweening</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>
         <source>No path created for Tweening</source>
         <translation>No hay una ruta creada para el Tweening</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/tweenertool/tweener.cpp" line="396"/>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>
         <source>Tween name is missing!</source>
         <translation>El nombre del Tween no ha sido asignado!</translation>
     </message>
