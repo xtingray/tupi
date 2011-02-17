@@ -235,8 +235,6 @@ void KTMainWindow::createNewProject()
  * @endif
 */
 
-//void KTMainWindow::viewNewDocument(const QString &title)
-
 void KTMainWindow::viewNewDocument()
 {
     #ifdef K_DEBUG

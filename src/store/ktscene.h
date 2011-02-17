@@ -123,7 +123,7 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         /**
           * Adds a layer, if addToEnd is true, the layer will be set at the end, otherwise next to the current layer
           */
-        KTLayer *createLayer(int position, bool loaded = false);
+        KTLayer *createLayer(QString name, int position, bool loaded = false);
 
         KTSoundLayer *createSoundLayer(int position, bool loaded = false);
 

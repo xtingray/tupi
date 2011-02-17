@@ -59,21 +59,25 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
-        KTLayer *layer = scene->createLayer(position);
+        KTLayer *layer = scene->createLayer(name, position);
 
         if (! layer) 
             return false;
 
+        /*
         if (!name.isEmpty())
             layer->setLayerName(name);
         else
             response->setArg(layer->layerName());
+        */
+
+        layer->setLayerName(name);
+
+        // response->setArg(layer->layerName());
+        // layer->fromXml(state);
+        // m_project->updateScene(scenePosition, scene);
 
         emit responsed(response);
-
-        layer->fromXml(state);
-        response->setArg(layer->layerName());
-        //m_project->updateScene(scenePosition, scene);
 
         return true;
     }

@@ -35,6 +35,7 @@
 
 #include "ktprojectloader.h"
 #include "ktproject.h"
+#include "kdebug.h"
 
 #include "ktprojectresponse.h"
 #include "ktlibraryobject.h"
@@ -100,7 +101,7 @@ void KTProjectLoader::createSoundLayer(int scenePosition, int layerPosition, con
     project->emitResponse(&response);
 }
 
-void KTProjectLoader::createScene(int scenePosition, const QString &name, KTProject *project)
+void KTProjectLoader::createScene(const QString &name, int scenePosition, KTProject *project)
 {
     KTSceneResponse response(KTProjectRequest::Scene, KTProjectRequest::Add);
 

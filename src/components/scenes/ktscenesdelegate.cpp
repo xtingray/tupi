@@ -33,34 +33,31 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kttreedelegate.h"
+#include "ktscenesdelegate.h"
 #include "kdebug.h"
 
 #include <QtGui>
 
-KTTreeDelegate::KTTreeDelegate(QObject *parent)
+KTScenesDelegate::KTScenesDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
 }
 
-KTTreeDelegate::~KTTreeDelegate()
+KTScenesDelegate::~KTScenesDelegate()
 {
 }
 
-void KTTreeDelegate::paint(QPainter *painter,
+void KTScenesDelegate::paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const
 {
     QItemDelegate::paint(painter, option, index);
 }
 
-QWidget *KTTreeDelegate::createEditor(QWidget *parent,
-        const QStyleOptionViewItem & /* option */,
+QWidget *KTScenesDelegate::createEditor(QWidget *parent,
+        const QStyleOptionViewItem &option,
         const QModelIndex &index) const
 {
-    if (index.column() != 1)
-        return 0;
-
     QVariant originalValue = index.model()->data(index, Qt::DisplayRole);
     QLineEdit *lineEdit = new QLineEdit(parent);
     lineEdit->setFrame(false);
@@ -68,7 +65,7 @@ QWidget *KTTreeDelegate::createEditor(QWidget *parent,
     return lineEdit;
 }
 
-void KTTreeDelegate::setEditorData(QWidget *editor,
+void KTScenesDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const
 {
     QVariant value = index.model()->data(index, Qt::DisplayRole);
@@ -76,7 +73,7 @@ void KTTreeDelegate::setEditorData(QWidget *editor,
         lineEdit->setText(value.toString());
 }
 
-void KTTreeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+void KTScenesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const
 {
     QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);

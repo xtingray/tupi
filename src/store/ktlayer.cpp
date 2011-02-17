@@ -114,7 +114,7 @@ bool KTLayer::isVisible() const
     return k->isVisible;
 }
 
-KTFrame *KTLayer::createFrame(int position, bool loaded)
+KTFrame *KTLayer::createFrame(QString name, int position, bool loaded)
 {
     /*
     if (position < 0 || position > k->frames.count()) {
@@ -128,7 +128,7 @@ KTFrame *KTLayer::createFrame(int position, bool loaded)
 
     KTFrame *frame = new KTFrame(this);
     k->framesCount++;
-    frame->setFrameName(tr("Frame %1").arg(k->framesCount));
+    frame->setFrameName(name);
 
     k->frames.insert(position, frame);
 
@@ -262,7 +262,7 @@ void KTLayer::fromXml(const QString &xml)
 
            if (!e.isNull()) {
                if (e.tagName() == "frame") {
-                   KTFrame *frame = createFrame( k->frames.count(), true );
+                   KTFrame *frame = createFrame(e.attribute("name"), k->frames.count(), true);
 
                    if (frame) {
                        QString newDoc;

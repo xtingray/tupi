@@ -506,7 +506,7 @@ void KTExposureTable::commitData(QWidget *editor)
     QTableWidget::commitData(0); // Don't rename
 
     if (lineEdit)
-        emit requestRenameFrame(currentLayer(),  currentFrame(), lineEdit->text());
+        emit requestRenameFrame(currentLayer(), currentFrame(), lineEdit->text());
 }
 
 int KTExposureTable::layersTotal()

@@ -56,7 +56,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
     int position = response->frameIndex();
     QString name = response->arg().toString();
 
-    QString state = response->state();
+    // QString state = response->state();
     
     KTScene *scene = m_project->scene(scenePosition);
     
@@ -66,11 +66,12 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
     KTLayer *layer = scene->layer(layerPosition);
     
     if (layer) {
-        KTFrame *frame = layer->createFrame(position);
+        KTFrame *frame = layer->createFrame(name, position);
         
         if (!frame)
             return false;
-        
+       
+        /* 
         if (!name.isEmpty()) {
             #ifdef K_DEBUG
                 kDebug("items") << name;
@@ -79,14 +80,19 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
         } else {
             response->setArg(frame->frameName());
         }
+        */
 
+        response->setArg(frame->frameName());
         response->setFrameIndex(layer->visualIndexOf(frame));
+
         emit responsed(response);
-        
+
+        /* SQA: Check if this code is really necessary
         if (!state.isEmpty()) {
             frame->fromXml(state);
             response->setArg(frame->frameName());
         }
+        */
 
         return true;
     }
@@ -243,11 +249,15 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     int scenePos = response->sceneIndex();
     int layerPos = response->layerIndex();
     int position = response->frameIndex();
     QString newName= response->arg().toString();
-    
+
     QString oldName;
     
     KTScene *scene = m_project->scene(scenePos);
@@ -264,8 +274,9 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
             return false;
         
         oldName = frame->frameName();
-        
-        frame->setFrameName(newName);
+
+        if (oldName.compare(newName) != 0)
+            frame->setFrameName(newName);
         
         emit responsed(response);
 

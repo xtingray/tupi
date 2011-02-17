@@ -46,7 +46,7 @@
 /**
  * This class handles all the procedures related to the projects local format for Tupi.
  *
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)

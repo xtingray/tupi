@@ -37,38 +37,39 @@
 #include "kdebug.h"
 
 #include <QTreeWidgetItem>
+#include <QHeaderView>
 
-// TODO: Add support for renaming and moving objects from the list
+// SQA: Add support for renaming and moving objects from the list
 
 KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent)
 {
-    setHeaderLabels(QStringList() << "name");
+    setHeaderLabels(QStringList() << "");
+    header()->setResizeMode(QHeaderView::ResizeToContents);
+    setColumnCount(1);
+
+    setItemDelegate(new KTScenesDelegate(this));
+
     connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(changeCurrentScene()));
-    connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), 
-            this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
 }
 
 KTScenesList::~KTScenesList()
 {
 }
 
-void KTScenesList::addScene(const QString &name)
+void KTScenesList::insertScene(int index, const QString &name)
 {
     QTreeWidgetItem *newScene = new QTreeWidgetItem(this);
     newScene->setText(0, name);
-}
-
-void KTScenesList::insertScene(int index, const QString &name)
-{
-    QTreeWidgetItem *newScene = new QTreeWidgetItem;
-    newScene->setText(0, name);
+    newScene->setFlags(newScene->flags() | Qt::ItemIsEditable);
     insertTopLevelItem(index, newScene);
 }
 
+/*
 void KTScenesList::changeCurrentName(QString name)
 {
     currentItem()->setText(0, name);
 } 
+*/
 
 int KTScenesList::removeCurrentScene()
 {
@@ -88,6 +89,7 @@ void KTScenesList::removeScene(int index)
 
 void KTScenesList::renameScene(int index, const QString &name)
 {
+    kFatal() << "KTScenesList::renameScene() - And this one? " << name;
     QTreeWidgetItem *item = topLevelItem(index);
 
     if (item)
@@ -106,17 +108,12 @@ void KTScenesList::changeCurrentScene()
 {
     if (currentItem()) {
         QString name = currentItem()->text(0);
+        if (name.length() == 0)
+            return;
         int index = indexCurrentScene();
+        kFatal() << "KTScenesList::changeCurrentScene() - Following the rabbit!: " << name;
         emit(changeCurrent(name, index));
     }
-}
-
-void KTScenesList::changeCurrentScene(QTreeWidgetItem *item, int c)
-{
-    Q_UNUSED(c);
-    QString name = item->text(0);
-    int index = indexOfTopLevelItem(item);
-    emit(changeCurrent(name, index));
 }
 
 int KTScenesList::moveCurrentSceneUp()
@@ -150,4 +147,17 @@ QString KTScenesList::nameCurrentScene()
 int KTScenesList::scenesCount()
 {
     return topLevelItemCount();
+}
+
+void KTScenesList::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (event->buttons() == Qt::LeftButton)
+        callRename();
+}
+
+void KTScenesList::callRename()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit itemRenamed(item);
 }

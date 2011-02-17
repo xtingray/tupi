@@ -179,16 +179,21 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
         int index = 0;
         foreach (QString scenePath, scenes) {
                  scenePath = projectDir.path() + "/" + scenePath;
-                 KTScene *scene = project->createScene(index, true);
 
-                 QFile f(scenePath);
+                 QFile file(scenePath);
 
-                 if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                     QString xml = QString::fromLocal8Bit(f.readAll());
+                 if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                     QString xml = QString::fromLocal8Bit(file.readAll());
+                     QDomDocument document;
+                     if (! document.setContent(xml))
+                         return false;
+                     QDomElement root = document.documentElement();
+
+                     KTScene *scene = project->createScene(root.attribute("name"), index, true);
                      scene->fromXml(xml);
 
                      index += 1;
-                     f.close();
+                     file.close();
                  }
         }
         project->setOpen(true);

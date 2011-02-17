@@ -136,7 +136,7 @@ void KTScene::setLayers(const Layers &layers)
     k->layers = layers;
 }
 
-KTLayer *KTScene::createLayer(int position, bool loaded)
+KTLayer *KTScene::createLayer(QString name, int position, bool loaded)
 {
     // Q_CHECK_PTR(k->layers);
 
@@ -152,7 +152,8 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
     KTLayer *layer = new KTLayer(this, k->layerCount);
 
-    layer->setLayerName(tr("Layer %1").arg(k->nameIndex));
+    // layer->setLayerName(tr("Layer %1").arg(k->nameIndex));
+    layer->setLayerName(name);
 
     k->layers.insert(position, layer);
 
@@ -270,7 +271,7 @@ void KTScene::fromXml(const QString &xml)
            if (!e.isNull()) {
                if (e.tagName() == "layer") {
                    int pos = k->layers.count();
-                   KTLayer *layer = createLayer(pos, true);
+                   KTLayer *layer = createLayer(e.attribute("name"), pos, true);
 
                    if (layer) {
                        QString newDoc;

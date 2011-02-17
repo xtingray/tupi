@@ -735,6 +735,16 @@
         <source>10 frames</source>
         <translation>10 marcos</translation>
     </message>
+    <message>
+        <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
+        <source>Layer %1</source>
+        <translation>Capa %1</translation>
+    </message>
 </context>
 <context>
     <name>KTGCTable</name>
@@ -3163,6 +3173,42 @@
         <location filename="../../../components/debug/ktdebugwidget.cpp" line="43"/>
         <source>Debug Console</source>
         <translation>Consola de Depuración</translation>
+    </message>
+</context>
+<context>
+    <name>KTProjectManager</name>
+    <message>
+        <location filename="../../../store/ktprojectmanager.cpp" line="43"/>
+        <source>Scene %1</source>
+        <translation>Escena %1</translation>
+    </message>
+    <message>
+        <location filename="../../../store/ktprojectmanager.cpp" line="43"/>
+        <source>Layer %1</source>
+        <translation>Capa %1</translation>
+    </message>
+    <message>
+        <location filename="../../../store/ktprojectmanager.cpp" line="43"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
+    </message>
+</context>
+<context>
+    <name>KTScenesWidget</name>
+    <message>
+        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
+        <source>Scene %1</source>
+        <translation>Escena %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
+        <source>Layer %1</source>
+        <translation>Capa %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
     </message>
 </context>
 </TS>

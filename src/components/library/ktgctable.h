@@ -37,17 +37,13 @@
 #define KTGCTABLE_H
 
 #include "kttreedelegate.h"
+#include "ktreelistwidget.h"
 
 #include <QKeyEvent>
-//#include <QTreeWidget>
-
-#include "ktreelistwidget.h"
 
 /**
  * @author David Cuadrado
 */
-
-//class KTGCTable : public QTreeWidget
 
 class KTGCTable : public KTreeListWidget
 {

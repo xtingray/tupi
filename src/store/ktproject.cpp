@@ -216,7 +216,7 @@ int KTProject::fps() const
     return k->fps;
 }
 
-KTScene *KTProject::createScene(int position, bool loaded)
+KTScene *KTProject::createScene(QString name, int position, bool loaded)
 {
     if (position < 0 || position > k->scenes.count())
         return 0;
@@ -225,10 +225,11 @@ KTScene *KTProject::createScene(int position, bool loaded)
     k->scenes.insert(position, scene);
     k->sceneCounter++;
 
-    scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
+    // scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
+    scene->setSceneName(name);
     
     if (loaded)
-        KTProjectLoader::createScene(position, scene->sceneName(), this);
+        KTProjectLoader::createScene(scene->sceneName(), position, this);
 
     return scene;
 }

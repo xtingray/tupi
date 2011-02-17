@@ -55,6 +55,9 @@ struct KTScenesWidget::Private
 {
     QButtonGroup *buttonGroup;
     KTScenesList *tableScenes;
+
+    bool renaming;
+    QString oldId;
 };
 
 KTScenesWidget::KTScenesWidget(QWidget *parent) : KTModuleWidgetBase(parent, "KTScenesWidget"), k(new Private)
@@ -102,10 +105,15 @@ void KTScenesWidget::setupTableScenes()
 
     connect(k->tableScenes, SIGNAL(changeCurrent(QString , int)), 
             this, SLOT(selectScene(QString, int)));
+
     connect(k->tableScenes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
             this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
-    connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), 
-            this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
+
+    connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this,
+            SLOT(renameObject(QTreeWidgetItem*)));
+
+    connect(k->tableScenes, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this,
+                                   SLOT(refreshItem(QTreeWidgetItem*)));
 }
 
 void KTScenesWidget::sendEvent(int action)
@@ -132,12 +140,15 @@ void KTScenesWidget::selectScene(const QString &name, int index)
     emit localRequestTriggered(&event);
 }
 
+/*
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int value)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif
+    kFatal() << "KTScenesWidget::sceneDobleClick() - So?";
 }
+*/
 
 void KTScenesWidget::emitRequestInsertScene()
 {
@@ -150,13 +161,13 @@ void KTScenesWidget::emitRequestInsertScene()
     if (index == 0)
         index = k->tableScenes->scenesCount();
 
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add);
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add, tr("Scene %1").arg(index + 1));
     emit requestTriggered(&event);
 
-    event = KTRequestBuilder::createLayerRequest(index, 0, KTProjectRequest::Add);
+    event = KTRequestBuilder::createLayerRequest(index, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
     emit requestTriggered(&event);
 
-    event = KTRequestBuilder::createFrameRequest(index, 0, 0, KTProjectRequest::Add);
+    event = KTRequestBuilder::createFrameRequest(index, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
     emit requestTriggered(&event);
 }
 
@@ -204,6 +215,32 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
     }
 }
 
+/*
 void KTScenesWidget::emitRequestRenameScene(QTreeWidgetItem *item)
 {
+    kFatal() << "KTScenesWidget::emitRequestRenameScene() - New name: " << item->text(0); 
+
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->tableScenes->indexCurrentScene(), KTProjectRequest::Rename, item->text(0));
+    emit requestTriggered(&event);
+}
+*/
+
+void KTScenesWidget::renameObject(QTreeWidgetItem* item)
+{
+    if (item) {
+        k->renaming = true;
+        k->oldId = item->text(1);
+        kFatal() << "KTScenesWidget::renameObject() - Following the white rabbit!";
+        k->tableScenes->editItem(item, 0);
+    } 
+}
+
+void KTScenesWidget::refreshItem(QTreeWidgetItem *item)
+{
+    if (k->renaming) {
+        KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->tableScenes->indexCurrentScene(), 
+                                                                      KTProjectRequest::Rename, item->text(0));
+        emit requestTriggered(&event);
+        k->renaming = false;
+    }
 }

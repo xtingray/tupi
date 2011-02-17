@@ -4,8 +4,10 @@
 # Target is a library:  
 
 HEADERS += ktsceneslist.h \
+           ktscenesdelegate.h \
            ktsceneswidget.h 
 SOURCES += ktsceneslist.cpp \
+           ktscenesdelegate.cpp \
            ktsceneswidget.cpp 
 
 CONFIG += static warn_on

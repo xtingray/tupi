@@ -103,7 +103,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 
         Scenes scenes() const;
 
-        KTScene *createScene(int position, bool loaded = false);
+        KTScene *createScene(QString name, int position, bool loaded = false);
         void updateScene(int position, KTScene *scene);
         bool removeScene(int position);
         bool moveScene(int position, int newPosition);

@@ -119,8 +119,10 @@ bool KTreeListWidget::isEditable() const
 
 void KTreeListWidget::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
-    K_FUNCINFO;
-    
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
 
     if (edit) {

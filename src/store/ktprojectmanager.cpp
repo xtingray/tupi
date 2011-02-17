@@ -176,13 +176,13 @@ void KTProjectManager::setupNewProject()
     k->project->setOpen(true);
     setupProjectDir();
 
-    KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, QString());
+    KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, tr("Scene %1").arg(1));
     handleProjectRequest(&request);
 
-    request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, QString());
+    request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
     handleProjectRequest(&request);
 
-    request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, QString());
+    request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
     handleProjectRequest(&request);
 }
 

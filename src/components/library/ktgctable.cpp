@@ -47,8 +47,6 @@
  * @author David Cuadrado
 */
 
-//KTGCTable::KTGCTable(QWidget *parent) : QTreeWidget(parent), m_currentFolder(0)
-
 KTGCTable::KTGCTable(QWidget *parent) : KTreeListWidget(parent), m_currentFolder(0)
 {
     setHeaderLabels(QStringList() << "" << "");
@@ -81,6 +79,8 @@ void KTGCTable::createFolder(const QString &name)
     newFolder->setIcon(0, QIcon(THEME_DIR + "icons/open.png"));
     newFolder->setText(1, folderName);
     newFolder->setText(2, "");
+
+    // SQA: Check if this instruction is really necessary
     newFolder->setFlags(newFolder->flags() | Qt::ItemIsEditable);
 
     foldersTotal++;

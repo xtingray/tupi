@@ -206,14 +206,14 @@ void KTExposureSheet::applyAction(int action)
                  int layer = k->currentTable->columnCount();
 
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(),
-                                                                               layer, KTProjectRequest::Add);
+                                                                               layer, KTProjectRequest::Add, tr("Layer %1").arg(layer + 1));
                  emit requestTriggered(&event);
 
                  int framesNum = k->currentTable->usedFrames(k->currentTable->currentColumn());
 
                  for (int i=0;i < framesNum;i++) {
                       event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), layer, i, 
-                                                                   KTProjectRequest::Add, QString());
+                                                                   KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
                       emit requestTriggered(&event);
                  }
                }
@@ -422,7 +422,7 @@ void KTExposureSheet::insertFrame(int indexLayer, int indexFrame)
     #endif
 
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
-                                                 indexLayer, indexFrame, KTProjectRequest::Add);
+                                                 indexLayer, indexFrame, KTProjectRequest::Add, tr("Frame %1").arg(indexFrame + 1));
     emit requestTriggered(&request);
 }
 
@@ -435,7 +435,7 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
-    KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, 
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
     emit requestTriggered(&request);
 }
@@ -543,10 +543,10 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                      table->removeLayer(e->layerIndex());
 
                      if (table->layersTotal() == 0) {
-                         KTProjectRequest request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, QString());
+                         KTProjectRequest request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
                          emit requestTriggered(&request);
 
-                         request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, QString());
+                         request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
                          emit requestTriggered(&request);
                      }
                  }
@@ -603,6 +603,8 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
+                     kFatal() << "KTExposureSheet::frameResponse() - Adding frame: " << e->arg().toString();
+
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {

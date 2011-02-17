@@ -37,17 +37,21 @@
 #define KTSCENESLIST_H
 
 #include "ktreelistwidget.h"
+#include "ktscenesdelegate.h"
+
+#include <QMouseEvent>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class KTScenesList : public KTreeListWidget
 {
     Q_OBJECT
+
     public:
         KTScenesList(QWidget *parent = 0);
         ~KTScenesList();
-        void addScene(const QString &name);
         void insertScene(int index, const QString &name);
 
         int removeCurrentScene();
@@ -61,16 +65,19 @@ class KTScenesList : public KTreeListWidget
 
         void selectScene(int index);
 
+    protected:
+        void mouseDoubleClickEvent(QMouseEvent *event);
+
     private slots:
+        void callRename();
         void changeCurrentScene();
-        void changeCurrentScene(QTreeWidgetItem *item, int c);
 
     public slots:
         int moveCurrentSceneUp();
         int moveCurrentSceneDown();
-        void changeCurrentName(QString name);
 
     signals:
+        void itemRenamed(QTreeWidgetItem *);
         void changeCurrent(QString name, int index);
 };
 

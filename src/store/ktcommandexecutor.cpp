@@ -71,23 +71,27 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
     if (position < 0 || position > m_project->scenes().count())
         return false;
     
-    KTScene *scene = m_project->createScene(position);
+    KTScene *scene = m_project->createScene(name, position);
     if (!scene) 
         return false;
-    
+   
+    /* 
     if (!name.isEmpty())
         scene->setSceneName(name);
     else
         response->setArg(scene->sceneName());
+    */
     
     emit responsed(response);
-    
+   
+    /* SQA: Check if this code is really necessary 
     QString state =  response->state();
     
     if (! state.isEmpty()) {
         scene->fromXml(state);
         response->setArg(scene->sceneName());
     }
+    */
     
     return true;
 }
@@ -156,11 +160,13 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
     int position = response->sceneIndex();
     QString newName = response->arg().toString();
     KTScene *scene = m_project->scene(position);
+
+    kFatal() << "KTCommandExecutor::renameScene() - New name: " << newName;
     
     if (!scene)
         return false;
     
-    KTProjectRequest request = KTRequestBuilder::createSceneRequest(position, KTProjectRequest::Rename, newName);
+    // KTProjectRequest request = KTRequestBuilder::createSceneRequest(position, KTProjectRequest::Rename, newName);
     
     scene->setSceneName(newName);
     

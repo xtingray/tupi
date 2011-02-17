@@ -43,8 +43,9 @@
 class KTProject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTProjectLoader
 {
     public:
@@ -58,7 +59,7 @@ class KTProjectLoader
 
     	static void createSoundLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);
     	
-    	static void createScene(int scenePosition, const QString &name, KTProject *project);
+    	static void createScene(const QString &name, int scenePosition, KTProject *project);
     	
     	static void createSymbol(KTLibraryObject::Type type, const QString &name, const QString &parent, const QByteArray &data, KTProject *project);
 };

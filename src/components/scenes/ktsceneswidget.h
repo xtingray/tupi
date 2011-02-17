@@ -47,12 +47,14 @@
 //#include <QLineEdit>
 #include <QPixmap>
 #include <QList>
+#include <QTreeWidgetItem>
 
 class KTSceneResponse;
 
 class KTScenesWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KTScenesWidget(QWidget *parent = 0);
         ~KTScenesWidget();
@@ -69,10 +71,12 @@ class KTScenesWidget : public KTModuleWidgetBase
         void setupTableScenes();
 
     private slots:
-        void sceneDobleClick(QTreeWidgetItem * item, int col);
+        // void sceneDobleClick(QTreeWidgetItem * item, int col);
         void emitRequestInsertScene();
         void emitRequestRemoveScene();
-        void emitRequestRenameScene(QTreeWidgetItem *item);
+        void renameObject(QTreeWidgetItem* item);
+        void refreshItem(QTreeWidgetItem *item);
+        // void emitRequestRenameScene(QTreeWidgetItem *item);
 
     protected:
         virtual void sceneResponse(KTSceneResponse *e);
