@@ -454,7 +454,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                  if (layersTotal == 1) {
                      for (int frame = usedFrames; frame < framePos; frame++) {
                           KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, frame + 1,
-                                                   KTProjectRequest::Add, arg);
+                                                   KTProjectRequest::Add, tr("Frame %1").arg(frame + 2));
                           emit requestTriggered(&event);
                      }
 
@@ -464,7 +464,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                      for (int layer=0; layer < layersTotal; layer++) {
                           for (int frame = usedFrames; frame <= framePos; frame++) {
                                KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layer, frame,
-                                                        KTProjectRequest::Add, arg);
+                                                        KTProjectRequest::Add, tr("Frame %1").arg(frame + 1));
                                emit requestTriggered(&event);
                           }
                      }
@@ -531,18 +531,18 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
             case KTProjectActionBar::InsertLayer:
             {
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos,
-                                          KTProjectRequest::Add, arg);
+                                          KTProjectRequest::Add, tr("Layer %1").arg(layerPos + 1));
                  emit requestTriggered(&event);
 
                  if (layerPos == 0) {
                      event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, 0,
-                                               KTProjectRequest::Add, arg);
+                                               KTProjectRequest::Add, tr("Frame %1").arg(1));
                      emit requestTriggered(&event);
                  } else {
                      int total = framesTable(scenePos)->lastFrameByLayer(layerPos-1);
                      for (int j=0; j <= total; j++) {
                           event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, j,
-                                                                       KTProjectRequest::Add, arg);
+                                                                       KTProjectRequest::Add, tr("Frame %1").arg(j + 1));
                           emit requestTriggered(&event);
                      }
                  }
@@ -591,7 +591,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
             case KTProjectActionBar::InsertScene:
             {
                  KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos + 1, 
-                                           KTProjectRequest::Add, arg);
+                                           KTProjectRequest::Add, tr("Scene %1").arg(scenePos + 2));
             
                  emit requestTriggered(&event);
             
@@ -620,7 +620,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
             case KTProjectActionBar::MoveSceneDown:
             {
                  KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move,
-                                     scenePos - 1);
+                                          scenePos - 1);
                  emit requestTriggered(&event);
                  return true;
             }

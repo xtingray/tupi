@@ -580,7 +580,7 @@ void KTLibraryWidget::importBitmapArray()
                              if (i < photograms.size()-1 && imagesCounter > 1) {
 
                                  KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
-                                                                              k->currentFrame.frame + 1, KTProjectRequest::Add, QString());
+                                                                              k->currentFrame.frame + 1, KTProjectRequest::Add, tr("Frame %1").arg(k->currentFrame.frame + 2));
                                  emit requestTriggered(&request);
 
                                  request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
@@ -697,7 +697,7 @@ void KTLibraryWidget::importSvgArray()
                              if (i < photograms.size()-1 && svgCounter > 1) {
 
                                  KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
-                                                                              k->currentFrame.frame + 1, KTProjectRequest::Add, QString());
+                                                                              k->currentFrame.frame + 1, KTProjectRequest::Add, tr("Frame %1").arg(k->currentFrame.frame + 2));
                                  emit requestTriggered(&request);
 
                                  request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 

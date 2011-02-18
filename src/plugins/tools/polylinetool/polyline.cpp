@@ -62,7 +62,7 @@ struct PolyLine::Private
 {
     bool begin;
     QPointF center;
-    QPointF rigth;
+    QPointF right;
     QPointF mirror;
     
     KNodeGroup *nodegroup;
@@ -82,9 +82,9 @@ PolyLine::PolyLine(): k(new Private), m_configurator(0)
     k->nodegroup = 0;
     k->item = 0;
     
-    k->line1 = new QGraphicsLineItem(0,0,0,0);
+    k->line1 = new QGraphicsLineItem(0, 0, 0, 0);
     k->line1->setPen(QPen(QColor(55, 177, 50)));
-    k->line2 = new QGraphicsLineItem(0,0,0,0);
+    k->line2 = new QGraphicsLineItem(0, 0, 0, 0);
     k->line2->setPen(QPen(QColor(55, 177, 50)));
     
     setupActions();
@@ -134,6 +134,7 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         k->path = QPainterPath();
         k->path.moveTo(input->pos());
         k->item = new KTPathItem();
+        k->item->setPath(k->path);
         
         scene->includeObject(k->item);
 
@@ -144,7 +145,8 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         
         k->begin = false;
         k->path = k->item->path();
-        k->path.cubicTo(k->rigth, k->mirror, input->pos());
+
+        k->path.cubicTo(k->right, k->mirror, input->pos());
     }
     
     k->center = input->pos();
@@ -168,11 +170,11 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     k->mirror = k->center - (input->pos() - k->center);
 
     if (k->begin) {
-        k->rigth = input->pos();
+        k->right = input->pos();
     } else {
         for (int i = k->path.elementCount()-1; i >= 0; i--) {
              if (k->path.elementAt(i).type == QPainterPath::CurveToElement) {
-                 k->rigth = input->pos();
+                 k->right = input->pos();
                  if (k->path.elementAt(i+1).type == QPainterPath::CurveToDataElement)
                      k->path.setElementPositionAt(i+1, k->mirror.x(), k->mirror.y());
                  break;
@@ -186,7 +188,7 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
         k->item->setPath(k->path);
     
     k->line1->setLine(QLineF(k->mirror, k->center));
-    k->line2->setLine(QLineF(k->rigth, k->center));
+    k->line2->setLine(QLineF(k->right, k->center));
 }
 
 void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -202,7 +204,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     
     if (!k->nodegroup) {
         k->nodegroup = new KNodeGroup(k->item, scene);
-        connect(k->nodegroup, SIGNAL(nodeClicked()), this, SLOT(nodeChanged()));
+        connect(k->nodegroup, SIGNAL(nodeReleased()), this, SLOT(nodeChanged()));
     } else {
         k->nodegroup->createNodes(k->item);
     }
@@ -386,13 +388,19 @@ void PolyLine::nodeChanged()
                     k->nodegroup->restoreItem();
                     emit requested(&event);
              } else {
-                   kFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
+               #ifdef K_DEBUG
+                      kFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
+               #endif
              }
         } else {
-            kFatal() << "PolyLine::nodeChanged() -> ERROR: There are no changedNodes!";
+          #ifdef K_DEBUG
+                 kFatal() << "PolyLine::nodeChanged() -> ERROR: There are no changedNodes!";
+          #endif
         }
     } else {
-        kFatal() << "PolyLine::nodeChanged() -> ERROR: There's no nodegroup!";
+      #ifdef K_DEBUG
+             kFatal() << "PolyLine::nodeChanged() -> ERROR: There's no nodegroup!";
+      #endif
     }
 }
 

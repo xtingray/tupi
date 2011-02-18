@@ -59,7 +59,7 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
     /*
     SpinBoxDelegate *spin = new SpinBoxDelegate;
     setItemDelegate(spin);
-    connect(spin, SIGNAL(nodeClicked()), this, SIGNAL(updateTable()));
+    connect(spin, SIGNAL(nodeReleased()), this, SIGNAL(updateTable()));
     */
 
     setMaximumWidth(120);

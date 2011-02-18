@@ -1020,6 +1020,11 @@
         <source>Sound file</source>
         <translation>Archivo de sonido</translation>
     </message>
+    <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="404"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
+    </message>
 </context>
 <context>
     <name>KTListProjectDialog</name>
@@ -2291,6 +2296,21 @@
         <location filename="../../../components/timeline/kttimeline.cpp" line="72"/>
         <source>Time Line</source>
         <translation>Línea de tiempo</translation>
+    </message>
+    <message>
+        <location filename="../../../components/timeline/kttimeline.cpp" line="72"/>
+        <source>Scene %1</source>
+        <translation>Escena %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/timeline/kttimeline.cpp" line="72"/>
+        <source>Layer %1</source>
+        <translation>Capa %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/timeline/kttimeline.cpp" line="72"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
     </message>
 </context>
 <context>

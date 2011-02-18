@@ -263,8 +263,7 @@ void KTExposureSheet::applyAction(int action)
 
                  if (k->currentTable->framesTotalAtCurrentLayer() == 1) {
                      KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
-                                              layer, target,
-                                              KTProjectRequest::Reset);
+                                              layer, target, KTProjectRequest::Reset);
                      emit requestTriggered(&event);
                      k->fromMenu = false;
 
@@ -274,8 +273,7 @@ void KTExposureSheet::applyAction(int action)
                  // SQA: Take care about the first frame case and paint a message on the workspace 
                  if (target == lastFrame) {
                      KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene, 
-                                              layer, target,
-                                              KTProjectRequest::Remove);
+                                              layer, target, KTProjectRequest::Remove);
                      emit requestTriggered(&event);
                      if (target > 0)
                          selectFrame(layer, target-1);
@@ -286,16 +284,14 @@ void KTExposureSheet::applyAction(int action)
 
                      for (int index=target+1; index <= lastFrame; index++) {
                           KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
-                                                   layer, index,
-                                                   KTProjectRequest::Move, index - 1);
+                                                   layer, index, KTProjectRequest::Move, index - 1);
                           emit requestTriggered(&event);
                      }
 
                      selectFrame(layer, target);
 
                      KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, 
-                                                                                     layer, lastFrame, 
-                                                                                     KTProjectRequest::Remove);
+                                                layer, lastFrame, KTProjectRequest::Remove);
                      emit requestTriggered(&request);
                  }
 
