@@ -59,16 +59,29 @@ class Configurator : public QFrame
 
         void loadTweenList(QList<QString> tweenList);
         void setCurrentTween(KTItemTweener *currentTween);
+        QString currentTweenName() const;
         void closeSettingsPanel();
         void resetUI();
         
     private slots:
+        void addTween(const QString &name);
+        void editTween();
+        void removeTween();
+        void removeTween(const QString &name);
+        void closeTweenProperties();
         
     signals:
+        void clickedRemoveTween(const QString &name);
+        void editModeOn();
+        void clickedResetInterface();
         
     private:
+        void setPropertiesPanel();
+        void activePropertiesPanel(bool enable);
         void setTweenManagerPanel();
         void activeTweenManagerPanel(bool enable);
+        void setButtonsPanel();
+        void activeButtonsPanel(bool enable);
 
         struct Private;
         Private *const k;

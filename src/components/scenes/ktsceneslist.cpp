@@ -89,7 +89,6 @@ void KTScenesList::removeScene(int index)
 
 void KTScenesList::renameScene(int index, const QString &name)
 {
-    kFatal() << "KTScenesList::renameScene() - And this one? " << name;
     QTreeWidgetItem *item = topLevelItem(index);
 
     if (item)
@@ -111,7 +110,6 @@ void KTScenesList::changeCurrentScene()
         if (name.length() == 0)
             return;
         int index = indexCurrentScene();
-        kFatal() << "KTScenesList::changeCurrentScene() - Following the rabbit!: " << name;
         emit(changeCurrent(name, index));
     }
 }

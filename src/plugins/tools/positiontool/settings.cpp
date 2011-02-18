@@ -140,9 +140,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(totalLayout);
 
     k->layout->addSpacing(10);
-
     k->layout->addLayout(buttonsLayout);
-
     k->layout->setSpacing(5);
 
     activateSelectionMode();
@@ -156,7 +154,6 @@ Settings::~Settings()
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
     k->mode = Add;
-
     k->input->setText(name);
 
     activateSelectionMode();

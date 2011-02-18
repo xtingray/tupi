@@ -71,11 +71,10 @@ class Settings : public QWidget
         void notifySelection(bool flag);
         int startComboSize();
         QString currentTweenName() const;
-        void setEditMode();
         
     private slots:
         void emitOptionChanged(int option);
-        void addTween();
+        // void addTween();
         void applyTween();
         
     signals:
@@ -86,6 +85,7 @@ class Settings : public QWidget
         void startingPointChanged(int);
         
     private:
+        void setEditMode();
         struct Private;
         Private *const k;
 };

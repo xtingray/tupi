@@ -556,7 +556,7 @@ void Tweener::applyTween()
             for (int i = framesNumber; i <= total; i++) {
                  KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                                       k->scene->currentLayerIndex(),
-                                                                                      i, KTProjectRequest::Add);
+                                                                                      i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
                  emit requested(&requestFrame);
             }
         }
@@ -616,7 +616,7 @@ void Tweener::applyTween()
                      for (int i = framesNumber; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                           k->scene->currentLayerIndex(),
-                                                          i, KTProjectRequest::Add);
+                                                          i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
                           emit requested(&requestFrame);
                      }
                  }

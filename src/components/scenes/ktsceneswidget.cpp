@@ -140,16 +140,6 @@ void KTScenesWidget::selectScene(const QString &name, int index)
     emit localRequestTriggered(&event);
 }
 
-/*
-void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int value)
-{
-    #ifdef K_DEBUG
-           K_FUNCINFO;
-    #endif
-    kFatal() << "KTScenesWidget::sceneDobleClick() - So?";
-}
-*/
-
 void KTScenesWidget::emitRequestInsertScene()
 {
     #ifdef K_DEBUG
@@ -215,22 +205,11 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
     }
 }
 
-/*
-void KTScenesWidget::emitRequestRenameScene(QTreeWidgetItem *item)
-{
-    kFatal() << "KTScenesWidget::emitRequestRenameScene() - New name: " << item->text(0); 
-
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->tableScenes->indexCurrentScene(), KTProjectRequest::Rename, item->text(0));
-    emit requestTriggered(&event);
-}
-*/
-
 void KTScenesWidget::renameObject(QTreeWidgetItem* item)
 {
     if (item) {
         k->renaming = true;
         k->oldId = item->text(1);
-        kFatal() << "KTScenesWidget::renameObject() - Following the white rabbit!";
         k->tableScenes->editItem(item, 0);
     } 
 }

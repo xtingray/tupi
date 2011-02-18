@@ -1935,7 +1935,7 @@
     </message>
     <message>
         <location filename="../src/shell/ktnewproject.cpp" line="80"/>
-        <source>myproject</source>
+        <source>my_project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

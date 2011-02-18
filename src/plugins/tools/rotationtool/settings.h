@@ -55,11 +55,19 @@ class Settings : public QWidget
         Settings(QWidget *parent = 0);
         ~Settings();
 
+        void setParameters(const QString &name, int framesTotal, int startFrame);
+        void setParameters(KTItemTweener *currentTween);
+        QString currentTweenName() const;
+
     private slots:
+        void applyTween();
         
     signals:
+        void clickedApplyTween();
+        void clickedResetTween();
         
     private:
+        void setEditMode();
         struct Private;
         Private *const k;
 };

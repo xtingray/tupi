@@ -82,7 +82,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     layout->addWidget(labelProjectName, 0, 0);
 
     k->projectName = new QLineEdit(container);
-    k->projectName->setText(tr("myproject"));
+    k->projectName->setText(tr("my_project"));
     layout->addWidget(k->projectName, 0, 1);
 
     QLabel *labelAuthorName = new QLabel(tr("Author"), container);

@@ -1937,7 +1937,7 @@
     </message>
     <message>
         <location filename="../src/shell/ktnewproject.cpp" line="85"/>
-        <source>myproject</source>
+        <source>my_project</source>
         <translation>Můj projekt</translation>
     </message>
     <message>

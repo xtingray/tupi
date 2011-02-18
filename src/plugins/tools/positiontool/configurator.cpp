@@ -226,12 +226,6 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activatePathMode()
-{
-    //k->options->setCurrentIndex(1);
-    //k->stepViewer->cleanRows();
-}
-
 void Configurator::activateSelectionMode()
 {
     k->settingsPanel->activateSelectionMode();
@@ -246,10 +240,12 @@ void Configurator::addTween(const QString &name)
 {
     k->mode = Settings::Add;
 
+    k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
+
     activeTweenManagerPanel(false);
     activePropertiesPanel(true);
 
-    k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
+    // k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
 
     k->state = Properties;
 

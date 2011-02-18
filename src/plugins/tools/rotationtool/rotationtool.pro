@@ -7,11 +7,13 @@ INSTALLS += target
 target.path = /plugins/
 
 HEADERS += tweener.h \
+           buttonspanel.h \ 
            configurator.h \
            settings.h \
            tweenmanager.h
 
 SOURCES += tweener.cpp \
+           buttonspanel.cpp \
            configurator.cpp \
            settings.cpp \
            tweenmanager.cpp

@@ -341,61 +341,61 @@ void KTViewDocument::loadPlugins()
                   if (action) {
                       connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));
                       action->setParent(plugin);
-                      QString toolStr = action->text();
+                      QString toolName = action->text();
 
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
                                  {
-                                   if (toolStr.compare(tr("Pencil")) == 0)
+                                   if (toolName.compare(tr("Pencil")) == 0)
                                        brushTools[0] = action;
 
-                                   if (toolStr.compare(tr("Eraser")) == 0) {
+                                   if (toolName.compare(tr("Eraser")) == 0) {
                                        action->setDisabled(true);
                                        brushTools[1] = action;
                                    }
 
-                                   if (toolStr.compare(tr("PolyLine")) == 0)
+                                   if (toolName.compare(tr("PolyLine")) == 0)
                                        brushTools[2] = action;
 
-                                   if (toolStr.compare(tr("Line")) == 0)
+                                   if (toolName.compare(tr("Line")) == 0)
                                        brushTools[3] = action;
 
-                                   if (toolStr.compare(tr("Rectangle")) == 0)
+                                   if (toolName.compare(tr("Rectangle")) == 0)
                                        brushTools[4] = action;
 
-                                   if (toolStr.compare(tr("Ellipse")) == 0)
+                                   if (toolName.compare(tr("Ellipse")) == 0)
                                        brushTools[5] = action;
 
-                                   if (toolStr.compare(tr("Text")) == 0)
+                                   if (toolName.compare(tr("Text")) == 0)
                                        brushTools[6] = action;
                                  }
                                  break;
                               case KTToolInterface::Tweener:
                                  {
-                                   kFatal() << "Tweener Label: " << toolStr;
+                                   kFatal() << "Tweener Label: " << toolName;
 
-                                   if (toolStr.compare(tr("Position Tween")) == 0)
+                                   if (toolName.compare(tr("Position Tween")) == 0)
                                        tweenTools[0] = action;
 
-                                   if (toolStr.compare(tr("Rotation Tween")) == 0)
+                                   if (toolName.compare(tr("Rotation Tween")) == 0)
                                        tweenTools[1] = action;
 
-                                   if (toolStr.compare(tr("Scale Tween")) == 0) {
+                                   if (toolName.compare(tr("Scale Tween")) == 0) {
                                        // action->setDisabled(true);
                                        tweenTools[2] = action;
                                    }
 
-                                   if (toolStr.compare(tr("Opacity Tween")) == 0) {
+                                   if (toolName.compare(tr("Opacity Tween")) == 0) {
                                        // action->setDisabled(true);
                                        tweenTools[3] = action;
                                    }
 
-                                   if (toolStr.compare(tr("Colouring Tween")) == 0) {
+                                   if (toolName.compare(tr("Colouring Tween")) == 0) {
                                        // action->setDisabled(true);
                                        tweenTools[4] = action;
                                    }
 
-                                   if (toolStr.compare(tr("Compound Tween")) == 0) {
+                                   if (toolName.compare(tr("Compound Tween")) == 0) {
                                        // action->setDisabled(true);
                                        tweenTools[5] = action;
                                    }
@@ -404,21 +404,21 @@ void KTViewDocument::loadPlugins()
                               case KTToolInterface::Selection:
                                  {
                                    k->selectionMenu->addAction(action);
-                                   if (toolStr.compare(tr("Object Selection")) == 0)
+                                   if (toolName.compare(tr("Object Selection")) == 0)
                                        k->selectionMenu->setDefaultAction(action);
                                  }
                                  break;
                               case KTToolInterface::Fill:
                                  {
                                    k->fillMenu->addAction(action);
-                                   if (toolStr.compare(tr("Internal fill")) == 0)
+                                   if (toolName.compare(tr("Internal fill")) == 0)
                                       k->fillMenu->setDefaultAction(action);
                                  }
                                  break;
                                case KTToolInterface::View:
                                  {
                                    k->viewToolMenu->addAction(action);
-                                   if (toolStr.compare(tr("Zoom")) == 0)
+                                   if (toolName.compare(tr("Zoom")) == 0)
                                        k->viewToolMenu->setDefaultAction(action);
 
                                  }
@@ -466,34 +466,39 @@ void KTViewDocument::selectTool()
            K_FUNCINFO;
     #endif
 
-    if (k->currentTool) {
-        k->currentTool->saveConfig();
-        QWidget *toolConfigurator = k->currentTool->configurator();
-        if (toolConfigurator)
-            k->configurationArea->close();
-    }
-
     KAction *action = qobject_cast<KAction *>(sender());
 
     if (action) {
+
+        QString toolName = tr("%1").arg(action->text());
+
+        if (k->currentTool) {
+            if (toolName.compare(k->currentTool->name()) == 0)
+                return;
+
+            k->currentTool->saveConfig();
+            QWidget *toolConfigurator = k->currentTool->configurator();
+            if (toolConfigurator)
+                k->configurationArea->close();
+        }
+
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         k->currentTool = tool; 
-        QString toolStr = tr("%1").arg(action->text());
-        k->paintArea->setCurrentTool(toolStr);
+        k->paintArea->setCurrentTool(toolName);
 
         if (!action->icon().isNull())
-            k->status->updateTool(toolStr, action->icon().pixmap(15, 15));
+            k->status->updateTool(toolName, action->icon().pixmap(15, 15));
 
         int minWidth = 0;
 
         switch (tool->toolType()) {
 
                 case KTToolInterface::Brush: 
-                     if (toolStr.compare(tr("Pencil"))==0) {
+                     if (toolName.compare(tr("Pencil"))==0) {
                          minWidth = 130;
-                     } else if (toolStr.compare(tr("Text"))==0) {
+                     } else if (toolName.compare(tr("Text"))==0) {
                                 minWidth = 350;
-                     } else if (toolStr.compare(tr("PolyLine"))==0) {
+                     } else if (toolName.compare(tr("PolyLine"))==0) {
                                 minWidth = 130;
                      } 
 
@@ -523,7 +528,7 @@ void KTViewDocument::selectTool()
                      k->selectionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->selectionMenu->menuAction()->setIcon(action->icon());
-                     if (toolStr.compare(tr("Object Selection"))==0) {
+                     if (toolName.compare(tr("Object Selection"))==0) {
                          minWidth = 130;
                          connect(k->paintArea, SIGNAL(itemAddedOnSelection(KTGraphicsScene *)), 
                                  tool, SLOT(updateItems(KTGraphicsScene *)));
@@ -535,7 +540,7 @@ void KTViewDocument::selectTool()
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
-                     if (toolStr.compare(tr("Zoom"))==0)
+                     if (toolName.compare(tr("Zoom"))==0)
                          minWidth = 130;
                      break;
         }
@@ -554,7 +559,7 @@ void KTViewDocument::selectTool()
                 k->configurationArea->close();
         }
 
-        tool->setName(toolStr);
+        tool->setName(toolName);
         k->paintArea->setTool(tool);
 
         k->paintArea->viewport()->setCursor(action->cursor());

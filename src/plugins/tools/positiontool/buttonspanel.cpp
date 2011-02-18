@@ -42,7 +42,7 @@
 
 ButtonsPanel::ButtonsPanel(QWidget *parent) : QWidget(parent)
 {
-    KImageButton *editButton = new KImageButton(QPixmap(THEME_DIR + "icons/tweener.png"), 22);
+    KImageButton *editButton = new KImageButton(QPixmap(THEME_DIR + "icons/position_tween.png"), 22);
     editButton->setToolTip(tr("Edit Tween"));
     connect(editButton, SIGNAL(clicked()), this, SIGNAL(clickedEditTween()));
 

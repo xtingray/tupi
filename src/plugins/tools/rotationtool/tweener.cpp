@@ -43,14 +43,12 @@
 #include <QGraphicsView>
 #include <QDomDocument>
 
-// #include "kalgorithm.h"
 #include "kglobal.h"
 #include "kdebug.h"
 #include "kaction.h"
 #include "kosd.h"
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
-#include "ktgraphicalgorithm.h"
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
 #include "ktsvgitem.h"
@@ -177,6 +175,7 @@ QWidget *Tweener::configurator()
         k->mode = Settings::View;
 
         k->configurator = new Configurator;
+        connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
     } 
 
     return k->configurator;
@@ -223,6 +222,27 @@ void Tweener::setCurrentTween(const QString &name)
     k->currentTween = scene->tween(name);
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
+}
+
+/* This method resets this plugin */
+
+void Tweener::applyReset()
+{
+    k->editMode = Settings::None;
+}
+
+/* This method applies to the project, the Tween created from this plugin */
+
+void Tweener::applyTween()
+{
+    QString name = k->configurator->currentTweenName();
+
+    if (name.length() == 0) {
+        KOsd::self()->display(tr("Error"), tr("Tween name is missing!"), KOsd::Error);
+        return;
+    }
+
+    setCurrentTween(name);
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

@@ -1441,7 +1441,7 @@
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="74"/>
-        <source>myproject</source>
+        <source>my_project</source>
         <translation type="unfinished">mio_progetto</translation>
     </message>
     <message>

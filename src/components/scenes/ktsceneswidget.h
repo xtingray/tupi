@@ -44,7 +44,6 @@
 #include <QPushButton>
 #include <QButtonGroup>
 #include <QLabel>
-//#include <QLineEdit>
 #include <QPixmap>
 #include <QList>
 #include <QTreeWidgetItem>
@@ -71,12 +70,10 @@ class KTScenesWidget : public KTModuleWidgetBase
         void setupTableScenes();
 
     private slots:
-        // void sceneDobleClick(QTreeWidgetItem * item, int col);
         void emitRequestInsertScene();
         void emitRequestRemoveScene();
         void renameObject(QTreeWidgetItem* item);
         void refreshItem(QTreeWidgetItem *item);
-        // void emitRequestRenameScene(QTreeWidgetItem *item);
 
     protected:
         virtual void sceneResponse(KTSceneResponse *e);

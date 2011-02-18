@@ -1557,7 +1557,7 @@
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="74"/>
-        <source>myproject</source>
+        <source>my_project</source>
         <translation>mi_proyecto</translation>
     </message>
     <message>
@@ -3039,6 +3039,11 @@
         <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>
         <source>Tween name is missing!</source>
         <translation>El nombre del Tween no ha sido asignado!</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="391"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
     </message>
 </context>
 <context>
