@@ -65,6 +65,8 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
     setMaximumWidth(120);
     setMaximumHeight(800);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+
+    k->dots = new QList<QPointF>();
 }
 
 StepsViewer::~StepsViewer()
@@ -91,7 +93,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         k->points.clear();
         k->frames.clear();
         k->points = points;
-        k->dots = new QList<QPointF>();
+        k->dots->clear();
 
         setRowCount(0);
 

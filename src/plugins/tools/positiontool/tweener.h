@@ -71,6 +71,7 @@ class Tweener : public KTToolPlugin
         void setupActions();
         QString pathToCoords();
         int maxZValue();
+        void clearSelection();
 
     private:
         struct Private;

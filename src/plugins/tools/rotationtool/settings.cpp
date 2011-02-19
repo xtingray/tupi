@@ -35,6 +35,7 @@
 
 #include "settings.h"
 #include "kdebug.h"
+#include "kradiobuttongroup.h"
 #include "ktitemtweener.h"
 #include "kttweenerstep.h"
 #include "kimagebutton.h"
@@ -49,6 +50,7 @@ struct Settings::Private
     QBoxLayout *layout;
     Mode mode;
     QLineEdit *input;
+    KRadioButtonGroup *options;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -71,13 +73,16 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     nameLayout->addWidget(nameLabel);
     nameLayout->addWidget(k->input);
 
-    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
+    k->options->addItem(tr("Select object"), 0);
+    k->options->addItem(tr("Set Properties"), 1);
+    connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
+    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
     k->remove->setToolTip(tr("Cancel Tween"));
-
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -88,9 +93,12 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     buttonsLayout->addWidget(k->remove);
 
     k->layout->addLayout(nameLayout);
+    k->layout->addWidget(k->options);
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
+
+    activateSelectionMode();
 }
 
 Settings::~Settings()
@@ -137,3 +145,31 @@ QString Settings::currentTweenName() const
 
     return tweenName;
 }
+
+void Settings::emitOptionChanged(int option)
+{
+    switch (option) {
+            case 0:
+             {
+                 // emit clickedSelect();
+             }
+            break;
+            case 1:
+             {
+                 /*
+                 if (k->selectionDone) {
+                     emit clickedCreatePath();
+                 } else {
+                     k->options->setCurrentIndex(0);
+                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+                 }
+                 */
+             }
+    }
+}
+
+void Settings::activateSelectionMode()
+{
+    k->options->setCurrentIndex(0);
+}
+

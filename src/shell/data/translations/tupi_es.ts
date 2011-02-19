@@ -149,6 +149,11 @@
         <translation>Selecciona los objetos a animar primero!</translation>
     </message>
     <message>
+        <location filename="../src/plugins/tools/positiontool/settings.cpp" line="396"/>
+        <source>No path created for Tweening</source>
+        <translation>No hay una ruta creada para el Tweening</translation>
+    </message>
+    <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Update Tween</source>
         <translation>Actualizar Tween</translation>
@@ -3044,16 +3049,6 @@
         <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>
         <source>Error</source>
         <translation>Error</translation>
-    </message>
-    <message>
-        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="391"/>
-        <source>No items selected for Tweening</source>
-        <translation>No hay objectos seleccionados para el Tweening</translation>
-    </message>
-    <message>
-        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>
-        <source>No path created for Tweening</source>
-        <translation>No hay una ruta creada para el Tweening</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="396"/>

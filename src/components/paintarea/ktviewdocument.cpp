@@ -346,8 +346,10 @@ void KTViewDocument::loadPlugins()
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
                                  {
-                                   if (toolName.compare(tr("Pencil")) == 0)
+                                   if (toolName.compare(tr("Pencil")) == 0) {
                                        brushTools[0] = action;
+                                       k->brushesMenu->setDefaultAction(action);
+                                   }
 
                                    if (toolName.compare(tr("Eraser")) == 0) {
                                        action->setDisabled(true);
@@ -374,8 +376,10 @@ void KTViewDocument::loadPlugins()
                                  {
                                    kFatal() << "Tweener Label: " << toolName;
 
-                                   if (toolName.compare(tr("Position Tween")) == 0)
+                                   if (toolName.compare(tr("Position Tween")) == 0) {
                                        tweenTools[0] = action;
+                                       k->motionMenu->setDefaultAction(action);
+                                   }
 
                                    if (toolName.compare(tr("Rotation Tween")) == 0)
                                        tweenTools[1] = action;

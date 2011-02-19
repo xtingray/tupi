@@ -308,8 +308,8 @@ QString Configurator::currentTweenName() const
 
 void Configurator::notifySelection(bool flag)
 {
-    if (k->mode != Settings::View)
-        k->settingsPanel->notifySelection(flag); 
+    // if (k->mode != Settings::View)
+    k->settingsPanel->notifySelection(flag); 
 }
 
 void Configurator::closeSettingsPanel()

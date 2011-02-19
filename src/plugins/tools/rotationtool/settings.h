@@ -58,9 +58,11 @@ class Settings : public QWidget
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void setParameters(KTItemTweener *currentTween);
         QString currentTweenName() const;
+        void activateSelectionMode();
 
     private slots:
         void applyTween();
+        void emitOptionChanged(int option);
         
     signals:
         void clickedApplyTween();

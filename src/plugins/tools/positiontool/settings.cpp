@@ -276,6 +276,17 @@ void Settings::notifySelection(bool flag)
 
 void Settings::applyTween()
 {
+    if (!k->selectionDone) {
+        k->options->setCurrentIndex(0);
+        KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+        return;
+    }
+
+    if (totalSteps() <= 2) {
+        KOsd::self()->display(tr("Error"), tr("No path created for Tweening"), KOsd::Error);
+        return;
+    }
+
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
 

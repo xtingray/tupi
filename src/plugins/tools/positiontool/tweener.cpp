@@ -300,12 +300,7 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 void Tweener::aboutToChangeTool()
 {
     if (k->editMode == Settings::Selection) {
-        if (k->objects.size() > 0) {
-            foreach (QGraphicsItem *item, k->objects) {
-                     if (item->isSelected())
-                         item->setSelected(false);
-            }
-        }
+        clearSelection();
         return;
     }
 
@@ -468,7 +463,8 @@ QString Tweener::pathToCoords()
 void Tweener::applyReset()
 {
     k->editMode = Settings::None;
-    k->objects.clear();
+
+    clearSelection();
 
     if (k->group) {
         k->group->clear();
@@ -486,17 +482,6 @@ void Tweener::applyReset()
 
 void Tweener::applyTween()
 {
-    if (k->objects.size() == 0) {
-        KOsd::self()->display(tr("Error"), tr("No items selected for Tweening"), KOsd::Error);
-        return;
-    }
-
-    QPolygonF points = k->path->path().toFillPolygon();
-    if (points.count() <= 2) {
-        KOsd::self()->display(tr("Error"), tr("No path created for Tweening"), KOsd::Error);
-        return;
-    }
-
     QString name = k->configurator->currentTweenName();
 
     if (name.length() == 0) {
@@ -750,6 +735,20 @@ int Tweener::framesTotal()
         total = layer->framesNumber();
 
     return total;
+}
+
+/* This method clear selection */
+
+void Tweener::clearSelection()
+{
+    if (k->objects.size() > 0) {
+        foreach (QGraphicsItem *item, k->objects) {
+                 if (item->isSelected())
+                     item->setSelected(false);
+        }
+        k->objects.clear();
+        k->configurator->notifySelection(false);
+    }
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

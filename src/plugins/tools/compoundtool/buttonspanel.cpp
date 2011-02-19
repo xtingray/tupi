@@ -33,51 +33,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#include "buttonspanel.h"
+#include "kimagebutton.h"
+#include "kdebug.h"
 
-#include <kttoolplugin.h>
+#include <QHBoxLayout>
+#include <QBoxLayout>
 
-/**
- * @author Gustav Gonzalez 
- * 
-*/
-
-class Tweener : public KTToolPlugin
+ButtonsPanel::ButtonsPanel(QWidget *parent) : QWidget(parent)
 {
-    Q_OBJECT
+    KImageButton *editButton = new KImageButton(QPixmap(THEME_DIR + "icons/tweener.png"), 22);
+    editButton->setToolTip(tr("Edit Tween"));
+    connect(editButton, SIGNAL(clicked()), this, SIGNAL(clickedEditTween()));
 
-    public:
-        Tweener();
-        virtual ~Tweener();
-        virtual void init(KTGraphicsScene *scene);
+    KImageButton *removeButton = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
+    removeButton->setToolTip(tr("Remove Tween"));
+    connect(removeButton, SIGNAL(clicked()), this, SIGNAL(clickedRemoveTween()));
 
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-        virtual QMap<QString, KAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
+    QHBoxLayout *controlLayout = new QHBoxLayout;
+    controlLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    controlLayout->setMargin(1);
+    controlLayout->setSpacing(5);
+    controlLayout->addWidget(editButton);
+    controlLayout->addWidget(removeButton);
 
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        virtual void aboutToChangeTool();
+    layout->addLayout(controlLayout);
+}
 
-        virtual void updateScene(KTGraphicsScene *scene);
-        virtual void saveConfig();
-
-    private:
-        void setupActions();
-
-    private:
-        struct Private;
-        Private *const k;
-
-    private slots:
-        void setCurrentTween(const QString &name);
-        void applyReset();
-        void applyTween();
-};
-
-#endif
+ButtonsPanel::~ButtonsPanel()
+{
+}

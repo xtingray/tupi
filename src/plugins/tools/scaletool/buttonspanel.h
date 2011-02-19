@@ -33,51 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#ifndef BUTTONSPANEL_H
+#define BUTTONSPANEL_H
 
-#include <kttoolplugin.h>
+#include <QWidget>
 
 /**
  * @author Gustav Gonzalez 
- * 
 */
 
-class Tweener : public KTToolPlugin
+class ButtonsPanel: public QWidget 
 {
     Q_OBJECT
 
     public:
-        Tweener();
-        virtual ~Tweener();
-        virtual void init(KTGraphicsScene *scene);
 
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        ButtonsPanel(QWidget *parent = 0);
+        ~ButtonsPanel();
 
-        virtual QMap<QString, KAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        virtual void aboutToChangeTool();
-
-        virtual void updateScene(KTGraphicsScene *scene);
-        virtual void saveConfig();
-
-    private:
-        void setupActions();
-
-    private:
-        struct Private;
-        Private *const k;
-
-    private slots:
-        void setCurrentTween(const QString &name);
-        void applyReset();
-        void applyTween();
+    signals:
+        void clickedEditTween();
+        void clickedRemoveTween();
+        
 };
 
 #endif

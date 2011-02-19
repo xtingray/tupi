@@ -33,51 +33,50 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#ifndef TWEENMANAGER_H
+#define TWEENMANAGER_H
 
-#include <kttoolplugin.h>
+#include <QWidget>
 
 /**
  * @author Gustav Gonzalez 
- * 
 */
 
-class Tweener : public KTToolPlugin
+class QListWidgetItem;
+
+class TweenManager: public QWidget 
 {
     Q_OBJECT
 
     public:
-        Tweener();
-        virtual ~Tweener();
-        virtual void init(KTGraphicsScene *scene);
 
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        TweenManager(QWidget *parent = 0);
+        ~TweenManager();
+        void loadTweenList(QList<QString> tweenList);
+        void resetUI();
+        QString currentTweenName() const;
+        int listSize(); 
+        void removeItemFromList();
+        void updateTweenName(const QString &name);
 
-        virtual QMap<QString, KAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        virtual void aboutToChangeTool();
-
-        virtual void updateScene(KTGraphicsScene *scene);
-        virtual void saveConfig();
-
-    private:
-        void setupActions();
-
-    private:
-        struct Private;
-        Private *const k;
+    signals:
+        void addNewTween(const QString &name);
+        void editCurrentTween(const QString &name);
+        void removeCurrentTween(const QString &name);
+        void getTweenData(const QString &name);
 
     private slots:
-        void setCurrentTween(const QString &name);
-        void applyReset();
-        void applyTween();
+        void addTween();
+        void editTween();
+        void removeTween();
+        void showMenu(const QPoint &point);
+        void updateTweenData(QListWidgetItem *item);
+
+    private:
+        bool itemExists(const QString &name);
+
+        struct Private;
+        Private *const k;
 };
 
 #endif

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef COMPOUNDTWEENER_H
-#define COMPOUNDTWEENER_H
+#ifndef ROTATIONTWEENER_H
+#define ROTATIONTWEENER_H
 
 #include <kttoolplugin.h>
 
@@ -76,7 +76,8 @@ class Tweener : public KTToolPlugin
 
     private slots:
         void setCurrentTween(const QString &name);
-
+        void applyReset();
+        void applyTween();
 };
 
 #endif
