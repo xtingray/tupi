@@ -387,6 +387,35 @@ void KTScene::addTweenObject(KTSvgItem *object)
     k->tweeningSvgObjects << object;
 }
 
+void KTScene::insertTweenObject(int index, KTGraphicObject *object)
+{
+    k->tweeningGraphicObjects.insert(index, object); 
+}
+
+void KTScene::insertTweenObject(int index, KTSvgItem *object)
+{
+    k->tweeningSvgObjects.insert(index, object);
+}
+
+int KTScene::indexOfTweenObject(const QString &name, KTLibraryObject::Type type)
+{
+    if (type == KTLibraryObject::Item) {
+        for (int i=0; i<k->tweeningGraphicObjects.size(); i++) {
+             KTItemTweener *tween = k->tweeningGraphicObjects.at(i)->tween();
+             if (tween->name().compare(name) == 0)
+                 return i;
+        }
+    } else {
+        for (int i=0; i<k->tweeningSvgObjects.size(); i++) {
+             KTItemTweener *tween = k->tweeningSvgObjects.at(i)->tween();
+             if (tween->name().compare(name) == 0)
+                 return i;
+        }
+    }
+
+    return -1;
+}
+
 void KTScene::removeTweenObject(KTGraphicObject *object)
 {
     if (k->tweeningGraphicObjects.size() > 0)

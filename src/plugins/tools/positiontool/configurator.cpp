@@ -269,9 +269,10 @@ void Configurator::closeTweenProperties()
 {
     if (k->mode == Settings::Add) {
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == Settings::Edit) {
-        closeSettingsPanel();
-    }
+    } 
+    // else if (k->mode == Settings::Edit) {
+    //     closeSettingsPanel();
+    // }
 
     emit clickedResetInterface();
 

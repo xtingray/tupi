@@ -85,6 +85,8 @@ class Settings : public QWidget
         void startingPointChanged(int);
         
     private:
+        void setInnerForm();
+        void activeInnerForm(bool enable);
         void setEditMode();
         struct Private;
         Private *const k;

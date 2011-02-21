@@ -52,7 +52,9 @@
 
 struct Settings::Private
 {
+    QWidget *innerPanel;
     QBoxLayout *layout; 
+
     QLineEdit *input;
     KRadioButtonGroup *options;
     StepsViewer *stepViewer;
@@ -84,30 +86,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     nameLayout->addWidget(nameLabel);
     nameLayout->addWidget(k->input);
 
-    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":"); 
-    startingLabel->setAlignment(Qt::AlignHCenter);
-    k->combo = new QComboBox();
-    k->combo->setMaximumWidth(50);
-    k->combo->setEditable(false);
-
-    connect(k->combo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
-
-    QHBoxLayout *startLayout = new QHBoxLayout;
-    startLayout->setMargin(0);
-    startLayout->setSpacing(0);
-    startLayout->addWidget(k->combo);
-
     k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
     k->options->addItem(tr("Select object"), 0);
     k->options->addItem(tr("Create path"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
-
-    k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
-    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-    QHBoxLayout *totalLayout = new QHBoxLayout;
-    totalLayout->setMargin(0);
-    totalLayout->setSpacing(0);
-    totalLayout->addWidget(k->totalLabel);
 
     k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
 
@@ -125,19 +107,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     buttonsLayout->addWidget(k->apply);
     buttonsLayout->addWidget(k->remove);
 
-    k->stepViewer = new StepsViewer;
-    k->stepViewer->verticalHeader()->hide();
-    k->stepViewer->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-
     k->layout->addLayout(nameLayout);
-
-    k->layout->addWidget(startingLabel);
-    k->layout->addLayout(startLayout);
-
     k->layout->addWidget(k->options);
-    k->layout->addWidget(k->stepViewer);
 
-    k->layout->addLayout(totalLayout);
+    setInnerForm();
 
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
@@ -149,6 +122,58 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 Settings::~Settings()
 {
     delete k;
+}
+
+void Settings::setInnerForm()
+{
+    k->innerPanel = new QWidget; 
+
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+
+    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":");
+    startingLabel->setAlignment(Qt::AlignHCenter);
+    k->combo = new QComboBox();
+    k->combo->setMaximumWidth(50);
+    k->combo->setEditable(false);
+
+    connect(k->combo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+
+    QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setMargin(0);
+    startLayout->setSpacing(0);
+    startLayout->addWidget(k->combo);
+
+    k->stepViewer = new StepsViewer;
+    k->stepViewer->verticalHeader()->hide();
+    k->stepViewer->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+    k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
+    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    QHBoxLayout *totalLayout = new QHBoxLayout;
+    totalLayout->setMargin(0);
+    totalLayout->setSpacing(0);
+    totalLayout->addWidget(k->totalLabel);
+
+    innerLayout->addWidget(startingLabel);
+    innerLayout->addLayout(startLayout);
+    innerLayout->addWidget(k->stepViewer);
+
+    innerLayout->addLayout(totalLayout);
+
+    k->innerPanel->setLayout(innerLayout);
+
+    k->layout->addWidget(k->innerPanel);
+
+    activeInnerForm(false);
+}
+
+void Settings::activeInnerForm(bool enable)
+{
+    if (enable && !k->innerPanel->isVisible())
+        k->innerPanel->show();
+    else
+        k->innerPanel->hide();
 }
 
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
@@ -215,12 +240,14 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
+                 activeInnerForm(false);
                  emit clickedSelect();
              }
             break;
             case 1:
              {
                  if (k->selectionDone) {
+                     activeInnerForm(true);
                      emit clickedCreatePath();
                  } else {
                      k->options->setCurrentIndex(0);

@@ -162,29 +162,36 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
         if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
-            if (layer) {
-                KTFrame *frame = layer->frame(framePosition);
-                if (frame) {
 
+            if (layer) {
+
+                KTFrame *frame = layer->frame(framePosition);
+
+                if (frame) {
                     if (type == KTLibraryObject::Svg) {
                         frame->removeSvgAt(response->itemIndex());
+
+                        emit responsed(response);
+                        return true;
                     } else {
                         KTGraphicObject *object = frame->graphic(response->itemIndex());
                         if (object) {
-                            if (object->hasTween())
+                            frame->removeGraphicAt(response->itemIndex());
+                            if (object->hasTween()) {
+                                kFatal() << "KTCommandExecutor::removeItem() - Remove tween from scene!";
                                 scene->removeTweenObject(object);
+                            }
+
+                            emit responsed(response);
+                            return true;
+
                         } else {
                             #ifdef K_DEBUG
                                    kError() << "KTCommandExecutor::removeItem() - Error: " << tr("Invalid object index") << response->itemIndex();
                             #endif
+                            return false;
                         }
-
-                        frame->removeGraphicAt(response->itemIndex());
                     }
-                
-                    emit responsed(response);
-                
-                    return true;
                 }
             }
 
@@ -202,7 +209,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                          frame->removeGraphicAt(response->itemIndex());
 
                     emit responsed(response);
-
                     return true;
                 }
             }
@@ -711,47 +717,55 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
     
     if (scene) {
 
-        // if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        KTLayer *layer = scene->layer(layerPosition);
 
-            KTLayer *layer = scene->layer(layerPosition);
+        if (layer) {
 
-            if (layer) {
+            KTFrame *frame = layer->frame(framePosition);
 
-                KTFrame *frame = layer->frame(framePosition);
+            if (frame) {
 
-                if (frame) {
+                KTItemTweener *tween = new KTItemTweener();
+                tween->fromXml(xml);
+                kFatal() << "KTCommandExecutor::setTween() - Tween Name: " << tween->name();
 
-                    KTItemTweener *tween = new KTItemTweener();
-                    tween->fromXml(xml);
+                if (type == KTLibraryObject::Item) {
 
-                    if (type == KTLibraryObject::Item) {
-
-                        KTGraphicObject *object = frame->graphic(position);
-                        if (object == 0) {
-                            #ifdef K_DEBUG
-                                   kFatal() << "KTCommandExecutor::setTween() - Invalid graphic index: " << position;
-                            #endif
-                            return false;
-                        }
-                        object->setTween(tween);
-                        scene->addTweenObject(object);
-
+                    KTGraphicObject *object = frame->graphic(position);
+                    if (object == 0) {
+                        #ifdef K_DEBUG
+                               kFatal() << "KTCommandExecutor::setTween() - Invalid graphic index: " << position;
+                        #endif
+                        return false;
                     } else {
-                        KTSvgItem *object = frame->svg(position); 
-                        if (object == 0) {
-                            #ifdef K_DEBUG
-                                   kFatal() << "KTCommandExecutor::setTween() - Invalid svg index: " << position;
-                            #endif
-                            return false;
+                        bool hasTween = object->hasTween();
+                        object->setTween(tween);
+                        if (hasTween) { 
+                            kFatal() << "KTCommandExecutor::setTween() - Updating tween!";
+                            int index = scene->indexOfTweenObject(tween->name(), type);
+                            scene->insertTweenObject(index, object);
+                        } else {
+                            kFatal() << "KTCommandExecutor::setTween() - Adding the new tween!";
+                            scene->addTweenObject(object);
                         }
+                    }
+
+                } else {
+                    KTSvgItem *object = frame->svg(position); 
+                    if (object == 0) {
+                        #ifdef K_DEBUG
+                               kFatal() << "KTCommandExecutor::setTween() - Invalid svg index: " << position;
+                        #endif
+                        return false;
+                    } else {
                         object->setTween(tween);
                         scene->addTweenObject(object);
                     }
-
-                    return true;
                 }
+
+                return true;
             }
-        // }
+        }
     }
     
     return false;

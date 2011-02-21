@@ -106,8 +106,10 @@ void KTScenesWidget::setupTableScenes()
     connect(k->tableScenes, SIGNAL(changeCurrent(QString , int)), 
             this, SLOT(selectScene(QString, int)));
 
-    connect(k->tableScenes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
+    /*
+    connect(k->tableScenes, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), 
             this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
+    */
 
     connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this,
             SLOT(renameObject(QTreeWidgetItem*)));

@@ -132,14 +132,17 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
           */
         bool moveLayer(int from, int to);
 
-        //int logicalIndex() const;
         int objectIndex() const;
         int visualIndexOf(KTLayer *layer) const;
-        //int logicalIndexOf(KTLayer *layer) const;
 
         KTProject *project() const;
         void addTweenObject(KTGraphicObject *object);
         void addTweenObject(KTSvgItem *object);
+
+        void insertTweenObject(int index, KTGraphicObject *object);
+        void insertTweenObject(int index, KTSvgItem *object);
+
+        int indexOfTweenObject(const QString &name, KTLibraryObject::Type type);
 
         void removeTweenObject(KTGraphicObject *object);
         void removeTweenObject(KTSvgItem *object);
