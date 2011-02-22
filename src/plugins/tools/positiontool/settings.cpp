@@ -88,7 +88,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 
     k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
     k->options->addItem(tr("Select object"), 0);
-    k->options->addItem(tr("Create path"), 1);
+    k->options->addItem(tr("Set Properties"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
     k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
@@ -186,6 +186,8 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
     k->combo->setEnabled(false);
     k->apply->setToolTip(tr("Save Tween"));
+    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->remove->setToolTip(tr("Cancel Tween"));
 
     initStartCombo(framesTotal, startFrame);
 }
@@ -198,6 +200,8 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
     notifySelection(true);
     activatePathMode();
+
+    k->combo->setEnabled(true);
 
     initStartCombo(currentTween->frames(), currentTween->startFrame());
 

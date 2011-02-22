@@ -741,11 +741,9 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                         bool hasTween = object->hasTween();
                         object->setTween(tween);
                         if (hasTween) { 
-                            kFatal() << "KTCommandExecutor::setTween() - Updating tween!";
                             int index = scene->indexOfTweenObject(tween->name(), type);
                             scene->insertTweenObject(index, object);
                         } else {
-                            kFatal() << "KTCommandExecutor::setTween() - Adding the new tween!";
                             scene->addTweenObject(object);
                         }
                     }
@@ -758,8 +756,14 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                         #endif
                         return false;
                     } else {
+                        bool hasTween = object->hasTween();
                         object->setTween(tween);
-                        scene->addTweenObject(object);
+                        if (hasTween) {
+                            int index = scene->indexOfTweenObject(tween->name(), type);
+                            scene->insertTweenObject(index, object);
+                        } else {
+                            scene->addTweenObject(object);
+                        }
                     }
                 }
 

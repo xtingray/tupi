@@ -380,10 +380,15 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
             if (frame) {
                 svgItem->setOpacity(opacity);
                 k->objectCounter++;
+                kFatal() << "KTGraphicsScene::addSvgObject() - Just tracing in frame[" << k->framePosition.frame << "]";
                 addItem(svgItem);
             }
 
         }
+    } else {
+        #ifdef K_DEBUG
+               kFatal() << "KTGraphicsScene::addSvgObject() - Error: No SVG item!";
+        #endif
     } 
 } 
 
@@ -479,6 +484,10 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                              object->setToolTip(tr("Tween: %1/Step: ").arg(tween->name()) + QString::number(step));
                              addSvgObject(object);
                  }
+             } else {
+                 #ifdef K_DEBUG
+                           kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - No tween found!";
+                 #endif
              }
          }
     }

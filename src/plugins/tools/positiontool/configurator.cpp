@@ -245,11 +245,10 @@ void Configurator::addTween(const QString &name)
     activeTweenManagerPanel(false);
     activePropertiesPanel(true);
 
-    // k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
-
     k->state = Properties;
 
-    emit selectionModeOn();
+    // kFatal() << "Configurator::addTween() - Calling setSelect()";
+    // emit selectionModeOn();
 }
 
 void Configurator::editTween()
@@ -309,7 +308,6 @@ QString Configurator::currentTweenName() const
 
 void Configurator::notifySelection(bool flag)
 {
-    // if (k->mode != Settings::View)
     k->settingsPanel->notifySelection(flag); 
 }
 

@@ -125,8 +125,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="54"/>
-        <source>Create path</source>
-        <translation>Crear ruta</translation>
+        <source>Set Properties</source>
+        <translation>Propiedades</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
