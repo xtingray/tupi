@@ -48,6 +48,9 @@ class KTTweenerStep;
 class StepsViewer : public QTableWidget
 {
     Q_OBJECT
+
+    friend class KTExposureVerticalHeader;
+
     public:
         StepsViewer(QWidget *parent = 0);
         ~StepsViewer();

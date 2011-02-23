@@ -599,8 +599,6 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
-                     kFatal() << "KTExposureSheet::frameResponse() - Adding frame: " << e->arg().toString();
-
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {

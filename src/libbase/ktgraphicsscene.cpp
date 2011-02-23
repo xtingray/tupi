@@ -380,7 +380,6 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
             if (frame) {
                 svgItem->setOpacity(opacity);
                 k->objectCounter++;
-                kFatal() << "KTGraphicsScene::addSvgObject() - Just tracing in frame[" << k->framePosition.frame << "]";
                 addItem(svgItem);
             }
 
@@ -410,40 +409,37 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                  if (origin == photogram) {
 
                      KTTweenerStep *stepItem = tween->stepAt(0);
-                     if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                         object->setLastTweenPos(stepItem->position());
-                         object->item()->setPos(QPointF(0, 0));
-                     } else {
-                         QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
-                         object->item()->setPos(point);
-                     }
-
                      object->item()->setToolTip(tr("Tween: %1/Step: 0").arg(tween->name()));
+
+                     if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
+                         if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                             object->setLastTweenPos(stepItem->position());
+                             object->item()->setPos(QPointF(0, 0));
+                         } else {
+                             QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
+                             object->item()->setPos(point);
+                         }
+                     }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
 
                             int step = photogram - origin;
                             KTTweenerStep *stepItem = tween->stepAt(step);
+                            object->item()->setToolTip(tr("Tween: %1/Step: ").arg(tween->name()) + QString::number(step));
 
-                            if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                                qreal dx = stepItem->position().x() - object->lastTweenPos().x();
-                                qreal dy = stepItem->position().y() - object->lastTweenPos().y();
-                                object->item()->moveBy(dx, dy);
-                                object->setLastTweenPos(stepItem->position());
-                            } else {
-                                object->item()->setPos(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
+                            if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
+                                if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                                    qreal dx = stepItem->position().x() - object->lastTweenPos().x();
+                                    qreal dy = stepItem->position().y() - object->lastTweenPos().y();
+                                    object->item()->moveBy(dx, dy);
+                                    object->setLastTweenPos(stepItem->position());
+                                } else {
+                                    object->item()->setPos(stepItem->position().x() - adjustX, 
+                                                           stepItem->position().y() - adjustY);
+                                }
                             }
 
-                            object->item()->setToolTip(tr("Tween: %1/Step: ").arg(tween->name()) + QString::number(step));
                             addGraphicObject(object);
-
-                            /*
-                            QRectF r = object->item()->sceneBoundingRect();
-                            addRect(r, QPen(Qt::green), QBrush(QColor(0,120,0,50)));
-                            update(r);
-                            addLine(QLineF(point.x()-3, point.y(), point.x()+3, point.y()), QPen(Qt::red));
-                            addLine(QLineF(point.x(), point.y()-3, point.x(), point.y()+3), QPen(Qt::red));
-                            */
                  }
              }
         }
@@ -469,19 +465,23 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                  if (origin == photogram) {
 
                      KTTweenerStep *stepItem = tween->stepAt(0);
-
-                     QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
-                     object->setPos(point);
                      object->setToolTip(tr("Tween: %1/Step: 0").arg(tween->name()));
+
+                     if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
+                         QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
+                         object->setPos(point);
+                     }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
                              int step = photogram - origin;
-
                              KTTweenerStep *stepItem = tween->stepAt(step);
-                             QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
-                             object->setPos(point);
-
                              object->setToolTip(tr("Tween: %1/Step: ").arg(tween->name()) + QString::number(step));
+
+                             if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
+                                 QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
+                                 object->setPos(point);
+                             }
+
                              addSvgObject(object);
                  }
              } else {

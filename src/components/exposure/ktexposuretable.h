@@ -43,11 +43,11 @@ class KTExposureVerticalHeader;
 class QMenu;
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 class KTExposureTable : public QTableWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     friend class KTExposureVerticalHeader;
     friend class KTExposureItemDelegate;

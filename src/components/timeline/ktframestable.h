@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTLAYERTABLE_H
-#define KTLAYERTABLE_H
+#ifndef KTFRAMESTABLE_H
+#define KTFRAMESTABLE_H
 
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -64,7 +64,7 @@ class KTFramesTableItem : public QTableWidgetItem
 class KTTLRuler;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 class KTFramesTable : public QTableWidget
 {

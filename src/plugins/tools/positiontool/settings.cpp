@@ -128,7 +128,7 @@ void Settings::setInnerForm()
 {
     k->innerPanel = new QWidget; 
 
-    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":");
@@ -146,7 +146,6 @@ void Settings::setInnerForm()
 
     k->stepViewer = new StepsViewer;
     k->stepViewer->verticalHeader()->hide();
-    k->stepViewer->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
     k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);

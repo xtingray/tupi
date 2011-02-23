@@ -513,7 +513,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Tweener:
-                     minWidth = 160;
+                     minWidth = 220;
                      k->motionMenu->setDefaultAction(action);
                      k->motionMenu->setActiveAction(action);
                      if (!action->icon().isNull())

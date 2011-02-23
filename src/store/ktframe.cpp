@@ -223,6 +223,7 @@ void KTFrame::fromXml(const QString &xml)
                                          }
                                          tweener->fromXml(newDoc);
                                          svg->setTween(tweener);
+                                         scene()->addTweenObject(svg);
                                      }
 
                                      n2 = n2.nextSibling(); 

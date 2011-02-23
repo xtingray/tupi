@@ -41,6 +41,10 @@
 #include <cmath>
 #include <QGraphicsPathItem>
 #include <QDebug>
+#include <QBoxLayout>
+#include <QPushButton>
+#include <QHeaderView>
+#include <QPainter>
 
 struct StepsViewer::Private
 {
@@ -52,8 +56,13 @@ struct StepsViewer::Private
 StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
 {
     setFont(QFont("Arial", 8, QFont::Normal, false));
-    setColumnCount(2);
-    setHorizontalHeaderLabels(QStringList() << tr("Interval") << tr("Frames"));
+    setColumnCount(4);
+    setColumnWidth(0, 70);
+    setColumnWidth(1, 60);
+    setColumnWidth(2, 20); 
+    setColumnWidth(3, 20);
+
+    setHorizontalHeaderLabels(QStringList() << tr("Interval") << tr("Frames") << tr("") << tr(""));
 
     // SQA: Disabled while plugin is fixed
     /*
@@ -62,9 +71,11 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
     connect(spin, SIGNAL(nodeReleased()), this, SIGNAL(updateTable()));
     */
 
-    setMaximumWidth(120);
+    setMinimumWidth(174);
+    //setMaximumWidth(170);
     setMaximumHeight(800);
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     k->dots = new QList<QPointF>();
 }
@@ -146,8 +157,18 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  framesItem->setText(QString::number(frames));
                  framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
+                 QPushButton *plusButton = new QPushButton("+"); 
+                 QPushButton *minusButton = new QPushButton("-");
+
+                 // SQA: Temporary code
+                 plusButton->setDisabled(true);
+                 minusButton->setDisabled(true);
+
                  setItem(control, 0, intervalItem);
                  setItem(control, 1, framesItem);
+                 setCellWidget(control, 2, plusButton);
+                 setCellWidget(control, 3, minusButton);
+
                  setRowHeight(control, 20);
 
                  if (point != keys->last()) {
@@ -185,6 +206,10 @@ int StepsViewer::totalSteps()
 
 void StepsViewer::cleanRows()
 {
+    k->points.clear();
+    k->frames.clear();
+    k->dots->clear();
+
     int size = rowCount() - 1;
     for (int i = size ; i >= 0; i--)
          removeRow(i);
