@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,44 +33,24 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef STEPSVIEWER_H
-#define STEPSVIEWER_H
+#include "kpushbutton.h"
 
-#include <QTableWidget>
+#include <QPolygon>
+#include <QPainter>
 
-class QGraphicsPathItem;
-class KTTweenerStep;
-
-/**
- * @author Jorge Cuadrado 
-*/
-
-class StepsViewer : public QTableWidget
+KPushButton::KPushButton(QWidget *parent, const QString &name, int column, int row) : QPushButton(parent)
 {
-    Q_OBJECT
+    setText(name);
+    m_column = column;
+    m_row = row;
+    connect(this, SIGNAL(clicked()), this, SLOT(setCoords()));
+}
 
-    // friend class KTExposureVerticalHeader;
+KPushButton::~KPushButton()
+{
+}
 
-    public:
-        StepsViewer(QWidget *parent = 0);
-        ~StepsViewer();
-        void setPath(const QGraphicsPathItem *path);
-        
-        QVector<KTTweenerStep *> steps();
-        int totalSteps();
-        void cleanRows();
-        virtual QSize sizeHint() const;
-
-    private slots:
-        void updatePath(int column, int row);
-        
-    private:
-        QList<QPointF> calculateDots(QPointF dot1, QPointF dot2, int total);
-        struct Private;
-        Private *const k;
-
-    signals:
-        void updateTable();
-};
-
-#endif
+void KPushButton::setCoords()
+{
+    emit clicked(m_column, m_row);
+}

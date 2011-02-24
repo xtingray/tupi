@@ -36,13 +36,13 @@
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
 #include "spinboxdelegate.h"
+#include "kpushbutton.h"
 #include "kdebug.h"
 
 #include <cmath>
 #include <QGraphicsPathItem>
 #include <QDebug>
 #include <QBoxLayout>
-#include <QPushButton>
 #include <QHeaderView>
 #include <QPainter>
 
@@ -51,6 +51,8 @@ struct StepsViewer::Private
     QPolygonF points;
     QList<int> frames;
     QList<QPointF> *dots;
+    QList<KPushButton*> *plusButton;
+    QList<KPushButton*> *minusButton;
 };
 
 StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
@@ -72,12 +74,12 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
     */
 
     setMinimumWidth(174);
-    //setMaximumWidth(170);
     setMaximumHeight(800);
-    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     k->dots = new QList<QPointF>();
+    k->plusButton = new QList<KPushButton*>();
+    k->minusButton = new QList<KPushButton*>();
 }
 
 StepsViewer::~StepsViewer()
@@ -105,6 +107,9 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         k->frames.clear();
         k->points = points;
         k->dots->clear();
+
+        k->plusButton->clear();
+        k->minusButton->clear();
 
         setRowCount(0);
 
@@ -134,11 +139,11 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              if (point == controlKey) {
                  if (frames == 1) {
                      if (control == 0) {
-                         k->dots->append(calculateDots(points.at(0), controlKey, 9));
-                         frames = 10;
+                         k->dots->append(calculateDots(points.at(0), controlKey, 29));
+                         frames = 30;
                      } else {
-                         k->dots->append(calculateDots(keys->at(control-1), controlKey, 9));
-                         frames = 9; 
+                         k->dots->append(calculateDots(keys->at(control-1), controlKey, 29));
+                         frames = 29; 
                      }
                  } else {
                      if (control == 0) 
@@ -157,17 +162,19 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  framesItem->setText(QString::number(frames));
                  framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
-                 QPushButton *plusButton = new QPushButton("+"); 
-                 QPushButton *minusButton = new QPushButton("-");
+                 k->plusButton->append(new KPushButton(this, "+", 2, control)); 
+                 connect(k->plusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
+                 k->minusButton->append(new KPushButton(this, "-", 3, control));
+                 connect(k->minusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
 
                  // SQA: Temporary code
-                 plusButton->setDisabled(true);
-                 minusButton->setDisabled(true);
+                 k->plusButton->at(control)->setDisabled(true);
+                 k->minusButton->at(control)->setDisabled(true);
 
                  setItem(control, 0, intervalItem);
                  setItem(control, 1, framesItem);
-                 setCellWidget(control, 2, plusButton);
-                 setCellWidget(control, 3, minusButton);
+                 setCellWidget(control, 2, k->plusButton->at(control));
+                 setCellWidget(control, 3, k->minusButton->at(control));
 
                  setRowHeight(control, 20);
 
@@ -182,6 +189,21 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              frames++;
          }
     }
+}
+
+void StepsViewer::updatePath(int column, int row)
+{
+    QTableWidgetItem *cell = item(row, 1);
+    int value = cell->text().toInt();
+
+    if (column == 2)
+        value += 5;
+    else
+        value -= 5;
+    
+    cell->setText(QString::number(value));
+
+    // Make the points calculation right here!
 }
 
 QVector<KTTweenerStep *> StepsViewer::steps()

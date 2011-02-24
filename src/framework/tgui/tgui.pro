@@ -52,6 +52,7 @@ HEADERS += kaction.h \
            koptionaldialog.h \
            kosd.h \
            kpathhelper.h \
+           kpushbutton.h \
            kradiobuttongroup.h \
            krulerbase.h \
            kseparator.h \
@@ -118,6 +119,7 @@ SOURCES += kaction.cpp \
            koptionaldialog.cpp \
            kosd.cpp \
            kpathhelper.cpp \
+           kpushbutton.cpp \
            kradiobuttongroup.cpp \
            krulerbase.cpp \
            kseparator.cpp \

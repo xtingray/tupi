@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,44 +33,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef STEPSVIEWER_H
-#define STEPSVIEWER_H
+#ifndef KPUSHBUTTON_H
+#define KPUSHBUTTON_H
 
-#include <QTableWidget>
-
-class QGraphicsPathItem;
-class KTTweenerStep;
+#include "kglobal.h"
+#include <QPushButton>
 
 /**
- * @author Jorge Cuadrado 
+ * @author Gustav Gonzalez 
 */
-
-class StepsViewer : public QTableWidget
+class K_GUI_EXPORT KPushButton : public QPushButton 
 {
     Q_OBJECT
 
-    // friend class KTExposureVerticalHeader;
-
     public:
-        StepsViewer(QWidget *parent = 0);
-        ~StepsViewer();
-        void setPath(const QGraphicsPathItem *path);
-        
-        QVector<KTTweenerStep *> steps();
-        int totalSteps();
-        void cleanRows();
-        virtual QSize sizeHint() const;
-
-    private slots:
-        void updatePath(int column, int row);
-        
-    private:
-        QList<QPointF> calculateDots(QPointF dot1, QPointF dot2, int total);
-        struct Private;
-        Private *const k;
+        KPushButton(QWidget *parent = 0, const QString &name = QString(), int column = 0, int row = 0);
+        ~KPushButton();
 
     signals:
-        void updateTable();
+        void clicked(int, int);
+        
+    private slots:
+        void setCoords();
+        
+    private:
+        int m_column;
+        int m_row;
 };
 
 #endif

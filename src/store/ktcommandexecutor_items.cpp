@@ -727,7 +727,6 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
 
                 KTItemTweener *tween = new KTItemTweener();
                 tween->fromXml(xml);
-                kFatal() << "KTCommandExecutor::setTween() - Tween Name: " << tween->name();
 
                 if (type == KTLibraryObject::Item) {
 

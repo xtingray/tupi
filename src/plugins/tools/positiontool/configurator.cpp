@@ -246,9 +246,6 @@ void Configurator::addTween(const QString &name)
     activePropertiesPanel(true);
 
     k->state = Properties;
-
-    // kFatal() << "Configurator::addTween() - Calling setSelect()";
-    // emit selectionModeOn();
 }
 
 void Configurator::editTween()
@@ -266,12 +263,8 @@ void Configurator::editTween()
 
 void Configurator::closeTweenProperties()
 {
-    if (k->mode == Settings::Add) {
+    if (k->mode == Settings::Add)
         k->tweenManager->removeItemFromList();
-    } 
-    // else if (k->mode == Settings::Edit) {
-    //     closeSettingsPanel();
-    // }
 
     emit clickedResetInterface();
 

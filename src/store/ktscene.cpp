@@ -389,12 +389,12 @@ void KTScene::addTweenObject(KTSvgItem *object)
 
 void KTScene::insertTweenObject(int index, KTGraphicObject *object)
 {
-    k->tweeningGraphicObjects.insert(index, object); 
+    k->tweeningGraphicObjects.replace(index, object); 
 }
 
 void KTScene::insertTweenObject(int index, KTSvgItem *object)
 {
-    k->tweeningSvgObjects.insert(index, object);
+    k->tweeningSvgObjects.replace(index, object);
 }
 
 int KTScene::indexOfTweenObject(const QString &name, KTLibraryObject::Type type)
@@ -507,10 +507,8 @@ QList<QString> KTScene::getTweenNames(KTItemTweener::Type type)
 
     foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
              if (KTItemTweener *tween = object->tween()) {
-                 if (tween->type() == type) {
-                     QString value = tween->name();
+                 if (tween->type() == type)
                      names.append(tween->name());
-                 }
              }
     }
 

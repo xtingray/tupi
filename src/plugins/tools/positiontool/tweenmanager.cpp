@@ -98,6 +98,8 @@ TweenManager::~TweenManager()
 
 void TweenManager::loadTweenList(QList<QString> tweenList)
 {
+    k->tweensList->clear();
+
     for (int i=0; i < tweenList.size(); i++) {
         QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
         tweenerItem->setFont(QFont("verdana", 8));

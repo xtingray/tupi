@@ -374,33 +374,32 @@ void KTViewDocument::loadPlugins()
                                  break;
                               case KTToolInterface::Tweener:
                                  {
-                                   kFatal() << "Tweener Label: " << toolName;
-
                                    if (toolName.compare(tr("Position Tween")) == 0) {
                                        tweenTools[0] = action;
                                        k->motionMenu->setDefaultAction(action);
                                    }
 
                                    if (toolName.compare(tr("Rotation Tween")) == 0)
+                                       action->setDisabled(true);
                                        tweenTools[1] = action;
 
                                    if (toolName.compare(tr("Scale Tween")) == 0) {
-                                       // action->setDisabled(true);
+                                       action->setDisabled(true);
                                        tweenTools[2] = action;
                                    }
 
                                    if (toolName.compare(tr("Opacity Tween")) == 0) {
-                                       // action->setDisabled(true);
+                                       action->setDisabled(true);
                                        tweenTools[3] = action;
                                    }
 
                                    if (toolName.compare(tr("Colouring Tween")) == 0) {
-                                       // action->setDisabled(true);
+                                       action->setDisabled(true);
                                        tweenTools[4] = action;
                                    }
 
                                    if (toolName.compare(tr("Compound Tween")) == 0) {
-                                       // action->setDisabled(true);
+                                       action->setDisabled(true);
                                        tweenTools[5] = action;
                                    }
                                  }

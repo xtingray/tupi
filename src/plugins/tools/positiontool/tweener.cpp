@@ -380,7 +380,6 @@ void Tweener::setSelect()
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       if ((item->zValue() >= 10000) && (item->toolTip().length()==0)) {
-                           kFatal() << "Tweener::setSelect() - Activating object!";
                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                       }
              }
