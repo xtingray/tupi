@@ -94,7 +94,7 @@ QSize StepsViewer::sizeHint() const
 
 void StepsViewer::setPath(const QGraphicsPathItem *path)
 {
-    kFatal() << "StepsViewer::setPath() - Just tracing!";
+    // kFatal() << "StepsViewer::setPath() - Just tracing!";
 
     // Set of key points which define the path 
     QPolygonF points = path->path().toFillPolygon();
