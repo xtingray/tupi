@@ -3,7 +3,9 @@ Priority: extra
 Maintainer: Gustav Gonzalez [xtingray] <info@maefloresta.com>
 Build-Depends: debhelper (>= 7), autotools-dev, ruby, libaspell-dev, 
  libavformat-dev, libavcodec-dev, mesa-common-dev, qt4-dev-tools, 
- qt4-qmake, imagemagick, zlib1g-dev
+ qt4-qmake, libqt4-dev, libqt4-opengl, libqt4-opengl-dev, libqt4-gui,
+ imagemagick, zlib1g-dev
+
 Standards-Version: 3.9.1
 Section: graphics 
 Homepage: http://www.maefloresta.com 
