@@ -2,7 +2,6 @@ Source: tupi
 Section: graphics
 Priority: extra
 Maintainer: Gustav Gonzalez [xtingray] <info@maefloresta.com>
-XSBC-Original-Maintainer: Gustav Gonzalez <xtingray@kazak.com.co>
 Standards-Version: 3.9.1
 Build-Depends: debhelper (>= 7), autotools-dev, ruby, libaspell-dev, 
  libavformat-dev, libavcodec-dev, mesa-common-dev, qt4-dev-tools, 
