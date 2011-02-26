@@ -380,7 +380,7 @@ void KTViewDocument::loadPlugins()
                                    }
 
                                    if (toolName.compare(tr("Rotation Tween")) == 0)
-                                       action->setDisabled(true);
+                                       // action->setDisabled(true);
                                        tweenTools[1] = action;
 
                                    if (toolName.compare(tr("Scale Tween")) == 0) {

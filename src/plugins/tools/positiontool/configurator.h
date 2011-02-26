@@ -103,7 +103,7 @@ class Configurator : public QFrame
         void clickedResetInterface();
         void clickedApplyTween();
         void startingPointChanged(int);
-        void selectionModeOn();
+        // void selectionModeOn();
         void editModeOn();
         void getTweenData(const QString &);
         

@@ -194,7 +194,8 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    if (k->scene->currentFrameIndex() == k->startPoint) {
+    // if (k->scene->currentFrameIndex() == k->startPoint) {
+    if (scene->currentFrameIndex() == k->startPoint) {
 
         if (k->editMode == Settings::Path) {
 
@@ -260,11 +261,13 @@ QWidget *Tweener::configurator()
 
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
         connect(k->configurator, SIGNAL(clickedCreatePath()), this, SLOT(setCreatePath()));
+
+        kFatal() << "Tweener::configurator() - Connecting signal clickedSelect()";
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
-        connect(k->configurator, SIGNAL(selectionModeOn()), this, SLOT(setSelect()));
+        // connect(k->configurator, SIGNAL(selectionModeOn()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv())); 
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
 
@@ -358,6 +361,8 @@ void Tweener::setCreatePath()
 
 void Tweener::setSelect()
 {
+    kFatal() << "Tweener::setSelect() - Just tracing... Position";
+
     if (k->mode == Settings::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),

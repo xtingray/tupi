@@ -108,8 +108,8 @@ void Configurator::setPropertiesPanel()
     k->settingsPanel = new Settings(this);
 
     // connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
-    // connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
-    // connect(k->settingsPanel, SIGNAL(clickedCreatePath()), this, SIGNAL(clickedCreatePath()));
+    connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
+    connect(k->settingsPanel, SIGNAL(clickedDefineAngle()), this, SIGNAL(clickedDefineAngle()));
     // connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
     connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(closeTweenProperties()));
 
@@ -172,6 +172,8 @@ void Configurator::activeButtonsPanel(bool enable)
 
 void Configurator::addTween(const QString &name)
 {
+    kFatal() << "Configurator::addTween() - Just tracing!";
+
     k->mode = Settings::Add;
 
     k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
@@ -215,6 +217,11 @@ QString Configurator::currentTweenName() const
         k->tweenManager->updateTweenName(newName);
 
     return newName;
+}
+
+void Configurator::notifySelection(bool flag)
+{
+    k->settingsPanel->notifySelection(flag);
 }
 
 void Configurator::removeTween(const QString &name)

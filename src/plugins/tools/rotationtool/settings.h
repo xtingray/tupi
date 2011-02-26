@@ -50,13 +50,14 @@ class Settings : public QWidget
 
     public:
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 1, Path, None };
+        enum EditMode { Selection = 1, AngleRange, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
 
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void setParameters(KTItemTweener *currentTween);
+        void notifySelection(bool flag);
         QString currentTweenName() const;
         void activateSelectionMode();
 
@@ -65,10 +66,14 @@ class Settings : public QWidget
         void emitOptionChanged(int option);
         
     signals:
+        void clickedSelect();
+        void clickedDefineAngle();
         void clickedApplyTween();
         void clickedResetTween();
         
     private:
+        void setInnerForm();
+        void activeInnerForm(bool enable);
         void setEditMode();
         struct Private;
         Private *const k;

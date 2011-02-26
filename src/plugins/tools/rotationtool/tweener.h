@@ -76,6 +76,9 @@ class Tweener : public KTToolPlugin
 
     private slots:
         void setCurrentTween(const QString &name);
+        void setSelect();
+        void setAngleMode();
+        void setEditEnv();
         void applyReset();
         void applyTween();
 };

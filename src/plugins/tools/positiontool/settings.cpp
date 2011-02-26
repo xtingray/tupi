@@ -243,6 +243,7 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
+                 kFatal() << "Settings::emitOptionChanged() - Position / Just tracing!";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
@@ -291,6 +292,7 @@ void Settings::activatePathMode()
 
 void Settings::activateSelectionMode()
 {
+    kFatal() << "Settings::activateSelectionMode() - Just tracing!";
     k->options->setCurrentIndex(0);
 }
 

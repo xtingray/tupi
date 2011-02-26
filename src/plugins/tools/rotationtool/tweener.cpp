@@ -92,6 +92,8 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
+    kFatal() << "Tweener::init() - Rotation / Just tracing!";
+
     k->scene = scene;
     k->objects.clear();
 
@@ -150,7 +152,16 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    Q_UNUSED(scene);
+
+    if (scene->currentFrameIndex() == k->startPoint) {
+        if (k->editMode == Settings::Selection) {
+            if (scene->selectedItems().size() > 0) {
+                k->objects = scene->selectedItems();
+                k->configurator->notifySelection(true);
+            }
+        }
+    }
+
 }
 
 /* This method returns the list of actions defined in this plugin */
@@ -175,7 +186,14 @@ QWidget *Tweener::configurator()
         k->mode = Settings::View;
 
         k->configurator = new Configurator;
+        kFatal() << "Tweener::configurator() - Connecting signal clickedSelect() / Rotation";
+        connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
+        connect(k->configurator, SIGNAL(selectionModeOn()), this, SLOT(setSelect()));
+        connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv()));
+        connect(k->configurator, SIGNAL(clickedDefineAngle()), this, SLOT(setAngleMode()));
+    } else {
+        kFatal() << "Tweener::configurator() - There is configurator already!";
     } 
 
     return k->configurator;
@@ -213,7 +231,8 @@ void Tweener::saveConfig()
 /* This method updates the workspace when the plugin changes the scene */
 
 void Tweener::updateScene(KTGraphicsScene *scene)
-{
+{ 
+    Q_UNUSED(scene);
 }
 
 void Tweener::setCurrentTween(const QString &name)
@@ -224,10 +243,70 @@ void Tweener::setCurrentTween(const QString &name)
         k->configurator->setCurrentTween(k->currentTween);
 }
 
+void Tweener::setEditEnv()
+{
+    kFatal() << "Tweener::setEditEnv() - Just tracing!";
+
+    k->mode = Settings::Edit;
+
+    KTScene *scene = k->scene->scene();
+    k->objects = scene->getItemsFromTween(k->currentTween->name());
+}
+
+/* This method initializes the "Select object" mode */
+
+void Tweener::setSelect()
+{
+    kFatal() << "Tweener::setSelect() - Rotation / Just tracing!";
+
+    if (k->mode == Settings::Edit) {
+        if (k->startPoint != k->scene->currentFrameIndex()) {
+            KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                            k->scene->currentLayerIndex(),
+                                                                            k->startPoint, KTProjectRequest::Select, "1");
+            emit requested(&request);
+        }
+    }
+
+    k->editMode = Settings::Selection;
+
+    foreach (QGraphicsView * view, k->scene->views()) {
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      if ((item->zValue() >= 10000) && (item->toolTip().length()==0)) {
+                          item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                      }
+             }
+    }
+
+    // When Object selection is enabled, previous selection is set
+    if (k->objects.size() > 0) {
+        foreach (QGraphicsItem *item, k->objects) {
+                 item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                 item->setSelected(true);
+        }
+    }
+
+}
+
+void Tweener::setAngleMode()
+{
+    k->editMode = Settings::AngleRange;
+
+    foreach (QGraphicsView * view, k->scene->views()) {
+             view->setDragMode (QGraphicsView::NoDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+             }
+    }
+}
+
 /* This method resets this plugin */
 
 void Tweener::applyReset()
 {
+    k->mode = Settings::View;
     k->editMode = Settings::None;
 }
 

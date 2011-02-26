@@ -60,6 +60,7 @@ class Configurator : public QFrame
         void loadTweenList(QList<QString> tweenList);
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
+        void notifySelection(bool flag);
         void closeSettingsPanel();
         void resetUI();
         
@@ -71,6 +72,8 @@ class Configurator : public QFrame
         void closeTweenProperties();
         
     signals:
+        void clickedSelect();
+        void clickedDefineAngle();
         void clickedRemoveTween(const QString &name);
         void editModeOn();
         void clickedResetInterface();
