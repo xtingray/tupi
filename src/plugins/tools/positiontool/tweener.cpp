@@ -124,7 +124,6 @@ void Tweener::init(KTGraphicsScene *scene)
     }
 
     int total = framesTotal();
-
     k->configurator->initStartCombo(total, k->scene->currentFrameIndex());
 }
 

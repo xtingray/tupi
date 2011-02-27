@@ -69,18 +69,21 @@ class Tweener : public KTToolPlugin
 
     private:
         void setupActions();
+        int framesTotal();
+        void clearSelection();
 
     private:
         struct Private;
         Private *const k;
 
     private slots:
-        void setCurrentTween(const QString &name);
         void setSelect();
         void setAngleMode();
         void setEditEnv();
         void applyReset();
         void applyTween();
+        void updateStartPoint(int index);
+        void setCurrentTween(const QString &name);
 };
 
 #endif

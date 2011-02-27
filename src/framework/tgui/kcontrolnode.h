@@ -47,9 +47,10 @@
 
 class KNodeGroup;
 
-class KControlNode : public QObject, public QGraphicsItem
+// class KControlNode : public QObject, public QGraphicsItem
+class KControlNode : public QGraphicsItem
 {
-    Q_OBJECT
+    // Q_OBJECT
     
     public:
 

@@ -58,7 +58,7 @@ struct Settings::Private
     QLineEdit *input;
     KRadioButtonGroup *options;
     StepsViewer *stepViewer;
-    QComboBox *combo;
+    QComboBox *comboInit;
     QLabel *totalLabel;
     bool selectionDone;
     Mode mode; 
@@ -131,18 +131,21 @@ void Settings::setInnerForm()
     QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":");
-    startingLabel->setAlignment(Qt::AlignHCenter);
-    k->combo = new QComboBox();
-    k->combo->setMaximumWidth(50);
-    k->combo->setEditable(false);
+    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
+    startingLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    k->comboInit = new QComboBox();
+    k->comboInit->setFixedWidth(60);
+    //k->comboInit->setMaximumWidth(50);
+    k->comboInit->setEditable(false);
 
-    connect(k->combo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
     startLayout->setMargin(0);
     startLayout->setSpacing(0);
-    startLayout->addWidget(k->combo);
+    // startLayout->addWidget(startingLabel);
+    startLayout->addWidget(k->comboInit);
 
     k->stepViewer = new StepsViewer;
     k->stepViewer->verticalHeader()->hide();
@@ -150,6 +153,7 @@ void Settings::setInnerForm()
     k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
     k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     QHBoxLayout *totalLayout = new QHBoxLayout;
+    totalLayout->setAlignment(Qt::AlignHCenter);
     totalLayout->setMargin(0);
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
@@ -183,7 +187,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     activateSelectionMode();
     k->stepViewer->cleanRows();
 
-    k->combo->setEnabled(false);
+    k->comboInit->setEnabled(false);
     k->apply->setToolTip(tr("Save Tween"));
     k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
@@ -200,7 +204,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
     notifySelection(true);
     activatePathMode();
 
-    k->combo->setEnabled(true);
+    k->comboInit->setEnabled(true);
 
     initStartCombo(currentTween->frames(), currentTween->startFrame());
 
@@ -210,26 +214,26 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
 {
-    k->combo->clear();
+    k->comboInit->clear();
     for (int i=1; i<=framesTotal; i++)
-         k->combo->addItem(QString::number(i));
+         k->comboInit->addItem(QString::number(i));
 
-    k->combo->setCurrentIndex(currentIndex);
+    k->comboInit->setCurrentIndex(currentIndex);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
-    k->combo->setCurrentIndex(currentIndex);
+    k->comboInit->setCurrentIndex(currentIndex);
 }
 
 int Settings::startFrame()
 {
-    return k->combo->currentIndex();
+    return k->comboInit->currentIndex();
 }
 
 int Settings::startComboSize()
 {
-    return k->combo->count();
+    return k->comboInit->count();
 }
 
 void Settings::updateSteps(const QGraphicsPathItem *path)
@@ -322,8 +326,8 @@ void Settings::applyTween()
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
 
-    if (!k->combo->isEnabled())
-        k->combo->setEnabled(true);
+    if (!k->comboInit->isEnabled())
+        k->comboInit->setEnabled(true);
 
     emit clickedApplyTween();
 }

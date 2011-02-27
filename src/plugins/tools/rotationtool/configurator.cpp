@@ -107,7 +107,7 @@ void Configurator::setPropertiesPanel()
 {
     k->settingsPanel = new Settings(this);
 
-    // connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
     connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->settingsPanel, SIGNAL(clickedDefineAngle()), this, SIGNAL(clickedDefineAngle()));
     // connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
@@ -168,6 +168,28 @@ void Configurator::activeButtonsPanel(bool enable)
         k->controlPanel->show();
     else
         k->controlPanel->hide();
+}
+
+void Configurator::initStartCombo(int framesTotal, int currentFrame)
+{
+    k->framesTotal = framesTotal;
+    k->currentFrame = currentFrame;
+    k->settingsPanel->initStartCombo(framesTotal, currentFrame);
+}
+
+void Configurator::setStartFrame(int currentIndex)
+{
+    k->settingsPanel->setStartFrame(currentIndex);
+}
+
+int Configurator::startComboSize()
+{
+    return k->settingsPanel->startComboSize();
+}
+
+int Configurator::totalSteps()
+{
+    return k->settingsPanel->totalSteps();
 }
 
 void Configurator::addTween(const QString &name)
@@ -250,6 +272,11 @@ void Configurator::closeSettingsPanel()
         k->mode = Settings::View;
         k->state = Manager;
     }
+}
+
+Settings::Mode Configurator::mode()
+{
+    return k->mode;
 }
 
 void Configurator::resetUI()

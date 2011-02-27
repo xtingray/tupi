@@ -55,8 +55,9 @@ struct Settings::Private
     QLineEdit *input;
     KRadioButtonGroup *options;
     QComboBox *comboInit;
-    QComboBox *comboEnd;
+    QComboBox *endCombo;
     QComboBox *comboType;
+    QComboBox *comboSpeed;
     QLabel *totalLabel;
 
     bool selectionDone;
@@ -127,49 +128,84 @@ void Settings::setInnerForm()
     QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ":");
-    startingLabel->setAlignment(Qt::AlignHCenter);
+    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
+    startingLabel->setAlignment(Qt::AlignVCenter);
     k->comboInit = new QComboBox();
     k->comboInit->setMaximumWidth(50);
     k->comboInit->setEditable(false);
 
-    // connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
-    QLabel *endingLabel = new QLabel(tr("Ending at frame") + ":");
-    endingLabel->setAlignment(Qt::AlignHCenter);
-    k->comboEnd = new QComboBox();
-    k->comboEnd->setMaximumWidth(50);
-    k->comboEnd->setEditable(false);
+    QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
+    endingLabel->setAlignment(Qt::AlignVCenter);
+    k->endCombo = new QComboBox();
+    k->endCombo->setFixedWidth(60);
+    k->endCombo->setEditable(true);
+    k->endCombo->addItem(QString::number(1));
 
     // connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
     startLayout->setMargin(0);
     startLayout->setSpacing(0);
+    startLayout->addWidget(startingLabel);
     startLayout->addWidget(k->comboInit);
 
     QHBoxLayout *endLayout = new QHBoxLayout;
+    endLayout->setAlignment(Qt::AlignHCenter);
     endLayout->setMargin(0);
     endLayout->setSpacing(0);
-    endLayout->addWidget(k->comboEnd);
+    endLayout->addWidget(endingLabel);
+    endLayout->addWidget(k->endCombo);
 
     k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
     k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     QHBoxLayout *totalLayout = new QHBoxLayout;
+    totalLayout->setAlignment(Qt::AlignHCenter);
     totalLayout->setMargin(0);
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
-    innerLayout->addWidget(startingLabel);
+    k->comboType = new QComboBox();
+    k->comboType->addItem(tr("Constant"));
+    k->comboType->addItem(tr("Variable"));
+    // connect(k->comboType, SIGNAL(currentIndexChanged(int)), , );
+
+    QLabel *typeLabel = new QLabel(tr("Type") + ": ");
+    typeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *typeLayout = new QHBoxLayout;
+    typeLayout->setAlignment(Qt::AlignHCenter);
+    typeLayout->setMargin(0);
+    typeLayout->setSpacing(0);
+    typeLayout->addWidget(typeLabel);
+    typeLayout->addWidget(k->comboType);
+
+    QLabel *speedLabel = new QLabel(tr("Speed (Degrees/Frame)") + ": ");
+    speedLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    k->comboSpeed = new QComboBox();
+    k->comboSpeed->setMaximumWidth(50);
+    k->comboSpeed->setEditable(true);
+    for (int i=1; i<=360; i++)
+         k->comboSpeed->addItem(QString::number(i));
+
+    QVBoxLayout *speedLayout = new QVBoxLayout;
+    speedLayout->setAlignment(Qt::AlignHCenter);
+    speedLayout->setMargin(0);
+    speedLayout->setSpacing(0);
+    speedLayout->addWidget(speedLabel);
+    speedLayout->addWidget(k->comboSpeed);
+
     innerLayout->addLayout(startLayout);
-
-    innerLayout->addWidget(endingLabel);
     innerLayout->addLayout(endLayout);
-
     innerLayout->addLayout(totalLayout);
 
-    k->innerPanel->setLayout(innerLayout);
+    innerLayout->addSpacing(10);
+    innerLayout->addLayout(typeLayout);
+    innerLayout->addLayout(speedLayout);
+    // innerLayout->addWidget(k->comboSpeed);
 
+    k->innerPanel->setLayout(innerLayout);
     k->layout->addWidget(k->innerPanel);
 
     activeInnerForm(false);
@@ -198,6 +234,35 @@ void Settings::setParameters(KTItemTweener *currentTween)
     setEditMode();
 
     k->input->setText(currentTween->name());
+}
+
+void Settings::initStartCombo(int framesTotal, int currentIndex)
+{
+    k->comboInit->clear();
+    for (int i=1; i<=framesTotal; i++)
+         k->comboInit->addItem(QString::number(i));
+
+    k->comboInit->setCurrentIndex(currentIndex);
+    // k->endCombo->setText(QString::number(framesTotal));
+    k->endCombo->setItemText(0, QString::number(framesTotal));
+}
+
+void Settings::setStartFrame(int currentIndex)
+{
+    k->comboInit->setCurrentIndex(currentIndex);
+    int end = k->endCombo->currentText().toInt();
+    if (end < currentIndex+1)
+        k->endCombo->setItemText(0, QString::number(currentIndex + 1));
+}
+
+int Settings::startComboSize()
+{
+    return k->comboInit->count();
+}
+
+int Settings::totalSteps()
+{
+    return k->endCombo->currentText().toInt() - k->comboInit->currentIndex();
 }
 
 void Settings::setEditMode()

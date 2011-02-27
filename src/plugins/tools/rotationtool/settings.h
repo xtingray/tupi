@@ -57,7 +57,13 @@ class Settings : public QWidget
 
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void setParameters(KTItemTweener *currentTween);
+        void initStartCombo(int totalFrames, int currentIndex);
+        void setStartFrame(int currentIndex);
+
+        int totalSteps();
+
         void notifySelection(bool flag);
+        int startComboSize();
         QString currentTweenName() const;
         void activateSelectionMode();
 
@@ -70,6 +76,7 @@ class Settings : public QWidget
         void clickedDefineAngle();
         void clickedApplyTween();
         void clickedResetTween();
+        void startingPointChanged();
         
     private:
         void setInnerForm();

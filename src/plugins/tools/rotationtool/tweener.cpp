@@ -107,6 +107,15 @@ void Tweener::init(KTGraphicsScene *scene)
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
     }
+
+    int total = framesTotal();
+    k->configurator->initStartCombo(total, k->scene->currentFrameIndex());
+}
+
+void Tweener::updateStartPoint(int index)
+{
+     if (k->startPoint != index && index >= 0)
+         k->startPoint = index;
 }
 
 /* This method returns the plugin name */
@@ -186,10 +195,9 @@ QWidget *Tweener::configurator()
         k->mode = Settings::View;
 
         k->configurator = new Configurator;
-        kFatal() << "Tweener::configurator() - Connecting signal clickedSelect() / Rotation";
+        connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        connect(k->configurator, SIGNAL(selectionModeOn()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv()));
         connect(k->configurator, SIGNAL(clickedDefineAngle()), this, SLOT(setAngleMode()));
     } else {
@@ -232,7 +240,38 @@ void Tweener::saveConfig()
 
 void Tweener::updateScene(KTGraphicsScene *scene)
 { 
-    Q_UNUSED(scene);
+    k->mode = k->configurator->mode();
+
+    if (k->mode == Settings::Edit) {
+
+       int total = k->startPoint + k->configurator->totalSteps();
+       int framesNumber = framesTotal();
+
+       if (k->configurator->startComboSize() < framesNumber)
+           k->configurator->initStartCombo(framesNumber, k->startPoint);
+
+    } else if (k->mode == Settings::Add) {
+
+               int total = framesTotal();
+
+               if (k->configurator->startComboSize() < total) {
+                   k->configurator->initStartCombo(total, k->startPoint);
+               } else {
+                   if (scene->currentFrameIndex() != k->startPoint)
+                       k->configurator->setStartFrame(scene->currentFrameIndex());
+               }
+
+               if (k->editMode == Settings::Selection) {
+                       if (scene->currentFrameIndex() != k->startPoint)
+                           clearSelection();
+                       k->startPoint = scene->currentFrameIndex();
+                       setSelect();
+               }
+
+    } else {
+             if (scene->currentFrameIndex() != k->startPoint)
+                 k->configurator->setStartFrame(scene->currentFrameIndex());
+    }
 }
 
 void Tweener::setCurrentTween(const QString &name)
@@ -251,6 +290,30 @@ void Tweener::setEditEnv()
 
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name());
+}
+
+int Tweener::framesTotal()
+{
+    int total = 1;
+    KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+    if (layer)
+        total = layer->framesNumber();
+
+    return total;
+}
+
+/* This method clear selection */
+
+void Tweener::clearSelection()
+{
+    if (k->objects.size() > 0) {
+        foreach (QGraphicsItem *item, k->objects) {
+                 if (item->isSelected())
+                     item->setSelected(false);
+        }
+        k->objects.clear();
+        k->configurator->notifySelection(false);
+    }
 }
 
 /* This method initializes the "Select object" mode */

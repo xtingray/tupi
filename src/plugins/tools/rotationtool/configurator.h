@@ -58,10 +58,17 @@ class Configurator : public QFrame
         ~Configurator();
 
         void loadTweenList(QList<QString> tweenList);
+
+        void initStartCombo(int framesTotal, int currentFrame);
+        void setStartFrame(int currentIndex);
+
+        int totalSteps();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
+        int startComboSize();
         void closeSettingsPanel();
+        Settings::Mode mode();
         void resetUI();
         
     private slots:
