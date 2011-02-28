@@ -79,6 +79,7 @@ class Configurator : public QFrame
         void closeTweenProperties();
         
     signals:
+        void startingPointChanged(int index);
         void clickedSelect();
         void clickedDefineAngle();
         void clickedRemoveTween(const QString &name);

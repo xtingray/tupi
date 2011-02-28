@@ -70,13 +70,14 @@ class Settings : public QWidget
     private slots:
         void applyTween();
         void emitOptionChanged(int option);
+        void refreshForm(int type);
         
     signals:
         void clickedSelect();
         void clickedDefineAngle();
         void clickedApplyTween();
         void clickedResetTween();
-        void startingPointChanged();
+        void startingPointChanged(int index);
         
     private:
         void setInnerForm();

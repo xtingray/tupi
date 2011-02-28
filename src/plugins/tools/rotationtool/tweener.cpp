@@ -244,7 +244,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
     if (k->mode == Settings::Edit) {
 
-       int total = k->startPoint + k->configurator->totalSteps();
+       // int total = k->startPoint + k->configurator->totalSteps();
        int framesNumber = framesTotal();
 
        if (k->configurator->startComboSize() < framesNumber)

@@ -61,8 +61,12 @@ struct Settings::Private
     QComboBox *comboInit;
     QComboBox *endCombo;
     QComboBox *comboType;
+    QComboBox *comboStart;
+    QComboBox *comboEnd;
     QComboBox *comboSpeed;
-    QCheckBox *loopBox; 
+    QCheckBox *clockLoopBox; 
+    QCheckBox *rangeLoopBox;
+    QCheckBox *reverseLoopBox;
     QLabel *totalLabel;
     QComboBox *comboClock;
 
@@ -174,9 +178,9 @@ void Settings::setInnerForm()
     totalLayout->addWidget(k->totalLabel);
 
     k->comboType = new QComboBox();
-    k->comboType->addItem(tr("Constant"));
-    k->comboType->addItem(tr("Variable"));
-    // connect(k->comboType, SIGNAL(currentIndexChanged(int)), , );
+    k->comboType->addItem(tr("Continous"));
+    k->comboType->addItem(tr("Discrete"));
+    connect(k->comboType, SIGNAL(currentIndexChanged(int)), this, SLOT(refreshForm(int)));
 
     QLabel *typeLabel = new QLabel(tr("Type") + ": ");
     typeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -192,7 +196,7 @@ void Settings::setInnerForm()
     k->comboSpeed = new QComboBox();
     k->comboSpeed->setMaximumWidth(50);
     k->comboSpeed->setEditable(true);
-    for (int i=1; i<=360; i++)
+    for (int i=0; i<=359; i++)
          k->comboSpeed->addItem(QString::number(i));
 
     QVBoxLayout *speedLayout = new QVBoxLayout;
@@ -207,26 +211,24 @@ void Settings::setInnerForm()
     speedLayout2->setSpacing(0);
     speedLayout2->addWidget(k->comboSpeed);
 
-    k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
-    QVBoxLayout *loopLayout = new QVBoxLayout;
-    loopLayout->setAlignment(Qt::AlignHCenter);
-    loopLayout->setMargin(0);
-    loopLayout->setSpacing(0);
-    loopLayout->addWidget(k->loopBox);
-
     innerLayout->addLayout(startLayout);
     innerLayout->addLayout(endLayout);
     innerLayout->addLayout(totalLayout);
 
-    innerLayout->addSpacing(10);
+    innerLayout->addSpacing(15);
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
     innerLayout->addLayout(typeLayout);
 
     innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+
     setClockForm();
     innerLayout->addWidget(k->clockPanel);
+    setRangeForm();
+    innerLayout->addWidget(k->rangePanel);
+
     innerLayout->addLayout(speedLayout);
     innerLayout->addLayout(speedLayout2);
-    innerLayout->addLayout(loopLayout);
+
     innerLayout->addWidget(new KSeparator(Qt::Horizontal));
 
     k->layout->addWidget(k->innerPanel);
@@ -258,8 +260,17 @@ void Settings::setClockForm()
     k->comboClock->addItem(tr("Clockwise"));
     k->comboClock->addItem(tr("Counterclockwise"));
 
+    k->clockLoopBox = new QCheckBox(tr("Loop"), k->clockPanel);
+    QVBoxLayout *loopLayout = new QVBoxLayout;
+    loopLayout->setAlignment(Qt::AlignHCenter);
+    loopLayout->setMargin(0);
+    loopLayout->setSpacing(0);
+    loopLayout->addWidget(k->clockLoopBox);
+
     clockLayout->addWidget(directionLabel);    
     clockLayout->addWidget(k->comboClock);
+    clockLayout->addSpacing(5);
+    clockLayout->addLayout(loopLayout);
     activeClockForm(true);
 }
 
@@ -276,6 +287,64 @@ void Settings::setRangeForm()
     k->rangePanel = new QWidget;
     QBoxLayout *rangeLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->rangePanel);
     rangeLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    rangeLayout->setMargin(0);
+    rangeLayout->setSpacing(0);
+ 
+    QLabel *rangeLabel = new QLabel(tr("Degrees Range") + ": ");
+    rangeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    QLabel *startLabel = new QLabel(tr("Start at") + ": ");
+    startLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    k->comboStart = new QComboBox();
+    k->comboStart->setEditable(true);
+    for (int i=0; i<=359; i++)
+         k->comboStart->addItem(QString::number(i));
+
+    QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
+    startLayout->setMargin(0);
+    startLayout->setSpacing(0);
+    startLayout->addWidget(startLabel);
+    startLayout->addWidget(k->comboStart);
+
+    QLabel *endLabel = new QLabel(tr("Finish at") + ": ");
+    endLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    k->comboEnd = new QComboBox();
+    k->comboEnd->setEditable(true);
+    for (int i=0; i<=359; i++)
+         k->comboEnd->addItem(QString::number(i));
+
+    QHBoxLayout *endLayout = new QHBoxLayout;
+    endLayout->setAlignment(Qt::AlignHCenter);
+    endLayout->setMargin(0);
+    endLayout->setSpacing(0);
+    endLayout->addWidget(endLabel);
+    endLayout->addWidget(k->comboEnd);
+
+    k->rangeLoopBox = new QCheckBox(tr("Loop"), k->rangePanel);
+    QVBoxLayout *loopLayout = new QVBoxLayout;
+    loopLayout->setAlignment(Qt::AlignHCenter);
+    loopLayout->setMargin(0);
+    loopLayout->setSpacing(0);
+    loopLayout->addWidget(k->rangeLoopBox);
+
+    k->reverseLoopBox = new QCheckBox(tr("Loop with Reverse"), k->rangePanel);
+    QVBoxLayout *reverseLayout = new QVBoxLayout;
+    reverseLayout->setAlignment(Qt::AlignHCenter);
+    reverseLayout->setMargin(0);
+    reverseLayout->setSpacing(0);
+    reverseLayout->addWidget(k->reverseLoopBox);
+
+    rangeLayout->addWidget(rangeLabel);
+    rangeLayout->addLayout(startLayout);
+    rangeLayout->addLayout(endLayout);
+    rangeLayout->addSpacing(5);
+    rangeLayout->addLayout(loopLayout);
+    rangeLayout->addLayout(reverseLayout);
+
+    activeRangeForm(false);
 }
 
 void Settings::activeRangeForm(bool enable)
@@ -389,5 +458,16 @@ void Settings::activateSelectionMode()
 {
     kFatal() << "Settings::activateSelectionMode() - Rotation / Just tracing!";
     k->options->setCurrentIndex(0);
+}
+
+void Settings::refreshForm(int type)
+{
+    if (type == 0) {
+        activeClockForm(true);
+        activeRangeForm(false);
+    } else {
+        activeClockForm(false);
+        activeRangeForm(true);
+    }
 }
 
