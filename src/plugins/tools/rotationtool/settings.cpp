@@ -39,16 +39,20 @@
 #include "ktitemtweener.h"
 #include "kttweenerstep.h"
 #include "kimagebutton.h"
+#include "kseparator.h"
 #include "kosd.h"
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QBoxLayout>
 #include <QComboBox>
+#include <QCheckBox>
 
 struct Settings::Private
 {
     QWidget *innerPanel;
+    QWidget *rangePanel;
+    QWidget *clockPanel;
 
     QBoxLayout *layout;
     Mode mode;
@@ -58,7 +62,9 @@ struct Settings::Private
     QComboBox *endCombo;
     QComboBox *comboType;
     QComboBox *comboSpeed;
+    QCheckBox *loopBox; 
     QLabel *totalLabel;
+    QComboBox *comboClock;
 
     bool selectionDone;
 
@@ -194,7 +200,19 @@ void Settings::setInnerForm()
     speedLayout->setMargin(0);
     speedLayout->setSpacing(0);
     speedLayout->addWidget(speedLabel);
-    speedLayout->addWidget(k->comboSpeed);
+
+    QVBoxLayout *speedLayout2 = new QVBoxLayout;
+    speedLayout2->setAlignment(Qt::AlignHCenter);
+    speedLayout2->setMargin(0);
+    speedLayout2->setSpacing(0);
+    speedLayout2->addWidget(k->comboSpeed);
+
+    k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
+    QVBoxLayout *loopLayout = new QVBoxLayout;
+    loopLayout->setAlignment(Qt::AlignHCenter);
+    loopLayout->setMargin(0);
+    loopLayout->setSpacing(0);
+    loopLayout->addWidget(k->loopBox);
 
     innerLayout->addLayout(startLayout);
     innerLayout->addLayout(endLayout);
@@ -202,10 +220,15 @@ void Settings::setInnerForm()
 
     innerLayout->addSpacing(10);
     innerLayout->addLayout(typeLayout);
-    innerLayout->addLayout(speedLayout);
-    // innerLayout->addWidget(k->comboSpeed);
 
-    k->innerPanel->setLayout(innerLayout);
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+    setClockForm();
+    innerLayout->addWidget(k->clockPanel);
+    innerLayout->addLayout(speedLayout);
+    innerLayout->addLayout(speedLayout2);
+    innerLayout->addLayout(loopLayout);
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+
     k->layout->addWidget(k->innerPanel);
 
     activeInnerForm(false);
@@ -217,6 +240,50 @@ void Settings::activeInnerForm(bool enable)
         k->innerPanel->show();
     else
         k->innerPanel->hide();
+}
+
+void Settings::setClockForm()
+{
+    k->clockPanel = new QWidget;
+
+    QBoxLayout *clockLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->clockPanel);
+    clockLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    clockLayout->setMargin(0);
+    clockLayout->setSpacing(0);
+
+    QLabel *directionLabel = new QLabel(tr("Direction") + ": ");
+    directionLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    k->comboClock = new QComboBox();
+    k->comboClock->addItem(tr("Clockwise"));
+    k->comboClock->addItem(tr("Counterclockwise"));
+
+    clockLayout->addWidget(directionLabel);    
+    clockLayout->addWidget(k->comboClock);
+    activeClockForm(true);
+}
+
+void Settings::activeClockForm(bool enable)
+{
+    if (enable && !k->clockPanel->isVisible())
+        k->clockPanel->show();
+    else
+        k->clockPanel->hide();
+}
+
+void Settings::setRangeForm()
+{
+    k->rangePanel = new QWidget;
+    QBoxLayout *rangeLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->rangePanel);
+    rangeLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+}
+
+void Settings::activeRangeForm(bool enable)
+{
+    if (enable && !k->rangePanel->isVisible())
+        k->rangePanel->show();
+    else
+        k->rangePanel->hide();
 }
 
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)

@@ -164,7 +164,7 @@ void Settings::setInnerForm()
 
     innerLayout->addLayout(totalLayout);
 
-    k->innerPanel->setLayout(innerLayout);
+    // k->innerPanel->setLayout(innerLayout);
 
     k->layout->addWidget(k->innerPanel);
 
