@@ -111,7 +111,12 @@
     <message>
         <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>
         <source>Starting at frame</source>
-        <translation>Empezando en marco</translation>
+        <translation>Empezar en marco</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>
+        <source>Ending at frame</source>
+        <translation>Terminar en marco</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="53"/>
@@ -132,6 +137,66 @@
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
         <source>Frames Total</source>
         <translation>Total de marcos</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Type</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Continous</source>
+        <translation>Continuo</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Partial</source>
+        <translation>Parcial</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Direction</source>
+        <translation>Dirección</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Clockwise</source>
+        <translation>Sentido Horario</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Counterclockwise</source>
+        <translation>Sentido Antihorario</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Loop</source>
+        <translation>Repetir</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Speed (Degrees/Frame)</source>
+        <translation>Velocidad (Grados/Marco)</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Degrees Range</source>
+        <translation>Grados de Rotación</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Start at</source>
+        <translation>Empezar en</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Finish at</source>
+        <translation>Terminar en</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="106"/>
+        <source>Loop with Reverse</source>
+        <translation>Repetir con Retorno</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="69"/>

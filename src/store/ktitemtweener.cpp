@@ -54,7 +54,18 @@ struct KTItemTweener::Private
     KTItemTweener::Type type;
     int initFrame;
     int frames;
+
+    // Position Tween
     QString path;
+
+    // Rotation Tween
+    KTItemTweener::RotationType rotationType;
+    KTItemTweener::RotateDirection rotateDirection;
+    int rotateSpeed;
+    bool rotateLoop;
+    bool reverseLoop;
+    int rotateStartDegree;
+    int rotateEndDegree;
 
     QHash<int, KTTweenerStep *> steps; // TODO: remove when Qt 4.3
 
@@ -168,7 +179,9 @@ void KTItemTweener::fromXml(const QString &xml)
         k->type = KTItemTweener::Type(root.attribute("type").toInt());
         k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();
-        k->path = root.attribute("coords");
+
+        if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All)
+            k->path = root.attribute("coords");
 
         QDomNode node = root.firstChild();
         
@@ -204,7 +217,20 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     root.setAttribute("type", k->type);
     root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);
-    root.setAttribute("coords", k->path);
+
+    if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All)
+        root.setAttribute("coords", k->path);
+
+    // if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All)
+       // Rotation Type - Enum 
+       // Speed (Degrees/Frame) - int
+       // if Continuos
+          // Direction - Enum
+          // Loop - bool
+       // if Partial
+          // startDegree - int
+          // endDegree - int
+          // ReverseLoop - bool
     
     foreach (KTTweenerStep *step, k->steps.values())
              root.appendChild(step->toXml(doc));

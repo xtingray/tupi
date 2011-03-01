@@ -59,10 +59,10 @@ struct Settings::Private
     QLineEdit *input;
     KRadioButtonGroup *options;
     QComboBox *comboInit;
-    QComboBox *endCombo;
+    QComboBox *comboEnd;
     QComboBox *comboType;
     QComboBox *comboStart;
-    QComboBox *comboEnd;
+    QComboBox *comboFinish;
     QComboBox *comboSpeed;
     QCheckBox *clockLoopBox; 
     QCheckBox *rangeLoopBox;
@@ -144,16 +144,16 @@ void Settings::setInnerForm()
     k->comboInit->setMaximumWidth(50);
     k->comboInit->setEditable(false);
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
-    k->endCombo = new QComboBox();
-    k->endCombo->setFixedWidth(60);
-    k->endCombo->setEditable(true);
-    k->endCombo->addItem(QString::number(1));
+    k->comboEnd = new QComboBox();
+    k->comboEnd->setFixedWidth(60);
+    k->comboEnd->setEditable(true);
+    k->comboEnd->addItem(QString::number(1));
 
-    // connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -167,9 +167,9 @@ void Settings::setInnerForm()
     endLayout->setMargin(0);
     endLayout->setSpacing(0);
     endLayout->addWidget(endingLabel);
-    endLayout->addWidget(k->endCombo);
+    endLayout->addWidget(k->comboEnd);
 
-    k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
+    k->totalLabel = new QLabel(tr("Frames Total") + ": 1");
     k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     QHBoxLayout *totalLayout = new QHBoxLayout;
     totalLayout->setAlignment(Qt::AlignHCenter);
@@ -179,7 +179,7 @@ void Settings::setInnerForm()
 
     k->comboType = new QComboBox();
     k->comboType->addItem(tr("Continous"));
-    k->comboType->addItem(tr("Discrete"));
+    k->comboType->addItem(tr("Partial"));
     connect(k->comboType, SIGNAL(currentIndexChanged(int)), this, SLOT(refreshForm(int)));
 
     QLabel *typeLabel = new QLabel(tr("Type") + ": ");
@@ -198,6 +198,7 @@ void Settings::setInnerForm()
     k->comboSpeed->setEditable(true);
     for (int i=0; i<=359; i++)
          k->comboSpeed->addItem(QString::number(i));
+    k->comboSpeed->setCurrentIndex(5);
 
     QVBoxLayout *speedLayout = new QVBoxLayout;
     speedLayout->setAlignment(Qt::AlignHCenter);
@@ -261,6 +262,7 @@ void Settings::setClockForm()
     k->comboClock->addItem(tr("Counterclockwise"));
 
     k->clockLoopBox = new QCheckBox(tr("Loop"), k->clockPanel);
+    k->clockLoopBox->setChecked(true);
     QVBoxLayout *loopLayout = new QVBoxLayout;
     loopLayout->setAlignment(Qt::AlignHCenter);
     loopLayout->setMargin(0);
@@ -311,19 +313,20 @@ void Settings::setRangeForm()
     QLabel *endLabel = new QLabel(tr("Finish at") + ": ");
     endLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    k->comboEnd = new QComboBox();
-    k->comboEnd->setEditable(true);
+    k->comboFinish = new QComboBox();
+    k->comboFinish->setEditable(true);
     for (int i=0; i<=359; i++)
-         k->comboEnd->addItem(QString::number(i));
+         k->comboFinish->addItem(QString::number(i));
 
     QHBoxLayout *endLayout = new QHBoxLayout;
     endLayout->setAlignment(Qt::AlignHCenter);
     endLayout->setMargin(0);
     endLayout->setSpacing(0);
     endLayout->addWidget(endLabel);
-    endLayout->addWidget(k->comboEnd);
+    endLayout->addWidget(k->comboFinish);
 
     k->rangeLoopBox = new QCheckBox(tr("Loop"), k->rangePanel);
+    k->rangeLoopBox->setChecked(true);
     QVBoxLayout *loopLayout = new QVBoxLayout;
     loopLayout->setAlignment(Qt::AlignHCenter);
     loopLayout->setMargin(0);
@@ -375,20 +378,23 @@ void Settings::setParameters(KTItemTweener *currentTween)
 void Settings::initStartCombo(int framesTotal, int currentIndex)
 {
     k->comboInit->clear();
-    for (int i=1; i<=framesTotal; i++)
+    k->comboEnd->clear();
+
+    for (int i=1; i<=framesTotal; i++) {
          k->comboInit->addItem(QString::number(i));
+         k->comboEnd->addItem(QString::number(i));
+    }
 
     k->comboInit->setCurrentIndex(currentIndex);
-    // k->endCombo->setText(QString::number(framesTotal));
-    k->endCombo->setItemText(0, QString::number(framesTotal));
+    k->comboEnd->setCurrentIndex(framesTotal - 1);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
     k->comboInit->setCurrentIndex(currentIndex);
-    int end = k->endCombo->currentText().toInt();
+    int end = k->comboEnd->currentText().toInt();
     if (end < currentIndex+1)
-        k->endCombo->setItemText(0, QString::number(currentIndex + 1));
+        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
 }
 
 int Settings::startComboSize()
@@ -398,7 +404,7 @@ int Settings::startComboSize()
 
 int Settings::totalSteps()
 {
-    return k->endCombo->currentText().toInt() - k->comboInit->currentIndex();
+    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
 }
 
 void Settings::setEditMode()
@@ -471,3 +477,27 @@ void Settings::refreshForm(int type)
     }
 }
 
+void Settings::checkBottomLimit(int index)
+{
+    emit startingPointChanged(index);
+    checkLimit();
+}
+
+void Settings::checkTopLimit(int index)
+{
+    Q_UNUSED(index);
+    checkLimit();
+}
+
+void Settings::checkLimit()
+{
+    int begin = k->comboInit->currentText().toInt();
+    int end = k->comboEnd->currentText().toInt();
+        
+    if (begin > end) {
+        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
+        end = k->comboEnd->currentText().toInt();
+    }
+
+    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(end - begin + 1));
+}

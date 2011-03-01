@@ -63,6 +63,7 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
+        void activateSelectionMode();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);

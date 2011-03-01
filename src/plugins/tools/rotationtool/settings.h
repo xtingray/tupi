@@ -71,6 +71,8 @@ class Settings : public QWidget
         void applyTween();
         void emitOptionChanged(int option);
         void refreshForm(int type);
+        void checkBottomLimit(int index);
+        void checkTopLimit(int index);
         
     signals:
         void clickedSelect();
@@ -87,6 +89,8 @@ class Settings : public QWidget
         void setRangeForm();
         void activeRangeForm(bool enable);
         void setEditMode();
+        void checkLimit();
+
         struct Private;
         Private *const k;
 };

@@ -192,6 +192,11 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
+void Configurator::activateSelectionMode()
+{
+    k->settingsPanel->activateSelectionMode();
+}
+
 void Configurator::addTween(const QString &name)
 {
     kFatal() << "Configurator::addTween() - Just tracing!";

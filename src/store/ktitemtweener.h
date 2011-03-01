@@ -55,6 +55,8 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
     public:
         enum Type { Position = 1, Rotation, Scale, Opacity, Colouring, All };
+        enum RotationType { Continuos = 1, Partial };
+        enum RotateDirection { Clockwise = 1, Counterclockwise };
 
         KTItemTweener();
         ~KTItemTweener();

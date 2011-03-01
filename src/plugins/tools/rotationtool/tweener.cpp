@@ -254,18 +254,24 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                int total = framesTotal();
 
+               if (k->editMode == Settings::AngleRange) {
+                   if (total > k->configurator->startComboSize()) {
+                       k->configurator->activateSelectionMode();
+                       clearSelection();
+                       setSelect();
+                   } 
+               } else if (k->editMode == Settings::Selection) {
+                          if (scene->currentFrameIndex() != k->startPoint)
+                              clearSelection();
+                          k->startPoint = scene->currentFrameIndex();
+                          setSelect();
+               }
+
                if (k->configurator->startComboSize() < total) {
                    k->configurator->initStartCombo(total, k->startPoint);
                } else {
                    if (scene->currentFrameIndex() != k->startPoint)
                        k->configurator->setStartFrame(scene->currentFrameIndex());
-               }
-
-               if (k->editMode == Settings::Selection) {
-                       if (scene->currentFrameIndex() != k->startPoint)
-                           clearSelection();
-                       k->startPoint = scene->currentFrameIndex();
-                       setSelect();
                }
 
     } else {
