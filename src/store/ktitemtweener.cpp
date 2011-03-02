@@ -221,7 +221,12 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All)
         root.setAttribute("coords", k->path);
 
-    // if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All)
+    /*
+    if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All)
+        if (k->rotationType == KTItemTweener::Continuos)
+
+        else if (k->rotationType == KTItemTweener::Partial)
+
        // Rotation Type - Enum 
        // Speed (Degrees/Frame) - int
        // if Continuos
@@ -231,6 +236,15 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
           // startDegree - int
           // endDegree - int
           // ReverseLoop - bool
+
+    KTItemTweener::RotationType rotationType;
+    KTItemTweener::RotateDirection rotateDirection;
+    int rotateSpeed;
+    bool rotateLoop;
+    bool reverseLoop;
+    int rotateStartDegree;
+    int rotateEndDegree;
+    */
     
     foreach (KTTweenerStep *step, k->steps.values())
              root.appendChild(step->toXml(doc));
