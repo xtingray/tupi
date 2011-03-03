@@ -69,6 +69,7 @@ struct Settings::Private
     QCheckBox *reverseLoopBox;
     QLabel *totalLabel;
     QComboBox *comboClock;
+    int totalSteps;
 
     bool selectionDone;
 
@@ -79,6 +80,7 @@ struct Settings::Private
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->selectionDone = false;
+    k->totalSteps = 0;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
@@ -460,6 +462,25 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
+QString Settings::tweenToXml(int currentFrame, QString &path)
+{
+    QDomDocument doc;
+
+    QDomElement root = doc.createElement("tweening");
+    root.setAttribute("name", currentTweenName());
+    root.setAttribute("type", KTItemTweener::Rotation);
+    root.setAttribute("init", currentFrame);
+    root.setAttribute("frames", k->totalSteps);
+    root.setAttribute("coords", path);
+
+    foreach (KTTweenerStep *step, k->stepViewer->steps())
+             root.appendChild(step->toXml(doc));
+
+    doc.appendChild(root);
+
+    return doc.toString();
+}
+
 void Settings::activateSelectionMode()
 {
     kFatal() << "Settings::activateSelectionMode() - Rotation / Just tracing!";
@@ -499,5 +520,6 @@ void Settings::checkLimit()
         end = k->comboEnd->currentText().toInt();
     }
 
-    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(end - begin + 1));
+    k->totalSteps = end - begin + 1;
+    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->totalSteps));
 }

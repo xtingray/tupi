@@ -196,6 +196,7 @@ QWidget *Tweener::configurator()
 
         k->configurator = new Configurator;
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
+        connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
         connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv()));
@@ -383,6 +384,8 @@ void Tweener::applyReset()
 
 void Tweener::applyTween()
 {
+    kFatal() << "Tweener::applyTween() - Applying rotation tween!";
+
     QString name = k->configurator->currentTweenName();
 
     if (name.length() == 0) {

@@ -110,7 +110,7 @@ void Configurator::setPropertiesPanel()
     connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
     connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->settingsPanel, SIGNAL(clickedDefineAngle()), this, SIGNAL(clickedDefineAngle()));
-    // connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
+    connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
     connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(closeTweenProperties()));
 
     k->settingsLayout->addWidget(k->settingsPanel);
@@ -282,6 +282,12 @@ void Configurator::closeSettingsPanel()
 Settings::Mode Configurator::mode()
 {
     return k->mode;
+}
+
+void Configurator::applyItem()
+{
+     k->mode = Settings::Edit;
+     emit clickedApplyTween();
 }
 
 void Configurator::resetUI()

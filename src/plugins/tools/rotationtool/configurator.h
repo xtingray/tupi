@@ -73,6 +73,7 @@ class Configurator : public QFrame
         void resetUI();
         
     private slots:
+        void applyItem();
         void addTween(const QString &name);
         void editTween();
         void removeTween();
@@ -85,6 +86,7 @@ class Configurator : public QFrame
         void clickedDefineAngle();
         void clickedRemoveTween(const QString &name);
         void editModeOn();
+        void clickedApplyTween();
         void clickedResetInterface();
         
     private:
