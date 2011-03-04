@@ -224,8 +224,12 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     QPen pen(QBrush(color), 1, Qt::DotLine);
                     k->path->setPen(pen);
 
+                    QGraphicsItem *item = k->objects.at(0);
+                    QRectF rect = item->sceneBoundingRect();
+
                     QPainterPath path;
-                    path.moveTo(input->pos());
+                    // path.moveTo(input->pos());
+                    path.moveTo(rect.center());
                     k->path->setPath(path);
                     scene->addItem(k->path);
                     k->pathAdded = true;

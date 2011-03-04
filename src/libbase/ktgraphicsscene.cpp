@@ -409,7 +409,8 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                  if (origin == photogram) {
 
                      KTTweenerStep *stepItem = tween->stepAt(0);
-                     object->item()->setToolTip(tr("Tween: %1/Step: 0").arg(tween->name()));
+                     //object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: 0"));
+                     object->item()->setToolTip(": " + tween->name() + tr("/Step: 0"));
 
                      if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
                          if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
@@ -421,11 +422,18 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          }
                      }
 
+                     if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
+                         double angle = stepItem->rotation();
+                         QRectF rect = object->item()->sceneBoundingRect(); 
+                         object->item()->setTransformOriginPoint(rect.center());
+                         object->item()->setRotation(angle);
+                     }
+
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
 
                             int step = photogram - origin;
                             KTTweenerStep *stepItem = tween->stepAt(step);
-                            object->item()->setToolTip(tr("Tween: %1/Step: ").arg(tween->name()) + QString::number(step));
+                            // object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
 
                             if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
                                 if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
@@ -437,6 +445,13 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                     object->item()->setPos(stepItem->position().x() - adjustX, 
                                                            stepItem->position().y() - adjustY);
                                 }
+                            }
+
+                            if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
+                                double angle = stepItem->rotation();
+                                QRectF rect = object->item()->sceneBoundingRect();
+                                object->item()->setTransformOriginPoint(rect.center());
+                                object->item()->setRotation(angle);
                             }
 
                             addGraphicObject(object);

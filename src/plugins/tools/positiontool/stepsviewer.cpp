@@ -209,13 +209,14 @@ void StepsViewer::updatePath(int column, int row)
 QVector<KTTweenerStep *> StepsViewer::steps()
 {
     QVector<KTTweenerStep *> stepsVector;
-    int count = 0;
+    // int count = 0;
 
     for (int i=0; i < k->dots->size(); i++) {
-         KTTweenerStep *step = new KTTweenerStep(count);
+         // KTTweenerStep *step = new KTTweenerStep(count);
+         KTTweenerStep *step = new KTTweenerStep(i);
          step->setPosition(k->dots->at(i));
          stepsVector << step;
-         count++;
+         // count++;
     }
   
     return stepsVector;

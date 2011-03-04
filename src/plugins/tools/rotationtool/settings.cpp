@@ -60,9 +60,13 @@ struct Settings::Private
     KRadioButtonGroup *options;
     QComboBox *comboInit;
     QComboBox *comboEnd;
+
     QComboBox *comboType;
+    KTItemTweener::RotationType rotationType;
+
     QComboBox *comboStart;
     QComboBox *comboFinish;
+
     QComboBox *comboSpeed;
     QCheckBox *clockLoopBox; 
     QCheckBox *rangeLoopBox;
@@ -80,6 +84,7 @@ struct Settings::Private
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->selectionDone = false;
+    k->rotationType = KTItemTweener::Continuos;
     k->totalSteps = 0;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -462,7 +467,7 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame, QString &path)
+QString Settings::tweenToXml(int currentFrame)
 {
     QDomDocument doc;
 
@@ -471,10 +476,75 @@ QString Settings::tweenToXml(int currentFrame, QString &path)
     root.setAttribute("type", KTItemTweener::Rotation);
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->totalSteps);
-    root.setAttribute("coords", path);
 
+    root.setAttribute("rotationType", k->rotationType);
+    int speed = k->comboSpeed->currentText().toInt();
+    root.setAttribute("rotateSpeed", speed);
+
+    if (k->rotationType == KTItemTweener::Continuos) {
+        if (k->clockLoopBox->isChecked())
+            root.setAttribute("rotateLoop", "1");
+        else
+            root.setAttribute("rotateLoop", "0");
+
+        root.setAttribute("rotateDirection", k->comboClock->currentIndex());
+
+        int angle = 0;
+        for (int i=0; i < k->totalSteps; i++) {
+             KTTweenerStep *step = new KTTweenerStep(i);
+             step->setRotation(angle);
+             root.appendChild(step->toXml(doc));
+             angle += speed;
+        }
+
+    } else if (k->rotationType == KTItemTweener::Partial) {
+               bool loop = k->rangeLoopBox->isChecked();
+               if (loop)
+                   root.setAttribute("rotateLoop", "1");
+               else
+                   root.setAttribute("rotateLoop", "0");
+
+               int start = k->comboStart->currentText().toInt();
+               root.setAttribute("rotateStartDegree", start);
+
+               int limit = k->comboFinish->currentText().toInt();
+               root.setAttribute("rotateEndDegree", limit);
+
+               bool reverse = k->reverseLoopBox->isChecked();
+               if (reverse)
+                   root.setAttribute("reverseLoop", "1");
+               else
+                   root.setAttribute("reverseLoop", "0");
+
+               double angle = start;
+               bool token = false;
+               for (int i=0; i < k->totalSteps; i++) {
+                    KTTweenerStep *step = new KTTweenerStep(i);
+                    step->setRotation(angle);
+                    root.appendChild(step->toXml(doc));
+
+                    if (!token) {
+                        if (angle < limit)
+                             angle += speed;
+                    } else {
+                        angle -= speed;
+                    }
+
+                    if (reverse) {
+                        if (angle >= limit)
+                            token = true;
+                        else if (angle < start) 
+                                 token = false;
+                    } else if (loop && angle >= limit) {
+                               angle = start;
+                    } 
+               }
+    }
+
+    /*
     foreach (KTTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
+    */
 
     doc.appendChild(root);
 
@@ -490,9 +560,11 @@ void Settings::activateSelectionMode()
 void Settings::refreshForm(int type)
 {
     if (type == 0) {
+        k->rotationType = KTItemTweener::Continuos;
         activeClockForm(true);
         activeRangeForm(false);
     } else {
+        k->rotationType = KTItemTweener::Partial;
         activeClockForm(false);
         activeRangeForm(true);
     }

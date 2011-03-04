@@ -393,6 +393,49 @@ void Tweener::applyTween()
         return;
     }
 
+    if (!k->scene->scene()->tweenExists(name)) {
+
+        foreach (QGraphicsItem *item, k->objects) {
+
+                 KTLibraryObject::Type type = KTLibraryObject::Item;
+                 int objectIndex = k->scene->currentFrame()->indexOf(item);
+
+                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
+                     type = KTLibraryObject::Svg;
+                     objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 }
+
+                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
+                                            k->scene->currentSceneIndex(),
+                                            k->scene->currentLayerIndex(),
+                                            k->startPoint,
+                                            objectIndex,
+                                            QPointF(), type,
+                                            KTProjectRequest::SetTween,
+                                            k->configurator->tweenToXml(k->startPoint));
+                 emit requested(&request);
+        }
+
+        int framesNumber = framesTotal();
+
+        int total = k->startPoint + k->configurator->totalSteps() - 1;
+
+        if (total > framesNumber) {
+            for (int i = framesNumber; i <= total; i++) {
+                 KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                                      k->scene->currentLayerIndex(),
+                                                                                      i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                 emit requested(&requestFrame);
+            }
+        }
+
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                        k->scene->currentLayerIndex(),
+                                                                        k->startPoint, KTProjectRequest::Select, "1");
+        emit requested(&request);
+
+    }
+
     setCurrentTween(name);
 }
 
