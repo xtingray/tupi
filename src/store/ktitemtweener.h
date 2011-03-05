@@ -53,6 +53,8 @@ class QGraphicsPathItem;
 
 class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
+    Q_OBJECT
+ 
     public:
         enum Type { Position = 0, Rotation, Scale, Opacity, Colouring, All };
         enum RotationType { Continuos = 0, Partial };
@@ -84,7 +86,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         QDomElement toXml(QDomDocument &doc) const;
 
         QGraphicsPathItem *graphicsPath() const;
-        QString& tweenType();
+        QString tweenType();
         
     private:
         struct Private;

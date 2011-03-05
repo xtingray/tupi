@@ -487,14 +487,18 @@ QString Settings::tweenToXml(int currentFrame)
         else
             root.setAttribute("rotateLoop", "0");
 
-        root.setAttribute("rotateDirection", k->comboClock->currentIndex());
+        int direction = k->comboClock->currentIndex();
+        root.setAttribute("rotateDirection", direction);
 
         int angle = 0;
         for (int i=0; i < k->totalSteps; i++) {
              KTTweenerStep *step = new KTTweenerStep(i);
              step->setRotation(angle);
              root.appendChild(step->toXml(doc));
-             angle += speed;
+             if (direction == KTItemTweener::Clockwise)
+                 angle += speed;
+             else
+                 angle -= speed;
         }
 
     } else if (k->rotationType == KTItemTweener::Partial) {

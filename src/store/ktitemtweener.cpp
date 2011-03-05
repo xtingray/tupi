@@ -267,27 +267,27 @@ QGraphicsPathItem *KTItemTweener::graphicsPath() const
     return item;
 }
 
-QString & KTItemTweener::tweenType()
+QString KTItemTweener::tweenType()
 {
     QString type = ""; 
     switch (k->type) {
             case KTItemTweener::Position :
-                 type = tr("Position Tween");
+                 type = QString(tr("Position Tween"));
                  break;
             case KTItemTweener::Rotation :
-                 type = tr("Rotation Tween");
+                 type = QString(tr("Rotation Tween"));
                  break;
             case KTItemTweener::Scale :
-                 type = tr("Scale Tween");
+                 type = QString(tr("Scale Tween"));
                  break;
             case KTItemTweener::Opacity :
-                 type = tr("Opacity Tween");
+                 type = QString(tr("Opacity Tween"));
                  break;
             case KTItemTweener::Colouring :
-                 type = tr("Colouring Tween");
+                 type = QString(tr("Colouring Tween"));
                  break;
             case KTItemTweener::All :
-                 type = tr("Compound Tween");
+                 type = QString(tr("Compound Tween"));
                  break;
 
     }

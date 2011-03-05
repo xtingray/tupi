@@ -409,8 +409,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                  if (origin == photogram) {
 
                      KTTweenerStep *stepItem = tween->stepAt(0);
-                     //object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: 0"));
-                     object->item()->setToolTip(": " + tween->name() + tr("/Step: 0"));
+                     object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: 0"));
 
                      if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
                          if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
@@ -433,8 +432,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 
                             int step = photogram - origin;
                             KTTweenerStep *stepItem = tween->stepAt(step);
-                            // object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
-
+                            object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
                             if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
                                 if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
                                     qreal dx = stepItem->position().x() - object->lastTweenPos().x();
