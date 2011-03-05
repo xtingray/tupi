@@ -68,6 +68,7 @@
 #include "ktscene.h"
 #include "ktsvgitem.h"
 #include "ktpixmapitem.h"
+#include "node.h"
 #include "ktproject.h"
 
 #include "kosd.h"
@@ -149,6 +150,10 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
     if (k->currentTool.compare(tr("Object Selection")) == 0) {
 
         if (event->buttons() == Qt::RightButton) {
+
+            // If a node is the target... abort!
+            if (qgraphicsitem_cast<Node *>(scene()->itemAt(mapToScene(event->pos()))))
+                return;
 
             if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
                 item->setFlag(QGraphicsItem::ItemIsSelectable, true);

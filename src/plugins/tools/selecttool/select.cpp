@@ -132,8 +132,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
     if (k->changedManager)
         k->changedManager = 0;
    
-    // SQA: Why this condition is required? What is it with the Control key? 
-    // Workspace rotation mode?
+    // If Control key is pressed / allow multiple selection 
     if (input->keyModifiers() != Qt::ControlModifier) {
         foreach (NodeManager *nodeManager, k->nodeManagers) {
                  if (scene->mouseGrabberItem() == nodeManager->parentItem()) {

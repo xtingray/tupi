@@ -30,6 +30,9 @@ CONFIG += static warn_on
 TEMPLATE = lib
 TARGET = paintarea
 
+SELECTION_DIR = ../../plugins/tools/selecttool
+INCLUDEPATH += $$SELECTION_DIR
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 include(../components_config.pri)

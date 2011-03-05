@@ -56,7 +56,7 @@
 /**
  * This class defines the data structure for a node, and all the methods required to manipulate it.
  * 
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct Node::Private
@@ -69,6 +69,7 @@ struct Node::Private
     TypeNode typeNode;
     ActionNode action;
     bool notChange;
+    ActionNode generalState; 
     QGraphicsItem * parent;
     NodeManager *manager;
 };
@@ -80,6 +81,8 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
     // setParentItem(k->parent);
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
+
+    k->generalState = Scale;
     
     setPos(pos);
     setZValue(parent->zValue() + 1);
@@ -98,7 +101,8 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setRenderHint(QPainter::Antialiasing, false);
     
     QColor color;
-    
+   
+    /* 
     if ((option->state & QStyle::State_Sunken) && (k->action == Rotate)) {
         color = QColor("white");
         color.setAlpha(200);
@@ -106,19 +110,26 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         color = QColor("green");
         color.setAlpha(200);
     }
-    
-    if (k->action == Rotate) {
-        if (k->typeNode != Center) {
-            color = QColor(31, 183, 180);
-            color.setAlpha(150);
-        } else {
-            color = QColor(255, 0, 0);
-            color.setAlpha(150);
-        }
+    */
+
+   if (k->typeNode != Center) {
+       if (k->action == Rotate) {
+           color = QColor(31, 183, 180);
+           color.setAlpha(150);
+       } else {
+           color = QColor("green");
+           color.setAlpha(200);
+       }
+    } else {
+       if (k->generalState == Scale) {
+           color = QColor(150, 150, 150);
+       } else {
+           color = QColor(255, 0, 0);
+       }
+       color.setAlpha(150);
     }
 
     QRectF square = boundingRect();
-
     painter->setBrush(color);
     painter->drawRoundRect(square);
 
@@ -130,7 +141,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     if (k->typeNode == Center) {
         painter->save();
-        painter->setPen(Qt::gray);
+        painter->setPen(Qt::white);
         painter->drawLine(square.topLeft(), square.bottomRight());
         painter->drawLine(square.bottomLeft(), square.topRight());
         painter->restore();
@@ -149,7 +160,7 @@ QRectF Node::boundingRect() const
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change ==  ItemSelectedChange) {
+    if (change == ItemSelectedChange) {
         K_FUNCINFO;
         setVisible(true);
         
@@ -192,7 +203,7 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     QPointF newPos(event->scenePos());
 
-    if( k->notChange) {
+    if (k->notChange) {
         k->notChange = false;
     } else {
         if (k->action == Scale) {
@@ -242,7 +253,7 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             sy = static_cast<float>(rect.height()) / static_cast<float>(parentRect.height());
             
             if (sx > 0 && sy > 0) {
-                k->manager->scale( sx,sy);
+                k->manager->scale(sx, sy);
             } else {
                 if (sx > 0)
                     k->manager->scale(sx, 1);
@@ -250,9 +261,8 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
                 if (sy > 0)
                     k->manager->scale(1, sy);
             }
-        } else {
-            
-            if (k->typeNode != Center) {
+        } else if (k->action == Rotate) {
+            // if (k->typeNode != Center) {
                 // k->manager->setVisible(false);
                 QPointF p1 = newPos;
                 QPointF p2 = k->parent->sceneBoundingRect().center();
@@ -260,7 +270,7 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
                 
                 double a = (180 * KTGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
                 k->manager->rotate(a-45);
-            }
+            // }
         }
     }
 
@@ -269,7 +279,6 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
         event->accept();
     }
 }
-
 
 void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * e)
 {
@@ -293,7 +302,16 @@ int Node::typeNode() const
 
 void Node::setAction(ActionNode action)
 {
-    k->action = action;
+    if (k->typeNode != Center)
+        k->action = action;
+    else
+        k->action = Scale;
+
+    if (k->generalState == Scale)
+        k->generalState = Rotate;
+    else
+        k->generalState = Scale;
+
     update();
 }
 
