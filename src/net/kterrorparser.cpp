@@ -1,4 +1,4 @@
-***************************************************************************
+/***************************************************************************
  *   Project TUPI: Magia 2D                                                *
  *   Project Contact: info@maefloresta.com                                 *
  *   Project Website: http://www.maefloresta.com                           *
