@@ -44,66 +44,61 @@
 
 class KTChat::Private
 {
-	public:
-		Private()
-		{
-		}
-		
-		~Private()
-		{
-			delete lineEdit;
-			delete browser;
-		}
-		
-		QLineEdit *lineEdit;
-		QTextBrowser *browser;
-		QPushButton *send;
-		
+    public:
+        Private()
+        {
+        }
+        
+        ~Private()
+        {
+            delete lineEdit;
+            delete browser;
+        }
+        
+        QLineEdit *lineEdit;
+        QTextBrowser *browser;
+        QPushButton *send;
 };
 
 KTChat::KTChat(QWidget *parent) : QWidget(parent), k(new Private)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	QGridLayout *layout = new QGridLayout(this);
-	
-	setWindowTitle("chat");
-	
-	k->browser = new QTextBrowser;
-	layout->addWidget(k->browser, 0, 0 );
-	
-	
-	QHBoxLayout *box = new QHBoxLayout;
-	
-	k->lineEdit = new QLineEdit;
-	box->addWidget(k->lineEdit);
-	
-	k->send = new QPushButton(tr("Send"));
-	box->addWidget(k->send);
-	
-	layout->addLayout( box, 1, 0);
-	
-	connect(k->lineEdit, SIGNAL(returnPressed()), k->send, SLOT(animateClick()));
-	connect(k->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
+    setAttribute(Qt::WA_DeleteOnClose);
+    QGridLayout *layout = new QGridLayout(this);
+    
+    setWindowTitle("chat");
+    
+    k->browser = new QTextBrowser;
+    layout->addWidget(k->browser, 0, 0);
+    
+    QHBoxLayout *box = new QHBoxLayout;
+    
+    k->lineEdit = new QLineEdit;
+    box->addWidget(k->lineEdit);
+    
+    k->send = new QPushButton(tr("Send"));
+    box->addWidget(k->send);
+    
+    layout->addLayout(box, 1, 0);
+    
+    connect(k->lineEdit, SIGNAL(returnPressed()), k->send, SLOT(animateClick()));
+    connect(k->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
 }
-
 
 KTChat::~KTChat()
 {
-	delete k;
+    delete k;
 }
-
 
 void KTChat::addMessage(const QString &from, const QString &message)
 {
-	k->browser->append(QString("<%1> %2").arg(from).arg(message));
+    k->browser->append(QString("<%1> %2").arg(from).arg(message));
 }
 
 void KTChat::sendMessage()
 {
-	QString text = k->lineEdit->text();
-	k->lineEdit->clear();
-	if(!text.isEmpty())
-	{
-		emit requestSendMessage(text);
-	}
+    QString text = k->lineEdit->text();
+    k->lineEdit->clear();
+
+    if (!text.isEmpty())
+        emit requestSendMessage(text);
 }

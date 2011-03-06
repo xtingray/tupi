@@ -33,7 +33,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "ktlistprojectdialog.h"
 #include "ktreelistwidget.h"
 #include "ktreewidgetsearchline.h"
@@ -55,26 +54,25 @@ struct KTListProjectDialog::Private
 
 KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
 {
-    setWindowTitle ( tr("Projects List from Server"));
-    setModal ( true );
+    setWindowTitle(tr("Projects List from Server"));
+    setModal(true);
     QVBoxLayout *layout = new QVBoxLayout(this);
     setLayout(layout);
     QHBoxLayout *search = new QHBoxLayout;
 
     QToolButton *button = new QToolButton;
-    button->setIcon( QIcon(THEME_DIR+"/icons/clear_right.png"));
+    button->setIcon(QIcon(THEME_DIR+"/icons/clear_right.png"));
 
     search->addWidget(button);
-    k->tree = new  QTreeWidget;
+    k->tree = new QTreeWidget;
     
-    
-    k->tree->setHeaderLabels( QStringList() << tr("name") << tr("author") << tr("description") );
+    k->tree->setHeaderLabels(QStringList() << tr("name") << tr("author") << tr("description"));
     k->tree->header()->show();
     k->search = new KTreeWidgetSearchLine(this,k->tree);
-    search->addWidget( k->search );
+    search->addWidget(k->search);
     connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
     
-    connect(k->tree, SIGNAL(itemDoubleClicked ( QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem * , int )));
+    connect(k->tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem * , int)));
     
     layout->addLayout(search);
     layout->addWidget(k->tree);
@@ -83,13 +81,12 @@ KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
     QHBoxLayout *buttons = new QHBoxLayout;
     k->accept = new QPushButton(tr("OK"));
     k->cancel = new QPushButton("Cancel");
-    connect(k->accept, SIGNAL( clicked ()), this, SLOT(accept()));
-    connect(k->cancel, SIGNAL( clicked()), this, SLOT(reject()));
+    connect(k->accept, SIGNAL(clicked ()), this, SLOT(accept()));
+    connect(k->cancel, SIGNAL(clicked()), this, SLOT(reject()));
     buttons->addWidget(k->accept);
     buttons->addWidget(k->cancel);
     layout->addLayout(buttons);
 }
-
 
 KTListProjectDialog::~KTListProjectDialog()
 {
@@ -105,11 +102,11 @@ void KTListProjectDialog::addProject(const QString& name, const QString& author,
 
 QString KTListProjectDialog::currentProject()
 {
-    QTreeWidgetItem *item = k->tree->currentItem ();
-    if(item)
-    {
+    QTreeWidgetItem *item = k->tree->currentItem();
+
+    if (item)
         return item->text(0);
-    }
+
     return "";
 }
 

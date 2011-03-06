@@ -39,25 +39,25 @@
 #include <ktxmlparserbase.h>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class KTComunicationParser : public KTXmlParserBase
 {
-	public:
-		KTComunicationParser();
-		virtual ~KTComunicationParser();
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-	public:
-		QString message() const;
-		QString login() const;
-		
-	private:
-		struct Private;
-		Private *const k;
-
+    public:
+        KTComunicationParser();
+        virtual ~KTComunicationParser();
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+    public:
+        QString message() const;
+        QString login() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

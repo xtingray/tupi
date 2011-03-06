@@ -46,48 +46,44 @@
 
 KTListPackage::KTListPackage(Type type, const QString & pattern, bool regexp, bool caseSensitive) : QDomDocument()
 {
-	QDomElement root = createElement("list");
-	root.setAttribute("version", "0");
-	appendChild(root);
-	
-	m_options = createElement("options");
-	m_options.setAttribute("pattern", pattern);
-	m_options.setAttribute("type", type);
-	root.appendChild(m_options);
-	
-	m_caseSensitive = createElement("caseSensitive");
-	m_caseSensitive.setAttribute("enabled", caseSensitive);
-	m_options.appendChild(m_caseSensitive);
-	
-	m_regexp = createElement("regexp");
-	m_caseSensitive.setAttribute("enabled", regexp);
-	m_options.appendChild(m_regexp);
+    QDomElement root = createElement("list");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    m_options = createElement("options");
+    m_options.setAttribute("pattern", pattern);
+    m_options.setAttribute("type", type);
+    root.appendChild(m_options);
+    
+    m_caseSensitive = createElement("caseSensitive");
+    m_caseSensitive.setAttribute("enabled", caseSensitive);
+    m_options.appendChild(m_caseSensitive);
+    
+    m_regexp = createElement("regexp");
+    m_caseSensitive.setAttribute("enabled", regexp);
+    m_options.appendChild(m_regexp);
 }
 
 KTListPackage::~KTListPackage()
 {
 }
 
-
 void KTListPackage::setPattern(const QString & pattern)
 {
-	m_options.setAttribute("pattern", pattern);
-	
+    m_options.setAttribute("pattern", pattern);
 }
 
 void KTListPackage::setType(int type)
 {
-	m_options.setAttribute("type", type);
-	
+    m_options.setAttribute("type", type);
 }
 
 void KTListPackage::setCaseSensitive(bool caseSensitive)
 {
-	m_caseSensitive.setAttribute("enabled", caseSensitive);
+    m_caseSensitive.setAttribute("enabled", caseSensitive);
 }
 
 void KTListPackage::setRegexp(bool regexp)
 {
-	m_caseSensitive.setAttribute("enabled", regexp);
+    m_caseSensitive.setAttribute("enabled", regexp);
 }
-

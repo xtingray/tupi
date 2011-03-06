@@ -41,30 +41,31 @@
 class KTNetProjectManagerParams;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTConnectDialog : public QDialog
 {
-	Q_OBJECT
-	public:
-		KTConnectDialog(QWidget *parent = 0);
-		~KTConnectDialog();
-		
-		void setServer(const QString &server);
-		void setPort(int port);
-		
-		QString login() const;
-		QString password() const;
-		QString server() const;
-		int port() const;
-		
-	protected:
-		void loadSettings();
-		void saveSettings();
-		
-	private:
-		class Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KTConnectDialog(QWidget *parent = 0);
+        ~KTConnectDialog();
+        
+        void setServer(const QString &server);
+        void setPort(int port);
+        
+        QString login() const;
+        QString password() const;
+        QString server() const;
+        int port() const;
+        
+    protected:
+        void loadSettings();
+        void saveSettings();
+        
+    private:
+        class Private;
+        Private *const k;
 
 };
 

@@ -67,7 +67,6 @@ struct KTConnectDialog::Private
         QSpinBox *port;
         
         QCheckBox *storePassword;
-        
 };
 
 KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), k(new Private())
@@ -140,7 +139,6 @@ int KTConnectDialog::port() const
     return k->port->value();
 }
 
-
 void KTConnectDialog::loadSettings()
 {
     KCONFIG->beginGroup("Network");
@@ -160,17 +158,13 @@ void KTConnectDialog::saveSettings()
     KCONFIG->setValue("port", k->port->value());
     KCONFIG->setValue("login", k->login->text());
     
-    if ( k->storePassword->isChecked() )
-    {
+    if (k->storePassword->isChecked()) {
         KCONFIG->setValue("password", k->password->text());
-    }
-    else
-    {
+    } else {
         KCONFIG->setValue("password", "");
     }
     
     KCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
     KCONFIG->sync();
-    
 }
 

@@ -46,11 +46,13 @@ class KTNetSocket;
 class KTNetProjectManagerParams;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTNetProjectManagerHandler(QObject *parent = 0);
         ~KTNetProjectManagerHandler();

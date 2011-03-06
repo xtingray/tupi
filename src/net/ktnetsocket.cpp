@@ -47,27 +47,23 @@ KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(han
 {
 }
 
-
 KTNetSocket::~KTNetSocket()
 {
 }
 
 void KTNetSocket::readed(const QString &readed)
 {
-	#ifdef K_DEBUG
-		kDebug("net") << "READED: " << readed;
-	#endif
+    #ifdef K_DEBUG
+        kDebug("net") << "READED: " << readed;
+    #endif
 
-	QDomDocument doc;
-	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
+    QDomDocument doc;
+    
+    if (doc.setContent(readed)) {
+        QString root = doc.documentElement().tagName();
+        m_handler->handlePackage(root, readed);
+    } else {
+        qDebug("Isn't a document");
+    }
 }
 

@@ -41,23 +41,21 @@
 
 KTOpenPackage::KTOpenPackage(const QString& projectName): QDomDocument()
 {
-	QDomElement root = createElement("openproject");
-	root.setAttribute("version", "0");
-	appendChild(root);
-	
-	QDomElement m_project = createElement("project");
-	m_project.setAttribute("name", projectName);
-	root.appendChild(m_project);
-	
+    QDomElement root = createElement("openproject");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    QDomElement m_project = createElement("project");
+    m_project.setAttribute("name", projectName);
+    root.appendChild(m_project);
+    
 }
-
 
 KTOpenPackage::~KTOpenPackage()
 {
 }
 
-void KTOpenPackage::setProjectName( const QString& projectName )
+void KTOpenPackage::setProjectName(const QString& projectName)
 {
-	m_project.setAttribute("name", projectName);
+    m_project.setAttribute("name", projectName);
 }
-

@@ -39,13 +39,14 @@
 #include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+ * @author Jorge Cuadrado
 */
+
 class KTNoticePackage : public QDomDocument
 {
-	public:
-		KTNoticePackage(const QString &text);
-		~KTNoticePackage();
+    public:
+        KTNoticePackage(const QString &text);
+        ~KTNoticePackage();
 };
 
 #endif

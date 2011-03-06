@@ -37,20 +37,20 @@
 #define KTOPENPACKAGE_H
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado 
 */
 
 #include <QDomDocument>
 
 class KTOpenPackage: public QDomDocument
 {
-	public:
-		KTOpenPackage(const QString & nameProject);
-		~KTOpenPackage();
-		void setProjectName(const QString & nameProject);
-		
-	private:
-		QDomElement m_project;
+    public:
+        KTOpenPackage(const QString & nameProject);
+        ~KTOpenPackage();
+        void setProjectName(const QString & nameProject);
+        
+    private:
+        QDomElement m_project;
 };
 
 #endif

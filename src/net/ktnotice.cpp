@@ -44,64 +44,62 @@
 
 class KTNotice::Private
 {
-	public:
-		Private()
-		{
-		}
-		
-		~Private()
-		{
-			delete lineEdit;
-			delete browser;
-		}
-		
-		QLineEdit *lineEdit;
-		QTextEdit *browser;
-		QPushButton *send;
+    public:
+        Private()
+        {
+        }
+        
+        ~Private()
+        {
+            delete lineEdit;
+            delete browser;
+        }
+        
+        QLineEdit *lineEdit;
+        QTextEdit *browser;
+        QPushButton *send;
 };
 
 KTNotice::KTNotice(QWidget *parent) : QWidget(parent), k(new Private())
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	QGridLayout *layout = new QGridLayout(this);
-	
-	setWindowTitle("chat");
-	
-	k->browser = new QTextEdit;
-	k->browser->setReadOnly(true);
-	layout->addWidget(k->browser, 0, 0 );
-	
-	QHBoxLayout *box = new QHBoxLayout;
-	
-	k->lineEdit = new QLineEdit;
-	box->addWidget(k->lineEdit);
-	
-	k->send = new QPushButton(tr("Send"));
-	box->addWidget(k->send);
-	
-	layout->addLayout( box, 1, 0);
-	
-	connect(k->lineEdit, SIGNAL(returnPressed()), k->send, SLOT(animateClick()));
-	connect(k->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
+    setAttribute(Qt::WA_DeleteOnClose);
+    QGridLayout *layout = new QGridLayout(this);
+    
+    setWindowTitle("chat");
+    
+    k->browser = new QTextEdit;
+    k->browser->setReadOnly(true);
+    layout->addWidget(k->browser, 0, 0);
+    
+    QHBoxLayout *box = new QHBoxLayout;
+    
+    k->lineEdit = new QLineEdit;
+    box->addWidget(k->lineEdit);
+    
+    k->send = new QPushButton(tr("Send"));
+    box->addWidget(k->send);
+    
+    layout->addLayout(box, 1, 0);
+    
+    connect(k->lineEdit, SIGNAL(returnPressed()), k->send, SLOT(animateClick()));
+    connect(k->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
 }
-
 
 KTNotice::~KTNotice()
 {
-	delete k;
+    delete k;
 }
 
 void KTNotice::addMessage(const QString &from, const QString &message)
 {
-	k->browser->append("<div style=\"margin:10px; padding: 2px; border: 3px solid#999999; \">" + tr("notice") + ":<br/>" + message + "<br/>" + tr(" by ") + from + "</div>" );
+    k->browser->append("<div style=\"margin:10px; padding: 2px; border: 3px solid#999999; \">" + tr("notice") + ":<br/>" + message + "<br/>" + tr(" by ") + from + "</div>");
 }
 
 void KTNotice::sendMessage()
 {
-	QString text = k->lineEdit->text();
-	k->lineEdit->clear();
-	if(!text.isEmpty())
-	{
-		emit requestSendMessage(text);
-	}
+    QString text = k->lineEdit->text();
+    k->lineEdit->clear();
+
+    if (!text.isEmpty())
+        emit requestSendMessage(text);
 }

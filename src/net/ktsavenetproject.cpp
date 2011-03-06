@@ -99,7 +99,6 @@ bool KTSaveNetProject::save(const QString &_filename, const KTProject *project)
     
     file.close();
     
-    
     return true;
 }
 
@@ -107,7 +106,6 @@ bool KTSaveNetProject::load(const QString &, KTProject *)
 {
     return false;
 }
-
 
 KTNetProjectManagerParams *KTSaveNetProject::params(const QString &filename)
 {
@@ -141,12 +139,10 @@ KTNetProjectManagerParams *KTSaveNetProject::params(const QString &filename)
                             
                                   n1 = n1.nextSibling();
                        }
-                        
                    }
                 }
                 n = n.nextSibling();
             }
-
         }
         
         file.close();

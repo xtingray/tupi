@@ -119,7 +119,6 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     connect(k->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
 }
 
-
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 {
     #ifdef K_DEBUG
@@ -128,7 +127,6 @@ KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
     k->chat->close();
     delete k;
 }
-
 
 void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* request)
 {
@@ -374,7 +372,6 @@ void KTNetProjectManagerHandler::sendChatMessage(const QString & message)
     KTChatPackage package(message);
     sendPackage(package);
 }
-
 
 void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
 {

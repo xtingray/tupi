@@ -39,25 +39,27 @@
 #include <QDialog>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class KTNotice: public QWidget
 {
-	Q_OBJECT
-	public:
-		KTNotice(QWidget *parent = 0);
-		~KTNotice();
-		void addMessage(const QString &from, const QString &message);
-		
-	signals:
-		void requestSendMessage(const QString &message);
-		
-	protected slots:
-		void sendMessage();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+
+    public:
+        KTNotice(QWidget *parent = 0);
+        ~KTNotice();
+        void addMessage(const QString &from, const QString &message);
+        
+    signals:
+        void requestSendMessage(const QString &message);
+        
+    protected slots:
+        void sendMessage();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

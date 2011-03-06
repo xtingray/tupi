@@ -39,27 +39,28 @@
 #include <QWidget>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado 
 */
+
 class KTChat : public QWidget
 {
-	Q_OBJECT;
-	
-	public:
-		KTChat(QWidget *parent = 0);
-		~KTChat();
-		
-		void addMessage(const QString &from, const QString &message);
-		
-	signals:
-		void requestSendMessage(const QString &message);
-		
-	protected slots:
-		void sendMessage();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    
+    public:
+        KTChat(QWidget *parent = 0);
+        ~KTChat();
+        
+        void addMessage(const QString &from, const QString &message);
+        
+    signals:
+        void requestSendMessage(const QString &message);
+        
+    protected slots:
+        void sendMessage();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

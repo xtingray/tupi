@@ -33,29 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #ifndef KTNEWPROJECTPACKAGE_H
 #define KTNEWPROJECTPACKAGE_H
 
 #include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
+ * @author Jorge Cuadrado
 */
+
 class KTNewProjectPackage : public QDomDocument
 {
-	public:
-		KTNewProjectPackage(const QString & name, const QString & author, const QString & description );
-		~KTNewProjectPackage();
-		
-		void setName(const QString & name);
-		void setAuthor(const QString & author);
-		void setDescription(const QString & description);
-		
-	private:
-		struct Private;
-		Private *const k;
-		
+    public:
+        KTNewProjectPackage(const QString & name, const QString & author, const QString & description);
+        ~KTNewProjectPackage();
+        
+        void setName(const QString & name);
+        void setAuthor(const QString & author);
+        void setDescription(const QString & description);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

@@ -38,47 +38,40 @@
 
 struct KTProjectParser::Private
 {
-	QByteArray data;
+    QByteArray data;
 };
 
 KTProjectParser::KTProjectParser(): KTXmlParserBase() , k( new Private())
 {
 }
 
-
 KTProjectParser::~KTProjectParser()
 {
 }
 
-
 bool KTProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "project")
-	{
-		if(tag == "data")
-		{
-			setReadText(true);
-		}
-	}
-	return true;
+    if (root() == "project") {
+        if (tag == "data")
+            setReadText(true);
+    }
+
+    return true;
 }
 
 bool KTProjectParser::endTag(const QString &tag)
 {
-	Q_UNUSED(tag);
-	return true;
-	
+    Q_UNUSED(tag);
+    return true;
 }
 
 void KTProjectParser::text(const QString &text)
 {
-	if ( currentTag() == "data" )
-	{
-		k->data = QByteArray::fromBase64(text.toLocal8Bit());
-	}
+    if (currentTag() == "data")
+        k->data = QByteArray::fromBase64(text.toLocal8Bit());
 }
 
 QByteArray KTProjectParser::data()
 {
-	return k->data;
+    return k->data;
 }

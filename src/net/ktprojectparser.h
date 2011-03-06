@@ -37,28 +37,25 @@
 #define KTPROJECTPARSER_H
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 
 #include "ktxmlparserbase.h"
 
 class KTProjectParser : public KTXmlParserBase
 {
-	public:
-		
-		
-		KTProjectParser();
-		virtual ~KTProjectParser();
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QByteArray data();
-		
-	private:
-		struct Private;
-		Private *const k;
-
+    public:
+        KTProjectParser();
+        virtual ~KTProjectParser();
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        QByteArray data();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

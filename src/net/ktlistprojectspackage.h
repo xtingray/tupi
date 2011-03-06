@@ -39,8 +39,9 @@
 #include <QDomDocument>
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class KTListProjectsPackage : public QDomDocument
 {
     public:

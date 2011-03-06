@@ -39,8 +39,9 @@
 #include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class KTListPackage : public QDomDocument
 {
     public:
@@ -49,7 +50,7 @@ class KTListPackage : public QDomDocument
             Files
         };
         
-        KTListPackage(Type type, const QString &pattern,  bool  regexp = false, bool caseSensitive= false);
+        KTListPackage(Type type, const QString &pattern, bool  regexp = false, bool caseSensitive= false);
         ~KTListPackage();
         
         void setPattern(const QString & pattern);

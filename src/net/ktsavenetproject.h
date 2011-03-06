@@ -42,23 +42,24 @@
 class KTNetProjectManagerParams;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTSaveNetProject : public KTSaveProject
 {
-	public:
-		KTSaveNetProject();
-		KTSaveNetProject(const QString &server, int port);
-		~KTSaveNetProject();
-		
-		virtual bool save(const QString &filename, const KTProject *project);
-		virtual bool load(const QString &filename, KTProject *project);
-		
-		KTNetProjectManagerParams *params(const QString &filename);
-		
-	private:
-		QString m_server;
-		int m_port;
+    public:
+        KTSaveNetProject();
+        KTSaveNetProject(const QString &server, int port);
+        ~KTSaveNetProject();
+        
+        virtual bool save(const QString &filename, const KTProject *project);
+        virtual bool load(const QString &filename, KTProject *project);
+        
+        KTNetProjectManagerParams *params(const QString &filename);
+        
+    private:
+        QString m_server;
+        int m_port;
 
 };
 

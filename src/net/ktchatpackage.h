@@ -39,14 +39,14 @@
 #include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class KTChatPackage: public QDomDocument
 {
-	public:
-		KTChatPackage(const QString &text);
-		~KTChatPackage();
-
+    public:
+        KTChatPackage(const QString &text);
+        ~KTChatPackage();
 };
 
 #endif

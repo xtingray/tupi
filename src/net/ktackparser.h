@@ -39,25 +39,26 @@
 #include <ktxmlparserbase.h>
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado 
 */
+
 class KTAckParser : public KTXmlParserBase
 {
-	public:
-		KTAckParser();
-		~KTAckParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		
-		virtual void text(const QString &msg);
-		
-		QString sign() const;
-		QString motd() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTAckParser();
+        ~KTAckParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        
+        virtual void text(const QString &msg);
+        
+        QString sign() const;
+        QString motd() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

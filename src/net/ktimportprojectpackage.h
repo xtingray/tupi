@@ -39,9 +39,8 @@
 #include<QDomDocument>
 
 /**
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
+ * @author Jorge Cuadrado
 */
-
 
 class KTImportProjectPackage : public QDomDocument
 {

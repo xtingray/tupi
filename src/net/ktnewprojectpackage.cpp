@@ -37,41 +37,39 @@
 
 struct KTNewProjectPackage::Private
 {
-	QDomText name, author, description;
+    QDomText name, author, description;
 };
 
 KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description ): QDomDocument(), k(new Private)
 {
-	QDomElement root = createElement("newproject");
-	root.setAttribute("version", "0");
-	
-	k->name = createTextNode(name);
-	k->author = createTextNode(author);
-	k->description = createTextNode(description);
-	
-	root.appendChild(createElement("name")).appendChild(k->name);
-	root.appendChild(createElement("author")).appendChild(k->author);
-	root.appendChild(createElement("description")).appendChild(k->description);
-	appendChild(root);
+    QDomElement root = createElement("newproject");
+    root.setAttribute("version", "0");
+    
+    k->name = createTextNode(name);
+    k->author = createTextNode(author);
+    k->description = createTextNode(description);
+    
+    root.appendChild(createElement("name")).appendChild(k->name);
+    root.appendChild(createElement("author")).appendChild(k->author);
+    root.appendChild(createElement("description")).appendChild(k->description);
+    appendChild(root);
 }
-
 
 KTNewProjectPackage::~KTNewProjectPackage()
 {
 }
 
-
 void KTNewProjectPackage::setName(const QString & name)
 {
-	k->name.setData(name);
+    k->name.setData(name);
 }
 
 void KTNewProjectPackage::setAuthor(const QString & author)
 {
-	k->author.setData(author);
+    k->author.setData(author);
 }
 
 void KTNewProjectPackage::setDescription(const QString & description)
 {
-	k->description.setData(description);
+    k->description.setData(description);
 }

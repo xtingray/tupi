@@ -33,46 +33,39 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "ktcomunicationparser.h"
 
 struct KTComunicationParser::Private
 {
-	QString message;
-	QString login;
+    QString message;
+    QString login;
 };
-
 
 KTComunicationParser::KTComunicationParser() : KTXmlParserBase(), k(new Private())
 {
-	
+    
 }
-
 
 KTComunicationParser::~KTComunicationParser()
 {
-	
+    
 }
-
 
 bool KTComunicationParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "chat" || root() == "notice" || root() == "wall" )
-	{
-		if ( tag == "message" )
-		{
-			k->message = atts.value("text");
-			k->login = atts.value("from");
-		}
-	}
-	
-	
-	return true;
+    if (root() == "chat" || root() == "notice" || root() == "wall") {
+        if (tag == "message") {
+            k->message = atts.value("text");
+            k->login = atts.value("from");
+        }
+    }
+    
+    return true;
 }
 
 bool KTComunicationParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void KTComunicationParser::text(const QString &)
@@ -81,11 +74,10 @@ void KTComunicationParser::text(const QString &)
 
 QString KTComunicationParser::message() const
 {
-	return k->message;
+    return k->message;
 }
 
 QString KTComunicationParser::login() const
 {
-	return k->login;
+    return k->login;
 }
-

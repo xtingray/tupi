@@ -39,31 +39,26 @@
 #include <QDialog>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class QTreeWidgetItem;
 class KTListProjectDialog : public QDialog
 {
-	Q_OBJECT;
-	public:
-		KTListProjectDialog();
-		~KTListProjectDialog();
-		
-		void addProject(const QString& name, const QString& author, const QString& description);
-		
-		QString currentProject();
-		
-		
-	private slots:
-		void execAccept(QTreeWidgetItem * , int );
-	
-	private:
-		struct Private;
-		Private *const k;
-		
+    Q_OBJECT
 
-		
-		
+    public:
+        KTListProjectDialog();
+        ~KTListProjectDialog();
+        void addProject(const QString& name, const QString& author, const QString& description);
+        QString currentProject();
+        
+    private slots:
+        void execAccept(QTreeWidgetItem * , int );
+    
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

@@ -1,4 +1,4 @@
-/***************************************************************************
+***************************************************************************
  *   Project TUPI: Magia 2D                                                *
  *   Project Contact: info@maefloresta.com                                 *
  *   Project Website: http://www.maefloresta.com                           *
@@ -39,8 +39,9 @@
 #include <ktprojectmanagerparams.h>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTNetProjectManagerParams : public KTProjectManagerParams
 {
     public:

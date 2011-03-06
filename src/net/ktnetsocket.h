@@ -41,21 +41,22 @@
 class KTNetProjectManagerHandler;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTNetSocket : public KTSocketBase
 {
-	Q_OBJECT;
-	
-	public:
-		KTNetSocket(KTNetProjectManagerHandler *handler);
-		~KTNetSocket();
-		
-		virtual void readed(const QString &readed);
-		
-	private:
-		KTNetProjectManagerHandler *m_handler;
-		
+    Q_OBJECT
+    
+    public:
+        KTNetSocket(KTNetProjectManagerHandler *handler);
+        ~KTNetSocket();
+        
+        virtual void readed(const QString &readed);
+        
+    private:
+        KTNetProjectManagerHandler *m_handler;
+        
 };
 
 #endif
