@@ -81,6 +81,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 
         virtual void itemResponse(const KTItemResponse *event);
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
 
         virtual QMenu *menu() const;
         

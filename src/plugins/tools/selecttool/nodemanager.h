@@ -41,12 +41,15 @@
 #include <QGraphicsScene>
 #include "node.h"
 
-
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
-class NodeManager
+
+class NodeManager : public QObject
+
 {
+    Q_OBJECT
+
     public:
         NodeManager(QGraphicsItem * parent, QGraphicsScene *scene);
         ~NodeManager();
@@ -77,7 +80,10 @@ class NodeManager
         void setVisible(bool visible);
         
         double rotation();
-        
+
+        void setProportion(bool flag);
+        bool proportionalScale();
+
     private:
         QHash<Node::TypeNode, Node *> m_nodes;
         QGraphicsItem * m_parent;
@@ -91,8 +97,8 @@ class NodeManager
         QPointF m_anchor;
         
         bool m_press;
+        bool m_proportional;
         double m_rotation;
-
 };
 
 #endif

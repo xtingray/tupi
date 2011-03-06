@@ -81,6 +81,7 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
     // setParentItem(k->parent);
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
+    setFlag(ItemIsFocusable, true);
 
     k->generalState = Scale;
     
@@ -96,6 +97,7 @@ Node::~Node()
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w)
 {
     Q_UNUSED(w);
+    Q_UNUSED(option);
     
     bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
     painter->setRenderHint(QPainter::Antialiasing, false);
@@ -251,15 +253,19 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             float sx = 1, sy = 1;
             sx = static_cast<float>(rect.width()) / static_cast<float>(parentRect.width());
             sy = static_cast<float>(rect.height()) / static_cast<float>(parentRect.height());
-            
-            if (sx > 0 && sy > 0) {
-                k->manager->scale(sx, sy);
-            } else {
-                if (sx > 0)
-                    k->manager->scale(sx, 1);
 
-                if (sy > 0)
-                    k->manager->scale(1, sy);
+            if (k->manager->proportionalScale()) {
+                k->manager->scale(sx, sx);
+            } else {
+                if (sx > 0 && sy > 0) {
+                    k->manager->scale(sx, sy);
+                } else {
+                    if (sx > 0)
+                        k->manager->scale(sx, 1);
+
+                    if (sy > 0)
+                        k->manager->scale(1, sy);
+                }
             }
         } else if (k->action == Rotate) {
             // if (k->typeNode != Center) {
@@ -318,4 +324,10 @@ void Node::setAction(ActionNode action)
 int Node::actionNode()
 {
     return k->action;
+}
+
+void Node::keyReleaseEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+    k->manager->setProportion(false);
 }

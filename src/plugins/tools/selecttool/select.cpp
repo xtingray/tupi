@@ -154,16 +154,17 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 
     foreach (QGraphicsItem *item, selectedObjects) {
              if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
-                 bool finded = false;
+                 bool found = false;
                  foreach (NodeManager *nodeManager, k->nodeManagers) {
-                          if (nodeManager->parentItem() == nodeManager->parentItem()) {
-                              finded = true;
+                          if (item == nodeManager->parentItem()) {
+                              found = true;
                               break;
                           }
                  }
             
-                 if (!finded) {
+                 if (!found) {
                      NodeManager *manager = new NodeManager(item, scene);
+                     // connect(manager, SIGNAL(disableProportion()), this, SLOT(disableProportionMode()));
                      k->nodeManagers << manager;
                  }
              }
@@ -216,6 +217,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
         foreach (QGraphicsItem *item, selectedObjects) {
                  if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
                      NodeManager *manager = new NodeManager(item, scene);
+                     // connect(manager, SIGNAL(disableProportion()), this, SLOT(disableProportionMode()));
                      k->nodeManagers << manager;
                  }
         }
@@ -415,11 +417,17 @@ void Select::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    if (event->modifiers() == Qt::ShiftModifier) {
+        foreach (NodeManager *nodeManager, k->nodeManagers) {
+                 nodeManager->setProportion(true);
+        }
+    }
+
     if (event->key() == Qt::Key_R) { 
         if (event->modifiers() == Qt::AltModifier) {
             foreach (NodeManager *nodeManager, k->nodeManagers) {
-                         nodeManager->toggleAction();
-                         break;
+                     nodeManager->toggleAction();
+                     break;
             }
 
             return;

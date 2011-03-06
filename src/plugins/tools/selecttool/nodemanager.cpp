@@ -54,11 +54,14 @@ NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_pare
     Node *bottomLeft = new Node(Node::BottomLeft,Node::Scale, rect.bottomLeft(),this, parent, scene);
     Node *bottomRight = new Node(Node::BottomRight,Node::Scale, rect.bottomRight(),this, parent, scene);
     Node *center = new Node(Node::Center, Node::Scale, rect.center(), this,parent, scene);
+
     m_nodes.insert(Node::TopLeft, topLeft);
     m_nodes.insert(Node::TopRight, topRight);
     m_nodes.insert(Node::BottomLeft, bottomLeft);
     m_nodes.insert(Node::BottomRight, bottomRight);
     m_nodes.insert(Node::Center, center);
+
+    m_proportional = false;
     
     beginToEdit();
 }
@@ -231,4 +234,14 @@ void NodeManager::setVisible(bool visible)
 double NodeManager::rotation()
 {
     return m_rotation;
+}
+
+void NodeManager::setProportion(bool flag)
+{
+    m_proportional = flag;
+}
+
+bool NodeManager::proportionalScale()
+{
+    return m_proportional;
 }

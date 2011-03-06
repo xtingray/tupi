@@ -2907,6 +2907,16 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Shift + Left Mouse Button</source>
+        <translation>Shift + Botón Izquierdo del Ratón</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Proportional scaling on selection</source>
+        <translation>Escala proporcional de la selección</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
         <source>Close line</source>
         <translation>Finalizar trazo</translation>
     </message>

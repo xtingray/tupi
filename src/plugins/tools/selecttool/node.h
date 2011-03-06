@@ -39,6 +39,7 @@
 #include <QGraphicsItem>
 #include <QObject>
 #include <QPointF>
+#include <QKeyEvent>
 
 /**
  * @author Jorge Cuadrado 
@@ -68,18 +69,18 @@ class Node : public QObject, public QGraphicsItem
         int type() const { return Type; }
         
         int typeNode() const;
-        
+
     protected:
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
         void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event);
+        void keyReleaseEvent(QKeyEvent *event);
         
     private:
         struct Private;
         Private *const k;
-        
 };
 
 #endif

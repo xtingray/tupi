@@ -47,13 +47,13 @@
 class KTItemResponse;
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 
 class NodeManager;
 class Select : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         Select();
