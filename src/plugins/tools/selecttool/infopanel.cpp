@@ -63,7 +63,7 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Proportional scaling on selection") + "</p>");
 
     QString text = textArea->document()->toPlainText();
-    int height = (text.length()*270)/215;
+    int height = (text.length()*270)/230;
 
     textArea->setFixedHeight(height);
 

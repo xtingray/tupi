@@ -164,7 +164,6 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
             
                  if (!found) {
                      NodeManager *manager = new NodeManager(item, scene);
-                     // connect(manager, SIGNAL(disableProportion()), this, SLOT(disableProportionMode()));
                      k->nodeManagers << manager;
                  }
              }
@@ -217,7 +216,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
         foreach (QGraphicsItem *item, selectedObjects) {
                  if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
                      NodeManager *manager = new NodeManager(item, scene);
-                     // connect(manager, SIGNAL(disableProportion()), this, SLOT(disableProportionMode()));
                      k->nodeManagers << manager;
                  }
         }
