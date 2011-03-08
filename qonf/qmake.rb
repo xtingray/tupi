@@ -8,15 +8,11 @@ class QMake
     $found = ""
 
     def initialize
-        if not findQMake("4.7.0", false)
-            raise QonfException.new("Can't find valid qmake - qt4")
-        end
-        
         @make = "make"
     end
 
     # This method check if the current version of Qt is valid for Tupi compilation    
-    def findQMake(minqtversion, verbose)
+    def findQMake(minqtversion, verbose, qtdir)
         qtversion = ""
         paths = [ "qmake", "qmake-qt4", "qmake4" ]
         minver = minqtversion.split(".")
@@ -31,7 +27,12 @@ class QMake
                 distance = 0
                 IO.popen("whereis #{path}") { |result|
                           sites = result.readlines.join("").split(":")
-                          word = sites[1].chop
+                          word = ""
+                          if qtdir.length > 0
+                             word = qtdir + "/bin/qmake"
+                          else
+                             word = sites[1].chop
+                          end
                           distance = word.length
                 }
 

@@ -21,10 +21,36 @@ class Configure
         parseArgs(args)
         
         @qmake = QMake.new
+
+        @properties = {}
         
         setPath()       
         Makefile::setArgs(@options)
- 
+    end
+
+    def load_properties(properties_filename)
+        File.open(properties_filename, 'r') do |properties_file|
+            properties_file.read.each_line do |line|
+                line.strip!
+                if (line[0] != ?# and line[0] != ?=)
+                    i = line.index('=')
+                    if (i)
+                        @properties[line[0..i - 1].strip] = line[i + 1..-1].strip
+                    else
+                        @properties[line] = ''
+                    end
+                end
+            end
+        end
+        @properties
+    end
+
+    def hasProperty?(arg)
+        @properties.has_key?(arg)
+    end
+
+    def propertyValue(arg)
+        @properties[arg].to_s
     end
 
     def hasArgument?(arg)
@@ -39,10 +65,10 @@ class Configure
         @testsDir = dir
     end
     
-    def verifyQtVersion(minqtversion)
+    def verifyQtVersion(minqtversion, qtdir)
         Info.info << "Checking for Qt >= " << minqtversion << "... "
 
-        if @qmake.findQMake(minqtversion, true)
+        if @qmake.findQMake(minqtversion, true, qtdir)
            print "[ \033[92mOK\033[0m ]\n"
         else
            print "[ \033[91mFAILED\033[0m ]\n"

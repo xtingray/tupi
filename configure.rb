@@ -13,30 +13,49 @@ begin
     if conf.hasArgument?("help") or conf.hasArgument?("h")
        puts <<_EOH_
 Use: ./configure [options]
-    options:
-        --help, -h:                             Show this message
-        --prefix=[path], -prefix [path]:        Sets installation path [/usr/local]
-        --bindir=[path], -bindir [path]:        Set binaries path [/usr/local/bin]
-        --libdir=[path], -libdir [path]:        Set library path [/usr/local/lib]
-        --includedir=path], -includedir [path]: Set include path [/usr/local/include]
-        --sharedir=path], -share [path]:        Set data path [/usr/local/share]
-        --with-debug:                           Enable debug
-        --debian-build:				Option exclusive for Debian maintainer
+  options:
+  --help, -h:                              Show this message
+  --prefix=[path], -prefix [path]:         Sets installation path [/usr/local]
+  --bindir=[path], -bindir [path]:         Set binaries path [/usr/local/bin]
+  --libdir=[path], -libdir [path]:         Set library path [/usr/local/lib]
+  --includedir=[path], -includedir [path]: Set include path [/usr/local/include]
+  --sharedir=[path], -sharedir [path]:     Set data path [/usr/local/share]
+  --with-debug:                            Enable debug
+  --with-qtdir=[path], -with-qtdir [path]: Set Qt directory [i.e. /usr/local/qt]
+  --debian-build:                          Option exclusive for Debian maintainer
 _EOH_
         exit 0
     end
 
-    conf.setTestDir("configure.tests")
-    conf.verifyQtVersion("4.7.0")
-    conf.createTests
-    
-    config = RQonf::Config.new
-  
-    debug = 0 
-    if conf.hasArgument?("with-debug")
-        debug = 1 
+    distro = ""
+    if FileTest.exists?("/etc/lsb-release")
+       conf.load_properties("/etc/lsb-release")
+       if conf.hasProperty?("DISTRIB_CODENAME")
+          distro = conf.propertyValue("DISTRIB_CODENAME")
+       end
     end
- 
+
+    if conf.hasArgument?("with-qtdir")
+       qtdir = conf.argumentValue("with-qtdir")
+       conf.verifyQtVersion("4.7.0", qtdir)
+    else
+       if distro == "lucid"
+          Info.error << " ERROR: If you are using Ubuntu Lucid (10.04). You must use the parameter --with-qtdir\n"
+          Info.error << " Try the option --help for more info\n"
+          exit 0
+       else
+          conf.verifyQtVersion("4.7.0", "")
+       end
+    end
+
+    debug = 0
+    if conf.hasArgument?("with-debug")
+        debug = 1
+    end
+
+    config = RQonf::Config.new
+    conf.createTests
+    conf.setTestDir("configure.tests")
     conf.runTests(config, debug)
 
     config.addModule("core")
