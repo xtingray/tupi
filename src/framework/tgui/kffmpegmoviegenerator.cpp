@@ -407,10 +407,20 @@ KFFMpegMovieGenerator::~KFFMpegMovieGenerator()
 bool KFFMpegMovieGenerator::begin()
 {
     av_register_all();
-    k->fmt = av_guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
 
-    if (!k->fmt) 
-         k->fmt = av_guess_format("mpeg", NULL, NULL);
+    #ifdef K_LUCID
+        k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
+    #else
+        k->fmt = av_guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
+    #endif
+
+    if (!k->fmt) {
+        #ifdef K_LUCID
+            k->fmt = guess_format("mpeg", NULL, NULL);
+        #else
+            k->fmt = av_guess_format("mpeg", NULL, NULL);
+        #endif
+    }
 
     if (! k->fmt) {
         k->errorMsg = "ffmpeg error: Cannot find a valid format for " + k->movieFile.toLocal8Bit() + ". This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";

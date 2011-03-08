@@ -38,6 +38,9 @@ _EOH_
     if conf.hasArgument?("with-qtdir")
        qtdir = conf.argumentValue("with-qtdir")
        conf.verifyQtVersion("4.7.0", qtdir)
+       if distro == "lucid"
+          config.addDefine("K_LUCID")
+       end
     else
        if distro == "lucid"
           Info.error << " ERROR: If you are using Ubuntu Lucid (10.04). You must use the parameter --with-qtdir\n"
