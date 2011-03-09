@@ -45,7 +45,13 @@ extern "C" {
 int main()
 {
 	av_register_all();
-	AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
+
+        #ifdef K_LUCID
+               AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
+        #else
+               AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
+        #endif
+
         AVFormatContext *oc = avformat_alloc_context();
 	
 	oc->oformat = fmt;
