@@ -165,3 +165,5 @@ RESOURCES += tgui_images.qrc
 linux-g{
     TARGETDEPS += ../tcore/libtupifwcore.so
 }
+
+include(../../../tupiglobal.pri)
