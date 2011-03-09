@@ -21,7 +21,7 @@ class Test
         @optional = false
     end
     
-    def run(config, debug)
+    def run(config, debug, isLucid)
         parser = Parser.new
         parser.os = DetectOS::OS[DetectOS.whatOS].to_s.downcase
         
@@ -48,7 +48,11 @@ class Test
                    extralib = "-L/usr/lib64"
                 end
 
-                @qmake.run( "'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
+                if isLucid
+                   @qmake.run("'DEFINES += K_LUCID' 'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
+                else
+                   @qmake.run("'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
+                end
 
                 if not @qmake.compile(debug)
                     Dir.chdir(cwd)

@@ -35,6 +35,8 @@ _EOH_
        end
     end
 
+    config = RQonf::Config.new
+
     if conf.hasArgument?("with-qtdir")
        qtdir = conf.argumentValue("with-qtdir")
        conf.verifyQtVersion("4.7.0", qtdir)
@@ -56,10 +58,14 @@ _EOH_
         debug = 1
     end
 
-    config = RQonf::Config.new
     conf.createTests
     conf.setTestDir("configure.tests")
-    conf.runTests(config, debug)
+
+    if distro == "lucid"
+       conf.runTests(config, debug, true)
+    else
+       conf.runTests(config, debug, false)
+    end
 
     config.addModule("core")
     config.addModule("gui")

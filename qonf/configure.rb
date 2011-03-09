@@ -81,9 +81,9 @@ class Configure
         findTest(@testsDir)
     end
     
-    def runTests(config, debug)
+    def runTests(config, debug, isLucid)
         @tests.each { |test|
-            if not test.run(config, debug) and not test.optional
+            if not test.run(config, debug, isLucid) and not test.optional
                 raise QonfException.new("\033[91mMissing required dependency\033[0m")
             end
         }
