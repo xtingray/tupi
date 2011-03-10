@@ -267,7 +267,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          valid = true;
                          k->layerCounter = i;
-                         addFrame(mainFrame, Current);
+                         addFrame(mainFrame, KTGraphicsScene::Current);
                      }
                   }
               }
@@ -314,7 +314,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
         QList<int> indexes = frame->itemIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              KTGraphicObject *object = frame->graphic(indexes.at(i));
-             if (mode != Current) {
+             if (mode != KTGraphicsScene::Current) {
                  if (!object->hasTween())
                      addGraphicObject(object, opacity);
              } else {
@@ -325,6 +325,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
         indexes = frame->svgIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              KTSvgItem *object = frame->svg(indexes.at(i));
+             kFatal() << "KTGraphicsScene::addFrame() - adding Svg Object! 1";
              addSvgObject(object, opacity);
         }
     }
@@ -485,6 +486,16 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                          object->setPos(point);
                      }
 
+                     if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
+                         double angle = stepItem->rotation();
+                         // QPointF point = object->transformOriginPoint();
+                         QRectF rect = object->sceneBoundingRect();
+                         kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - X: " << rect.topLeft().x();
+                         kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - Y: " << rect.topLeft().y();
+                         //object->setTransformOriginPoint(rect.topLeft().x() + (rect.width()/2), rect.topLeft().y() + (rect.height()/2));
+                         object->setRotation(angle);
+                     }
+
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
                              int step = photogram - origin;
                              KTTweenerStep *stepItem = tween->stepAt(step);
@@ -495,6 +506,14 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                                  object->setPos(point);
                              }
 
+                             if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
+                                 double angle = stepItem->rotation();
+                                 // QPointF point = object->transformOriginPoint();
+                                 // rect = object->sceneBoundingRect();
+                                 // object->setTransformOriginPoint(point.x() + (rect.width()/2), point.y() + (rect.height()/2));
+                                 object->setRotation(angle);
+                             }
+                             kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - adding Svg Object! 2";   
                              addSvgObject(object);
                  }
              } else {
