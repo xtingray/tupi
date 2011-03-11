@@ -54,6 +54,7 @@ struct KTItemTweener::Private
     KTItemTweener::Type type;
     int initFrame;
     int frames;
+    QPointF originPoint;
 
     // Position Tween
     QString path;
