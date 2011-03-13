@@ -34,17 +34,14 @@
  ***************************************************************************/
 
 #include "ktsaveproject.h"
-
-#include <QDir>
-
 #include "ktproject.h"
 #include "ktscene.h"
 #include "ktlibrary.h"
 #include "ktpackagehandler.h"
-
 #include "kalgorithm.h"
-
 #include "kdebug.h"
+
+#include <QDir>
 
 KTSaveProject::KTSaveProject() : QObject()
 {
@@ -176,27 +173,33 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 
         QStringList scenes = projectDir.entryList(QStringList() << "*.tps", QDir::Readable | QDir::Files);
 
-        int index = 0;
-        foreach (QString scenePath, scenes) {
-                 scenePath = projectDir.path() + "/" + scenePath;
+        if (scenes.count() > 0) {
 
-                 QFile file(scenePath);
+            int index = 0;
+            foreach (QString scenePath, scenes) {
+                     scenePath = projectDir.path() + "/" + scenePath;
 
-                 if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                     QString xml = QString::fromLocal8Bit(file.readAll());
-                     QDomDocument document;
-                     if (! document.setContent(xml))
-                         return false;
-                     QDomElement root = document.documentElement();
+                     QFile file(scenePath);
 
-                     KTScene *scene = project->createScene(root.attribute("name"), index, true);
-                     scene->fromXml(xml);
+                     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                         QString xml = QString::fromLocal8Bit(file.readAll());
+                         QDomDocument document;
+                         if (! document.setContent(xml))
+                             return false;
+                         QDomElement root = document.documentElement();
 
-                     index += 1;
-                     file.close();
-                 }
+                         KTScene *scene = project->createScene(root.attribute("name"), index, true);
+                         scene->fromXml(xml);
+
+                         index += 1;
+                         file.close();
+                     }
+            }
+            project->setOpen(true);
+        } else {
+            // Corrupted file!
+            return false;
         }
-        project->setOpen(true);
 
         return true;
     }
