@@ -467,7 +467,7 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame)
+QString Settings::tweenToXml(int currentFrame, QPointF point)
 {
     QDomDocument doc;
 
@@ -476,6 +476,7 @@ QString Settings::tweenToXml(int currentFrame)
     root.setAttribute("type", KTItemTweener::Rotation);
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->totalSteps);
+    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
 
     root.setAttribute("rotationType", k->rotationType);
     int speed = k->comboSpeed->currentText().toInt();

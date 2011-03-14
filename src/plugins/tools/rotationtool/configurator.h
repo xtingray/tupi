@@ -71,7 +71,7 @@ class Configurator : public QFrame
         void closeSettingsPanel();
         Settings::Mode mode();
         void resetUI();
-        QString tweenToXml(int currentFrame);
+        QString tweenToXml(int currentFrame, QPointF point);
         
     private slots:
         void applyItem();

@@ -216,9 +216,9 @@ void Configurator::updateSteps(const QGraphicsPathItem *path)
     k->settingsPanel->updateSteps(path);
 }
 
-QString Configurator::tweenToXml(int currentFrame, QString &path)
+QString Configurator::tweenToXml(int currentFrame, QPointF point, QString &path)
 {
-    return k->settingsPanel->tweenToXml(currentFrame, path);
+    return k->settingsPanel->tweenToXml(currentFrame, point, path);
 }
 
 int Configurator::totalSteps()

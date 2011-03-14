@@ -187,9 +187,9 @@ int Configurator::startComboSize()
     return k->settingsPanel->startComboSize();
 }
 
-QString Configurator::tweenToXml(int currentFrame)
+QString Configurator::tweenToXml(int currentFrame, QPointF point)
 {
-    return k->settingsPanel->tweenToXml(currentFrame);
+    return k->settingsPanel->tweenToXml(currentFrame, point);
 }
 
 int Configurator::totalSteps()

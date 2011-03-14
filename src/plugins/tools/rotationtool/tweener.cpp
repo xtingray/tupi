@@ -412,7 +412,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint));
+                                            k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint()));
                  emit requested(&request);
         }
 

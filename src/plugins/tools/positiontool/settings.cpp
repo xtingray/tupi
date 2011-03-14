@@ -265,7 +265,7 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame, QString &path)
+QString Settings::tweenToXml(int currentFrame, QPointF point, QString &path)
 {
     QDomDocument doc;
 
@@ -274,6 +274,7 @@ QString Settings::tweenToXml(int currentFrame, QString &path)
     root.setAttribute("type", KTItemTweener::Position);
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
+    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     root.setAttribute("coords", path);
 
     foreach (KTTweenerStep *step, k->stepViewer->steps())

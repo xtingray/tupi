@@ -181,6 +181,12 @@ void KTItemTweener::fromXml(const QString &xml)
         k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();
 
+        QString origin = root.attribute("origin"); // [x,y]
+        QStringList list = origin.split(",");
+        int x = list.at(0).toInt();
+        int y = list.at(1).toInt();
+        k->originPoint = QPointF(x, y); 
+
         if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All)
             k->path = root.attribute("coords");
 
@@ -232,6 +238,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     root.setAttribute("type", k->type);
     root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);
+    root.setAttribute("origin", QString::number(k->originPoint.x()) + "," + QString::number(k->originPoint.y()));
 
     if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All) {
         root.setAttribute("coords", k->path);

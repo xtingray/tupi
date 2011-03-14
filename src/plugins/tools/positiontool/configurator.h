@@ -73,7 +73,7 @@ class Configurator : public QFrame
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path);
-        QString tweenToXml(int currentFrame, QString &path);
+        QString tweenToXml(int currentFrame, QPointF point, QString &path);
         int totalSteps();
         void activateSelectionMode();
         void cleanData();

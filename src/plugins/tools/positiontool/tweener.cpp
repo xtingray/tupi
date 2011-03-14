@@ -512,7 +512,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween, 
-                                            k->configurator->tweenToXml(k->startPoint, route));
+                                            k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint(), route));
                  emit requested(&request);
         }
 
@@ -587,7 +587,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, route));
+                                            k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint(), route));
                  emit requested(&request);
 
                  int total = k->startPoint + k->configurator->totalSteps();

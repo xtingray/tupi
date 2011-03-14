@@ -63,7 +63,7 @@ class Settings : public QWidget
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path);
-        QString tweenToXml(int currentFrame, QString &path);
+        QString tweenToXml(int currentFrame, QPointF point, QString &path);
         int totalSteps();
         void activatePathMode();
         void activateSelectionMode();
