@@ -405,6 +405,8 @@ void Tweener::applyTween()
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  }
 
+                 QRectF rect = item->sceneBoundingRect();
+
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
@@ -412,7 +414,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint()));
+                                            k->configurator->tweenToXml(k->startPoint, rect.center()));
                  emit requested(&request);
         }
 

@@ -478,6 +478,9 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
 
+    kFatal() << "Settings::tweenToXml() - Origin X: " << point.x();
+    kFatal() << "Settings::tweenToXml() - Origin Y: " << point.y();
+
     root.setAttribute("rotationType", k->rotationType);
     int speed = k->comboSpeed->currentText().toInt();
     root.setAttribute("rotateSpeed", speed);

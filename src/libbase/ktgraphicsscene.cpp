@@ -433,7 +433,10 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                      if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
                          double angle = stepItem->rotation();
                          QRectF rect = object->item()->sceneBoundingRect(); 
-                         object->item()->setTransformOriginPoint(rect.center());
+                         // object->item()->setTransformOriginPoint(rect.center());
+                         kFatal() << "Rotation - Origin X: " << tween->transformOriginPoint().x();
+                         kFatal() << "Rotation - Origin Y: " << tween->transformOriginPoint().y();
+                         object->item()->setTransformOriginPoint(tween->transformOriginPoint());
                          object->item()->setRotation(angle);
                      }
 
@@ -456,8 +459,8 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 
                             if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
                                 double angle = stepItem->rotation();
-                                QRectF rect = object->item()->sceneBoundingRect();
-                                object->item()->setTransformOriginPoint(rect.center());
+                                // QRectF rect = object->item()->sceneBoundingRect();
+                                // object->item()->setTransformOriginPoint(rect.center());
                                 object->item()->setRotation(angle);
                             }
 

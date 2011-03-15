@@ -79,6 +79,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 
         int frames() const;
         int startFrame();
+        QPointF transformOriginPoint();
         
         void setStep(int step);
         

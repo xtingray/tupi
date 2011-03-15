@@ -169,6 +169,11 @@ int KTItemTweener::startFrame()
     return k->initFrame;
 }
 
+QPointF KTItemTweener::transformOriginPoint()
+{
+    return k->originPoint;
+}
+
 void KTItemTweener::fromXml(const QString &xml)
 {
     QDomDocument doc;
