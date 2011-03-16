@@ -188,8 +188,9 @@ void KTItemTweener::fromXml(const QString &xml)
 
         QString origin = root.attribute("origin"); // [x,y]
         QStringList list = origin.split(",");
-        int x = list.at(0).toInt();
-        int y = list.at(1).toInt();
+        double x = list.first().toDouble();
+        double y = list.last().toDouble();
+
         k->originPoint = QPointF(x, y); 
 
         if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All)

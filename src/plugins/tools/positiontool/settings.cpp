@@ -179,6 +179,8 @@ void Settings::activeInnerForm(bool enable)
         k->innerPanel->hide();
 }
 
+// Adding new Tween
+
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
     k->mode = Add;
@@ -194,6 +196,8 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
     initStartCombo(framesTotal, startFrame);
 }
+
+// Editing new Tween
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
