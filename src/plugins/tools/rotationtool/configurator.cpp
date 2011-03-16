@@ -135,6 +135,8 @@ void Configurator::setTweenManagerPanel()
 {
     k->tweenManager = new TweenManager(this);
     connect(k->tweenManager, SIGNAL(addNewTween(const QString &)), this, SLOT(addTween(const QString &)));
+    connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
+    // connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SIGNAL(getTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
     k->state = Manager;
@@ -301,3 +303,7 @@ void Configurator::resetUI()
     closeSettingsPanel();
 }
 
+void Configurator::updateTweenData(const QString &name)
+{
+    emit getTweenData(name);
+}

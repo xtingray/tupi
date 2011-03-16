@@ -88,6 +88,8 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 
         QGraphicsPathItem *graphicsPath() const;
         QString tweenType();
+
+        KTItemTweener::RotationType tweenRotationType();
         
     private:
         struct Private;

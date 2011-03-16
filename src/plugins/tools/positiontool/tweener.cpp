@@ -491,7 +491,7 @@ void Tweener::applyTween()
         return;
     }
 
-    if (!k->scene->scene()->tweenExists(name)) {
+    if (!k->scene->scene()->tweenExists(name, KTItemTweener::Position)) {
 
         foreach (QGraphicsItem *item, k->objects) {   
 
@@ -703,7 +703,7 @@ int Tweener::maxZValue()
 void Tweener::removeTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
-    scene->removeTween(name);
+    scene->removeTween(name, KTItemTweener::Position);
 
     applyReset();
 }
@@ -711,7 +711,7 @@ void Tweener::removeTween(const QString &name)
 void Tweener::setCurrentTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
-    k->currentTween = scene->tween(name);
+    k->currentTween = scene->tween(name, KTItemTweener::Position);
     if (k->currentTween) {
         k->configurator->setCurrentTween(k->currentTween);
     } 
@@ -722,7 +722,7 @@ void Tweener::setEditEnv()
     k->mode = Settings::Edit;
 
     KTScene *scene = k->scene->scene();
-    k->objects = scene->getItemsFromTween(k->currentTween->name());
+    k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Position);
     k->path = k->currentTween->graphicsPath();
 
     k->path->setZValue(maxZValue());

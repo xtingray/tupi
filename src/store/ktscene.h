@@ -147,13 +147,13 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         void removeTweenObject(KTGraphicObject *object);
         void removeTweenObject(KTSvgItem *object);
 
-        bool tweenExists(const QString &name);
-        void removeTween(const QString &name);
+        bool tweenExists(const QString &name, KTItemTweener::Type type);
+        void removeTween(const QString &name, KTItemTweener::Type type);
 
-        KTItemTweener *tween(const QString &name);
+        KTItemTweener *tween(const QString &name, KTItemTweener::Type type);
 
         QList<QString> getTweenNames(KTItemTweener::Type type);
-        QList<QGraphicsItem *> getItemsFromTween(const QString &name);
+        QList<QGraphicsItem *> getItemsFromTween(const QString &name, KTItemTweener::Type type);
 
         int getTotalTweens();
 

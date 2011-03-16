@@ -384,6 +384,8 @@ void Settings::setParameters(KTItemTweener *currentTween)
     setEditMode();
 
     k->input->setText(currentTween->name());
+    kFatal() << "Settings::setParameters() - Index: " << currentTween->tweenRotationType();
+    k->comboType->setCurrentIndex(currentTween->tweenRotationType());
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -481,9 +483,6 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
-
-    kFatal() << "Settings::tweenToXml() - Origin X: " << point.x();
-    kFatal() << "Settings::tweenToXml() - Origin Y: " << point.y();
 
     root.setAttribute("rotationType", k->rotationType);
     int speed = k->comboSpeed->currentText().toInt();

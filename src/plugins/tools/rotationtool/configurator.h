@@ -80,6 +80,7 @@ class Configurator : public QFrame
         void removeTween();
         void removeTween(const QString &name);
         void closeTweenProperties();
+        void updateTweenData(const QString &name);
         
     signals:
         void startingPointChanged(int index);
@@ -89,6 +90,7 @@ class Configurator : public QFrame
         void editModeOn();
         void clickedApplyTween();
         void clickedResetInterface();
+        void getTweenData(const QString &name);
         
     private:
         void setPropertiesPanel();
