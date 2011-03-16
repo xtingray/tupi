@@ -150,6 +150,7 @@ void Settings::setInnerForm()
     k->comboInit = new QComboBox();
     k->comboInit->setMaximumWidth(50);
     k->comboInit->setEditable(false);
+    k->comboInit->setValidator(new QIntValidator(k->comboInit));
 
     connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
 
@@ -159,6 +160,7 @@ void Settings::setInnerForm()
     k->comboEnd->setFixedWidth(60);
     k->comboEnd->setEditable(true);
     k->comboEnd->addItem(QString::number(1));
+    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
     connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
 
@@ -203,6 +205,7 @@ void Settings::setInnerForm()
     k->comboSpeed = new QComboBox();
     k->comboSpeed->setMaximumWidth(50);
     k->comboSpeed->setEditable(true);
+    k->comboSpeed->setValidator(new QIntValidator(k->comboSpeed));
     for (int i=0; i<=359; i++)
          k->comboSpeed->addItem(QString::number(i));
     k->comboSpeed->setCurrentIndex(5);
@@ -307,8 +310,10 @@ void Settings::setRangeForm()
 
     k->comboStart = new QComboBox();
     k->comboStart->setEditable(true);
-    for (int i=0; i<=359; i++)
+    k->comboStart->setValidator(new QIntValidator(k->comboStart));
+    for (int i=-359; i<=359; i++)
          k->comboStart->addItem(QString::number(i));
+    k->comboStart->setCurrentIndex(359);
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -322,8 +327,10 @@ void Settings::setRangeForm()
 
     k->comboFinish = new QComboBox();
     k->comboFinish->setEditable(true);
-    for (int i=0; i<=359; i++)
+    k->comboFinish->setValidator(new QIntValidator(k->comboFinish));
+    for (int i=-359; i<=359; i++)
          k->comboFinish->addItem(QString::number(i));
+    k->comboFinish->setCurrentIndex(359);
 
     QHBoxLayout *endLayout = new QHBoxLayout;
     endLayout->setAlignment(Qt::AlignHCenter);
@@ -334,6 +341,8 @@ void Settings::setRangeForm()
 
     k->rangeLoopBox = new QCheckBox(tr("Loop"), k->rangePanel);
     k->rangeLoopBox->setChecked(true);
+    connect(k->rangeLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
+
     QVBoxLayout *loopLayout = new QVBoxLayout;
     loopLayout->setAlignment(Qt::AlignHCenter);
     loopLayout->setMargin(0);
@@ -341,6 +350,8 @@ void Settings::setRangeForm()
     loopLayout->addWidget(k->rangeLoopBox);
 
     k->reverseLoopBox = new QCheckBox(tr("Loop with Reverse"), k->rangePanel);
+    connect(k->reverseLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateRangeCheckbox(int)));
+
     QVBoxLayout *reverseLayout = new QVBoxLayout;
     reverseLayout->setAlignment(Qt::AlignHCenter);
     reverseLayout->setMargin(0);
@@ -384,8 +395,21 @@ void Settings::setParameters(KTItemTweener *currentTween)
     setEditMode();
 
     k->input->setText(currentTween->name());
-    kFatal() << "Settings::setParameters() - Index: " << currentTween->tweenRotationType();
     k->comboType->setCurrentIndex(currentTween->tweenRotationType());
+    k->comboSpeed->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));
+    k->comboSpeed->setCurrentIndex(0);
+
+    if (currentTween->tweenRotationType() == KTItemTweener::Continuos) {
+        k->clockLoopBox->setChecked(currentTween->tweenRotateLoop());
+        k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
+    } else {
+        k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));
+        k->comboStart->setCurrentIndex(0);
+        k->comboFinish->setItemText(0, QString::number(currentTween->tweenRotateEndDegree()));
+        k->comboFinish->setCurrentIndex(0);
+        k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
+        k->reverseLoopBox->setChecked(currentTween->tweenReverseLoop());
+    }
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -605,4 +629,16 @@ void Settings::checkLimit()
 
     k->totalSteps = end - begin + 1;
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->totalSteps));
+}
+
+void Settings::updateRangeCheckbox(int state)
+{
+    if (k->reverseLoopBox->isChecked() && k->rangeLoopBox->isChecked())
+        k->rangeLoopBox->setChecked(false);
+}
+
+void Settings::updateReverseCheckbox(int state)
+{
+    if (k->reverseLoopBox->isChecked() && k->rangeLoopBox->isChecked())
+        k->reverseLoopBox->setChecked(false);
 }

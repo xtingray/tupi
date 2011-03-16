@@ -90,6 +90,12 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         QString tweenType();
 
         KTItemTweener::RotationType tweenRotationType();
+        int tweenRotateSpeed();
+        bool tweenRotateLoop();
+        KTItemTweener::RotateDirection tweenRotateDirection();
+        int tweenRotateStartDegree();
+        int tweenRotateEndDegree();
+        bool tweenReverseLoop();
         
     private:
         struct Private;

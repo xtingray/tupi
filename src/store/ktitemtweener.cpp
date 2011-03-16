@@ -316,3 +316,33 @@ KTItemTweener::RotationType KTItemTweener::tweenRotationType()
 {
     return k->rotationType;
 }
+
+int KTItemTweener::tweenRotateSpeed()
+{
+    return k->rotateSpeed;
+}
+
+bool KTItemTweener::tweenRotateLoop()
+{
+    return k->rotateLoop;
+}
+
+KTItemTweener::RotateDirection KTItemTweener::tweenRotateDirection()
+{
+    return k->rotateDirection;
+}
+
+int KTItemTweener::tweenRotateStartDegree()
+{
+    return k->rotateStartDegree;
+}
+
+int KTItemTweener::tweenRotateEndDegree()
+{
+    return k->rotateEndDegree;
+}
+
+bool KTItemTweener::tweenReverseLoop()
+{
+    return k->reverseLoop;
+}

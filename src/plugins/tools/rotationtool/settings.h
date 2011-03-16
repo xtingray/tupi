@@ -74,6 +74,8 @@ class Settings : public QWidget
         void refreshForm(int type);
         void checkBottomLimit(int index);
         void checkTopLimit(int index);
+        void updateRangeCheckbox(int state);
+        void updateReverseCheckbox(int state);
         
     signals:
         void clickedSelect();
