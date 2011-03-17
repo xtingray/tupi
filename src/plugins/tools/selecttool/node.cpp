@@ -34,22 +34,20 @@
  ***************************************************************************/
 
 #include "node.h"
-#include <QCursor>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
 #include <QStyleOptionButton>
 #include <QApplication>
-
 #include <QCursor>
+
 #include "kdebug.h"
 #include "nodemanager.h"
+#include "ktgraphicalgorithm.h"
+#include "ktgraphicobject.h"
 
 #include <cmath> //atan
-#include "ktgraphicalgorithm.h"
-
-#include "ktgraphicobject.h"
 
 #define DEBUG 0
 

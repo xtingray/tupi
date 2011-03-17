@@ -10,13 +10,15 @@ HEADERS += tweener.h \
            buttonspanel.h \ 
            configurator.h \
            settings.h \
-           tweenmanager.h
+           tweenmanager.h \
+           target.h
 
 SOURCES += tweener.cpp \
            buttonspanel.cpp \
            configurator.cpp \
            settings.cpp \
-           tweenmanager.cpp
+           tweenmanager.cpp \
+           target.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib

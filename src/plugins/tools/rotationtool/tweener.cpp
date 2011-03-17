@@ -36,6 +36,7 @@
 #include "tweener.h"
 #include "configurator.h"
 #include "settings.h"
+#include "target.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -53,6 +54,7 @@
 #include "ktgraphicobject.h"
 #include "ktsvgitem.h"
 #include "ktpathitem.h"
+#include "ktpixmapitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
@@ -69,8 +71,11 @@ struct Tweener::Private
     QList<QGraphicsItem *> objects;
 
     KTItemTweener *currentTween;
-
     int startPoint;
+
+    QPointF origin;
+
+    Target *target;
 
     Settings::Mode mode;
     Settings::EditMode editMode;
@@ -168,6 +173,10 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
             if (scene->selectedItems().size() > 0) {
                 k->objects = scene->selectedItems();
                 k->configurator->notifySelection(true);
+                QGraphicsItem *item = k->objects.at(0);
+                QRectF rect = item->sceneBoundingRect();
+                k->origin = rect.center();
+                kFatal() << "Tweener::release() - Center: [" << k->origin.x() << ", " << k->origin.y() << "]";
             }
         }
     }
@@ -335,6 +344,9 @@ void Tweener::setSelect()
 {
     kFatal() << "Tweener::setSelect() - Rotation / Just tracing!";
 
+    if (k->editMode == Settings::AngleRange)
+        k->scene->removeItem(k->target);
+
     if (k->mode == Settings::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
@@ -367,15 +379,21 @@ void Tweener::setSelect()
 
 void Tweener::setAngleMode()
 {
+    kFatal() << "Tweener::setAngleMode() - Activating Angle mode!";
+
     k->editMode = Settings::AngleRange;
 
-    foreach (QGraphicsView * view, k->scene->views()) {
+    foreach (QGraphicsView *view, k->scene->views()) {
              view->setDragMode (QGraphicsView::NoDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                       item->setFlag(QGraphicsItem::ItemIsMovable, false);
              }
     }
+
+    k->target = new Target(k->origin, k->objects.at(0), k->scene);
+    connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+    k->scene->addItem(k->target);
 }
 
 /* This method resets this plugin */
@@ -410,16 +428,17 @@ void Tweener::applyTween()
                  KTLibraryObject::Type type = KTLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item);
                  QRectF rect = item->sceneBoundingRect();
-                 QPointF point = item->transformOriginPoint();
-                 QPointF origin = QPointF(point.x() + (rect.width()/2), point.y() + (rect.height()/2));
+                 QPointF origin = origin = item->mapFromParent(k->origin);
 
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
                      type = KTLibraryObject::Svg;
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  } else {
                      if (qgraphicsitem_cast<KTPathItem *>(item))
-                         origin = rect.center();
+                         origin = k->origin;
                  }
+
+                 kFatal() << "Tweener::applyTween() - Center: [" << origin.x() << ", " << origin.y() << "]";
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
@@ -510,7 +529,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, origin));
+                                            k->configurator->tweenToXml(k->startPoint, k->origin));
                  emit requested(&request);
 
                  int total = k->startPoint + k->configurator->totalSteps();
@@ -536,6 +555,11 @@ void Tweener::applyTween()
     }
 
     setCurrentTween(name);
+}
+
+void Tweener::updateOriginPoint(const QPointF &point)
+{
+    k->origin = point;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

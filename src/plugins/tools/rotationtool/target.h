@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,58 +33,41 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#ifndef NODE_H
+#define NODE_H
 
-#include <kttoolplugin.h>
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPointF>
 
 /**
  * @author Gustav Gonzalez 
- * 
 */
 
-class Tweener : public KTToolPlugin
+class Target : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-
+    
     public:
-        Tweener();
-        virtual ~Tweener();
-        virtual void init(KTGraphicsScene *scene);
+        
+        Target(const QPointF & pos = QPoint(0,0), QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~Target();
+        
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+        QRectF boundingRect() const;
+        QPointF position();
 
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-
-        virtual QMap<QString, KAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        virtual void aboutToChangeTool();
-
-        virtual void updateScene(KTGraphicsScene *scene);
-        virtual void saveConfig();
-
-    private:
-        void setupActions();
-        int framesTotal();
-        void clearSelection();
-
+    signals:
+        void positionUpdated(const QPointF &point);
+        
+    protected:
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        
     private:
         struct Private;
         Private *const k;
-
-    private slots:
-        void setSelect();
-        void setAngleMode();
-        void setEditEnv();
-        void applyReset();
-        void applyTween();
-        void updateStartPoint(int index);
-        void setCurrentTween(const QString &name);
-        void updateOriginPoint(const QPointF &point);
 };
 
 #endif

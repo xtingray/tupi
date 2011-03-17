@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,58 +33,95 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#include "target.h"
+#include "kdebug.h"
+#include "ktgraphicalgorithm.h"
+#include "ktgraphicobject.h"
 
-#include <kttoolplugin.h>
+#include <QCursor>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QStyleOption>
+#include <QStyleOptionButton>
+#include <QApplication>
+
+#define DEBUG 0
 
 /**
- * @author Gustav Gonzalez 
+ * This class defines the data structure for a node, and all the methods required to manipulate it.
  * 
+ * @author Gustav Gonzalez 
 */
 
-class Tweener : public KTToolPlugin
+struct Target::Private
 {
-    Q_OBJECT
-
-    public:
-        Tweener();
-        virtual ~Tweener();
-        virtual void init(KTGraphicsScene *scene);
-
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-
-        virtual QMap<QString, KAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        virtual void aboutToChangeTool();
-
-        virtual void updateScene(KTGraphicsScene *scene);
-        virtual void saveConfig();
-
-    private:
-        void setupActions();
-        int framesTotal();
-        void clearSelection();
-
-    private:
-        struct Private;
-        Private *const k;
-
-    private slots:
-        void setSelect();
-        void setAngleMode();
-        void setEditEnv();
-        void applyReset();
-        void applyTween();
-        void updateStartPoint(int index);
-        void setCurrentTween(const QString &name);
-        void updateOriginPoint(const QPointF &point);
+    QGraphicsItem *parent;
+    QPointF position;
 };
 
-#endif
+Target::Target(const QPointF & pos, QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsItem(0, scene), k(new Private)
+{
+    k->parent = parent;
+
+    QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
+    setFlag(ItemIsSelectable, true);
+    setFlag(ItemIsMovable, true);
+    setFlag(ItemIsFocusable, true);
+
+    setPos(pos);
+    setZValue(parent->zValue() + 1);
+}
+
+Target::~Target()
+{
+    delete k;
+}
+
+void Target::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w)
+{
+    Q_UNUSED(w);
+    Q_UNUSED(option);
+    
+    QColor color;
+    color = QColor("green");
+    color.setAlpha(200);
+
+    QRectF square = boundingRect();
+    painter->setBrush(color);
+    painter->drawRoundRect(square);
+}
+
+QRectF Target::boundingRect() const
+{
+    QSizeF size(10, 10);
+    QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
+
+    return rect;
+}
+
+void Target::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    K_FUNCINFO;
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    K_FUNCINFO;
+
+    kFatal() << "Target::mouseReleaseEvent() - New point: [" << event->scenePos().x() << ", " << event->scenePos().y() << "]";
+    emit positionUpdated(event->scenePos()); 
+
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void Target::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+QPointF Target::position()
+{
+    return k->position;
+}
