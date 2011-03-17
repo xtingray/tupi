@@ -163,7 +163,7 @@ void Settings::setInnerForm()
     k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
     connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
-    connect(k->comboEnd, SIGNAL(editTextChanged(const QString &)), this, SLOT(updateTotalSteps(const QString &)));
+    // connect(k->comboEnd, SIGNAL(editTextChanged(const QString &)), this, SLOT(updateTotalSteps(const QString &)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -303,9 +303,10 @@ void Settings::setRangeForm()
     k->comboStart = new QComboBox();
     k->comboStart->setEditable(true);
     k->comboStart->setValidator(new QIntValidator(k->comboStart));
-    for (int i=-359; i<=359; i++)
+    for (int i=0; i<=359; i++)
          k->comboStart->addItem(QString::number(i));
-    k->comboStart->setCurrentIndex(359);
+
+    connect(k->comboStart, SIGNAL(currentIndexChanged(int)), this, SLOT(checkRange(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -320,9 +321,12 @@ void Settings::setRangeForm()
     k->comboFinish = new QComboBox();
     k->comboFinish->setEditable(true);
     k->comboFinish->setValidator(new QIntValidator(k->comboFinish));
-    for (int i=-359; i<=359; i++)
+    for (int i=0; i<=359; i++)
          k->comboFinish->addItem(QString::number(i));
-    k->comboFinish->setCurrentIndex(359);
+
+    k->comboFinish->setCurrentIndex(5);
+
+    connect(k->comboFinish, SIGNAL(currentIndexChanged(int)), this, SLOT(checkRange(int)));
 
     QHBoxLayout *endLayout = new QHBoxLayout;
     endLayout->setAlignment(Qt::AlignHCenter);
@@ -529,8 +533,8 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
                int start = k->comboStart->currentText().toInt();
                root.setAttribute("rotateStartDegree", start);
 
-               int limit = k->comboFinish->currentText().toInt();
-               root.setAttribute("rotateEndDegree", limit);
+               int end = k->comboFinish->currentText().toInt();
+               root.setAttribute("rotateEndDegree", end);
 
                bool reverse = k->reverseLoopBox->isChecked();
                if (reverse)
@@ -540,33 +544,53 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
                double angle = start;
                bool token = false;
-               for (int i=0; i < k->totalSteps; i++) {
-                    KTTweenerStep *step = new KTTweenerStep(i);
-                    step->setRotation(angle);
-                    root.appendChild(step->toXml(doc));
 
-                    if (!token) {
-                        if (angle < limit)
-                             angle += speed;
-                    } else {
-                        angle -= speed;
-                    }
+               if (start < end) {
+                   for (int i=0; i < k->totalSteps; i++) {
+                        KTTweenerStep *step = new KTTweenerStep(i);
+                        step->setRotation(angle);
+                        root.appendChild(step->toXml(doc));
 
-                    if (reverse) {
-                        if (angle >= limit)
-                            token = true;
-                        else if (angle < start) 
-                                 token = false;
-                    } else if (loop && angle >= limit) {
-                               angle = start;
-                    } 
+                        if (!token) {
+                            if (angle < end)
+                                angle += speed;
+                        } else {
+                            angle -= speed;
+                        }
+
+                        if (reverse) {
+                            if (angle >= end)
+                                token = true;
+                            else if (angle < start) 
+                                     token = false;
+                        } else if (loop && angle >= end) {
+                                   angle = start;
+                        } 
+                   }
+               } else {
+                   for (int i=0; i < k->totalSteps; i++) {
+                        KTTweenerStep *step = new KTTweenerStep(i);
+                        step->setRotation(angle);
+                        root.appendChild(step->toXml(doc));
+
+                        if (!token) {
+                            if (angle > end)
+                                angle -= speed;
+                        } else {
+                            angle += speed;
+                        }
+
+                        if (reverse) {
+                            if (angle <= end)
+                                token = true;
+                            else if (angle > start)
+                                     token = false;
+                        } else if (loop && angle <= end) {
+                                   angle = start;
+                        }
+                   }
                }
     }
-
-    /*
-    foreach (KTTweenerStep *step, k->stepViewer->steps())
-             root.appendChild(step->toXml(doc));
-    */
 
     doc.appendChild(root);
 
@@ -632,6 +656,21 @@ void Settings::updateReverseCheckbox(int state)
 
 void Settings::updateTotalSteps(const QString &text)
 {
+    Q_UNUSED(text);
     checkLimit();
 }
 
+void Settings::checkRange(int index)
+{
+    Q_UNUSED(index);
+
+    int start = k->comboStart->currentText().toInt();
+    int end = k->comboFinish->currentText().toInt();
+
+    if (start == end) {
+        if (k->comboFinish->currentIndex() == 359)
+            k->comboStart->setCurrentIndex(k->comboStart->currentIndex() - 1);
+        else
+            k->comboFinish->setCurrentIndex(k->comboFinish->currentIndex() + 1);
+    }
+}
