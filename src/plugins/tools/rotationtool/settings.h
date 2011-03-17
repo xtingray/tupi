@@ -76,6 +76,7 @@ class Settings : public QWidget
         void checkTopLimit(int index);
         void updateRangeCheckbox(int state);
         void updateReverseCheckbox(int state);
+        void updateTotalSteps(const QString &text);
         
     signals:
         void clickedSelect();

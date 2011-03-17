@@ -201,11 +201,12 @@ void KTItemTweener::fromXml(const QString &xml)
             kFatal() << "KTItemTweener::fromXml() - Rotation Type: " << k->rotationType;
 
             k->rotateSpeed = root.attribute("rotateSpeed").toInt();
-            k->rotateLoop = root.attribute("rotateLoop").toInt(); 
+            //k->rotateLoop = root.attribute("rotateLoop").toInt(); 
 
             if (k->rotationType == KTItemTweener::Continuos) {
                 k->rotateDirection = KTItemTweener::RotateDirection(root.attribute("rotateDirection").toInt());
             } else if (k->rotationType == KTItemTweener::Partial) {
+                       k->rotateLoop = root.attribute("rotateLoop").toInt();
                        k->rotateStartDegree = root.attribute("rotateStartDegree").toInt();
                        k->rotateEndDegree = root.attribute("rotateEndDegree").toInt();
                        k->reverseLoop = root.attribute("reverseLoop").toInt();
@@ -256,11 +257,12 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         kFatal() << "KTItemTweener::toXml() - Rotation Type: " << k->rotationType;
         root.setAttribute("rotationType", k->rotationType);
         root.setAttribute("rotateSpeed", k->rotateSpeed);
-        root.setAttribute("rotateLoop", k->rotateLoop);
+        // root.setAttribute("rotateLoop", k->rotateLoop);
 
         if (k->rotationType == KTItemTweener::Continuos) {
             root.setAttribute("rotateDirection", k->rotateDirection); 
         } else if (k->rotationType == KTItemTweener::Partial) {
+                   root.setAttribute("rotateLoop", k->rotateLoop);
                    root.setAttribute("rotateStartDegree", k->rotateStartDegree);
                    root.setAttribute("rotateEndDegree", k->rotateEndDegree); 
                    root.setAttribute("reverseLoop", k->reverseLoop);

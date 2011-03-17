@@ -219,7 +219,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 void Tweener::setCurrentTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
-    k->currentTween = scene->tween(name);
+    k->currentTween = scene->tween(name, KTItemTweener::Scale);
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
 }

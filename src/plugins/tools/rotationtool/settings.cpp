@@ -68,7 +68,7 @@ struct Settings::Private
     QComboBox *comboFinish;
 
     QComboBox *comboSpeed;
-    QCheckBox *clockLoopBox; 
+    //QCheckBox *clockLoopBox; 
     QCheckBox *rangeLoopBox;
     QCheckBox *reverseLoopBox;
     QLabel *totalLabel;
@@ -163,6 +163,7 @@ void Settings::setInnerForm()
     k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
     connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+    connect(k->comboEnd, SIGNAL(editTextChanged(const QString &)), this, SLOT(updateTotalSteps(const QString &)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -271,18 +272,9 @@ void Settings::setClockForm()
     k->comboClock->addItem(tr("Clockwise"));
     k->comboClock->addItem(tr("Counterclockwise"));
 
-    k->clockLoopBox = new QCheckBox(tr("Loop"), k->clockPanel);
-    k->clockLoopBox->setChecked(true);
-    QVBoxLayout *loopLayout = new QVBoxLayout;
-    loopLayout->setAlignment(Qt::AlignHCenter);
-    loopLayout->setMargin(0);
-    loopLayout->setSpacing(0);
-    loopLayout->addWidget(k->clockLoopBox);
-
     clockLayout->addWidget(directionLabel);    
     clockLayout->addWidget(k->comboClock);
     clockLayout->addSpacing(5);
-    clockLayout->addLayout(loopLayout);
     activeClockForm(true);
 }
 
@@ -400,7 +392,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboSpeed->setCurrentIndex(0);
 
     if (currentTween->tweenRotationType() == KTItemTweener::Continuos) {
-        k->clockLoopBox->setChecked(currentTween->tweenRotateLoop());
+        //k->clockLoopBox->setChecked(currentTween->tweenRotateLoop());
         k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
     } else {
         k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));
@@ -513,11 +505,6 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     root.setAttribute("rotateSpeed", speed);
 
     if (k->rotationType == KTItemTweener::Continuos) {
-        if (k->clockLoopBox->isChecked())
-            root.setAttribute("rotateLoop", "1");
-        else
-            root.setAttribute("rotateLoop", "0");
-
         int direction = k->comboClock->currentIndex();
         root.setAttribute("rotateDirection", direction);
 
@@ -642,3 +629,9 @@ void Settings::updateReverseCheckbox(int state)
     if (k->reverseLoopBox->isChecked() && k->rangeLoopBox->isChecked())
         k->reverseLoopBox->setChecked(false);
 }
+
+void Settings::updateTotalSteps(const QString &text)
+{
+    checkLimit();
+}
+
