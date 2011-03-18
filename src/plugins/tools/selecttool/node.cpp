@@ -76,7 +76,6 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
         QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private(node, action, manager, parent))
 {
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
-    // setParentItem(k->parent);
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsFocusable, true);
@@ -97,36 +96,26 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(w);
     Q_UNUSED(option);
     
-    bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
-    painter->setRenderHint(QPainter::Antialiasing, false);
+    //bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
+    //painter->setRenderHint(QPainter::Antialiasing, false);
     
     QColor color;
    
-    /* 
-    if ((option->state & QStyle::State_Sunken) && (k->action == Rotate)) {
-        color = QColor("white");
-        color.setAlpha(200);
+    if (k->typeNode != Center) {
+        if (k->action == Rotate) {
+            color = QColor(31, 183, 180);
+            color.setAlpha(150);
+        } else {
+            color = QColor("green");
+            color.setAlpha(200);
+        }
     } else {
-        color = QColor("green");
-        color.setAlpha(200);
-    }
-    */
-
-   if (k->typeNode != Center) {
-       if (k->action == Rotate) {
-           color = QColor(31, 183, 180);
-           color.setAlpha(150);
-       } else {
-           color = QColor("green");
-           color.setAlpha(200);
-       }
-    } else {
-       if (k->generalState == Scale) {
-           color = QColor(150, 150, 150);
-       } else {
+        if (k->generalState == Scale) {
+            color = QColor(150, 150, 150);
+        } else {
            color = QColor(255, 0, 0);
-       }
-       color.setAlpha(150);
+        }
+        color.setAlpha(150);
     }
 
     QRectF square = boundingRect();
@@ -141,21 +130,29 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     if (k->typeNode == Center) {
         painter->save();
-        painter->setPen(Qt::white);
-        painter->drawLine(square.topLeft(), square.bottomRight());
-        painter->drawLine(square.bottomLeft(), square.topRight());
+        color = QColor("white");
+        color.setAlpha(220);
+        painter->setPen(color);
+
+        QPointF point1 = QPointF(square.topLeft().x() + 2, square.topLeft().y() + 2);
+        QPointF point2 = QPointF(square.bottomRight().x() - 2, square.bottomRight().y() - 2);
+        QPointF point3 = QPointF(square.bottomLeft().x() + 2, square.bottomLeft().y() - 2);
+        QPointF point4 = QPointF(square.topRight().x() - 2, square.topRight().y() + 2);
+
+        painter->drawLine(point1, point2);
+        painter->drawLine(point3, point4);
         painter->restore();
     }
     
-    painter->setRenderHint(QPainter::Antialiasing, antialiasing);
+    //painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
 QRectF Node::boundingRect() const
 {
     QSizeF size(8, 8);
-    QRectF r(QPointF(-size.width()/2, -size.height()/2), size);
+    QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
 
-    return r;
+    return rect;
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)

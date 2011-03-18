@@ -87,6 +87,7 @@ class Configurator : public QFrame
         void clickedSelect();
         void clickedDefineAngle();
         void clickedRemoveTween(const QString &name);
+        void addModeOn();
         void editModeOn();
         void clickedApplyTween();
         void clickedResetInterface();

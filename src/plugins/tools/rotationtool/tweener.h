@@ -80,9 +80,11 @@ class Tweener : public KTToolPlugin
     private slots:
         void setSelect();
         void setAngleMode();
+        void addModeOn();
         void setEditEnv();
         void applyReset();
         void applyTween();
+        void removeTween(const QString &name);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
         void updateOriginPoint(const QPointF &point);

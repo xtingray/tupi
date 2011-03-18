@@ -216,6 +216,8 @@ void Configurator::addTween(const QString &name)
     activePropertiesPanel(true);
 
     k->state = Properties;
+
+    emit addModeOn();
 }
 
 void Configurator::editTween()

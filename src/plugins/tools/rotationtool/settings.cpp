@@ -163,7 +163,6 @@ void Settings::setInnerForm()
     k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
     connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
-    // connect(k->comboEnd, SIGNAL(editTextChanged(const QString &)), this, SLOT(updateTotalSteps(const QString &)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -501,9 +500,11 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     root.setAttribute("name", currentTweenName());
     root.setAttribute("type", KTItemTweener::Rotation);
     root.setAttribute("init", currentFrame);
+    
+    checkFramesRange();
     root.setAttribute("frames", k->totalSteps);
-    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
 
+    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     root.setAttribute("rotationType", k->rotationType);
     int speed = k->comboSpeed->currentText().toInt();
     root.setAttribute("rotateSpeed", speed);
@@ -619,16 +620,16 @@ void Settings::refreshForm(int type)
 void Settings::checkBottomLimit(int index)
 {
     emit startingPointChanged(index);
-    checkLimit();
+    checkFramesRange();
 }
 
 void Settings::checkTopLimit(int index)
 {
     Q_UNUSED(index);
-    checkLimit();
+    checkFramesRange();
 }
 
-void Settings::checkLimit()
+void Settings::checkFramesRange()
 {
     int begin = k->comboInit->currentText().toInt();
     int end = k->comboEnd->currentText().toInt();
@@ -657,7 +658,7 @@ void Settings::updateReverseCheckbox(int state)
 void Settings::updateTotalSteps(const QString &text)
 {
     Q_UNUSED(text);
-    checkLimit();
+    checkFramesRange();
 }
 
 void Settings::checkRange(int index)

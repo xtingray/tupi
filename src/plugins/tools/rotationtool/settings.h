@@ -94,7 +94,7 @@ class Settings : public QWidget
         void setRangeForm();
         void activeRangeForm(bool enable);
         void setEditMode();
-        void checkLimit();
+        void checkFramesRange();
 
         struct Private;
         Private *const k;

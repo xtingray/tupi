@@ -65,7 +65,7 @@ Target::Target(const QPointF & pos, QGraphicsItem *parent, QGraphicsScene *scene
     k->parent = parent;
 
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
-    setFlag(ItemIsSelectable, true);
+    setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsFocusable, true);
 
@@ -85,11 +85,24 @@ void Target::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     
     QColor color;
     color = QColor("green");
-    color.setAlpha(200);
+    color.setAlpha(180);
 
     QRectF square = boundingRect();
     painter->setBrush(color);
     painter->drawRoundRect(square);
+
+    painter->save();
+    color = QColor("white");
+    color.setAlpha(220); 
+    painter->setPen(color);
+    QPointF point1 = QPointF(square.topLeft().x() + 3, square.topLeft().y() + 3); 
+    QPointF point2 = QPointF(square.bottomRight().x() - 3, square.bottomRight().y() - 3);
+    QPointF point3 = QPointF(square.bottomLeft().x() + 3, square.bottomLeft().y() - 3);
+    QPointF point4 = QPointF(square.topRight().x() - 3, square.topRight().y() + 3);
+
+    painter->drawLine(point1, point2);
+    painter->drawLine(point3, point4);
+    painter->restore();
 }
 
 QRectF Target::boundingRect() const

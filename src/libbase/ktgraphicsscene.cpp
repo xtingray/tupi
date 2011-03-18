@@ -314,6 +314,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
         QList<int> indexes = frame->itemIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              KTGraphicObject *object = frame->graphic(indexes.at(i));
+             object->item()->setToolTip("");
              if (mode != KTGraphicsScene::Current) {
                  if (!object->hasTween())
                      addGraphicObject(object, opacity);
@@ -325,6 +326,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
         indexes = frame->svgIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              KTSvgItem *object = frame->svg(indexes.at(i));
+             object->setToolTip("");
              if (!object->hasTween()) {
                  addSvgObject(object, opacity);
              } else {
