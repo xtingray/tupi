@@ -348,16 +348,7 @@ void Tweener::setCreatePath()
     }
 
     k->editMode = Settings::Path;
-
-    foreach (QGraphicsView * view, k->scene->views()) {
-             view->setDragMode (QGraphicsView::NoDrag);
-             foreach (QGraphicsItem *item, view->scene()->items()) {
-                      if (item != k->path) {
-                          item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                          item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                      }
-             }
-    }
+    disableSelection();
 }
 
 /* This method initializes the "Select object" mode */
@@ -463,6 +454,7 @@ void Tweener::applyReset()
     k->editMode = Settings::None;
 
     clearSelection();
+    disableSelection();
 
     if (k->group) {
         k->group->clear();
@@ -705,6 +697,14 @@ void Tweener::removeTween(const QString &name)
     KTScene *scene = k->scene->scene();
     scene->removeTween(name, KTItemTweener::Position);
 
+    foreach (QGraphicsView * view, k->scene->views()) {
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      QString tip = item->toolTip();
+                      if (tip.startsWith(tr("Position Tween") + ": " + name))
+                          item->setToolTip("");
+             }
+    }
+
     applyReset();
 }
 
@@ -756,6 +756,19 @@ void Tweener::clearSelection()
         }
         k->objects.clear();
         k->configurator->notifySelection(false);
+    }
+}
+
+/* This method disables object selection */
+
+void Tweener::disableSelection()
+{
+    foreach (QGraphicsView *view, k->scene->views()) {
+             view->setDragMode (QGraphicsView::NoDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+             }
     }
 }
 

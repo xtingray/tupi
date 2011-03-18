@@ -321,6 +321,7 @@ void Tweener::setEditEnv()
 {
     kFatal() << "Tweener::setEditEnv() - Just tracing!";
     k->mode = Settings::Edit;
+    k->editMode = Settings::AngleRange;
 
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Rotation);
@@ -339,7 +340,7 @@ int Tweener::framesTotal()
     return total;
 }
 
-/* This method clear selection */
+/* This method clears selection */
 
 void Tweener::clearSelection()
 {
@@ -350,6 +351,19 @@ void Tweener::clearSelection()
         }
         k->objects.clear();
         k->configurator->notifySelection(false);
+    }
+}
+
+/* This method disables object selection */
+
+void Tweener::disableSelection()
+{
+    foreach (QGraphicsView *view, k->scene->views()) {
+             view->setDragMode (QGraphicsView::NoDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+             }
     }
 }
 
@@ -388,6 +402,7 @@ void Tweener::setSelect()
                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                  item->setSelected(true);
         }
+        k->configurator->notifySelection(true);
     }
 
 }
@@ -398,14 +413,7 @@ void Tweener::setAngleMode()
 
     k->editMode = Settings::AngleRange;
 
-    foreach (QGraphicsView *view, k->scene->views()) {
-             view->setDragMode (QGraphicsView::NoDrag);
-             foreach (QGraphicsItem *item, view->scene()->items()) {
-                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
-             }
-    }
-
+    disableSelection();
     addTarget();
 }
 
@@ -414,9 +422,14 @@ void Tweener::setAngleMode()
 void Tweener::applyReset()
 {
     kFatal() << "Tweener::applyReset() - Reseting interface! - mode: " << k->mode;
+    kFatal() << "Tweener::applyReset() - Reseting interface! - edit mode: " << k->editMode;
 
-    if (k->mode == Settings::Edit || k->mode == Settings::Add)
+    if ((k->mode == Settings::Edit || k->mode == Settings::Add) && k->editMode == Settings::AngleRange)
         k->scene->removeItem(k->target);
+    else
+        kFatal() << "Tweener::applyReset() - Ouch! :S";
+
+    disableSelection();
 
     k->mode = Settings::View;
     k->editMode = Settings::None;
@@ -581,6 +594,14 @@ void Tweener::removeTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
     scene->removeTween(name, KTItemTweener::Rotation);
+
+    foreach (QGraphicsView * view, k->scene->views()) {
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      QString tip = item->toolTip();
+                      if (tip.startsWith(tr("Rotation Tween") + ": " + name))
+                          item->setToolTip("");
+             }
+    }
 
     applyReset();
 }

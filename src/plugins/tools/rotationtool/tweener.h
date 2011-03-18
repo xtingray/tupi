@@ -71,6 +71,7 @@ class Tweener : public KTToolPlugin
         void setupActions();
         int framesTotal();
         void clearSelection();
+        void disableSelection();
         void addTarget();
 
     private:

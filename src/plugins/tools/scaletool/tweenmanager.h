@@ -68,6 +68,7 @@ class TweenManager: public QWidget
     private slots:
         void addTween();
         void editTween();
+        void editTween(QListWidgetItem *item);
         void removeTween();
         void showMenu(const QPoint &point);
         void updateTweenData(QListWidgetItem *item);

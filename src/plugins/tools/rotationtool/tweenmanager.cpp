@@ -86,6 +86,7 @@ TweenManager::TweenManager(QWidget *parent) : QWidget(parent), k(new Private)
     k->tweensList->setFixedHeight(68);
     connect(k->tweensList, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showMenu(const QPoint &)));
     connect(k->tweensList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(updateTweenData(QListWidgetItem *)));
+    connect(k->tweensList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(editTween(QListWidgetItem *)));
 
     listLayout->addWidget(k->tweensList);
 
@@ -142,6 +143,11 @@ void TweenManager::addTween()
 void TweenManager::editTween()
 {
     QListWidgetItem *item = k->tweensList->currentItem();
+    emit editCurrentTween(item->text());
+}
+
+void TweenManager::editTween(QListWidgetItem *item)
+{
     emit editCurrentTween(item->text());
 }
 

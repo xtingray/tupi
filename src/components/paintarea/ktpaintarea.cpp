@@ -532,6 +532,25 @@ bool KTPaintArea::canPaint() const
 void KTPaintArea::deleteItems()
 {
     // K_FUNCINFO;
+
+    if (k->currentTool.compare(tr("Position Tween")) == 0)
+        return;
+
+    if (k->currentTool.compare(tr("Rotation Tween")) == 0)
+        return;
+
+    if (k->currentTool.compare(tr("Scale Tween")) == 0)
+        return;        
+
+    if (k->currentTool.compare(tr("Opacity Tween")) == 0)
+        return;
+
+    if (k->currentTool.compare(tr("Colouring Tween")) == 0)
+        return;
+
+    if (k->currentTool.compare(tr("Compound Tween")) == 0)
+        return;
+
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (!selected.empty()) {

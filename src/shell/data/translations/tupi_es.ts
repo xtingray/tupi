@@ -1807,6 +1807,36 @@
         <source>No items selected</source>
         <translation>No hay items seleccionados</translation>
     </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Position Tween</source>
+        <translation>Tween de Posición</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Rotation Tween</source>
+        <translation>Tween de Rotación</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Scale Tween</source>
+        <translation>Tween de Escala</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Opacity Tween</source>
+        <translation>Tween de Opacidad</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Colouring Tween</source>
+        <translation>Tween de Color</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Compound Tween</source>
+        <translation>Tween Compuesto</translation>
+    </message>
 </context>
 <context>
     <name>KTPaintAreaBase</name>

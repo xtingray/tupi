@@ -113,11 +113,12 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 
         setRowCount(0);
 
+        // This list contains the (green) key points of the path 
+        QList<QPointF> *keys = new QList<QPointF>();
+
         // path().elementCount(): Returns the number of path elements in the painter path.
 
-         QList<QPointF> *keys = new QList<QPointF>();
-
-         for (int i = 1; i < path->path().elementCount(); i++) {
+        for (int i = 1; i < path->path().elementCount(); i++) {
               QPainterPath::Element e  = path->path().elementAt(i);
               if (e.type != QPainterPath::CurveToElement) {
                   if ((e.type == QPainterPath::CurveToDataElement) &&
@@ -128,13 +129,14 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                   keys->append(point); 
                   count++;
               }
-         }
+        }
 
-         int control = 0;
-         QPointF controlKey = keys->at(0);
-         int frames = 0;
+        int control = 0;
+        QPointF controlKey = keys->at(0);
+        int frames = 0;
 
-         for(int i=0; i < points.size()-1; i++) {
+        // Grouping dots by key points
+        for (int i=0; i < points.size()-1; i++) {
              QPointF point = points.at(i);
              if (point == controlKey) {
                  if (frames == 1) {
@@ -187,7 +189,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 
              k->dots->append(point);
              frames++;
-         }
+        }
     }
 }
 
