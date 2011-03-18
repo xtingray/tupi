@@ -262,7 +262,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
        if (k->configurator->startComboSize() < framesNumber)
            k->configurator->initStartCombo(framesNumber, k->startPoint);
 
+       kFatal() << "Tweener::updateScene() - Tracing Edit mode!";
+
     } else if (k->mode == Settings::Add) {
+
+               kFatal() << "Tweener::updateScene() - Tracing Add mode!";
 
                int total = framesTotal();
 
@@ -287,6 +291,8 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                }
 
     } else {
+             kFatal() << "Tweener::updateScene() - Tracing None mode!";
+
              if (scene->currentFrameIndex() != k->startPoint)
                  k->configurator->setStartFrame(scene->currentFrameIndex());
     }
@@ -391,9 +397,7 @@ void Tweener::setAngleMode()
              }
     }
 
-    k->target = new Target(k->origin, k->objects.at(0), k->scene);
-    connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
-    k->scene->addItem(k->target);
+    addTarget();
 }
 
 /* This method resets this plugin */
@@ -428,7 +432,7 @@ void Tweener::applyTween()
                  KTLibraryObject::Type type = KTLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item);
                  QRectF rect = item->sceneBoundingRect();
-                 QPointF origin = origin = item->mapFromParent(k->origin);
+                 QPointF origin = item->mapFromParent(k->origin);
 
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
                      type = KTLibraryObject::Svg;
@@ -560,6 +564,12 @@ void Tweener::applyTween()
 void Tweener::updateOriginPoint(const QPointF &point)
 {
     k->origin = point;
+}
+
+void Tweener::addTarget()
+{
+    k->target = new Target(k->origin, k->objects.at(0), k->scene);
+    connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);
