@@ -276,14 +276,14 @@ void Configurator::removeTween()
     QString name = k->tweenManager->currentTweenName();
     k->tweenManager->removeItemFromList();
 
-    if (k->tweenManager->listSize() == 0)
-        activeButtonsPanel(false);
-
     removeTween(name);
 }
 
 void Configurator::removeTween(const QString &name)
 {
+    if (k->tweenManager->listSize() == 0)
+        activeButtonsPanel(false);
+
     emit clickedRemoveTween(name);
 }
 

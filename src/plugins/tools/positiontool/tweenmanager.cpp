@@ -155,7 +155,9 @@ void TweenManager::editTween(QListWidgetItem *item)
 
 void TweenManager::removeTween()
 {
+    kFatal() << "TweenManager::removeTween() - Just tracing!";
     removeItemFromList();
+
     emit removeCurrentTween(k->target);
 }
 
@@ -177,6 +179,7 @@ void TweenManager::showMenu(const QPoint &point)
         QMenu *menu = new QMenu(tr("Options"));
         menu->addAction(edit);
         menu->addAction(remove);
+
         QPoint globalPos = k->tweensList->mapToGlobal(point);
         menu->exec(globalPos);
     }

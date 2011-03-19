@@ -121,7 +121,7 @@ void KTMainWindow::createGUI()
     // Adding the scenes widget to the right side of the interface
 
     m_scenes = new KTScenesWidget;
-    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing, "Scenes Manager", QKeySequence(tr("Shift+S")));
+    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing, "Scenes Manager", QKeySequence(tr("Shift+C")));
     m_actionManager->insert(scenesView->toggleViewAction(), "show scenes");
     addToPerspective(scenesView->toggleViewAction(), Drawing);
 
