@@ -50,26 +50,46 @@ class Settings : public QWidget
 
     public:
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 1, Path, None };
+        enum EditMode { Selection = 1, Properties, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
 
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void setParameters(KTItemTweener *currentTween);
+        void initStartCombo(int totalFrames, int currentIndex);
+        void setStartFrame(int currentIndex);
+
+        int totalSteps();
+
+        void notifySelection(bool flag);
+        int startComboSize();
         QString currentTweenName() const;
         void activateSelectionMode();
+        QString tweenToXml(int currentFrame, QPointF point);
 
     private slots:
         void applyTween();
         void emitOptionChanged(int option);
+        void checkBottomLimit(int index);
+        void checkTopLimit(int index);
+        void updateTotalSteps(const QString &text);
+        void updateLoopCheckbox(int state);
+        void updateReverseCheckbox(int state);
         
     signals:
+        void clickedSelect();
+        void clickedDefineProperties();
         void clickedApplyTween();
         void clickedResetTween();
+        void startingPointChanged(int index);
         
     private:
+        void setInnerForm();
+        void activeInnerForm(bool enable);
         void setEditMode();
+        void checkFramesRange();
+
         struct Private;
         Private *const k;
 };

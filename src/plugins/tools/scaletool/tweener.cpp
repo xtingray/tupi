@@ -36,6 +36,7 @@
 #include "tweener.h"
 #include "configurator.h"
 #include "settings.h"
+#include "target.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -52,6 +53,8 @@
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
 #include "ktsvgitem.h"
+#include "ktpathitem.h"
+#include "ktpixmapitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
@@ -68,8 +71,10 @@ struct Tweener::Private
     QList<QGraphicsItem *> objects;
 
     KTItemTweener *currentTween;
-
     int startPoint;
+
+    QPointF origin;
+    Target *target;
 
     Settings::Mode mode;
     Settings::EditMode editMode;
@@ -105,6 +110,15 @@ void Tweener::init(KTGraphicsScene *scene)
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
     }
+
+    int total = framesTotal();
+    k->configurator->initStartCombo(total, k->scene->currentFrameIndex());
+}
+
+void Tweener::updateStartPoint(int index)
+{
+     if (k->startPoint != index && index >= 0)
+         k->startPoint = index;
 }
 
 /* This method returns the plugin name */
@@ -150,7 +164,18 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    Q_UNUSED(scene);
+
+    if (scene->currentFrameIndex() == k->startPoint) {
+        if (k->editMode == Settings::Selection) {
+            if (scene->selectedItems().size() > 0) {
+                k->objects = scene->selectedItems();
+                k->configurator->notifySelection(true);
+                QGraphicsItem *item = k->objects.at(0);
+                QRectF rect = item->sceneBoundingRect();
+                k->origin = rect.center();
+            }
+        }
+    }
 }
 
 /* This method returns the list of actions defined in this plugin */
@@ -175,7 +200,15 @@ QWidget *Tweener::configurator()
         k->mode = Settings::View;
 
         k->configurator = new Configurator;
+        connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
+        connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
+        connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
+        connect(k->configurator, SIGNAL(addModeOn()), this, SLOT(addModeOn()));
+        connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv()));
+        connect(k->configurator, SIGNAL(clickedDefineProperties()), this, SLOT(setPropertiesMode()));
+        connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
+        connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
     } 
 
     return k->configurator;
@@ -190,6 +223,15 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 
 void Tweener::aboutToChangeTool()
 {
+    if (k->editMode == Settings::Selection) {
+        clearSelection();
+        disableSelection();
+
+        return;
+    }
+
+    if (k->editMode == Settings::Properties)
+        k->scene->removeItem(k->target);
 }
 
 /* This method defines the actions contained in this plugin */
@@ -213,22 +255,167 @@ void Tweener::saveConfig()
 /* This method updates the workspace when the plugin changes the scene */
 
 void Tweener::updateScene(KTGraphicsScene *scene)
-{
+{ 
+    k->mode = k->configurator->mode();
+
+    if (k->mode == Settings::Edit) {
+
+       int framesNumber = framesTotal();
+
+       if (k->configurator->startComboSize() < framesNumber)
+           k->configurator->initStartCombo(framesNumber, k->startPoint);
+
+       if (scene->currentFrameIndex() == k->startPoint)
+           k->scene->addItem(k->target);
+
+    } else if (k->mode == Settings::Add) {
+
+               int total = framesTotal();
+
+               if (k->editMode == Settings::Properties) {
+                   if (total > k->configurator->startComboSize()) {
+                       k->configurator->activateSelectionMode();
+                       clearSelection();
+                       setSelect();
+                   } 
+               } else if (k->editMode == Settings::Selection) {
+                          if (scene->currentFrameIndex() != k->startPoint)
+                              clearSelection();
+                          k->startPoint = scene->currentFrameIndex();
+                          setSelect();
+               }
+
+               if (k->configurator->startComboSize() < total) {
+                   k->configurator->initStartCombo(total, k->startPoint);
+               } else {
+                   if (scene->currentFrameIndex() != k->startPoint)
+                       k->configurator->setStartFrame(scene->currentFrameIndex());
+               }
+
+    } else {
+             if (scene->currentFrameIndex() != k->startPoint)
+                 k->configurator->setStartFrame(scene->currentFrameIndex());
+    }
 }
 
 void Tweener::setCurrentTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
     k->currentTween = scene->tween(name, KTItemTweener::Scale);
+
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
+}
+
+void Tweener::setEditEnv()
+{
+    k->mode = Settings::Edit;
+    k->editMode = Settings::Properties;
+
+    KTScene *scene = k->scene->scene();
+    k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Scale);
+    k->origin = k->currentTween->transformOriginPoint();
+
+    addTarget();
+}
+
+int Tweener::framesTotal()
+{
+    int total = 1;
+    KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+    if (layer)
+        total = layer->framesNumber();
+
+    return total;
+}
+
+/* This method clears selection */
+
+void Tweener::clearSelection()
+{
+    if (k->objects.size() > 0) {
+        foreach (QGraphicsItem *item, k->objects) {
+                 if (item->isSelected())
+                     item->setSelected(false);
+        }
+        k->objects.clear();
+        k->configurator->notifySelection(false);
+    }
+}
+
+/* This method disables object selection */
+
+void Tweener::disableSelection()
+{
+    foreach (QGraphicsView *view, k->scene->views()) {
+             view->setDragMode (QGraphicsView::NoDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+             }
+    }
+}
+
+/* This method initializes the "Select object" mode */
+
+void Tweener::setSelect()
+{
+    if (k->editMode == Settings::Properties)
+        k->scene->removeItem(k->target);
+
+    if (k->mode == Settings::Edit) {
+        if (k->startPoint != k->scene->currentFrameIndex()) {
+            KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                            k->scene->currentLayerIndex(),
+                                                                            k->startPoint, KTProjectRequest::Select, "1");
+            emit requested(&request);
+        }
+    }
+
+    k->editMode = Settings::Selection;
+
+    foreach (QGraphicsView * view, k->scene->views()) {
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      if ((item->zValue() >= 10000) && (item->toolTip().length()==0)) {
+                          item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                      }
+             }
+    }
+
+    // When Object selection is enabled, previous selection is set
+    if (k->objects.size() > 0) {
+        foreach (QGraphicsItem *item, k->objects) {
+                 item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                 item->setSelected(true);
+        }
+        k->configurator->notifySelection(true);
+    }
+
+}
+
+void Tweener::setPropertiesMode()
+{
+    k->editMode = Settings::Properties;
+
+    disableSelection();
+    addTarget();
 }
 
 /* This method resets this plugin */
 
 void Tweener::applyReset()
 {
+    if ((k->mode == Settings::Edit || k->mode == Settings::Add) && k->editMode == Settings::Properties)
+        k->scene->removeItem(k->target);
+
+    disableSelection();
+
+    k->mode = Settings::View;
     k->editMode = Settings::None;
+
+    clearSelection();
+    k->startPoint = k->scene->currentFrameIndex();
 }
 
 /* This method applies to the project, the Tween created from this plugin */
@@ -242,7 +429,169 @@ void Tweener::applyTween()
         return;
     }
 
+    if (!k->scene->scene()->tweenExists(name, KTItemTweener::Scale)) {
+
+        foreach (QGraphicsItem *item, k->objects) {
+
+                 KTLibraryObject::Type type = KTLibraryObject::Item;
+                 int objectIndex = k->scene->currentFrame()->indexOf(item);
+                 QRectF rect = item->sceneBoundingRect();
+                 QPointF origin = item->mapFromParent(k->origin);
+
+                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
+                     type = KTLibraryObject::Svg;
+                     objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 } else {
+                     if (qgraphicsitem_cast<KTPathItem *>(item))
+                         origin = k->origin;
+                 }
+
+                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
+                                            k->scene->currentSceneIndex(),
+                                            k->scene->currentLayerIndex(),
+                                            k->startPoint,
+                                            objectIndex,
+                                            QPointF(), type,
+                                            KTProjectRequest::SetTween,
+                                            k->configurator->tweenToXml(k->startPoint, origin));
+                 emit requested(&request);
+        }
+
+        int framesNumber = framesTotal();
+
+        int total = k->startPoint + k->configurator->totalSteps() - 1;
+
+        if (total > framesNumber) {
+            for (int i = framesNumber; i <= total; i++) {
+                 KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                   k->scene->currentLayerIndex(),
+                                                                   i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                 emit requested(&requestFrame);
+            }
+        }
+
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                        k->scene->currentLayerIndex(),
+                                                                        k->startPoint, KTProjectRequest::Select, "1");
+        emit requested(&request);
+
+    } else {
+
+        QList<QGraphicsItem *> newList;
+
+        foreach (QGraphicsItem *item, k->objects) {
+
+                 KTLibraryObject::Type type = KTLibraryObject::Item;
+                 KTScene *scene = k->scene->scene();
+                 KTLayer *layer = scene->layer(k->scene->currentLayerIndex());
+                 KTFrame *frame = layer->frame(k->currentTween->startFrame());
+                 int objectIndex = frame->indexOf(item);
+
+                 QRectF rect = item->sceneBoundingRect();
+                 QPointF point = item->transformOriginPoint();
+                 QPointF origin = QPointF(point.x() + (rect.width()/2), point.y() + (rect.height()/2));
+
+                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
+                     type = KTLibraryObject::Svg;
+                     objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 } else {
+                     if (qgraphicsitem_cast<KTPathItem *>(item))
+                         origin = rect.center();
+                 }
+
+                 if (k->startPoint != k->currentTween->startFrame()) {
+                     QDomDocument dom;
+                     dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+
+                     KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
+                                                                                    k->scene->currentLayerIndex(),
+                                                                                    k->startPoint, -1,
+                                                                                    QPointF(), type, KTProjectRequest::Add,
+                                                                                    dom.toString());
+                     emit requested(&request);
+
+                     request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
+                                                                   k->scene->currentLayerIndex(),
+                                                                   k->currentTween->startFrame(),
+                                                                   objectIndex, QPointF(), type,
+                                                                   KTProjectRequest::Remove);
+                     emit requested(&request);
+
+                     frame = layer->frame(k->startPoint);
+                     if (type == KTLibraryObject::Item)
+                         objectIndex = frame->graphicItemsCount() - 1;
+                     else
+                         objectIndex = frame->svgItemsCount() - 1;
+
+                     newList.append(frame->graphic(objectIndex)->item());
+                 }
+
+                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
+                                            k->scene->currentSceneIndex(),
+                                            k->scene->currentLayerIndex(),
+                                            k->startPoint,
+                                            objectIndex,
+                                            QPointF(), type,
+                                            KTProjectRequest::SetTween,
+                                            k->configurator->tweenToXml(k->startPoint, k->origin));
+                 emit requested(&request);
+
+                 int total = k->startPoint + k->configurator->totalSteps();
+
+                 int framesNumber = framesTotal();
+
+                 if (framesNumber < total) {
+                     for (int i = framesNumber; i < total; i++) {
+                          KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                          k->scene->currentLayerIndex(),
+                                                          i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                          emit requested(&requestFrame);
+                     }
+                 }
+
+                 request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                                                k->startPoint, KTProjectRequest::Select, "1");
+                 emit requested(&request);
+        }
+
+        if (newList.size() > 0)
+            k->objects = newList;
+    }
+
     setCurrentTween(name);
+    //k->scene->addItem(k->target);
+}
+
+void Tweener::removeTween(const QString &name)
+{
+    KTScene *scene = k->scene->scene();
+    scene->removeTween(name, KTItemTweener::Scale);
+
+    foreach (QGraphicsView * view, k->scene->views()) {
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      QString tip = item->toolTip();
+                      if (tip.startsWith(tr("Scale Tween") + ": " + name))
+                          item->setToolTip("");
+             }
+    }
+
+    applyReset();
+}
+
+void Tweener::updateOriginPoint(const QPointF &point)
+{
+    k->origin = point;
+}
+
+void Tweener::addTarget()
+{
+    k->target = new Target(k->origin, k->objects.at(0), k->scene);
+    connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+}
+
+void Tweener::addModeOn()
+{
+    k->mode = Settings::Add;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

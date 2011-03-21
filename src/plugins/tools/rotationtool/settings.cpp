@@ -403,7 +403,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
         k->comboFinish->setItemText(0, QString::number(currentTween->tweenRotateEndDegree()));
         k->comboFinish->setCurrentIndex(0);
         k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
-        k->reverseLoopBox->setChecked(currentTween->tweenReverseLoop());
+        k->reverseLoopBox->setChecked(currentTween->tweenRotateReverseLoop());
     }
 }
 

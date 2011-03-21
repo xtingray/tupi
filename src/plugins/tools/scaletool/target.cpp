@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,76 +33,108 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef CONFIGURATOR_H
-#define CONFIGURATOR_H
+#include "target.h"
+#include "kdebug.h"
+#include "ktgraphicalgorithm.h"
+#include "ktgraphicobject.h"
 
-#include <QFrame>
-#include "settings.h"
+#include <QCursor>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QStyleOption>
+#include <QStyleOptionButton>
+#include <QApplication>
 
-class QGraphicsPathItem;
-class QListWidgetItem;
-class KTItemTweener;
+#define DEBUG 0
 
 /**
+ * This class defines the data structure for a node, and all the methods required to manipulate it.
+ * 
  * @author Gustav Gonzalez 
 */
 
-class Configurator : public QFrame
+struct Target::Private
 {
-    Q_OBJECT
-
-    public:
-        enum GuiState { Manager = 1, Properties };
-
-        Configurator(QWidget *parent = 0);
-        ~Configurator();
-
-        void loadTweenList(QList<QString> tweenList);
-
-        void initStartCombo(int framesTotal, int currentFrame);
-        void setStartFrame(int currentIndex);
-
-        int totalSteps();
-        void activateSelectionMode();
-        void setCurrentTween(KTItemTweener *currentTween);
-        QString currentTweenName() const;
-        void notifySelection(bool flag);
-        int startComboSize();
-        void closeSettingsPanel();
-        Settings::Mode mode();
-        void resetUI();
-        QString tweenToXml(int currentFrame, QPointF point);
-        
-    private slots:
-        void applyItem();
-        void addTween(const QString &name);
-        void editTween();
-        void removeTween();
-        void removeTween(const QString &name);
-        void closeTweenProperties();
-        void updateTweenData(const QString &name);
-        
-    signals:
-        void startingPointChanged(int index);
-        void clickedSelect();
-        void clickedDefineProperties();
-        void clickedRemoveTween(const QString &name);
-        void addModeOn();
-        void editModeOn();
-        void clickedApplyTween();
-        void clickedResetInterface();
-        void getTweenData(const QString &name);
-        
-    private:
-        void setPropertiesPanel();
-        void activePropertiesPanel(bool enable);
-        void setTweenManagerPanel();
-        void activeTweenManagerPanel(bool enable);
-        void setButtonsPanel();
-        void activeButtonsPanel(bool enable);
-
-        struct Private;
-        Private *const k;
+    QGraphicsItem *parent;
+    QPointF position;
 };
 
-#endif
+Target::Target(const QPointF & pos, QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsItem(0, scene), k(new Private)
+{
+    k->parent = parent;
+
+    QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
+    setFlag(ItemIsSelectable, false);
+    setFlag(ItemIsMovable, true);
+    setFlag(ItemIsFocusable, true);
+
+    setPos(pos);
+    setZValue(parent->zValue() + 1);
+}
+
+Target::~Target()
+{
+    delete k;
+}
+
+void Target::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w)
+{
+    Q_UNUSED(w);
+    Q_UNUSED(option);
+    
+    QColor color;
+    color = QColor("green");
+    color.setAlpha(180);
+
+    QRectF square = boundingRect();
+    painter->setBrush(color);
+    painter->drawRoundRect(square);
+
+    painter->save();
+    color = QColor("white");
+    color.setAlpha(220); 
+    painter->setPen(color);
+    QPointF point1 = QPointF(square.topLeft().x() + 3, square.topLeft().y() + 3); 
+    QPointF point2 = QPointF(square.bottomRight().x() - 3, square.bottomRight().y() - 3);
+    QPointF point3 = QPointF(square.bottomLeft().x() + 3, square.bottomLeft().y() - 3);
+    QPointF point4 = QPointF(square.topRight().x() - 3, square.topRight().y() + 3);
+
+    painter->drawLine(point1, point2);
+    painter->drawLine(point3, point4);
+    painter->restore();
+}
+
+QRectF Target::boundingRect() const
+{
+    QSizeF size(10, 10);
+    QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
+
+    return rect;
+}
+
+void Target::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    K_FUNCINFO;
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    K_FUNCINFO;
+
+    kFatal() << "Target::mouseReleaseEvent() - New point: [" << event->scenePos().x() << ", " << event->scenePos().y() << "]";
+    emit positionUpdated(event->scenePos()); 
+
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void Target::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+QPointF Target::position()
+{
+    return k->position;
+}

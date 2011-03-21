@@ -50,7 +50,7 @@ class Settings : public QWidget
 
     public:
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 1, AngleRange, None };
+        enum EditMode { Selection = 1, Properties, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();

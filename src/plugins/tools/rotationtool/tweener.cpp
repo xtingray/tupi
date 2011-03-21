@@ -74,7 +74,6 @@ struct Tweener::Private
     int startPoint;
 
     QPointF origin;
-
     Target *target;
 
     Settings::Mode mode;
@@ -98,8 +97,6 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
-    kFatal() << "Tweener::init() - Rotation / Just tracing!";
-
     k->scene = scene;
     k->objects.clear();
 
@@ -176,11 +173,9 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 QGraphicsItem *item = k->objects.at(0);
                 QRectF rect = item->sceneBoundingRect();
                 k->origin = rect.center();
-                kFatal() << "Tweener::release() - Center: [" << k->origin.x() << ", " << k->origin.y() << "]";
             }
         }
     }
-
 }
 
 /* This method returns the list of actions defined in this plugin */
@@ -214,8 +209,6 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(clickedDefineAngle()), this, SLOT(setAngleMode()));
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
-    } else {
-        kFatal() << "Tweener::configurator() - There is configurator already!";
     } 
 
     return k->configurator;
@@ -230,6 +223,15 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 
 void Tweener::aboutToChangeTool()
 {
+    if (k->editMode == Settings::Selection) {
+        clearSelection();
+        disableSelection();
+
+        return;
+    }
+
+    if (k->editMode == Settings::Properties)
+        k->scene->removeItem(k->target);
 }
 
 /* This method defines the actions contained in this plugin */
@@ -256,11 +258,8 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 { 
     k->mode = k->configurator->mode();
 
-    kFatal() << "Tweener::updateScene() - mode: " << k->mode;
-
     if (k->mode == Settings::Edit) {
 
-       // int total = k->startPoint + k->configurator->totalSteps();
        int framesNumber = framesTotal();
 
        if (k->configurator->startComboSize() < framesNumber)
@@ -269,15 +268,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
        if (scene->currentFrameIndex() == k->startPoint)
            k->scene->addItem(k->target);
 
-       kFatal() << "Tweener::updateScene() - Tracing Edit mode!";
-
     } else if (k->mode == Settings::Add) {
-
-               kFatal() << "Tweener::updateScene() - Tracing Add mode!";
 
                int total = framesTotal();
 
-               if (k->editMode == Settings::AngleRange) {
+               if (k->editMode == Settings::Properties) {
                    if (total > k->configurator->startComboSize()) {
                        k->configurator->activateSelectionMode();
                        clearSelection();
@@ -298,8 +293,6 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                }
 
     } else {
-             kFatal() << "Tweener::updateScene() - Tracing None mode!";
-
              if (scene->currentFrameIndex() != k->startPoint)
                  k->configurator->setStartFrame(scene->currentFrameIndex());
     }
@@ -307,21 +300,17 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
 void Tweener::setCurrentTween(const QString &name)
 {
-    kFatal() << "Tweener::setCurrentTween() - Updating to Tween " << name;
-
     KTScene *scene = k->scene->scene();
     k->currentTween = scene->tween(name, KTItemTweener::Rotation);
+
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
-    else
-        kFatal() << "Tweener::setCurrentTween() - No Tween found! :S";
 }
 
 void Tweener::setEditEnv()
 {
-    kFatal() << "Tweener::setEditEnv() - Just tracing!";
     k->mode = Settings::Edit;
-    k->editMode = Settings::AngleRange;
+    k->editMode = Settings::Properties;
 
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Rotation);
@@ -371,9 +360,7 @@ void Tweener::disableSelection()
 
 void Tweener::setSelect()
 {
-    kFatal() << "Tweener::setSelect() - Rotation / Just tracing!";
-
-    if (k->editMode == Settings::AngleRange)
+    if (k->editMode == Settings::Properties)
         k->scene->removeItem(k->target);
 
     if (k->mode == Settings::Edit) {
@@ -409,9 +396,7 @@ void Tweener::setSelect()
 
 void Tweener::setAngleMode()
 {
-    kFatal() << "Tweener::setAngleMode() - Activating Angle mode!";
-
-    k->editMode = Settings::AngleRange;
+    k->editMode = Settings::Properties;
 
     disableSelection();
     addTarget();
@@ -421,13 +406,8 @@ void Tweener::setAngleMode()
 
 void Tweener::applyReset()
 {
-    kFatal() << "Tweener::applyReset() - Reseting interface! - mode: " << k->mode;
-    kFatal() << "Tweener::applyReset() - Reseting interface! - edit mode: " << k->editMode;
-
-    if ((k->mode == Settings::Edit || k->mode == Settings::Add) && k->editMode == Settings::AngleRange)
+    if ((k->mode == Settings::Edit || k->mode == Settings::Add) && k->editMode == Settings::Properties)
         k->scene->removeItem(k->target);
-    else
-        kFatal() << "Tweener::applyReset() - Ouch! :S";
 
     disableSelection();
 
@@ -436,16 +416,12 @@ void Tweener::applyReset()
 
     clearSelection();
     k->startPoint = k->scene->currentFrameIndex();
-
-    // k->configurator <- send the clean interface order here!
 }
 
 /* This method applies to the project, the Tween created from this plugin */
 
 void Tweener::applyTween()
 {
-    kFatal() << "Tweener::applyTween() - Applying rotation tween!";
-
     QString name = k->configurator->currentTweenName();
 
     if (name.length() == 0) {
@@ -469,8 +445,6 @@ void Tweener::applyTween()
                      if (qgraphicsitem_cast<KTPathItem *>(item))
                          origin = k->origin;
                  }
-
-                 kFatal() << "Tweener::applyTween() - Center: [" << origin.x() << ", " << origin.y() << "]";
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
@@ -502,8 +476,6 @@ void Tweener::applyTween()
         emit requested(&request);
 
     } else {
-
-        kFatal() << "Tweener::applyTween() - Updating tween!";
 
         QList<QGraphicsItem *> newList;
 

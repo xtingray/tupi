@@ -39,18 +39,39 @@
 #include "ktitemtweener.h"
 #include "kttweenerstep.h"
 #include "kimagebutton.h"
+#include "kseparator.h"
 #include "kosd.h"
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QBoxLayout>
+#include <QComboBox>
+#include <QCheckBox>
 
 struct Settings::Private
 {
+    QWidget *innerPanel;
+    QWidget *rangePanel;
+    QWidget *clockPanel;
+
     QBoxLayout *layout;
     Mode mode;
     QLineEdit *input;
     KRadioButtonGroup *options;
+    QComboBox *comboInit;
+    QComboBox *comboEnd;
+
+    QLabel *totalLabel;
+    int totalSteps;
+
+    KTItemTweener::ScaleAxes scaleAxes;
+    QComboBox *comboAxes;
+    QComboBox *comboFactor;
+    QComboBox *comboIterations;
+    QCheckBox *loopBox;
+    QCheckBox *reverseLoopBox;
+
+    bool selectionDone;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -58,6 +79,10 @@ struct Settings::Private
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
+    k->scaleAxes = KTItemTweener::XY;
+    k->selectionDone = false;
+    k->totalSteps = 0;
+
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
@@ -94,6 +119,9 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 
     k->layout->addLayout(nameLayout);
     k->layout->addWidget(k->options);
+
+    setInnerForm();
+
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
@@ -106,19 +134,215 @@ Settings::~Settings()
     delete k;
 }
 
+void Settings::setInnerForm()
+{
+    k->innerPanel = new QWidget;
+
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
+    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+
+    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
+    startingLabel->setAlignment(Qt::AlignVCenter);
+    k->comboInit = new QComboBox();
+    k->comboInit->setMaximumWidth(50);
+    k->comboInit->setEditable(false);
+    k->comboInit->setValidator(new QIntValidator(k->comboInit));
+
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
+
+    QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
+    endingLabel->setAlignment(Qt::AlignVCenter);
+    k->comboEnd = new QComboBox();
+    k->comboEnd->setFixedWidth(60);
+    k->comboEnd->setEditable(true);
+    k->comboEnd->addItem(QString::number(1));
+    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
+
+    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+
+    QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
+    startLayout->setMargin(0);
+    startLayout->setSpacing(0);
+    startLayout->addWidget(startingLabel);
+    startLayout->addWidget(k->comboInit);
+
+    QHBoxLayout *endLayout = new QHBoxLayout;
+    endLayout->setAlignment(Qt::AlignHCenter);
+    endLayout->setMargin(0);
+    endLayout->setSpacing(0);
+    endLayout->addWidget(endingLabel);
+    endLayout->addWidget(k->comboEnd);
+
+    k->totalLabel = new QLabel(tr("Frames Total") + ": 1");
+    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    QHBoxLayout *totalLayout = new QHBoxLayout;
+    totalLayout->setAlignment(Qt::AlignHCenter);
+    totalLayout->setMargin(0);
+    totalLayout->setSpacing(0);
+    totalLayout->addWidget(k->totalLabel);
+
+    k->comboAxes = new QComboBox();
+    k->comboAxes->addItem(tr("Width & Height"));
+    k->comboAxes->addItem(tr("Only Width"));
+    k->comboAxes->addItem(tr("Only Height"));
+    QLabel *axesLabel = new QLabel(tr("Scale in") + ": ");
+    axesLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *axesLayout = new QHBoxLayout;
+    axesLayout->setAlignment(Qt::AlignHCenter);
+    axesLayout->setMargin(0);
+    axesLayout->setSpacing(0);
+    axesLayout->addWidget(axesLabel);
+    axesLayout->addWidget(k->comboAxes);
+
+    k->comboFactor = new QComboBox();
+    for (int i=1; i<=9; i++)
+         k->comboFactor->addItem("0." + QString::number(i));
+    for (int i=1; i<=20; i++) {
+         double value = (double)(i*5)/(double)10;
+         k->comboFactor->addItem(QString::number(value));
+    }
+
+    QLabel *speedLabel = new QLabel(tr("Scaling Factor") + ": ");
+    speedLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *speedLayout = new QHBoxLayout;
+    speedLayout->setAlignment(Qt::AlignHCenter);
+    speedLayout->setMargin(0);
+    speedLayout->setSpacing(0);
+    speedLayout->addWidget(speedLabel);
+    speedLayout->addWidget(k->comboFactor);
+
+    k->comboIterations = new QComboBox();
+    k->comboIterations->setEditable(true);
+    k->comboIterations->setValidator(new QIntValidator(k->comboIterations));
+    for (int i=1; i<=100; i++)
+         k->comboIterations->addItem(QString::number(i));
+
+    QLabel *iterationsLabel = new QLabel(tr("Iterations") + ": ");
+    iterationsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *iterationsLayout = new QHBoxLayout;
+    iterationsLayout->setAlignment(Qt::AlignHCenter);
+    iterationsLayout->setMargin(0);
+    iterationsLayout->setSpacing(0);
+    iterationsLayout->addWidget(iterationsLabel);
+    iterationsLayout->addWidget(k->comboIterations);
+
+    k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
+    k->loopBox->setChecked(true);
+    connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
+
+    QVBoxLayout *loopLayout = new QVBoxLayout;
+    loopLayout->setAlignment(Qt::AlignHCenter);
+    loopLayout->setMargin(0);
+    loopLayout->setSpacing(0);
+    loopLayout->addWidget(k->loopBox);
+
+    k->reverseLoopBox = new QCheckBox(tr("Loop with Reverse"), k->innerPanel);
+    connect(k->reverseLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateLoopCheckbox(int)));
+
+    QVBoxLayout *reverseLayout = new QVBoxLayout;
+    reverseLayout->setAlignment(Qt::AlignHCenter);
+    reverseLayout->setMargin(0);
+    reverseLayout->setSpacing(0);
+    reverseLayout->addWidget(k->reverseLoopBox);
+
+    innerLayout->addLayout(startLayout);
+    innerLayout->addLayout(endLayout);
+    innerLayout->addLayout(totalLayout);
+
+    innerLayout->addSpacing(15);
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+
+    innerLayout->addLayout(axesLayout);
+    innerLayout->addLayout(speedLayout);
+    innerLayout->addLayout(iterationsLayout);
+    innerLayout->addLayout(loopLayout);
+    innerLayout->addLayout(reverseLayout);
+
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+
+    k->layout->addWidget(k->innerPanel);
+
+    activeInnerForm(false);
+}
+
+void Settings::activeInnerForm(bool enable)
+{
+    if (enable && !k->innerPanel->isVisible())
+        k->innerPanel->show();
+    else
+        k->innerPanel->hide();
+}
+
+// Adding new Tween
+
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
     k->mode = Add;
     k->input->setText(name);
 
+    activateSelectionMode();
+
     k->apply->setToolTip(tr("Save Tween"));
 }
+
+// Editing new Tween
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
 
     k->input->setText(currentTween->name());
+
+    /*
+    k->comboType->setCurrentIndex(currentTween->tweenRotationType());
+    k->comboFactor->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));
+    k->comboFactor->setCurrentIndex(0);
+
+    if (currentTween->tweenRotationType() == KTItemTweener::Continuos) {
+        //k->clockLoopBox->setChecked(currentTween->tweenRotateLoop());
+        k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
+    } else {
+        k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));
+        k->comboStart->setCurrentIndex(0);
+        k->comboFinish->setItemText(0, QString::number(currentTween->tweenRotateEndDegree()));
+        k->comboFinish->setCurrentIndex(0);
+        k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
+        k->reverseLoopBox->setChecked(currentTween->tweenReverseLoop());
+    }
+    */
+}
+
+void Settings::initStartCombo(int framesTotal, int currentIndex)
+{
+    k->comboInit->clear();
+    k->comboEnd->clear();
+
+    for (int i=1; i<=framesTotal; i++) {
+         k->comboInit->addItem(QString::number(i));
+         k->comboEnd->addItem(QString::number(i));
+    }
+
+    k->comboInit->setCurrentIndex(currentIndex);
+    k->comboEnd->setCurrentIndex(framesTotal - 1);
+}
+
+void Settings::setStartFrame(int currentIndex)
+{
+    k->comboInit->setCurrentIndex(currentIndex);
+    int end = k->comboEnd->currentText().toInt();
+    if (end < currentIndex+1)
+        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
+}
+
+int Settings::startComboSize()
+{
+    return k->comboInit->count();
+}
+
+int Settings::totalSteps()
+{
+    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
 }
 
 void Settings::setEditMode()
@@ -137,6 +361,11 @@ void Settings::applyTween()
     emit clickedApplyTween();
 }
 
+void Settings::notifySelection(bool flag)
+{
+    k->selectionDone = flag;
+}
+
 QString Settings::currentTweenName() const
 {
     QString tweenName = k->input->text();
@@ -151,25 +380,204 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 // emit clickedSelect();
+                 kFatal() << "Settings::emitOptionChanged() - Scale / Just tracing!";
+                 activeInnerForm(false);
+                 emit clickedSelect();
              }
             break;
             case 1:
              {
-                 /*
                  if (k->selectionDone) {
-                     emit clickedCreatePath();
+                     activeInnerForm(true);
+                     emit clickedDefineProperties();
                  } else {
                      k->options->setCurrentIndex(0);
                      KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
                  }
-                 */
              }
     }
 }
 
+QString Settings::tweenToXml(int currentFrame, QPointF point)
+{
+    QDomDocument doc;
+
+    QDomElement root = doc.createElement("tweening");
+    root.setAttribute("name", currentTweenName());
+    root.setAttribute("type", KTItemTweener::Scale);
+    root.setAttribute("init", currentFrame);
+   
+    checkFramesRange();
+    root.setAttribute("frames", k->totalSteps);
+    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
+    root.setAttribute("scaleAxes", k->scaleAxes);
+    double factor = k->comboFactor->currentText().toDouble();
+    root.setAttribute("scaleFactor", factor);
+    root.setAttribute("scaleIterations", k->scaleAxes);
+
+    bool loop = k->loopBox->isChecked();
+    if (loop)
+        root.setAttribute("scaleLoop", "1");
+    else
+        root.setAttribute("scaleLoop", "0");
+
+    bool reverse = k->reverseLoopBox->isChecked();
+    if (reverse)
+        root.setAttribute("scaleReverseLoop", "1");
+    else
+        root.setAttribute("scaleReverseLoop", "0");
+
+    double scaleX = 0.9;
+    double scaleY = 0.9;
+
+    for (int i=0; i < k->totalSteps; i++) {
+         KTTweenerStep *step = new KTTweenerStep(i);
+         step->setScale(scaleX, scaleY);
+         root.appendChild(step->toXml(doc));
+    }
+
+    /*
+    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
+    root.setAttribute("rotationType", k->rotationType);
+    int speed = k->comboFactor->currentText().toInt();
+    root.setAttribute("rotateSpeed", speed);
+
+    if (k->rotationType == KTItemTweener::Continuos) {
+        int direction = k->comboClock->currentIndex();
+        root.setAttribute("rotateDirection", direction);
+
+        int angle = 0;
+        for (int i=0; i < k->totalSteps; i++) {
+             KTTweenerStep *step = new KTTweenerStep(i);
+             step->setRotation(angle);
+             root.appendChild(step->toXml(doc));
+             if (direction == KTItemTweener::Clockwise)
+                 angle += speed;
+             else
+                 angle -= speed;
+        }
+
+    } else if (k->rotationType == KTItemTweener::Partial) {
+               bool loop = k->rangeLoopBox->isChecked();
+               if (loop)
+                   root.setAttribute("rotateLoop", "1");
+               else
+                   root.setAttribute("rotateLoop", "0");
+
+               int start = k->comboStart->currentText().toInt();
+               root.setAttribute("rotateStartDegree", start);
+
+               int end = k->comboFinish->currentText().toInt();
+               root.setAttribute("rotateEndDegree", end);
+
+               bool reverse = k->reverseLoopBox->isChecked();
+               if (reverse)
+                   root.setAttribute("reverseLoop", "1");
+               else
+                   root.setAttribute("reverseLoop", "0");
+
+               double angle = start;
+               bool token = false;
+
+               if (start < end) {
+                   for (int i=0; i < k->totalSteps; i++) {
+                        KTTweenerStep *step = new KTTweenerStep(i);
+                        step->setRotation(angle);
+                        root.appendChild(step->toXml(doc));
+
+                        if (!token) {
+                            if (angle < end)
+                                angle += speed;
+                        } else {
+                            angle -= speed;
+                        }
+
+                        if (reverse) {
+                            if (angle >= end)
+                                token = true;
+                            else if (angle < start) 
+                                     token = false;
+                        } else if (loop && angle >= end) {
+                                   angle = start;
+                        } 
+                   }
+               } else {
+                   for (int i=0; i < k->totalSteps; i++) {
+                        KTTweenerStep *step = new KTTweenerStep(i);
+                        step->setRotation(angle);
+                        root.appendChild(step->toXml(doc));
+
+                        if (!token) {
+                            if (angle > end)
+                                angle -= speed;
+                        } else {
+                            angle += speed;
+                        }
+
+                        if (reverse) {
+                            if (angle <= end)
+                                token = true;
+                            else if (angle > start)
+                                     token = false;
+                        } else if (loop && angle <= end) {
+                                   angle = start;
+                        }
+                   }
+               }
+    }
+    */
+
+    doc.appendChild(root);
+
+    return doc.toString();
+}
+
 void Settings::activateSelectionMode()
 {
+    kFatal() << "Settings::activateSelectionMode() - Scale / Just tracing!";
     k->options->setCurrentIndex(0);
 }
 
+void Settings::checkBottomLimit(int index)
+{
+    emit startingPointChanged(index);
+    checkFramesRange();
+}
+
+void Settings::checkTopLimit(int index)
+{
+    Q_UNUSED(index);
+    checkFramesRange();
+}
+
+void Settings::checkFramesRange()
+{
+    int begin = k->comboInit->currentText().toInt();
+    int end = k->comboEnd->currentText().toInt();
+        
+    if (begin > end) {
+        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
+        end = k->comboEnd->currentText().toInt();
+    }
+
+    k->totalSteps = end - begin + 1;
+    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->totalSteps));
+}
+
+void Settings::updateLoopCheckbox(int state)
+{
+    if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
+        k->loopBox->setChecked(false);
+}
+
+void Settings::updateReverseCheckbox(int state)
+{
+    if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
+        k->reverseLoopBox->setChecked(false);
+}
+
+void Settings::updateTotalSteps(const QString &text)
+{
+    Q_UNUSED(text);
+    checkFramesRange();
+}

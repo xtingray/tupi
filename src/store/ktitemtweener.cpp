@@ -64,9 +64,16 @@ struct KTItemTweener::Private
     KTItemTweener::RotateDirection rotateDirection;
     int rotateSpeed;
     int rotateLoop;
-    int reverseLoop;
+    int rotateReverseLoop;
     int rotateStartDegree;
     int rotateEndDegree;
+
+    // Scale Tween
+    KTItemTweener::ScaleAxes scaleAxes;
+    double scaleFactor;
+    int scaleIterations;
+    int scaleLoop;
+    int scaleReverseLoop;
 
     QHash<int, KTTweenerStep *> steps; // TODO: remove when Qt 4.3
 
@@ -201,7 +208,6 @@ void KTItemTweener::fromXml(const QString &xml)
             kFatal() << "KTItemTweener::fromXml() - Rotation Type: " << k->rotationType;
 
             k->rotateSpeed = root.attribute("rotateSpeed").toInt();
-            //k->rotateLoop = root.attribute("rotateLoop").toInt(); 
 
             if (k->rotationType == KTItemTweener::Continuos) {
                 k->rotateDirection = KTItemTweener::RotateDirection(root.attribute("rotateDirection").toInt());
@@ -209,8 +215,16 @@ void KTItemTweener::fromXml(const QString &xml)
                        k->rotateLoop = root.attribute("rotateLoop").toInt();
                        k->rotateStartDegree = root.attribute("rotateStartDegree").toInt();
                        k->rotateEndDegree = root.attribute("rotateEndDegree").toInt();
-                       k->reverseLoop = root.attribute("reverseLoop").toInt();
+                       k->rotateReverseLoop = root.attribute("rotateReverseLoop").toInt();
             }
+        }
+
+        if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::All) {
+            k->scaleAxes = KTItemTweener::ScaleAxes(root.attribute("scaleAxes").toInt()); 
+            k->scaleFactor = root.attribute("scaleFactor").toDouble(); 
+            k->scaleIterations = root.attribute("scaleIterations").toInt();
+            k->scaleLoop = root.attribute("scaleLoop").toInt();
+            k->scaleReverseLoop = root.attribute("scaleReverseLoop").toInt();
         }
 
         QDomNode node = root.firstChild();
@@ -257,7 +271,6 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         kFatal() << "KTItemTweener::toXml() - Rotation Type: " << k->rotationType;
         root.setAttribute("rotationType", k->rotationType);
         root.setAttribute("rotateSpeed", k->rotateSpeed);
-        // root.setAttribute("rotateLoop", k->rotateLoop);
 
         if (k->rotationType == KTItemTweener::Continuos) {
             root.setAttribute("rotateDirection", k->rotateDirection); 
@@ -265,10 +278,18 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
                    root.setAttribute("rotateLoop", k->rotateLoop);
                    root.setAttribute("rotateStartDegree", k->rotateStartDegree);
                    root.setAttribute("rotateEndDegree", k->rotateEndDegree); 
-                   root.setAttribute("reverseLoop", k->reverseLoop);
+                   root.setAttribute("rotateReverseLoop", k->rotateReverseLoop);
         }
     }
-                 
+
+    if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::All) {
+        root.setAttribute("scaleAxes", k->scaleAxes);
+        root.setAttribute("scaleFactor", k->scaleFactor);
+        root.setAttribute("scaleIterations", k->scaleIterations);
+        root.setAttribute("scaleLoop", k->scaleLoop);
+        root.setAttribute("scaleReverseLoop", k->scaleReverseLoop);
+    }
+ 
     foreach (KTTweenerStep *step, k->steps.values())
              root.appendChild(step->toXml(doc));
     
@@ -344,7 +365,7 @@ int KTItemTweener::tweenRotateEndDegree()
     return k->rotateEndDegree;
 }
 
-bool KTItemTweener::tweenReverseLoop()
+bool KTItemTweener::tweenRotateReverseLoop()
 {
-    return k->reverseLoop;
+    return k->rotateReverseLoop;
 }

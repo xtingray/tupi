@@ -533,22 +533,7 @@ void KTPaintArea::deleteItems()
 {
     // K_FUNCINFO;
 
-    if (k->currentTool.compare(tr("Position Tween")) == 0)
-        return;
-
-    if (k->currentTool.compare(tr("Rotation Tween")) == 0)
-        return;
-
-    if (k->currentTool.compare(tr("Scale Tween")) == 0)
-        return;        
-
-    if (k->currentTool.compare(tr("Opacity Tween")) == 0)
-        return;
-
-    if (k->currentTool.compare(tr("Colouring Tween")) == 0)
-        return;
-
-    if (k->currentTool.compare(tr("Compound Tween")) == 0)
+    if (k->currentTool.compare(tr("Object Selection")) != 0 && k->currentTool.compare(tr("Contour Selection")) != 0)
         return;
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();

@@ -297,6 +297,14 @@ void Select::aboutToChangeTool()
     K_FUNCINFOX("tools");
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
+
+    foreach (QGraphicsView *view, k->scene->views()) {
+             view->setDragMode (QGraphicsView::NoDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+             }
+    }
 }
 
 void Select::itemResponse(const KTItemResponse *event)

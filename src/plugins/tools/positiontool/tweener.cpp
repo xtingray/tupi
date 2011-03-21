@@ -292,6 +292,8 @@ void Tweener::aboutToChangeTool()
 {
     if (k->editMode == Settings::Selection) {
         clearSelection();
+        disableSelection();
+
         return;
     }
 
