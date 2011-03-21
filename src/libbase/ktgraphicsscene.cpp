@@ -434,12 +434,10 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                      }
 
                      if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
-                         double scaleX = stepItem->horizontalScale();
-                         double scaleY = stepItem->verticalScale();
                          QPointF point = tween->transformOriginPoint();
                          kFatal() << "KTGraphicsScene::addTweeningObjects() - Pos: [" << point.x() << ", " << point.y() << "]";
                          object->item()->setTransformOriginPoint(point);
-                         object->item()->scale(scaleX, scaleY);
+                         object->item()->scale(1.0, 1.0);
                      }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {

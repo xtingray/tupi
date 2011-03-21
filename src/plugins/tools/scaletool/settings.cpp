@@ -427,10 +427,14 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     else
         root.setAttribute("scaleReverseLoop", "0");
 
+    KTTweenerStep *step = new KTTweenerStep(0);
+    step->setScale(1.0, 1.0);
+    root.appendChild(step->toXml(doc));
+
     double scaleX = 0.9;
     double scaleY = 0.9;
 
-    for (int i=0; i < k->totalSteps; i++) {
+    for (int i=1; i < k->totalSteps; i++) {
          KTTweenerStep *step = new KTTweenerStep(i);
          step->setScale(scaleX, scaleY);
          root.appendChild(step->toXml(doc));
