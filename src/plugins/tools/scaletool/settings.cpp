@@ -198,9 +198,10 @@ void Settings::setInnerForm()
     k->comboFactor = new QComboBox();
     for (int i=1; i<=9; i++)
          k->comboFactor->addItem("0." + QString::number(i));
-    for (int i=1; i<=20; i++) {
-         double value = (double)(i*5)/(double)10;
-         k->comboFactor->addItem(QString::number(value));
+
+    for (int i=1; i<=9; i++) {
+         for (int j=0; j<=9; j++)
+              k->comboFactor->addItem(QString::number(i) + "." + QString::number(j));
     }
 
     QLabel *speedLabel = new QLabel(tr("Scaling Factor") + ": ");
@@ -413,7 +414,8 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     root.setAttribute("scaleAxes", k->scaleAxes);
     double factor = k->comboFactor->currentText().toDouble();
     root.setAttribute("scaleFactor", factor);
-    root.setAttribute("scaleIterations", k->scaleAxes);
+    double iterations = k->comboIterations->currentText().toDouble();
+    root.setAttribute("scaleIterations", iterations);
 
     bool loop = k->loopBox->isChecked();
     if (loop)
@@ -431,105 +433,34 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     step->setScale(1.0, 1.0);
     root.appendChild(step->toXml(doc));
 
-    double scaleX = 0.9;
-    double scaleY = 0.9;
-
+    double scaleX = 1.0*factor;
+    double scaleY = 1.0*factor;
+    int cycle = 2;
+    bool token = true;
+    
     for (int i=1; i < k->totalSteps; i++) {
          KTTweenerStep *step = new KTTweenerStep(i);
          step->setScale(scaleX, scaleY);
          root.appendChild(step->toXml(doc));
+
+         if (cycle < iterations && token) {
+             scaleX *= factor;
+             scaleY *= factor;
+             cycle++;
+         } else {
+             if (loop) {
+                 cycle = 1;
+                 scaleX = 1.0;
+                 scaleY = 1.0;
+             } else if (reverse) {
+                 scaleX /= factor;
+                 scaleY /= factor;
+                 cycle++;
+             } else {
+                 token = false;
+             }
+         }
     }
-
-    /*
-    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
-    root.setAttribute("rotationType", k->rotationType);
-    int speed = k->comboFactor->currentText().toInt();
-    root.setAttribute("rotateSpeed", speed);
-
-    if (k->rotationType == KTItemTweener::Continuos) {
-        int direction = k->comboClock->currentIndex();
-        root.setAttribute("rotateDirection", direction);
-
-        int angle = 0;
-        for (int i=0; i < k->totalSteps; i++) {
-             KTTweenerStep *step = new KTTweenerStep(i);
-             step->setRotation(angle);
-             root.appendChild(step->toXml(doc));
-             if (direction == KTItemTweener::Clockwise)
-                 angle += speed;
-             else
-                 angle -= speed;
-        }
-
-    } else if (k->rotationType == KTItemTweener::Partial) {
-               bool loop = k->rangeLoopBox->isChecked();
-               if (loop)
-                   root.setAttribute("rotateLoop", "1");
-               else
-                   root.setAttribute("rotateLoop", "0");
-
-               int start = k->comboStart->currentText().toInt();
-               root.setAttribute("rotateStartDegree", start);
-
-               int end = k->comboFinish->currentText().toInt();
-               root.setAttribute("rotateEndDegree", end);
-
-               bool reverse = k->reverseLoopBox->isChecked();
-               if (reverse)
-                   root.setAttribute("reverseLoop", "1");
-               else
-                   root.setAttribute("reverseLoop", "0");
-
-               double angle = start;
-               bool token = false;
-
-               if (start < end) {
-                   for (int i=0; i < k->totalSteps; i++) {
-                        KTTweenerStep *step = new KTTweenerStep(i);
-                        step->setRotation(angle);
-                        root.appendChild(step->toXml(doc));
-
-                        if (!token) {
-                            if (angle < end)
-                                angle += speed;
-                        } else {
-                            angle -= speed;
-                        }
-
-                        if (reverse) {
-                            if (angle >= end)
-                                token = true;
-                            else if (angle < start) 
-                                     token = false;
-                        } else if (loop && angle >= end) {
-                                   angle = start;
-                        } 
-                   }
-               } else {
-                   for (int i=0; i < k->totalSteps; i++) {
-                        KTTweenerStep *step = new KTTweenerStep(i);
-                        step->setRotation(angle);
-                        root.appendChild(step->toXml(doc));
-
-                        if (!token) {
-                            if (angle > end)
-                                angle -= speed;
-                        } else {
-                            angle += speed;
-                        }
-
-                        if (reverse) {
-                            if (angle <= end)
-                                token = true;
-                            else if (angle > start)
-                                     token = false;
-                        } else if (loop && angle <= end) {
-                                   angle = start;
-                        }
-                   }
-               }
-    }
-    */
 
     doc.appendChild(root);
 

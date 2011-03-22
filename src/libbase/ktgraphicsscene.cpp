@@ -437,8 +437,12 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          QPointF point = tween->transformOriginPoint();
                          kFatal() << "KTGraphicsScene::addTweeningObjects() - Pos: [" << point.x() << ", " << point.y() << "]";
                          object->item()->setTransformOriginPoint(point);
-                         //object->item()->scale(1.0, 1.0);
+                         // object->item()->scale(1.0, 1.0);
                          object->item()->setScale(1.0);
+                     }
+
+                     if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                         object->item()->setOpacity(0.2);
                      }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
@@ -467,10 +471,14 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                 double scaleX = stepItem->horizontalScale();
                                 double scaleY = stepItem->verticalScale();
                                 object->item()->setScale(scaleX);
-                                //object->item()->scale(scaleX, scaleY);
+                                // object->item()->scale(scaleX, scaleY);
                             }
 
                             addGraphicObject(object);
+
+                            if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                                object->item()->setOpacity(0.2);
+                            }
                  }
              }
         }
