@@ -203,11 +203,10 @@ void Settings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
 
-    k->input->setText(currentTween->name());
-
     notifySelection(true);
     activatePathMode();
 
+    k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);
 
     initStartCombo(currentTween->frames(), currentTween->startFrame());

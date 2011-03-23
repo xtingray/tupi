@@ -291,7 +291,11 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
+
+    kFatal() << "Settings::setParameters() - Just tracing! Editing Mode";
+
     setEditMode();
+    notifySelection(true);
 
     k->input->setText(currentTween->name());
 
@@ -300,6 +304,8 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboIterations->setItemText(0, QString::number(currentTween->tweenScaleIterations()));
     k->loopBox->setChecked(currentTween->tweenScaleLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenScaleReverseLoop());
+
+    // k->options->setCurrentIndex(1);
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -369,12 +375,14 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
+                 kFatal() << "Settings::emitOptionChanged(int option) - Just tracing! - Mode: Select";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
             break;
             case 1:
              {
+                 kFatal() << "Settings::emitOptionChanged(int option) - Just tracing! - Mode: Properties";
                  if (k->selectionDone) {
                      activeInnerForm(true);
                      emit clickedDefineProperties();

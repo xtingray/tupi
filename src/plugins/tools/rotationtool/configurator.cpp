@@ -137,7 +137,6 @@ void Configurator::setTweenManagerPanel()
     connect(k->tweenManager, SIGNAL(addNewTween(const QString &)), this, SLOT(addTween(const QString &)));
     connect(k->tweenManager, SIGNAL(editCurrentTween(const QString &)), this, SLOT(editTween()));
     connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
-    // connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SIGNAL(getTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
     k->state = Manager;
@@ -223,12 +222,14 @@ void Configurator::addTween(const QString &name)
 
 void Configurator::editTween()
 {
+    kFatal() << "Configurator::editTween() - Just tracing!";
+
+    activeTweenManagerPanel(false);
+
     k->mode = Settings::Edit;
     k->state = Properties;
 
     k->settingsPanel->setParameters(k->currentTween);
-
-    activeTweenManagerPanel(false);
     activePropertiesPanel(true);
 
     emit editModeOn();

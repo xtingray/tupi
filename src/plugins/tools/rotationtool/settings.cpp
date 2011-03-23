@@ -68,7 +68,6 @@ struct Settings::Private
     QComboBox *comboFinish;
 
     QComboBox *comboSpeed;
-    //QCheckBox *clockLoopBox; 
     QCheckBox *rangeLoopBox;
     QCheckBox *reverseLoopBox;
     QLabel *totalLabel;
@@ -189,6 +188,7 @@ void Settings::setInnerForm()
     k->comboType = new QComboBox();
     k->comboType->addItem(tr("Continous"));
     k->comboType->addItem(tr("Partial"));
+
     connect(k->comboType, SIGNAL(currentIndexChanged(int)), this, SLOT(refreshForm(int)));
 
     QLabel *typeLabel = new QLabel(tr("Type") + ": ");
@@ -322,7 +322,6 @@ void Settings::setRangeForm()
     k->comboFinish->setValidator(new QIntValidator(k->comboFinish));
     for (int i=0; i<=359; i++)
          k->comboFinish->addItem(QString::number(i));
-
     k->comboFinish->setCurrentIndex(5);
 
     connect(k->comboFinish, SIGNAL(currentIndexChanged(int)), this, SLOT(checkRange(int)));
@@ -336,6 +335,7 @@ void Settings::setRangeForm()
 
     k->rangeLoopBox = new QCheckBox(tr("Loop"), k->rangePanel);
     k->rangeLoopBox->setChecked(true);
+
     connect(k->rangeLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
     QVBoxLayout *loopLayout = new QVBoxLayout;
@@ -343,8 +343,8 @@ void Settings::setRangeForm()
     loopLayout->setMargin(0);
     loopLayout->setSpacing(0);
     loopLayout->addWidget(k->rangeLoopBox);
-
     k->reverseLoopBox = new QCheckBox(tr("Loop with Reverse"), k->rangePanel);
+
     connect(k->reverseLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateRangeCheckbox(int)));
 
     QVBoxLayout *reverseLayout = new QVBoxLayout;
@@ -388,8 +388,10 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 void Settings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
+    notifySelection(true);
 
     k->input->setText(currentTween->name());
+
     k->comboType->setCurrentIndex(currentTween->tweenRotationType());
     k->comboSpeed->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));
     k->comboSpeed->setCurrentIndex(0);
@@ -404,6 +406,8 @@ void Settings::setParameters(KTItemTweener *currentTween)
         k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
         k->reverseLoopBox->setChecked(currentTween->tweenRotateReverseLoop());
     }
+
+    // k->options->setCurrentIndex(1);
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -473,13 +477,14 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Rotation / Just tracing!";
+                 kFatal() << "Settings::emitOptionChanged() - Rotation / Select Mode!";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
             break;
             case 1:
              {
+                 kFatal() << "Settings::emitOptionChanged() - Rotation / Properties Mode!";
                  if (k->selectionDone) {
                      activeInnerForm(true);
                      emit clickedDefineAngle();
