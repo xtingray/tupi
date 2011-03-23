@@ -35,7 +35,6 @@
 
 #include "tweener.h"
 #include "configurator.h"
-#include "settings.h"
 #include "target.h"
 
 #include <QPointF>
@@ -108,7 +107,9 @@ void Tweener::init(KTGraphicsScene *scene)
     QList<QString> tweenList = k->scene->scene()->getTweenNames(KTItemTweener::Rotation);
     if (tweenList.size() > 0) {
         k->configurator->loadTweenList(tweenList);
-        setCurrentTween(tweenList.at(0));
+        QString tweenName = tweenList.at(0);
+        setCurrentTween(tweenName);
+        // k->objects = k->scene->scene()->getItemsFromTween(tweenName, KTItemTweener::Rotation);
     }
 
     int total = framesTotal();
@@ -204,8 +205,7 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        connect(k->configurator, SIGNAL(addModeOn()), this, SLOT(addModeOn()));
-        connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv()));
+        connect(k->configurator, SIGNAL(setMode(Settings::Mode)), this, SLOT(updateMode(Settings::Mode)));
         connect(k->configurator, SIGNAL(clickedDefineAngle()), this, SLOT(setAngleMode()));
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
@@ -274,7 +274,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                if (k->editMode == Settings::Properties) {
                    if (total > k->configurator->startComboSize()) {
-                       k->configurator->activateSelectionMode();
+                       k->configurator->activatePropertiesMode(Settings::Selection);
                        clearSelection();
                        setSelect();
                    } 
@@ -305,18 +305,6 @@ void Tweener::setCurrentTween(const QString &name)
 
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
-}
-
-void Tweener::setEditEnv()
-{
-    k->mode = Settings::Edit;
-    k->editMode = Settings::Properties;
-
-    KTScene *scene = k->scene->scene();
-    k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Rotation);
-    k->origin = k->currentTween->transformOriginPoint();
-
-    addTarget();
 }
 
 int Tweener::framesTotal()
@@ -397,8 +385,15 @@ void Tweener::setSelect()
 void Tweener::setAngleMode()
 {
     k->editMode = Settings::Properties;
-
     disableSelection();
+
+    kFatal() << "Tweener::setAngleMode() - State: " << k->mode;
+
+    if (k->objects.isEmpty()) {
+        k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), KTItemTweener::Rotation);
+        k->origin = k->currentTween->transformOriginPoint(); 
+    }
+
     addTarget();
 }
 
@@ -410,11 +405,11 @@ void Tweener::applyReset()
         k->scene->removeItem(k->target);
 
     disableSelection();
+    clearSelection();
 
     k->mode = Settings::View;
     k->editMode = Settings::None;
 
-    clearSelection();
     k->startPoint = k->scene->currentFrameIndex();
 }
 
@@ -559,7 +554,8 @@ void Tweener::applyTween()
     }
 
     setCurrentTween(name);
-    //k->scene->addItem(k->target);
+
+    KOsd::self()->display(tr("Info"), tr("Tween %1 saved!").arg(name), KOsd::Info);
 }
 
 void Tweener::removeTween(const QString &name)
@@ -589,9 +585,9 @@ void Tweener::addTarget()
     connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
 }
 
-void Tweener::addModeOn()
+void Tweener::updateMode(Settings::Mode mode)
 {
-    k->mode = Settings::Add;
+    k->mode = mode;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

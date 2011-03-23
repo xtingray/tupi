@@ -63,7 +63,7 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
-        void activateSelectionMode();
+        void activatePropertiesMode(Settings::EditMode mode);
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
@@ -87,8 +87,8 @@ class Configurator : public QFrame
         void clickedSelect();
         void clickedDefineAngle();
         void clickedRemoveTween(const QString &name);
-        void addModeOn();
-        void editModeOn();
+        void setMode(Settings::Mode mode);
+        // void editModeOn();
         void clickedApplyTween();
         void clickedResetInterface();
         void getTweenData(const QString &name);

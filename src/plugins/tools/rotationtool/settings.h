@@ -50,7 +50,7 @@ class Settings : public QWidget
 
     public:
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 1, Properties, None };
+        enum EditMode { Selection = 0, Properties, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
@@ -65,7 +65,7 @@ class Settings : public QWidget
         void notifySelection(bool flag);
         int startComboSize();
         QString currentTweenName() const;
-        void activateSelectionMode();
+        void activatePropertiesMode(Settings::EditMode mode);
         QString tweenToXml(int currentFrame, QPointF point);
 
     private slots:

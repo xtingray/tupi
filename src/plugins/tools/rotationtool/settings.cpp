@@ -56,6 +56,8 @@ struct Settings::Private
 
     QBoxLayout *layout;
     Mode mode;
+    EditMode editMode;
+
     QLineEdit *input;
     KRadioButtonGroup *options;
     QComboBox *comboInit;
@@ -129,7 +131,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateSelectionMode();
+    activatePropertiesMode(Settings::Selection);
 }
 
 Settings::~Settings()
@@ -378,8 +380,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->mode = Add;
     k->input->setText(name);
 
-    activateSelectionMode();
-
+    activatePropertiesMode(Settings::Selection);
     k->apply->setToolTip(tr("Save Tween"));
 }
 
@@ -387,8 +388,9 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
+    kFatal() << "Settings::setParameters() - Editing tween!";
     setEditMode();
-    notifySelection(true);
+    activatePropertiesMode(Settings::Properties);
 
     k->input->setText(currentTween->name());
 
@@ -406,8 +408,6 @@ void Settings::setParameters(KTItemTweener *currentTween)
         k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
         k->reverseLoopBox->setChecked(currentTween->tweenRotateReverseLoop());
     }
-
-    // k->options->setCurrentIndex(1);
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -477,20 +477,26 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Rotation / Select Mode!";
-                 activeInnerForm(false);
-                 emit clickedSelect();
+                 if (k->editMode != Settings::Selection) {
+                     kFatal() << "Settings::emitOptionChanged() - Rotation / Select Mode!";
+                     activeInnerForm(false);
+                     k->editMode = Settings::Selection;
+                     emit clickedSelect();
+                 }
              }
             break;
             case 1:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Rotation / Properties Mode!";
-                 if (k->selectionDone) {
-                     activeInnerForm(true);
-                     emit clickedDefineAngle();
-                 } else {
-                     k->options->setCurrentIndex(0);
-                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+                 if (k->editMode != Settings::Properties) {
+                     kFatal() << "Settings::emitOptionChanged() - Rotation / Properties Mode!";
+                     k->editMode = Settings::Properties;
+                     if (k->selectionDone) {
+                         activeInnerForm(true);
+                         emit clickedDefineAngle();
+                     } else {
+                         k->options->setCurrentIndex(0);
+                         KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+                     }
                  }
              }
     }
@@ -602,10 +608,10 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     return doc.toString();
 }
 
-void Settings::activateSelectionMode()
+void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    kFatal() << "Settings::activateSelectionMode() - Rotation / Just tracing!";
-    k->options->setCurrentIndex(0);
+    kFatal() << "Settings::activatePropertiesMode() - Rotation / Just tracing!";
+    k->options->setCurrentIndex(mode);
 }
 
 void Settings::refreshForm(int type)
