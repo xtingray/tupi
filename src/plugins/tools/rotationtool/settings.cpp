@@ -395,7 +395,6 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboSpeed->setCurrentIndex(0);
 
     if (currentTween->tweenRotationType() == KTItemTweener::Continuos) {
-        //k->clockLoopBox->setChecked(currentTween->tweenRotateLoop());
         k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
     } else {
         k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));

@@ -470,6 +470,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                             if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
                                 double scaleX = stepItem->horizontalScale();
                                 double scaleY = stepItem->verticalScale();
+                                kFatal() << "KTGraphicsScene::addTweeningObjects() - Scale factor: " << scaleX;
                                 object->item()->setScale(scaleX);
                                 // object->item()->scale(scaleX, scaleY);
                             }

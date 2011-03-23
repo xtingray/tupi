@@ -295,23 +295,11 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
     k->input->setText(currentTween->name());
 
-    /*
-    k->comboType->setCurrentIndex(currentTween->tweenRotationType());
-    k->comboFactor->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));
-    k->comboFactor->setCurrentIndex(0);
-
-    if (currentTween->tweenRotationType() == KTItemTweener::Continuos) {
-        //k->clockLoopBox->setChecked(currentTween->tweenRotateLoop());
-        k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
-    } else {
-        k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));
-        k->comboStart->setCurrentIndex(0);
-        k->comboFinish->setItemText(0, QString::number(currentTween->tweenRotateEndDegree()));
-        k->comboFinish->setCurrentIndex(0);
-        k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
-        k->reverseLoopBox->setChecked(currentTween->tweenReverseLoop());
-    }
-    */
+    k->comboAxes->setCurrentIndex(currentTween->tweenScaleAxes());
+    k->comboFactor->setItemText(0, QString::number(currentTween->tweenScaleFactor()));
+    k->comboIterations->setItemText(0, QString::number(currentTween->tweenScaleIterations()));
+    k->loopBox->setChecked(currentTween->tweenScaleLoop());
+    k->reverseLoopBox->setChecked(currentTween->tweenScaleReverseLoop());
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -381,7 +369,6 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Scale / Just tracing!";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
@@ -452,12 +439,21 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
                  cycle = 1;
                  scaleX = 1.0;
                  scaleY = 1.0;
-             } else if (reverse) {
-                 scaleX /= factor;
-                 scaleY /= factor;
-                 cycle++;
+             } else if (reverse && !token) {
+                 if (cycle >= ((iterations*2)-2)) {
+                     token = true;
+                     cycle = 2;
+                     scaleX *= factor;
+                     scaleY *= factor;
+                 } else {
+                     scaleX /= factor;
+                     scaleY /= factor;
+                     cycle++;
+                 }
              } else {
                  token = false;
+                 scaleX /= factor;
+                 scaleY /= factor;
              }
          }
     }
@@ -469,7 +465,6 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
 void Settings::activateSelectionMode()
 {
-    kFatal() << "Settings::activateSelectionMode() - Scale / Just tracing!";
     k->options->setCurrentIndex(0);
 }
 

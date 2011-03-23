@@ -369,3 +369,28 @@ bool KTItemTweener::tweenRotateReverseLoop()
 {
     return k->rotateReverseLoop;
 }
+
+KTItemTweener::ScaleAxes KTItemTweener::tweenScaleAxes()
+{
+    return k->scaleAxes;
+}
+
+double KTItemTweener::tweenScaleFactor()
+{
+    return k->scaleFactor;
+}
+
+int KTItemTweener::tweenScaleIterations()
+{
+    return k->scaleIterations;
+}
+
+int KTItemTweener::tweenScaleLoop()
+{
+    return k->scaleLoop;
+}
+
+int KTItemTweener::tweenScaleReverseLoop()
+{
+    return k->scaleReverseLoop;
+}
