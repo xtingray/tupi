@@ -131,6 +131,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
+    k->editMode == None;  
     activatePropertiesMode(Settings::Selection);
 }
 
@@ -474,10 +475,11 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
+    kFatal() << "Settings::emitOptionChanged() - editMode: " << k->editMode;
     switch (option) {
             case 0:
              {
-                 if (k->editMode != Settings::Selection) {
+                 if (k->editMode != Selection) {
                      kFatal() << "Settings::emitOptionChanged() - Rotation / Select Mode!";
                      activeInnerForm(false);
                      k->editMode = Settings::Selection;
@@ -487,7 +489,7 @@ void Settings::emitOptionChanged(int option)
             break;
             case 1:
              {
-                 if (k->editMode != Settings::Properties) {
+                 if (k->editMode != Properties) {
                      kFatal() << "Settings::emitOptionChanged() - Rotation / Properties Mode!";
                      k->editMode = Settings::Properties;
                      if (k->selectionDone) {
