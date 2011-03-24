@@ -1401,16 +1401,16 @@
         <translation>Otevírá se nový dokument...</translation>
     </message>
     <message>
-        <location filename="../src/shell/ktmainwindow.cpp" line="256"/>
-        <source>Illustration</source>
-        <translation>Obrázek</translation>
-    </message>
-    <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="274"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="1063"/>
         <location filename="../src/shell/ktmainwindow_gui.cpp" line="328"/>
         <source>Animation</source>
         <translation>Kreslený film</translation>
+    </message>
+    <message>
+        <location filename="../src/shell/ktmainwindow.cpp" line="256"/>
+        <source>Player</source>
+        <translation>Player</translation>
     </message>
     <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="376"/>
@@ -1672,11 +1672,6 @@
         <location filename="../src/shell/ktmainwindow_gui.cpp" line="315"/>
         <source>Modules</source>
         <translation>Moduly</translation>
-    </message>
-    <message>
-        <location filename="../src/shell/ktmainwindow_gui.cpp" line="320"/>
-        <source>Drawing</source>
-        <translation>Kreslení</translation>
     </message>
     <message>
         <location filename="../src/shell/ktmainwindow_gui.cpp" line="336"/>

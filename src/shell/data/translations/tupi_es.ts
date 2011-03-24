@@ -1163,15 +1163,15 @@
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="231"/>
-        <source>Illustration</source>
-        <translation>Ilustración</translation>
+        <source>Animation</source>
+        <translation>Animación</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="249"/>
         <location filename="../../ktmainwindow.cpp" line="957"/>
         <location filename="../../ktmainwindow_gui.cpp" line="315"/>
-        <source>Animation</source>
-        <translation>Animación</translation>
+        <source>Player</source>
+        <translation>Reproductor</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="322"/>
@@ -1388,11 +1388,6 @@
         <location filename="../../ktmainwindow_gui.cpp" line="303"/>
         <source>Modules</source>
         <translation>Módulos</translation>
-    </message>
-    <message>
-        <location filename="../../ktmainwindow_gui.cpp" line="308"/>
-        <source>Drawing</source>
-        <translation>Ilustración</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="309"/>

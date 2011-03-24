@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -42,7 +42,7 @@ class QTabWidget;
 
 /**
  * A tabbed main window.
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
 {
@@ -50,11 +50,11 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
     public:
 
         enum Perspective {
-             Drawing = 0x01,
-             Animation = 0x02,
+             Animation = 0x01,
+             Player = 0x02,
              Help = 0x04,
              News = 0x08,
-             All = Drawing | Animation | Help | News
+             All = Animation | Player | Help | News
         };
 
         KTabbedMainWindow(QWidget *parent = 0);

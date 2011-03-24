@@ -959,16 +959,16 @@
         <translation>Открытие нового документа...</translation>
     </message>
     <message>
-        <location filename="../../../shell/ktmainwindow.cpp" line="251"/>
-        <source>Illustration</source>
-        <translation>Рисование</translation>
-    </message>
-    <message>
         <location filename="../../../shell/ktmainwindow.cpp" line="269"/>
         <location filename="../../../shell/ktmainwindow.cpp" line="1030"/>
         <location filename="../../../shell/ktmainwindow_gui.cpp" line="312"/>
         <source>Animation</source>
         <translation>Анимация</translation>
+    </message>
+    <message>
+        <location filename="../../../shell/ktmainwindow.cpp" line="251"/>
+        <source>Player</source>
+        <translation>Player</translation>
     </message>
     <message>
         <location filename="../../../shell/ktmainwindow.cpp" line="351"/>
@@ -1219,11 +1219,6 @@
         <location filename="../../../shell/ktmainwindow_gui.cpp" line="299"/>
         <source>Modules</source>
         <translation>Модули</translation>
-    </message>
-    <message>
-        <location filename="../../../shell/ktmainwindow_gui.cpp" line="304"/>
-        <source>Drawing</source>
-        <translation>Рисование</translation>
     </message>
     <message>
         <location filename="../../../shell/ktmainwindow_gui.cpp" line="320"/>

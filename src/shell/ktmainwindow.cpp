@@ -164,8 +164,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     // Time to load plugins... 
     KTPluginManager::instance()->loadPlugins();
 
-    // Defining the Drawing view, as the first interface to show up	
-    setCurrentPerspective(Drawing);
+    // Defining the Animation view, as the first interface to show up	
+    setCurrentPerspective(Animation);
 
     KCONFIG->beginGroup("General");
     // check if into the config file, user always wants to start opening his last project 
@@ -254,7 +254,7 @@ void KTMainWindow::viewNewDocument()
         drawingTab = new KTViewDocument(m_projectManager->project());
         connectToDisplays(drawingTab);
 
-        drawingTab->setWindowTitle(tr("Illustration"));
+        drawingTab->setWindowTitle(tr("Animation"));
 
         addWidget(drawingTab);
 
@@ -272,7 +272,7 @@ void KTMainWindow::viewNewDocument()
 
         animationTab = new KTAnimationspace(viewCamera);
         animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
-        animationTab->setWindowTitle(tr("Animation"));
+        animationTab->setWindowTitle(tr("Player"));
         addWidget(animationTab);
 
         helpTab = new KTHelpBrowser(this);
@@ -1143,7 +1143,7 @@ void KTMainWindow::updateCurrentTab(int index)
 {
     // SQA: Check/Test the content of this method
 
-    if (index == 1) {  // Animation mode 
+    if (index == 1) {  // Player mode 
 
         if (lastTab == 2)
             helpView->expandDock(false);
@@ -1153,7 +1153,7 @@ void KTMainWindow::updateCurrentTab(int index)
 
     } else {
 
-        if (index == 0) { // Illustration mode
+        if (index == 0) { // Animation mode
             if (lastTab == 1)
                 viewCamera->doStop();
 

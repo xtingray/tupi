@@ -916,16 +916,16 @@
         <translation type="unfinished">Obrint un nou document...</translation>
     </message>
     <message>
-        <location filename="../../ktmainwindow.cpp" line="231"/>
-        <source>Illustration</source>
-        <translation type="unfinished">Il·lustració</translation>
-    </message>
-    <message>
         <location filename="../../ktmainwindow.cpp" line="249"/>
         <location filename="../../ktmainwindow.cpp" line="957"/>
         <location filename="../../ktmainwindow_gui.cpp" line="315"/>
         <source>Animation</source>
         <translation type="unfinished">Animació</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="231"/>
+        <source>Player</source>
+        <translation type="unfinished">Player</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="322"/>
@@ -1064,11 +1064,6 @@
         <location filename="../../ktmainwindow_gui.cpp" line="303"/>
         <source>Modules</source>
         <translation type="unfinished">Mòduls</translation>
-    </message>
-    <message>
-        <location filename="../../ktmainwindow_gui.cpp" line="308"/>
-        <source>Drawing</source>
-        <translation type="unfinished">Il·lustració</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="322"/>

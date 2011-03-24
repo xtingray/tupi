@@ -85,20 +85,21 @@ class KTProjectResponse;
 
 /**
  * This class defines the main window application
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTMainWindow : public KTabbedMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
 
         enum Perspective {
-             Drawing = 0x01,
-             Animation = 0x02,
+             Animation = 0x01,
+             Player = 0x02,
              Help = 0x04,
              News = 0x08,
-             All = Drawing | Animation | Help | News
+             All = Animation | Player | Help | News
         };
 
         KTMainWindow(KTSplash *splash = 0, int parameters = 1);

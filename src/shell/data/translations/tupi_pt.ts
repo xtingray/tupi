@@ -1399,15 +1399,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/shell/ktmainwindow.cpp" line="256"/>
-        <source>Illustration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="274"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="1062"/>
         <location filename="../src/shell/ktmainwindow_gui.cpp" line="328"/>
         <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/shell/ktmainwindow.cpp" line="256"/>
+        <source>Player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1669,11 +1669,6 @@
     <message>
         <location filename="../src/shell/ktmainwindow_gui.cpp" line="315"/>
         <source>Modules</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/shell/ktmainwindow_gui.cpp" line="320"/>
-        <source>Drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

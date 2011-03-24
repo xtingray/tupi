@@ -181,10 +181,10 @@ void KTabbedMainWindow::emitWidgetChanged(int index)
         
        switch (index) {
                case 0:
-                    setCurrentPerspective(Drawing);
+                    setCurrentPerspective(Animation);
                break;
                case 1:
-                    setCurrentPerspective(Animation);
+                    setCurrentPerspective(Player);
                break;
                case 2:
                     setCurrentPerspective(Help);
@@ -272,10 +272,10 @@ void KTabbedMainWindow::setCurrentTab(int index)
 
         switch (index) {
                case 0:
-                    setCurrentPerspective(Drawing);
+                    setCurrentPerspective(Animation);
                break;
                case 1:
-                    setCurrentPerspective(Animation);
+                    setCurrentPerspective(Player);
                break;
                case 2:
                     setCurrentPerspective(Help);

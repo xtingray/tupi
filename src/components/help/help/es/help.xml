@@ -7,8 +7,8 @@
     </Section>
     <Section title="Tup&#205;? Qu&#233; es eso?" file="chapter1.html">
         <SubSection title="Componentes Principales" file="components.html" />
-        <SubSection title="M&#243;dulo de Ilustraci&#243;n" file="illustration.html" />
         <SubSection title="M&#243;dulo de Animaci&#243;n" file="animation.html" />
+        <SubSection title="M&#243;dulo de Reproducci&#243;n" file="player.html" />
         <SubSection title="M&#243;dulo de Ayuda" file="help.html" />
     </Section>
     <Section title="Hagamos un ejemplo!" file="chapter2.html">

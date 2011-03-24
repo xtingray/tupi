@@ -67,11 +67,11 @@ void KTMainWindow::createGUI()
     // Adding the color palette to the left side of the interface 
 
     m_colorPalette = new KTColorPalette;
-    colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing, "Color Palette", QKeySequence(tr("Shift+P")));
+    colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Animation, "Color Palette", QKeySequence(tr("Shift+P")));
     //colorView->setShortcut(QKeySequence(tr("Shift+P")));
 
     m_actionManager->insert(colorView->toggleViewAction(), "show palette");
-    addToPerspective(colorView->toggleViewAction(), Drawing);
+    addToPerspective(colorView->toggleViewAction(), Animation);
 
     connectToDisplays(m_colorPalette);
     ui4paintArea(m_colorPalette);
@@ -79,9 +79,9 @@ void KTMainWindow::createGUI()
     // Adding the pen parameters widget to the left side of the interface 
 
     m_penWidget = new KTPenWidget;
-    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Drawing, "Pen", QKeySequence(tr("Shift+B")));
+    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Animation, "Pen", QKeySequence(tr("Shift+B")));
     m_actionManager->insert(penView->toggleViewAction(), "show pen");
-    addToPerspective(penView->toggleViewAction(), Drawing);
+    addToPerspective(penView->toggleViewAction(), Animation);
 
     connectToDisplays(m_penWidget);
     ui4paintArea(m_penWidget);
@@ -91,9 +91,9 @@ void KTMainWindow::createGUI()
     m_libraryWidget = new KTLibraryWidget();
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
 
-    libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing, "Library", QKeySequence(tr("Shift+L")));
+    libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Animation, "Library", QKeySequence(tr("Shift+L")));
     m_actionManager->insert(libraryView->toggleViewAction(), "show library");
-    addToPerspective(libraryView->toggleViewAction(), Drawing);
+    addToPerspective(libraryView->toggleViewAction(), Animation);
     connectToDisplays(m_libraryWidget);
 
     new KAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("Bitmap"), QKeySequence(tr("Alt+B")), m_libraryWidget, SLOT(importBitmap()),
@@ -121,9 +121,9 @@ void KTMainWindow::createGUI()
     // Adding the scenes widget to the right side of the interface
 
     m_scenes = new KTScenesWidget;
-    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing, "Scenes Manager", QKeySequence(tr("Shift+C")));
+    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Animation, "Scenes Manager", QKeySequence(tr("Shift+C")));
     m_actionManager->insert(scenesView->toggleViewAction(), "show scenes");
-    addToPerspective(scenesView->toggleViewAction(), Drawing);
+    addToPerspective(scenesView->toggleViewAction(), Animation);
 
     ui4project(m_scenes);
     ui4localRequest(m_scenes);
@@ -131,9 +131,9 @@ void KTMainWindow::createGUI()
 
     // Adding the exposure sheet to the right side of the interface
     m_exposureSheet = new KTExposureSheet;
-    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing, "Exposure Sheet", QKeySequence(tr("Shift+E")));
+    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Animation, "Exposure Sheet", QKeySequence(tr("Shift+E")));
     m_actionManager->insert(exposureView->toggleViewAction(), "show exposure");
-    addToPerspective(exposureView->toggleViewAction(), Drawing);
+    addToPerspective(exposureView->toggleViewAction(), Animation);
 
     ui4project(m_exposureSheet);
     ui4localRequest(m_exposureSheet);
@@ -158,9 +158,9 @@ void KTMainWindow::createGUI()
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new KTTimeLine;
     m_timeLine->setLibrary(m_projectManager->project()->library());
-    timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Drawing, "Time Line", QKeySequence(tr("Shift+T")));
+    timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Animation, "Time Line", QKeySequence(tr("Shift+T")));
     m_actionManager->insert(timeView->toggleViewAction(), "show timeline");
-    addToPerspective(timeView->toggleViewAction(), Drawing);
+    addToPerspective(timeView->toggleViewAction(), Animation);
 
     ui4project(m_timeLine);
     ui4localRequest(m_timeLine);
@@ -169,16 +169,16 @@ void KTMainWindow::createGUI()
 #if defined(QT_GUI_LIB) && defined(K_DEBUG)
     QDesktopWidget desktop;
     m_debug = new KTDebugWidget(this, desktop.screenGeometry().width());
-    debugView = addToolView(m_debug, Qt::BottomDockWidgetArea, Drawing, "Debug Term", QKeySequence(tr("Shift+D")));
+    debugView = addToolView(m_debug, Qt::BottomDockWidgetArea, Animation, "Debug Term", QKeySequence(tr("Shift+D")));
     m_actionManager->insert(debugView->toggleViewAction(), "show debug");
-    addToPerspective(debugView->toggleViewAction(), Drawing);
+    addToPerspective(debugView->toggleViewAction(), Animation);
 #endif
 
     // Adding the script editor to the bottom side, if kinas was enabled
     /*
 #ifdef ENABLE_KINAS
     KinasWidget *m_scriptEditor = new KinasWidget;
-    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing, "Tupi Script", QKeySequence(tr("Shift+K"));
+    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Animation, "Tupi Script", QKeySequence(tr("Shift+K"));
 #endif
     */
 
@@ -316,20 +316,20 @@ void KTMainWindow::setupMenu()
     QActionGroup *group = new QActionGroup(this);
     group->setExclusive(true);
 
-    // Adding Option Drawing
-    QAction *drawingPerspective = new QAction(tr("Drawing"), this);
+    // Adding Option Animation
+    QAction *drawingPerspective = new QAction(tr("Animation"), this);
     drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png")); 
     drawingPerspective->setIconVisibleInMenu(true);
     drawingPerspective->setShortcut(QKeySequence("Ctrl+1"));
-    drawingPerspective->setData(Drawing);
+    drawingPerspective->setData(Animation);
     group->addAction(drawingPerspective);
 
-    // Adding Option Animation
-    QAction *animationPerspective = new QAction(tr("Animation"), this);
+    // Adding Option Player 
+    QAction *animationPerspective = new QAction(tr("Player"), this);
     animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
     animationPerspective->setIconVisibleInMenu(true);
     animationPerspective->setShortcut(QKeySequence("Ctrl+2"));
-    animationPerspective->setData(Animation);
+    animationPerspective->setData(Player);
     group->addAction(animationPerspective);
 
    // Adding Option Help 
@@ -657,8 +657,8 @@ void KTMainWindow::changePerspective(QAction *a)
 {
     int perspective = a->data().toInt();
 
-    // Illustration or Animation perspective
-    if (perspective == Drawing || perspective == Animation) {
+    // Animation or Player perspective
+    if (perspective == Animation || perspective == Player) {
         setCurrentTab(perspective - 1);
     } else { 
         if (perspective == Help) // Help perspective 

@@ -7,8 +7,8 @@
     </Section>
     <Section title="Tupi? Что это?" file="chapter1.html">
         <SubSection title="Основные компоненты" file="components.html" />
-        <SubSection title="Модуль рисования" file="illustration.html" />
-        <SubSection title="Модуль анимации" file="animation.html" />
+        <SubSection title="Модуль рисования" file="animation.html" />
+        <SubSection title="Модуль анимации" file="player.html" />
         <SubSection title="Модуль справки" file="help.html" />
     </Section>
     <Section title="Попробуем на примере!" file="chapter2.html">

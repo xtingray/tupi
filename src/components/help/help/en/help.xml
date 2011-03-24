@@ -7,8 +7,8 @@
     </Section>
     <Section title="Tupi? What's it?" file="chapter1.html">
         <SubSection title="Main Components" file="components.html" />
-        <SubSection title="Illustration Module" file="illustration.html" />
         <SubSection title="Animation Module" file="animation.html" />
+        <SubSection title="Player Module" file="player.html" />
         <SubSection title="Help Module" file="help.html" />
     </Section>
     <Section title="Let's make an example!" file="chapter2.html">

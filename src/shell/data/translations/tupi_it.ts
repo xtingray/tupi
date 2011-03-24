@@ -971,16 +971,16 @@
         <translation type="unfinished">Apertura di un nuovo documento...</translation>
     </message>
     <message>
-        <location filename="../../ktmainwindow.cpp" line="231"/>
-        <source>Illustration</source>
-        <translation type="unfinished">Disegno</translation>
-    </message>
-    <message>
         <location filename="../../ktmainwindow.cpp" line="249"/>
         <location filename="../../ktmainwindow.cpp" line="957"/>
         <location filename="../../ktmainwindow_gui.cpp" line="315"/>
         <source>Animation</source>
         <translation type="unfinished">Animazione</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="231"/>
+        <source>Player</source>
+        <translation type="unfinished">Player</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="322"/>
@@ -1197,11 +1197,6 @@
         <location filename="../../ktmainwindow_gui.cpp" line="303"/>
         <source>Modules</source>
         <translation type="unfinished">Moduli</translation>
-    </message>
-    <message>
-        <location filename="../../ktmainwindow_gui.cpp" line="308"/>
-        <source>Drawing</source>
-        <translation type="unfinished">Disegno</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="309"/>
