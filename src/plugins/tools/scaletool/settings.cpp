@@ -126,7 +126,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateSelectionMode();
+    activatePropertiesMode(Settings::Selection);
 }
 
 Settings::~Settings()
@@ -282,8 +282,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->mode = Add;
     k->input->setText(name);
 
-    activateSelectionMode();
-
+    activatePropertiesMode(Settings::Selection);
     k->apply->setToolTip(tr("Save Tween"));
 }
 
@@ -291,10 +290,9 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
-
-    kFatal() << "Settings::setParameters() - Just tracing! Editing Mode";
-
     setEditMode();
+    activatePropertiesMode(Settings::Properties);
+
     notifySelection(true);
 
     k->input->setText(currentTween->name());
@@ -304,8 +302,6 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboIterations->setItemText(0, QString::number(currentTween->tweenScaleIterations()));
     k->loopBox->setChecked(currentTween->tweenScaleLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenScaleReverseLoop());
-
-    // k->options->setCurrentIndex(1);
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -375,14 +371,12 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged(int option) - Just tracing! - Mode: Select";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
             break;
             case 1:
              {
-                 kFatal() << "Settings::emitOptionChanged(int option) - Just tracing! - Mode: Properties";
                  if (k->selectionDone) {
                      activeInnerForm(true);
                      emit clickedDefineProperties();
@@ -471,9 +465,9 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     return doc.toString();
 }
 
-void Settings::activateSelectionMode()
+void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    k->options->setCurrentIndex(0);
+    k->options->setCurrentIndex(mode);
 }
 
 void Settings::checkBottomLimit(int index)

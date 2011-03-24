@@ -35,7 +35,6 @@
 
 #include "tweener.h"
 #include "configurator.h"
-#include "settings.h"
 #include "target.h"
 
 #include <QPointF>
@@ -204,8 +203,7 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        connect(k->configurator, SIGNAL(addModeOn()), this, SLOT(addModeOn()));
-        connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv()));
+        connect(k->configurator, SIGNAL(setMode(Settings::Mode)), this, SLOT(updateMode(Settings::Mode)));
         connect(k->configurator, SIGNAL(clickedDefineProperties()), this, SLOT(setPropertiesMode()));
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
@@ -274,7 +272,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                if (k->editMode == Settings::Properties) {
                    if (total > k->configurator->startComboSize()) {
-                       k->configurator->activateSelectionMode();
+                       k->configurator->activatePropertiesMode(Settings::Selection);
                        clearSelection();
                        setSelect();
                    } 
@@ -305,18 +303,6 @@ void Tweener::setCurrentTween(const QString &name)
 
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
-}
-
-void Tweener::setEditEnv()
-{
-    k->mode = Settings::Edit;
-    k->editMode = Settings::Properties;
-
-    KTScene *scene = k->scene->scene();
-    k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Scale);
-    k->origin = k->currentTween->transformOriginPoint();
-
-    addTarget();
 }
 
 int Tweener::framesTotal()
@@ -559,7 +545,6 @@ void Tweener::applyTween()
     }
 
     setCurrentTween(name);
-    //k->scene->addItem(k->target);
 }
 
 void Tweener::removeTween(const QString &name)
@@ -589,9 +574,9 @@ void Tweener::addTarget()
     connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
 }
 
-void Tweener::addModeOn()
+void Tweener::updateMode(Settings::Mode mode)
 {
-    k->mode = Settings::Add;
+    k->mode = mode;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

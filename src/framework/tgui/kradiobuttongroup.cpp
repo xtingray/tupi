@@ -42,6 +42,8 @@
 
 KRadioButtonGroup::KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent) : QGroupBox(title, parent), m_orientation(orientation)
 {
+    currentButtonIndex = -1;
+
     if (orientation == Qt::Horizontal)
         m_layout = new QHBoxLayout;
     else
@@ -88,7 +90,11 @@ int KRadioButtonGroup::currentIndex() const
 
 void KRadioButtonGroup::emitButtonId(QAbstractButton *button)
 {
-    emit clicked(m_buttonGroup->buttons().indexOf(button));
+    int index = m_buttonGroup->buttons().indexOf(button);
+    if (currentButtonIndex != index) {
+        currentButtonIndex = index;
+        emit clicked(index);
+    }
 }
 
 void KRadioButtonGroup::setCurrentIndex(int index)

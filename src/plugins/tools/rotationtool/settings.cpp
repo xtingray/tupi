@@ -56,7 +56,6 @@ struct Settings::Private
 
     QBoxLayout *layout;
     Mode mode;
-    EditMode editMode;
 
     QLineEdit *input;
     KRadioButtonGroup *options;
@@ -131,7 +130,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    k->editMode == None;  
     activatePropertiesMode(Settings::Selection);
 }
 
@@ -475,23 +473,17 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
-    kFatal() << "Settings::emitOptionChanged() - editMode: " << k->editMode;
     switch (option) {
             case 0:
              {
-                 if (k->editMode != Selection) {
                      kFatal() << "Settings::emitOptionChanged() - Rotation / Select Mode!";
                      activeInnerForm(false);
-                     k->editMode = Settings::Selection;
                      emit clickedSelect();
-                 }
              }
             break;
             case 1:
              {
-                 if (k->editMode != Properties) {
                      kFatal() << "Settings::emitOptionChanged() - Rotation / Properties Mode!";
-                     k->editMode = Settings::Properties;
                      if (k->selectionDone) {
                          activeInnerForm(true);
                          emit clickedDefineAngle();
@@ -499,7 +491,6 @@ void Settings::emitOptionChanged(int option)
                          k->options->setCurrentIndex(0);
                          KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
                      }
-                 }
              }
     }
 }

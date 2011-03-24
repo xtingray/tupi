@@ -65,7 +65,8 @@ class Settings : public QWidget
         void notifySelection(bool flag);
         int startComboSize();
         QString currentTweenName() const;
-        void activateSelectionMode();
+        void activatePropertiesMode(Settings::EditMode mode);
+        // void activateSelectionMode();
         QString tweenToXml(int currentFrame, QPointF point);
 
     private slots:

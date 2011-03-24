@@ -109,7 +109,6 @@ void Tweener::init(KTGraphicsScene *scene)
         k->configurator->loadTweenList(tweenList);
         QString tweenName = tweenList.at(0);
         setCurrentTween(tweenName);
-        // k->objects = k->scene->scene()->getItemsFromTween(tweenName, KTItemTweener::Rotation);
     }
 
     int total = framesTotal();

@@ -199,25 +199,24 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activateSelectionMode()
+void Configurator::activatePropertiesMode(Settings::EditMode mode)
 {
-    k->settingsPanel->activateSelectionMode();
+    k->settingsPanel->activatePropertiesMode(mode);
 }
 
 void Configurator::addTween(const QString &name)
 {
     kFatal() << "Configurator::addTween() - Just tracing!";
 
-    k->mode = Settings::Add;
-
-    k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
-
     activeTweenManagerPanel(false);
-    activePropertiesPanel(true);
 
+    k->mode = Settings::Add;
     k->state = Properties;
 
-    emit addModeOn();
+    k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
+    activePropertiesPanel(true);
+
+    emit setMode(k->mode);
 }
 
 void Configurator::editTween()
@@ -229,10 +228,11 @@ void Configurator::editTween()
     k->mode = Settings::Edit;
     k->state = Properties;
 
+    k->settingsPanel->notifySelection(true);
     k->settingsPanel->setParameters(k->currentTween);
     activePropertiesPanel(true);
 
-    emit editModeOn();
+    emit setMode(k->mode);
 }
 
 void Configurator::removeTween()

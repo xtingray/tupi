@@ -43,11 +43,13 @@
 #include "kglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KRadioButtonGroup : public QGroupBox
 {
     Q_OBJECT
+
     public:
         KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
         ~KRadioButtonGroup();
@@ -68,6 +70,7 @@ class K_GUI_EXPORT KRadioButtonGroup : public QGroupBox
         Qt::Orientation m_orientation;
         QBoxLayout *m_layout;
         QButtonGroup *m_buttonGroup;
+        int currentButtonIndex;
 };
 
 #endif
