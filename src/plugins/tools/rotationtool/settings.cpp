@@ -473,6 +473,8 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
+    kFatal() << "Settings::emitOptionChanged() - New Option: " << option;
+
     switch (option) {
             case 0:
              {

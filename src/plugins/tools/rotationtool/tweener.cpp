@@ -53,6 +53,7 @@
 #include "ktgraphicobject.h"
 #include "ktsvgitem.h"
 #include "ktpathitem.h"
+#include "ktrectitem.h"
 #include "ktpixmapitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
@@ -481,16 +482,14 @@ void Tweener::applyTween()
                  KTFrame *frame = layer->frame(k->currentTween->startFrame());
                  int objectIndex = frame->indexOf(item);
 
-                 QRectF rect = item->sceneBoundingRect();
-                 QPointF point = item->transformOriginPoint();
-                 QPointF origin = QPointF(point.x() + (rect.width()/2), point.y() + (rect.height()/2));
+                 QPointF origin = item->mapFromParent(k->origin);
 
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
                      type = KTLibraryObject::Svg;
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  } else {
                      if (qgraphicsitem_cast<KTPathItem *>(item))
-                         origin = rect.center();
+                         origin = k->origin;
                  }
 
                  if (k->startPoint != k->currentTween->startFrame()) {
@@ -527,7 +526,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, k->origin));
+                                            k->configurator->tweenToXml(k->startPoint, origin));
                  emit requested(&request);
 
                  int total = k->startPoint + k->configurator->totalSteps();

@@ -102,6 +102,7 @@ void KRadioButtonGroup::setCurrentIndex(int index)
     QAbstractButton *button = m_buttonGroup->button(index);
 
     if (button) {
+        currentButtonIndex = index;
         button->setChecked(true);
         emit clicked(index);
     } 
