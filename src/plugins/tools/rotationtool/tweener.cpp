@@ -379,7 +379,6 @@ void Tweener::setSelect()
         }
         k->configurator->notifySelection(true);
     }
-
 }
 
 void Tweener::setAngleMode()
@@ -472,7 +471,11 @@ void Tweener::applyTween()
 
     } else {
 
+        removeTweenFromProject(name);
+
         QList<QGraphicsItem *> newList;
+
+        kFatal() << "applyTween() - Objects total: " << k->objects.count();
 
         foreach (QGraphicsItem *item, k->objects) {
 
@@ -530,7 +533,6 @@ void Tweener::applyTween()
                  emit requested(&request);
 
                  int total = k->startPoint + k->configurator->totalSteps();
-
                  int framesNumber = framesTotal();
 
                  if (framesNumber < total) {
@@ -556,7 +558,7 @@ void Tweener::applyTween()
     KOsd::self()->display(tr("Info"), tr("Tween %1 saved!").arg(name), KOsd::Info);
 }
 
-void Tweener::removeTween(const QString &name)
+void Tweener::removeTweenFromProject(const QString &name)
 {
     KTScene *scene = k->scene->scene();
     scene->removeTween(name, KTItemTweener::Rotation);
@@ -568,7 +570,11 @@ void Tweener::removeTween(const QString &name)
                           item->setToolTip("");
              }
     }
+}
 
+void Tweener::removeTween(const QString &name)
+{
+    removeTweenFromProject(name);
     applyReset();
 }
 

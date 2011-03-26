@@ -129,8 +129,8 @@ void Tweener::init(KTGraphicsScene *scene)
 
 void Tweener::updateStartPoint(int index)
 {
-     if (k->startPoint != index && index >= 0) 
-         k->startPoint = index;
+    if (k->startPoint != index && index >= 0) 
+        k->startPoint = index;
 }
 
 /* This method returns the plugin name */
@@ -193,7 +193,6 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    // if (k->scene->currentFrameIndex() == k->startPoint) {
     if (scene->currentFrameIndex() == k->startPoint) {
 
         if (k->editMode == Settings::Path) {
@@ -530,6 +529,7 @@ void Tweener::applyTween()
 
     } else {
 
+        removeTweenFromProject(name);
         QList<QGraphicsItem *> newList;
 
         foreach (QGraphicsItem *item, k->objects) {
@@ -694,7 +694,7 @@ int Tweener::maxZValue()
     return max + 1;
 }
 
-void Tweener::removeTween(const QString &name)
+void Tweener::removeTweenFromProject(const QString &name)
 {
     KTScene *scene = k->scene->scene();
     scene->removeTween(name, KTItemTweener::Position);
@@ -706,7 +706,11 @@ void Tweener::removeTween(const QString &name)
                           item->setToolTip("");
              }
     }
+}
 
+void Tweener::removeTween(const QString &name)
+{
+    removeTweenFromProject(name);
     applyReset();
 }
 

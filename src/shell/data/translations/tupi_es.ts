@@ -228,6 +228,36 @@
         <source>Close Tween properties</source>
         <translation>Cerrar diálogo de propiedades</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Scale in</source>
+        <translation>Scalar en</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Width &amp; Height</source>
+        <translation>Ancho y Altura</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Only Width</source>
+        <translation>Solo Ancho</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Only Height</source>
+        <translation>Solo Altura</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Scaling Factor</source>
+        <translation>Factor de Escala:</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Iterations</source>
+        <translation>Iteraciones</translation>
+    </message>
 </context>
 <context>
     <name>ButtonsPanel</name>

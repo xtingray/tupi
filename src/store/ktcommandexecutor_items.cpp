@@ -708,7 +708,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
-    KTLibraryObject::Type type = response->itemType();
+    KTLibraryObject::Type itemType = response->itemType();
     int position = response->itemIndex();
     
     QString xml = response->arg().toString();
@@ -728,7 +728,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                 KTItemTweener *tween = new KTItemTweener();
                 tween->fromXml(xml);
 
-                if (type == KTLibraryObject::Item) {
+                if (itemType == KTLibraryObject::Item) {
 
                     KTGraphicObject *object = frame->graphic(position);
                     if (object == 0) {
@@ -737,14 +737,8 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                         #endif
                         return false;
                     } else {
-                        bool hasTween = object->hasTween();
                         object->setTween(tween);
-                        if (hasTween) { 
-                            int index = scene->indexOfTweenObject(tween->name(), type);
-                            scene->insertTweenObject(index, object);
-                        } else {
-                            scene->addTweenObject(object);
-                        }
+                        scene->addTweenObject(object);
                     }
 
                 } else {
@@ -755,14 +749,8 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                         #endif
                         return false;
                     } else {
-                        bool hasTween = object->hasTween();
                         object->setTween(tween);
-                        if (hasTween) {
-                            int index = scene->indexOfTweenObject(tween->name(), type);
-                            scene->insertTweenObject(index, object);
-                        } else {
-                            scene->addTweenObject(object);
-                        }
+                        scene->addTweenObject(object);
                     }
                 }
 

@@ -139,10 +139,10 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         void addTweenObject(KTGraphicObject *object);
         void addTweenObject(KTSvgItem *object);
 
-        void insertTweenObject(int index, KTGraphicObject *object);
-        void insertTweenObject(int index, KTSvgItem *object);
+        void updateTweenObject(int index, KTGraphicObject *object);
+        void updateTweenObject(int index, KTSvgItem *object);
 
-        int indexOfTweenObject(const QString &name, KTLibraryObject::Type type);
+        // int indexOfTweenObject(const QString &name, KTLibraryObject::Type itemType, KTItemTweener::Type tweenType);
 
         void removeTweenObject(KTGraphicObject *object);
         void removeTweenObject(KTSvgItem *object);

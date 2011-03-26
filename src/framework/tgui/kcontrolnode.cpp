@@ -95,7 +95,8 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     // painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 
     QColor c;
-    
+
+    /*
     if (option->state & QStyle::State_Sunken || option->state & QStyle::State_Selected) {
 
         // painter->save();
@@ -119,10 +120,14 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         }
         c.setAlpha(150);
     }
+    */
 
     if (k->centralNode) {
-        c = QColor("green");
-        c.setAlpha(100);
+        c = QColor("white");
+        // c.setAlpha();
+    } else {
+        c = QColor(55, 155, 55);
+        // c.setAlpha(200);
     }
 
     painter->setBrush(c);

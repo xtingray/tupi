@@ -463,6 +463,7 @@ void Tweener::applyTween()
 
     } else {
 
+        removeTweenFromProject(name);
         QList<QGraphicsItem *> newList;
 
         foreach (QGraphicsItem *item, k->objects) {
@@ -547,7 +548,7 @@ void Tweener::applyTween()
     setCurrentTween(name);
 }
 
-void Tweener::removeTween(const QString &name)
+void Tweener::removeTweenFromProject(const QString &name)
 {
     KTScene *scene = k->scene->scene();
     scene->removeTween(name, KTItemTweener::Scale);
@@ -559,7 +560,11 @@ void Tweener::removeTween(const QString &name)
                           item->setToolTip("");
              }
     }
+}
 
+void Tweener::removeTween(const QString &name)
+{
+    removeTweenFromProject(name);
     applyReset();
 }
 

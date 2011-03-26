@@ -400,6 +400,9 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 void KTGraphicsScene::addTweeningObjects(int photogram)
 {
     QList<KTGraphicObject *> tweenList = k->scene->tweeningGraphicObjects();
+
+    kFatal() << "KTGraphicsScene::addTweeningObjects() - Tween List Size: " << tweenList.count(); 
+
     for (int i=0; i < tweenList.count(); i++) {
 
          KTGraphicObject *object = tweenList.at(i);
@@ -518,6 +521,12 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                          object->setRotation(angle);
                      }
 
+                     if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
+                         QPointF point = tween->transformOriginPoint();
+                         object->setTransformOriginPoint(point);
+                         object->setScale(1.0);
+                     }
+
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
                              int step = photogram - origin;
                              KTTweenerStep *stepItem = tween->stepAt(step);
@@ -533,7 +542,13 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                                  object->setRotation(angle);
                              }
 
-                             addSvgObject(object);
+                            if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
+                                double scaleX = stepItem->horizontalScale();
+                                double scaleY = stepItem->verticalScale();
+                                object->setScale(scaleX);
+                            }
+
+                            addSvgObject(object);
                  }
              } else {
                  #ifdef K_DEBUG

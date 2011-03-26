@@ -74,6 +74,7 @@ class Tweener : public KTToolPlugin
         void clearSelection();
         void disableSelection();
         void addTarget();
+        void removeTweenFromProject(const QString &name);
 
     private:
         struct Private;

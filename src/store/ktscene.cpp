@@ -387,34 +387,36 @@ void KTScene::addTweenObject(KTSvgItem *object)
     k->tweeningSvgObjects << object;
 }
 
-void KTScene::insertTweenObject(int index, KTGraphicObject *object)
+void KTScene::updateTweenObject(int index, KTGraphicObject *object)
 {
     k->tweeningGraphicObjects.replace(index, object); 
 }
 
-void KTScene::insertTweenObject(int index, KTSvgItem *object)
+void KTScene::updateTweenObject(int index, KTSvgItem *object)
 {
     k->tweeningSvgObjects.replace(index, object);
 }
 
-int KTScene::indexOfTweenObject(const QString &name, KTLibraryObject::Type type)
+/*
+int KTScene::indexOfTweenObject(const QString &name, KTLibraryObject::Type itemType, KTItemTweener::Type tweenType)
 {
-    if (type == KTLibraryObject::Item) {
+    if (itemType == KTLibraryObject::Item) {
         for (int i=0; i<k->tweeningGraphicObjects.size(); i++) {
              KTItemTweener *tween = k->tweeningGraphicObjects.at(i)->tween();
-             if ((tween->name().compare(name) == 0) && (tween->type() == type))
+             if ((tween->name().compare(name) == 0) && (tween->type() == tweenType))
                  return i;
         }
     } else {
         for (int i=0; i<k->tweeningSvgObjects.size(); i++) {
              KTItemTweener *tween = k->tweeningSvgObjects.at(i)->tween();
-             if ((tween->name().compare(name) == 0) && (tween->type() == type))
+             if ((tween->name().compare(name) == 0) && (tween->type() == tweenType))
                  return i;
         }
     }
 
     return -1;
 }
+*/
 
 void KTScene::removeTweenObject(KTGraphicObject *object)
 {
@@ -464,7 +466,6 @@ void KTScene::removeTween(const QString &name, KTItemTweener::Type type)
                  if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
                      object->removeTween();
                      removeTweenObject(object);
-                     return;
                  }
              }
     }
@@ -474,7 +475,6 @@ void KTScene::removeTween(const QString &name, KTItemTweener::Type type)
                  if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
                      object->removeTween();
                      removeTweenObject(object);
-                     return;
                  }
              }
     }
@@ -507,14 +507,14 @@ QList<QString> KTScene::getTweenNames(KTItemTweener::Type type)
 
     foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
              if (KTItemTweener *tween = object->tween()) {
-                 if (tween->type() == type)
+                 if (tween->type() == type && !names.contains(tween->name()))
                      names.append(tween->name());
              }
     }
 
     foreach (KTSvgItem *object, k->tweeningSvgObjects) {
              if (KTItemTweener *tween = object->tween()) {
-                 if (tween->type() == type)
+                 if (tween->type() == type && !names.contains(tween->name()))
                      names.append(tween->name());
              } 
     }
