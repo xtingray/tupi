@@ -216,12 +216,9 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                          // Painting the background
                          drawBackground();
 
-                         kFatal() << "KTGraphicsScene::drawPhotogram() - Tracing opacity: " << k->opacity;
-
                          // Painting previews frames
                          if (k->onionSkin.previous > 0 && photogram > 0) {
 
-                             kFatal() << "KTGraphicsScene::drawPhotogram() - Painting previous frames - Opacity previous: " << k->onionSkin.previous;
                              double opacity = k->opacity;
                              double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.previous);
 
@@ -239,7 +236,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                   }
 
                                   frameBehind = previousFrame;
-                                  kFatal() << "KTGraphicsScene::drawPhotogram() - Substraction: " << opacity << " - " << opacityFactor;  
                                   opacity -= opacityFactor;
                              }
 
@@ -248,7 +244,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                          // Painting next frames
                          if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
 
-                             kFatal() << "KTGraphicsScene::drawPhotogram() - Painting next frames - Opacity next: " << k->onionSkin.next;
                              double opacity = k->opacity;
                              double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
 
@@ -266,7 +261,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                   }
                       
                                   frameLater = nextFrame;
-                                  kFatal() << "KTGraphicsScene::drawPhotogram() - Substraction: " << opacity << " - " << opacityFactor;
                                   opacity -= opacityFactor;
                              }
                          }
@@ -408,8 +402,6 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 void KTGraphicsScene::addTweeningObjects(int photogram)
 {
     QList<KTGraphicObject *> tweenList = k->scene->tweeningGraphicObjects();
-
-    kFatal() << "KTGraphicsScene::addTweeningObjects() - Tween List Size: " << tweenList.count(); 
 
     for (int i=0; i < tweenList.count(); i++) {
 
