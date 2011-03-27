@@ -251,7 +251,7 @@
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Scaling Factor</source>
-        <translation>Factor de Escala:</translation>
+        <translation type="unfinished">Factor de Escala</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
@@ -2239,6 +2239,21 @@
         <source>Filter here...</source>
         <translation>Filtre aquí...</translation>
     </message>
+    <message>
+        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
+        <source>Scene %1</source>
+        <translation>Escena %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
+        <source>Layer %1</source>
+        <translation>Capa %1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
+    </message>
 </context>
 <context>
     <name>KTSplash</name>
@@ -2689,6 +2704,21 @@
         <translation>Papel cebolla</translation>
     </message>
     <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="618"/>
+        <source>Onion Skin Factor</source>
+        <translation>Factor de Trasparencia</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="618"/>
+        <source>Enable/Disable onion skin</source>
+        <translation>Habilita/Deshabilita el papel cebolla</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="618"/>
+        <source>Set onion skin factor default value</source>
+        <translation>Asigna valor por defecto de opacidad del papel cebolla</translation>
+    </message>
+    <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="624"/>
         <source>Next Frames</source>
         <translation>Marcos siguientes</translation>
@@ -2810,7 +2840,7 @@
     <message>
         <location filename="../../main.cpp" line="202"/>
         <source>Loading modules...</source>
-        <translation>Cargando módulos</translation>
+        <translation type="unfinished">Cargando módulos...</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="205"/>
@@ -3339,24 +3369,6 @@
     </message>
     <message>
         <location filename="../../../store/ktprojectmanager.cpp" line="43"/>
-        <source>Frame %1</source>
-        <translation>Marco %1</translation>
-    </message>
-</context>
-<context>
-    <name>KTScenesWidget</name>
-    <message>
-        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
-        <source>Scene %1</source>
-        <translation>Escena %1</translation>
-    </message>
-    <message>
-        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
-        <source>Layer %1</source>
-        <translation>Capa %1</translation>
-    </message>
-    <message>
-        <location filename="../../../components/scenes/ktsceneswidget.cpp" line="43"/>
         <source>Frame %1</source>
         <translation>Marco %1</translation>
     </message>

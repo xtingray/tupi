@@ -106,6 +106,8 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         KTProject::Mode spaceMode();
         void setSpaceMode(KTProject::Mode mode);
 
+        void setOnionFactor(double opacity);
+
     private:
         void addFrame(KTFrame *frame, double opacity = 1.0, Context mode = Current);
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);

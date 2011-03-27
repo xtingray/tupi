@@ -70,6 +70,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
     public slots:
         void setNextFramesOnionSkinCount(int n);
         void setPreviousFramesOnionSkinCount(int n);
+        void setOnionFactor(double value);
 
     signals:
         void requestTriggered(const KTProjectRequest *event);

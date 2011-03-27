@@ -108,6 +108,9 @@ class KTViewDocument : public QMainWindow
         void loadPlugins();
         void setSpaceContext();
         void updateBgColor(const QColor color);
+        void enableOnionFeature();
+        void setDefaultOnionFactor();
+        void setOnionFactor(double value);
 
     private slots:
         void showPos(const QPointF &p);	

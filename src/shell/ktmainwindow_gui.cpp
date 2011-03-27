@@ -318,7 +318,7 @@ void KTMainWindow::setupMenu()
 
     // Adding Option Animation
     QAction *drawingPerspective = new QAction(tr("Animation"), this);
-    drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png")); 
+    drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")); 
     drawingPerspective->setIconVisibleInMenu(true);
     drawingPerspective->setShortcut(QKeySequence("Ctrl+1"));
     drawingPerspective->setData(Animation);
@@ -326,7 +326,7 @@ void KTMainWindow::setupMenu()
 
     // Adding Option Player 
     QAction *animationPerspective = new QAction(tr("Player"), this);
-    animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
+    animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/play.png"));
     animationPerspective->setIconVisibleInMenu(true);
     animationPerspective->setShortcut(QKeySequence("Ctrl+2"));
     animationPerspective->setData(Player);

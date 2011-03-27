@@ -892,3 +892,9 @@ void KTPaintArea::updateSpaceContext()
     currentScene->setSpaceMode(k->project->spaceContext());
     k->spaceMode = k->project->spaceContext();
 }
+
+void KTPaintArea::setOnionFactor(double value)
+{
+    KTGraphicsScene* currentScene = graphicsScene();
+    currentScene->setOnionFactor(value);
+}

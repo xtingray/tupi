@@ -86,6 +86,14 @@ struct KTViewDocument::Private
     QAction *aUndo, *aRedo, *aClose;
     QToolBar *barGrid, *toolbar;
     QDoubleSpinBox *zoomFactorSpin;
+    QDoubleSpinBox *onionFactorSpin;
+
+    QSpinBox *prevOnionSkinSpin;
+    QSpinBox *nextOnionSkinSpin;
+    bool onionEnabled;
+    int prevOnionValue;
+    int nextOnionValue;
+    double opacityFactor;
 
     KTPaintArea *paintArea;
 
@@ -106,10 +114,11 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
            K_FUNCINFO;
     #endif
 
-    setWindowIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
 
     k->project = project;
     k->currentTool = 0;
+    k->onionEnabled = true;
     k->actionManager = new KActionManager(this);
 
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
@@ -117,6 +126,12 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     k->paintArea = new KTPaintArea(project, frame);
     connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
+
+    KCONFIG->beginGroup("OnionParameters");
+    k->opacityFactor = KCONFIG->value("OnionFactor", -1).toDouble();
+    if (k->opacityFactor < 0)
+        k->opacityFactor = 0.5;
+    k->paintArea->setOnionFactor(k->opacityFactor);
 
     setCentralWidget(frame);
 
@@ -272,6 +287,18 @@ void KTViewDocument::setupDrawActions()
     ungroup->setDisabled(true);
 
     ungroup->setStatusTip(tr("Ungroups the selected object"));
+
+    KAction *onion = new KAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"),
+                               QKeySequence(tr("Ctrl+Shift+O")), this, SLOT(enableOnionFeature()),
+                               k->actionManager, "onion");
+
+    onion->setStatusTip(tr("Enable/Disable onion skin"));
+
+    KAction *onionFactor = new KAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"),
+                               QKeySequence(tr("Ctrl+Shift+S")), this, SLOT(setDefaultOnionFactor()),
+                               k->actionManager, "onionfactor");
+
+    onionFactor->setStatusTip(tr("Set onion skin factor default value"));
 }
 
 void KTViewDocument::createTools()
@@ -654,35 +681,39 @@ void KTViewDocument::createToolBar()
     int preview = KCONFIG->value("PreviewFrames", -1).toInt();
     int next = KCONFIG->value("NextFrames", -1).toInt();
 
-    QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
-    prevOnionSkinSpin->setToolTip(tr("Preview Frames"));
-    connect(prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
+    k->prevOnionSkinSpin = new QSpinBox(this);
+    k->prevOnionSkinSpin->setToolTip(tr("Preview Frames"));
+    connect(k->prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
 
     if (preview > 0)
-        prevOnionSkinSpin->setValue(preview);
+        k->prevOnionSkinSpin->setValue(preview);
     else
-        prevOnionSkinSpin->setValue(1);
+        k->prevOnionSkinSpin->setValue(1);
 
-    k->barGrid->addWidget(prevOnionSkinSpin);
+    k->barGrid->addWidget(k->prevOnionSkinSpin);
+    k->barGrid->addAction(k->actionManager->find("onion"));
 
-    QLabel *layers = new QLabel("");
-    QPixmap pix(THEME_DIR + "icons/layer.png");
-    layers->setToolTip(tr("Onion Skin"));
-    layers->setPixmap(pix);
-    layers->setMaximumSize(25, 20);
-    k->barGrid->addWidget(layers);
-
-    QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
-    nextOnionSkinSpin->setToolTip(tr("Next Frames"));
-    connect(nextOnionSkinSpin, SIGNAL(valueChanged (int)), this, SLOT(setNextOnionSkin(int)));
+    k->nextOnionSkinSpin = new QSpinBox(this);
+    k->nextOnionSkinSpin->setToolTip(tr("Next Frames"));
+    connect(k->nextOnionSkinSpin, SIGNAL(valueChanged (int)), this, SLOT(setNextOnionSkin(int)));
 
     if (next > 0)
-        nextOnionSkinSpin->setValue(next);
+        k->nextOnionSkinSpin->setValue(next);
     else
-        nextOnionSkinSpin->setValue(1);
+        k->nextOnionSkinSpin->setValue(1);
 
-    k->barGrid->addWidget(nextOnionSkinSpin);
+    k->barGrid->addWidget(k->nextOnionSkinSpin);
 
+    k->barGrid->addAction(k->actionManager->find("onionfactor"));
+
+    k->onionFactorSpin = new QDoubleSpinBox(this);
+    k->onionFactorSpin->setRange(0, 1);
+    k->onionFactorSpin->setSingleStep(0.01);
+    k->onionFactorSpin->setValue(k->opacityFactor);
+    k->onionFactorSpin->setToolTip(tr("Onion Skin Factor"));
+    connect(k->onionFactorSpin, SIGNAL(valueChanged(double)), this, SLOT(setOnionFactor(double)));
+
+    k->barGrid->addWidget(k->onionFactorSpin);
     k->barGrid->addSeparator();
 
     k->spaceMode = new QComboBox();
@@ -841,4 +872,47 @@ void KTViewDocument::updateBgColor(const QColor color)
 {
    k->project->setBgColor(color);
    k->paintArea->setBgColor(color);
+}
+
+void KTViewDocument::enableOnionFeature()
+{
+    if (!k->onionEnabled) {
+
+        if (k->prevOnionValue == 0)
+            k->prevOnionSkinSpin->setValue(1);
+        else
+            k->prevOnionSkinSpin->setValue(k->prevOnionValue);
+
+        if (k->nextOnionValue == 0)
+            k->nextOnionSkinSpin->setValue(1);
+        else
+            k->nextOnionSkinSpin->setValue(k->nextOnionValue);
+
+        k->onionEnabled = true;
+
+    } else {
+
+        k->prevOnionValue = k->prevOnionSkinSpin->value();
+        k->nextOnionValue = k->nextOnionSkinSpin->value();
+        k->prevOnionSkinSpin->setValue(0);
+        k->nextOnionSkinSpin->setValue(0);
+        k->onionEnabled = false;
+
+    }
+
+    k->paintArea->updatePaintArea();
+}
+
+void KTViewDocument::setDefaultOnionFactor()
+{
+    k->onionFactorSpin->setValue(0.5);
+    setOnionFactor(0.5);
+}
+
+void KTViewDocument::setOnionFactor(double opacity)
+{
+    KCONFIG->beginGroup("OnionParameters");
+    KCONFIG->setValue("OnionFactor", opacity);
+
+    k->paintArea->setOnionFactor(opacity);
 }

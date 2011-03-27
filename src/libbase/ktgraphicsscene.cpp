@@ -74,6 +74,7 @@ struct KTGraphicsScene::Private
 {
     KTToolPlugin *tool;
     KTScene *scene;
+    double opacity;
 
     struct OnionSkin
      {
@@ -215,15 +216,18 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                          // Painting the background
                          drawBackground();
 
+                         kFatal() << "KTGraphicsScene::drawPhotogram() - Tracing opacity: " << k->opacity;
+
                          // Painting previews frames
                          if (k->onionSkin.previous > 0 && photogram > 0) {
-                             double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
-                             double opacity = 0.5;
+
+                             kFatal() << "KTGraphicsScene::drawPhotogram() - Painting previous frames - Opacity previous: " << k->onionSkin.previous;
+                             double opacity = k->opacity;
+                             double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.previous);
 
                              int limit = photogram - k->onionSkin.previous;
                              if (limit < 0) 
                                  limit = 0;
-
 
                              QString frameBehind = ""; 
                              for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
@@ -235,6 +239,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                   }
 
                                   frameBehind = previousFrame;
+                                  kFatal() << "KTGraphicsScene::drawPhotogram() - Substraction: " << opacity << " - " << opacityFactor;  
                                   opacity -= opacityFactor;
                              }
 
@@ -242,8 +247,10 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          // Painting next frames
                          if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
-                             double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
-                             double opacity = 0.5;
+
+                             kFatal() << "KTGraphicsScene::drawPhotogram() - Painting next frames - Opacity next: " << k->onionSkin.next;
+                             double opacity = k->opacity;
+                             double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
 
                              int limit = photogram + k->onionSkin.next;
                              if (limit >= layer->frames().count()) 
@@ -259,6 +266,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                   }
                       
                                   frameLater = nextFrame;
+                                  kFatal() << "KTGraphicsScene::drawPhotogram() - Substraction: " << opacity << " - " << opacityFactor;
                                   opacity -= opacityFactor;
                              }
                          }
@@ -973,5 +981,13 @@ KTProject::Mode KTGraphicsScene::spaceMode()
 void KTGraphicsScene::setSpaceMode(KTProject::Mode mode)
 {
     k->spaceMode = mode;    
+}
+
+void KTGraphicsScene::setOnionFactor(double opacity)
+{
+    kFatal() << "KTGraphicsScene::setOnionFactor() - Updating to: " << opacity;
+    k->opacity = opacity;
+    if (k->spaceMode == KTProject::FRAMES_EDITION)
+        drawCurrentPhotogram();
 }
 

@@ -271,7 +271,7 @@ void KTMainWindow::viewNewDocument()
         ui4project(viewCamera);
 
         animationTab = new KTAnimationspace(viewCamera);
-        animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
+        animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/play.png"));
         animationTab->setWindowTitle(tr("Player"));
         addWidget(animationTab);
 
