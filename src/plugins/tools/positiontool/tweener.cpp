@@ -210,6 +210,9 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 k->objects = scene->selectedItems();
                 k->configurator->notifySelection(true);
 
+                QGraphicsItem *item = k->objects.at(0);
+                QRectF rect = item->sceneBoundingRect();
+
                 if (!k->path) {
                     k->path = new QGraphicsPathItem;
                     k->path->setZValue(maxZValue());
@@ -223,15 +226,19 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     QPen pen(QBrush(color), 1, Qt::DotLine);
                     k->path->setPen(pen);
 
-                    QGraphicsItem *item = k->objects.at(0);
-                    QRectF rect = item->sceneBoundingRect();
-
                     QPainterPath path;
                     // path.moveTo(input->pos());
                     path.moveTo(rect.center());
                     k->path->setPath(path);
                     scene->addItem(k->path);
                     k->pathAdded = true;
+                } else {
+                    scene->removeItem(k->path);
+                    QPainterPath path;
+                    // path.moveTo(input->pos());
+                    path.moveTo(rect.center());
+                    k->path->setPath(path);
+                    scene->addItem(k->path);
                 }
             } 
         }
@@ -496,6 +503,10 @@ void Tweener::applyTween()
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  }
 
+                 QRectF rect = item->sceneBoundingRect();
+                 QPointF point = item->mapFromParent(rect.center());
+                 kFatal() << "Tweener::applyTween() - Item Position: [" << point.x() << ", " << point.y() << "]";
+
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
@@ -505,7 +516,8 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween, 
-                                            k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint(), route));
+                                            k->configurator->tweenToXml(k->startPoint, point, route));
+                                            // k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint(), route));
                  emit requested(&request);
         }
 

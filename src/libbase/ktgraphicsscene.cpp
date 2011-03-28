@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -67,7 +67,7 @@
 /**
  * This class defines the data structure and methods for handling animation scenes.
  * Here is where the set of photograms of one scene are processed.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTGraphicsScene::Private
@@ -422,8 +422,11 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 
                      if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
                          if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                             object->setLastTweenPos(stepItem->position());
-                             object->item()->setPos(QPointF(0, 0));
+                             QPointF point = QPoint(-adjustX, -adjustY);
+                             object->setLastTweenPos(stepItem->position() + point);
+                             object->item()->setTransformOriginPoint(tween->transformOriginPoint());
+                             // kFatal() << "KTGraphicsScene::addTweeningObjects() - Item Position: [" << point.x() << ", " << point.y() << "]";
+                             object->item()->setPos(stepItem->position() + point);
                          } else {
                              QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
                              object->item()->setPos(point);
@@ -453,12 +456,14 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                             int step = photogram - origin;
                             KTTweenerStep *stepItem = tween->stepAt(step);
                             object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
+
                             if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
                                 if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                                    qreal dx = stepItem->position().x() - object->lastTweenPos().x();
-                                    qreal dy = stepItem->position().y() - object->lastTweenPos().y();
+                                    qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
+                                    qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
                                     object->item()->moveBy(dx, dy);
-                                    object->setLastTweenPos(stepItem->position());
+                                    QPointF point = QPoint(-adjustX, -adjustY);
+                                    object->setLastTweenPos(stepItem->position() + point);
                                 } else {
                                     object->item()->setPos(stepItem->position().x() - adjustX, 
                                                            stepItem->position().y() - adjustY);
