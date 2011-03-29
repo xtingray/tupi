@@ -92,12 +92,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
     k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    k->remove->setToolTip(tr("Cancel Tween"));
-
+    // k->remove->setToolTip(tr("Cancel Tween"));
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -250,7 +248,6 @@ void Settings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Position / Just tracing!";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
@@ -300,7 +297,6 @@ void Settings::activatePathMode()
 
 void Settings::activateSelectionMode()
 {
-    kFatal() << "Settings::activateSelectionMode() - Just tracing!";
     k->options->setCurrentIndex(0);
 }
 

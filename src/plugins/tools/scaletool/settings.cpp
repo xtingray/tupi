@@ -107,7 +107,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    k->remove->setToolTip(tr("Cancel Tween"));
+    // k->remove->setToolTip(tr("Cancel Tween"));
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -197,12 +197,16 @@ void Settings::setInnerForm()
     axesLayout->addWidget(k->comboAxes);
 
     k->comboFactor = new QComboBox();
-    for (int i=1; i<=9; i++)
+    for (int i=1; i<=9; i++) {
          k->comboFactor->addItem("0." + QString::number(i));
+         k->comboFactor->addItem("0." + QString::number(i) + "5");
+    }
 
     for (int i=1; i<=9; i++) {
-         for (int j=0; j<=9; j++)
+         for (int j=0; j<=9; j++) {
               k->comboFactor->addItem(QString::number(i) + "." + QString::number(j));
+              k->comboFactor->addItem(QString::number(i) + "." + QString::number(j) + "5");
+         }
     }
 
     QLabel *speedLabel = new QLabel(tr("Scaling Factor") + ": ");
@@ -285,6 +289,8 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
     activatePropertiesMode(Settings::Selection);
     k->apply->setToolTip(tr("Save Tween"));
+    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->remove->setToolTip(tr("Cancel Tween"));
 }
 
 // Editing new Tween
@@ -378,7 +384,6 @@ void Settings::emitOptionChanged(int option)
             break;
             case 1:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Properties ON!";
                  if (k->selectionDone) {
                      activeInnerForm(true);
                      emit clickedDefineProperties();
@@ -469,7 +474,6 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
 void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    kFatal() << "Settings::activatePropertiesMode() - Scaling - Mode: " << mode;
     k->options->setCurrentIndex(mode);
 }
 

@@ -155,7 +155,6 @@ void TweenManager::editTween(QListWidgetItem *item)
 
 void TweenManager::removeTween()
 {
-    kFatal() << "TweenManager::removeTween() - Just tracing!";
     removeItemFromList();
 
     emit removeCurrentTween(k->target);

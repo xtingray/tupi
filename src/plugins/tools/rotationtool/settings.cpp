@@ -111,7 +111,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    k->remove->setToolTip(tr("Cancel Tween"));
+    // k->remove->setToolTip(tr("Cancel Tween"));
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -381,6 +381,8 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
     activatePropertiesMode(Settings::Selection);
     k->apply->setToolTip(tr("Save Tween"));
+    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->remove->setToolTip(tr("Cancel Tween"));
 }
 
 // Editing new Tween
