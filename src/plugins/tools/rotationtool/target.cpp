@@ -123,7 +123,6 @@ void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     K_FUNCINFO;
 
-    kFatal() << "Target::mouseReleaseEvent() - New point: [" << event->scenePos().x() << ", " << event->scenePos().y() << "]";
     emit positionUpdated(event->scenePos()); 
 
     QGraphicsItem::mouseReleaseEvent(event);

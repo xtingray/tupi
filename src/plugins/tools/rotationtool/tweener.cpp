@@ -386,8 +386,6 @@ void Tweener::setAngleMode()
     k->editMode = Settings::Properties;
     disableSelection();
 
-    kFatal() << "Tweener::setAngleMode() - State: " << k->mode;
-
     if (k->objects.isEmpty()) {
         k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), KTItemTweener::Rotation);
         k->origin = k->currentTween->transformOriginPoint(); 
@@ -472,10 +470,7 @@ void Tweener::applyTween()
     } else {
 
         removeTweenFromProject(name);
-
         QList<QGraphicsItem *> newList;
-
-        kFatal() << "applyTween() - Objects total: " << k->objects.count();
 
         foreach (QGraphicsItem *item, k->objects) {
 

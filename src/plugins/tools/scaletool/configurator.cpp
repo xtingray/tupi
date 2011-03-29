@@ -105,6 +105,8 @@ void Configurator::loadTweenList(QList<QString> tweenList)
 
 void Configurator::setPropertiesPanel()
 {
+    kFatal() << "Configurator::setPropertiesPanel() - Just tracing!";
+
     k->settingsPanel = new Settings(this);
 
     connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
@@ -136,6 +138,7 @@ void Configurator::setTweenManagerPanel()
     k->tweenManager = new TweenManager(this);
     connect(k->tweenManager, SIGNAL(addNewTween(const QString &)), this, SLOT(addTween(const QString &)));
     connect(k->tweenManager, SIGNAL(editCurrentTween(const QString &)), this, SLOT(editTween()));
+    connect(k->tweenManager, SIGNAL(removeCurrentTween(const QString &)), this, SLOT(removeTween(const QString &)));
     connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
@@ -201,6 +204,7 @@ int Configurator::totalSteps()
 
 void Configurator::activatePropertiesMode(Settings::EditMode mode)
 {
+    kFatal() << "Configurator::activatePropertiesMode() - Scaling - Mode: " << mode;
     k->settingsPanel->activatePropertiesMode(mode);
 }
 

@@ -383,8 +383,13 @@ void Tweener::setSelect()
 void Tweener::setPropertiesMode()
 {
     k->editMode = Settings::Properties;
-
     disableSelection();
+
+    if (k->objects.isEmpty()) {
+        k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), KTItemTweener::Scale);
+        k->origin = k->currentTween->transformOriginPoint();
+    }
+
     addTarget();
 }
 
@@ -396,11 +401,11 @@ void Tweener::applyReset()
         k->scene->removeItem(k->target);
 
     disableSelection();
+    clearSelection();
 
     k->mode = Settings::View;
     k->editMode = Settings::None;
 
-    clearSelection();
     k->startPoint = k->scene->currentFrameIndex();
 }
 
@@ -546,6 +551,8 @@ void Tweener::applyTween()
     }
 
     setCurrentTween(name);
+
+    KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
 }
 
 void Tweener::removeTweenFromProject(const QString &name)

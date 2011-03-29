@@ -186,6 +186,7 @@ void Settings::setInnerForm()
     k->comboAxes->addItem(tr("Width & Height"));
     k->comboAxes->addItem(tr("Only Width"));
     k->comboAxes->addItem(tr("Only Height"));
+    k->comboAxes->setEnabled(false);
     QLabel *axesLabel = new QLabel(tr("Scale in") + ": ");
     axesLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     QHBoxLayout *axesLayout = new QHBoxLayout;
@@ -377,6 +378,7 @@ void Settings::emitOptionChanged(int option)
             break;
             case 1:
              {
+                 kFatal() << "Settings::emitOptionChanged() - Properties ON!";
                  if (k->selectionDone) {
                      activeInnerForm(true);
                      emit clickedDefineProperties();
@@ -467,6 +469,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
 void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
+    kFatal() << "Settings::activatePropertiesMode() - Scaling - Mode: " << mode;
     k->options->setCurrentIndex(mode);
 }
 

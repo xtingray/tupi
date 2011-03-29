@@ -231,7 +231,7 @@
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Scale in</source>
-        <translation>Scalar en</translation>
+        <translation>Escalar en</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
@@ -251,7 +251,7 @@
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Scaling Factor</source>
-        <translation type="unfinished">Factor de Escala</translation>
+        <translation>Factor de Escala</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
@@ -2840,7 +2840,7 @@
     <message>
         <location filename="../../main.cpp" line="202"/>
         <source>Loading modules...</source>
-        <translation type="unfinished">Cargando módulos...</translation>
+        <translation>Cargando módulos...</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="205"/>

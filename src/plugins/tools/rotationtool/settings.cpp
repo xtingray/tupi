@@ -387,7 +387,6 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 void Settings::setParameters(KTItemTweener *currentTween)
 {
-    kFatal() << "Settings::setParameters() - Editing tween!";
     setEditMode();
     activatePropertiesMode(Settings::Properties);
 
@@ -473,19 +472,15 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
-    kFatal() << "Settings::emitOptionChanged() - New Option: " << option;
-
     switch (option) {
             case 0:
              {
-                     kFatal() << "Settings::emitOptionChanged() - Rotation / Select Mode!";
                      activeInnerForm(false);
                      emit clickedSelect();
              }
             break;
             case 1:
              {
-                     kFatal() << "Settings::emitOptionChanged() - Rotation / Properties Mode!";
                      if (k->selectionDone) {
                          activeInnerForm(true);
                          emit clickedDefineAngle();
@@ -605,7 +600,6 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
 void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    kFatal() << "Settings::activatePropertiesMode() - Rotation / Just tracing!";
     k->options->setCurrentIndex(mode);
 }
 
