@@ -117,6 +117,7 @@ void Tweener::init(KTGraphicsScene *scene)
     k->pathAdded = false;
     k->pathOffset = QPointF(0, 0); 
     k->firstNode = QPointF(0, 0);
+    k->itemObjectReference = QPointF(0, 0);
 
     k->mode = Settings::View;
     k->editMode = Settings::None;
@@ -161,29 +162,11 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
 
     if (k->editMode == Settings::Path && k->scene->currentFrameIndex() == k->startPoint) {
         if (k->path) {
+            QPointF point = k->path->mapFromParent(input->pos());
             QPainterPath path = k->path->path();
-            path.cubicTo(input->pos(), input->pos(), input->pos());
+            path.cubicTo(point, point, point);
             k->path->setPath(path);
         }
-
-        /*
-        if (!k->path) {
-            // SQA: The first part of this if really happens any time?
-            k->path = new QGraphicsPathItem;
-            QColor color = Qt::lightGray;
-            color.setAlpha(200);
-            QPen pen(QBrush(color), 1, Qt::DotLine);  
-            k->path->setPen(pen);
-            QPainterPath path;
-            path.moveTo(input->pos());
-            k->firstNode = input->pos();
-            k->path->setPath(path);
-        } else {
-            QPainterPath path = k->path->path();
-            path.cubicTo(input->pos(), input->pos(), input->pos());
-            k->path->setPath(path);
-        }
-        */
     } 
 }
 
@@ -219,11 +202,8 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 k->configurator->updateSteps(k->path);
                 QPainterPath::Element e  = k->path->path().elementAt(0);
                 QPointF begin = QPointF(e.x, e.y);
-                kFatal() << "Tweener::release() - begin: [" << e.x << ", " << e.y << "]";
-                kFatal() << "Tweener::release() - clue: [" << k->firstNode.x() << ", " << k->firstNode.y() << "]";
 
                 if (begin != k->firstNode) {
-
                     QPointF oldPos = k->firstNode;
                     QPointF newPos = begin;
 
@@ -252,6 +232,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
                 QGraphicsItem *item = k->objects.at(0);
                 QRectF rect = item->sceneBoundingRect();
+                QPointF newPos = rect.center();
 
                 if (!k->path) {
                     k->path = new QGraphicsPathItem;
@@ -263,24 +244,24 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     k->path->setPen(pen);
 
                     QPainterPath path;
-                    k->firstNode = rect.center();
-                    path.moveTo(rect.center());
+                    path.moveTo(newPos);
+                    k->firstNode = newPos;
                     k->path->setPath(path);
                     scene->addItem(k->path);
                     k->pathAdded = true;
 
-                    k->itemObjectReference = rect.center();
+                    k->itemObjectReference = newPos;
                     k->pathOffset = QPointF(0, 0);
                 } else {
                     QPointF oldPos = k->itemObjectReference;
-                    QPointF newPos = rect.center();
+                    if (newPos != oldPos) {
+                        int distanceX = newPos.x() - oldPos.x();
+                        int distanceY = newPos.y() - oldPos.y();
+                        k->path->moveBy(distanceX, distanceY);
 
-                    int distanceX = newPos.x() - oldPos.x();
-                    int distanceY = newPos.y() - oldPos.y();
-
-                    k->path->moveBy(distanceX, distanceY);
-                    k->itemObjectReference = newPos;
-                    k->pathOffset = QPointF(distanceX, distanceY);
+                        k->itemObjectReference = newPos;
+                        k->pathOffset = QPointF(distanceX, distanceY);
+                    }
                 }
             } 
         }
@@ -313,7 +294,6 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
         connect(k->configurator, SIGNAL(clickedCreatePath()), this, SLOT(setCreatePath()));
 
-        kFatal() << "Tweener::configurator() - Connecting signal clickedSelect()";
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
@@ -381,6 +361,8 @@ void Tweener::setCreatePath()
 {
     if (k->path) {
 
+        k->pathOffset = QPointF(0, 0);
+
         if (!k->pathAdded) {
             k->scene->addItem(k->path);
             k->pathAdded = true;
@@ -405,8 +387,6 @@ void Tweener::setCreatePath()
 
 void Tweener::setSelect()
 {
-    kFatal() << "Tweener::setSelect() - Just tracing... Position";
-
     if (k->mode == Settings::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
@@ -563,7 +543,6 @@ void Tweener::applyTween()
         }
 
         int framesNumber = framesTotal();
-
         int total = k->startPoint + k->configurator->totalSteps() - 1;
 
         if (total > framesNumber) {
@@ -788,10 +767,20 @@ void Tweener::setEditEnv()
     QGraphicsItem *item = k->objects.at(0);
     QRectF rect = item->sceneBoundingRect();
     k->itemObjectReference = rect.center();
-    k->firstNode = rect.center();
 
     k->path = k->currentTween->graphicsPath();
     k->path->setZValue(maxZValue());
+
+    QPainterPath::Element e  = k->path->path().elementAt(0);
+    k->firstNode = QPointF(e.x, e.y);
+
+    QPointF oldPos = QPointF(e.x, e.y);
+    QPointF newPos = rect.center();
+
+    int distanceX = newPos.x() - oldPos.x();
+    int distanceY = newPos.y() - oldPos.y();
+    k->path->moveBy(distanceX, distanceY);
+    k->pathOffset = QPointF(distanceX, distanceY);
 
     QColor color = Qt::lightGray;
     color.setAlpha(200);
