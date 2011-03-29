@@ -424,9 +424,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
                              QPointF point = QPoint(-adjustX, -adjustY);
                              object->setLastTweenPos(stepItem->position() + point);
-                             object->item()->setTransformOriginPoint(tween->transformOriginPoint());
-                             // kFatal() << "KTGraphicsScene::addTweeningObjects() - Item Position: [" << point.x() << ", " << point.y() << "]";
-                             object->item()->setPos(stepItem->position() + point);
+                             object->item()->setPos(tween->transformOriginPoint());
                          } else {
                              QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
                              object->item()->setPos(point);
@@ -982,7 +980,6 @@ void KTGraphicsScene::setSpaceMode(KTProject::Mode mode)
 
 void KTGraphicsScene::setOnionFactor(double opacity)
 {
-    kFatal() << "KTGraphicsScene::setOnionFactor() - Updating to: " << opacity;
     k->opacity = opacity;
     if (k->spaceMode == KTProject::FRAMES_EDITION)
         drawCurrentPhotogram();

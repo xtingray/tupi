@@ -3220,6 +3220,11 @@
         <source>Frame %1</source>
         <translation>Marco %1</translation>
     </message>
+    <message>
+        <location filename="../src/plugins/tools/positiontool/tweener.cpp" line="391"/>
+        <source>Tween %1 applied!</source>
+        <translation>Tween %1 aplicado!</translation>
+    </message>
 </context>
 <context>
     <name>ViewTool</name>

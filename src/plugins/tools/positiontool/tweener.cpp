@@ -82,6 +82,10 @@ struct Tweener::Private
 
     Settings::Mode mode;
     Settings::EditMode editMode;
+
+    QPointF itemObjectReference;
+    QPointF pathOffset;
+    QPointF firstNode;
 };
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
@@ -111,6 +115,8 @@ void Tweener::init(KTGraphicsScene *scene)
     k->objects.clear();
 
     k->pathAdded = false;
+    k->pathOffset = QPointF(0, 0); 
+    k->firstNode = QPointF(0, 0);
 
     k->mode = Settings::View;
     k->editMode = Settings::None;
@@ -154,7 +160,15 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(scene);
 
     if (k->editMode == Settings::Path && k->scene->currentFrameIndex() == k->startPoint) {
+        if (k->path) {
+            QPainterPath path = k->path->path();
+            path.cubicTo(input->pos(), input->pos(), input->pos());
+            k->path->setPath(path);
+        }
+
+        /*
         if (!k->path) {
+            // SQA: The first part of this if really happens any time?
             k->path = new QGraphicsPathItem;
             QColor color = Qt::lightGray;
             color.setAlpha(200);
@@ -162,12 +176,14 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
             k->path->setPen(pen);
             QPainterPath path;
             path.moveTo(input->pos());
+            k->firstNode = input->pos();
             k->path->setPath(path);
         } else {
             QPainterPath path = k->path->path();
             path.cubicTo(input->pos(), input->pos(), input->pos());
             k->path->setPath(path);
         }
+        */
     } 
 }
 
@@ -201,6 +217,30 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 k->group->createNodes(k->path);
                 k->group->expandAllNodes();
                 k->configurator->updateSteps(k->path);
+                QPainterPath::Element e  = k->path->path().elementAt(0);
+                QPointF begin = QPointF(e.x, e.y);
+                kFatal() << "Tweener::release() - begin: [" << e.x << ", " << e.y << "]";
+                kFatal() << "Tweener::release() - clue: [" << k->firstNode.x() << ", " << k->firstNode.y() << "]";
+
+                if (begin != k->firstNode) {
+
+                    QPointF oldPos = k->firstNode;
+                    QPointF newPos = begin;
+
+                    int distanceX = newPos.x() - oldPos.x();
+                    int distanceY = newPos.y() - oldPos.y();
+
+                    if (k->objects.size() > 0) {
+                        foreach (QGraphicsItem *item, k->objects) {
+                                 item->moveBy(distanceX, distanceY);
+                        }
+                        QGraphicsItem *item = k->objects.at(0);
+                        QRectF rect = item->sceneBoundingRect();
+                        k->itemObjectReference = rect.center();
+                    }
+
+                    k->firstNode = newPos;
+                }
             }
 
         } else {
@@ -217,28 +257,30 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     k->path = new QGraphicsPathItem;
                     k->path->setZValue(maxZValue());
 
-                    // QColor color(150, 150, 150, 200);
-                    // QPen pen(QBrush(color), 1, Qt::DotLine);
-                    // k->path->setPen(pen);
-
                     QColor color = Qt::lightGray;
                     color.setAlpha(200);
                     QPen pen(QBrush(color), 1, Qt::DotLine);
                     k->path->setPen(pen);
 
                     QPainterPath path;
-                    // path.moveTo(input->pos());
+                    k->firstNode = rect.center();
                     path.moveTo(rect.center());
                     k->path->setPath(path);
                     scene->addItem(k->path);
                     k->pathAdded = true;
+
+                    k->itemObjectReference = rect.center();
+                    k->pathOffset = QPointF(0, 0);
                 } else {
-                    scene->removeItem(k->path);
-                    QPainterPath path;
-                    // path.moveTo(input->pos());
-                    path.moveTo(rect.center());
-                    k->path->setPath(path);
-                    scene->addItem(k->path);
+                    QPointF oldPos = k->itemObjectReference;
+                    QPointF newPos = rect.center();
+
+                    int distanceX = newPos.x() - oldPos.x();
+                    int distanceY = newPos.y() - oldPos.y();
+
+                    k->path->moveBy(distanceX, distanceY);
+                    k->itemObjectReference = newPos;
+                    k->pathOffset = QPointF(distanceX, distanceY);
                 }
             } 
         }
@@ -408,6 +450,8 @@ QString Tweener::pathToCoords()
 {
     QString strPath = "";
     QChar t;
+    int offsetX = k->pathOffset.x();
+    int offsetY = k->pathOffset.y();
 
     for (int i=0; i < k->path->path().elementCount(); i++) {
          QPainterPath::Element e = k->path->path().elementAt(i);
@@ -416,9 +460,9 @@ QString Tweener::pathToCoords()
             {
                 if (t != 'M') {
                     t = 'M';
-                    strPath += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += "M " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
                 } else {
-                    strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
                 }
             }
             break;
@@ -426,9 +470,9 @@ QString Tweener::pathToCoords()
             {
                 if (t != 'L') {
                     t = 'L';
-                    strPath += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += " L " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
                 } else {
-                    strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
                 }
             }
             break;
@@ -436,16 +480,16 @@ QString Tweener::pathToCoords()
             {
                 if (t != 'C') {
                     t = 'C';
-                    strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += " C " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
                 } else {
-                    strPath += "  " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                    strPath += "  " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
                 }
             }
             break;
             case QPainterPath::CurveToDataElement:
             {
                 if (t == 'C')
-                    strPath +=  " " + QString::number(e.x) + "  " + QString::number(e.y) + " ";
+                    strPath +=  " " + QString::number(e.x + offsetX) + "  " + QString::number(e.y + offsetY) + " ";
             }
             break;
         }
@@ -503,10 +547,7 @@ void Tweener::applyTween()
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  }
 
-                 QRectF rect = item->sceneBoundingRect();
-                 QPointF point = item->mapFromParent(rect.center());
-                 kFatal() << "Tweener::applyTween() - Item Position: [" << point.x() << ", " << point.y() << "]";
-
+                 QPointF point = item->pos();
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
@@ -584,6 +625,7 @@ void Tweener::applyTween()
                      newList.append(frame->graphic(objectIndex)->item());
                  }
 
+                 QPointF point = item->pos();
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
@@ -593,7 +635,7 @@ void Tweener::applyTween()
                                             objectIndex,
                                             QPointF(), type,
                                             KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint(), route));
+                                            k->configurator->tweenToXml(k->startPoint, point, route));
                  emit requested(&request);
 
                  int total = k->startPoint + k->configurator->totalSteps();
@@ -619,6 +661,8 @@ void Tweener::applyTween()
     }
 
     setCurrentTween(name);
+
+    KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
 }
 
 /* This method updates the data of the path into the tool panel 
@@ -741,8 +785,12 @@ void Tweener::setEditEnv()
 
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Position);
-    k->path = k->currentTween->graphicsPath();
+    QGraphicsItem *item = k->objects.at(0);
+    QRectF rect = item->sceneBoundingRect();
+    k->itemObjectReference = rect.center();
+    k->firstNode = rect.center();
 
+    k->path = k->currentTween->graphicsPath();
     k->path->setZValue(maxZValue());
 
     QColor color = Qt::lightGray;

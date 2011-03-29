@@ -555,7 +555,7 @@ void Tweener::applyTween()
 
     setCurrentTween(name);
 
-    KOsd::self()->display(tr("Info"), tr("Tween %1 saved!").arg(name), KOsd::Info);
+    KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
 }
 
 void Tweener::removeTweenFromProject(const QString &name)

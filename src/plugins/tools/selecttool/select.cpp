@@ -90,6 +90,7 @@ void Select::init(KTGraphicsScene *scene)
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
     k->changedManager = 0;
+    k->scene = scene;
 
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
