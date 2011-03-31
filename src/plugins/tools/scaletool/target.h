@@ -50,12 +50,11 @@ class Target : public QObject, public QGraphicsItem
     
     public:
         
-        Target(const QPointF & pos = QPoint(0,0), QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        Target(const QPointF & pos = QPoint(0,0), int zLevel = 0, QGraphicsScene * scene = 0);
         ~Target();
         
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
         QRectF boundingRect() const;
-        QPointF position();
 
     signals:
         void positionUpdated(const QPointF &point);
@@ -64,10 +63,6 @@ class Target : public QObject, public QGraphicsItem
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        
-    private:
-        struct Private;
-        Private *const k;
 };
 
 #endif

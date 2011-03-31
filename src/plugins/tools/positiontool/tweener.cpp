@@ -721,9 +721,12 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 int Tweener::maxZValue()
 {
     int max = -1;
-    foreach (QGraphicsItem *item, k->objects) {
-             if (item->zValue() > max)
-                 max = item->zValue();
+    foreach (QGraphicsView *view, k->scene->views()) {
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      if (item->zValue() > max)
+                          max = item->zValue();
+
+             }
     }
 
     return max + 1;

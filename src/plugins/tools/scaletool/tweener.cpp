@@ -580,13 +580,36 @@ void Tweener::updateOriginPoint(const QPointF &point)
 
 void Tweener::addTarget()
 {
-    k->target = new Target(k->origin, k->objects.at(0), k->scene);
-    connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+    if (k->mode == Settings::Add) {
+        k->target = new Target(k->origin, maxZValue(), k->scene);
+        connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+    } else {
+        if (k->objects.size() > 0) {
+            QGraphicsItem *item = k->objects.at(0);
+            k->origin = item->mapToParent(k->currentTween->transformOriginPoint());
+            k->target = new Target(k->origin, maxZValue(), k->scene);
+            connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+        }
+    }
 }
 
 void Tweener::updateMode(Settings::Mode mode)
 {
     k->mode = mode;
+}
+
+int Tweener::maxZValue()
+{
+    int max = -1;
+    foreach (QGraphicsView *view, k->scene->views()) {
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      if (item->zValue() > max)
+                          max = item->zValue();
+
+             }
+    }
+
+    return max + 1;
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

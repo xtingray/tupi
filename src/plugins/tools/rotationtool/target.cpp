@@ -46,36 +46,25 @@
 #include <QStyleOptionButton>
 #include <QApplication>
 
-#define DEBUG 0
-
 /**
  * This class defines the data structure for a node, and all the methods required to manipulate it.
  * 
  * @author Gustav Gonzalez 
 */
 
-struct Target::Private
+Target::Target(const QPointF & pos, int zLevel, QGraphicsScene *scene) : QGraphicsItem(0, scene)
 {
-    QGraphicsItem *parent;
-    QPointF position;
-};
-
-Target::Target(const QPointF & pos, QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsItem(0, scene), k(new Private)
-{
-    k->parent = parent;
-
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsFocusable, true);
 
     setPos(pos);
-    setZValue(parent->zValue() + 1);
+    setZValue(zLevel);
 }
 
 Target::~Target()
 {
-    delete k;
 }
 
 void Target::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w)
@@ -115,13 +104,14 @@ QRectF Target::boundingRect() const
 
 void Target::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    K_FUNCINFO;
     QGraphicsItem::mousePressEvent(event);
 }
 
 void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    K_FUNCINFO;
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
 
     emit positionUpdated(event->scenePos()); 
 
@@ -131,9 +121,4 @@ void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void Target::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseMoveEvent(event);
-}
-
-QPointF Target::position()
-{
-    return k->position;
 }

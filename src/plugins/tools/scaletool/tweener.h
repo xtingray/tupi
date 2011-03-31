@@ -75,6 +75,7 @@ class Tweener : public KTToolPlugin
         void disableSelection();
         void addTarget();
         void removeTweenFromProject(const QString &name);
+        int maxZValue();
 
     private:
         struct Private;
