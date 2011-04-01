@@ -35,7 +35,6 @@
 
 #include "tweener.h"
 #include "configurator.h"
-#include "settings.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -138,6 +137,8 @@ void Tweener::updateStartPoint(int index)
 {
     if (k->startPoint != index && index >= 0) 
         k->startPoint = index;
+
+    kFatal() << "Tweener::updateStartPoint() - k->startPoint: " << k->startPoint;
 }
 
 /* This method returns the plugin name */
@@ -192,6 +193,11 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
+    kFatal() << "Tweener::release() - Mode: " << k->mode;
+    kFatal() << "Tweener::release() - editMode: " << k->editMode;
+    kFatal() << "Tweener::release() - Current Index: " << scene->currentFrameIndex();
+    kFatal() << "Tweener::release() - Start Point: " << k->startPoint; 
+
     if (scene->currentFrameIndex() == k->startPoint) {
 
         if (k->editMode == Settings::Path) {
@@ -228,6 +234,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
             if (scene->selectedItems().size() > 0) {
 
                 k->objects = scene->selectedItems();
+                kFatal() << "Tweener::release() - Objects selected!";
                 k->configurator->notifySelection(true);
 
                 QGraphicsItem *item = k->objects.at(0);
@@ -293,13 +300,12 @@ QWidget *Tweener::configurator()
 
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
         connect(k->configurator, SIGNAL(clickedCreatePath()), this, SLOT(setCreatePath()));
-
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
+        connect(k->configurator, SIGNAL(setMode(Settings::Mode)), this, SLOT(updateMode(Settings::Mode)));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
-        // connect(k->configurator, SIGNAL(selectionModeOn()), this, SLOT(setSelect()));
-        connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv())); 
+        // connect(k->configurator, SIGNAL(editModeOn()), this, SLOT(setEditEnv())); 
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
 
     } else {
@@ -319,6 +325,7 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 void Tweener::aboutToChangeTool()
 {
     if (k->editMode == Settings::Selection) {
+        kFatal() << "Tweener::aboutToChangeTool() - Flag 1";
         clearSelection();
         disableSelection();
 
@@ -485,6 +492,7 @@ void Tweener::applyReset()
     k->mode = Settings::View;
     k->editMode = Settings::None;
 
+    kFatal() << "Tweener::applyReset() - Flag 2";
     clearSelection();
     disableSelection();
 
@@ -538,7 +546,6 @@ void Tweener::applyTween()
                                             QPointF(), type,
                                             KTProjectRequest::SetTween, 
                                             k->configurator->tweenToXml(k->startPoint, point, route));
-                                            // k->configurator->tweenToXml(k->startPoint, item->transformOriginPoint(), route));
                  emit requested(&request);
         }
 
@@ -700,22 +707,36 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                        k->path = 0;
                        k->configurator->cleanData();
                        k->configurator->activateSelectionMode();
+                       kFatal() << "Tweener::updateScene() - Flag 3"; 
                        clearSelection();
                        setSelect();
 
                } else if (k->editMode == Settings::Selection) {
                        
                        k->path = 0;
-                       if (scene->currentFrameIndex() != k->startPoint)
+                       if (scene->currentFrameIndex() != k->startPoint) {
+                           kFatal() << "Tweener::updateScene() - Flag 4";
                            clearSelection();
+                       }
+                       kFatal() << "Tweener::updateScene() - Selection - k->startPoint: " << scene->currentFrameIndex();
                        k->startPoint = scene->currentFrameIndex();
                        setSelect();
                } 
 
     } else {
-             if (scene->currentFrameIndex() != k->startPoint)
+             if (scene->currentFrameIndex() != k->startPoint) {
                  k->configurator->setStartFrame(scene->currentFrameIndex());
+             }
     }
+}
+
+void Tweener::updateMode(Settings::Mode mode)
+{
+    k->mode = mode;
+    kFatal() << "Tweener::updateMode() - k->startPoint: " << k->startPoint;
+
+    if (k->mode == Settings::Edit)
+        setEditEnv();
 }
 
 int Tweener::maxZValue()
@@ -763,6 +784,14 @@ void Tweener::setCurrentTween(const QString &name)
 
 void Tweener::setEditEnv()
 {
+    k->startPoint = k->currentTween->startFrame();
+    if (k->startPoint != k->scene->currentFrameIndex()) {
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                       k->scene->currentLayerIndex(),
+                                                                       k->startPoint, KTProjectRequest::Select, "1");
+        emit requested(&request);
+    }
+
     k->mode = Settings::Edit;
 
     KTScene *scene = k->scene->scene();
@@ -813,6 +842,7 @@ void Tweener::clearSelection()
                      item->setSelected(false);
         }
         k->objects.clear();
+        kFatal() << "Tweener::clearSelection() - Selection undone"; 
         k->configurator->notifySelection(false);
     }
 }

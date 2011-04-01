@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -39,17 +39,18 @@
 #include <QObject>
 #include <QLabel>
 
-#include <kttoolplugin.h>
+#include "kttoolplugin.h"
+#include "ktgraphicsscene.h"
 
 class KTPathItem;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class FillTool : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         FillTool();
@@ -88,6 +89,7 @@ class FillTool : public KTToolPlugin
         
     private:
         QMap<QString, KAction *> m_actions;
+        KTGraphicsScene *m_scene;
 };
 
 #endif

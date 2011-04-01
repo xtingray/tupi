@@ -186,6 +186,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
     activateSelectionMode();
     k->stepViewer->cleanRows();
+    k->totalLabel->setText(tr("Frames Total") + ": 0");
 
     k->comboInit->setEnabled(false);
     k->apply->setToolTip(tr("Save Tween"));
@@ -215,6 +216,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
 {
+    kFatal() << "Settings::initStartCombo() - Current Index: " << currentIndex;
     k->comboInit->clear();
     for (int i=1; i<=framesTotal; i++)
          k->comboInit->addItem(QString::number(i));
@@ -307,6 +309,7 @@ void Settings::cleanData()
 
 void Settings::notifySelection(bool flag)
 {
+    kFatal() << "Settings::notifySelection() - Flag: " << flag;
     k->selectionDone = flag;
 }
 

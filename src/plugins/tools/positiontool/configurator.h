@@ -100,11 +100,11 @@ class Configurator : public QFrame
         void clickedCreatePath();
         void clickedSelect();
         void clickedRemoveTween(const QString &);
+        void setMode(Settings::Mode mode);
         void clickedResetInterface();
         void clickedApplyTween();
         void startingPointChanged(int);
-        // void selectionModeOn();
-        void editModeOn();
+        // void editModeOn();
         void getTweenData(const QString &);
         
     private:

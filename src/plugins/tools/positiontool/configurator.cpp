@@ -197,6 +197,7 @@ void Configurator::initStartCombo(int framesTotal, int currentFrame)
 
 void Configurator::setStartFrame(int currentIndex)
 {
+    k->currentFrame = currentIndex;
     k->settingsPanel->setStartFrame(currentIndex);
 }
 
@@ -245,6 +246,8 @@ void Configurator::addTween(const QString &name)
     activePropertiesPanel(true);
 
     k->state = Properties;
+
+    emit setMode(k->mode);
 }
 
 void Configurator::editTween()
@@ -254,10 +257,12 @@ void Configurator::editTween()
     k->mode = Settings::Edit;
     k->state = Properties;
 
+    k->settingsPanel->notifySelection(true);
     k->settingsPanel->setParameters(k->currentTween);
     activePropertiesPanel(true);
 
-    emit editModeOn();
+    // emit editModeOn();
+    emit setMode(k->mode);
 }
 
 void Configurator::closeTweenProperties()

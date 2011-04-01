@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -39,8 +39,9 @@
 #include "kmoviegenerator.h"
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado
 */
+
 class KFFMpegMovieGenerator : public KMovieGenerator
 {
     public:

@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -77,9 +77,19 @@ FillTool::~FillTool()
 void FillTool::init(KTGraphicsScene *scene)
 {
     foreach (QGraphicsItem *item, scene->items()) {
-             item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-             item->setFlag(QGraphicsItem::ItemIsFocusable, true);
+             if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                 if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                     item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+                 } else {
+                     item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                     item->setFlag(QGraphicsItem::ItemIsFocusable, false);
+                 }
+             } else {
+                 item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+             }
     }
+
+    m_scene = scene;
 }
 
 QStringList FillTool::keys() const
@@ -256,6 +266,10 @@ void FillTool::aboutToChangeScene(KTGraphicsScene *)
 
 void FillTool::aboutToChangeTool() 
 {
+    foreach (QGraphicsItem *item, m_scene->items()) {
+             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+             item->setFlag(QGraphicsItem::ItemIsFocusable, false);
+    }
 }
 
 QPainterPath FillTool::mapPath(const QPainterPath &path, const QPointF &pos)

@@ -38,11 +38,11 @@
 #include <stdint.h>
 
 #include "kffmpegmoviegenerator.h"
+#include "kdebug.h"
+#include "kalgorithm.h"
 
 #include <QDir>
 
-#include "kdebug.h"
-#include "kalgorithm.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -244,7 +244,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     return true;
 }
 
-#define rgbtoyuv(r, g, b, y, u, v) \
+#define RGBtoYUV(r, g, b, y, u, v) \
   y = (uint8_t)(((int)30*r + (int)59*g + (int)11*b)/100); \
   u = (uint8_t)(((int)-17*r - (int)33*g + (int)50*b + 12800)/100); \
   v = (uint8_t)(((int)50*r - (int)42*g - (int)8*b + 12800)/100);
@@ -275,10 +275,10 @@ void KFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint
          uint8_t *vline  = vplane + ((y >> 1) * iHalfWidth);
 
          for (int x=0; x<width; x+=2) {
-              rgbtoyuv ( bufferRGBIndex[iRGBIdx[0]], bufferRGBIndex[iRGBIdx[1]], bufferRGBIndex[iRGBIdx[2]], *yline, *uline, *vline );
+              RGBtoYUV(bufferRGBIndex[iRGBIdx[0]], bufferRGBIndex[iRGBIdx[1]], bufferRGBIndex[iRGBIdx[2]], *yline, *uline, *vline);
               bufferRGBIndex += iRGBIncrement;
               yline++;
-              rgbtoyuv ( bufferRGBIndex[iRGBIdx[0]], bufferRGBIndex[iRGBIdx[1]], bufferRGBIndex[iRGBIdx[2]], *yline, *uline, *vline );
+              RGBtoYUV(bufferRGBIndex[iRGBIdx[0]], bufferRGBIndex[iRGBIdx[1]], bufferRGBIndex[iRGBIdx[2]], *yline, *uline, *vline);
               bufferRGBIndex += iRGBIncrement;
               yline++;
               uline++;
@@ -306,7 +306,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
 
         picturePtr = avcodec_alloc_frame();
-        picturePtr->quality = 0;
+        picturePtr->quality = 1;
 
         avpicture_fill((AVPicture *)picturePtr, pic_dat,
                    PIX_FMT_YUV420P, w, h);

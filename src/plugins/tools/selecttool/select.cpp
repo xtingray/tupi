@@ -85,7 +85,9 @@ Select::~Select()
 
 void Select::init(KTGraphicsScene *scene)
 {
-    K_FUNCINFOX("tools");
+    #ifdef K_DEBUG
+           K_FUNCINFOX("tools");
+    #endif
 
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
@@ -127,7 +129,6 @@ QStringList Select::keys() const
 
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    // K_FUNCINFOX("tools");
     Q_UNUSED(brushManager);
 
     if (k->changedManager)
@@ -175,9 +176,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    // Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    // Q_UNUSED(scene);
 
     if (k->changedManager) {
         k->changedManager->toggleAction();
@@ -190,8 +189,6 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    // K_FUNCINFOX("tools") << scene->selectedItems().count();
-
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
     
@@ -289,13 +286,19 @@ QWidget *Select::configurator()
 
 void Select::aboutToChangeScene(KTGraphicsScene *scene)
 {
-    K_FUNCINFOX("tools");
+    #ifdef K_DEBUG
+           K_FUNCINFOX("tools");
+    #endif
+
     init(scene);
 }
 
 void Select::aboutToChangeTool()
 {
-    K_FUNCINFOX("tools");
+    #ifdef K_DEBUG
+           K_FUNCINFOX("tools");
+    #endif
+
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
 
@@ -310,7 +313,9 @@ void Select::aboutToChangeTool()
 
 void Select::itemResponse(const KTItemResponse *event)
 {
-    K_FUNCINFOX("tools");
+    #ifdef K_DEBUG
+           K_FUNCINFOX("tools");
+    #endif
 
     QGraphicsItem *item = 0;
     KTScene *scene = 0;

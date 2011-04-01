@@ -72,14 +72,14 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
         dir.mkdir(dir.path());
 
     m_baseName = fileInfo.baseName();
-    const char *fmt = "PNG";
+    const char *extension = "PNG";
 
     switch (format) {
             case KTExportInterface::JPEG:
-                 fmt = "JPEG";
+                 extension = "JPEG";
                  break;
             case KTExportInterface::XPM:
-                 fmt = "XPM";
+                 extension = "XPM";
                  break;
             default:
                  break;
@@ -92,9 +92,9 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
 
              int photogram = 0;
              while (renderer.nextPhotogram()) {
-                    QImage img(size, QImage::Format_RGB32);
+                    QImage image(size, QImage::Format_RGB32);
                     {
-                     QPainter painter(&img);
+                     QPainter painter(&image);
                      painter.setRenderHint(QPainter::Antialiasing, true);
                      renderer.render(&painter);
                     }
@@ -104,7 +104,7 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
 
                     index += QString("%1").arg(photogram);
 
-                    img.save(fileInfo.absolutePath() + "/" + QString(m_baseName + "%1.%2").arg(index).arg(QString(fmt).toLower()), fmt);
+                    image.save(fileInfo.absolutePath() + "/" + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension);
 
                     photogram++;
              }
