@@ -48,6 +48,7 @@ struct KTSvgItem::Private
     KTFrame *frame;
     KTItemTweener *tween;
     bool hasTween;
+    QPointF lastTweenPos;
 };
 
 KTSvgItem::KTSvgItem(QGraphicsItem * parent)
@@ -148,3 +149,14 @@ void KTSvgItem::removeTween()
     k->tween = 0; 
     k->hasTween = false;
 }
+
+void KTSvgItem::setLastTweenPos(QPointF point)
+{
+    k->lastTweenPos = point;
+}
+
+QPointF KTSvgItem::lastTweenPos()
+{
+    return k->lastTweenPos;
+}
+

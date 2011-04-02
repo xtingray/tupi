@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -63,6 +63,8 @@ class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSeriali
         void rendering();
         void setTween(KTItemTweener *tween);
         bool hasTween();
+        void setLastTweenPos(QPointF point);
+        QPointF lastTweenPos();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

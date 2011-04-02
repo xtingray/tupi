@@ -55,6 +55,7 @@
 #include "ktbrushmanager.h"
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
+#include "ktpathitem.h"
 #include "ktsvgitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
@@ -240,6 +241,8 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                 QGraphicsItem *item = k->objects.at(0);
                 QRectF rect = item->sceneBoundingRect();
                 QPointF newPos = rect.center();
+                QPointF oldPos = k->itemObjectReference;
+                k->itemObjectReference = newPos;
 
                 if (!k->path) {
                     k->path = new QGraphicsPathItem;
@@ -257,18 +260,18 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     scene->addItem(k->path);
                     k->pathAdded = true;
 
-                    k->itemObjectReference = newPos;
+                    // k->itemObjectReference = newPos;
                     k->pathOffset = QPointF(0, 0);
                 } else {
-                    QPointF oldPos = k->itemObjectReference;
-                    if (newPos != oldPos) {
+                    // QPointF oldPos = k->itemObjectReference;
+                    // if (newPos != oldPos) {
                         int distanceX = newPos.x() - oldPos.x();
                         int distanceY = newPos.y() - oldPos.y();
                         k->path->moveBy(distanceX, distanceY);
 
-                        k->itemObjectReference = newPos;
+                        // k->itemObjectReference = newPos;
                         k->pathOffset = QPointF(distanceX, distanceY);
-                    }
+                    // }
                 }
             } 
         }
@@ -522,6 +525,8 @@ void Tweener::applyTween()
         KOsd::self()->display(tr("Error"), tr("Tween name is missing!"), KOsd::Error);
         return;
     }
+  
+    QPointF point;
 
     if (!k->scene->scene()->tweenExists(name, KTItemTweener::Position)) {
 
@@ -529,13 +534,17 @@ void Tweener::applyTween()
 
                  KTLibraryObject::Type type = KTLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item); 
+                 QRectF rect = item->sceneBoundingRect();
+                 QPointF point = rect.topLeft();
 
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
                      type = KTLibraryObject::Svg;
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 } else {
+                     if (qgraphicsitem_cast<KTPathItem *>(item))
+                         point = item->pos();
                  }
 
-                 QPointF point = item->pos();
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
@@ -579,9 +588,15 @@ void Tweener::applyTween()
                  KTFrame *frame = layer->frame(k->currentTween->startFrame());
                  int objectIndex = frame->indexOf(item);
 
+                 QRectF rect = item->sceneBoundingRect();
+                 point = rect.topLeft();
+
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
                      type = KTLibraryObject::Svg;
                      objectIndex = frame->indexOf(svg);
+                 } else {
+                     if (qgraphicsitem_cast<KTPathItem *>(item))
+                         point = item->pos();
                  }
 
                  if (k->startPoint != k->currentTween->startFrame()) {
@@ -611,7 +626,6 @@ void Tweener::applyTween()
                      newList.append(frame->graphic(objectIndex)->item());
                  }
 
-                 QPointF point = item->pos();
                  QString route = pathToCoords();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
@@ -645,6 +659,8 @@ void Tweener::applyTween()
         if (newList.size() > 0)
             k->objects = newList;
     }
+
+    kFatal() << "Point: [" << point.x() << ", " << point.y() << "]";
 
     setCurrentTween(name);
 

@@ -427,7 +427,7 @@ void Tweener::applyTween()
 
                  KTLibraryObject::Type type = KTLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item);
-                 QRectF rect = item->sceneBoundingRect();
+                 // QRectF rect = item->sceneBoundingRect();
                  QPointF origin = item->mapFromParent(k->origin);
 
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {

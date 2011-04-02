@@ -421,14 +421,9 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                      object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: 0"));
 
                      if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
-                         if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                             QPointF point = QPoint(-adjustX, -adjustY);
-                             object->setLastTweenPos(stepItem->position() + point);
-                             object->item()->setPos(tween->transformOriginPoint());
-                         } else {
-                             QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
-                             object->item()->setPos(point);
-                         }
+                         QPointF point = QPoint(-adjustX, -adjustY);
+                         object->setLastTweenPos(stepItem->position() + point);
+                         object->item()->setPos(tween->transformOriginPoint());
                      }
 
                      if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
@@ -455,16 +450,11 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                             object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
 
                             if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
-                                if (qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                                    qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
-                                    qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
-                                    object->item()->moveBy(dx, dy);
-                                    QPointF point = QPoint(-adjustX, -adjustY);
-                                    object->setLastTweenPos(stepItem->position() + point);
-                                } else {
-                                    object->item()->setPos(stepItem->position().x() - adjustX, 
-                                                           stepItem->position().y() - adjustY);
-                                }
+                                qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
+                                qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
+                                object->item()->moveBy(dx, dy);
+                                QPointF point = QPoint(-adjustX, -adjustY);
+                                object->setLastTweenPos(stepItem->position() + point);
                             }
 
                             if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
@@ -474,7 +464,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 
                             if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
                                 double scaleX = stepItem->horizontalScale();
-                                double scaleY = stepItem->verticalScale();
+                                // double scaleY = stepItem->verticalScale();
                                 object->item()->setScale(scaleX);
                                 // object->item()->scale(scaleX, scaleY);
                             }
@@ -512,8 +502,9 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                      object->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: 0"));
 
                      if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
-                         QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
-                         object->setPos(point);
+                         object->setPos(tween->transformOriginPoint());
+                         QPointF offset = QPoint(-adjustX, -adjustY);
+                         object->setLastTweenPos(stepItem->position() + offset);
                      }
 
                      if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
@@ -534,8 +525,11 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                              object->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
 
                              if (tween->type() == KTItemTweener::Position || tween->type() == KTItemTweener::All) {
-                                 QPointF point(stepItem->position().x() - adjustX, stepItem->position().y() - adjustY);
-                                 object->setPos(point);
+                                 qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
+                                 qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
+                                 object->moveBy(dx, dy);
+                                 QPointF offset = QPoint(-adjustX, -adjustY);
+                                 object->setLastTweenPos(stepItem->position() + offset);
                              }
 
                              if (tween->type() == KTItemTweener::Rotation || tween->type() == KTItemTweener::All) {
@@ -545,7 +539,7 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
 
                             if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
                                 double scaleX = stepItem->horizontalScale();
-                                double scaleY = stepItem->verticalScale();
+                                // double scaleY = stepItem->verticalScale();
                                 object->setScale(scaleX);
                             }
 
