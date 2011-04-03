@@ -83,7 +83,7 @@ _EOH_
     
     config.addDefine('VERSION=\\\\\"0.1\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Gemo\\\\\"')
-    config.addDefine('REVISION=\\\\\"git06\\\\\"')
+    config.addDefine('REVISION=\\\\\"git07\\\\\"')
 
     Info.info << "Debug support... "
 
