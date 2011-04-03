@@ -421,6 +421,13 @@ void Tweener::applyTween()
         return;
     }
 
+    if (k->startPoint != k->scene->currentFrameIndex()) {
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                       k->scene->currentLayerIndex(),
+                                                                       k->startPoint, KTProjectRequest::Select, "1");
+        emit requested(&request);
+    }
+
     if (!k->scene->scene()->tweenExists(name, KTItemTweener::Rotation)) {
 
         foreach (QGraphicsItem *item, k->objects) {
@@ -596,6 +603,16 @@ void Tweener::addTarget()
 void Tweener::updateMode(Settings::Mode mode)
 {
     k->mode = mode;
+
+    if (k->mode == Settings::Edit) {
+        k->startPoint = k->currentTween->startFrame();
+        if (k->startPoint != k->scene->currentFrameIndex()) {
+            KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                            k->scene->currentLayerIndex(),
+                                                                            k->startPoint, KTProjectRequest::Select, "1");
+            emit requested(&request);
+        }
+    }
 }
 
 int Tweener::maxZValue()

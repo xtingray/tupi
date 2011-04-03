@@ -385,10 +385,9 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
 
-    /*
+    k->comboInit->setCurrentIndex(startFrame);
     k->comboInit->setEditable(false);
     k->comboInit->setEnabled(false);
-    */
 }
 
 // Editing new Tween
@@ -400,12 +399,13 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
     k->input->setText(currentTween->name());
 
-    /*
     k->comboInit->setEnabled(true);
     k->comboInit->setEditable(true);
-    k->comboInit->setItemText(0, QString::number(currentTween->startFrame() + 1));
+    k->comboInit->setCurrentIndex(currentTween->startFrame());
     k->comboEnd->setItemText(0, QString::number(currentTween->startFrame() + currentTween->frames()));
-    */
+    k->comboEnd->setCurrentIndex(0);
+
+    checkFramesRange();
 
     k->comboType->setCurrentIndex(currentTween->tweenRotationType());
     k->comboSpeed->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));

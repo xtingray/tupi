@@ -36,6 +36,7 @@
 #include "ktexportwidget.h"
 
 // Qt
+#include <QApplication>
 #include <QPluginLoader>
 #include <QRadioButton>
 #include <QButtonGroup>
@@ -652,6 +653,8 @@ void ExportTo::exportIt()
         file.remove();
     }
 
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     if (m_currentExporter) {
 
         #ifdef K_DEBUG
@@ -671,6 +674,8 @@ void ExportTo::exportIt()
     } else {
         KOsd::self()->display(tr("Error"), tr("Format problem. Tupi Internal error."), KOsd::Error);
     }
+
+    QApplication::restoreOverrideCursor();
 
     if (done) {
         QString message = "File " + name + " was saved successful";

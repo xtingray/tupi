@@ -182,6 +182,7 @@ void Configurator::initStartCombo(int framesTotal, int currentFrame)
 
 void Configurator::setStartFrame(int currentIndex)
 {
+    k->currentFrame = currentIndex;
     k->settingsPanel->setStartFrame(currentIndex);
 }
 

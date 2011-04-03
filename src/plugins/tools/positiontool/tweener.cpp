@@ -56,6 +56,9 @@
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
 #include "ktpathitem.h"
+#include "ktellipseitem.h"
+#include "ktrectitem.h"
+#include "ktlineitem.h"
 #include "ktsvgitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
@@ -138,8 +141,6 @@ void Tweener::updateStartPoint(int index)
 {
     if (k->startPoint != index && index >= 0) 
         k->startPoint = index;
-
-    kFatal() << "Tweener::updateStartPoint() - k->startPoint: " << k->startPoint;
 }
 
 /* This method returns the plugin name */
@@ -194,11 +195,6 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    kFatal() << "Tweener::release() - Mode: " << k->mode;
-    kFatal() << "Tweener::release() - editMode: " << k->editMode;
-    kFatal() << "Tweener::release() - Current Index: " << scene->currentFrameIndex();
-    kFatal() << "Tweener::release() - Start Point: " << k->startPoint; 
-
     if (scene->currentFrameIndex() == k->startPoint) {
 
         if (k->editMode == Settings::Path) {
@@ -235,7 +231,6 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
             if (scene->selectedItems().size() > 0) {
 
                 k->objects = scene->selectedItems();
-                kFatal() << "Tweener::release() - Objects selected!";
                 k->configurator->notifySelection(true);
 
                 QGraphicsItem *item = k->objects.at(0);
@@ -328,7 +323,6 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 void Tweener::aboutToChangeTool()
 {
     if (k->editMode == Settings::Selection) {
-        kFatal() << "Tweener::aboutToChangeTool() - Flag 1";
         clearSelection();
         disableSelection();
 
@@ -495,7 +489,6 @@ void Tweener::applyReset()
     k->mode = Settings::View;
     k->editMode = Settings::None;
 
-    kFatal() << "Tweener::applyReset() - Flag 2";
     clearSelection();
     disableSelection();
 
@@ -525,9 +518,14 @@ void Tweener::applyTween()
         KOsd::self()->display(tr("Error"), tr("Tween name is missing!"), KOsd::Error);
         return;
     }
-  
-    QPointF point;
 
+    if (k->startPoint != k->scene->currentFrameIndex()) {
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                                       k->scene->currentLayerIndex(),
+                                                                       k->startPoint, KTProjectRequest::Select, "1");
+        emit requested(&request);
+    }
+  
     if (!k->scene->scene()->tweenExists(name, KTItemTweener::Position)) {
 
         foreach (QGraphicsItem *item, k->objects) {   
@@ -541,7 +539,8 @@ void Tweener::applyTween()
                      type = KTLibraryObject::Svg;
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  } else {
-                     if (qgraphicsitem_cast<KTPathItem *>(item))
+                     if (qgraphicsitem_cast<KTPathItem *>(item) || qgraphicsitem_cast<KTEllipseItem *>(item) 
+                         || qgraphicsitem_cast<KTLineItem *>(item) || qgraphicsitem_cast<KTRectItem *>(item))
                          point = item->pos();
                  }
 
@@ -589,13 +588,14 @@ void Tweener::applyTween()
                  int objectIndex = frame->indexOf(item);
 
                  QRectF rect = item->sceneBoundingRect();
-                 point = rect.topLeft();
+                 QPointF point = rect.topLeft();
 
                  if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
                      type = KTLibraryObject::Svg;
                      objectIndex = frame->indexOf(svg);
                  } else {
-                     if (qgraphicsitem_cast<KTPathItem *>(item))
+                     if (qgraphicsitem_cast<KTPathItem *>(item) || qgraphicsitem_cast<KTEllipseItem *>(item) 
+                         || qgraphicsitem_cast<KTLineItem *>(item) || qgraphicsitem_cast<KTRectItem *>(item))
                          point = item->pos();
                  }
 
@@ -660,8 +660,6 @@ void Tweener::applyTween()
             k->objects = newList;
     }
 
-    kFatal() << "Point: [" << point.x() << ", " << point.y() << "]";
-
     setCurrentTween(name);
 
     KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
@@ -723,18 +721,14 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                        k->path = 0;
                        k->configurator->cleanData();
                        k->configurator->activateSelectionMode();
-                       kFatal() << "Tweener::updateScene() - Flag 3"; 
                        clearSelection();
                        setSelect();
 
                } else if (k->editMode == Settings::Selection) {
                        
                        k->path = 0;
-                       if (scene->currentFrameIndex() != k->startPoint) {
-                           kFatal() << "Tweener::updateScene() - Flag 4";
+                       if (scene->currentFrameIndex() != k->startPoint)
                            clearSelection();
-                       }
-                       kFatal() << "Tweener::updateScene() - Selection - k->startPoint: " << scene->currentFrameIndex();
                        k->startPoint = scene->currentFrameIndex();
                        setSelect();
                } 
@@ -749,7 +743,6 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 void Tweener::updateMode(Settings::Mode mode)
 {
     k->mode = mode;
-    kFatal() << "Tweener::updateMode() - k->startPoint: " << k->startPoint;
 
     if (k->mode == Settings::Edit)
         setEditEnv();
@@ -858,7 +851,6 @@ void Tweener::clearSelection()
                      item->setSelected(false);
         }
         k->objects.clear();
-        kFatal() << "Tweener::clearSelection() - Selection undone"; 
         k->configurator->notifySelection(false);
     }
 }
