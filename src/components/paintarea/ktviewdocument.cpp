@@ -416,7 +416,7 @@ void KTViewDocument::loadPlugins()
                                    }
 
                                    if (toolName.compare(tr("Opacity Tween")) == 0) {
-                                       action->setDisabled(true);
+                                       // action->setDisabled(true);
                                        tweenTools[3] = action;
                                    }
 
