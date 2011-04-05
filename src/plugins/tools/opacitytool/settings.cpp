@@ -44,13 +44,23 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QBoxLayout>
+#include <QComboBox>
 
 struct Settings::Private
 {
+    QWidget *innerPanel;
     QBoxLayout *layout;
     Mode mode;
+
     QLineEdit *input;
+    QComboBox *comboInit;
+    QComboBox *comboEnd;
     KRadioButtonGroup *options;
+
+    QLabel *totalLabel;
+    int totalSteps;
+
+    bool selectionDone;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -94,11 +104,14 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 
     k->layout->addLayout(nameLayout);
     k->layout->addWidget(k->options);
+
+    setInnerForm();
+
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateSelectionMode();
+    activatePropertiesMode(Settings::Selection);
 }
 
 Settings::~Settings()
@@ -106,10 +119,77 @@ Settings::~Settings()
     delete k;
 }
 
+void Settings::setInnerForm()
+{
+    k->innerPanel = new QWidget;
+
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
+    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+
+    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
+    startingLabel->setAlignment(Qt::AlignVCenter);
+    k->comboInit = new QComboBox();
+    k->comboInit->setMaximumWidth(50);
+    k->comboInit->setEditable(false);
+    k->comboInit->setValidator(new QIntValidator(k->comboInit));
+
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
+
+    QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
+    endingLabel->setAlignment(Qt::AlignVCenter);
+    k->comboEnd = new QComboBox();
+    k->comboEnd->setFixedWidth(60);
+    k->comboEnd->setEditable(true);
+    k->comboEnd->addItem(QString::number(1));
+    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
+
+    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+
+    QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
+    startLayout->setMargin(0);
+    startLayout->setSpacing(0);
+    startLayout->addWidget(startingLabel);
+    startLayout->addWidget(k->comboInit);
+
+    QHBoxLayout *endLayout = new QHBoxLayout;
+    endLayout->setAlignment(Qt::AlignHCenter);
+    endLayout->setMargin(0);
+    endLayout->setSpacing(0);
+    endLayout->addWidget(endingLabel);
+    endLayout->addWidget(k->comboEnd);
+
+    k->totalLabel = new QLabel(tr("Frames Total") + ": 1");
+    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    QHBoxLayout *totalLayout = new QHBoxLayout;
+    totalLayout->setAlignment(Qt::AlignHCenter);
+    totalLayout->setMargin(0);
+    totalLayout->setSpacing(0);
+    totalLayout->addWidget(k->totalLabel);
+
+    innerLayout->addLayout(startLayout);
+    innerLayout->addLayout(endLayout);
+    innerLayout->addLayout(totalLayout);
+
+    k->layout->addWidget(k->innerPanel);
+
+    activeInnerForm(false);
+}
+
+void Settings::activeInnerForm(bool enable)
+{
+    if (enable && !k->innerPanel->isVisible())
+        k->innerPanel->show();
+    else
+        k->innerPanel->hide();
+}
+
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
     k->mode = Add;
     k->input->setText(name);
+
+    activatePropertiesMode(Settings::Selection);
 
     k->apply->setToolTip(tr("Save Tween"));
 }
@@ -117,8 +197,31 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 void Settings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
+    activatePropertiesMode(Settings::Properties);
 
     k->input->setText(currentTween->name());
+}
+
+void Settings::initStartCombo(int framesTotal, int currentIndex)
+{
+    k->comboInit->clear();
+    k->comboEnd->clear();
+
+    for (int i=1; i<=framesTotal; i++) {
+         k->comboInit->addItem(QString::number(i));
+         k->comboEnd->addItem(QString::number(i));
+    }
+
+    k->comboInit->setCurrentIndex(currentIndex);
+    k->comboEnd->setCurrentIndex(framesTotal - 1);
+}
+
+void Settings::setStartFrame(int currentIndex)
+{
+    k->comboInit->setCurrentIndex(currentIndex);
+    int end = k->comboEnd->currentText().toInt();
+    if (end < currentIndex+1)
+        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
 }
 
 void Settings::setEditMode()
@@ -137,6 +240,11 @@ void Settings::applyTween()
     emit clickedApplyTween();
 }
 
+void Settings::notifySelection(bool flag)
+{
+    k->selectionDone = flag;
+}
+
 QString Settings::currentTweenName() const
 {
     QString tweenName = k->input->text();
@@ -148,28 +256,57 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
+    kFatal() << "Settings::emitOptionChanged() - Mode: " << option; 
+
     switch (option) {
             case 0:
              {
-                 // emit clickedSelect();
+                 kFatal() << "Settings::emitOptionChanged() - Enabling selection mode!";
+                 activeInnerForm(false);
+                 emit clickedSelect();
              }
             break;
             case 1:
              {
-                 /*
                  if (k->selectionDone) {
-                     emit clickedCreatePath();
+                     activeInnerForm(true);
+                     emit clickedDefineProperties();
                  } else {
                      k->options->setCurrentIndex(0);
                      KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
                  }
-                 */
              }
     }
 }
 
-void Settings::activateSelectionMode()
+void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    k->options->setCurrentIndex(0);
+    kFatal() << "Settings::activatePropertiesMode() - Setting: " << mode;
+    k->options->setCurrentIndex(mode);
 }
 
+void Settings::checkBottomLimit(int index)
+{
+    emit startingPointChanged(index);
+    checkFramesRange();
+}
+
+void Settings::checkTopLimit(int index)
+{
+    Q_UNUSED(index);
+    checkFramesRange();
+}
+
+void Settings::checkFramesRange()
+{
+    int begin = k->comboInit->currentText().toInt();
+    int end = k->comboEnd->currentText().toInt();
+
+    if (begin > end) {
+        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
+        end = k->comboEnd->currentText().toInt();
+    }
+
+    k->totalSteps = end - begin + 1;
+    k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->totalSteps));
+}

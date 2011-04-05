@@ -37,6 +37,7 @@
 #define ROTATIONTWEENER_H
 
 #include <kttoolplugin.h>
+#include <settings.h>
 
 /**
  * @author Gustav Gonzalez 
@@ -69,6 +70,10 @@ class Tweener : public KTToolPlugin
 
     private:
         void setupActions();
+        int framesTotal();
+        void clearSelection();
+        void disableSelection();
+        void removeTweenFromProject(const QString &name);
 
     private:
         struct Private;
@@ -76,8 +81,13 @@ class Tweener : public KTToolPlugin
 
     private slots:
         void setCurrentTween(const QString &name);
+        void setSelect();
+        void setPropertiesMode(); 
+        void updateMode(Settings::Mode mode);
+        void updateStartPoint(int index);
         void applyReset();
         void applyTween();
+        void removeTween(const QString &name);
 };
 
 #endif

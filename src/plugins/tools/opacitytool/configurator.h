@@ -58,22 +58,36 @@ class Configurator : public QFrame
         ~Configurator();
 
         void loadTweenList(QList<QString> tweenList);
+
+        void initStartCombo(int framesTotal, int currentFrame);
+        void setStartFrame(int currentIndex);
+
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
+        void notifySelection(bool flag);
         void closeSettingsPanel();
+        Settings::Mode mode();
         void resetUI();
+        QString tweenToXml(int currentFrame, QPointF point);
         
     private slots:
+        void applyItem();
         void addTween(const QString &name);
         void editTween();
         void removeTween();
         void removeTween(const QString &name);
         void closeTweenProperties();
+        void updateTweenData(const QString &name);
         
     signals:
+        void startingPointChanged(int index);
+        void clickedSelect();
+        void clickedDefineProperties();
         void clickedRemoveTween(const QString &name);
-        void editModeOn();
+        void setMode(Settings::Mode mode);
+        void clickedApplyTween();
         void clickedResetInterface();
+        void getTweenData(const QString &name);
         
     private:
         void setPropertiesPanel();

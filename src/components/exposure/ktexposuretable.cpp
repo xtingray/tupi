@@ -537,7 +537,7 @@ void KTExposureTable::keyPressEvent(QKeyEvent * event)
         int limit = rowCount()-1;
         int next = currentRow()+1;
         if (next <= limit)
-        setCurrentCell(next, currentColumn());
+            setCurrentCell(next, currentColumn());
         return;
     }
 

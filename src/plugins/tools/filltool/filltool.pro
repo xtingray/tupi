@@ -8,15 +8,15 @@ target.path = /plugins/
 
 HEADERS += filltool.h  \
            cliphelper.h \
-           # qbezier_p.h \
+           qbezier_p.h \
            qmath_p.h \
-           # qnumeric.h \
-           # qnumeric_p.h \
+           qnumeric.h \
+           qnumeric_p.h \
            qpathclipper_p.h
 SOURCES += filltool.cpp  \
            cliphelper.cpp \
-           # qbezier.cpp \
-           # qnumeric.cpp \
+           qbezier.cpp \
+           qnumeric.cpp \
            qpathclipper.cpp
 
 CONFIG += plugin warn_on
