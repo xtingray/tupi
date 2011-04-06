@@ -45,6 +45,7 @@
 #include <QLineEdit>
 #include <QBoxLayout>
 #include <QComboBox>
+#include <QCheckBox>
 
 struct Settings::Private
 {
@@ -56,6 +57,12 @@ struct Settings::Private
     QComboBox *comboInit;
     QComboBox *comboEnd;
     KRadioButtonGroup *options;
+
+    QComboBox *comboInitFactor;
+    QComboBox *comboEndFactor;
+    QComboBox *comboIterations;
+    QCheckBox *loopBox;
+    QCheckBox *reverseLoopBox;
 
     QLabel *totalLabel;
     int totalSteps;
