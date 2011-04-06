@@ -92,7 +92,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    k->remove->setToolTip(tr("Cancel Tween"));
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -190,8 +189,13 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->input->setText(name);
 
     activatePropertiesMode(Settings::Selection);
-
     k->apply->setToolTip(tr("Save Tween"));
+    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->remove->setToolTip(tr("Cancel Tween"));
+
+    k->comboInit->setCurrentIndex(startFrame);
+    k->comboInit->setEditable(false);
+    k->comboInit->setEnabled(false);
 }
 
 void Settings::setParameters(KTItemTweener *currentTween)
@@ -200,6 +204,14 @@ void Settings::setParameters(KTItemTweener *currentTween)
     activatePropertiesMode(Settings::Properties);
 
     k->input->setText(currentTween->name());
+
+    k->comboInit->setEnabled(true);
+    k->comboInit->setEditable(true);
+    k->comboInit->setCurrentIndex(currentTween->startFrame());
+    k->comboEnd->setItemText(0, QString::number(currentTween->startFrame() + currentTween->frames()));
+    k->comboEnd->setCurrentIndex(0);
+
+    checkFramesRange();
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)

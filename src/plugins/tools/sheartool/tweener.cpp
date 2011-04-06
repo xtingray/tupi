@@ -98,7 +98,7 @@ void Tweener::init(KTGraphicsScene *scene)
 
     k->configurator->resetUI();
 
-    QList<QString> tweenList = k->scene->scene()->getTweenNames(KTItemTweener::Colouring);
+    QList<QString> tweenList = k->scene->scene()->getTweenNames(KTItemTweener::Shear);
     if (tweenList.size() > 0) {
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
@@ -118,7 +118,7 @@ void Tweener::updateStartPoint(int index)
 
 QStringList Tweener::keys() const
 {
-    return QStringList() << tr("Colouring Tween");
+    return QStringList() << tr("Shear Tween");
 }
 
 /* This method makes an action when the mouse is pressed on the workspace 
@@ -220,12 +220,12 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/colouring_tween.png"), 
-                                      tr("Colouring Tween"), this);
+    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/shear_tween.png"), 
+                                      tr("Shear Tween"), this);
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
-    translater->setShortcut(QKeySequence(tr("Shift+O")));
+    translater->setShortcut(QKeySequence(tr("Shift+H")));
 
-    k->actions.insert(tr("Colouring Tween"), translater);
+    k->actions.insert(tr("Shear Tween"), translater);
 }
 
 /* This method saves the settings of this plugin */
@@ -245,7 +245,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 void Tweener::setCurrentTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
-    k->currentTween = scene->tween(name, KTItemTweener::Colouring);
+    k->currentTween = scene->tween(name, KTItemTweener::Shear);
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
 }
@@ -328,7 +328,7 @@ void Tweener::setPropertiesMode()
     disableSelection();
 
     if (k->objects.isEmpty()) {
-        k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), KTItemTweener::Colouring);
+        k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), KTItemTweener::Shear);
     }
 }
 

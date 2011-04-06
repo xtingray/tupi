@@ -157,7 +157,16 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    Q_UNUSED(scene);
+
+    if (scene->currentFrameIndex() == k->startPoint) {
+        if (k->editMode == Settings::Selection) {
+            if (scene->selectedItems().size() > 0) {
+                k->objects = scene->selectedItems();
+                k->configurator->notifySelection(true);
+            }
+        }
+    }
+
 }
 
 /* This method returns the list of actions defined in this plugin */
@@ -327,7 +336,13 @@ void Tweener::setPropertiesMode()
 
 void Tweener::applyReset()
 {
+    disableSelection();
+    clearSelection();
+
+    k->mode = Settings::View;
     k->editMode = Settings::None;
+
+    k->startPoint = k->scene->currentFrameIndex();
 }
 
 /* This method applies to the project, the Tween created from this plugin */

@@ -33,80 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#ifndef BUTTONSPANEL_H
+#define BUTTONSPANEL_H
 
-#include <QObject>
-#include <QMatrix>
-#include <QPointF>
-
-#include "kttweenerstep.h"
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
-class QGraphicsPathItem;
+#include <QWidget>
 
 /**
- * @TODO: - setColorAt, setZAt
- * @author David Cuadrado
+ * @author Gustav Gonzalez 
 */
 
-class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
+class ButtonsPanel: public QWidget 
 {
     Q_OBJECT
- 
+
     public:
-        enum Type { Position = 0, Rotation, Scale, Shear, Opacity, Colouring, All };
-        enum RotationType { Continuos = 0, Partial };
-        enum RotateDirection { Clockwise = 0, Counterclockwise };
-        enum ScaleAxes { XY = 0, X, Y} ;
 
-        KTItemTweener();
-        ~KTItemTweener();
+        ButtonsPanel(QWidget *parent = 0);
+        ~ButtonsPanel();
 
-        QString name();
-        KTItemTweener::Type type();
+    signals:
+        void clickedEditTween();
+        void clickedRemoveTween();
         
-        void setPosAt(int step, const QPointF & point);
-        void setRotationAt(int step, double angle);
-        void setScaleAt(int step, double sx, double sy);
-        void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
-        
-        void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
-        
-        void setFrames(int frames);
-
-        int frames() const;
-        int startFrame();
-        QPointF transformOriginPoint();
-        
-        void setStep(int step);
-        
-        void fromXml(const QString &xml);
-        QDomElement toXml(QDomDocument &doc) const;
-
-        QGraphicsPathItem *graphicsPath() const;
-        QString tweenType();
-
-        KTItemTweener::RotationType tweenRotationType();
-        int tweenRotateSpeed();
-        bool tweenRotateLoop();
-        KTItemTweener::RotateDirection tweenRotateDirection();
-        int tweenRotateStartDegree();
-        int tweenRotateEndDegree();
-        bool tweenRotateReverseLoop();
-
-        KTItemTweener::ScaleAxes tweenScaleAxes();
-        double tweenScaleFactor();
-        int tweenScaleIterations();
-        int tweenScaleLoop();
-        int tweenScaleReverseLoop();
-        
-    private:
-        struct Private;
-        Private *const k;
 };
 
 #endif

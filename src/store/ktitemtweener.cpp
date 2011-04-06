@@ -320,6 +320,9 @@ QString KTItemTweener::tweenType()
             case KTItemTweener::Scale :
                  type = QString(tr("Scale Tween"));
                  break;
+            case KTItemTweener::Shear :
+                 type = QString(tr("Shear Tween"));
+                 break;
             case KTItemTweener::Opacity :
                  type = QString(tr("Opacity Tween"));
                  break;

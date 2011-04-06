@@ -15,6 +15,7 @@ SUBDIRS += penciltool \
            positiontool \
            rotationtool \
            scaletool \
+           sheartool \
            opacitytool \
            colouringtool \
            compoundtool

@@ -86,6 +86,11 @@
         <translation>Tween de Escala</translation>
     </message>
     <message>
+        <location filename="../src/plugins/tools/scaletool/configurator.cpp" line="69"/>
+        <source>Shear Tween</source>
+        <translation>Tween de Corte</translation>
+    </message>
+    <message>
         <location filename="../src/plugins/tools/opacitytool/configurator.cpp" line="69"/>
         <source>Opacity Tween</source>
         <translation>Tween de Opacidad</translation>
@@ -1848,6 +1853,11 @@
         <translation>Tween de Escala</translation>
     </message>
     <message>
+        <location filename="../src/plugins/tools/scaletool/configurator.cpp" line="69"/>
+        <source>Shear Tween</source>
+        <translation>Tween de Corte</translation>
+    </message>
+    <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
         <source>Opacity Tween</source>
         <translation>Tween de Opacidad</translation>
@@ -2664,6 +2674,11 @@
         <translation>Tween de Escala</translation>
     </message>
     <message>
+        <location filename="../src/plugins/tools/scaletool/configurator.cpp" line="69"/>
+        <source>Shear Tween</source>
+        <translation>Tween de Corte</translation>
+    </message>
+    <message>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="69"/>
         <source>Opacity Tween</source>
         <translation>Tween de Opacidad</translation>
@@ -3160,6 +3175,11 @@
         <translation>Tween de Escala</translation>
     </message>
     <message>
+        <location filename="../src/plugins/tools/scaletool/configurator.cpp" line="69"/>
+        <source>Shear Tween</source>
+        <translation>Tween de Corte</translation>
+    </message>
+    <message>
         <location filename="../src/plugins/tools/opacitytool/tweener.cpp" line="69"/>
         <source>Opacity Tween</source>
         <translation>Tween de Opacidad</translation>
@@ -3394,6 +3414,11 @@
         <location filename="../../../store/ktitemtweener.cpp" line="69"/>
         <source>Scale Tween</source>
         <translation>Tween de Escala</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/scaletool/configurator.cpp" line="69"/>
+        <source>Shear Tween</source>
+        <translation>Tween de Corte</translation>
     </message>
     <message>
         <location filename="../../../store/ktitemtweener.cpp" line="69"/>

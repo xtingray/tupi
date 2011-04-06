@@ -348,7 +348,7 @@ void KTViewDocument::createTools()
 void KTViewDocument::loadPlugins()
 {
     QVector<KAction*> brushTools(7);
-    QVector<KAction*> tweenTools(6);
+    QVector<KAction*> tweenTools(7);
 
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
@@ -415,19 +415,24 @@ void KTViewDocument::loadPlugins()
                                        tweenTools[2] = action;
                                    }
 
-                                   if (toolName.compare(tr("Opacity Tween")) == 0) {
+                                   if (toolName.compare(tr("Shear Tween")) == 0) {
                                        // action->setDisabled(true);
                                        tweenTools[3] = action;
                                    }
 
+                                   if (toolName.compare(tr("Opacity Tween")) == 0) {
+                                       // action->setDisabled(true);
+                                       tweenTools[4] = action;
+                                   }
+
                                    if (toolName.compare(tr("Colouring Tween")) == 0) {
                                        action->setDisabled(true);
-                                       tweenTools[4] = action;
+                                       tweenTools[5] = action;
                                    }
 
                                    if (toolName.compare(tr("Compound Tween")) == 0) {
                                        action->setDisabled(true);
-                                       tweenTools[5] = action;
+                                       tweenTools[6] = action;
                                    }
                                  }
                                  break;
