@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -60,9 +60,12 @@ class Settings : public QWidget
         void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
 
+        int totalSteps();
+
         QString currentTweenName() const;
         void activatePropertiesMode(Settings::EditMode mode);
         void notifySelection(bool flag);
+        QString tweenToXml(int currentFrame);
 
     private slots:
         void applyTween();

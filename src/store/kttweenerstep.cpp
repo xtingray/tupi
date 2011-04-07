@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -42,6 +42,7 @@ struct KTTweenerStep::Private
 {
     QPointF position;
     double rotation;
+    double opacity;
     
     struct PairF {
         double x;
@@ -97,6 +98,12 @@ void KTTweenerStep::setScale(double sx, double sy)
     k->flags |= Scale;
 }
 
+void KTTweenerStep::setOpacity(double opacity)
+{
+    k->opacity = opacity;
+    k->flags |= Opacity;
+}
+
 bool KTTweenerStep::has(Type type) const
 {
     return k->flags & type;
@@ -135,6 +142,11 @@ double KTTweenerStep::verticalShear() const
 double KTTweenerStep::rotation() const
 {
     return k->rotation;
+}
+
+double KTTweenerStep::opacity() const
+{
+    return k->opacity;
 }
 
 double KTTweenerStep::xTranslation() const

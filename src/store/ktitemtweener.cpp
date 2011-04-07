@@ -75,6 +75,13 @@ struct KTItemTweener::Private
     int scaleLoop;
     int scaleReverseLoop;
 
+    // Opacity Tween
+    double initOpacityFactor;
+    double endOpacityFactor;
+    int opacityIterations;
+    int opacityLoop;
+    int opacityReverseLoop;
+
     QHash<int, KTTweenerStep *> steps; // TODO: remove when Qt 4.3
 
     inline KTTweenerStep *step(int step)
@@ -130,6 +137,9 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
     
     if (step.has(KTTweenerStep::Rotation))
         setRotationAt(counter, step.rotation());
+
+    if (step.has(KTTweenerStep::Opacity))
+        setOpacityAt(counter, step.opacity());
 }
 
 KTTweenerStep * KTItemTweener::stepAt(int index)
@@ -159,6 +169,12 @@ void KTItemTweener::setRotationAt(int index, double angle)
 {
     VERIFY_STEP(index);
     k->step(index)->setRotation(angle);
+}
+
+void KTItemTweener::setOpacityAt(int index, double opacity)
+{
+    VERIFY_STEP(index);
+    k->step(index)->setOpacity(opacity);
 }
 
 void KTItemTweener::setFrames(int frames)
@@ -227,6 +243,14 @@ void KTItemTweener::fromXml(const QString &xml)
             k->scaleReverseLoop = root.attribute("scaleReverseLoop").toInt();
         }
 
+        if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::All) {
+            k->initOpacityFactor = root.attribute("initOpacityFactor").toDouble();
+            k->endOpacityFactor = root.attribute("endOpacityFactor").toDouble();
+            k->opacityIterations = root.attribute("opacityIterations").toInt();
+            k->opacityLoop = root.attribute("opacityLoop").toInt();
+            k->opacityReverseLoop = root.attribute("opacityReverseLoop").toInt();
+        }
+
         QDomNode node = root.firstChild();
         
         while (!node.isNull()) {
@@ -289,6 +313,14 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         root.setAttribute("scaleLoop", k->scaleLoop);
         root.setAttribute("scaleReverseLoop", k->scaleReverseLoop);
     }
+
+    if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::All) {
+        root.setAttribute("initOpacityFactor", k->initOpacityFactor); 
+        root.setAttribute("endOpacityFactor", k->endOpacityFactor); 
+        root.setAttribute("opacityIterations", k->opacityIterations);
+        root.setAttribute("opacityLoop", k->opacityLoop);
+        root.setAttribute("opacityReverseLoop", k->opacityReverseLoop);
+    } 
  
     foreach (KTTweenerStep *step, k->steps.values())
              root.appendChild(step->toXml(doc));

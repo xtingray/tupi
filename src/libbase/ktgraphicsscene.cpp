@@ -440,7 +440,8 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                      }
 
                      if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
-                         object->item()->setOpacity(0.2);
+                         object->item()->setOpacity(stepItem->opacity());
+                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
                      }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
@@ -472,7 +473,8 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                             addGraphicObject(object);
 
                             if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
-                                object->item()->setOpacity(0.2);
+                                object->item()->setOpacity(stepItem->opacity());
+                                kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
                             }
                  }
              }

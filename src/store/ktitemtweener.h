@@ -72,6 +72,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         void setScaleAt(int step, double sx, double sy);
         void setShearAt(int step, double sh, double sv);
         void setTranslationAt(int step, double dx, double dy);
+        void setOpacityAt(int index, double opacity);
         
         void addStep(const KTTweenerStep &step);
         KTTweenerStep * stepAt(int index);

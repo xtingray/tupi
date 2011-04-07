@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -42,8 +42,9 @@
 #include "ktglobal_store.h"
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
 {
     public:
@@ -52,7 +53,8 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
             Position = 0x01,
             Translation = 0x02,
             Rotation = 0x04,
-            Shear = 0x8,
+            Opacity = 0x06,
+            Shear = 0x08,
             Scale = 0x10
         };
         
@@ -65,6 +67,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
         void setRotation(double angle);
         void setShear(double sh, double sv);
         void setScale(double sx, double sy);
+        void setOpacity(double opacity);
         
         QPointF position() const;
         double horizontalScale() const;
@@ -72,6 +75,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
         double horizontalShear() const;
         double verticalShear() const;
         double rotation() const;
+        double opacity() const;
         double xTranslation() const;
         double yTranslation() const;
         

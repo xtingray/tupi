@@ -39,6 +39,7 @@
 #include "ktitemtweener.h"
 #include "kttweenerstep.h"
 #include "kimagebutton.h"
+#include "kseparator.h"
 #include "kosd.h"
 
 #include <QLabel>
@@ -173,9 +174,88 @@ void Settings::setInnerForm()
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
+    k->comboInitFactor = new QComboBox();
+    for (int i=1; i<=9; i++) {
+         k->comboInitFactor->addItem("0." + QString::number(i));
+         k->comboInitFactor->addItem("0." + QString::number(i) + "5");
+    }
+    k->comboInitFactor->addItem("1.0");
+    k->comboInitFactor->setCurrentIndex(18);
+
+    QLabel *opacityInitLabel = new QLabel(tr("Initial Opacity") + ": ");
+    opacityInitLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *opacityInitLayout = new QHBoxLayout;
+    opacityInitLayout->setAlignment(Qt::AlignHCenter);
+    opacityInitLayout->setMargin(0);
+    opacityInitLayout->setSpacing(0);
+    opacityInitLayout->addWidget(opacityInitLabel);
+    opacityInitLayout->addWidget(k->comboInitFactor);
+
+    k->comboEndFactor = new QComboBox();
+    for (int i=1; i<=9; i++) {
+         k->comboEndFactor->addItem("0." + QString::number(i));
+         k->comboEndFactor->addItem("0." + QString::number(i) + "5");
+    }
+    k->comboEndFactor->addItem("1.0");
+
+    QLabel *opacityEndLabel = new QLabel(tr("End Opacity") + ": ");
+    opacityEndLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *opacityEndLayout = new QHBoxLayout;
+    opacityEndLayout->setAlignment(Qt::AlignHCenter);
+    opacityEndLayout->setMargin(0);
+    opacityEndLayout->setSpacing(0);
+    opacityEndLayout->addWidget(opacityEndLabel);
+    opacityEndLayout->addWidget(k->comboEndFactor);
+
+    k->comboIterations = new QComboBox();
+    k->comboIterations->setEditable(true);
+    k->comboIterations->setValidator(new QIntValidator(k->comboIterations));
+    for (int i=1; i<=100; i++)
+         k->comboIterations->addItem(QString::number(i));
+
+    QLabel *iterationsLabel = new QLabel(tr("Iterations") + ": ");
+    iterationsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *iterationsLayout = new QHBoxLayout;
+    iterationsLayout->setAlignment(Qt::AlignHCenter);
+    iterationsLayout->setMargin(0);
+    iterationsLayout->setSpacing(0);
+    iterationsLayout->addWidget(iterationsLabel);
+    iterationsLayout->addWidget(k->comboIterations);
+
+    k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
+    k->loopBox->setChecked(true);
+    connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
+
+    QVBoxLayout *loopLayout = new QVBoxLayout;
+    loopLayout->setAlignment(Qt::AlignHCenter);
+    loopLayout->setMargin(0);
+    loopLayout->setSpacing(0);
+    loopLayout->addWidget(k->loopBox);
+
+    k->reverseLoopBox = new QCheckBox(tr("Loop with Reverse"), k->innerPanel);
+    connect(k->reverseLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateLoopCheckbox(int)));
+
+    QVBoxLayout *reverseLayout = new QVBoxLayout;
+    reverseLayout->setAlignment(Qt::AlignHCenter);
+    reverseLayout->setMargin(0);
+    reverseLayout->setSpacing(0);
+    reverseLayout->addWidget(k->reverseLoopBox);
+
     innerLayout->addLayout(startLayout);
     innerLayout->addLayout(endLayout);
     innerLayout->addLayout(totalLayout);
+
+    innerLayout->addSpacing(10);
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+
+    innerLayout->addLayout(opacityInitLayout);
+    innerLayout->addLayout(opacityEndLayout);
+
+    innerLayout->addLayout(iterationsLayout);
+    innerLayout->addLayout(loopLayout);
+    innerLayout->addLayout(reverseLayout);
+
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
 
     k->layout->addWidget(k->innerPanel);
 
@@ -243,6 +323,11 @@ void Settings::setStartFrame(int currentIndex)
         k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
 }
 
+int Settings::totalSteps()
+{
+    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
+}
+
 void Settings::setEditMode()
 {
     k->mode = Edit;
@@ -296,6 +381,60 @@ void Settings::emitOptionChanged(int option)
                  }
              }
     }
+}
+
+QString Settings::tweenToXml(int currentFrame)
+{
+    QDomDocument doc;
+
+    QDomElement root = doc.createElement("tweening");
+    root.setAttribute("name", currentTweenName());
+    root.setAttribute("type", KTItemTweener::Opacity);
+    root.setAttribute("init", currentFrame);
+  
+    checkFramesRange();
+    root.setAttribute("frames", k->totalSteps);
+    root.setAttribute("origin", "0,0");
+
+    double initFactor = k->comboInitFactor->currentText().toDouble();
+    root.setAttribute("initOpacityFactor", initFactor);
+
+    double endFactor = k->comboEndFactor->currentText().toDouble();
+    root.setAttribute("endOpacityFactor", endFactor);
+
+    int iterations = k->comboIterations->currentText().toInt();
+    root.setAttribute("opacityIterations", iterations);
+
+    bool loop = k->loopBox->isChecked();
+    if (loop)
+        root.setAttribute("opacityLoop", "1");
+    else
+        root.setAttribute("opacityLoop", "0");
+
+    bool reverse = k->reverseLoopBox->isChecked();
+    if (reverse)
+        root.setAttribute("opacityReverseLoop", "1");
+    else
+        root.setAttribute("opacityReverseLoop", "0");
+
+    double delta = (initFactor - endFactor)/(double)iterations;
+
+    KTTweenerStep *step = new KTTweenerStep(0);
+    step->setOpacity(initFactor);
+    root.appendChild(step->toXml(doc));
+
+    double reference = initFactor; 
+
+    for (int i=1; i < k->totalSteps; i++) {
+         KTTweenerStep *step = new KTTweenerStep(i);
+         reference -= delta;
+         step->setOpacity(reference);
+         root.appendChild(step->toXml(doc));
+    }
+
+    doc.appendChild(root);
+
+    return doc.toString();
 }
 
 void Settings::activatePropertiesMode(Settings::EditMode mode)

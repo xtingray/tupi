@@ -62,13 +62,14 @@ class Configurator : public QFrame
         void initStartCombo(int framesTotal, int currentFrame);
         void setStartFrame(int currentIndex);
 
+        int totalSteps();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         void closeSettingsPanel();
         Settings::Mode mode();
         void resetUI();
-        QString tweenToXml(int currentFrame, QPointF point);
+        QString tweenToXml(int currentFrame);
         
     private slots:
         void applyItem();

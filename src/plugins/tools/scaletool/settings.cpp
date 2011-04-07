@@ -422,7 +422,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     root.setAttribute("scaleAxes", k->scaleAxes);
     double factor = k->comboFactor->currentText().toDouble();
     root.setAttribute("scaleFactor", factor);
-    double iterations = k->comboIterations->currentText().toDouble();
+    int iterations = k->comboIterations->currentText().toInt();
     root.setAttribute("scaleIterations", iterations);
 
     bool loop = k->loopBox->isChecked();
