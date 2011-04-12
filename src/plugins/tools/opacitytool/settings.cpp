@@ -175,12 +175,12 @@ void Settings::setInnerForm()
     totalLayout->addWidget(k->totalLabel);
 
     k->comboInitFactor = new QComboBox();
-    for (int i=1; i<=9; i++) {
+    for (int i=0; i<=9; i++) {
          k->comboInitFactor->addItem("0." + QString::number(i));
          k->comboInitFactor->addItem("0." + QString::number(i) + "5");
     }
     k->comboInitFactor->addItem("1.0");
-    k->comboInitFactor->setCurrentIndex(18);
+    k->comboInitFactor->setCurrentIndex(20);
 
     QLabel *opacityInitLabel = new QLabel(tr("Initial Opacity") + ": ");
     opacityInitLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -192,13 +192,13 @@ void Settings::setInnerForm()
     opacityInitLayout->addWidget(k->comboInitFactor);
 
     k->comboEndFactor = new QComboBox();
-    for (int i=1; i<=9; i++) {
+    for (int i=0; i<=9; i++) {
          k->comboEndFactor->addItem("0." + QString::number(i));
          k->comboEndFactor->addItem("0." + QString::number(i) + "5");
     }
     k->comboEndFactor->addItem("1.0");
 
-    QLabel *opacityEndLabel = new QLabel(tr("End Opacity") + ": ");
+    QLabel *opacityEndLabel = new QLabel(tr("Ending Opacity") + ": ");
     opacityEndLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     QHBoxLayout *opacityEndLayout = new QHBoxLayout;
     opacityEndLayout->setAlignment(Qt::AlignHCenter);
@@ -419,17 +419,44 @@ QString Settings::tweenToXml(int currentFrame)
 
     double delta = (initFactor - endFactor)/(double)iterations;
 
+    kFatal() << "tweenToXml() - Delta: " << delta;
+    kFatal() << "tweenToXml() - initFactor: " << initFactor;
+    kFatal() << "tweenToXml() - endFactor: " << endFactor;
+
     KTTweenerStep *step = new KTTweenerStep(0);
     step->setOpacity(initFactor);
     root.appendChild(step->toXml(doc));
 
-    double reference = initFactor; 
+    double reference = initFactor - delta; 
+    int cycle = 2;
+    bool token = true;
 
     for (int i=1; i < k->totalSteps; i++) {
          KTTweenerStep *step = new KTTweenerStep(i);
-         reference -= delta;
          step->setOpacity(reference);
          root.appendChild(step->toXml(doc));
+
+         if (cycle < iterations && token) {
+             reference -= delta;
+             cycle++;
+         } else {
+             if (loop) {
+                 cycle = 1;
+                 reference = initFactor;
+             } else if (reverse && !token) {
+                 if (cycle >= ((iterations*2)-2)) {
+                     token = true;
+                     cycle = 2;
+                     reference -= delta;
+                 } else {
+                     reference += delta;
+                     cycle++;
+                 }
+             } else {
+                 token = false;
+                 reference += delta;
+             }
+         }
     }
 
     doc.appendChild(root);
@@ -467,4 +494,16 @@ void Settings::checkFramesRange()
 
     k->totalSteps = end - begin + 1;
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->totalSteps));
+}
+
+void Settings::updateLoopCheckbox(int state)
+{
+    if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
+        k->loopBox->setChecked(false);
+}
+
+void Settings::updateReverseCheckbox(int state)
+{
+    if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
+        k->reverseLoopBox->setChecked(false);
 }

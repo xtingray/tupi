@@ -107,7 +107,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    // k->remove->setToolTip(tr("Cancel Tween"));
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -303,8 +302,6 @@ void Settings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
     activatePropertiesMode(Settings::Properties);
-
-    // notifySelection(true);
 
     k->input->setText(currentTween->name());
 

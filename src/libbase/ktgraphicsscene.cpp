@@ -521,6 +521,11 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                          object->setScale(1.0);
                      }
 
+                     if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                         object->setOpacity(stepItem->opacity());
+                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
+                     }
+
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
                              int step = photogram - origin;
                              KTTweenerStep *stepItem = tween->stepAt(step);
@@ -546,6 +551,11 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                             }
 
                             addSvgObject(object);
+
+                            if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                                object->setOpacity(stepItem->opacity());
+                                kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - Opacity: " << stepItem->opacity();
+                            }
                  }
              } else {
                  #ifdef K_DEBUG

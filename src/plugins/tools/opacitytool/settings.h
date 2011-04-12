@@ -72,6 +72,8 @@ class Settings : public QWidget
         void emitOptionChanged(int option);
         void checkBottomLimit(int index);
         void checkTopLimit(int index);
+        void updateLoopCheckbox(int state);
+        void updateReverseCheckbox(int state);
         
     signals:
         void clickedSelect();

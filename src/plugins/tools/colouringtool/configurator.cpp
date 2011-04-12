@@ -188,6 +188,16 @@ void Configurator::setStartFrame(int currentIndex)
     k->settingsPanel->setStartFrame(currentIndex);
 }
 
+QString Configurator::tweenToXml(int currentFrame)
+{
+    return k->settingsPanel->tweenToXml(currentFrame);
+}
+
+int Configurator::totalSteps()
+{
+    return k->settingsPanel->totalSteps();
+}
+
 void Configurator::addTween(const QString &name)
 {
     kFatal() << "Configurator::addTween() - Adding Tween: " << name;

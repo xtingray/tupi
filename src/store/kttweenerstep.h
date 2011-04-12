@@ -36,10 +36,11 @@
 #ifndef KTTWEENERSTEP_H
 #define KTTWEENERSTEP_H
 
-#include <ktabstractserializable.h>
-#include <QPointF>
-
+#include "ktabstractserializable.h"
 #include "ktglobal_store.h"
+
+#include <QPointF>
+#include <QColor>
 
 /**
  * @author David Cuadrado
@@ -54,8 +55,9 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
             Translation = 0x02,
             Rotation = 0x04,
             Opacity = 0x06,
-            Shear = 0x08,
-            Scale = 0x10
+            Colouring = 0x08,
+            Shear = 0x10,
+            Scale = 0x12
         };
         
         KTTweenerStep(int index);
@@ -68,6 +70,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
         void setShear(double sh, double sv);
         void setScale(double sx, double sy);
         void setOpacity(double opacity);
+        void setColor(int red, int green, int blue);
         
         QPointF position() const;
         double horizontalScale() const;
@@ -76,6 +79,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
         double verticalShear() const;
         double rotation() const;
         double opacity() const;
+        QColor color() const;
         double xTranslation() const;
         double yTranslation() const;
         

@@ -404,9 +404,79 @@ void Tweener::applyTween()
                                                                         k->startPoint, KTProjectRequest::Select, "1");
         emit requested(&request);
 
+    } else {
+        removeTweenFromProject(name);
+        QList<QGraphicsItem *> newList;
+
+        foreach (QGraphicsItem *item, k->objects) {
+                 KTLibraryObject::Type type = KTLibraryObject::Item;
+                 KTScene *scene = k->scene->scene();
+                 KTLayer *layer = scene->layer(k->scene->currentLayerIndex());
+                 KTFrame *frame = layer->frame(k->currentTween->startFrame());
+                 int objectIndex = frame->indexOf(item);
+
+                 if (k->startPoint != k->currentTween->startFrame()) {
+                     QDomDocument dom;
+                     dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+
+                     KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
+                                                                                    k->scene->currentLayerIndex(),
+                                                                                    k->startPoint, -1,
+                                                                                    QPointF(), type, KTProjectRequest::Add,
+                                                                                    dom.toString());
+                     emit requested(&request);
+
+                     request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
+                                                                   k->scene->currentLayerIndex(),
+                                                                   k->currentTween->startFrame(),
+                                                                   objectIndex, QPointF(), type,
+                                                                   KTProjectRequest::Remove);
+                     emit requested(&request);
+
+                     frame = layer->frame(k->startPoint);
+                     if (type == KTLibraryObject::Item)
+                         objectIndex = frame->graphicItemsCount() - 1;
+                     else
+                         objectIndex = frame->svgItemsCount() - 1;
+
+                     newList.append(frame->graphic(objectIndex)->item());
+                 }
+
+                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
+                                            k->scene->currentSceneIndex(),
+                                            k->scene->currentLayerIndex(),
+                                            k->startPoint,
+                                            objectIndex,
+                                            QPointF(), type,
+                                            KTProjectRequest::SetTween,
+                                            k->configurator->tweenToXml(k->startPoint));
+                 emit requested(&request);
+
+                 int total = k->startPoint + k->configurator->totalSteps();
+
+                 int framesNumber = framesTotal();
+
+                 if (framesNumber < total) {
+                     for (int i = framesNumber; i < total; i++) {
+                          KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
+                                                          k->scene->currentLayerIndex(),
+                                                          i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                          emit requested(&requestFrame);
+                     }
+                 }
+
+                 request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                                                k->startPoint, KTProjectRequest::Select, "1");
+                 emit requested(&request);
+        }
+
+        if (newList.size() > 0)
+            k->objects = newList;
     }
 
     setCurrentTween(name);
+
+    KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
 }
 
 void Tweener::removeTweenFromProject(const QString &name)

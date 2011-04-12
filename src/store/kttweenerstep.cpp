@@ -43,6 +43,7 @@ struct KTTweenerStep::Private
     QPointF position;
     double rotation;
     double opacity;
+    QColor color;
     
     struct PairF {
         double x;
@@ -104,6 +105,12 @@ void KTTweenerStep::setOpacity(double opacity)
     k->flags |= Opacity;
 }
 
+void KTTweenerStep::setColor(int red, int green, int blue)
+{
+    k->color = QColor(red, green, blue);
+    k->flags |= Colouring;
+}
+
 bool KTTweenerStep::has(Type type) const
 {
     return k->flags & type;
@@ -147,6 +154,11 @@ double KTTweenerStep::rotation() const
 double KTTweenerStep::opacity() const
 {
     return k->opacity;
+}
+
+QColor KTTweenerStep::color() const
+{
+    return k->color;
 }
 
 double KTTweenerStep::xTranslation() const
@@ -202,6 +214,13 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
         
         step.appendChild(e);
     }
+
+    if (this->has(KTTweenerStep::Opacity)) {
+        QDomElement e = doc.createElement("opacity");
+        e.setAttribute("opacity", k->opacity);
+
+        step.appendChild(e);
+    }
     
     return step;
 }
@@ -231,6 +250,8 @@ void KTTweenerStep::fromXml(const QString& xml)
                               setScale(e.attribute("sx").toDouble(), e.attribute("sy").toDouble());
                    } else if (e.tagName() == "translation") {
                               setTranslation(e.attribute("dx").toDouble(), e.attribute("dy").toDouble());
+                   } else if (e.tagName() == "opacity") {
+                              setOpacity(e.attribute("opacity").toDouble());
                    }
                }
                node = node.nextSibling();

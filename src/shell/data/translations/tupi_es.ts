@@ -263,6 +263,16 @@
         <source>Iterations</source>
         <translation>Iteraciones</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Initial Opacity</source>
+        <translation>Opacidad Inicial</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Ending Opacity</source>
+        <translation>Opacidad Final</translation>
+    </message>
 </context>
 <context>
     <name>ButtonsPanel</name>
