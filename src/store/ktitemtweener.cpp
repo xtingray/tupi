@@ -82,6 +82,13 @@ struct KTItemTweener::Private
     int opacityLoop;
     int opacityReverseLoop;
 
+    // Color Tween
+    QColor initialColor;
+    QColor endingColor;
+    int colorIterations;
+    int colorLoop;
+    int colorReverseLoop;
+
     QHash<int, KTTweenerStep *> steps; // TODO: remove when Qt 4.3
 
     inline KTTweenerStep *step(int step)
@@ -175,6 +182,12 @@ void KTItemTweener::setOpacityAt(int index, double opacity)
 {
     VERIFY_STEP(index);
     k->step(index)->setOpacity(opacity);
+}
+
+void KTItemTweener::setColorAt(int index, int red, int green, int blue)
+{
+    VERIFY_STEP(index);
+    k->step(index)->setColor(red, green, blue);
 }
 
 void KTItemTweener::setFrames(int frames)
@@ -358,8 +371,8 @@ QString KTItemTweener::tweenType()
             case KTItemTweener::Opacity :
                  type = QString(tr("Opacity Tween"));
                  break;
-            case KTItemTweener::Colouring :
-                 type = QString(tr("Colouring Tween"));
+            case KTItemTweener::Coloring :
+                 type = QString(tr("Coloring Tween"));
                  break;
             case KTItemTweener::All :
                  type = QString(tr("Compound Tween"));
@@ -429,3 +442,54 @@ int KTItemTweener::tweenScaleReverseLoop()
 {
     return k->scaleReverseLoop;
 }
+
+double KTItemTweener::tweenOpacityInitialFactor()
+{
+    return k->initOpacityFactor;
+}
+
+double KTItemTweener::tweenOpacityEndingFactor()
+{
+    return k->endOpacityFactor;
+}
+
+int KTItemTweener::tweenOpacityIterations()
+{
+    return k->opacityIterations;
+}
+
+int KTItemTweener::tweenOpacityLoop() 
+{
+    return k->opacityLoop;
+}
+
+int KTItemTweener::tweenOpacityReverseLoop()
+{
+    return k->opacityReverseLoop;
+}
+
+QColor KTItemTweener::tweenInitialColor()
+{
+    return k->initialColor;
+}
+
+QColor KTItemTweener::tweenEndingColor()
+{
+    return k->endingColor;
+}
+
+int KTItemTweener::tweenColorIterations()
+{
+    return k->colorIterations; 
+}
+
+int KTItemTweener::tweenColorLoop()
+{
+    return k->colorLoop;
+}
+
+int KTItemTweener::tweenColorReverseLoop()
+{
+    return k->colorReverseLoop;
+}
+

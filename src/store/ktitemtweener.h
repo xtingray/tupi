@@ -39,6 +39,7 @@
 #include <QObject>
 #include <QMatrix>
 #include <QPointF>
+#include <QColor>
 
 #include "kttweenerstep.h"
 #include "ktglobal_store.h"
@@ -56,7 +57,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
     Q_OBJECT
  
     public:
-        enum Type { Position = 0, Rotation, Scale, Shear, Opacity, Colouring, All };
+        enum Type { Position = 0, Rotation, Scale, Shear, Opacity, Coloring, All };
         enum RotationType { Continuos = 0, Partial };
         enum RotateDirection { Clockwise = 0, Counterclockwise };
         enum ScaleAxes { XY = 0, X, Y} ;
@@ -72,7 +73,8 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         void setScaleAt(int step, double sx, double sy);
         void setShearAt(int step, double sh, double sv);
         void setTranslationAt(int step, double dx, double dy);
-        void setOpacityAt(int index, double opacity);
+        void setOpacityAt(int step, double opacity);
+        void setColorAt(int step, int red, int green, int blue);
         
         void addStep(const KTTweenerStep &step);
         KTTweenerStep * stepAt(int index);
@@ -104,6 +106,18 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         int tweenScaleIterations();
         int tweenScaleLoop();
         int tweenScaleReverseLoop();
+
+        double tweenOpacityInitialFactor();
+        double tweenOpacityEndingFactor();
+        int tweenOpacityIterations();
+        int tweenOpacityLoop();       
+        int tweenOpacityReverseLoop();
+
+        QColor tweenInitialColor();
+        QColor tweenEndingColor();
+        int tweenColorIterations();
+        int tweenColorLoop();
+        int tweenColorReverseLoop();
         
     private:
         struct Private;

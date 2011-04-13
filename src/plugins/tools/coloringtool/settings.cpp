@@ -47,6 +47,7 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QColorDialog>
 
 struct Settings::Private
 {
@@ -59,8 +60,8 @@ struct Settings::Private
     QComboBox *comboEnd;
     KRadioButtonGroup *options;
 
-    QComboBox *comboInitFactor;
-    QComboBox *comboEndFactor;
+    QColorDialog *comboInitColor;
+    QColorDialog *comboEndColor;
     QComboBox *comboIterations;
     QCheckBox *loopBox;
     QCheckBox *reverseLoopBox;
@@ -174,38 +175,42 @@ void Settings::setInnerForm()
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
-    k->comboInitFactor = new QComboBox();
+    /*
+    k->comboInitColor = new QComboBox();
     for (int i=0; i<=9; i++) {
-         k->comboInitFactor->addItem("0." + QString::number(i));
-         k->comboInitFactor->addItem("0." + QString::number(i) + "5");
+         k->comboInitColor->addItem("0." + QString::number(i));
+         k->comboInitColor->addItem("0." + QString::number(i) + "5");
     }
-    k->comboInitFactor->addItem("1.0");
-    k->comboInitFactor->setCurrentIndex(20);
+    k->comboInitColor->addItem("1.0");
+    k->comboInitColor->setCurrentIndex(20);
+    */
 
-    QLabel *colouringInitLabel = new QLabel(tr("Initial Colouring") + ": ");
-    colouringInitLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    QHBoxLayout *colouringInitLayout = new QHBoxLayout;
-    colouringInitLayout->setAlignment(Qt::AlignHCenter);
-    colouringInitLayout->setMargin(0);
-    colouringInitLayout->setSpacing(0);
-    colouringInitLayout->addWidget(colouringInitLabel);
-    colouringInitLayout->addWidget(k->comboInitFactor);
+    QLabel *coloringInitLabel = new QLabel(tr("Initial Color") + ": ");
+    coloringInitLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *coloringInitLayout = new QHBoxLayout;
+    coloringInitLayout->setAlignment(Qt::AlignHCenter);
+    coloringInitLayout->setMargin(0);
+    coloringInitLayout->setSpacing(0);
+    coloringInitLayout->addWidget(coloringInitLabel);
+    coloringInitLayout->addWidget(k->comboInitColor);
 
-    k->comboEndFactor = new QComboBox();
+    /*
+    k->comboEndColor = new QComboBox();
     for (int i=0; i<=9; i++) {
-         k->comboEndFactor->addItem("0." + QString::number(i));
-         k->comboEndFactor->addItem("0." + QString::number(i) + "5");
+         k->comboEndColor->addItem("0." + QString::number(i));
+         k->comboEndColor->addItem("0." + QString::number(i) + "5");
     }
-    k->comboEndFactor->addItem("1.0");
+    k->comboEndColor->addItem("1.0");
+    */
 
-    QLabel *colouringEndLabel = new QLabel(tr("Ending Colouring") + ": ");
-    colouringEndLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    QHBoxLayout *colouringEndLayout = new QHBoxLayout;
-    colouringEndLayout->setAlignment(Qt::AlignHCenter);
-    colouringEndLayout->setMargin(0);
-    colouringEndLayout->setSpacing(0);
-    colouringEndLayout->addWidget(colouringEndLabel);
-    colouringEndLayout->addWidget(k->comboEndFactor);
+    QLabel *coloringEndLabel = new QLabel(tr("Ending Color") + ": ");
+    coloringEndLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QHBoxLayout *coloringEndLayout = new QHBoxLayout;
+    coloringEndLayout->setAlignment(Qt::AlignHCenter);
+    coloringEndLayout->setMargin(0);
+    coloringEndLayout->setSpacing(0);
+    coloringEndLayout->addWidget(coloringEndLabel);
+    coloringEndLayout->addWidget(k->comboEndColor);
 
     k->comboIterations = new QComboBox();
     k->comboIterations->setEditable(true);
@@ -248,8 +253,8 @@ void Settings::setInnerForm()
     innerLayout->addSpacing(10);
     innerLayout->addWidget(new KSeparator(Qt::Horizontal));
 
-    innerLayout->addLayout(colouringInitLayout);
-    innerLayout->addLayout(colouringEndLayout);
+    innerLayout->addLayout(coloringInitLayout);
+    innerLayout->addLayout(coloringEndLayout);
 
     innerLayout->addLayout(iterationsLayout);
     innerLayout->addLayout(loopLayout);
@@ -389,33 +394,35 @@ QString Settings::tweenToXml(int currentFrame)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Colouring);
+    root.setAttribute("type", KTItemTweener::Coloring);
     root.setAttribute("init", currentFrame);
   
     checkFramesRange();
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", "0,0");
 
-    double initFactor = k->comboInitFactor->currentText().toDouble();
-    root.setAttribute("initColouringFactor", initFactor);
+    //double initFactor = k->comboInitColor->currentText().toDouble();
+    double initFactor = 1;
+    root.setAttribute("initColoringFactor", initFactor);
 
-    double endFactor = k->comboEndFactor->currentText().toDouble();
-    root.setAttribute("endColouringFactor", endFactor);
+    // double endFactor = k->comboEndColor->currentText().toDouble();
+    double endFactor = 2;
+    root.setAttribute("endColoringFactor", endFactor);
 
     int iterations = k->comboIterations->currentText().toInt();
-    root.setAttribute("colouringIterations", iterations);
+    root.setAttribute("coloringIterations", iterations);
 
     bool loop = k->loopBox->isChecked();
     if (loop)
-        root.setAttribute("colouringLoop", "1");
+        root.setAttribute("coloringLoop", "1");
     else
-        root.setAttribute("colouringLoop", "0");
+        root.setAttribute("coloringLoop", "0");
 
     bool reverse = k->reverseLoopBox->isChecked();
     if (reverse)
-        root.setAttribute("colouringReverseLoop", "1");
+        root.setAttribute("coloringReverseLoop", "1");
     else
-        root.setAttribute("colouringReverseLoop", "0");
+        root.setAttribute("coloringReverseLoop", "0");
 
     double delta = (initFactor - endFactor)/(double)iterations;
 

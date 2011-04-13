@@ -299,6 +299,12 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboEnd->setCurrentIndex(0);
 
     checkFramesRange();
+
+    k->comboInitFactor->setItemText(0, QString::number(currentTween->tweenOpacityInitialFactor()));
+    k->comboEndFactor->setItemText(0, QString::number(currentTween->tweenOpacityEndingFactor()));
+    k->comboIterations->setItemText(0, QString::number(currentTween->tweenOpacityIterations()));
+    k->loopBox->setChecked(currentTween->tweenOpacityLoop());
+    k->reverseLoopBox->setChecked(currentTween->tweenOpacityReverseLoop());
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)

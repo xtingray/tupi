@@ -108,7 +108,7 @@ void KTTweenerStep::setOpacity(double opacity)
 void KTTweenerStep::setColor(int red, int green, int blue)
 {
     k->color = QColor(red, green, blue);
-    k->flags |= Colouring;
+    k->flags |= Coloring;
 }
 
 bool KTTweenerStep::has(Type type) const
@@ -222,10 +222,15 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
         step.appendChild(e);
     }
 
-    if (this->has(KTTweenerStep::Colouring)) {
+    if (this->has(KTTweenerStep::Coloring)) {
         QDomElement e = doc.createElement("color");
-        QString colorText = QString::number(k->color.red()) + "," + QString::number(k->color.green()) + "," + QString::number(k->color.blue());
-        e.setAttribute("color", colorText);
+        QString red = QString::number(k->color.red());
+        QString green = QString::number(k->color.green());
+        QString blue = QString::number(k->color.blue());
+
+        e.setAttribute("red", red);
+        e.setAttribute("green", green);
+        e.setAttribute("blue", blue);
 
         step.appendChild(e);
     }
@@ -260,6 +265,11 @@ void KTTweenerStep::fromXml(const QString& xml)
                               setTranslation(e.attribute("dx").toDouble(), e.attribute("dy").toDouble());
                    } else if (e.tagName() == "opacity") {
                               setOpacity(e.attribute("opacity").toDouble());
+                   } else if (e.tagName() == "color") {
+                              int red = e.attribute("red").toInt();
+                              int green = e.attribute("green").toInt();
+                              int blue = e.attribute("blue").toInt();
+                              setColor(red, green, blue);
                    }
                }
                node = node.nextSibling();

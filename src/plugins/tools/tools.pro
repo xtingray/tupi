@@ -17,7 +17,7 @@ SUBDIRS += penciltool \
            scaletool \
            sheartool \
            opacitytool \
-           colouringtool \
+           coloringtool \
            compoundtool
 
 # KDEV_QTVER = 4
