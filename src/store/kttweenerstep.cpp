@@ -221,6 +221,14 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 
         step.appendChild(e);
     }
+
+    if (this->has(KTTweenerStep::Colouring)) {
+        QDomElement e = doc.createElement("color");
+        QString colorText = QString::number(k->color.red()) + "," + QString::number(k->color.green()) + "," + QString::number(k->color.blue());
+        e.setAttribute("color", colorText);
+
+        step.appendChild(e);
+    }
     
     return step;
 }

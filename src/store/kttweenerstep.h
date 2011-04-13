@@ -50,18 +50,17 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
 {
     public:
         enum Type {
-            None = 0x0,
-            Position = 0x01,
-            Translation = 0x02,
-            Rotation = 0x04,
-            Opacity = 0x06,
-            Colouring = 0x08,
-            Shear = 0x10,
-            Scale = 0x12
+             None = 0x0,
+             Position = 0x01,
+             Translation = 0x02,
+             Rotation = 0x04,
+             Scale = 0x06,
+             Shear = 0x08,
+             Opacity = 0x10,
+             Colouring = 0x12
         };
         
         KTTweenerStep(int index);
-        
         ~KTTweenerStep();
         
         void setPosition(const QPointF &pos);
