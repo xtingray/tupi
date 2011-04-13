@@ -74,6 +74,8 @@ class Settings : public QWidget
         void checkTopLimit(int index);
         void updateLoopCheckbox(int state);
         void updateReverseCheckbox(int state);
+        void setInitialColor();
+        void setEndingColor();
         
     signals:
         void clickedSelect();

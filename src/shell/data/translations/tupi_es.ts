@@ -97,7 +97,7 @@
     </message>
     <message>
         <location filename="../src/plugins/tools/colouringtool/configurator.cpp" line="69"/>
-        <source>Colouring Tween</source>
+        <source>Coloring Tween</source>
         <translation>Tween de Color</translation>
     </message>
     <message>
@@ -1874,7 +1874,7 @@
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
-        <source>Colouring Tween</source>
+        <source>Coloring Tween</source>
         <translation>Tween de Color</translation>
     </message>
     <message>
@@ -2695,7 +2695,7 @@
     </message>
     <message>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="69"/>
-        <source>Colouring Tween</source>
+        <source>Coloring Tween</source>
         <translation>Tween de Color</translation>
     </message>
     <message>
@@ -3196,7 +3196,7 @@
     </message>
     <message>
         <location filename="../src/plugins/tools/colouringtool/tweener.cpp" line="69"/>
-        <source>Colouring Tween</source>
+        <source>Coloring Tween</source>
         <translation>Tween de Color</translation>
     </message>
     <message>
@@ -3437,7 +3437,7 @@
     </message>
     <message>
         <location filename="../../../store/ktitemtweener.cpp" line="69"/>
-        <source>Colouring Tween</source>
+        <source>Coloring Tween</source>
         <translation>Tween de Color</translation>
     </message>
     <message>

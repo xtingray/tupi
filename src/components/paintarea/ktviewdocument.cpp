@@ -425,7 +425,7 @@ void KTViewDocument::loadPlugins()
                                        tweenTools[4] = action;
                                    }
 
-                                   if (toolName.compare(tr("Colouring Tween")) == 0) {
+                                   if (toolName.compare(tr("Coloring Tween")) == 0) {
                                        // action->setDisabled(true);
                                        tweenTools[5] = action;
                                    }

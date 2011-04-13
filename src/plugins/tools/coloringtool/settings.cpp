@@ -47,6 +47,7 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QPushButton>
 #include <QColorDialog>
 
 struct Settings::Private
@@ -60,8 +61,10 @@ struct Settings::Private
     QComboBox *comboEnd;
     KRadioButtonGroup *options;
 
-    QColorDialog *comboInitColor;
-    QColorDialog *comboEndColor;
+    QPushButton *initColorButton;
+    QColor initialColor;
+    QPushButton *endColorButton;
+    QColor endingColor;
     QComboBox *comboIterations;
     QCheckBox *loopBox;
     QCheckBox *reverseLoopBox;
@@ -175,14 +178,21 @@ void Settings::setInnerForm()
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
+    k->initialColor = QColor("#fff");
+    k->initColorButton = new QPushButton();
+    k->initColorButton->setText(tr("White"));
+    k->initColorButton->setPalette(QPalette(k->initialColor));
+    k->initColorButton->setAutoFillBackground(true);
+    connect(k->initColorButton, SIGNAL(clicked()), this, SLOT(setInitialColor()));
+
     /*
-    k->comboInitColor = new QComboBox();
+    k->initColorButton = new QComboBox();
     for (int i=0; i<=9; i++) {
-         k->comboInitColor->addItem("0." + QString::number(i));
-         k->comboInitColor->addItem("0." + QString::number(i) + "5");
+         k->initColorButton->addItem("0." + QString::number(i));
+         k->initColorButton->addItem("0." + QString::number(i) + "5");
     }
-    k->comboInitColor->addItem("1.0");
-    k->comboInitColor->setCurrentIndex(20);
+    k->initColorButton->addItem("1.0");
+    k->initColorButton->setCurrentIndex(20);
     */
 
     QLabel *coloringInitLabel = new QLabel(tr("Initial Color") + ": ");
@@ -192,16 +202,23 @@ void Settings::setInnerForm()
     coloringInitLayout->setMargin(0);
     coloringInitLayout->setSpacing(0);
     coloringInitLayout->addWidget(coloringInitLabel);
-    coloringInitLayout->addWidget(k->comboInitColor);
+    coloringInitLayout->addWidget(k->initColorButton);
 
     /*
-    k->comboEndColor = new QComboBox();
+    k->endColorButton = new QComboBox();
     for (int i=0; i<=9; i++) {
-         k->comboEndColor->addItem("0." + QString::number(i));
-         k->comboEndColor->addItem("0." + QString::number(i) + "5");
+         k->endColorButton->addItem("0." + QString::number(i));
+         k->endColorButton->addItem("0." + QString::number(i) + "5");
     }
-    k->comboEndColor->addItem("1.0");
+    k->endColorButton->addItem("1.0");
     */
+
+    k->endingColor = QColor("#fff");
+    k->endColorButton = new QPushButton();
+    k->endColorButton->setText(tr("White"));
+    k->endColorButton->setPalette(QPalette(k->endingColor));
+    k->endColorButton->setAutoFillBackground(true);
+    connect(k->endColorButton, SIGNAL(clicked()), this, SLOT(setEndingColor()));
 
     QLabel *coloringEndLabel = new QLabel(tr("Ending Color") + ": ");
     coloringEndLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -210,7 +227,7 @@ void Settings::setInnerForm()
     coloringEndLayout->setMargin(0);
     coloringEndLayout->setSpacing(0);
     coloringEndLayout->addWidget(coloringEndLabel);
-    coloringEndLayout->addWidget(k->comboEndColor);
+    coloringEndLayout->addWidget(k->endColorButton);
 
     k->comboIterations = new QComboBox();
     k->comboIterations->setEditable(true);
@@ -401,11 +418,11 @@ QString Settings::tweenToXml(int currentFrame)
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", "0,0");
 
-    //double initFactor = k->comboInitColor->currentText().toDouble();
+    //double initFactor = k->initColorButton->currentText().toDouble();
     double initFactor = 1;
     root.setAttribute("initColoringFactor", initFactor);
 
-    // double endFactor = k->comboEndColor->currentText().toDouble();
+    // double endFactor = k->endColorButton->currentText().toDouble();
     double endFactor = 2;
     root.setAttribute("endColoringFactor", endFactor);
 
@@ -514,3 +531,27 @@ void Settings::updateReverseCheckbox(int state)
     if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
         k->reverseLoopBox->setChecked(false);
 }
+
+void Settings::setInitialColor()
+{
+     k->initialColor = QColorDialog::getColor(k->initialColor, this);
+
+     if (k->initialColor.isValid()) {
+         k->initColorButton->setText(k->initialColor.name());
+         k->initColorButton->setPalette(QPalette(k->initialColor));
+         k->initColorButton->setAutoFillBackground(true);
+     }
+}
+
+void Settings::setEndingColor()
+{
+     k->endingColor = QColorDialog::getColor(k->endingColor, this);
+
+     if (k->endingColor.isValid()) {
+         k->endColorButton->setText(k->endingColor.name());
+         k->endColorButton->setPalette(QPalette(k->endingColor));
+         k->endColorButton->setAutoFillBackground(true);
+     }
+}
+
+
