@@ -305,6 +305,10 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->comboInit->setCurrentIndex(startFrame);
     k->comboInit->setEditable(false);
     k->comboInit->setEnabled(false);
+
+    k->initColorButton->setText(k->initialColor.name());
+    k->initColorButton->setPalette(QPalette(k->initialColor));
+    k->initColorButton->setAutoFillBackground(true);
 }
 
 void Settings::setParameters(KTItemTweener *currentTween)
@@ -366,9 +370,10 @@ void Settings::applyTween()
     emit clickedApplyTween();
 }
 
-void Settings::notifySelection(bool flag)
+void Settings::notifySelection(bool flag, QColor color)
 {
     k->selectionDone = flag;
+    k->initialColor = color;
 }
 
 QString Settings::currentTweenName() const

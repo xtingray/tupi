@@ -50,6 +50,10 @@
 #include "ktbrushmanager.h"
 #include "ktgraphicsscene.h"
 #include "ktgraphicobject.h"
+#include "ktpathitem.h"
+#include "ktellipseitem.h"
+#include "ktlineitem.h"
+#include "ktrectitem.h"
 #include "ktsvgitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
@@ -317,7 +321,19 @@ void Tweener::setSelect()
                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                  item->setSelected(true);
         }
-        k->configurator->notifySelection(true);
+        QGraphicsItem *item = k->objects.at(0);
+        QColor color = QColor("#fff");
+        if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(item)) {
+            color = path->pen().color();
+        } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(item)) {
+                   color = ellipse->pen().color();
+        } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(item)) {
+                   color = line->pen().color();
+        } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(item)) {
+                   color = rect->pen().color(); 
+        }
+
+        k->configurator->notifySelection(true, color);
     }
 
 }
