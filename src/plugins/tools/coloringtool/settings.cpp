@@ -47,7 +47,6 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
-#include <QPushButton>
 #include <QColorDialog>
 
 struct Settings::Private
@@ -178,6 +177,7 @@ void Settings::setInnerForm()
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
+    kFatal() << "Settings::setInnerForm() - Setting color white!";
     k->initialColor = QColor("#fff");
     k->initColorButton = new QPushButton();
     k->initColorButton->setText(tr("White"));
@@ -305,10 +305,6 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->comboInit->setCurrentIndex(startFrame);
     k->comboInit->setEditable(false);
     k->comboInit->setEnabled(false);
-
-    k->initColorButton->setText(k->initialColor.name());
-    k->initColorButton->setPalette(QPalette(k->initialColor));
-    k->initColorButton->setAutoFillBackground(true);
 }
 
 void Settings::setParameters(KTItemTweener *currentTween)
@@ -373,7 +369,11 @@ void Settings::applyTween()
 void Settings::notifySelection(bool flag, QColor color)
 {
     k->selectionDone = flag;
-    k->initialColor = color;
+
+    if (color.isValid()) {
+        k->initialColor = color;
+        updateColor(k->initialColor, k->initColorButton);
+    }
 }
 
 QString Settings::currentTweenName() const
@@ -387,12 +387,9 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
-    kFatal() << "Settings::emitOptionChanged() - Mode: " << option; 
-
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Enabling selection mode!";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
@@ -495,7 +492,6 @@ QString Settings::tweenToXml(int currentFrame)
 
 void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    kFatal() << "Settings::activatePropertiesMode() - Setting: " << mode;
     k->options->setCurrentIndex(mode);
 }
 
@@ -541,22 +537,22 @@ void Settings::setInitialColor()
 {
      k->initialColor = QColorDialog::getColor(k->initialColor, this);
 
-     if (k->initialColor.isValid()) {
-         k->initColorButton->setText(k->initialColor.name());
-         k->initColorButton->setPalette(QPalette(k->initialColor));
-         k->initColorButton->setAutoFillBackground(true);
-     }
+     if (k->initialColor.isValid())
+         updateColor(k->initialColor, k->initColorButton);    
 }
 
 void Settings::setEndingColor()
 {
      k->endingColor = QColorDialog::getColor(k->endingColor, this);
 
-     if (k->endingColor.isValid()) {
-         k->endColorButton->setText(k->endingColor.name());
-         k->endColorButton->setPalette(QPalette(k->endingColor));
-         k->endColorButton->setAutoFillBackground(true);
-     }
+     if (k->endingColor.isValid())
+         updateColor(k->endingColor, k->endColorButton);
 }
 
-
+void Settings::updateColor(QColor color, QPushButton *colorButton)
+{
+     kFatal() << "Settings::udpateColor() - Updating color: " << color.name();
+     colorButton->setText(color.name());
+     colorButton->setPalette(QPalette(color));
+     colorButton->setAutoFillBackground(true);
+}

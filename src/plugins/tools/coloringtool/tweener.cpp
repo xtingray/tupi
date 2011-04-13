@@ -166,7 +166,20 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
         if (k->editMode == Settings::Selection) {
             if (scene->selectedItems().size() > 0) {
                 k->objects = scene->selectedItems();
-                k->configurator->notifySelection(true);
+
+                QGraphicsItem *item = k->objects.at(0);
+                QColor color = QColor("#fff");
+                if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(item)) {
+                    color = path->pen().color();
+                } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(item)) {
+                           color = ellipse->pen().color();
+                } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(item)) {
+                           color = line->pen().color();
+                } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(item)) {
+                           color = rect->pen().color();
+                }
+
+                k->configurator->notifySelection(true, color);
             }
         }
     }

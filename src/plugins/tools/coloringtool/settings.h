@@ -37,6 +37,7 @@
 #define SETTINGS_H
 
 #include <QWidget>
+#include <QPushButton>
 
 class KTItemTweener;
 
@@ -89,6 +90,7 @@ class Settings : public QWidget
         void activeInnerForm(bool enable);
         void setEditMode();
         void checkFramesRange();
+        void updateColor(QColor color, QPushButton *colorButton);
 
         struct Private;
         Private *const k;
