@@ -147,6 +147,10 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
 
     if (step.has(KTTweenerStep::Opacity))
         setOpacityAt(counter, step.opacity());
+
+    if (step.has(KTTweenerStep::Coloring)) {
+        setColorAt(counter, step.color());
+    }
 }
 
 KTTweenerStep * KTItemTweener::stepAt(int index)
@@ -184,10 +188,10 @@ void KTItemTweener::setOpacityAt(int index, double opacity)
     k->step(index)->setOpacity(opacity);
 }
 
-void KTItemTweener::setColorAt(int index, int red, int green, int blue)
+void KTItemTweener::setColorAt(int index, const QColor &color)
 {
     VERIFY_STEP(index);
-    k->step(index)->setColor(red, green, blue);
+    k->step(index)->setColor(color);
 }
 
 void KTItemTweener::setFrames(int frames)
@@ -264,6 +268,26 @@ void KTItemTweener::fromXml(const QString &xml)
             k->opacityReverseLoop = root.attribute("opacityReverseLoop").toInt();
         }
 
+        if (k->type == KTItemTweener::Coloring || k->type == KTItemTweener::All) {
+            QString colorText = root.attribute("initialColor");
+            QStringList list = colorText.split(",");
+            int red = list.at(0).toInt();
+            int green = list.at(1).toInt();
+            int blue = list.at(2).toInt();
+            k->initialColor = QColor(red, green, blue);
+
+            colorText = root.attribute("endingColor");
+            list = colorText.split(",");
+            red = list.at(0).toInt();
+            green = list.at(1).toInt();
+            blue = list.at(2).toInt();
+            k->endingColor = QColor(red, green, blue);
+
+            k->colorIterations = root.attribute("colorIterations").toInt();
+            k->colorLoop = root.attribute("colorLoop").toInt();
+            k->colorReverseLoop = root.attribute("colorReverseLoop").toInt();
+        }
+
         QDomNode node = root.firstChild();
         
         while (!node.isNull()) {
@@ -334,6 +358,18 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         root.setAttribute("opacityLoop", k->opacityLoop);
         root.setAttribute("opacityReverseLoop", k->opacityReverseLoop);
     } 
+
+    if (k->type == KTItemTweener::Coloring || k->type == KTItemTweener::All) {
+        QString colorText = QString::number(k->initialColor.red()) + "," + QString::number(k->initialColor.green()) 
+                            + "," + QString::number(k->initialColor.blue());
+        root.setAttribute("initialColor", colorText); 
+        colorText = QString::number(k->endingColor.red()) + "," + QString::number(k->endingColor.green()) 
+                            + "," + QString::number(k->endingColor.blue());
+        root.setAttribute("endingColor", colorText);
+        root.setAttribute("colorIterations", k->opacityIterations);
+        root.setAttribute("colorLoop", k->opacityLoop);
+        root.setAttribute("colorReverseLoop", k->opacityReverseLoop);
+    }
  
     foreach (KTTweenerStep *step, k->steps.values())
              root.appendChild(step->toXml(doc));
@@ -492,4 +528,3 @@ int KTItemTweener::tweenColorReverseLoop()
 {
     return k->colorReverseLoop;
 }
-

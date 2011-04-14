@@ -57,11 +57,12 @@
 #include "ktgraphiclibraryitem.h"
 #include "ktsvgitem.h"
 #include "ktpathitem.h"
+#include "ktlineitem.h"
+#include "ktrectitem.h"
+#include "ktellipseitem.h"
 
 #include "ktprojectresponse.h"
-
 #include "kdebug.h"
-
 #include "ktguideline.h"
 
 /**
@@ -439,6 +440,29 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          object->item()->setScale(1.0);
                      }
 
+                     if (tween->type() == KTItemTweener::Coloring || tween->type() == KTItemTweener::All) {
+                         QColor itemColor = stepItem->color();
+                         if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                             QPen pen = path->pen();
+                             pen.setColor(itemColor);
+                             path->setPen(pen);
+                         } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(object->item())) {
+                                    QPen pen = ellipse->pen();
+                                    pen.setColor(itemColor);
+                                    ellipse->setPen(pen);
+                         } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(object->item())) {
+                                    QPen pen = line->pen();
+                                    pen.setColor(itemColor);
+                                    line->setPen(pen); 
+                         } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(object->item())) {
+                                    QPen pen = rect->pen();
+                                    pen.setColor(itemColor);
+                                    rect->setPen(pen);
+                         }
+
+                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Color: " << itemColor.name();
+                     }
+
                      if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
                          object->item()->setOpacity(stepItem->opacity());
                          kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
@@ -468,6 +492,29 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                 // double scaleY = stepItem->verticalScale();
                                 object->item()->setScale(scaleX);
                                 // object->item()->scale(scaleX, scaleY);
+                            }
+
+                            if (tween->type() == KTItemTweener::Coloring || tween->type() == KTItemTweener::All) {
+                                QColor itemColor = stepItem->color();
+                                if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                                    QPen pen = path->pen();
+                                    pen.setColor(itemColor);
+                                    path->setPen(pen);
+                                } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(object->item())) {
+                                           QPen pen = ellipse->pen();
+                                           pen.setColor(itemColor);
+                                           ellipse->setPen(pen);
+                                } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(object->item())) {
+                                           QPen pen = line->pen();
+                                           pen.setColor(itemColor);
+                                           line->setPen(pen);
+                                } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(object->item())) {
+                                           QPen pen = rect->pen();
+                                           pen.setColor(itemColor);
+                                           rect->setPen(pen);
+                                }
+
+                                kFatal() << "KTGraphicsScene::addTweeningObjects() - Color: " << itemColor.name();
                             }
 
                             addGraphicObject(object);

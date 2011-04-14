@@ -57,7 +57,8 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
              Scale = 0x06,
              Shear = 0x08,
              Opacity = 0x10,
-             Coloring = 0x12
+             Coloring = 0x12,
+             All = 0x14
         };
         
         KTTweenerStep(int index);
@@ -69,7 +70,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
         void setShear(double sh, double sv);
         void setScale(double sx, double sy);
         void setOpacity(double opacity);
-        void setColor(int red, int green, int blue);
+        void setColor(const QColor &color);
         
         QPointF position() const;
         double horizontalScale() const;

@@ -317,10 +317,19 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboInit->setEnabled(true);
     k->comboInit->setEditable(true);
     k->comboInit->setCurrentIndex(currentTween->startFrame());
-    k->comboEnd->setItemText(0, QString::number(currentTween->startFrame() + currentTween->frames()));
+    int lastFrame = currentTween->startFrame() + currentTween->frames();
+    k->comboEnd->setItemText(0, QString::number(lastFrame));
     k->comboEnd->setCurrentIndex(0);
 
     checkFramesRange();
+
+    updateColor(currentTween->tweenInitialColor(), k->initColorButton);
+    updateColor(currentTween->tweenEndingColor(), k->endColorButton);
+
+    int iterations = currentTween->tweenOpacityIterations();
+    k->comboIterations->setItemText(0, QString::number(iterations));
+    k->loopBox->setChecked(currentTween->tweenOpacityLoop());
+    k->reverseLoopBox->setChecked(currentTween->tweenOpacityReverseLoop());
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -420,67 +429,87 @@ QString Settings::tweenToXml(int currentFrame)
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", "0,0");
 
-    //double initFactor = k->initColorButton->currentText().toDouble();
-    double initFactor = 1;
-    root.setAttribute("initColoringFactor", initFactor);
+    int initialRed = k->initialColor.red();
+    int initialGreen = k->initialColor.green();
+    int initialBlue = k->initialColor.blue();
 
-    // double endFactor = k->endColorButton->currentText().toDouble();
-    double endFactor = 2;
-    root.setAttribute("endColoringFactor", endFactor);
+    QString colorText = QString::number(initialRed) + "," + QString::number(initialGreen)
+                        + "," + QString::number(initialBlue);
+    root.setAttribute("initialColor", colorText);
+
+    int endingRed = k->endingColor.red();
+    int endingGreen = k->endingColor.green();
+    int endingBlue = k->endingColor.blue();
+
+    colorText = QString::number(endingRed) + "," + QString::number(endingGreen)
+                        + "," + QString::number(endingBlue);
+    root.setAttribute("endingColor", colorText);
 
     int iterations = k->comboIterations->currentText().toInt();
-    root.setAttribute("coloringIterations", iterations);
+    root.setAttribute("colorIterations", iterations);
 
     bool loop = k->loopBox->isChecked();
     if (loop)
-        root.setAttribute("coloringLoop", "1");
+        root.setAttribute("colorLoop", "1");
     else
-        root.setAttribute("coloringLoop", "0");
+        root.setAttribute("colorLoop", "0");
 
     bool reverse = k->reverseLoopBox->isChecked();
     if (reverse)
-        root.setAttribute("coloringReverseLoop", "1");
+        root.setAttribute("colorReverseLoop", "1");
     else
-        root.setAttribute("coloringReverseLoop", "0");
-
-    double delta = (initFactor - endFactor)/(double)iterations;
-
-    kFatal() << "tweenToXml() - Delta: " << delta;
-    kFatal() << "tweenToXml() - initFactor: " << initFactor;
-    kFatal() << "tweenToXml() - endFactor: " << endFactor;
+        root.setAttribute("colorReverseLoop", "0");
 
     KTTweenerStep *step = new KTTweenerStep(0);
-    // step->setColor(initFactor);
+    step->setColor(k->initialColor);
     root.appendChild(step->toXml(doc));
 
-    double reference = initFactor - delta; 
+    double redDelta = (initialRed - endingRed)/(double)iterations;
+    double greenDelta = (initialGreen - endingGreen)/(double)iterations;
+    double blueDelta = (initialBlue - endingBlue)/(double)iterations; 
+
+    double redReference = initialRed - redDelta;
+    double greenReference = initialGreen - greenDelta;
+    double blueReference = initialBlue - greenDelta;
+
     int cycle = 2;
     bool token = true;
 
     for (int i=1; i < k->totalSteps; i++) {
          KTTweenerStep *step = new KTTweenerStep(i);
-         // step->setColor(reference);
+         QColor color = QColor(redReference, greenReference, blueReference);
+         step->setColor(color);
          root.appendChild(step->toXml(doc));
 
          if (cycle < iterations && token) {
-             reference -= delta;
+             redReference -= redDelta;
+             greenReference -= greenDelta;
+             blueReference -= blueDelta;
              cycle++;
          } else {
              if (loop) {
                  cycle = 1;
-                 reference = initFactor;
+                 redReference = initialRed;
+                 greenReference = initialGreen;
+                 blueReference = initialBlue;
              } else if (reverse && !token) {
                  if (cycle >= ((iterations*2)-2)) {
                      token = true;
                      cycle = 2;
-                     reference -= delta;
+                     redReference -= redDelta;
+                     greenReference -= greenDelta;
+                     blueReference -= blueDelta;
                  } else {
-                     reference += delta;
+                     redReference += redDelta;
+                     greenReference += greenDelta;
+                     blueReference += blueDelta;
                      cycle++;
                  }
              } else {
                  token = false;
-                 reference += delta;
+                 redReference += redDelta;
+                 greenReference += greenDelta;
+                 blueReference += blueDelta;
              }
          }
     }

@@ -105,9 +105,9 @@ void KTTweenerStep::setOpacity(double opacity)
     k->flags |= Opacity;
 }
 
-void KTTweenerStep::setColor(int red, int green, int blue)
+void KTTweenerStep::setColor(const QColor &color)
 {
-    k->color = QColor(red, green, blue);
+    k->color = color;
     k->flags |= Coloring;
 }
 
@@ -269,7 +269,7 @@ void KTTweenerStep::fromXml(const QString& xml)
                               int red = e.attribute("red").toInt();
                               int green = e.attribute("green").toInt();
                               int blue = e.attribute("blue").toInt();
-                              setColor(red, green, blue);
+                              setColor(QColor(red, green, blue));
                    }
                }
                node = node.nextSibling();
