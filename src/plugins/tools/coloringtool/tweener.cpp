@@ -179,11 +179,11 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                            color = rect->pen().color();
                 }
 
-                k->configurator->notifySelection(true, color);
+                k->configurator->setInitialColor(color);
+                k->configurator->notifySelection(true);
             }
         }
     }
-
 }
 
 /* This method returns the list of actions defined in this plugin */
@@ -335,7 +335,7 @@ void Tweener::setSelect()
                  item->setSelected(true);
         }
         QGraphicsItem *item = k->objects.at(0);
-        QColor color = QColor("#fff");
+        QColor color = QColor();
         if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(item)) {
             color = path->pen().color();
         } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(item)) {
@@ -345,8 +345,8 @@ void Tweener::setSelect()
         } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(item)) {
                    color = rect->pen().color(); 
         }
-
-        k->configurator->notifySelection(true, color);
+        k->configurator->setInitialColor(color);
+        k->configurator->notifySelection(true);
     }
 
 }

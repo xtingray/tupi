@@ -366,14 +366,14 @@ void Settings::applyTween()
     emit clickedApplyTween();
 }
 
-void Settings::notifySelection(bool flag, QColor color)
+void Settings::notifySelection(bool flag)
 {
     k->selectionDone = flag;
+}
 
-    if (color.isValid()) {
-        k->initialColor = color;
-        updateColor(k->initialColor, k->initColorButton);
-    }
+void Settings::setInitialColor(QColor color) {
+    k->initialColor = color;
+    updateColor(k->initialColor, k->initColorButton);
 }
 
 QString Settings::currentTweenName() const
@@ -536,23 +536,21 @@ void Settings::updateReverseCheckbox(int state)
 void Settings::setInitialColor()
 {
      k->initialColor = QColorDialog::getColor(k->initialColor, this);
-
-     if (k->initialColor.isValid())
-         updateColor(k->initialColor, k->initColorButton);    
+     updateColor(k->initialColor, k->initColorButton);    
 }
 
 void Settings::setEndingColor()
 {
      k->endingColor = QColorDialog::getColor(k->endingColor, this);
-
-     if (k->endingColor.isValid())
-         updateColor(k->endingColor, k->endColorButton);
+     updateColor(k->endingColor, k->endColorButton);
 }
 
 void Settings::updateColor(QColor color, QPushButton *colorButton)
 {
-     kFatal() << "Settings::udpateColor() - Updating color: " << color.name();
-     colorButton->setText(color.name());
-     colorButton->setPalette(QPalette(color));
-     colorButton->setAutoFillBackground(true);
+     if (color.isValid()) {
+         kFatal() << "Settings::udpateColor() - Updating color: " << color.name();
+         colorButton->setText(color.name());
+         colorButton->setPalette(QPalette(color));
+         colorButton->setAutoFillBackground(true);
+     }
 }

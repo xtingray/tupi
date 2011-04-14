@@ -65,7 +65,8 @@ class Settings : public QWidget
 
         QString currentTweenName() const;
         void activatePropertiesMode(Settings::EditMode mode);
-        void notifySelection(bool flag, QColor color = QColor());
+        void notifySelection(bool flag);
+        void setInitialColor(QColor color);
         QString tweenToXml(int currentFrame);
 
     private slots:

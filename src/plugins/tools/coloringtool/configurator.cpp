@@ -254,9 +254,14 @@ QString Configurator::currentTweenName() const
     return newName;
 }
 
-void Configurator::notifySelection(bool flag, QColor color)
+void Configurator::notifySelection(bool flag)
 {
-    k->settingsPanel->notifySelection(flag, color);
+    k->settingsPanel->notifySelection(flag);
+}
+
+void Configurator::setInitialColor(QColor color)
+{
+    k->settingsPanel->setInitialColor(color);
 }
 
 void Configurator::closeTweenProperties()

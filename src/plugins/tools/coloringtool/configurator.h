@@ -65,7 +65,9 @@ class Configurator : public QFrame
         int totalSteps();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
-        void notifySelection(bool flag, QColor color = QColor());
+        void notifySelection(bool flag);
+        void setInitialColor(QColor color);
+
         void closeSettingsPanel();
         Settings::Mode mode();
         void resetUI();
