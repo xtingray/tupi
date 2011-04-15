@@ -399,11 +399,6 @@ void Tweener::applyTween()
                  KTLibraryObject::Type type = KTLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item);
 
-                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
-                     type = KTLibraryObject::Svg;
-                     objectIndex = k->scene->currentFrame()->indexOf(svg);
-                 }
-
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),

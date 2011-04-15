@@ -185,16 +185,6 @@ void Settings::setInnerForm()
     k->initColorButton->setAutoFillBackground(true);
     connect(k->initColorButton, SIGNAL(clicked()), this, SLOT(setInitialColor()));
 
-    /*
-    k->initColorButton = new QComboBox();
-    for (int i=0; i<=9; i++) {
-         k->initColorButton->addItem("0." + QString::number(i));
-         k->initColorButton->addItem("0." + QString::number(i) + "5");
-    }
-    k->initColorButton->addItem("1.0");
-    k->initColorButton->setCurrentIndex(20);
-    */
-
     QLabel *coloringInitLabel = new QLabel(tr("Initial Color") + ": ");
     coloringInitLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     QHBoxLayout *coloringInitLayout = new QHBoxLayout;
@@ -203,15 +193,6 @@ void Settings::setInnerForm()
     coloringInitLayout->setSpacing(0);
     coloringInitLayout->addWidget(coloringInitLabel);
     coloringInitLayout->addWidget(k->initColorButton);
-
-    /*
-    k->endColorButton = new QComboBox();
-    for (int i=0; i<=9; i++) {
-         k->endColorButton->addItem("0." + QString::number(i));
-         k->endColorButton->addItem("0." + QString::number(i) + "5");
-    }
-    k->endColorButton->addItem("1.0");
-    */
 
     k->endingColor = QColor("#fff");
     k->endColorButton = new QPushButton();
@@ -326,10 +307,10 @@ void Settings::setParameters(KTItemTweener *currentTween)
     updateColor(currentTween->tweenInitialColor(), k->initColorButton);
     updateColor(currentTween->tweenEndingColor(), k->endColorButton);
 
-    int iterations = currentTween->tweenOpacityIterations();
+    int iterations = currentTween->tweenColorIterations();
     k->comboIterations->setItemText(0, QString::number(iterations));
-    k->loopBox->setChecked(currentTween->tweenOpacityLoop());
-    k->reverseLoopBox->setChecked(currentTween->tweenOpacityReverseLoop());
+    k->loopBox->setChecked(currentTween->tweenColorLoop());
+    k->reverseLoopBox->setChecked(currentTween->tweenColorReverseLoop());
 }
 
 void Settings::initStartCombo(int framesTotal, int currentIndex)
@@ -380,9 +361,17 @@ void Settings::notifySelection(bool flag)
     k->selectionDone = flag;
 }
 
+void Settings::setInitialColor()
+{
+     k->initialColor = QColorDialog::getColor(k->initialColor, this);
+     updateColor(k->initialColor, k->initColorButton);
+}
+
 void Settings::setInitialColor(QColor color) {
     k->initialColor = color;
+    k->endingColor = QColor("#fff");
     updateColor(k->initialColor, k->initColorButton);
+    updateColor(k->endingColor, k->endColorButton);
 }
 
 QString Settings::currentTweenName() const
@@ -560,12 +549,6 @@ void Settings::updateReverseCheckbox(int state)
 {
     if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
         k->reverseLoopBox->setChecked(false);
-}
-
-void Settings::setInitialColor()
-{
-     k->initialColor = QColorDialog::getColor(k->initialColor, this);
-     updateColor(k->initialColor, k->initColorButton);    
 }
 
 void Settings::setEndingColor()

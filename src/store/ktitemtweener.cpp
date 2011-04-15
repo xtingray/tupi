@@ -366,9 +366,9 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         colorText = QString::number(k->endingColor.red()) + "," + QString::number(k->endingColor.green()) 
                             + "," + QString::number(k->endingColor.blue());
         root.setAttribute("endingColor", colorText);
-        root.setAttribute("colorIterations", k->opacityIterations);
-        root.setAttribute("colorLoop", k->opacityLoop);
-        root.setAttribute("colorReverseLoop", k->opacityReverseLoop);
+        root.setAttribute("colorIterations", k->colorIterations);
+        root.setAttribute("colorLoop", k->colorLoop);
+        root.setAttribute("colorReverseLoop", k->colorReverseLoop);
     }
  
     foreach (KTTweenerStep *step, k->steps.values())
