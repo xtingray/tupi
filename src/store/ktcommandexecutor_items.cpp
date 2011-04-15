@@ -712,6 +712,8 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
     int position = response->itemIndex();
     
     QString xml = response->arg().toString();
+    // kFatal() << "KTCommandExecutor::setTween() - xml: ";
+    // kFatal() << xml;
 
     KTScene *scene = m_project->scene(scenePosition);
     

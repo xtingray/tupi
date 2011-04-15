@@ -505,6 +505,9 @@ QString Settings::tweenToXml(int currentFrame)
 
     doc.appendChild(root);
 
+    kFatal() << "Settings::tweenToXml() - xml:";
+    kFatal() << doc.toString();
+
     return doc.toString();
 }
 

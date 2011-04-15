@@ -58,15 +58,14 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
  
     public:
         enum Type {
-             None = 0x0,
-             Position = 0x01,
-             Translation = 0x02,
-             Rotation = 0x04,
-             Scale = 0x06,
-             Shear = 0x08,
-             Opacity = 0x10,
-             Coloring = 0x12,
-             All = 0x14
+             None = 0,
+             Position = 1,
+             Rotation = 2,
+             Scale = 3,
+             Shear = 4,
+             Opacity = 5,
+             Coloring = 6,
+             All = 7 
         };
         enum RotationType { Continuos = 0, Partial };
         enum RotateDirection { Clockwise = 0, Counterclockwise };
@@ -82,12 +81,11 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         void setRotationAt(int step, double angle);
         void setScaleAt(int step, double sx, double sy);
         void setShearAt(int step, double sh, double sv);
-        void setTranslationAt(int step, double dx, double dy);
         void setOpacityAt(int step, double opacity);
         void setColorAt(int step, const QColor &color);
         
         void addStep(const KTTweenerStep &step);
-        KTTweenerStep * stepAt(int index);
+        KTTweenerStep *stepAt(int index);
         
         void setFrames(int frames);
 

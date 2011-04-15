@@ -132,25 +132,21 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
     
     if (step.has(KTTweenerStep::Position))
         setPosAt(counter, step.position());
+
+    if (step.has(KTTweenerStep::Rotation))
+        setRotationAt(counter, step.rotation());
     
     if (step.has(KTTweenerStep::Scale))
         setScaleAt(counter, step.horizontalScale(), step.verticalScale());
     
-    if (step.has(KTTweenerStep::Translation))
-        setTranslationAt(counter, step.xTranslation(), step.yTranslation());
-    
     if (step.has(KTTweenerStep::Shear))
         setScaleAt(counter, step.horizontalShear(), step.verticalShear());
     
-    if (step.has(KTTweenerStep::Rotation))
-        setRotationAt(counter, step.rotation());
-
     if (step.has(KTTweenerStep::Opacity))
         setOpacityAt(counter, step.opacity());
 
-    if (step.has(KTTweenerStep::Coloring)) {
+    if (step.has(KTTweenerStep::Coloring))
         setColorAt(counter, step.color());
-    }
 }
 
 KTTweenerStep * KTItemTweener::stepAt(int index)
@@ -164,22 +160,16 @@ void KTItemTweener::setPosAt(int index, const QPointF &pos)
     k->step(index)->setPosition(pos);
 }
 
-void KTItemTweener::setScaleAt(int index, double sx, double sy)
-{
-    VERIFY_STEP(index);
-    k->step(index)->setScale(sx, sy);
-}
-
-void KTItemTweener::setTranslationAt(int index, double x, double y)
-{
-    VERIFY_STEP(index);
-    k->step(index)->setTranslation(x, y);
-}
-
 void KTItemTweener::setRotationAt(int index, double angle)
 {
     VERIFY_STEP(index);
     k->step(index)->setRotation(angle);
+}
+
+void KTItemTweener::setScaleAt(int index, double sx, double sy)
+{
+    VERIFY_STEP(index);
+    k->step(index)->setScale(sx, sy);
 }
 
 void KTItemTweener::setOpacityAt(int index, double opacity)
@@ -319,6 +309,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
+    kFatal() << "KTItemTweener::toXml() - Type: " << k->type;
     root.setAttribute("type", k->type);
     root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);

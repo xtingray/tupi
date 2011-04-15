@@ -48,7 +48,7 @@ struct KTTweenerStep::Private
     struct PairF {
         double x;
         double y;
-    } translation, shear, scale;
+    } shear, scale;
     
     int flags;
     int index;
@@ -70,13 +70,6 @@ void KTTweenerStep::setPosition(const QPointF &pos)
 {
     k->position = pos;
     k->flags |= Position;
-}
-
-void KTTweenerStep::setTranslation(double dx, double dy)
-{
-    k->translation.x = dx;
-    k->translation.y = dy;
-    k->flags |= Translation;
 }
 
 void KTTweenerStep::setRotation(double angle)
@@ -107,12 +100,21 @@ void KTTweenerStep::setOpacity(double opacity)
 
 void KTTweenerStep::setColor(const QColor &color)
 {
+    kFatal() << "KTTweenerStep::setColor() - Flag: " << k->flags;
+    kFatal() << "KTTweenerStep::setColor() - Type: " << Coloring;
+
     k->color = color;
     k->flags |= Coloring;
+
+    kFatal() << "KTTweenerStep::setColor() - Flag Later: " << k->flags;
 }
 
 bool KTTweenerStep::has(Type type) const
 {
+    kFatal() << "KTTweenerStep::has() - Flag: " << k->flags;
+    kFatal() << "KTTweenerStep::has() - Type: " << type;
+    bool test = k->flags & type;
+    kFatal() << "KTTweenerStep::has() - Result: " << test;
     return k->flags & type;
 }
 
@@ -161,16 +163,6 @@ QColor KTTweenerStep::color() const
     return k->color;
 }
 
-double KTTweenerStep::xTranslation() const
-{
-    return k->translation.x;
-}
-
-double KTTweenerStep::yTranslation() const
-{
-    return k->translation.y;
-}
-
 QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 {
     QDomElement step = doc.createElement("step");
@@ -183,19 +175,18 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
         
         step.appendChild(e);
     }
+
+    if (this->has(KTTweenerStep::Rotation)) {
+        QDomElement e = doc.createElement("rotation");
+        e.setAttribute("angle", k->rotation);
+    
+        step.appendChild(e);
+    }
     
     if (this->has(KTTweenerStep::Scale)) {
         QDomElement e = doc.createElement("scale");
         e.setAttribute("sx", k->scale.x);
         e.setAttribute("sy", k->scale.y);
-        
-        step.appendChild(e);
-    }
-    
-    if (this->has(KTTweenerStep::Translation)) {
-        QDomElement e = doc.createElement("translation");
-        e.setAttribute("dx", k->translation.x);
-        e.setAttribute("dy", k->translation.y);
         
         step.appendChild(e);
     }
@@ -208,13 +199,6 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
         step.appendChild(e);
     }
     
-    if (this->has(KTTweenerStep::Rotation)) {
-        QDomElement e = doc.createElement("rotation");
-        e.setAttribute("angle", k->rotation);
-        
-        step.appendChild(e);
-    }
-
     if (this->has(KTTweenerStep::Opacity)) {
         QDomElement e = doc.createElement("opacity");
         e.setAttribute("opacity", k->opacity);
@@ -238,7 +222,6 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
     return step;
 }
 
-
 void KTTweenerStep::fromXml(const QString& xml)
 {
     QDomDocument doc;
@@ -253,16 +236,14 @@ void KTTweenerStep::fromXml(const QString& xml)
         while (!node.isNull()) {
                QDomElement e = node.toElement();
                if (!e.isNull()) {
-                   if (e.tagName() == "rotation") {
-                       setRotation(e.attribute("angle").toDouble());
-                   } else if (e.tagName() == "shear") {
-                              setShear(e.attribute("sh").toDouble(), e.attribute("sv").toDouble());
-                   } else if (e.tagName() == "position") {
-                              setPosition(QPointF(e.attribute("x").toDouble(), e.attribute("y").toDouble()));
+                   if (e.tagName() == "position") {
+                       setPosition(QPointF(e.attribute("x").toDouble(), e.attribute("y").toDouble()));
+                   } else if (e.tagName() == "rotation") {
+                              setRotation(e.attribute("angle").toDouble());
                    } else if (e.tagName() == "scale") {
                               setScale(e.attribute("sx").toDouble(), e.attribute("sy").toDouble());
-                   } else if (e.tagName() == "translation") {
-                              setTranslation(e.attribute("dx").toDouble(), e.attribute("dy").toDouble());
+                   } else if (e.tagName() == "shear") {
+                              setShear(e.attribute("sh").toDouble(), e.attribute("sv").toDouble());
                    } else if (e.tagName() == "opacity") {
                               setOpacity(e.attribute("opacity").toDouble());
                    } else if (e.tagName() == "color") {
