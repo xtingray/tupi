@@ -72,6 +72,7 @@ struct Settings::Private
     QCheckBox *reverseLoopBox;
 
     bool selectionDone;
+    bool propertiesDone;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -233,7 +234,7 @@ void Settings::setInnerForm()
     iterationsLayout->addWidget(k->comboIterations);
 
     k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
-    k->loopBox->setChecked(true);
+    // k->loopBox->setChecked(true);
     connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
     QVBoxLayout *loopLayout = new QVBoxLayout;
@@ -273,10 +274,13 @@ void Settings::setInnerForm()
 
 void Settings::activeInnerForm(bool enable)
 {
-    if (enable && !k->innerPanel->isVisible())
+    if (enable && !k->innerPanel->isVisible()) {
+        k->propertiesDone = true;
         k->innerPanel->show();
-    else
+    } else {
+        k->propertiesDone = false;
         k->innerPanel->hide();
+    }
 }
 
 // Adding new Tween
@@ -315,6 +319,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
     k->comboAxes->setCurrentIndex(currentTween->tweenScaleAxes());
     k->comboFactor->setItemText(0, QString::number(currentTween->tweenScaleFactor()));
+    k->comboIterations->setCurrentIndex(0);
     k->comboIterations->setItemText(0, QString::number(currentTween->tweenScaleIterations()));
     k->loopBox->setChecked(currentTween->tweenScaleLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenScaleReverseLoop());
@@ -362,9 +367,18 @@ void Settings::setEditMode()
 
 void Settings::applyTween()
 {
+    if (!k->selectionDone) {
+        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info);
+        return;
+    }
+
+    if (!k->propertiesDone) {
+        KOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), KOsd::Info);
+        return;
+    }
+
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
-
     emit clickedApplyTween();
 }
 

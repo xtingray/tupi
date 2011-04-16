@@ -228,8 +228,6 @@ void KTItemTweener::fromXml(const QString &xml)
 
         if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All) {
             k->rotationType = KTItemTweener::RotationType(root.attribute("rotationType").toInt()); 
-            kFatal() << "KTItemTweener::fromXml() - Rotation Type: " << k->rotationType;
-
             k->rotateSpeed = root.attribute("rotateSpeed").toInt();
 
             if (k->rotationType == KTItemTweener::Continuos) {
@@ -309,7 +307,6 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
-    kFatal() << "KTItemTweener::toXml() - Type: " << k->type;
     root.setAttribute("type", k->type);
     root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);
@@ -320,7 +317,6 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     }
 
     if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All) {
-        kFatal() << "KTItemTweener::toXml() - Rotation Type: " << k->rotationType;
         root.setAttribute("rotationType", k->rotationType);
         root.setAttribute("rotateSpeed", k->rotateSpeed);
 

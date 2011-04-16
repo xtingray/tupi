@@ -100,21 +100,13 @@ void KTTweenerStep::setOpacity(double opacity)
 
 void KTTweenerStep::setColor(const QColor &color)
 {
-    kFatal() << "KTTweenerStep::setColor() - Flag: " << k->flags;
-    kFatal() << "KTTweenerStep::setColor() - Type: " << Coloring;
-
     k->color = color;
     k->flags |= Coloring;
-
-    kFatal() << "KTTweenerStep::setColor() - Flag Later: " << k->flags;
 }
 
 bool KTTweenerStep::has(Type type) const
 {
-    kFatal() << "KTTweenerStep::has() - Flag: " << k->flags;
-    kFatal() << "KTTweenerStep::has() - Type: " << type;
     bool test = k->flags & type;
-    kFatal() << "KTTweenerStep::has() - Result: " << test;
     return k->flags & type;
 }
 

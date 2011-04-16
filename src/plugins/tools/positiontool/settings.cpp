@@ -315,12 +315,12 @@ void Settings::applyTween()
 {
     if (!k->selectionDone) {
         k->options->setCurrentIndex(0);
-        KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info);
         return;
     }
 
     if (totalSteps() <= 2) {
-        KOsd::self()->display(tr("Error"), tr("No path created for Tweening"), KOsd::Error);
+        KOsd::self()->display(tr("Info"), tr("You must define a path for this Tween!"), KOsd::Info);
         return;
     }
 

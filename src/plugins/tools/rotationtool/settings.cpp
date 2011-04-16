@@ -76,6 +76,7 @@ struct Settings::Private
     int totalSteps;
 
     bool selectionDone;
+    bool propertiesDone;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -84,6 +85,7 @@ struct Settings::Private
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->selectionDone = false;
+    k->propertiesDone = false;
     k->rotationType = KTItemTweener::Continuos;
     k->totalSteps = 0;
 
@@ -250,10 +252,13 @@ void Settings::setInnerForm()
 
 void Settings::activeInnerForm(bool enable)
 {
-    if (enable && !k->innerPanel->isVisible())
+    if (enable && !k->innerPanel->isVisible()) {
+        k->propertiesDone = true;
         k->innerPanel->show();
-    else
+    } else {
+        k->propertiesDone = false;
         k->innerPanel->hide();
+    }
 }
 
 void Settings::setClockForm()
@@ -335,7 +340,7 @@ void Settings::setRangeForm()
     endLayout->addWidget(k->comboFinish);
 
     k->rangeLoopBox = new QCheckBox(tr("Loop"), k->rangePanel);
-    k->rangeLoopBox->setChecked(true);
+    // k->rangeLoopBox->setChecked(true);
 
     connect(k->rangeLoopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
@@ -465,9 +470,18 @@ void Settings::setEditMode()
 
 void Settings::applyTween()
 {
+    if (!k->selectionDone) {
+        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info); 
+        return;
+    }
+
+    if (!k->propertiesDone) {
+        KOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), KOsd::Info);
+        return;
+    }
+
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
-
     emit clickedApplyTween();
 }
 

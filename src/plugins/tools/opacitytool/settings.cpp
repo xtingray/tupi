@@ -69,6 +69,7 @@ struct Settings::Private
     int totalSteps;
 
     bool selectionDone;
+    bool propertiesDone;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -223,7 +224,7 @@ void Settings::setInnerForm()
     iterationsLayout->addWidget(k->comboIterations);
 
     k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
-    k->loopBox->setChecked(true);
+    // k->loopBox->setChecked(true);
     connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
     QVBoxLayout *loopLayout = new QVBoxLayout;
@@ -264,10 +265,13 @@ void Settings::setInnerForm()
 
 void Settings::activeInnerForm(bool enable)
 {
-    if (enable && !k->innerPanel->isVisible())
+    if (enable && !k->innerPanel->isVisible()) {
+        k->propertiesDone = true;
         k->innerPanel->show();
-    else
+    } else {
+        k->propertiesDone = false;
         k->innerPanel->hide();
+    }
 }
 
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
@@ -302,6 +306,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
 
     k->comboInitFactor->setItemText(0, QString::number(currentTween->tweenOpacityInitialFactor()));
     k->comboEndFactor->setItemText(0, QString::number(currentTween->tweenOpacityEndingFactor()));
+    k->comboIterations->setCurrentIndex(0);
     k->comboIterations->setItemText(0, QString::number(currentTween->tweenOpacityIterations()));
     k->loopBox->setChecked(currentTween->tweenOpacityLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenOpacityReverseLoop());
@@ -344,9 +349,18 @@ void Settings::setEditMode()
 
 void Settings::applyTween()
 {
+    if (!k->selectionDone) {
+        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info);
+        return;
+    }
+
+    if (!k->propertiesDone) {
+        KOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), KOsd::Info);
+        return;
+    }
+
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
-
     emit clickedApplyTween();
 }
 

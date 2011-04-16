@@ -72,6 +72,7 @@ struct Settings::Private
     int totalSteps;
 
     bool selectionDone;
+    bool propertiesDone;
 
     KImageButton *apply;
     KImageButton *remove;
@@ -226,7 +227,7 @@ void Settings::setInnerForm()
     iterationsLayout->addWidget(k->comboIterations);
 
     k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
-    k->loopBox->setChecked(true);
+    // k->loopBox->setChecked(true);
     connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
     QVBoxLayout *loopLayout = new QVBoxLayout;
@@ -267,10 +268,13 @@ void Settings::setInnerForm()
 
 void Settings::activeInnerForm(bool enable)
 {
-    if (enable && !k->innerPanel->isVisible())
+    if (enable && !k->innerPanel->isVisible()) {
+        k->propertiesDone = true;
         k->innerPanel->show();
-    else
+    } else {
+        k->propertiesDone = false;
         k->innerPanel->hide();
+    }
 }
 
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
@@ -308,6 +312,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
     updateColor(currentTween->tweenEndingColor(), k->endColorButton);
 
     int iterations = currentTween->tweenColorIterations();
+    k->comboIterations->setCurrentIndex(0);
     k->comboIterations->setItemText(0, QString::number(iterations));
     k->loopBox->setChecked(currentTween->tweenColorLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenColorReverseLoop());
@@ -350,9 +355,18 @@ void Settings::setEditMode()
 
 void Settings::applyTween()
 {
+    if (!k->selectionDone) {
+        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info);
+        return;
+    }
+
+    if (!k->propertiesDone) {
+        KOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), KOsd::Info);
+        return;
+    }
+
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
-
     emit clickedApplyTween();
 }
 
@@ -453,54 +467,65 @@ QString Settings::tweenToXml(int currentFrame)
     step->setColor(k->initialColor);
     root.appendChild(step->toXml(doc));
 
-    double redDelta = (initialRed - endingRed)/(double)iterations;
-    double greenDelta = (initialGreen - endingGreen)/(double)iterations;
-    double blueDelta = (initialBlue - endingBlue)/(double)iterations; 
+    if (k->totalSteps > 1) {
 
-    double redReference = initialRed - redDelta;
-    double greenReference = initialGreen - greenDelta;
-    double blueReference = initialBlue - greenDelta;
+        iterations -= 1;
 
-    int cycle = 2;
-    bool token = true;
+        double redDelta = (initialRed - endingRed)/(double)iterations;
+        double greenDelta = (initialGreen - endingGreen)/(double)iterations;
+        double blueDelta = (initialBlue - endingBlue)/(double)iterations-1; 
 
-    for (int i=1; i < k->totalSteps; i++) {
-         KTTweenerStep *step = new KTTweenerStep(i);
-         QColor color = QColor(redReference, greenReference, blueReference);
-         step->setColor(color);
-         root.appendChild(step->toXml(doc));
+        kFatal() << "Settings::tweenToXml() - redDelta: " << redDelta;
+        kFatal() << "Settings::tweenToXml() - greenDelta : " <<  greenDelta;
+        kFatal() << "Settings::tweenToXml() - blueDelta : " <<  blueDelta;
 
-         if (cycle < iterations && token) {
-             redReference -= redDelta;
-             greenReference -= greenDelta;
-             blueReference -= blueDelta;
-             cycle++;
-         } else {
-             if (loop) {
-                 cycle = 1;
-                 redReference = initialRed;
-                 greenReference = initialGreen;
-                 blueReference = initialBlue;
-             } else if (reverse && !token) {
-                 if (cycle >= ((iterations*2)-2)) {
-                     token = true;
-                     cycle = 2;
-                     redReference -= redDelta;
-                     greenReference -= greenDelta;
-                     blueReference -= blueDelta;
-                 } else {
+        double redReference = initialRed - redDelta;
+        double greenReference = initialGreen - greenDelta;
+        double blueReference = initialBlue - greenDelta;
+
+        int cycle = 2;
+        bool token = true;
+
+        for (int i=1; i < k->totalSteps; i++) {
+             KTTweenerStep *step = new KTTweenerStep(i);
+             QColor color = QColor(redReference, greenReference, blueReference);
+             step->setColor(color);
+             root.appendChild(step->toXml(doc));
+
+             if (cycle < iterations && token) {
+                 redReference -= redDelta;
+                 greenReference -= greenDelta;
+                 blueReference -= blueDelta;
+                 cycle++;
+             } else {
+                 // if repeat option is enabled
+                 if (loop) { 
+                     cycle = 1;
+                     redReference = initialRed;
+                     greenReference = initialGreen;
+                     blueReference = initialBlue;
+                 } else if (reverse && !token) { // if reverse option is enabled
+                            // if reverse cycle must start again
+                            if (cycle >= ((iterations*2)-2)) {
+                                token = true;
+                                cycle = 2;
+                                redReference -= redDelta;
+                                greenReference -= greenDelta;
+                                blueReference -= blueDelta;
+                            } else { // this is the reverse part
+                                redReference += redDelta;
+                                greenReference += greenDelta;
+                                blueReference += blueDelta;
+                                cycle++;
+                            }
+                 } else { // Moment to switch the reverse cycle 
+                     token = false;
                      redReference += redDelta;
                      greenReference += greenDelta;
                      blueReference += blueDelta;
-                     cycle++;
                  }
-             } else {
-                 token = false;
-                 redReference += redDelta;
-                 greenReference += greenDelta;
-                 blueReference += blueDelta;
              }
-         }
+        }
     }
 
     doc.appendChild(root);

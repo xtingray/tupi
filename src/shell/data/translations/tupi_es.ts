@@ -214,16 +214,6 @@
         <translation>Guardar Tween</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/tweenertool/settings.cpp" line="396"/>
-        <source>Select objects for Tweening first!</source>
-        <translation>Selecciona los objetos a animar primero!</translation>
-    </message>
-    <message>
-        <location filename="../src/plugins/tools/positiontool/settings.cpp" line="396"/>
-        <source>No path created for Tweening</source>
-        <translation>No hay una ruta creada para el Tweening</translation>
-    </message>
-    <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Update Tween</source>
         <translation>Actualizar Tween</translation>
@@ -272,6 +262,21 @@
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Ending Opacity</source>
         <translation>Opacidad Final</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>You must select at least one object!</source>
+        <translation>Debes seleccionar al menos un objeto!</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>You must define a path for this Tween!</source>
+        <translation>Debes definir una ruta para este Tween!</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>You must set Tween properties first!</source>
+        <translation>Debes definir las propiedades para este Tween!</translation>
     </message>
 </context>
 <context>

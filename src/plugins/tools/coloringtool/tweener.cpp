@@ -54,6 +54,7 @@
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
 #include "ktrectitem.h"
+#include "ktpixmapitem.h"
 #include "ktsvgitem.h"
 #include "ktitemtweener.h"
 #include "ktrequestbuilder.h"
@@ -166,6 +167,25 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
         if (k->editMode == Settings::Selection) {
             if (scene->selectedItems().size() > 0) {
                 k->objects = scene->selectedItems();
+
+                foreach (QGraphicsItem *item, k->objects) {
+
+                         QDomDocument dom;
+                         dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+                         QDomElement root = dom.documentElement();
+                         if (root.tagName() == "symbol") {
+                             QString key = root.attribute("id").toUpper();
+                             if (key.endsWith("JPG") || key.endsWith("PNG") || key.endsWith("GIF") || key.endsWith("XPM")) {
+                                 clearSelection();
+                                 KOsd::self()->display(tr("Error"), tr("Coloring Tween can't be applied to raster images"), KOsd::Error);
+                                 return;
+                             }
+                         } else if (root.tagName() == "svg") {
+                                    clearSelection();
+                                    KOsd::self()->display(tr("Error"), tr("Coloring Tween can't be applied to Svg files"), KOsd::Error);
+                                    return;
+                         }
+                }
 
                 QGraphicsItem *item = k->objects.at(0);
                 QColor color = QColor("#fff");
