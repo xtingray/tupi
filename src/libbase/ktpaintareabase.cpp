@@ -289,9 +289,25 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void KTPaintAreaBase::tabletEvent(QTabletEvent * event)
+void KTPaintAreaBase::tabletEvent(QTabletEvent *event)
 {
     QGraphicsView::tabletEvent(event);
+}
+
+void KTPaintAreaBase::enterEvent(QEvent *event)
+{
+    if (!hasFocus())
+        setFocus();
+
+    QGraphicsView::enterEvent(event);
+}
+
+void KTPaintAreaBase::leaveEvent(QEvent *event)
+{
+    if (hasFocus())
+        clearFocus();
+
+    QGraphicsView::leaveEvent(event);
 }
 
 void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)

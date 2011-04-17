@@ -566,3 +566,20 @@ void KTExposureTable::emitCellClicked(int frame, int layer)
 {
     emit cellClicked(frame, layer);
 }
+
+void KTExposureTable::enterEvent(QEvent *event)
+{
+    if (!hasFocus())
+        setFocus();
+
+    QTableWidget::enterEvent(event);
+}
+
+void KTExposureTable::leaveEvent(QEvent *event)
+{
+    if (hasFocus())
+        clearFocus();
+
+    QTableWidget::leaveEvent(event);
+}
+

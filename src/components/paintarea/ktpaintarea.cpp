@@ -927,7 +927,7 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
                                                          scene->currentLayerIndex(), 
                                                          frameIndex, 
-                                                         KTProjectRequest::Add, tr("Frame %1").arg(frameIndex));
+                                                         KTProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
             emit requestTriggered(&request);
         }
 

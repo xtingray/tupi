@@ -104,6 +104,8 @@ class KTExposureTable : public QTableWidget
         bool edit(const QModelIndex & index, EditTrigger trigger, QEvent * event);
         void mousePressEvent(QMouseEvent * event);
         void keyPressEvent(QKeyEvent * event);
+        void enterEvent(QEvent *event);
+        void leaveEvent(QEvent *event);
 
     protected slots:
         void commitData(QWidget * editor);

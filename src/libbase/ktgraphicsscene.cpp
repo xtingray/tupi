@@ -234,7 +234,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                                   if (frame && previousFrame.compare(currentFrame) != 0 
                                             && frameBehind.compare(previousFrame) != 0) {
                                       addFrame(frame, opacity, Preview);
-                                  }
+                                  } 
 
                                   frameBehind = previousFrame;
                                   opacity -= opacityFactor;

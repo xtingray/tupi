@@ -49,11 +49,13 @@ class KTPaintAreaRotator;
 
 /**
  * This class provides an area to draw with some kind of brushes
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
+ * @author Jorge Cuadrado - David Cuadrado
 */
+
 class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTPaintAreaBase(QWidget * parent = 0);
         ~KTPaintAreaBase();
@@ -86,6 +88,9 @@ class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
         virtual void mouseMoveEvent(QMouseEvent * event);
         virtual void mouseReleaseEvent(QMouseEvent *event);
         virtual void tabletEvent(QTabletEvent * event);
+        virtual void enterEvent(QEvent *event);
+        virtual void leaveEvent(QEvent *event);
+
         virtual void wheelEvent(QWheelEvent *event);
         virtual bool viewportEvent(QEvent *e);
 
