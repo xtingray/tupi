@@ -187,6 +187,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     setStatusBar(k->status);
     connect(k->status, SIGNAL(colorRequested()), this, SIGNAL(expandColorPanel()));
     connect(k->status, SIGNAL(colorUpdated(const QColor)), this, SLOT(updateBgColor(const QColor)));
+    connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
 
     // SQA: Verify if this code is doing something
     //connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 

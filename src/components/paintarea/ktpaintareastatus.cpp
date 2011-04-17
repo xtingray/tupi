@@ -57,6 +57,7 @@
 struct KTPaintAreaStatus::Private
 {
     KTViewDocument *viewDocument;
+    QLabel *frameLabel;
     QComboBox *zoom;
     QComboBox *rotation;
     QCheckBox *antialiasHint;
@@ -71,6 +72,15 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     setSizeGripEnabled(false);
     k->viewDocument = parent;
     k->scaleFactor = 100;
+
+    QWidget *frameContainer = new QWidget;
+    QHBoxLayout *frameLayout = new QHBoxLayout(frameContainer);
+    frameLayout->setSpacing(3);
+    frameLayout->setMargin(1);
+    k->frameLabel = new QLabel(tr("Frame #001"));
+    frameLayout->addWidget(k->frameLabel);
+
+    addPermanentWidget(frameContainer);
 
     QWidget *zoomContainer = new QWidget;
     QHBoxLayout *zoomLayout = new QHBoxLayout(zoomContainer);
@@ -204,5 +214,18 @@ void KTPaintAreaStatus::updateTool(const QString &label, const QPixmap &pixmap)
 {
     k->toolStatus->updateTooltip(label);
     k->toolStatus->updatePixmap(pixmap);
+}
+
+void KTPaintAreaStatus::updateFrameIndex(int index)
+{
+    QString text = "00"; 
+    index++;
+
+    if (index < 10)
+        text += QString::number(index);
+    else if (index < 100)
+             text = "0" + QString::number(index);
+
+    k->frameLabel->setText(tr("Frame #") + text);
 }
 

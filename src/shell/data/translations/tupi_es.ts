@@ -330,7 +330,7 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="267"/>
-        <source>Nodes selection </source>
+        <source>Nodes Selection</source>
         <translation>Selección de Nodos</translation>
     </message>
     <message>
@@ -1886,6 +1886,11 @@
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
         <source>Compound Tween</source>
         <translation>Tween Compuesto</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="69"/>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
     </message>
 </context>
 <context>

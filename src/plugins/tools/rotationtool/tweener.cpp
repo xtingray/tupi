@@ -460,7 +460,7 @@ void Tweener::applyTween()
 
         int total = k->startPoint + k->configurator->totalSteps() - 1;
 
-        if (total > framesNumber) {
+        if (total >= framesNumber) {
             for (int i = framesNumber; i <= total; i++) {
                  KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                    k->scene->currentLayerIndex(),
@@ -537,7 +537,7 @@ void Tweener::applyTween()
                  int total = k->startPoint + k->configurator->totalSteps();
                  int framesNumber = framesTotal();
 
-                 if (framesNumber < total) {
+                 if (total >= framesNumber) {
                      for (int i = framesNumber; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                           k->scene->currentLayerIndex(),

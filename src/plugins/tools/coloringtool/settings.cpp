@@ -449,6 +449,11 @@ QString Settings::tweenToXml(int currentFrame)
     root.setAttribute("endingColor", colorText);
 
     int iterations = k->comboIterations->currentText().toInt();
+    if (iterations == 0) {
+        iterations = 1;
+        k->comboIterations->setCurrentIndex(0);
+        k->comboIterations->setItemText(0, QString::number(iterations));
+    }
     root.setAttribute("colorIterations", iterations);
 
     bool loop = k->loopBox->isChecked();
@@ -471,9 +476,12 @@ QString Settings::tweenToXml(int currentFrame)
 
         iterations -= 1;
 
-        double redDelta = (initialRed - endingRed)/(double)iterations;
-        double greenDelta = (initialGreen - endingGreen)/(double)iterations;
-        double blueDelta = (initialBlue - endingBlue)/(double)iterations-1; 
+        if (iterations == 0)
+            iterations = 1;
+
+        double redDelta = (double)(initialRed - endingRed)/(double)iterations;
+        double greenDelta = (double)(initialGreen - endingGreen)/(double)iterations;
+        double blueDelta = (double)(initialBlue - endingBlue)/(double)iterations; 
 
         kFatal() << "Settings::tweenToXml() - redDelta: " << redDelta;
         kFatal() << "Settings::tweenToXml() - greenDelta : " <<  greenDelta;
@@ -482,6 +490,10 @@ QString Settings::tweenToXml(int currentFrame)
         double redReference = initialRed - redDelta;
         double greenReference = initialGreen - greenDelta;
         double blueReference = initialBlue - greenDelta;
+
+        kFatal() << "Settings::tweenToXml() - redReference: " << redReference;
+        kFatal() << "Settings::tweenToXml() - greenReference : " <<  greenReference;
+        kFatal() << "Settings::tweenToXml() - blueReference : " <<  blueReference;
 
         int cycle = 2;
         bool token = true;
@@ -492,10 +504,16 @@ QString Settings::tweenToXml(int currentFrame)
              step->setColor(color);
              root.appendChild(step->toXml(doc));
 
-             if (cycle < iterations && token) {
-                 redReference -= redDelta;
-                 greenReference -= greenDelta;
-                 blueReference -= blueDelta;
+             if (cycle <= iterations && token) {
+                 if (cycle == iterations) {
+                     redReference = endingRed;
+                     greenReference = endingGreen;
+                     blueReference = endingBlue;
+                 } else {
+                     redReference -= redDelta;
+                     greenReference -= greenDelta;
+                     blueReference -= blueDelta;
+                 }
                  cycle++;
              } else {
                  // if repeat option is enabled
@@ -506,12 +524,19 @@ QString Settings::tweenToXml(int currentFrame)
                      blueReference = initialBlue;
                  } else if (reverse && !token) { // if reverse option is enabled
                             // if reverse cycle must start again
-                            if (cycle >= ((iterations*2)-2)) {
+                            int top = (iterations*2)-2;
+                            if (cycle >= top) {
                                 token = true;
                                 cycle = 2;
-                                redReference -= redDelta;
-                                greenReference -= greenDelta;
-                                blueReference -= blueDelta;
+                                if (cycle == top) {
+                                    redReference = endingRed;
+                                    greenReference = endingGreen;
+                                    blueReference = endingBlue;
+                                } else {
+                                    redReference -= redDelta;
+                                    greenReference -= greenDelta;
+                                    blueReference -= blueDelta;
+                                }
                             } else { // this is the reverse part
                                 redReference += redDelta;
                                 greenReference += greenDelta;

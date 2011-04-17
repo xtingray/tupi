@@ -423,6 +423,11 @@ QString Settings::tweenToXml(int currentFrame)
     root.setAttribute("endOpacityFactor", endFactor);
 
     int iterations = k->comboIterations->currentText().toInt();
+    if (iterations == 0) {
+        iterations = 1;
+        k->comboIterations->setCurrentIndex(0);
+        k->comboIterations->setItemText(0, QString::number(iterations));
+    }
     root.setAttribute("opacityIterations", iterations);
 
     bool loop = k->loopBox->isChecked();

@@ -48,16 +48,16 @@ class KTPaintAreaRotator;
 
 /**
  * This class provides an area to make different kind of traces
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
+ * @author Jorge Cuadrado - David Cuadrado
 */
 
 class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHandler
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
 
-        //KTPaintArea(const KTProject *project, QWidget * parent = 0);
         KTPaintArea(KTProject *project, QWidget * parent = 0);
         ~KTPaintArea();
 
@@ -66,6 +66,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void updatePaintArea();
         void paintBackground();
         void updateSpaceContext();
+        virtual void keyPressEvent(QKeyEvent *event);
 
     public slots:
         void setNextFramesOnionSkinCount(int n);
@@ -75,6 +76,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
     signals:
         void requestTriggered(const KTProjectRequest *event);
         void itemAddedOnSelection(KTGraphicsScene *);
+        void frameChanged(int);
 
     public slots:
         void deleteItems();

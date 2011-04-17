@@ -41,11 +41,13 @@
 class KTViewDocument;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTPaintAreaStatus : public QStatusBar
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTPaintAreaStatus(KTViewDocument *parent);
         ~KTPaintAreaStatus();
@@ -55,11 +57,11 @@ class KTPaintAreaStatus : public QStatusBar
         void setPen(const QPen &pen);
 
     private slots:
-        //void selectAntialiasingHint(bool use);
         void selectAntialiasingHint();
         void selectRenderer(int id);
         void applyRotation(const QString & text);
         void applyZoom(const QString & text);
+        void updateFrameIndex(int index);
 
     signals:
         void colorRequested();

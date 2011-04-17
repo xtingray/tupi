@@ -108,6 +108,8 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
 
         void setOnionFactor(double opacity);
 
+        int framesTotal();
+
     private:
         void addFrame(KTFrame *frame, double opacity = 1.0, Context mode = Current);
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);

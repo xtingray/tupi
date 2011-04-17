@@ -49,8 +49,6 @@
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
 
-#include "ktprojectresponse.h"
-
 #include "ktpaintareaevent.h"
 #include "ktpaintarearotator.h"
 #include "ktimagedevice.h"
@@ -64,6 +62,8 @@
 #include "ktlibrarydialog.h"
 #include "ktlibraryobject.h"
 #include "ktrequestbuilder.h"
+#include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
 
 #include "ktscene.h"
 #include "ktsvgitem.h"
@@ -76,7 +76,7 @@
 /**
  * This class defines the behavior of the main paint area when ilustration module is on
  * Here is where all the events about the paint area are processed.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTPaintArea::Private
@@ -88,8 +88,6 @@ struct KTPaintArea::Private
     bool deleteMode;
     KTProject::Mode spaceMode;
 };
-
-// KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 {
@@ -242,13 +240,15 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                  }
                  break; 
 
+            case KTProjectRequest::Select:
             case KTProjectRequest::Paste:
-            case KTProjectRequest::Select: 
             case KTProjectRequest::Reset:
-                 { 
+                 {
                     KTGraphicsScene *guiScene = graphicsScene();
-                    if (!guiScene->scene()) 
-                        return;
+                    if (event->action() == KTProjectRequest::Select) {
+                        if (guiScene->currentFrameIndex() != event->frameIndex())
+                            emit frameChanged(event->frameIndex());
+                    }
 
                     setUpdatesEnabled(true);
                     guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
@@ -264,6 +264,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                     if (k->currentTool.compare(tr("Object Selection")) == 0)
                         guiScene->currentTool()->init(graphicsScene());
                  }
+
                  break;
 
             case KTProjectRequest::Lock:
@@ -898,3 +899,44 @@ void KTPaintArea::setOnionFactor(double value)
     KTGraphicsScene* currentScene = graphicsScene();
     currentScene->setOnionFactor(value);
 }
+
+void KTPaintArea::keyPressEvent(QKeyEvent *event)
+{
+    if (k->currentTool.compare(tr("Object Selection")) == 0 
+        || k->currentTool.compare(tr("Contour Selection")) == 0) {
+        KTPaintAreaBase::keyPressEvent(event);
+        return;
+    }
+
+    KTGraphicsScene* scene = graphicsScene();
+
+    if (event->key() == Qt::Key_Left && scene->currentFrameIndex() > 0) {
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                                        scene->currentLayerIndex(),
+                                                                        scene->currentFrameIndex() - 1, 
+                                                                        KTProjectRequest::Select, "1");
+        emit requestTriggered(&request);
+    }
+
+    if (event->key() == Qt::Key_Right) {
+
+        int framesTotal = scene->framesTotal(); 
+        int frameIndex = scene->currentFrameIndex() + 1; 
+
+        if (frameIndex == framesTotal) {
+            KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                         scene->currentLayerIndex(), 
+                                                         frameIndex, 
+                                                         KTProjectRequest::Add, tr("Frame %1").arg(frameIndex));
+            emit requestTriggered(&request);
+        }
+
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                                        scene->currentLayerIndex(),
+                                                                        scene->currentFrameIndex() + 1, 
+                                                                        KTProjectRequest::Select, "1");
+        emit requestTriggered(&request);
+    }
+}
+
+

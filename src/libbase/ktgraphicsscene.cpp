@@ -1036,3 +1036,11 @@ void KTGraphicsScene::setOnionFactor(double opacity)
         drawCurrentPhotogram();
 }
 
+int KTGraphicsScene::framesTotal() 
+{
+    KTLayer *layer = k->scene->layer(k->framePosition.layer);
+    if (layer)
+        return layer->framesNumber();
+    else
+        return -1;
+}
