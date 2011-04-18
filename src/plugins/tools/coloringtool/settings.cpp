@@ -80,6 +80,9 @@ struct Settings::Private
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
+    k->selectionDone = false;
+    k->totalSteps = 0;
+
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
@@ -472,7 +475,7 @@ QString Settings::tweenToXml(int currentFrame)
     step->setColor(k->initialColor);
     root.appendChild(step->toXml(doc));
 
-    if (k->totalSteps > 1) {
+    if (k->totalSteps > 1 && iterations > 1) {
 
         iterations -= 1;
 
@@ -522,32 +525,43 @@ QString Settings::tweenToXml(int currentFrame)
                      redReference = initialRed;
                      greenReference = initialGreen;
                      blueReference = initialBlue;
-                 } else if (reverse && !token) { // if reverse option is enabled
-                            // if reverse cycle must start again
-                            int top = (iterations*2)-2;
-                            if (cycle >= top) {
-                                token = true;
-                                cycle = 2;
-                                if (cycle == top) {
-                                    redReference = endingRed;
-                                    greenReference = endingGreen;
-                                    blueReference = endingBlue;
-                                } else {
-                                    redReference -= redDelta;
-                                    greenReference -= greenDelta;
-                                    blueReference -= blueDelta;
+                 } else if (reverse) { // if reverse option is enabled
+                            if (!token) {
+                                // if reverse cycle must start again
+                                int top = (iterations*2)-2;
+                                if (cycle >= top) {
+                                    token = true;
+                                    cycle = 2;
+                                    if (cycle == top) {
+                                        redReference = endingRed;
+                                        greenReference = endingGreen;
+                                        blueReference = endingBlue;
+                                    } else {
+                                        redReference -= redDelta;
+                                        greenReference -= greenDelta;
+                                        blueReference -= blueDelta;
+                                    }
+                                } else { // this is the reverse part
+                                   redReference += redDelta;
+                                   greenReference += greenDelta;
+                                   blueReference += blueDelta;
+                                   cycle++;
                                 }
-                            } else { // this is the reverse part
+                            } else { // if token
                                 redReference += redDelta;
                                 greenReference += greenDelta;
                                 blueReference += blueDelta;
-                                cycle++;
                             }
-                 } else { // Moment to switch the reverse cycle 
+                 } else { // If cycle is done and no loop and no reverse 
                      token = false;
+                     /*
                      redReference += redDelta;
                      greenReference += greenDelta;
                      blueReference += blueDelta;
+                     */
+                     redReference = initialRed;
+                     greenReference = initialGreen;
+                     blueReference = initialBlue;
                  }
              }
         }

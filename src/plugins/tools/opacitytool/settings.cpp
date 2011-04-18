@@ -77,6 +77,9 @@ struct Settings::Private
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
+    k->selectionDone = false;
+    k->totalSteps = 0;
+
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
