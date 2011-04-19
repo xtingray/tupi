@@ -486,33 +486,23 @@ QString Settings::tweenToXml(int currentFrame)
         double greenDelta = (double)(initialGreen - endingGreen)/(double)iterations;
         double blueDelta = (double)(initialBlue - endingBlue)/(double)iterations; 
 
-        kFatal() << "Settings::tweenToXml() - redDelta: " << redDelta;
-        kFatal() << "Settings::tweenToXml() - greenDelta : " <<  greenDelta;
-        kFatal() << "Settings::tweenToXml() - blueDelta : " <<  blueDelta;
+        double redReference = initialRed;
+        double greenReference = initialGreen;
+        double blueReference = initialBlue;
 
-        double redReference = initialRed - redDelta;
-        double greenReference = initialGreen - greenDelta;
-        double blueReference = initialBlue - greenDelta;
-
-        kFatal() << "Settings::tweenToXml() - redReference: " << redReference;
-        kFatal() << "Settings::tweenToXml() - greenReference : " <<  greenReference;
-        kFatal() << "Settings::tweenToXml() - blueReference : " <<  blueReference;
-
-        int cycle = 2;
-        int reverseTop = (iterations*2)-2;
+        int cycle = 1;
+        int reverseTop = (iterations*2)-1;
 
         for (int i=1; i < k->totalSteps; i++) {
-             KTTweenerStep *step = new KTTweenerStep(i);
-             QColor color = QColor(redReference, greenReference, blueReference);
-             step->setColor(color);
-             root.appendChild(step->toXml(doc));
-
              if (cycle <= iterations) {
+                 kFatal() << "Tracing a black rabbit!";
                  if (cycle == iterations) {
+                     kFatal() << "* Last black rabbit! - Cycle: " << cycle;
                      redReference = endingRed;
                      greenReference = endingGreen;
                      blueReference = endingBlue;
                  } else {
+                     kFatal() << "* Just another black rabbit! - Cycle: " << cycle; 
                      redReference -= redDelta;
                      greenReference -= greenDelta;
                      blueReference -= blueDelta;
@@ -526,17 +516,17 @@ QString Settings::tweenToXml(int currentFrame)
                      greenReference = initialGreen;
                      blueReference = initialBlue;
                  } else if (reverse) { // if reverse option is enabled
-                            // if reverse cycle must start again
-                            if (cycle <= reverseTop) {
-                                redReference += redDelta;
-                                greenReference += greenDelta;
-                                blueReference += blueDelta;
+                            kFatal() << "Tracing a white rabbit!";
+                            redReference += redDelta;
+                            greenReference += greenDelta;
+                            blueReference += blueDelta;
+
+                            if (cycle < reverseTop) {
+                                kFatal() << "* Just another white rabbit! - Cycle: " << cycle;
                                 cycle++;
                             } else {
+                                kFatal() << "* Last white rabbit! - Cycle: " << cycle;
                                 cycle = 1;
-                                redReference = initialRed;
-                                greenReference = initialGreen;
-                                blueReference = initialBlue;
                             }
                  } else { // If cycle is done and no loop and no reverse 
                      redReference = initialRed;
@@ -544,6 +534,11 @@ QString Settings::tweenToXml(int currentFrame)
                      blueReference = initialBlue;
                  }
              }
+
+             KTTweenerStep *step = new KTTweenerStep(i);
+             QColor color = QColor(redReference, greenReference, blueReference);
+             step->setColor(color);
+             root.appendChild(step->toXml(doc));
         }
     }
 
