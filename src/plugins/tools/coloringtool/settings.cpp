@@ -499,7 +499,7 @@ QString Settings::tweenToXml(int currentFrame)
         kFatal() << "Settings::tweenToXml() - blueReference : " <<  blueReference;
 
         int cycle = 2;
-        bool token = true;
+        int reverseTop = (iterations*2)-2;
 
         for (int i=1; i < k->totalSteps; i++) {
              KTTweenerStep *step = new KTTweenerStep(i);
@@ -507,7 +507,7 @@ QString Settings::tweenToXml(int currentFrame)
              step->setColor(color);
              root.appendChild(step->toXml(doc));
 
-             if (cycle <= iterations && token) {
+             if (cycle <= iterations) {
                  if (cycle == iterations) {
                      redReference = endingRed;
                      greenReference = endingGreen;
@@ -526,39 +526,19 @@ QString Settings::tweenToXml(int currentFrame)
                      greenReference = initialGreen;
                      blueReference = initialBlue;
                  } else if (reverse) { // if reverse option is enabled
-                            if (!token) {
-                                // if reverse cycle must start again
-                                int top = (iterations*2)-2;
-                                if (cycle >= top) {
-                                    token = true;
-                                    cycle = 2;
-                                    if (cycle == top) {
-                                        redReference = endingRed;
-                                        greenReference = endingGreen;
-                                        blueReference = endingBlue;
-                                    } else {
-                                        redReference -= redDelta;
-                                        greenReference -= greenDelta;
-                                        blueReference -= blueDelta;
-                                    }
-                                } else { // this is the reverse part
-                                   redReference += redDelta;
-                                   greenReference += greenDelta;
-                                   blueReference += blueDelta;
-                                   cycle++;
-                                }
-                            } else { // if token
+                            // if reverse cycle must start again
+                            if (cycle <= reverseTop) {
                                 redReference += redDelta;
                                 greenReference += greenDelta;
                                 blueReference += blueDelta;
+                                cycle++;
+                            } else {
+                                cycle = 1;
+                                redReference = initialRed;
+                                greenReference = initialGreen;
+                                blueReference = initialBlue;
                             }
                  } else { // If cycle is done and no loop and no reverse 
-                     token = false;
-                     /*
-                     redReference += redDelta;
-                     greenReference += greenDelta;
-                     blueReference += blueDelta;
-                     */
                      redReference = initialRed;
                      greenReference = initialGreen;
                      blueReference = initialBlue;
