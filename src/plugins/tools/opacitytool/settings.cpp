@@ -383,12 +383,9 @@ QString Settings::currentTweenName() const
 
 void Settings::emitOptionChanged(int option)
 {
-    kFatal() << "Settings::emitOptionChanged() - Mode: " << option; 
-
     switch (option) {
             case 0:
              {
-                 kFatal() << "Settings::emitOptionChanged() - Enabling selection mode!";
                  activeInnerForm(false);
                  emit clickedSelect();
              }
@@ -445,46 +442,43 @@ QString Settings::tweenToXml(int currentFrame)
     else
         root.setAttribute("opacityReverseLoop", "0");
 
-    double delta = (initFactor - endFactor)/(double)iterations;
+    double delta = (double)(initFactor - endFactor)/(double)(iterations - 1);
+    double reference = 0;
 
-    kFatal() << "tweenToXml() - Delta: " << delta;
-    kFatal() << "tweenToXml() - initFactor: " << initFactor;
-    kFatal() << "tweenToXml() - endFactor: " << endFactor;
+    int cycle = 1;
+    int reverseTop = (iterations*2)-2;
 
-    KTTweenerStep *step = new KTTweenerStep(0);
-    step->setOpacity(initFactor);
-    root.appendChild(step->toXml(doc));
+    for (int i=0; i < k->totalSteps; i++) {
+         if (cycle <= iterations) {
+             if (cycle == 1) {
+                 reference = initFactor;
+             } else if (cycle == iterations) {
+                        reference = endFactor;
+             } else {
+                 reference -= delta;
+             }
+             cycle++;
+         } else {
+             // if repeat option is enabled
+             if (loop) {
+                 cycle = 2;
+                 reference = initFactor;
+             } else if (reverse) { // if reverse option is enabled
+                        reference += delta;
 
-    double reference = initFactor - delta; 
-    int cycle = 2;
-    bool token = true;
+                        if (cycle < reverseTop)
+                            cycle++;
+                        else
+                            cycle = 1;
 
-    for (int i=1; i < k->totalSteps; i++) {
+             } else { // If cycle is done and no loop and no reverse
+                 reference = initFactor;
+             }
+         }
+
          KTTweenerStep *step = new KTTweenerStep(i);
          step->setOpacity(reference);
          root.appendChild(step->toXml(doc));
-
-         if (cycle < iterations && token) {
-             reference -= delta;
-             cycle++;
-         } else {
-             if (loop) {
-                 cycle = 1;
-                 reference = initFactor;
-             } else if (reverse && !token) {
-                 if (cycle >= ((iterations*2)-2)) {
-                     token = true;
-                     cycle = 2;
-                     reference -= delta;
-                 } else {
-                     reference += delta;
-                     cycle++;
-                 }
-             } else {
-                 token = false;
-                 reference += delta;
-             }
-         }
     }
 
     doc.appendChild(root);
@@ -494,7 +488,6 @@ QString Settings::tweenToXml(int currentFrame)
 
 void Settings::activatePropertiesMode(Settings::EditMode mode)
 {
-    kFatal() << "Settings::activatePropertiesMode() - Setting: " << mode;
     k->options->setCurrentIndex(mode);
 }
 

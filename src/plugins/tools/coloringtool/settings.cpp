@@ -181,7 +181,6 @@ void Settings::setInnerForm()
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
-    kFatal() << "Settings::setInnerForm() - Setting color white!";
     k->initialColor = QColor("#fff");
     k->initColorButton = new QPushButton();
     k->initColorButton->setText(tr("White"));
@@ -471,81 +470,64 @@ QString Settings::tweenToXml(int currentFrame)
     else
         root.setAttribute("colorReverseLoop", "0");
 
-    KTTweenerStep *step = new KTTweenerStep(0);
-    step->setColor(k->initialColor);
-    root.appendChild(step->toXml(doc));
+    double redDelta = (double)(initialRed - endingRed)/(double)(iterations - 1);
+    double greenDelta = (double)(initialGreen - endingGreen)/(double)(iterations - 1);
+    double blueDelta = (double)(initialBlue - endingBlue)/(double)(iterations - 1); 
 
-    if (k->totalSteps > 1 && iterations > 1) {
+    double redReference = 0;
+    double greenReference = 0;
+    double blueReference = 0;
 
-        iterations -= 1;
+    int cycle = 1;
+    int reverseTop = (iterations*2)-2;
 
-        if (iterations == 0)
-            iterations = 1;
-
-        double redDelta = (double)(initialRed - endingRed)/(double)iterations;
-        double greenDelta = (double)(initialGreen - endingGreen)/(double)iterations;
-        double blueDelta = (double)(initialBlue - endingBlue)/(double)iterations; 
-
-        double redReference = initialRed;
-        double greenReference = initialGreen;
-        double blueReference = initialBlue;
-
-        int cycle = 1;
-        int reverseTop = (iterations*2)-1;
-
-        for (int i=1; i < k->totalSteps; i++) {
-             if (cycle <= iterations) {
-                 kFatal() << "Tracing a black rabbit!";
-                 if (cycle == iterations) {
-                     kFatal() << "* Last black rabbit! - Cycle: " << cycle;
-                     redReference = endingRed;
-                     greenReference = endingGreen;
-                     blueReference = endingBlue;
-                 } else {
-                     kFatal() << "* Just another black rabbit! - Cycle: " << cycle; 
-                     redReference -= redDelta;
-                     greenReference -= greenDelta;
-                     blueReference -= blueDelta;
-                 }
-                 cycle++;
+    for (int i=0; i < k->totalSteps; i++) {
+         if (cycle <= iterations) {
+             if (cycle == 1) {
+                 redReference = initialRed;
+                 greenReference = initialGreen;
+                 blueReference = initialBlue;
+             } else if (cycle == iterations) {
+                        redReference = endingRed;
+                        greenReference = endingGreen;
+                        blueReference = endingBlue;
              } else {
-                 // if repeat option is enabled
-                 if (loop) { 
-                     cycle = 1;
-                     redReference = initialRed;
-                     greenReference = initialGreen;
-                     blueReference = initialBlue;
-                 } else if (reverse) { // if reverse option is enabled
-                            kFatal() << "Tracing a white rabbit!";
-                            redReference += redDelta;
-                            greenReference += greenDelta;
-                            blueReference += blueDelta;
-
-                            if (cycle < reverseTop) {
-                                kFatal() << "* Just another white rabbit! - Cycle: " << cycle;
-                                cycle++;
-                            } else {
-                                kFatal() << "* Last white rabbit! - Cycle: " << cycle;
-                                cycle = 1;
-                            }
-                 } else { // If cycle is done and no loop and no reverse 
-                     redReference = initialRed;
-                     greenReference = initialGreen;
-                     blueReference = initialBlue;
-                 }
+                 redReference -= redDelta;
+                 greenReference -= greenDelta;
+                 blueReference -= blueDelta;
              }
+             cycle++;
+         } else {
+             // if repeat option is enabled
+             if (loop) { 
+                 cycle = 2;
+                 redReference = initialRed;
+                 greenReference = initialGreen;
+                 blueReference = initialBlue;
+             } else if (reverse) { // if reverse option is enabled
+                        redReference += redDelta;
+                        greenReference += greenDelta;
+                        blueReference += blueDelta;
 
-             KTTweenerStep *step = new KTTweenerStep(i);
-             QColor color = QColor(redReference, greenReference, blueReference);
-             step->setColor(color);
-             root.appendChild(step->toXml(doc));
-        }
+                        if (cycle < reverseTop)
+                            cycle++;
+                        else 
+                            cycle = 1;
+
+             } else { // If cycle is done and no loop and no reverse 
+                 redReference = initialRed;
+                 greenReference = initialGreen;
+                 blueReference = initialBlue;
+             }
+         }
+
+         KTTweenerStep *step = new KTTweenerStep(i);
+         QColor color = QColor(redReference, greenReference, blueReference);
+         step->setColor(color);
+         root.appendChild(step->toXml(doc));
     }
 
     doc.appendChild(root);
-
-    kFatal() << "Settings::tweenToXml() - xml:";
-    kFatal() << doc.toString();
 
     return doc.toString();
 }
@@ -602,7 +584,6 @@ void Settings::setEndingColor()
 void Settings::updateColor(QColor color, QPushButton *colorButton)
 {
      if (color.isValid()) {
-         kFatal() << "Settings::udpateColor() - Updating color: " << color.name();
          colorButton->setText(color.name());
          colorButton->setPalette(QPalette(color));
          colorButton->setAutoFillBackground(true);
