@@ -440,6 +440,12 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          object->item()->setScale(1.0);
                      }
 
+                     if (tween->type() == KTItemTweener::Shear || tween->type() == KTItemTweener::All) {
+                         // QTransform transform;
+                         // transform.shear(,);
+                         // object->item()->setTransform(transform);
+                     } 
+
                      if (tween->type() == KTItemTweener::Coloring || tween->type() == KTItemTweener::All) {
                          QColor itemColor = stepItem->color();
                          if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
@@ -459,14 +465,10 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                     pen.setColor(itemColor);
                                     rect->setPen(pen);
                          }
-
-                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Color: " << itemColor.name();
                      }
 
-                     if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                     if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All)
                          object->item()->setOpacity(stepItem->opacity());
-                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
-                     }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
 
@@ -513,16 +515,12 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                            pen.setColor(itemColor);
                                            rect->setPen(pen);
                                 }
-
-                                kFatal() << "KTGraphicsScene::addTweeningObjects() - Color: " << itemColor.name();
                             }
 
                             addGraphicObject(object);
 
-                            if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                            if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All)
                                 object->item()->setOpacity(stepItem->opacity());
-                                kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
-                            }
                  }
              }
         }

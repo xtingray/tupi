@@ -454,46 +454,46 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     else
         root.setAttribute("scaleReverseLoop", "0");
 
-    KTTweenerStep *step = new KTTweenerStep(0);
-    step->setScale(1.0, 1.0);
-    root.appendChild(step->toXml(doc));
+    double scaleX = 1.0;
+    double scaleY = 1.0;
 
-    double scaleX = 1.0*factor;
-    double scaleY = 1.0*factor;
-    int cycle = 2;
-    bool token = true;
-    
-    for (int i=1; i < k->totalSteps; i++) {
+    int cycle = 1;
+    int reverseTop = (iterations*2)-2;
+
+    for (int i=0; i < k->totalSteps; i++) {
+         if (cycle <= iterations) {
+             if (cycle == 1) {
+                 scaleX = 1.0;
+                 scaleY = 1.0;
+             } else {
+                 scaleX *= factor;
+                 scaleY *= factor;
+             }
+             cycle++;
+         } else {
+             // if repeat option is enabled
+             if (loop) {
+                 cycle = 2;
+                 scaleX = 1.0;
+                 scaleY = 1.0;
+             } else if (reverse) { // if reverse option is enabled
+                        scaleX /= factor;
+                        scaleY /= factor;
+
+                        if (cycle < reverseTop)
+                            cycle++;
+                        else
+                            cycle = 1;
+
+             } else { // If cycle is done and no loop and no reverse
+                 scaleX = 1.0;
+                 scaleY = 1.0;
+             }
+         }
+
          KTTweenerStep *step = new KTTweenerStep(i);
          step->setScale(scaleX, scaleY);
          root.appendChild(step->toXml(doc));
-
-         if (cycle < iterations && token) {
-             scaleX *= factor;
-             scaleY *= factor;
-             cycle++;
-         } else {
-             if (loop) {
-                 cycle = 1;
-                 scaleX = 1.0;
-                 scaleY = 1.0;
-             } else if (reverse && !token) {
-                 if (cycle >= ((iterations*2)-2)) {
-                     token = true;
-                     cycle = 2;
-                     scaleX *= factor;
-                     scaleY *= factor;
-                 } else {
-                     scaleX /= factor;
-                     scaleY /= factor;
-                     cycle++;
-                 }
-             } else {
-                 token = false;
-                 scaleX /= factor;
-                 scaleY /= factor;
-             }
-         }
     }
 
     doc.appendChild(root);

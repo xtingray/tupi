@@ -297,6 +297,7 @@ void Configurator::resetUI()
 {
     k->tweenManager->resetUI();
     closeSettingsPanel();
+    k->settingsPanel->notifySelection(false);
 }
 
 void Configurator::updateTweenData(const QString &name)
