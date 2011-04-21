@@ -78,18 +78,20 @@ void KTTweenerStep::setRotation(double angle)
     k->flags |= Rotation;
 }
 
-void KTTweenerStep::setShear(double sh, double sv)
-{
-    k->shear.x = sh;
-    k->shear.y = sv;
-    k->flags |= Shear;
-}
-
 void KTTweenerStep::setScale(double sx, double sy)
 {
     k->scale.x = sx;
     k->scale.y = sy;
     k->flags |= Scale;
+}
+
+void KTTweenerStep::setShear(double sh, double sv)
+{
+    kFatal() << "KTTweenerStep::setShear() - X: " << sh;
+    kFatal() << "KTTweenerStep::setShear() - Y: " << sv;
+    k->shear.x = sh;
+    k->shear.y = sv;
+    k->flags |= Shear;
 }
 
 void KTTweenerStep::setOpacity(double opacity)

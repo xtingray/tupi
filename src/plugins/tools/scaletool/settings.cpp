@@ -64,7 +64,7 @@ struct Settings::Private
     QLabel *totalLabel;
     int totalSteps;
 
-    KTItemTweener::ScaleAxes scaleAxes;
+    KTItemTweener::TransformAxes scaleAxes;
     QComboBox *comboAxes;
     QComboBox *comboFactor;
     QComboBox *comboIterations;
@@ -186,7 +186,7 @@ void Settings::setInnerForm()
     k->comboAxes->addItem(tr("Width & Height"));
     k->comboAxes->addItem(tr("Only Width"));
     k->comboAxes->addItem(tr("Only Height"));
-    k->comboAxes->setEnabled(false);
+    // k->comboAxes->setEnabled(false);
     QLabel *axesLabel = new QLabel(tr("Scale in") + ": ");
     axesLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     QHBoxLayout *axesLayout = new QHBoxLayout;
@@ -454,8 +454,19 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     else
         root.setAttribute("scaleReverseLoop", "0");
 
-    double scaleX = 1.0;
-    double scaleY = 1.0;
+    double factorX = 1.0;
+    double factorY = 1.0;
+    double scaleX;
+    double scaleY;
+
+    if (k->scaleAxes == KTItemTweener::XY) {
+        factorX = factor;
+        factorY = factor;
+    } else if (k->scaleAxes == KTItemTweener::X) {
+               factorX = factor;
+    } else {
+        factorY = factor;
+    }
 
     int cycle = 1;
     int reverseTop = (iterations*2)-2;
@@ -466,8 +477,8 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
                  scaleX = 1.0;
                  scaleY = 1.0;
              } else {
-                 scaleX *= factor;
-                 scaleY *= factor;
+                 scaleX *= factorX;
+                 scaleY *= factorY;
              }
              cycle++;
          } else {
@@ -477,8 +488,8 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
                  scaleX = 1.0;
                  scaleY = 1.0;
              } else if (reverse) { // if reverse option is enabled
-                        scaleX /= factor;
-                        scaleY /= factor;
+                        scaleX /= factorX;
+                        scaleY /= factorY;
 
                         if (cycle < reverseTop)
                             cycle++;

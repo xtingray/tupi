@@ -69,11 +69,18 @@ struct KTItemTweener::Private
     int rotateEndDegree;
 
     // Scale Tween
-    KTItemTweener::ScaleAxes scaleAxes;
+    KTItemTweener::TransformAxes scaleAxes;
     double scaleFactor;
     int scaleIterations;
     int scaleLoop;
     int scaleReverseLoop;
+
+    // Shear Tween
+    KTItemTweener::TransformAxes shearAxes;
+    double shearFactor;
+    int shearIterations;
+    int shearLoop;
+    int shearReverseLoop;
 
     // Opacity Tween
     double initOpacityFactor;
@@ -140,7 +147,7 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
         setScaleAt(counter, step.horizontalScale(), step.verticalScale());
     
     if (step.has(KTTweenerStep::Shear))
-        setScaleAt(counter, step.horizontalShear(), step.verticalShear());
+        setShearAt(counter, step.horizontalShear(), step.verticalShear());
     
     if (step.has(KTTweenerStep::Opacity))
         setOpacityAt(counter, step.opacity());
@@ -170,6 +177,12 @@ void KTItemTweener::setScaleAt(int index, double sx, double sy)
 {
     VERIFY_STEP(index);
     k->step(index)->setScale(sx, sy);
+}
+
+void KTItemTweener::setShearAt(int index, double sx, double sy)
+{
+    VERIFY_STEP(index);
+    k->step(index)->setShear(sx, sy);
 }
 
 void KTItemTweener::setOpacityAt(int index, double opacity)
@@ -241,11 +254,19 @@ void KTItemTweener::fromXml(const QString &xml)
         }
 
         if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::All) {
-            k->scaleAxes = KTItemTweener::ScaleAxes(root.attribute("scaleAxes").toInt()); 
+            k->scaleAxes = KTItemTweener::TransformAxes(root.attribute("scaleAxes").toInt()); 
             k->scaleFactor = root.attribute("scaleFactor").toDouble(); 
             k->scaleIterations = root.attribute("scaleIterations").toInt();
             k->scaleLoop = root.attribute("scaleLoop").toInt();
             k->scaleReverseLoop = root.attribute("scaleReverseLoop").toInt();
+        }
+
+        if (k->type == KTItemTweener::Shear || k->type == KTItemTweener::All) {
+            k->shearAxes = KTItemTweener::TransformAxes(root.attribute("shearAxes").toInt());
+            k->shearFactor = root.attribute("shearFactor").toDouble();
+            k->shearIterations = root.attribute("shearIterations").toInt();
+            k->shearLoop = root.attribute("shearLoop").toInt();
+            k->shearReverseLoop = root.attribute("shearReverseLoop").toInt();
         }
 
         if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::All) {
@@ -336,6 +357,14 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         root.setAttribute("scaleIterations", k->scaleIterations);
         root.setAttribute("scaleLoop", k->scaleLoop);
         root.setAttribute("scaleReverseLoop", k->scaleReverseLoop);
+    }
+
+    if (k->type == KTItemTweener::Shear || k->type == KTItemTweener::All) {
+        root.setAttribute("shearAxes", k->shearAxes);
+        root.setAttribute("shearFactor", k->shearFactor);
+        root.setAttribute("shearIterations", k->shearIterations);
+        root.setAttribute("shearLoop", k->shearLoop);
+        root.setAttribute("shearReverseLoop", k->shearReverseLoop);
     }
 
     if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::All) {
@@ -441,7 +470,7 @@ bool KTItemTweener::tweenRotateReverseLoop()
     return k->rotateReverseLoop;
 }
 
-KTItemTweener::ScaleAxes KTItemTweener::tweenScaleAxes()
+KTItemTweener::TransformAxes KTItemTweener::tweenScaleAxes()
 {
     return k->scaleAxes;
 }
@@ -464,6 +493,31 @@ int KTItemTweener::tweenScaleLoop()
 int KTItemTweener::tweenScaleReverseLoop()
 {
     return k->scaleReverseLoop;
+}
+
+KTItemTweener::TransformAxes KTItemTweener::tweenShearAxes()
+{
+    return k->shearAxes;
+}
+
+double KTItemTweener::tweenShearFactor()
+{
+    return k->shearFactor;
+}
+
+int KTItemTweener::tweenShearIterations()
+{
+    return k->shearIterations;
+}
+
+int KTItemTweener::tweenShearLoop()
+{
+    return k->shearLoop;
+}
+
+int KTItemTweener::tweenShearReverseLoop()
+{
+    return k->shearReverseLoop;
 }
 
 double KTItemTweener::tweenOpacityInitialFactor()

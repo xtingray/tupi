@@ -58,7 +58,6 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
  
     public:
         enum Type {
-             None = 0,
              Position = 1,
              Rotation = 2,
              Scale = 3,
@@ -69,7 +68,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         };
         enum RotationType { Continuos = 0, Partial };
         enum RotateDirection { Clockwise = 0, Counterclockwise };
-        enum ScaleAxes { XY = 0, X, Y} ;
+        enum TransformAxes { XY = 0, X, Y };
 
         KTItemTweener();
         ~KTItemTweener();
@@ -109,11 +108,17 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         int tweenRotateEndDegree();
         bool tweenRotateReverseLoop();
 
-        KTItemTweener::ScaleAxes tweenScaleAxes();
+        KTItemTweener::TransformAxes tweenScaleAxes();
         double tweenScaleFactor();
         int tweenScaleIterations();
         int tweenScaleLoop();
         int tweenScaleReverseLoop();
+
+        KTItemTweener::TransformAxes tweenShearAxes();
+        double tweenShearFactor();
+        int tweenShearIterations();
+        int tweenShearLoop();
+        int tweenShearReverseLoop();
 
         double tweenOpacityInitialFactor();
         double tweenOpacityEndingFactor();
