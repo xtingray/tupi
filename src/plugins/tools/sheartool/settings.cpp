@@ -197,17 +197,22 @@ void Settings::setInnerForm()
     axesLayout->addWidget(k->comboAxes);
 
     k->comboFactor = new QComboBox();
+
+    for (int i=9; i>=1; i--) {
+         k->comboFactor->addItem("-0." + QString::number(i));
+         k->comboFactor->addItem("-0." + QString::number(i) + "5");
+    }
+
+    k->comboFactor->addItem("-0.05");
+    k->comboFactor->addItem("0.05");
+
     for (int i=1; i<=9; i++) {
          k->comboFactor->addItem("0." + QString::number(i));
          k->comboFactor->addItem("0." + QString::number(i) + "5");
     }
 
-    for (int i=1; i<=9; i++) {
-         for (int j=0; j<=9; j++) {
-              k->comboFactor->addItem(QString::number(i) + "." + QString::number(j));
-              k->comboFactor->addItem(QString::number(i) + "." + QString::number(j) + "5");
-         }
-    }
+    k->comboFactor->addItem("1.0");
+    k->comboFactor->setCurrentIndex(20);
 
     QLabel *speedLabel = new QLabel(tr("Scaling Factor") + ": ");
     speedLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -475,22 +480,22 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     for (int i=0; i < k->totalSteps; i++) {
          if (cycle <= iterations) {
              if (cycle == 1) {
-                 shearX = 1.0;
-                 shearY = 1.0;
+                 shearX = 0;
+                 shearY = 0;
              } else {
-                 shearX *= factorX;
-                 shearY *= factorY;
+                 shearX += factorX;
+                 shearY += factorY;
              }
              cycle++;
          } else {
              // if repeat option is enabled
              if (loop) {
                  cycle = 2;
-                 shearX = 1.0;
-                 shearY = 1.0;
+                 shearX = 0;
+                 shearY = 0;
              } else if (reverse) { // if reverse option is enabled
-                        shearX /= factorX;
-                        shearY /= factorY;
+                        shearX -= factorX;
+                        shearY -= factorY;
 
                         if (cycle < reverseTop)
                             cycle++;
@@ -498,8 +503,8 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
                             cycle = 1;
 
              } else { // If cycle is done and no loop and no reverse
-                 shearX = 1.0;
-                 shearY = 1.0;
+                 shearX = 0;
+                 shearY = 0;
              }
          }
 
@@ -509,9 +514,6 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     }
 
     doc.appendChild(root);
-
-    kFatal() << "tweenToXml() - xml:";
-    kFatal() << doc.toString();
 
     return doc.toString();
 }

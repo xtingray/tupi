@@ -436,15 +436,12 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                      if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
                          QPointF point = tween->transformOriginPoint();
                          object->item()->setTransformOriginPoint(point);
-                         QTransform transform;
-                         transform.scale(1.0, 1.0);
-                         object->item()->setTransform(transform);
+                         object->item()->setScale(1.0);
                      }
 
                      if (tween->type() == KTItemTweener::Shear || tween->type() == KTItemTweener::All) {
-                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Shear: " << stepItem->horizontalShear();
                          QTransform transform;
-                         transform.shear(stepItem->horizontalShear(), stepItem->verticalShear());
+                         transform.shear(0, 0);
                          object->item()->setTransform(transform);
                      } 
 
@@ -500,16 +497,20 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                 transform.translate(point.x(), point.y());
                                 transform.scale(scaleX, scaleY);
                                 transform.translate(-point.x(), -point.y());
-                                object->item()->setTransform(transform);
 
-                                // object->item()->setScale(scaleX);
-                                // object->item()->scale(scaleX, scaleY);
+                                object->item()->setTransform(transform);
                             }
 
                             if (tween->type() == KTItemTweener::Shear || tween->type() == KTItemTweener::All) {
-                                kFatal() << "KTGraphicsScene::addTweeningObjects() - Shear: " << stepItem->horizontalShear();
+                                QPointF point = tween->transformOriginPoint();
+
+                                double shearX = stepItem->horizontalShear();
+                                double shearY = stepItem->verticalShear();
                                 QTransform transform;
-                                transform.shear(stepItem->horizontalShear(), stepItem->verticalShear());
+                                transform.translate(point.x(), point.y());
+                                transform.shear(shearX, shearY);
+                                transform.translate(-point.x(), -point.y());
+
                                 object->item()->setTransform(transform);
                             }
 
@@ -583,10 +584,14 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                          object->setScale(1.0);
                      }
 
-                     if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
-                         object->setOpacity(stepItem->opacity());
-                         kFatal() << "KTGraphicsScene::addTweeningObjects() - Opacity: " << stepItem->opacity();
+                     if (tween->type() == KTItemTweener::Shear || tween->type() == KTItemTweener::All) {
+                         QTransform transform;
+                         transform.shear(0, 0);
+                         object->setTransform(transform);
                      }
+
+                     if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All)
+                         object->setOpacity(stepItem->opacity());
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
                              int step = photogram - origin;
@@ -607,17 +612,35 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                              }
 
                             if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
+                                QPointF point = tween->transformOriginPoint();
+
                                 double scaleX = stepItem->horizontalScale();
-                                // double scaleY = stepItem->verticalScale();
-                                object->setScale(scaleX);
+                                double scaleY = stepItem->verticalScale();
+                                QTransform transform;
+                                transform.translate(point.x(), point.y());
+                                transform.scale(scaleX, scaleY);
+                                transform.translate(-point.x(), -point.y());
+
+                                object->setTransform(transform);
+                            }
+
+                            if (tween->type() == KTItemTweener::Shear || tween->type() == KTItemTweener::All) {
+                                QPointF point = tween->transformOriginPoint();
+
+                                double shearX = stepItem->horizontalShear();
+                                double shearY = stepItem->verticalShear();
+                                QTransform transform;
+                                transform.translate(point.x(), point.y());
+                                transform.shear(shearX, shearY);
+                                transform.translate(-point.x(), -point.y());
+
+                                object->setTransform(transform);
                             }
 
                             addSvgObject(object);
 
-                            if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All) {
+                            if (tween->type() == KTItemTweener::Opacity || tween->type() == KTItemTweener::All)
                                 object->setOpacity(stepItem->opacity());
-                                kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - Opacity: " << stepItem->opacity();
-                            }
                  }
              } else {
                  #ifdef K_DEBUG

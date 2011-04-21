@@ -417,7 +417,7 @@ void KTViewDocument::loadPlugins()
                                    }
 
                                    if (toolName.compare(tr("Shear Tween")) == 0) {
-                                       action->setDisabled(true);
+                                       // action->setDisabled(true);
                                        tweenTools[3] = action;
                                    }
 

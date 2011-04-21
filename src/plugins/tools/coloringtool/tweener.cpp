@@ -275,7 +275,6 @@ void Tweener::saveConfig()
 
 void Tweener::updateScene(KTGraphicsScene *scene)
 {
-    kFatal() << "Tweener::updateScene() - Just tracing!";
     k->mode = k->configurator->mode();
 }
 
@@ -326,8 +325,6 @@ void Tweener::disableSelection()
 
 void Tweener::setSelect()
 {
-    kFatal() << "Tweener::setSelect() - Selection mode activated!";
-
     if (k->mode == Settings::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
@@ -441,10 +438,7 @@ void Tweener::applyTween()
                                                                    i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
                  emit requested(&requestFrame);
             }
-        } else {
-            kFatal() << "Tweener::applyTween() - Total: " << total;
-            kFatal() << "Tweener::applyTween() - framesNumber: " << framesNumber;
-        }
+        } 
 
         KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                         k->scene->currentLayerIndex(),
@@ -548,8 +542,6 @@ void Tweener::removeTween(const QString &name)
 
 void Tweener::updateMode(Settings::Mode mode)
 {
-    kFatal() << "Tweener::updateMode() - Updating mode: " << mode;
-
     k->mode = mode;
 
     if (k->mode == Settings::Edit) {
