@@ -439,10 +439,6 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          QTransform transform;
                          transform.scale(1.0, 1.0);
                          object->item()->setTransform(transform);
-                         kFatal() << "KTGraphicsScene::addTweeningObjects() - point: [" << point.x() << ", " << point.y() << "]" ;
-
-                         // object->item()->scale(1.0, 1.0);
-                         // object->item()->setScale(1.0);
                      }
 
                      if (tween->type() == KTItemTweener::Shear || tween->type() == KTItemTweener::All) {
@@ -497,7 +493,6 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 
                             if (tween->type() == KTItemTweener::Scale || tween->type() == KTItemTweener::All) {
                                 QPointF point = tween->transformOriginPoint();
-                                kFatal() << "KTGraphicsScene::addTweeningObjects() - point2: [" << point.x() << ", " << point.y() << "]" ;
 
                                 double scaleX = stepItem->horizontalScale();
                                 double scaleY = stepItem->verticalScale();
@@ -506,11 +501,6 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                 transform.scale(scaleX, scaleY);
                                 transform.translate(-point.x(), -point.y());
                                 object->item()->setTransform(transform);
-
-                                //QRectF rect(object->item()->boundingRect());
-                                QPointF center(object->item()->pos());
-
-                                kFatal() << "KTGraphicsScene::addTweeningObjects() - point3: [" << center.x() << ", " << center.y() << "]" ;
 
                                 // object->item()->setScale(scaleX);
                                 // object->item()->scale(scaleX, scaleY);

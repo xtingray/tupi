@@ -430,6 +430,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     checkFramesRange();
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
+    k->scaleAxes = KTItemTweener::TransformAxes(k->comboAxes->currentIndex());
     root.setAttribute("scaleAxes", k->scaleAxes);
     double factor = k->comboFactor->currentText().toDouble();
     root.setAttribute("scaleFactor", factor);
@@ -456,8 +457,8 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
     double factorX = 1.0;
     double factorY = 1.0;
-    double scaleX;
-    double scaleY;
+    double scaleX = 1.0;
+    double scaleY = 1.0;
 
     if (k->scaleAxes == KTItemTweener::XY) {
         factorX = factor;
