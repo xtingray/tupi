@@ -1,5 +1,5 @@
-tupi (0.1-0ubuntu7) maverick; urgency=low
+tupi (0.1-0ubuntu8) maverick; urgency=low
 
   * Proof of concept for the Tupi debian package
 
- -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sat, 2 Apr 2011 17:12:46 -0500
+ -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sat, 21 Apr 2011 10:45:46 -0500
