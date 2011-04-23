@@ -56,8 +56,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
              Scale = 4,
              Shear = 8,
              Opacity = 16,
-             Coloring = 32,
-             All = 63
+             Coloring = 32
         };
         
         KTTweenerStep(int index);

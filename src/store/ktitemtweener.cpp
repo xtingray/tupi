@@ -236,10 +236,10 @@ void KTItemTweener::fromXml(const QString &xml)
 
         k->originPoint = QPointF(x, y); 
 
-        if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All)
+        if (k->type == KTItemTweener::Position || k->type == KTItemTweener::Compound)
             k->path = root.attribute("coords");
 
-        if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All) {
+        if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::Compound) {
             k->rotationType = KTItemTweener::RotationType(root.attribute("rotationType").toInt()); 
             k->rotateSpeed = root.attribute("rotateSpeed").toInt();
 
@@ -253,7 +253,7 @@ void KTItemTweener::fromXml(const QString &xml)
             }
         }
 
-        if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::All) {
+        if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::Compound) {
             k->scaleAxes = KTItemTweener::TransformAxes(root.attribute("scaleAxes").toInt()); 
             k->scaleFactor = root.attribute("scaleFactor").toDouble(); 
             k->scaleIterations = root.attribute("scaleIterations").toInt();
@@ -261,7 +261,7 @@ void KTItemTweener::fromXml(const QString &xml)
             k->scaleReverseLoop = root.attribute("scaleReverseLoop").toInt();
         }
 
-        if (k->type == KTItemTweener::Shear || k->type == KTItemTweener::All) {
+        if (k->type == KTItemTweener::Shear || k->type == KTItemTweener::Compound) {
             k->shearAxes = KTItemTweener::TransformAxes(root.attribute("shearAxes").toInt());
             k->shearFactor = root.attribute("shearFactor").toDouble();
             k->shearIterations = root.attribute("shearIterations").toInt();
@@ -269,7 +269,7 @@ void KTItemTweener::fromXml(const QString &xml)
             k->shearReverseLoop = root.attribute("shearReverseLoop").toInt();
         }
 
-        if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::All) {
+        if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::Compound) {
             k->initOpacityFactor = root.attribute("initOpacityFactor").toDouble();
             k->endOpacityFactor = root.attribute("endOpacityFactor").toDouble();
             k->opacityIterations = root.attribute("opacityIterations").toInt();
@@ -277,7 +277,7 @@ void KTItemTweener::fromXml(const QString &xml)
             k->opacityReverseLoop = root.attribute("opacityReverseLoop").toInt();
         }
 
-        if (k->type == KTItemTweener::Coloring || k->type == KTItemTweener::All) {
+        if (k->type == KTItemTweener::Coloring || k->type == KTItemTweener::Compound) {
             QString colorText = root.attribute("initialColor");
             QStringList list = colorText.split(",");
             int red = list.at(0).toInt();
@@ -333,11 +333,11 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     root.setAttribute("frames", k->frames);
     root.setAttribute("origin", QString::number(k->originPoint.x()) + "," + QString::number(k->originPoint.y()));
 
-    if (k->type == KTItemTweener::Position || k->type == KTItemTweener::All) {
+    if (k->type == KTItemTweener::Position || k->type == KTItemTweener::Compound) {
         root.setAttribute("coords", k->path);
     }
 
-    if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::All) {
+    if (k->type == KTItemTweener::Rotation || k->type == KTItemTweener::Compound) {
         root.setAttribute("rotationType", k->rotationType);
         root.setAttribute("rotateSpeed", k->rotateSpeed);
 
@@ -351,7 +351,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         }
     }
 
-    if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::All) {
+    if (k->type == KTItemTweener::Scale || k->type == KTItemTweener::Compound) {
         root.setAttribute("scaleAxes", k->scaleAxes);
         root.setAttribute("scaleFactor", k->scaleFactor);
         root.setAttribute("scaleIterations", k->scaleIterations);
@@ -359,7 +359,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         root.setAttribute("scaleReverseLoop", k->scaleReverseLoop);
     }
 
-    if (k->type == KTItemTweener::Shear || k->type == KTItemTweener::All) {
+    if (k->type == KTItemTweener::Shear || k->type == KTItemTweener::Compound) {
         root.setAttribute("shearAxes", k->shearAxes);
         root.setAttribute("shearFactor", k->shearFactor);
         root.setAttribute("shearIterations", k->shearIterations);
@@ -367,7 +367,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         root.setAttribute("shearReverseLoop", k->shearReverseLoop);
     }
 
-    if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::All) {
+    if (k->type == KTItemTweener::Opacity || k->type == KTItemTweener::Compound) {
         root.setAttribute("initOpacityFactor", k->initOpacityFactor); 
         root.setAttribute("endOpacityFactor", k->endOpacityFactor); 
         root.setAttribute("opacityIterations", k->opacityIterations);
@@ -375,7 +375,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
         root.setAttribute("opacityReverseLoop", k->opacityReverseLoop);
     } 
 
-    if (k->type == KTItemTweener::Coloring || k->type == KTItemTweener::All) {
+    if (k->type == KTItemTweener::Coloring || k->type == KTItemTweener::Compound) {
         QString colorText = QString::number(k->initialColor.red()) + "," + QString::number(k->initialColor.green()) 
                             + "," + QString::number(k->initialColor.blue());
         root.setAttribute("initialColor", colorText); 
@@ -426,7 +426,7 @@ QString KTItemTweener::tweenType()
             case KTItemTweener::Coloring :
                  type = QString(tr("Coloring Tween"));
                  break;
-            case KTItemTweener::All :
+            case KTItemTweener::Compound :
                  type = QString(tr("Compound Tween"));
                  break;
 

@@ -100,7 +100,7 @@ void Tweener::init(KTGraphicsScene *scene)
 
     k->configurator->resetUI();
 
-    QList<QString> tweenList = k->scene->scene()->getTweenNames(KTItemTweener::All);
+    QList<QString> tweenList = k->scene->scene()->getTweenNames(KTItemTweener::Compound);
     if (tweenList.size() > 0) {
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
@@ -219,7 +219,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 void Tweener::setCurrentTween(const QString &name)
 {
     KTScene *scene = k->scene->scene();
-    k->currentTween = scene->tween(name, KTItemTweener::All);
+    k->currentTween = scene->tween(name, KTItemTweener::Compound);
     if (k->currentTween)
         k->configurator->setCurrentTween(k->currentTween);
 }

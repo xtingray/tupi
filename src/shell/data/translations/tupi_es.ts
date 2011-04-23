@@ -230,6 +230,11 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
+        <source>Shear in</source>
+        <translation>Cortar en</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/settings.cpp" line="58"/>
         <source>Width &amp; Height</source>
         <translation>Ancho y Altura</translation>
     </message>
