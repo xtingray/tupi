@@ -75,8 +75,8 @@ struct Tweener::Private
     QPointF origin;
     Target *target;
 
-    Settings::Mode mode;
-    Settings::EditMode editMode;
+    TweenerPanel::Mode mode;
+    TweenerPanel::EditMode editMode;
 };
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
@@ -99,8 +99,8 @@ void Tweener::init(KTGraphicsScene *scene)
     k->scene = scene;
     k->objects.clear();
 
-    k->mode = Settings::View;
-    k->editMode = Settings::None;
+    k->mode = TweenerPanel::View;
+    k->editMode = TweenerPanel::None;
 
     k->configurator->resetUI();
 
@@ -165,7 +165,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
     Q_UNUSED(brushManager);
 
     if (scene->currentFrameIndex() == k->startPoint) {
-        if (k->editMode == Settings::Selection) {
+        if (k->editMode == TweenerPanel::Selection) {
             if (scene->selectedItems().size() > 0) {
                 k->objects = scene->selectedItems();
                 k->configurator->notifySelection(true);
@@ -196,17 +196,19 @@ int Tweener::toolType() const
 QWidget *Tweener::configurator()
 {
     if (!k->configurator) {
-        k->mode = Settings::View;
+        k->mode = TweenerPanel::View;
 
         k->configurator = new Configurator;
+        /*
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        connect(k->configurator, SIGNAL(setMode(Settings::Mode)), this, SLOT(updateMode(Settings::Mode)));
+        connect(k->configurator, SIGNAL(setMode(TweenerPanel::Mode)), this, SLOT(updateMode(TweenerPanel::Mode)));
         connect(k->configurator, SIGNAL(clickedDefineProperties()), this, SLOT(setPropertiesMode()));
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
+        */
     } 
 
     return k->configurator;
@@ -221,15 +223,12 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 
 void Tweener::aboutToChangeTool()
 {
-    if (k->editMode == Settings::Selection) {
+    if (k->editMode == TweenerPanel::Selection) {
         clearSelection();
         disableSelection();
 
         return;
     }
-
-    if (k->editMode == Settings::Properties)
-        k->scene->removeItem(k->target);
 }
 
 /* This method defines the actions contained in this plugin */
@@ -254,46 +253,6 @@ void Tweener::saveConfig()
 
 void Tweener::updateScene(KTGraphicsScene *scene)
 { 
-    k->mode = k->configurator->mode();
-
-    if (k->mode == Settings::Edit) {
-
-       int framesNumber = framesTotal();
-
-       if (k->configurator->startComboSize() < framesNumber)
-           k->configurator->initStartCombo(framesNumber, k->startPoint);
-
-       if (scene->currentFrameIndex() == k->startPoint)
-           k->scene->addItem(k->target);
-
-    } else if (k->mode == Settings::Add) {
-
-               int total = framesTotal();
-
-               if (k->editMode == Settings::Properties) {
-                   if (total > k->configurator->startComboSize()) {
-                       k->configurator->activatePropertiesMode(Settings::Selection);
-                       clearSelection();
-                       setSelect();
-                   } 
-               } else if (k->editMode == Settings::Selection) {
-                          if (scene->currentFrameIndex() != k->startPoint)
-                              clearSelection();
-                          k->startPoint = scene->currentFrameIndex();
-                          setSelect();
-               }
-
-               if (k->configurator->startComboSize() < total) {
-                   k->configurator->initStartCombo(total, k->startPoint);
-               } else {
-                   if (scene->currentFrameIndex() != k->startPoint)
-                       k->configurator->setStartFrame(scene->currentFrameIndex());
-               }
-
-    } else {
-             if (scene->currentFrameIndex() != k->startPoint)
-                 k->configurator->setStartFrame(scene->currentFrameIndex());
-    }
 }
 
 void Tweener::setCurrentTween(const QString &name)
@@ -346,10 +305,7 @@ void Tweener::disableSelection()
 
 void Tweener::setSelect()
 {
-    if (k->editMode == Settings::Properties)
-        k->scene->removeItem(k->target);
-
-    if (k->mode == Settings::Edit) {
+    if (k->mode == TweenerPanel::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                             k->scene->currentLayerIndex(),
@@ -358,7 +314,7 @@ void Tweener::setSelect()
         }
     }
 
-    k->editMode = Settings::Selection;
+    k->editMode = TweenerPanel::Selection;
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
@@ -382,29 +338,24 @@ void Tweener::setSelect()
 
 void Tweener::setPropertiesMode()
 {
-    k->editMode = Settings::Properties;
+    k->editMode = TweenerPanel::Properties;
     disableSelection();
 
     if (k->objects.isEmpty()) {
         k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), KTItemTweener::Compound);
         k->origin = k->currentTween->transformOriginPoint();
     }
-
-    addTarget();
 }
 
 /* This method resets this plugin */
 
 void Tweener::applyReset()
 {
-    if ((k->mode == Settings::Edit || k->mode == Settings::Add) && k->editMode == Settings::Properties)
-        k->scene->removeItem(k->target);
-
     disableSelection();
     clearSelection();
 
-    k->mode = Settings::View;
-    k->editMode = Settings::None;
+    k->mode = TweenerPanel::View;
+    k->editMode = TweenerPanel::None;
 
     k->startPoint = k->scene->currentFrameIndex();
 }
@@ -425,134 +376,6 @@ void Tweener::applyTween()
                                                                        k->scene->currentLayerIndex(),
                                                                        k->startPoint, KTProjectRequest::Select, "1");
         emit requested(&request);
-    }
-
-    if (!k->scene->scene()->tweenExists(name, KTItemTweener::Compound)) {
-
-        foreach (QGraphicsItem *item, k->objects) {
-
-                 KTLibraryObject::Type type = KTLibraryObject::Item;
-                 int objectIndex = k->scene->currentFrame()->indexOf(item);
-                 QRectF rect = item->sceneBoundingRect();
-                 QPointF origin = item->mapFromParent(k->origin);
-
-                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
-                     type = KTLibraryObject::Svg;
-                     objectIndex = k->scene->currentFrame()->indexOf(svg);
-                 } else {
-                     if (qgraphicsitem_cast<KTPathItem *>(item))
-                         origin = k->origin;
-                 }
-
-                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
-                                            k->scene->currentSceneIndex(),
-                                            k->scene->currentLayerIndex(),
-                                            k->startPoint,
-                                            objectIndex,
-                                            QPointF(), type,
-                                            KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, origin));
-                 emit requested(&request);
-        }
-
-        int framesNumber = framesTotal();
-
-        int total = k->startPoint + k->configurator->totalSteps() - 1;
-
-        if (total >= framesNumber) {
-            for (int i = framesNumber; i <= total; i++) {
-                 KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                   k->scene->currentLayerIndex(),
-                                                                   i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
-                 emit requested(&requestFrame);
-            }
-        }
-
-        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                        k->scene->currentLayerIndex(),
-                                                                        k->startPoint, KTProjectRequest::Select, "1");
-        emit requested(&request);
-
-    } else {
-
-        removeTweenFromProject(name);
-        QList<QGraphicsItem *> newList;
-
-        foreach (QGraphicsItem *item, k->objects) {
-
-                 KTLibraryObject::Type type = KTLibraryObject::Item;
-                 KTScene *scene = k->scene->scene();
-                 KTLayer *layer = scene->layer(k->scene->currentLayerIndex());
-                 KTFrame *frame = layer->frame(k->currentTween->startFrame());
-                 int objectIndex = frame->indexOf(item);
-
-                 QPointF origin = item->mapFromParent(k->origin);
-
-                 if (KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item)) {
-                     type = KTLibraryObject::Svg;
-                     objectIndex = k->scene->currentFrame()->indexOf(svg);
-                 } else {
-                     if (qgraphicsitem_cast<KTPathItem *>(item))
-                         origin = k->origin;
-                 }
-
-                 if (k->startPoint != k->currentTween->startFrame()) {
-                     QDomDocument dom;
-                     dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
-
-                     KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
-                                                                                    k->scene->currentLayerIndex(),
-                                                                                    k->startPoint, -1,
-                                                                                    QPointF(), type, KTProjectRequest::Add,
-                                                                                    dom.toString());
-                     emit requested(&request);
-
-                     request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
-                                                                   k->scene->currentLayerIndex(),
-                                                                   k->currentTween->startFrame(),
-                                                                   objectIndex, QPointF(), type,
-                                                                   KTProjectRequest::Remove);
-                     emit requested(&request);
-
-                     frame = layer->frame(k->startPoint);
-                     if (type == KTLibraryObject::Item)
-                         objectIndex = frame->graphicItemsCount() - 1;
-                     else
-                         objectIndex = frame->svgItemsCount() - 1;
-
-                     newList.append(frame->graphic(objectIndex)->item());
-                 }
-
-                 KTProjectRequest request = KTRequestBuilder::createItemRequest(
-                                            k->scene->currentSceneIndex(),
-                                            k->scene->currentLayerIndex(),
-                                            k->startPoint,
-                                            objectIndex,
-                                            QPointF(), type,
-                                            KTProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, origin));
-                 emit requested(&request);
-
-                 int total = k->startPoint + k->configurator->totalSteps();
-
-                 int framesNumber = framesTotal();
-
-                 if (total >= framesNumber) {
-                     for (int i = framesNumber; i < total; i++) {
-                          KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                          k->scene->currentLayerIndex(),
-                                                          i, KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
-                          emit requested(&requestFrame);
-                     }
-                 }
-
-                 request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                                                k->startPoint, KTProjectRequest::Select, "1");
-                 emit requested(&request);
-        }
-
-        if (newList.size() > 0)
-            k->objects = newList;
     }
 
     setCurrentTween(name);
@@ -587,7 +410,7 @@ void Tweener::updateOriginPoint(const QPointF &point)
 
 void Tweener::addTarget()
 {
-    if (k->mode == Settings::Add) {
+    if (k->mode == TweenerPanel::Add) {
         k->target = new Target(k->origin, maxZValue(), k->scene);
         connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
     } else {
@@ -600,11 +423,11 @@ void Tweener::addTarget()
     }
 }
 
-void Tweener::updateMode(Settings::Mode mode)
+void Tweener::updateMode(TweenerPanel::Mode mode)
 {
     k->mode = mode;
 
-    if (k->mode == Settings::Edit) {
+    if (k->mode == TweenerPanel::Edit) {
         k->startPoint = k->currentTween->startFrame();
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),

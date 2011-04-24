@@ -48,7 +48,7 @@ struct Configurator::Private
 {
     QBoxLayout *layout;
     QBoxLayout *settingsLayout;
-    // Settings *settingsPanel;
+    TweenerPanel *tweenList;
     TweenManager *tweenManager;
     ButtonsPanel *controlPanel;
 
@@ -57,7 +57,7 @@ struct Configurator::Private
     int framesTotal;
     int currentFrame;
 
-    Settings::Mode mode;
+    TweenerPanel::Mode mode;
     GuiState state;
 };
 
@@ -66,7 +66,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->framesTotal = 1;
     k->currentFrame = 0;
 
-    k->mode = Settings::View;
+    k->mode = TweenerPanel::View;
     k->state = Manager;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -85,7 +85,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 
     setTweenManagerPanel();
     setButtonsPanel();
-    // setPropertiesPanel();
+    setTweenerPanel();
 
     k->layout->addLayout(k->settingsLayout);
     k->layout->addStretch(2);
@@ -103,8 +103,16 @@ void Configurator::loadTweenList(QList<QString> tweenList)
         activeButtonsPanel(true);
 }
 
-void Configurator::setPropertiesPanel()
+void Configurator::setTweenerPanel()
 {
+    k->tweenList = new TweenerPanel(this);
+
+    connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
+    connect(k->settingsPanel, SIGNAL(clickedDefineProperties()), this, SIGNAL(clickedDefineProperties()));
+
+    k->settingsLayout->addWidget(k->tweenList);
+    activeTweenerPanel(false);
+
     /*
     k->settingsPanel = new Settings(this);
 
@@ -120,14 +128,12 @@ void Configurator::setPropertiesPanel()
     */
 }
 
-void Configurator::activePropertiesPanel(bool enable)
+void Configurator::activeTweenerPanel(bool enable)
 {
-    /*
     if (enable)
-        k->settingsPanel->show();
+        k->tweenList->show();
     else
-        k->settingsPanel->hide();
-    */
+        k->tweenList->hide();
 }
 
 void Configurator::setCurrentTween(KTItemTweener *currentTween)
@@ -208,7 +214,7 @@ int Configurator::totalSteps()
     return 1;
 }
 
-void Configurator::activatePropertiesMode(Settings::EditMode mode)
+void Configurator::activatePropertiesMode(TweenerPanel::EditMode mode)
 {
     // k->settingsPanel->activatePropertiesMode(mode);
 }
@@ -217,11 +223,11 @@ void Configurator::addTween(const QString &name)
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Add;
-    k->state = Properties;
+    k->mode = TweenerPanel::Add;
+    k->state = TweenerList;
 
     // k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
-    // activePropertiesPanel(true);
+    activeTweenerPanel(true);
 
     emit setMode(k->mode);
 }
@@ -230,12 +236,12 @@ void Configurator::editTween()
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Edit;
-    k->state = Properties;
+    k->mode = TweenerPanel::Edit;
+    k->state = TweenerList;
 
     // k->settingsPanel->notifySelection(true);
     // k->settingsPanel->setParameters(k->currentTween);
-    activePropertiesPanel(true);
+    activeTweenerPanel(true);
 
     emit setMode(k->mode);
 }
@@ -275,9 +281,9 @@ void Configurator::notifySelection(bool flag)
 
 void Configurator::closeTweenProperties()
 {
-    if (k->mode == Settings::Add) {
+    if (k->mode == TweenerPanel::Add) {
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == Settings::Edit) {
+    } else if (k->mode == TweenerPanel::Edit) {
         closeSettingsPanel();
     }
 
@@ -288,22 +294,22 @@ void Configurator::closeTweenProperties()
 
 void Configurator::closeSettingsPanel()
 {
-    if (k->state == Properties) {
+    if (k->state == TweenerList) {
         activeTweenManagerPanel(true);
         // activePropertiesPanel(false);
-        k->mode = Settings::View;
+        k->mode = TweenerPanel::View;
         k->state = Manager;
     }
 }
 
-Settings::Mode Configurator::mode()
+TweenerPanel::Mode Configurator::mode()
 {
     return k->mode;
 }
 
 void Configurator::applyItem()
 {
-     k->mode = Settings::Edit;
+     k->mode = TweenerPanel::Edit;
      emit clickedApplyTween();
 }
 

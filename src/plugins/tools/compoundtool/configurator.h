@@ -37,11 +37,12 @@
 #define CONFIGURATOR_H
 
 #include <QFrame>
-#include "settings.h"
+#include "tweenerpanel.h"
 
 class QGraphicsPathItem;
 class QListWidgetItem;
 class KTItemTweener;
+class TweenerPanel;
 
 /**
  * @author Gustav Gonzalez 
@@ -52,7 +53,7 @@ class Configurator : public QFrame
     Q_OBJECT
 
     public:
-        enum GuiState { Manager = 1, Properties };
+        enum GuiState { Manager = 1, TweenerList };
 
         Configurator(QWidget *parent = 0);
         ~Configurator();
@@ -63,13 +64,13 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
-        void activatePropertiesMode(Settings::EditMode mode);
+        void activatePropertiesMode(TweenerPanel::EditMode mode);
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();
         void closeSettingsPanel();
-        Settings::Mode mode();
+        TweenerPanel::Mode mode();
         void resetUI();
         QString tweenToXml(int currentFrame, QPointF point);
         
@@ -87,14 +88,14 @@ class Configurator : public QFrame
         void clickedSelect();
         void clickedDefineProperties();
         void clickedRemoveTween(const QString &name);
-        void setMode(Settings::Mode mode);
+        void setMode(TweenerPanel::Mode mode);
         void clickedApplyTween();
         void clickedResetInterface();
         void getTweenData(const QString &name);
         
     private:
-        void setPropertiesPanel();
-        void activePropertiesPanel(bool enable);
+        void setTweenerPanel();
+        void activeTweenerPanel(bool enable);
         void setTweenManagerPanel();
         void activeTweenManagerPanel(bool enable);
         void setButtonsPanel();

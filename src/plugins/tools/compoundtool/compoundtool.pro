@@ -9,14 +9,16 @@ target.path = /plugins/
 HEADERS += tweener.h \
            buttonspanel.h \
            configurator.h \
-           settings.h \
+           tweenerpanel.h \
+           # settings.h \
            tweenmanager.h \
            target.h
 
 SOURCES += tweener.cpp \
            buttonspanel.cpp \
            configurator.cpp \
-           settings.cpp \
+           tweenerpanel.cpp \
+           # settings.cpp \
            tweenmanager.cpp \
            target.cpp
 
