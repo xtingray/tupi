@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,75 +33,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef CONFIGURATOR_H
-#define CONFIGURATOR_H
+#ifndef NODE_H
+#define NODE_H
 
-#include <QFrame>
-#include "settings.h"
-
-class QGraphicsPathItem;
-class QListWidgetItem;
-class KTItemTweener;
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPointF>
 
 /**
  * @author Gustav Gonzalez 
 */
 
-class Configurator : public QFrame
+class Target : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-
+    
     public:
-        enum GuiState { Manager = 1, Properties };
-
-        Configurator(QWidget *parent = 0);
-        ~Configurator();
-
-        void loadTweenList(QList<QString> tweenList);
-
-        void initStartCombo(int framesTotal, int currentFrame);
-        void setStartFrame(int currentIndex);
-
-        int totalSteps();
-        void activatePropertiesMode(Settings::EditMode mode);
-        void setCurrentTween(KTItemTweener *currentTween);
-        QString currentTweenName() const;
-        void notifySelection(bool flag);
-        int startComboSize();
-        void closeSettingsPanel();
-        Settings::Mode mode();
-        void resetUI();
-        QString tweenToXml(int currentFrame, QPointF point);
         
-    private slots:
-        void applyItem();
-        void addTween(const QString &name);
-        void editTween();
-        void removeTween();
-        void removeTween(const QString &name);
-        void closeTweenProperties();
-        void updateTweenData(const QString &name);
+        Target(const QPointF & pos = QPoint(0,0), int zLevel = 0, QGraphicsScene * scene = 0);
+        ~Target();
         
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+        QRectF boundingRect() const;
+
     signals:
-        void startingPointChanged(int index);
-        void clickedSelect();
-        void clickedDefineProperties();
-        void clickedRemoveTween(const QString &name);
-        void setMode(Settings::Mode mode);
-        void clickedApplyTween();
-        void clickedResetInterface();
-        void getTweenData(const QString &name);
+        void positionUpdated(const QPointF &point);
         
-    private:
-        void setPropertiesPanel();
-        void activePropertiesPanel(bool enable);
-        void setTweenManagerPanel();
-        void activeTweenManagerPanel(bool enable);
-        void setButtonsPanel();
-        void activeButtonsPanel(bool enable);
-
-        struct Private;
-        Private *const k;
+    protected:
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 };
 
 #endif

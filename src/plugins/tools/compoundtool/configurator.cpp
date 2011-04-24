@@ -48,7 +48,7 @@ struct Configurator::Private
 {
     QBoxLayout *layout;
     QBoxLayout *settingsLayout;
-    Settings *settingsPanel;
+    // Settings *settingsPanel;
     TweenManager *tweenManager;
     ButtonsPanel *controlPanel;
 
@@ -85,7 +85,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 
     setTweenManagerPanel();
     setButtonsPanel();
-    setPropertiesPanel();
+    // setPropertiesPanel();
 
     k->layout->addLayout(k->settingsLayout);
     k->layout->addStretch(2);
@@ -105,25 +105,29 @@ void Configurator::loadTweenList(QList<QString> tweenList)
 
 void Configurator::setPropertiesPanel()
 {
+    /*
     k->settingsPanel = new Settings(this);
 
-    // connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
-    // connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
-    // connect(k->settingsPanel, SIGNAL(clickedCreatePath()), this, SIGNAL(clickedCreatePath()));
-    // connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
+    connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
+    connect(k->settingsPanel, SIGNAL(clickedDefineProperties()), this, SIGNAL(clickedDefineProperties()));
+    connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
     connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(closeTweenProperties()));
 
     k->settingsLayout->addWidget(k->settingsPanel);
 
     activePropertiesPanel(false);
+    */
 }
 
 void Configurator::activePropertiesPanel(bool enable)
 {
+    /*
     if (enable)
         k->settingsPanel->show();
     else
         k->settingsPanel->hide();
+    */
 }
 
 void Configurator::setCurrentTween(KTItemTweener *currentTween)
@@ -135,6 +139,9 @@ void Configurator::setTweenManagerPanel()
 {
     k->tweenManager = new TweenManager(this);
     connect(k->tweenManager, SIGNAL(addNewTween(const QString &)), this, SLOT(addTween(const QString &)));
+    connect(k->tweenManager, SIGNAL(editCurrentTween(const QString &)), this, SLOT(editTween()));
+    connect(k->tweenManager, SIGNAL(removeCurrentTween(const QString &)), this, SLOT(removeTween(const QString &)));
+    connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
     k->state = Manager;
@@ -170,29 +177,67 @@ void Configurator::activeButtonsPanel(bool enable)
         k->controlPanel->hide();
 }
 
+void Configurator::initStartCombo(int framesTotal, int currentFrame)
+{
+    k->framesTotal = framesTotal;
+    k->currentFrame = currentFrame;
+    // k->settingsPanel->initStartCombo(framesTotal, currentFrame);
+}
+
+void Configurator::setStartFrame(int currentIndex)
+{
+    k->currentFrame = currentIndex;
+    // k->settingsPanel->setStartFrame(currentIndex);
+}
+
+int Configurator::startComboSize()
+{
+    // return k->settingsPanel->startComboSize();
+       return 1;
+}
+
+QString Configurator::tweenToXml(int currentFrame, QPointF point)
+{
+    // return k->settingsPanel->tweenToXml(currentFrame, point);
+    return "";
+}
+
+int Configurator::totalSteps()
+{
+    // return k->settingsPanel->totalSteps();
+    return 1;
+}
+
+void Configurator::activatePropertiesMode(Settings::EditMode mode)
+{
+    // k->settingsPanel->activatePropertiesMode(mode);
+}
+
 void Configurator::addTween(const QString &name)
 {
-    k->mode = Settings::Add;
-
-    k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
-
     activeTweenManagerPanel(false);
-    activePropertiesPanel(true);
 
+    k->mode = Settings::Add;
     k->state = Properties;
+
+    // k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
+    // activePropertiesPanel(true);
+
+    emit setMode(k->mode);
 }
 
 void Configurator::editTween()
 {
+    activeTweenManagerPanel(false);
+
     k->mode = Settings::Edit;
     k->state = Properties;
 
-    k->settingsPanel->setParameters(k->currentTween);
-
-    activeTweenManagerPanel(false);
+    // k->settingsPanel->notifySelection(true);
+    // k->settingsPanel->setParameters(k->currentTween);
     activePropertiesPanel(true);
 
-    emit editModeOn();
+    emit setMode(k->mode);
 }
 
 void Configurator::removeTween()
@@ -214,12 +259,18 @@ void Configurator::removeTween(const QString &name)
 QString Configurator::currentTweenName() const
 {
     QString oldName = k->tweenManager->currentTweenName();
-    QString newName = k->settingsPanel->currentTweenName();
+    // QString newName = k->settingsPanel->currentTweenName();
+    QString newName = oldName;
 
     if (oldName.compare(newName) != 0)
         k->tweenManager->updateTweenName(newName);
 
     return newName;
+}
+
+void Configurator::notifySelection(bool flag)
+{
+    // k->settingsPanel->notifySelection(flag);
 }
 
 void Configurator::closeTweenProperties()
@@ -239,15 +290,31 @@ void Configurator::closeSettingsPanel()
 {
     if (k->state == Properties) {
         activeTweenManagerPanel(true);
-        activePropertiesPanel(false);
+        // activePropertiesPanel(false);
         k->mode = Settings::View;
         k->state = Manager;
     }
+}
+
+Settings::Mode Configurator::mode()
+{
+    return k->mode;
+}
+
+void Configurator::applyItem()
+{
+     k->mode = Settings::Edit;
+     emit clickedApplyTween();
 }
 
 void Configurator::resetUI()
 {
     k->tweenManager->resetUI();
     closeSettingsPanel();
+    // k->settingsPanel->notifySelection(false);
 }
 
+void Configurator::updateTweenData(const QString &name)
+{
+    emit getTweenData(name);
+}
