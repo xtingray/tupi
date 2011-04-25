@@ -54,9 +54,16 @@ class TweenerPanel : public QWidget
         TweenerPanel(QWidget *parent = 0);
         ~TweenerPanel();
 
+        void setParameters(const QString &name, int framesTotal, int startFrame);
+        void activateMode(TweenerPanel::EditMode mode);
+        void notifySelection(bool flag);
+
     private slots:
+        void emitOptionChanged(int option);
         
     signals:
+        void clickedSelect();
+        void clickedTweenProperties();
         
     private:
         struct Private;

@@ -64,7 +64,6 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
-        void activatePropertiesMode(TweenerPanel::EditMode mode);
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
@@ -84,15 +83,14 @@ class Configurator : public QFrame
         void updateTweenData(const QString &name);
         
     signals:
-        void startingPointChanged(int index);
         void clickedSelect();
-        void clickedDefineProperties();
-        void clickedRemoveTween(const QString &name);
+        void clickedTweenProperties();
         void setMode(TweenerPanel::Mode mode);
+        void clickedRemoveTween(const QString &name);
         void clickedApplyTween();
         void clickedResetInterface();
         void getTweenData(const QString &name);
-        
+
     private:
         void setTweenerPanel();
         void activeTweenerPanel(bool enable);

@@ -107,8 +107,8 @@ void Configurator::setTweenerPanel()
 {
     k->tweenList = new TweenerPanel(this);
 
-    connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
-    connect(k->settingsPanel, SIGNAL(clickedDefineProperties()), this, SIGNAL(clickedDefineProperties()));
+    connect(k->tweenList, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
+    connect(k->tweenList, SIGNAL(clickedTweenProperties()), this, SIGNAL(clickedTweenProperties()));
 
     k->settingsLayout->addWidget(k->tweenList);
     activeTweenerPanel(false);
@@ -214,19 +214,14 @@ int Configurator::totalSteps()
     return 1;
 }
 
-void Configurator::activatePropertiesMode(TweenerPanel::EditMode mode)
-{
-    // k->settingsPanel->activatePropertiesMode(mode);
-}
-
 void Configurator::addTween(const QString &name)
 {
     activeTweenManagerPanel(false);
 
     k->mode = TweenerPanel::Add;
-    k->state = TweenerList;
+    k->state = Configurator::TweenerList;
 
-    // k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
+    k->tweenList->setParameters(name, k->framesTotal, k->currentFrame);
     activeTweenerPanel(true);
 
     emit setMode(k->mode);
@@ -276,7 +271,7 @@ QString Configurator::currentTweenName() const
 
 void Configurator::notifySelection(bool flag)
 {
-    // k->settingsPanel->notifySelection(flag);
+    k->tweenList->notifySelection(flag);
 }
 
 void Configurator::closeTweenProperties()

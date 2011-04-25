@@ -199,6 +199,9 @@ QWidget *Tweener::configurator()
         k->mode = TweenerPanel::View;
 
         k->configurator = new Configurator;
+        connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
+        connect(k->configurator, SIGNAL(clickedTweenProperties()), this, SLOT(setPropertiesMode()));
+
         /*
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));

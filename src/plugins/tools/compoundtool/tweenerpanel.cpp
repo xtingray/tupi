@@ -50,10 +50,6 @@
 
 struct TweenerPanel::Private
 {
-    QWidget *innerPanel;
-    QWidget *rangePanel;
-    QWidget *clockPanel;
-
     QBoxLayout *layout;
     Mode mode;
     QLineEdit *input;
@@ -123,9 +119,55 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
+
+    activateMode(TweenerPanel::Selection);
 }
 
 TweenerPanel::~TweenerPanel()
 {
     delete k;
 }
+
+// Adding new Tween
+
+void TweenerPanel::setParameters(const QString &name, int framesTotal, int startFrame)
+{
+    k->mode = Add;
+    k->input->setText(name);
+
+    activateMode(TweenerPanel::Selection);
+    k->apply->setToolTip(tr("Save Tween"));
+    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->remove->setToolTip(tr("Cancel Tween"));
+}
+
+void TweenerPanel::emitOptionChanged(int option)
+{
+    switch (option) {
+            case 0:
+             {
+                 emit clickedSelect();
+             }
+            break;
+            case 1:
+             {
+                 if (k->selectionDone) {
+                     emit clickedTweenProperties();
+                 } else {
+                     k->options->setCurrentIndex(0);
+                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+                 }
+             }
+    }
+}
+
+void TweenerPanel::activateMode(TweenerPanel::EditMode mode)
+{
+    k->options->setCurrentIndex(mode);
+}
+
+void TweenerPanel::notifySelection(bool flag)
+{
+    k->selectionDone = flag;
+}
+
