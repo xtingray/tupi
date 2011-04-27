@@ -111,8 +111,10 @@ QStringList ContourSelection::keys() const
 
 void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    foreach (QGraphicsView * view, scene->views())
-             view->setDragMode (QGraphicsView::RubberBandDrag);
+    /*
+    foreach (QGraphicsView *view, scene->views())
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+    */
 
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
@@ -333,6 +335,14 @@ void ContourSelection::aboutToChangeTool()
 {
     qDeleteAll(k->nodeGroups);
     k->nodeGroups.clear();
+
+    foreach (QGraphicsView *view, k->scene->views()) {
+             view->setDragMode (QGraphicsView::NoDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
+                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+             }
+    }
 }
 
 void ContourSelection::saveConfig()

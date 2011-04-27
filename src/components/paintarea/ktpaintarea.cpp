@@ -260,8 +260,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                         guiScene->drawBackground();
                     }
 
-                    // SQA: Check the init routine for the Selection plugin
-                    if (k->currentTool.compare(tr("Object Selection")) == 0)
+                    if (guiScene->currentTool()->toolType() == KTToolInterface::Selection)
                         guiScene->currentTool()->init(graphicsScene());
                  }
 
