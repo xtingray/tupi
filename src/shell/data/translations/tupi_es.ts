@@ -1966,6 +1966,16 @@
         <source>Current Background</source>
         <translation>Fondo</translation>
     </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="69"/>
+        <source>Click here to change background color</source>
+        <translation>Haz click aquí para cambiar el color del fondo</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="69"/>
+        <source>Click here to change brush color</source>
+        <translation>Haz click aquí para cambiar el color de la brocha</translation>
+    </message>
 </context>
 <context>
     <name>KTPenWidget</name>

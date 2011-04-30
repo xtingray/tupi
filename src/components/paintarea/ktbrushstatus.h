@@ -54,6 +54,7 @@ class KTBrushStatus : public QWidget
 
         void setForeground(const QPen &pen);
         void setColor(const QColor &color);
+        void setTooltip(const QString &tip);
 
     signals:
         void colorRequested();

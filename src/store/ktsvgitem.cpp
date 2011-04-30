@@ -106,8 +106,6 @@ void KTSvgItem::fromXml(const QString &xml)
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTSvgItem::toXml() - Name: " << k->name;
-
     if (k->name.length() == 0) {
         #ifdef K_DEBUG
                kError() << "KTFrame::fromXml() - ERROR: Object id is null!";
@@ -118,9 +116,9 @@ QDomElement KTSvgItem::toXml(QDomDocument &doc) const
     root.setAttribute("id", k->name);
     root.appendChild(KTSerializer::properties(this, doc));
 
-    if (k->tween)
+    if (k->hasTween)
         root.appendChild(k->tween->toXml(doc));
- 
+
     return root;
 }
 

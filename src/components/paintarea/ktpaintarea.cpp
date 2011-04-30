@@ -33,8 +33,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kdebug.h"
-
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QGraphicsRectItem>
@@ -56,6 +54,7 @@
 
 #include "kconfig.h"
 #include "kapplication.h"
+#include "kdebug.h"
 
 #include "kttextitem.h"
 

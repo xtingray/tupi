@@ -40,6 +40,7 @@
 #include "kconfig.h"
 #include "kapplication.h"
 #include "kosd.h"
+#include "kdebug.h"
 
 #include <QLineEdit>
 #include <QCheckBox>
@@ -253,5 +254,11 @@ void KTNewProject::setBgColor()
          k->colorButton->setText(k->color.name());
          k->colorButton->setPalette(QPalette(k->color));
          k->colorButton->setAutoFillBackground(true);
+     } else {
+         k->color = QColor("#fff");
+         k->colorButton->setText(tr("White"));
      }
+
+     k->colorButton->setPalette(QPalette(k->color));
+     k->colorButton->setAutoFillBackground(true);
 }

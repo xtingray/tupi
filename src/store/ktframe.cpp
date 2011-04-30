@@ -470,6 +470,7 @@ QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &
     KTItemFactory itemFactory;
     itemFactory.setLibrary(project()->library());
     QGraphicsItem *graphicItem = itemFactory.create(xml);
+    // graphicItem->setPos(coords);
 
     if (graphicItem) {
         insertItem(position, graphicItem);

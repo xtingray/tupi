@@ -142,12 +142,14 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint()));
 
     k->bgStatus = new KTBrushStatus(tr("Current Background"), true);
+    k->bgStatus->setTooltip(tr("Click here to change background color"));
     addPermanentWidget(k->bgStatus);
     k->bgStatus->setColor(k->viewDocument->project()->bgColor());
 
     connect(k->bgStatus, SIGNAL(colorUpdated(const QColor)), this, SIGNAL(colorUpdated(const QColor)));
 
     k->brushStatus = new KTBrushStatus(tr("Current Brush"), false);
+    k->brushStatus->setTooltip(tr("Click here to change brush color"));
     addPermanentWidget(k->brushStatus);
 
     connect(k->brushStatus, SIGNAL(colorRequested()), this, SIGNAL(colorRequested())); 

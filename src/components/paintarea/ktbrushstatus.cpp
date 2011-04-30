@@ -89,3 +89,8 @@ void KTBrushStatus::updateColour()
     }
 }
 
+void KTBrushStatus::setTooltip(const QString &tip)
+{
+    brush->setToolTip(tip);
+}
+
