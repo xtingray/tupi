@@ -290,6 +290,7 @@ void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * e)
     //k->parent->setSelected(true);
     //k->parent->setFocus(Qt::MouseFocusReason);
 
+    kFatal() << "Node::mouseDoubleClickEvent() - Changing mode!";
     k->manager->toggleAction();
 
     //e->setAccepted(false);
