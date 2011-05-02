@@ -133,14 +133,14 @@ class KTItemResponse : public KTFrameResponse
         KTLibraryObject::Type itemType() const;
         void setItemType(KTLibraryObject::Type type);
         QPointF position();
-        void setPosX(int coord);
-        void setPosY(int coord);
+        void setPosX(double coord);
+        void setPosY(double coord);
 
     private:
         int m_itemIndex;
         KTLibraryObject::Type m_itemType;
-        int m_x;
-        int m_y;
+        double m_x;
+        double m_y;
 };
 
 class KTLibraryResponse : public KTFrameResponse

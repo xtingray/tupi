@@ -71,10 +71,9 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
                static_cast<KTItemResponse *>(k->response)->setItemIndex(atts.value("index").toInt());
     } else if (qname == "objectType") {
                static_cast<KTItemResponse *>(k->response)->setItemType(KTLibraryObject::Type(atts.value("id").toInt())); 
-    } else if (qname == "posx") {
-               static_cast<KTItemResponse *>(k->response)->setPosX(atts.value("x").toInt());
-    } else if (qname == "posy") {
-               static_cast<KTItemResponse *>(k->response)->setPosY(atts.value("y").toInt());
+    } else if (qname == "position") {
+               static_cast<KTItemResponse *>(k->response)->setPosX(atts.value("x").toDouble());
+               static_cast<KTItemResponse *>(k->response)->setPosY(atts.value("y").toDouble());
     } else if (qname == "frame") {
                static_cast<KTFrameResponse *>(k->response)->setFrameIndex(atts.value("index").toInt());
     } else if (qname == "data") {

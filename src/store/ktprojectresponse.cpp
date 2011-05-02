@@ -303,12 +303,12 @@ QPointF KTItemResponse::position()
     return QPointF(m_x, m_y);
 }
 
-void KTItemResponse::setPosX(int coord)
+void KTItemResponse::setPosX(double coord)
 {
     m_x = coord;
 }
 
-void KTItemResponse::setPosY(int coord)
+void KTItemResponse::setPosY(double coord)
 {
     m_y = coord;
 }

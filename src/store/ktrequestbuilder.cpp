@@ -71,11 +71,9 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     QDomElement objectType = doc.createElement("objectType");
     objectType.setAttribute("id", type);
 
-    QDomElement posx = doc.createElement("posx");
-    posx.setAttribute("x", point.x());
-
-    QDomElement posy = doc.createElement("posy");
-    posy.setAttribute("y", point.y());
+    QDomElement position = doc.createElement("position");
+    position.setAttribute("x", point.x());
+    position.setAttribute("y", point.y());
 
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
@@ -85,8 +83,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     KTRequestBuilder::appendData(doc, action, data);
     root.appendChild(action);
     item.appendChild(objectType);
-    item.appendChild(posx);
-    item.appendChild(posy);
+    item.appendChild(position);
     frame.appendChild(item);
     layer.appendChild(frame);
     scene.appendChild(layer);

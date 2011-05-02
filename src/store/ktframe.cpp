@@ -43,6 +43,7 @@
 #include "ktframe.h"
 #include "ktlayer.h"
 
+#include "ktsvg2qt.h"
 #include "ktitemfactory.h"
 #include "ktserializer.h"
 #include "ktgraphicobject.h"
@@ -185,7 +186,17 @@ void KTFrame::fromXml(const QString &xml)
                                 ts << n2;
                               }
 
-                              createItem(k->graphics.count(), QPointF(), newDoc);
+                              QPointF point = QPointF();
+                              QDomNode n3 = n2.firstChild();
+                              while (!n3.isNull()) {
+                                     QDomElement e3 = n3.toElement();
+                                     if (e3.tagName() == "properties") {
+                                         KTSvg2Qt::parsePointF(e3.attribute("pos"), point);
+                                         break;
+                                     }
+                                     n3 = n3.nextSibling();
+                              }
+                              createItem(k->graphics.count(), point, newDoc);
                               last = k->graphics.value(k->graphics.count()-1);
                           }
 
@@ -470,7 +481,7 @@ QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &
     KTItemFactory itemFactory;
     itemFactory.setLibrary(project()->library());
     QGraphicsItem *graphicItem = itemFactory.create(xml);
-    // graphicItem->setPos(coords);
+    graphicItem->setPos(coords);
 
     if (graphicItem) {
         insertItem(position, graphicItem);

@@ -95,7 +95,7 @@ struct KTGraphicsScene::Private
 
     bool isDrawing;
     int layerCounter;
-    int objectCounter;
+    // int objectCounter;
 
     QList<KTLineGuide *> lines;
     KTProject::Mode spaceMode;   
@@ -312,7 +312,7 @@ void KTGraphicsScene::drawBackground()
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
 {
     if (frame) {
-        k->objectCounter = 0;
+        // k->objectCounter = 0;
 
         QList<int> indexes = frame->itemIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
@@ -362,7 +362,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
                 if (frame) {
                     item->setOpacity(opacity);
-                    k->objectCounter++;
+                    // k->objectCounter++;
                     addItem(item);
                 }
             }
@@ -388,7 +388,7 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 
             if (frame) {
                 svgItem->setOpacity(opacity);
-                k->objectCounter++;
+                // k->objectCounter++;
                 addItem(svgItem);
             }
 

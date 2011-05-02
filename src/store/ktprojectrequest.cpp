@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "ktprojectrequest.h"
-
 #include "ktprojectresponse.h"
 #include "ktrequestbuilder.h"
 

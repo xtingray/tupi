@@ -86,6 +86,9 @@ struct KTPaintArea::Private
     QString currentTool; 
     bool deleteMode;
     KTProject::Mode spaceMode;
+    QPointF oldPosition;
+    QPointF position;
+    bool menuOn;
 };
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
@@ -153,8 +156,12 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
                 return;
 
             if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
-                item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                item->setSelected(true);
+                if (item->opacity() == 1) {
+                    item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    item->setSelected(true);
+                } else {
+                    return;
+                }
             }
 
             QMenu *menu = new QMenu(tr("Drawing area"));
@@ -177,6 +184,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
             order->addAction(tr("Brind forwards"))->setData(MoveForwards);
 
             menu->addMenu(order);
+            order->setDisabled(true);
             menu->addSeparator();
 
             // Code commented temporary while SQA is done
@@ -216,6 +224,8 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
                 menu->addMenu(toolMenu);
             }
 
+            k->position = viewPosition();
+            k->menuOn = true;
             menu->exec(event->globalPos());
         }
     } 
@@ -453,7 +463,8 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                         viewport()->update(scene()->sceneRect().toRect());
 
-                        if (k->currentTool.compare(tr("Object Selection")) == 0)
+                        // if (k->currentTool.compare(tr("Object Selection")) == 0)
+                        if (guiScene->currentTool()->toolType() == KTToolInterface::Selection)
                             guiScene->currentTool()->init(graphicsScene());          
                     }
                     break;
@@ -667,6 +678,7 @@ void KTPaintArea::copyItems()
         KTGraphicsScene* currentScene = graphicsScene();
 
         if (currentScene) {
+            k->oldPosition = selected.at(0)->boundingRect().topLeft();
             foreach (QGraphicsItem *item, selected) {
 
                      QDomDocument dom;
@@ -712,12 +724,15 @@ void KTPaintArea::pasteItems()
 
     KTGraphicsScene* currentScene = graphicsScene();
 
+    if (!k->menuOn)
+        k->position = viewPosition();
+    
+    QPointF point = k->position - k->oldPosition;
+
     foreach (QString xml, k->copiesXml) {
              KTLibraryObject::Type type = KTLibraryObject::Item;
              int total = currentScene->currentFrame()->graphicItemsCount();
 
-             QPointF point = viewPosition();
-             
              if (xml.startsWith("<svg")) {
                  type = KTLibraryObject::Svg;
                  total = currentScene->currentFrame()->svgItemsCount();
@@ -730,6 +745,8 @@ void KTPaintArea::pasteItems()
                                       KTProjectRequest::Add, xml);
              emit requestTriggered(&event);
      }
+
+     k->menuOn = false;
 }
 
 void KTPaintArea::cutItems()

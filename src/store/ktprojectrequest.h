@@ -50,6 +50,7 @@ class KTProjectResponse;
 class STORE_EXPORT KTProjectRequestArgument
 {
     public:
+
         KTProjectRequestArgument();
         KTProjectRequestArgument(const QString &v);
         ~KTProjectRequestArgument();
