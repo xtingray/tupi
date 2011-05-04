@@ -25,13 +25,15 @@ class QMake
                 version = []
                 sites = []
                 distance = 0
-                IO.popen("whereis #{path}") { |result|
+                # IO.popen("whereis #{path}") { |result|
+                IO.popen("which #{path}") { |result|
                           sites = result.readlines.join("").split(":")
                           word = ""
                           if qtdir.length > 0
                              word = qtdir + "/bin/qmake"
                           else
-                             word = sites[1].chop
+                             # word = sites[1].chop
+                             word = sites[0].chop
                           end
                           distance = word.length
                 }
@@ -47,19 +49,19 @@ class QMake
                     next if $? != 0
 
                     version.size.times { |i|
-                        if i = 0
+                        if i == 0
                            if version[i] < minver[i]
                               return false 
                            end
                         end
 
-                        if i = 1
+                        if i == 1
                            if version[i] < minver[i]
                               return false
                            end
                         end
 
-                        if i = 2
+                        if i == 2
                            if version[i] < minver[i]
                               return false
                            end

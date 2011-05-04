@@ -37,7 +37,7 @@
 #include <QRect>
 
 #include "ktapplication.h"
-#include "configwizard.h"
+// #include "configwizard.h"
 
 // Tupi Framework 
 #include "kapplicationproperties.h"
@@ -60,6 +60,7 @@ KTApplication::~KTApplication()
 
 bool KTApplication::firstRun()
 {
+    /*
     QDesktopWidget *screen = QApplication::desktop();
     int screenW = screen->width();     // returns desktop width
     int screenH = screen->height();    // returns desktop height
@@ -86,6 +87,7 @@ bool KTApplication::firstRun()
         return true;
     }
     delete firstDialog;
+    */
 
     return false;
 }

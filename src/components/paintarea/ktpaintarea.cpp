@@ -101,6 +101,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
     setBgColor(project->bgColor());
     k->currentSceneIndex = 0;
     k->deleteMode = false;
+    k->menuOn = false;
 
     setCurrentScene(0);
     k->currentTool = tr("Pencil");
@@ -724,10 +725,14 @@ void KTPaintArea::pasteItems()
 
     KTGraphicsScene* currentScene = graphicsScene();
 
-    if (!k->menuOn)
+    if (!k->menuOn) {
         k->position = viewPosition();
+    }
     
     QPointF point = k->position - k->oldPosition;
+
+    kFatal() << "KTPaintArea::pasteItems() - Old Position: [" << k->oldPosition.x() << ", " << k->oldPosition.y() << "]";
+    kFatal() << "KTPaintArea::pasteItems() - New Position: [" << k->position.x() << ", " << k->position.y() << "]";
 
     foreach (QString xml, k->copiesXml) {
              KTLibraryObject::Type type = KTLibraryObject::Item;

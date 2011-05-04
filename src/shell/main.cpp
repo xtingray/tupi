@@ -104,12 +104,14 @@ int main(int argc, char ** argv)
 {
     KTApplication application(argc, argv);
 
-    // If help es required as argument from command line, show the options console help
+    // SQA: This code is deprecated 
+    /*
     if (application.isArg("help") || application.isArg("h")) {
         usage();
         application.exit(0);
         return 0;
     }
+    */
 
     // qsrand(::time(0));
 
@@ -175,7 +177,8 @@ int main(int argc, char ** argv)
     QApplication::setStyle(new QPlastiqueStyle());
 #endif
 
-    // If user asked for reconfigure Tupi or if this is the first time the application is launched
+    // SQA: This code is deprecated
+    /*
     if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure")) {
         // Launching the basic configuration dialog
         if (! application.firstRun()) {
@@ -194,6 +197,7 @@ int main(int argc, char ** argv)
         kAppProp->setHomeDir(KCONFIG->value("Home").toString());
         application.createCache(KCONFIG->value("Cache").toString());
     }
+    */
 
     // Time to apply the theme for the application GUI
     QString themefile = KCONFIG->value("ThemeFile").toString();
@@ -244,7 +248,8 @@ int main(int argc, char ** argv)
     // If there is a second argument, it means to open a project from the command line
     if (argc == 2) {
         QString project = QString(argv[1]);
-        mainWindow.openProject(project);
+        if (project.endsWith(".tup") || project.endsWith(".TUP"))
+            mainWindow.openProject(project);
     }
 
     // It's time to play with Tupi!	
@@ -257,6 +262,7 @@ int main(int argc, char ** argv)
 
 void usage()
 {
+    // SQA: This code is deprecated
 #if defined(Q_OS_UNIX)
     // Characters \033[1;33m and \033[1;34m are useful for colored messages
     puts(QString("\033[1;33m"+QApplication::applicationName() + kAppProp->version()).toLocal8Bit());

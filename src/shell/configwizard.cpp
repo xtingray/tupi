@@ -42,8 +42,8 @@
 #include <QLineEdit>
 #include <QFileDialog>
 
-#include "wizard1.xpm"
-#include "wizard2.xpm"
+// #include "wizard1.xpm"
+// #include "wizard2.xpm"
 
 // Tupi Framework 
 #include "kdebug.h"
@@ -83,9 +83,9 @@ QString ConfigWizard::cache() const
 // CWFirstPage
 CWFirstPage::CWFirstPage(QWidget *parent) : KWizardPage(tr("Welcome"), parent)
 {
-    QImage img(wizard1_xpm);
+    // QImage img(wizard1_xpm);
 
-    setPixmap( QPixmap::fromImage(/* ::blend(img, 0.1f, palette().color(QPalette::Background), DImageEffect::DiagonalGradient, true)*/img) );
+    // setPixmap( QPixmap::fromImage(/* ::blend(img, 0.1f, palette().color(QPalette::Background), DImageEffect::DiagonalGradient, true)*/img) );
 
     QLabel *msg = new QLabel(tr("<h1>Welcome to the Tupi Configuration wizard!</h1><br><br>"
            "<table border=0 align=right ><tr><td>- Tupi is a 2D Animation Toolkit designed by animators for animators.</td></tr><tr><td>- Tupi is free/open software and it is covered under the GNU GPL license terms.</td></tr><tr><td>- Tupi is Software Project developed by Toonka Films (http://www.toonka.com)</td></tr></table><br><br>"
@@ -103,7 +103,7 @@ CWFirstPage::~ CWFirstPage()
 // CWFSecondPage
 CWSecondPage::CWSecondPage(QWidget *parent) : KWizardPage(tr("Configure Tupi"), parent)
 {
-    setPixmap(QPixmap(wizard2_xpm));
+    // setPixmap(QPixmap(wizard2_xpm));
 
     KVHBox *container = new KVHBox(0, Qt::Vertical);
     container->boxLayout()->setAlignment(Qt::AlignTop);

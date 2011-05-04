@@ -48,7 +48,7 @@ HEADERS += ktmainwindow.h \
            ktcrashhandler.h \
            ktcrashwidget.h \
            ktapplication.h \
-           configwizard.h \
+           # configwizard.h \
            ktlocalprojectmanagerhandler.h
 SOURCES += main.cpp \
            ktmainwindow.cpp \
@@ -58,7 +58,7 @@ SOURCES += main.cpp \
            ktcrashhandler.cpp \
            ktcrashwidget.cpp \
            ktapplication.cpp \
-           configwizard.cpp \
+           # configwizard.cpp \
            ktmainwindow_gui.cpp \
            ktlocalprojectmanagerhandler.cpp
 

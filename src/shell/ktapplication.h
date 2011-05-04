@@ -41,11 +41,13 @@
 /**
  * Support Class for main.cpp
  * This class contains some of the basic methods required when Tupi is launched
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
+
 class KTApplication : public KApplication
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTApplication(int &argc, char **argv);
         ~KTApplication();
@@ -53,7 +55,7 @@ class KTApplication : public KApplication
     public slots:
         /**
          * @if english
-         * Opens a settings wizard the first time Tupi is launched
+         * Open a settings wizard the first time Tupi is launched
          * @endif
          * @if spanish
          * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion
@@ -64,7 +66,7 @@ class KTApplication : public KApplication
 
         /**
          * @if english
-         * Creates a cache directory with the path defined at cacheDir variable
+         * Create a cache directory with the path defined at cacheDir variable
          * @endif
          * @if spanish
          * Crea el cache en la ruta especificada por la variable cacheDir
