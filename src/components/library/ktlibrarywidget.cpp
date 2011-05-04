@@ -75,7 +75,7 @@
 /**
  * This class defines the Library widget.
  * Here is where events around the Library widget are handled.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTLibraryWidget::Private

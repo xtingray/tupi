@@ -137,6 +137,9 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
     // If Control key is pressed / allow multiple selection 
     if (input->keyModifiers() != Qt::ControlModifier) {
         foreach (NodeManager *nodeManager, k->nodeManagers) {
+
+                 // SQA: Deprecated code
+                 /* 
                  if (scene->mouseGrabberItem() == nodeManager->parentItem()) {
                      nodeManager->toggleAction();
                      k->changedManager = nodeManager;
@@ -146,6 +149,14 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
                             k->nodeManagers.removeAll(nodeManager);
                             delete nodeManager;
                  }
+                 */
+
+                 if (!nodeManager->isPress()) {
+                     nodeManager->parentItem()->setSelected(false);
+                     k->nodeManagers.removeAll(nodeManager);
+                     // delete nodeManager;
+                     scene->drawCurrentPhotogram();
+                 } 
         }
     } 
     

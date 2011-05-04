@@ -440,15 +440,17 @@ bool KTFrame::removeGraphicAt(int position)
     if (position < 0)
         return false;
 
-    KTGraphicObject *object = k->graphics.takeObject(position);
+    // KTGraphicObject *object = k->graphics.takeObject(position);
+    KTGraphicObject *object = k->graphics.value(position);
     k->objectIndexes.remove(position);
 
-    if (object) {
+    if (object->hasTween())
         this->scene()->removeTweenObject(object);
-        return true;
-    }
 
-    return false;
+    k->objectIndexes.remove(position);
+    k->graphics.remove(position);
+
+    return true;
 }
 
 bool KTFrame::removeSvgAt(int position)

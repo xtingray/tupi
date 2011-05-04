@@ -36,10 +36,7 @@
 #include "ktcommandexecutor.h"
 #include "ktproject.h"
 #include "ktprojectrequest.h"
-
 #include "ktprojectresponse.h"
-#include <QDebug>
-
 #include "kdebug.h"
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
@@ -52,7 +49,6 @@ bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
     
     return false;
 }
-
 
 bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 {

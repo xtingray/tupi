@@ -525,7 +525,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                         case KTLibraryObject::Text:
                         {
                              // SQA: Just out of curiosity, check if this case really happens!
-                             kFatal() << "KTProject::addSymbolToProject() - Just tracing text!";
+                             // kFatal() << "KTProject::addSymbolToProject() - Just tracing text!";
                              KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
                              frame->addItem(name, libraryItem);
                         }

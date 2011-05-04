@@ -39,8 +39,9 @@
 #include <QHash>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 template<typename T>
 class KTIntHash
 {

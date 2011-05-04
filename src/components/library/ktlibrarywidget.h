@@ -51,12 +51,13 @@
 class KTLibrary;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTLibraryWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KTLibraryWidget(QWidget *parent = 0);
         ~KTLibraryWidget();

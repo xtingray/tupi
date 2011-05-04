@@ -542,8 +542,6 @@ bool KTPaintArea::canPaint() const
 
 void KTPaintArea::deleteItems()
 {
-    // K_FUNCINFO;
-
     if (k->currentTool.compare(tr("Object Selection")) != 0 && k->currentTool.compare(tr("Contour Selection")) != 0)
         return;
 
@@ -730,9 +728,6 @@ void KTPaintArea::pasteItems()
     }
     
     QPointF point = k->position - k->oldPosition;
-
-    kFatal() << "KTPaintArea::pasteItems() - Old Position: [" << k->oldPosition.x() << ", " << k->oldPosition.y() << "]";
-    kFatal() << "KTPaintArea::pasteItems() - New Position: [" << k->position.x() << ", " << k->position.y() << "]";
 
     foreach (QString xml, k->copiesXml) {
              KTLibraryObject::Type type = KTLibraryObject::Item;

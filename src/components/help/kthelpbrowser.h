@@ -43,11 +43,13 @@
 #include <QKeyEvent> 
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
+
 class KTHelpBrowser : public QWidget
 {
     Q_OBJECT
+
     public:
         KTHelpBrowser(QWidget *parent);
         ~KTHelpBrowser();

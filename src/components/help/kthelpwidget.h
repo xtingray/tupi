@@ -47,11 +47,13 @@
 class KHelpWidgetManager;
 
 /**
- * @author David Alejandro Cuadrado Cabrera <krawek@gmail.com>
+ * @author David Alejandro Cuadrado Cabrera
 */
+
 class KTHelpWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KTHelpWidget(const QString &path, QWidget *parent = 0);
         ~KTHelpWidget();

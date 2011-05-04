@@ -83,6 +83,7 @@ class NodeManager : public QObject
 
         void setProportion(bool flag);
         bool proportionalScale();
+        void clear();
 
     private:
         QHash<Node::TypeNode, Node *> m_nodes;

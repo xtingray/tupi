@@ -68,6 +68,11 @@ NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_pare
 
 NodeManager::~NodeManager()
 {
+    clear();
+}
+
+void NodeManager::clear()
+{
     foreach (Node *node, m_nodes) {
              if (node) {
                  if (QGraphicsScene *scene = node->scene())
