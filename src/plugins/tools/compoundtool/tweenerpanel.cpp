@@ -50,6 +50,9 @@
 
 struct TweenerPanel::Private
 {
+    QWidget *innerPanel;
+
+
     QBoxLayout *layout;
     Mode mode;
     QLineEdit *input;
@@ -115,6 +118,8 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
 
     k->layout->addLayout(nameLayout);
     k->layout->addWidget(k->options);
+
+    setInnerForm();
 
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
