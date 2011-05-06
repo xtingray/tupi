@@ -66,11 +66,17 @@ TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
          itemLayout->setAlignment(Qt::AlignHCenter);
          itemLayout->setMargin(0);
          itemLayout->setSpacing(5);
+
          k->checkList->append(new QCheckBox(this));
          k->buttonList->append(new KPushButton(this, labels.at(i), 1, i));
-         itemLayout->addWidget(k->checkList->at(i));
-         itemLayout->addWidget(k->buttonList->at(i));
 
+         itemLayout->addWidget(k->checkList->at(i));
+         connect(k->checkList->at(i), SIGNAL(stateChanged(int)), this, SLOT(enableTween(int)));
+
+         itemLayout->addWidget(k->buttonList->at(i));
+         connect(k->buttonList->at(i), SIGNAL(clicked(int, int)), this, SLOT(showTweenSettings(int, int)));
+
+         k->buttonList->at(i)->setDisabled(true);
          innerLayout->addLayout(itemLayout);
     }
 
@@ -80,4 +86,14 @@ TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
 TweenerTable::~TweenerTable()
 {
     delete k;
+}
+
+void TweenerTable::showTweenSettings(int column, int row)
+{
+    kFatal() << "TweenerTable::updatePath() - Row: " << row;
+}
+
+void TweenerTable::enableTween(int state)
+{
+    kFatal() << "TweenerTable::enableTween() - State: " << state;
 }
