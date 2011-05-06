@@ -206,7 +206,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml(doc));
     
     KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
-                             scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), QPointF(),
+                             scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), m_item->pos(),
                              KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
     
     emit requested(&event);
