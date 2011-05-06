@@ -36,7 +36,7 @@
 #include "tweenerpanel.h"
 #include "kdebug.h"
 #include "kradiobuttongroup.h"
-#include "ktitemtweener.h"
+// #include "ktitemtweener.h"
 // #include "kttweenerstep.h"
 #include "kimagebutton.h"
 #include "kseparator.h"
@@ -52,7 +52,8 @@
 
 struct TweenerPanel::Private
 {
-    QWidget *innerPanel;
+    QWidget *tweenerTablePanel;
+    QList<QWidget*> *panelList;
 
     QBoxLayout *layout;
     Mode mode;
@@ -66,13 +67,6 @@ struct TweenerPanel::Private
     QLabel *totalLabel;
     int totalSteps;
 
-    KTItemTweener::TransformAxes scaleAxes;
-    QComboBox *comboAxes;
-    QComboBox *comboFactor;
-    QComboBox *comboIterations;
-    QCheckBox *loopBox;
-    QCheckBox *reverseLoopBox;
-
     bool selectionDone;
     bool propertiesDone;
 
@@ -82,7 +76,6 @@ struct TweenerPanel::Private
 
 TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
 {
-    k->scaleAxes = KTItemTweener::XY;
     k->selectionDone = false;
     k->propertiesDone = false;
     k->totalSteps = 0;
@@ -108,6 +101,7 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
     k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->apply->setDisabled(true);
     // connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
@@ -123,7 +117,7 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(nameLayout);
     k->layout->addWidget(k->options);
 
-    setInnerForm();
+    setTweenerTableForm();
 
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
@@ -137,11 +131,11 @@ TweenerPanel::~TweenerPanel()
     delete k;
 }
 
-void TweenerPanel::setInnerForm()
+void TweenerPanel::setTweenerTableForm()
 {
-    k->innerPanel = new QWidget;
+    k->tweenerTablePanel = new QWidget;
 
-    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->tweenerTablePanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
     QLabel *startingLabel = new QLabel(tr("Tweeners") + ": ");
@@ -153,22 +147,72 @@ void TweenerPanel::setInnerForm()
     startLayout->addWidget(startingLabel);
 
     k->tweenerTable = new TweenerTable;
+    connect(k->tweenerTable, SIGNAL(callTweenerSettings(int)), this, SLOT(showTweenSettings(int)));
 
     innerLayout->addLayout(startLayout);
     innerLayout->addWidget(k->tweenerTable);
 
-    k->layout->addWidget(k->innerPanel);
-    activeInnerForm(false);
+    k->layout->addWidget(k->tweenerTablePanel);
+    activeTweenerTableForm(false);
 }
 
-void TweenerPanel::activeInnerForm(bool enable)
+void TweenerPanel::activeTweenerTableForm(bool enable)
 {
-    if (enable && !k->innerPanel->isVisible()) {
+    if (enable && !k->tweenerTablePanel->isVisible()) {
         k->propertiesDone = true;
-        k->innerPanel->show();
+        k->tweenerTablePanel->show();
     } else {
         k->propertiesDone = false;
-        k->innerPanel->hide();
+        k->tweenerTablePanel->hide();
+    }
+}
+
+void TweenerPanel::loadTweenComponents()
+{
+    QStringList labels;
+    labels << tr("Position") << tr("Rotation") << tr("Scale") << tr("Shear") << tr("Opacity") << tr("Coloring");
+    k->panelList = new QList<QWidget*>();
+
+    for (int i = 0; i < labels.size(); ++i) {
+
+         switch(i)  {
+                case TweenerPanel::Position:
+                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
+                     k->panelList->append(new QWidget);
+                break;
+                case TweenerPanel::Rotation:
+                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";
+                     k->panelList->append(new QWidget);
+                break;
+                case TweenerPanel::Scale:
+                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Scale gui";
+                     k->panelList->append(new QWidget);
+                break;
+                case TweenerPanel::Shear:
+                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Shear gui";
+                     k->panelList->append(new QWidget);
+                break;
+                case TweenerPanel::Opacity:
+                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Opacity gui";
+                     k->panelList->append(new QWidget); 
+                break;
+                case TweenerPanel::Coloring:
+                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Coloring gui";
+                     k->panelList->append(new QWidget);
+                break;
+         }
+
+         k->layout->addWidget(k->panelList->at(i));
+         activeTweenComponent(i, false);
+    }
+}
+
+void TweenerPanel::activeTweenComponent(int index, bool enable)
+{
+    if (enable && !k->panelList->at(index)->isVisible()) {
+        k->panelList->at(index)->show();
+    } else {
+        k->panelList->at(index)->hide();
     }
 }
 
@@ -196,7 +240,7 @@ void TweenerPanel::emitOptionChanged(int option)
             case 1:
              {
                  if (k->selectionDone) {
-                     activeInnerForm(true);
+                     activeTweenerTableForm(true);
                      emit clickedTweenProperties();
                  } else {
                      k->options->setCurrentIndex(0);
@@ -216,3 +260,26 @@ void TweenerPanel::notifySelection(bool flag)
     k->selectionDone = flag;
 }
 
+void TweenerPanel::showTweenSettings(int tweenType)
+{
+    switch(tweenType)  {
+           case TweenerPanel::Position:
+                kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
+           break;
+           case TweenerPanel::Rotation:
+                kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";
+           break;
+           case TweenerPanel::Scale:
+                kFatal() << "TweenerPanel::showTweenSettings() - Opening Scale gui";
+           break;
+           case TweenerPanel::Shear:
+                kFatal() << "TweenerPanel::showTweenSettings() - Opening Shear gui";
+           break;
+           case TweenerPanel::Opacity:
+                kFatal() << "TweenerPanel::showTweenSettings() - Opening Opacity gui";
+           break;
+           case TweenerPanel::Coloring:
+                kFatal() << "TweenerPanel::showTweenSettings() - Opening Coloring gui";
+           break;
+    }
+}

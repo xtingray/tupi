@@ -48,6 +48,14 @@ class TweenerPanel : public QWidget
 
     public:
 
+        enum TweenerType { Position = 0,
+                           Rotation,
+                           Scale,
+                           Shear,
+                           Opacity,
+                           Coloring
+                         };
+
         enum Mode { Add = 1, Edit, View };
         enum EditMode { Selection = 0, Properties, None };
 
@@ -60,14 +68,18 @@ class TweenerPanel : public QWidget
 
     private slots:
         void emitOptionChanged(int option);
+        void showTweenSettings(int tweenType);
         
     signals:
         void clickedSelect();
         void clickedTweenProperties();
         
     private:
-        void setInnerForm();
-        void activeInnerForm(bool enable);
+        void setTweenerTableForm();
+        void activeTweenerTableForm(bool enable);
+        void loadTweenComponents();
+        void activeTweenComponent(int index, bool enable);
+
         struct Private;
         Private *const k;
 };

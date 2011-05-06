@@ -91,9 +91,20 @@ TweenerTable::~TweenerTable()
 void TweenerTable::showTweenSettings(int column, int row)
 {
     kFatal() << "TweenerTable::updatePath() - Row: " << row;
+    emit callTweenerSettings(row);
 }
 
 void TweenerTable::enableTween(int state)
 {
-    kFatal() << "TweenerTable::enableTween() - State: " << state;
+    Q_UNUSED(state);
+
+    for (int i=0; i < k->checkList->size(); i++) {
+         if (k->checkList->at(i)->isChecked()) {
+             if (!k->buttonList->at(i)->isEnabled())
+                 k->buttonList->at(i)->setEnabled(true);
+         } else {
+             if (k->buttonList->at(i)->isEnabled())
+                 k->buttonList->at(i)->setEnabled(false);
+         }
+    }
 }

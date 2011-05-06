@@ -33,31 +33,61 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TWEENERTABLE_H
-#define TWEENERTABLE_H
-
-/**
- * @author Gustav Gonzalez
-*/
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include <QWidget>
 
-class TweenerTable : public QWidget
+class QGraphicsPathItem;
+class KTItemTweener;
+
+/**
+ * @author Jorge Cuadrado
+*/
+
+class Settings : public QWidget 
 {
     Q_OBJECT
 
     public:
-        TweenerTable(QWidget *parent = 0);
-        ~TweenerTable();
+        enum Mode { Add = 1, Edit, View };
+        enum EditMode { Selection = 0, Path, None };
 
+        Settings(QWidget *parent = 0);
+        ~Settings();
+
+        void setParameters(const QString &name, int framesTotal, int startFrame);
+        void setParameters(KTItemTweener *currentTween);
+        void initStartCombo(int totalFrames, int currentIndex);
+        void setStartFrame(int currentIndex);
+        int startFrame();
+
+        void updateSteps(const QGraphicsPathItem *path);
+        QString tweenToXml(int currentFrame, QPointF point, QString &path);
+        int totalSteps();
+        void activatePathMode();
+        void activateSelectionMode();
+        void cleanData();
+        void notifySelection(bool flag);
+        int startComboSize();
+        QString currentTweenName() const;
+        
     private slots:
-        void showTweenSettings(int column, int row);
-        void enableTween(int state); 
-
+        void emitOptionChanged(int option);
+        // void addTween();
+        void applyTween();
+        
     signals:
-        void callTweenerSettings(int row);
+        void clickedCreatePath();
+        void clickedSelect();
+        void clickedResetTween();
+        void clickedApplyTween();
+        void startingPointChanged(int);
         
     private:
+        void setInnerForm();
+        void activeInnerForm(bool enable);
+        void setEditMode();
         struct Private;
         Private *const k;
 };
