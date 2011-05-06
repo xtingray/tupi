@@ -37,9 +37,10 @@
 #include "kdebug.h"
 #include "kradiobuttongroup.h"
 #include "ktitemtweener.h"
-#include "kttweenerstep.h"
+// #include "kttweenerstep.h"
 #include "kimagebutton.h"
 #include "kseparator.h"
+#include "tweenertable.h"
 #include "kosd.h"
 
 #include <QLabel>
@@ -47,11 +48,11 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QHeaderView>
 
 struct TweenerPanel::Private
 {
     QWidget *innerPanel;
-
 
     QBoxLayout *layout;
     Mode mode;
@@ -59,6 +60,8 @@ struct TweenerPanel::Private
     KRadioButtonGroup *options;
     QComboBox *comboInit;
     QComboBox *comboEnd;
+
+    TweenerTable *tweenerTable;
 
     QLabel *totalLabel;
     int totalSteps;
@@ -81,6 +84,7 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->scaleAxes = KTItemTweener::XY;
     k->selectionDone = false;
+    k->propertiesDone = false;
     k->totalSteps = 0;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -133,6 +137,41 @@ TweenerPanel::~TweenerPanel()
     delete k;
 }
 
+void TweenerPanel::setInnerForm()
+{
+    k->innerPanel = new QWidget;
+
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
+    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+
+    QLabel *startingLabel = new QLabel(tr("Tweeners") + ": ");
+
+    QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
+    startLayout->setMargin(0);
+    startLayout->setSpacing(0);
+    startLayout->addWidget(startingLabel);
+
+    k->tweenerTable = new TweenerTable;
+
+    innerLayout->addLayout(startLayout);
+    innerLayout->addWidget(k->tweenerTable);
+
+    k->layout->addWidget(k->innerPanel);
+    activeInnerForm(false);
+}
+
+void TweenerPanel::activeInnerForm(bool enable)
+{
+    if (enable && !k->innerPanel->isVisible()) {
+        k->propertiesDone = true;
+        k->innerPanel->show();
+    } else {
+        k->propertiesDone = false;
+        k->innerPanel->hide();
+    }
+}
+
 // Adding new Tween
 
 void TweenerPanel::setParameters(const QString &name, int framesTotal, int startFrame)
@@ -157,6 +196,7 @@ void TweenerPanel::emitOptionChanged(int option)
             case 1:
              {
                  if (k->selectionDone) {
+                     activeInnerForm(true);
                      emit clickedTweenProperties();
                  } else {
                      k->options->setCurrentIndex(0);

@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                           *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,43 +33,51 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TWEENERPANEL_H
-#define TWEENERPANEL_H
+#include "tweenertable.h"
+#include "kpushbutton.h"
+#include "kseparator.h"
+#include "kdebug.h"
 
-#include <QWidget>
+#include <QBoxLayout>
+#include <QCheckBox>
+#include <QPushButton>
 
-/**
- * @author Gustav Gonzalez 
-*/
-
-class TweenerPanel : public QWidget 
+struct TweenerTable::Private
 {
-    Q_OBJECT
-
-    public:
-
-        enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Properties, None };
-
-        TweenerPanel(QWidget *parent = 0);
-        ~TweenerPanel();
-
-        void setParameters(const QString &name, int framesTotal, int startFrame);
-        void activateMode(TweenerPanel::EditMode mode);
-        void notifySelection(bool flag);
-
-    private slots:
-        void emitOptionChanged(int option);
-        
-    signals:
-        void clickedSelect();
-        void clickedTweenProperties();
-        
-    private:
-        void setInnerForm();
-        void activeInnerForm(bool enable);
-        struct Private;
-        Private *const k;
+    QList<QCheckBox*> *checkList;
+    QList<KPushButton*> *buttonList;
 };
 
-#endif
+TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
+{
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+
+    QStringList labels;
+    labels << tr("Position") << tr("Rotation") << tr("Scale") << tr("Shear") << tr("Opacity") << tr("Coloring"); 
+
+    k->checkList = new QList<QCheckBox*>();
+    k->buttonList = new QList<KPushButton*>();
+
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+
+    for (int i = 0; i < labels.size(); ++i) {
+         QHBoxLayout *itemLayout = new QHBoxLayout;
+         itemLayout->setAlignment(Qt::AlignHCenter);
+         itemLayout->setMargin(0);
+         itemLayout->setSpacing(5);
+         k->checkList->append(new QCheckBox(this));
+         k->buttonList->append(new KPushButton(this, labels.at(i), 1, i));
+         itemLayout->addWidget(k->checkList->at(i));
+         itemLayout->addWidget(k->buttonList->at(i));
+
+         innerLayout->addLayout(itemLayout);
+    }
+
+    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+}
+
+TweenerTable::~TweenerTable()
+{
+    delete k;
+}

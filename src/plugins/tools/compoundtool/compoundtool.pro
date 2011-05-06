@@ -10,7 +10,7 @@ HEADERS += tweener.h \
            buttonspanel.h \
            configurator.h \
            tweenerpanel.h \
-           # settings.h \
+           tweenertable.h \
            tweenmanager.h \
            target.h
 
@@ -18,7 +18,7 @@ SOURCES += tweener.cpp \
            buttonspanel.cpp \
            configurator.cpp \
            tweenerpanel.cpp \
-           # settings.cpp \
+           tweenertable.cpp \
            tweenmanager.cpp \
            target.cpp
 
