@@ -7,20 +7,17 @@ INSTALLS += target
 target.path = /plugins/
 
 HEADERS += tweener.h \
-           buttonspanel.h \
            configurator.h \
            tweenerpanel.h \
            tweenertable.h \
-           tweenmanager.h \
-           target.h
+           positionsettings.h
 
 SOURCES += tweener.cpp \
-           buttonspanel.cpp \
+           # buttonspanel.cpp \
            configurator.cpp \
            tweenerpanel.cpp \
            tweenertable.cpp \
-           tweenmanager.cpp \
-           target.cpp
+           positionsettings.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib

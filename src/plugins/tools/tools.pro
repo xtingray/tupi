@@ -3,7 +3,8 @@
 # Subdir relative project main directory: ./src/plugins/tools
 # Target is a subdirs project 
 
-SUBDIRS += penciltool \
+SUBDIRS += common \
+           penciltool \
            selecttool \
            contourselectiontool \
            texttool \

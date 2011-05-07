@@ -8,18 +8,10 @@ target.path = /plugins/
 
 HEADERS += tweener.h \
            configurator.h \
-           settings.h \
-           buttonspanel.h \
-           tweenmanager.h \
-           stepsviewer.h \
-           spinboxdelegate.h
+           settings.h
 SOURCES += tweener.cpp \
            configurator.cpp \
-           settings.cpp \
-           buttonspanel.cpp \
-           tweenmanager.cpp \
-           stepsviewer.cpp \
-           spinboxdelegate.cpp
+           settings.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib

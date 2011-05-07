@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "settings.h"
+#include "positionsettings.h"
 #include "kradiobuttongroup.h"
 #include "kimagebutton.h"
 #include "kdebug.h"
@@ -50,7 +50,7 @@
 #include <QHeaderView>
 #include <QGraphicsPathItem>
 
-struct Settings::Private
+struct PositionSettings::Private
 {
     QWidget *innerPanel;
     QBoxLayout *layout; 
@@ -67,7 +67,7 @@ struct Settings::Private
     KImageButton *remove;
 };
 
-Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
+PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->selectionDone = false;
 
@@ -117,12 +117,12 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     activateSelectionMode();
 }
 
-Settings::~Settings()
+PositionSettings::~PositionSettings()
 {
     delete k;
 }
 
-void Settings::setInnerForm()
+void PositionSettings::setInnerForm()
 {
     k->innerPanel = new QWidget; 
 
@@ -169,7 +169,7 @@ void Settings::setInnerForm()
     activeInnerForm(false);
 }
 
-void Settings::activeInnerForm(bool enable)
+void PositionSettings::activeInnerForm(bool enable)
 {
     if (enable && !k->innerPanel->isVisible())
         k->innerPanel->show();
@@ -179,7 +179,7 @@ void Settings::activeInnerForm(bool enable)
 
 // Adding new Tween
 
-void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
+void PositionSettings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
     k->mode = Add;
     k->input->setText(name);
@@ -198,7 +198,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 // Editing new Tween
 
-void Settings::setParameters(KTItemTweener *currentTween)
+void PositionSettings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
 
@@ -214,7 +214,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }
 
-void Settings::initStartCombo(int framesTotal, int currentIndex)
+void PositionSettings::initStartCombo(int framesTotal, int currentIndex)
 {
     k->comboInit->clear();
     for (int i=1; i<=framesTotal; i++)
@@ -223,28 +223,28 @@ void Settings::initStartCombo(int framesTotal, int currentIndex)
     k->comboInit->setCurrentIndex(currentIndex);
 }
 
-void Settings::setStartFrame(int currentIndex)
+void PositionSettings::setStartFrame(int currentIndex)
 {
     k->comboInit->setCurrentIndex(currentIndex);
 }
 
-int Settings::startFrame()
+int PositionSettings::startFrame()
 {
     return k->comboInit->currentIndex();
 }
 
-int Settings::startComboSize()
+int PositionSettings::startComboSize()
 {
     return k->comboInit->count();
 }
 
-void Settings::updateSteps(const QGraphicsPathItem *path)
+void PositionSettings::updateSteps(const QGraphicsPathItem *path)
 {
     k->stepViewer->setPath(path);
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }
 
-void Settings::emitOptionChanged(int option)
+void PositionSettings::emitOptionChanged(int option)
 {
     switch (option) {
             case 0:
@@ -266,7 +266,7 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame, QPointF point, QString &path)
+QString PositionSettings::tweenToXml(int currentFrame, QPointF point, QString &path)
 {
     QDomDocument doc;
 
@@ -286,32 +286,32 @@ QString Settings::tweenToXml(int currentFrame, QPointF point, QString &path)
     return doc.toString();
 }
 
-int Settings::totalSteps()
+int PositionSettings::totalSteps()
 {
     return k->stepViewer->totalSteps();
 }
 
-void Settings::activatePathMode()
+void PositionSettings::activatePathMode()
 {
     k->options->setCurrentIndex(1);
 }
 
-void Settings::activateSelectionMode()
+void PositionSettings::activateSelectionMode()
 {
     k->options->setCurrentIndex(0);
 }
 
-void Settings::cleanData()
+void PositionSettings::cleanData()
 {
     k->stepViewer->cleanRows();
 }
 
-void Settings::notifySelection(bool flag)
+void PositionSettings::notifySelection(bool flag)
 {
     k->selectionDone = flag;
 }
 
-void Settings::applyTween()
+void PositionSettings::applyTween()
 {
     if (!k->selectionDone) {
         k->options->setCurrentIndex(0);
@@ -333,7 +333,7 @@ void Settings::applyTween()
     emit clickedApplyTween();
 }
 
-void Settings::setEditMode()
+void PositionSettings::setEditMode()
 {
     k->mode = Edit;
     k->apply->setToolTip(tr("Update Tween"));
@@ -341,7 +341,7 @@ void Settings::setEditMode()
     k->remove->setToolTip(tr("Close Tween properties"));
 }
 
-QString Settings::currentTweenName() const
+QString PositionSettings::currentTweenName() const
 {
     QString tweenName = k->input->text();
     if (tweenName.length() > 0)

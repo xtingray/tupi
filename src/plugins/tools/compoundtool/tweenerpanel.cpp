@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tweenerpanel.h"
+#include "positionsettings.h"
 #include "kdebug.h"
 #include "kradiobuttongroup.h"
 // #include "ktitemtweener.h"
@@ -178,7 +179,7 @@ void TweenerPanel::loadTweenComponents()
          switch(i)  {
                 case TweenerPanel::Position:
                      kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
-                     k->panelList->append(new QWidget);
+                     k->panelList->append(new PositionSettings());
                 break;
                 case TweenerPanel::Rotation:
                      kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";

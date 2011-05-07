@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef POSITIONSETTINGS_H
+#define POSITIONSETTINGS_H
 
 #include <QWidget>
 
@@ -42,10 +42,10 @@ class QGraphicsPathItem;
 class KTItemTweener;
 
 /**
- * @author Jorge Cuadrado
+ * @author Gustav Gonzalez 
 */
 
-class Settings : public QWidget 
+class PositionSettings : public QWidget 
 {
     Q_OBJECT
 
@@ -53,8 +53,8 @@ class Settings : public QWidget
         enum Mode { Add = 1, Edit, View };
         enum EditMode { Selection = 0, Path, None };
 
-        Settings(QWidget *parent = 0);
-        ~Settings();
+        PositionSettings(QWidget *parent = 0);
+        ~PositionSettings();
 
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void setParameters(KTItemTweener *currentTween);
