@@ -21,7 +21,7 @@ class Test
         @optional = false
     end
     
-    def run(config, debug, isLucid)
+    def run(config, conf, debug, isLucid)
         parser = Parser.new
         parser.os = DetectOS::OS[DetectOS.whatOS].to_s.downcase
         
@@ -32,7 +32,7 @@ class Test
         Info.info << "Checking for " << parser.name << "... "
         
         dir = "#{File.dirname(@rules)}/#{parser.dir}"
-        
+
         if $DEBUG
             Info.warn << "Running in " << dir << $endl
         end
@@ -43,16 +43,43 @@ class Test
             if File.stat(dir).directory?
                 Dir.chdir(dir)
 
-                extralib = ""
+                extraLib = ""
+                extraInclude = ""
                 if RUBY_PLATFORM == "x86_64-linux"
-                   extralib = "-L/usr/lib64"
+                   extraLib = "-L/usr/lib64 "
+                end
+
+                if File.dirname(@rules).end_with?("ffmpeg")  
+                   if conf.hasArgument?("with-ffmpeg")
+                      ffmpegLib = conf.argumentValue("with-ffmpeg") + "/lib"
+                      extraLib += "-L#{ffmpegLib}"
+                      extraInclude = conf.argumentValue("with-ffmpeg") + "/include"
+                   end
+                end
+
+                if File.dirname(@rules).end_with?("aspell")
+                   if conf.hasArgument?("with-aspell")
+                      aspellLib = conf.argumentValue("with-aspell") + "/lib"
+                      extraLib += "-L#{aspellLib}"
+                      extraInclude = conf.argumentValue("with-aspell") + "/include"
+                   end
+                end
+
+                qmakeLine = ""
+                 
+                if extraLib.length > 0 
+                   qmakeLine = "'LIBS += #{extraLib} #{parser.libs.join(" ")}'";
+                end
+
+                if extraInclude.length > 0    
+                   qmakeLine += " 'INCLUDEPATH += #{extraInclude} #{parser.includes.join(" ")}'";
                 end
 
                 if isLucid
-                   @qmake.run("'DEFINES += K_LUCID' 'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
-                else
-                   @qmake.run("'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
+                   qmakeLine = "'DEFINES += K_LUCID' " + qmakeLine
                 end
+
+                @qmake.run(qmakeLine, true)
 
                 if not @qmake.compile(debug)
                     Dir.chdir(cwd)

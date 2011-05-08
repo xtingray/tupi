@@ -6,4 +6,6 @@ module RQonf
     CONFIG["libdir"] = "/usr/local/tupi/lib"
     CONFIG["includedir"] = "/usr/local/tupi/include"
     CONFIG["sharedir"] = "/usr/local/tupi/share"
+    CONFIG["ffmpegdir"] = "/usr"
+    CONFIG["aspelldir"] = "/usr"
 end

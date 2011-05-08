@@ -35,7 +35,7 @@
 
 #include "positionsettings.h"
 #include "kradiobuttongroup.h"
-#include "kimagebutton.h"
+// #include "kimagebutton.h"
 #include "kdebug.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
@@ -46,13 +46,13 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QComboBox>
+#include <QPushButton>
 #include <QBoxLayout>
 #include <QHeaderView>
 #include <QGraphicsPathItem>
 
 struct PositionSettings::Private
 {
-    QWidget *innerPanel;
     QBoxLayout *layout; 
 
     QLineEdit *input;
@@ -63,8 +63,7 @@ struct PositionSettings::Private
     bool selectionDone;
     Mode mode; 
 
-    KImageButton *apply;
-    KImageButton *remove;
+    QPushButton *closeButton;
 };
 
 PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Private)
@@ -76,105 +75,30 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
 
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
-    QLabel *nameLabel = new QLabel(tr("Name") + ": ");
-    k->input = new QLineEdit;
+    k->stepViewer = new StepsViewer;
+    k->stepViewer->verticalHeader()->hide();
 
-    QHBoxLayout *nameLayout = new QHBoxLayout;
-    nameLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    nameLayout->setMargin(0);
-    nameLayout->setSpacing(0);
-    nameLayout->addWidget(nameLabel);
-    nameLayout->addWidget(k->input);
+    k->layout->addWidget(k->stepViewer);
 
-    k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
-    k->options->addItem(tr("Select object"), 0);
-    k->options->addItem(tr("Set Properties"), 1);
-    connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
-
-    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
-
-    k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    // k->remove->setToolTip(tr("Cancel Tween"));
-    connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
+    k->closeButton = new QPushButton(tr("Back to Tweens"), this);
+    connect(k->closeButton, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(10);
-    buttonsLayout->addWidget(k->apply);
-    buttonsLayout->addWidget(k->remove);
-
-    k->layout->addLayout(nameLayout);
-    k->layout->addWidget(k->options);
-
-    setInnerForm();
+    buttonsLayout->addWidget(k->closeButton);
 
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateSelectionMode();
+    // activateSelectionMode();
 }
 
 PositionSettings::~PositionSettings()
 {
     delete k;
-}
-
-void PositionSettings::setInnerForm()
-{
-    k->innerPanel = new QWidget; 
-
-    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
-    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-
-    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
-    startingLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    k->comboInit = new QComboBox();
-    k->comboInit->setFixedWidth(60);
-    //k->comboInit->setMaximumWidth(50);
-    k->comboInit->setEditable(false);
-
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
-
-    QHBoxLayout *startLayout = new QHBoxLayout;
-    startLayout->setAlignment(Qt::AlignHCenter);
-    startLayout->setMargin(0);
-    startLayout->setSpacing(0);
-    // startLayout->addWidget(startingLabel);
-    startLayout->addWidget(k->comboInit);
-
-    k->stepViewer = new StepsViewer;
-    k->stepViewer->verticalHeader()->hide();
-
-    k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
-    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-    QHBoxLayout *totalLayout = new QHBoxLayout;
-    totalLayout->setAlignment(Qt::AlignHCenter);
-    totalLayout->setMargin(0);
-    totalLayout->setSpacing(0);
-    totalLayout->addWidget(k->totalLabel);
-
-    innerLayout->addWidget(startingLabel);
-    innerLayout->addLayout(startLayout);
-    innerLayout->addWidget(k->stepViewer);
-
-    innerLayout->addLayout(totalLayout);
-
-    // k->innerPanel->setLayout(innerLayout);
-
-    k->layout->addWidget(k->innerPanel);
-
-    activeInnerForm(false);
-}
-
-void PositionSettings::activeInnerForm(bool enable)
-{
-    if (enable && !k->innerPanel->isVisible())
-        k->innerPanel->show();
-    else
-        k->innerPanel->hide();
 }
 
 // Adding new Tween
@@ -189,9 +113,8 @@ void PositionSettings::setParameters(const QString &name, int framesTotal, int s
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 
     k->comboInit->setEnabled(false);
-    k->apply->setToolTip(tr("Save Tween"));
-    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
-    k->remove->setToolTip(tr("Cancel Tween"));
+    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->closeButton->setToolTip(tr("Cancel Tween"));
 
     initStartCombo(framesTotal, startFrame);
 }
@@ -249,14 +172,12 @@ void PositionSettings::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
-                 activeInnerForm(false);
                  emit clickedSelect();
              }
             break;
             case 1:
              {
                  if (k->selectionDone) {
-                     activeInnerForm(true);
                      emit clickedCreatePath();
                  } else {
                      k->options->setCurrentIndex(0);
@@ -336,9 +257,8 @@ void PositionSettings::applyTween()
 void PositionSettings::setEditMode()
 {
     k->mode = Edit;
-    k->apply->setToolTip(tr("Update Tween"));
-    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
-    k->remove->setToolTip(tr("Close Tween properties"));
+    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
+    k->closeButton->setToolTip(tr("Close Tween properties"));
 }
 
 QString PositionSettings::currentTweenName() const

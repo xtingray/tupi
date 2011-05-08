@@ -119,6 +119,7 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addWidget(k->options);
 
     setTweenerTableForm();
+    loadTweenComponents();
 
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
@@ -266,6 +267,8 @@ void TweenerPanel::showTweenSettings(int tweenType)
     switch(tweenType)  {
            case TweenerPanel::Position:
                 kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
+                activeTweenerTableForm(false);
+                activeTweenComponent(0, true);
            break;
            case TweenerPanel::Rotation:
                 kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";

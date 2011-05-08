@@ -14,15 +14,17 @@ begin
        puts <<_EOH_
 Use: ./configure [options]
   options:
-  --help, -h:                              Show this message
-  --prefix=[path], -prefix [path]:         Sets installation path [/usr/local]
-  --bindir=[path], -bindir [path]:         Set binaries path [/usr/local/bin]
-  --libdir=[path], -libdir [path]:         Set library path [/usr/local/lib]
-  --includedir=[path], -includedir [path]: Set include path [/usr/local/include]
-  --sharedir=[path], -sharedir [path]:     Set data path [/usr/local/share]
-  --with-debug:                            Enable debug
-  --with-qtdir=[path], -with-qtdir [path]: Set Qt directory [i.e. /usr/local/qt]
-  --debian-build:                          Option exclusive for Debian maintainer
+  --help, -h:                                Show this message
+  --prefix=[path], -prefix [path]:           Sets installation path [/usr/local]
+  --bindir=[path], -bindir [path]:           Set binaries path [/usr/local/bin]
+  --libdir=[path], -libdir [path]:           Set library path [/usr/local/lib]
+  --includedir=[path], -includedir [path]:   Set include path [/usr/local/include]
+  --sharedir=[path], -sharedir [path]:       Set data path [/usr/local/share]
+  --with-ffmpeg=[path], -with-ffmpeg [path]: Set ffmpeg installation path [/usr]
+  --with-aspell=[path], -with-aspell [path]: Set apell installation path [/usr]
+  --with-debug:                              Enable debug
+  --with-qtdir=[path], -with-qtdir [path]:   Set Qt directory [i.e. /usr/local/qt]
+  --debian-build:                            Option exclusive for Debian maintainer
 _EOH_
         exit 0
     end
@@ -53,6 +55,20 @@ _EOH_
        end
     end
 
+    if conf.hasArgument?("with-ffmpeg")
+       ffmpegLib = conf.argumentValue("with-ffmpeg") + "/lib"
+       ffmpegInclude = conf.argumentValue("with-ffmpeg") + "/include"
+       config.addLib("-L" + ffmpegLib)
+       config.addIncludePath(ffmpegInclude)
+    end
+
+    if conf.hasArgument?("with-aspell")
+       aspellLib = conf.argumentValue("with-spell") + "/lib"
+       aspellInclude = conf.argumentValue("with-aspell") + "/include"
+       config.addLib("-L" + aspellLib)
+       config.addIncludePath(aspellInclude)
+    end
+
     debug = 0
     if conf.hasArgument?("with-debug")
         debug = 1
@@ -62,9 +78,9 @@ _EOH_
     conf.setTestDir("configure.tests")
 
     if distro == "lucid"
-       conf.runTests(config, debug, true)
+       conf.runTests(config, conf, debug, true)
     else
-       conf.runTests(config, debug, false)
+       conf.runTests(config, conf, debug, false)
     end
 
     config.addModule("core")
