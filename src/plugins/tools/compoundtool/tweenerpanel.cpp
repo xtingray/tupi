@@ -53,6 +53,7 @@
 
 struct TweenerPanel::Private
 {
+    QWidget *optionsPanel;
     QWidget *tweenerTablePanel;
     QWidget *buttonsPanel;
 
@@ -66,6 +67,9 @@ struct TweenerPanel::Private
     QComboBox *comboEnd;
 
     TweenerTable *tweenerTable;
+    int currentTweenIndex;
+
+    PositionSettings *positionPanel;
 
     QLabel *totalLabel;
     int totalSteps;
@@ -98,13 +102,9 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     nameLayout->addWidget(nameLabel);
     nameLayout->addWidget(k->input);
 
-    k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
-    k->options->addItem(tr("Select object"), 0);
-    k->options->addItem(tr("Set Tweeners"), 1);
-    connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
-
     k->layout->addLayout(nameLayout);
-    k->layout->addWidget(k->options);
+
+    setOptionsPanel();
 
     setTweenerTableForm();
     loadTweenComponents();
@@ -119,6 +119,34 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
 TweenerPanel::~TweenerPanel()
 {
     delete k;
+}
+
+void TweenerPanel::setOptionsPanel()
+{
+    k->optionsPanel = new QWidget;
+
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->optionsPanel);
+    //innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    innerLayout->setMargin(0);
+    innerLayout->setSpacing(0);
+
+    k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
+    k->options->addItem(tr("Select object"), 0);
+    k->options->addItem(tr("Set Tweeners"), 1);
+    connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
+
+    innerLayout->addWidget(k->options);
+
+    k->layout->addWidget(k->optionsPanel);
+    activeOptionsPanel(true);
+}
+
+void TweenerPanel::activeOptionsPanel(bool enable)
+{
+    if (enable && !k->optionsPanel->isVisible())
+        k->optionsPanel->show();
+    else
+        k->optionsPanel->hide();
 }
 
 void TweenerPanel::setTweenerTableForm()
@@ -203,7 +231,9 @@ void TweenerPanel::loadTweenComponents()
          switch(i)  {
                 case TweenerPanel::Position:
                      kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
-                     k->panelList->append(new PositionSettings());
+                     k->positionPanel = new PositionSettings;
+                     connect(k->positionPanel, SIGNAL(clickedResetTween()), this, SLOT(activateTweenersTable()));
+                     k->panelList->append(k->positionPanel);
                 break;
                 case TweenerPanel::Rotation:
                      kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";
@@ -287,26 +317,18 @@ void TweenerPanel::notifySelection(bool flag)
 
 void TweenerPanel::showTweenSettings(int tweenType)
 {
-    switch(tweenType)  {
-           case TweenerPanel::Position:
-                kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
-                activeTweenerTableForm(false);
-                activeTweenComponent(0, true);
-           break;
-           case TweenerPanel::Rotation:
-                kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";
-           break;
-           case TweenerPanel::Scale:
-                kFatal() << "TweenerPanel::showTweenSettings() - Opening Scale gui";
-           break;
-           case TweenerPanel::Shear:
-                kFatal() << "TweenerPanel::showTweenSettings() - Opening Shear gui";
-           break;
-           case TweenerPanel::Opacity:
-                kFatal() << "TweenerPanel::showTweenSettings() - Opening Opacity gui";
-           break;
-           case TweenerPanel::Coloring:
-                kFatal() << "TweenerPanel::showTweenSettings() - Opening Coloring gui";
-           break;
-    }
+    k->currentTweenIndex = tweenType;
+
+    activeOptionsPanel(false);
+    activeTweenerTableForm(false);
+    activeButtonsPanel(false);
+    activeTweenComponent(tweenType, true);
+}
+
+void TweenerPanel::activateTweenersTable()
+{
+    activeTweenComponent(k->currentTweenIndex, false);
+    activeOptionsPanel(true);
+    activeTweenerTableForm(true);
+    activeButtonsPanel(true);
 }

@@ -35,7 +35,8 @@
 
 #include "positionsettings.h"
 #include "kradiobuttongroup.h"
-// #include "kimagebutton.h"
+#include "kseparator.h"
+#include "kimagebutton.h"
 #include "kdebug.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
@@ -63,6 +64,7 @@ struct PositionSettings::Private
     bool selectionDone;
     Mode mode; 
 
+    QPushButton *applyButton;
     QPushButton *closeButton;
 };
 
@@ -75,18 +77,66 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
 
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
+    QLabel *componentLabel = new QLabel(tr("Component") + ": ");
+    componentLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    QLabel *componentName = new QLabel(tr("Position"));
+    componentName->setAlignment(Qt::AlignHCenter);
+    componentName->setFont(QFont("Arial", 8, QFont::Bold));
+
+    QHBoxLayout *labelLayout = new QHBoxLayout;
+    labelLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    labelLayout->setMargin(0);
+    labelLayout->setSpacing(0);
+    labelLayout->addWidget(componentLabel);
+    labelLayout->addWidget(componentName);
+
+    QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
+    startingLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    k->comboInit = new QComboBox();
+    k->comboInit->setFixedWidth(60);
+    k->comboInit->setEditable(false);
+
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+
+    QHBoxLayout *startLayout = new QHBoxLayout;
+    startLayout->setAlignment(Qt::AlignHCenter);
+    startLayout->setMargin(0);
+    startLayout->setSpacing(0);
+    startLayout->addWidget(k->comboInit);
+
+    k->layout->addLayout(labelLayout);
+    k->layout->addWidget(new KSeparator(Qt::Horizontal));
+
+    k->layout->addWidget(startingLabel);
+    k->layout->addLayout(startLayout);
+
     k->stepViewer = new StepsViewer;
     k->stepViewer->verticalHeader()->hide();
 
     k->layout->addWidget(k->stepViewer);
 
-    k->closeButton = new QPushButton(tr("Back to Tweens"), this);
+    k->totalLabel = new QLabel(tr("Frames Total") + ": 0");
+    k->totalLabel->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    QHBoxLayout *totalLayout = new QHBoxLayout;
+    totalLayout->setAlignment(Qt::AlignHCenter);
+    totalLayout->setMargin(0);
+    totalLayout->setSpacing(0);
+    totalLayout->addWidget(k->totalLabel);
+
+    k->layout->addLayout(totalLayout);
+
+    k->applyButton = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    // connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
+
+    k->closeButton = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
     connect(k->closeButton, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(10);
+    buttonsLayout->addWidget(k->applyButton);
     buttonsLayout->addWidget(k->closeButton);
 
     k->layout->addSpacing(10);

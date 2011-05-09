@@ -69,6 +69,7 @@ class TweenerPanel : public QWidget
     private slots:
         void emitOptionChanged(int option);
         void showTweenSettings(int tweenType);
+        void activateTweenersTable();
         
     signals:
         void clickedSelect();
@@ -76,6 +77,8 @@ class TweenerPanel : public QWidget
         void clickedResetTween();
         
     private:
+        void setOptionsPanel();
+        void activeOptionsPanel(bool enable);
         void setTweenerTableForm();
         void activeTweenerTableForm(bool enable);
         void setButtonsPanel();

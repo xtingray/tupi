@@ -77,6 +77,7 @@ struct Tweener::Private
 
     TweenerPanel::Mode mode;
     TweenerPanel::EditMode editMode;
+    TweenerPanel::TweenerType currentTweener;
 };
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
