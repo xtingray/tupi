@@ -54,6 +54,8 @@
 struct TweenerPanel::Private
 {
     QWidget *tweenerTablePanel;
+    QWidget *buttonsPanel;
+
     QList<QWidget*> *panelList;
 
     QBoxLayout *layout;
@@ -101,29 +103,15 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     k->options->addItem(tr("Set Tweeners"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
-    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    k->apply->setDisabled(true);
-    // connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
-
-    k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    // connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
-
-    QHBoxLayout *buttonsLayout = new QHBoxLayout;
-    buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-    buttonsLayout->setMargin(0);
-    buttonsLayout->setSpacing(10);
-    buttonsLayout->addWidget(k->apply);
-    buttonsLayout->addWidget(k->remove);
-
     k->layout->addLayout(nameLayout);
     k->layout->addWidget(k->options);
 
     setTweenerTableForm();
     loadTweenComponents();
 
-    k->layout->addSpacing(10);
-    k->layout->addLayout(buttonsLayout);
-    k->layout->setSpacing(5);
+    // k->layout->addSpacing(10);
+    setButtonsPanel();
+    k->layout->setSpacing(0);
 
     activateMode(TweenerPanel::Selection);
 }
@@ -167,6 +155,41 @@ void TweenerPanel::activeTweenerTableForm(bool enable)
         k->propertiesDone = false;
         k->tweenerTablePanel->hide();
     }
+}
+
+void TweenerPanel::setButtonsPanel()
+{
+    k->buttonsPanel = new QWidget;
+
+    QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->buttonsPanel);
+    innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+
+    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->apply->setDisabled(true);
+    // connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
+
+    k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
+
+    QHBoxLayout *buttonsLayout = new QHBoxLayout;
+    buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+    buttonsLayout->setMargin(0);
+    buttonsLayout->setSpacing(10);
+    buttonsLayout->addWidget(k->apply);
+    buttonsLayout->addWidget(k->remove);
+
+    innerLayout->addLayout(buttonsLayout);
+
+    k->layout->addWidget(k->buttonsPanel);
+    activeButtonsPanel(true);
+}
+
+void TweenerPanel::activeButtonsPanel(bool enable)
+{
+    if (enable && !k->buttonsPanel->isVisible())
+        k->buttonsPanel->show();
+    else
+        k->buttonsPanel->hide();
 }
 
 void TweenerPanel::loadTweenComponents()

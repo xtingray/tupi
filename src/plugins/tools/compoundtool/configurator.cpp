@@ -109,6 +109,7 @@ void Configurator::setTweenerPanel()
 
     connect(k->tweenList, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->tweenList, SIGNAL(clickedTweenProperties()), this, SIGNAL(clickedTweenProperties()));
+    connect(k->tweenList, SIGNAL(clickedResetTween()), this, SLOT(closeTweenList()));
 
     k->settingsLayout->addWidget(k->tweenList);
     activeTweenerPanel(false);
@@ -120,7 +121,7 @@ void Configurator::setTweenerPanel()
     connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->settingsPanel, SIGNAL(clickedDefineProperties()), this, SIGNAL(clickedDefineProperties()));
     connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
-    connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(closeTweenProperties()));
+    connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(closeTweenList()));
 
     k->settingsLayout->addWidget(k->settingsPanel);
 
@@ -274,24 +275,24 @@ void Configurator::notifySelection(bool flag)
     k->tweenList->notifySelection(flag);
 }
 
-void Configurator::closeTweenProperties()
+void Configurator::closeTweenList()
 {
     if (k->mode == TweenerPanel::Add) {
         k->tweenManager->removeItemFromList();
     } else if (k->mode == TweenerPanel::Edit) {
-        closeSettingsPanel();
+        closeTweenerPanel();
     }
 
     emit clickedResetInterface();
 
-    closeSettingsPanel();
+    closeTweenerPanel();
 }
 
-void Configurator::closeSettingsPanel()
+void Configurator::closeTweenerPanel()
 {
     if (k->state == TweenerList) {
         activeTweenManagerPanel(true);
-        // activePropertiesPanel(false);
+        activeTweenerPanel(false);
         k->mode = TweenerPanel::View;
         k->state = Manager;
     }
@@ -311,7 +312,7 @@ void Configurator::applyItem()
 void Configurator::resetUI()
 {
     k->tweenManager->resetUI();
-    closeSettingsPanel();
+    closeTweenerPanel();
     // k->settingsPanel->notifySelection(false);
 }
 

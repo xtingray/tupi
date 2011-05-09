@@ -68,7 +68,7 @@ class Configurator : public QFrame
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();
-        void closeSettingsPanel();
+        void closeTweenerPanel();
         TweenerPanel::Mode mode();
         void resetUI();
         QString tweenToXml(int currentFrame, QPointF point);
@@ -79,7 +79,7 @@ class Configurator : public QFrame
         void editTween();
         void removeTween();
         void removeTween(const QString &name);
-        void closeTweenProperties();
+        void closeTweenList();
         void updateTweenData(const QString &name);
         
     signals:

@@ -73,10 +73,13 @@ class TweenerPanel : public QWidget
     signals:
         void clickedSelect();
         void clickedTweenProperties();
+        void clickedResetTween();
         
     private:
         void setTweenerTableForm();
         void activeTweenerTableForm(bool enable);
+        void setButtonsPanel();
+        void activeButtonsPanel(bool enable);
         void loadTweenComponents();
         void activeTweenComponent(int index, bool enable);
 
