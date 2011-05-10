@@ -46,6 +46,7 @@
 #include "kglobal.h"
 #include "kdebug.h"
 #include "kaction.h"
+#include "knodegroup.h"
 #include "kosd.h"
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
@@ -67,9 +68,14 @@ struct Tweener::Private
     Configurator *configurator;
 
     KTGraphicsScene *scene;
+    QGraphicsPathItem *path;
     QList<QGraphicsItem *> objects;
 
     KTItemTweener *currentTween;
+
+    KNodeGroup *group;
+
+    bool pathAdded;
     int startPoint;
 
     QPointF origin;
@@ -78,6 +84,10 @@ struct Tweener::Private
     TweenerPanel::Mode mode;
     TweenerPanel::EditMode editMode;
     TweenerPanel::TweenerType currentTweener;
+
+    QPointF itemObjectReference;
+    QPointF pathOffset;
+    QPointF firstNode;
 };
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
@@ -97,8 +107,16 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
+    delete k->path;
+    k->path = 0;
+
     k->scene = scene;
     k->objects.clear();
+
+    k->pathAdded = false;
+    k->pathOffset = QPointF(0, 0);
+    k->firstNode = QPointF(0, 0);
+    k->itemObjectReference = QPointF(0, 0);
 
     k->mode = TweenerPanel::View;
     k->editMode = TweenerPanel::None;
