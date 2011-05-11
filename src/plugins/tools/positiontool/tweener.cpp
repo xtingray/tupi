@@ -255,18 +255,13 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     scene->addItem(k->path);
                     k->pathAdded = true;
 
-                    // k->itemObjectReference = newPos;
                     k->pathOffset = QPointF(0, 0);
                 } else {
-                    // QPointF oldPos = k->itemObjectReference;
-                    // if (newPos != oldPos) {
-                        int distanceX = newPos.x() - oldPos.x();
-                        int distanceY = newPos.y() - oldPos.y();
-                        k->path->moveBy(distanceX, distanceY);
+                    int distanceX = newPos.x() - oldPos.x();
+                    int distanceY = newPos.y() - oldPos.y();
+                    k->path->moveBy(distanceX, distanceY);
 
-                        // k->itemObjectReference = newPos;
-                        k->pathOffset = QPointF(distanceX, distanceY);
-                    // }
+                    k->pathOffset = QPointF(distanceX, distanceY);
                 }
             } 
         }

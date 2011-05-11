@@ -203,7 +203,12 @@ int Configurator::startComboSize()
        return 1;
 }
 
-QString Configurator::tweenToXml(int currentFrame, QPointF point)
+void Configurator::updateSteps(const QGraphicsPathItem *path)
+{
+    // k->settingsPanel->updateSteps(path);
+}
+
+QString Configurator::tweenToXml(int currentFrame, QPointF point, QString &route)
 {
     // return k->settingsPanel->tweenToXml(currentFrame, point);
     return "";
@@ -213,6 +218,11 @@ int Configurator::totalSteps()
 {
     // return k->settingsPanel->totalSteps();
     return 1;
+}
+
+void Configurator::activateSelectionMode()
+{
+    // k->settingsPanel->activateSelectionMode();
 }
 
 void Configurator::addTween(const QString &name)
@@ -273,6 +283,11 @@ QString Configurator::currentTweenName() const
 void Configurator::notifySelection(bool flag)
 {
     k->tweenList->notifySelection(flag);
+}
+
+void Configurator::cleanData()
+{
+    // k->settingsPanel->cleanData();
 }
 
 void Configurator::closeTweenList()

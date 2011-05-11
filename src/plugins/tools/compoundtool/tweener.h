@@ -33,15 +33,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#ifndef POSITIONTWEENER_H
+#define POSITIONTWEENER_H
 
 #include <kttoolplugin.h>
 #include "tweenerpanel.h"
 
+
 /**
  * @author Gustav Gonzalez 
- * 
+ *
 */
 
 class Tweener : public KTToolPlugin
@@ -57,40 +58,42 @@ class Tweener : public KTToolPlugin
         virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-
-        virtual QMap<QString, KAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        virtual void aboutToChangeTool();
-
         virtual void updateScene(KTGraphicsScene *scene);
+        virtual QMap<QString, KAction *>actions() const;
+        virtual QWidget *configurator();
+        virtual void aboutToChangeTool();
         virtual void saveConfig();
 
+        int toolType() const;
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        bool isComplete() const;
+
     private:
-        void setupActions();
         int framesTotal();
+        void setupActions();
+        QString pathToCoords();
+        int maxZValue();
         void clearSelection();
         void disableSelection();
-        void addTarget();
         void removeTweenFromProject(const QString &name);
-        int maxZValue();
 
     private:
         struct Private;
         Private *const k;
 
     private slots:
-        void setSelect();
-        void setPropertiesMode();
-        void updateMode(TweenerPanel::Mode mode);
         void applyReset();
         void applyTween();
         void removeTween(const QString &name);
+        void setCreatePath();
+        void setSelect();
+        void setEditEnv();
+        void updateMode(TweenerPanel::Mode mode);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
-        void updateOriginPoint(const QPointF &point);
+
+    public slots:
+        void updatePath();
 };
 
 #endif
