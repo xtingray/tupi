@@ -82,6 +82,7 @@ class Tweener : public KTToolPlugin
         Private *const k;
 
     private slots:
+        void updateCurrentTweenerType(TweenerPanel::TweenerType type);
         void applyReset();
         void applyTween();
         void removeTween(const QString &name);

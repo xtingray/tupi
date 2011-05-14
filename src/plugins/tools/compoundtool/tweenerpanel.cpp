@@ -54,8 +54,7 @@
 struct TweenerPanel::Private
 {
     QWidget *optionsPanel;
-    QWidget *tweenerTablePanel;
-    QWidget *buttonsPanel;
+    QWidget *tweenerTablePanel; QWidget *buttonsPanel;
 
     QList<QWidget*> *panelList;
 
@@ -230,29 +229,26 @@ void TweenerPanel::loadTweenComponents()
 
          switch(i)  {
                 case TweenerPanel::Position:
-                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Position gui";
+                     kFatal() << "TweenerPanel::loadTweenComponents() - Opening Position gui";
                      k->positionPanel = new PositionSettings;
-                     connect(k->positionPanel, SIGNAL(clickedResetTween()), this, SLOT(activateTweenersTable()));
+                     connect(k->positionPanel, SIGNAL(clickedApplyTween()), this, SLOT(activateTweenersTable()));  
+                     connect(k->positionPanel, SIGNAL(clickedResetTween()), this, SLOT(resetTweenersTable()));
+                     connect(k->positionPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int))); 
                      k->panelList->append(k->positionPanel);
                 break;
                 case TweenerPanel::Rotation:
-                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Rotation gui";
                      k->panelList->append(new QWidget);
                 break;
                 case TweenerPanel::Scale:
-                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Scale gui";
                      k->panelList->append(new QWidget);
                 break;
                 case TweenerPanel::Shear:
-                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Shear gui";
                      k->panelList->append(new QWidget);
                 break;
                 case TweenerPanel::Opacity:
-                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Opacity gui";
                      k->panelList->append(new QWidget); 
                 break;
                 case TweenerPanel::Coloring:
-                     kFatal() << "TweenerPanel::showTweenSettings() - Opening Coloring gui";
                      k->panelList->append(new QWidget);
                 break;
          }
@@ -296,7 +292,7 @@ void TweenerPanel::emitOptionChanged(int option)
              {
                  if (k->selectionDone) {
                      activeTweenerTableForm(true);
-                     emit clickedTweenProperties();
+                     // emit clickedTweenProperties();
                  } else {
                      k->options->setCurrentIndex(0);
                      KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
@@ -323,6 +319,9 @@ void TweenerPanel::showTweenSettings(int tweenType)
     activeTweenerTableForm(false);
     activeButtonsPanel(false);
     activeTweenComponent(tweenType, true);
+
+    kFatal() << "TweenerPanel::showTweenSettings() - Opening tween: " << tweenType;
+    emit tweenPropertiesActivated(TweenerPanel::TweenerType(tweenType));
 }
 
 void TweenerPanel::activateTweenersTable()
@@ -331,4 +330,27 @@ void TweenerPanel::activateTweenersTable()
     activeOptionsPanel(true);
     activeTweenerTableForm(true);
     activeButtonsPanel(true);
+}
+
+void TweenerPanel::resetTweenersTable()
+{
+    activeTweenComponent(k->currentTweenIndex, false);
+    activeOptionsPanel(true);
+    activeTweenerTableForm(true);
+    activeButtonsPanel(true);
+}
+
+void TweenerPanel::updateSteps(const QGraphicsPathItem *path)
+{
+    k->positionPanel->updateSteps(path);
+}
+
+void TweenerPanel::initStartCombo(int framesTotal, int currentFrame)
+{
+    k->positionPanel->initStartCombo(framesTotal, currentFrame);
+}
+
+int TweenerPanel::startComboSize()
+{
+    return k->positionPanel->startComboSize();
 }

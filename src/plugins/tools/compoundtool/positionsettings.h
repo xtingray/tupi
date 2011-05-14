@@ -65,15 +65,11 @@ class PositionSettings : public QWidget
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentFrame, QPointF point, QString &path);
         int totalSteps();
-        void activatePathMode();
-        void activateSelectionMode();
         void cleanData();
-        void notifySelection(bool flag);
         int startComboSize();
         QString currentTweenName() const;
         
     private slots:
-        void emitOptionChanged(int option);
         // void addTween();
         void applyTween();
         
@@ -82,7 +78,7 @@ class PositionSettings : public QWidget
         void clickedSelect();
         void clickedResetTween();
         void clickedApplyTween();
-        void startingPointChanged(int);
+        void startingPointChanged(int index);
         
     private:
         void setEditMode();

@@ -134,7 +134,7 @@ void Settings::setInnerForm()
     k->comboInit = new QComboBox();
     k->comboInit->setFixedWidth(60);
     //k->comboInit->setMaximumWidth(50);
-    k->comboInit->setEditable(false);
+    //k->comboInit->setEditable(false);
 
     connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 

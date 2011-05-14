@@ -57,11 +57,9 @@ struct PositionSettings::Private
     QBoxLayout *layout; 
 
     QLineEdit *input;
-    KRadioButtonGroup *options;
     StepsViewer *stepViewer;
     QComboBox *comboInit;
     QLabel *totalLabel;
-    bool selectionDone;
     Mode mode; 
 
     QPushButton *applyButton;
@@ -70,8 +68,6 @@ struct PositionSettings::Private
 
 PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Private)
 {
-    k->selectionDone = false;
-
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
@@ -95,7 +91,9 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
     startingLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     k->comboInit = new QComboBox();
     k->comboInit->setFixedWidth(60);
-    k->comboInit->setEditable(false);
+
+    // SQA: Remove this instruction in the right moment
+    k->comboInit->setEnabled(false);
 
     connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
@@ -127,7 +125,7 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
     k->layout->addLayout(totalLayout);
 
     k->applyButton = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    // connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
+    connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->closeButton = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
     connect(k->closeButton, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
@@ -142,8 +140,6 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
     k->layout->addSpacing(10);
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
-
-    // activateSelectionMode();
 }
 
 PositionSettings::~PositionSettings()
@@ -158,7 +154,6 @@ void PositionSettings::setParameters(const QString &name, int framesTotal, int s
     k->mode = Add;
     k->input->setText(name);
 
-    activateSelectionMode();
     k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 
@@ -174,9 +169,6 @@ void PositionSettings::setParameters(const QString &name, int framesTotal, int s
 void PositionSettings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
-
-    notifySelection(true);
-    activatePathMode();
 
     k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);
@@ -217,26 +209,6 @@ void PositionSettings::updateSteps(const QGraphicsPathItem *path)
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }
 
-void PositionSettings::emitOptionChanged(int option)
-{
-    switch (option) {
-            case 0:
-             {
-                 emit clickedSelect();
-             }
-            break;
-            case 1:
-             {
-                 if (k->selectionDone) {
-                     emit clickedCreatePath();
-                 } else {
-                     k->options->setCurrentIndex(0);
-                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);   
-                 }
-             }
-    }
-}
-
 QString PositionSettings::tweenToXml(int currentFrame, QPointF point, QString &path)
 {
     QDomDocument doc;
@@ -262,34 +234,13 @@ int PositionSettings::totalSteps()
     return k->stepViewer->totalSteps();
 }
 
-void PositionSettings::activatePathMode()
-{
-    k->options->setCurrentIndex(1);
-}
-
-void PositionSettings::activateSelectionMode()
-{
-    k->options->setCurrentIndex(0);
-}
-
 void PositionSettings::cleanData()
 {
     k->stepViewer->cleanRows();
 }
 
-void PositionSettings::notifySelection(bool flag)
-{
-    k->selectionDone = flag;
-}
-
 void PositionSettings::applyTween()
 {
-    if (!k->selectionDone) {
-        k->options->setCurrentIndex(0);
-        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info);
-        return;
-    }
-
     if (totalSteps() <= 2) {
         KOsd::self()->display(tr("Info"), tr("You must define a path for this Tween!"), KOsd::Info);
         return;

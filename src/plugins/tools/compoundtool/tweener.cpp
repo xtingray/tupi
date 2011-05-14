@@ -83,6 +83,7 @@ struct Tweener::Private
     bool pathAdded;
     int startPoint;
 
+    TweenerPanel::TweenerType currentTweenType;
     TweenerPanel::Mode mode;
     TweenerPanel::EditMode editMode;
 
@@ -291,8 +292,11 @@ QWidget *Tweener::configurator()
 
         k->configurator = new Configurator;
 
+        connect(k->configurator, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)), this, SLOT(updateCurrentTweenerType(TweenerPanel::TweenerType)));
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
-        connect(k->configurator, SIGNAL(clickedCreatePath()), this, SLOT(setCreatePath()));
+
+
+        // connect(k->configurator, SIGNAL(clickedCreatePath()), this, SLOT(setCreatePath()));
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
@@ -860,6 +864,15 @@ void Tweener::disableSelection()
                       item->setFlag(QGraphicsItem::ItemIsMovable, false);
              }
     }
+}
+
+void Tweener::updateCurrentTweenerType(TweenerPanel::TweenerType type)
+{
+    kFatal() << "updateCurrentTweenerType() - Just following type: " << type;
+    k->currentTweenType = type;
+
+    if (type == TweenerPanel::Position)
+        setCreatePath();
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

@@ -37,6 +37,7 @@
 #define TWEENERPANEL_H
 
 #include <QWidget>
+#include <QGraphicsPathItem>
 
 /**
  * @author Gustav Gonzalez 
@@ -65,16 +66,22 @@ class TweenerPanel : public QWidget
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void activateMode(TweenerPanel::EditMode mode);
         void notifySelection(bool flag);
+        void updateSteps(const QGraphicsPathItem *path);
+        void initStartCombo(int framesTotal, int currentFrame);
+        int startComboSize();
 
     private slots:
         void emitOptionChanged(int option);
         void showTweenSettings(int tweenType);
         void activateTweenersTable();
+        void resetTweenersTable();
         
     signals:
         void clickedSelect();
-        void clickedTweenProperties();
+        // void clickedTweenProperties();
         void clickedResetTween();
+        void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
+        void startingPointChanged(int index);
         
     private:
         void setOptionsPanel();

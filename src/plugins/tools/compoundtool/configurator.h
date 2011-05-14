@@ -88,12 +88,14 @@ class Configurator : public QFrame
         
     signals:
         void clickedSelect();
-        void clickedTweenProperties();
+        // void clickedTweenProperties();
+        void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
         void setMode(TweenerPanel::Mode mode);
         void clickedRemoveTween(const QString &name);
         void clickedApplyTween();
         void clickedResetInterface();
         void getTweenData(const QString &name);
+        void startingPointChanged(int index);
 
     private:
         void setTweenerPanel();
