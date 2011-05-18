@@ -67,6 +67,7 @@ struct TweenerPanel::Private
 
     TweenerTable *tweenerTable;
     int currentTweenIndex;
+    QList<TweenerPanel::TweenerType> tweenerList;
 
     PositionSettings *positionPanel;
 
@@ -76,8 +77,8 @@ struct TweenerPanel::Private
     bool selectionDone;
     bool propertiesDone;
 
-    KImageButton *apply;
-    KImageButton *remove;
+    KImageButton *applyButton;
+    KImageButton *closeButton;
 };
 
 TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
@@ -191,19 +192,19 @@ void TweenerPanel::setButtonsPanel()
     QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->buttonsPanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    k->apply->setDisabled(true);
-    // connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
+    k->applyButton = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->applyButton->setDisabled(true);
+    connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
 
-    k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
+    k->closeButton = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    connect(k->closeButton, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(10);
-    buttonsLayout->addWidget(k->apply);
-    buttonsLayout->addWidget(k->remove);
+    buttonsLayout->addWidget(k->applyButton);
+    buttonsLayout->addWidget(k->closeButton);
 
     innerLayout->addLayout(buttonsLayout);
 
@@ -231,9 +232,11 @@ void TweenerPanel::loadTweenComponents()
                 case TweenerPanel::Position:
                      kFatal() << "TweenerPanel::loadTweenComponents() - Opening Position gui";
                      k->positionPanel = new PositionSettings;
-                     connect(k->positionPanel, SIGNAL(clickedApplyTween()), this, SLOT(activateTweenersTable()));  
-                     connect(k->positionPanel, SIGNAL(clickedResetTween()), this, SLOT(resetTweenersTable()));
+                     connect(k->positionPanel, SIGNAL(clickedApplyTween(TweenerPanel::TweenerType)), this, SLOT(activateTweenersTable(TweenerPanel::TweenerType)));  
+                     connect(k->positionPanel, SIGNAL(clickedCloseTweenProperties(TweenerPanel::Mode)), this, SLOT(updateTweenersTable(TweenerPanel::Mode)));
                      connect(k->positionPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int))); 
+
+                     k->positionPanel->setParameters(k->totalSteps, 0);
                      k->panelList->append(k->positionPanel);
                 break;
                 case TweenerPanel::Rotation:
@@ -275,9 +278,9 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
     k->input->setText(name);
 
     activateMode(TweenerPanel::Selection);
-    k->apply->setToolTip(tr("Save Tween"));
-    k->remove->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
-    k->remove->setToolTip(tr("Cancel Tween"));
+    k->applyButton->setToolTip(tr("Save Tween"));
+    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->closeButton->setToolTip(tr("Cancel Tween"));
 }
 
 void TweenerPanel::emitOptionChanged(int option)
@@ -324,25 +327,42 @@ void TweenerPanel::showTweenSettings(int tweenType)
     emit tweenPropertiesActivated(TweenerPanel::TweenerType(tweenType));
 }
 
-void TweenerPanel::activateTweenersTable()
+void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type)
 {
+    k->tweenerList.append(type);
+
+    /*
     activeTweenComponent(k->currentTweenIndex, false);
     activeOptionsPanel(true);
     activeTweenerTableForm(true);
     activeButtonsPanel(true);
+    */
+
+    if (!k->applyButton->isEnabled())
+        k->applyButton->setEnabled(true);
 }
 
-void TweenerPanel::resetTweenersTable()
+void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)
 {
+    kFatal() << "TweenerPanel::updateTweenersTable() - Just tracing!"; 
+
     activeTweenComponent(k->currentTweenIndex, false);
     activeOptionsPanel(true);
     activeTweenerTableForm(true);
     activeButtonsPanel(true);
+
+    if (mode == TweenerPanel::Add) {
+        k->tweenerTable->checkTween(k->currentTweenIndex, false);
+        if (TweenerPanel::TweenerType(k->currentTweenIndex) == TweenerPanel::Position)
+            emit resetPathFromWorkSpace();
+    } else {
+        kFatal() << "TweenerPanel::updateTweenersTable() - Mode: " << mode;
+    }
 }
 
-void TweenerPanel::updateSteps(const QGraphicsPathItem *path)
+void TweenerPanel::updateSteps(const QGraphicsPathItem *path, QPointF offset)
 {
-    k->positionPanel->updateSteps(path);
+    k->positionPanel->updateSteps(path, offset);
 }
 
 void TweenerPanel::initStartCombo(int framesTotal, int currentFrame)
@@ -354,3 +374,18 @@ int TweenerPanel::startComboSize()
 {
     return k->positionPanel->startComboSize();
 }
+
+void TweenerPanel::applyTween()
+{
+    kFatal() << "TweenerPanel::applyTween() - Just tracing!";
+
+    setEditMode();
+}
+
+void TweenerPanel::setEditMode()
+{
+    k->mode = TweenerPanel::Edit;
+    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
+    k->closeButton->setToolTip(tr("Close Tween properties"));
+}
+

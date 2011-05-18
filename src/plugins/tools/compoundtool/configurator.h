@@ -63,7 +63,7 @@ class Configurator : public QFrame
         void initStartCombo(int framesTotal, int currentFrame);
         void setStartFrame(int currentIndex);
 
-        void updateSteps(const QGraphicsPathItem *path);
+        void updateSteps(const QGraphicsPathItem *path, QPointF offset);
 
         int totalSteps();
         void activateSelectionMode();
@@ -75,7 +75,7 @@ class Configurator : public QFrame
         void closeTweenerPanel();
         TweenerPanel::Mode mode();
         void resetUI();
-        QString tweenToXml(int currentFrame, QPointF point, QString &route);
+        QString tweenToXml(int currentFrame, QPointF point);
         
     private slots:
         void applyItem();
@@ -94,6 +94,7 @@ class Configurator : public QFrame
         void clickedRemoveTween(const QString &name);
         void clickedApplyTween();
         void clickedResetInterface();
+        void resetPathFromWorkSpace();
         void getTweenData(const QString &name);
         void startingPointChanged(int index);
 

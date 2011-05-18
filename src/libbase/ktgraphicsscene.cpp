@@ -421,124 +421,150 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                      KTTweenerStep *stepItem = tween->stepAt(0);
                      object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: 0"));
 
-                     if (stepItem->has(KTTweenerStep::Position)) {
-                         QPointF point = QPoint(-adjustX, -adjustY);
-                         object->setLastTweenPos(stepItem->position() + point);
-                         object->item()->setPos(tween->transformOriginPoint());
-                     }
-
-                     if (stepItem->has(KTTweenerStep::Rotation)) {
-                         double angle = stepItem->rotation();
+                     if (tween->type() == KTItemTweener::Compound) {
                          object->item()->setTransformOriginPoint(tween->transformOriginPoint());
-                         object->item()->setRotation(angle);
-                     }
 
-                     if (stepItem->has(KTTweenerStep::Scale)) {
-                         QPointF point = tween->transformOriginPoint();
-                         object->item()->setTransformOriginPoint(point);
-                         object->item()->setScale(1.0);
-                     }
-
-                     if (stepItem->has(KTTweenerStep::Shear)) {
-                         QTransform transform;
-                         transform.shear(0, 0);
-                         object->item()->setTransform(transform);
-                     } 
-
-                     if (stepItem->has(KTTweenerStep::Coloring)) {
-                         QColor itemColor = stepItem->color();
-                         if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                             QPen pen = path->pen();
-                             pen.setColor(itemColor);
-                             path->setPen(pen);
-                         } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(object->item())) {
-                                    QPen pen = ellipse->pen();
-                                    pen.setColor(itemColor);
-                                    ellipse->setPen(pen);
-                         } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(object->item())) {
-                                    QPen pen = line->pen();
-                                    pen.setColor(itemColor);
-                                    line->setPen(pen); 
-                         } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(object->item())) {
-                                    QPen pen = rect->pen();
-                                    pen.setColor(itemColor);
-                                    rect->setPen(pen);
+                         if (stepItem->has(KTTweenerStep::Position)) {
+                             QPointF point = QPoint(-adjustX, -adjustY);
+                             object->setLastTweenPos(stepItem->position() + point);
+                             object->item()->setPos(tween->transformOriginPoint());
                          }
-                     }
+                         
+                     } else {
 
-                     if (stepItem->has(KTTweenerStep::Opacity))
-                         object->item()->setOpacity(stepItem->opacity());
+                         if (stepItem->has(KTTweenerStep::Position)) {
+                             QPointF point = QPoint(-adjustX, -adjustY);
+                             object->setLastTweenPos(stepItem->position() + point);
+                             object->item()->setPos(tween->transformOriginPoint());
+                         }
+
+                         if (stepItem->has(KTTweenerStep::Rotation)) {
+                             double angle = stepItem->rotation();
+                             object->item()->setTransformOriginPoint(tween->transformOriginPoint());
+                             object->item()->setRotation(angle);
+                         }
+
+                         if (stepItem->has(KTTweenerStep::Scale)) {
+                             QPointF point = tween->transformOriginPoint();
+                             object->item()->setTransformOriginPoint(point);
+                             object->item()->setScale(1.0);
+                         }
+
+                         if (stepItem->has(KTTweenerStep::Shear)) {
+                             QTransform transform;
+                             transform.shear(0, 0);
+                             object->item()->setTransform(transform);
+                         } 
+
+                         if (stepItem->has(KTTweenerStep::Coloring)) {
+                             QColor itemColor = stepItem->color();
+                             if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                                 QPen pen = path->pen();
+                                 pen.setColor(itemColor);
+                                 path->setPen(pen);
+                             } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(object->item())) {
+                                        QPen pen = ellipse->pen();
+                                        pen.setColor(itemColor);
+                                        ellipse->setPen(pen);
+                             } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(object->item())) {
+                                        QPen pen = line->pen();
+                                        pen.setColor(itemColor);
+                                        line->setPen(pen); 
+                             } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(object->item())) {
+                                        QPen pen = rect->pen();
+                                        pen.setColor(itemColor);
+                                        rect->setPen(pen);
+                            }
+                         }
+
+                         if (stepItem->has(KTTweenerStep::Opacity))
+                             object->item()->setOpacity(stepItem->opacity());
+                     }
 
                  } else if ((origin < photogram) && (photogram < origin + tween->frames())) {
 
                             int step = photogram - origin;
                             KTTweenerStep *stepItem = tween->stepAt(step);
                             object->item()->setToolTip(tween->tweenType() + ": " + tween->name() + tr("/Step: ") + QString::number(step));
+                            if (tween->type() == KTItemTweener::Compound) {
 
-                            if (stepItem->has(KTTweenerStep::Position)) {
-                                qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
-                                qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
-                                object->item()->moveBy(dx, dy);
-                                QPointF point = QPoint(-adjustX, -adjustY);
-                                object->setLastTweenPos(stepItem->position() + point);
-                            }
-
-                            if (stepItem->has(KTTweenerStep::Rotation)) {
-                                double angle = stepItem->rotation();
-                                object->item()->setRotation(angle);
-                            }
-
-                            if (stepItem->has(KTTweenerStep::Scale)) {
-                                QPointF point = tween->transformOriginPoint();
-
-                                double scaleX = stepItem->horizontalScale();
-                                double scaleY = stepItem->verticalScale();
-                                QTransform transform;
-                                transform.translate(point.x(), point.y());
-                                transform.scale(scaleX, scaleY);
-                                transform.translate(-point.x(), -point.y());
-
-                                object->item()->setTransform(transform);
-                            }
-
-                            if (stepItem->has(KTTweenerStep::Shear)) {
-                                QPointF point = tween->transformOriginPoint();
-
-                                double shearX = stepItem->horizontalShear();
-                                double shearY = stepItem->verticalShear();
-                                QTransform transform;
-                                transform.translate(point.x(), point.y());
-                                transform.shear(shearX, shearY);
-                                transform.translate(-point.x(), -point.y());
-
-                                object->item()->setTransform(transform);
-                            }
-
-                            if (stepItem->has(KTTweenerStep::Coloring)) {
-                                QColor itemColor = stepItem->color();
-                                if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
-                                    QPen pen = path->pen();
-                                    pen.setColor(itemColor);
-                                    path->setPen(pen);
-                                } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(object->item())) {
-                                           QPen pen = ellipse->pen();
-                                           pen.setColor(itemColor);
-                                           ellipse->setPen(pen);
-                                } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(object->item())) {
-                                           QPen pen = line->pen();
-                                           pen.setColor(itemColor);
-                                           line->setPen(pen);
-                                } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(object->item())) {
-                                           QPen pen = rect->pen();
-                                           pen.setColor(itemColor);
-                                           rect->setPen(pen);
+                                if (stepItem->has(KTTweenerStep::Position)) {
+                                    qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
+                                    qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
+                                    object->item()->moveBy(dx, dy);
+                                    QPointF point = QPoint(-adjustX, -adjustY);
+                                    object->setLastTweenPos(stepItem->position() + point);
                                 }
-                            }
 
-                            addGraphicObject(object);
+                                addGraphicObject(object);
 
-                            if (stepItem->has(KTTweenerStep::Opacity))
-                                object->item()->setOpacity(stepItem->opacity());
+                            } else {
+
+                                if (stepItem->has(KTTweenerStep::Position)) {
+                                    qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
+                                    qreal dy = stepItem->position().y() - (object->lastTweenPos().y() + adjustY);
+                                    object->item()->moveBy(dx, dy);
+                                    QPointF point = QPoint(-adjustX, -adjustY);
+                                    object->setLastTweenPos(stepItem->position() + point);
+                                }
+
+                                if (stepItem->has(KTTweenerStep::Rotation)) {
+                                    double angle = stepItem->rotation();
+                                    object->item()->setRotation(angle);
+                                }
+
+                                if (stepItem->has(KTTweenerStep::Scale)) {
+                                    QPointF point = tween->transformOriginPoint();
+
+                                    double scaleX = stepItem->horizontalScale();
+                                    double scaleY = stepItem->verticalScale();
+                                    QTransform transform;
+                                    transform.translate(point.x(), point.y());
+                                    transform.scale(scaleX, scaleY);
+                                    transform.translate(-point.x(), -point.y());
+
+                                    object->item()->setTransform(transform);
+                                }
+
+                                if (stepItem->has(KTTweenerStep::Shear)) {
+                                    QPointF point = tween->transformOriginPoint();
+
+                                    double shearX = stepItem->horizontalShear();
+                                    double shearY = stepItem->verticalShear();
+                                    QTransform transform;
+                                    transform.translate(point.x(), point.y());
+                                    transform.shear(shearX, shearY);
+                                    transform.translate(-point.x(), -point.y());
+
+                                    object->item()->setTransform(transform);
+                                }
+
+                                if (stepItem->has(KTTweenerStep::Coloring)) {
+                                    QColor itemColor = stepItem->color();
+                                    if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(object->item())) {
+                                        QPen pen = path->pen();
+                                        pen.setColor(itemColor);
+                                        path->setPen(pen);
+                                    } else if (KTEllipseItem *ellipse = qgraphicsitem_cast<KTEllipseItem *>(object->item())) {
+                                               QPen pen = ellipse->pen();
+                                               pen.setColor(itemColor);
+                                               ellipse->setPen(pen);
+                                    } else if (KTLineItem *line = qgraphicsitem_cast<KTLineItem *>(object->item())) {
+                                               QPen pen = line->pen();
+                                               pen.setColor(itemColor);
+                                               line->setPen(pen);
+                                    } else if (KTRectItem *rect = qgraphicsitem_cast<KTRectItem *>(object->item())) {
+                                               QPen pen = rect->pen();
+                                               pen.setColor(itemColor);
+                                               rect->setPen(pen);
+                                    }
+                                }
+
+                                addGraphicObject(object);
+
+                                if (stepItem->has(KTTweenerStep::Opacity))
+                                    object->item()->setOpacity(stepItem->opacity());
+                            }    
                  }
              }
         }

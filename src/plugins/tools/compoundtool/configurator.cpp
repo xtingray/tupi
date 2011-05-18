@@ -110,10 +110,10 @@ void Configurator::setTweenerPanel()
     connect(k->tweenList, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->tweenList, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)), 
             this, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)));
-    connect(k->tweenList, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
-    // connect(k->tweenList, SIGNAL(clickedTweenProperties()), this, SIGNAL(clickedTweenProperties()));
+    connect(k->tweenList, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
     connect(k->tweenList, SIGNAL(clickedResetTween()), this, SLOT(closeTweenList()));
+    connect(k->tweenList, SIGNAL(resetPathFromWorkSpace()), this, SIGNAL(resetPathFromWorkSpace()));
 
     k->settingsLayout->addWidget(k->tweenList);
     activeTweenerPanel(false);
@@ -206,12 +206,12 @@ int Configurator::startComboSize()
     return k->tweenList->startComboSize();
 }
 
-void Configurator::updateSteps(const QGraphicsPathItem *path)
+void Configurator::updateSteps(const QGraphicsPathItem *path, QPointF offset)
 {
-    k->tweenList->updateSteps(path);
+    k->tweenList->updateSteps(path, offset);
 }
 
-QString Configurator::tweenToXml(int currentFrame, QPointF point, QString &route)
+QString Configurator::tweenToXml(int currentFrame, QPointF point)
 {
     // return k->settingsPanel->tweenToXml(currentFrame, point);
     return "";

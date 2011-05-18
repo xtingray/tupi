@@ -56,11 +56,13 @@ struct PositionSettings::Private
 {
     QBoxLayout *layout; 
 
-    QLineEdit *input;
+    // QLineEdit *input;
     StepsViewer *stepViewer;
     QComboBox *comboInit;
     QLabel *totalLabel;
-    Mode mode; 
+    TweenerPanel::Mode mode; 
+
+    QString path;
 
     QPushButton *applyButton;
     QPushButton *closeButton;
@@ -126,9 +128,10 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
 
     k->applyButton = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
     connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
+    k->applyButton->setEnabled(false);
 
     k->closeButton = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    connect(k->closeButton, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
+    connect(k->closeButton, SIGNAL(clicked()), this, SLOT(closeTweenProperties()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
@@ -149,10 +152,9 @@ PositionSettings::~PositionSettings()
 
 // Adding new Tween
 
-void PositionSettings::setParameters(const QString &name, int framesTotal, int startFrame)
+void PositionSettings::setParameters(int framesTotal, int startFrame)
 {
-    k->mode = Add;
-    k->input->setText(name);
+    k->mode = TweenerPanel::Add;
 
     k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
@@ -170,7 +172,6 @@ void PositionSettings::setParameters(KTItemTweener *currentTween)
 {
     setEditMode();
 
-    k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);
 
     initStartCombo(currentTween->frames(), currentTween->startFrame());
@@ -203,23 +204,24 @@ int PositionSettings::startComboSize()
     return k->comboInit->count();
 }
 
-void PositionSettings::updateSteps(const QGraphicsPathItem *path)
+void PositionSettings::updateSteps(const QGraphicsPathItem *path, QPointF offset)
 {
+    k->path = pathToCoords(path, offset);
     k->stepViewer->setPath(path);
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
+
+    if (!k->applyButton->isEnabled())
+        k->applyButton->setEnabled(true);
 }
 
-QString PositionSettings::tweenToXml(int currentFrame, QPointF point, QString &path)
+QString PositionSettings::tweenToXml(int currentFrame, QPointF point)
 {
     QDomDocument doc;
 
-    QDomElement root = doc.createElement("tweening");
-    root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Position);
+    QDomElement root = doc.createElement("position");
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
-    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
-    root.setAttribute("coords", path);
+    root.setAttribute("coords", k->path);
 
     foreach (KTTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
@@ -246,27 +248,88 @@ void PositionSettings::applyTween()
         return;
     }
 
-    // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
 
     if (!k->comboInit->isEnabled())
         k->comboInit->setEnabled(true);
 
-    emit clickedApplyTween();
+    emit clickedApplyTween(TweenerPanel::Position);
+}
+
+void PositionSettings::resetTween()
+{
+    cleanData();
+    k->totalLabel->setText(tr("Frames Total") + ": 0");
+}
+
+void PositionSettings::closeTweenProperties()
+{
+    if (k->mode == TweenerPanel::Add)
+        resetTween(); 
+
+    kFatal() << "PositionSettings::closeTweenProperties() - Mode: " << k->mode;
+
+    emit clickedCloseTweenProperties(k->mode);
 }
 
 void PositionSettings::setEditMode()
 {
-    k->mode = Edit;
+    k->mode = TweenerPanel::Edit;
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }
 
-QString PositionSettings::currentTweenName() const
-{
-    QString tweenName = k->input->text();
-    if (tweenName.length() > 0)
-        k->input->setFocus();
+/* This method transforms the path created into a QString representation */
 
-    return tweenName;
+QString PositionSettings::pathToCoords(const QGraphicsPathItem *path, QPointF offset)
+{
+    QString strPath = "";
+    QChar t;
+    int offsetX = offset.x();
+    int offsetY = offset.y();
+
+    for (int i=0; i < path->path().elementCount(); i++) {
+         QPainterPath::Element e = path->path().elementAt(i);
+         switch (e.type) {
+            case QPainterPath::MoveToElement:
+            {
+                if (t != 'M') {
+                    t = 'M';
+                    strPath += "M " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
+                } else {
+                    strPath += QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
+                }
+            }
+            break;
+            case QPainterPath::LineToElement:
+            {
+                if (t != 'L') {
+                    t = 'L';
+                    strPath += " L " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
+                } else {
+                    strPath += QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
+                }
+            }
+            break;
+            case QPainterPath::CurveToElement:
+            {
+                if (t != 'C') {
+                    t = 'C';
+                    strPath += " C " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
+                } else {
+                    strPath += "  " + QString::number(e.x + offsetX) + " " + QString::number(e.y + offsetY) + " ";
+                }
+            }
+            break;
+            case QPainterPath::CurveToDataElement:
+            {
+                if (t == 'C')
+                    strPath +=  " " + QString::number(e.x + offsetX) + "  " + QString::number(e.y + offsetY) + " ";
+            }
+            break;
+        }
+    }
+
+    return strPath.trimmed();
 }
+

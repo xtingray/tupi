@@ -108,3 +108,8 @@ void TweenerTable::enableTween(int state)
          }
     }
 }
+
+void TweenerTable::checkTween(int index, bool flag)
+{
+    k->checkList->at(index)->setChecked(flag);    
+}

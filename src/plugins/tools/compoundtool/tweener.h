@@ -71,7 +71,6 @@ class Tweener : public KTToolPlugin
     private:
         int framesTotal();
         void setupActions();
-        QString pathToCoords();
         int maxZValue();
         void clearSelection();
         void disableSelection();
@@ -92,6 +91,7 @@ class Tweener : public KTToolPlugin
         void updateMode(TweenerPanel::Mode mode);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
+        void cleanPath();
 
     public slots:
         void updatePath();

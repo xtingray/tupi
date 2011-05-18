@@ -66,15 +66,16 @@ class TweenerPanel : public QWidget
         void setParameters(const QString &name, int framesTotal, int startFrame);
         void activateMode(TweenerPanel::EditMode mode);
         void notifySelection(bool flag);
-        void updateSteps(const QGraphicsPathItem *path);
+        void updateSteps(const QGraphicsPathItem *path, QPointF offset);
         void initStartCombo(int framesTotal, int currentFrame);
         int startComboSize();
 
     private slots:
         void emitOptionChanged(int option);
         void showTweenSettings(int tweenType);
-        void activateTweenersTable();
-        void resetTweenersTable();
+        void activateTweenersTable(TweenerPanel::TweenerType type);
+        void updateTweenersTable(TweenerPanel::Mode mode);
+        void applyTween();
         
     signals:
         void clickedSelect();
@@ -82,6 +83,7 @@ class TweenerPanel : public QWidget
         void clickedResetTween();
         void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
         void startingPointChanged(int index);
+        void resetPathFromWorkSpace();
         
     private:
         void setOptionsPanel();
@@ -92,6 +94,7 @@ class TweenerPanel : public QWidget
         void activeButtonsPanel(bool enable);
         void loadTweenComponents();
         void activeTweenComponent(int index, bool enable);
+        void setEditMode();
 
         struct Private;
         Private *const k;
