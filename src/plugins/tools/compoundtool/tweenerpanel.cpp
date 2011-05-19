@@ -295,7 +295,7 @@ void TweenerPanel::emitOptionChanged(int option)
              {
                  if (k->selectionDone) {
                      activeTweenerTableForm(true);
-                     // emit clickedTweenProperties();
+                     emit clickedTweenProperties();
                  } else {
                      k->options->setCurrentIndex(0);
                      KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
@@ -351,13 +351,12 @@ void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)
     activeTweenerTableForm(true);
     activeButtonsPanel(true);
 
-    if (mode == TweenerPanel::Add) {
+    if (mode == TweenerPanel::Add)
         k->tweenerTable->checkTween(k->currentTweenIndex, false);
-        if (TweenerPanel::TweenerType(k->currentTweenIndex) == TweenerPanel::Position)
-            emit resetPathFromWorkSpace();
-    } else {
-        kFatal() << "TweenerPanel::updateTweenersTable() - Mode: " << mode;
-    }
+
+    if (TweenerPanel::TweenerType(k->currentTweenIndex) == TweenerPanel::Position)
+        emit resetPathFromWorkSpace();
+
 }
 
 void TweenerPanel::updateSteps(const QGraphicsPathItem *path, QPointF offset)

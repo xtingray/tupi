@@ -58,7 +58,7 @@ class TweenerPanel : public QWidget
                          };
 
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Properties, None };
+        enum EditMode { Selection = 0, TweenList, TweenProperties, None };
 
         TweenerPanel(QWidget *parent = 0);
         ~TweenerPanel();
@@ -79,7 +79,7 @@ class TweenerPanel : public QWidget
         
     signals:
         void clickedSelect();
-        // void clickedTweenProperties();
+        void clickedTweenProperties();
         void clickedResetTween();
         void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
         void startingPointChanged(int index);

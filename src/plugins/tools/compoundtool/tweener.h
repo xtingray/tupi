@@ -73,8 +73,8 @@ class Tweener : public KTToolPlugin
         void setupActions();
         int maxZValue();
         void clearSelection();
-        void disableSelection();
         void removeTweenFromProject(const QString &name);
+        void disableSelection();
 
     private:
         struct Private;
@@ -92,6 +92,7 @@ class Tweener : public KTToolPlugin
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
         void cleanPath();
+        void tweenListMode();
 
     public slots:
         void updatePath();

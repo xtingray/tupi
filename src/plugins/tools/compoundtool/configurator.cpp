@@ -108,6 +108,8 @@ void Configurator::setTweenerPanel()
     k->tweenList = new TweenerPanel(this);
 
     connect(k->tweenList, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
+    connect(k->tweenList, SIGNAL(clickedTweenProperties()), this, SIGNAL(clickedTweenProperties()));
+
     connect(k->tweenList, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)), 
             this, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)));
 

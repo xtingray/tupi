@@ -164,7 +164,7 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
 
-    if (k->editMode == TweenerPanel::Properties && k->scene->currentFrameIndex() == k->startPoint) {
+    if (k->editMode == TweenerPanel::TweenProperties && k->scene->currentFrameIndex() == k->startPoint) {
         if (k->path) {
             QPointF point = k->path->mapFromParent(input->pos());
             QPainterPath path = k->path->path();
@@ -198,7 +198,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
     if (scene->currentFrameIndex() == k->startPoint) {
 
-        if (k->editMode == TweenerPanel::Properties) {
+        if (k->editMode == TweenerPanel::TweenProperties) {
 
             if (k->group) {
                 k->group->createNodes(k->path);
@@ -296,6 +296,8 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
 
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
+        connect(k->configurator, SIGNAL(clickedTweenProperties()), this, SLOT(tweenListMode()));
+
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
         connect(k->configurator, SIGNAL(resetPathFromWorkSpace()), this, SLOT(cleanPath()));
@@ -327,7 +329,7 @@ void Tweener::aboutToChangeTool()
         return;
     }
 
-    if (k->editMode == TweenerPanel::Properties) {
+    if (k->editMode == TweenerPanel::TweenProperties) {
         if (k->path) {
             k->scene->removeItem(k->path);
             k->pathAdded = false;
@@ -381,7 +383,7 @@ void Tweener::setCreatePath()
 
     }
 
-    k->editMode = TweenerPanel::Properties;
+    k->editMode = TweenerPanel::TweenProperties;
     disableSelection();
 }
 
@@ -630,7 +632,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
        int total = k->startPoint + k->configurator->totalSteps();
 
-       if (k->editMode == TweenerPanel::Properties) {
+       if (k->editMode == TweenerPanel::TweenProperties) {
            if (scene->currentFrameIndex() >= k->startPoint && scene->currentFrameIndex() < total) {
                if (k->path && k->group) {
                    k->scene->addItem(k->path);            
@@ -656,7 +658,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                        k->configurator->setStartFrame(scene->currentFrameIndex());
                }
 
-               if (k->editMode == TweenerPanel::Properties) {
+               if (k->editMode == TweenerPanel::TweenProperties) {
 
                        k->path = 0;
                        k->configurator->cleanData();
@@ -828,8 +830,13 @@ void Tweener::cleanPath()
         if (k->startPoint == k->scene->currentFrameIndex())
             k->scene->removeItem(k->path);
         k->pathAdded = false;
-        k->path = 0;
     }
+}
+
+void Tweener::tweenListMode()
+{
+   k->editMode = TweenerPanel::TweenList;
+   disableSelection();
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);
