@@ -356,7 +356,6 @@ void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)
 
     if (TweenerPanel::TweenerType(k->currentTweenIndex) == TweenerPanel::Position)
         emit resetPathFromWorkSpace();
-
 }
 
 void TweenerPanel::updateSteps(const QGraphicsPathItem *path, QPointF offset)
@@ -377,8 +376,9 @@ int TweenerPanel::startComboSize()
 void TweenerPanel::applyTween()
 {
     kFatal() << "TweenerPanel::applyTween() - Just tracing!";
-
     setEditMode();
+
+    emit clickedApplyTween();
 }
 
 void TweenerPanel::setEditMode()
@@ -386,5 +386,33 @@ void TweenerPanel::setEditMode()
     k->mode = TweenerPanel::Edit;
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
+}
+
+QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
+{
+   // XML goes here!
+
+   QString text;
+
+   text = "<tweening name=\"test\" type=\"1\" init=\"0\" frames=\"72\" origin=\"22,26\">";
+   text += "<settings>";
+   text += " <position init=\"0\" frames=\"72\" coords=\"M 53.5 53.5  C 245 140  229  333  229  333   392 2 4  387  331  387  331   522 47  587  137  587  137\" />";
+   text += "  <rotation init=\"0\" frames=\"72\" rotateDirection=\"0\" rotateSpeed=\"5\" type=\"2\" name=\"test\" rotationType=\"0\" />";
+   text += "</settings>";
+   text += "<step value=\"0\">";
+   text += "  <position x=\"53,5\" y=\"53,5\"/>";
+   text += "  <rotation angle=\"0\"/>";
+   text += "</step>";
+   text += " <step value=\"1\">";
+   text += "  <position x=\"70,85203552246094\" y=\"61,91224670410156\"/>";
+   text += "  <rotation angle=\"5\"/>";
+   text += " </step>";
+   text += " <step value=\"2\">";
+   text += "  <position x=\"87,0291748046875\" y=\"70,8936767578125\"/>";
+   text += "  <rotation angle=\"10\"/>";
+   text += " </step>";
+   text += "</tweening>";
+
+   return text;
 }
 

@@ -69,6 +69,7 @@ class TweenerPanel : public QWidget
         void updateSteps(const QGraphicsPathItem *path, QPointF offset);
         void initStartCombo(int framesTotal, int currentFrame);
         int startComboSize();
+        QString tweenToXml(int currentFrame, QPointF point);
 
     private slots:
         void emitOptionChanged(int option);
@@ -80,6 +81,7 @@ class TweenerPanel : public QWidget
     signals:
         void clickedSelect();
         void clickedTweenProperties();
+        void clickedApplyTween();
         void clickedResetTween();
         void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
         void startingPointChanged(int index);

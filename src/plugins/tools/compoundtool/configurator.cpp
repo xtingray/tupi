@@ -109,6 +109,7 @@ void Configurator::setTweenerPanel()
 
     connect(k->tweenList, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->tweenList, SIGNAL(clickedTweenProperties()), this, SIGNAL(clickedTweenProperties()));
+    connect(k->tweenList, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
 
     connect(k->tweenList, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)), 
             this, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)));
@@ -215,8 +216,7 @@ void Configurator::updateSteps(const QGraphicsPathItem *path, QPointF offset)
 
 QString Configurator::tweenToXml(int currentFrame, QPointF point)
 {
-    // return k->settingsPanel->tweenToXml(currentFrame, point);
-    return "";
+    return k->tweenList->tweenToXml(currentFrame, point);
 }
 
 int Configurator::totalSteps()
