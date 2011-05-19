@@ -425,9 +425,18 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          object->item()->setTransformOriginPoint(tween->transformOriginPoint());
 
                          if (stepItem->has(KTTweenerStep::Position)) {
+                             kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying position...";
                              QPointF point = QPoint(-adjustX, -adjustY);
                              object->setLastTweenPos(stepItem->position() + point);
                              object->item()->setPos(tween->transformOriginPoint());
+                         }
+
+                         if (stepItem->has(KTTweenerStep::Rotation)) {
+                             double angle = stepItem->rotation();
+                             object->item()->setRotation(angle);
+                             kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
+                         } else {
+                             kFatal() << "KTGraphicsScene::addTweeningObjects() - No rotation parameter!";
                          }
                          
                      } else {
@@ -494,6 +503,12 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                     object->item()->moveBy(dx, dy);
                                     QPointF point = QPoint(-adjustX, -adjustY);
                                     object->setLastTweenPos(stepItem->position() + point);
+                                }
+
+                                if (stepItem->has(KTTweenerStep::Rotation)) {
+                                    double angle = stepItem->rotation();
+                                    object->item()->setRotation(angle);
+                                    kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
                                 }
 
                                 addGraphicObject(object);

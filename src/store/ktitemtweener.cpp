@@ -137,11 +137,15 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
     
     VERIFY_STEP(counter);
     
-    if (step.has(KTTweenerStep::Position))
+    if (step.has(KTTweenerStep::Position)) {
         setPosAt(counter, step.position());
+        kFatal() << "KTItemTweener::addStep() - Adding position value";
+    }
 
-    if (step.has(KTTweenerStep::Rotation))
+    if (step.has(KTTweenerStep::Rotation)) {
         setRotationAt(counter, step.rotation());
+        kFatal() << "KTItemTweener::addStep() - Adding rotation value";
+    }
     
     if (step.has(KTTweenerStep::Scale))
         setScaleAt(counter, step.horizontalScale(), step.verticalScale());
@@ -170,6 +174,7 @@ void KTItemTweener::setPosAt(int index, const QPointF &pos)
 void KTItemTweener::setRotationAt(int index, double angle)
 {
     VERIFY_STEP(index);
+    kFatal() << "KTItemTweener::setRotationAt() - Index: " << index << " - Angle: " << angle;
     k->step(index)->setRotation(angle);
 }
 
@@ -219,6 +224,8 @@ QPointF KTItemTweener::transformOriginPoint()
 
 void KTItemTweener::fromXml(const QString &xml)
 {
+    kFatal() << "KTItemTweener::fromXml() - Following the white rabbit!";
+    
     QDomDocument doc;
 
     if (doc.setContent(xml)) {
@@ -246,10 +253,23 @@ void KTItemTweener::fromXml(const QString &xml)
                    if (!e.isNull()) {
                        if (e.tagName() == "position") {
                            kFatal() << "KTItemTweener::fromXml() - Processing position settings";
+                           k->path = e.attribute("coords");
                        }
                        if (e.tagName() == "rotation") {
                            kFatal() << "KTItemTweener::fromXml() - Processing rotation settings";
+                           k->rotationType = KTItemTweener::RotationType(root.attribute("rotationType").toInt());
+                           k->rotateSpeed = root.attribute("rotateSpeed").toInt();
+
+                           if (k->rotationType == KTItemTweener::Continuos) {
+                               k->rotateDirection = KTItemTweener::RotateDirection(root.attribute("rotateDirection").toInt());
+                           } else if (k->rotationType == KTItemTweener::Partial) {
+                                      k->rotateLoop = root.attribute("rotateLoop").toInt();
+                                      k->rotateStartDegree = root.attribute("rotateStartDegree").toInt();
+                                      k->rotateEndDegree = root.attribute("rotateEndDegree").toInt();
+                                      k->rotateReverseLoop = root.attribute("rotateReverseLoop").toInt();
+                           }
                        }
+
                        if (e.tagName() == "scale") {
                            kFatal() << "KTItemTweener::fromXml() - Processing scale settings";
                        }
@@ -359,6 +379,8 @@ void KTItemTweener::fromXml(const QString &xml)
 
 QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
+    kFatal() << "KTItemTweener::toXml() - Following the white rabbit!";
+
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
     root.setAttribute("type", k->type);

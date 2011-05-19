@@ -70,6 +70,7 @@ class TweenerPanel : public QWidget
         void initStartCombo(int framesTotal, int currentFrame);
         int startComboSize();
         QString tweenToXml(int currentFrame, QPointF point);
+        int totalSteps();
 
     private slots:
         void emitOptionChanged(int option);

@@ -221,8 +221,7 @@ QString Configurator::tweenToXml(int currentFrame, QPointF point)
 
 int Configurator::totalSteps()
 {
-    // return k->settingsPanel->totalSteps();
-    return 1;
+    return k->tweenList->totalSteps();
 }
 
 void Configurator::activateSelectionMode()
