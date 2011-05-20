@@ -50,6 +50,7 @@ class TweenerTable : public QWidget
         TweenerTable(QWidget *parent = 0);
         ~TweenerTable();
         void checkTween(int index, bool flag);
+        void resetTable();
 
     private slots:
         void showTweenSettings(int column, int row);

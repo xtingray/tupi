@@ -75,7 +75,7 @@ struct TweenerPanel::Private
     int totalSteps;
 
     bool selectionDone;
-    bool propertiesDone;
+    bool propertiesOpen;
 
     KImageButton *applyButton;
     KImageButton *closeButton;
@@ -84,7 +84,7 @@ struct TweenerPanel::Private
 TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->selectionDone = false;
-    k->propertiesDone = false;
+    k->propertiesOpen = false;
     k->totalSteps = 0;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -177,10 +177,10 @@ void TweenerPanel::setTweenerTableForm()
 void TweenerPanel::activeTweenerTableForm(bool enable)
 {
     if (enable && !k->tweenerTablePanel->isVisible()) {
-        k->propertiesDone = true;
+        k->propertiesOpen = true;
         k->tweenerTablePanel->show();
     } else {
-        k->propertiesDone = false;
+        k->propertiesOpen = false;
         k->tweenerTablePanel->hide();
     }
 }
@@ -232,7 +232,7 @@ void TweenerPanel::loadTweenComponents()
                 case TweenerPanel::Position:
                      kFatal() << "TweenerPanel::loadTweenComponents() - Opening Position gui";
                      k->positionPanel = new PositionSettings;
-                     connect(k->positionPanel, SIGNAL(clickedApplyTween(TweenerPanel::TweenerType)), this, SLOT(activateTweenersTable(TweenerPanel::TweenerType)));  
+                     connect(k->positionPanel, SIGNAL(clickedApplyTween(TweenerPanel::TweenerType, const QString &)), this, SLOT(activateTweenersTable(TweenerPanel::TweenerType, const QString &)));  
                      connect(k->positionPanel, SIGNAL(clickedCloseTweenProperties(TweenerPanel::Mode)), this, SLOT(updateTweenersTable(TweenerPanel::Mode)));
                      connect(k->positionPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int))); 
 
@@ -274,6 +274,8 @@ void TweenerPanel::activeTweenComponent(int index, bool enable)
 
 void TweenerPanel::setParameters(const QString &name, int framesTotal, int startFrame)
 {
+    k->tweenerTable->resetTable();
+
     k->mode = Add;
     k->input->setText(name);
 
@@ -289,6 +291,7 @@ void TweenerPanel::emitOptionChanged(int option)
             case 0:
              {
                  emit clickedSelect();
+                 activeTweenerTableForm(false);
              }
             break;
             case 1:
@@ -327,19 +330,14 @@ void TweenerPanel::showTweenSettings(int tweenType)
     emit tweenPropertiesActivated(TweenerPanel::TweenerType(tweenType));
 }
 
-void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type)
+void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type, const QString &message)
 {
     k->tweenerList.append(type);
 
-    /*
-    activeTweenComponent(k->currentTweenIndex, false);
-    activeOptionsPanel(true);
-    activeTweenerTableForm(true);
-    activeButtonsPanel(true);
-    */
-
     if (!k->applyButton->isEnabled())
         k->applyButton->setEnabled(true);
+
+    KOsd::self()->display(tr("Info"), message, KOsd::Info);
 }
 
 void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)
@@ -400,15 +398,15 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
    text += "  <rotation init=\"0\" frames=\"3\" rotateDirection=\"0\" rotateSpeed=\"5\" rotationType=\"0\" />";
    text += "</settings>";
    text += "<step value=\"0\">";
-   text += "  <position x=\"53,5\" y=\"53,5\"/>";
+   text += "  <position x=\"50\" y=\"50\"/>";
    text += "  <rotation angle=\"0\"/>";
    text += "</step>";
    text += " <step value=\"1\">";
-   text += "  <position x=\"70,85203552246094\" y=\"61,91224670410156\"/>";
+   text += "  <position x=\"150\" y=\"150\"/>";
    text += "  <rotation angle=\"45\"/>";
    text += " </step>";
    text += " <step value=\"2\">";
-   text += "  <position x=\"87,0291748046875\" y=\"70,8936767578125\"/>";
+   text += "  <position x=\"250\" y=\"250\"/>";
    text += "  <rotation angle=\"90\"/>";
    text += " </step>";
    text += "</tweening>";

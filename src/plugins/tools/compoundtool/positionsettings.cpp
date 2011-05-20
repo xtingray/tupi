@@ -253,7 +253,9 @@ void PositionSettings::applyTween()
     if (!k->comboInit->isEnabled())
         k->comboInit->setEnabled(true);
 
-    emit clickedApplyTween(TweenerPanel::Position);
+    QString text(tr("Position Tween is set!")); 
+
+    emit clickedApplyTween(TweenerPanel::Position, text);
 }
 
 void PositionSettings::resetTween()

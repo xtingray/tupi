@@ -75,7 +75,7 @@ class TweenerPanel : public QWidget
     private slots:
         void emitOptionChanged(int option);
         void showTweenSettings(int tweenType);
-        void activateTweenersTable(TweenerPanel::TweenerType type);
+        void activateTweenersTable(TweenerPanel::TweenerType type, const QString &message);
         void updateTweenersTable(TweenerPanel::Mode mode);
         void applyTween();
         

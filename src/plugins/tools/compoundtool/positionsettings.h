@@ -80,7 +80,7 @@ class PositionSettings : public QWidget
         void clickedCreatePath();
         void clickedSelect();
         void clickedCloseTweenProperties(TweenerPanel::Mode mode);
-        void clickedApplyTween(TweenerPanel::TweenerType type);
+        void clickedApplyTween(TweenerPanel::TweenerType type, const QString &text);
         void startingPointChanged(int index);
         
     private:

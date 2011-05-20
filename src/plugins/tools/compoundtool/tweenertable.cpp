@@ -113,3 +113,11 @@ void TweenerTable::checkTween(int index, bool flag)
 {
     k->checkList->at(index)->setChecked(flag);    
 }
+
+void TweenerTable::resetTable()
+{
+    for (int i=0; i < k->checkList->size(); i++) {
+         if (k->checkList->at(i)->isChecked()) 
+             k->checkList->at(i)->setChecked(false);
+    }
+}
