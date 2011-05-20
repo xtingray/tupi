@@ -432,6 +432,8 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          }
 
                          if (stepItem->has(KTTweenerStep::Rotation)) {
+                             QRectF rect = object->item()->sceneBoundingRect();
+                             object->item()->setTransformOriginPoint(rect.center());
                              double angle = stepItem->rotation();
                              object->item()->setRotation(angle);
                              kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
