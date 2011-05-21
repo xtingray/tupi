@@ -122,6 +122,7 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
             m_rect->setBrush(brushManager->brush());
 
             firstPoint = input->pos();
+
         } else if (name() == tr("Ellipse")) {
 
                    added = false;
@@ -135,20 +136,11 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
 
                    added = false;
                    m_line = new KTLineItem();
-                   m_line->setLine(QLineF(0,0,0,0));
+                   m_line->setLine(QLineF(input->pos().x(), input->pos().y(), input->pos().x(), input->pos().y()));
                    m_line->setPen(brushManager->pen());
 
-                   // m_line->setBrush(brushManager->brush());
-
-                   /*
-                   m_item = new KTLineItem;
-                   static_cast<QGraphicsLineItem *>(m_item)->setPen(brushManager->pen());
-                   static_cast<QGraphicsLineItem *>(m_item)->setLine(QLineF(0,0,0,0));
-                   */
+                   firstPoint = input->pos();
         }
-        
-        // m_item->setPos(origin);
-        // scene->includeObject(m_item);
     }
 }
 
@@ -213,18 +205,15 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 
         m_ellipse->setRect(rect);
 
-        // m_ellipse->setPos(rect.topLeft());
-
     } else if (name() == tr("Line")) {
 
-        QLineF line(m_line->line().x1(), m_line->line().y1(), input->pos().x(), input->pos().y()); 
-        m_line->setLine(line);
+        if (!added) {
+            scene->includeObject(m_line);
+            added = true;
+        }
 
-        /*
-        QPointF pos = m_item->mapFromScene(input->pos());
-        QLineF line(static_cast<KTLineItem *>(m_item)->line().x1(), static_cast<KTLineItem *>(m_item)->line().y1(), pos.x(), pos.y());
-        static_cast<KTLineItem *>(m_item)->setLine(line);
-        */
+        QLineF line(firstPoint.x(), firstPoint.y(), input->pos().x(), input->pos().y()); 
+        m_line->setLine(line);
     }
 }
 
@@ -232,7 +221,6 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    Q_UNUSED(input);
 
     QDomDocument doc;
     QPointF position;
@@ -240,11 +228,10 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     if (name() == tr("Rectangle")) {
         doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_rect)->toXml(doc));
         position = m_rect->pos();
-        kFatal() << "GeometricTool::release() - Position Rect: [" << position.x() << ", " << position.y() << "]";
     } else if (name() == tr("Ellipse")) {
                doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_ellipse)->toXml(doc));
-               position = m_ellipse->pos();
-               kFatal() << "GeometricTool::release() - Position Ellipse: [" << position.x() << ", " << position.y() << "]";
+               QRectF rect = m_ellipse->rect();
+               position = rect.topLeft();
     } else if (name() == tr("Line")) {
                doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_line)->toXml(doc));
                position = m_line->pos(); 
