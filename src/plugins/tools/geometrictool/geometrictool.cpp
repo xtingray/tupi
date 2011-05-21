@@ -114,134 +114,117 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
     Q_UNUSED(brushManager);
     
     if (input->buttons() == Qt::LeftButton) {
-        QPointF pos = input->pos();
         
         if (name() == tr("Rectangle")) {
-            m_item = new KTRectItem;
-            
-            static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(brushManager->pen());
-            static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brushManager->brush());
+            added = false;
+            m_rect = new KTRectItem(QRectF(input->pos(), QSize(0,0)));
+            m_rect->setPen(brushManager->pen());
+            m_rect->setBrush(brushManager->brush());
+
+            firstPoint = input->pos();
         } else if (name() == tr("Ellipse")) {
-                   m_item = new KTEllipseItem;
-                   static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(brushManager->pen());
-                   static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brushManager->brush());
+
+                   added = false;
+                   m_ellipse = new KTEllipseItem(QRectF(input->pos(), QSize(0,0)));
+                   m_ellipse->setPen(brushManager->pen());
+                   m_ellipse->setBrush(brushManager->brush());
+
+                   firstPoint = input->pos();
+
         } else if (name() == tr("Line")) {
-            m_item = new KTLineItem;
-            static_cast<QGraphicsLineItem *>(m_item)->setPen(brushManager->pen());
-            static_cast<QGraphicsLineItem *>(m_item)->setLine(QLineF(0,0,0,0));
+
+                   added = false;
+                   m_line = new KTLineItem();
+                   m_line->setLine(QLineF(0,0,0,0));
+                   m_line->setPen(brushManager->pen());
+
+                   // m_line->setBrush(brushManager->brush());
+
+                   /*
+                   m_item = new KTLineItem;
+                   static_cast<QGraphicsLineItem *>(m_item)->setPen(brushManager->pen());
+                   static_cast<QGraphicsLineItem *>(m_item)->setLine(QLineF(0,0,0,0));
+                   */
         }
         
-        m_item->setPos(pos);
-        //scene->addItem(m_item);
-        scene->includeObject(m_item);
+        // m_item->setPos(origin);
+        // scene->includeObject(m_item);
     }
 }
 
 void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    Q_UNUSED(input);
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
     
     if (name() == tr("Rectangle")) {
 
-        m_rect = static_cast<KTRectItem *>(m_item)->rect();
-
-        /*
-        bool w = true; 
-       
-        if (proportion) {
-            QPointF begin = m_rect.topLeft();
-            QPointF end = m_item->mapFromScene(input->pos());
-            QPointF result = begin - end;
-
-            QPointF destiny = QPointF(result.x(), result.x());
-
-            if (result.x() > result.y()) {
-                destiny = QPointF(result.y(), result.y());
-                w = false;
-            }
-            
-            m_rect.setBottomRight(begin + destiny);
-
-        } else {
-            m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
+        if (!added) {
+            scene->includeObject(m_rect);
+            added = true;
         }
-        */
 
-        m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
+        int xMouse = input->pos().x();
+        int yMouse = input->pos().y();
+        int xInit = firstPoint.x();
+        int yInit = firstPoint.y();
 
-        static_cast<KTRectItem *>(m_item)->setRect(m_rect);
-        
-        QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
-        QMatrix m;
+        QRectF rect = m_rect->rect();
 
-        /*
-        if (proportion) {
-            if (w)
-                m.scale(m_rect.width() / 100, m_rect.width() / 100);
+        if (xMouse >= xInit) {
+            if (yMouse >= yInit)
+                rect.setBottomRight(input->pos());
             else
-                m.scale(m_rect.height() / 100, m_rect.height() / 100);
+                rect.setTopRight(input->pos());
         } else {
-            m.scale(m_rect.width() / 100, m_rect.height() / 100);
-        }
-        */
-
-        m.scale(m_rect.width() / 100, m_rect.height() / 100);
-
-        brush.setMatrix(m);
-        static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
-        
-        QPen pen = static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
-        brush = pen.brush();
-        m.reset();
-
-        /*
-        if (proportion) {
-            if (w)
-                m.scale(m_rect.width() / 100, m_rect.width() / 100);
+            if (yMouse >= yInit)
+                rect.setBottomLeft(input->pos());
             else
-                m.scale(m_rect.height() / 100, m_rect.height() / 100);
-        } else {
-            m.scale(m_rect.width() / 100, m_rect.height() / 100);
+                rect.setTopLeft(input->pos());
         }
-        */
 
-        m.scale(m_rect.width() / 100, m_rect.height() / 100);
+        m_rect->setRect(rect);
 
-        brush.setMatrix(m);
-        pen.setBrush(brush);
-        
-        static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
-        
     } else if (name() == tr("Ellipse")) {
 
-        m_rect = static_cast<KTEllipseItem *>(m_item)->rect();
-        m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
-        static_cast<KTEllipseItem *>(m_item)->setRect(m_rect);
-        QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
-        QMatrix m;
-        
-        m.scale(m_rect.width() / 100, m_rect.height() / 100);
-        brush.setMatrix(m);
-        static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
-        
-        QPen pen = static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
-        brush = pen.brush();
-        m.reset();
-        
-        m.scale(m_rect.width() / 100, m_rect.height() / 100);
-        brush.setMatrix(m);
-        pen.setBrush(brush);
-        
-        static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
-        
+        if (!added) {
+            scene->includeObject(m_ellipse);
+            added = true;
+        }
+
+        int xMouse = input->pos().x();
+        int yMouse = input->pos().y();
+        int xInit = firstPoint.x();
+        int yInit = firstPoint.y();
+
+        QRectF rect = m_ellipse->rect();
+
+        if (xMouse >= xInit) {
+            if (yMouse >= yInit)
+                rect.setBottomRight(input->pos());
+            else
+                rect.setTopRight(input->pos());
+        } else {
+            if (yMouse >= yInit)
+                rect.setBottomLeft(input->pos());
+            else
+                rect.setTopLeft(input->pos());
+        }
+
+        m_ellipse->setRect(rect);
+
+        // m_ellipse->setPos(rect.topLeft());
+
     } else if (name() == tr("Line")) {
 
+        QLineF line(m_line->line().x1(), m_line->line().y1(), input->pos().x(), input->pos().y()); 
+        m_line->setLine(line);
+
+        /*
         QPointF pos = m_item->mapFromScene(input->pos());
         QLineF line(static_cast<KTLineItem *>(m_item)->line().x1(), static_cast<KTLineItem *>(m_item)->line().y1(), pos.x(), pos.y());
-        
         static_cast<KTLineItem *>(m_item)->setLine(line);
+        */
     }
 }
 
@@ -252,10 +235,23 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     Q_UNUSED(input);
 
     QDomDocument doc;
-    doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml(doc));
+    QPointF position;
+
+    if (name() == tr("Rectangle")) {
+        doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_rect)->toXml(doc));
+        position = m_rect->pos();
+        kFatal() << "GeometricTool::release() - Position Rect: [" << position.x() << ", " << position.y() << "]";
+    } else if (name() == tr("Ellipse")) {
+               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_ellipse)->toXml(doc));
+               position = m_ellipse->pos();
+               kFatal() << "GeometricTool::release() - Position Ellipse: [" << position.x() << ", " << position.y() << "]";
+    } else if (name() == tr("Line")) {
+               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_line)->toXml(doc));
+               position = m_line->pos(); 
+    }
     
     KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
-                             scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), m_item->pos(),
+                             scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), position,
                              KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
     
     emit requested(&event);

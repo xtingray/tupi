@@ -41,6 +41,9 @@
 #include <QKeyEvent>
 
 #include <kttoolplugin.h>
+#include <ktrectitem.h>
+#include <ktellipseitem.h>
+#include <ktlineitem.h>
 
 /**
  * @author David Cuadrado
@@ -74,11 +77,17 @@ class GeometricTool : public KTToolPlugin
         void setupActions();
         
     private:
-        QRectF m_rect;
+        KTRectItem *m_rect;
+        KTEllipseItem *m_ellipse;
+        KTLineItem *m_line;
+
+        bool added;
+        QPointF firstPoint;
+
         QMap<QString, KAction *> m_actions;
         bool proportion;
         
-        QGraphicsItem *m_item;
+        // QGraphicsItem *m_item;
 };
 
 #endif
