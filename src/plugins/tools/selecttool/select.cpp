@@ -262,7 +262,9 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                                     KTProjectRequest::Transform, doc.toString());
                          emit requested(&event);
                      } else {
-                         kDebug("selection") << "position is " << position; 
+                         #ifdef K_DEBUG
+                                kDebug("selection") << "position is " << position; 
+                         #endif
                      }
                  }
         }

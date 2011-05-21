@@ -388,7 +388,12 @@ void TweenerPanel::setEditMode()
 
 QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
 {
-   // XML goes here!
+   for (int i=0; i > k->tweenerList.size(); i++) {
+
+        // k->positionPanel->startFrame()
+        // k->positionPanel->totalSteps()
+        // k->positionPanel->pathString()
+   }
 
    QString text;
 
@@ -398,15 +403,15 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
    text += "  <rotation init=\"0\" frames=\"3\" rotateDirection=\"0\" rotateSpeed=\"5\" rotationType=\"0\" />";
    text += "</settings>";
    text += "<step value=\"0\">";
-   text += "  <position x=\"50\" y=\"50\"/>";
+   text += "  <position x=\"0\" y=\"0\"/>";
    text += "  <rotation angle=\"0\"/>";
    text += "</step>";
    text += " <step value=\"1\">";
-   text += "  <position x=\"150\" y=\"150\"/>";
+   text += "  <position x=\"20\" y=\"20\"/>";
    text += "  <rotation angle=\"45\"/>";
    text += " </step>";
    text += " <step value=\"2\">";
-   text += "  <position x=\"250\" y=\"250\"/>";
+   text += "  <position x=\"40\" y=\"40\"/>";
    text += "  <rotation angle=\"90\"/>";
    text += " </step>";
    text += "</tweening>";

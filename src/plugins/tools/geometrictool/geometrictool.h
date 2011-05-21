@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -38,16 +38,17 @@
 
 #include <QObject>
 #include <QLabel>
+#include <QKeyEvent>
 
 #include <kttoolplugin.h>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class GeometricTool : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         GeometricTool();
@@ -58,6 +59,7 @@ class GeometricTool : public KTToolPlugin
         virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void keyPressEvent(QKeyEvent *event);
 
         virtual QMap<QString, KAction *> actions() const;
         
@@ -74,6 +76,7 @@ class GeometricTool : public KTToolPlugin
     private:
         QRectF m_rect;
         QMap<QString, KAction *> m_actions;
+        bool proportion;
         
         QGraphicsItem *m_item;
 };

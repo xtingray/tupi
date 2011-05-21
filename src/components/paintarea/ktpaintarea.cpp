@@ -918,7 +918,8 @@ void KTPaintArea::setOnionFactor(double value)
 void KTPaintArea::keyPressEvent(QKeyEvent *event)
 {
     if (k->currentTool.compare(tr("Object Selection")) == 0 
-        || k->currentTool.compare(tr("Contour Selection")) == 0) {
+        || k->currentTool.compare(tr("Contour Selection")) == 0
+        || k->currentTool.compare(tr("Rectangle")) == 0) {
         KTPaintAreaBase::keyPressEvent(event);
         return;
     }

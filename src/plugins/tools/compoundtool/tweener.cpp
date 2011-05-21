@@ -165,11 +165,15 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(scene);
 
     if (k->editMode == TweenerPanel::TweenProperties && k->scene->currentFrameIndex() == k->startPoint) {
-        if (k->path) {
-            QPointF point = k->path->mapFromParent(input->pos());
-            QPainterPath path = k->path->path();
-            path.cubicTo(point, point, point);
-            k->path->setPath(path);
+        if (k->currentTweenType == TweenerPanel::Position) {
+            if (k->path) {
+                QPointF point = k->path->mapFromParent(input->pos());
+                QPainterPath path = k->path->path();
+                path.cubicTo(point, point, point);
+                k->path->setPath(path);
+            }
+        } else {
+            kFatal() << "Tweener::press() - No position!";
         }
     } 
 }
@@ -200,31 +204,35 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
         if (k->editMode == TweenerPanel::TweenProperties) {
 
-            if (k->group) {
-                k->group->createNodes(k->path);
-                k->group->expandAllNodes();
-                k->configurator->updateSteps(k->path, k->pathOffset);
-                QPainterPath::Element e  = k->path->path().elementAt(0);
-                QPointF begin = QPointF(e.x, e.y);
+            if (k->currentTweenType == TweenerPanel::Position) {
 
-                if (begin != k->firstNode) {
-                    QPointF oldPos = k->firstNode;
-                    QPointF newPos = begin;
+                if (k->group) {
+                    k->group->createNodes(k->path);
+                    k->group->expandAllNodes();
+                    k->configurator->updateSteps(k->path, k->pathOffset);
+                    QPainterPath::Element e  = k->path->path().elementAt(0);
+                    QPointF begin = QPointF(e.x, e.y);
 
-                    int distanceX = newPos.x() - oldPos.x();
-                    int distanceY = newPos.y() - oldPos.y();
+                    if (begin != k->firstNode) {
+                        QPointF oldPos = k->firstNode;
+                        QPointF newPos = begin;
 
-                    if (k->objects.size() > 0) {
-                        foreach (QGraphicsItem *item, k->objects) {
-                                 item->moveBy(distanceX, distanceY);
+                        int distanceX = newPos.x() - oldPos.x();
+                        int distanceY = newPos.y() - oldPos.y();
+
+                        if (k->objects.size() > 0) {
+                            foreach (QGraphicsItem *item, k->objects)
+                                     item->moveBy(distanceX, distanceY);
+                            QGraphicsItem *item = k->objects.at(0);
+                            QRectF rect = item->sceneBoundingRect();
+                            k->itemObjectReference = rect.center();
                         }
-                        QGraphicsItem *item = k->objects.at(0);
-                        QRectF rect = item->sceneBoundingRect();
-                        k->itemObjectReference = rect.center();
-                    }
 
-                    k->firstNode = newPos;
+                        k->firstNode = newPos;
+                    }
                 }
+            } else {
+                kFatal() << "Tweener::release() - No position!";
             }
 
         } else {
@@ -292,7 +300,9 @@ QWidget *Tweener::configurator()
 
         k->configurator = new Configurator;
 
-        connect(k->configurator, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)), this, SLOT(updateCurrentTweenerType(TweenerPanel::TweenerType)));
+        connect(k->configurator, SIGNAL(tweenPropertiesActivated(TweenerPanel::TweenerType)), 
+                this, SLOT(updateCurrentTweenerType(TweenerPanel::TweenerType)));
+
         connect(k->configurator, SIGNAL(startingPointChanged(int)), this, SLOT(updateStartPoint(int)));
 
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
@@ -330,11 +340,13 @@ void Tweener::aboutToChangeTool()
     }
 
     if (k->editMode == TweenerPanel::TweenProperties) {
-        if (k->path) {
-            k->scene->removeItem(k->path);
-            k->pathAdded = false;
-            delete k->group;
-            k->group = 0;
+        if (k->currentTweenType == TweenerPanel::Position) {
+            if (k->path) {
+                k->scene->removeItem(k->path);
+                k->pathAdded = false;
+                delete k->group;
+                k->group = 0;
+            }
         }
         return;
     }
@@ -400,12 +412,17 @@ void Tweener::setSelect()
         }
     }
 
-    if (k->path) {
-        k->scene->removeItem(k->path);
-        k->pathAdded = false;
-        delete k->group;
-        k->group = 0;
+
+    /*
+    if (k->currentTweenType == TweenerPanel::Position) {
+        if (k->path) {
+            k->scene->removeItem(k->path);
+            k->pathAdded = false;
+            delete k->group;
+            k->group = 0;
+        }
     }
+    */
 
     k->editMode = TweenerPanel::Selection;
 
@@ -438,16 +455,18 @@ void Tweener::applyReset()
     clearSelection();
     disableSelection();
 
-    if (k->group) {
-        k->group->clear();
-        k->group = 0;
-    }
+    if (k->currentTweenType == TweenerPanel::Position) {
+        if (k->group) {
+            k->group->clear();
+            k->group = 0;
+        }
 
-    if (k->path) {
-        if (k->startPoint == k->scene->currentFrameIndex())
-            k->scene->removeItem(k->path);
-        k->pathAdded = false;
-        k->path = 0;
+        if (k->path) {
+            if (k->startPoint == k->scene->currentFrameIndex())
+                k->scene->removeItem(k->path);
+            k->pathAdded = false;
+            k->path = 0;
+        }
     }
 
     k->startPoint = k->scene->currentFrameIndex();
@@ -633,11 +652,13 @@ void Tweener::updateScene(KTGraphicsScene *scene)
        int total = k->startPoint + k->configurator->totalSteps();
 
        if (k->editMode == TweenerPanel::TweenProperties) {
-           if (scene->currentFrameIndex() >= k->startPoint && scene->currentFrameIndex() < total) {
-               if (k->path && k->group) {
-                   k->scene->addItem(k->path);            
-                   k->group->createNodes(k->path);
-                   k->group->expandAllNodes();
+           if (k->currentTweenType == TweenerPanel::Position) {
+               if (scene->currentFrameIndex() >= k->startPoint && scene->currentFrameIndex() < total) {
+                   if (k->path && k->group) {
+                       k->scene->addItem(k->path);            
+                       k->group->createNodes(k->path);
+                       k->group->expandAllNodes();
+                   }
                }
            }
        } 
@@ -660,15 +681,19 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                if (k->editMode == TweenerPanel::TweenProperties) {
 
-                       k->path = 0;
+                       if (k->currentTweenType == TweenerPanel::Position)
+                           k->path = 0;
+
                        k->configurator->cleanData();
                        k->configurator->activateSelectionMode();
                        clearSelection();
                        setSelect();
 
                } else if (k->editMode == TweenerPanel::Selection) {
-                       
-                       k->path = 0;
+
+                       if (k->currentTweenType == TweenerPanel::Position)                       
+                           k->path = 0;
+
                        if (scene->currentFrameIndex() != k->startPoint)
                            clearSelection();
                        k->startPoint = scene->currentFrameIndex();
@@ -751,26 +776,29 @@ void Tweener::setEditEnv()
     QRectF rect = item->sceneBoundingRect();
     k->itemObjectReference = rect.center();
 
-    k->path = k->currentTween->graphicsPath();
-    k->path->setZValue(maxZValue());
+    if (k->currentTweenType == TweenerPanel::Position) {
 
-    QPainterPath::Element e  = k->path->path().elementAt(0);
-    k->firstNode = QPointF(e.x, e.y);
+        k->path = k->currentTween->graphicsPath();
+        k->path->setZValue(maxZValue());
 
-    QPointF oldPos = QPointF(e.x, e.y);
-    QPointF newPos = rect.center();
+        QPainterPath::Element e  = k->path->path().elementAt(0);
+        k->firstNode = QPointF(e.x, e.y);
 
-    int distanceX = newPos.x() - oldPos.x();
-    int distanceY = newPos.y() - oldPos.y();
-    k->path->moveBy(distanceX, distanceY);
-    k->pathOffset = QPointF(distanceX, distanceY);
+        QPointF oldPos = QPointF(e.x, e.y);
+        QPointF newPos = rect.center();
 
-    QColor color = Qt::lightGray;
-    color.setAlpha(200);
-    QPen pen(QBrush(color), 1, Qt::DotLine);
-    k->path->setPen(pen);
+        int distanceX = newPos.x() - oldPos.x();
+        int distanceY = newPos.y() - oldPos.y();
+        k->path->moveBy(distanceX, distanceY);
+        k->pathOffset = QPointF(distanceX, distanceY);
 
-    setCreatePath();
+        QColor color = Qt::lightGray;
+        color.setAlpha(200);
+        QPen pen(QBrush(color), 1, Qt::DotLine);
+        k->path->setPen(pen);
+
+        setCreatePath();
+    }
 }
 
 int Tweener::framesTotal()
@@ -815,8 +843,12 @@ void Tweener::updateCurrentTweenerType(TweenerPanel::TweenerType type)
     kFatal() << "updateCurrentTweenerType() - Just following type: " << type;
     k->currentTweenType = type;
 
-    if (type == TweenerPanel::Position)
+    if (k->currentTweenType == TweenerPanel::Position) {
+        kFatal() << "Tweener::updateCurrentTweenerType() - Setting path!";
         setCreatePath();
+    } else  {
+        kFatal() << "Tweener::updateCurrentTweenerType() - Type is not Position!";
+    }
 }
 
 void Tweener::cleanPath()

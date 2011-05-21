@@ -73,6 +73,8 @@ QStringList GeometricTool::keys() const
 
 void GeometricTool::init(KTGraphicsScene *scene)
 {
+    proportion = false;
+
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -144,24 +146,71 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
     if (name() == tr("Rectangle")) {
 
         m_rect = static_cast<KTRectItem *>(m_item)->rect();
-        
-        m_rect.setBottomRight(m_item->mapFromScene(input->pos()) );
-        
+
+        /*
+        bool w = true; 
+       
+        if (proportion) {
+            QPointF begin = m_rect.topLeft();
+            QPointF end = m_item->mapFromScene(input->pos());
+            QPointF result = begin - end;
+
+            QPointF destiny = QPointF(result.x(), result.x());
+
+            if (result.x() > result.y()) {
+                destiny = QPointF(result.y(), result.y());
+                w = false;
+            }
+            
+            m_rect.setBottomRight(begin + destiny);
+
+        } else {
+            m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
+        }
+        */
+
+        m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
+
         static_cast<KTRectItem *>(m_item)->setRect(m_rect);
         
         QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
         QMatrix m;
-        m.scale( m_rect.width() / 100, m_rect.height() / 100);
+
+        /*
+        if (proportion) {
+            if (w)
+                m.scale(m_rect.width() / 100, m_rect.width() / 100);
+            else
+                m.scale(m_rect.height() / 100, m_rect.height() / 100);
+        } else {
+            m.scale(m_rect.width() / 100, m_rect.height() / 100);
+        }
+        */
+
+        m.scale(m_rect.width() / 100, m_rect.height() / 100);
+
         brush.setMatrix(m);
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
         
         QPen pen = static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
         brush = pen.brush();
         m.reset();
-        
-        m.scale( m_rect.width() / 100, m_rect.height() / 100);
+
+        /*
+        if (proportion) {
+            if (w)
+                m.scale(m_rect.width() / 100, m_rect.width() / 100);
+            else
+                m.scale(m_rect.height() / 100, m_rect.height() / 100);
+        } else {
+            m.scale(m_rect.width() / 100, m_rect.height() / 100);
+        }
+        */
+
+        m.scale(m_rect.width() / 100, m_rect.height() / 100);
+
         brush.setMatrix(m);
-        pen.setBrush(brush );
+        pen.setBrush(brush);
         
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
         
@@ -238,6 +287,16 @@ void GeometricTool::aboutToChangeTool()
 
 void GeometricTool::saveConfig()
 {
+}
+
+void GeometricTool::keyPressEvent(QKeyEvent *event)
+{
+    kFatal() << "GeometricTool::keyPressEvent() - Key: " << event->key();
+
+    if (event->modifiers() == Qt::ShiftModifier) {
+        kFatal() << "GeometricTool::keyPressEvent() - Shift is pressed!";
+        proportion = true;
+    }
 }
 
 Q_EXPORT_PLUGIN2(kt_geometric, GeometricTool)

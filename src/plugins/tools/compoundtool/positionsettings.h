@@ -69,6 +69,7 @@ class PositionSettings : public QWidget
         int totalSteps();
         void cleanData();
         int startComboSize();
+        QString pathString();
         
     private slots:
         // void addTween();

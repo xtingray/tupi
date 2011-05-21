@@ -62,7 +62,8 @@ struct PositionSettings::Private
     QLabel *totalLabel;
     TweenerPanel::Mode mode; 
 
-    QString path;
+    const QGraphicsPathItem *path;
+    QPointF offset;
 
     QPushButton *applyButton;
     QPushButton *closeButton;
@@ -206,7 +207,8 @@ int PositionSettings::startComboSize()
 
 void PositionSettings::updateSteps(const QGraphicsPathItem *path, QPointF offset)
 {
-    k->path = pathToCoords(path, offset);
+    k->path = path;
+    k->offset = offset;
     k->stepViewer->setPath(path);
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 
@@ -221,7 +223,7 @@ QString PositionSettings::tweenToXml(int currentFrame, QPointF point)
     QDomElement root = doc.createElement("position");
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
-    root.setAttribute("coords", k->path);
+    // root.setAttribute("coords", k->path);
 
     foreach (KTTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
@@ -335,3 +337,7 @@ QString PositionSettings::pathToCoords(const QGraphicsPathItem *path, QPointF of
     return strPath.trimmed();
 }
 
+QString PositionSettings::pathString()
+{
+    return pathToCoords(k->path, k->offset);
+}
