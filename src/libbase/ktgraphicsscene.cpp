@@ -972,6 +972,18 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
     QGraphicsScene::keyPressEvent(event);
 }
 
+void KTGraphicsScene::keyReleaseEvent(QKeyEvent *event)
+{
+    if (k->tool) {
+        k->tool->keyReleaseEvent(event);
+
+        if (event->isAccepted())
+            return;
+    }
+   
+    QGraphicsScene::keyReleaseEvent(event);
+}
+
 /*
 
 // TODO: Check this code, not sure whether it does something or it's handy :S

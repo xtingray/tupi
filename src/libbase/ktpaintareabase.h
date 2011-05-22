@@ -84,15 +84,15 @@ class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
         void drawPadLock(QPainter *painter, const QRectF &rect, QString text);
 
     protected:
-        virtual void mousePressEvent(QMouseEvent * event);
-        virtual void mouseMoveEvent(QMouseEvent * event);
+        virtual void mousePressEvent(QMouseEvent *event);
+        virtual void mouseMoveEvent(QMouseEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent *event);
-        virtual void tabletEvent(QTabletEvent * event);
+        virtual void tabletEvent(QTabletEvent *event);
         virtual void enterEvent(QEvent *event);
         virtual void leaveEvent(QEvent *event);
 
         virtual void wheelEvent(QWheelEvent *event);
-        virtual bool viewportEvent(QEvent *e);
+        virtual bool viewportEvent(QEvent *event);
 
     signals:
         void cursorPosition(const QPointF &pos);

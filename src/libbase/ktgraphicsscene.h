@@ -123,6 +123,7 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void keyPressEvent(QKeyEvent *keyEvent);
+        virtual void keyReleaseEvent(QKeyEvent *keyEvent);
        
         /* 
         virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);

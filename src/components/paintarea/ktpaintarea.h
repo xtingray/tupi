@@ -67,6 +67,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void paintBackground();
         void updateSpaceContext();
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
 
     public slots:
         void setNextFramesOnionSkinCount(int n);

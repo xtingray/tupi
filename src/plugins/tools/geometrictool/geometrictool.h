@@ -63,6 +63,7 @@ class GeometricTool : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
 
         virtual QMap<QString, KAction *> actions() const;
         
@@ -87,7 +88,7 @@ class GeometricTool : public KTToolPlugin
         QMap<QString, KAction *> m_actions;
         bool proportion;
         
-        // QGraphicsItem *m_item;
+        QGraphicsItem *m_item;
 };
 
 #endif

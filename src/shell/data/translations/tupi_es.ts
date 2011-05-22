@@ -1857,6 +1857,11 @@
         <translation>Rectángulo</translation>
     </message>
     <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="314"/>
+        <source>Ellipse</source>
+        <translation>Elipse</translation>
+    </message>
+    <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="506"/>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="540"/>
         <source>No items selected</source>

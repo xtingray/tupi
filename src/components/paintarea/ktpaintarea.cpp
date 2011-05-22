@@ -919,7 +919,8 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
 {
     if (k->currentTool.compare(tr("Object Selection")) == 0 
         || k->currentTool.compare(tr("Contour Selection")) == 0
-        || k->currentTool.compare(tr("Rectangle")) == 0) {
+        || k->currentTool.compare(tr("Rectangle")) == 0
+        || k->currentTool.compare(tr("Ellipse")) == 0) {
         KTPaintAreaBase::keyPressEvent(event);
         return;
     }
@@ -955,4 +956,7 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-
+void KTPaintArea::keyReleaseEvent(QKeyEvent *event)
+{
+    KTPaintAreaBase::keyReleaseEvent(event);
+}

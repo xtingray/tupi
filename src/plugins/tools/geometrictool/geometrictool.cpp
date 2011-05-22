@@ -149,10 +149,13 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
     
-    if (name() == tr("Rectangle")) {
+    if (name() == tr("Rectangle") || name() == tr("Ellipse")) {
 
         if (!added) {
-            scene->includeObject(m_rect);
+            if (name() == tr("Rectangle"))
+                scene->includeObject(m_rect);
+            else
+                scene->includeObject(m_ellipse);
             added = true;
         }
 
@@ -161,49 +164,77 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         int xInit = firstPoint.x();
         int yInit = firstPoint.y();
 
-        QRectF rect = m_rect->rect();
+        QRectF rect;
 
-        if (xMouse >= xInit) {
-            if (yMouse >= yInit)
-                rect.setBottomRight(input->pos());
-            else
-                rect.setTopRight(input->pos());
+        if (name() == tr("Rectangle"))
+            rect = m_rect->rect();
+        else
+            rect = m_ellipse->rect();
+
+        if (proportion) {
+
+            int width = abs(xMouse - xInit);
+            int height = abs(yMouse - yInit);
+
+            bool xWins = false;
+            if (width <= height)
+                xWins = true; 
+
+            QPointF target;
+
+            if (xMouse >= xInit) {
+                if (yMouse >= yInit) {
+                    if (xWins)
+                        target = QPointF(xInit + width, yInit + width);      
+                    else
+                        target = QPointF(xInit + height, yInit + height);
+
+                    rect.setBottomRight(target);
+                } else {
+                    if (xWins)
+                        target = QPointF(xInit + width, yInit - width);
+                    else
+                        target = QPointF(xInit + height, yInit - height);
+
+                    rect.setTopRight(target);
+                }
+            } else {
+                if (yMouse >= yInit) {
+                    if (xWins)
+                        target = QPointF(xInit - width, yInit + width);
+                    else
+                        target = QPointF(xInit - height, yInit + height);
+
+                    rect.setBottomLeft(target);
+                } else {
+                    if (xWins)
+                        target = QPointF(xInit - width, yInit - width);
+                    else
+                        target = QPointF(xInit - height, yInit - height);
+
+                    rect.setTopLeft(target);
+                }
+            }
+            
         } else {
-            if (yMouse >= yInit)
-                rect.setBottomLeft(input->pos());
-            else
-                rect.setTopLeft(input->pos());
+
+            if (xMouse >= xInit) {
+                if (yMouse >= yInit)
+                    rect.setBottomRight(input->pos());
+                else
+                    rect.setTopRight(input->pos());
+            } else {
+                if (yMouse >= yInit)
+                    rect.setBottomLeft(input->pos());
+                else
+                    rect.setTopLeft(input->pos());
+            }
         }
 
-        m_rect->setRect(rect);
-
-    } else if (name() == tr("Ellipse")) {
-
-        if (!added) {
-            scene->includeObject(m_ellipse);
-            added = true;
-        }
-
-        int xMouse = input->pos().x();
-        int yMouse = input->pos().y();
-        int xInit = firstPoint.x();
-        int yInit = firstPoint.y();
-
-        QRectF rect = m_ellipse->rect();
-
-        if (xMouse >= xInit) {
-            if (yMouse >= yInit)
-                rect.setBottomRight(input->pos());
-            else
-                rect.setTopRight(input->pos());
-        } else {
-            if (yMouse >= yInit)
-                rect.setBottomLeft(input->pos());
-            else
-                rect.setTopLeft(input->pos());
-        }
-
-        m_ellipse->setRect(rect);
+        if (name() == tr("Rectangle"))
+            m_rect->setRect(rect);
+        else
+            m_ellipse->setRect(rect);
 
     } else if (name() == tr("Line")) {
 
@@ -274,12 +305,14 @@ void GeometricTool::saveConfig()
 
 void GeometricTool::keyPressEvent(QKeyEvent *event)
 {
-    kFatal() << "GeometricTool::keyPressEvent() - Key: " << event->key();
-
-    if (event->modifiers() == Qt::ShiftModifier) {
-        kFatal() << "GeometricTool::keyPressEvent() - Shift is pressed!";
+    if (event->key() == Qt::Key_Shift)
         proportion = true;
-    }
+}
+
+void GeometricTool::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Shift)
+        proportion = false;
 }
 
 Q_EXPORT_PLUGIN2(kt_geometric, GeometricTool)
