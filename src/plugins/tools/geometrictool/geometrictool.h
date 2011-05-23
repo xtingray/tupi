@@ -45,6 +45,8 @@
 #include <ktellipseitem.h>
 #include <ktlineitem.h>
 
+#include "infopanel.h"
+
 /**
  * @author David Cuadrado
 */
@@ -81,6 +83,8 @@ class GeometricTool : public KTToolPlugin
         KTRectItem *m_rect;
         KTEllipseItem *m_ellipse;
         KTLineItem *m_line;
+
+        InfoPanel *m_configurator;
 
         bool added;
         QPointF firstPoint;

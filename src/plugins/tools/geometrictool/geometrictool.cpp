@@ -287,7 +287,12 @@ int GeometricTool::toolType() const
         
 QWidget *GeometricTool::configurator()
 {
-    return  0;
+    if (name() == tr("Rectangle") || name() == tr("Ellipse")) {
+        m_configurator = new InfoPanel;
+        return m_configurator;
+    } else {
+      return  0;
+    }
 }
 
 void GeometricTool::aboutToChangeScene(KTGraphicsScene *scene)

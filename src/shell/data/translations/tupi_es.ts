@@ -3070,6 +3070,11 @@
         <source>Esc key or Right mouse button</source>
         <translation>Tecla Escape o botón derecho del ratón</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Set width/height proportional dimensions</source>
+        <translation>Aplicar dimensiones de ancho/altura proporcionales</translation>
+    </message>
 </context>
 <context>
     <name>SelectPlugin</name>

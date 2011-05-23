@@ -520,6 +520,7 @@ void KTViewDocument::selectTool()
 
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         k->currentTool = tool; 
+        tool->setName(toolName);
         k->paintArea->setCurrentTool(toolName);
 
         if (!action->icon().isNull())
@@ -534,9 +535,12 @@ void KTViewDocument::selectTool()
                          minWidth = 130;
                      } else if (toolName.compare(tr("Text"))==0) {
                                 minWidth = 350;
-                     } else if (toolName.compare(tr("PolyLine"))==0) {
+                     } else if (toolName.compare(tr("PolyLine"))==0 
+                                || toolName.compare(tr("Rectangle"))==0 
+                                || toolName.compare(tr("Ellipse"))==0) {
+                                kFatal() << "KTViewDocument::selectTool() - toolName: " << toolName;
                                 minWidth = 130;
-                     } 
+                     }
 
                      k->brushesMenu->setDefaultAction(action);
                      k->brushesMenu->setActiveAction(action);
@@ -595,9 +599,7 @@ void KTViewDocument::selectTool()
                 k->configurationArea->close();
         }
 
-        tool->setName(toolName);
         k->paintArea->setTool(tool);
-
         k->paintArea->viewport()->setCursor(action->cursor());
 
         if ((tool->toolType() == KTToolInterface::Tweener) && (k->spaceMode->currentIndex() != 0))
