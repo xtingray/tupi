@@ -341,3 +341,8 @@ QString PositionSettings::pathString()
 {
     return pathToCoords(k->path, k->offset);
 }
+
+QVector<KTTweenerStep *> PositionSettings::steps()
+{
+    return k->stepViewer->steps();
+}

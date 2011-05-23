@@ -393,6 +393,7 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
         // k->positionPanel->startFrame()
         // k->positionPanel->totalSteps()
         // k->positionPanel->pathString()
+        // k->positionPanel->steps()
    }
 
    QString text;

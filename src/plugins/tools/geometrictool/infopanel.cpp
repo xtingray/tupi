@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                           *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,64 +33,40 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef POSITIONSETTINGS_H
-#define POSITIONSETTINGS_H
+#include "infopanel.h"
+#include <QBoxLayout>
+#include <QTextEdit>
 
-#include <QWidget>
-#include "tweenerpanel.h"
-#include "kttweenerstep.h"
+#include "kglobal.h"
+#include "kdebug.h"
 
-class QGraphicsPathItem;
-class KTItemTweener;
-class TweenerPanel;
-
-/**
- * @author Gustav Gonzalez 
-*/
-
-class PositionSettings : public QWidget 
+InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {
-    Q_OBJECT
+    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-    public:
-        // enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Path, None };
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *label = new QLabel(tr("Tips"));
+    label->setAlignment(Qt::AlignHCenter); 
+    layout->addWidget(label);
 
-        PositionSettings(QWidget *parent = 0);
-        ~PositionSettings();
+    mainLayout->addLayout(layout);
 
-        void setParameters(int framesTotal, int startFrame);
-        void setParameters(KTItemTweener *currentTween);
-        void initStartCombo(int totalFrames, int currentIndex);
-        void setStartFrame(int currentIndex);
-        int startFrame();
+    QTextEdit *textArea = new QTextEdit; 
 
-        void updateSteps(const QGraphicsPathItem *path, QPointF offset);
-        QString tweenToXml(int currentFrame, QPointF point);
-        int totalSteps();
-        void cleanData();
-        int startComboSize();
-        QString pathString();
-        QVector<KTTweenerStep *> steps();
-        
-    private slots:
-        // void addTween();
-        void applyTween();
-        void resetTween();
-        void closeTweenProperties();
-        
-    signals:
-        void clickedCreatePath();
-        void clickedSelect();
-        void clickedCloseTweenProperties(TweenerPanel::Mode mode);
-        void clickedApplyTween(TweenerPanel::TweenerType type, const QString &text);
-        void startingPointChanged(int index);
-        
-    private:
-        QString pathToCoords(const QGraphicsPathItem *path, QPointF offset);
-        void setEditMode();
-        struct Private;
-        Private *const k;
-};
+    // SQA: Check this code with several screen resolutions. It must looks good with everyone! 
+    textArea->setFont(QFont("Arial", 8, QFont::Normal, false));
+    textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Set width/height proportional dimensions") + "</p>");
 
-#endif
+    QString text = textArea->document()->toPlainText();
+    int height = (text.length()*270)/230;
+
+    textArea->setFixedHeight(height);
+
+    mainLayout->addWidget(textArea);
+    mainLayout->addStretch(2);
+}
+
+InfoPanel::~InfoPanel()
+{
+}
+

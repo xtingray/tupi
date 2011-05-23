@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                           *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,64 +33,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef POSITIONSETTINGS_H
-#define POSITIONSETTINGS_H
+#ifndef INFOPANEL_H
+#define INFOPANEL_H
 
-#include <QWidget>
-#include "tweenerpanel.h"
-#include "kttweenerstep.h"
-
-class QGraphicsPathItem;
-class KTItemTweener;
-class TweenerPanel;
+#include <QLabel>
 
 /**
  * @author Gustav Gonzalez 
 */
 
-class PositionSettings : public QWidget 
+class InfoPanel : public QWidget
 {
-    Q_OBJECT
-
+    Q_OBJECT;
     public:
-        // enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Path, None };
-
-        PositionSettings(QWidget *parent = 0);
-        ~PositionSettings();
-
-        void setParameters(int framesTotal, int startFrame);
-        void setParameters(KTItemTweener *currentTween);
-        void initStartCombo(int totalFrames, int currentIndex);
-        void setStartFrame(int currentIndex);
-        int startFrame();
-
-        void updateSteps(const QGraphicsPathItem *path, QPointF offset);
-        QString tweenToXml(int currentFrame, QPointF point);
-        int totalSteps();
-        void cleanData();
-        int startComboSize();
-        QString pathString();
-        QVector<KTTweenerStep *> steps();
-        
-    private slots:
-        // void addTween();
-        void applyTween();
-        void resetTween();
-        void closeTweenProperties();
-        
-    signals:
-        void clickedCreatePath();
-        void clickedSelect();
-        void clickedCloseTweenProperties(TweenerPanel::Mode mode);
-        void clickedApplyTween(TweenerPanel::TweenerType type, const QString &text);
-        void startingPointChanged(int index);
-        
-    private:
-        QString pathToCoords(const QGraphicsPathItem *path, QPointF offset);
-        void setEditMode();
-        struct Private;
-        Private *const k;
+        InfoPanel(QWidget *parent = 0);
+        ~InfoPanel();
 };
 
 #endif
