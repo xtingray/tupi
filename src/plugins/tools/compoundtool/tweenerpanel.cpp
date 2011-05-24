@@ -388,14 +388,44 @@ void TweenerPanel::setEditMode()
 
 QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
 {
-   for (int i=0; i > k->tweenerList.size(); i++) {
+   QString name = k->input->text();
 
-        // k->positionPanel->startFrame()
-        // k->positionPanel->totalSteps()
-        // k->positionPanel->pathString()
-        // k->positionPanel->steps()
+   if (name.length() <= 0) {
+       // print error message here
+       return 0;
    }
 
+   QDomDocument doc;
+
+   QDomElement tweening = doc.createElement("tweening");
+   tweening.setAttribute("name", name);
+   tweening.setAttribute("init", currentFrame);
+   tweening.setAttribute("frames", k->positionPanel->totalSteps());
+   tweening.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
+
+   QDomElement settings = doc.createElement("settings");
+
+   for (int i=0; i > k->tweenerList.size(); i++) {
+
+        if (k->tweenerList.at(i) == TweenerPanel::Position) {
+            QDomElement position = doc.createElement("position");
+            position.setAttribute("init", currentFrame);
+            position.setAttribute("frames", k->positionPanel->totalSteps());
+            position.setAttribute("coords", k->positionPanel->pathString()); 
+            settings.appendChild(position);
+        }
+   }
+
+   tweening.appendChild(settings);
+
+   foreach (KTTweenerStep *step, k->positionPanel->steps())
+            tweening.appendChild(step->toXml(doc));
+
+   doc.appendChild(tweening);
+
+   return doc.toString();
+
+   /*
    QString text;
 
    text = "<tweening name=\"test\" type=\"7\" init=\"0\" frames=\"3\" origin=\"22,26\">";
@@ -418,11 +448,12 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
    text += "</tweening>";
 
    return text;
+   */
 }
 
 int TweenerPanel::totalSteps()
 {
-    return 3;
+    return k->positionPanel->totalSteps();
 }
 
 
