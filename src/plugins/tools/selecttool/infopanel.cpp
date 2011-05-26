@@ -37,13 +37,36 @@
 #include <QBoxLayout>
 #include <QTextEdit>
 
+#include "kimagebutton.h"
+#include "kseparator.h"
 #include "kglobal.h"
 #include "kdebug.h"
 
 InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {
-    KINIT;
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+
+    QBoxLayout *buttonsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    buttonsLayout->setMargin(0);
+    buttonsLayout->setSpacing(0);
+
+    KImageButton *horizontalFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    horizontalFlip->setToolTip(tr("Horizontal Flip"));
+    KImageButton *verticalFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    verticalFlip->setToolTip(tr("Horizontal Flip"));
+    KImageButton *crossedFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    crossedFlip->setToolTip(tr("Crossed Flip"));
+    connect(horizontalFlip, SIGNAL(clicked()), this, SIGNAL(hFlip()));
+    connect(verticalFlip, SIGNAL(clicked()), this, SIGNAL(vFlip()));
+    connect(crossedFlip, SIGNAL(clicked()), this, SIGNAL(cFlip()));
+
+    buttonsLayout->addWidget(horizontalFlip);
+    buttonsLayout->addWidget(verticalFlip);
+    buttonsLayout->addWidget(crossedFlip);
+
+    mainLayout->addLayout(buttonsLayout);
+
+    mainLayout->addWidget(new KSeparator(Qt::Horizontal));
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *label = new QLabel(tr("Tips"));
@@ -73,6 +96,5 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
 InfoPanel::~InfoPanel()
 {
-    KEND;
 }
 

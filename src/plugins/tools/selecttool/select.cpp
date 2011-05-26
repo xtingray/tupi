@@ -228,7 +228,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                      k->nodeManagers << manager;
                  }
         }
-        
+
         foreach (NodeManager *manager, k->nodeManagers) {
                  if (manager->isModified()) {
                      int position = -1;
@@ -291,8 +291,12 @@ int Select::toolType() const
 
 QWidget *Select::configurator() 
 {
-    if (! m_configurator)
+    if (! m_configurator) {
         m_configurator = new InfoPanel;
+        connect(m_configurator, SIGNAL(hFlip()), this, SLOT(horizontalFlip()));
+        connect(m_configurator, SIGNAL(vFlip()), this, SLOT(verticalFlip()));
+        connect(m_configurator, SIGNAL(cFlip()), this, SLOT(crossedFlip()));
+    }
 
     return m_configurator;
 }
@@ -379,14 +383,14 @@ void Select::itemResponse(const KTItemResponse *event)
         #endif
         return;
     }
-    
+
     switch (event->action()) {
 
             case KTProjectRequest::Transform:
             {
                  if (item) {
 
-                     foreach (QGraphicsView * view, k->scene->views())
+                     foreach (QGraphicsView *view, k->scene->views())
                               view->setUpdatesEnabled(true);
 
                      foreach (NodeManager* node, k->nodeManagers) {
@@ -509,6 +513,45 @@ void Select::updateItems(KTGraphicsScene *scene)
                       }
              }
     }
+}
+
+void Select::horizontalFlip()
+{
+    QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
+
+    foreach (QGraphicsItem *item, selectedObjects) {
+
+             QTransform test = item->transform();
+             kFatal() << "Select::horizontalFlip() - Initial T: " << test.type();
+
+             // if (test.type() == QTransform::TxNone) {
+                 QRectF rect = item->sceneBoundingRect();
+                 QPointF point =  rect.topLeft();
+                 kFatal() << "Select::horizontalFlip() - Pos 1: [" << point.x() << ", " << point.y() << "]";
+                 QTransform transform;
+                 transform.translate(point.x(), point.y());
+                 transform.scale(-1.0, 1.0);
+                 transform.translate(- (point.x() + rect.width()), -point.y());
+                 item->setTransform(transform);
+             /*
+             } else {
+                 QTransform transform;
+                 transform.scale(1.0, 1.0);
+                 item->setTransform(transform);
+             }
+             */
+    }
+
+    if (selectedObjects.size() > 0)
+        QTimer::singleShot(0, this, SLOT(syncNodes()));
+}
+
+void Select::verticalFlip()
+{
+}
+
+void Select::crossedFlip()
+{
 }
 
 Q_EXPORT_PLUGIN2(kt_select, Select);

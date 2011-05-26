@@ -41,11 +41,12 @@
 #include <QPointF>
 #include <QKeyEvent>
 
+class NodeManager;
+
 /**
  * @author Jorge Cuadrado 
 */
 
-class NodeManager;
 class Node : public QObject, public QGraphicsItem
 {
     Q_OBJECT

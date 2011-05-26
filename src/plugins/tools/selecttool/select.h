@@ -45,12 +45,12 @@
 #include "infopanel.h"
 
 class KTItemResponse;
+class NodeManager;
 
 /**
  * @author Jorge Cuadrado
 */
 
-class NodeManager;
 class Select : public KTToolPlugin
 {
     Q_OBJECT
@@ -92,6 +92,9 @@ class Select : public KTToolPlugin
     private slots:
         void syncNodes();
         void updateItems(KTGraphicsScene *);
+        void horizontalFlip();
+        void verticalFlip();
+        void crossedFlip();
 };
 
 #endif

@@ -115,13 +115,13 @@ void NodeManager::syncNodes(const QRectF &sbr)
                        case Node::BottomLeft:
                        {
                             if ((*it)->scenePos() != sbr.bottomLeft())
-                                (*it)->setPos( sbr.bottomLeft() );
+                                (*it)->setPos(sbr.bottomLeft() );
                             break;
                        }
                        case Node::Center:
                        {
                             if ((*it)->scenePos() != sbr.center())
-                                (*it)->setPos( sbr.center());
+                                (*it)->setPos(sbr.center());
                             // m_modify = true;
                             break;
                        }
@@ -145,17 +145,20 @@ QGraphicsItem *NodeManager::parentItem() const
 bool NodeManager::isModified() const
 {
     return !((m_parent->matrix() == m_origMatrix) && (m_parent->pos() == m_origPos));
+    // return !((m_parent->transform() == m_origTransform) && (m_parent->pos() == m_origPos));
 }
 
 void NodeManager::beginToEdit()
 {
     m_origMatrix = m_parent->matrix();
+    // m_origTransform = m_parent->transform();
     m_origPos = m_parent->pos();
 }
 
 void NodeManager::restoreItem()
 {
     m_parent->setMatrix(m_origMatrix);
+    // m_parent->setTransform(m_origTransform);
     m_parent->setPos(m_origPos);
 }
 
@@ -172,12 +175,19 @@ QPointF NodeManager::anchor() const
 void NodeManager::scale(float sx, float sy)
 {
     QMatrix m;
-    // m.rotate(m_parent->data(KTGraphicObject::Rotate).toDouble());
     m.translate(m_anchor.x(),m_anchor.y());
     m.scale(sx,sy);
     m.translate(-m_anchor.x(),-m_anchor.y());
-    // m.rotate(-m_parent->data(KTGraphicObject::Rotate).toDouble());
     m_parent->setMatrix(m, true);
+
+    /*
+    QTransform transform;
+    transform.translate(m_anchor.x(), m_anchor.y());
+    transform.scale(sx, sy);
+    transform.translate(-m_anchor.x(), -m_anchor.y());
+    m_parent->setTransform(transform);
+    */
+    
     syncNodesFromParent();
 }
 
@@ -189,6 +199,15 @@ void NodeManager::rotate(double a)
     m.translate(-m_anchor.x(),-m_anchor.y());
     m_parent->setMatrix(m);
     m_parent->setData(KTGraphicObject::Rotate, m_rotation - a);
+
+    /*
+    QTransform transform;
+    transform.translate(m_anchor.x(), m_anchor.y());
+    transform.rotate(m_rotation-a);
+    transform.translate(-m_anchor.x(), -m_anchor.y());
+    m_parent->setTransform(transform);
+    m_parent->setData(KTGraphicObject::Rotate, m_rotation - a);
+    */
     
     syncNodesFromParent();
     m_rotation = a;
