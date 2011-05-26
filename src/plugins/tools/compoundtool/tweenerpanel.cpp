@@ -399,13 +399,16 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
 
    QDomElement tweening = doc.createElement("tweening");
    tweening.setAttribute("name", name);
+   tweening.setAttribute("type", TweenerPanel::Compound);
    tweening.setAttribute("init", currentFrame);
    tweening.setAttribute("frames", k->positionPanel->totalSteps());
    tweening.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
 
    QDomElement settings = doc.createElement("settings");
 
-   for (int i=0; i > k->tweenerList.size(); i++) {
+   for (int i=0; i < k->tweenerList.size(); i++) {
+
+        kFatal() << "TweenerPanel::tweenToXml() - tweenerList: " << k->tweenerList.at(i);
 
         if (k->tweenerList.at(i) == TweenerPanel::Position) {
             QDomElement position = doc.createElement("position");
@@ -422,6 +425,9 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
             tweening.appendChild(step->toXml(doc));
 
    doc.appendChild(tweening);
+
+   kFatal() << "LOOK THIS";
+   kFatal() << doc.toString();
 
    return doc.toString();
 

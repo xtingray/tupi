@@ -49,13 +49,15 @@ class TweenerPanel : public QWidget
 
     public:
 
-        enum TweenerType { Position = 0,
-                           Rotation,
-                           Scale,
-                           Shear,
-                           Opacity,
-                           Coloring
-                         };
+        enum TweenerType { 
+             Position = 0,
+             Rotation = 1,
+             Scale = 2,
+             Shear = 3,
+             Opacity = 4,
+             Coloring = 5,
+             Compound = 6
+        };
 
         enum Mode { Add = 1, Edit, View };
         enum EditMode { Selection = 0, TweenList, TweenProperties, None };

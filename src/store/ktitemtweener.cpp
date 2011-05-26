@@ -96,6 +96,22 @@ struct KTItemTweener::Private
     int colorLoop;
     int colorReverseLoop;
 
+    // Compound Tween
+    int compPositionInitFrame;
+    int compPositionFrames;
+    int compRotationInitFrame;
+    int compRotationFrames;
+    int compScaleInitFrame;
+    int compScaleFrames;
+    int compShearInitFrame;
+    int compShearFrames;
+    int compOpacityInitFrame;
+    int compOpacityFrames;
+    int compColoringInitFrame;
+    int compColoringFrames;
+
+    QList<KTItemTweener::Type> tweenList;
+
     QHash<int, KTTweenerStep *> steps; // TODO: remove when Qt 4.3
 
     inline KTTweenerStep *step(int step)
@@ -233,6 +249,9 @@ void KTItemTweener::fromXml(const QString &xml)
 
         k->name = root.attribute("name");
         k->type = KTItemTweener::Type(root.attribute("type").toInt());
+
+        kFatal() << "KTItemTweener::formXml() - Reading the whole tween! - Type: " << k->type;
+
         k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();
 
@@ -253,10 +272,18 @@ void KTItemTweener::fromXml(const QString &xml)
                    if (!e.isNull()) {
                        if (e.tagName() == "position") {
                            kFatal() << "KTItemTweener::fromXml() - Processing position settings";
+                           k->tweenList.append(KTItemTweener::Position);
+                           k->compPositionInitFrame = e.attribute("init").toInt();
+                           k->compPositionFrames = e.attribute("frames").toInt();
+
                            k->path = e.attribute("coords");
                        }
                        if (e.tagName() == "rotation") {
                            kFatal() << "KTItemTweener::fromXml() - Processing rotation settings";
+                           k->tweenList.append(KTItemTweener::Rotation);
+                           k->compRotationInitFrame = e.attribute("init").toInt();
+                           k->compRotationFrames = e.attribute("frames").toInt();
+
                            k->rotationType = KTItemTweener::RotationType(root.attribute("rotationType").toInt());
                            k->rotateSpeed = root.attribute("rotateSpeed").toInt();
 
@@ -272,17 +299,30 @@ void KTItemTweener::fromXml(const QString &xml)
 
                        if (e.tagName() == "scale") {
                            kFatal() << "KTItemTweener::fromXml() - Processing scale settings";
+                           k->tweenList.append(KTItemTweener::Scale);
+                           k->compScaleInitFrame = e.attribute("init").toInt();
+                           k->compScaleFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "shear") {
                            kFatal() << "KTItemTweener::fromXml() - Processing shear settings";
+                           k->tweenList.append(KTItemTweener::Shear);
+                           k->compShearInitFrame = e.attribute("init").toInt();
+                           k->compShearFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "opacity") {
                            kFatal() << "KTItemTweener::fromXml() - Processing opacity settings";
+                           k->tweenList.append(KTItemTweener::Opacity);
+                           k->compOpacityInitFrame = e.attribute("init").toInt();
+                           k->compOpacityFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "coloring") {
                            kFatal() << "KTItemTweener::fromXml() - Processing coloring settings";
+                           k->tweenList.append(KTItemTweener::Coloring);
+                           k->compColoringInitFrame = e.attribute("init").toInt();
+                           k->compColoringFrames = e.attribute("frames").toInt();
                        }
                    }
+
                    node = node.nextSibling();
             }
 
@@ -379,7 +419,7 @@ void KTItemTweener::fromXml(const QString &xml)
 
 QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTItemTweener::toXml() - Following the white rabbit!";
+    kFatal() << "KTItemTweener::toXml() - Saving the whole tween! - Type: " << k->type;
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
@@ -389,6 +429,21 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     root.setAttribute("origin", QString::number(k->originPoint.x()) + "," + QString::number(k->originPoint.y()));
 
     if (k->type == KTItemTweener::Compound) {
+
+        QDomElement settings = doc.createElement("settings");
+
+        for (int i=0; i < k->tweenList.size(); i++) {
+
+             if (k->tweenList.at(i) == KTItemTweener::Position) {
+                 QDomElement position = doc.createElement("position");
+                 position.setAttribute("init", k->compPositionInitFrame);
+                 position.setAttribute("frames", k->compPositionFrames);
+                 position.setAttribute("coords", k->path);
+                 settings.appendChild(position);
+             }
+        }
+
+        root.appendChild(settings); 
 
     } else { 
 
@@ -445,9 +500,10 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
             root.setAttribute("colorReverseLoop", k->colorReverseLoop);
         }
  
-        foreach (KTTweenerStep *step, k->steps.values())
-                 root.appendChild(step->toXml(doc));
     }
+
+    foreach (KTTweenerStep *step, k->steps.values())
+             root.appendChild(step->toXml(doc));
     
     return root;
 }
