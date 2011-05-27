@@ -47,10 +47,15 @@ class InfoPanel : public QWidget
     Q_OBJECT
 
     public:
+        enum Flip { Vertical = 1, Horizontal, Crossed };
+
         InfoPanel(QWidget *parent = 0);
         ~InfoPanel();
 
      signals:
+        void callFlip(InfoPanel::Flip flip);
+
+     private slots:
         void vFlip();
         void hFlip();
         void cFlip();

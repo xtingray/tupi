@@ -294,7 +294,7 @@ QWidget *Select::configurator()
 {
     if (! m_configurator) {
         m_configurator = new InfoPanel;
-        connect(m_configurator, SIGNAL(hFlip()), this, SLOT(horizontalFlip()));
+        connect(m_configurator, SIGNAL(callFlip(InfoPanel::Flip)), this, SLOT(applyFlip(InfoPanel::Flip)));
         connect(m_configurator, SIGNAL(vFlip()), this, SLOT(verticalFlip()));
         connect(m_configurator, SIGNAL(cFlip()), this, SLOT(crossedFlip()));
     }
@@ -518,7 +518,7 @@ void Select::updateItems(KTGraphicsScene *scene)
     }
 }
 
-void Select::horizontalFlip()
+void Select::applyFlip(InfoPanel::Flip flip)
 {
     QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
 
@@ -529,18 +529,21 @@ void Select::horizontalFlip()
 
              QMatrix m;
              m.translate(point.x(), point.y());
-             m.scale(-1.0, 1.0);
+
+             if (flip == InfoPanel::Horizontal)
+                 m.scale(-1.0, 1.0);
+             else if (flip == InfoPanel::Vertical)
+                      m.scale(1.0, -1.0);
+             else if (flip == InfoPanel::Crossed)
+                      m.scale(-1.0, -1.0);
+
              m.translate(-point.x(), -point.y());
              item->setMatrix(m, true);
-
              rect = item->sceneBoundingRect();
              QPointF point2 =  rect.topLeft();
 
              QPointF result = point - point2;
-
              item->moveBy(result.x(), result.y());
-
-             // QTimer::singleShot(0, this, SLOT(syncNodes()));
 
              foreach (NodeManager *manager, k->nodeManagers) {
                       if (manager->isModified()) {
@@ -563,40 +566,7 @@ void Select::horizontalFlip()
                           emit requested(&event);
                       }
              }
-
-
-/*
-             QTransform test = item->transform();
-             kFatal() << "Select::horizontalFlip() - Initial T: " << test.type();
-
-             if (test.type() == QTransform::TxNone) {
-                 QRectF rect = item->sceneBoundingRect();
-                 QPointF point =  rect.topLeft();
-                 kFatal() << "Select::horizontalFlip() - Pos 1: [" << point.x() << ", " << point.y() << "]";
-                 QTransform transform;
-                 transform.translate(point.x(), point.y());
-                 transform.scale(-1.0, 1.0);
-                 transform.translate(- (point.x() + rect.width()), -point.y());
-                 item->setTransform(transform);
-             } else {
-                 QTransform transform;
-                 transform.scale(1.0, 1.0);
-                 item->setTransform(transform);
-             }
-*/
     }
-
-
-    // if (selectedObjects.size() > 0)
-    //     QTimer::singleShot(0, this, SLOT(syncNodes()));
-}
-
-void Select::verticalFlip()
-{
-}
-
-void Select::crossedFlip()
-{
 }
 
 Q_EXPORT_PLUGIN2(kt_select, Select);

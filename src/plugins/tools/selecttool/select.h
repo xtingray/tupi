@@ -92,9 +92,7 @@ class Select : public KTToolPlugin
     private slots:
         void syncNodes();
         void updateItems(KTGraphicsScene *);
-        void horizontalFlip();
-        void verticalFlip();
-        void crossedFlip();
+        void applyFlip(InfoPanel::Flip flip);
 };
 
 #endif

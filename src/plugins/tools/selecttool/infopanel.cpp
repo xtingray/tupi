@@ -56,9 +56,9 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     verticalFlip->setToolTip(tr("Horizontal Flip"));
     KImageButton *crossedFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
     crossedFlip->setToolTip(tr("Crossed Flip"));
-    connect(horizontalFlip, SIGNAL(clicked()), this, SIGNAL(hFlip()));
-    connect(verticalFlip, SIGNAL(clicked()), this, SIGNAL(vFlip()));
-    connect(crossedFlip, SIGNAL(clicked()), this, SIGNAL(cFlip()));
+    connect(horizontalFlip, SIGNAL(clicked()), this, SLOT(hFlip()));
+    connect(verticalFlip, SIGNAL(clicked()), this, SLOT(vFlip()));
+    connect(crossedFlip, SIGNAL(clicked()), this, SLOT(cFlip()));
 
     buttonsLayout->addWidget(horizontalFlip);
     buttonsLayout->addWidget(verticalFlip);
@@ -96,5 +96,20 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
 InfoPanel::~InfoPanel()
 {
+}
+
+void InfoPanel::hFlip()
+{
+    emit callFlip(InfoPanel::Horizontal);
+}
+
+void InfoPanel::vFlip()
+{
+    emit callFlip(InfoPanel::Vertical);
+}
+
+void InfoPanel::cFlip()
+{
+    emit callFlip(InfoPanel::Crossed);
 }
 
