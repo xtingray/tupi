@@ -390,6 +390,8 @@ void Select::itemResponse(const KTItemResponse *event)
             {
                  if (item) {
 
+                     kFatal() << "Tracing data -> " << event->action();
+
                      foreach (QGraphicsView *view, k->scene->views())
                               view->setUpdatesEnabled(true);
 
@@ -524,7 +526,7 @@ void Select::horizontalFlip()
              QTransform test = item->transform();
              kFatal() << "Select::horizontalFlip() - Initial T: " << test.type();
 
-             // if (test.type() == QTransform::TxNone) {
+             if (test.type() == QTransform::TxNone) {
                  QRectF rect = item->sceneBoundingRect();
                  QPointF point =  rect.topLeft();
                  kFatal() << "Select::horizontalFlip() - Pos 1: [" << point.x() << ", " << point.y() << "]";
@@ -533,13 +535,11 @@ void Select::horizontalFlip()
                  transform.scale(-1.0, 1.0);
                  transform.translate(- (point.x() + rect.width()), -point.y());
                  item->setTransform(transform);
-             /*
              } else {
                  QTransform transform;
                  transform.scale(1.0, 1.0);
                  item->setTransform(transform);
              }
-             */
     }
 
     if (selectedObjects.size() > 0)
