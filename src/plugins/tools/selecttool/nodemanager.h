@@ -94,7 +94,7 @@ class NodeManager : public QObject
         // bool m_modify;
         
         QMatrix m_origMatrix;
-        QTransform m_origTransform;
+        // QTransform m_origTransform;
         QPointF m_origPos;
         QPointF m_anchor;
         

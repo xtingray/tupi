@@ -144,21 +144,21 @@ QGraphicsItem *NodeManager::parentItem() const
 
 bool NodeManager::isModified() const
 {
-    // return !((m_parent->matrix() == m_origMatrix) && (m_parent->pos() == m_origPos));
-    return !((m_parent->transform() == m_origTransform) && (m_parent->pos() == m_origPos));
+    return !((m_parent->matrix() == m_origMatrix) && (m_parent->pos() == m_origPos));
+    // return !((m_parent->transform() == m_origTransform) && (m_parent->pos() == m_origPos));
 }
 
 void NodeManager::beginToEdit()
 {
-    // m_origMatrix = m_parent->matrix();
-    m_origTransform = m_parent->transform();
+    m_origMatrix = m_parent->matrix();
+    // m_origTransform = m_parent->transform();
     m_origPos = m_parent->pos();
 }
 
 void NodeManager::restoreItem()
 {
-    // m_parent->setMatrix(m_origMatrix);
-    m_parent->setTransform(m_origTransform);
+    m_parent->setMatrix(m_origMatrix);
+    // m_parent->setTransform(m_origTransform);
     m_parent->setPos(m_origPos);
 }
 

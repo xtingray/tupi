@@ -39,6 +39,7 @@
 #include <QKeySequence>
 #include <QList>
 #include <QGraphicsView>
+#include <QTimer>
 #include <cmath>
 
 #include "kaction.h"
@@ -61,20 +62,18 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectresponse.h"
 
-#include <QTimer>
-
 struct Select::Private
 {
     QMap<QString, KAction *> actions;
     QList<NodeManager*> nodeManagers;
     KTGraphicsScene *scene;
-    NodeManager* changedManager;
+    // NodeManager* changedManager;
     bool selectionFlag;
 };
 
 Select::Select(): k(new Private),  m_configurator(0)
 {
-    k->changedManager = 0;
+    // k->changedManager = 0;
     setupActions();
 }
 
@@ -91,7 +90,7 @@ void Select::init(KTGraphicsScene *scene)
 
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
-    k->changedManager = 0;
+    // k->changedManager = 0;
     k->scene = scene;
 
     foreach (QGraphicsView *view, scene->views()) {
@@ -131,8 +130,8 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 {
     Q_UNUSED(brushManager);
 
-    if (k->changedManager)
-        k->changedManager = 0;
+    // if (k->changedManager)
+    //    k->changedManager = 0;
    
     // If Control key is pressed / allow multiple selection 
     if (input->keyModifiers() != Qt::ControlModifier) {
@@ -189,10 +188,12 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 {
     Q_UNUSED(brushManager);
 
+    /*
     if (k->changedManager) {
         k->changedManager->toggleAction();
         k->changedManager = 0;
     }
+    */
     
     if (input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
         QTimer::singleShot(0, this, SLOT(syncNodes()));
@@ -214,7 +215,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
         while (it != itEnd) {
                int parentIndex = k->scene->selectedItems().indexOf((*it)->parentItem());
             
-               if (parentIndex != -1 )
+               if (parentIndex != -1)
                    selectedObjects.removeAt(parentIndex);
                else
                    delete k->nodeManagers.takeAt(k->nodeManagers.indexOf((*it)));
@@ -523,6 +524,48 @@ void Select::horizontalFlip()
 
     foreach (QGraphicsItem *item, selectedObjects) {
 
+             QRectF rect = item->sceneBoundingRect();
+             QPointF point =  rect.topLeft();
+
+             QMatrix m;
+             m.translate(point.x(), point.y());
+             m.scale(-1.0, 1.0);
+             m.translate(-point.x(), -point.y());
+             item->setMatrix(m, true);
+
+             rect = item->sceneBoundingRect();
+             QPointF point2 =  rect.topLeft();
+
+             QPointF result = point - point2;
+
+             item->moveBy(result.x(), result.y());
+
+             // QTimer::singleShot(0, this, SLOT(syncNodes()));
+
+             foreach (NodeManager *manager, k->nodeManagers) {
+                      if (manager->isModified()) {
+
+                          QDomDocument doc;
+                          doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
+
+                          foreach (QGraphicsView *view, k->scene->views())
+                                   view->setUpdatesEnabled(false);
+
+                          manager->restoreItem();
+
+                          int position  = k->scene->currentFrame()->indexOf(manager->parentItem());
+
+                          KTProjectRequest event = KTRequestBuilder::createItemRequest(
+                                                   k->scene->currentSceneIndex(),
+                                                   k->scene->currentLayerIndex(),
+                                                   k->scene->currentFrameIndex(), position, QPointF(), KTLibraryObject::Item,
+                                                   KTProjectRequest::Transform, doc.toString());
+                          emit requested(&event);
+                      }
+             }
+
+
+/*
              QTransform test = item->transform();
              kFatal() << "Select::horizontalFlip() - Initial T: " << test.type();
 
@@ -540,10 +583,12 @@ void Select::horizontalFlip()
                  transform.scale(1.0, 1.0);
                  item->setTransform(transform);
              }
+*/
     }
 
-    if (selectedObjects.size() > 0)
-        QTimer::singleShot(0, this, SLOT(syncNodes()));
+
+    // if (selectedObjects.size() > 0)
+    //     QTimer::singleShot(0, this, SLOT(syncNodes()));
 }
 
 void Select::verticalFlip()
