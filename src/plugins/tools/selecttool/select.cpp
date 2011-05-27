@@ -67,13 +67,11 @@ struct Select::Private
     QMap<QString, KAction *> actions;
     QList<NodeManager*> nodeManagers;
     KTGraphicsScene *scene;
-    // NodeManager* changedManager;
     bool selectionFlag;
 };
 
 Select::Select(): k(new Private),  m_configurator(0)
 {
-    // k->changedManager = 0;
     setupActions();
 }
 
@@ -90,13 +88,13 @@ void Select::init(KTGraphicsScene *scene)
 
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
-    // k->changedManager = 0;
     k->scene = scene;
 
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
 
+                      // SQA: Temporary code for debug issues
                       /*
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
@@ -130,26 +128,9 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 {
     Q_UNUSED(brushManager);
 
-    // if (k->changedManager)
-    //    k->changedManager = 0;
-   
     // If Control key is pressed / allow multiple selection 
     if (input->keyModifiers() != Qt::ControlModifier) {
         foreach (NodeManager *nodeManager, k->nodeManagers) {
-
-                 // SQA: Deprecated code
-                 /* 
-                 if (scene->mouseGrabberItem() == nodeManager->parentItem()) {
-                     nodeManager->toggleAction();
-                     k->changedManager = nodeManager;
-                     break;
-                 } else if (!nodeManager->isPress()) {
-                            nodeManager->parentItem()->setSelected(false);
-                            k->nodeManagers.removeAll(nodeManager);
-                            delete nodeManager;
-                 }
-                 */
-
                  if (!nodeManager->isPress()) {
                      nodeManager->parentItem()->setSelected(false);
                      k->nodeManagers.removeAll(nodeManager);
@@ -188,13 +169,6 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 {
     Q_UNUSED(brushManager);
 
-    /*
-    if (k->changedManager) {
-        k->changedManager->toggleAction();
-        k->changedManager = 0;
-    }
-    */
-    
     if (input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
         QTimer::singleShot(0, this, SLOT(syncNodes()));
 }
@@ -232,13 +206,13 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
         foreach (NodeManager *manager, k->nodeManagers) {
                  if (manager->isModified()) {
-                     int position = -1;
                      QDomDocument doc;
                      doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
 
                      QGraphicsItem *item = manager->parentItem();
                      KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
 
+                     int position = -1;
                      KTLibraryObject::Type type;
 
                      if (svg) {
@@ -295,8 +269,6 @@ QWidget *Select::configurator()
     if (! m_configurator) {
         m_configurator = new InfoPanel;
         connect(m_configurator, SIGNAL(callFlip(InfoPanel::Flip)), this, SLOT(applyFlip(InfoPanel::Flip)));
-        connect(m_configurator, SIGNAL(vFlip()), this, SLOT(verticalFlip()));
-        connect(m_configurator, SIGNAL(cFlip()), this, SLOT(crossedFlip()));
     }
 
     return m_configurator;
@@ -390,8 +362,6 @@ void Select::itemResponse(const KTItemResponse *event)
             case KTProjectRequest::Transform:
             {
                  if (item) {
-
-                     kFatal() << "Tracing data -> " << event->action();
 
                      foreach (QGraphicsView *view, k->scene->views())
                               view->setUpdatesEnabled(true);
@@ -493,7 +463,7 @@ void Select::keyPressEvent(QKeyEvent *event)
                      item->moveBy(0, delta);
 
                  QTimer::singleShot(0, this, SLOT(syncNodes()));
-       }
+        }
     }
 }
 
@@ -551,17 +521,27 @@ void Select::applyFlip(InfoPanel::Flip flip)
                           QDomDocument doc;
                           doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
 
+                          KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(manager->parentItem());
+                          int position = -1;
+                          KTLibraryObject::Type type;
+
+                          if (svg) {
+                              position  = k->scene->currentFrame()->indexOf(svg);
+                              type = KTLibraryObject::Svg;
+                          } else {
+                              position  = k->scene->currentFrame()->indexOf(manager->parentItem());
+                              type = KTLibraryObject::Item;
+                          }
+
                           foreach (QGraphicsView *view, k->scene->views())
                                    view->setUpdatesEnabled(false);
 
                           manager->restoreItem();
 
-                          int position  = k->scene->currentFrame()->indexOf(manager->parentItem());
-
                           KTProjectRequest event = KTRequestBuilder::createItemRequest(
                                                    k->scene->currentSceneIndex(),
                                                    k->scene->currentLayerIndex(),
-                                                   k->scene->currentFrameIndex(), position, QPointF(), KTLibraryObject::Item,
+                                                   k->scene->currentFrameIndex(), position, QPointF(), type,
                                                    KTProjectRequest::Transform, doc.toString());
                           emit requested(&event);
                       }

@@ -3075,6 +3075,26 @@
         <source>Set width/height proportional dimensions</source>
         <translation>Aplicar dimensiones de ancho/altura proporcionales</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Flips</source>
+        <translation>Transformaciones</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Horizontal Flip</source>
+        <translation>Voltear Horizontalmente</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Vertical Flip</source>
+        <translation>Voltear Verticalmente</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Crossed Flip</source>
+        <translation>Voltear en ambos Ejes</translation>
+    </message>
 </context>
 <context>
     <name>SelectPlugin</name>

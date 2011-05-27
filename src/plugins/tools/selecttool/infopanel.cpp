@@ -46,15 +46,21 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
+    QBoxLayout *flipLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *flips = new QLabel(tr("Flips"));
+    flips->setAlignment(Qt::AlignHCenter);
+    flipLayout->addWidget(flips);
+    mainLayout->addLayout(flipLayout);
+
     QBoxLayout *buttonsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(0);
 
-    KImageButton *horizontalFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    KImageButton *horizontalFlip = new KImageButton(QPixmap(THEME_DIR + "icons/horizontal_flip.png"), 22);
     horizontalFlip->setToolTip(tr("Horizontal Flip"));
-    KImageButton *verticalFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
-    verticalFlip->setToolTip(tr("Horizontal Flip"));
-    KImageButton *crossedFlip = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    KImageButton *verticalFlip = new KImageButton(QPixmap(THEME_DIR + "icons/vertical_flip.png"), 22);
+    verticalFlip->setToolTip(tr("Vertical Flip"));
+    KImageButton *crossedFlip = new KImageButton(QPixmap(THEME_DIR + "icons/crossed_flip.png"), 22);
     crossedFlip->setToolTip(tr("Crossed Flip"));
     connect(horizontalFlip, SIGNAL(clicked()), this, SLOT(hFlip()));
     connect(verticalFlip, SIGNAL(clicked()), this, SLOT(vFlip()));
