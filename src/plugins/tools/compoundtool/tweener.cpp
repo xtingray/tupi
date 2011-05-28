@@ -310,7 +310,8 @@ QWidget *Tweener::configurator()
 
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        connect(k->configurator, SIGNAL(resetPathFromWorkSpace()), this, SLOT(cleanPath()));
+        // connect(k->configurator, SIGNAL(loadPath(bool)), this, SLOT(cleanPath()));
+        connect(k->configurator, SIGNAL(loadPath(bool)), this, SLOT(setPath(bool)));
 
         connect(k->configurator, SIGNAL(setMode(TweenerPanel::Mode)), this, SLOT(updateMode(TweenerPanel::Mode)));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
@@ -857,17 +858,21 @@ void Tweener::updateCurrentTweenerType(TweenerPanel::TweenerType type)
     }
 }
 
-void Tweener::cleanPath()
+void Tweener::setPath(bool isEnabled)
 {
-    if (k->group) {
-        k->group->clear();
-        k->group = 0;
-    }
+    if (isEnabled) {
+        setCreatePath();
+    } else {
+        if (k->group) {
+            k->group->clear();
+            k->group = 0;
+        }
 
-    if (k->path) {
-        if (k->startPoint == k->scene->currentFrameIndex())
-            k->scene->removeItem(k->path);
-        k->pathAdded = false;
+        if (k->path) {
+            if (k->startPoint == k->scene->currentFrameIndex())
+                k->scene->removeItem(k->path);
+            k->pathAdded = false;
+        }
     }
 }
 

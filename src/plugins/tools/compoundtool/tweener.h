@@ -91,7 +91,7 @@ class Tweener : public KTToolPlugin
         void updateMode(TweenerPanel::Mode mode);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
-        void cleanPath();
+        void setPath(bool isEnabled);
         void tweenListMode();
 
     public slots:

@@ -94,7 +94,7 @@ class Configurator : public QFrame
         void clickedRemoveTween(const QString &name);
         void clickedApplyTween();
         void clickedResetInterface();
-        void resetPathFromWorkSpace();
+        void loadPath(bool flag);
         void getTweenData(const QString &name);
         void startingPointChanged(int index);
 

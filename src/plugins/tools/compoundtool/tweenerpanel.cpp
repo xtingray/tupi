@@ -166,6 +166,7 @@ void TweenerPanel::setTweenerTableForm()
 
     k->tweenerTable = new TweenerTable;
     connect(k->tweenerTable, SIGNAL(callTweenerSettings(int)), this, SLOT(showTweenSettings(int)));
+    // connect(k->tweenerTable, SIGNAL(disableSaveTween()), this, SLOT(()));
 
     innerLayout->addLayout(startLayout);
     innerLayout->addWidget(k->tweenerTable);
@@ -303,6 +304,7 @@ void TweenerPanel::setParameters(KTItemTweener *currentTween)
              switch(i) {
                     case 0:
                          k->positionPanel->setParameters(currentTween);
+                         emit loadPath(true);
                     break;
              }
          }
@@ -377,7 +379,7 @@ void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)
         k->tweenerTable->checkTween(k->currentTweenIndex, false);
 
     if (TweenerPanel::TweenerType(k->currentTweenIndex) == TweenerPanel::Position)
-        emit resetPathFromWorkSpace();
+        emit loadPath(false);
 }
 
 void TweenerPanel::updateSteps(const QGraphicsPathItem *path, QPointF offset)

@@ -92,7 +92,7 @@ class TweenerPanel : public QWidget
         void clickedResetTween();
         void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
         void startingPointChanged(int index);
-        void resetPathFromWorkSpace();
+        void loadPath(bool flag);
         
     private:
         void setOptionsPanel();

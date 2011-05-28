@@ -98,8 +98,11 @@ void TweenerTable::enableTween(int state)
 {
     Q_UNUSED(state);
 
+    int i = 0;
+
     for (int i=0; i < k->checkList->size(); i++) {
          if (k->checkList->at(i)->isChecked()) {
+             i++;
              if (!k->buttonList->at(i)->isEnabled())
                  k->buttonList->at(i)->setEnabled(true);
          } else {
@@ -107,6 +110,9 @@ void TweenerTable::enableTween(int state)
                  k->buttonList->at(i)->setEnabled(false);
          }
     }
+
+    if (i == 0)
+        emit disableSaveTween();
 }
 
 void TweenerTable::checkTween(int index, bool flag)

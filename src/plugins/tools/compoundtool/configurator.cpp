@@ -116,7 +116,7 @@ void Configurator::setTweenerPanel()
 
     connect(k->tweenList, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
     connect(k->tweenList, SIGNAL(clickedResetTween()), this, SLOT(closeTweenList()));
-    connect(k->tweenList, SIGNAL(resetPathFromWorkSpace()), this, SIGNAL(resetPathFromWorkSpace()));
+    connect(k->tweenList, SIGNAL(loadPath(bool)), this, SIGNAL(loadPath(bool)));
 
     k->settingsLayout->addWidget(k->tweenList);
     activeTweenerPanel(false);
