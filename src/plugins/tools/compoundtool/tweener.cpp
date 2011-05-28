@@ -751,6 +751,8 @@ void Tweener::removeTween(const QString &name)
 
 void Tweener::setCurrentTween(const QString &name)
 {
+    kFatal() << "Tweener::setCurrentTween(Tweener::setCurrentTween() - Updating tweener: " << name;
+
     KTScene *scene = k->scene->scene();
     k->currentTween = scene->tween(name, KTItemTweener::Compound);
     if (k->currentTween) {
@@ -760,6 +762,8 @@ void Tweener::setCurrentTween(const QString &name)
 
 void Tweener::setEditEnv()
 {
+    kFatal() << "void Tweener::setEditEnv() - Just tracing!!!";
+
     k->startPoint = k->currentTween->startFrame();
     if (k->startPoint != k->scene->currentFrameIndex()) {
         KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
@@ -776,7 +780,9 @@ void Tweener::setEditEnv()
     QRectF rect = item->sceneBoundingRect();
     k->itemObjectReference = rect.center();
 
-    if (k->currentTweenType == TweenerPanel::Position) {
+    if (k->currentTween->contains(KTItemTweener::Position)) {
+
+        kFatal() << "void Tweener::setEditEnv() - Adding path!";
 
         k->path = k->currentTween->graphicsPath();
         k->path->setZValue(maxZValue());
@@ -797,7 +803,7 @@ void Tweener::setEditEnv()
         QPen pen(QBrush(color), 1, Qt::DotLine);
         k->path->setPen(pen);
 
-        setCreatePath();
+        // setCreatePath();
     }
 }
 

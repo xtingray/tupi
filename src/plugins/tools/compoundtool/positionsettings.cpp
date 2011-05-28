@@ -216,23 +216,6 @@ void PositionSettings::updateSteps(const QGraphicsPathItem *path, QPointF offset
         k->applyButton->setEnabled(true);
 }
 
-QString PositionSettings::tweenToXml(int currentFrame, QPointF point)
-{
-    QDomDocument doc;
-
-    QDomElement root = doc.createElement("position");
-    root.setAttribute("init", currentFrame);
-    root.setAttribute("frames", k->stepViewer->totalSteps());
-    // root.setAttribute("coords", k->path);
-
-    foreach (KTTweenerStep *step, k->stepViewer->steps())
-             root.appendChild(step->toXml(doc));
-
-    doc.appendChild(root);
-
-    return doc.toString();
-}
-
 int PositionSettings::totalSteps()
 {
     return k->stepViewer->totalSteps();

@@ -131,6 +131,8 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         int tweenColorIterations();
         int tweenColorLoop();
         int tweenColorReverseLoop();
+
+        bool contains(KTItemTweener::Type type);
         
     private:
         struct Private;

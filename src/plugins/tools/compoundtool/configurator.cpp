@@ -249,9 +249,11 @@ void Configurator::editTween()
     k->mode = TweenerPanel::Edit;
     k->state = TweenerList;
 
-    // k->settingsPanel->notifySelection(true);
-    // k->settingsPanel->setParameters(k->currentTween);
+    k->tweenList->notifySelection(true);
+    k->tweenList->setParameters(k->currentTween);
     activeTweenerPanel(true);
+
+    kFatal() << "Configurator::editTween() - Calling for Edition order!!!";
 
     emit setMode(k->mode);
 }
@@ -275,8 +277,7 @@ void Configurator::removeTween(const QString &name)
 QString Configurator::currentTweenName() const
 {
     QString oldName = k->tweenManager->currentTweenName();
-    // QString newName = k->settingsPanel->currentTweenName();
-    QString newName = oldName;
+    QString newName = k->tweenList->currentTweenName();
 
     if (oldName.compare(newName) != 0)
         k->tweenManager->updateTweenName(newName);

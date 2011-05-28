@@ -280,9 +280,33 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
     k->input->setText(name);
 
     activateMode(TweenerPanel::Selection);
+
     k->applyButton->setToolTip(tr("Save Tween"));
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
     k->closeButton->setToolTip(tr("Cancel Tween"));
+}
+
+// Editing Tween
+
+void TweenerPanel::setParameters(KTItemTweener *currentTween)
+{
+    k->tweenerTable->resetTable();
+
+    k->mode = Edit;
+    k->input->setText(currentTween->name());
+
+    activateMode(TweenerPanel::TweenList);
+
+    for (int i=0; i < 6; i++) {
+         if (currentTween->contains(KTItemTweener::Type(i))) {
+             k->tweenerTable->checkTween(i, true);
+             switch(i) {
+                    case 0:
+                         k->positionPanel->setParameters(currentTween);
+                    break;
+             }
+         }
+    }
 }
 
 void TweenerPanel::emitOptionChanged(int option)
@@ -462,4 +486,11 @@ int TweenerPanel::totalSteps()
     return k->positionPanel->totalSteps();
 }
 
+QString TweenerPanel::currentTweenName() const
+{
+    QString tweenName = k->input->text();
+    if (tweenName.length() > 0)
+        k->input->setFocus();
 
+    return tweenName;
+}

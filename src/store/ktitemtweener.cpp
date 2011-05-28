@@ -684,3 +684,13 @@ int KTItemTweener::tweenColorReverseLoop()
 {
     return k->colorReverseLoop;
 }
+
+bool KTItemTweener::contains(KTItemTweener::Type type)
+{
+    for (int i=0; i < k->tweenList.size(); i++) {
+         if (k->tweenList.at(i) == type)
+             return true;
+    }
+
+    return false; 
+}

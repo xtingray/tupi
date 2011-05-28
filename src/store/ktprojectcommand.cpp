@@ -218,6 +218,7 @@ void KTProjectCommand::redo()
             break;
             case KTProjectRequest::Item:
             {
+                 kFatal() << "KTProjectCommand::redo() - Item request!";
                  itemCommand();
             }
             break;

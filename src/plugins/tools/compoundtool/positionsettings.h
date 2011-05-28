@@ -53,8 +53,8 @@ class PositionSettings : public QWidget
     Q_OBJECT
 
     public:
-        // enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Path, None };
+        enum Mode { Add = 1, Edit, View };
+        // enum EditMode { Selection = 0, Path, None };
 
         PositionSettings(QWidget *parent = 0);
         ~PositionSettings();
@@ -66,7 +66,6 @@ class PositionSettings : public QWidget
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path, QPointF offset);
-        QString tweenToXml(int currentFrame, QPointF point);
         int totalSteps();
         void cleanData();
         int startComboSize();
