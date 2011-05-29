@@ -58,7 +58,7 @@ class TweenerTable : public QWidget
 
     signals:
         void callTweenerSettings(int row);
-        void disableSaveTween();
+        void enableSaveTween(bool flag);
         
     private:
         struct Private;

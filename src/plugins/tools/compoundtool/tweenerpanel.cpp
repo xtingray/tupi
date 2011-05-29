@@ -166,7 +166,7 @@ void TweenerPanel::setTweenerTableForm()
 
     k->tweenerTable = new TweenerTable;
     connect(k->tweenerTable, SIGNAL(callTweenerSettings(int)), this, SLOT(showTweenSettings(int)));
-    // connect(k->tweenerTable, SIGNAL(disableSaveTween()), this, SLOT(()));
+    connect(k->tweenerTable, SIGNAL(enableSaveTween(bool)), this, SLOT(enableApplyButton(bool)));
 
     innerLayout->addLayout(startLayout);
     innerLayout->addWidget(k->tweenerTable);
@@ -495,4 +495,9 @@ QString TweenerPanel::currentTweenName() const
         k->input->setFocus();
 
     return tweenName;
+}
+
+void TweenerPanel::enableApplyButton(bool flag)
+{
+    k->applyButton->setEnabled(flag);
 }

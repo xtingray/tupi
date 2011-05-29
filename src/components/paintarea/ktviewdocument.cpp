@@ -432,7 +432,7 @@ void KTViewDocument::loadPlugins()
                                    }
 
                                    if (toolName.compare(tr("Compound Tween")) == 0) {
-                                       // action->setDisabled(true);
+                                       action->setDisabled(true);
                                        tweenTools[6] = action;
                                    }
                                  }
