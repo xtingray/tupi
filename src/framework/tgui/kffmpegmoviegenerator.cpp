@@ -96,7 +96,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
 
     c = st->codec;
     c->codec_id = CodecID(codec_id);
-    c->codec_type = CODEC_TYPE_VIDEO;
+    // c->codec_type = CODEC_TYPE_VIDEO;
+    c->codec_type = AVMEDIA_TYPE_VIDEO;   
 
     /* put sample parameters */
     c->bit_rate = 800000;
@@ -318,7 +319,8 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         AVPacket pkt;
         av_init_packet(&pkt);
 
-        pkt.flags |= PKT_FLAG_KEY;
+        // pkt.flags |= PKT_FLAG_KEY;
+	pkt.flags |= AV_PKT_FLAG_KEY;
         pkt.stream_index= video_st->index;
         pkt.data= (uint8_t *)picturePtr;
         pkt.size= sizeof(AVPicture);
@@ -337,7 +339,8 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
                 pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
 
             if (c->coded_frame->key_frame)
-                pkt.flags |= PKT_FLAG_KEY;
+		pkt.flags |= AV_PKT_FLAG_KEY;
+                // pkt.flags |= PKT_FLAG_KEY;
             pkt.stream_index = video_st->index;
             pkt.data= videOutbuf;
             pkt.size= out_size;
