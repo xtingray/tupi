@@ -68,7 +68,7 @@ class Configurator : public QFrame
         int totalSteps();
         void activateMode(TweenerPanel::EditMode mode);
 
-        void cleanData();
+        void cleanPositionData();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);

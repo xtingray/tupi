@@ -293,9 +293,9 @@ void Configurator::notifySelection(bool flag)
     k->tweenList->notifySelection(flag);
 }
 
-void Configurator::cleanData()
+void Configurator::cleanPositionData()
 {
-    // k->settingsPanel->cleanData();
+    k->tweenList->cleanPositionData();
 }
 
 void Configurator::closeTweenList()

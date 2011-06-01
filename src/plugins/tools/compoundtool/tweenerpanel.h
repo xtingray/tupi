@@ -77,6 +77,7 @@ class TweenerPanel : public QWidget
         QString tweenToXml(int currentFrame, QPointF point);
         int totalSteps();
         QString currentTweenName() const;
+        void cleanPositionData();
 
     private slots:
         void emitOptionChanged(int option);

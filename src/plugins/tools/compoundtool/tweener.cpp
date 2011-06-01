@@ -473,7 +473,7 @@ void Tweener::applyReset()
     }
 
     k->startPoint = k->scene->currentFrameIndex();
-    k->configurator->cleanData();
+    k->configurator->cleanPositionData();
 }
 
 /* This method applies to the project, the Tween created from this plugin */
@@ -688,10 +688,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                if (k->editMode == TweenerPanel::TweenProperties) {
 
-                   if (k->currentTweenType == TweenerPanel::Position)
+                   if (k->currentTweenType == TweenerPanel::Position) {
                        k->path = 0;
+                       k->configurator->cleanPositionData();
+                   }
 
-                   k->configurator->cleanData();
                    k->configurator->activateMode(TweenerPanel::Selection);
                    clearSelection();
                    setSelect();
@@ -708,8 +709,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                } else if (k->editMode == TweenerPanel::TweenList) {
 
-                          if (scene->currentFrameIndex() != k->startPoint)
-                              // call selection mode here!!! 
+                          if (scene->currentFrameIndex() != k->startPoint) {
+                              k->startPoint = scene->currentFrameIndex(); 
+                              clearSelection();
+                              k->configurator->activateMode(TweenerPanel::Selection);
+                          }
                }
 
     } else {

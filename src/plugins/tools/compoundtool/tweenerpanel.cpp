@@ -503,3 +503,9 @@ void TweenerPanel::enableApplyButton(bool flag)
 {
     k->applyButton->setEnabled(flag);
 }
+
+void TweenerPanel::cleanPositionData()
+{
+    k->positionPanel->cleanData();
+}
+
