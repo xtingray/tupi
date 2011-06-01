@@ -37,6 +37,8 @@
 #define POSITIONSETTINGS_H
 
 #include <QWidget>
+
+#include "configurator.h"
 #include "tweenerpanel.h"
 #include "kttweenerstep.h"
 
@@ -53,8 +55,6 @@ class PositionSettings : public QWidget
     Q_OBJECT
 
     public:
-        enum Mode { Add = 1, Edit, View };
-        // enum EditMode { Selection = 0, Path, None };
 
         PositionSettings(QWidget *parent = 0);
         ~PositionSettings();
@@ -67,21 +67,21 @@ class PositionSettings : public QWidget
 
         void updateSteps(const QGraphicsPathItem *path, QPointF offset);
         int totalSteps();
-        void cleanData();
         int startComboSize();
         QString pathString();
         QVector<KTTweenerStep *> steps();
+
+    public slots:
+        void resetTween();
         
     private slots:
-        // void addTween();
         void applyTween();
-        void resetTween();
         void closeTweenProperties();
         
     signals:
         void clickedCreatePath();
         void clickedSelect();
-        void clickedCloseTweenProperties(TweenerPanel::Mode mode);
+        void clickedCloseTweenProperties();
         void clickedApplyTween(TweenerPanel::TweenerType type, const QString &text);
         void startingPointChanged(int index);
         

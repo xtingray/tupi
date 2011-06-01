@@ -37,6 +37,7 @@
 #define POSITIONTWEENER_H
 
 #include <kttoolplugin.h>
+#include "configurator.h"
 #include "tweenerpanel.h"
 
 
@@ -88,7 +89,7 @@ class Tweener : public KTToolPlugin
         void setCreatePath();
         void setSelect();
         void setEditEnv();
-        void updateMode(TweenerPanel::Mode mode);
+        void updateMode(Configurator::Mode mode);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
         void setPath(bool isEnabled);

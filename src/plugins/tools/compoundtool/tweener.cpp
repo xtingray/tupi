@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tweener.h"
-#include "configurator.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -83,8 +82,8 @@ struct Tweener::Private
     bool pathAdded;
     int startPoint;
 
+    Configurator::Mode mode;
     TweenerPanel::TweenerType currentTweenType;
-    TweenerPanel::Mode mode;
     TweenerPanel::EditMode editMode;
 
     QPointF itemObjectReference;
@@ -123,7 +122,7 @@ void Tweener::init(KTGraphicsScene *scene)
     k->firstNode = QPointF(0, 0);
     k->itemObjectReference = QPointF(0, 0);
 
-    k->mode = TweenerPanel::View;
+    k->mode = Configurator::View;
     k->editMode = TweenerPanel::None;
 
     k->configurator->resetUI();
@@ -298,7 +297,7 @@ int Tweener::toolType() const
 QWidget *Tweener::configurator()
 {
     if (!k->configurator) {
-        k->mode = TweenerPanel::View;
+        k->mode = Configurator::View;
 
         k->configurator = new Configurator;
 
@@ -406,7 +405,7 @@ void Tweener::setCreatePath()
 
 void Tweener::setSelect()
 {
-    if (k->mode == TweenerPanel::Edit) {
+    if (k->mode == Configurator::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                             k->scene->currentLayerIndex(),
@@ -452,7 +451,7 @@ void Tweener::setSelect()
 
 void Tweener::applyReset()
 {
-    k->mode = TweenerPanel::View;
+    k->mode = Configurator::View;
     k->editMode = TweenerPanel::None;
 
     clearSelection();
@@ -473,7 +472,7 @@ void Tweener::applyReset()
     }
 
     k->startPoint = k->scene->currentFrameIndex();
-    k->configurator->cleanPositionData();
+    k->configurator->cleanPositionParams();
 }
 
 /* This method applies to the project, the Tween created from this plugin */
@@ -650,7 +649,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 {
     k->mode = k->configurator->mode();
 
-    if (k->mode == TweenerPanel::Edit) {
+    if (k->mode == Configurator::Edit) {
 
        kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Edit";
 
@@ -673,7 +672,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
        if (k->configurator->startComboSize() < framesNumber)
            k->configurator->initStartCombo(framesNumber, k->startPoint);
 
-    } else if (k->mode == TweenerPanel::Add) {
+    } else if (k->mode == Configurator::Add) {
 
                kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Add";
 
@@ -690,22 +689,22 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                    if (k->currentTweenType == TweenerPanel::Position) {
                        k->path = 0;
-                       k->configurator->cleanPositionData();
+                       k->configurator->cleanPositionParams();
                    }
 
-                   k->configurator->activateMode(TweenerPanel::Selection);
                    clearSelection();
-                   setSelect();
+                   k->configurator->activateMode(TweenerPanel::Selection);
 
                } else if (k->editMode == TweenerPanel::Selection) {
 
                           if (k->currentTweenType == TweenerPanel::Position)                       
                               k->path = 0;
 
-                          if (scene->currentFrameIndex() != k->startPoint)
+                          if (scene->currentFrameIndex() != k->startPoint) {
                               clearSelection();
-                          k->startPoint = scene->currentFrameIndex();
-                          setSelect();
+                              k->startPoint = scene->currentFrameIndex();
+                              setSelect();
+                          }
 
                } else if (k->editMode == TweenerPanel::TweenList) {
 
@@ -725,11 +724,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
     }
 }
 
-void Tweener::updateMode(TweenerPanel::Mode mode)
+void Tweener::updateMode(Configurator::Mode mode)
 {
     k->mode = mode;
 
-    if (k->mode == TweenerPanel::Edit)
+    if (k->mode == Configurator::Edit)
         setEditEnv();
 }
 
@@ -790,7 +789,7 @@ void Tweener::setEditEnv()
         emit requested(&request);
     }
 
-    k->mode = TweenerPanel::Edit;
+    k->mode = Configurator::Edit;
 
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Compound);

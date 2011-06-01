@@ -57,7 +57,7 @@ struct Configurator::Private
     int framesTotal;
     int currentFrame;
 
-    TweenerPanel::Mode mode;
+    Configurator::Mode mode;
     GuiState state;
 };
 
@@ -66,8 +66,8 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->framesTotal = 1;
     k->currentFrame = 0;
 
-    k->mode = TweenerPanel::View;
-    k->state = Manager;
+    k->mode = Configurator::View;
+    k->state = Configurator::Manager;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -158,7 +158,7 @@ void Configurator::setTweenManagerPanel()
     connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
-    k->state = Manager;
+    k->state = Configurator::Manager;
 }
 
 void Configurator::activeTweenManagerPanel(bool enable)
@@ -201,7 +201,7 @@ void Configurator::initStartCombo(int framesTotal, int currentFrame)
 void Configurator::setStartFrame(int currentIndex)
 {
     k->currentFrame = currentIndex;
-    // k->settingsPanel->setStartFrame(currentIndex);
+    k->tweenList->setStartFrame(currentIndex);
 }
 
 int Configurator::startComboSize()
@@ -233,8 +233,8 @@ void Configurator::addTween(const QString &name)
 {
     activeTweenManagerPanel(false);
 
-    k->mode = TweenerPanel::Add;
-    k->state = Configurator::TweenerList;
+    k->mode = Configurator::Add;
+    k->state = Configurator::TweenSettings;
 
     kFatal() << "Configurator::addTween() - framesTotal: " << k->framesTotal;
     kFatal() << "Configurator::addTween() - currentFrame: " << k->currentFrame;
@@ -249,8 +249,8 @@ void Configurator::editTween()
 {
     activeTweenManagerPanel(false);
 
-    k->mode = TweenerPanel::Edit;
-    k->state = TweenerList;
+    k->mode = Configurator::Edit;
+    k->state = Configurator::TweenSettings;
 
     k->tweenList->notifySelection(true);
     k->tweenList->setParameters(k->currentTween);
@@ -293,16 +293,16 @@ void Configurator::notifySelection(bool flag)
     k->tweenList->notifySelection(flag);
 }
 
-void Configurator::cleanPositionData()
+void Configurator::cleanPositionParams()
 {
-    k->tweenList->cleanPositionData();
+    k->tweenList->cleanPositionParams();
 }
 
 void Configurator::closeTweenList()
 {
-    if (k->mode == TweenerPanel::Add) {
+    if (k->mode == Configurator::Add) {
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == TweenerPanel::Edit) {
+    } else if (k->mode == Configurator::Edit) {
         closeTweenerPanel();
     }
 
@@ -313,22 +313,22 @@ void Configurator::closeTweenList()
 
 void Configurator::closeTweenerPanel()
 {
-    if (k->state == TweenerList) {
+    if (k->state == Configurator::TweenSettings) {
         activeTweenManagerPanel(true);
         activeTweenerPanel(false);
-        k->mode = TweenerPanel::View;
-        k->state = Manager;
+        k->mode = Configurator::View;
+        k->state = Configurator::Manager;
     }
 }
 
-TweenerPanel::Mode Configurator::mode()
+Configurator::Mode Configurator::mode()
 {
     return k->mode;
 }
 
 void Configurator::applyItem()
 {
-     k->mode = TweenerPanel::Edit;
+     k->mode = Configurator::Edit;
      emit clickedApplyTween();
 }
 

@@ -59,13 +59,13 @@ struct PositionSettings::Private
     StepsViewer *stepViewer;
     QComboBox *comboInit;
     QLabel *totalLabel;
-    TweenerPanel::Mode mode; 
+    Configurator::Mode mode; 
 
     const QGraphicsPathItem *path;
     QPointF offset;
 
-    QPushButton *applyButton;
-    QPushButton *closeButton;
+    KImageButton *applyButton;
+    KImageButton *closeButton;
 };
 
 PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Private)
@@ -95,7 +95,7 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
     k->comboInit->setFixedWidth(60);
 
     // SQA: Remove this instruction in the right moment
-    k->comboInit->setEnabled(false);
+    // k->comboInit->setEnabled(false);
 
     connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
 
@@ -154,7 +154,7 @@ PositionSettings::~PositionSettings()
 
 void PositionSettings::setParameters(int framesTotal, int startFrame)
 {
-    k->mode = TweenerPanel::Add;
+    k->mode = Configurator::Add;
 
     k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
@@ -220,11 +220,6 @@ int PositionSettings::totalSteps()
     return k->stepViewer->totalSteps();
 }
 
-void PositionSettings::cleanData()
-{
-    k->stepViewer->cleanRows();
-}
-
 void PositionSettings::applyTween()
 {
     if (totalSteps() <= 2) {
@@ -244,23 +239,23 @@ void PositionSettings::applyTween()
 
 void PositionSettings::resetTween()
 {
-    cleanData();
+    k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 }
 
 void PositionSettings::closeTweenProperties()
 {
-    if (k->mode == TweenerPanel::Add)
+    if (k->mode == Configurator::Add)
         resetTween(); 
 
     kFatal() << "PositionSettings::closeTweenProperties() - Mode: " << k->mode;
 
-    emit clickedCloseTweenProperties(k->mode);
+    emit clickedCloseTweenProperties();
 }
 
 void PositionSettings::setEditMode()
 {
-    k->mode = TweenerPanel::Edit;
+    k->mode = Configurator::Edit;
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }

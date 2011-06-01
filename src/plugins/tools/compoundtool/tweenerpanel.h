@@ -61,7 +61,6 @@ class TweenerPanel : public QWidget
              Compound = 6
         };
 
-        enum Mode { Add = 1, Edit, View };
         enum EditMode { Selection = 0, TweenList, TweenProperties, None };
 
         TweenerPanel(QWidget *parent = 0);
@@ -77,13 +76,14 @@ class TweenerPanel : public QWidget
         QString tweenToXml(int currentFrame, QPointF point);
         int totalSteps();
         QString currentTweenName() const;
-        void cleanPositionData();
+        void cleanPositionParams();
+        void setStartFrame(int currentIndex);
 
     private slots:
         void emitOptionChanged(int option);
         void showTweenSettings(int tweenType);
         void activateTweenersTable(TweenerPanel::TweenerType type, const QString &message);
-        void updateTweenersTable(TweenerPanel::Mode mode);
+        void updateTweenersTable();
         void applyTween();
         void enableApplyButton(bool flag);
         
