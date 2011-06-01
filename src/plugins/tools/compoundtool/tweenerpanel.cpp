@@ -37,8 +37,6 @@
 #include "positionsettings.h"
 #include "kdebug.h"
 #include "kradiobuttongroup.h"
-// #include "ktitemtweener.h"
-// #include "kttweenerstep.h"
 #include "kimagebutton.h"
 #include "kseparator.h"
 #include "tweenertable.h"
@@ -64,8 +62,6 @@ struct TweenerPanel::Private
 
     QLineEdit *input;
     KRadioButtonGroup *options;
-    QComboBox *comboInit;
-    QComboBox *comboEnd;
 
     TweenerTable *tweenerTable;
     int currentTweenIndex;
@@ -106,12 +102,10 @@ TweenerPanel::TweenerPanel(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(nameLayout);
 
     setOptionsPanel();
-
     setTweenerTableForm();
     loadTweenComponents();
-
-    // k->layout->addSpacing(10);
     setButtonsPanel();
+
     k->layout->setSpacing(0);
 
     activateMode(TweenerPanel::Selection);
@@ -127,7 +121,6 @@ void TweenerPanel::setOptionsPanel()
     k->optionsPanel = new QWidget;
 
     QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->optionsPanel);
-    //innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     innerLayout->setMargin(0);
     innerLayout->setSpacing(0);
 
@@ -178,12 +171,10 @@ void TweenerPanel::setTweenerTableForm()
 
 void TweenerPanel::activeTweenerTableForm(bool enable)
 {
-    if (enable && !k->tweenerTablePanel->isVisible()) {
-        k->editMode = TweenerPanel::TweenList;
+    if (enable && !k->tweenerTablePanel->isVisible())
         k->tweenerTablePanel->show();
-    } else {
+    else
         k->tweenerTablePanel->hide();
-    }
 }
 
 void TweenerPanel::setButtonsPanel()
@@ -320,6 +311,7 @@ void TweenerPanel::emitOptionChanged(int option)
     switch (option) {
             case 0:
              {
+                 k->editMode = TweenerPanel::Selection;
                  emit clickedSelect();
                  activeTweenerTableForm(false);
              }
@@ -327,6 +319,7 @@ void TweenerPanel::emitOptionChanged(int option)
             case 1:
              {
                  if (k->selectionDone) {
+                     k->editMode = TweenerPanel::TweenList;
                      activeTweenerTableForm(true);
                      emit clickedTweenProperties();
                  } else {
@@ -350,6 +343,7 @@ void TweenerPanel::notifySelection(bool flag)
 void TweenerPanel::showTweenSettings(int tweenType)
 {
     k->currentTweenIndex = tweenType;
+    k->editMode = TweenerPanel::TweenProperties;
 
     activeOptionsPanel(false);
     activeTweenerTableForm(false);
@@ -373,6 +367,8 @@ void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type, const Q
 void TweenerPanel::updateTweenersTable()
 {
     kFatal() << "TweenerPanel::updateTweenersTable() - Just tracing!"; 
+
+    k->editMode = TweenerPanel::TweenList;
 
     activeTweenComponent(k->currentTweenIndex, false);
     activeOptionsPanel(true);
