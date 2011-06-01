@@ -66,7 +66,8 @@ class Configurator : public QFrame
         void updateSteps(const QGraphicsPathItem *path, QPointF offset);
 
         int totalSteps();
-        void activateSelectionMode();
+        void activateMode(TweenerPanel::EditMode mode);
+
         void cleanData();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;

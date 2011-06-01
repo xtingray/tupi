@@ -224,9 +224,9 @@ int Configurator::totalSteps()
     return k->tweenList->totalSteps();
 }
 
-void Configurator::activateSelectionMode()
+void Configurator::activateMode(TweenerPanel::EditMode mode)
 {
-    // k->settingsPanel->activateSelectionMode();
+    k->tweenList->activateMode(mode);
 }
 
 void Configurator::addTween(const QString &name)
@@ -235,6 +235,9 @@ void Configurator::addTween(const QString &name)
 
     k->mode = TweenerPanel::Add;
     k->state = Configurator::TweenerList;
+
+    kFatal() << "Configurator::addTween() - framesTotal: " << k->framesTotal;
+    kFatal() << "Configurator::addTween() - currentFrame: " << k->currentFrame;
 
     k->tweenList->setParameters(name, k->framesTotal, k->currentFrame);
     activeTweenerPanel(true);

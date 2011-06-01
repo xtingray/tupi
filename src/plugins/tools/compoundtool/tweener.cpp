@@ -140,8 +140,10 @@ void Tweener::init(KTGraphicsScene *scene)
 
 void Tweener::updateStartPoint(int index)
 {
-    if (k->startPoint != index && index >= 0) 
+    if (k->startPoint != index && index >= 0) {
+        kFatal() << "Tweener::updateStartPoint() - New Start Point: " << k->startPoint;
         k->startPoint = index;
+    }
 }
 
 /* This method returns the plugin name */
@@ -650,6 +652,8 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
     if (k->mode == TweenerPanel::Edit) {
 
+       kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Edit";
+
        int total = k->startPoint + k->configurator->totalSteps();
 
        if (k->editMode == TweenerPanel::TweenProperties) {
@@ -671,6 +675,8 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
     } else if (k->mode == TweenerPanel::Add) {
 
+               kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Add";
+
                int total = framesTotal();
 
                if (k->configurator->startComboSize() < total) {
@@ -682,26 +688,33 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                if (k->editMode == TweenerPanel::TweenProperties) {
 
-                       if (k->currentTweenType == TweenerPanel::Position)
-                           k->path = 0;
+                   if (k->currentTweenType == TweenerPanel::Position)
+                       k->path = 0;
 
-                       k->configurator->cleanData();
-                       k->configurator->activateSelectionMode();
-                       clearSelection();
-                       setSelect();
+                   k->configurator->cleanData();
+                   k->configurator->activateMode(TweenerPanel::Selection);
+                   clearSelection();
+                   setSelect();
 
                } else if (k->editMode == TweenerPanel::Selection) {
 
-                       if (k->currentTweenType == TweenerPanel::Position)                       
-                           k->path = 0;
+                          if (k->currentTweenType == TweenerPanel::Position)                       
+                              k->path = 0;
 
-                       if (scene->currentFrameIndex() != k->startPoint)
-                           clearSelection();
-                       k->startPoint = scene->currentFrameIndex();
-                       setSelect();
-               } 
+                          if (scene->currentFrameIndex() != k->startPoint)
+                              clearSelection();
+                          k->startPoint = scene->currentFrameIndex();
+                          setSelect();
+
+               } else if (k->editMode == TweenerPanel::TweenList) {
+
+                          if (scene->currentFrameIndex() != k->startPoint)
+                              // call selection mode here!!! 
+               }
 
     } else {
+             kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::View";
+
              if (scene->currentFrameIndex() != k->startPoint) {
                  k->configurator->setStartFrame(scene->currentFrameIndex());
              }

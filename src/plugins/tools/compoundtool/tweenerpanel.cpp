@@ -277,6 +277,8 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
 {
     k->tweenerTable->resetTable();
 
+    k->positionPanel->setParameters(framesTotal, startFrame);
+
     k->mode = Add;
     k->input->setText(name);
 

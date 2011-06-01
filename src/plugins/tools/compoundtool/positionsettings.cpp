@@ -56,7 +56,6 @@ struct PositionSettings::Private
 {
     QBoxLayout *layout; 
 
-    // QLineEdit *input;
     StepsViewer *stepViewer;
     QComboBox *comboInit;
     QLabel *totalLabel;
