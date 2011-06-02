@@ -38,7 +38,6 @@
 
 #include <QWidget>
 
-#include "configurator.h"
 #include "tweenerpanel.h"
 #include "kttweenerstep.h"
 
@@ -81,7 +80,7 @@ class PositionSettings : public QWidget
     signals:
         void clickedCreatePath();
         void clickedSelect();
-        void clickedCloseTweenProperties();
+        void clickedCloseTweenProperties(TweenerPanel::Mode mode);
         void clickedApplyTween(TweenerPanel::TweenerType type, const QString &text);
         void startingPointChanged(int index);
         

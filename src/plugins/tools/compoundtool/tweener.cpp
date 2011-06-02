@@ -35,15 +35,6 @@
 
 #include "tweener.h"
 
-#include <QPointF>
-#include <QKeySequence>
-#include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QMatrix>
-#include <QGraphicsLineItem>
-#include <QGraphicsView>
-#include <QDomDocument>
-
 #include "kglobal.h"
 #include "kdebug.h"
 #include "kaction.h"
@@ -66,6 +57,15 @@
 #include "ktscene.h"
 #include "ktlayer.h"
 
+#include <QPointF>
+#include <QKeySequence>
+#include <QGraphicsPathItem>
+#include <QPainterPath>
+#include <QMatrix>
+#include <QGraphicsLineItem>
+#include <QGraphicsView>
+#include <QDomDocument>
+
 struct Tweener::Private
 {
     QMap<QString, KAction *> actions;
@@ -82,7 +82,7 @@ struct Tweener::Private
     bool pathAdded;
     int startPoint;
 
-    Configurator::Mode mode;
+    TweenerPanel::Mode mode;
     TweenerPanel::TweenerType currentTweenType;
     TweenerPanel::EditMode editMode;
 
@@ -112,17 +112,18 @@ void Tweener::init(KTGraphicsScene *scene)
 {
     delete k->path;
     k->path = 0;
+    k->pathAdded = false;
     delete k->group;
     k->group = 0;
+
     k->scene = scene;
     k->objects.clear();
 
-    k->pathAdded = false;
     k->pathOffset = QPointF(0, 0); 
     k->firstNode = QPointF(0, 0);
     k->itemObjectReference = QPointF(0, 0);
 
-    k->mode = Configurator::View;
+    k->mode = TweenerPanel::View;
     k->editMode = TweenerPanel::None;
 
     k->configurator->resetUI();
@@ -211,7 +212,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     k->group->createNodes(k->path);
                     k->group->expandAllNodes();
                     k->configurator->updateSteps(k->path, k->pathOffset);
-                    QPainterPath::Element e  = k->path->path().elementAt(0);
+                    QPainterPath::Element e = k->path->path().elementAt(0);
                     QPointF begin = QPointF(e.x, e.y);
 
                     if (begin != k->firstNode) {
@@ -237,6 +238,8 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
             }
 
         } else {
+
+            // if k->editMode == TweenerPanel::TweenSelection
 
             if (scene->selectedItems().size() > 0) {
 
@@ -297,7 +300,7 @@ int Tweener::toolType() const
 QWidget *Tweener::configurator()
 {
     if (!k->configurator) {
-        k->mode = Configurator::View;
+        k->mode = TweenerPanel::View;
 
         k->configurator = new Configurator;
 
@@ -311,8 +314,7 @@ QWidget *Tweener::configurator()
 
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        // connect(k->configurator, SIGNAL(loadPath(bool)), this, SLOT(cleanPath()));
-        connect(k->configurator, SIGNAL(loadPath(bool)), this, SLOT(setPath(bool)));
+        connect(k->configurator, SIGNAL(loadPath(bool, bool)), this, SLOT(setPath(bool, bool)));
 
         connect(k->configurator, SIGNAL(setMode(TweenerPanel::Mode)), this, SLOT(updateMode(TweenerPanel::Mode)));
         connect(k->configurator, SIGNAL(clickedApplyTween()), this, SLOT(applyTween()));
@@ -331,7 +333,6 @@ void Tweener::aboutToChangeScene(KTGraphicsScene *)
 }
 
 /* This method is called when this plugin is off */
-
 void Tweener::aboutToChangeTool()
 {
     if (k->editMode == TweenerPanel::Selection) {
@@ -344,6 +345,7 @@ void Tweener::aboutToChangeTool()
     if (k->editMode == TweenerPanel::TweenProperties) {
         if (k->currentTweenType == TweenerPanel::Position) {
             if (k->path) {
+                kFatal() << "Tweener::aboutToChangeTool() - Removing path!";
                 k->scene->removeItem(k->path);
                 k->pathAdded = false;
                 delete k->group;
@@ -354,12 +356,12 @@ void Tweener::aboutToChangeTool()
     }
 }
 
-/* SQA: What is it? */
-
+/* SQA: What is it? 
 bool Tweener::isComplete() const
 {
     return true;
 }
+*/
 
 /* This method defines the actions contained in this plugin */
 
@@ -397,7 +399,6 @@ void Tweener::setCreatePath()
 
     }
 
-    k->editMode = TweenerPanel::TweenProperties;
     disableSelection();
 }
 
@@ -405,7 +406,7 @@ void Tweener::setCreatePath()
 
 void Tweener::setSelect()
 {
-    if (k->mode == Configurator::Edit) {
+    if (k->mode == TweenerPanel::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                             k->scene->currentLayerIndex(),
@@ -413,18 +414,6 @@ void Tweener::setSelect()
             emit requested(&request);
         }
     }
-
-
-    /*
-    if (k->currentTweenType == TweenerPanel::Position) {
-        if (k->path) {
-            k->scene->removeItem(k->path);
-            k->pathAdded = false;
-            delete k->group;
-            k->group = 0;
-        }
-    }
-    */
 
     k->editMode = TweenerPanel::Selection;
 
@@ -444,19 +433,21 @@ void Tweener::setSelect()
                  item->setSelected(true);
         }
     }
-
 }
 
 /* This method resets this plugin */
 
 void Tweener::applyReset()
 {
-    k->mode = Configurator::View;
+    kFatal() << "Tweener::applyReset() - Fire in the hole!";
+
+    k->mode = TweenerPanel::View;
     k->editMode = TweenerPanel::None;
 
     clearSelection();
     disableSelection();
 
+    /*
     if (k->currentTweenType == TweenerPanel::Position) {
         if (k->group) {
             k->group->clear();
@@ -464,15 +455,18 @@ void Tweener::applyReset()
         }
 
         if (k->path) {
-            if (k->startPoint == k->scene->currentFrameIndex())
+            if (k->startPoint == k->scene->currentFrameIndex()) {
+                kFatal() << "Tweener::applyReset() - Removing path!";
                 k->scene->removeItem(k->path);
+            }
             k->pathAdded = false;
             k->path = 0;
         }
     }
+    */
 
     k->startPoint = k->scene->currentFrameIndex();
-    k->configurator->cleanPositionParams();
+    k->configurator->cleanTweensForms();
 }
 
 /* This method applies to the project, the Tween created from this plugin */
@@ -649,7 +643,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 {
     k->mode = k->configurator->mode();
 
-    if (k->mode == Configurator::Edit) {
+    if (k->mode == TweenerPanel::Edit) {
 
        kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Edit";
 
@@ -672,7 +666,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
        if (k->configurator->startComboSize() < framesNumber)
            k->configurator->initStartCombo(framesNumber, k->startPoint);
 
-    } else if (k->mode == Configurator::Add) {
+    } else if (k->mode == TweenerPanel::Add) {
 
                kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Add";
 
@@ -687,10 +681,10 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                if (k->editMode == TweenerPanel::TweenProperties) {
 
-                   if (k->currentTweenType == TweenerPanel::Position) {
+                   if (k->currentTweenType == TweenerPanel::Position)
                        k->path = 0;
-                       k->configurator->cleanPositionParams();
-                   }
+
+                   k->configurator->cleanTweensForms();
 
                    clearSelection();
                    k->configurator->activateMode(TweenerPanel::Selection);
@@ -724,11 +718,11 @@ void Tweener::updateScene(KTGraphicsScene *scene)
     }
 }
 
-void Tweener::updateMode(Configurator::Mode mode)
+void Tweener::updateMode(TweenerPanel::Mode mode)
 {
     k->mode = mode;
 
-    if (k->mode == Configurator::Edit)
+    if (k->mode == TweenerPanel::Edit)
         setEditEnv();
 }
 
@@ -789,7 +783,7 @@ void Tweener::setEditEnv()
         emit requested(&request);
     }
 
-    k->mode = Configurator::Edit;
+    k->mode = TweenerPanel::Edit;
 
     KTScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name(), KTItemTweener::Compound);
@@ -865,6 +859,7 @@ void Tweener::updateCurrentTweenerType(TweenerPanel::TweenerType type)
 {
     kFatal() << "updateCurrentTweenerType() - Just following type: " << type;
     k->currentTweenType = type;
+    k->editMode = TweenerPanel::TweenProperties;
 
     if (k->currentTweenType == TweenerPanel::Position) {
         kFatal() << "Tweener::updateCurrentTweenerType() - Setting path!";
@@ -874,9 +869,10 @@ void Tweener::updateCurrentTweenerType(TweenerPanel::TweenerType type)
     }
 }
 
-void Tweener::setPath(bool isEnabled)
+void Tweener::setPath(bool isEnabled, bool reset)
 {
     if (isEnabled) {
+        k->editMode = TweenerPanel::TweenProperties;
         setCreatePath();
     } else {
         if (k->group) {
@@ -885,9 +881,29 @@ void Tweener::setPath(bool isEnabled)
         }
 
         if (k->path) {
+
             if (k->startPoint == k->scene->currentFrameIndex())
                 k->scene->removeItem(k->path);
+
             k->pathAdded = false;
+
+            if (reset) {
+                QPainterPath::Element e  = k->path->path().elementAt(0);
+                QPointF newPos = QPointF(e.x, e.y);
+
+                k->path = new QGraphicsPathItem;
+                k->path->setZValue(maxZValue());
+
+                QColor color = Qt::lightGray;
+                color.setAlpha(200);
+                QPen pen(QBrush(color), 1, Qt::DotLine);
+                k->path->setPen(pen);
+
+                QPainterPath path;
+                path.moveTo(newPos);
+                k->firstNode = newPos;
+                k->path->setPath(path);
+            }
         }
     }
 }

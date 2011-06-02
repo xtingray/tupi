@@ -40,7 +40,6 @@
 #include "configurator.h"
 #include "tweenerpanel.h"
 
-
 /**
  * @author Gustav Gonzalez 
  *
@@ -67,7 +66,7 @@ class Tweener : public KTToolPlugin
 
         int toolType() const;
         void aboutToChangeScene(KTGraphicsScene *scene);
-        bool isComplete() const;
+        // bool isComplete() const;
 
     private:
         int framesTotal();
@@ -89,10 +88,10 @@ class Tweener : public KTToolPlugin
         void setCreatePath();
         void setSelect();
         void setEditEnv();
-        void updateMode(Configurator::Mode mode);
+        void updateMode(TweenerPanel::Mode mode);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
-        void setPath(bool isEnabled);
+        void setPath(bool isEnabled, bool reset);
         void tweenListMode();
 
     public slots:

@@ -57,7 +57,7 @@ struct TweenerPanel::Private
 
     QList<QWidget*> *panelList;
 
-    Configurator::Mode mode;
+    TweenerPanel::Mode mode;
     EditMode editMode;
 
     QLineEdit *input;
@@ -226,8 +226,8 @@ void TweenerPanel::loadTweenComponents()
                      k->positionPanel = new PositionSettings;
                      connect(k->positionPanel, SIGNAL(clickedApplyTween(TweenerPanel::TweenerType, const QString &)), 
                              this, SLOT(activateTweenersTable(TweenerPanel::TweenerType, const QString &)));  
-                     connect(k->positionPanel, SIGNAL(clickedCloseTweenProperties()), 
-                             this, SLOT(updateTweenersTable()));
+                     connect(k->positionPanel, SIGNAL(clickedCloseTweenProperties(TweenerPanel::Mode)), 
+                             this, SLOT(updateTweenersTable(TweenerPanel::Mode)));
                      connect(k->positionPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int))); 
 
                      k->positionPanel->setParameters(k->totalSteps, 0);
@@ -272,7 +272,7 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
 
     k->positionPanel->setParameters(framesTotal, startFrame);
 
-    k->mode = Configurator::Add;
+    k->mode = TweenerPanel::Add;
     k->input->setText(name);
 
     activateMode(TweenerPanel::Selection);
@@ -288,7 +288,7 @@ void TweenerPanel::setParameters(KTItemTweener *currentTween)
 {
     k->tweenerTable->resetTable();
 
-    k->mode = Configurator::Edit;
+    k->mode = TweenerPanel::Edit;
     k->input->setText(currentTween->name());
 
     activateMode(TweenerPanel::TweenList);
@@ -299,7 +299,7 @@ void TweenerPanel::setParameters(KTItemTweener *currentTween)
              switch(i) {
                     case 0:
                          k->positionPanel->setParameters(currentTween);
-                         emit loadPath(true);
+                         emit loadPath(true, false);
                     break;
              }
          }
@@ -319,8 +319,9 @@ void TweenerPanel::emitOptionChanged(int option)
             case 1:
              {
                  if (k->selectionDone) {
-                     k->editMode = TweenerPanel::TweenList;
                      activeTweenerTableForm(true);
+
+                     k->editMode = TweenerPanel::TweenList;
                      emit clickedTweenProperties();
                  } else {
                      k->options->setCurrentIndex(0);
@@ -364,7 +365,7 @@ void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type, const Q
     KOsd::self()->display(tr("Info"), message, KOsd::Info);
 }
 
-void TweenerPanel::updateTweenersTable()
+void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)
 {
     kFatal() << "TweenerPanel::updateTweenersTable() - Just tracing!"; 
 
@@ -375,11 +376,15 @@ void TweenerPanel::updateTweenersTable()
     activeTweenerTableForm(true);
     activeButtonsPanel(true);
 
-    if (k->mode == Configurator::Add)
-        k->tweenerTable->checkTween(k->currentTweenIndex, false);
+    bool reset = false;
+
+    if (mode == TweenerPanel::Add) {
+        // k->tweenerTable->checkTween(k->currentTweenIndex, false);
+        reset = true;
+    }
 
     if (TweenerPanel::TweenerType(k->currentTweenIndex) == TweenerPanel::Position)
-        emit loadPath(false);
+        emit loadPath(false, reset);
 }
 
 void TweenerPanel::updateSteps(const QGraphicsPathItem *path, QPointF offset)
@@ -407,7 +412,7 @@ void TweenerPanel::applyTween()
 
 void TweenerPanel::setEditMode()
 {
-    k->mode = Configurator::Edit;
+    k->mode = TweenerPanel::Edit;
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }
@@ -502,9 +507,10 @@ void TweenerPanel::enableApplyButton(bool flag)
     k->applyButton->setEnabled(flag);
 }
 
-void TweenerPanel::cleanPositionParams()
+void TweenerPanel::cleanTweensForms()
 {
     k->positionPanel->resetTween();
+    // Add another cleaning methods here 
 }
 
 void TweenerPanel::setStartFrame(int currentIndex)

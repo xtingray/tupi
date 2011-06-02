@@ -59,7 +59,7 @@ struct PositionSettings::Private
     StepsViewer *stepViewer;
     QComboBox *comboInit;
     QLabel *totalLabel;
-    Configurator::Mode mode; 
+    TweenerPanel::Mode mode; 
 
     const QGraphicsPathItem *path;
     QPointF offset;
@@ -154,7 +154,7 @@ PositionSettings::~PositionSettings()
 
 void PositionSettings::setParameters(int framesTotal, int startFrame)
 {
-    k->mode = Configurator::Add;
+    k->mode = TweenerPanel::Add;
 
     k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
@@ -245,17 +245,17 @@ void PositionSettings::resetTween()
 
 void PositionSettings::closeTweenProperties()
 {
-    if (k->mode == Configurator::Add)
+    if (k->mode == TweenerPanel::Add)
         resetTween(); 
 
     kFatal() << "PositionSettings::closeTweenProperties() - Mode: " << k->mode;
 
-    emit clickedCloseTweenProperties();
+    emit clickedCloseTweenProperties(k->mode);
 }
 
 void PositionSettings::setEditMode()
 {
-    k->mode = Configurator::Edit;
+    k->mode = TweenerPanel::Edit;
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }

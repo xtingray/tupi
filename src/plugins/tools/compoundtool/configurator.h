@@ -54,7 +54,6 @@ class Configurator : public QFrame
 
     public:
         enum GuiState { Manager = 1, TweenSettings };
-        enum Mode { Add = 1, Edit, View };
 
         Configurator(QWidget *parent = 0);
         ~Configurator();
@@ -69,13 +68,13 @@ class Configurator : public QFrame
         int totalSteps();
         void activateMode(TweenerPanel::EditMode mode);
 
-        void cleanPositionParams();
+        void cleanTweensForms();
         void setCurrentTween(KTItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();
         void closeTweenerPanel();
-        Configurator::Mode mode();
+        TweenerPanel::Mode mode();
         void resetUI();
         QString tweenToXml(int currentFrame, QPointF point);
         
@@ -92,11 +91,11 @@ class Configurator : public QFrame
         void clickedSelect();
         void clickedTweenProperties();
         void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
-        void setMode(Configurator::Mode mode);
+        void setMode(TweenerPanel::Mode mode);
         void clickedRemoveTween(const QString &name);
         void clickedApplyTween();
         void clickedResetInterface();
-        void loadPath(bool flag);
+        void loadPath(bool enable, bool reset);
         void getTweenData(const QString &name);
         void startingPointChanged(int index);
 

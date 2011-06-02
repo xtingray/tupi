@@ -45,6 +45,8 @@
  * @author Gustav Gonzalez 
 */
 
+class Configurator;
+
 class TweenerPanel : public QWidget 
 {
     Q_OBJECT
@@ -61,6 +63,7 @@ class TweenerPanel : public QWidget
              Compound = 6
         };
 
+        enum Mode { Add = 1, Edit, View };
         enum EditMode { Selection = 0, TweenList, TweenProperties, None };
 
         TweenerPanel(QWidget *parent = 0);
@@ -76,14 +79,14 @@ class TweenerPanel : public QWidget
         QString tweenToXml(int currentFrame, QPointF point);
         int totalSteps();
         QString currentTweenName() const;
-        void cleanPositionParams();
+        void cleanTweensForms();
         void setStartFrame(int currentIndex);
 
     private slots:
         void emitOptionChanged(int option);
         void showTweenSettings(int tweenType);
         void activateTweenersTable(TweenerPanel::TweenerType type, const QString &message);
-        void updateTweenersTable();
+        void updateTweenersTable(TweenerPanel::Mode mode);
         void applyTween();
         void enableApplyButton(bool flag);
         
@@ -94,7 +97,7 @@ class TweenerPanel : public QWidget
         void clickedResetTween();
         void tweenPropertiesActivated(TweenerPanel::TweenerType flag);
         void startingPointChanged(int index);
-        void loadPath(bool flag);
+        void loadPath(bool enable, bool reset);
         
     private:
         void setOptionsPanel();
