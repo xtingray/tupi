@@ -88,6 +88,7 @@ class TweenerPanel : public QWidget
         void activateTweenersTable(TweenerPanel::TweenerType type, const QString &message);
         void updateTweenersTable(TweenerPanel::Mode mode);
         void applyTween();
+        void closePanel();
         void enableApplyButton(bool flag);
         
     signals:

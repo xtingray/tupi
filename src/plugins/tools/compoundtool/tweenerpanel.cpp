@@ -189,7 +189,7 @@ void TweenerPanel::setButtonsPanel()
     connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
 
     k->closeButton = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
-    connect(k->closeButton, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
+    connect(k->closeButton, SIGNAL(clicked()), this, SLOT(closePanel()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
     buttonsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
@@ -268,7 +268,7 @@ void TweenerPanel::activeTweenComponent(int index, bool enable)
 
 void TweenerPanel::setParameters(const QString &name, int framesTotal, int startFrame)
 {
-    k->tweenerTable->resetTable();
+    // k->tweenerTable->resetTable();
 
     k->positionPanel->setParameters(framesTotal, startFrame);
 
@@ -286,20 +286,22 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
 
 void TweenerPanel::setParameters(KTItemTweener *currentTween)
 {
-    k->tweenerTable->resetTable();
+    kFatal() << "TweenerPanel::setParameters() - Loading Tween: " << currentTween->name();
 
-    k->mode = TweenerPanel::Edit;
+    setEditMode();
+
     k->input->setText(currentTween->name());
-
     activateMode(TweenerPanel::TweenList);
 
     for (int i=0; i < 6; i++) {
          if (currentTween->contains(KTItemTweener::Type(i))) {
+             kFatal() << "TweenerPanel::setParameters() - Tween contains: " << i;
              k->tweenerTable->checkTween(i, true);
              switch(i) {
                     case 0:
+                         k->tweenerList.append(TweenerPanel::TweenerType(i));
                          k->positionPanel->setParameters(currentTween);
-                         emit loadPath(true, false);
+                         // emit loadPath(true, false);
                     break;
              }
          }
@@ -357,7 +359,12 @@ void TweenerPanel::showTweenSettings(int tweenType)
 
 void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type, const QString &message)
 {
-    k->tweenerList.append(type);
+    if (!k->tweenerList.contains(type))
+        k->tweenerList.append(type);
+
+    emit clickedApplyTween();
+
+    setEditMode();
 
     if (!k->applyButton->isEnabled())
         k->applyButton->setEnabled(true);
@@ -413,6 +420,8 @@ void TweenerPanel::applyTween()
 void TweenerPanel::setEditMode()
 {
     k->mode = TweenerPanel::Edit;
+
+    k->applyButton->setToolTip(tr("Update Tween"));
     k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }
@@ -436,6 +445,8 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
    tweening.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
 
    QDomElement settings = doc.createElement("settings");
+
+   kFatal() << "TweenerPanel::tweenToXml() - Tweener List Size: " << k->tweenerList.size();
 
    for (int i=0; i < k->tweenerList.size(); i++) {
 
@@ -517,4 +528,10 @@ void TweenerPanel::setStartFrame(int currentIndex)
 {
     // k->currentFrame = currentIndex;
     k->positionPanel->setStartFrame(currentIndex);
+}
+
+void TweenerPanel::closePanel()
+{
+    k->tweenerTable->resetTable();
+    emit clickedResetTween(); 
 }
