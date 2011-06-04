@@ -114,7 +114,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateSelectionMode();
+    activateMode(Settings::Selection);
 }
 
 Settings::~Settings()
@@ -184,7 +184,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->mode = Add;
     k->input->setText(name);
 
-    activateSelectionMode();
+    activateMode(Settings::Selection);
     k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 
@@ -203,7 +203,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
     setEditMode();
 
     notifySelection(true);
-    activatePathMode();
+    activateMode(Settings::Path);
 
     k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);
@@ -291,6 +291,7 @@ int Settings::totalSteps()
     return k->stepViewer->totalSteps();
 }
 
+/*
 void Settings::activatePathMode()
 {
     k->options->setCurrentIndex(1);
@@ -299,6 +300,12 @@ void Settings::activatePathMode()
 void Settings::activateSelectionMode()
 {
     k->options->setCurrentIndex(0);
+}
+*/
+
+void Settings::activateMode(Settings::EditMode mode)
+{
+    k->options->setCurrentIndex(mode);
 }
 
 void Settings::cleanData()

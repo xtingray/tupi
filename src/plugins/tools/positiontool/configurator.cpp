@@ -226,9 +226,9 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activateSelectionMode()
+void Configurator::activateMode(Settings::EditMode mode)
 {
-    k->settingsPanel->activateSelectionMode();
+    k->settingsPanel->activateMode(mode);
 }
 
 void Configurator::cleanData()

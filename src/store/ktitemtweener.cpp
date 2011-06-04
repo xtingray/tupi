@@ -241,6 +241,7 @@ QPointF KTItemTweener::transformOriginPoint()
 void KTItemTweener::fromXml(const QString &xml)
 {
     kFatal() << "KTItemTweener::fromXml() - Following the white rabbit!";
+    kFatal() << xml;
     
     QDomDocument doc;
 
@@ -249,8 +250,6 @@ void KTItemTweener::fromXml(const QString &xml)
 
         k->name = root.attribute("name");
         k->type = KTItemTweener::Type(root.attribute("type").toInt());
-
-        kFatal() << "KTItemTweener::formXml() - Reading the whole tween! - Type: " << k->type;
 
         k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();

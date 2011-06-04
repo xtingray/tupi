@@ -75,7 +75,8 @@ class Configurator : public QFrame
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentFrame, QPointF point, QString &path);
         int totalSteps();
-        void activateSelectionMode();
+        // void activateSelectionMode();
+        void activateMode(Settings::EditMode mode);
         void cleanData();
         QString currentTweenName() const;
         void notifySelection(bool flag);

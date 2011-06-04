@@ -715,7 +715,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
                        k->path = 0;
                        k->configurator->cleanData();
-                       k->configurator->activateSelectionMode();
+                       k->configurator->activateMode(Settings::Selection);
                        clearSelection();
                        setSelect();
 

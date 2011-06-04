@@ -65,8 +65,9 @@ class Settings : public QWidget
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentFrame, QPointF point, QString &path);
         int totalSteps();
-        void activatePathMode();
-        void activateSelectionMode();
+        // void activatePathMode();
+        // void activateSelectionMode();
+        void activateMode(Settings::EditMode mode);
         void cleanData();
         void notifySelection(bool flag);
         int startComboSize();
