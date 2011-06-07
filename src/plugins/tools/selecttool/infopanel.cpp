@@ -39,8 +39,8 @@
 
 #include "kimagebutton.h"
 #include "kseparator.h"
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {

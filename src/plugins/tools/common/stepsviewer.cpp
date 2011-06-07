@@ -37,7 +37,7 @@
 #include "kttweenerstep.h"
 #include "spinboxdelegate.h"
 #include "tpushbutton.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <cmath>
 #include <QGraphicsPathItem>

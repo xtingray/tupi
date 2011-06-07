@@ -36,7 +36,7 @@
 #include "textconfigurator.h"
 #include "kfontchooser.h"
 #include "kspellhighlighter.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QBoxLayout>
 #include <QFontDatabase>

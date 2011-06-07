@@ -36,8 +36,8 @@
 #include "ffmpegplugin.h"
 
 // Tupi Framework
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 #include "kffmpegmoviegenerator.h"
 
 #include <QImage>
@@ -118,7 +118,7 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
          if (!generator->movieHeaderOk()) {
              errorMsg = generator->getErrorMsg();
              #ifdef K_DEBUG
-                    kError() << "FFMpegPlugin::exportToFormat() - FATAL : can't create video";
+                    tError() << "FFMpegPlugin::exportToFormat() - FATAL : can't create video";
              #endif
              delete generator;
              return false;

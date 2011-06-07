@@ -486,6 +486,11 @@ void Tweener::applyTween()
                                                                        k->startPoint, KTProjectRequest::Select, "1");
         emit requested(&request);
     }
+
+    if (!k->scene->scene()->tweenExists(name, KTItemTweener::Compound))
+        tFatal() << "Tweener::applyTween() - Tween " << name << " is NEW!!!"; 
+    else
+        tFatal() << "Tweener::applyTween() - Tween " << name << " is NOT NEW!!!";
   
     if (!k->scene->scene()->tweenExists(name, KTItemTweener::Compound)) {
 
@@ -504,6 +509,12 @@ void Tweener::applyTween()
                          || qgraphicsitem_cast<KTLineItem *>(item) || qgraphicsitem_cast<KTRectItem *>(item))
                          point = item->pos();
                  }
+
+                 tFatal() << "Tweener::applyTween() - Point 1: [" << point.x() << ", " << point.y() << "]";
+                 QDomDocument dom;
+                 dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+                 tFatal() << "";
+                 tFatal() << "Tweener::applyTween() - " << dom.toString();
 
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
@@ -561,6 +572,10 @@ void Tweener::applyTween()
                  if (k->startPoint != k->currentTween->startFrame()) {
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+
+                     tFatal() << "Tweener::applyTween() - Point 2: [" << point.x() << ", " << point.y() << "]";
+                     tFatal() << "";
+                     tFatal() << "Tweener::applyTween() - " << dom.toString();
 
                      KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), 
                                                                                     k->scene->currentLayerIndex(), 
@@ -913,7 +928,5 @@ void Tweener::tweenListMode()
    k->editMode = TweenerPanel::TweenList;
    disableSelection();
 }
-
-//
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

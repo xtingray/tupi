@@ -35,7 +35,7 @@
 
 #include "buttonspanel.h"
 #include "kimagebutton.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QHBoxLayout>
 #include <QBoxLayout>

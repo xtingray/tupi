@@ -36,7 +36,7 @@
 #include "settings.h"
 #include "kradiobuttongroup.h"
 #include "kimagebutton.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"

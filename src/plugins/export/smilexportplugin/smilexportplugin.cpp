@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include <QImage>
 #include <QPainter>

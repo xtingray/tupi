@@ -36,7 +36,7 @@
 #include "tweenmanager.h"
 #include "kimagebutton.h"
 #include "kosd.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QHBoxLayout>
 #include <QBoxLayout>

@@ -37,7 +37,7 @@
 #include "ktgraphicobject.h"
 
 // Tupi Framework 
-#include "kdebug.h"
+#include "tdebug.h"
 
 /**
  * This class handles the methods required to manipulate a set of nodes.

@@ -42,7 +42,7 @@
 #include "kosd.h"
 #include "kradiobuttongroup.h"
 #include "kimagebutton.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QLabel>
 #include <QLineEdit>

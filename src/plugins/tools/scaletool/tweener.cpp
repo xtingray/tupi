@@ -43,7 +43,7 @@
 #include <QGraphicsView>
 #include <QDomDocument>
 
-#include "kglobal.h"
+#include "tglobal.h"
 #include "tdebug.h"
 #include "taction.h"
 #include "kosd.h"

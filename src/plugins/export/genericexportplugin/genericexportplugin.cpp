@@ -35,8 +35,8 @@
 
 #include "genericexportplugin.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include <QImage>
 #include <QPainter>

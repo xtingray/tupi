@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "spinboxdelegate.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QModelIndex>
 
