@@ -36,7 +36,7 @@
 #include "ktlibrary.h"
 #include "ktproject.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTLibrary::KTLibrary(const QString &id, KTProject *parent) : KTLibraryFolder(id, parent)
 {

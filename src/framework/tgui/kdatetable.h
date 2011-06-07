@@ -38,7 +38,7 @@
 
 #include <QTableWidget>
 #include <QDate>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

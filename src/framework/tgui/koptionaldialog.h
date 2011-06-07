@@ -40,7 +40,7 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QHBoxLayout>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if english

@@ -42,7 +42,7 @@
 #include <QMenu>
 #include <QPolygonF>
 #include <QFrame>
-#include "kglobal.h"
+#include "tglobal.h"
 
 #define UNITCOUNT 5
 

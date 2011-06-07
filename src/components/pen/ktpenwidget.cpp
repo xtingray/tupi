@@ -34,9 +34,9 @@
  ***************************************************************************/
 
 #include "ktpenwidget.h"
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 #include <QListWidget>
 
@@ -60,8 +60,8 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
 {
     setWindowTitle(tr("Pen Properties"));
 
-    KCONFIG->beginGroup("PenParameters");
-    int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
+    TCONFIG->beginGroup("PenParameters");
+    int thicknessValue = TCONFIG->value("Thickness", -1).toInt();
 
     if (thicknessValue <= 0)
         thicknessValue = 3;
@@ -155,8 +155,8 @@ void KTPenWidget::setThickness(int value)
         k->pen.setWidth(value);
         updatePenParams();
 
-        KCONFIG->beginGroup("PenParameters");
-        KCONFIG->setValue("Thickness", value);
+        TCONFIG->beginGroup("PenParameters");
+        TCONFIG->setValue("Thickness", value);
 
         emitPenChanged();
     }

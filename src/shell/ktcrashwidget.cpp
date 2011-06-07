@@ -48,9 +48,9 @@
 #include "ktcrashwidget.h"
 #include "ktcrashhandler.h"
 
-#include "kglobal.h"
-#include "kconfig.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tconfig.h"
+#include "tdebug.h"
 
 #include <unistd.h>
 
@@ -77,8 +77,8 @@ TextArea::~ TextArea()
 void TextArea::setSource(const QUrl &name)
 {
     if (name.scheme() == "http") {
-        KCONFIG->beginGroup("General");
-        QString browser = KCONFIG->value("Browser").toString();
+        TCONFIG->beginGroup("General");
+        QString browser = TCONFIG->value("Browser").toString();
         if (!browser.isEmpty())
             QProcess::startDetached(browser, QStringList() << name.toString());
     } else {
@@ -151,7 +151,7 @@ void KTCrashWidget::setPid(int pid)
 void KTCrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
 {
     #ifdef K_DEBUG
-        K_FUNCINFO << execInfo << " " << backtrace;
+        T_FUNCINFO << execInfo << " " << backtrace;
     #endif
 
     QWidget *btPage = new QWidget;

@@ -39,7 +39,7 @@
 
 #include "ktitemtweener.h"
 #include "kosd.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QLabel>
 #include <QBoxLayout>
@@ -226,8 +226,8 @@ void Configurator::addTween(const QString &name)
     k->mode = TweenerPanel::Add;
     k->state = Configurator::TweenSettings;
 
-    kFatal() << "Configurator::addTween() - framesTotal: " << k->framesTotal;
-    kFatal() << "Configurator::addTween() - currentFrame: " << k->currentFrame;
+    tFatal() << "Configurator::addTween() - framesTotal: " << k->framesTotal;
+    tFatal() << "Configurator::addTween() - currentFrame: " << k->currentFrame;
 
     k->tweenList->setParameters(name, k->framesTotal, k->currentFrame);
     activeTweenerPanel(true);
@@ -246,7 +246,7 @@ void Configurator::editTween()
     k->tweenList->setParameters(k->currentTween);
     activeTweenerPanel(true);
 
-    kFatal() << "Configurator::editTween() - Calling for Edition order!!!";
+    tFatal() << "Configurator::editTween() - Calling for Edition order!!!";
 
     emit setMode(k->mode);
 }

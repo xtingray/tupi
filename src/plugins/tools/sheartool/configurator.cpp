@@ -39,7 +39,7 @@
 
 #include "ktitemtweener.h"
 #include "kosd.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QLabel>
 #include <QBoxLayout>

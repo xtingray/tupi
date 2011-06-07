@@ -39,7 +39,7 @@
 #include <qdom.h>
 #include <qmap.h>
 #include <qstringlist.h>
-#include "kglobal.h"
+#include "tglobal.h"
 
 typedef QMap<QString, QString> ThemeKey;
 

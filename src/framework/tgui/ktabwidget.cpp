@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktabwidget.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QWheelEvent>
 #include <QTabBar>

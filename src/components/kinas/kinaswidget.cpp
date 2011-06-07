@@ -34,11 +34,11 @@
  ***************************************************************************/
 
 #include "kinaswidget.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
-    KINIT;
+    TINIT;
 
     setWindowTitle(tr("Tupi Script"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/color_palette.png"));
@@ -60,7 +60,7 @@ KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 
 KinasWidget::~KinasWidget()
 {
-    KEND;
+    TEND;
 }
 
 void KinasWidget::addEditor(const QString &title)

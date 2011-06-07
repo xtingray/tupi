@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,28 +33,24 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KGLOBAL_H
-#define KGLOBAL_H
+#include "tpushbutton.h"
 
-#if defined(QT_SHARED) || defined(QT_PLUGIN)
-# define K_GUI_EXPORT Q_GUI_EXPORT
-# define K_CORE_EXPORT Q_DECL_EXPORT
-# define K_SOUND_EXPORT Q_DECL_EXPORT
-#else
-# define K_GUI_EXPORT
-# define K_CORE_EXPORT
-# define K_SOUND_EXPORT
-#endif
+#include <QPolygon>
+#include <QPainter>
 
-#include "kapplicationproperties.h"
+TPushButton::TPushButton(QWidget *parent, const QString &name, int column, int row) : QPushButton(parent)
+{
+    setText(name);
+    m_column = column;
+    m_row = row;
+    connect(this, SIGNAL(clicked()), this, SLOT(setCoords()));
+}
 
-#define SHARE_DIR kAppProp->shareDir()
-#define DATA_DIR kAppProp->dataDir()
-#define THEME_DIR kAppProp->themeDir()
-#define HOME_DIR kAppProp->homeDir()
-#define CONFIG_DIR kAppProp->configDir()
-#define PLUGINS_DIR kAppProp->pluginDir()
+TPushButton::~TPushButton()
+{
+}
 
-#define CACHE_DIR kAppProp->cacheDir()
-
-#endif
+void TPushButton::setCoords()
+{
+    emit clicked(m_column, m_row);
+}

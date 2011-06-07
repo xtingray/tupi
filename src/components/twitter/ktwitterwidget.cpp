@@ -36,8 +36,8 @@
 #include "ktwitterwidget.h"
 #include "ktwitter.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

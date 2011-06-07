@@ -43,12 +43,12 @@
 
 #include "ktprojectresponse.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -74,7 +74,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
         /* 
         if (!name.isEmpty()) {
             #ifdef K_DEBUG
-                kDebug("items") << name;
+                tDebug("items") << name;
             #endif
             frame->setFrameName(name);
         } else {
@@ -180,7 +180,7 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
             return true;
         } else {
             #ifdef K_DEBUG
-                   kWarning() << "KTCommandExecutor::moveFrame() - Failed moving frame";
+                   tWarning() << "KTCommandExecutor::moveFrame() - Failed moving frame";
             #endif
             return false;
         }
@@ -208,7 +208,7 @@ bool KTCommandExecutor::exchangeFrame(KTFrameResponse *response)
             return true;
         } else {
             #ifdef K_DEBUG
-                   kWarning() << "Failed moving frame";
+                   tWarning() << "Failed moving frame";
             #endif
             return false;
         }
@@ -250,7 +250,7 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     int scenePos = response->sceneIndex();
@@ -290,7 +290,7 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     int scenePos = response->sceneIndex();
@@ -378,7 +378,7 @@ bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
 bool KTCommandExecutor::pasteFrame(KTFrameResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     int scenePos = response->sceneIndex();

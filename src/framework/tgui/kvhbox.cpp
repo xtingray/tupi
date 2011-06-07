@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kvhbox.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QApplication>
 #include <QVBoxLayout>
@@ -87,7 +87,7 @@ void KVHBox::moveWidgetUp(QWidget *widget)
         m_pLayout->removeWidget(widget);
         m_pLayout->insertWidget(position-1, widget);
     } else {
-        kError() << "The widget isn't in the layout" << endl;
+        tError() << "The widget isn't in the layout" << endl;
     }
 }
 

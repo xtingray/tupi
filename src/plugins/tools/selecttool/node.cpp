@@ -42,7 +42,7 @@
 #include <QApplication>
 #include <QCursor>
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include "nodemanager.h"
 #include "ktgraphicalgorithm.h"
 #include "ktgraphicobject.h"
@@ -158,7 +158,7 @@ QRectF Node::boundingRect() const
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedChange) {
-        K_FUNCINFO;
+        T_FUNCINFO;
         setVisible(true);
         
         if (value.toBool())
@@ -172,7 +172,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    K_FUNCINFO;
+    T_FUNCINFO;
     // update();
     k->manager->setPress(true);
     
@@ -189,7 +189,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    K_FUNCINFO;
+    T_FUNCINFO;
     // update();
     QGraphicsItem::mouseReleaseEvent(event);
     k->parent->setSelected(true);
@@ -283,14 +283,14 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * e)
 {
-    K_FUNCINFO;
+    T_FUNCINFO;
     // update();
 
     //if (!m_parent->isSelected())
     //k->parent->setSelected(true);
     //k->parent->setFocus(Qt::MouseFocusReason);
 
-    kFatal() << "Node::mouseDoubleClickEvent() - Changing mode!";
+    tFatal() << "Node::mouseDoubleClickEvent() - Changing mode!";
     k->manager->toggleAction();
 
     //e->setAccepted(false);

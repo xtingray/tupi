@@ -37,7 +37,7 @@
 #include "ktproject.h"
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {

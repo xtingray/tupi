@@ -38,7 +38,7 @@
 
 #include <QString>
 #include <QStringList>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if english

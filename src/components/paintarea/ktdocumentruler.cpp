@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktdocumentruler.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <iostream>
 using namespace std;

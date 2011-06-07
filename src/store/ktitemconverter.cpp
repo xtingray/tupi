@@ -41,7 +41,7 @@
 #include "ktproxyitem.h"
 #include "ktitemgroup.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QBrush>
 #include <QPen>
@@ -124,7 +124,7 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
         case KTItemGroup::Type:
         {
             #ifdef K_DEBUG
-                kWarning() << "KTItemConverter::convertToPath no support groups";
+                tWarning() << "KTItemConverter::convertToPath no support groups";
             #endif
             delete path;
             return 0;
@@ -134,7 +134,7 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
         default:
         {
             #ifdef K_DEBUG
-                kWarning() << "KTItemConverter::convertToPath use default";
+                tWarning() << "KTItemConverter::convertToPath use default";
             #endif
             ppath = item->shape(); // TODO
         }

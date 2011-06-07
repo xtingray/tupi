@@ -47,7 +47,7 @@
 #include "ktanimationrenderer.h"
 #include "ktsoundlayer.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTAnimationArea::Private
 {
@@ -151,7 +151,7 @@ void KTAnimationArea::paintEvent(QPaintEvent *)
 void KTAnimationArea::play()
 {
    #ifdef K_DEBUG
-          kDebug("camera") << "KTAnimationArea::play() - Playing at " << k->fps << " FPS";
+          tDebug("camera") << "KTAnimationArea::play() - Playing at " << k->fps << " FPS";
    #endif
 
    if (k->playBackTimer->isActive()) 
@@ -175,7 +175,7 @@ void KTAnimationArea::play()
 void KTAnimationArea::playBack()
 {
    #ifdef K_DEBUG
-          kDebug("camera") << "Playing back!";
+          tDebug("camera") << "Playing back!";
    #endif
 
    if (k->timer->isActive())
@@ -194,7 +194,7 @@ void KTAnimationArea::playBack()
 void KTAnimationArea::stop()
 {
     #ifdef K_DEBUG
-           kDebug("camera") << "Stopping";
+           tDebug("camera") << "Stopping";
     #endif
    
     if (k->timer->isActive())
@@ -280,7 +280,7 @@ void KTAnimationArea::layerResponse(KTLayerResponse *)
 void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("animation");
+           T_FUNCINFOX("animation");
     #endif
 
     switch (event->action()) {

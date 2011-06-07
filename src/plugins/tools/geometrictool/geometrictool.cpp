@@ -41,8 +41,8 @@
 #include <QPaintDevice>
 #include <QGraphicsView>
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
@@ -89,19 +89,19 @@ void GeometricTool::init(KTGraphicsScene *scene)
 
 void GeometricTool::setupActions()
 {
-    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/square.png"), tr("Rectangle"), this);
+    TAction *action1 = new TAction(QIcon(THEME_DIR + "icons/square.png"), tr("Rectangle"), this);
     action1->setShortcut(QKeySequence(tr("R")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/square.png"));
     
     m_actions.insert( tr("Rectangle"), action1);
     
-    KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/ellipse.png"), tr("Ellipse"), this);
+    TAction *action2 = new TAction(QIcon(THEME_DIR + "icons/ellipse.png"), tr("Ellipse"), this);
     action2->setShortcut(QKeySequence(tr("C")));
     action2->setCursor(QCursor(THEME_DIR + "cursors/circle.png"));
     
     m_actions.insert(tr("Ellipse"), action2);
     
-    KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/line.png"), tr("Line"), this);
+    TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/line.png"), tr("Line"), this);
     action3->setShortcut(QKeySequence(tr("L")));
     action3->setCursor(QCursor(THEME_DIR + "cursors/line.png"));
 
@@ -275,7 +275,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     emit requested(&event);
 }
 
-QMap<QString, KAction *> GeometricTool::actions() const
+QMap<QString, TAction *> GeometricTool::actions() const
 {
     return m_actions;
 }

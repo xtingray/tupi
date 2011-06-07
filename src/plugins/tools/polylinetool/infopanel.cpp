@@ -37,12 +37,12 @@
 #include <QBoxLayout>
 #include <QTextEdit>
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {
-    KINIT;
+    TINIT;
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -62,6 +62,6 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
 InfoPanel::~InfoPanel()
 {
-    KEND;
+    TEND;
 }
 

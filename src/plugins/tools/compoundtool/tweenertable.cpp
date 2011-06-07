@@ -34,9 +34,9 @@
  ***************************************************************************/
 
 #include "tweenertable.h"
-#include "kpushbutton.h"
+#include "tpushbutton.h"
 #include "kseparator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QBoxLayout>
 #include <QCheckBox>
@@ -45,7 +45,7 @@
 struct TweenerTable::Private
 {
     QList<QCheckBox*> *checkList;
-    QList<KPushButton*> *buttonList;
+    QList<TPushButton*> *buttonList;
 };
 
 TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
@@ -57,7 +57,7 @@ TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
     labels << tr("Position") << tr("Rotation") << tr("Scale") << tr("Shear") << tr("Opacity") << tr("Coloring"); 
 
     k->checkList = new QList<QCheckBox*>();
-    k->buttonList = new QList<KPushButton*>();
+    k->buttonList = new QList<TPushButton*>();
 
     innerLayout->addWidget(new KSeparator(Qt::Horizontal));
 
@@ -68,7 +68,7 @@ TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
          itemLayout->setSpacing(5);
 
          k->checkList->append(new QCheckBox(this));
-         k->buttonList->append(new KPushButton(this, labels.at(i), 1, i));
+         k->buttonList->append(new TPushButton(this, labels.at(i), 1, i));
 
          itemLayout->addWidget(k->checkList->at(i));
          connect(k->checkList->at(i), SIGNAL(stateChanged(int)), this, SLOT(enableTween(int)));
@@ -92,7 +92,7 @@ void TweenerTable::showTweenSettings(int column, int row)
 {
     Q_UNUSED(column);
 
-    kFatal() << "TweenerTable::updatePath() - Row: " << row;
+    tFatal() << "TweenerTable::updatePath() - Row: " << row;
     emit callTweenerSettings(row);
 }
 

@@ -40,7 +40,7 @@
 #include <QFile>
 
 #include "kcore/kalgorithm.h"
-#include "kcore/kdebug.h"
+#include "kcore/tdebug.h"
 
 KGstEngine *KGstEngine::s_instance = 0;
 
@@ -242,7 +242,7 @@ void KGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 
     m_players.remove(playInfo->id);
 
-    kDebug() << "UUU: " << m_players.count();
+    tDebug() << "UUU: " << m_players.count();
 
     if (playInfo->player != 0) {
         gst_element_set_state( playInfo->player, GST_STATE_NULL );

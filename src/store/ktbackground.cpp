@@ -36,7 +36,7 @@
 #include "ktbackground.h"
 #include "ktserializer.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTBackground::KTBackground(KTScene *parent)
     : QObject(parent)

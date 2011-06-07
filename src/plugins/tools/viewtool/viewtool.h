@@ -64,7 +64,7 @@ class ViewTool: public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 
-        virtual QMap<QString, KAction *> actions() const;
+        virtual QMap<QString, TAction *> actions() const;
         int toolType() const;
         
         virtual QWidget *configurator();
@@ -76,7 +76,7 @@ class ViewTool: public KTToolPlugin
         void setupActions();
         
     private:
-        QMap<QString, KAction *> m_actions;
+        QMap<QString, TAction *> m_actions;
         QGraphicsRectItem *m_rect;
         bool added;
         QPointF firstPoint; 

@@ -38,7 +38,7 @@
 
 #include <QTableWidget>
 #include <QMap>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if spanish

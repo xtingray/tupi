@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktpaletteparser.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTPaletteParser::Private
 {
@@ -54,7 +54,7 @@ struct KTPaletteParser::Private
 
 KTPaletteParser::KTPaletteParser(): KXmlParserBase(), k(new Private)
 {
-     // KINIT;
+     // TINIT;
      k->paletteName = "";
      k->isEditable = false;
      k->gradient = 0;
@@ -64,7 +64,7 @@ KTPaletteParser::KTPaletteParser(): KXmlParserBase(), k(new Private)
 KTPaletteParser::~KTPaletteParser()
 {
      delete k;
-     //	KEND;
+     //	TEND;
 }
 
 bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
@@ -84,7 +84,7 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
                        k->brushes << c;
                    } else {
                     #ifdef K_DEBUG
-		           kError() << "Invalid Color";
+		           tError() << "Invalid Color";
                     #endif
                    }
         } else if (tag == "Gradient") {
@@ -121,7 +121,7 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
                            default:
                              {
                                #ifdef K_DEBUG
-                                      kFatal() << "No gradient type: " << type;
+                                      tFatal() << "No gradient type: " << type;
                                #endif
                              }
                            break;

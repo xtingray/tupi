@@ -35,7 +35,7 @@
 
 #include "kconfigurationdialog.h"
 #include "kseparator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -48,13 +48,13 @@
 
 ////////////////
 
-struct KConfigurationDialog::Private
+struct TConfigurationDialog::Private
 {
     QListWidget *list;
     QStackedWidget *pageArea;
 };
 
-KConfigurationDialog::KConfigurationDialog(QWidget *parent) : QDialog(parent), k(new Private)
+TConfigurationDialog::TConfigurationDialog(QWidget *parent) : QDialog(parent), k(new Private)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     
@@ -89,12 +89,12 @@ KConfigurationDialog::KConfigurationDialog(QWidget *parent) : QDialog(parent), k
     layout->addWidget(buttonBox);
 }
 
-KConfigurationDialog::~KConfigurationDialog()
+TConfigurationDialog::~TConfigurationDialog()
 {
     delete k;
 }
 
-void KConfigurationDialog::addPage(QWidget *page, const QString &label, const QIcon &icon)
+void TConfigurationDialog::addPage(QWidget *page, const QString &label, const QIcon &icon)
 {
     QListWidgetItem *pageItem = new QListWidgetItem(k->list);
     pageItem->setIcon(icon);
@@ -105,26 +105,26 @@ void KConfigurationDialog::addPage(QWidget *page, const QString &label, const QI
     k->pageArea->addWidget(page);
 }
 
-QWidget *KConfigurationDialog::currentPage() const
+QWidget *TConfigurationDialog::currentPage() const
 {
     return k->pageArea->currentWidget();
 }
 
-void KConfigurationDialog::ok()
+void TConfigurationDialog::ok()
 {
     accept();
 }
 
-void KConfigurationDialog::cancel()
+void TConfigurationDialog::cancel()
 {
     reject();
 }
 
-void KConfigurationDialog::apply()
+void TConfigurationDialog::apply()
 {
 }
 
-void KConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *prev)
+void TConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *prev)
 {
     if (!curr)
         curr = prev;
@@ -132,7 +132,7 @@ void KConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *pr
     k->pageArea->setCurrentIndex(k->list->row(curr));
 }
 
-void KConfigurationDialog::setCurrentItem(int row)
+void TConfigurationDialog::setCurrentItem(int row)
 {
    k->list->setCurrentRow(row);
 }

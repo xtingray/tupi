@@ -46,9 +46,9 @@
 // #include "wizard2.xpm"
 
 // Tupi Framework 
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kimageeffect.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 ConfigWizard::ConfigWizard() : KWizard(0)
 {

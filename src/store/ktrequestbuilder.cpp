@@ -37,7 +37,7 @@
 
 #include <QDomDocument>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
@@ -265,7 +265,7 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
             default:
                  {
                     #ifdef K_DEBUG
-                           kWarning() << "wOw! Unknown response! O_o";
+                           tWarning() << "wOw! Unknown response! O_o";
                     #endif
                  }
     }

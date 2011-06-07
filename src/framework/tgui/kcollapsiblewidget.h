@@ -39,7 +39,7 @@
 #include <QScrollArea>
 #include <QLabel>
 #include <QDebug>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QScrollArea;
 class QTextDocument;

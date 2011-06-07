@@ -42,7 +42,7 @@
 
 #include <QTableWidget>
 #include <QStyleOptionViewItem>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class KCellViewItemDelegate;
 

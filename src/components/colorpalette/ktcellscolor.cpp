@@ -35,7 +35,7 @@
 
 
 #include "ktcellscolor.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "ktpalettedocument.h"
 
 #include <QFile>

@@ -35,12 +35,12 @@
 
 #include "ktlibrarywidget.h"
 
-#include "kglobal.h"
-#include "kapplication.h"
+#include "tglobal.h"
+#include "tapplication.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include "koptionaldialog.h"
-#include "kconfig.h"
+#include "tconfig.h"
 
 #include <QApplication>
 #include <QGroupBox>
@@ -110,7 +110,7 @@ struct KTLibraryWidget::Private
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
     k->childCount = 0;
     k->renaming = false;
@@ -192,7 +192,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 KTLibraryWidget::~KTLibraryWidget()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
     delete k;
 }
@@ -225,7 +225,7 @@ void KTLibraryWidget::activeRefresh(QTreeWidgetItem *item)
 void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     RETURN_IF_NOT_LIBRARY;
@@ -242,7 +242,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
 
         if (!object) {
             #ifdef K_DEBUG
-                   kFatal() << "KTLibraryWidget::previewItem() - Cannot find the object: " << item->text(1) + "." + item->text(2).toLower();
+                   tFatal() << "KTLibraryWidget::previewItem() - Cannot find the object: " << item->text(1) + "." + item->text(2).toLower();
             #endif
             QGraphicsTextItem *msg = new QGraphicsTextItem(tr("No preview available"));
             k->display->render(static_cast<QGraphicsItem *>(msg));
@@ -284,7 +284,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
                 default:
                    {
                      #ifdef K_DEBUG
-                            kDebug("library") << "Unknown symbol id: " << object->type();
+                            tDebug("library") << "Unknown symbol id: " << object->type();
                      #endif
                    }
                    break;
@@ -818,7 +818,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 
                  } else {
                      #ifdef K_DEBUG
-                            kFatal() << "KTLibraryWidget::libraryResponse() - No object found: " << key;
+                            tFatal() << "KTLibraryWidget::libraryResponse() - No object found: " << key;
                      #endif
                  }
               }
@@ -827,7 +827,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             case KTProjectRequest::AddSymbolToProject:
               {
                  #ifdef K_DEBUG
-                        kDebug() << "*** KTLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
+                        tDebug() << "*** KTLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
                  #endif
               }
             break;
@@ -863,7 +863,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             case KTProjectRequest::Remove:
               {
                  #ifdef K_DEBUG
-                        kDebug() << "*** KTLibraryWidget::libraryResponse -> Remove : No action taken";
+                        tDebug() << "*** KTLibraryWidget::libraryResponse -> Remove : No action taken";
                  #endif
               }
             break;
@@ -871,7 +871,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             default:
               {
                  #ifdef K_DEBUG
-                        kDebug() << "*** Project Code: " << response->action();
+                        tDebug() << "*** Project Code: " << response->action();
                         qWarning("ktlibrarywidget.cpp IMPLEMENT ME");
                  #endif
               }

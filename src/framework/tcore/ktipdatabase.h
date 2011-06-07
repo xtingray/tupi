@@ -39,7 +39,7 @@
 #include <QWidget>
 #include <QString>
 #include <QList>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @struct KTip

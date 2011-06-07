@@ -42,9 +42,9 @@
 #include <QTimer>
 #include <cmath>
 
-#include "kaction.h"
-#include "kdebug.h"
-#include "kglobal.h"
+#include "taction.h"
+#include "tdebug.h"
+#include "tglobal.h"
 #include "kalgorithm.h"
 
 #include "ktgraphicalgorithm.h"
@@ -64,7 +64,7 @@
 
 struct Select::Private
 {
-    QMap<QString, KAction *> actions;
+    QMap<QString, TAction *> actions;
     QList<NodeManager*> nodeManagers;
     KTGraphicsScene *scene;
     bool selectionFlag;
@@ -83,7 +83,7 @@ Select::~Select()
 void Select::init(KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("tools");
+           T_FUNCINFOX("tools");
     #endif
 
     qDeleteAll(k->nodeManagers);
@@ -99,8 +99,8 @@ void Select::init(KTGraphicsScene *scene)
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
                       QDomElement root = dom.documentElement();
-                      kFatal() << "Select::init() - XML: ";
-                      kFatal() << dom.toString();
+                      tFatal() << "Select::init() - XML: ";
+                      tFatal() << dom.toString();
                       */
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
@@ -238,7 +238,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
-                                kDebug("selection") << "position is " << position; 
+                                tDebug("selection") << "position is " << position; 
                          #endif
                      }
                  }
@@ -248,13 +248,13 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
 void Select::setupActions()
 {
-    KAction *select = new KAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
+    TAction *select = new TAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("O")));
 
     k->actions.insert(tr("Select"), select);
 }
 
-QMap<QString, KAction *> Select::actions() const
+QMap<QString, TAction *> Select::actions() const
 {
     return k->actions;
 }
@@ -277,7 +277,7 @@ QWidget *Select::configurator()
 void Select::aboutToChangeScene(KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("tools");
+           T_FUNCINFOX("tools");
     #endif
 
     init(scene);
@@ -286,7 +286,7 @@ void Select::aboutToChangeScene(KTGraphicsScene *scene)
 void Select::aboutToChangeTool()
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("tools");
+           T_FUNCINFOX("tools");
     #endif
 
     qDeleteAll(k->nodeManagers);
@@ -304,7 +304,7 @@ void Select::aboutToChangeTool()
 void Select::itemResponse(const KTItemResponse *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("tools");
+           T_FUNCINFOX("tools");
     #endif
 
     QGraphicsItem *item = 0;
@@ -352,7 +352,7 @@ void Select::itemResponse(const KTItemResponse *event)
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "Select::itemResponse - Project does not exist";
+               tFatal() << "Select::itemResponse - Project does not exist";
         #endif
         return;
     }
@@ -375,7 +375,7 @@ void Select::itemResponse(const KTItemResponse *event)
 
                  } else {
                      #ifdef K_DEBUG
-                            kFatal() << "Select::itemResponse - No item found";
+                            tFatal() << "Select::itemResponse - No item found";
                      #endif
                  }
             }

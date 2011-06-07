@@ -38,7 +38,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KRadioButtonGroup::KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent) : QGroupBox(title, parent), m_orientation(orientation)
 {

@@ -49,7 +49,7 @@
 
 #include <kcollapsiblewidget.h>
 
-#include <kdebug.h>
+#include <tdebug.h>
 
 /******************************************************************
  * Helper classes

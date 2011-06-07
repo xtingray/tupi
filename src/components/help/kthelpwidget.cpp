@@ -46,8 +46,8 @@
 #include <QHeaderView>
 
 // Tupi Framework 
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {

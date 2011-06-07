@@ -44,7 +44,7 @@
 #include <QHeaderView>
 #include <QTimer>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 ////////// KCellViewItemDelegate ///////////
 

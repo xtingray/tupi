@@ -43,7 +43,7 @@ class KVHBox;
 #include <QBoxLayout>
 #include <QEvent>
 #include <QMouseEvent>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado

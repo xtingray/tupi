@@ -59,7 +59,7 @@ class TextTool : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual bool itemPressed(QGraphicsItem *item);
-        virtual QMap<QString, KAction *>actions() const;
+        virtual QMap<QString, TAction *>actions() const;
         int toolType() const;
         virtual QWidget *configurator();
         void aboutToChangeScene(KTGraphicsScene *scene);
@@ -73,7 +73,7 @@ class TextTool : public KTToolPlugin
         KTTextItem *m_item;
         TextConfigurator *m_configurator;
         QPoint m_position;
-        QMap<QString, KAction *> m_actions;
+        QMap<QString, TAction *> m_actions;
 };
 
 #endif

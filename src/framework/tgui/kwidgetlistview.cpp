@@ -37,7 +37,7 @@
 #include "kwidgetlistview.h"
 #include <QHeaderView>
 #include <QResizeEvent>
-#include "kdebug.h"
+#include "tdebug.h"
 
 KWidgetListView::KWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 {

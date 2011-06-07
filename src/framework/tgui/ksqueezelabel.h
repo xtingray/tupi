@@ -37,7 +37,7 @@
 #define KSQUEEZELABEL_H
 
 #include <qlabel.h>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if english

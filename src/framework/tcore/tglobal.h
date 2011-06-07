@@ -33,60 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KCONFIG_H
-#define KCONFIG_H
+#ifndef TGLOBAL_H
+#define TGLOBAL_H
 
-#include <QObject>
-#include <QDir>
-#include <QHash>
-#include <QDomDocument>
-#include <QVariant>
+#if defined(QT_SHARED) || defined(QT_PLUGIN)
+# define K_GUI_EXPORT Q_GUI_EXPORT
+# define K_CORE_EXPORT Q_DECL_EXPORT
+# define K_SOUND_EXPORT Q_DECL_EXPORT
+#else
+# define K_GUI_EXPORT
+# define K_CORE_EXPORT
+# define K_SOUND_EXPORT
+#endif
 
-#include "kglobal.h"
+#include "kapplicationproperties.h"
 
-class KConfig;
+#define SHARE_DIR kAppProp->shareDir()
+#define DATA_DIR kAppProp->dataDir()
+#define THEME_DIR kAppProp->themeDir()
+#define HOME_DIR kAppProp->homeDir()
+#define CONFIG_DIR kAppProp->configDir()
+#define PLUGINS_DIR kAppProp->pluginDir()
 
-/**
- * @author David Cuadrado
- * this is a dom config handler
-*/
-
-class K_CORE_EXPORT KConfig : public QObject
-{
-    public:
-        ~KConfig();
-
-    protected:
-        explicit KConfig();
-        void init();
-
-    public:
-        void beginGroup(const QString & prefix);
-        void endGroup();
-
-        void setValue(const QString & key, const QVariant & value);
-
-        QVariant value(const QString & key, const QVariant & defaultValue = QVariant()) const;
-
-        static KConfig *instance();
-
-        bool firstTime();
-        bool isOk();
-        QDomDocument document();
-        QString currentGroup();
-
-        void sync();
-
-    private:
-        QDomElement find(const QDomElement &element, const QString &key) const;
-
-    private:
-        static KConfig *m_instance;
-
-        class Private;
-        Private * const k;
-};
-
-#define KCONFIG KConfig::instance()
+#define CACHE_DIR kAppProp->cacheDir()
 
 #endif

@@ -47,9 +47,9 @@
 #include "ktrequestbuilder.h"
 #include "ktlibraryobject.h"
 
-#include "kdebug.h"
-#include "kglobal.h"
-#include "kaction.h"
+#include "tdebug.h"
+#include "tglobal.h"
+#include "taction.h"
 
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
@@ -68,7 +68,7 @@ struct PolyLine::Private
     KNodeGroup *nodegroup;
     QPainterPath path;
     
-    QMap<QString, KAction *> actions;
+    QMap<QString, TAction *> actions;
     
     KTPathItem *item;
     KTGraphicsScene *scene;
@@ -117,7 +117,7 @@ QStringList PolyLine::keys() const
 void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     if (input->button() == Qt::RightButton) {
@@ -194,7 +194,7 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     Q_UNUSED(input);
@@ -233,7 +233,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
                    k->nodegroup->restoreItem();
                    emit requested(&event);
                } else {
-                   kDebug("selection") << "position is " << position; 
+                   tDebug("selection") << "position is " << position; 
                }
 
                k->nodegroup->clearChangesNodes();
@@ -243,7 +243,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 void PolyLine::itemResponse(const KTItemResponse *response)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     KTProject *project = k->scene->scene()->project();
@@ -275,7 +275,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 
     } else {
         #ifdef K_DEBUG
-               kFatal() << "PolyLine::itemResponse() - Project not exist";
+               tFatal() << "PolyLine::itemResponse() - Project not exist";
         #endif
     }
         
@@ -360,7 +360,7 @@ void PolyLine::endItem()
 void PolyLine::nodeChanged()
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     if (k->nodegroup) {
@@ -389,31 +389,31 @@ void PolyLine::nodeChanged()
                     emit requested(&event);
              } else {
                #ifdef K_DEBUG
-                      kFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
+                      tFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
                #endif
              }
         } else {
           #ifdef K_DEBUG
-                 kFatal() << "PolyLine::nodeChanged() -> ERROR: There are no changedNodes!";
+                 tFatal() << "PolyLine::nodeChanged() -> ERROR: There are no changedNodes!";
           #endif
         }
     } else {
       #ifdef K_DEBUG
-             kFatal() << "PolyLine::nodeChanged() -> ERROR: There's no nodegroup!";
+             tFatal() << "PolyLine::nodeChanged() -> ERROR: There's no nodegroup!";
       #endif
     }
 }
 
 void PolyLine::setupActions()
 {
-    KAction *pencil = new KAction(QIcon(THEME_DIR + "icons/polyline.png"), tr("PolyLine"), this);
+    TAction *pencil = new TAction(QIcon(THEME_DIR + "icons/polyline.png"), tr("PolyLine"), this);
     pencil->setShortcut(QKeySequence(tr("S")));
     pencil->setCursor(QCursor(THEME_DIR + "cursors/polyline.png"));
     
     k->actions.insert(tr("PolyLine"), pencil);
 }
 
-QMap<QString, KAction *> PolyLine::actions() const
+QMap<QString, TAction *> PolyLine::actions() const
 {
     return k->actions;
 }

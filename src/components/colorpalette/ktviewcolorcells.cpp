@@ -34,13 +34,13 @@
  ***************************************************************************/
 
 #include "ktviewcolorcells.h"
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 #include <QScrollArea>
 #include <QGroupBox>
 #include "kimagebutton.h"
 
-#include "kconfig.h"
+#include "tconfig.h"
 
 struct KTViewColorCells::Private
 {
@@ -69,8 +69,8 @@ KTViewColorCells::KTViewColorCells(QWidget *parent) : QFrame(parent), k(new Priv
 
 KTViewColorCells::~KTViewColorCells()
 {
-    KCONFIG->beginGroup("ColorPalette");
-    KCONFIG->setValue("LastPalette", k->chooserPalette->currentIndex());;
+    TCONFIG->beginGroup("ColorPalette");
+    TCONFIG->setValue("LastPalette", k->chooserPalette->currentIndex());;
 
     QDir brushesDir(CONFIG_DIR + "palettes");
 
@@ -78,7 +78,7 @@ KTViewColorCells::~KTViewColorCells()
         brushesDir.mkdir(brushesDir.path());
 
     #ifdef K_DEBUG
-           kDebug("palette") << brushesDir.path();
+           tDebug("palette") << brushesDir.path();
     #endif
 
     for (int i = 0; i < k->containerPalette->count(); i++) {
@@ -92,7 +92,7 @@ KTViewColorCells::~KTViewColorCells()
     delete k;
 	
     #ifdef K_DEBUG
-          KEND;
+          TEND;
     #endif
 }
 
@@ -133,8 +133,8 @@ void KTViewColorCells::setupForm()
 
     connect(k->chooserPalette, SIGNAL(activated(int )), k->containerPalette, SLOT(setCurrentIndex(int )));
 
-    KCONFIG->beginGroup("ColorPalette");
-    int lastIndex = KCONFIG->value("LastPalette").toInt();
+    TCONFIG->beginGroup("ColorPalette");
+    int lastIndex = TCONFIG->value("LastPalette").toInt();
 
     if (lastIndex > 0) {
         k->chooserPalette->setCurrentIndex(lastIndex);
@@ -148,7 +148,7 @@ void KTViewColorCells::setupForm()
 void KTViewColorCells::readPalettes(const QString &paletteDir)
 {
     #ifdef K_DEBUG
-           kDebug("palette") << "Reading palettes from: " << paletteDir;
+           tDebug("palette") << "Reading palettes from: " << paletteDir;
     #endif
     QDir dir(paletteDir);
 
@@ -174,7 +174,7 @@ void KTViewColorCells::readPaletteFile(const QString &file)
         addPalette(name,brushes,editable );
     } else {
         #ifdef K_DEBUG
-               kError() << "Error while parse palette file: " << file;
+               tError() << "Error while parse palette file: " << file;
         #endif
     }
 }
@@ -222,7 +222,7 @@ void KTViewColorCells::addPalette(KTCellsColor *palette)
 void KTViewColorCells::changeColor(QTableWidgetItem* item)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (item)

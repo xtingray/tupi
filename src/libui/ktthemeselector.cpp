@@ -46,13 +46,13 @@
 #include <QInputDialog>
 
 // Tupi Framework 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include "kseparator.h"
 
 #include "kcolorbutton.h"
-#include "kapplication.h"
+#include "tapplication.h"
 #include "kstylecombobox.h"
 
 /**
@@ -312,10 +312,10 @@ void KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem *item, int)
         
         if (! item->text(0).isEmpty()) {
             #ifdef K_DEBUG
-                K_FUNCINFO;
+                T_FUNCINFO;
             #endif
-            KCONFIG->beginGroup("General");
-            KCONFIG->setValue("ThemeFile", SHARE_DIR + "themes/" + item->text(0));
+            TCONFIG->beginGroup("General");
+            TCONFIG->setValue("ThemeFile", SHARE_DIR + "themes/" + item->text(0));
             m_lastFile = SHARE_DIR + "themes/" + item->text(0);
         }
     }

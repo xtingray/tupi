@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kcommandhistory.h"
-#include <kdebug.h>
+#include <tdebug.h>
 
 #include <QUndoStack>
 #include <QMenu>
@@ -95,8 +95,8 @@ void KCommandHistory::updateFromIndex(int idx)
 {
     qDebug("*** KCommandHistory::updateFromIndex");
     
-    kfDebug << idx << " == " << m_stack->count() << " == " << m_currentIndex;
-    kDebug() << m_stack->text(idx-1);
+    tfDebug << idx << " == " << m_stack->count() << " == " << m_currentIndex;
+    tDebug() << m_stack->text(idx-1);
     
     if (idx > m_stack->count()) {
         qDebug("*** Exiting...");
@@ -121,27 +121,27 @@ void KCommandHistory::updateFromIndex(int idx)
     } else if (idx > m_currentIndex) {
                // redo clicked
                qDebug("REDO");
-               kDebug() << idx << " " << m_currentIndex;
+               tDebug() << idx << " " << m_currentIndex;
         
                if (m_actions.contains(idx)) {
                    m_redoMenu->removeAction(m_actions[idx]);
                    m_undoMenu->addAction(m_actions[idx]);
                    m_undoMenu->menuAction()->setEnabled(true);
                } else {
-                   kError() << "Error!";
+                   tError() << "Error!";
                }
     } else if (idx < m_currentIndex) {
 
                // Undo clicked
                qDebug("UNDO");
-               kDebug() << idx << " " << m_currentIndex;
+               tDebug() << idx << " " << m_currentIndex;
         
                if (m_actions.contains(idx-1)) {
                    m_undoMenu->removeAction(m_actions[idx-1]);
                    m_redoMenu->addAction(m_actions[idx-1]);
                    m_redoMenu->menuAction()->setEnabled(true);
                } else {
-                   kError() << "Error!";
+                   tError() << "Error!";
                }
 
     }
@@ -156,7 +156,7 @@ void KCommandHistory::undoFromAction(QAction *a)
 
     for (int i = qMin(idx, m_currentIndex); i < qMax(idx, m_currentIndex); i++) {
         if (!m_stack->canUndo()) {
-            kError() << "Cannot undo!!!";
+            tError() << "Cannot undo!!!";
             break;
         }
         
@@ -190,7 +190,7 @@ void KCommandHistory::redoFromAction(QAction *a)
     for (int i = qMax(idx, m_currentIndex)-1; i >= qMin(idx, m_currentIndex)-1; i--) {
          SHOW_VAR(i);
          if (!m_stack->canRedo()) {
-             kError() << "Cannot redo!!!";
+             tError() << "Cannot redo!!!";
              break;
          }
         
@@ -220,13 +220,13 @@ void KCommandHistory::redoFromAction(QAction *a)
 
 void KCommandHistory::enableRedoMenu(bool e)
 {
-    K_FUNCINFO;
+    T_FUNCINFO;
     m_redoMenu->menuAction()->setEnabled(e);
 }
 
 void KCommandHistory::enableUndoMenu(bool e)
 {
-    K_FUNCINFO;
+    T_FUNCINFO;
     m_undoMenu->menuAction()->setEnabled(e);
 }
 

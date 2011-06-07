@@ -41,9 +41,9 @@
 #include <QPaintDevice>
 #include <QGraphicsView>
 
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
@@ -56,14 +56,14 @@
 
 ViewTool::ViewTool() : m_rect(0), m_scene(0), m_configurator(0)
 {
-    KINIT;
+    TINIT;
 
     setupActions();
 }
 
 ViewTool::~ViewTool()
 {
-    KEND;
+    TEND;
 }
 
 void ViewTool::init(KTGraphicsScene *scene)
@@ -84,13 +84,13 @@ QStringList ViewTool::keys() const
 
 void ViewTool::setupActions()
 {
-    KAction *zoomAction = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
+    TAction *zoomAction = new TAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
     zoomAction->setShortcut(QKeySequence(tr("Z")));
     zoomAction->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
     
     m_actions.insert(tr("Zoom"), zoomAction);
     
-    KAction *handAction = new KAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
+    TAction *handAction = new TAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
     handAction->setShortcut(QKeySequence(tr("H")));
     handAction->setCursor(QCursor(THEME_DIR + "cursors/hand.png"));
 
@@ -219,7 +219,7 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     }
 }
 
-QMap<QString, KAction *> ViewTool::actions() const
+QMap<QString, TAction *> ViewTool::actions() const
 {
     return m_actions;
 }
@@ -254,8 +254,8 @@ void ViewTool::aboutToChangeTool()
 void ViewTool::saveConfig()
 {
     if (m_configurator) {
-        KCONFIG->beginGroup("ZoomTool");
-        KCONFIG->setValue("zoomFactor", m_configurator->getFactor());
+        TCONFIG->beginGroup("ZoomTool");
+        TCONFIG->setValue("zoomFactor", m_configurator->getFactor());
     }
 }
 

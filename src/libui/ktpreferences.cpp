@@ -40,9 +40,9 @@
 #include "ktpreferences.h"
 #include "ktpaintareaconfig.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kapplication.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tapplication.h"
 #include "kformfactory.h"
 
 #include <QLabel>
@@ -84,27 +84,27 @@ KTPreferences::GeneralPage::GeneralPage()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     // m_renderType = Tupi::RenderType(0);
-    KCONFIG->beginGroup("General");
+    TCONFIG->beginGroup("General");
     
     m_home = new QLineEdit;
     
-    QString str = KCONFIG->value("Home").toString();
+    QString str = TCONFIG->value("Home").toString();
     if (!str.isEmpty())
         m_home->setText(str);
     
     m_repository = new QLineEdit;
-    str = KCONFIG->value("Cache").toString();
+    str = TCONFIG->value("Cache").toString();
     if (!str.isEmpty())
         m_repository->setText(str);
     
     m_browser = new QLineEdit;
-    str = KCONFIG->value("Browser").toString();
+    str = TCONFIG->value("Browser").toString();
     if (!str.isEmpty())
         m_browser->setText(str);
     else
         m_browser->setText("/usr/bin/firefox");
     
-    str = KCONFIG->value("RenderType").toString();
+    str = TCONFIG->value("RenderType").toString();
 
     /*
     m_renderType = new QComboBox();
@@ -116,11 +116,11 @@ KTPreferences::GeneralPage::GeneralPage()
         m_renderType->setCurrentIndex(str.toInt());
     */
     
-    bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
+    bool openLast = TCONFIG->value("OpenLastProject", true).toBool();
     m_openLastProject = new QCheckBox();
     m_openLastProject->setChecked(openLast);
 
-    autoSave = KCONFIG->value("AutoSave").toInt();
+    autoSave = TCONFIG->value("AutoSave").toInt();
 
     m_minutes = new QSpinBox(this);
     m_minutes->setMinimum(0);
@@ -141,27 +141,27 @@ KTPreferences::GeneralPage::~GeneralPage()
 
 void KTPreferences::GeneralPage::saveValues()
 {
-    KCONFIG->beginGroup("General");
+    TCONFIG->beginGroup("General");
     
     QString str = m_home->text();
     if (!str.isEmpty() && m_home->isModified())
-        KCONFIG->setValue("Home", str);
+        TCONFIG->setValue("Home", str);
     
     str = m_repository->text();
     if (!str.isEmpty() && m_repository->isModified())
-        KCONFIG->setValue("Cache", str);
+        TCONFIG->setValue("Cache", str);
     
     str = m_browser->text();
     if (!str.isEmpty() && m_browser->isModified())
-        KCONFIG->setValue("Browser", str);
+        TCONFIG->setValue("Browser", str);
 
     if (autoSaveUpdated())
-        KCONFIG->setValue("AutoSave", m_minutes->value()); 
+        TCONFIG->setValue("AutoSave", m_minutes->value()); 
 
-    //KCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
-    KCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
+    //TCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
+    TCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
 
-    KCONFIG->sync();
+    TCONFIG->sync();
 }
 
 bool KTPreferences::GeneralPage::autoSaveUpdated()
@@ -200,7 +200,7 @@ QFont KTPreferences::FontPage::currentFont() const
 
 //--------------- CONSTRUCTOR --------------------
 
-KTPreferences::KTPreferences(QWidget *parent) : KConfigurationDialog(parent)
+KTPreferences::KTPreferences(QWidget *parent) : TConfigurationDialog(parent)
 {
     setWindowTitle(tr("Application KTPreferences"));
     
@@ -230,7 +230,7 @@ KTPreferences::~KTPreferences()
 void KTPreferences::ok()
 {
     apply();
-    KConfigurationDialog::ok();
+    TConfigurationDialog::ok();
 }
 
 void KTPreferences::apply()

@@ -41,7 +41,7 @@
 #include <QMatrix>
 #include <QGraphicsItem>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTGraphicObject::Private
 {
@@ -57,7 +57,7 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 	: QObject(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->item = item;
@@ -71,7 +71,7 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 KTGraphicObject::~KTGraphicObject()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 
     if (k->item)

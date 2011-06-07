@@ -35,7 +35,7 @@
 
 #include "ktsvgitem.h"
 #include "ktserializer.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QSvgRenderer>
 #include <QFileInfo>
@@ -108,7 +108,7 @@ QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
     if (k->name.length() == 0) {
         #ifdef K_DEBUG
-               kError() << "KTFrame::fromXml() - ERROR: Object id is null!";
+               tError() << "KTFrame::fromXml() - ERROR: Object id is null!";
         #endif
     }
 

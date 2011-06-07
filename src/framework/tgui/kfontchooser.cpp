@@ -35,7 +35,7 @@
 
 #include "kfontchooser.h"
 #include "kformfactory.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QComboBox>
 #include <QHBoxLayout>

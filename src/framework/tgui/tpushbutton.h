@@ -33,24 +33,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kpushbutton.h"
+#ifndef TPUSHBUTTON_H
+#define TPUSHBUTTON_H
 
-#include <QPolygon>
-#include <QPainter>
+#include "tglobal.h"
+#include <QPushButton>
 
-KPushButton::KPushButton(QWidget *parent, const QString &name, int column, int row) : QPushButton(parent)
+/**
+ * @author Gustav Gonzalez 
+*/
+class K_GUI_EXPORT TPushButton : public QPushButton 
 {
-    setText(name);
-    m_column = column;
-    m_row = row;
-    connect(this, SIGNAL(clicked()), this, SLOT(setCoords()));
-}
+    Q_OBJECT
 
-KPushButton::~KPushButton()
-{
-}
+    public:
+        TPushButton(QWidget *parent = 0, const QString &name = QString(), int column = 0, int row = 0);
+        ~TPushButton();
 
-void KPushButton::setCoords()
-{
-    emit clicked(m_column, m_row);
-}
+    signals:
+        void clicked(int, int);
+        
+    private slots:
+        void setCoords();
+        
+    private:
+        int m_column;
+        int m_row;
+};
+
+#endif

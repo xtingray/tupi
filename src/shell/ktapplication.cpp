@@ -41,7 +41,7 @@
 
 // Tupi Framework 
 #include "kapplicationproperties.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 /**
  * Support Class for main.cpp
@@ -49,7 +49,7 @@
  * @author David Cuadrado
 */
 
-KTApplication::KTApplication(int &argc, char **argv) : KApplication(argc, argv)
+KTApplication::KTApplication(int &argc, char **argv) : TApplication(argc, argv)
 {
     setApplicationName("tupi");
 }
@@ -77,10 +77,10 @@ bool KTApplication::firstRun()
         kAppProp->setHomeDir(firstDialog->home());
         createCache(firstDialog->cache());
 
-        KCONFIG->beginGroup("General");
-        KCONFIG->setValue("Home", HOME_DIR);
-        KCONFIG->setValue("Cache", CACHE_DIR);
-        KCONFIG->sync();
+        TCONFIG->beginGroup("General");
+        TCONFIG->setValue("Home", HOME_DIR);
+        TCONFIG->setValue("Cache", CACHE_DIR);
+        TCONFIG->sync();
 
         delete firstDialog;
 
@@ -97,12 +97,12 @@ void KTApplication::createCache(const QString &cacheDir)
     QDir cache(cacheDir);
     if (! cache.exists()) {
         #ifdef K_DEBUG
-               kDebug() << tr("Initializing repository %1").arg(cacheDir);
+               tDebug() << tr("Initializing repository %1").arg(cacheDir);
         #endif
 
        if (! cache.mkdir(cacheDir)) {
            #ifdef K_DEBUG
-                  kError() << tr("Can not create the projects repository");
+                  tError() << tr("Can not create the projects repository");
            #endif
        }
     }

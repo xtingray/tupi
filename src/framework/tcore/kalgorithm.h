@@ -39,7 +39,7 @@
 #include <QString>
 #include <QColor>
 
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * Class containing generic useful algorithms about random values

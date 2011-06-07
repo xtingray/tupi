@@ -42,7 +42,7 @@
 #include <QScrollBar>
 #include <QHeaderView>
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kttlruler.h"
 //#include "ktprojectrequest.h"
 #include "ktprojectactionbar.h"
@@ -291,7 +291,7 @@ void KTFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetIte
             emit emitRequestChangeFrame(k->sceneIndex, verticalHeader()->visualIndex(this->row(item)), this->column(item));
             // emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
         else
-            kFatal() << "KTFramesTable::emitFrameSelected <- item exists but isn't used right now";
+            tFatal() << "KTFramesTable::emitFrameSelected <- item exists but isn't used right now";
     } else { 
         emit frameRequest(KTProjectActionBar::InsertFrame, currentColumn(), currentRow(), k->sceneIndex);
     }

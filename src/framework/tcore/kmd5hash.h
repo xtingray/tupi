@@ -34,7 +34,7 @@
 #ifndef KMD5HASH_H
 #define KMD5HASH_H
 
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QByteArray;
 class QString;

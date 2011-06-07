@@ -40,7 +40,7 @@
 #include <QList>
 #include <QDialog>
 
-#include "kglobal.h"
+#include "tglobal.h"
 #include "ktipdatabase.h"
 
 class QCheckBox;

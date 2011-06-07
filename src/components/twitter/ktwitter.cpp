@@ -41,7 +41,7 @@
 #include <QEventLoop>
 
 #include "ktwitter.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 QString KTwitter::TWITTER_HOST = QString("http://twitter.com");
 QString KTwitter::IS_TWITTER_UP_URL = QString("/help/test.xml");
@@ -116,7 +116,7 @@ void KTwitter::closeRequest(QNetworkReply *reply)
             }
         }
     } else {
-        kFatal() << "KTwitter::closeRequest -> NO NETWORK? :S";
+        tFatal() << "KTwitter::closeRequest -> NO NETWORK? :S";
     } 
 }
 

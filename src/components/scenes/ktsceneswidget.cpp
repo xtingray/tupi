@@ -38,11 +38,11 @@
 #include "ktprojectactionbar.h"
 #include "ktrequestbuilder.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 #include "kimagebutton.h"
 #include "koptionaldialog.h"
-#include "kconfig.h"
+#include "tconfig.h"
 
 #include <QToolTip>
 #include <QMessageBox>
@@ -63,7 +63,7 @@ struct KTScenesWidget::Private
 KTScenesWidget::KTScenesWidget(QWidget *parent) : KTModuleWidgetBase(parent, "KTScenesWidget"), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     setWindowTitle(tr("Scenes Manager"));
@@ -75,7 +75,7 @@ KTScenesWidget::KTScenesWidget(QWidget *parent) : KTModuleWidgetBase(parent, "KT
 KTScenesWidget::~KTScenesWidget()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
     delete k;
 }
@@ -145,7 +145,7 @@ void KTScenesWidget::selectScene(const QString &name, int index)
 void KTScenesWidget::emitRequestInsertScene()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     int index = k->tableScenes->indexCurrentScene() + 1;
@@ -178,7 +178,7 @@ void KTScenesWidget::closeAllScenes()
 void KTScenesWidget::sceneResponse(KTSceneResponse *e)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("scenes");
+           T_FUNCINFOX("scenes");
     #endif
 
     switch (e->action()) {

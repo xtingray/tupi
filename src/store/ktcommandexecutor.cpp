@@ -43,7 +43,7 @@
 
 #include "ktprojectresponse.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTCommandExecutor::KTCommandExecutor(KTProject *project) : QObject(project), m_project(project)
 {
@@ -62,7 +62,7 @@ void KTCommandExecutor::getScenes(KTSceneResponse *response)
 bool KTCommandExecutor::createScene(KTSceneResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
     #endif
     
     int position = response->sceneIndex();
@@ -99,7 +99,7 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
 bool KTCommandExecutor::removeScene(KTSceneResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
     #endif    
 
     int position = response->sceneIndex();
@@ -140,7 +140,7 @@ bool KTCommandExecutor::lockScene(KTSceneResponse *response)
     bool lock = response->arg().toBool();
 
     #ifdef K_DEBUG
-        kWarning() << "Lock scene: " << lock;
+        tWarning() << "Lock scene: " << lock;
     #endif    
 
     KTScene *scene = m_project->scene(position);
@@ -161,7 +161,7 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
     QString newName = response->arg().toString();
     KTScene *scene = m_project->scene(position);
 
-    kFatal() << "KTCommandExecutor::renameScene() - New name: " << newName;
+    tFatal() << "KTCommandExecutor::renameScene() - New name: " << newName;
     
     if (!scene)
         return false;

@@ -41,7 +41,7 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QTimer>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * A image pressable

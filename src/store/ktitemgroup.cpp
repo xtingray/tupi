@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktitemgroup.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktserializer.h"
 

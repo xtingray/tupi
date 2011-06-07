@@ -39,7 +39,7 @@
 #include <qsyntaxhighlighter.h>
 
 #include "kspeller.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if english

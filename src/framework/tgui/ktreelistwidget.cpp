@@ -39,7 +39,7 @@
 #include <QEvent>
 #include <QLineEdit>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 class KTreeListWidgetDelegate : public QItemDelegate
 {
@@ -120,7 +120,7 @@ bool KTreeListWidget::isEditable() const
 void KTreeListWidget::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     QLineEdit *edit = qobject_cast<QLineEdit *>(editor);

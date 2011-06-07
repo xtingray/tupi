@@ -33,52 +33,60 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KACTIONMANAGER_H
-#define KACTIONMANAGER_H
+#ifndef TCONFIG_H
+#define TCONFIG_H
 
 #include <QObject>
-#include <QWidget>
-#include <QList>
+#include <QDir>
 #include <QHash>
+#include <QDomDocument>
+#include <QVariant>
 
-#include "kaction.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
-typedef QList<QAction *> KActionList;
-typedef QHash<QString, QAction *> KActionDict;
-typedef QHash<QString, KActionDict> KActionContainer;
-
-class QToolBar;
-class QMenuBar;
+class TConfig;
 
 /**
- * @short class KActionManager provides an action manager, this handler makes easier the access and sort of any action of the app.
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
+ * this is a dom config handler
 */
 
-class K_GUI_EXPORT KActionManager : public QObject
+class K_CORE_EXPORT TConfig : public QObject
 {
-    Q_OBJECT
+    public:
+        ~TConfig();
+
+    protected:
+        explicit TConfig();
+        void init();
 
     public:
-        KActionManager(QObject *parent = 0);
-        ~KActionManager();
+        void beginGroup(const QString & prefix);
+        void endGroup();
 
-        bool insert(QAction *action, const QString &id, const QString &container = "default");
-        void remove(QAction* action, const QString &container = QString());
+        void setValue(const QString & key, const QVariant & value);
 
-        QAction *take(QAction* action, const QString &container = QString());
-        QAction *find(const QString &id, const QString &container = QString()) const;
-        QAction *operator[](const QString &id) const;
-        void enable(const QString &id, bool flag);
-        void exec(const QString &id);
+        QVariant value(const QString & key, const QVariant & defaultValue = QVariant()) const;
 
-        QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
-        QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
-        QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true);
+        static TConfig *instance();
+
+        bool firstTime();
+        bool isOk();
+        QDomDocument document();
+        QString currentGroup();
+
+        void sync();
 
     private:
-        KActionContainer m_actionContainer;
+        QDomElement find(const QDomElement &element, const QString &key) const;
+
+    private:
+        static TConfig *m_instance;
+
+        class Private;
+        Private * const k;
 };
+
+#define TCONFIG TConfig::instance()
 
 #endif

@@ -67,7 +67,7 @@ class GeometricTool : public KTToolPlugin
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent *event);
 
-        virtual QMap<QString, KAction *> actions() const;
+        virtual QMap<QString, TAction *> actions() const;
         
         int toolType() const;
         
@@ -89,7 +89,7 @@ class GeometricTool : public KTToolPlugin
         bool added;
         QPointF firstPoint;
 
-        QMap<QString, KAction *> m_actions;
+        QMap<QString, TAction *> m_actions;
         bool proportion;
         
         QGraphicsItem *m_item;

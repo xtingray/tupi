@@ -40,7 +40,7 @@
 #include <QRadioButton>
 #include <QBoxLayout>
 #include <QButtonGroup>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado

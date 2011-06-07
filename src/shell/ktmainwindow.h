@@ -43,7 +43,7 @@
 #include <QResizeEvent>
 #include <QCloseEvent>
 #include <QUndoStack>
-#include "kactionmanager.h"
+#include "tactionmanager.h"
 #include "ktviewdocument.h"
 
 #include "ktanimationspace.h"
@@ -210,7 +210,7 @@ class KTMainWindow : public KTabbedMainWindow
           KTHelpBrowser *helpTab;
           KTwitterWidget *newsTab;
           KTStatusBar *m_statusBar;
-          KActionManager *m_actionManager;
+          TActionManager *m_actionManager;
           QMenu *m_fileMenu;
           QMenu *m_settingsMenu;
           QMenu *m_viewMenu;

@@ -36,8 +36,8 @@
 #include "ktcamerastatus.h"
 #include "ktexportwidget.h"
 
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 #include "kseparator.h"
 
@@ -51,7 +51,7 @@
 KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(parent)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
@@ -120,8 +120,8 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
 
     connect(loopBox, SIGNAL(clicked()), camera, SLOT(setLoop()));
 
-    KCONFIG->beginGroup("AnimationParameters");
-    loop = KCONFIG->value("Loop").toBool();
+    TCONFIG->beginGroup("AnimationParameters");
+    loop = TCONFIG->value("Loop").toBool();
     if (loop)
         loopBox->setChecked(true);
 
@@ -143,7 +143,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
 KTCameraStatus::~KTCameraStatus()
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 }
 
@@ -173,8 +173,8 @@ void KTCameraStatus::setFramesTotal(const QString &frames)
 bool KTCameraStatus::isLooping()
 {
     loop = loopBox->isChecked();
-    KCONFIG->beginGroup("AnimationParameters");
-    KCONFIG->setValue("Loop", loop);
+    TCONFIG->beginGroup("AnimationParameters");
+    TCONFIG->setValue("Loop", loop);
 
     return loop;
 }

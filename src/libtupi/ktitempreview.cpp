@@ -42,7 +42,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSvgItem>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTItemPreview::Private
 {

@@ -40,7 +40,7 @@
 #include <QSpinBox>
 #include <QSlider>
 
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if english

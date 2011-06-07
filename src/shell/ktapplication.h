@@ -36,7 +36,7 @@
 #ifndef KTAPPLICATION_H
 #define KTAPPLICATION_H
 
-#include "kapplication.h"
+#include "tapplication.h"
 
 /**
  * Support Class for main.cpp
@@ -44,7 +44,7 @@
  * @author David Cuadrado
 */
 
-class KTApplication : public KApplication
+class KTApplication : public TApplication
 {
     Q_OBJECT
 

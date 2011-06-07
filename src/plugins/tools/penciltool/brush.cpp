@@ -53,21 +53,21 @@
 #include "ktlibraryobject.h"
 #include "ktellipseitem.h"
 
-#include "kaction.h"
+#include "taction.h"
 #include "kalgorithm.h"
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {
-    KINIT;
+    TINIT;
     setupActions();
 }
 
 Brush::~Brush()
 {
-    KEND;
+    TEND;
 }
 
 void Brush::init(KTGraphicsScene *scene)
@@ -178,7 +178,7 @@ void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 
 void Brush::setupActions()
 {
-    KAction *pencil = new KAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
+    TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
     pencil->setShortcut(QKeySequence(tr("P")) );
 
     QPixmap pix(THEME_DIR + "cursors/pencil.png");
@@ -187,7 +187,7 @@ void Brush::setupActions()
     m_actions.insert(tr("Pencil"), pencil);
 }
 
-QMap<QString, KAction *> Brush::actions() const
+QMap<QString, TAction *> Brush::actions() const
 {
     return m_actions;
 }
@@ -212,8 +212,8 @@ void Brush::aboutToChangeTool()
 void Brush::saveConfig()
 {
     if (m_configurator) {
-        KCONFIG->beginGroup("BrushTool");
-        KCONFIG->setValue("Smoothness", m_configurator->exactness());
+        TCONFIG->beginGroup("BrushTool");
+        TCONFIG->setValue("Smoothness", m_configurator->exactness());
     }
 }
 

@@ -41,15 +41,15 @@
 #include <QHeaderView>
 #include <QPushButton>
 
-#include "kglobal.h"
+#include "tglobal.h"
 #include "kimagebutton.h"
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -114,8 +114,8 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     mainLayout->addLayout(buttonLayout);
     mainLayout->addStretch(2);
 
-    KCONFIG->beginGroup("BrushTool");
-    double smoothness = KCONFIG->value("Smoothness", -1).toDouble();
+    TCONFIG->beginGroup("BrushTool");
+    double smoothness = TCONFIG->value("Smoothness", -1).toDouble();
 
     if (smoothness > 0) 
         m_exactness->setValue(smoothness);
@@ -126,7 +126,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 ExactnessConfigurator::~ExactnessConfigurator()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

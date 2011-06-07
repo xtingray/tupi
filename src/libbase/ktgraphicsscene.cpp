@@ -62,7 +62,7 @@
 #include "ktellipseitem.h"
 
 #include "ktprojectresponse.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "ktguideline.h"
 
 /**
@@ -104,7 +104,7 @@ struct KTGraphicsScene::Private
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -129,7 +129,7 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 KTGraphicsScene::~KTGraphicsScene()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 
     clearFocus();
@@ -147,7 +147,7 @@ KTGraphicsScene::~KTGraphicsScene()
 void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if ((frame != k->framePosition.frame && k->framePosition.frame >= 0) || 
@@ -166,7 +166,7 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 void KTGraphicsScene::drawCurrentPhotogram()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
@@ -184,7 +184,7 @@ void KTGraphicsScene::drawCurrentPhotogram()
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     Q_CHECK_PTR(k->scene);
@@ -293,7 +293,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 void KTGraphicsScene::drawBackground()
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     Q_CHECK_PTR(k->scene);
@@ -342,7 +342,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
         QGraphicsItem *item = object->item();
@@ -372,7 +372,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     if (svgItem) {
@@ -395,7 +395,7 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "KTGraphicsScene::addSvgObject() - Error: No SVG item!";
+               tFatal() << "KTGraphicsScene::addSvgObject() - Error: No SVG item!";
         #endif
     } 
 } 
@@ -425,7 +425,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          object->item()->setTransformOriginPoint(tween->transformOriginPoint());
 
                          if (stepItem->has(KTTweenerStep::Position)) {
-                             kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying position...";
+                             tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying position...";
                              QPointF point = QPoint(-adjustX, -adjustY);
                              object->setLastTweenPos(stepItem->position() + point);
                              object->item()->setPos(tween->transformOriginPoint());
@@ -436,9 +436,9 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                              object->item()->setTransformOriginPoint(rect.center());
                              double angle = stepItem->rotation();
                              object->item()->setRotation(angle);
-                             kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
+                             tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
                          } else {
-                             kFatal() << "KTGraphicsScene::addTweeningObjects() - No rotation parameter!";
+                             tFatal() << "KTGraphicsScene::addTweeningObjects() - No rotation parameter!";
                          }
                          
                      } else {
@@ -510,7 +510,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                 if (stepItem->has(KTTweenerStep::Rotation)) {
                                     double angle = stepItem->rotation();
                                     object->item()->setRotation(angle);
-                                    kFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
+                                    tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
                                 }
 
                                 addGraphicObject(object);
@@ -687,7 +687,7 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                  }
              } else {
                  #ifdef K_DEBUG
-                           kFatal() << "KTGraphicsScene::addSvgTweeningObjects() - No tween found!";
+                           tFatal() << "KTGraphicsScene::addSvgTweeningObjects() - No tween found!";
                  #endif
              }
          }
@@ -728,7 +728,7 @@ int KTGraphicsScene::currentSceneIndex() const
 void KTGraphicsScene::setNextOnionSkinCount(int n)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     k->onionSkin.next = n;
@@ -739,7 +739,7 @@ void KTGraphicsScene::setNextOnionSkinCount(int n)
 void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     k->onionSkin.previous = n;
@@ -763,12 +763,12 @@ KTFrame *KTGraphicsScene::currentFrame()
                             return layer->frame(k->framePosition.frame);
                     } else {
                         #ifdef K_DEBUG
-                               kFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
+                               tFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
                         #endif
                     }
                 } else {
                     #ifdef K_DEBUG
-                           kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
+                           tFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
                     #endif
                 }
             } else {
@@ -791,7 +791,7 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
     Q_CHECK_PTR(scene);
 
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->tool)
@@ -829,7 +829,7 @@ KTScene *KTGraphicsScene::scene() const
 void KTGraphicsScene::setTool(KTToolPlugin *tool)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->spaceMode == KTProject::FRAMES_EDITION) {
@@ -869,7 +869,7 @@ KTToolPlugin *KTGraphicsScene::currentTool() const
 void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     QGraphicsScene::mousePressEvent(event);
@@ -888,7 +888,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             if (currentFrame()) {
                 //if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
-                //kFatal() << "KTGraphicsScene::mousePressEvent() - FLAG: " << currentFrame()->isLocked();
+                //tFatal() << "KTGraphicsScene::mousePressEvent() - FLAG: " << currentFrame()->isLocked();
                     if (event->buttons() == Qt::LeftButton) {
                         k->tool->begin();
                         k->isDrawing = true;
@@ -929,7 +929,7 @@ void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
     if (currentFrame()) {
         if (currentFrame()->isLocked()) {
             #ifdef K_DEBUG
-                   kFatal() << "KTGraphicsScene::mouseReleased() - Frame is locked!";
+                   tFatal() << "KTGraphicsScene::mouseReleased() - Frame is locked!";
             #endif
             return;
         }
@@ -1048,7 +1048,7 @@ bool KTGraphicsScene::event(QEvent *e)
 void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("scene");
+           T_FUNCINFOX("scene");
     #endif
 
     if (k->tool) {

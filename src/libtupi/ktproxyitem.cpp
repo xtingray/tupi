@@ -35,7 +35,7 @@
 
 #include "ktproxyitem.h"
 #include <QPainter>
-#include "kdebug.h"
+#include "tdebug.h"
 
 /**
  * This class defines a copy of a graphic object.

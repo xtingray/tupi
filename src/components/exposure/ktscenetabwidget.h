@@ -36,7 +36,7 @@
 #ifndef KTSCENETABWIDGET_H
 #define KTSCENETABWIDGET_H
 
-#include "kglobal.h"
+#include "tglobal.h"
 #include "ktexposuretable.h"
 
 #include <QTabWidget>

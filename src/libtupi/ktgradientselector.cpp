@@ -36,7 +36,7 @@
 #include "ktgradientselector.h"
 
 #include <qdrawutil.h>
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kimageeffect.h"
 
 #include <QMatrix>
@@ -44,7 +44,7 @@
 
 KTGradientSelector::KTGradientSelector(QWidget *parent) : QAbstractSlider(parent), m_currentArrowIndex(0), m_gradient(0,0,1,1), m_update(true), m_maxArrows(10), m_currentColor(Qt::black)
 {
-    KINIT;
+    TINIT;
     _orientation = Qt::Horizontal;
     init();
 }
@@ -71,7 +71,7 @@ void KTGradientSelector::init()
 
 KTGradientSelector::~KTGradientSelector()
 {
-    KEND;
+    TEND;
 }
 
 QRect KTGradientSelector::contentsRect() const

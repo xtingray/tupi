@@ -34,8 +34,8 @@
  ***************************************************************************/
 
 #include "ktlayermanager.h"
-#include "kapplication.h"
-#include "kdebug.h"
+#include "tapplication.h"
+#include "tdebug.h"
 
 ////////////////////////////////
 
@@ -53,7 +53,7 @@ struct KTLayerManager::Private
 KTLayerManager::KTLayerManager(int sceneIndex, QWidget *parent) : QWidget(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        KINIT;
+        TINIT;
     #endif
 
     k->layerIndex = new KTLayerIndex(sceneIndex); 
@@ -75,7 +75,7 @@ KTLayerManager::KTLayerManager(int sceneIndex, QWidget *parent) : QWidget(parent
 KTLayerManager::~KTLayerManager()
 {
     #ifdef K_DEBUG
-        KEND;
+        TEND;
     #endif
 
     delete k;

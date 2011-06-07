@@ -36,7 +36,7 @@
 #include "ktitemfactory.h"
 #include <QGraphicsItem>
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include <ktsvg2qt.h>
 
 #include "ktpathitem.h"
@@ -119,7 +119,7 @@ bool KTItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
 {
     /*
     #ifdef K_DEBUG
-           K_FUNCINFOX("items") << qname;
+           T_FUNCINFOX("items") << qname;
     #endif
     */
 
@@ -308,7 +308,7 @@ bool KTItemFactory::endTag(const QString& qname)
 {
     /*
     #ifdef K_DEBUG
-           K_FUNCINFOX("items") << qname;
+           T_FUNCINFOX("items") << qname;
     #endif
     */
 
@@ -376,7 +376,7 @@ bool KTItemFactory::endTag(const QString& qname)
 
     } else {
                #ifdef K_DEBUG
-                      kWarning("items") << "Unhandled: " << qname;
+                      tWarning("items") << "Unhandled: " << qname;
                #endif
     }
 

@@ -37,7 +37,7 @@
 #define KTERMTAB_H
 
 #include <QToolButton>
-#include "kglobal.h"
+#include "tglobal.h"
 #include "ktabwidget.h"
 
 class KTerm;

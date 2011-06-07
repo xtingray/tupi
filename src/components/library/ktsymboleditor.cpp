@@ -45,8 +45,8 @@
 #include "kttoolplugin.h"
 
 // Tupi Framework 
-#include "kaction.h"
-#include "kdebug.h"
+#include "taction.h"
+#include "tdebug.h"
 
 /**
  * This class defines the toolbar at the left side of the paint area.
@@ -139,9 +139,9 @@ void KTSymbolEditor::loadTools()
             
         for (it = keys.begin(); it != keys.end(); ++it)
         {
-            kDebug("plugins") << "*******Tool Loaded: " << *it;
+            tDebug("plugins") << "*******Tool Loaded: " << *it;
             
-            KAction *act = tool->actions()[*it];
+            TAction *act = tool->actions()[*it];
             if ( act )
             {
                 connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
@@ -180,8 +180,8 @@ void KTSymbolEditor::loadTools()
 
 void KTSymbolEditor::selectTool()
 {
-    K_FUNCINFO;
-    KAction *action = qobject_cast<KAction *>(sender());
+    T_FUNCINFO;
+    TAction *action = qobject_cast<TAction *>(sender());
     
     if ( action )
     {

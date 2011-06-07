@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktscene.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QDir>
 #include <QGraphicsItem>
@@ -76,7 +76,7 @@ KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
 KTScene::~KTScene()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 
     //k->layers.clear(true);
@@ -142,7 +142,7 @@ KTLayer *KTScene::createLayer(QString name, int position, bool loaded)
 
     if (position < 0 || position > k->layers.count()) {
         #ifdef K_DEBUG
-               kDebug() << "KTScene::createLayer() - Invalid index";
+               tDebug() << "KTScene::createLayer() - Invalid index";
         #endif
         return 0;
     }
@@ -166,11 +166,11 @@ KTLayer *KTScene::createLayer(QString name, int position, bool loaded)
 KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO << position;
+           T_FUNCINFO << position;
     #endif
 
     if (position < 0 || position > k->soundLayers.count()) {
-        kDebug() << "Error in createSoundLayer";
+        tDebug() << "Error in createSoundLayer";
         return 0;
     }
 
@@ -230,9 +230,9 @@ KTLayer *KTScene::layer(int position) const
 
     if (position < 0) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: LAYERS TOTAL: " << k->layers.count();
-               K_FUNCINFO << " FATAL ERROR: index out of bound -> Position: " << position;
-               K_FUNCINFO << " FATAL ERROR: The layer requested doesn't exist anymore";
+               T_FUNCINFO << " FATAL ERROR: LAYERS TOTAL: " << k->layers.count();
+               T_FUNCINFO << " FATAL ERROR: index out of bound -> Position: " << position;
+               T_FUNCINFO << " FATAL ERROR: The layer requested doesn't exist anymore";
         #endif
         return 0;
     }
@@ -244,7 +244,7 @@ KTSoundLayer *KTScene::soundLayer(int position) const
 {
     if (position < 0 || position >= k->soundLayers.count()) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+               T_FUNCINFO << " FATAL ERROR: index out of bound " << position;
         #endif
         return 0;
     }

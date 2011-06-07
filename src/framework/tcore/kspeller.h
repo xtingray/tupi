@@ -42,7 +42,7 @@
 #include <QString>
 
 #include "kspellinterface.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

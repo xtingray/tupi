@@ -36,7 +36,7 @@
 
 #include "kxmlparserbase.h"
 
-#include <kdebug.h>
+#include <tdebug.h>
 
 struct KXmlParserBase::Private
 {
@@ -117,16 +117,16 @@ bool KXmlParserBase::characters(const QString & ch)
 
 bool KXmlParserBase::error(const QXmlParseException & exception)
 {
-    kWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-    kWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
+    tWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+    tWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
 
     return true;
 }
 
 bool KXmlParserBase::fatalError(const QXmlParseException & exception)
 {
-    kFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-    kWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
+    tFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+    tWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
 
     return true;
 }
@@ -170,7 +170,7 @@ bool KXmlParserBase::parse(QFile *file)
 {
     if (!file->isOpen()) {
         if (! file->open(QIODevice::ReadOnly | QIODevice::Text)) {
-            kWarning() << "Cannot open file " << file->fileName();
+            tWarning() << "Cannot open file " << file->fileName();
             return false;
         }
     }

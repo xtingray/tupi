@@ -56,7 +56,7 @@
 #include "ktrequestparser.h"
 
 #include "kalgorithm.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 // This class handles the current animation project 
 
@@ -90,7 +90,7 @@ class KTProjectManager::Private
 KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), k(new Private())
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->isModified = false;
@@ -107,7 +107,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), k(new Pri
 KTProjectManager::~KTProjectManager()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 
     delete k;
@@ -152,7 +152,7 @@ KTAbstractProjectHandler *KTProjectManager::handler() const
 void KTProjectManager::setupNewProject()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (!k->handler || !k->params) {
@@ -218,7 +218,7 @@ bool KTProjectManager::loadProject(const QString &fileName)
 {
     if (! k->handler) {
         #ifdef K_DEBUG
-               kFatal() << "KTProjectManager::loadProject() - NO HANDLER!";
+               tFatal() << "KTProjectManager::loadProject() - NO HANDLER!";
         #endif
         return false;
     }
@@ -283,9 +283,9 @@ void KTProjectManager::setupProjectDir()
 void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
-           kWarning() << "Package: ";
-           kWarning() << request->xml();
+           T_FUNCINFO;
+           tWarning() << "Package: ";
+           tWarning() << request->xml();
     #endif
 
     // TODO: the handler must advise when to build the command
@@ -299,9 +299,9 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
-           kWarning() << "Package: ";
-           kWarning() << request->xml();
+           T_FUNCINFO;
+           tWarning() << "Package: ";
+           tWarning() << request->xml();
     #endif
 
     KTRequestParser parser;
@@ -349,7 +349,7 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 void KTProjectManager::createCommand(const KTProjectRequest *request, bool addToStack)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (request->isValid()) {
@@ -361,7 +361,7 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
             command->redo();
     } else {
         #ifdef K_DEBUG
-               kWarning() << "invalid request";
+               tWarning() << "invalid request";
         #endif
     }
 }
@@ -379,7 +379,7 @@ QUndoStack *KTProjectManager::undoHistory() const
 void KTProjectManager::emitResponse(KTProjectResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO << response->action();
+           T_FUNCINFO << response->action();
     #endif
 
     if (response->action() != KTProjectRequest::Select)

@@ -39,7 +39,7 @@
 #include <QPainterPath>
 #include <QChar>
 #include <QStringList>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

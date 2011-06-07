@@ -50,7 +50,7 @@
 
 #include "ktframe.h"
 
-#include "kaction.h"
+#include "taction.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 #include "ktglobal.h"

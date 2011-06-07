@@ -37,7 +37,7 @@
 
 #include <QStackedWidget>
 
-KStackedMainWindow::KStackedMainWindow(QWidget *parent) : KMainWindow(parent)
+KStackedMainWindow::KStackedMainWindow(QWidget *parent) : TMainWindow(parent)
 {
     m_stack = new QStackedWidget;
     setCentralWidget(m_stack);

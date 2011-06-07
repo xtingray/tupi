@@ -40,7 +40,7 @@
 #include <QPluginLoader>
 #include <QUrl>
 #include <qplugin.h>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

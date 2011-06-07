@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktprojectparser.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTProjectParser::Private
 {

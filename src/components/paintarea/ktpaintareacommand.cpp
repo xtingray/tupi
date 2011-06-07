@@ -38,7 +38,7 @@
 #include "ktpaintareaevent.h"
 #include "ktbrushmanager.h"
 
-#include "kdebug.h" 
+#include "tdebug.h" 
 
 #include <QVariant>
 

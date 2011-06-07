@@ -13,11 +13,11 @@ include.path = /include/tupicore
 HEADERS += kalgorithm.h \
            kapplicationproperties.h \
            kaspellchecker.h \
-           kconfig.h \
+           tconfig.h \
            kcpuinfo.h \
-           kdebug.h \
+           tdebug.h \
            kfortunegenerator.h \
-           kglobal.h \
+           tglobal.h \
            kmd5hash.h \
            kspeller.h \
            kspellhighlighter.h \
@@ -27,9 +27,9 @@ HEADERS += kalgorithm.h \
 SOURCES += kalgorithm.cpp \
            kapplicationproperties.cpp \
            kaspellchecker.cpp \
-           kconfig.cpp \
+           tconfig.cpp \
            kcpuinfo.cpp \
-           kdebug.cpp \
+           tdebug.cpp \
            kfortunegenerator.cpp \
            kmd5hash.cpp \
            kspeller.cpp \

@@ -44,7 +44,7 @@
 
 // Tupi Framework
 #include "ktipdialog.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kosd.h"
 #include "kimageeffect.h"
 #include "kaudioplayer.h"
@@ -109,7 +109,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
               m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
-       KINIT;
+       TINIT;
     #endif
 
     // Loading audio player plugin
@@ -125,7 +125,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
-    m_renderType = Tupi::RenderType(KCONFIG->value("RenderType").toInt());
+    m_renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt());
 
     // Calling out the project manager
     m_projectManager = new KTProjectManager(this);
@@ -136,7 +136,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Calling out the events/actions manager
     splash->setMessage(tr("Loading action manager..."));
-    m_actionManager = new KActionManager(this);
+    m_actionManager = new TActionManager(this);
 
     // Defining the menu bar
     splash->setMessage(tr("Creating menu bar..."));
@@ -153,9 +153,9 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     setupToolBar();
 
     // Check if user wants to see a Tupi tip for every time he launches the program
-    KCONFIG->beginGroup("TipOfDay");
-    //bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true));
-    bool showTips = KCONFIG->value("ShowOnStart", true).toBool();
+    TCONFIG->beginGroup("TipOfDay");
+    //bool showTips = qvariant_cast<bool>(TCONFIG->value("ShowOnStart", true));
+    bool showTips = TCONFIG->value("ShowOnStart", true).toBool();
 
     // If option is enabled, then, show a little dialog with a nice tip
     if (showTips)
@@ -167,17 +167,17 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     // Defining the Animation view, as the first interface to show up	
     setCurrentPerspective(Animation);
 
-    KCONFIG->beginGroup("General");
+    TCONFIG->beginGroup("General");
     // check if into the config file, user always wants to start opening his last project 
     // created
-    bool openLast = KCONFIG->value("OpenLastProject").toBool();
+    bool openLast = TCONFIG->value("OpenLastProject").toBool();
 
     if (openLast && parameters == 1)
-        openProject(KCONFIG->value("LastProject").toString());
+        openProject(TCONFIG->value("LastProject").toString());
 
-    if (KCONFIG->firstTime()) {
-        KCONFIG->setValue("OpenLastProject", openLast);
-        KCONFIG->setValue("AutoSave", 2);
+    if (TCONFIG->firstTime()) {
+        TCONFIG->setValue("OpenLastProject", openLast);
+        TCONFIG->setValue("AutoSave", 2);
     }
 
 }
@@ -193,7 +193,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 KTMainWindow::~KTMainWindow()
 {
 #ifdef K_DEBUG
-    KEND;
+    TEND;
 #endif
 
     QClipboard *clipboard = QApplication::clipboard();
@@ -238,7 +238,7 @@ void KTMainWindow::createNewProject()
 void KTMainWindow::viewNewDocument()
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     if (m_projectManager->isOpen()) {
@@ -308,8 +308,8 @@ void KTMainWindow::viewNewDocument()
 
         m_projectManager->undoModified();
 
-        KCONFIG->beginGroup("PenParameters");
-        int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
+        TCONFIG->beginGroup("PenParameters");
+        int thicknessValue = TCONFIG->value("Thickness", -1).toInt();
         m_penWidget->init();
         m_penWidget->setThickness(thicknessValue);
     }
@@ -327,7 +327,7 @@ void KTMainWindow::viewNewDocument()
 void KTMainWindow::newProject()
 {
     #ifdef K_DEBUG
-       kWarning() << "Creating new project...";
+       tWarning() << "Creating new project...";
     #endif
 
     projectSaved = false;
@@ -642,7 +642,7 @@ void KTMainWindow::openProject()
 void KTMainWindow::openProject(const QString &path)
 {
     #ifdef K_DEBUG
-       kWarning() << "Opening project: " << path;
+       tWarning() << "Opening project: " << path;
     #endif
 
     if (path.isEmpty())
@@ -769,7 +769,7 @@ void KTMainWindow::importProjectToServer()
 void KTMainWindow::save()
 {
     #ifdef K_DEBUG
-       kDebug("project") << "KTMainWindow::save() - Saving...";
+       tDebug("project") << "KTMainWindow::save() - Saving...";
     #endif
     QTimer::singleShot(0, this, SLOT(saveProject()));
 }
@@ -1093,11 +1093,11 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
         file.remove();
     }
 
-    KCONFIG->beginGroup("General");
-    KCONFIG->setValue("LastProject", lastProject);
-    KCONFIG->setValue("Recents", m_recentProjects);
+    TCONFIG->beginGroup("General");
+    TCONFIG->setValue("LastProject", lastProject);
+    TCONFIG->setValue("Recents", m_recentProjects);
 
-    KMainWindow::closeEvent(event);
+    TMainWindow::closeEvent(event);
 }
 
 /**

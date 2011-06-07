@@ -38,7 +38,7 @@
 
 #include <qwidget.h>
 #include <QDate>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QComboBox;
 class QSpinBox;

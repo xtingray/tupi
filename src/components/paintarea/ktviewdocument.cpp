@@ -37,8 +37,8 @@
 #include "ktviewdocument.h"
 
 // Tupi Framework 
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -98,7 +98,7 @@ struct KTViewDocument::Private
     KTPaintArea *paintArea;
 
     KTDocumentRuler *verticalRuler, *horizontalRuler;
-    KActionManager *actionManager;
+    TActionManager *actionManager;
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
     KTPaintAreaStatus *status;
@@ -111,7 +111,7 @@ struct KTViewDocument::Private
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     setWindowIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
@@ -119,7 +119,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     k->project = project;
     k->currentTool = 0;
     k->onionEnabled = true;
-    k->actionManager = new KActionManager(this);
+    k->actionManager = new TActionManager(this);
 
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
     QGridLayout *layout = new QGridLayout(frame);
@@ -127,8 +127,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     k->paintArea = new KTPaintArea(project, frame);
     connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
 
-    KCONFIG->beginGroup("OnionParameters");
-    k->opacityFactor = KCONFIG->value("OnionFactor", -1).toDouble();
+    TCONFIG->beginGroup("OnionParameters");
+    k->opacityFactor = TCONFIG->value("OnionFactor", -1).toDouble();
     if (k->opacityFactor < 0)
         k->opacityFactor = 0.5;
     k->paintArea->setOnionFactor(k->opacityFactor);
@@ -142,7 +142,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     layout->addWidget(k->horizontalRuler, 0, 1);
     layout->addWidget(k->verticalRuler, 1, 0);
 
-    Tupi::RenderType renderType = Tupi::RenderType(KCONFIG->value("RenderType").toInt()); 
+    Tupi::RenderType renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt()); 
 
     switch (renderType) {
             case Tupi::OpenGL:
@@ -155,7 +155,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
             default:
                  #ifdef K_DEBUG
-                        kWarning() << "Unsopported render, switching to native!";
+                        tWarning() << "Unsopported render, switching to native!";
                  #endif
                  k->paintArea->setUseOpenGL(false);
             break;
@@ -249,53 +249,53 @@ void KTViewDocument::showPos(const QPointF &p)
 
 void KTViewDocument::setupDrawActions()
 {
-    KAction *showGrid = new KAction(QPixmap(THEME_DIR + "icons/subgrid.png"), 
+    TAction *showGrid = new TAction(QPixmap(THEME_DIR + "icons/subgrid.png"), 
                                     tr("Show grid"), QKeySequence(tr("#")),
                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
     showGrid->setCheckable(true);
 
-    KAction *copy = new KAction(QPixmap(THEME_DIR + "icons/copy.png"), 
+    TAction *copy = new TAction(QPixmap(THEME_DIR + "icons/copy.png"), 
                                 tr("Copy"), QKeySequence(tr("Ctrl+C")),
                                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
     copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 
-    KAction *paste = new KAction(QPixmap(THEME_DIR + "icons/paste.png"), 
+    TAction *paste = new TAction(QPixmap(THEME_DIR + "icons/paste.png"), 
                                  tr("Paste"), QKeySequence(tr("Ctrl+V")),
                                  k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
     paste->setStatusTip(tr("Pastes the clipboard into the current document"));
 
-    KAction *cut = new KAction(QPixmap(THEME_DIR + "icons/cut.png"), 
+    TAction *cut = new TAction(QPixmap(THEME_DIR + "icons/cut.png"), 
                                tr("Cut"), QKeySequence(tr("Ctrl+X")),
                                k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
     cut->setStatusTip(tr("Cuts the selected items"));
 
-    KAction *del = new KAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), 
+    TAction *del = new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), 
                                QKeySequence(Qt::Key_Delete), k->paintArea, SLOT(deleteItems()), 
                                k->actionManager, "delete");
     
     del->setStatusTip(tr("Deletes the selected object"));
 
-    KAction *group = new KAction(QPixmap(THEME_DIR + "icons/group.png"), tr("&Group"),   
+    TAction *group = new TAction(QPixmap(THEME_DIR + "icons/group.png"), tr("&Group"),   
                                  QKeySequence(tr("Ctrl+G")), k->paintArea, SLOT(groupItems()), 
                                  k->actionManager, "group");
 
     group->setStatusTip(tr("Group the selected objects into a single one"));
     group->setDisabled(true);
 
-    KAction *ungroup = new KAction(QPixmap(THEME_DIR + "icons/ungroup.png"), tr("&Ungroup"), 
+    TAction *ungroup = new TAction(QPixmap(THEME_DIR + "icons/ungroup.png"), tr("&Ungroup"), 
                                     QKeySequence(tr("Ctrl+Shift+G")) , k->paintArea, SLOT(ungroupItems()), 
                                     k->actionManager, "ungroup");
     ungroup->setDisabled(true);
 
     ungroup->setStatusTip(tr("Ungroups the selected object"));
 
-    KAction *onion = new KAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"),
+    TAction *onion = new TAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"),
                                QKeySequence(tr("Ctrl+Shift+O")), this, SLOT(enableOnionFeature()),
                                k->actionManager, "onion");
 
     onion->setStatusTip(tr("Enable/Disable onion skin"));
 
-    KAction *onionFactor = new KAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"),
+    TAction *onionFactor = new TAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"),
                                QKeySequence(tr("Ctrl+Shift+S")), this, SLOT(setDefaultOnionFactor()),
                                k->actionManager, "onionfactor");
 
@@ -348,8 +348,8 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
-    QVector<KAction*> brushTools(7);
-    QVector<KAction*> tweenTools(7);
+    QVector<TAction*> brushTools(7);
+    QVector<TAction*> tweenTools(7);
 
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
@@ -360,10 +360,10 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         kDebug("plugins") << "*** Tool Loaded: " << *it;
+                         tDebug("plugins") << "*** Tool Loaded: " << *it;
                   #endif
 
-                  KAction *action = tool->actions()[*it];
+                  TAction *action = tool->actions()[*it];
                   action->setIconVisibleInMenu(true);
 
                   if (action) {
@@ -479,10 +479,10 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         kDebug("plugins") << "*** Filter Loaded: " << *it;
+                         tDebug("plugins") << "*** Filter Loaded: " << *it;
                   #endif
 
-                  KAction *act = filter->actions()[*it];
+                  TAction *act = filter->actions()[*it];
                   if (act) {
                       connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
                       k->filterMenu->addAction(act);
@@ -490,7 +490,7 @@ void KTViewDocument::loadPlugins()
              }
     }
 
-    KAction *pencil = brushTools.at(0);
+    TAction *pencil = brushTools.at(0);
     pencil->trigger();
     brushTools.clear();
     tweenTools.clear();
@@ -499,10 +499,10 @@ void KTViewDocument::loadPlugins()
 void KTViewDocument::selectTool()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
-    KAction *action = qobject_cast<KAction *>(sender());
+    TAction *action = qobject_cast<TAction *>(sender());
 
     if (action) {
 
@@ -538,7 +538,7 @@ void KTViewDocument::selectTool()
                      } else if (toolName.compare(tr("PolyLine"))==0 
                                 || toolName.compare(tr("Rectangle"))==0 
                                 || toolName.compare(tr("Ellipse"))==0) {
-                                kFatal() << "KTViewDocument::selectTool() - toolName: " << toolName;
+                                tFatal() << "KTViewDocument::selectTool() - toolName: " << toolName;
                                 minWidth = 130;
                      }
 
@@ -610,18 +610,18 @@ void KTViewDocument::selectTool()
 void KTViewDocument::selectToolFromMenu(QAction *action)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     QMenu *menu = qobject_cast<QMenu *>(action->parent());
 
     if (menu) {
-        KAction *tool = qobject_cast<KAction *>(menu->activeAction());
+        TAction *tool = qobject_cast<TAction *>(menu->activeAction());
 
         if (tool) {
             tool->trigger(); // this call selectTool()
         } else {
-            tool = qobject_cast<KAction *>(menu->defaultAction());
+            tool = qobject_cast<TAction *>(menu->defaultAction());
             if (tool)
                 tool->trigger();
         }
@@ -685,9 +685,9 @@ void KTViewDocument::createToolBar()
 
     k->barGrid->addSeparator();
 
-    KCONFIG->beginGroup("OnionParameters");
-    int preview = KCONFIG->value("PreviewFrames", -1).toInt();
-    int next = KCONFIG->value("NextFrames", -1).toInt();
+    TCONFIG->beginGroup("OnionParameters");
+    int preview = TCONFIG->value("PreviewFrames", -1).toInt();
+    int next = TCONFIG->value("NextFrames", -1).toInt();
 
     k->prevOnionSkinSpin = new QSpinBox(this);
     k->prevOnionSkinSpin->setToolTip(tr("Preview Frames"));
@@ -762,16 +762,16 @@ void KTViewDocument::setCursor(const QCursor &)
 
 void KTViewDocument::setPreviousOnionSkin(int level)
 {
-    KCONFIG->beginGroup("OnionParameters");
-    KCONFIG->setValue("PreviewFrames", level);
+    TCONFIG->beginGroup("OnionParameters");
+    TCONFIG->setValue("PreviewFrames", level);
 
     k->paintArea->setPreviousFramesOnionSkinCount(level);
 }
 
 void KTViewDocument::setNextOnionSkin(int level)
 {
-    KCONFIG->beginGroup("OnionParameters");
-    KCONFIG->setValue("NextFrames", level);
+    TCONFIG->beginGroup("OnionParameters");
+    TCONFIG->setValue("NextFrames", level);
 
     k->paintArea->setNextFramesOnionSkinCount(level);
 }
@@ -834,8 +834,8 @@ void KTViewDocument::callAutoSave()
 
 void KTViewDocument::updateTimer()
 {
-    KCONFIG->beginGroup("General");
-    int autoSave = KCONFIG->value("AutoSave").toInt();
+    TCONFIG->beginGroup("General");
+    int autoSave = TCONFIG->value("AutoSave").toInt();
 
     k->timer = new QTimer(this);
 
@@ -919,8 +919,8 @@ void KTViewDocument::setDefaultOnionFactor()
 
 void KTViewDocument::setOnionFactor(double opacity)
 {
-    KCONFIG->beginGroup("OnionParameters");
-    KCONFIG->setValue("OnionFactor", opacity);
+    TCONFIG->beginGroup("OnionParameters");
+    TCONFIG->setValue("OnionFactor", opacity);
 
     k->paintArea->setOnionFactor(opacity);
 }

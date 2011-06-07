@@ -37,7 +37,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTPaletteImporter::KTPaletteImporter() : m_document(0)
 {
@@ -69,7 +69,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 
        if (! stream.readLine().contains("GIMP Palette")) {
            #ifdef K_DEBUG
-                  kError() << "Don't contains \"GIMP Palette\"";
+                  tError() << "Don't contains \"GIMP Palette\"";
            #endif
            return;
        }
@@ -109,12 +109,12 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
                       m_document->addColor(c);
                   } else {
                       #ifdef K_DEBUG
-                             kError() << "Bad color";
+                             tError() << "Bad color";
                       #endif
                   }
               } else {
                   #ifdef K_DEBUG
-                         kError() << "No find";
+                         tError() << "No find";
                   #endif
               }
        }

@@ -38,9 +38,9 @@
 #include <QHBoxLayout>
 #include <QSizePolicy>
 
-#include "kapplication.h"
+#include "tapplication.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title, parent), m_modifyTogether(false)
 {

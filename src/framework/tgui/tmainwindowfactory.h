@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                           *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,32 +33,25 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KPUSHBUTTON_H
-#define KPUSHBUTTON_H
+#ifndef TMAINWINDOWFACTORY_H
+#define TMAINWINDOWFACTORY_H
 
-#include "kglobal.h"
-#include <QPushButton>
+#include "kideality.h"
+
+class TMainWindow;
+class QMainWindow;
 
 /**
- * @author Gustav Gonzalez 
+ * This class creates a TMainWindow from other QMainWindow
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class K_GUI_EXPORT KPushButton : public QPushButton 
+class K_IDEAL_EXPORT TMainWindowFactory
 {
-    Q_OBJECT
-
     public:
-        KPushButton(QWidget *parent = 0, const QString &name = QString(), int column = 0, int row = 0);
-        ~KPushButton();
+        TMainWindowFactory();
+        ~TMainWindowFactory();
 
-    signals:
-        void clicked(int, int);
-        
-    private slots:
-        void setCoords();
-        
-    private:
-        int m_column;
-        int m_row;
+        static TMainWindow *create(QMainWindow *other);
 };
 
 #endif

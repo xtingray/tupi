@@ -48,7 +48,7 @@
 #include <cmath> // sin,cos
 
 #include "ktframe.h"
-#include "kaction.h"
+#include "taction.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
@@ -64,7 +64,7 @@ class TUPI_EXPORT AFilterInterface
         virtual QStringList keys() const = 0;
         // virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
         
-        virtual QHash<QString, KAction *>actions() = 0;
+        virtual QHash<QString, TAction *>actions() = 0;
 };
 
 Q_DECLARE_INTERFACE(AFilterInterface, "com.maefloresta.tupi.AFilterInterface/0.1");

@@ -35,7 +35,7 @@
 
 #include "ktgradientviewer.h"
 #include <QPainter>
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QMouseEvent>
 #include <QRectF>
@@ -89,7 +89,7 @@ class KTGradientViewer::ControlPoint
 KTGradientViewer::KTGradientViewer(QWidget *parent)
     : QFrame(parent), m_angle(0), m_radius(50)
 {
-    KINIT;
+    TINIT;
     m_controlPoint = new ControlPoint();
     m_type = QGradient::LinearGradient;
     m_spread =  QGradient::PadSpread;
@@ -102,7 +102,7 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 
 KTGradientViewer::~KTGradientViewer()
 {
-    KEND;
+    TEND;
     delete m_controlPoint;
 }
 
@@ -151,7 +151,7 @@ void KTGradientViewer::createGradient()
             }
             default:
             {
-                kFatal() << "Fatal error, the gradient type doesn't exists!";
+                tFatal() << "Fatal error, the gradient type doesn't exists!";
             }
     }
     m_gradient.setStops(m_gradientStops);
@@ -200,7 +200,7 @@ QGradient KTGradientViewer::gradient()
             }
             default:
             {
-                kFatal() << "Fatal error, the gradient type doesn't exists!";
+                tFatal() << "Fatal error, the gradient type doesn't exists!";
             }
     }
 
@@ -266,7 +266,7 @@ void KTGradientViewer::setGradient(const QGradient* gradient)
             }
             default:
             {
-                kFatal() << "Fatal error, the gradient type doesn't exists!";
+                tFatal() << "Fatal error, the gradient type doesn't exists!";
             }
     }
 

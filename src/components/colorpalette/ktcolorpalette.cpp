@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktcolorpalette.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QBoxLayout>
 #include <QPushButton>
@@ -42,8 +42,8 @@
 #include <QFrame>
 #include <QToolTip>
 #include "kimagebutton.h"
-#include "kglobal.h"
-#include "kconfig.h"
+#include "tglobal.h"
+#include "tconfig.h"
 
 #include "ktpaintareaevent.h"
 #include "ktcolorvalue.h"
@@ -84,7 +84,7 @@ struct KTColorPalette::Private
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->currentOutlineColor = Qt::black;
@@ -106,20 +106,20 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->splitter->addWidget(k->centralWidget);
     k->centralWidget->setPalette(palette());
 
-    KCONFIG->beginGroup("ColorPalette");
-    QColor foreground = QColor(KCONFIG->value("LastForegroundColor", Qt::black).toString());
-    QColor background = QColor(KCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
+    TCONFIG->beginGroup("ColorPalette");
+    QColor foreground = QColor(TCONFIG->value("LastForegroundColor", Qt::black).toString());
+    QColor background = QColor(TCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
 }
 
 KTColorPalette::~KTColorPalette()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif	
 
-    KCONFIG->beginGroup("ColorPalette");
-    KCONFIG->setValue("LastForegroundColor", color().first);
-    KCONFIG->setValue("LastBackgroundColor", color().second);
+    TCONFIG->beginGroup("ColorPalette");
+    TCONFIG->setValue("LastForegroundColor", color().first);
+    TCONFIG->setValue("LastBackgroundColor", color().second);
     delete k;
 }
 

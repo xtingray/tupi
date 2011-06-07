@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kttreedelegate.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QtGui>
 

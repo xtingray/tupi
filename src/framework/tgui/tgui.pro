@@ -12,10 +12,10 @@ target.path = /lib/
 include.files += *.h 
 include.path = /include/tupigui 
 
-HEADERS += kaction.h \
-           kactionmanager.h \
+HEADERS += taction.h \
+           tactionmanager.h \
            kanimwidget.h \
-           kapplication.h \
+           tapplication.h \
            kbuttonbar.h \
            kcellview.h \
            kcirclebutton.h \
@@ -43,16 +43,16 @@ HEADERS += kaction.h \
            kimageeffect.h \
            kindicatordrawer.h \
            kitemselector.h \
-           kmainwindow.h \
-           kmainwindowabstractsettings.h \
-           kmainwindowfactory.h \
+           tmainwindow.h \
+           tmainwindowabstractsettings.h \
+           tmainwindowfactory.h \
            kmoviegenerator.h \
            kmoviegeneratorinterface.h \
            knodegroup.h \
            koptionaldialog.h \
            kosd.h \
            kpathhelper.h \
-           kpushbutton.h \
+           tpushbutton.h \
            kradiobuttongroup.h \
            krulerbase.h \
            kseparator.h \
@@ -82,10 +82,10 @@ HEADERS += kaction.h \
            kcolorarrow.xpm \
            kcolorreset.xpm
 
-SOURCES += kaction.cpp \
-           kactionmanager.cpp \
+SOURCES += taction.cpp \
+           tactionmanager.cpp \
            kanimwidget.cpp \
-           kapplication.cpp \
+           tapplication.cpp \
            kbuttonbar.cpp \
            kcellview.cpp \
            kcirclebutton.cpp \
@@ -112,14 +112,14 @@ SOURCES += kaction.cpp \
            kimageeffect.cpp \
            kindicatordrawer.cpp \
            kitemselector.cpp \
-           kmainwindow.cpp \
-           kmainwindowfactory.cpp \
+           tmainwindow.cpp \
+           tmainwindowfactory.cpp \
            kmoviegenerator.cpp \
            knodegroup.cpp \
            koptionaldialog.cpp \
            kosd.cpp \
            kpathhelper.cpp \
-           kpushbutton.cpp \
+           tpushbutton.cpp \
            kradiobuttongroup.cpp \
            krulerbase.cpp \
            kseparator.cpp \

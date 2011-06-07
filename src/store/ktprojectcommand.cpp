@@ -35,7 +35,7 @@
 
 #include "ktprojectcommand.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktcommandexecutor.h"
 #include "ktprojectrequest.h"
@@ -108,7 +108,7 @@ void KTProjectCommand::initText()
             default:
              {
                  #ifdef K_DEBUG
-                        kfDebug << "CAN'T HANDLE ID: " << k->response->part();
+                        tfDebug << "CAN'T HANDLE ID: " << k->response->part();
                   #endif
              }
             break;
@@ -183,7 +183,7 @@ KTProjectCommand::~KTProjectCommand()
 void KTProjectCommand::redo()
 {
     #ifdef K_DEBUG
-        K_FUNCINFO << k->response->part();
+        T_FUNCINFO << k->response->part();
     #endif    
 
     if (k->executed) {
@@ -197,7 +197,7 @@ void KTProjectCommand::redo()
             case KTProjectRequest::Project:
             {
             #ifdef K_DEBUG
-                kDebug() << "Project response isn't handle";
+                tDebug() << "Project response isn't handle";
             #endif
             }
             break;
@@ -218,20 +218,20 @@ void KTProjectCommand::redo()
             break;
             case KTProjectRequest::Item:
             {
-                 kFatal() << "KTProjectCommand::redo() - Item request!";
+                 tFatal() << "KTProjectCommand::redo() - Item request!";
                  itemCommand();
             }
             break;
             case KTProjectRequest::Library:
             {
-                 kFatal() << "KTProjectCommand::redo() - Just tracing library redo()!";
+                 tFatal() << "KTProjectCommand::redo() - Just tracing library redo()!";
                  libraryCommand();
             }
             break;
             default:
             {
             #ifdef K_DEBUG
-                K_FUNCINFO << ("Unknown project response!");
+                T_FUNCINFO << ("Unknown project response!");
             #endif
             }
             break;
@@ -246,7 +246,7 @@ void KTProjectCommand::undo()
             case KTProjectRequest::Project:
             {
                  #ifdef K_DEBUG
-                        kDebug() << "Project response isn't handle";
+                        tDebug() << "Project response isn't handle";
                  #endif
             }
             break;
@@ -267,20 +267,20 @@ void KTProjectCommand::undo()
             break;
             case KTProjectRequest::Item:
             {
-                 kFatal() << "KTProjectCommand::undo() - Item request!";
+                 tFatal() << "KTProjectCommand::undo() - Item request!";
                  itemCommand();
             }
             break;
             case KTProjectRequest::Library:
             {
-                 kFatal() << "KTProjectCommand::undo() - Just tracing library undo()!";
+                 tFatal() << "KTProjectCommand::undo() - Just tracing library undo()!";
                  libraryCommand();
             }
             break;
             default:
             {
                  #ifdef K_DEBUG
-                        K_FUNCINFO << ("Unknown project response!");
+                        T_FUNCINFO << ("Unknown project response!");
                  #endif
             }
             break;
@@ -290,7 +290,7 @@ void KTProjectCommand::undo()
 void KTProjectCommand::frameCommand()
 {
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
     #endif
 
     KTFrameResponse *response = static_cast<KTFrameResponse *>(k->response);
@@ -454,7 +454,7 @@ void KTProjectCommand::itemCommand()
 {
     /*
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
     #endif
     */
 
@@ -530,7 +530,7 @@ void KTProjectCommand::itemCommand()
 void KTProjectCommand::libraryCommand()
 {
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
     #endif
     
     KTLibraryResponse *response = static_cast<KTLibraryResponse *>(k->response);

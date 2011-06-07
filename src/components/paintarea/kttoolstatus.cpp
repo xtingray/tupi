@@ -38,8 +38,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 KTToolStatus::KTToolStatus()
 {

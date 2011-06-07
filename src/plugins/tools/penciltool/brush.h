@@ -63,7 +63,7 @@ class Brush : public KTToolPlugin
         virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual QMap<QString, KAction *>actions() const;
+        virtual QMap<QString, TAction *>actions() const;
         int toolType() const;
         virtual QWidget *configurator();
         virtual void aboutToChangeTool();
@@ -78,7 +78,7 @@ class Brush : public KTToolPlugin
         QPointF m_oldPos;
         QPainterPath m_path;
         ExactnessConfigurator * m_configurator;
-        QMap<QString, KAction *> m_actions;
+        QMap<QString, TAction *> m_actions;
         KTPathItem *m_item;
 };
 

@@ -37,8 +37,8 @@
 
 #include <QDir>
 #include <QTimer>
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #define KLIB_PREFIX "/pending/to/define"
 #define PLUGIN_DIR QString(KLIB_PREFIX)+"/pending/to/define"
@@ -63,7 +63,7 @@ KAudioPlayer *KAudioPlayer::instance()
 
 void KAudioPlayer::loadEngine(const QString &engineKey)
 {
-    kDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
+    tDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
     
     QDir m_pluginDirectory = QDir(PLUGIN_DIR);
     
@@ -72,12 +72,12 @@ void KAudioPlayer::loadEngine(const QString &engineKey)
         QObject *plugin = qobject_cast<QObject*>(loader.instance());
         
         if (plugin) {
-            kDebug("audio engine") << "******FILE: " << fileName;
+            tDebug("audio engine") << "******FILE: " << fileName;
             KAudioEngineIface *engine = qobject_cast<KAudioEngineIface *>(plugin);
             
             if (engine) {
                 if (engine->key() == engineKey) {
-                    kDebug("audio engine") << "Loaded!";
+                    tDebug("audio engine") << "Loaded!";
                     m_engine = engine;
                     m_engine->init();
                     break;

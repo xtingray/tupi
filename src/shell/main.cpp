@@ -50,7 +50,7 @@
 #include <QThread>
 
 #include "kapplicationproperties.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kcollapsiblewidget.h"
 #include "kaudioplayer.h"
 
@@ -126,19 +126,19 @@ int main(int argc, char ** argv)
     kAppProp->setRevision(REVISION);
 
     // Time to define global variables for Tupi
-    KCONFIG->beginGroup("General");
+    TCONFIG->beginGroup("General");
 
-    if (! KCONFIG->isOk()) {
+    if (! TCONFIG->isOk()) {
 #if defined(K_DEBUG)
-        KCONFIG->setValue("Debug", "true");
+        TCONFIG->setValue("Debug", "true");
 #else
-        KCONFIG->setValue("Debug", "false");
+        TCONFIG->setValue("Debug", "false");
 #endif
-        KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("TUPI_HOME")));
-        KCONFIG->setValue("Cache", QDir::tempPath());
+        TCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("TUPI_HOME")));
+        TCONFIG->setValue("Cache", QDir::tempPath());
     }
 
-    kAppProp->setHomeDir(KCONFIG->value("Home").toString());
+    kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setPluginDir(QString::fromLocal8Bit(::getenv("TUPI_PLUGIN")));
     kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("TUPI_SHARE")));
 
@@ -156,14 +156,14 @@ int main(int argc, char ** argv)
     kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
 
     /*
-    kDebug() << "HOME_DIR: " << HOME_DIR;
-    kDebug() << "SHARE_DIR: " << SHARE_DIR;
-    kDebug() << "DATA_DIR: " << DATA_DIR;
-    kDebug() << "THEME_DIR: " << THEME_DIR;
+    tDebug() << "HOME_DIR: " << HOME_DIR;
+    tDebug() << "SHARE_DIR: " << SHARE_DIR;
+    tDebug() << "DATA_DIR: " << DATA_DIR;
+    tDebug() << "THEME_DIR: " << THEME_DIR;
     */
 
     // Setting the repository directory (where the projects are saved)
-    application.createCache(KCONFIG->value("Cache").toString());
+    application.createCache(TCONFIG->value("Cache").toString());
 
     // Downloading maefloresta Twitter status
     KTwitter *ktwitter = new KTwitter();
@@ -184,7 +184,7 @@ int main(int argc, char ** argv)
         if (! application.firstRun()) {
             // If dialog is canceled or Tupi can not be configured, kill the whole application
             #ifdef K_DEBUG
-                  kFatal () << "********************* You need configure the application" << endl;
+                  tFatal () << "********************* You need configure the application" << endl;
            #endif
 
            QMessageBox::critical(0, QObject::tr("Missing..."), 
@@ -194,13 +194,13 @@ int main(int argc, char ** argv)
         }
 
         // Setting the new global variables for Tupi
-        kAppProp->setHomeDir(KCONFIG->value("Home").toString());
-        application.createCache(KCONFIG->value("Cache").toString());
+        kAppProp->setHomeDir(TCONFIG->value("Home").toString());
+        application.createCache(TCONFIG->value("Cache").toString());
     }
     */
 
     // Time to apply the theme for the application GUI
-    QString themefile = KCONFIG->value("ThemeFile").toString();
+    QString themefile = TCONFIG->value("ThemeFile").toString();
 
     if (! themefile.isEmpty()) 
         application.applyTheme(themefile);
@@ -235,7 +235,7 @@ int main(int argc, char ** argv)
 
     // Looking for plugins for Tupi
     #ifdef K_DEBUG
-           kWarning() << "Loading plugins from: " << SHARE_DIR << " + plugins";
+           tWarning() << "Loading plugins from: " << SHARE_DIR << " + plugins";
     #endif
     QApplication::addLibraryPath(SHARE_DIR + "plugins");
 

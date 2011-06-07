@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kmoviegenerator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 KMovieGenerator::KMovieGenerator(int width, int height)
     : QImage(width, height, QImage::Format_RGB32)

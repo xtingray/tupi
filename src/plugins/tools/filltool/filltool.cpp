@@ -40,8 +40,8 @@
 #include <QImage>
 #include <QPaintDevice>
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 #include "kpathhelper.h"
 
 #include "ktrectitem.h"
@@ -99,19 +99,19 @@ QStringList FillTool::keys() const
 
 void FillTool::setupActions()
 {
-    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/inside.png"), tr("Internal fill"), this);
+    TAction *action1 = new TAction(QIcon(THEME_DIR + "icons/inside.png"), tr("Internal fill"), this);
     action1->setShortcut(QKeySequence(tr("I")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
     m_actions.insert(tr("Internal fill"), action1);
     
     /*
-    KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
+    TAction *action2 = new TAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
     action2->setShortcut(QKeySequence(tr("Ctrl+F")));
     action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
     m_actions.insert(tr("Shape fill"), action2);
     */
     
-    KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
+    TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
     action3->setShortcut(QKeySequence(tr("B")));
     action3->setCursor(QCursor(THEME_DIR + "cursors/contour_fill.png"));
     m_actions.insert(tr("Contour fill"), action3);
@@ -127,7 +127,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
             
             if (!item) { 
                 #ifdef K_DEBUG
-                       kFatal() << "FillTool::press() - No item found";
+                       tFatal() << "FillTool::press() - No item found";
                 #endif
                 return;
             }
@@ -229,7 +229,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                     emit requested(&event);
                 } else {
                     #ifdef K_DEBUG
-                           kFatal() << "FillTool::press() - Invalid object index";
+                           tFatal() << "FillTool::press() - Invalid object index";
                     #endif
                 }
             }
@@ -245,7 +245,7 @@ void FillTool::release(const KTInputDeviceInformation *, KTBrushManager *, KTGra
 {
 }
 
-QMap<QString, KAction *> FillTool::actions() const
+QMap<QString, TAction *> FillTool::actions() const
 {
     return m_actions;
 }

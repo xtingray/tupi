@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktdebugterm.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QIcon>
 #include <QBoxLayout>
@@ -43,10 +43,10 @@
 KTDebugTerm::KTDebugTerm(QWidget *parent, int width) : QWidget(parent)
 {
 #ifdef K_DEBUG
-    KINIT;
+    TINIT;
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this); 
     mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
-    debugBrowser = KDebug::browser(this, width);
+    debugBrowser = TDebug::browser(this, width);
     mainLayout->addWidget(debugBrowser);
 #endif
 }
@@ -54,6 +54,6 @@ KTDebugTerm::KTDebugTerm(QWidget *parent, int width) : QWidget(parent)
 KTDebugTerm::~KTDebugTerm()
 {
 #ifdef K_DEBUG
-    KEND;
+    TEND;
 #endif
 }

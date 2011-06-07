@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "target.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "ktgraphicalgorithm.h"
 #include "ktgraphicobject.h"
 
@@ -110,7 +110,7 @@ void Target::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     emit positionUpdated(event->scenePos()); 

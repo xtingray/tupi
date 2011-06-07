@@ -39,7 +39,7 @@
 #include <QFont>
 
 #include "ktsvg2qt.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTSerializer::KTSerializer()
 {

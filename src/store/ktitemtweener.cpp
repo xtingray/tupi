@@ -35,13 +35,13 @@
 
 #include "ktitemtweener.h"
 #include "ktsvg2qt.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QGraphicsItem>
 #include <QHash>
 
 #define VERIFY_STEP(index) if (index > k->frames || k->frames == 0) { \
-                               kWarning("items") << "Invalid step " << index << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
+                               tWarning("items") << "Invalid step " << index << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
                                return; }
 
 #define STEP(index) index / (double)k->frames
@@ -155,12 +155,12 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
     
     if (step.has(KTTweenerStep::Position)) {
         setPosAt(counter, step.position());
-        kFatal() << "KTItemTweener::addStep() - Adding position value";
+        tFatal() << "KTItemTweener::addStep() - Adding position value";
     }
 
     if (step.has(KTTweenerStep::Rotation)) {
         setRotationAt(counter, step.rotation());
-        kFatal() << "KTItemTweener::addStep() - Adding rotation value";
+        tFatal() << "KTItemTweener::addStep() - Adding rotation value";
     }
     
     if (step.has(KTTweenerStep::Scale))
@@ -190,7 +190,7 @@ void KTItemTweener::setPosAt(int index, const QPointF &pos)
 void KTItemTweener::setRotationAt(int index, double angle)
 {
     VERIFY_STEP(index);
-    kFatal() << "KTItemTweener::setRotationAt() - Index: " << index << " - Angle: " << angle;
+    tFatal() << "KTItemTweener::setRotationAt() - Index: " << index << " - Angle: " << angle;
     k->step(index)->setRotation(angle);
 }
 
@@ -240,8 +240,8 @@ QPointF KTItemTweener::transformOriginPoint()
 
 void KTItemTweener::fromXml(const QString &xml)
 {
-    kFatal() << "KTItemTweener::fromXml() - Following the white rabbit!";
-    kFatal() << xml;
+    tFatal() << "KTItemTweener::fromXml() - Following the white rabbit!";
+    tFatal() << xml;
     
     QDomDocument doc;
 
@@ -270,7 +270,7 @@ void KTItemTweener::fromXml(const QString &xml)
 
                    if (!e.isNull()) {
                        if (e.tagName() == "position") {
-                           kFatal() << "KTItemTweener::fromXml() - Processing position settings";
+                           tFatal() << "KTItemTweener::fromXml() - Processing position settings";
                            k->tweenList.append(KTItemTweener::Position);
                            k->compPositionInitFrame = e.attribute("init").toInt();
                            k->compPositionFrames = e.attribute("frames").toInt();
@@ -278,7 +278,7 @@ void KTItemTweener::fromXml(const QString &xml)
                            k->path = e.attribute("coords");
                        }
                        if (e.tagName() == "rotation") {
-                           kFatal() << "KTItemTweener::fromXml() - Processing rotation settings";
+                           tFatal() << "KTItemTweener::fromXml() - Processing rotation settings";
                            k->tweenList.append(KTItemTweener::Rotation);
                            k->compRotationInitFrame = e.attribute("init").toInt();
                            k->compRotationFrames = e.attribute("frames").toInt();
@@ -297,25 +297,25 @@ void KTItemTweener::fromXml(const QString &xml)
                        }
 
                        if (e.tagName() == "scale") {
-                           kFatal() << "KTItemTweener::fromXml() - Processing scale settings";
+                           tFatal() << "KTItemTweener::fromXml() - Processing scale settings";
                            k->tweenList.append(KTItemTweener::Scale);
                            k->compScaleInitFrame = e.attribute("init").toInt();
                            k->compScaleFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "shear") {
-                           kFatal() << "KTItemTweener::fromXml() - Processing shear settings";
+                           tFatal() << "KTItemTweener::fromXml() - Processing shear settings";
                            k->tweenList.append(KTItemTweener::Shear);
                            k->compShearInitFrame = e.attribute("init").toInt();
                            k->compShearFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "opacity") {
-                           kFatal() << "KTItemTweener::fromXml() - Processing opacity settings";
+                           tFatal() << "KTItemTweener::fromXml() - Processing opacity settings";
                            k->tweenList.append(KTItemTweener::Opacity);
                            k->compOpacityInitFrame = e.attribute("init").toInt();
                            k->compOpacityFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "coloring") {
-                           kFatal() << "KTItemTweener::fromXml() - Processing coloring settings";
+                           tFatal() << "KTItemTweener::fromXml() - Processing coloring settings";
                            k->tweenList.append(KTItemTweener::Coloring);
                            k->compColoringInitFrame = e.attribute("init").toInt();
                            k->compColoringFrames = e.attribute("frames").toInt();
@@ -418,7 +418,7 @@ void KTItemTweener::fromXml(const QString &xml)
 
 QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTItemTweener::toXml() - Saving the whole tween! - Type: " << k->type;
+    tFatal() << "KTItemTweener::toXml() - Saving the whole tween! - Type: " << k->type;
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
@@ -686,10 +686,10 @@ int KTItemTweener::tweenColorReverseLoop()
 
 bool KTItemTweener::contains(KTItemTweener::Type type)
 {
-    kFatal() << "KTItemTweener::contains() - Type List Size: " << k->tweenList.size();
+    tFatal() << "KTItemTweener::contains() - Type List Size: " << k->tweenList.size();
 
     for (int i=0; i < k->tweenList.size(); i++) {
-         kFatal() << "KTItemTweener::contains() - type: " << k->tweenList.at(i);
+         tFatal() << "KTItemTweener::contains() - type: " << k->tweenList.at(i);
          if (k->tweenList.at(i) == type)
              return true;
     }

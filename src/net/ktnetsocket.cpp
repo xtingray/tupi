@@ -37,7 +37,7 @@
 #include <QTextStream>
 #include <QDataStream>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktnetprojectmanagerhandler.h"
 
@@ -54,7 +54,7 @@ KTNetSocket::~KTNetSocket()
 void KTNetSocket::readed(const QString &readed)
 {
     #ifdef K_DEBUG
-        kDebug("net") << "READED: " << readed;
+        tDebug("net") << "READED: " << readed;
     #endif
 
     QDomDocument doc;

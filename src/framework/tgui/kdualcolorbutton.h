@@ -45,7 +45,7 @@ class QBitmap;
 #include <QDropEvent>
 #include <QBrush>
 #include <QWidget>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @note This class was adapted to Tupi by David Cuadrado

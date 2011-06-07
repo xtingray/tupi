@@ -39,7 +39,7 @@
 #include "ktlibrary.h"
 #include "ktpackagehandler.h"
 #include "kalgorithm.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QDir>
 
@@ -73,7 +73,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
         if (!projectDir.exists()) {
             if (! projectDir.mkdir(projectDir.path())) {
                 #ifdef K_DEBUG
-                       kFatal() << "KTSaveProject::save() - Can't save project";
+                       tFatal() << "KTSaveProject::save() - Can't save project";
                 #endif
                 return false;
             }
@@ -81,7 +81,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     }
 
     #ifdef K_DEBUG
-           kDebug("project") << "KTSaveProject::save() - Saving project to: " << projectDir.absolutePath();
+           tDebug("project") << "KTSaveProject::save() - Saving project to: " << projectDir.absolutePath();
     #endif
 
     {
@@ -136,7 +136,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
 
     if (ok) {
         #ifdef K_DEBUG
-               kWarning() << tr("Project saved in %1").arg(fileName);
+               tWarning() << tr("Project saved in %1").arg(fileName);
         #endif
     }
 
@@ -146,7 +146,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
 bool KTSaveProject::load(const QString &fileName, KTProject *project)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO << fileName;
+           T_FUNCINFO << fileName;
     #endif
 
     KTPackageHandler packageHandler;
@@ -161,10 +161,10 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
             pfile.close();
         } else {
             #ifdef K_DEBUG
-                   kError() << "KTSaveProject::load() - Error while open .tpp file. Name: " << pfile.fileName();
-                   kError() << "KTSaveProject::load() - Path: " << projectDir.path();
-                   kError() << "KTSaveProject::load() - Error Description: " << pfile.errorString();
-                   kError() << "KTSaveProject::load() - Error type: " << pfile.error();
+                   tError() << "KTSaveProject::load() - Error while open .tpp file. Name: " << pfile.fileName();
+                   tError() << "KTSaveProject::load() - Path: " << projectDir.path();
+                   tError() << "KTSaveProject::load() - Error Description: " << pfile.errorString();
+                   tError() << "KTSaveProject::load() - Error type: " << pfile.error();
             #endif
             return false;
         }

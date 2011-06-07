@@ -40,7 +40,7 @@
 #include <QFrame>
 #include <QLabel>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent)
 {

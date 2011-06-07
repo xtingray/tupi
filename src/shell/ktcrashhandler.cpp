@@ -55,8 +55,8 @@ extern "C"
 
 #include "ktcrashhandler.h"
 #include "ktcrashwidget.h"
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 
 KTCrashHandler *KTCrashHandler::m_instance = 0;
 
@@ -203,7 +203,7 @@ bool KTCrashHandler::containsSignalEntry(int signal)
 void KTCrashHandler::setConfig(const QString &filePath)
 {
 #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
        //SHOW_VAR(filePath);
 #endif
 
@@ -252,7 +252,7 @@ static QString runCommand(const QString &command)
     QString result = "";
 
 #ifdef K_DEBUG
-    kDebug() << "Running command: " << command;
+    tDebug() << "Running command: " << command;
 #endif
 
     FILE *process = ::popen(command.toLocal8Bit().data(), "r");

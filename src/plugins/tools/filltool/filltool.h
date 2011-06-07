@@ -71,7 +71,7 @@ class FillTool : public KTToolPlugin
         
         KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
         
-        virtual QMap<QString, KAction *> actions() const;
+        virtual QMap<QString, TAction *> actions() const;
         
         int toolType() const;
         
@@ -88,7 +88,7 @@ class FillTool : public KTToolPlugin
         void setupActions();
         
     private:
-        QMap<QString, KAction *> m_actions;
+        QMap<QString, TAction *> m_actions;
         KTGraphicsScene *m_scene;
 };
 

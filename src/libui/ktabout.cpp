@@ -44,10 +44,10 @@
 #include <QTextBrowser>
 
 #include "ktabout.h"
-#include "kglobal.h"
+#include "tglobal.h"
 #include "kimageeffect.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #define DEBUG_ABOUT 1
 
@@ -84,7 +84,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
         creditsFile.close();
     } else {
         #ifdef K_DEBUG
-               kError() << "Error while trying to read " << creditsFile.fileName();
+               tError() << "Error while trying to read " << creditsFile.fileName();
         #endif
     }
     */
@@ -98,13 +98,10 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
         return;
 
     if (!doc.setContent(&file)) {
-        kFatal() << "LEAVING!!! - Path: " << creditsFile;
         file.close();
         return;
     }
     file.close();
-
-    kFatal() << "PASSING!!!";
 
     QDomElement docElem = doc.documentElement();
     QDomNode n = docElem.firstChild();

@@ -46,7 +46,7 @@
 #include "ktprojectresponse.h"
 #include "ktprojectloader.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QDir>
 #include <QGraphicsView>
@@ -74,7 +74,7 @@ struct KTProject::Private
 KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->bgColor = QColor("#fff");
@@ -90,7 +90,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
 KTProject::~KTProject()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 
     deleteDataDir();
@@ -110,7 +110,7 @@ void KTProject::loadLibrary(const QString &filename)
         lfile.close();
     } else {
         #ifdef K_DEBUG
-               kFatal("library") << "Cannot open library from: " << filename;
+               tFatal("library") << "Cannot open library from: " << filename;
         #endif
     }
 }
@@ -242,7 +242,7 @@ void KTProject::updateScene(int position, KTScene *scene)
 bool KTProject::removeScene(int position)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
     KTScene *toRemove = scene(position);
 
@@ -263,7 +263,7 @@ bool KTProject::moveScene(int position, int newPosition)
 {
     if (position < 0 || position >= k->scenes.count() || newPosition < 0 || newPosition >= k->scenes.count()) {
         #ifdef K_DEBUG
-               kWarning() << "Failed moving scene!";
+               tWarning() << "Failed moving scene!";
         #endif
         return false;
     }
@@ -276,12 +276,12 @@ bool KTProject::moveScene(int position, int newPosition)
 KTScene *KTProject::scene(int position) const
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("project")<< position;
+           T_FUNCINFOX("project")<< position;
     #endif
 
     if (position < 0 || position >= k->scenes.count()) {
         #ifdef K_DEBUG
-               kFatal() << "KTProject::scene() - FATAL ERROR: index out of bound (" << position << ")";
+               tFatal() << "KTProject::scene() - FATAL ERROR: index out of bound (" << position << ")";
         #endif
         return 0;
     }
@@ -525,7 +525,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                         case KTLibraryObject::Text:
                         {
                              // SQA: Just out of curiosity, check if this case really happens!
-                             // kFatal() << "KTProject::addSymbolToProject() - Just tracing text!";
+                             // tFatal() << "KTProject::addSymbolToProject() - Just tracing text!";
                              KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
                              frame->addItem(name, libraryItem);
                         }
@@ -570,7 +570,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                         break;
                         default:
                              #ifdef K_DEBUG
-                                    kFatal() << "KTProject::addSymbolToProject() -> Unknown Object Type"; 
+                                    tFatal() << "KTProject::addSymbolToProject() -> Unknown Object Type"; 
                              #endif
                         break;
                 }
@@ -579,7 +579,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
             } else {
                 #ifdef K_DEBUG 
-                       kFatal() << "KTProject::addSymbolToProject() - Object NOT found at library! " << name;
+                       tFatal() << "KTProject::addSymbolToProject() - Object NOT found at library! " << name;
                 #endif
                 return false;
             }
@@ -684,7 +684,7 @@ bool KTProject::deleteDataDir()
         if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg")) {
 
             #ifdef K_DEBUG
-                   kDebug("project") << "Removing directory " << dir.absolutePath(); 
+                   tDebug("project") << "Removing directory " << dir.absolutePath(); 
             #endif
 
             foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg") {
@@ -707,7 +707,7 @@ bool KTProject::deleteDataDir()
 
         if (! dir.rmdir(dir.absolutePath())) {
             #ifdef K_DEBUG
-                   kError("project") << "Cannot remove project data directory!";
+                   tError("project") << "Cannot remove project data directory!";
             #endif
         }
 

@@ -38,7 +38,7 @@
 
 #include <QWidget>
 #include <QStringList>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QBoxLayout;
 class QGridLayout;

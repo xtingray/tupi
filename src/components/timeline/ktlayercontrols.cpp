@@ -45,8 +45,8 @@
 #include <QItemDelegate>
 
 #include "kseparator.h"
-#include "kapplication.h"
-#include "kdebug.h"
+#include "tapplication.h"
+#include "tdebug.h"
 
 const int LOCK_COLUMN = 0;
 const int VIEW_COLUMN = 1;
@@ -168,7 +168,7 @@ struct KTLayerControls::Private
 KTLayerControls::KTLayerControls(int sceneIndex, QWidget *parent) : QTableWidget(0, 2, parent), k(new Private)
 {
     #ifdef K_DEBUG
-        KINIT;
+        TINIT;
     #endif
 
     setItemDelegate(new KTLayerControlsItemDelegate(this));
@@ -196,7 +196,7 @@ KTLayerControls::KTLayerControls(int sceneIndex, QWidget *parent) : QTableWidget
 KTLayerControls::~KTLayerControls()
 {
     #ifdef K_DEBUG
-        KEND;
+        TEND;
     #endif
 
     delete k;
@@ -292,7 +292,7 @@ void KTLayerControls::lockLayer(int position, bool locked)
 void KTLayerControls::setLocalRequest(int layerIndex, int column)
 {
     if (column == 0) {
-        kFatal() << "KTLayerControls::setLocalRequest -> Column 0!";
+        tFatal() << "KTLayerControls::setLocalRequest -> Column 0!";
     }
 
     if (column == 1) {

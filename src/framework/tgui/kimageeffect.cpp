@@ -59,7 +59,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define MOD(x, y) ((x) < 0 ? ((y) - 1 - ((y) - 1 - (x)) % (y)) : (x) % (y))
 
 /**
- * \relates KGlobal
+ * \relates TGlobal
  * A typesafe function that returns x if it's between low and high values.
  * low if x is smaller than then low and high if x is bigger than high.
  */

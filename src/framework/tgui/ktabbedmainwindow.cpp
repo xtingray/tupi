@@ -104,7 +104,7 @@ void TabWidgetPrivate::wheelMove(int delta)
  * @param parent 
  * @return 
  */
-KTabbedMainWindow::KTabbedMainWindow(QWidget *parent) : KMainWindow(parent)
+KTabbedMainWindow::KTabbedMainWindow(QWidget *parent) : TMainWindow(parent)
 {
     m_tabWidget = new TabWidgetPrivate;
     setupTabWidget(m_tabWidget);

@@ -42,7 +42,7 @@
 #include <QSpinBox>
 #include <QLineEdit>
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kdoublecombobox.h"
 
 #include <cmath>
@@ -116,7 +116,7 @@ struct KTColorValue::Private
 KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->ok = true;
@@ -128,7 +128,7 @@ KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), k(new Private)
 KTColorValue::~KTColorValue()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

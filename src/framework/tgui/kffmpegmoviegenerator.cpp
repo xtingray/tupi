@@ -38,7 +38,7 @@
 #include <stdint.h>
 
 #include "kffmpegmoviegenerator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kalgorithm.h"
 
 #include <QDir>
@@ -89,7 +89,7 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     if (!st) {
         errorMsg = "ffmpeg error: Could not alloc stream. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << errorMsg;
+               tError() << errorMsg;
         #endif
         return 0;
     }
@@ -197,7 +197,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     if (!codec) {
         errorMsg = "ffmpeg error: Video codec not found. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. It's very possible your system is missing codecs. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << errorMsg;
+               tError() << errorMsg;
         #endif
 
         return false;
@@ -207,7 +207,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     if (avcodec_open(c, codec) < 0) {
         errorMsg = "ffmpeg error: Could not open video codec. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << errorMsg;
+               tError() << errorMsg;
         #endif
         return false;
     }
@@ -224,7 +224,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     if (!picture) {
         errorMsg = "ffmpeg error: Could not allocate m_picture. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << errorMsg;
+               tError() << errorMsg;
         #endif 
         return false;
     }
@@ -236,7 +236,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
         if (!tmpPicture) {
             errorMsg = "ffmpeg error: Could not allocate temporary picture. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
             #ifdef K_DEBUG
-                   kError() << errorMsg;
+                   tError() << errorMsg;
             #endif
             return false;
         }
@@ -291,7 +291,7 @@ void KFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
     #ifdef K_DEBUG
-           kDebug() << "* Generating frame #" << frameCount;
+           tDebug() << "* Generating frame #" << frameCount;
     #endif
 
     AVCodecContext *c = video_st->codec;
@@ -357,7 +357,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
        errorMsg = "ffmpeg error: Could not write video frame. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
 
        #ifdef K_DEBUG
-              kError() << errorMsg;
+              tError() << errorMsg;
        #endif
        return false;
    }
@@ -428,7 +428,7 @@ bool KFFMpegMovieGenerator::begin()
     if (! k->fmt) {
         k->errorMsg = "ffmpeg error: Cannot find a valid format for " + k->movieFile.toLocal8Bit() + ". This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << k->errorMsg;
+               tError() << k->errorMsg;
         #endif
         return false;
     }
@@ -438,7 +438,7 @@ bool KFFMpegMovieGenerator::begin()
     if (!k->oc) {
         k->errorMsg = "ffmpeg error: Error while doing export. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << k->errorMsg;
+               tError() << k->errorMsg;
         #endif
         return false;
     }
@@ -450,7 +450,7 @@ bool KFFMpegMovieGenerator::begin()
     if (!k->video_st) {
         k->errorMsg = "ffmpeg error: Can't add video stream. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << k->errorMsg;
+               tError() << k->errorMsg;
         #endif
         return false;
     }
@@ -458,7 +458,7 @@ bool KFFMpegMovieGenerator::begin()
     if (av_set_parameters(k->oc, 0) < 0) {
         k->errorMsg = "ffmpeg error: Invalid output format parameters. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
-               kError() << k->errorMsg;
+               tError() << k->errorMsg;
         #endif
         return false;
     }
@@ -467,7 +467,7 @@ bool KFFMpegMovieGenerator::begin()
 
     if (!k->openVideo(k->oc, k->video_st)) {
         #ifdef K_DEBUG
-               kError() << "Can't open video";
+               tError() << "Can't open video";
         #endif
         return false;
     }
@@ -476,7 +476,7 @@ bool KFFMpegMovieGenerator::begin()
         if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
             k->errorMsg = "ffmpeg error: Could not open " + k->movieFile.toLocal8Bit() + ". This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
             #ifdef K_DEBUG
-                   kError() << k->errorMsg;
+                   tError() << k->errorMsg;
             #endif
             return false;
         }

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kactionmanager.h"
-#include "kdebug.h"
+#include "tactionmanager.h"
+#include "tdebug.h"
 
 #include <QMenuBar>
 #include <QToolBar>
@@ -43,15 +43,15 @@
  * Construye un manejador de acciones.
  * @param parent widget que contine el manejador de acciones
  */
-KActionManager::KActionManager(QObject *parent) : QObject(parent)
+TActionManager::TActionManager(QObject *parent) : QObject(parent)
 {
-    setObjectName("KActionManager"+parent->objectName());
+    setObjectName("TActionManager"+parent->objectName());
 }
 
 /**
  * Destructor
  */
-KActionManager::~KActionManager()
+TActionManager::~TActionManager()
 {
 }
 
@@ -60,7 +60,7 @@ KActionManager::~KActionManager()
  * @param action accion para adicionar 
  * @return 
  */
-bool KActionManager::insert(QAction *action, const QString &_id, const QString &container)
+bool TActionManager::insert(QAction *action, const QString &_id, const QString &container)
 {
     QString id = _id.toLower();
     if (id.isEmpty() || container.isEmpty())
@@ -68,7 +68,7 @@ bool KActionManager::insert(QAction *action, const QString &_id, const QString &
 
     QAction *a = (m_actionContainer[container])[id];
     if (a == action) {
-        kWarning() << tr("Cannot insert action with id: ") << id;
+        tWarning() << tr("Cannot insert action with id: ") << id;
         return false;
     }
 
@@ -82,7 +82,7 @@ bool KActionManager::insert(QAction *action, const QString &_id, const QString &
  * Remueve una accion del manejador
  * @param action para remover
  */
-void KActionManager::remove(QAction* action, const QString &container)
+void TActionManager::remove(QAction* action, const QString &container)
 {
     delete take(action, container);
 }
@@ -92,7 +92,7 @@ void KActionManager::remove(QAction* action, const QString &container)
  * @param action para remover
  * @return la accion removida o cero si esta no estaba en el manejador
  */
-QAction *KActionManager::take(QAction* action, const QString &container)
+QAction *TActionManager::take(QAction* action, const QString &container)
 {
     QAction *a = 0;
     QString id = m_actionContainer[container].key(action);
@@ -120,7 +120,7 @@ QAction *KActionManager::take(QAction* action, const QString &container)
  * @param id asociado a la accion
  * @return la accion requeriada
  */
-QAction *KActionManager::find(const QString &_id, const QString &container) const
+QAction *TActionManager::find(const QString &_id, const QString &container) const
 {
     QAction *action = 0;
     QString id = _id.toLower();
@@ -138,7 +138,7 @@ QAction *KActionManager::find(const QString &_id, const QString &container) cons
     }
 
     if (action == 0)
-        kError() << "KActionManager::find(): Returning NULL action: " << id << " in " << container;
+        tError() << "TActionManager::find(): Returning NULL action: " << id << " in " << container;
 
     return action;
 }
@@ -147,7 +147,7 @@ QAction *KActionManager::find(const QString &_id, const QString &container) cons
  * Retorna la accion asociada a id
  * @param id 
  */
-QAction *KActionManager::operator[](const QString &id) const
+QAction *TActionManager::operator[](const QString &id) const
 {
     return find(id);
 }
@@ -156,7 +156,7 @@ QAction *KActionManager::operator[](const QString &id) const
  * Retorna la accion asociada a id
  * @param id
  */
-void KActionManager::enable(const QString &id, bool flag)
+void TActionManager::enable(const QString &id, bool flag)
 {
    QAction *action = find(id);
    if (action != 0)
@@ -167,7 +167,7 @@ void KActionManager::enable(const QString &id, bool flag)
  * Exec the action defined by id 
  * @param id
  */
-void KActionManager::exec(const QString &id)
+void TActionManager::exec(const QString &id)
 {
    QAction *action = find(id);
    if (action != 0) {
@@ -176,7 +176,7 @@ void KActionManager::exec(const QString &id)
    } 
 }
 
-QMenuBar *KActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers, bool clear)
+QMenuBar *TActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers, bool clear)
 {
     if (menuBar) {
         if (clear)
@@ -191,7 +191,7 @@ QMenuBar *KActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &con
     return menuBar;
 }
 
-QMenu *KActionManager::setupMenu(QMenu *menu, const QString &container, bool clear)
+QMenu *TActionManager::setupMenu(QMenu *menu, const QString &container, bool clear)
 {
     if (!menu)
         menu = new QMenu(container);
@@ -207,7 +207,7 @@ QMenu *KActionManager::setupMenu(QMenu *menu, const QString &container, bool cle
     return menu;
 }
 
-QToolBar *KActionManager::setupToolBar(QToolBar *toolBar, const QString &container, bool clear)
+QToolBar *TActionManager::setupToolBar(QToolBar *toolBar, const QString &container, bool clear)
 {
     if (!toolBar)
         toolBar = new QToolBar();

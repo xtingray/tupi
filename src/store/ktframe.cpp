@@ -38,7 +38,7 @@
 #include <QGraphicsView>
 #include <QCursor>
 #include <QSvgRenderer>
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktframe.h"
 #include "ktlayer.h"
@@ -140,7 +140,7 @@ bool KTFrame::isVisible() const
 void KTFrame::fromXml(const QString &xml)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     QDomDocument document;
@@ -241,7 +241,7 @@ void KTFrame::fromXml(const QString &xml)
                               }
                           } else {
                               #ifdef K_DEBUG
-                                     kError() << "KTFrame::fromXml() - ERROR: Object id is null!";
+                                     tError() << "KTFrame::fromXml() - ERROR: Object id is null!";
                               #endif
                           }
                }
@@ -355,7 +355,7 @@ void KTFrame::insertSvgItem(int position, KTSvgItem *item)
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     qSort(group.begin(), group.end());
@@ -408,7 +408,7 @@ void KTFrame::replaceItem(int position, QGraphicsItem *item)
 bool KTFrame::moveItem(int currentPosition, int newPosition)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO << "current "<< currentPosition << " new "  << newPosition;
+           T_FUNCINFO << "current "<< currentPosition << " new "  << newPosition;
     #endif
 
     if (currentPosition == newPosition || currentPosition < 0 
@@ -544,7 +544,7 @@ KTGraphicObject *KTFrame::graphic(int position) const
 {
     if (position < 0) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->graphic()] - index: " << position << " - total items: " << k->graphics.count();
+               T_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->graphic()] - index: " << position << " - total items: " << k->graphics.count();
         #endif
 
         return 0;
@@ -557,7 +557,7 @@ KTSvgItem *KTFrame::svg(int position) const
 {
     if (position < 0) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->svg()] - index: " << position << " - total items: " << k->svg.count();
+               T_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->svg()] - index: " << position << " - total items: " << k->svg.count();
         #endif
 
         return 0;

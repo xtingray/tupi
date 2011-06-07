@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kindicatordrawer.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QRadialGradient>
 #include <cmath> //abs

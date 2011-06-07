@@ -62,7 +62,7 @@ class PolyLine : public KTToolPlugin
         
         virtual void keyPressEvent(QKeyEvent *event);
 
-        virtual QMap<QString, KAction *>actions() const;
+        virtual QMap<QString, TAction *>actions() const;
         
         int toolType() const;
         

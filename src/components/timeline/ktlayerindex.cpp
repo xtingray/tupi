@@ -45,8 +45,8 @@
 #include <QItemDelegate>
 
 #include "kseparator.h"
-#include "kapplication.h"
-#include "kdebug.h"
+#include "tapplication.h"
+#include "tdebug.h"
 
 const int LAYER_COLUMN = 0;
 
@@ -160,7 +160,7 @@ struct KTLayerIndex::Private
 KTLayerIndex::KTLayerIndex(int sceneIndex, QWidget *parent) : QTableWidget(0, 1, parent), k(new Private)
 {
     #ifdef K_DEBUG
-        KINIT;
+        TINIT;
     #endif
 
     k->sceneIndex = sceneIndex;
@@ -187,7 +187,7 @@ KTLayerIndex::KTLayerIndex(int sceneIndex, QWidget *parent) : QTableWidget(0, 1,
 KTLayerIndex::~KTLayerIndex()
 {
     #ifdef K_DEBUG
-        KEND;
+        TEND;
     #endif
 
     delete k;
@@ -311,6 +311,6 @@ void KTLayerIndex::refresh()
 {
     // int w = width();
     // int h = height();
-    // kFatal() << "Updating KTLayerIndex interface - Size: " << w << " : " << h;
+    // tFatal() << "Updating KTLayerIndex interface - Size: " << w << " : " << h;
     //repaint(0, 0, width(), height());
 }

@@ -38,7 +38,7 @@
 
 #include "kvhbox.h"
 #include "kseparator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "kimageeffect.h"
 

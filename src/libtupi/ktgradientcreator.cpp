@@ -35,8 +35,8 @@
 
 #include "ktgradientcreator.h"
 
-#include "kdebug.h"
-#include "kapplication.h"
+#include "tdebug.h"
+#include "tapplication.h"
 
 #include <QBoxLayout>
 
@@ -102,7 +102,7 @@ KTGradientCreator::KTGradientCreator(QWidget *parent)
 
 KTGradientCreator::~KTGradientCreator()
 {
-    KEND;
+    TEND;
 }
 
 void KTGradientCreator::setCurrentColor(const QColor &color)

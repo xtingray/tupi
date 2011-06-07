@@ -40,7 +40,7 @@
 #include <QDomDocument>
 #include <QFile>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTipDatabase::Private
 {

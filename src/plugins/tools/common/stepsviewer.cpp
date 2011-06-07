@@ -36,7 +36,7 @@
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
 #include "spinboxdelegate.h"
-#include "kpushbutton.h"
+#include "tpushbutton.h"
 #include "kdebug.h"
 
 #include <cmath>
@@ -51,8 +51,8 @@ struct StepsViewer::Private
     QPolygonF points;
     QList<int> frames;
     QList<QPointF> *dots;
-    QList<KPushButton*> *plusButton;
-    QList<KPushButton*> *minusButton;
+    QList<TPushButton*> *plusButton;
+    QList<TPushButton*> *minusButton;
 };
 
 StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
@@ -78,8 +78,8 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     k->dots = new QList<QPointF>();
-    k->plusButton = new QList<KPushButton*>();
-    k->minusButton = new QList<KPushButton*>();
+    k->plusButton = new QList<TPushButton*>();
+    k->minusButton = new QList<TPushButton*>();
 }
 
 StepsViewer::~StepsViewer()
@@ -164,9 +164,9 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  framesItem->setText(QString::number(frames));
                  framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
-                 k->plusButton->append(new KPushButton(this, "+", 2, control)); 
+                 k->plusButton->append(new TPushButton(this, "+", 2, control)); 
                  connect(k->plusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
-                 k->minusButton->append(new KPushButton(this, "-", 3, control));
+                 k->minusButton->append(new TPushButton(this, "-", 3, control));
                  connect(k->minusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
 
                  // SQA: Temporary code

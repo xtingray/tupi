@@ -39,7 +39,7 @@
 #include <qobject.h>
 
 #include "kaudioengineiface.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

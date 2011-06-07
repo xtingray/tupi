@@ -38,7 +38,7 @@
 #include <QStyleFactory>
 #include <QApplication>
 
-#include <kdebug.h>
+#include <tdebug.h>
 
 KStyleComboBox::KStyleComboBox(QWidget *parent) : QComboBox(parent)
 {

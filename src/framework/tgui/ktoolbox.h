@@ -36,7 +36,7 @@
 #ifndef KTOOLBOX_H
 #define KTOOLBOX_H
 
-#include "kglobal.h"
+#include "tglobal.h"
 #include <QToolBox>
 
 /**

@@ -37,7 +37,7 @@
 #define KTOONSTYLE_H
 
 #include <QPlastiqueStyle>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @if english

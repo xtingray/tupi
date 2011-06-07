@@ -43,7 +43,7 @@
 #include <QObject>
 
 #include "kseparator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktviewdocument.h"
 #include "ktglobal.h"

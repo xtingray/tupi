@@ -50,12 +50,12 @@ class KTItemResponse;
 class KTGraphicsScene;
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
  */
 
 class ContourSelection : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         ContourSelection();
@@ -67,7 +67,7 @@ class ContourSelection : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         
-        virtual QMap<QString, KAction *>actions() const;
+        virtual QMap<QString, TAction *>actions() const;
         
         int toolType() const;
         

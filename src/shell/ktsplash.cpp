@@ -43,8 +43,8 @@
 #include <cmath> //abs
 
 #include "kimageeffect.h"
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 
 //------------------ CONSTRUCTOR -----------------
 

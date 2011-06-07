@@ -41,7 +41,7 @@
 #include <QPaintEvent>
 #include <QTimer>
 #include <QTextDocument>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

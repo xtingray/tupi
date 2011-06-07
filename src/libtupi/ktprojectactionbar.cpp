@@ -41,10 +41,10 @@
 #include <QDesktopWidget>
 
 #include "ktglobal.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "kseparator.h"
-#include "kconfig.h"
+#include "tconfig.h"
 #include "koptionaldialog.h"
 #include "kimagebutton.h"
 
@@ -349,8 +349,8 @@ void KTProjectActionBar::emitActionSelected(int action)
     {
         case RemoveFrame:
         {
-            KCONFIG->beginGroup("ExposureSheet");
-            bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskFrame", false));
+            TCONFIG->beginGroup("ExposureSheet");
+            bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveWithoutAskFrame", false));
 
             if (! noAsk) {
                 KOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
@@ -362,16 +362,16 @@ void KTProjectActionBar::emitActionSelected(int action)
                 if (dialog.exec() == QDialog::Rejected)
                     return;
 
-                KCONFIG->beginGroup("ExposureSheet");
-                KCONFIG->setValue("RemoveWithoutAskFrame", dialog.shownAgain());
-                KCONFIG->sync();
+                TCONFIG->beginGroup("ExposureSheet");
+                TCONFIG->setValue("RemoveWithoutAskFrame", dialog.shownAgain());
+                TCONFIG->sync();
             }
         }
         break;
         case RemoveLayer:
         {
-            KCONFIG->beginGroup("ExposureSheet");
-            bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskLayer", false));
+            TCONFIG->beginGroup("ExposureSheet");
+            bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveWithoutAskLayer", false));
 
             if (! noAsk) {
                 KOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
@@ -382,16 +382,16 @@ void KTProjectActionBar::emitActionSelected(int action)
                 if (dialog.exec() == QDialog::Rejected)
                     return;
 
-                KCONFIG->beginGroup("ExposureSheet");
-                KCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
-                KCONFIG->sync();
+                TCONFIG->beginGroup("ExposureSheet");
+                TCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
+                TCONFIG->sync();
             }
         }
         break;
         case RemoveScene:
         {
-            KCONFIG->beginGroup("ExposureSheet");
-            bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskScene", false));
+            TCONFIG->beginGroup("ExposureSheet");
+            bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveWithoutAskScene", false));
 
             if (! noAsk) {
                 KOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
@@ -402,9 +402,9 @@ void KTProjectActionBar::emitActionSelected(int action)
                 if (dialog.exec() == QDialog::Rejected)
                     return;
 
-                KCONFIG->beginGroup("ExposureSheet");
-                KCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
-                KCONFIG->sync();
+                TCONFIG->beginGroup("ExposureSheet");
+                TCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
+                TCONFIG->sync();
             }
         }
         break;

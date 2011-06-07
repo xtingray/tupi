@@ -35,7 +35,7 @@
 
 #include "ktviewcamera.h"
 #include "ktexportwidget.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kseparator.h"
 
 #include <QLabel>
@@ -49,7 +49,7 @@
 KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     project = work;
@@ -99,7 +99,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 KTViewCamera::~KTViewCamera()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

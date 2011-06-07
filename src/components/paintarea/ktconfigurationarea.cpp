@@ -49,7 +49,7 @@
 #include <QTimer>
 //#include <QVBoxLayout>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTConfigurationArea::Private
 {
@@ -113,13 +113,13 @@ void KTConfigurationArea::toggleLock()
 void KTConfigurationArea::shrink()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parentWidget());
     if (!mainWindow || ! widget()) {
         #ifdef K_DEBUG
-               K_FUNCINFO << "Fatal error";
+               T_FUNCINFO << "Fatal error";
         #endif
         return;
     }

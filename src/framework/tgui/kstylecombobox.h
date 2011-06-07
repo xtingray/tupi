@@ -37,7 +37,7 @@
 #define KSTYLECOMBOBOX_H
 
 #include <qcombobox.h>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KCONFIGURATIONAREA_H
-#define KCONFIGURATIONAREA_H
+#ifndef TCONFIGURATIONAREA_H
+#define TCONFIGURATIONAREA_H
 
 #include <QDockWidget>
 

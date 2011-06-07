@@ -59,7 +59,7 @@ class Tweener : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void updateScene(KTGraphicsScene *scene);
-        virtual QMap<QString, KAction *>actions() const;
+        virtual QMap<QString, TAction *>actions() const;
         virtual QWidget *configurator();
         virtual void aboutToChangeTool();
         virtual void saveConfig();

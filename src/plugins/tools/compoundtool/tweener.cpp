@@ -35,9 +35,9 @@
 
 #include "tweener.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kaction.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "taction.h"
 #include "knodegroup.h"
 #include "kosd.h"
 #include "ktsvg2qt.h"
@@ -68,7 +68,7 @@
 
 struct Tweener::Private
 {
-    QMap<QString, KAction *> actions;
+    QMap<QString, TAction *> actions;
     Configurator *configurator;
 
     KTGraphicsScene *scene;
@@ -141,7 +141,7 @@ void Tweener::init(KTGraphicsScene *scene)
 void Tweener::updateStartPoint(int index)
 {
     if (k->startPoint != index && index >= 0) {
-        kFatal() << "Tweener::updateStartPoint() - New Start Point: " << k->startPoint;
+        tFatal() << "Tweener::updateStartPoint() - New Start Point: " << k->startPoint;
         k->startPoint = index;
     }
 }
@@ -160,7 +160,7 @@ QStringList Tweener::keys() const
 void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     Q_UNUSED(brushManager);
@@ -175,7 +175,7 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
                 k->path->setPath(path);
             }
         } else {
-            kFatal() << "Tweener::press() - No position!";
+            tFatal() << "Tweener::press() - No position!";
         }
     } 
 }
@@ -196,7 +196,7 @@ void Tweener::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
 void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     Q_UNUSED(input);
@@ -234,7 +234,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
                     }
                 }
             } else {
-                kFatal() << "Tweener::release() - No position!";
+                tFatal() << "Tweener::release() - No position!";
             }
 
         } else {
@@ -283,7 +283,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
 /* This method returns the list of actions defined in this plugin */
 
-QMap<QString, KAction *> Tweener::actions() const
+QMap<QString, TAction *> Tweener::actions() const
 {
     return k->actions;
 }
@@ -345,7 +345,7 @@ void Tweener::aboutToChangeTool()
     if (k->editMode == TweenerPanel::TweenProperties) {
         if (k->currentTweenType == TweenerPanel::Position) {
             if (k->path) {
-                kFatal() << "Tweener::aboutToChangeTool() - Removing path!";
+                tFatal() << "Tweener::aboutToChangeTool() - Removing path!";
                 k->scene->removeItem(k->path);
                 k->pathAdded = false;
                 delete k->group;
@@ -367,7 +367,7 @@ bool Tweener::isComplete() const
 
 void Tweener::setupActions()
 {
-    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/compound_tween.png"), 
+    TAction *translater = new TAction(QPixmap(THEME_DIR + "icons/compound_tween.png"), 
                                       tr("Compound Tween"), this);
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+X")));
@@ -439,7 +439,7 @@ void Tweener::setSelect()
 
 void Tweener::applyReset()
 {
-    kFatal() << "Tweener::applyReset() - Fire in the hole!";
+    tFatal() << "Tweener::applyReset() - Fire in the hole!";
 
     k->mode = TweenerPanel::View;
     k->editMode = TweenerPanel::None;
@@ -456,7 +456,7 @@ void Tweener::applyReset()
 
         if (k->path) {
             if (k->startPoint == k->scene->currentFrameIndex()) {
-                kFatal() << "Tweener::applyReset() - Removing path!";
+                tFatal() << "Tweener::applyReset() - Removing path!";
                 k->scene->removeItem(k->path);
             }
             k->pathAdded = false;
@@ -645,7 +645,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
     if (k->mode == TweenerPanel::Edit) {
 
-       kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Edit";
+       tFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Edit";
 
        int total = k->startPoint + k->configurator->totalSteps();
 
@@ -668,7 +668,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
 
     } else if (k->mode == TweenerPanel::Add) {
 
-               kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Add";
+               tFatal() << "Tweener::updateScene() - Mode: TweenerPanel::Add";
 
                int total = framesTotal();
 
@@ -710,7 +710,7 @@ void Tweener::updateScene(KTGraphicsScene *scene)
                }
 
     } else {
-             kFatal() << "Tweener::updateScene() - Mode: TweenerPanel::View";
+             tFatal() << "Tweener::updateScene() - Mode: TweenerPanel::View";
 
              if (scene->currentFrameIndex() != k->startPoint) {
                  k->configurator->setStartFrame(scene->currentFrameIndex());
@@ -762,7 +762,7 @@ void Tweener::removeTween(const QString &name)
 
 void Tweener::setCurrentTween(const QString &name)
 {
-    kFatal() << "Tweener::setCurrentTween(Tweener::setCurrentTween() - Updating tweener: " << name;
+    tFatal() << "Tweener::setCurrentTween(Tweener::setCurrentTween() - Updating tweener: " << name;
 
     KTScene *scene = k->scene->scene();
     k->currentTween = scene->tween(name, KTItemTweener::Compound);
@@ -773,7 +773,7 @@ void Tweener::setCurrentTween(const QString &name)
 
 void Tweener::setEditEnv()
 {
-    kFatal() << "void Tweener::setEditEnv() - Just tracing!!!";
+    tFatal() << "void Tweener::setEditEnv() - Just tracing!!!";
 
     k->startPoint = k->currentTween->startFrame();
     if (k->startPoint != k->scene->currentFrameIndex()) {
@@ -793,7 +793,7 @@ void Tweener::setEditEnv()
 
     if (k->currentTween->contains(KTItemTweener::Position)) {
 
-        kFatal() << "void Tweener::setEditEnv() - Adding path!";
+        tFatal() << "void Tweener::setEditEnv() - Adding path!";
 
         k->path = k->currentTween->graphicsPath();
         k->path->setZValue(maxZValue());
@@ -857,15 +857,15 @@ void Tweener::disableSelection()
 
 void Tweener::updateCurrentTweenerType(TweenerPanel::TweenerType type)
 {
-    kFatal() << "updateCurrentTweenerType() - Just following type: " << type;
+    tFatal() << "updateCurrentTweenerType() - Just following type: " << type;
     k->currentTweenType = type;
     k->editMode = TweenerPanel::TweenProperties;
 
     if (k->currentTweenType == TweenerPanel::Position) {
-        kFatal() << "Tweener::updateCurrentTweenerType() - Setting path!";
+        tFatal() << "Tweener::updateCurrentTweenerType() - Setting path!";
         setCreatePath();
     } else  {
-        kFatal() << "Tweener::updateCurrentTweenerType() - Type is not Position!";
+        tFatal() << "Tweener::updateCurrentTweenerType() - Type is not Position!";
     }
 }
 

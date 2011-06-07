@@ -51,7 +51,7 @@
 #include <QImage>
 
 #include "kcirclebutton.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QPainterPath;
 

@@ -52,9 +52,9 @@
 #include "ktimagedevice.h"
 #include "ktgraphicsscene.h"
 
-#include "kconfig.h"
-#include "kapplication.h"
-#include "kdebug.h"
+#include "tconfig.h"
+#include "tapplication.h"
+#include "tdebug.h"
 
 #include "kttextitem.h"
 
@@ -94,7 +94,7 @@ struct KTPaintArea::Private
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     k->project = project;
@@ -118,7 +118,7 @@ KTPaintArea::~KTPaintArea()
 void KTPaintArea::setCurrentScene(int index)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->project->scenesTotal() > 0) {
@@ -138,12 +138,12 @@ void KTPaintArea::setCurrentScene(int index)
 void KTPaintArea::mousePressEvent(QMouseEvent *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (graphicsScene()->currentFrame()->isLocked()) {
         #ifdef K_DEBUG
-               kFatal() << "KTPaintArea::mousePressEvent() - Frame is locked!";
+               tFatal() << "KTPaintArea::mousePressEvent() - Frame is locked!";
         #endif
         return;
     }
@@ -237,7 +237,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 void KTPaintArea::frameResponse(KTFrameResponse *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (graphicsScene()->isDrawing())
@@ -306,7 +306,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (graphicsScene()->isDrawing())
@@ -378,7 +378,7 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (graphicsScene()->isDrawing()) 
@@ -412,7 +412,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
            default: 
                 {
                     #ifdef K_DEBUG
-                           kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
+                           tFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
                     #endif
                 }
                 break;
@@ -473,7 +473,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
     } else { 
       #ifdef K_DEBUG
-             kDebug() << "KTPaintArea::itemResponse - isDrawing() == true! - No action taken";
+             tDebug() << "KTPaintArea::itemResponse - isDrawing() == true! - No action taken";
       #endif
     }
 
@@ -599,7 +599,7 @@ void KTPaintArea::deleteItems()
                          emit requestTriggered(&event);
                      } else {
                          #ifdef K_DEBUG
-                                kFatal() << "KTPaintArea::deleteItems() - Error: Invalid item index";
+                                tFatal() << "KTPaintArea::deleteItems() - Error: Invalid item index";
                          #endif
                      }
 
@@ -612,7 +612,7 @@ void KTPaintArea::deleteItems()
 
 void KTPaintArea::groupItems()
 {
-    // K_FUNCINFO;
+    // T_FUNCINFO;
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (!selected.isEmpty()) {
@@ -667,7 +667,7 @@ void KTPaintArea::ungroupItems()
 void KTPaintArea::copyItems()
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("paintarea");
+           T_FUNCINFOX("paintarea");
     #endif
 
     k->copiesXml.clear();
@@ -718,7 +718,7 @@ void KTPaintArea::copyItems()
 void KTPaintArea::pasteItems()
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("paintarea");
+           T_FUNCINFOX("paintarea");
     #endif
 
     KTGraphicsScene* currentScene = graphicsScene();
@@ -752,7 +752,7 @@ void KTPaintArea::pasteItems()
 void KTPaintArea::cutItems()
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("paintarea");
+           T_FUNCINFOX("paintarea");
     #endif
     copyItems();
     deleteItems();
@@ -761,7 +761,7 @@ void KTPaintArea::cutItems()
 void KTPaintArea::setNextFramesOnionSkinCount(int n)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     if (KTGraphicsScene* currentScene = graphicsScene())
@@ -771,7 +771,7 @@ void KTPaintArea::setNextFramesOnionSkinCount(int n)
 void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 {
     #ifdef K_DEBUG
-       K_FUNCINFO;
+       T_FUNCINFO;
     #endif
 
     if (KTGraphicsScene* currentScene = graphicsScene())
@@ -781,7 +781,7 @@ void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 void KTPaintArea::addSelectedItemsToLibrary()
 {
     #ifdef K_DEBUG
-           kDebug("paintarea") << "Adding to library";
+           tDebug("paintarea") << "Adding to library";
     #endif
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();
@@ -815,7 +815,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
 void KTPaintArea::requestMoveSelectedItems(QAction *action)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("paintarea");
+           T_FUNCINFOX("paintarea");
     #endif
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();
@@ -867,7 +867,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
 void KTPaintArea::updatePaintArea() 
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->spaceMode == KTProject::FRAMES_EDITION) {
@@ -881,7 +881,7 @@ void KTPaintArea::updatePaintArea()
 void KTPaintArea::paintBackground()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     KTGraphicsScene* currentScene = graphicsScene();
@@ -892,7 +892,7 @@ void KTPaintArea::paintBackground()
 void KTPaintArea::setCurrentTool(QString tool) 
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     k->currentTool = tool;
@@ -901,7 +901,7 @@ void KTPaintArea::setCurrentTool(QString tool)
 void KTPaintArea::updateSpaceContext()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     KTGraphicsScene* currentScene = graphicsScene();

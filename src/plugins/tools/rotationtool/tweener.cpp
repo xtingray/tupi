@@ -43,9 +43,9 @@
 #include <QGraphicsView>
 #include <QDomDocument>
 
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kaction.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "taction.h"
 #include "kosd.h"
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
@@ -64,7 +64,7 @@
 
 struct Tweener::Private
 {
-    QMap<QString, KAction *> actions;
+    QMap<QString, TAction *> actions;
     Configurator *configurator;
 
     KTGraphicsScene *scene;
@@ -136,7 +136,7 @@ QStringList Tweener::keys() const
 void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     Q_UNUSED(input);
@@ -160,7 +160,7 @@ void Tweener::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
 void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     Q_UNUSED(input);
@@ -181,7 +181,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
 /* This method returns the list of actions defined in this plugin */
 
-QMap<QString, KAction *> Tweener::actions() const
+QMap<QString, TAction *> Tweener::actions() const
 {
     return k->actions;
 }
@@ -238,7 +238,7 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/rotation_tween.png"), 
+    TAction *translater = new TAction(QPixmap(THEME_DIR + "icons/rotation_tween.png"), 
                                       tr("Rotation Tween"), this);
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+R")));

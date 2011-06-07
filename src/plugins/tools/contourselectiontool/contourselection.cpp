@@ -39,9 +39,9 @@
 #include <QKeySequence>
 #include <QList>
 
-#include "kaction.h"
-#include "kdebug.h"
-#include "kglobal.h"
+#include "taction.h"
+#include "tdebug.h"
+#include "tglobal.h"
 #include "kalgorithm.h"
 #include "knodegroup.h"
 
@@ -64,7 +64,7 @@
 
 struct ContourSelection::Private
 {
-    QMap<QString, KAction *> actions;
+    QMap<QString, TAction *> actions;
     QList<KNodeGroup*> nodeGroups; 
     KTGraphicsScene *scene;
 
@@ -182,7 +182,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                          group->restoreItem();
                          emit requested(&event);
                      } else {
-                         kDebug("selection") << "position is " << position; 
+                         tDebug("selection") << "position is " << position; 
                      }
                      group->clearChangesNodes();
                  }
@@ -200,7 +200,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 
 void ContourSelection::itemResponse(const KTItemResponse *response)
 {
-    K_FUNCINFOX("selection");
+    T_FUNCINFOX("selection");
     KTProject *project = k->scene->scene()->project();
     QGraphicsItem *item = 0;
     KTScene *scene = 0;
@@ -228,7 +228,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "ContourSelection::itemResponse() - Project not exist";
+               tFatal() << "ContourSelection::itemResponse() - Project not exist";
         #endif
     }
     
@@ -259,7 +259,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
                      }
                  } else {
                      #ifdef K_DEBUG
-                            kFatal() << "ContourSelection::itemResponse() - No item found";
+                            tFatal() << "ContourSelection::itemResponse() - No item found";
                      #endif
                  }
             }
@@ -305,13 +305,13 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-    KAction *select = new KAction(QPixmap(THEME_DIR + "icons/nodes.png"), tr("Nodes selection "), this);
+    TAction *select = new TAction(QPixmap(THEME_DIR + "icons/nodes.png"), tr("Nodes selection "), this);
     select->setShortcut(QKeySequence(tr("N")));
 
     k->actions.insert(tr("Contour Selection"), select);
 }
 
-QMap<QString, KAction *> ContourSelection::actions() const
+QMap<QString, TAction *> ContourSelection::actions() const
 {
     return k->actions;
 }

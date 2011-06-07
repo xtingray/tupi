@@ -34,10 +34,10 @@
  ***************************************************************************/
 
 #include "ktexposuresheet.h"
-#include "kapplication.h"
+#include "tapplication.h"
 
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 #include "koptionaldialog.h"
 
 #include <QToolTip>
@@ -62,7 +62,7 @@ struct KTExposureSheet::Private
 KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->currentTable = 0;
@@ -92,7 +92,7 @@ KTExposureSheet::~KTExposureSheet()
 {
     delete k;
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 
@@ -155,7 +155,7 @@ void KTExposureSheet::createMenu()
 void KTExposureSheet::addScene(int index, const QString &name)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO << " index: " << index << " name: " << name;
+           T_FUNCINFO << " index: " << index << " name: " << name;
     #endif
 
     KTExposureTable *newScene = new KTExposureTable;
@@ -188,14 +188,14 @@ void KTExposureSheet::renameScene(int index, const QString &name)
 void KTExposureSheet::applyAction(int action)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO<< "action: " << action;
+           T_FUNCINFO<< "action: " << action;
     #endif
 
      k->currentTable = k->scenes->getCurrentTable();
 
     if (k->currentTable == 0) {
         #ifdef K_DEBUG
-               kFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
+               tFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
         #endif
         return;
     }
@@ -334,7 +334,7 @@ void KTExposureSheet::applyAction(int action)
 void KTExposureSheet::setScene(int index)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->scenes->count() >= index) {
@@ -414,7 +414,7 @@ void KTExposureSheet::expandCurrentFrameTen()
 void KTExposureSheet::insertFrame(int indexLayer, int indexFrame)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
@@ -469,7 +469,7 @@ void KTExposureSheet::actionTriggered(QAction *action)
 void KTExposureSheet::closeAllScenes()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     k->scenes->blockSignals(true);
@@ -484,7 +484,7 @@ void KTExposureSheet::closeAllScenes()
 void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("exposure");
+           T_FUNCINFOX("exposure");
     #endif
 
     switch(e->action()) {
@@ -576,13 +576,13 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 default:
                      #ifdef K_DEBUG
-                            kFatal() << "KTExposureSheet::layerResponse - Layer option undefined! -> " << e->action();
+                            tFatal() << "KTExposureSheet::layerResponse - Layer option undefined! -> " << e->action();
                      #endif
                 break;
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "KTExposureSheet::layerResponse -> Scene index invalid: " << e->sceneIndex();
+               tFatal() << "KTExposureSheet::layerResponse -> Scene index invalid: " << e->sceneIndex();
         #endif
     }
 }
@@ -590,7 +590,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 void KTExposureSheet::frameResponse(KTFrameResponse *e)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     KTExposureTable *table = k->scenes->getTable(e->sceneIndex());
@@ -657,9 +657,9 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Expand:
                  {
-                     kFatal() << "KTExposureSheet::frameResponse - Expand! -> Just Tracing!";
-                     kFatal() << "KTExposureSheet::frameResponse - Starting point: -> " << e->frameIndex();
-                     kFatal() << "KTExposureSheet::frameResponse - Range: -> " << e->arg().toInt();
+                     tFatal() << "KTExposureSheet::frameResponse - Expand! -> Just Tracing!";
+                     tFatal() << "KTExposureSheet::frameResponse - Starting point: -> " << e->frameIndex();
+                     tFatal() << "KTExposureSheet::frameResponse - Range: -> " << e->arg().toInt();
                      for(int i = 0; i < e->arg().toInt(); i++)
                          table->insertFrame(e->layerIndex(), e->frameIndex()+i+1, 
                                             table->frameName(e->layerIndex(), e->frameIndex()), 
@@ -687,7 +687,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "KTExposureSheet::frameResponse -> Scene index invalid: " << e->sceneIndex();
+               tFatal() << "KTExposureSheet::frameResponse -> Scene index invalid: " << e->sceneIndex();
         #endif
     }
 }

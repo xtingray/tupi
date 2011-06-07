@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kanimwidget.h"
-#include "kapplication.h"
+#include "tapplication.h"
 
 #include <QPixmap>
 #include <QHideEvent>
@@ -42,7 +42,7 @@
 #include <QPainter>
 #include <QFontMetricsF>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 class KAnimWidget::Controller
 {

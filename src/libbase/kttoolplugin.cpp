@@ -41,7 +41,7 @@
 #include "ktprojectresponse.h"
 #include "ktgraphicsscene.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTToolPlugin::Private
 {
@@ -79,12 +79,12 @@ QString KTToolPlugin::name() const
 
 void KTToolPlugin::begin()
 {
-    kDebug("tools") << "Begin: " << k->currentTool;
+    tDebug("tools") << "Begin: " << k->currentTool;
 }
 
 void KTToolPlugin::end()
 {
-    kDebug("tools") << "End: " << k->currentTool;
+    tDebug("tools") << "End: " << k->currentTool;
 }
 
 void KTToolPlugin::itemResponse(const KTItemResponse *event)

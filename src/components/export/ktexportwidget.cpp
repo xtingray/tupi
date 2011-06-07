@@ -49,8 +49,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include "kitemselector.h"
 #include "kxyspinbox.h"
@@ -318,7 +318,7 @@ void SelectScenes::reset()
 void SelectScenes::setScenes(const QList<KTScene *> &scenes)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     m_selector->clear();
@@ -326,14 +326,14 @@ void SelectScenes::setScenes(const QList<KTScene *> &scenes)
 
     foreach (KTScene *scene, scenes) {
              #ifdef K_DEBUG
-                    kDebug("export") << "Adding " << scene->sceneName();
+                    tDebug("export") << "Adding " << scene->sceneName();
              #endif
              m_selector->addItem(QString("%1: ").arg(pos)+scene->sceneName());
              pos++;
     }
 
     #ifdef K_DEBUG
-           kDebug("export") << "Loop: " << pos;
+           tDebug("export") << "Loop: " << pos;
     #endif
 
     m_selector->selectFirstItem();
@@ -590,7 +590,7 @@ void ExportTo::updateState(const QString &name)
 void ExportTo::exportIt()
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     bool done = false; 
@@ -658,13 +658,13 @@ void ExportTo::exportIt()
     if (m_currentExporter) {
 
         #ifdef K_DEBUG
-               kDebug() << "Exporting to file: " << filename;
+               tDebug() << "Exporting to file: " << filename;
         #endif
 
         QList<KTScene *> scenes = scenesToExport();
 
         #ifdef K_DEBUG
-               kDebug() << "Exporting " << scenes.count() << " scenes";
+               tDebug() << "Exporting " << scenes.count() << " scenes";
         #endif
 
         if (scenes.count() > 0) 
@@ -699,7 +699,7 @@ QList<KTScene *> ExportTo::scenesToExport() const
 KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExportWizard(parent), m_project(project)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     setWindowTitle(tr("Export"));
@@ -734,7 +734,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
 KTExportWidget::~KTExportWidget()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 
@@ -754,7 +754,7 @@ void KTExportWidget::loadPlugins()
                      m_plugins.insert(exporter->key(), exporter);
                  } else {
                      #ifdef K_DEBUG
-                            kError() << "Can't load: " << fileName;
+                            tError() << "Can't load: " << fileName;
                      #endif
                  }
              }

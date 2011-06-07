@@ -36,10 +36,10 @@
 #include "kthememanager.h"
 #include "qapplication.h"
 #include "kthemedocument.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
-#include <kglobal.h>
-#include <kapplication.h>
+#include <tglobal.h>
+#include <tapplication.h>
 
 KThemeManager::KThemeManager() : QXmlDefaultHandler()
 {
@@ -62,7 +62,7 @@ bool KThemeManager::applyTheme(const QString &file)
     if (reader.parse(&xmlsource)) {
         ok = true;
     } else {
-        kError() <<  QObject::tr("I can't analize the theme file: %1").arg(file) << endl;
+        tError() <<  QObject::tr("I can't analize the theme file: %1").arg(file) << endl;
         ok = false;
     }
     
@@ -71,7 +71,7 @@ bool KThemeManager::applyTheme(const QString &file)
 
 bool KThemeManager::applyTheme(const KThemeDocument &kd)
 {
-    // kDebug() << "Applying theme" << endl;
+    // tDebug() << "Applying theme" << endl;
 
     bool ok = false;
     QXmlSimpleReader reader;
@@ -83,7 +83,7 @@ bool KThemeManager::applyTheme(const KThemeDocument &kd)
     if (reader.parse(&xmlsource)) {
         ok = true;
     } else {
-        kDebug() << QObject::tr("I can't analize the theme document") << endl;
+        tDebug() << QObject::tr("I can't analize the theme document") << endl;
         ok = false;
     }
     
@@ -180,15 +180,15 @@ bool KThemeManager::characters(const QString &)
 
 bool KThemeManager::error(const QXmlParseException & exception)
 {
-    kError() << "Error analizing theme: " << exception.message() << endl;
+    tError() << "Error analizing theme: " << exception.message() << endl;
 
     return false;
 }
 
 bool KThemeManager::fatalError(const QXmlParseException & exception)
 {
-    kError() << "FATAL Error analizing theme: " << endl;
-    kError() << "Line: " << exception.lineNumber() << " Column: " << exception.columnNumber() << " " << exception.message() << endl;
+    tError() << "FATAL Error analizing theme: " << endl;
+    tError() << "Line: " << exception.lineNumber() << " Column: " << exception.columnNumber() << " " << exception.message() << endl;
 
     return false;
 }

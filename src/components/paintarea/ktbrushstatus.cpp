@@ -42,7 +42,7 @@
 #include <QColorDialog>
 
 #include "kseparator.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTBrushStatus::KTBrushStatus(const QString &label, bool bg)
 {

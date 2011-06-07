@@ -45,7 +45,7 @@
 #include <QShowEvent>
 #include <QList>
 #include <QWidget>
-#include "kglobal.h"
+#include "tglobal.h"
 
 typedef QList<QPixmap> ListOfPixmaps;
 

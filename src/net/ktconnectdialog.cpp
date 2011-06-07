@@ -46,7 +46,7 @@
 
 #include <QDialogButtonBox>
 
-#include "kconfig.h"
+#include "tconfig.h"
 #include "kformfactory.h"
 
 struct KTConnectDialog::Private
@@ -141,30 +141,30 @@ int KTConnectDialog::port() const
 
 void KTConnectDialog::loadSettings()
 {
-    KCONFIG->beginGroup("Network");
-    k->server->setText(KCONFIG->value("server", "localhost").toString());
-    k->port->setValue(KCONFIG->value("port", 6502).toInt());
-    k->login->setText(KCONFIG->value("login", "").toString());
-    k->password->setText(KCONFIG->value("password", "").toString());
+    TCONFIG->beginGroup("Network");
+    k->server->setText(TCONFIG->value("server", "localhost").toString());
+    k->port->setValue(TCONFIG->value("port", 6502).toInt());
+    k->login->setText(TCONFIG->value("login", "").toString());
+    k->password->setText(TCONFIG->value("password", "").toString());
     
-    k->storePassword->setChecked(KCONFIG->value("storePassword").toInt());
+    k->storePassword->setChecked(TCONFIG->value("storePassword").toInt());
 }
 
 void KTConnectDialog::saveSettings()
 {
-    KCONFIG->beginGroup("Network");
+    TCONFIG->beginGroup("Network");
     
-    KCONFIG->setValue("server", k->server->text());
-    KCONFIG->setValue("port", k->port->value());
-    KCONFIG->setValue("login", k->login->text());
+    TCONFIG->setValue("server", k->server->text());
+    TCONFIG->setValue("port", k->port->value());
+    TCONFIG->setValue("login", k->login->text());
     
     if (k->storePassword->isChecked()) {
-        KCONFIG->setValue("password", k->password->text());
+        TCONFIG->setValue("password", k->password->text());
     } else {
-        KCONFIG->setValue("password", "");
+        TCONFIG->setValue("password", "");
     }
     
-    KCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
-    KCONFIG->sync();
+    TCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
+    TCONFIG->sync();
 }
 

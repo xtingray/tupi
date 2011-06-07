@@ -38,7 +38,7 @@
 
 #include "ktprojectresponse.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kosd.h"
 
 #include "ktprojectcommand.h"
@@ -95,7 +95,7 @@ struct KTNetProjectManagerHandler::Private
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), k(new Private)
 {
     #ifdef K_DEBUG
-       KINIT;
+       TINIT;
     #endif
 
     k->socket = new KTNetSocket(this);
@@ -122,7 +122,7 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 {
     #ifdef K_DEBUG
-       KEND;
+       TEND;
     #endif
     k->chat->close();
     delete k;
@@ -136,7 +136,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
     
     if (k->socket->state() == QAbstractSocket::ConnectedState) {
         #ifdef K_DEBUG
-               kDebug("net") << "SENDING: " << request->xml();
+               tDebug("net") << "SENDING: " << request->xml();
         #endif
         k->socket->send(request->xml());
     }
@@ -191,7 +191,7 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     k->params = netparams;
     
     #ifdef K_DEBUG
-           kDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
+           tDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
     #endif    
 
     k->socket->connectToHost(k->params->server(), k->params->port());
@@ -245,7 +245,7 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request, bool toS
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("net");
+        T_FUNCINFOX("net");
     #endif
 
     if (root == "request") {
@@ -275,7 +275,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
         } else { // TODO: show error 
             #ifdef K_DEBUG
-                   kError() << "Error parsing";
+                   tError() << "Error parsing";
             #endif
         }
     } else if (root == "ack") {
@@ -315,7 +315,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
                    if (dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty()) {
                        #ifdef K_DEBUG
-                              kDebug() << "opening " << dialog.currentProject() << "project";
+                              tDebug() << "opening " << dialog.currentProject() << "project";
                        #endif
                        loadProjectFromServer(dialog.currentProject());
                    } else {
@@ -342,7 +342,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                }
     } else {
       #ifdef K_DEBUG
-             kDebug("net") << "Unknown package: " << root;
+             tDebug("net") << "Unknown package: " << root;
       #endif
     }
 }

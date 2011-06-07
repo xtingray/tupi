@@ -36,7 +36,7 @@
 #ifndef KTABBEDMAINWINDOW_H
 #define KTABBEDMAINWINDOW_H
 
-#include "kmainwindow.h"
+#include "tmainwindow.h"
 
 class QTabWidget;
 
@@ -44,7 +44,7 @@ class QTabWidget;
  * A tabbed main window.
  * @author David Cuadrado
 */
-class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
+class K_IDEAL_EXPORT KTabbedMainWindow : public TMainWindow
 {
     Q_OBJECT;
     public:

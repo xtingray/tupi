@@ -40,7 +40,7 @@
 #include <QLabel>
 #include <QResizeEvent>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KSqueezeLabel::KSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent)
 {

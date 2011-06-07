@@ -37,8 +37,8 @@
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include <QPluginLoader>
 #include <QDir>
@@ -73,7 +73,7 @@ void KTPluginManager::loadPlugins()
         QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
         QObject *plugin = qobject_cast<QObject*>(loader->instance());
         
-        kDebug("plugins") << "****** Trying to load plugin from: " << fileName;
+        tDebug("plugins") << "****** Trying to load plugin from: " << fileName;
         
         if (plugin) {
             AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
@@ -87,14 +87,14 @@ void KTPluginManager::loadPlugins()
             
             m_loaders << loader;
         } else {
-            kFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
+            tFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
         }
     }
 }
 
 void KTPluginManager::unloadPlugins()
 {
-    kDebug("plugins") << "Unloading plugins...";
+    tDebug("plugins") << "Unloading plugins...";
     foreach (QPluginLoader *loader, m_loaders) {
              delete loader->instance();
              delete loader;

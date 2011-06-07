@@ -40,7 +40,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QLabel>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

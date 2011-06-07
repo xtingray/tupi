@@ -43,7 +43,7 @@
 #include <QMenu>
 #include <QHeaderView>
 
-#include "kdebug.h"
+#include "tdebug.h"
 #include <ktglobal.h>
 
 /**
@@ -217,10 +217,10 @@ void KTExposureTable::emitRequestRenameFrame(QTableWidgetItem * item)
 void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int currentColumn, int previousRow, int previousColumn)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
-    // kFatal() << "KTExposureTable::emitRequestSelectFrame() - CR: " << currentSelectedRow << " - CC: " << currentColumn;
+    // tFatal() << "KTExposureTable::emitRequestSelectFrame() - CR: " << currentSelectedRow << " - CC: " << currentColumn;
 
     if (!k->removingLayer) { 
 
@@ -300,7 +300,7 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
         return frame->data(IsLocked).toBool();
     } else {
         #ifdef K_DEBUG
-               kWarning() << "KTExposureTable::frameIsLocked() - Layer: " << indexLayer << ", Frame: " << indexFrame << " doesn't exist";
+               tWarning() << "KTExposureTable::frameIsLocked() - Layer: " << indexLayer << ", Frame: " << indexFrame << " doesn't exist";
         #endif
     }
     return false;

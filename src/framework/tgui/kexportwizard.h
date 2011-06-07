@@ -43,7 +43,7 @@
 #include <QStackedWidget>
 
 #include "kvhbox.h"
-#include "kglobal.h"
+#include "tglobal.h"
 #include "ktoolview.h"
 
 class KExportWizardPage;

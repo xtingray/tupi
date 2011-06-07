@@ -54,9 +54,9 @@
 
 // Tupi Framework 
 #include <ktscene.h>
-#include "kconfig.h"
-#include "kdebug.h"
-#include "kapplication.h"
+#include "tconfig.h"
+#include "tdebug.h"
+#include "tapplication.h"
 #include "kosd.h"
 
 #include <cmath>
@@ -133,13 +133,13 @@ void KTPaintAreaBase::setBgColor(const QColor color)
 
 void KTPaintAreaBase::saveState()
 {
-    KConfig *config = kApp->config("PaintArea");
+    TConfig *config = kApp->config("PaintArea");
     config->setValue("RenderHints", int(renderHints()));
 }
 
 void KTPaintAreaBase::restoreState()
 {
-    KConfig *config = kApp->config("PaintArea");
+    TConfig *config = kApp->config("PaintArea");
 
     int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
     setRenderHints(QPainter::RenderHints(renderHints));
@@ -169,7 +169,7 @@ void KTPaintAreaBase::setAntialiasing(bool use)
 
 void KTPaintAreaBase::setUseOpenGL(bool opengl)
 {
-    K_FUNCINFO << opengl;
+    T_FUNCINFO << opengl;
 
     QCursor cursor(Qt::ArrowCursor);
     if (viewport())
@@ -222,12 +222,12 @@ bool KTPaintAreaBase::drawGrid() const
 void KTPaintAreaBase::mousePressEvent(QMouseEvent * event)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (!canPaint()) { 
         #ifdef K_DEBUG
-               kDebug() << "KTPaintAreaBase::mousePressEvent -> I can't paint right now!";
+               tDebug() << "KTPaintAreaBase::mousePressEvent -> I can't paint right now!";
         #endif
         return;
     }
@@ -406,7 +406,7 @@ void KTPaintAreaBase::drawPadLock(QPainter *painter, const QRectF &rect, QString
 bool KTPaintAreaBase::canPaint() const
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->scene) {
@@ -414,13 +414,13 @@ bool KTPaintAreaBase::canPaint() const
 
         if (frame) {
             #ifdef K_DEBUG
-                   kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THE PROBLEM IS THE FRAME";
+                   tFatal() << "KTPaintAreaBase::canPaint() : SORRY, THE PROBLEM IS THE FRAME";
             #endif
             return !frame->isLocked();
         }
     } else {
         #ifdef K_DEBUG
-               kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THERE'S NO SCENE";
+               tFatal() << "KTPaintAreaBase::canPaint() : SORRY, THERE'S NO SCENE";
         #endif
     }
 

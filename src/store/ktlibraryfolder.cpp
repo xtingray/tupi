@@ -36,7 +36,7 @@
 #include "ktlibraryfolder.h"
 #include "ktlibraryobject.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktprojectloader.h"
 #include "ktproject.h"
@@ -225,7 +225,7 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
     }
     
     #ifdef K_DEBUG
-        kDebug() << "KTLibraryFolder::findObject(): Cannot find object with id: " << id;
+        tDebug() << "KTLibraryFolder::findObject(): Cannot find object with id: " << id;
     #endif
     
     return 0;
@@ -239,7 +239,7 @@ KTLibraryFolder *KTLibraryFolder::findFolder(const QString &id) const
     }
    
     #ifdef K_DEBUG
-        kDebug() << "KTLibraryFolder::findFolder(): Cannot find folder with id: " << id;
+        tDebug() << "KTLibraryFolder::findFolder(): Cannot find folder with id: " << id;
     #endif
    
     return 0;
@@ -253,7 +253,7 @@ bool KTLibraryFolder::folderExists(const QString &id) const
     }
   
     #ifdef K_DEBUG
-        kDebug() << "KTLibraryFolder::folderExists() - Cannot find folder with id: " << id;
+        tDebug() << "KTLibraryFolder::folderExists() - Cannot find folder with id: " << id;
     #endif
   
     return false;
@@ -274,7 +274,7 @@ bool KTLibraryFolder::renameObject(const QString &folder, const QString &oldId, 
        
     } else {
         #ifdef K_DEBUG
-               kDebug() << "KTLibraryFolder::renameObject() - Object not found: " << oldId;
+               tDebug() << "KTLibraryFolder::renameObject() - Object not found: " << oldId;
         #endif
     }
 

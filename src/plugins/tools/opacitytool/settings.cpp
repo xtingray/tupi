@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "settings.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "kradiobuttongroup.h"
 #include "ktitemtweener.h"
 #include "kttweenerstep.h"

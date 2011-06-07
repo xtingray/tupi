@@ -42,7 +42,7 @@
 #include <QDir>
 
 #include "kaudioplayer.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTLibraryObject::Private
 {
@@ -112,7 +112,7 @@ void KTLibraryObject::fromXml(const QString &xml)
     
     if (! document.setContent(xml)) {
         #ifdef K_DEBUG  
-               kFatal() << "KTLibraryObject::fromXml -> Invalid XML structure!";
+               tFatal() << "KTLibraryObject::fromXml -> Invalid XML structure!";
         #endif
         return;
     }
@@ -152,7 +152,7 @@ void KTLibraryObject::fromXml(const QString &xml)
                 default:
                      {
                          #ifdef K_DEBUG
-                                kFatal() << "KTLibraryObject::fromXml() - Unknown object type: " << k->type;
+                                tFatal() << "KTLibraryObject::fromXml() - Unknown object type: " << k->type;
                          #endif
                      }
                 break;
@@ -220,7 +220,7 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
 {
     if (data.isEmpty()) {
         #ifdef K_DEBUG
-               kFatal() << "KTLibraryObject::loadData() - Data is null!";
+               tFatal() << "KTLibraryObject::loadData() - Data is null!";
         #endif
         return false;
     }
@@ -291,7 +291,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
                      loadRawData(f.readAll());
                  } else {
                      #ifdef K_DEBUG
-                            kFatal() << "KTLibraryObject::loadDataFromPath() - Image: Can't access file: " << k->dataPath;
+                            tFatal() << "KTLibraryObject::loadDataFromPath() - Image: Can't access file: " << k->dataPath;
                      #endif
                  }
             }
@@ -311,7 +311,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
                      loadRawData(f.readAll());
                  } else {
                      #ifdef K_DEBUG
-                            kFatal() << "KTLibraryObject::loadDataFromPath() - Svg: Can't access file";
+                            tFatal() << "KTLibraryObject::loadDataFromPath() - Svg: Can't access file";
                      #endif
                  }
             }

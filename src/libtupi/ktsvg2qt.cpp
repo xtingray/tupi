@@ -40,7 +40,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTSvg2Qt::KTSvg2Qt()
 {

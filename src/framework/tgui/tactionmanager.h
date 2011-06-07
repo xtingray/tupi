@@ -33,93 +33,52 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kaction.h"
-#include "kactionmanager.h"
-#include "kdebug.h"
+#ifndef TACTIONMANAGER_H
+#define TACTIONMANAGER_H
 
-KAction::KAction(QObject * parent, const QString &id) : QAction(parent)
+#include <QObject>
+#include <QWidget>
+#include <QList>
+#include <QHash>
+
+#include "taction.h"
+#include "tglobal.h"
+
+typedef QList<QAction *> KActionList;
+typedef QHash<QString, QAction *> KActionDict;
+typedef QHash<QString, KActionDict> KActionContainer;
+
+class QToolBar;
+class QMenuBar;
+
+/**
+ * @short class TActionManager provides an action manager, this handler makes easier the access and sort of any action of the app.
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
+
+class K_GUI_EXPORT TActionManager : public QObject
 {
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
+    Q_OBJECT
 
-KAction::KAction(const QString & text, QObject * parent, const QString &id) : QAction(text, parent)
-{
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
+    public:
+        TActionManager(QObject *parent = 0);
+        ~TActionManager();
 
-KAction::KAction(const QIcon & icon, const QString & text, QObject * parent, const QString &id) : QAction(icon, text, parent)
-{
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
+        bool insert(QAction *action, const QString &id, const QString &container = "default");
+        void remove(QAction* action, const QString &container = QString());
 
-KAction::KAction(const QIcon & icon, QObject *parent, const QString &id) : QAction(parent)
-{
-    setIcon(icon);
+        QAction *take(QAction* action, const QString &container = QString());
+        QAction *find(const QString &id, const QString &container = QString()) const;
+        QAction *operator[](const QString &id) const;
+        void enable(const QString &id, bool flag);
+        void exec(const QString &id);
 
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m , id);
-}
+        QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
+        QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
+        QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true);
 
-KAction::KAction(const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon, text, parent)
-{
-    setShortcut(QKeySequence(key));
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
+    private:
+        KActionContainer m_actionContainer;
+};
 
-KAction::KAction(const QIcon & icon, const QKeySequence &key, QObject * parent, const QString &id) : QAction(parent)
-{
-    setIcon(icon);
-    setShortcut(key);
-
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
-
-KAction::KAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(icon, text, parent)
-{
-    setShortcut(key);
-    connect(this, SIGNAL(triggered()), reciever, slot);
-
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
-
-KAction::KAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(text, parent)
-{
-    setShortcut(key);
-    connect(this, SIGNAL(triggered()), reciever, slot);
-
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager(m, id);
-}
-
-KAction::~KAction()
-{
-}
-
-void KAction::initWithManager(KActionManager * parent, const QString &id)
-{
-    setIconVisibleInMenu(true);
-
-    if (!id.isEmpty())
-        parent->insert(this, id);
-}
-
-void KAction::init()
-{
-}
-
-void KAction::setCursor(const QCursor &cursor)
-{
-    m_cursor = cursor;
-}
-
-QCursor KAction::cursor() const
-{
-    return m_cursor;
-}
-
+#endif

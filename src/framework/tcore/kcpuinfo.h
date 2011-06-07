@@ -27,7 +27,7 @@
 #ifndef __KCPUINFO_H
 #define __KCPUINFO_H
 
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * This class provides a means for applications to obtain information at

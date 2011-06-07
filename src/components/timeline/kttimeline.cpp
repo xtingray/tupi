@@ -39,8 +39,8 @@
 #include "kttimeline.h"
 
 // Tupi Framework 
-#include "kapplication.h"
-#include "kdebug.h"
+#include "tapplication.h"
+#include "tdebug.h"
 
 #include "ktprojectrequest.h"
 #include "ktlibraryobject.h"
@@ -69,7 +69,7 @@ struct KTTimeLine::Private
 KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), k(new Private)
 {
     #ifdef K_DEBUG
-        KINIT;
+        TINIT;
     #endif
     
     setWindowTitle(tr("Time Line"));
@@ -99,7 +99,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 KTTimeLine::~KTTimeLine()
 {
     #ifdef K_DEBUG
-        KEND;
+        TEND;
     #endif
     delete k;
 }
@@ -196,7 +196,7 @@ void KTTimeLine::setLibrary(const KTLibrary *library)
 void KTTimeLine::sceneResponse(KTSceneResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     /*
@@ -229,12 +229,12 @@ void KTTimeLine::sceneResponse(KTSceneResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 kFatal() << "KTTimeLine::sceneResponse <- Doing Scene selection!";
+                 tFatal() << "KTTimeLine::sceneResponse <- Doing Scene selection!";
                  k->container->setCurrentIndex(response->sceneIndex());
             }
             break;
             default:
-                 kFatal() << "KTTimeLine::sceneResponse : Unknown action :/";
+                 tFatal() << "KTTimeLine::sceneResponse : Unknown action :/";
             break;
     }
 
@@ -244,7 +244,7 @@ void KTTimeLine::sceneResponse(KTSceneResponse *response)
 void KTTimeLine::layerResponse(KTLayerResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     /*
@@ -264,7 +264,7 @@ void KTTimeLine::layerResponse(KTLayerResponse *response)
             break;
             case KTProjectRequest::Remove:
             {
-                 kFatal() << "KTTimeLine::layerResponse -> Removing layer!";
+                 tFatal() << "KTTimeLine::layerResponse -> Removing layer!";
 
                  KTLayerManager *layerManager = this->layerManager(response->sceneIndex());
                  if (layerManager)
@@ -316,7 +316,7 @@ void KTTimeLine::layerResponse(KTLayerResponse *response)
 void KTTimeLine::frameResponse(KTFrameResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     /*
@@ -329,7 +329,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
                  if (framesTable)
                      framesTable->insertFrame(response->layerIndex(), response->arg().toString());
                  else
-                     kFatal() << "KTTimeLine::frameResponse -> NO FRAME TABLE AVAILABLE!";
+                     tFatal() << "KTTimeLine::frameResponse -> NO FRAME TABLE AVAILABLE!";
             }
             break;
             case KTProjectRequest::Remove:
@@ -358,7 +358,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 kFatal() << "KTTimeLine::frameResponse() - Just tracing Selection!";
+                 tFatal() << "KTTimeLine::frameResponse() - Just tracing Selection!";
 
                  int layerIndex = response->layerIndex();
 
@@ -380,7 +380,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
 void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     /*
@@ -422,14 +422,14 @@ void KTTimeLine::requestCommand(int action)
     int framePos = framesTable(scenePos)->lastFrameByLayer(layerPos) + 1;
 
     if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
-        kFatal() << "KTTimeLine::requestCommand -> It isn't frame action";
+        tFatal() << "KTTimeLine::requestCommand -> It isn't frame action";
         layerPos = layerManager(scenePos)->getLayerIndex()->rowCount();
         framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
         if (!requestLayerAction(action, layerPos, scenePos)) {
-            kFatal() << "KTTimeLine::requestCommand -> It isn't layer action";
+            tFatal() << "KTTimeLine::requestCommand -> It isn't layer action";
             if (!requestSceneAction(action, scenePos)) {
                 #ifdef K_DEBUG
-                    kFatal("timeline") << "Can't handle action";
+                    tFatal("timeline") << "Can't handle action";
                 #endif
             }
         }
@@ -439,7 +439,7 @@ void KTTimeLine::requestCommand(int action)
 bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int scenePos, const QVariant &arg)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (scenePos < 0)
@@ -633,7 +633,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 {
     #ifdef K_DEBUG
-        K_FUNCINFO << name;
+        T_FUNCINFO << name;
     #endif
     int scenePos = k->container->currentIndex();
     
@@ -644,7 +644,7 @@ void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 
 void KTTimeLine::emitSelectionSignal()
 {
-    kFatal() << "KTTimeLine::emitSelectionSignal() - Just tracing!";
+    tFatal() << "KTTimeLine::emitSelectionSignal() - Just tracing!";
 
     int scenePos = k->container->currentIndex();
     int layerPos = layerManager(scenePos)->getLayerIndex()->currentRow();
@@ -665,7 +665,7 @@ void KTTimeLine::selectFrame(int indexLayer, int indexFrame)
 {
     int scenePos = k->container->currentIndex();
 
-    kFatal() << "KTTimeLine::selectFrame() - Just tracing!";
+    tFatal() << "KTTimeLine::selectFrame() - Just tracing!";
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(scenePos, indexLayer,
                                                  indexFrame, KTProjectRequest::Select, "1");
     emit requestTriggered(&request);
@@ -675,7 +675,7 @@ void KTTimeLine::selectFrame(int indexLayer, int indexFrame)
 void KTTimeLine::emitRequestChangeScene(int sceneIndex)
 {
     if (k->container->count() > 1) {
-        kFatal() << "KTTimeLine::emitRequestChangeScene - Just tracing!";
+        tFatal() << "KTTimeLine::emitRequestChangeScene - Just tracing!";
         KTProjectRequest request = KTRequestBuilder::createSceneRequest(sceneIndex, KTProjectRequest::Select);
         emit localRequestTriggered(&request);
     }
@@ -683,7 +683,7 @@ void KTTimeLine::emitRequestChangeScene(int sceneIndex)
 
 void KTTimeLine::emitRequestChangeFrame(int sceneIndex, int layerIndex, int frameIndex)
 {
-    kFatal() << "KTTimeLine::emitRequestChangeFrame - Just tracing!";
+    tFatal() << "KTTimeLine::emitRequestChangeFrame - Just tracing!";
     KTProjectRequest event = KTRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
                              KTProjectRequest::Select, "1");
     emit requestTriggered(&event);

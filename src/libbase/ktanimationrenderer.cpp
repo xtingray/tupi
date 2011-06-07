@@ -39,7 +39,7 @@
 #include "ktframe.h"
 #include "ktscene.h"
 #include "ktgraphicobject.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QPainter>
 

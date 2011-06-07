@@ -37,7 +37,7 @@
 #define KELABEL_H
 
 #include "ksqueezelabel.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 #include <QLineEdit>
 #include <QMouseEvent>

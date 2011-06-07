@@ -37,7 +37,7 @@
 #define KTREELISTWIDGET_H
 
 #include <QTreeWidget>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

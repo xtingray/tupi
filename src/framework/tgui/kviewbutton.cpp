@@ -35,7 +35,7 @@
 
 #include "kviewbutton.h"
 #include "ktoolview.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QToolBar>
 #include <QStylePainter>

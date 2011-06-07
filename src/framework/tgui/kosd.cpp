@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kosd.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QApplication>
 #include <QBitmap>

@@ -38,7 +38,7 @@
 
 #include <QXmlDefaultHandler>
 #include <QPalette>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class KThemeDocument;
 

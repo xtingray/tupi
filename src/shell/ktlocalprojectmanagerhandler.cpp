@@ -41,7 +41,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 /**
  * This class handles all the procedures related to the projects local format for Tupi.
@@ -127,7 +127,7 @@ bool KTLocalProjectManagerHandler::isUndoCommand(const QString &xml)
 void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (request->isValid()) {
@@ -135,7 +135,7 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
         //emit sendCommand(request, isUndoCommand(request->xml()));
     } else {
         #ifdef K_DEBUG
-               kfDebug << "INVALID REQUEST! ID: " << request->id();
+               tfDebug << "INVALID REQUEST! ID: " << request->id();
         #endif
     }
 }

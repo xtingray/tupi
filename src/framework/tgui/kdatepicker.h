@@ -40,7 +40,7 @@
 #include <QToolButton>
 
 #include "kdatetable.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QComboBox;
 class QLabel;

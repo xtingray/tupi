@@ -36,7 +36,7 @@
 #include "ktlayer.h"
 #include "ktscene.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktprojectloader.h"
 
@@ -69,9 +69,9 @@ KTLayer::~KTLayer()
 Frames KTLayer::frames()
 {
    /*
-    kFatal() << "";
-    kFatal() << "KTLayer::frames - LAYER NAME: " << k->name;
-    kFatal() << "";
+    tFatal() << "";
+    tFatal() << "KTLayer::frames - LAYER NAME: " << k->name;
+    tFatal() << "";
     */
 
     return k->frames;
@@ -118,7 +118,7 @@ KTFrame *KTLayer::createFrame(QString name, int position, bool loaded)
 {
     /*
     if (position < 0 || position > k->frames.count()) {
-        kFatal() << "KTLayer::createFrame -> index is out of range: " << position << " - frames.count(): " << k->frames.count();
+        tFatal() << "KTLayer::createFrame -> index is out of range: " << position << " - frames.count(): " << k->frames.count();
         return 0;
     }
     */
@@ -148,7 +148,7 @@ bool KTLayer::removeFrame(int position)
 
         /*
         if (toRemove->repeat() < 1) {
-            kFatal() << "KTLayer::removeFrame -> Deleting pointer!";
+            tFatal() << "KTLayer::removeFrame -> Deleting pointer!";
             delete toRemove;
         }
         */
@@ -212,10 +212,10 @@ bool KTLayer::exchangeFrame(int from, int to)
 
 bool KTLayer::expandFrame(int position, int size)
 {
-    // kFatal() << "KTLayer::expandFrame -> Just Tracing!";
+    // tFatal() << "KTLayer::expandFrame -> Just Tracing!";
 
     if (position < 0 || position >= k->frames.count()) {
-        kFatal() << "KTLayer::expandFrame -> pos: " << position << " - size: " << size;
+        tFatal() << "KTLayer::expandFrame -> pos: " << position << " - size: " << size;
         return false;
     }
 
@@ -234,8 +234,8 @@ KTFrame *KTLayer::frame(int position) const
 {
     if (position < 0 || position >= k->frames.count()) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound (KTLayer) : " << position;
-               K_FUNCINFO << " FATAL ERROR: index limit : " << k->frames.count()-1;
+               T_FUNCINFO << " FATAL ERROR: index out of bound (KTLayer) : " << position;
+               T_FUNCINFO << " FATAL ERROR: index limit : " << k->frames.count()-1;
         #endif
         return 0;
     }

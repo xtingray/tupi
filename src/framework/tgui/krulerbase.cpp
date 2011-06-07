@@ -35,7 +35,7 @@
 
 
 #include "krulerbase.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QMouseEvent>
 #include <QFrame>
@@ -229,7 +229,7 @@ void KRulerBase::setSeparation(int sep)
         k->separation = sep;
         update();
     } else {
-        kError() << "I can't assign separation : " << sep << endl;
+        tError() << "I can't assign separation : " << sep << endl;
     }
 }
 

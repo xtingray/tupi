@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kttweenerstep.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QVector>
 
@@ -87,8 +87,8 @@ void KTTweenerStep::setScale(double sx, double sy)
 
 void KTTweenerStep::setShear(double sh, double sv)
 {
-    kFatal() << "KTTweenerStep::setShear() - X: " << sh;
-    kFatal() << "KTTweenerStep::setShear() - Y: " << sv;
+    tFatal() << "KTTweenerStep::setShear() - X: " << sh;
+    tFatal() << "KTTweenerStep::setShear() - Y: " << sv;
     k->shear.x = sh;
     k->shear.y = sv;
     k->flags |= Shear;

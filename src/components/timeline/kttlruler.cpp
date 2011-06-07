@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kttlruler.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QPainter>
 #include <QMouseEvent>
@@ -42,7 +42,7 @@
 KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     setHighlightSections(true);
@@ -54,7 +54,7 @@ KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 KTTLRuler::~KTTLRuler()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

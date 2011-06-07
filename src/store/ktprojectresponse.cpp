@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktprojectresponse.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 // This class returns information about data structure of a Tupi project 
 // It is used from signals in the KTProject class to send data to anothers classes
@@ -139,7 +139,7 @@ int KTProjectResponse::action() const
                 break;
                 default:
                      {
-                        kFatal() << "KTProjectResponse::action() : Unhandled action -> " << k->action;
+                        tFatal() << "KTProjectResponse::action() : Unhandled action -> " << k->action;
                      }
                 break;
         }

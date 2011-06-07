@@ -35,8 +35,8 @@
 
 #include "ktoolview.h"
 #include "kviewbutton.h"
-#include "kmainwindow.h"
-#include "kdebug.h"
+#include "tmainwindow.h"
+#include "tdebug.h"
 
 #include <QtDebug>
 #include <QAction>
@@ -159,7 +159,7 @@ void KToolView::setFixedSize(int s)
 
 void KToolView::showEvent(QShowEvent *e)
 {
-    if (KMainWindow *mw = dynamic_cast<KMainWindow *>(parentWidget())) {
+    if (TMainWindow *mw = dynamic_cast<TMainWindow *>(parentWidget())) {
         if (!(mw->currentPerspective() & m_perspective)) {
             e->ignore(); // make sure!
             return;

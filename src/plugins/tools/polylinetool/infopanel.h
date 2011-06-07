@@ -44,7 +44,8 @@
 
 class InfoPanel : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         InfoPanel(QWidget *parent = 0);
         ~InfoPanel();

@@ -34,9 +34,9 @@
  ***************************************************************************/
 
 #include "ktgctable.h"
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kapplication.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tapplication.h"
 
 #include <QHeaderView>
 #include <QMenu>

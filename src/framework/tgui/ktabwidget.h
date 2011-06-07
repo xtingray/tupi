@@ -37,7 +37,7 @@
 #define KTABWIDGET_H
 
 #include <QTabWidget>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

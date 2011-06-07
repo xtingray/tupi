@@ -44,7 +44,7 @@
 #include <QMouseEvent>
 
 #include "ktcolorpicker.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 static int pWidth = 100;
 static int pHeight = 80;
@@ -107,7 +107,7 @@ KTColorPicker::~KTColorPicker()
 {
     delete k;
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

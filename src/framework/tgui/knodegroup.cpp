@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "knodegroup.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QGraphicsPathItem>
 #include <QAbstractGraphicsShapeItem>
@@ -52,7 +52,7 @@ struct KNodeGroup::Private
 KNodeGroup::KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): k(new Private)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     k->parentItem = parent;
@@ -70,7 +70,7 @@ QGraphicsItem * KNodeGroup::parentItem()
 KNodeGroup::~KNodeGroup()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 
     clear();
@@ -113,7 +113,7 @@ void KNodeGroup::syncNodesFromParent()
 void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     k->parentItem = newParent;
@@ -242,7 +242,7 @@ void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
             index++;
         }
     } else {
-        kDebug("selection") << "Item not item path";
+        tDebug("selection") << "Item not item path";
     }
 }
 
@@ -253,12 +253,12 @@ void KNodeGroup::addControlNode(KControlNode*)
 void KNodeGroup::emitNodeClicked(KControlNode::State state)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     /* SQA: Possible code for the future 
     if (state == KControlNode::Pressed) {
-        kFatal() << "KNodeGroup::emitNodeClicked() - Click! -> PRESSED";
+        tFatal() << "KNodeGroup::emitNodeClicked() - Click! -> PRESSED";
         emit nodePressed();
     }
     */

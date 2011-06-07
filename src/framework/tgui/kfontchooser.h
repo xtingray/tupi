@@ -37,7 +37,7 @@
 #define KFONTCHOOSER_H
 
 #include <QFrame>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QComboBox;
 class QFontComboBox;

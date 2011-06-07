@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktrequestparser.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QXmlSimpleReader>
 #include <QXmlInputSource>

@@ -36,7 +36,7 @@
 #ifndef KSTACKEDMAINWINDOW_H
 #define KSTACKEDMAINWINDOW_H
 
-#include "kmainwindow.h"
+#include "tmainwindow.h"
 
 #include <QHash>
 
@@ -45,7 +45,7 @@ class QStackedWidget;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class K_IDEAL_EXPORT KStackedMainWindow : public KMainWindow
+class K_IDEAL_EXPORT KStackedMainWindow : public TMainWindow
 {
     Q_OBJECT;
     public:

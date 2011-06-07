@@ -35,7 +35,7 @@
 
 #include "kcontrolnode.h"
 #include "knodegroup.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QCursor>
 #include <QGraphicsScene>
@@ -260,7 +260,7 @@ void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     /*
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
     */
 

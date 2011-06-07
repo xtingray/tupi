@@ -40,7 +40,7 @@
 #include <QKeySequence>
 #include <QGraphicsView>
 
-#include "kglobal.h"
+#include "tglobal.h"
 #include "ktscene.h"
 
 #include "ktinputdeviceinformation.h"
@@ -137,7 +137,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     emit requested(&event);
 }
 
-QMap<QString, KAction *> TextTool::actions() const
+QMap<QString, TAction *> TextTool::actions() const
 {
     return m_actions;
 }
@@ -163,7 +163,7 @@ void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
 
 void TextTool::setupActions()
 {
-    KAction *text = new KAction(QIcon(THEME_DIR + "icons/text.png"), tr("Text"), this);
+    TAction *text = new TAction(QIcon(THEME_DIR + "icons/text.png"), tr("Text"), this);
     text->setShortcut(QKeySequence(tr("T")));
     text->setCursor(QCursor(THEME_DIR + "cursors/text.png"));
 

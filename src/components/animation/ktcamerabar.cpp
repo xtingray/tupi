@@ -36,14 +36,14 @@
 #include "ktcamerabar.h"
 #include <QBoxLayout>
 
-#include "kdebug.h"
-#include "kglobal.h"
+#include "tdebug.h"
+#include "tglobal.h"
 
 KTCameraBar::KTCameraBar(QWidget *parent)
  : QFrame(parent)
 {
     #ifdef K_DEBUG
-           KINIT;
+           TINIT;
     #endif
 
     setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
@@ -88,7 +88,7 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 KTCameraBar::~KTCameraBar()
 {
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

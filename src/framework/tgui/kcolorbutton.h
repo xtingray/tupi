@@ -42,7 +42,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QColor;
 

@@ -37,7 +37,7 @@
 
 #include <QPainter>
 #include <qdrawutil.h>
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTLuminancePicker::Private
 {
@@ -77,7 +77,7 @@ KTLuminancePicker::~KTLuminancePicker()
 {
     delete k;
     #ifdef K_DEBUG
-           KEND;
+           TEND;
     #endif
 }
 

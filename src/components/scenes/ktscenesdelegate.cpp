@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktscenesdelegate.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QtGui>
 

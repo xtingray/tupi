@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktpenthicknesswidget.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTPenThicknessWidget::Private
 {

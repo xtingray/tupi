@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #if !defined(K_NODEBUG)
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QFile>
 #include <QString>
@@ -133,14 +133,14 @@ static class ConfigReader
 
 ConfigReader::ConfigReader()
 {
-    QSettings settings("kdebug");
+    QSettings settings("tdebug");
     settings.beginGroup("Iface");
 
     areas = settings.value("areas", QStringList()).toStringList();
     showArea = settings.value("show_area", false).toBool();
     showAll = settings.value("show_all", true).toBool();
 
-    defaultOutput= DebugOutput(settings.value("default", KShellOutput).toInt());
+    defaultOutput= DebugOutput(settings.value("default", TShellOutput).toInt());
     forceDisableGUI = false;
     colorize = false;
     
@@ -154,7 +154,7 @@ ConfigReader::ConfigReader()
 ConfigReader::~ConfigReader()
 {
     /*
-    QSettings settings("kdebug");
+    QSettings settings("tdebug");
     settings.beginGroup("Iface");
 
     if (areas.isEmpty())
@@ -189,7 +189,7 @@ class DebugBrowserHighlighter : public QSyntaxHighlighter
         QMap<QString, QColor> m_colors;
 };
 
-#include "kdebug.moc"
+#include "tdebug.moc"
 
 DebugBrowserHighlighter::DebugBrowserHighlighter(QTextDocument *doc) : QSyntaxHighlighter(doc)
 {
@@ -234,33 +234,33 @@ void DebugBrowserHighlighter::highlightBlock(const QString &text)
 
 #endif // QT_GUI_LIB
 
-static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
+static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
-    if ((o == KBoxOutput) || (o == KBrowserOutput && configReader.forceDisableGUI)) {
-        o = KShellOutput;
-        configReader.defaultOutput = KShellOutput;
+    if ((o == TBoxOutput) || (o == TBrowserOutput && configReader.forceDisableGUI)) {
+        o = TShellOutput;
+        configReader.defaultOutput = TShellOutput;
     }
 
     char const *output = "%s\n";
 
     if (configReader.colorize) {
         switch(t) {
-               case KDebugMsg:
+               case TDebugMsg:
                     {
                       // output = "%s\n";
                     }
                break;
-               case KWarningMsg:
+               case TWarningMsg:
                     {
                       output = SHOW_WARNING;
                     }
                break;
-               case KErrorMsg:
+               case TErrorMsg:
                     {
                       output = SHOW_ERROR;
                     }
                break;
-               case KFatalMsg:
+               case TFatalMsg:
                     {
                       output = SHOW_FATAL;
                     }
@@ -268,17 +268,17 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
         }
     }
 
-    // o = KBrowserOutput;
+    // o = TBrowserOutput;
 
     switch (o) {
-            case KShellOutput:
+            case TShellOutput:
                {
                  fprintf(stderr, output, data);
                }
                break;
-            case KFileOutput:
+            case TFileOutput:
                {
-                 QFile outFile("kdebug.log");
+                 QFile outFile("tdebug.log");
 
                  if (outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
                      outFile.write(data, strlen(data));
@@ -287,25 +287,25 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
                }
             break;
             #ifdef QT_GUI_LIB
-            case KBoxOutput:
+            case TBoxOutput:
                {
                     switch (t) {
-                            case KDebugMsg:
+                            case TDebugMsg:
                                {
                                    QMessageBox::information(0, QObject::tr("Information"), data, QMessageBox::Ok);
                                }
                             break;
-                            case KWarningMsg:
+                            case TWarningMsg:
                                {
                                    QMessageBox::warning(0, QObject::tr("Warning"), data);
                                }
                             break;
-                            case KErrorMsg:
+                            case TErrorMsg:
                                {
                                    QMessageBox::critical(0, QObject::tr("Error"), data);
                                }
                             break;
-                            case KFatalMsg:
+                            case TFatalMsg:
                                {
                                    QMessageBox::critical(0, QObject::tr("Critical"), data);
                                }
@@ -313,7 +313,7 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
                     }
                }
             break;
-            case KBrowserOutput:
+            case TBrowserOutput:
                {
                     if (debugBrowser) {
                         if (data) {
@@ -331,7 +331,7 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
     }
 }
 
-KDebug::KDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
+TDebug::TDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
 {
     streamer = new Streamer();
 
@@ -346,79 +346,79 @@ KDebug::KDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
         *streamer << init << ": ";
     }
 
-    if (m_output == KDefault)
+    if (m_output == TDefault)
         m_output = configReader.defaultOutput;
 };
 
-KDebug::KDebug(const KDebug & k) : streamer(k.streamer), m_type(k.m_type), m_output(k.m_output), m_area(k.m_area)
+TDebug::TDebug(const TDebug & k) : streamer(k.streamer), m_type(k.m_type), m_output(k.m_output), m_area(k.m_area)
 {
 }
 
-KDebug::~KDebug()
+TDebug::~TDebug()
 {
     // if ((m_area.isEmpty() && configReader.showAll) || configReader.areas.contains(m_area))
-    // ::kDebugOutput(m_type, m_output, streamer->buffer.toLocal8Bit().data());
+    // ::tDebugOutput(m_type, m_output, streamer->buffer.toLocal8Bit().data());
 
-    ::kDebugOutput(m_type, KBrowserOutput, streamer->buffer.toLocal8Bit().data());
+    ::tDebugOutput(m_type, TBrowserOutput, streamer->buffer.toLocal8Bit().data());
 
     delete streamer;
 }
 
-void KDebug::setForceDisableGUI()
+void TDebug::setForceDisableGUI()
 {
     configReader.forceDisableGUI = true;
 }
 
-KDebug& KDebug::operator << (const QDateTime& time) 
+TDebug& TDebug::operator << (const QDateTime& time) 
 {
     *this << time.toString();
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QDate& date) 
+TDebug& TDebug::operator << (const QDate& date) 
 {
     *this << date.toString();
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QTime& time) 
+TDebug& TDebug::operator << (const QTime& time) 
 {
     *this << time.toString();
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QPoint & p)  
+TDebug& TDebug::operator << (const QPoint & p)  
 {
     *this << "(" << p.x() << ", " << p.y() << ")";
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QPointF & p)  
+TDebug& TDebug::operator << (const QPointF & p)  
 {
     *this << "(" << p.x() << ", " << p.y() << ")";
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QSize & s)  
+TDebug& TDebug::operator << (const QSize & s)  
 {
     *this << "[" << s.width() << "x" << s.height() << "]";
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QRect & r)  
+TDebug& TDebug::operator << (const QRect & r)  
 {
     *this << "[" << r.x() << "," << r.y() << " - " << r.width() << "x" << r.height() << "]";
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QStringList & l) 
+TDebug& TDebug::operator << (const QStringList & l) 
 {
     *this << "(";
     *this << l.join(",");
@@ -428,7 +428,7 @@ KDebug& KDebug::operator << (const QStringList & l)
 }
 
 
-KDebug& KDebug::operator << (const QVariant & v) 
+TDebug& TDebug::operator << (const QVariant & v) 
 {
     *this << "[variant: ";
     *this << v.typeName();
@@ -439,7 +439,7 @@ KDebug& KDebug::operator << (const QVariant & v)
     return *this;
 }
 
-KDebug& KDebug::operator << (const QEvent* e)
+TDebug& TDebug::operator << (const QEvent* e)
 {
     *this << "[Event " << e->type() << "]";
 
@@ -447,28 +447,28 @@ KDebug& KDebug::operator << (const QEvent* e)
 }
 
 #ifdef QT_GUI_LIB
-KDebug& KDebug::operator<<( const QPixmap& p ) 
+TDebug& TDebug::operator<<( const QPixmap& p ) 
 {
     *this << "(" << p.width() << ", " << p.height() << ")";
 
     return *this;
 }
 
-KDebug& KDebug::operator<<( const QIcon& p )
+TDebug& TDebug::operator<<( const QIcon& p )
 {
     *this << "(" << p.pixmap(QSize() ).width() << ", " << p.pixmap(QSize()).height() << ")";
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QImage& p) 
+TDebug& TDebug::operator << (const QImage& p) 
 {
     *this << "(" << p.width() << ", " << p.height() << ")";
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QRegion & reg) 
+TDebug& TDebug::operator << (const QRegion & reg) 
 {
     *this<< "[ ";
 
@@ -482,7 +482,7 @@ KDebug& KDebug::operator << (const QRegion & reg)
     return *this;
 }
 
-KDebug& KDebug::operator << (const QColor & c) 
+TDebug& TDebug::operator << (const QColor & c) 
 {
     if (c.isValid())
         *this << c.name();
@@ -492,7 +492,7 @@ KDebug& KDebug::operator << (const QColor & c)
     return *this;
 }
 
-KDebug& KDebug::operator << (const QPen & p) 
+TDebug& TDebug::operator << (const QPen & p) 
 {
     static const char* const s_penStyles[] = {
            "NoPen", "SolidLine", "DashLine", "DotLine", "DashDotLine",
@@ -521,7 +521,7 @@ KDebug& KDebug::operator << (const QPen & p)
     return *this;
 }
 
-KDebug& KDebug::operator << (const QBrush & b)
+TDebug& TDebug::operator << (const QBrush & b)
 {
     if (b.gradient()) {
         *this << b.gradient();
@@ -550,7 +550,7 @@ KDebug& KDebug::operator << (const QBrush & b)
     return *this;
 }
 
-KDebug& KDebug::operator << (const QWidget* t) 
+TDebug& TDebug::operator << (const QWidget* t) 
 {
     if (t)
         *this << "[Widget " + QString::fromLocal8Bit(t->metaObject ()->className()) + " geometry: " << t->width() << "x"<< t->height() << "]";
@@ -560,28 +560,28 @@ KDebug& KDebug::operator << (const QWidget* t)
     return *this; 
 }
 
-KDebug& KDebug::operator << (const QLinearGradient &g)
+TDebug& TDebug::operator << (const QLinearGradient &g)
 {
     *this << "QLinearGradient start=" << g.start() << " stop="<<g.finalStop();
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QRadialGradient &g)
+TDebug& TDebug::operator << (const QRadialGradient &g)
 {
     *this << "QRadialGradient center=" << g.center() << " focal="<<g.focalPoint() << " radius=" << g.radius();
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QConicalGradient &g)
+TDebug& TDebug::operator << (const QConicalGradient &g)
 {
     *this << "QConicalGradient center=" << g.center() << " angle="<<g.angle();
 
     return *this;
 }
 
-KDebug& KDebug::operator << (const QGradient *g)
+TDebug& TDebug::operator << (const QGradient *g)
 {
     switch (g->type()) {
             case QGradient::LinearGradient:
@@ -605,7 +605,7 @@ KDebug& KDebug::operator << (const QGradient *g)
     return *this;
 }
 
-KDebug& KDebug::operator << (const QMatrix &m)
+TDebug& TDebug::operator << (const QMatrix &m)
 {
     *this << "\n";
     *this << "|" << m.m11() << "\t" << m.m12() << "\t" << 0 << "\t|\n";
@@ -615,14 +615,14 @@ KDebug& KDebug::operator << (const QMatrix &m)
     return *this;
 }
 
-void KDebug::resaltWidget(QWidget *w, const QColor &color)
+void TDebug::resaltWidget(QWidget *w, const QColor &color)
 {
     QPalette pal = w->palette();
     pal.setColor(QPalette::Background, color);
     w->setPalette(pal);
 }
 
-QTextEdit *KDebug::browser(QWidget *parent, int width)
+QTextEdit *TDebug::browser(QWidget *parent, int width)
 {
     if (!debugBrowser) {
         debugBrowser = new QTextEdit(parent);

@@ -41,7 +41,7 @@
  */
 #include <QPushButton>
 #include <QStyleOptionButton>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @short The KCircleButton class provides a circular button

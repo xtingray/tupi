@@ -37,7 +37,7 @@
 #define KCLICKLINEEDIT_H
 
 #include <QLineEdit>
-#include "kglobal.h"
+#include "tglobal.h"
 
 class K_GUI_EXPORT KClickLineEdit : public QLineEdit
 {

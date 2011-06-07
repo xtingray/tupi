@@ -37,7 +37,7 @@
 #include "kworkspacemainwindow.h"
 #include <QWorkspace>
 
-KWorkspaceMainWindow::KWorkspaceMainWindow(QWidget *parent) : KMainWindow(parent)
+KWorkspaceMainWindow::KWorkspaceMainWindow(QWidget *parent) : TMainWindow(parent)
 {
     m_workspace = new QWorkspace;
     setCentralWidget(m_workspace);

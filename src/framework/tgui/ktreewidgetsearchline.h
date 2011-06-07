@@ -39,7 +39,7 @@
 #include <QModelIndex>
 
 #include "kclicklineedit.h"
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;

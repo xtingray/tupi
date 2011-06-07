@@ -37,10 +37,10 @@
 #include "ktnetprojectmanagerparams.h"
 
 #include "kformfactory.h"
-#include "kconfig.h"
-#include "kapplication.h"
+#include "tconfig.h"
+#include "tapplication.h"
 #include "kosd.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QLineEdit>
 #include <QCheckBox>
@@ -156,7 +156,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
 KTNewProject::~KTNewProject()
 {
   /*
-    KConfig *config = kApp->config("Network");
+    TConfig *config = kApp->config("Network");
     config->setValue("server", k->server->text());
     config->setValue("port", k->port->value());
     config->setValue("login", k->login->text());
@@ -178,7 +178,7 @@ void KTNewProject::setupNetOptions()
     k->login = new QLineEdit;
     k->password = new QLineEdit;
 
-    KConfig *config = kApp->config("Network");
+    TConfig *config = kApp->config("Network");
 
     k->server->setText(config->value("server", "localhost").toString());
     k->port->setValue(config->value("port", 6502).toInt());

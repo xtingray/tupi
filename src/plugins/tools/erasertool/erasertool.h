@@ -49,7 +49,7 @@ class KTPathItem;
 
 class EraserTool : public KTToolPlugin
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         EraserTool();
@@ -63,7 +63,7 @@ class EraserTool : public KTToolPlugin
         
         void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos);
         
-        virtual QMap<QString, KAction *> actions() const;
+        virtual QMap<QString, TAction *> actions() const;
         
         int toolType() const;
         
@@ -77,7 +77,7 @@ class EraserTool : public KTToolPlugin
         void setupActions();
         
     private:
-        QMap<QString, KAction *> m_actions;
+        QMap<QString, TAction *> m_actions;
 };
 
 #endif

@@ -40,7 +40,7 @@
 #include <QBoxLayout>
 #include <QDialog>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <qobject.h>
 

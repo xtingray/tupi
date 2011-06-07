@@ -39,7 +39,7 @@
 
 #include "ktitemtweener.h"
 #include "kosd.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QLabel>
 #include <QBoxLayout>
@@ -105,7 +105,7 @@ void Configurator::loadTweenList(QList<QString> tweenList)
 
 void Configurator::setPropertiesPanel()
 {
-    kFatal() << "Configurator::setPropertiesPanel() - Just tracing!";
+    tFatal() << "Configurator::setPropertiesPanel() - Just tracing!";
 
     k->settingsPanel = new Settings(this);
 
@@ -200,7 +200,7 @@ int Configurator::totalSteps()
 
 void Configurator::addTween(const QString &name)
 {
-    kFatal() << "Configurator::addTween() - Adding Tween: " << name;
+    tFatal() << "Configurator::addTween() - Adding Tween: " << name;
 
     activeTweenManagerPanel(false);
 

@@ -37,7 +37,7 @@
 #include "kradiobuttongroup.h"
 #include "kseparator.h"
 #include "kimagebutton.h"
-#include "kdebug.h"
+#include "tdebug.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
@@ -248,7 +248,7 @@ void PositionSettings::closeTweenProperties()
     if (k->mode == TweenerPanel::Add)
         resetTween(); 
 
-    kFatal() << "PositionSettings::closeTweenProperties() - Mode: " << k->mode;
+    tFatal() << "PositionSettings::closeTweenProperties() - Mode: " << k->mode;
 
     emit clickedCloseTweenProperties(k->mode);
 }

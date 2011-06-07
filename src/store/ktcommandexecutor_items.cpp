@@ -56,14 +56,14 @@
 #include "ktlayer.h"
 #include "ktbackground.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QGraphicsItem>
 
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -103,13 +103,13 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 
                 } else {
                     #ifdef K_DEBUG
-                           kError() << "KTCommandExecutor::createItem() - Error: " << tr("Frame doesn't exists!");
+                           tError() << "KTCommandExecutor::createItem() - Error: " << tr("Frame doesn't exists!");
                     #endif
                     return false;
                 }
             } else {
                 #ifdef K_DEBUG
-                       kError() << "KTCommandExecutor::createItem() - Error: " << tr("Layer doesn't exists!");
+                       tError() << "KTCommandExecutor::createItem() - Error: " << tr("Layer doesn't exists!");
                 #endif
                 return false;
             }
@@ -140,7 +140,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
         }
     } else {
         #ifdef K_DEBUG
-               kError() << "KTCommandExecutor::createItem() - Error: " << tr("Scene doesn't exists!");
+               tError() << "KTCommandExecutor::createItem() - Error: " << tr("Scene doesn't exists!");
         #endif
         return false;
     }
@@ -178,7 +178,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                         if (object) {
                             frame->removeGraphicAt(response->itemIndex());
                             if (object->hasTween()) {
-                                kFatal() << "KTCommandExecutor::removeItem() - Remove tween from scene!";
+                                tFatal() << "KTCommandExecutor::removeItem() - Remove tween from scene!";
                                 scene->removeTweenObject(object);
                             }
 
@@ -187,7 +187,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 
                         } else {
                             #ifdef K_DEBUG
-                                   kError() << "KTCommandExecutor::removeItem() - Error: " << tr("Invalid object index") << response->itemIndex();
+                                   tError() << "KTCommandExecutor::removeItem() - Error: " << tr("Invalid object index") << response->itemIndex();
                             #endif
                             return false;
                         }
@@ -216,7 +216,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 
     } else {
         #ifdef K_DEBUG
-               kError() << "KTCommandExecutor::removeItem() - Error: " << tr("Scene doesn't exists!");
+               tError() << "KTCommandExecutor::removeItem() - Error: " << tr("Scene doesn't exists!");
         #endif
         return false;
     }
@@ -227,7 +227,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 bool KTCommandExecutor::moveItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -279,7 +279,7 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
     
     int scenePosition = response->sceneIndex();
@@ -327,7 +327,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
     
     int scenePosition = response->sceneIndex();
@@ -429,7 +429,7 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
             default:
             {
             #ifdef K_DEBUG
-                kWarning() << "unknown item " << toType ;
+                tWarning() << "unknown item " << toType ;
             #endif
             }
             break;
@@ -441,7 +441,7 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -462,7 +462,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
-                        kDebug("items") << item->type();
+                        tDebug("items") << item->type();
                     
                         if (toType == item->type()) 
                             return false;
@@ -493,7 +493,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
-                        kDebug("items") << item->type();
+                        tDebug("items") << item->type();
 
                         if (toType == item->type())
                             return false;
@@ -521,7 +521,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -603,7 +603,7 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
 {
     /*
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        T_FUNCINFOX("items");
     #endif
     */
     
@@ -701,7 +701,7 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
 bool KTCommandExecutor::setTween(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
         SHOW_VAR(response);
     #endif
 
@@ -712,8 +712,8 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
     int position = response->itemIndex();
     
     QString xml = response->arg().toString();
-    // kFatal() << "KTCommandExecutor::setTween() - xml: ";
-    // kFatal() << xml;
+    // tFatal() << "KTCommandExecutor::setTween() - xml: ";
+    // tFatal() << xml;
 
     KTScene *scene = m_project->scene(scenePosition);
     
@@ -735,7 +735,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                     KTGraphicObject *object = frame->graphic(position);
                     if (object == 0) {
                         #ifdef K_DEBUG
-                               kFatal() << "KTCommandExecutor::setTween() - Invalid graphic index: " << position;
+                               tFatal() << "KTCommandExecutor::setTween() - Invalid graphic index: " << position;
                         #endif
                         return false;
                     } else {
@@ -747,7 +747,7 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                     KTSvgItem *object = frame->svg(position); 
                     if (object == 0) {
                         #ifdef K_DEBUG
-                               kFatal() << "KTCommandExecutor::setTween() - Invalid svg index: " << position;
+                               tFatal() << "KTCommandExecutor::setTween() - Invalid svg index: " << position;
                         #endif
                         return false;
                     } else {

@@ -72,7 +72,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene) = 0;
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene) = 0;
         
-        virtual QMap<QString, KAction *> actions() const = 0;
+        virtual QMap<QString, TAction *> actions() const = 0;
         
         virtual QWidget *configurator()  = 0;
         virtual void aboutToChangeTool() = 0;

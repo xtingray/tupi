@@ -33,16 +33,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kconfig.h"
+#include "tconfig.h"
 #include <qdir.h>
 
 #include <QCoreApplication>
 #include <QTextDocument>
 #include <QDomDocument>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
-class KConfig::Private
+class TConfig::Private
 {
     public:
         QDomDocument document;
@@ -57,11 +57,11 @@ class KConfig::Private
         QString lastGroup;
 };
 
-KConfig* KConfig::m_instance = 0;
+TConfig* TConfig::m_instance = 0;
 
-KConfig::KConfig() : QObject(), k(new Private)
+TConfig::TConfig() : QObject(), k(new Private)
 {
-    KINIT;
+    TINIT;
 	
 #ifdef Q_WS_X11
     k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
@@ -73,10 +73,10 @@ KConfig::KConfig() : QObject(), k(new Private)
 
     if (!k->configDirectory.exists()) {
         k->firstTime = true;
-        kDebug() << tr("%1 doesn't exist. Creating...").arg(k->configDirectory.path()) << endl;
+        tDebug() << tr("%1 doesn't exist. Creating...").arg(k->configDirectory.path()) << endl;
 
         if (!k->configDirectory.mkdir(k->configDirectory.path()))
-            kError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
+            tError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
     } else {
         k->firstTime = false;
     }
@@ -86,22 +86,22 @@ KConfig::KConfig() : QObject(), k(new Private)
     init();
 }
 
-KConfig::~KConfig()
+TConfig::~TConfig()
 {
-    KEND;
+    TEND;
     if (m_instance) 
         delete m_instance;
 }
 
-KConfig *KConfig::instance()
+TConfig *TConfig::instance()
 {
     if (! m_instance)
-        m_instance = new KConfig;
+        m_instance = new TConfig;
 
     return m_instance;
 }
 
-void KConfig::init()
+void TConfig::init()
 {
     QFile config(k->path);
     k->isOk = false;
@@ -114,7 +114,7 @@ void KConfig::init()
         k->isOk = k->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
 
         if (!k->isOk)
-            kDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
+            tDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
 
         config.close();
    }
@@ -128,22 +128,22 @@ void KConfig::init()
    }
 }
 
-bool KConfig::firstTime()
+bool TConfig::firstTime()
 {
     return k->firstTime;
 }
 
-bool KConfig::isOk()
+bool TConfig::isOk()
 {
     return k->isOk;
 }
 
-QDomDocument KConfig::document()
+QDomDocument TConfig::document()
 {
     return k->document;
 }
 
-void KConfig::sync()
+void TConfig::sync()
 {
     QFile f(k->path);
 
@@ -159,7 +159,7 @@ void KConfig::sync()
     init();
 }
 
-void KConfig::beginGroup(const QString & prefix)
+void TConfig::beginGroup(const QString & prefix)
 {
     QString stripped = Qt::escape(prefix);
 
@@ -180,13 +180,13 @@ void KConfig::beginGroup(const QString & prefix)
     }
 }
 
-void KConfig::endGroup()
+void TConfig::endGroup()
 {
     if (!k->lastGroup.isEmpty())
         beginGroup(k->lastGroup);
 }
 
-void KConfig::setValue(const QString & key, const QVariant & value)
+void TConfig::setValue(const QString & key, const QVariant & value)
 {
     QDomElement element = find(k->currentGroup, key);
 
@@ -211,7 +211,7 @@ void KConfig::setValue(const QString & key, const QVariant & value)
     }
 }
 
-QVariant KConfig::value(const QString & key, const QVariant & defaultValue) const
+QVariant TConfig::value(const QString & key, const QVariant & defaultValue) const
 {
    QDomElement element = find(k->currentGroup, key); // Current group or root?
 	
@@ -229,7 +229,7 @@ QVariant KConfig::value(const QString & key, const QVariant & defaultValue) cons
    return v;
 }
 
-QDomElement KConfig::find(const QDomElement &element, const QString &key) const 
+QDomElement TConfig::find(const QDomElement &element, const QString &key) const 
 {
    QDomElement recent;
    QDomNode n = element.firstChild();
@@ -248,7 +248,7 @@ QDomElement KConfig::find(const QDomElement &element, const QString &key) const
    return recent;
 }
 
-QString KConfig::currentGroup()
+QString TConfig::currentGroup()
 {
     return k->lastGroup;
 }

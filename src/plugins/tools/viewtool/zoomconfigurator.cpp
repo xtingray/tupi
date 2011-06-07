@@ -42,13 +42,13 @@
 #include "kimagebutton.h"
 #include "kseparator.h"
 
-#include "kglobal.h"
-#include "kdebug.h"
-#include "kconfig.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
 {
-    KINIT;
+    TINIT;
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -85,8 +85,8 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
     mainLayout->addWidget(textArea);
     mainLayout->addStretch(2);
 
-    KCONFIG->beginGroup("ZoomTool");
-    double value = KCONFIG->value("zoomFactor", -1).toDouble();
+    TCONFIG->beginGroup("ZoomTool");
+    double value = TCONFIG->value("zoomFactor", -1).toDouble();
 
     if (value > 0) 
         factor->setValue(value);
@@ -96,7 +96,7 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
 
 ZoomConfigurator::~ZoomConfigurator()
 {
-    KEND;
+    TEND;
 }
 
 double ZoomConfigurator::getFactor() const

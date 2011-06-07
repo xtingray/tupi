@@ -35,7 +35,7 @@
 
 #include "ktprojectloader.h"
 #include "ktproject.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "ktprojectresponse.h"
 #include "ktlibraryobject.h"

@@ -55,7 +55,7 @@
 class ColorSchemePref;
 class KTPaintAreaConfig;
 
-class KTPreferences : public KConfigurationDialog
+class KTPreferences : public TConfigurationDialog
 {
     Q_OBJECT;
     

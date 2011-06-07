@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KCONFIGURATIONDIALOG_H
-#define KCONFIGURATIONDIALOG_H
+#ifndef TCONFIGURATIONDIALOG_H
+#define TCONFIGURATIONDIALOG_H
 
 #include <QDialog>
 #include <QMap>
@@ -43,7 +43,7 @@
 #include "kwidgetlistview.h"
 #include "kflatbutton.h"
 
-#include "kglobal.h"
+#include "tglobal.h"
 
 class QStackedWidget;
 class QListWidget;
@@ -52,12 +52,12 @@ class QListWidgetItem;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class K_GUI_EXPORT KConfigurationDialog : public QDialog
+class K_GUI_EXPORT TConfigurationDialog : public QDialog
 {
     Q_OBJECT
     public:
-        KConfigurationDialog(QWidget *parent = 0);
-        ~KConfigurationDialog();
+        TConfigurationDialog(QWidget *parent = 0);
+        ~TConfigurationDialog();
         
         void addPage(QWidget *page, const QString &label, const QIcon &icon);
         QWidget *currentPage() const;

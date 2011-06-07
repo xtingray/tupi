@@ -36,13 +36,13 @@
 #ifndef KWORKSPACEMAINWINDOW_H
 #define KWORKSPACEMAINWINDOW_H
 
-#include "kmainwindow.h"
+#include "tmainwindow.h"
 #include <QWorkspace>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class K_IDEAL_EXPORT KWorkspaceMainWindow : public KMainWindow
+class K_IDEAL_EXPORT KWorkspaceMainWindow : public TMainWindow
 {
     Q_OBJECT;
     public:

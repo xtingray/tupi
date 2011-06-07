@@ -42,12 +42,12 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectresponse.h"
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFO;
+        T_FUNCINFO;
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -88,7 +88,7 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 {
     #ifdef K_DEBUG
-           K_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     int scenePos = response->sceneIndex();
@@ -127,7 +127,7 @@ bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 
     if (! scene->moveLayer(position, newPosition)) {
         #ifdef K_DEBUG
-               kWarning() << "Failed moving layer";
+               tWarning() << "Failed moving layer";
         #endif
         return false;
     } else {
@@ -167,7 +167,7 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
     QString newName = response->arg().toString();
 
     #ifdef K_DEBUG
-           kWarning() << "Renamed layer: " << newName;
+           tWarning() << "Renamed layer: " << newName;
     #endif
 
     QString oldName;

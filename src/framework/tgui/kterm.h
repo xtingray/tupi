@@ -39,7 +39,7 @@
 #include <qwidget.h>
 #include <QProcess>
 #include <QX11EmbedContainer>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
     @author David Cuadrado <krawek@gmail.com>

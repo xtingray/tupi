@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kdualcolorbutton.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include "kcolorarrow.xpm"
 #include "kcolorreset.xpm"
@@ -96,7 +96,7 @@ KDualColorButton::~KDualColorButton()
     delete arrowBitmap;
     delete resetPixmap;
 
-    KEND;
+    TEND;
 }
 
 QBrush KDualColorButton::foreground() const

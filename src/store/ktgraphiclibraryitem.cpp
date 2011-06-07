@@ -39,7 +39,7 @@
 
 #include <QGraphicsTextItem>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 struct KTGraphicLibraryItem::Private
 {
@@ -81,13 +81,13 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 {
     if (!object) {
         #ifdef K_DEBUG
-            kWarning("library") << "Setting null library object";
+            tWarning("library") << "Setting null library object";
         #endif
         return;
     }
     
     #ifdef K_DEBUG
-        K_FUNCINFOX("library") << object->symbolName();
+        T_FUNCINFOX("library") << object->symbolName();
     #endif
 
     k->symbolName = object->symbolName();

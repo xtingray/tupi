@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kpathhelper.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 KPathHelper::KPathHelper()
 {
@@ -148,7 +148,7 @@ QPainterPath KPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 
 QPainterPath KPathHelper::buildPath(const QString &svgpath)
 {
-	kWarning() << QObject::tr("Not implemented yet.");
+	tWarning() << QObject::tr("Not implemented yet.");
 	
 	return QPainterPath();
 }

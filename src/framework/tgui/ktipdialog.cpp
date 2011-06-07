@@ -35,8 +35,8 @@
 
 #include "ktipdialog.h"
 #include "kseparator.h"
-#include "kconfig.h"
-#include "kdebug.h"
+#include "tconfig.h"
+#include "tdebug.h"
 
 #include <QVBoxLayout>
 #include <QTextBrowser>
@@ -120,8 +120,8 @@ void KTipDialog::setupGUI()
     
     setAttribute(Qt::WA_DeleteOnClose, true);
     
-    KCONFIG->beginGroup("TipOfDay");
-    m_showOnStart->setChecked(qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true)));
+    TCONFIG->beginGroup("TipOfDay");
+    m_showOnStart->setChecked(qvariant_cast<bool>(TCONFIG->value("ShowOnStart", true)));
     
     showNextTip();
 }
@@ -146,7 +146,7 @@ void KTipDialog::showNextTip()
 
 void KTipDialog::setShowOnStart()
 {
-    KCONFIG->beginGroup("TipOfDay");
-    KCONFIG->setValue("ShowOnStart", m_showOnStart->isChecked());
+    TCONFIG->beginGroup("TipOfDay");
+    TCONFIG->setValue("ShowOnStart", m_showOnStart->isChecked());
 }
 

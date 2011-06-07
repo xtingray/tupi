@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktsceneslist.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QTreeWidgetItem>
 #include <QHeaderView>

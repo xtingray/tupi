@@ -37,7 +37,7 @@
 #define KXMLPARSERBASE_H
 
 #include <QXmlDefaultHandler>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

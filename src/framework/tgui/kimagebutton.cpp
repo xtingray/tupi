@@ -45,7 +45,7 @@
 #include <QStyleOptionButton>
 #include <QStylePainter>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 class KImageButton::Animation
 {

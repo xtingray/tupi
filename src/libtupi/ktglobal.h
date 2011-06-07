@@ -36,7 +36,7 @@
 #ifndef KTGLOBAL_H
 #define KTGLOBAL_H
 
-#include "kglobal.h"
+#include "tglobal.h"
 
 #define TUPI_EXPORT K_GUI_EXPORT
 

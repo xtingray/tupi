@@ -35,14 +35,14 @@
 
 #include "ktdebugwidget.h"
 #include "ktdebugterm.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 #include <QIcon>
 
 KTDebugWidget::KTDebugWidget(QWidget *parent, int width) : KTModuleWidgetBase(parent, "Debug Terminal")
 {
 #ifdef K_DEBUG
-    KINIT;
+    TINIT;
 #endif
 
     setWindowTitle(tr("Debug Console"));
@@ -60,6 +60,6 @@ KTDebugWidget::KTDebugWidget(QWidget *parent, int width) : KTModuleWidgetBase(pa
 KTDebugWidget::~KTDebugWidget()
 {
 #ifdef K_DEBUG
-    KEND;
+    TEND;
 #endif
 }

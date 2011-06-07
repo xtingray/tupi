@@ -40,7 +40,7 @@
 #include <QLinearGradient>
 #include <QBoxLayout>
 
-#include "kdebug.h"
+#include "tdebug.h"
 
 /**
  * This class defines the space which contains the Animation Mode interface.
@@ -121,7 +121,7 @@ void KTAnimationspace::dropEvent(QDropEvent *event)
         QPalette pal = palette();
         pal.setColor(QPalette::Dark, color);
  
-        kDebug() << "Co: " << color;
+        tDebug() << "Co: " << color;
         setPalette(pal);
         event->acceptProposedAction();
     } else {

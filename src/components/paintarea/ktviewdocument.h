@@ -39,7 +39,7 @@
 #include "ktdocumentruler.h"
 #include <QMainWindow>
 
-#include "kactionmanager.h"
+#include "tactionmanager.h"
 #include "kosd.h"
 
 #include "ktfilterinterface.h"

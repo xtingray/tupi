@@ -35,7 +35,7 @@
 
 #include "ktlineitem.h"
 #include "ktserializer.h"
-#include "kdebug.h"
+#include "tdebug.h"
 
 KTLineItem::KTLineItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsLineItem(parent, scene)
 {

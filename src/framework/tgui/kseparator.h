@@ -37,7 +37,7 @@
 #define KSEPARATOR_H
 
 #include <QFrame>
-#include "kglobal.h"
+#include "tglobal.h"
 
 /**
  * Standard horizontal or vertical separator.
