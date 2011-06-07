@@ -35,7 +35,7 @@
 
 #include "positionsettings.h"
 #include "kradiobuttongroup.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "kimagebutton.h"
 #include "tdebug.h"
 #include "ktitemtweener.h"
@@ -106,7 +106,7 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
     startLayout->addWidget(k->comboInit);
 
     k->layout->addLayout(labelLayout);
-    k->layout->addWidget(new KSeparator(Qt::Horizontal));
+    k->layout->addWidget(new TSeparator(Qt::Horizontal));
 
     k->layout->addWidget(startingLabel);
     k->layout->addLayout(startLayout);

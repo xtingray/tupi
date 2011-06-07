@@ -38,7 +38,7 @@
 #include "tdebug.h"
 #include "kradiobuttongroup.h"
 #include "kimagebutton.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tweenertable.h"
 #include "tosd.h"
 

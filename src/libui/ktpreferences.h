@@ -47,7 +47,7 @@
 
 #include "kfontchooser.h"
 #include "ktabdialog.h"
-#include "kconfigurationdialog.h"
+#include "tconfigurationdialog.h"
 
 #include "ktthemeselector.h"
 #include "ktglobal.h"

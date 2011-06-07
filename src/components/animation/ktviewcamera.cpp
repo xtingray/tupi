@@ -36,7 +36,7 @@
 #include "ktviewcamera.h"
 #include "ktexportwidget.h"
 #include "tdebug.h"
-#include "kseparator.h"
+#include "tseparator.h"
 
 #include <QLabel>
 #include <QHBoxLayout>

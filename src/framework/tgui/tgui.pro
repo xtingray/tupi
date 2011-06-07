@@ -24,7 +24,7 @@ HEADERS += taction.h \
            kcollapsiblewidget.h \
            kcolorbutton.h \
            kcommandhistory.h \
-           kconfigurationdialog.h \
+           tconfigurationdialog.h \
            kcontrolnode.h \
            kdatepicker.h \
            kdatetable.h \
@@ -55,19 +55,19 @@ HEADERS += taction.h \
            tpushbutton.h \
            kradiobuttongroup.h \
            krulerbase.h \
-           kseparator.h \
+           tseparator.h \
            ksqueezelabel.h \
            kstackedmainwindow.h \
            kstylecombobox.h \
            ktabbedmainwindow.h \
            ktabdialog.h \
-           ktabwidget.h \
+           ttabwidget.h \
            kterm.h \
            ktermtab.h \
            kthemedocument.h \
            kthememanager.h \
            ktipdialog.h \
-           ktoolbox.h \
+           ttoolbox.h \
            ktoolview.h \
            ktreelistwidget.h \
            ktreewidgetsearchline.h \
@@ -94,7 +94,7 @@ SOURCES += taction.cpp \
            kcolorbutton.cpp \
            kcollapsiblewidget.cpp \
            kcommandhistory.cpp \
-           kconfigurationdialog.cpp \
+           tconfigurationdialog.cpp \
            kcontrolnode.cpp \
            kdatepicker.cpp \
            kdatetable.cpp \
@@ -122,19 +122,19 @@ SOURCES += taction.cpp \
            tpushbutton.cpp \
            kradiobuttongroup.cpp \
            krulerbase.cpp \
-           kseparator.cpp \
+           tseparator.cpp \
            ksqueezelabel.cpp \
            kstackedmainwindow.cpp \
            kstylecombobox.cpp \
            ktabbedmainwindow.cpp \
            ktabdialog.cpp \
-           ktabwidget.cpp \
+           ttabwidget.cpp \
            kterm.cpp \
            ktermtab.cpp \
            kthemedocument.cpp \
            kthememanager.cpp \
            ktipdialog.cpp \
-           ktoolbox.cpp \
+           ttoolbox.cpp \
            ktoolview.cpp \
            ktreelistwidget.cpp \
            ktreewidgetsearchline.cpp \

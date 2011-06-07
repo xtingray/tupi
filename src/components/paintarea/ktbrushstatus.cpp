@@ -41,7 +41,7 @@
 #include <QBrush>
 #include <QColorDialog>
 
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tdebug.h"
 
 KTBrushStatus::KTBrushStatus(const QString &label, bool bg)

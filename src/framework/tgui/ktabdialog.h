@@ -36,7 +36,7 @@
 #ifndef KTABDIALOG_H
 #define KTABDIALOG_H
 
-#include "ktabwidget.h"
+#include "ttabwidget.h"
 
 #include <QDialog>
 #include <QHash>
@@ -72,7 +72,7 @@ class K_GUI_EXPORT KTabDialog : public QDialog
         void setButtonText(Button b, const QString &text);
         QPushButton *button(Button b);
         
-        KTabWidget *tabWidget() const;
+        TTabWidget *tabWidget() const;
         
     private:
         void setupButtons(int buttons);
@@ -87,7 +87,7 @@ class K_GUI_EXPORT KTabDialog : public QDialog
         virtual void custom3() {};
         
     private:
-        KTabWidget *m_tabWidget;
+        TTabWidget *m_tabWidget;
         Buttons m_buttons;
 };
 

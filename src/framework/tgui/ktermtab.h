@@ -38,7 +38,7 @@
 
 #include <QToolButton>
 #include "tglobal.h"
-#include "ktabwidget.h"
+#include "ttabwidget.h"
 
 class KTerm;
 
@@ -46,7 +46,7 @@ class KTerm;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class K_GUI_EXPORT KTermTab : public KTabWidget
+class K_GUI_EXPORT KTermTab : public TTabWidget
 {
     Q_OBJECT
     public:

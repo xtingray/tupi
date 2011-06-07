@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "koptionaldialog.h"
-#include "kseparator.h"
+#include "tseparator.h"
 
 #include <QVBoxLayout>
 #include <QLabel>
@@ -52,7 +52,7 @@ KOptionalDialog::KOptionalDialog(const QString &text,const QString &title,QWidge
     
     m_layout->addStretch(10);
     
-    m_layout->addWidget(new KSeparator);
+    m_layout->addWidget(new TSeparator);
     
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);

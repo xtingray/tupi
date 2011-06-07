@@ -43,7 +43,7 @@
 #include <qlabel.h>
 #include "kterm.h"
 
-KTermTab::KTermTab(QWidget *parent) : KTabWidget(parent)
+KTermTab::KTermTab(QWidget *parent) : TTabWidget(parent)
 {
     // tabBar()->setShape(QTabBar::TriangularNorth);
     m_newTab = new QToolButton(this);

@@ -92,8 +92,8 @@ void TabWidgetPrivate::wheelMove(int delta)
 
 #else
 
-#include <ktabwidget.h>
-#define TabWidgetPrivate KTabWidget
+#include <ttabwidget.h>
+#define TabWidgetPrivate TTabWidget
 
 #endif
 

@@ -44,7 +44,7 @@
 #include <QPainter>
 #include <QItemDelegate>
 
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tapplication.h"
 #include "tdebug.h"
 

@@ -40,7 +40,7 @@
 #include <QSplitter>
 
 #include <QStackedWidget>
-#include "ktabwidget.h"
+#include "ttabwidget.h"
 
 class KTLayerManager;
 class KTFramesTable;

@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktipdialog.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tconfig.h"
 #include "tdebug.h"
 
@@ -94,7 +94,7 @@ void KTipDialog::setupGUI()
     */
     
     layout->addWidget(textBrowser);
-    layout->addWidget(new KSeparator);
+    layout->addWidget(new TSeparator);
     
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     

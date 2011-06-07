@@ -49,7 +49,7 @@
 #include "tglobal.h"
 #include "tdebug.h"
 
-#include "kseparator.h"
+#include "tseparator.h"
 
 #include "kcolorbutton.h"
 #include "tapplication.h"
@@ -190,11 +190,11 @@ void KTThemeSelector::setupChooseColor()
     schemaLayout->addWidget(saveSchemeButton);
     schemeWidget->setLayout(schemaLayout);
     
-    new KSeparator(this);
+    new TSeparator(this);
     new QLabel(tr("Style"), this);
     new KStyleComboBox(this);
     
-    new KSeparator(this);
+    new TSeparator(this);
     m_useColors = new QCheckBox(tr("Use this colors"), this);
     
     connect(&m_generalButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), 

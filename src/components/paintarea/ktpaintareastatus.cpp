@@ -42,7 +42,7 @@
 #include <QIntValidator>
 #include <QObject>
 
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tdebug.h"
 
 #include "ktviewdocument.h"

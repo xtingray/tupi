@@ -60,7 +60,7 @@ struct KTTimeLine::Private
 {
     Private() : container(0), actionBar(0), selectedLayer(-1), library(0) {}
     
-    KTabWidget *container;
+    TTabWidget *container;
     KTProjectActionBar *actionBar;
     int selectedLayer; 
     const KTLibrary *library;
@@ -88,7 +88,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
    
     addChild(k->actionBar, Qt::AlignCenter);
     
-    k->container = new KTabWidget(this);
+    k->container = new TTabWidget(this);
     addChild(k->container);
     
     connect(k->actionBar, SIGNAL(actionSelected(int)), this, SLOT(requestCommand(int)));

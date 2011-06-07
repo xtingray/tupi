@@ -35,7 +35,7 @@
 
 #include "tweenertable.h"
 #include "tpushbutton.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tdebug.h"
 
 #include <QBoxLayout>
@@ -59,7 +59,7 @@ TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
     k->checkList = new QList<QCheckBox*>();
     k->buttonList = new QList<TPushButton*>();
 
-    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+    innerLayout->addWidget(new TSeparator(Qt::Horizontal));
 
     for (int i = 0; i < labels.size(); ++i) {
          QHBoxLayout *itemLayout = new QHBoxLayout;
@@ -80,7 +80,7 @@ TweenerTable::TweenerTable(QWidget *parent) : QWidget(parent), k(new Private)
          innerLayout->addLayout(itemLayout);
     }
 
-    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+    innerLayout->addWidget(new TSeparator(Qt::Horizontal));
 }
 
 TweenerTable::~TweenerTable()

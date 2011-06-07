@@ -35,7 +35,7 @@
 
 #include "kexportwizard.h"
 #include "kvhbox.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tdebug.h"
 #include "kimageeffect.h"
 
@@ -205,7 +205,7 @@ KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KV
 {
     KVHBox *theTitle = new KVHBox(this, Qt::Vertical);
     new QLabel(title, theTitle);
-    new KSeparator(theTitle);
+    new TSeparator(theTitle);
     boxLayout()->setAlignment(theTitle, Qt::AlignTop);
 
     m_container = new QFrame(this);
@@ -216,7 +216,7 @@ KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KV
     m_layout->addWidget(m_image, 0, 0, Qt::AlignLeft);
     m_image->hide();
 
-    new KSeparator(this);
+    new TSeparator(this);
 
     hide();
 }

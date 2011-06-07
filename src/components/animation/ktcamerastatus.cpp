@@ -39,7 +39,7 @@
 #include "tdebug.h"
 #include "tconfig.h"
 
-#include "kseparator.h"
+#include "tseparator.h"
 
 #include <QStatusBar>
 #include <QLabel>

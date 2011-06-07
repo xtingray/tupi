@@ -58,12 +58,12 @@
 #include <QSplitter>
 #include <QMenu>
 
-#include "ktoolbox.h"
+#include "ttoolbox.h"
 #include "kvhbox.h"
 
 struct KTColorPalette::Private
 {
-    KToolBox *centralWidget;
+    TToolBox *centralWidget;
     KTViewColorCells *containerPalette;
     KTColorValue *displayColorValue;
     KTColorPicker *colorPicker;
@@ -98,7 +98,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->splitter = new QSplitter(Qt::Vertical, this);
     addChild(k->splitter);
 
-    k->centralWidget = new KToolBox(k->splitter);
+    k->centralWidget = new TToolBox(k->splitter);
 
     setupChooserTypeColor();
     // setupGradientManager();

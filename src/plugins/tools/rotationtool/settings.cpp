@@ -39,7 +39,7 @@
 #include "ktitemtweener.h"
 #include "kttweenerstep.h"
 #include "kimagebutton.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tosd.h"
 
 #include <QLabel>
@@ -230,10 +230,10 @@ void Settings::setInnerForm()
     innerLayout->addLayout(totalLayout);
 
     innerLayout->addSpacing(15);
-    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+    innerLayout->addWidget(new TSeparator(Qt::Horizontal));
     innerLayout->addLayout(typeLayout);
 
-    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+    innerLayout->addWidget(new TSeparator(Qt::Horizontal));
 
     setClockForm();
     innerLayout->addWidget(k->clockPanel);
@@ -243,7 +243,7 @@ void Settings::setInnerForm()
     innerLayout->addLayout(speedLayout);
     innerLayout->addLayout(speedLayout2);
 
-    innerLayout->addWidget(new KSeparator(Qt::Horizontal));
+    innerLayout->addWidget(new TSeparator(Qt::Horizontal));
 
     k->layout->addWidget(k->innerPanel);
 

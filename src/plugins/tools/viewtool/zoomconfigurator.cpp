@@ -40,7 +40,7 @@
 #include <QLabel>
 
 #include "kimagebutton.h"
-#include "kseparator.h"
+#include "tseparator.h"
 
 #include "tglobal.h"
 #include "tdebug.h"

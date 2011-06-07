@@ -43,7 +43,7 @@
 #include "ktglobal.h"
 #include "tdebug.h"
 
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tconfig.h"
 #include "koptionaldialog.h"
 #include "kimagebutton.h"
@@ -153,7 +153,7 @@ void KTProjectActionBar::setup(Actions actions)
 
     if (actions & Separator) {
         k->buttonLayout->addSpacing(5);
-        k->buttonLayout->addWidget(new KSeparator(Qt::Vertical));
+        k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
     }
     
     if (actions & InsertFrame) {
@@ -288,9 +288,9 @@ void KTProjectActionBar::setup(Actions actions)
 
     k->buttonLayout->addStretch();
     
-    mainLayout->addWidget(new KSeparator(Qt::Horizontal));
+    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
     mainLayout->addLayout(k->buttonLayout);
-    mainLayout->addWidget(new KSeparator(Qt::Horizontal));
+    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
 }
 
 // TODO: Check why this function do nothing :S
@@ -312,7 +312,7 @@ void KTProjectActionBar::insertSeparator(int position)
             break;
     }
 
-    k->buttonLayout->insertWidget(position + 1, new KSeparator(Qt::Vertical), 1, Qt::AlignCenter);
+    k->buttonLayout->insertWidget(position + 1, new TSeparator(Qt::Vertical), 1, Qt::AlignCenter);
 }
 
 void KTProjectActionBar::insertBlankSpace(int position)

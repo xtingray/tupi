@@ -38,7 +38,7 @@
 #include <QTextEdit>
 
 #include "kimagebutton.h"
-#include "kseparator.h"
+#include "tseparator.h"
 #include "tglobal.h"
 #include "tdebug.h"
 
@@ -72,7 +72,7 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
     mainLayout->addLayout(buttonsLayout);
 
-    mainLayout->addWidget(new KSeparator(Qt::Horizontal));
+    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *label = new QLabel(tr("Tips"));
