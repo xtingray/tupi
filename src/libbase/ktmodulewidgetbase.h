@@ -44,7 +44,7 @@
 #include <QBoxLayout>
 #include <QDockWidget>
 
-#include "kosd.h"
+#include "tosd.h"
 #include "ktprojectresponse.h"
 #include "ktabstractprojectresponsehandler.h"
 #include "ktglobal.h"

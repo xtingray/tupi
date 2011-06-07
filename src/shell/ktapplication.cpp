@@ -40,7 +40,7 @@
 // #include "configwizard.h"
 
 // Tupi Framework 
-#include "kapplicationproperties.h"
+#include "tapplicationproperties.h"
 #include "tdebug.h"
 
 /**

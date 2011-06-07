@@ -40,7 +40,7 @@
 #include "kttweenerstep.h"
 #include "kimagebutton.h"
 #include "kseparator.h"
-#include "kosd.h"
+#include "tosd.h"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -471,12 +471,12 @@ void Settings::setEditMode()
 void Settings::applyTween()
 {
     if (!k->selectionDone) {
-        KOsd::self()->display(tr("Info"), tr("You must select at least one object!"), KOsd::Info); 
+        TOsd::self()->display(tr("Info"), tr("You must select at least one object!"), TOsd::Info); 
         return;
     }
 
     if (!k->propertiesDone) {
-        KOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), KOsd::Info);
+        TOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), TOsd::Info);
         return;
     }
 
@@ -515,7 +515,7 @@ void Settings::emitOptionChanged(int option)
                          emit clickedDefineAngle();
                      } else {
                          k->options->setCurrentIndex(0);
-                         KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+                         TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
                      }
              }
     }

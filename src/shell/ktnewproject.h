@@ -36,9 +36,9 @@
 #ifndef KTNEWPROYECT_H
 #define KTNEWPROYECT_H
 
-#include "kosd.h"
+#include "tosd.h"
 #include "ktabdialog.h"
-#include "kwizard.h"
+#include "twizard.h"
 #include "kxyspinbox.h"
 
 class KTProjectManagerParams;
@@ -50,6 +50,7 @@ class KTProjectManagerParams;
 class KTNewProject : public KTabDialog
 {
     Q_OBJECT
+
     public:
         KTNewProject(QWidget *parent = 0);
         ~KTNewProject();

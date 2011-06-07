@@ -49,7 +49,7 @@
 #include <QDesktopWidget>
 #include <QThread>
 
-#include "kapplicationproperties.h"
+#include "tapplicationproperties.h"
 #include "tdebug.h"
 #include "kcollapsiblewidget.h"
 #include "kaudioplayer.h"

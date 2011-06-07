@@ -35,7 +35,7 @@
 
 #include "tweenmanager.h"
 #include "kimagebutton.h"
-#include "kosd.h"
+#include "tosd.h"
 #include "tdebug.h"
 
 #include <QHBoxLayout>
@@ -137,7 +137,7 @@ void TweenManager::addTween()
 
             emit addNewTween(name);
         } else {
-            KOsd::self()->display(tr("Error"), tr("Tween name already exists!"), KOsd::Error);
+            TOsd::self()->display(tr("Error"), tr("Tween name already exists!"), TOsd::Error);
         }
     }
 }

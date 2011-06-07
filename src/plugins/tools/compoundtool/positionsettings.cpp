@@ -41,7 +41,7 @@
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
-#include "kosd.h"
+#include "tosd.h"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -223,7 +223,7 @@ int PositionSettings::totalSteps()
 void PositionSettings::applyTween()
 {
     if (totalSteps() <= 2) {
-        KOsd::self()->display(tr("Info"), tr("You must define a path for this Tween!"), KOsd::Info);
+        TOsd::self()->display(tr("Info"), tr("You must define a path for this Tween!"), TOsd::Info);
         return;
     }
 

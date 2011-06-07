@@ -57,7 +57,7 @@
 #include "tconfig.h"
 #include "tdebug.h"
 #include "tapplication.h"
-#include "kosd.h"
+#include "tosd.h"
 
 #include <cmath>
 

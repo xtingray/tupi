@@ -46,7 +46,7 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "taction.h"
-#include "kosd.h"
+#include "tosd.h"
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
 #include "ktgraphicsscene.h"
@@ -416,7 +416,7 @@ void Tweener::applyTween()
     QString name = k->configurator->currentTweenName();
 
     if (name.length() == 0) {
-        KOsd::self()->display(tr("Error"), tr("Tween name is missing!"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Tween name is missing!"), TOsd::Error);
         return;
     }
 
@@ -557,7 +557,7 @@ void Tweener::applyTween()
 
     setCurrentTween(name);
 
-    KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
+    TOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), TOsd::Info);
 }
 
 void Tweener::removeTweenFromProject(const QString &name)

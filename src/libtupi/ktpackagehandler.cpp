@@ -43,12 +43,12 @@
 
 #include "tdebug.h"
 #include "tglobal.h"
-#include "kapplicationproperties.h"
+#include "tapplicationproperties.h"
 
 /**
  * This class manages the file format for Tupi projects.
  * Here is where methods to handle Tupi files are defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTPackageHandler::Private

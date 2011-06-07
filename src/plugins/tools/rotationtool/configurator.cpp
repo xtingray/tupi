@@ -38,7 +38,7 @@
 #include "buttonspanel.h"
 
 #include "ktitemtweener.h"
-#include "kosd.h"
+#include "tosd.h"
 #include "tdebug.h"
 
 #include <QLabel>

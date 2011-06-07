@@ -35,7 +35,7 @@
 
 #include "ktipdatabase.h"
 
-#include "kalgorithm.h"
+#include "talgorithm.h"
 
 #include <QDomDocument>
 #include <QFile>
@@ -53,7 +53,7 @@ KTipDatabase::KTipDatabase(const QString &file, QWidget *parent) : QWidget(paren
     loadTips(file);
     
     if (!k->tips.isEmpty())
-        k->currentTipIndex = KAlgorithm::random() % k->tips.count();
+        k->currentTipIndex = TAlgorithm::random() % k->tips.count();
 }
 
 KTipDatabase::~KTipDatabase()

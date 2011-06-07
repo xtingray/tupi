@@ -70,7 +70,7 @@
 #include "ktabbedmainwindow.h"
 #include "ktstatusbar.h"
 
-#include "kosd.h"
+#include "tosd.h"
 #include "ktoolview.h"
 
 // Including headers about projects management

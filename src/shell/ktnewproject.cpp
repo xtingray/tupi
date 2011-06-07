@@ -39,7 +39,7 @@
 #include "kformfactory.h"
 #include "tconfig.h"
 #include "tapplication.h"
-#include "kosd.h"
+#include "tosd.h"
 #include "tdebug.h"
 
 #include <QLineEdit>
@@ -228,7 +228,7 @@ bool KTNewProject::useNetwork() const
 void KTNewProject::ok()
 {
     if (k->projectName->text().isEmpty()) {
-        KOsd::self()->display(tr("Error"), tr("Please fill the project name field"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Please fill the project name field"), TOsd::Error);
         return;
     }
     KTabDialog::ok();

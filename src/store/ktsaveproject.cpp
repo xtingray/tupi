@@ -38,7 +38,7 @@
 #include "ktscene.h"
 #include "ktlibrary.h"
 #include "ktpackagehandler.h"
-#include "kalgorithm.h"
+#include "talgorithm.h"
 #include "tdebug.h"
 
 #include <QDir>

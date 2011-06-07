@@ -50,7 +50,7 @@ HEADERS += taction.h \
            kmoviegeneratorinterface.h \
            knodegroup.h \
            koptionaldialog.h \
-           kosd.h \
+           tosd.h \
            kpathhelper.h \
            tpushbutton.h \
            kradiobuttongroup.h \
@@ -75,7 +75,7 @@ HEADERS += taction.h \
            kviewbutton.h \
            kwaitstyle.h \
            kwidgetlistview.h \
-           kwizard.h \
+           twizard.h \
            kexportwizard.h \
            kworkspacemainwindow.h \
            kxyspinbox.h \
@@ -117,7 +117,7 @@ SOURCES += taction.cpp \
            kmoviegenerator.cpp \
            knodegroup.cpp \
            koptionaldialog.cpp \
-           kosd.cpp \
+           tosd.cpp \
            kpathhelper.cpp \
            tpushbutton.cpp \
            kradiobuttongroup.cpp \
@@ -142,7 +142,7 @@ SOURCES += taction.cpp \
            kviewbutton.cpp \
            kwaitstyle.cpp \
            kwidgetlistview.cpp \
-           kwizard.cpp \
+           twizard.cpp \
            kexportwizard.cpp \
            kworkspacemainwindow.cpp \
            kxyspinbox.cpp

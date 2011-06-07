@@ -49,7 +49,7 @@
 #include "tdebug.h"
 #include "taction.h"
 #include "knodegroup.h"
-#include "kosd.h"
+#include "tosd.h"
 #include "ktsvg2qt.h"
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
@@ -510,7 +510,7 @@ void Tweener::applyTween()
     QString name = k->configurator->currentTweenName();
 
     if (name.length() == 0) {
-        KOsd::self()->display(tr("Error"), tr("Tween name is missing!"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Tween name is missing!"), TOsd::Error);
         return;
     }
 
@@ -657,7 +657,7 @@ void Tweener::applyTween()
 
     setCurrentTween(name);
 
-    KOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), KOsd::Info);
+    TOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), TOsd::Info);
 }
 
 /* This method updates the data of the path into the tool panel 

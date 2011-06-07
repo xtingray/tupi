@@ -67,7 +67,7 @@
 #include "ktlibraryobject.h"
 #include "ktsymboleditor.h"
 
-#include "kosd.h"
+#include "tosd.h"
 #include "kaudioplayer.h"
 
 #define RETURN_IF_NOT_LIBRARY if (!k->library) return;
@@ -422,7 +422,7 @@ void KTLibraryWidget::importBitmap()
 
         data.clear();
     } else {
-        KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(image), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(image), TOsd::Error);
     }
 }
 
@@ -459,7 +459,7 @@ void KTLibraryWidget::importSvg()
                                                      k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
     } else {
-        KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(svgPath), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(svgPath), TOsd::Error);
     }
 }
 
@@ -604,7 +604,7 @@ void KTLibraryWidget::importBitmapArray()
 
         }
     } else {
-        KOsd::self()->display(tr("Error"), tr("No image files were found.<br/>Please, try another directory"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("No image files were found.<br/>Please, try another directory"), TOsd::Error);
     }
 }
 
@@ -722,7 +722,7 @@ void KTLibraryWidget::importSvgArray()
 
         }
     } else {
-        KOsd::self()->display(tr("Error"), tr("No SVG files were found.<br/>Please, try another directory"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("No SVG files were found.<br/>Please, try another directory"), TOsd::Error);
     }
 }
 
@@ -746,7 +746,7 @@ void KTLibraryWidget::importSound()
                                                      KTLibraryObject::Sound, data);
         emit requestTriggered(&request);
     } else {
-        KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(sound), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(sound), TOsd::Error);
     }
 }
 

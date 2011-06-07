@@ -45,7 +45,7 @@
 #include "taction.h"
 #include "tdebug.h"
 #include "tglobal.h"
-#include "kalgorithm.h"
+#include "talgorithm.h"
 
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"

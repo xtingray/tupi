@@ -48,7 +48,7 @@
 
 #include "kthememanager.h"
 #include "kvhbox.h"
-#include "kwizard.h"
+#include "twizard.h"
 #include "tconfig.h"
 #include "tglobal.h"
 

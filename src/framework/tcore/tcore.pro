@@ -10,8 +10,8 @@ target.path = /lib/
 include.files += *.h 
 include.path = /include/tupicore 
 
-HEADERS += kalgorithm.h \
-           kapplicationproperties.h \
+HEADERS += talgorithm.h \
+           tapplicationproperties.h \
            kaspellchecker.h \
            tconfig.h \
            kcpuinfo.h \
@@ -24,8 +24,8 @@ HEADERS += kalgorithm.h \
            kspellinterface.h \
            ktipdatabase.h \
            kxmlparserbase.h
-SOURCES += kalgorithm.cpp \
-           kapplicationproperties.cpp \
+SOURCES += talgorithm.cpp \
+           tapplicationproperties.cpp \
            kaspellchecker.cpp \
            tconfig.cpp \
            kcpuinfo.cpp \

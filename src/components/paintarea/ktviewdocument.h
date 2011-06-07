@@ -40,7 +40,7 @@
 #include <QMainWindow>
 
 #include "tactionmanager.h"
-#include "kosd.h"
+#include "tosd.h"
 
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"

@@ -55,7 +55,7 @@
 #include "ktrequestbuilder.h"
 #include "ktrequestparser.h"
 
-#include "kalgorithm.h"
+#include "talgorithm.h"
 #include "tdebug.h"
 
 // This class handles the current animation project 
@@ -261,7 +261,7 @@ bool KTProjectManager::isValid() const
 
 void KTProjectManager::setupProjectDir()
 {
-    QString dataDir = CACHE_DIR + "/" + (k->project->projectName().isEmpty() ? KAlgorithm::randomString(6) : k->project->projectName());
+    QString dataDir = CACHE_DIR + "/" + (k->project->projectName().isEmpty() ? TAlgorithm::randomString(6) : k->project->projectName());
     QDir project = dataDir;
 
     if (!project.exists()) {

@@ -70,7 +70,7 @@
 #include "node.h"
 #include "ktproject.h"
 
-#include "kosd.h"
+#include "tosd.h"
 
 /**
  * This class defines the behavior of the main paint area when ilustration module is on
@@ -787,7 +787,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (selected.isEmpty()) {
-        KOsd::self()->display(tr("Error"), tr("No items selected"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("No items selected"), TOsd::Error);
         return;
     }
 
@@ -821,7 +821,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (selected.isEmpty()) {
-        KOsd::self()->display(tr("Error"), tr("No items selected"), KOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("No items selected"), TOsd::Error);
         return;
     }
 	

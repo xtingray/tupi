@@ -40,7 +40,7 @@
 #include "kimagebutton.h"
 #include "kseparator.h"
 #include "tweenertable.h"
-#include "kosd.h"
+#include "tosd.h"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -327,7 +327,7 @@ void TweenerPanel::emitOptionChanged(int option)
                      emit clickedTweenProperties();
                  } else {
                      k->options->setCurrentIndex(0);
-                     KOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), KOsd::Info);
+                     TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
                  }
              }
     }
@@ -369,7 +369,7 @@ void TweenerPanel::activateTweenersTable(TweenerPanel::TweenerType type, const Q
     if (!k->applyButton->isEnabled())
         k->applyButton->setEnabled(true);
 
-    KOsd::self()->display(tr("Info"), message, KOsd::Info);
+    TOsd::self()->display(tr("Info"), message, TOsd::Info);
 }
 
 void TweenerPanel::updateTweenersTable(TweenerPanel::Mode mode)

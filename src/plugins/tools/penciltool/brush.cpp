@@ -54,7 +54,7 @@
 #include "ktellipseitem.h"
 
 #include "taction.h"
-#include "kalgorithm.h"
+#include "talgorithm.h"
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tconfig.h"

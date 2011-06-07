@@ -39,7 +39,7 @@
 
 #include "kffmpegmoviegenerator.h"
 #include "tdebug.h"
-#include "kalgorithm.h"
+#include "talgorithm.h"
 
 #include <QDir>
 
@@ -385,7 +385,7 @@ void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps)
  : KMovieGenerator(width, height), k(new Private)
 {
-    k->movieFile = QDir::tempPath() + "/tupi_video_" + KAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video_" + TAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
     k->exception = begin();
@@ -393,7 +393,7 @@ KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format fo
 
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps) : KMovieGenerator(size.width(), size.height()), k(new Private)
 {
-    k->movieFile = QDir::tempPath() + "/tupi_video_" + KAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video_" + TAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
     k->exception = begin();

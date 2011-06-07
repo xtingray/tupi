@@ -39,7 +39,7 @@
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
-#include "kosd.h"
+#include "tosd.h"
 #include "kradiobuttongroup.h"
 #include "kimagebutton.h"
 #include "tdebug.h"

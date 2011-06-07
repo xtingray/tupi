@@ -42,7 +42,7 @@
 #include "taction.h"
 #include "tdebug.h"
 #include "tglobal.h"
-#include "kalgorithm.h"
+#include "talgorithm.h"
 #include "knodegroup.h"
 
 #include "ktgraphicalgorithm.h"
