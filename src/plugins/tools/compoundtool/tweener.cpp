@@ -338,11 +338,7 @@ void Tweener::aboutToChangeTool()
     if (k->editMode == TweenerPanel::Selection) {
         clearSelection();
         disableSelection();
-
-        return;
-    }
-
-    if (k->editMode == TweenerPanel::TweenProperties) {
+    } else if (k->editMode == TweenerPanel::TweenProperties) {
         if (k->currentTweenType == TweenerPanel::Position) {
             if (k->path) {
                 tFatal() << "Tweener::aboutToChangeTool() - Removing path!";
@@ -352,8 +348,11 @@ void Tweener::aboutToChangeTool()
                 k->group = 0;
             }
         }
-        return;
     }
+
+    k->mode = TweenerPanel::View;
+    k->editMode = TweenerPanel::None;
+    k->currentTweenType = TweenerPanel::Undefined;
 }
 
 /* SQA: What is it? 
@@ -443,27 +442,13 @@ void Tweener::applyReset()
 
     k->mode = TweenerPanel::View;
     k->editMode = TweenerPanel::None;
+    k->currentTweenType = TweenerPanel::Undefined;
 
     clearSelection();
     disableSelection();
 
-    /*
-    if (k->currentTweenType == TweenerPanel::Position) {
-        if (k->group) {
-            k->group->clear();
-            k->group = 0;
-        }
-
-        if (k->path) {
-            if (k->startPoint == k->scene->currentFrameIndex()) {
-                tFatal() << "Tweener::applyReset() - Removing path!";
-                k->scene->removeItem(k->path);
-            }
-            k->pathAdded = false;
-            k->path = 0;
-        }
-    }
-    */
+    k->pathAdded = false;
+    k->path = 0;
 
     k->startPoint = k->scene->currentFrameIndex();
     k->configurator->cleanTweensForms();
@@ -480,12 +465,15 @@ void Tweener::applyTween()
         return;
     }
 
+    // SQA: Remove this code
+    /*
     if (k->startPoint != k->scene->currentFrameIndex()) {
         KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                        k->scene->currentLayerIndex(),
                                                                        k->startPoint, KTProjectRequest::Select, "1");
         emit requested(&request);
     }
+    */
 
     if (!k->scene->scene()->tweenExists(name, KTItemTweener::Compound))
         tFatal() << "Tweener::applyTween() - Tween " << name << " is NEW!!!"; 

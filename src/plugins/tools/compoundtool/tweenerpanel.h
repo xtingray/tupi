@@ -60,7 +60,8 @@ class TweenerPanel : public QWidget
              Shear = 3,
              Opacity = 4,
              Coloring = 5,
-             Compound = 6
+             Compound = 6,
+             Undefined = 7
         };
 
         enum Mode { Add = 1, Edit, View };

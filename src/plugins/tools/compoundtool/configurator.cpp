@@ -290,11 +290,8 @@ void Configurator::cleanTweensForms()
 
 void Configurator::closeTweenList()
 {
-    if (k->mode == TweenerPanel::Add) {
+    if (k->mode == TweenerPanel::Add)
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == TweenerPanel::Edit) {
-        closeTweenerPanel();
-    }
 
     emit clickedResetInterface();
 

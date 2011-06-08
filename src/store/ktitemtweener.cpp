@@ -153,15 +153,11 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
     
     VERIFY_STEP(counter);
     
-    if (step.has(KTTweenerStep::Position)) {
+    if (step.has(KTTweenerStep::Position))
         setPosAt(counter, step.position());
-        tFatal() << "KTItemTweener::addStep() - Adding position value";
-    }
 
-    if (step.has(KTTweenerStep::Rotation)) {
+    if (step.has(KTTweenerStep::Rotation)) 
         setRotationAt(counter, step.rotation());
-        tFatal() << "KTItemTweener::addStep() - Adding rotation value";
-    }
     
     if (step.has(KTTweenerStep::Scale))
         setScaleAt(counter, step.horizontalScale(), step.verticalScale());
