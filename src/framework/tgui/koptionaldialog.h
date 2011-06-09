@@ -49,11 +49,13 @@
  * Esta clase representa un dialogo que es opcional
  * @endif
  * 
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KOptionalDialog : public QDialog
 {
     Q_OBJECT
+
     public:
         /**
          * @if english

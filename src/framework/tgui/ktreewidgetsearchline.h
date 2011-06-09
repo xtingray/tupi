@@ -46,7 +46,7 @@ class QTreeWidgetItem;
 class QToolButton;
 
 /**
- * This class makes it easy to add a search line for filtering the items in
+ * This class provides a search line for filtering the items in
  * listviews based on a simple text search.
  *
  * No changes to the application other than instantiating this class with

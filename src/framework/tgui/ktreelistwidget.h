@@ -40,12 +40,13 @@
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KTreeListWidget : public QTreeWidget
 {
     Q_OBJECT
+
     public:
         KTreeListWidget(QWidget *parent = 0);
         ~KTreeListWidget();

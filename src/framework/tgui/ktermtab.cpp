@@ -34,14 +34,13 @@
  ***************************************************************************/
 
 #include "ktermtab.h"
+#include "kterm.h"
 
 #ifdef Q_WS_X11
 
 #include <QtGlobal> 
 #include <QTabBar>
-
-#include <qlabel.h>
-#include "kterm.h"
+#include <QLabel>
 
 KTermTab::KTermTab(QWidget *parent) : TTabWidget(parent)
 {

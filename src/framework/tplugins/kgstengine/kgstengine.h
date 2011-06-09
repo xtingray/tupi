@@ -39,7 +39,7 @@
 #include <QObject>
 #include <QHash>
 
-#include <ksound/kaudioengineiface.h>
+#include "ksound/kaudioengineiface.h"
 
 /*
 #ifdef HAVE_GST10
@@ -48,12 +48,13 @@
 */
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class KGstEngine : public QObject, public KAudioEngineIface
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     Q_INTERFACES(KAudioEngineIface);
     
     public:

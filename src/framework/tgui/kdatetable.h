@@ -38,14 +38,17 @@
 
 #include <QTableWidget>
 #include <QDate>
+
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KDateTable : public QTableWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KDateTable(QWidget *parent = 0);
         ~KDateTable();

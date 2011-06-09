@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "kwaitstyle.h"
+#include "kimageeffect.h"
+
 #include <QLayout>
 #include <QPainter>
 #include <QPainterPath>
@@ -44,8 +46,6 @@
 #include <QtDebug>
 #include <QPushButton>
 #include <QGroupBox>
-
-#include "kimageeffect.h"
 
 QPixmap cached(const QString &img, const QColor &color)
 {

@@ -33,10 +33,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QtGlobal> 
+#include "kterm.h"
+
 #ifdef Q_WS_X11
 
-#include "kterm.h"
+#include <QtGlobal>
 #include <QApplication>
 
 KTerm::KTerm(QWidget *w) : QX11EmbedContainer(w)

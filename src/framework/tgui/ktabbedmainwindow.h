@@ -44,9 +44,11 @@ class QTabWidget;
  * A tabbed main window.
  * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT KTabbedMainWindow : public TMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
 
         enum Perspective {

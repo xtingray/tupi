@@ -47,9 +47,8 @@
 #include <QGroupBox>
 #include <QFontMetrics>
 
-#include <kcollapsiblewidget.h>
-
-#include <tdebug.h>
+#include "kcollapsiblewidget.h"
+#include "tdebug.h"
 
 /******************************************************************
  * Helper classes

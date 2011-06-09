@@ -34,12 +34,12 @@
  ***************************************************************************/
 
 #include "kthememanager.h"
-#include "qapplication.h"
 #include "kthemedocument.h"
 #include "tdebug.h"
+#include "tglobal.h"
+#include "tapplication.h"
 
-#include <tglobal.h>
-#include <tapplication.h>
+#include <QApplication>
 
 KThemeManager::KThemeManager() : QXmlDefaultHandler()
 {
@@ -199,4 +199,3 @@ QColor KThemeManager::getColor(const QXmlAttributes& atts)
 
     return color;
 }
-

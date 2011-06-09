@@ -39,16 +39,18 @@
 #include <QDockWidget>
 #include <QIcon>
 #include <QKeySequence>
+
 #include "kideality.h"
 
 class KViewButton;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT KToolView : public QDockWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         KToolView(const QString &title, const QIcon &icon = QIcon(), const QString &code = QString(), QWidget * parent = 0);

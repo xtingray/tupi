@@ -41,12 +41,14 @@
 #include <QDebug>
 #include "tglobal.h"
 
+
 class QScrollArea;
 class QTextDocument;
 
 class K_GUI_EXPORT KClickableLabel : public QWidget
 {
     Q_OBJECT
+
     public:
         KClickableLabel(QWidget* parent = 0);
         ~KClickableLabel();
@@ -84,6 +86,7 @@ class K_GUI_EXPORT KClickableLabel : public QWidget
 class K_GUI_EXPORT KCollapsibleWidget : public QWidget
 {
     Q_OBJECT
+
     public:
         KCollapsibleWidget(QWidget *parent = 0);
         KCollapsibleWidget(const QString& caption, QWidget *parent = 0);
@@ -119,7 +122,9 @@ class K_GUI_EXPORT KCollapsibleWidget : public QWidget
 class K_GUI_EXPORT KSettingsContainer : public QScrollArea
 {
     Q_ENUMS(CollapseState);
-    Q_OBJECT;
+
+    Q_OBJECT
+
     public:
         enum CollapseState { Collapsed, Uncollapsed };
         KSettingsContainer(QWidget *parent = 0);

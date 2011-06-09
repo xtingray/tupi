@@ -36,9 +36,10 @@
 #ifndef KTHEMEDOCUMENT_H
 #define KTHEMEDOCUMENT_H
 
+#include <QMap>
+#include <QStringList>
+
 #include <qdom.h>
-#include <qmap.h>
-#include <qstringlist.h>
 #include "tglobal.h"
 
 typedef QMap<QString, QString> ThemeKey;

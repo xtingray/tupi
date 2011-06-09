@@ -36,7 +36,7 @@
 #ifndef KSQUEEZELABEL_H
 #define KSQUEEZELABEL_H
 
-#include <qlabel.h>
+#include <QLabel>
 #include "tglobal.h"
 
 /**

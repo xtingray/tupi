@@ -39,8 +39,9 @@
 #include <QString>
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class KFortuneGenerator
 {
     public:

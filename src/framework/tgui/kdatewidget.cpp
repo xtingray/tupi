@@ -33,7 +33,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kdatewidget.h"
 #include <QSpinBox>
 #include <QComboBox>
@@ -41,43 +40,41 @@
 
 KDateWidget::KDateWidget(QWidget *parent) : QWidget(parent)
 {
-	init(QDate::currentDate());
+    init(QDate::currentDate());
 }
 
 KDateWidget::KDateWidget(const QDate &date, QWidget *parent) : QWidget(parent)
 {
-	init(date);
+    init(date);
 }
 
 void KDateWidget::init(const QDate &date)
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	
-	m_day = new QSpinBox;
-	m_day->setMinimum(0);
-	
-	m_year = new QSpinBox;
-	m_year->setMinimum(0);
-	m_year->setMaximum(3000);
-	
-	m_mounth = new QComboBox;
-	
-	for(int i = 1; i <= 12; i++)
-	{
-		QDate tmp(1,i, 1);
-		
-		m_mounth->addItem( tmp.toString("MMMM"), i );
-	}
-	
-	layout->addWidget( m_day );
-	layout->addWidget(m_mounth);
-	layout->addWidget(m_year);
-	
-	setDate(date);
-	
-	connect(m_day, SIGNAL(valueChanged (int)), this, SLOT(updateDateValues(int) ));
-	connect(m_year, SIGNAL(valueChanged(int)), this, SLOT(updateDateValues(int)));
-	connect(m_mounth, SIGNAL(activated( int )), this, SLOT(updateDateValues(int))); 
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    
+    m_day = new QSpinBox;
+    m_day->setMinimum(0);
+    
+    m_year = new QSpinBox;
+    m_year->setMinimum(0);
+    m_year->setMaximum(3000);
+    
+    m_mounth = new QComboBox;
+    
+    for (int i = 1; i <= 12; i++) {
+         QDate tmp(1,i, 1);
+         m_mounth->addItem(tmp.toString("MMMM"), i);
+    }
+    
+    layout->addWidget(m_day);
+    layout->addWidget(m_mounth);
+    layout->addWidget(m_year);
+    
+    setDate(date);
+    
+    connect(m_day, SIGNAL(valueChanged (int)), this, SLOT(updateDateValues(int)));
+    connect(m_year, SIGNAL(valueChanged(int)), this, SLOT(updateDateValues(int)));
+    connect(m_mounth, SIGNAL(activated(int)), this, SLOT(updateDateValues(int))); 
 }
 
 KDateWidget::~KDateWidget()
@@ -86,42 +83,40 @@ KDateWidget::~KDateWidget()
 
 void KDateWidget::setDate(const QDate &date)
 {
-	m_date = date;
-	
-	m_day->blockSignals( true );
-	m_year->blockSignals( true );
-	m_mounth->blockSignals( true );
-	
-	m_day->setMaximum(date.daysInMonth());
-	
-	m_day->setValue( date.day());
-	m_year->setValue( date.year());
-	
-	m_mounth->setCurrentIndex( date.month()-1 );
-	
-	m_day->blockSignals( false );
-	m_year->blockSignals( false );
-	m_mounth->blockSignals( false );
+    m_date = date;
+    
+    m_day->blockSignals(true);
+    m_year->blockSignals(true);
+    m_mounth->blockSignals(true);
+    
+    m_day->setMaximum(date.daysInMonth());
+    
+    m_day->setValue(date.day());
+    m_year->setValue(date.year());
+    
+    m_mounth->setCurrentIndex(date.month()-1);
+    
+    m_day->blockSignals(false);
+    m_year->blockSignals(false);
+    m_mounth->blockSignals(false);
 }
 
 QDate KDateWidget::date() const
 {
-	return m_date;
+    return m_date;
 }
 
 void KDateWidget::updateDateValues(int)
 {
-	QDate newDate;
-	
-	int year = m_year->value();
-	
-	int day = m_day->value();
-	
-	int mounth = m_mounth->currentIndex()+1;
-	
-	
-	newDate.setYMD(year, mounth, day);
-	
-	setDate(newDate);
+    QDate newDate;
+    
+    int year = m_year->value();
+    
+    int day = m_day->value();
+    
+    int mounth = m_mounth->currentIndex()+1;
+    
+    newDate.setYMD(year, mounth, day);
+    
+    setDate(newDate);
 }
-

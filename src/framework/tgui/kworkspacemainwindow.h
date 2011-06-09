@@ -40,11 +40,13 @@
 #include <QWorkspace>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT KWorkspaceMainWindow : public TMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KWorkspaceMainWindow(QWidget *parent = 0);
         ~KWorkspaceMainWindow();

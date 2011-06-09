@@ -36,16 +36,18 @@
 #ifndef KDATEWIDGET_H
 #define KDATEWIDGET_H
 
-#include <qwidget.h>
+#include <QWidget>
 #include <QDate>
+
 #include "tglobal.h"
 
 class QComboBox;
 class QSpinBox;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KDateWidget : public QWidget
 {
     Q_OBJECT

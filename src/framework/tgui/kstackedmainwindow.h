@@ -43,11 +43,13 @@
 class QStackedWidget;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT KStackedMainWindow : public TMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KStackedMainWindow(QWidget *parent = 0);
         ~KStackedMainWindow();

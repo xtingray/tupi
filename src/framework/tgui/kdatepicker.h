@@ -47,13 +47,14 @@ class QLabel;
 
 /**
  * 
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
  * 
 */
 
 class K_GUI_EXPORT KDatePicker : public QFrame
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KDatePicker(QWidget *parent = 0);
         ~KDatePicker();
@@ -86,13 +87,14 @@ class K_GUI_EXPORT KDatePicker : public QFrame
         
         class EditableButton;
         
-         QToolButton *m_mounth;
-         EditableButton *m_year;
+        QToolButton *m_mounth;
+        EditableButton *m_year;
 };
 
 class KDatePicker::EditableButton : public QToolButton
 {
     Q_OBJECT
+
     public:
         EditableButton();
         ~EditableButton();

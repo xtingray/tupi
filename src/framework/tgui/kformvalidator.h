@@ -42,8 +42,9 @@ class QLineEdit;
 #define K_GIVE_NAME(obj) obj->setObjectName(#obj);
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KFormValidator
 {
     public:

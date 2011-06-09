@@ -35,16 +35,17 @@
 
 #ifndef KCELLVIEW_H
 #define KCELLVIEW_H
-/**
- * @file kcellview.h
- * @brief Include this file if you need the class KCellView, KCellViewItem, KCellViewItemDelegate or KCellViewModel
- */
 
 #include <QTableWidget>
 #include <QStyleOptionViewItem>
 #include "tglobal.h"
 
 class KCellViewItemDelegate;
+
+/**
+ * @file kcellview.h
+ * @brief Include this file if you need the class KCellView, KCellViewItem, KCellViewItemDelegate or KCellViewModel
+ */
 
 class KCellViewItem : public QTableWidgetItem
 {

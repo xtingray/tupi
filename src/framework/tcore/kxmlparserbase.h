@@ -40,8 +40,9 @@
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_CORE_EXPORT KXmlParserBase : public QXmlDefaultHandler
 {
     public:

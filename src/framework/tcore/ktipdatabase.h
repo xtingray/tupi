@@ -39,11 +39,12 @@
 #include <QWidget>
 #include <QString>
 #include <QList>
+
 #include "tglobal.h"
 
 /**
  * @struct KTip
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
  */
 
 struct KTip

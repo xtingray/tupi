@@ -33,10 +33,9 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kxmlparserbase.h"
 
-#include <tdebug.h>
+#include "tdebug.h"
 
 struct KXmlParserBase::Private
 {

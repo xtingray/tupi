@@ -41,8 +41,9 @@
 #include "kmoviegeneratorinterface.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KMovieGenerator : public QImage, public KMovieGeneratorInterface
 {
     public:

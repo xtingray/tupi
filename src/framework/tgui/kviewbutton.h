@@ -38,16 +38,19 @@
 
 #include <QToolButton>
 #include <QStyleOptionToolButton>
+
 #include "kideality.h"
 
 class KToolView;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT KViewButton : public QToolButton
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KViewButton(Qt::ToolBarArea area, KToolView *toolView, QWidget * parent = 0);
         KViewButton(KToolView *toolView, QWidget *parent = 0);

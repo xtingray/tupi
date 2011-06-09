@@ -36,17 +36,18 @@
 #ifndef KAUDIOPLAYER_H
 #define KAUDIOPLAYER_H
 
-#include <qobject.h>
+#include <QObject>
 
 #include "kaudioengineiface.h"
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 class K_CORE_EXPORT KAudioPlayer : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KAudioPlayer();
         ~KAudioPlayer();

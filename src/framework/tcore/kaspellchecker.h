@@ -50,8 +50,9 @@ struct AspellSpeller;
  * @if english
  * Interface for spell 
  * @endif
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_CORE_EXPORT KAspellChecker : public KSpellInterface
 {
     public:

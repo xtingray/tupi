@@ -47,7 +47,7 @@
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 #ifdef __GNUC__

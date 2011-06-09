@@ -42,11 +42,13 @@
 #include "tglobal.h"
 
 /**
-    @author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado
 */
+
 class K_GUI_EXPORT KTerm : public QX11EmbedContainer
 {
     Q_OBJECT
+
     public:
         KTerm(QWidget *w = 0);
         ~KTerm();

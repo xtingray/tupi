@@ -49,28 +49,28 @@
 
 class K_GUI_EXPORT KWaitStyle : public QPlastiqueStyle
 {
-public:
-    KWaitStyle();
+    public:
+        KWaitStyle();
 
-    void drawHoverRect(QPainter *painter, const QRect &rect, const QBrush &brush) const;
+        void drawHoverRect(QPainter *painter, const QRect &rect, const QBrush &brush) const;
 
-    void drawPrimitive(PrimitiveElement element, const QStyleOption *option,
-                       QPainter *painter, const QWidget *widget = 0) const;
-    void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
-    void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option,
-                            QPainter *painter, const QWidget *widget) const;
-    QSize sizeFromContents(ContentsType type, const QStyleOption *option,
-                           const QSize &size, const QWidget *widget) const;
+        void drawPrimitive(PrimitiveElement element, const QStyleOption *option,
+                           QPainter *painter, const QWidget *widget = 0) const;
+        void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+        void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option,
+                                QPainter *painter, const QWidget *widget) const;
+        QSize sizeFromContents(ContentsType type, const QStyleOption *option,
+                               const QSize &size, const QWidget *widget) const;
 
-    QRect subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const;
-    QRect subControlRect(ComplexControl cc, const QStyleOptionComplex *opt,
-                         SubControl sc, const QWidget *widget) const;
+        QRect subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const;
+        QRect subControlRect(ComplexControl cc, const QStyleOptionComplex *opt,
+                             SubControl sc, const QWidget *widget) const;
 
-    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
+        int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
 
-    void polish(QPalette &palette);
-    void polish(QWidget *widget);
-    void unpolish(QWidget *widget);
+        void polish(QPalette &palette);
+        void polish(QWidget *widget);
+        void unpolish(QWidget *widget);
 };
 
 #endif

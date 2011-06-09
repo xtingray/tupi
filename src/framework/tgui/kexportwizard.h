@@ -49,12 +49,12 @@
 class KExportWizardPage;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KExportWizard : public QDialog
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         KExportWizard(QWidget *parent = 0);
@@ -97,6 +97,7 @@ class K_GUI_EXPORT KExportWizard : public QDialog
 class KExportWizardPage : public KVHBox
 {
     Q_OBJECT
+
     public:
         KExportWizardPage(const QString &title, QWidget *parent = 0);
         virtual ~KExportWizardPage();

@@ -48,12 +48,13 @@ class QTextBrowser;
 
 /**
  * @class KTipDialog
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
  */
 
 class K_GUI_EXPORT KTipDialog : public QDialog
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTipDialog(QStringList &labels, const QString &file, QWidget *parent = 0);
         KTipDialog(QStringList &labels, KTipDatabase *database, QWidget *parent = 0);

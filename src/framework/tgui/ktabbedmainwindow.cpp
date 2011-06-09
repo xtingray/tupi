@@ -40,13 +40,14 @@
 #include <QPainter>
 #include <QWheelEvent>
 #include <QTabBar>
-
 #include <QtDebug>
 
 #ifndef TUPI_GUI
+
 class TabWidgetPrivate : public QTabWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         TabWidgetPrivate(QWidget *parent = 0);
         ~TabWidgetPrivate();

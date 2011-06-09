@@ -43,11 +43,13 @@
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KXYSpinBox : public QGroupBox
 {
     Q_OBJECT
+
     public:
         KXYSpinBox(const QString &title, QWidget *parent = 0);
         ~KXYSpinBox();

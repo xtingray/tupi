@@ -39,11 +39,12 @@
 #include <QWidget>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 class KItemSelector : public QWidget
 {
     Q_OBJECT
+
     public:
         KItemSelector(QWidget *parent = 0);
         ~KItemSelector();

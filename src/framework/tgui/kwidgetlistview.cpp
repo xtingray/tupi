@@ -33,17 +33,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kwidgetlistview.h"
+#include "tdebug.h"
+
 #include <QHeaderView>
 #include <QResizeEvent>
-#include "tdebug.h"
 
 KWidgetListView::KWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 {
     verticalHeader()->hide();
     horizontalHeader()->hide();
-    horizontalHeader()->setResizeMode ( QHeaderView::Custom);
+    horizontalHeader()->setResizeMode(QHeaderView::Custom);
 }
 
 KWidgetListView::~KWidgetListView()
@@ -56,7 +56,7 @@ QTableWidgetItem *KWidgetListView::addWidget(QWidget *widget)
 
     int newRowIndex = rowCount();
     insertRow(newRowIndex);
-    setItem( newRowIndex, 0, newItem);
+    setItem(newRowIndex, 0, newItem);
 
     setIndexWidget(indexFromItem(newItem), widget);
     verticalHeader()->resizeSection(newRowIndex, widget->height());
@@ -93,7 +93,7 @@ QTableWidgetItem *KWidgetListView::item(QWidget *widget)
 
 void KWidgetListView::resizeEvent(QResizeEvent *e)
 {
-    horizontalHeader()->resizeSection (0, e->size().width() );
+    horizontalHeader()->resizeSection(0, e->size().width());
 }
 
 void KWidgetListView::moveItemUp(int index)
@@ -108,9 +108,7 @@ void KWidgetListView::moveItemDown(int index)
         verticalHeader()->moveSection(index, index+1);
 }
 
-
 int KWidgetListView::currentVisualRow() const
 {
     return verticalHeader()->visualIndex(currentRow());
 }
-

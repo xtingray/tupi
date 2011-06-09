@@ -44,8 +44,9 @@ class QBoxLayout;
 class QGridLayout;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KFormFactory
 {
     public:

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kcellview.h"
+#include "tdebug.h"
 
 #include <QPainter>
 #include <QPaintEvent>
@@ -43,8 +43,6 @@
 #include <QScrollBar>
 #include <QHeaderView>
 #include <QTimer>
-
-#include "tdebug.h"
 
 ////////// KCellViewItemDelegate ///////////
 

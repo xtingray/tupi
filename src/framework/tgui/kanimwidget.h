@@ -45,6 +45,7 @@
 #include <QShowEvent>
 #include <QList>
 #include <QWidget>
+
 #include "tglobal.h"
 
 typedef QList<QPixmap> ListOfPixmaps;
@@ -58,6 +59,7 @@ typedef QList<QPixmap> ListOfPixmaps;
  * @Author David Cuadrado
  * @endif
  */
+
 class K_GUI_EXPORT KAnimWidget : public QWidget
 {
     public:

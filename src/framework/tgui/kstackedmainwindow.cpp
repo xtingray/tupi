@@ -61,7 +61,6 @@ void KStackedMainWindow::addWidget(QWidget *widget, int perspective)
 void KStackedMainWindow::removeWidget(QWidget *widget)
 {
     m_stack->removeWidget(widget);
-    
     m_widgets.remove(m_widgets.key(widget));
 }
 

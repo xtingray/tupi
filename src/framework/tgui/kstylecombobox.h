@@ -36,15 +36,18 @@
 #ifndef KSTYLECOMBOBOX_H
 #define KSTYLECOMBOBOX_H
 
-#include <qcombobox.h>
+#include <QComboBox>
+
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KStyleComboBox : public QComboBox
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KStyleComboBox(QWidget *parent = 0);
         ~KStyleComboBox();

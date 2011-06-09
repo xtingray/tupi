@@ -50,9 +50,11 @@
  * @endif
  * @author Jorge Cuadrado
 */
+
 class K_GUI_EXPORT KEditSpinBox : public QGroupBox
 {
     Q_OBJECT
+
     public:
         /**
          * @if english

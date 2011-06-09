@@ -43,7 +43,6 @@
 
 #include <QDir>
 
-
 #ifdef __cplusplus
 extern "C" {
 #include "libavformat/avformat.h"

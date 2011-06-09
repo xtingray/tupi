@@ -43,7 +43,7 @@
 #include <QMouseEvent>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KELabel : public KSqueezeLabel

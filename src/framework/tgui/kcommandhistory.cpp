@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "kcommandhistory.h"
-#include <tdebug.h>
+#include "tdebug.h"
 
 #include <QUndoStack>
 #include <QMenu>

@@ -34,13 +34,12 @@
  ***************************************************************************/
 
 #include "kgstengine.h"
+#include "kalgorithm.h"
+#include "tdebug.h"
 
 #include <QtDebug>
 #include <QTimer>
 #include <QFile>
-
-#include "kcore/kalgorithm.h"
-#include "kcore/tdebug.h"
 
 KGstEngine *KGstEngine::s_instance = 0;
 

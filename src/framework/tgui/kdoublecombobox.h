@@ -39,8 +39,9 @@
 #include <QComboBox>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KDoubleComboBox : public QComboBox
 {
     Q_OBJECT;

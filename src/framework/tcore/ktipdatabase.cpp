@@ -34,13 +34,11 @@
  ***************************************************************************/
 
 #include "ktipdatabase.h"
-
 #include "talgorithm.h"
+#include "tdebug.h"
 
 #include <QDomDocument>
 #include <QFile>
-
-#include "tdebug.h"
 
 struct KTipDatabase::Private
 {

@@ -39,7 +39,7 @@
 #include<QPainter>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class KIndicatorDrawer

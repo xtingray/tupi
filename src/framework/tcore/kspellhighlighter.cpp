@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "kspellhighlighter.h"
+
 #include <QtDebug>
 
 KSpellHighlighter::KSpellHighlighter(QTextDocument * parent) : QSyntaxHighlighter(parent)

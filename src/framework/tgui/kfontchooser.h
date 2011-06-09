@@ -43,11 +43,13 @@ class QComboBox;
 class QFontComboBox;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KFontChooser : public QFrame
 {
     Q_OBJECT
+
     public:
         KFontChooser(QWidget *parent = 0);
         ~KFontChooser();

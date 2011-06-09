@@ -57,7 +57,7 @@ class QPainterPath;
 
 /**
  * @short The KCircleButtonBar class provides a circular button bar
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KCircleButtonBar : public QFrame

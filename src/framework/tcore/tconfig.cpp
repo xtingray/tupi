@@ -34,13 +34,12 @@
  ***************************************************************************/
 
 #include "tconfig.h"
-#include <qdir.h>
+#include "tdebug.h"
 
+#include <QDir>
 #include <QCoreApplication>
 #include <QTextDocument>
 #include <QDomDocument>
-
-#include "tdebug.h"
 
 class TConfig::Private
 {

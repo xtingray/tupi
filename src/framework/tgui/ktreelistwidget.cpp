@@ -34,12 +34,12 @@
  ***************************************************************************/
 
 #include "ktreelistwidget.h"
+#include "tdebug.h"
+
 #include <QHeaderView>
 #include <QItemDelegate>
 #include <QEvent>
 #include <QLineEdit>
-
-#include "tdebug.h"
 
 class KTreeListWidgetDelegate : public QItemDelegate
 {

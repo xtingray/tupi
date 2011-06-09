@@ -40,11 +40,13 @@
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KFlatButton : public QAbstractButton
 {
     Q_OBJECT
+
     public:
         KFlatButton(QWidget *parent = 0);
         KFlatButton(const QString &text, QWidget *parent = 0);

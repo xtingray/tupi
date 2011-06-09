@@ -38,6 +38,7 @@
 
 #include <QTableWidget>
 #include <QMap>
+
 #include "tglobal.h"
 
 /**
@@ -45,11 +46,13 @@
  *     La clase KWidgetListView provee una lista de widgets basada en items
  *     @brief Provee una lista de widgets
  * @endif
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KWidgetListView : public QTableWidget
 {
     Q_OBJECT
+
     public:
         /**
           * @if spanish

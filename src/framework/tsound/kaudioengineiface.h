@@ -39,12 +39,14 @@
 #include <QString>
 #include <QPluginLoader>
 #include <QUrl>
-#include <qplugin.h>
+
+#include "qplugin.h"
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_CORE_EXPORT KAudioEngineIface
 {
     public:

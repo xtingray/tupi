@@ -42,13 +42,15 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+
 #include "tglobal.h"
 
 class QColor;
 
 class K_GUI_EXPORT KColorButton : public QAbstractButton
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     Q_PROPERTY(QColor color READ color WRITE setColor);
 
     public:

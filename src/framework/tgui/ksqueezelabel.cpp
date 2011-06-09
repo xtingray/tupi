@@ -35,8 +35,7 @@
 
 #include "ksqueezelabel.h"
 
-#include <qtooltip.h>
-//Added by qt3to4:
+#include <QToolTip>
 #include <QLabel>
 #include <QResizeEvent>
 

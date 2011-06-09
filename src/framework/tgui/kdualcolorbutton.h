@@ -45,6 +45,7 @@ class QBitmap;
 #include <QDropEvent>
 #include <QBrush>
 #include <QWidget>
+
 #include "tglobal.h"
 
 /**
@@ -71,6 +72,7 @@ class QBitmap;
 class K_GUI_EXPORT KDualColorButton : public QWidget
 {
     Q_OBJECT
+
     Q_ENUMS(DualColor)
     Q_PROPERTY(QBrush foreground READ foreground WRITE setForeground)
     Q_PROPERTY(QBrush background READ background WRITE setBackground)

@@ -36,7 +36,7 @@
 #ifndef SPELLHIGHLIGHTER_H
 #define SPELLHIGHLIGHTER_H
 
-#include <qsyntaxhighlighter.h>
+#include <QSyntaxHighlighter>
 
 #include "kspeller.h"
 #include "tglobal.h"

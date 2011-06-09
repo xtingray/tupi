@@ -34,11 +34,11 @@
  ***************************************************************************/
 
 #include "kaudioplayer.h"
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include <QDir>
 #include <QTimer>
-#include "tglobal.h"
-#include "tdebug.h"
 
 #define KLIB_PREFIX "/pending/to/define"
 #define PLUGIN_DIR QString(KLIB_PREFIX)+"/pending/to/define"
@@ -127,8 +127,7 @@ void KAudioPlayer::seek(uint ms)
 
 void KAudioPlayer::setVolume(int percent)
 {
-    if (m_engine) {
+    if (m_engine)
         m_engine->setVolume(percent);
-    }
 }
 

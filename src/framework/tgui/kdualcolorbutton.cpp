@@ -39,8 +39,8 @@
 #include "kcolorarrow.xpm"
 #include "kcolorreset.xpm"
 
-#include <qpainter.h>
-#include <qbitmap.h>
+#include <QPainter>
+#include <QBitmap>
 
 #include <qdrawutil.h>
 

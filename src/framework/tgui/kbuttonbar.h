@@ -49,11 +49,13 @@ class QAction;
 class QMenu;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT KButtonBar : public QToolBar
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
         ~KButtonBar();

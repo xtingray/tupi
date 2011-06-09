@@ -44,11 +44,12 @@ class QMenu;
 class QAction;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KCommandHistory : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         KCommandHistory(QUndoStack *stack, QObject *parent = 0);

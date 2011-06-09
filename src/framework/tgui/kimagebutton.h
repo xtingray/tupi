@@ -45,7 +45,7 @@
 
 /**
  * A image pressable
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KImageButton : public QPushButton

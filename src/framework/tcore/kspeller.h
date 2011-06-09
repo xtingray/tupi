@@ -45,8 +45,9 @@
 #include "tglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_CORE_EXPORT KSpeller : public QObject
 {
     Q_OBJECT;

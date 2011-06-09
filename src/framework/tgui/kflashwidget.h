@@ -46,6 +46,7 @@
 /**
  * @author David Cuadrado 
 */
+
 class K_GUI_EXPORT KFlashWidget : public QX11EmbedContainer
 {
     Q_OBJECT

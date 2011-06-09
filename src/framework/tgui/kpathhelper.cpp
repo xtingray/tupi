@@ -46,180 +46,159 @@ KPathHelper::~KPathHelper()
 
 QPainterPath KPathHelper::toRect(const QPainterPath &p, const QRect &rect, float offset)
 {
-	QPainterPath path;
-	
-	QRectF br = p.boundingRect();
-	QMatrix matrix;
-	
-	float sx = 1, sy = 1;
-	if ( rect.width() < br.width() )
-	{
-		sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
-	}
-	if ( rect.height() < br.height() )
-	{
-		sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
-	}
-	
-	float factor = qMin(sx, sy);
-	matrix.scale(factor, factor);
-	path = matrix.map(p);
-	
-	matrix.reset();
-	
-	QPointF pos = path.boundingRect().topLeft();
-	
-	float tx = offset/2-pos.x(), ty = offset/2-pos.y();
-	
-	matrix.translate(tx, ty);
-	return matrix.map(path);
+    QPainterPath path;
+    
+    QRectF br = p.boundingRect();
+    QMatrix matrix;
+    
+    float sx = 1, sy = 1;
+
+    if (rect.width() < br.width())
+        sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
+
+    if (rect.height() < br.height())
+        sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
+    
+    float factor = qMin(sx, sy);
+    matrix.scale(factor, factor);
+    path = matrix.map(p);
+    
+    matrix.reset();
+    
+    QPointF pos = path.boundingRect().topLeft();
+    
+    float tx = offset/2-pos.x(), ty = offset/2-pos.y();
+    
+    matrix.translate(tx, ty);
+    return matrix.map(path);
 }
 
 QList<QPainterPath> KPathHelper::toRect(const QList<QPainterPath> &l, const QRect &rect, float offset)
 {
-	QList<QPainterPath> returnList;
-	QRectF br;
-	
-	foreach(QPainterPath in, l)
-	{
-		br = br | in.boundingRect().toRect();
-	}
+    QList<QPainterPath> returnList;
+    QRectF br;
+    
+    foreach (QPainterPath in, l)
+             br = br | in.boundingRect().toRect();
+    
+    foreach (QPainterPath path, l) {
+             QMatrix matrix;
+             float sx = 1, sy = 1;
 
-	
-	foreach(QPainterPath path, l)
-	{
-		QMatrix matrix;
-		
-		float sx = 1, sy = 1;
-		if ( rect.width() < br.width() )
-		{
-			sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
-		}
-		if ( rect.height() < br.height() )
-		{
-			sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
-		}
-		
-		float factor = qMin(sx, sy);
-		matrix.scale(factor, factor);
-		path = matrix.map(path);
-		
-		matrix.reset();
-		
-		QPointF pos = path.boundingRect().topLeft();
-		
-		float tx = offset/2-pos.x(), ty = offset/2-pos.y();
-		
-		matrix.translate(tx, ty);
-		returnList << matrix.map(path);
-	}
-	
-	return returnList;
+             if (rect.width() < br.width())
+                 sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
+
+             if (rect.height() < br.height())
+                 sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
+        
+             float factor = qMin(sx, sy);
+             matrix.scale(factor, factor);
+             path = matrix.map(path);
+        
+             matrix.reset();
+        
+             QPointF pos = path.boundingRect().topLeft();
+        
+             float tx = offset/2-pos.x(), ty = offset/2-pos.y();
+        
+             matrix.translate(tx, ty);
+             returnList << matrix.map(path);
+    }
+    
+    return returnList;
 }
 
 QPainterPath KPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 {
-	// ###: Not work for curves
-	QPainterPath path;
-	
-	foreach (QString polTmp, polygonsStr)
-	{
-		QStringList points = polTmp.trimmed().split(' ');
-		
-		QPolygonF polygon;
-		
-		foreach(QString p, points)
-		{
-			bool valid = false;
-			double x = p.section(sep, 0, 0).toDouble(&valid);
-			double y = p.section(sep, 1, 1).toDouble(&valid);
-			
-			if ( valid )
-			{
-				polygon << QPointF(x, y);
-			}
-		}
-		
-		path.addPolygon(polygon);
+    // ###: Not work for curves
+    QPainterPath path;
+    
+    foreach (QString polTmp, polygonsStr) {
+        QStringList points = polTmp.trimmed().split(' ');
+        
+        QPolygonF polygon;
+        
+        foreach (QString p, points) {
+                 bool valid = false;
+                 double x = p.section(sep, 0, 0).toDouble(&valid);
+                 double y = p.section(sep, 1, 1).toDouble(&valid);
+            
+                 if (valid)
+                     polygon << QPointF(x, y);
+        }
+        
+        path.addPolygon(polygon);
+    }
 
-	}
-	return path;
+    return path;
 }
 
 QPainterPath KPathHelper::buildPath(const QString &svgpath)
 {
-	tWarning() << QObject::tr("Not implemented yet.");
-	
-	return QPainterPath();
+    tWarning() << QObject::tr("Not implemented yet.");
+    
+    return QPainterPath();
 }
 
 
 QPainterPath KPathHelper::fromElements(const QList<QPainterPath::Element>& elements)
 {
-	QPainterPath shape;
-	QVector<QPointF> curve;
-	
-	foreach(QPainterPath::Element e, elements)
-	{
-		switch(e.type)
-		{
-			case QPainterPath::MoveToElement:
-			{
-				shape.moveTo(e.x, e.y);
-				break;
-			}
-			case QPainterPath::LineToElement:
-			{
-				shape.lineTo(e.x, e.y);
-				break;
-			}
-			case QPainterPath::CurveToDataElement:
-			{
-				curve << e;
-				if(curve.count() == 3)
-				{
-					shape.cubicTo(curve[0], curve[1], curve[2]);
-				}
-				break;
-			}
-			case QPainterPath::CurveToElement:
-			{
-				curve.clear();
-				curve << e;
-				break;
-			}
-		}
-	}
-	return shape;
+    QPainterPath shape;
+    QVector<QPointF> curve;
+    
+    foreach (QPainterPath::Element e, elements) {
+             switch(e.type) {
+                    case QPainterPath::MoveToElement:
+                    {
+                         shape.moveTo(e.x, e.y);
+                         break;
+                    }
+                    case QPainterPath::LineToElement:
+                    {
+                         shape.lineTo(e.x, e.y);
+                         break;
+                    }
+                    case QPainterPath::CurveToDataElement:
+                    {
+                         curve << e;
+                         if (curve.count() == 3)
+                             shape.cubicTo(curve[0], curve[1], curve[2]);
+                         break;
+                    }
+                    case QPainterPath::CurveToElement:
+                    {
+                         curve.clear();
+                         curve << e;
+                         break;
+                    }
+             }
+    }
+
+    return shape;
 }
 
-QList<QPainterPath> KPathHelper::toSubpaths(const QPainterPath & path )
+QList<QPainterPath> KPathHelper::toSubpaths(const QPainterPath &path)
 {
-	QList<QPainterPath> paths;
-	QList<QPainterPath::Element> elements;
-	
-	for(int index = 0; index < path.elementCount(); index++ )
-	{
-		QPainterPath::Element e = path.elementAt(index);
-		
-		if(e.type == QPainterPath::MoveToElement && !elements.isEmpty())
-		{
-			QPainterPath path = KPathHelper::fromElements(elements);
-			paths << path;
-			elements.clear();
-		}
-		
-		elements << e;
-	}
-	
-	if( ! elements.isEmpty() )
-	{
-		QPainterPath path = KPathHelper::fromElements(elements);
-		paths << path;
-		elements.clear();
-	}
-	
-	return paths;
+    QList<QPainterPath> paths;
+    QList<QPainterPath::Element> elements;
+    
+    for (int index = 0; index < path.elementCount(); index++) {
+         QPainterPath::Element e = path.elementAt(index);
+        
+         if (e.type == QPainterPath::MoveToElement && !elements.isEmpty()) {
+             QPainterPath path = KPathHelper::fromElements(elements);
+             paths << path;
+             elements.clear();
+         }
+        
+         elements << e;
+    }
+    
+    if (! elements.isEmpty()) {
+        QPainterPath path = KPathHelper::fromElements(elements);
+        paths << path;
+        elements.clear();
+    }
+    
+    return paths;
 }
-
-

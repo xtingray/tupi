@@ -44,11 +44,13 @@
 typedef QHash<int, QPushButton *> Buttons;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_GUI_EXPORT KTabDialog : public QDialog
 {
     Q_OBJECT
+
     public:
         enum Button
         {

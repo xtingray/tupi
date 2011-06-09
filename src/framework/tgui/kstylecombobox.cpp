@@ -34,11 +34,10 @@
  ***************************************************************************/
 
 #include "kstylecombobox.h"
+#include "tdebug.h"
 
 #include <QStyleFactory>
 #include <QApplication>
-
-#include <tdebug.h>
 
 KStyleComboBox::KStyleComboBox(QWidget *parent) : QComboBox(parent)
 {

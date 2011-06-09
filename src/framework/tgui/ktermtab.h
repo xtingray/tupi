@@ -37,18 +37,20 @@
 #define KTERMTAB_H
 
 #include <QToolButton>
+
 #include "tglobal.h"
 #include "ttabwidget.h"
 
 class KTerm;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KTermTab : public TTabWidget
 {
     Q_OBJECT
+
     public:
         KTermTab(QWidget *parent = 0);
         ~KTermTab();

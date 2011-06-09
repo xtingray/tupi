@@ -52,6 +52,7 @@ class KVHBox;
 class K_GUI_EXPORT KVHBox : public QFrame
 {
     Q_OBJECT
+
     public:
         KVHBox(QWidget *parent, Qt::Orientation o);
         KVHBox(QWidget *parent = 0, bool isVertical = true);
