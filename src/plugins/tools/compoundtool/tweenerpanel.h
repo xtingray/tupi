@@ -82,6 +82,7 @@ class TweenerPanel : public QWidget
         QString currentTweenName() const;
         void cleanTweensForms();
         void setStartFrame(int currentIndex);
+        void resetTweener();
 
     private slots:
         void emitOptionChanged(int option);

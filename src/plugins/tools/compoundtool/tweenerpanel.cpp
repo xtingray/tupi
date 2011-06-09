@@ -260,6 +260,7 @@ void TweenerPanel::activeTweenComponent(int index, bool enable)
     if (enable && !k->panelList->at(index)->isVisible()) {
         k->panelList->at(index)->show();
     } else {
+        k->currentTweenIndex = -1;
         k->panelList->at(index)->hide();
     }
 }
@@ -269,6 +270,8 @@ void TweenerPanel::activeTweenComponent(int index, bool enable)
 void TweenerPanel::setParameters(const QString &name, int framesTotal, int startFrame)
 {
     // k->tweenerTable->resetTable();
+
+    k->currentTweenIndex = -1;
 
     k->positionPanel->setParameters(framesTotal, startFrame);
 
@@ -287,6 +290,8 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
 void TweenerPanel::setParameters(KTItemTweener *currentTween)
 {
     tFatal() << "TweenerPanel::setParameters() - Loading Tween: " << currentTween->name();
+
+    k->currentTweenIndex = -1;
 
     setEditMode();
 
@@ -534,4 +539,18 @@ void TweenerPanel::closePanel()
 {
     k->tweenerTable->resetTable();
     emit clickedResetTween(); 
+}
+
+void TweenerPanel::resetTweener()
+{
+    if (k->currentTweenIndex != -1) {
+        activeTweenComponent(k->currentTweenIndex, false);
+        k->currentTweenIndex = -1;
+    }
+
+    k->tweenerTable->resetTable();
+
+    activeOptionsPanel(true);
+    activeTweenerTableForm(true);
+    activeButtonsPanel(true);
 }
