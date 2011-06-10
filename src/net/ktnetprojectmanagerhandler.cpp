@@ -106,7 +106,7 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     
     k->comunicationModule = new QTabWidget;
     k->comunicationModule->setWindowTitle(tr("Communications"));
-    k->comunicationModule->setWindowIcon(QPixmap(THEME_DIR+"/icons/chat.png"));
+    k->comunicationModule->setWindowIcon(QPixmap(THEME_DIR + "/icons/chat.png"));
     
     k->chat = new KTChat;
     k->comunicationModule->addTab(k->chat, tr("chat"));
@@ -130,10 +130,11 @@ KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 
 void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* request)
 {
-    // Esto llega desde el proyecto antes de ejecutar el comando!
+    // This comes from the project before the command execution
     
-    // TODO: Guardar una copia de los eventos o paquetes en una cola y reenviar a la GUI cuando llegue el paquete de que todo va bien desde el servidor!
-    
+    // SQA: Save a copy of the events or queued packages and resend to the GUI when the "Ok" package 
+    // comes from the server 
+
     if (k->socket->state() == QAbstractSocket::ConnectedState) {
         #ifdef K_DEBUG
                tDebug("net") << "SENDING: " << request->xml();
@@ -157,7 +158,6 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
     return false;
 }
 
-//bool KTNetProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject *project)
 {
     KTSaveNetProject saver(k->params->server(), k->params->port());
@@ -199,8 +199,8 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     bool connected = k->socket->waitForConnected(1000);
 
     if (connected) {
-        KTConnectPackage connectPackage( k->params->login(), k->params->password());
-        k->socket->send( connectPackage );
+        KTConnectPackage connectPackage(k->params->login(), k->params->password());
+        k->socket->send(connectPackage);
     }
     
     return connected;
@@ -226,7 +226,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
             return false;
     }
     
-    KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author(), netparams->description() );
+    KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author(), netparams->description());
     k->socket->send(newProjectPackage);
     
     return true;
@@ -260,8 +260,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
             if (k->ownPackage && !k->doAction) {
                 if (parser.response()->part() == KTProjectRequest::Item) {
                     KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
-                    KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), response->layerIndex(), 
-                                                                                    response->frameIndex(), KTProjectRequest::Select);
+                    KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), 
+                                               response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
                     request.setExternal(!k->ownPackage);
                     emit sendLocalCommand(&request);
                 }
@@ -269,7 +269,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                 return;
             }
             
-            KTProjectRequest request = KTRequestBuilder::fromResponse( parser.response());
+            KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
             request.setExternal(!k->ownPackage);
             emitRequest(&request, k->doAction && k->ownPackage);
 
@@ -311,7 +311,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                if (parser.parse(package)) {
                    KTListProjectDialog dialog;
                    foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo()) {
-                            dialog.addProject( info.name, info.author, info.description);
+                            dialog.addProject(info.name, info.author, info.description);
                    }
 
                    if (dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty()) {
@@ -320,7 +320,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        #endif
                        loadProjectFromServer(dialog.currentProject());
                    } else {
-                       //TODO: disconnect
+                       //SQA: Disconnect client
                    }
                }
     } else if (root == "chat") {

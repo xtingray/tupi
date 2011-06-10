@@ -36,7 +36,7 @@
 #ifndef KTACKPARSER_H
 #define KTACKPARSER_H
 
-#include <ktxmlparserbase.h>
+#include "ktxmlparserbase.h"
 
 /**
  * @author David Cuadrado 

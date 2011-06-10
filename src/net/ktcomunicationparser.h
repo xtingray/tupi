@@ -36,7 +36,7 @@
 #ifndef KTCOMUNICATIONPARSER_H
 #define KTCOMUNICATIONPARSER_H
 
-#include <ktxmlparserbase.h>
+#include "ktxmlparserbase.h"
 
 /**
  * @author Jorge Cuadrado

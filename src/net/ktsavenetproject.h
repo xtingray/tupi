@@ -36,7 +36,7 @@
 #ifndef KTSAVENETPROJECT_H
 #define KTSAVENETPROJECT_H 
 
-#include <ktsaveproject.h>
+#include "ktsaveproject.h"
 #include <QString>
 
 class KTNetProjectManagerParams;
@@ -60,7 +60,6 @@ class KTSaveNetProject : public KTSaveProject
     private:
         QString m_server;
         int m_port;
-
 };
 
 #endif

@@ -149,7 +149,9 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     netLayout->addWidget(k->netOptions);
 
     addTab(netContainer, tr("Network"));
-    enableTab(1, false);
+
+    // SQA: Only for devel issues
+    // enableTab(1, false);
 
     enableNetOptions(false);
 }

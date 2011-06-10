@@ -37,26 +37,22 @@
 #include "kmd5hash.h"
 
 /*
-<connect version="0" >
+<connect version="0">
         <login>the_login</login>
         <password>the_hashed_password_md5</password>
 </connect>
 */
 
-KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
- : QDomDocument()
+KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd) : QDomDocument()
 {
-	QDomElement root = createElement("connect");
-	root.setAttribute("version", "0");
-	appendChild(root);
-	
-	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
-	root.appendChild( createElement("password")).appendChild(createTextNode(KMD5Hash::hash( passwd)));
+    QDomElement root = createElement("connect");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    root.appendChild(createElement("login") ).appendChild(createTextNode(login));
+    root.appendChild(createElement("password")).appendChild(createTextNode(KMD5Hash::hash(passwd)));
 }
-
 
 KTConnectPackage::~KTConnectPackage()
 {
 }
-
-

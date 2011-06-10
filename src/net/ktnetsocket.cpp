@@ -34,14 +34,12 @@
  ***************************************************************************/
 
 #include "ktnetsocket.h"
+#include "tdebug.h"
+#include "ktnetprojectmanagerhandler.h"
+#include "ktcompress.h"
+
 #include <QTextStream>
 #include <QDataStream>
-
-#include "tdebug.h"
-
-#include "ktnetprojectmanagerhandler.h"
-
-#include "ktcompress.h"
 
 KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
 {
@@ -63,7 +61,7 @@ void KTNetSocket::readed(const QString &readed)
         QString root = doc.documentElement().tagName();
         m_handler->handlePackage(root, readed);
     } else {
-        qDebug("Isn't a document");
+        qDebug("KTNetSocket::readed() - Error: It isn't a document");
     }
 }
 

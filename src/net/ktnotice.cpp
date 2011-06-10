@@ -37,7 +37,6 @@
 
 #include <QTextEdit>
 #include <QLineEdit>
-
 #include <QGridLayout>
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -92,7 +91,8 @@ KTNotice::~KTNotice()
 
 void KTNotice::addMessage(const QString &from, const QString &message)
 {
-    k->browser->append("<div style=\"margin:10px; padding: 2px; border: 3px solid#999999; \">" + tr("notice") + ":<br/>" + message + "<br/>" + tr(" by ") + from + "</div>");
+    k->browser->append("<div style=\"margin:10px; padding: 2px; border: 3px solid#999999; \">" 
+                        + tr("notice") + ":<br/>" + message + "<br/>" + tr(" by ") + from + "</div>");
 }
 
 void KTNotice::sendMessage()

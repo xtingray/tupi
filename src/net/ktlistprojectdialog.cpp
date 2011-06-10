@@ -49,7 +49,6 @@ struct KTListProjectDialog::Private
     QTreeWidget *tree;
     KTreeWidgetSearchLine *search;
     QPushButton *accept, *cancel;
-
 };
 
 KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
@@ -61,7 +60,7 @@ KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
     QHBoxLayout *search = new QHBoxLayout;
 
     QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR+"/icons/clear_right.png"));
+    button->setIcon(QIcon(THEME_DIR + "/icons/clear_right.png"));
 
     search->addWidget(button);
     k->tree = new QTreeWidget;
@@ -110,7 +109,7 @@ QString KTListProjectDialog::currentProject()
     return "";
 }
 
-void KTListProjectDialog::execAccept(QTreeWidgetItem * , int )
+void KTListProjectDialog::execAccept(QTreeWidgetItem * , int)
 {
     accept();
 }

@@ -34,6 +34,9 @@
  ***************************************************************************/
 
 #include "ktconnectdialog.h"
+#include "ktnetprojectmanagerparams.h"
+#include "tconfig.h"
+#include "kformfactory.h"
 
 #include <QLineEdit>
 #include <QCheckBox>
@@ -41,13 +44,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QSpinBox>
-
-#include "ktnetprojectmanagerparams.h"
-
 #include <QDialogButtonBox>
-
-#include "tconfig.h"
-#include "kformfactory.h"
 
 struct KTConnectDialog::Private
 {
@@ -74,7 +71,7 @@ KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), k(new Priva
     setWindowTitle(tr("Connection Dialog"));
     k->login = new QLineEdit;
     k->password = new QLineEdit;
-    k->password->setEchoMode( QLineEdit::Password);
+    k->password->setEchoMode(QLineEdit::Password);
     
     k->server = new QLineEdit;
     k->port = new QSpinBox;
@@ -102,7 +99,6 @@ KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), k(new Priva
     
     loadSettings();
 }
-
 
 KTConnectDialog::~KTConnectDialog()
 {
@@ -167,4 +163,3 @@ void KTConnectDialog::saveSettings()
     TCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
     TCONFIG->sync();
 }
-

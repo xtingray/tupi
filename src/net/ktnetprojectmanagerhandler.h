@@ -36,8 +36,9 @@
 #ifndef KTNETPROJECTMANAGER_H
 #define KTNETPROJECTMANAGER_H
 
+#include "ktabstractprojectmanagerhandler.h"
+
 #include <QDomDocument>
-#include <ktabstractprojectmanagerhandler.h>
 #include <QTabWidget>
 
 class KTChat;
@@ -64,7 +65,6 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         virtual void handleProjectRequest(const KTProjectRequest* event);
         virtual bool commandExecuted(KTProjectResponse *response);
 
-        //virtual bool saveProject(const QString &fileName, const KTProject *project);
         virtual bool saveProject(const QString &fileName, KTProject *project);
         virtual bool loadProject(const QString &fileName, KTProject *project);
 

@@ -56,7 +56,6 @@ class KTNetSocket : public KTSocketBase
         
     private:
         KTNetProjectManagerHandler *m_handler;
-        
 };
 
 #endif

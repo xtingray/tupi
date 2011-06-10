@@ -192,9 +192,9 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 */
 KTMainWindow::~KTMainWindow()
 {
-#ifdef K_DEBUG
-    TEND;
-#endif
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->clear(QClipboard::Clipboard);
@@ -526,23 +526,23 @@ bool KTMainWindow::closeProject()
  * @return true if the network project can be configured
 */
 
-bool KTMainWindow::setupNetworkProject(const QString& projectName ,const QString &server , int port)
+bool KTMainWindow::setupNetworkProject(const QString& projectName, const QString &server, int port)
 {
-    KTConnectDialog *cndialog = new KTConnectDialog(this);
+    KTConnectDialog *netDialog = new KTConnectDialog(this);
 
     if (!server.isEmpty())
-        cndialog->setServer(server);
+        netDialog->setServer(server);
 
     if (port != -1)
-        cndialog->setPort(port);
+        netDialog->setPort(port);
 
     KTNetProjectManagerParams *params = new KTNetProjectManagerParams();
 
-    if (cndialog->exec() == QDialog::Accepted) {
-        params->setServer(cndialog->server());
-        params->setPort(cndialog->port());
-        params->setLogin(cndialog->login());
-        params->setPassword(cndialog->password());
+    if (netDialog->exec() == QDialog::Accepted) {
+        params->setServer(netDialog->server());
+        params->setPort(netDialog->port());
+        params->setLogin(netDialog->login());
+        params->setPassword(netDialog->password());
         params->setProjectName(projectName);
 
         return setupNetworkProject(params);
@@ -653,7 +653,6 @@ void KTMainWindow::openProject(const QString &path)
     if (path.endsWith(".ntup")) {
         KTSaveNetProject loader;
         KTNetProjectManagerParams *params = loader.params(path);
-
         setupNetworkProject(params->projectName(), params->server(), params->port());
         delete params;
     } else if (path.endsWith(".tup")) {

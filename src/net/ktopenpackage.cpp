@@ -48,7 +48,6 @@ KTOpenPackage::KTOpenPackage(const QString& projectName): QDomDocument()
     QDomElement m_project = createElement("project");
     m_project.setAttribute("name", projectName);
     root.appendChild(m_project);
-    
 }
 
 KTOpenPackage::~KTOpenPackage()

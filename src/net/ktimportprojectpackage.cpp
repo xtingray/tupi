@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QFile>
 #include "ktimportprojectpackage.h"
+#include <QFile>
 
 KTImportProjectPackage::KTImportProjectPackage(const QString & projectPath)
 {
@@ -49,7 +49,7 @@ KTImportProjectPackage::~KTImportProjectPackage()
 
 }
 
-void KTImportProjectPackage::setProject(const QString & projectPath)
+void KTImportProjectPackage::setProject(const QString &projectPath)
 {
     QFile file(projectPath);
     file.open(QIODevice::ReadOnly);

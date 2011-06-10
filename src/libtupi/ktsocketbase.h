@@ -42,31 +42,33 @@
 #include "ktglobal.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class TUPI_EXPORT KTSocketBase : public QTcpSocket
 {
-	Q_OBJECT;
-	public:
-		KTSocketBase(QObject *parent = 0);
-		~KTSocketBase();
-		
-		void send(const QString &str);
-		void send(const QDomDocument &doc);
-		
-		virtual void readed(const QString &readed) = 0;
-		
-	protected slots:
-		virtual void readFromServer();
-		
-	public slots:
-		void sendQueue();
-		void clearQueue();
-		
-	private:
-		struct Private;
-		Private *const k;
-		
+    Q_OBJECT
+
+    public:
+        KTSocketBase(QObject *parent = 0);
+        ~KTSocketBase();
+        
+        void send(const QString &str);
+        void send(const QDomDocument &doc);
+        
+        virtual void readed(const QString &readed) = 0;
+        
+    protected slots:
+        virtual void readFromServer();
+        
+    public slots:
+        void sendQueue();
+        void clearQueue();
+        
+    private:
+        struct Private;
+        Private *const k;
+        
 };
 
 #endif

@@ -46,8 +46,7 @@ KTSaveNetProject::KTSaveNetProject() : KTSaveProject()
 {
 }
 
-KTSaveNetProject::KTSaveNetProject(const QString &server, int port)
- : KTSaveProject(), m_server(server), m_port(port)
+KTSaveNetProject::KTSaveNetProject(const QString &server, int port) : KTSaveProject(), m_server(server), m_port(port)
 {
 }
 

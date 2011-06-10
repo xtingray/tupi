@@ -43,6 +43,7 @@
 */
 
 class QTreeWidgetItem;
+
 class KTListProjectDialog : public QDialog
 {
     Q_OBJECT
@@ -54,7 +55,7 @@ class KTListProjectDialog : public QDialog
         QString currentProject();
         
     private slots:
-        void execAccept(QTreeWidgetItem * , int );
+        void execAccept(QTreeWidgetItem * , int);
     
     private:
         struct Private;

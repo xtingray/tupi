@@ -47,6 +47,7 @@ class KTNetProjectManagerParams;
 class KTConnectDialog : public QDialog
 {
     Q_OBJECT
+
     public:
         KTConnectDialog(QWidget *parent = 0);
         ~KTConnectDialog();
@@ -66,7 +67,6 @@ class KTConnectDialog : public QDialog
     private:
         class Private;
         Private *const k;
-
 };
 
 #endif

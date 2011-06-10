@@ -34,11 +34,10 @@
  ***************************************************************************/
 
 #include "ktsocketbase.h"
+#include "tdebug.h"
 
 #include <QTextStream>
 #include <QQueue>
-
-#include "tdebug.h"
 
 struct KTSocketBase::Private
 {
@@ -47,11 +46,10 @@ struct KTSocketBase::Private
 
 KTSocketBase::KTSocketBase(QObject *parent) : QTcpSocket(parent), k(new Private)
 {
-    connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
+    connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()));
     connect(this, SIGNAL(connected()), this, SLOT(sendQueue()));
     connect(this, SIGNAL(disconnected()), this, SLOT(clearQueue()));
 }
-
 
 KTSocketBase::~KTSocketBase()
 {
@@ -60,13 +58,11 @@ KTSocketBase::~KTSocketBase()
 
 void KTSocketBase::sendQueue()
 {
-    while( k->queue.count() > 0 )
-    {
-        if ( state() == QAbstractSocket::ConnectedState )
-        {
+    while (k->queue.count() > 0) {
+        if (state() == QAbstractSocket::ConnectedState)
             send(k->queue.dequeue());
-        }
-        else break;
+        else 
+            break;
     }
 }
 
@@ -77,13 +73,10 @@ void KTSocketBase::clearQueue()
 
 void KTSocketBase::send(const QString &str)
 {
-    if ( state() == QAbstractSocket::ConnectedState )
-    {
+    if (state() == QAbstractSocket::ConnectedState) {
         QTextStream stream(this);
         stream << str.toLocal8Bit().toBase64() << "%%" << endl;
-    }
-    else
-    {
+    } else {
         k->queue.enqueue(str);
     }
 }
@@ -96,23 +89,21 @@ void KTSocketBase::send(const QDomDocument &doc)
 void KTSocketBase::readFromServer()
 {
     QString readed;
-    while(this->canReadLine())
-    {
-        readed += this->readLine();
-        if ( readed.endsWith("%%\n") )
-        {
-            break;
-        }
+
+    while (this->canReadLine()) {
+           readed += this->readLine();
+           if (readed.endsWith("%%\n"))
+               break;
     }
     
-    if ( !readed.isEmpty() )
-    {
+    if (!readed.isEmpty()) {
         readed.remove(readed.lastIndexOf("%%"), 2);
-        readed = QString::fromLocal8Bit( QByteArray::fromBase64(readed.toLocal8Bit()) );
+        readed = QString::fromLocal8Bit(QByteArray::fromBase64(readed.toLocal8Bit()));
         
         this->readed(readed);
     }
     
-    if (this->canReadLine()) readFromServer();
+    if (this->canReadLine()) 
+        readFromServer();
 }
 

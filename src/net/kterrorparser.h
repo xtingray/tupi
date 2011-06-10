@@ -39,7 +39,8 @@
 /**
  * @author Jorge Cuadrado
 */
-#include <ktxmlparserbase.h>
+
+#include "ktxmlparserbase.h"
 
 class KTErrorParser : public KTXmlParserBase
 {
@@ -62,8 +63,6 @@ class KTErrorParser : public KTXmlParserBase
     
     private:
         KTErrorParser::Error m_error;
-        
-        
 };
 
 #endif

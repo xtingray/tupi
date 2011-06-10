@@ -39,15 +39,14 @@
 #include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
-
 
 class KTConnectPackage : public QDomDocument
 {
-	public:
-		KTConnectPackage(const QString & login, const QString& passwd );
-		~KTConnectPackage();
+    public:
+        KTConnectPackage(const QString & login, const QString& passwd);
+        ~KTConnectPackage();
 };
 
 #endif

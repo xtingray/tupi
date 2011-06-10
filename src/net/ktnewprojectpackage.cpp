@@ -37,7 +37,9 @@
 
 struct KTNewProjectPackage::Private
 {
-    QDomText name, author, description;
+    QDomText name;
+    QDomText author;
+    QDomText description;
 };
 
 KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description ): QDomDocument(), k(new Private)
