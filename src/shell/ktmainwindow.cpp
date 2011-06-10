@@ -565,7 +565,9 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
         KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
-        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
+        // connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
+        connect(netProjectManagerHandler, SIGNAL(openNewArea()), this, SLOT(viewNewDocument()));
+
         m_projectManager->setHandler(netProjectManagerHandler);
         m_projectManager->setParams(params);
         m_isNetworkProject = true;

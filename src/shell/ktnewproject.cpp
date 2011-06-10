@@ -68,58 +68,43 @@ struct KTNewProject::Private
     QLineEdit *password;
 };
 
-KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private)
+KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
 {
     setWindowIcon(QPixmap(THEME_DIR + "icons/new.png"));
 
-    k->useNetwork = false;
     setWindowTitle(tr("Create a new project"));
     setModal(true);
 
-    QFrame *container = new QFrame();
-    QGridLayout *layout = new QGridLayout(container);
+    QFrame *infoContainer = new QFrame();
+    QGridLayout *layout = new QGridLayout(infoContainer);
 
-    QLabel *labelProjectName = new QLabel(tr("Project Name"), container);
+    QLabel *labelProjectName = new QLabel(tr("Project Name"), infoContainer);
     layout->addWidget(labelProjectName, 0, 0);
 
-    k->projectName = new QLineEdit(container);
+    k->projectName = new QLineEdit(infoContainer);
     k->projectName->setText(tr("my_project"));
     layout->addWidget(k->projectName, 0, 1);
 
-    QLabel *labelAuthorName = new QLabel(tr("Author"), container);
+    QLabel *labelAuthorName = new QLabel(tr("Author"), infoContainer);
     layout->addWidget(labelAuthorName, 1, 0);
 
-    k->authorName = new QLineEdit(container);
+    k->authorName = new QLineEdit(infoContainer);
     k->authorName->setText(QString::fromLocal8Bit(::getenv("USER")));
     layout->addWidget(k->authorName, 1, 1);
-
-    QLabel *labelBgColor = new QLabel(tr("Background Color"), container);
-
-    k->color = QColor("#fff");
-    k->colorButton = new QPushButton();
-    k->colorButton->setText(tr("White"));
-    k->colorButton->setToolTip(tr("Click here to change background color"));
-    k->colorButton->setPalette(QPalette(k->color));
-    k->colorButton->setAutoFillBackground(true);
-
-    connect(k->colorButton, SIGNAL(clicked()), this, SLOT(setBgColor()));
-
-    layout->addWidget(labelBgColor, 2, 0);
-    layout->addWidget(k->colorButton, 2, 1);
-
-    k->size = new KXYSpinBox(tr("Dimension"), container);
-    k->size->setMaximum(5000);
-    //k->size->setModifyTogether(true);;
-
-    k->size->setX(520);
-    k->size->setY(380);
-	
-    layout->addWidget(k->size, 3, 0);
 
     QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
 	
     QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     renderAndFps->setLayout(subLayout);
+
+    k->color = QColor("#fff");
+    k->colorButton = new QPushButton();
+    k->colorButton->setText(tr("Background"));
+    k->colorButton->setToolTip(tr("Click here to change background color"));
+    k->colorButton->setPalette(QPalette(k->color));
+    k->colorButton->setAutoFillBackground(true);
+
+    connect(k->colorButton, SIGNAL(clicked()), this, SLOT(setBgColor()));
 	
     QBoxLayout *fpsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 
@@ -129,40 +114,57 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
 
     fpsLayout->addWidget(label);
     fpsLayout->addWidget(k->fps);
+    subLayout->addWidget(k->colorButton);
     subLayout->addLayout(fpsLayout);
 
-    QWidget *mcont = new QWidget;
-    QVBoxLayout *mcontly = new QVBoxLayout(mcont);
-    mcontly->addWidget(renderAndFps);
+    k->size = new KXYSpinBox(tr("Dimension"), infoContainer);
+    k->size->setMaximum(5000);
+    k->size->setX(520);
+    k->size->setY(380);
 
-    addTab(container, tr("Project info"));
+    QWidget *panel = new QWidget;
+    QVBoxLayout *sizeLayout = new QVBoxLayout(panel);
+    sizeLayout->addWidget(k->size);
+
+    layout->addWidget(panel, 3, 0);
+    layout->addWidget(renderAndFps, 3, 1);
+
+    addTab(infoContainer, tr("Project info"));
+
+    QFrame *netContainer = new QFrame();
+    QBoxLayout *netLayout = new QBoxLayout(QBoxLayout::TopToBottom, netContainer);
+    netLayout->setAlignment(Qt::AlignHCenter);
+
+    QCheckBox *activeNetOptions = new QCheckBox(tr("Create a network project"));
+    connect(activeNetOptions, SIGNAL(toggled(bool)), this, SLOT(enableNetOptions(bool)));
+
+    QBoxLayout *labelLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    labelLayout->setAlignment(Qt::AlignHCenter);
+    labelLayout->addWidget(activeNetOptions);
+
+    netLayout->addLayout(labelLayout);
 
     setupNetOptions();
-    mcontly->addWidget(k->netOptions);
 
-    layout->addWidget(mcont, 3, 1);
+    netLayout->addWidget(k->netOptions);
 
-    k->netOptions->setVisible(false);
+    addTab(netContainer, tr("Network"));
+    enableTab(1, false);
 
-    /*
-    QCheckBox *activeNetOptions = new QCheckBox( tr("Create a network project") );
-    layout->addWidget(activeNetOptions, 3, 1);
-    activeNetOptions->setEnabled(false);
-
-    connect(activeNetOptions, SIGNAL(toggled( bool )), this, SLOT(activateNetOptions(bool)));
-    */
+    enableNetOptions(false);
 }
 
 KTNewProject::~KTNewProject()
 {
-  /*
-    TConfig *config = kApp->config("Network");
-    config->setValue("server", k->server->text());
-    config->setValue("port", k->port->value());
-    config->setValue("login", k->login->text());
-    config->setValue("password", k->password->text());
-   */
-   delete k;
+    if (k->useNetwork) {
+        TConfig *config = kApp->config("Network");
+        config->setValue("server", k->server->text());
+        config->setValue("port", k->port->value());
+        config->setValue("login", k->login->text());
+        config->setValue("password", k->password->text());
+    }
+
+    delete k;
 }
 
 void KTNewProject::setupNetOptions()
@@ -181,14 +183,14 @@ void KTNewProject::setupNetOptions()
     TConfig *config = kApp->config("Network");
 
     k->server->setText(config->value("server", "localhost").toString());
-    k->port->setValue(config->value("port", 6502).toInt());
+    k->port->setValue(config->value("port", 5000).toInt());
 
     k->login->setText(config->value("login", "").toString());
     k->password->setText(config->value("password", "").toString());
 
-    k->password->setEchoMode( QLineEdit::Password );
+    k->password->setEchoMode(QLineEdit::Password);
 
-    layout->addLayout( KFormFactory::makeGrid( QStringList() << tr("Login") << tr("Password") <<tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port ) );
+    layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port));
 }
 
 KTProjectManagerParams *KTNewProject::parameters()
@@ -231,13 +233,18 @@ void KTNewProject::ok()
         TOsd::self()->display(tr("Error"), tr("Please fill the project name field"), TOsd::Error);
         return;
     }
+
     KTabDialog::ok();
 }
 
-void KTNewProject::activateNetOptions(bool isVisible)
+void KTNewProject::enableNetOptions(bool isEnabled)
 {
-    k->netOptions->setVisible(isVisible);
-    k->useNetwork = isVisible;
+    k->useNetwork = isEnabled;
+
+    k->server->setEnabled(isEnabled);
+    k->port->setEnabled(isEnabled);
+    k->login->setEnabled(isEnabled);
+    k->password->setEnabled(isEnabled);
 }
 
 void KTNewProject::focusProjectLabel() 

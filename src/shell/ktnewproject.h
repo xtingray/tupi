@@ -68,7 +68,7 @@ class KTNewProject : public KTabDialog
         void setBgColor();
 
     public slots:
-        void activateNetOptions(bool isVisible);
+        void enableNetOptions(bool isEnabled);
 
     private:
         struct Private;

@@ -1692,8 +1692,8 @@
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="80"/>
-        <source>Background Color</source>
-        <translation>Color de Fondo</translation>
+        <source>Background</source>
+        <translation>Fondo</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="80"/>

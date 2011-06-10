@@ -75,6 +75,7 @@ class K_GUI_EXPORT KTabDialog : public QDialog
         QPushButton *button(Button b);
         
         TTabWidget *tabWidget() const;
+        void enableTab(int index, bool enable);
         
     private:
         void setupButtons(int buttons);

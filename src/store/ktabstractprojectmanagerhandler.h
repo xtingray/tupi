@@ -36,7 +36,7 @@
 #ifndef KTABSTRACTPROJECTHANDLER_H
 #define KTABSTRACTPROJECTHANDLER_H
 
-#include <qobject.h>
+#include <QObject>
 #include "ktglobal_store.h"
 
 class KTProjectResponse;
@@ -46,11 +46,12 @@ class KTProjectCommand;
 class KTProject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTAbstractProjectHandler : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         KTAbstractProjectHandler(QObject *parent = 0);
@@ -70,7 +71,8 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
     signals:
         void sendCommand(const KTProjectRequest *request, bool addToStack);
         void sendLocalCommand(const KTProjectRequest *request);
-        void openNewArea(const QString &name);
+        // void openNewArea(const QString &name);
+        void openNewArea();
 };
 
 #endif

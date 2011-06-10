@@ -169,3 +169,8 @@ TTabWidget *KTabDialog::tabWidget() const
 {
     return m_tabWidget;
 }
+
+void KTabDialog::enableTab(int index, bool enable)
+{
+    m_tabWidget->setTabEnabled(index, enable);
+}

@@ -300,7 +300,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        if (k->project) {
                            KTSaveProject *loader = new KTSaveProject;
                            loader->load(file.fileName(), k->project);
-                           emit openNewArea(k->project->projectName());
+                           // emit openNewArea(k->project->projectName());
+                           emit openNewArea();
                            delete loader;
                        }
                    }
