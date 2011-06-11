@@ -46,20 +46,16 @@ int main()
 {
 	av_register_all();
 
-        #ifdef K_LUCID
-               AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
-        #elif defined(__APPLE__)
+        #if defined(__APPLE__) || defined(K_LUCID)
                AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
         #else
                AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
         #endif
 
-        AVFormatContext *oc;
-
-        #ifdef defined(__APPLE__)
-               oc = av_alloc_format_context();
+        #if defined(__APPLE__)
+               AVFormatContext *oc = av_alloc_format_context();
         #else
-               oc = avformat_alloc_context();
+               AVFormatContext *oc = avformat_alloc_context();
         #endif
 	
 	oc->oformat = fmt;
