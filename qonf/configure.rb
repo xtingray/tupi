@@ -21,10 +21,18 @@ class Configure
         parseArgs(args)
         
         @qmake = QMake.new
+        @statusFile = Dir.getwd + "/configure.status"
 
+        @tests = []
+        @testsDir = Dir.getwd
+
+        @options = {}
+        parseArgs(args)
+
+        @qmake = QMake.new
         @properties = {}
-        
-        setPath()       
+
+        setPath()
         Makefile::setArgs(@options)
     end
 
@@ -91,7 +99,13 @@ class Configure
     
     def createMakefiles
         Info.info << "Creating makefiles..." << $endl
-        @qmake.run("", true)
+
+        if RUBY_PLATFORM.downcase.include?("darwin")
+            qmakeLine = " 'CONFIG += console warn_on' 'CONFIG -= app_bundle' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation -L/sw/lib -L/opt/X11/lib -lX11' 'INCLUDEPATH += /sw/include /opt/X11/include'"
+	    @qmake.run(qmakeLine, true)
+        else
+            @qmake.run("", true)
+        end
         
         Info.info << "Updating makefiles and source code..." << $endl
         
@@ -104,31 +118,34 @@ class Configure
     
     private
     def parseArgs(args)
+
         optc = 0
         last_opt = ""
-        while args.size > optc
-            arg = args[optc].strip
-            
-            if arg =~ /^--([\w-]*)={0,1}([\W\w]*)/
-                opt = $1.strip
-                val = $2.strip
 
-                @options[opt] = val
-                
-                last_opt = opt
-            elsif arg =~ /^-(\w)/
-                @options[$1.strip] = nil
-                last_opt = $1.strip
-            else
-                # arg is an arg for option
-                if not last_opt.to_s.empty? and @options[last_opt].to_s.empty?
-                    @options[last_opt] = arg
-                else
-                    raise "Invalid option: #{arg}"
-                end
-            end
-        
-            optc += 1
+        while args.size > optc
+
+          arg = args[optc].strip
+
+          if arg =~ /^--([\w-]*)={0,1}([\W\w]*)/
+
+             opt = $1.strip
+             val = $2.strip
+             @options[opt] = val
+             last_opt = opt
+
+          else
+
+             # arg is an arg for option
+             if not last_opt.to_s.empty? and @options[last_opt].to_s.empty?
+                @options[last_opt] = arg
+             else
+                raise "Invalid option: #{arg}"
+             end
+
+          end
+
+          optc += 1
+
         end
     end
     

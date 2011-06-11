@@ -69,7 +69,7 @@ void KTPluginManager::loadPlugins()
     
     QDir m_pluginDirectory = QDir(PLUGINS_DIR);
 
-    foreach (QString fileName, m_pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dy", QDir::Files)) {
+    foreach (QString fileName, m_pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dylib", QDir::Files)) {
         QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
         QObject *plugin = qobject_cast<QObject*>(loader->instance());
         

@@ -33,6 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#if defined(Q_WS_X11) && defined(Q_OS_LINUX)
+
 #ifndef KTERM_H
 #define KTERM_H
 
@@ -66,4 +68,5 @@ class K_GUI_EXPORT KTerm : public QX11EmbedContainer
         QProcess *m_process;
 };
 
+#endif
 #endif

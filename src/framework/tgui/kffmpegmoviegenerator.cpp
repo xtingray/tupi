@@ -412,12 +412,16 @@ bool KFFMpegMovieGenerator::begin()
 
     #ifdef K_LUCID
         k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
+    #elif defined(__APPLE__)
+        k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
     #else
         k->fmt = av_guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
     #endif
 
     if (!k->fmt) {
         #ifdef K_LUCID
+            k->fmt = guess_format("mpeg", NULL, NULL);
+        #elif defined(__APPLE__)
             k->fmt = guess_format("mpeg", NULL, NULL);
         #else
             k->fmt = av_guess_format("mpeg", NULL, NULL);
@@ -432,7 +436,11 @@ bool KFFMpegMovieGenerator::begin()
         return false;
     }
 
-    k->oc = avformat_alloc_context();
+    #ifdef __APPLE__
+        k->oc = av_alloc_format_context();
+    #else
+        k->oc = avformat_alloc_context();
+    #endif
 
     if (!k->oc) {
         k->errorMsg = "ffmpeg error: Error while doing export. This is not a Tupi's problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";

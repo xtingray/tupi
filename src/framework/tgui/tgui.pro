@@ -157,7 +157,6 @@ TEMPLATE = lib
 TARGET = tupifwgui
 QT += xml opengl
 
-#LIBS += -L../tcore -ltupifwcore
 INCLUDEPATH += ../tcore ../
 
 RESOURCES += tgui_images.qrc
@@ -168,4 +167,8 @@ linux-g{
 
 include(../../../tupiglobal.pri)
 
-LIBS = -L../tcore -ltupifwcore
+LIBS += -L../tcore -ltupifwcore
+
+macx {
+    LIBS += -lavcodec -lavformat -lavutil 
+}

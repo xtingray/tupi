@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(Q_OS_LINUX) 
 
 #ifndef KFLASHWIDGET_H
 #define KFLASHWIDGET_H
@@ -41,6 +41,7 @@
 #include <QWidget>
 #include <QProcess>
 #include <QX11EmbedContainer>
+
 #include "tglobal.h"
 
 /**

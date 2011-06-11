@@ -33,6 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#if defined(Q_WS_X11) && defined(Q_OS_LINUX)
+
 #ifndef KTERMTAB_H
 #define KTERMTAB_H
 
@@ -68,4 +70,5 @@ class K_GUI_EXPORT KTermTab : public TTabWidget
         
 };
 
+#endif
 #endif
