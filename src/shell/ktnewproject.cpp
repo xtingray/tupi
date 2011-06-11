@@ -192,7 +192,7 @@ void KTNewProject::setupNetOptions()
 
     k->password->setEchoMode(QLineEdit::Password);
 
-    layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port));
+    layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Username") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port));
 }
 
 KTProjectManagerParams *KTNewProject::parameters()
@@ -232,8 +232,21 @@ bool KTNewProject::useNetwork() const
 void KTNewProject::ok()
 {
     if (k->projectName->text().isEmpty()) {
-        TOsd::self()->display(tr("Error"), tr("Please fill the project name field"), TOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Please, set a name for the project"), TOsd::Error);
         return;
+    }
+
+    if (k->useNetwork) {
+        if (k->login->text().isEmpty()) {
+            TOsd::self()->display(tr("Error"), tr("Please, fill in your username"), TOsd::Error);
+            return;
+        }
+
+        if (k->password->text().isEmpty()) {
+            TOsd::self()->display(tr("Error"), tr("Please, fill in your password"), TOsd::Error);
+            return;
+        }
+
     }
 
     KTabDialog::ok();

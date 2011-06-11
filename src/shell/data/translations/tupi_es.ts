@@ -1757,8 +1757,18 @@
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="204"/>
-        <source>Please fill the project name field</source>
-        <translation>Por favor, ingrese el nombre del proyecto</translation>
+        <source>Please, set a name for the project</source>
+        <translation>Por favor, asigne un nombre al proyecto</translation>
+    </message>
+    <message>
+        <location filename="../../ktnewproject.cpp" line="204"/>
+        <source>Please, fill in your username</source>
+        <translation>Por favor, ingrese su nombre de usuario</translation>
+    </message>
+    <message>
+        <location filename="../../ktnewproject.cpp" line="204"/>
+        <source>Please, fill in your password</source>
+        <translation>Por favor, ingrese su clave</translation>
     </message>
 </context>
 <context>
