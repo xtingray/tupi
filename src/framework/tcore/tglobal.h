@@ -46,7 +46,7 @@
 # define K_SOUND_EXPORT
 #endif
 
-#include "tapplicationproperties.h"
+// #include "tapplicationproperties.h"
 
 #define SHARE_DIR kAppProp->shareDir()
 #define DATA_DIR kAppProp->dataDir()

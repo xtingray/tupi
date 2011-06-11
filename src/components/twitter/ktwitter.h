@@ -36,6 +36,8 @@
 #ifndef KTWITTER_H
 #define KTWITTER_H
 
+#include "tapplicationproperties.h"
+
 #include <QWidget>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>

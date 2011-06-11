@@ -36,6 +36,8 @@
 #ifndef KTHELPBROWSER_H
 #define KTHELPBROWSER_H
 
+#include "tapplicationproperties.h"
+
 #include <QWidget>
 #include <QSplitter>
 #include <QTextBrowser>

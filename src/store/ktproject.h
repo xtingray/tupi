@@ -38,15 +38,15 @@
 
 #include "ktabstractserializable.h"
 #include "ktglobal.h"
+#include "tapplicationproperties.h"
+#include "ktinthash.h"
+#include "ktglobal_store.h"
+#include "ktlibraryobject.h"
 
 #include <QObject>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QSize>
-
-#include "ktinthash.h"
-#include "ktglobal_store.h"
-#include "ktlibraryobject.h"
 
 class KTScene;
 class KTLayer;
@@ -61,7 +61,7 @@ typedef KTIntHash<KTScene *> Scenes;
 /**
  * This class contains the project data structure including scenes.
  * 
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado
 */
 
 class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable

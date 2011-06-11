@@ -28,6 +28,7 @@
 #define __KCPUINFO_H
 
 #include "tglobal.h"
+#include "tapplicationproperties.h"
 
 /**
  * This class provides a means for applications to obtain information at

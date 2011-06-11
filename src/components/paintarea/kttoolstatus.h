@@ -37,6 +37,7 @@
 #define KTTOOLSTATUS_H
 
 #include "ktcolorwidget.h"
+#include "tapplicationproperties.h"
 
 #include <QLabel>
 

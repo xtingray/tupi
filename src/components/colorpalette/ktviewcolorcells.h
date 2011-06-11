@@ -44,14 +44,16 @@
 
 #include "ktcellscolor.h"
 #include "ktpaletteparser.h"
+#include "tapplicationproperties.h"
 
 /**
-    @author Jorge Cuadrado <kuadrosx@toonka.com>
+    @author Jorge Cuadrado
 **/
 
 class KTViewColorCells : public QFrame
 {
     Q_OBJECT
+
     public:
         KTViewColorCells(QWidget *parent = 0);
         virtual ~KTViewColorCells();

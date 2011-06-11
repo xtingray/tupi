@@ -38,6 +38,7 @@
 
 #include "tglobal.h"
 #include "ktexposuretable.h"
+#include "tapplicationproperties.h"
 
 #include <QTabWidget>
 #include <QHash>
@@ -45,11 +46,13 @@
 #include <QFrame>
 
 /**
- * @author Xtingray 
+ * @author Gustav Gonzalez 
 */
+
 class K_GUI_EXPORT KTSceneTabWidget : public QFrame
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTSceneTabWidget(QWidget *parent = 0);
         ~KTSceneTabWidget();

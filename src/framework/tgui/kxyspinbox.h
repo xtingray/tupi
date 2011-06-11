@@ -41,6 +41,7 @@
 #include <QSpinBox>
 #include <QLabel>
 #include "tglobal.h"
+#include "tapplicationproperties.h"
 
 /**
  * @author David Cuadrado

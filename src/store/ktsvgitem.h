@@ -54,6 +54,7 @@ class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSeriali
         KTSvgItem(QGraphicsItem * parent = 0);
         KTSvgItem(QString &file, KTFrame *frame);
         ~KTSvgItem();
+
         void setSymbolName(const QString &symbolName);
         QString symbolName() const;
         QString itemPath() const;

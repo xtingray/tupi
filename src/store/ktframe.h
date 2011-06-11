@@ -59,7 +59,7 @@ typedef KTIntHash<KTSvgItem *> SvgObjects;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado
 */
 class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 {

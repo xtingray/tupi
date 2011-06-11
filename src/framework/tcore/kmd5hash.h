@@ -35,6 +35,7 @@
 #define KMD5HASH_H
 
 #include "tglobal.h"
+#include "tapplicationproperties.h"
 
 class QByteArray;
 class QString;

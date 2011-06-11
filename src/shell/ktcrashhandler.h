@@ -36,6 +36,8 @@
 #ifndef KTCRASHHANDLER_H
 #define KTCRASHHANDLER_H
 
+#include "tapplicationproperties.h"
+
 #include <QString>
 #include <QMap>
 #include <QColor>

@@ -37,12 +37,12 @@
 #define KTABOUT_H
 
 #include <QTextBrowser>
-
-#include <qlabel.h>
-#include <qpixmap.h>
+#include <QLabel>
+#include <QPixmap>
 
 #include "ktabdialog.h"
 #include "kanimwidget.h"
+#include "tapplicationproperties.h"
 
 /**
  * @brief Class that handles the about dialog box

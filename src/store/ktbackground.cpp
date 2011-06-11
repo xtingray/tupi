@@ -35,7 +35,6 @@
 
 #include "ktbackground.h"
 #include "ktserializer.h"
-
 #include "tdebug.h"
 
 KTBackground::KTBackground(KTScene *parent)

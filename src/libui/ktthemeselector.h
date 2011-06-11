@@ -50,15 +50,18 @@
 
 #include "kthemedocument.h"
 #include "kvhbox.h"
+#include "tapplicationproperties.h"
 
 class QCheckBox;
 
 /**
  * @author David Cuadrado
 */
+
 class KTThemeSelector : public KVHBox
 {
     Q_OBJECT
+
     public:
         KTThemeSelector(QWidget *parent = 0);
         ~KTThemeSelector();

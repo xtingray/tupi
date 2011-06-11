@@ -36,21 +36,22 @@
 #ifndef KTPROJECTACTIONBAR_H
 #define KTPROJECTACTIONBAR_H
 
-#include <qwidget.h>
-
+#include <QWidget>
 #include <QButtonGroup>
+
 #include "ktglobal.h"
+#include "tapplicationproperties.h"
 
 class KImageButton;
 class QBoxLayout;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class TUPI_EXPORT KTProjectActionBar : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         enum Action

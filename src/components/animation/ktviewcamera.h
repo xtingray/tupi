@@ -38,20 +38,21 @@
 
 #include "kcirclebuttonbar.h"
 #include "kvhbox.h"
-
-#include <QMainWindow>
-#include <QFrame>
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
 #include "ktcamerastatus.h"
+
+#include <QMainWindow>
+#include <QFrame>
 
 class KTProjectResponse;
 class QCheckBox;
 class KTCameraStatus;
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado 
 */
+
 class KTViewCamera : public QFrame
 {
     Q_OBJECT

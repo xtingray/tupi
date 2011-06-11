@@ -36,6 +36,8 @@
 #ifndef BUTTONSPANEL_H
 #define BUTTONSPANEL_H
 
+#include "tapplicationproperties.h"
+
 #include <QWidget>
 
 /**

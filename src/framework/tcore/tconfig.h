@@ -53,6 +53,8 @@ class TConfig;
 
 class K_CORE_EXPORT TConfig : public QObject
 {
+    Q_OBJECT
+
     public:
         ~TConfig();
 

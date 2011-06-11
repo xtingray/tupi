@@ -36,18 +36,21 @@
 #ifndef KTCAMERABAR_H
 #define KTCAMERABAR_H
 
+#include "kimagebutton.h"
+#include "tapplicationproperties.h"
+
 #include <QFrame>
 #include <QPainter>
 #include <QPushButton>
 
-#include "kimagebutton.h"
-
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
+
 class KTCameraBar : public QFrame
 {
     Q_OBJECT
+
     public:
         KTCameraBar(QWidget *parent = 0);
         ~KTCameraBar();

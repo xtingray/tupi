@@ -36,6 +36,8 @@
 #ifndef INFOPANEL_H
 #define INFOPANEL_H
 
+#include "tapplicationproperties.h"
+
 #include <QLabel>
 
 /**

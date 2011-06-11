@@ -36,6 +36,8 @@
 #ifndef EXACTNESSCONFIGURATOR_H
 #define EXACTNESSCONFIGURATOR_H
 
+#include "tapplicationproperties.h"
+
 #include <QDoubleSpinBox>
 #include <QLabel>
 
@@ -43,11 +45,13 @@ class QTableWidget;
 class QTableWidgetItem;
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class ExactnessConfigurator : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         ExactnessConfigurator(QWidget *parent = 0);
         ~ExactnessConfigurator();

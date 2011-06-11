@@ -42,9 +42,10 @@
  * @brief Include this file if you need the class KTSplash
  */
 
-#include <qpainter.h>
-#include <qsplashscreen.h>
+#include "tapplicationproperties.h"
 
+#include <QPainter>
+#include <QSplashScreen>
 #include <QTimer>
 
 /**
@@ -56,6 +57,7 @@
 class KTSplash : public QSplashScreen
 {
     Q_OBJECT
+
     public:
         /**
          * @brief Default Constructor

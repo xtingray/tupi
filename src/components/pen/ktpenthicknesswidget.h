@@ -36,6 +36,8 @@
 #ifndef KTPENTHICKNESSWIDGET_H
 #define KTPENTHICKNESSWIDGET_H
 
+#include "tapplicationproperties.h"
+
 #include <QWidget>
 #include <QPainter>
 #include <QPaintEvent>

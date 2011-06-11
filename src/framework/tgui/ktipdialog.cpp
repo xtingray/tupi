@@ -37,6 +37,7 @@
 #include "tseparator.h"
 #include "tconfig.h"
 #include "tdebug.h"
+#include "tapplicationproperties.h"
 
 #include <QVBoxLayout>
 #include <QTextBrowser>

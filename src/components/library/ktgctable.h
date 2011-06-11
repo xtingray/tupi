@@ -38,6 +38,7 @@
 
 #include "kttreedelegate.h"
 #include "ktreelistwidget.h"
+#include "tapplicationproperties.h"
 
 #include <QKeyEvent>
 

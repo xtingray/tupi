@@ -45,14 +45,15 @@
 
 #include "kimagebutton.h"
 #include "ktprojectrequest.h"
+#include "tapplicationproperties.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 **/
 
 class KTLayerControls : public QTableWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     friend class KTLayerControlsItemDelegate;
     

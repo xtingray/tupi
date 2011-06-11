@@ -37,6 +37,7 @@
 #define KTLISTPROJECTDIALOG_H
 
 #include <QDialog>
+#include "tapplicationproperties.h"
 
 /**
  * @author Jorge Cuadrado

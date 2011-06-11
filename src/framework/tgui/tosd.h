@@ -42,6 +42,7 @@
 #include <QTimer>
 #include <QTextDocument>
 #include "tglobal.h"
+#include "tapplicationproperties.h"
 
 /**
  * @author David Cuadrado

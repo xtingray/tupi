@@ -36,16 +36,13 @@
 #ifndef KTBACKGROUND_H
 #define KTBACKGROUND_H
 
-#include "ktscene.h"
-#include "ktframe.h"
 #include "ktabstractserializable.h"
 #include "ktglobal_store.h"
+#include "ktscene.h"
 
 /**
  * @author Gustav Gonzalez
 */
-
-class KTScene;
 
 class STORE_EXPORT KTBackground : public QObject, public KTAbstractSerializable
 {

@@ -40,10 +40,8 @@
 #include <QDir>
 #include <QColor>
 
-#include "ktexportpluginobject.h"
-
+// #include "ktexportpluginobject.h"
 #include "ktscene.h"
-
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
 /**
@@ -75,7 +73,7 @@ class TUPI_EXPORT KTExportInterface
         virtual ~KTExportInterface() {};
         virtual QString key() const = 0;
         virtual Formats availableFormats() = 0;
-        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps ) = 0;
+        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps) = 0;
         virtual const char* getExceptionMsg() = 0;
 };
 

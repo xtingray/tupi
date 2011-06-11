@@ -40,7 +40,6 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QCheckBox>
-//#include <QSpinBox>
 #include <QComboBox>
 
 #include "ktviewcamera.h"
@@ -62,7 +61,6 @@ class KTCameraStatus : public QFrame
         bool isLooping();
 
     private:
-        // QSpinBox *fps;
         QComboBox *fps; 
         QLabel *sceneName;
         QLabel *framesTotal;
