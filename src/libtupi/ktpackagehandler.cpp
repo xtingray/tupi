@@ -36,14 +36,13 @@
 #include "ktpackagehandler.h"
 #include "quazip.h"
 #include "quazipfile.h"
+#include "tdebug.h"
+#include "tglobal.h"
+#include "tapplicationproperties.h"
 
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-
-#include "tdebug.h"
-#include "tglobal.h"
-#include "tapplicationproperties.h"
 
 /**
  * This class manages the file format for Tupi projects.
@@ -67,8 +66,13 @@ KTPackageHandler::~KTPackageHandler()
 
 bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
 {
+    #ifdef K_DEBUG
+           tDebug() << "KTPackageHandler::makePackage() - Project Path: " << projectPath;
+           tDebug() << "KTPackageHandler::makePackage() - Package Path: " << packagePath;
+    #endif
+
     if (!QFile::exists(projectPath)) {
-        qWarning("Project not saved!");
+        qWarning("KTPackageHandler::makePackage() - Project path doesn't exist!");
         return false;
     }
     
@@ -100,7 +104,6 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
     
     return true;
 }
-
 
 bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 {

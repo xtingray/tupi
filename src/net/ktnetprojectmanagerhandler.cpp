@@ -106,8 +106,8 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     
     k->comunicationModule = new QTabWidget;
     k->comunicationModule->setWindowTitle(tr("Communications"));
-    k->comunicationModule->setWindowIcon(QPixmap(THEME_DIR + "/icons/chat.png"));
-    
+    k->comunicationModule->setWindowIcon(QPixmap(THEME_DIR + "icons/chat.png"));
+
     k->chat = new KTChat;
     k->comunicationModule->addTab(k->chat, tr("chat"));
     
@@ -117,6 +117,8 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     k->comunicationModule->addTab(k->notices, tr("notices"));
     
     connect(k->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
+
+    tFatal() << "KTNetProjectManagerHandler::KTNetProjectManagerHandler() - Constructor is done!";
 }
 
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
@@ -124,6 +126,7 @@ KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
     #ifdef K_DEBUG
        TEND;
     #endif
+
     k->chat->close();
     delete k;
 }
@@ -137,7 +140,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
     if (k->socket->state() == QAbstractSocket::ConnectedState) {
         #ifdef K_DEBUG
-               tDebug("net") << "SENDING: " << request->xml();
+               tDebug("net") << "KTNetProjectManagerHandler::handleProjectRequest() - SENDING PACKAGE: " << request->xml();
         #endif
         k->socket->send(request->xml());
     }
@@ -191,7 +194,7 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     k->params = netparams;
     
     #ifdef K_DEBUG
-           tDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
+           tDebug("net") << "KTNetProjectManagerHandler::initialize() - Connecting to " << netparams->server() << ":" << netparams->port();
     #endif    
 
     k->socket->connectToHost(k->params->server(), k->params->port());
@@ -201,6 +204,10 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     if (connected) {
         KTConnectPackage connectPackage(k->params->login(), k->params->password());
         k->socket->send(connectPackage);
+    } else {
+        tFatal() << "KTNetProjectManagerHandler::initialize() - Unable to connect to " << k->params->server() << ":" << k->params->port();
+        TOsd::self()->display(tr("Error"), tr("Unable to connect to server"), TOsd::Error);
+        return false;
     }
     
     return connected;
@@ -208,6 +215,8 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
 
 bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 {
+    tFatal() << "KTNetProjectManagerHandler::setupNewProject() - Tracing first connection to server!";
+
     KTNetProjectManagerParams *netparams = dynamic_cast<KTNetProjectManagerParams*>(params);
     
     if (! netparams) 
@@ -300,9 +309,12 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        if (k->project) {
                            KTSaveProject *loader = new KTSaveProject;
                            loader->load(file.fileName(), k->project);
-                           // emit openNewArea(k->project->projectName());
+                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - Calling out for new project!";  
                            emit openNewArea();
+                           // emit openNewArea(k->project->projectName());
                            delete loader;
+                       } else {
+                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - No project. No call";
                        }
                    }
                }

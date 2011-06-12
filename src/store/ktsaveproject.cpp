@@ -53,6 +53,10 @@ KTSaveProject::~KTSaveProject()
 
 bool KTSaveProject::save(const QString &fileName, KTProject *project)
 {
+    #ifdef K_DEBUG
+           tDebug() << "KTSaveProject::save() - Saving file " << fileName;
+    #endif
+
     int indexPath = fileName.lastIndexOf("/");
     int indexFile = fileName.length() - indexPath;
     QString name = fileName.right(indexFile - 1);
@@ -68,14 +72,31 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
         project->library()->updatePaths(CACHE_DIR + "/" + name);
         if (!projectDir.exists()) {
             projectDir.rename(oldDirName, projectDir.path());
+            #ifdef K_DEBUG
+                   tDebug() << "KTSaveProject::save() - Directory renamed to " << projectDir.path();
+            #endif
+            if (! projectDir.mkdir(projectDir.path())) {
+                #ifdef K_DEBUG
+                       tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
+                #endif
+                return false;
+            } else {
+                #ifdef K_DEBUG
+                       tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
+                #endif
+            }
         }
     } else {
         if (!projectDir.exists()) {
             if (! projectDir.mkdir(projectDir.path())) {
                 #ifdef K_DEBUG
-                       tFatal() << "KTSaveProject::save() - Can't save project";
+                       tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
                 #endif
                 return false;
+            } else {
+                #ifdef K_DEBUG
+                       tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
+                #endif
             }
         }
     }
@@ -95,6 +116,10 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
          doc.appendChild(project->toXml(doc));
          ts << doc.toString();
          projectFile.close();
+     } else {
+         #ifdef K_DEBUG
+                tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/project.tpp";
+         #endif
      }
     }
 
@@ -112,6 +137,10 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
                   st << doc.toString();
                   index += 1;
                   scn.close();
+              } else {
+                  #ifdef K_DEBUG
+                         tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";
+                  #endif
               }
      }
     }
@@ -128,6 +157,10 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
 
          ts << doc.toString();
          lbr.close();
+     } else {
+         #ifdef K_DEBUG
+                tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/library.tpl";
+         #endif
      }
     }
 
@@ -137,6 +170,10 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     if (ok) {
         #ifdef K_DEBUG
                tWarning() << tr("Project saved in %1").arg(fileName);
+        #endif
+    } else {
+        #ifdef K_DEBUG
+               tError() << tr("Project couldn't be saved in %1").arg(fileName);
         #endif
     }
 

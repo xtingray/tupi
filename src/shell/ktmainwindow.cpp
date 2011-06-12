@@ -219,6 +219,7 @@ void KTMainWindow::createNewProject()
     //    return;
 
     m_projectManager->setupNewProject();
+ 
     enableToolViews(true);
     setMenuItemsContext(true);
 
@@ -292,7 +293,8 @@ void KTMainWindow::viewNewDocument()
 
         addWidget(helpTab);
 
-        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
+        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() 
+                              + "/twitter.html";
 
         if (QFile::exists(twitterPath)) {
             internetOn = true;
@@ -343,12 +345,14 @@ void KTMainWindow::newProject()
 
     if (wizard->exec() != QDialog::Rejected) {
 
-       if (wizard->useNetwork())
-           setupNetworkProject(wizard->parameters());
-       else
+       if (wizard->useNetwork()) {
+           bool isOk = setupNetworkProject(wizard->parameters());
+           if (isOk)
+               createNewProject();
+       } else {
            setupLocalProject(wizard->parameters());
-
-       createNewProject();
+           createNewProject();
+       }
     }
 
     delete wizard;
@@ -564,23 +568,28 @@ bool KTMainWindow::setupNetworkProject(const QString& projectName, const QString
 bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
+        tFatal() << "KTMainWindow::setupNetworkProject() - Tracing network project!";
+
         KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
         // connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
         connect(netProjectManagerHandler, SIGNAL(openNewArea()), this, SLOT(viewNewDocument()));
 
         m_projectManager->setHandler(netProjectManagerHandler);
-        m_projectManager->setParams(params);
-        m_isNetworkProject = true;
+        bool isOk = m_projectManager->setParams(params);
 
-        if (m_viewChat) {
-            removeToolView(m_viewChat);
-            delete m_viewChat;
+        if (isOk) {
+            m_isNetworkProject = true;
+
+            if (m_viewChat) {
+                removeToolView(m_viewChat);
+                delete m_viewChat;
+            }
+
+            m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::BottomDockWidgetArea, All, "Chat");
+            m_viewChat->setVisible(false);
+
+            return true;
         }
-
-        m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::RightDockWidgetArea, All, "Chat");
-        m_viewChat->setVisible(false);
-
-        return true;
     }
 
     return false;

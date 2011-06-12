@@ -35,11 +35,7 @@
 
 #include "ktprojectmanager.h"
 
-#include <QUndoStack>
-#include <QDir>
-
 #include "ktproject.h"
-
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktframe.h"
@@ -57,6 +53,9 @@
 
 #include "talgorithm.h"
 #include "tdebug.h"
+
+#include <QUndoStack>
+#include <QDir>
 
 // This class handles the current animation project 
 
@@ -113,13 +112,17 @@ KTProjectManager::~KTProjectManager()
     delete k;
 }
 
-void KTProjectManager::setParams(KTProjectManagerParams *params)
+bool KTProjectManager::setParams(KTProjectManagerParams *params)
 {
     if (k->params) 
         delete k->params;
 
     k->params = params;
-    k->handler->initialize(k->params);
+
+    tFatal() << "KTProjectManager::setParams() - Initializing project manager handler";
+    bool isOk = k->handler->initialize(k->params);
+
+    return isOk;
 }
 
 KTProjectManagerParams *KTProjectManager::params() const
@@ -169,7 +172,7 @@ void KTProjectManager::setupNewProject()
     k->project->setFPS(k->params->fps());
 
     if (! k->handler->setupNewProject(k->params)) {
-        qDebug("ERROR WHILE SETUP PROJECT");
+        qDebug("KTProjectManager::setupNewProject() - Project settings error");
         return;
     }
 
@@ -185,7 +188,6 @@ void KTProjectManager::setupNewProject()
     request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
     handleProjectRequest(&request);
 }
-
 
 void KTProjectManager::closeProject()
 {

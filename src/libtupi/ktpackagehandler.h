@@ -36,34 +36,35 @@
 #ifndef KTPACKAGEHANDLER_H
 #define KTPACKAGEHANDLER_H
 
-#include <QString>
 #include "ktglobal.h"
+
+#include <QString>
 
 class QuaZip;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class TUPI_EXPORT KTPackageHandler
 {
-	public:
-		KTPackageHandler();
-		~KTPackageHandler();
-		
-		bool makePackage(const QString &projectPath, const QString &packagePath);
-		bool importPackage(const QString &packagePath);
-		
-		QString importedProjectPath() const;
-		
-	private:
-		bool compress(QuaZip *zip, const QString &path);
-		QString stripRepositoryFromPath(QString path);
-		bool createPath(const QString &filePath);
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTPackageHandler();
+        ~KTPackageHandler();
+        
+        bool makePackage(const QString &projectPath, const QString &packagePath);
+        bool importPackage(const QString &packagePath);
+        
+        QString importedProjectPath() const;
+        
+    private:
+        bool compress(QuaZip *zip, const QString &path);
+        QString stripRepositoryFromPath(QString path);
+        bool createPath(const QString &filePath);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

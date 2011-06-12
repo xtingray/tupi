@@ -37,11 +37,10 @@
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 #include "ktsaveproject.h"
+#include "tdebug.h"
 
 #include <QDomDocument>
 #include <QDomElement>
-
-#include "tdebug.h"
 
 /**
  * This class handles all the procedures related to the projects local format for Tupi.
@@ -135,7 +134,7 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
         //emit sendCommand(request, isUndoCommand(request->xml()));
     } else {
         #ifdef K_DEBUG
-               tfDebug << "INVALID REQUEST! ID: " << request->id();
+               tfDebug << "KTLocalProjectManagerHandler::handleProjectRequest() - INVALID REQUEST! ID: " << request->id();
         #endif
     }
 }

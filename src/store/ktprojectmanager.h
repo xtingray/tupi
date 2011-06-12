@@ -36,9 +36,7 @@
 #ifndef KTPROJECTMANAGER_H
 #define KTPROJECTMANAGER_H
 
-#include <QObject>
 #include "ktglobal_store.h"
-// #include "ktcommandexecutor.h"
 
 class KTProject;
 class KTProjectRequest;
@@ -49,18 +47,22 @@ class QUndoStack;
 class KTCommandExecutor;
 class KTProjectResponse;
 
+#include <QObject>
+
 /**
  * Events handler class for the project
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTProjectManager : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTProjectManager(QObject *parent = 0);
         virtual ~KTProjectManager();
 
-        void setParams(KTProjectManagerParams *params);
+        bool setParams(KTProjectManagerParams *params);
         KTProjectManagerParams *params() const;
 
         virtual void setupNewProject();
