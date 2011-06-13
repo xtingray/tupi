@@ -34,9 +34,7 @@
  ***************************************************************************/
 
 #include "ktprojectcommand.h"
-
 #include "tdebug.h"
-
 #include "ktcommandexecutor.h"
 #include "ktprojectrequest.h"
 #include "ktpaintareaevent.h"

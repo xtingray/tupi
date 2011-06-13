@@ -230,16 +230,27 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 
                          index += 1;
                          file.close();
+                     } else {
+                         #ifdef K_DEBUG
+                                tError() << "KTSaveProject::load() - Can't open file " << scenePath;
+                         #endif
+                         return false;
                      }
             }
             project->setOpen(true);
+            return true;
+
         } else {
-            // Corrupted file!
+            #ifdef K_DEBUG
+                   tError() << "KTSaveProject::load() - No scene files found (*.tps)";
+            #endif
             return false;
         }
-
-        return true;
     }
+
+    #ifdef K_DEBUG
+           tError() << "KTSaveProject::load() - Can't import package (" << fileName << ")";
+    #endif
 
     return false;
 }

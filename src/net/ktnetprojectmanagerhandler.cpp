@@ -294,10 +294,18 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    k->sign = parser.sign();
                    TOsd::self()->display(tr("Information"), parser.motd());
                }
-    } else if (root == "error") {
+    } else if (root == "notification") {
                KTErrorParser parser;
-               if (parser.parse(package))
-                   TOsd::self()->display(tr("Error"), parser.error().message, TOsd::Level(parser.error().level));
+               if (parser.parse(package)) {
+                   TOsd::Level level = TOsd::Level(parser.error().level);
+                   QString title = "Information";
+                   if (level == TOsd::Warning) {
+                              title = tr("Warning");
+                   } else if (level == TOsd::Error) {
+                              title = tr("Error");
+                   }
+                   TOsd::self()->display(title, parser.error().message, level);
+               }
     } else if (root == "project") {
                KTProjectParser parser;
                if (parser.parse(package)) {
@@ -355,7 +363,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                }
     } else {
       #ifdef K_DEBUG
-             tDebug("net") << "Unknown package: " << root;
+             tError("net") << "KTNetProjectManagerHandler::handlePackage() - Unknown package: " << root;
       #endif
     }
 }

@@ -431,9 +431,14 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif 
+
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
-    emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
+    // emit requestTriggered(&request);
 }
 
 void KTExposureSheet::changeVisibilityLayer(int visualIndexLayer, bool visibility)

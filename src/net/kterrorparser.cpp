@@ -45,7 +45,7 @@ KTErrorParser::~KTErrorParser()
 
 bool KTErrorParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-    if (root() == "error") {
+    if (root() == "notification") {
         if (tag == "message") {
             m_error.level = atts.value("level").toInt();
             setReadText(true);

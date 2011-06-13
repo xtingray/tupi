@@ -71,7 +71,7 @@ class STORE_EXPORT KTProjectManager : public QObject
         bool isOpen() const;
         bool isModified() const;
         KTProject *project() const;
-        void setHandler(KTAbstractProjectHandler *handler);
+        void setHandler(KTAbstractProjectHandler *handler, bool isNetworked);
         KTAbstractProjectHandler *handler() const;
 
         QUndoStack *undoHistory() const;

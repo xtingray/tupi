@@ -35,6 +35,8 @@
 
 #include "ktexposuretable.h"
 #include "ktexposureheader.h"
+#include "tdebug.h"
+#include "ktglobal.h"
 
 #include <QPainter>
 #include <QItemDelegate>
@@ -42,9 +44,6 @@
 #include <QMouseEvent>
 #include <QMenu>
 #include <QHeaderView>
-
-#include "tdebug.h"
-#include <ktglobal.h>
 
 /**
  * @author Jorge Cuadrado

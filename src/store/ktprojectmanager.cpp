@@ -84,6 +84,7 @@ class KTProjectManager::Private
         KTCommandExecutor *commandExecutor;
         KTProjectManagerParams *params;
         QString copyFrame;
+        bool isNetworked;
 };
 
 KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), k(new Private())
@@ -130,7 +131,7 @@ KTProjectManagerParams *KTProjectManager::params() const
     return k->params;
 }
 
-void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
+void KTProjectManager::setHandler(KTAbstractProjectHandler *handler, bool isNetworked)
 {
     if (k->handler) {
         disconnect(k->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
@@ -142,6 +143,7 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
     k->handler = handler;
     k->handler->setParent(this);
     k->handler->setProject(k->project);
+    k->isNetworked = isNetworked;
 
     connect(k->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
     connect(k->handler, SIGNAL(sendLocalCommand(const KTProjectRequest *)), this, SLOT(handleLocalRequest(const KTProjectRequest *)));
@@ -179,14 +181,16 @@ void KTProjectManager::setupNewProject()
     k->project->setOpen(true);
     setupProjectDir();
 
-    KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, tr("Scene %1").arg(1));
-    handleProjectRequest(&request);
+    if (!k->isNetworked) {
+        KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, tr("Scene %1").arg(1));
+        handleProjectRequest(&request);
 
-    request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
-    handleProjectRequest(&request);
+        request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
+        handleProjectRequest(&request);
 
-    request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
-    handleProjectRequest(&request);
+        request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
+        handleProjectRequest(&request);
+    }
 }
 
 void KTProjectManager::closeProject()
@@ -196,7 +200,7 @@ void KTProjectManager::closeProject()
 
     if (k->project->isOpen()) {
         if (! k->handler->closeProject()) {
-            qDebug("ERROR: WHILE CLOSING THE PROJECT");
+            qDebug("KTProjectManager::closeProject() - Error while closing the project");
             return;
         }
 
@@ -263,7 +267,8 @@ bool KTProjectManager::isValid() const
 
 void KTProjectManager::setupProjectDir()
 {
-    QString dataDir = CACHE_DIR + "/" + (k->project->projectName().isEmpty() ? TAlgorithm::randomString(6) : k->project->projectName());
+    QString name = (k->project->projectName().isEmpty() ? TAlgorithm::randomString(6) : k->project->projectName());
+    QString dataDir = CACHE_DIR + "/" + name;
     QDir project = dataDir;
 
     if (!project.exists()) {
@@ -295,7 +300,7 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
     if (k->handler)
         k->handler->handleProjectRequest(request);
     else
-        qDebug("ERROR: NO HANDLER");
+        qDebug("KTProjectManager::handleProjectRequest() - Error: No handler available");
 }
 
 void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)

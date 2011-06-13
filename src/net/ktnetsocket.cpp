@@ -52,7 +52,8 @@ KTNetSocket::~KTNetSocket()
 void KTNetSocket::readed(const QString &readed)
 {
     #ifdef K_DEBUG
-        tDebug("net") << "KTNetSocket::readed() - PACKAGE ARRIVING: " << readed;
+        tDebug("net") << "KTNetSocket::readed() - PACKAGE ARRIVING: ";
+        tDebug("net")  << readed;
     #endif
 
     QDomDocument doc;

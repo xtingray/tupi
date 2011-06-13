@@ -129,7 +129,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Calling out the project manager
     m_projectManager = new KTProjectManager(this);
-    m_projectManager->setHandler(new KTLocalProjectManagerHandler);
+    m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
 
     splash->setMessage(tr("Setting up the project manager"));
     SleeperThread::msleep(500);
@@ -574,7 +574,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
         // connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
         connect(netProjectManagerHandler, SIGNAL(openNewArea()), this, SLOT(viewNewDocument()));
 
-        m_projectManager->setHandler(netProjectManagerHandler);
+        m_projectManager->setHandler(netProjectManagerHandler, true);
         bool isOk = m_projectManager->setParams(params);
 
         if (isOk) {
@@ -608,7 +608,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
-        m_projectManager->setHandler(new KTLocalProjectManagerHandler);
+        m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
         m_isNetworkProject = false;
         setWindowTitle(params->projectName() + " - " + tr("Tupi: Magic 2D"));
@@ -665,7 +665,7 @@ void KTMainWindow::openProject(const QString &path)
         setupNetworkProject(params->projectName(), params->server(), params->port());
         delete params;
     } else if (path.endsWith(".tup")) {
-               m_projectManager->setHandler(new KTLocalProjectManagerHandler);
+               m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
                m_isNetworkProject = false;
     }
 
