@@ -39,8 +39,9 @@
 #include <QXmlDefaultHandler>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTXmlParserBase : public QXmlDefaultHandler
 {
     public:

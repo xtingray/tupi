@@ -99,6 +99,8 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     #endif
 
     k->socket = new KTNetSocket(this);
+    connect(k->socket, SIGNAL(disconnected()), this, SLOT(connectionLost()));
+
     k->project = 0;
     k->params = 0;
     k->ownPackage = false;
@@ -184,12 +186,12 @@ bool KTNetProjectManagerHandler::loadProjectFromServer(const QString &name)
     return true;
 }
 
-bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
+void KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
 {
     KTNetProjectManagerParams *netparams = dynamic_cast<KTNetProjectManagerParams*>(params);
 
     if (! netparams) 
-        return false;
+        return;
     
     k->params = netparams;
     
@@ -198,7 +200,6 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     #endif    
 
     k->socket->connectToHost(k->params->server(), k->params->port());
-    
     bool connected = k->socket->waitForConnected(1000);
 
     if (connected) {
@@ -207,10 +208,7 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     } else {
         tFatal() << "KTNetProjectManagerHandler::initialize() - Unable to connect to " << k->params->server() << ":" << k->params->port();
         TOsd::self()->display(tr("Error"), tr("Unable to connect to server"), TOsd::Error);
-        return false;
     }
-    
-    return connected;
 }
 
 bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
@@ -228,12 +226,14 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 
     k->projectName = netparams->projectName();
     k->author = netparams->author();
-    
+   
+    /* 
     if (! k->socket->isOpen()) {
         bool connected = initialize(params);
         if (!connected) 
             return false;
     }
+    */
     
     KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author(), netparams->description());
     k->socket->send(newProjectPackage);
@@ -284,7 +284,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
         } else { // TODO: show error 
             #ifdef K_DEBUG
-                   tError() << "Error parsing";
+                   tError() << "KTNetProjectManagerHandler::handlePackage() - Error parsing net request";
             #endif
         }
     } else if (root == "ack") {
@@ -292,7 +292,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                KTAckParser parser;
                if (parser.parse(package)) {
                    k->sign = parser.sign();
-                   TOsd::self()->display(tr("Information"), parser.motd());
+                   // TOsd::self()->display(tr("Information"), tr("Login successful!")); 
+                   // TOsd::self()->display(tr("Information"), parser.motd());
+                   emit createNewNetProject(); 
                }
     } else if (root == "notification") {
                KTErrorParser parser;
@@ -318,8 +320,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                            KTSaveProject *loader = new KTSaveProject;
                            loader->load(file.fileName(), k->project);
                            tFatal() << "KTNetProjectManagerHandler::handlePackage() - Calling out for new project!";  
-                           emit openNewArea();
-                           // emit openNewArea(k->project->projectName());
+                           // emit openNewArea();
+                           emit openNewArea(k->project->projectName());
                            delete loader;
                        } else {
                            tFatal() << "KTNetProjectManagerHandler::handlePackage() - No project. No call";
@@ -398,4 +400,9 @@ void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
 {
     KTNoticePackage package(message);
     sendPackage(package);
+}
+
+void KTNetProjectManagerHandler::connectionLost()
+{
+    tDebug() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed!";
 }

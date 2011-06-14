@@ -937,14 +937,16 @@ void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
 
     k->inputInformation->updateFromMouseEvent(event);
 
-    if (k->tool && k->isDrawing) {
-        k->tool->release(k->inputInformation, k->brushManager, this);
-        k->tool->end();
+    if (k->isDrawing) {
+        if (k->tool) {
+            k->tool->release(k->inputInformation, k->brushManager, this);
+            k->tool->end();
+        }
     } else {
-        // TODO: To find the way to enhance this condition only for zoom tool
-        // if (k->tool->toolType() == KTToolPlugin::View) 
+        if (k->tool) { 
            if (k->tool->name().compare(tr("Zoom")))
                k->tool->release(k->inputInformation, k->brushManager, this);
+        }
     }
 
     k->isDrawing = false;

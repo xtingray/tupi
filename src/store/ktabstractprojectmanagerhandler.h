@@ -57,7 +57,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
         KTAbstractProjectHandler(QObject *parent = 0);
         virtual ~KTAbstractProjectHandler();
 
-        virtual bool initialize(KTProjectManagerParams *params);
+        virtual void initialize(KTProjectManagerParams *params);
         virtual bool setupNewProject(KTProjectManagerParams *params);
         virtual bool closeProject();
         virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
@@ -71,8 +71,8 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
     signals:
         void sendCommand(const KTProjectRequest *request, bool addToStack);
         void sendLocalCommand(const KTProjectRequest *request);
-        // void openNewArea(const QString &name);
-        void openNewArea();
+        void openNewArea(const QString &name);
+        void createNewNetProject();
 };
 
 #endif

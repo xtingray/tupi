@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "ktxmlparserbase.h"
-
 #include "tdebug.h"
 
 struct KTXmlParserBase::Private
@@ -92,7 +91,7 @@ bool KTXmlParserBase::startElement(const QString& , const QString& , const QStri
      return r;
 }
 
-bool KTXmlParserBase::endElement( const QString&, const QString& , const QString& qname)
+bool KTXmlParserBase::endElement(const QString&, const QString& , const QString& qname)
 {
      return endTag(qname);
 }
@@ -110,14 +109,14 @@ bool KTXmlParserBase::characters(const QString & ch)
      return true;
 }
 
-bool KTXmlParserBase::error ( const QXmlParseException & exception )
+bool KTXmlParserBase::error(const QXmlParseException & exception)
 {
      tWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
      tWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
      return true;
 }
 
-bool KTXmlParserBase::fatalError ( const QXmlParseException & exception )
+bool KTXmlParserBase::fatalError(const QXmlParseException & exception)
 {
      tFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
      tWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
@@ -169,5 +168,5 @@ bool KTXmlParserBase::parse(QFile *file)
          }
      }
 
-     return parse(QString::fromLocal8Bit(file->readAll()) );
+     return parse(QString::fromLocal8Bit(file->readAll()));
 }

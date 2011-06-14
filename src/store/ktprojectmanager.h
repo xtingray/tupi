@@ -62,7 +62,7 @@ class STORE_EXPORT KTProjectManager : public QObject
         KTProjectManager(QObject *parent = 0);
         virtual ~KTProjectManager();
 
-        bool setParams(KTProjectManagerParams *params);
+        void setParams(KTProjectManagerParams *params);
         KTProjectManagerParams *params() const;
 
         virtual void setupNewProject();

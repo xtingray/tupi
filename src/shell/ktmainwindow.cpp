@@ -55,7 +55,6 @@
 #include "ktlocalprojectmanagerhandler.h"
 
 // #ifdef USE_NET
-#include "ktnetprojectmanagerhandler.h"
 #include "ktnetprojectmanagerparams.h"
 #include "ktconnectdialog.h"
 #include "ktsavenetproject.h"
@@ -212,27 +211,41 @@ KTMainWindow::~KTMainWindow()
  * @endif
 */
 
-void KTMainWindow::createNewProject()
+void KTMainWindow::createNewLocalProject()
 {
-    // Modal
-    //if (!closeProject())
-    //    return;
-
     m_projectManager->setupNewProject();
  
     enableToolViews(true);
     setMenuItemsContext(true);
 
-    if (!m_isNetworkProject)
-        viewNewDocument();
+    viewNewDocument();
+}
+
+void KTMainWindow::createNewNetProject(const QString &projectName)
+{
+    m_isNetworkProject = true;
+    setWindowTitle(projectName + " - " + tr("Tupi: Magic 2D") + " " + tr("[net mode]"));
+
+    if (m_viewChat) {
+        removeToolView(m_viewChat);
+        delete m_viewChat;
+    }
+
+    m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::BottomDockWidgetArea, All, "Chat");
+    m_viewChat->setVisible(false);
+
+    enableToolViews(true);
+    setMenuItemsContext(true);
+
+    viewNewDocument();
 }
 
 /**
  * @if english
- * This method supports all the low level tasks for the method createNewProject().
+ * This method supports all the low level tasks for the method createNewLocalProject().
  * @endif
  * @if spanish
- * Este metodo soporta todas las tareas de bajo nivel para el metodo createNewProject().
+ * Este metodo soporta todas las tareas de bajo nivel para el metodo createNewLocalProject().
  * @endif
 */
 
@@ -306,7 +319,9 @@ void KTMainWindow::viewNewDocument()
         connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
 
         exposureView->expandDock(true);
-        connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
+
+        if (!m_isNetworkProject)
+            connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         m_projectManager->undoModified();
 
@@ -341,18 +356,16 @@ void KTMainWindow::newProject()
                  (int) (desktop.screenGeometry().height() - wizard->height())/2);
     wizard->focusProjectLabel();
 
-    //connectToDisplays(wizard);
+    // connectToDisplays(wizard);
 
     if (wizard->exec() != QDialog::Rejected) {
 
-       if (wizard->useNetwork()) {
-           bool isOk = setupNetworkProject(wizard->parameters());
-           if (isOk)
-               createNewProject();
-       } else {
-           setupLocalProject(wizard->parameters());
-           createNewProject();
-       }
+        if (wizard->useNetwork()) {
+            setupNetworkProject(wizard->parameters());
+        } else {
+            setupLocalProject(wizard->parameters());
+            createNewLocalProject();
+        }
     }
 
     delete wizard;
@@ -530,7 +543,7 @@ bool KTMainWindow::closeProject()
  * @return true if the network project can be configured
 */
 
-bool KTMainWindow::setupNetworkProject(const QString& projectName, const QString &server, int port)
+void KTMainWindow::setupNetworkProject(const QString& projectName, const QString &server, int port)
 {
     KTConnectDialog *netDialog = new KTConnectDialog(this);
 
@@ -549,10 +562,8 @@ bool KTMainWindow::setupNetworkProject(const QString& projectName, const QString
         params->setPassword(netDialog->password());
         params->setProjectName(projectName);
 
-        return setupNetworkProject(params);
+        setupNetworkProject(params);
     }
-
-    return false;
 }
 
 /**
@@ -565,34 +576,18 @@ bool KTMainWindow::setupNetworkProject(const QString& projectName, const QString
  * @return 
 */
 
-bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
+void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
         tFatal() << "KTMainWindow::setupNetworkProject() - Tracing network project!";
 
-        KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
-        // connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
-        connect(netProjectManagerHandler, SIGNAL(openNewArea()), this, SLOT(viewNewDocument()));
+        netProjectManagerHandler =  new KTNetProjectManagerHandler;
+        connect(netProjectManagerHandler, SIGNAL(createNewNetProject()), this, SLOT(requestNewNetProject()));
+        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
-        bool isOk = m_projectManager->setParams(params);
-
-        if (isOk) {
-            m_isNetworkProject = true;
-
-            if (m_viewChat) {
-                removeToolView(m_viewChat);
-                delete m_viewChat;
-            }
-
-            m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::BottomDockWidgetArea, All, "Chat");
-            m_viewChat->setVisible(false);
-
-            return true;
-        }
+        m_projectManager->setParams(params);
     }
-
-    return false;
 }
 
 /**
@@ -608,9 +603,9 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
+        m_isNetworkProject = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
-        m_isNetworkProject = false;
         setWindowTitle(params->projectName() + " - " + tr("Tupi: Magic 2D"));
 
         return true;
@@ -632,8 +627,11 @@ void KTMainWindow::openProject()
 {
     const char *home = getenv("HOME");
 
-    QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home, 
-                      tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
+    // QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home, 
+    //                   tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
+
+    QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home,
+                      tr("Tupi Project Package (*.tup)"));
 
     if (package.isEmpty()) 
         return;
@@ -659,6 +657,7 @@ void KTMainWindow::openProject(const QString &path)
     if (path.isEmpty())
         return;
 
+    /*
     if (path.endsWith(".ntup")) {
         KTSaveNetProject loader;
         KTNetProjectManagerParams *params = loader.params(path);
@@ -667,6 +666,12 @@ void KTMainWindow::openProject(const QString &path)
     } else if (path.endsWith(".tup")) {
                m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
                m_isNetworkProject = false;
+    }
+    */
+
+    if (path.endsWith(".tup")) {
+        m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
+        m_isNetworkProject = false;
     }
 
     if (closeProject()) {
@@ -732,6 +737,7 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::openProjectFromServer()
 {
+    /*
     if (setupNetworkProject()) {
         KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
                                               (m_projectManager->handler());
@@ -740,6 +746,7 @@ void KTMainWindow::openProjectFromServer()
             handler->sendPackage(package);
         }
     }
+    */
 }
 
 /**
@@ -753,18 +760,20 @@ void KTMainWindow::openProjectFromServer()
 
 void KTMainWindow::importProjectToServer()
 {
-     if (setupNetworkProject()) {
-         KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
+    /*
+    if (setupNetworkProject()) {
+        KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
                                                (m_projectManager->handler());
 
-         if (handler->isValid()) {
-             const char *home = getenv("HOME");
-             QString file = QFileDialog::getOpenFileName(this, tr("Import project package"), 
+        if (handler->isValid()) {
+            const char *home = getenv("HOME");
+            QString file = QFileDialog::getOpenFileName(this, tr("Import project package"), 
                                                      home, tr("Tupi Project Package (*.tup)"));
-             KTImportProjectPackage package(file);		
-             handler->sendPackage(package);
-         }
-     }
+            KTImportProjectPackage package(file);		
+            handler->sendPackage(package);
+        }
+    }
+    */
 }
 
 /**
@@ -976,8 +985,11 @@ void KTMainWindow::saveAs()
 
     isSaveDialogOpen = true;
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home, 
-                       tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
+    // QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home, 
+    //                    tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home,
+                       tr("Tupi Project Package (*.tup)"));
 
     if (fileName.isEmpty()) {
         isSaveDialogOpen = false;
@@ -1020,30 +1032,35 @@ void KTMainWindow::saveAs()
 
 void KTMainWindow::saveProject()
 {
-    if (isSaveDialogOpen)
-        return;
+    if (!m_isNetworkProject) {
 
-    if (m_fileName.isEmpty()) {
-        saveAs();
-        return;
-    }
+        if (isSaveDialogOpen)
+            return;
 
-    if (m_projectManager->saveProject(m_fileName)) {  
-        TOsd::self()->display(tr("Information"), tr("Project %1 saved").arg(m_projectManager->project()->projectName()));
-        projectSaved = true;
-        int indexPath = m_fileName.lastIndexOf("/");
-        int indexFile = m_fileName.length() - indexPath;
-        QString name = m_fileName.right(indexFile - 1);
-        int indexDot = name.lastIndexOf(".");
-        name = name.left(indexDot);
+        if (m_fileName.isEmpty()) {
+            saveAs();
+            return;
+        }
 
-        setWindowTitle(name + " - " + tr("Tupi: Magic 2D"));
+        if (m_projectManager->saveProject(m_fileName)) {  
+            TOsd::self()->display(tr("Information"), tr("Project %1 saved").arg(m_projectManager->project()->projectName()));
+            projectSaved = true;
+            int indexPath = m_fileName.lastIndexOf("/");
+            int indexFile = m_fileName.length() - indexPath;
+            QString name = m_fileName.right(indexFile - 1);
+            int indexDot = name.lastIndexOf(".");
+            name = name.left(indexDot);
+
+            setWindowTitle(name + " - " + tr("Tupi: Magic 2D"));
+        } else {
+            TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
+        }
+
+        if (isSaveDialogOpen)
+            isSaveDialogOpen = false;
     } else {
-        TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
+        tFatal() << "KTMainWindow::saveProject() - Saving from network!";
     }
-
-    if (isSaveDialogOpen)
-        isSaveDialogOpen = false;
 }
 
 /**
@@ -1227,8 +1244,8 @@ void KTMainWindow::callSave()
         saveProject();
 }
 
-
-void KTMainWindow::expandExposureView(int index) {
+void KTMainWindow::expandExposureView(int index) 
+{
     contextMode = static_cast<KTProject::Mode>(index);
 
     if (contextMode == KTProject::FRAMES_EDITION) {
@@ -1240,9 +1257,15 @@ void KTMainWindow::expandExposureView(int index) {
     }
 }
 
-void KTMainWindow::expandColorView() {
+void KTMainWindow::expandColorView() 
+{
     if (colorView->isExpanded())
         colorView->expandDock(false); 
     else
         colorView->expandDock(true);
+}
+
+void KTMainWindow::requestNewNetProject()
+{
+    m_projectManager->setupNewProject();
 }

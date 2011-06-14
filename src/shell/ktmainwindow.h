@@ -43,6 +43,7 @@
 #include <QResizeEvent>
 #include <QCloseEvent>
 #include <QUndoStack>
+
 #include "tactionmanager.h"
 #include "ktviewdocument.h"
 
@@ -75,6 +76,7 @@
 
 // Including headers about projects management
 #include "ktprojectmanager.h"
+#include "ktnetprojectmanagerhandler.h"
 #include "ktsplash.h"
 
 #include "ktviewdocument.h"
@@ -133,8 +135,8 @@ class KTMainWindow : public KTabbedMainWindow
          void ui4localRequest(QWidget *widget);
          void flipTabs(int index);
 
-         bool setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
-         bool setupNetworkProject(KTProjectManagerParams *params);
+         void setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
+         void setupNetworkProject(KTProjectManagerParams *params);
          bool setupLocalProject(KTProjectManagerParams *params);
          void setUndoRedoActions();
 
@@ -163,7 +165,7 @@ class KTMainWindow : public KTabbedMainWindow
 
     private slots:
           void viewNewDocument();
-          void createNewProject();
+          void createNewLocalProject();
           void newProject();
           bool closeProject();
           void openProject();
@@ -184,6 +186,9 @@ class KTMainWindow : public KTabbedMainWindow
 
           void addPage(QWidget *widget);
           void updateCurrentTab(int index);
+
+          void requestNewNetProject();
+          void createNewNetProject(const QString &projectName);
 
     private slots:
           void messageToStatus(const QString &);
@@ -224,6 +229,7 @@ class KTMainWindow : public KTabbedMainWindow
           QMenu *m_recentProjectsMenu;
 
     private: // Network variables
+          KTNetProjectManagerHandler *netProjectManagerHandler;
           bool m_isNetworkProject;
           KToolView *m_viewChat;
 

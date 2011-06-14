@@ -49,10 +49,6 @@ KTAbstractProjectResponseHandler::~KTAbstractProjectResponseHandler()
 
 bool KTAbstractProjectResponseHandler::handleResponse(KTProjectResponse *response)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO << response->part();
-    #endif
-
     switch (response->part()) {
             case KTProjectRequest::Item:
             {

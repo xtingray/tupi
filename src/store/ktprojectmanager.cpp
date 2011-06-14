@@ -113,7 +113,7 @@ KTProjectManager::~KTProjectManager()
     delete k;
 }
 
-bool KTProjectManager::setParams(KTProjectManagerParams *params)
+void KTProjectManager::setParams(KTProjectManagerParams *params)
 {
     if (k->params) 
         delete k->params;
@@ -121,9 +121,7 @@ bool KTProjectManager::setParams(KTProjectManagerParams *params)
     k->params = params;
 
     tFatal() << "KTProjectManager::setParams() - Initializing project manager handler";
-    bool isOk = k->handler->initialize(k->params);
-
-    return isOk;
+    k->handler->initialize(k->params);
 }
 
 KTProjectManagerParams *KTProjectManager::params() const
@@ -134,8 +132,10 @@ KTProjectManagerParams *KTProjectManager::params() const
 void KTProjectManager::setHandler(KTAbstractProjectHandler *handler, bool isNetworked)
 {
     if (k->handler) {
-        disconnect(k->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
-        disconnect(k->handler, SIGNAL(sendLocalCommand(const KTProjectRequest *)), this, SLOT(handleLocalRequest(const KTProjectRequest *)));
+        disconnect(k->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), 
+                   this, SLOT(createCommand(const KTProjectRequest *, bool)));
+        disconnect(k->handler, SIGNAL(sendLocalCommand(const KTProjectRequest *)), 
+                   this, SLOT(handleLocalRequest(const KTProjectRequest *)));
         delete k->handler;
         k->handler = 0;
     }
@@ -335,7 +335,12 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
                 }
             } else if (response->action() == KTProjectRequest::Paste) {
                        response->setArg(k->copyFrame);
-                       handleProjectRequest(& KTRequestBuilder::fromResponse(response));
+
+                       // SQA: Bad code. Remove
+                       // handleProjectRequest(& KTRequestBuilder::fromResponse(response));
+
+                       KTProjectRequest request = KTRequestBuilder::fromResponse(response);
+                       handleProjectRequest(&request);
                        return;
             }
         }

@@ -58,7 +58,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         KTNetProjectManagerHandler(QObject *parent = 0);
         ~KTNetProjectManagerHandler();
 
-        virtual bool initialize(KTProjectManagerParams *params);
+        virtual void initialize(KTProjectManagerParams *params);
         virtual bool setupNewProject(KTProjectManagerParams *params);
         virtual bool closeProject();
 
@@ -84,6 +84,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
     private slots:
         void sendChatMessage(const QString & message);
         void sendNoticeMessage(const QString & message);
+        void connectionLost();
 
     private:
         struct Private;

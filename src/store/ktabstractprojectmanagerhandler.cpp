@@ -44,9 +44,8 @@ KTAbstractProjectHandler::~KTAbstractProjectHandler()
 {
 }
 
-bool KTAbstractProjectHandler::initialize(KTProjectManagerParams *params)
+void KTAbstractProjectHandler::initialize(KTProjectManagerParams *params)
 {
-    return true;
 }
 
 bool KTAbstractProjectHandler::setupNewProject(KTProjectManagerParams *params)
