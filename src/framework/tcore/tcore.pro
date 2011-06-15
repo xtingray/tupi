@@ -38,13 +38,7 @@ SOURCES += talgorithm.cpp \
            ktipdatabase.cpp \
            kxmlparserbase.cpp
 
-unix {
-    CONFIG += release warn_on dll
-}
-
-macx {
-    CONFIG += release warn_on dylib
-}
+CONFIG += release warn_on dll
 
 TEMPLATE = lib
 TARGET = tupifwcore
