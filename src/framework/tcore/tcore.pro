@@ -24,6 +24,7 @@ HEADERS += talgorithm.h \
            kspellinterface.h \
            ktipdatabase.h \
            kxmlparserbase.h
+
 SOURCES += talgorithm.cpp \
            tapplicationproperties.cpp \
            kaspellchecker.cpp \
@@ -37,7 +38,14 @@ SOURCES += talgorithm.cpp \
            ktipdatabase.cpp \
            kxmlparserbase.cpp
 
-CONFIG += release warn_on dll
+unix {
+    CONFIG += release warn_on dll
+}
+
+macx {
+    CONFIG += release warn_on dylib
+}
+
 TEMPLATE = lib
 TARGET = tupifwcore
 
