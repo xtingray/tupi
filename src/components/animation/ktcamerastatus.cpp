@@ -143,7 +143,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
 KTCameraStatus::~KTCameraStatus()
 {
     #ifdef K_DEBUG
-           TINIT;
+           TEND;
     #endif
 }
 

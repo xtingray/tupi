@@ -178,7 +178,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
         TCONFIG->setValue("OpenLastProject", openLast);
         TCONFIG->setValue("AutoSave", 2);
     }
-
 }
 
 /**
@@ -214,6 +213,7 @@ KTMainWindow::~KTMainWindow()
 void KTMainWindow::createNewLocalProject()
 {
     m_projectManager->setupNewProject();
+    m_projectManager->setOpen(true);
  
     enableToolViews(true);
     setMenuItemsContext(true);
@@ -236,6 +236,8 @@ void KTMainWindow::createNewNetProject(const QString &projectName)
 
     enableToolViews(true);
     setMenuItemsContext(true);
+
+    m_projectManager->setOpen(true);
 
     viewNewDocument();
 }

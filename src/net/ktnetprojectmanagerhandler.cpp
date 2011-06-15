@@ -243,6 +243,9 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 
 bool KTNetProjectManagerHandler::closeProject()
 {
+    if (k->socket->isOpen())
+        k->socket->close();
+
     return KTAbstractProjectHandler::closeProject();
 }
 
@@ -254,7 +257,7 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request, bool toS
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package)
 {
     #ifdef K_DEBUG
-        T_FUNCINFOX("net");
+           T_FUNCINFOX("net");
     #endif
 
     if (root == "request") {

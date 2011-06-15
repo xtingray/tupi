@@ -174,12 +174,12 @@ void KTProjectManager::setupNewProject()
     k->project->setFPS(k->params->fps());
 
     if (! k->handler->setupNewProject(k->params)) {
-        qDebug("KTProjectManager::setupNewProject() - Project settings error");
+        tDebug() << "KTProjectManager::setupNewProject() - Project settings error";
         return;
     }
 
-    k->project->setOpen(true);
-    setupProjectDir();
+    // k->project->setOpen(true);
+    // setupProjectDir();
 
     if (!k->isNetworked) {
         KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, tr("Scene %1").arg(1));
@@ -195,12 +195,12 @@ void KTProjectManager::setupNewProject()
 
 void KTProjectManager::closeProject()
 {
-    if (!k->handler) 
+    if (!k->handler)
         return;
 
     if (k->project->isOpen()) {
         if (! k->handler->closeProject()) {
-            qDebug("KTProjectManager::closeProject() - Error while closing the project");
+            tError() << "KTProjectManager::closeProject() - Error while closing the project";
             return;
         }
 
@@ -265,21 +265,23 @@ bool KTProjectManager::isValid() const
     return k->handler->isValid();
 }
 
+/*
 void KTProjectManager::setupProjectDir()
 {
     QString name = (k->project->projectName().isEmpty() ? TAlgorithm::randomString(6) : k->project->projectName());
     QString dataDir = CACHE_DIR + "/" + name;
-    QDir project = dataDir;
+    QDir projectDir = dataDir;
 
-    if (!project.exists()) {
-        if (project.mkpath(project.absolutePath())) {
+    if (!projectDir.exists()) {
+        if (projectDir.mkpath(projectDir.absolutePath())) {
             QStringList dirs;
             dirs << "audio" << "video" << "images" << "svg";
             foreach (QString dir, dirs)
-                     project.mkdir(dir);
+                     projectDir.mkdir(dir);
         }
     }
 }
+*/
 
 /**
  * This function is called when some event is triggered by the project
@@ -344,6 +346,7 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
                        return;
             }
         }
+
         parser.response()->setExternal(request->isExternal());
 
         emit responsed(parser.response());
@@ -373,7 +376,7 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
             command->redo();
     } else {
         #ifdef K_DEBUG
-               tWarning() << "invalid request";
+               tWarning() << "KTProjectManager::createCommand() - Invalid request";
         #endif
     }
 }
@@ -402,4 +405,9 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
     } else if (k->handler->commandExecuted(response)) {
         emit responsed(response);
     }
+}
+
+void KTProjectManager::setOpen(bool isOpen)
+{
+    k->project->setOpen(isOpen);
 }

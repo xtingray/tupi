@@ -5,11 +5,18 @@
 
 INSTALLS += tupidata \
             launcher \
-            desktop \
             icons \
             tupiman \
             copyright \
             target 
+
+unix {
+    INSTALLS += desktop
+
+    desktop.target = ../../launcher/tupi.desktop
+    desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
+    desktop.path = /applications/
+}
 
 target.path = /bin/ 
 
@@ -24,10 +31,6 @@ tupiman.path = /man1/
 copyright.target = ../components/help/help/man/copyright
 copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
 copyright.path = /tupi/
-
-desktop.target = ../../launcher/tupi.desktop
-desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
-desktop.path = /applications/
 
 icons.target = ../../launcher/icons/tupi.png
 icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps

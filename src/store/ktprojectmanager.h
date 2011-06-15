@@ -81,9 +81,12 @@ class STORE_EXPORT KTProjectManager : public QObject
 
         bool isValid() const;
         void undoModified();
-    
+        void setOpen(bool isOpen);
+   
+    /* 
     private:
         void setupProjectDir();
+    */
 
     protected slots:
         virtual void handleProjectRequest(const KTProjectRequest *request);

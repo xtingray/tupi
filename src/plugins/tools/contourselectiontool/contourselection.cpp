@@ -82,6 +82,8 @@ ContourSelection::~ContourSelection()
 
 void ContourSelection::init(KTGraphicsScene *scene)
 {
+    k->scene = scene;
+
     qDeleteAll(k->nodeGroups);
     k->nodeGroups.clear();
 
@@ -118,8 +120,9 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
+    Q_UNUSED(scene);
     
-    k->scene = scene;
+    // k->scene = scene;
 }
 
 void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)

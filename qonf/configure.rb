@@ -209,7 +209,13 @@ class Configure
         newfile += "export TUPI_PLUGIN=\"" + launcher_libdir + "/plugins\"\n"
         newfile += "export TUPI_INCLUDE=\"" + launcher_includedir + "\"\n"
         newfile += "export TUPI_BIN=\"" + launcher_bindir + "\"\n\n"
-        newfile += "export LD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
+
+        if RUBY_PLATFORM.downcase.include?("darwin")
+           newfile += "export DYLD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
+        else
+           newfile += "export LD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
+        end
+
         newfile += "exec ${TUPI_BIN}/tupi.bin $*"
 
         launcher = File.open("launcher/tupi", "w") { |f|
