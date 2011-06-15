@@ -165,7 +165,7 @@ linux-g{
     TARGETDEPS += ../tcore/libtupifwcore.so
 }
 
-include(../../../tupiglobal.pri)
+# include(../../../tupiglobal.pri)
 
 LIBS += -L../tcore -ltupifwcore
 

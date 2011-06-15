@@ -14,17 +14,17 @@ begin
        puts <<_EOH_
 Use: ./configure [options]
   options:
-  --help, -h:                                Show this message
-  --prefix=[path], -prefix [path]:           Sets installation path [/usr/local]
-  --bindir=[path], -bindir [path]:           Set binaries path [/usr/local/bin]
-  --libdir=[path], -libdir [path]:           Set library path [/usr/local/lib]
-  --includedir=[path], -includedir [path]:   Set include path [/usr/local/include]
-  --sharedir=[path], -sharedir [path]:       Set data path [/usr/local/share]
-  --with-ffmpeg=[path], -with-ffmpeg [path]: Set ffmpeg installation path [/usr]
-  --with-aspell=[path], -with-aspell [path]: Set apell installation path [/usr]
-  --with-debug:                              Enable debug
-  --with-qtdir=[path], -with-qtdir [path]:   Set Qt directory [i.e. /usr/local/qt]
-  --debian-build:                            Option exclusive for Debian maintainer
+  --help:               Show this message
+  --prefix=[path]:      Sets installation path [/usr/local]
+  --bindir=[path]:      Set binaries path [/usr/local/bin]
+  --libdir=[path]:      Set library path [/usr/local/lib]
+  --includedir=[path]:  Set include path [/usr/local/include]
+  --sharedir=[path]:    Set data path [/usr/local/share]
+  --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
+  --with-aspell=[path]: Set apell installation path [/usr]
+  --with-debug:         Enable debug
+  --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]
+  --debian-build:       Option exclusive for Debian maintainer
 _EOH_
         exit 0
     end
@@ -94,8 +94,8 @@ _EOH_
     config.addLib("-ltupifwsound")
     config.addLib("-lz")
     
-    config.addLib("-L#{RQonf::CONFIG["libdir"]}")
-    config.addIncludePath(RQonf::CONFIG["includepath"])
+    # config.addLib("-L#{RQonf::CONFIG["libdir"]}")
+    # config.addIncludePath(RQonf::CONFIG["includepath"])
     
     config.addDefine('VERSION=\\\\\"0.1\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Gemo\\\\\"')
@@ -119,7 +119,6 @@ _EOH_
 
     if RUBY_PLATFORM.downcase.include?("darwin")
        config.addLib("-L/sw/lib")
-       config.addLib("-L/lib")
        config.addIncludePath("/sw/include")
     end
 
