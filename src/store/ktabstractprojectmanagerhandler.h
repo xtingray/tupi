@@ -36,8 +36,9 @@
 #ifndef KTABSTRACTPROJECTHANDLER_H
 #define KTABSTRACTPROJECTHANDLER_H
 
-#include <QObject>
 #include "ktglobal_store.h"
+
+#include <QObject>
 
 class KTProjectResponse;
 class KTProjectRequest;
@@ -72,7 +73,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
         void sendCommand(const KTProjectRequest *request, bool addToStack);
         void sendLocalCommand(const KTProjectRequest *request);
         void openNewArea(const QString &name);
-        void createNewNetProject();
+        void authenticationSuccessful();
 };
 
 #endif

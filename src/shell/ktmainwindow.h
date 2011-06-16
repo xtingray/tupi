@@ -104,6 +104,12 @@ class KTMainWindow : public KTabbedMainWindow
              All = Animation | Player | Help | News
         };
 
+        enum RequestType {
+             None = 0,
+             New,
+             Open
+        };
+
         KTMainWindow(KTSplash *splash = 0, int parameters = 1);
         ~KTMainWindow();
 
@@ -187,7 +193,7 @@ class KTMainWindow : public KTabbedMainWindow
           void addPage(QWidget *widget);
           void updateCurrentTab(int index);
 
-          void requestNewNetProject();
+          void requestNewProject();
           void createNewNetProject(const QString &projectName);
 
     private slots:
@@ -261,6 +267,7 @@ class KTMainWindow : public KTabbedMainWindow
           bool internetOn;
           int lastTab;
           KTProject::Mode contextMode;
+          KTMainWindow::RequestType requestType; 
 
     signals:
           void responsed(KTProjectResponse *);

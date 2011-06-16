@@ -243,8 +243,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 
 bool KTNetProjectManagerHandler::closeProject()
 {
-    if (k->socket->isOpen())
-        k->socket->close();
+    closeConnection();
 
     return KTAbstractProjectHandler::closeProject();
 }
@@ -297,7 +296,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    k->sign = parser.sign();
                    // TOsd::self()->display(tr("Information"), tr("Login successful!")); 
                    // TOsd::self()->display(tr("Information"), parser.motd());
-                   emit createNewNetProject(); 
+                   emit authenticationSuccessful(); 
                }
     } else if (root == "notification") {
                KTErrorParser parser;
@@ -408,4 +407,10 @@ void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
 void KTNetProjectManagerHandler::connectionLost()
 {
     tDebug() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed!";
+}
+
+void KTNetProjectManagerHandler::closeConnection()
+{
+    if (k->socket->isOpen())
+        k->socket->close();
 }

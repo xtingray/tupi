@@ -229,7 +229,7 @@ void KTMainWindow::setupMenu()
 
     m_fileMenu->addAction(m_actionManager->find("opennetproject"));
     m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
-    m_actionManager->enable("opennetproject", false);
+    // m_actionManager->enable("opennetproject", false);
     m_actionManager->enable("importprojectserver", false);
 
     // Adding Option Open Recent	

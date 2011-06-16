@@ -178,6 +178,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
         TCONFIG->setValue("OpenLastProject", openLast);
         TCONFIG->setValue("AutoSave", 2);
     }
+
+    KTMainWindow::requestType = None;
 }
 
 /**
@@ -387,7 +389,7 @@ bool KTMainWindow::closeProject()
 {
     if (!m_projectManager->isOpen())
         return true;
-	
+
     if (m_projectManager->isModified()) {
 
         QDesktopWidget desktop;
@@ -532,6 +534,9 @@ bool KTMainWindow::closeProject()
 
     setWindowTitle(tr("Tupi: Magic 2D"));
 
+    if (m_isNetworkProject) 
+        netProjectManagerHandler->closeConnection();
+
     return true;
 }
 
@@ -584,11 +589,13 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
         tFatal() << "KTMainWindow::setupNetworkProject() - Tracing network project!";
 
         netProjectManagerHandler =  new KTNetProjectManagerHandler;
-        connect(netProjectManagerHandler, SIGNAL(createNewNetProject()), this, SLOT(requestNewNetProject()));
+        connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestNewProject()));
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
+
+        KTMainWindow::requestType = New;
     }
 }
 
@@ -739,6 +746,8 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::openProjectFromServer()
 {
+    KTMainWindow::requestType = Open;
+
     /*
     if (setupNetworkProject()) {
         KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
@@ -1267,7 +1276,8 @@ void KTMainWindow::expandColorView()
         colorView->expandDock(true);
 }
 
-void KTMainWindow::requestNewNetProject()
+void KTMainWindow::requestNewProject()
 {
-    m_projectManager->setupNewProject();
+    if (KTMainWindow::requestType == New)
+        m_projectManager->setupNewProject();
 }

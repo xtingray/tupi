@@ -69,12 +69,11 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         virtual bool loadProject(const QString &fileName, KTProject *project);
 
         void handlePackage(const QString &root, const QString &package);
-
         virtual bool isValid() const;
-
         void sendPackage(const QDomDocument &doc);
 
         QTabWidget *comunicationWidget();
+        void closeConnection();
 
     private:
         bool loadProjectFromServer(const QString &name);
