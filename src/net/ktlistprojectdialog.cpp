@@ -51,24 +51,29 @@ struct KTListProjectDialog::Private
     QPushButton *accept, *cancel;
 };
 
-KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
+KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(), k(new Private)
 {
-    setWindowTitle(tr("Projects List from Server"));
+    setWindowTitle(tr("Projects List from Server") + " - [ " + serverName  + " ]");
     setModal(true);
     QVBoxLayout *layout = new QVBoxLayout(this);
     setLayout(layout);
     QHBoxLayout *search = new QHBoxLayout;
 
+    k->tree = new QTreeWidget;
+    k->tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description"));
+    k->tree->header()->show();
+
+    k->tree->setColumnWidth(0, 150);
+    k->tree->setColumnWidth(1, 100);
+    k->tree->setColumnWidth(2, 200);
+
+    k->search = new KTreeWidgetSearchLine(this, k->tree);
+    search->addWidget(k->search);
+
     QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR + "/icons/clear_right.png"));
+    button->setIcon(QIcon(THEME_DIR + "icons/magnifying.png"));
 
     search->addWidget(button);
-    k->tree = new QTreeWidget;
-    
-    k->tree->setHeaderLabels(QStringList() << tr("name") << tr("author") << tr("description"));
-    k->tree->header()->show();
-    k->search = new KTreeWidgetSearchLine(this,k->tree);
-    search->addWidget(k->search);
     connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
     
     connect(k->tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem * , int)));
@@ -82,9 +87,12 @@ KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
     k->cancel = new QPushButton("Cancel");
     connect(k->accept, SIGNAL(clicked ()), this, SLOT(accept()));
     connect(k->cancel, SIGNAL(clicked()), this, SLOT(reject()));
-    buttons->addWidget(k->accept);
+
     buttons->addWidget(k->cancel);
+    buttons->addWidget(k->accept);
     layout->addLayout(buttons);
+
+    setMinimumWidth(450); 
 }
 
 KTListProjectDialog::~KTListProjectDialog()
@@ -109,7 +117,8 @@ QString KTListProjectDialog::currentProject()
     return "";
 }
 
-void KTListProjectDialog::execAccept(QTreeWidgetItem * , int)
+void KTListProjectDialog::execAccept(QTreeWidgetItem *item, int index)
 {
-    accept();
+    if (index >= 0)
+        accept();
 }

@@ -36,8 +36,9 @@
 #ifndef KTLISTPROJECTDIALOG_H
 #define KTLISTPROJECTDIALOG_H
 
-#include <QDialog>
 #include "tapplicationproperties.h"
+
+#include <QDialog>
 
 /**
  * @author Jorge Cuadrado
@@ -50,13 +51,13 @@ class KTListProjectDialog : public QDialog
     Q_OBJECT
 
     public:
-        KTListProjectDialog();
+        KTListProjectDialog(const QString &serverName);
         ~KTListProjectDialog();
         void addProject(const QString& name, const QString& author, const QString& description);
         QString currentProject();
         
     private slots:
-        void execAccept(QTreeWidgetItem * , int);
+        void execAccept(QTreeWidgetItem *item, int index);
     
     private:
         struct Private;

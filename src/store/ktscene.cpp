@@ -155,6 +155,7 @@ KTLayer *KTScene::createLayer(QString name, int position, bool loaded)
     // layer->setLayerName(tr("Layer %1").arg(k->nameIndex));
     layer->setLayerName(name);
 
+    tFatal() << "KTScene::createLayer() - Inserting layer at position: " << position;
     k->layers.insert(position, layer);
 
     if (loaded)

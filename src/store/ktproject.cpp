@@ -222,6 +222,8 @@ KTScene *KTProject::createScene(QString name, int position, bool loaded)
         return 0;
 
     KTScene *scene = new KTScene(this);
+
+    tFatal() << "KTProject::createScene() - Inserting scene at position: " << position;
     k->scenes.insert(position, scene);
     k->sceneCounter++;
 
@@ -257,7 +259,6 @@ bool KTProject::removeScene(int position)
 
     return false;
 }
-
 
 bool KTProject::moveScene(int position, int newPosition)
 {

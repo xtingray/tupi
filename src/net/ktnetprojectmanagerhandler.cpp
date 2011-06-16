@@ -73,6 +73,7 @@
 
 #include <QTemporaryFile>
 #include <QTabWidget>
+#include <QDesktopWidget>
 
 struct KTNetProjectManagerHandler::Private
 {
@@ -278,11 +279,12 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                 }
 
                 return;
+            } else {
+                tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing command coming from net";
+                KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
+                request.setExternal(!k->ownPackage);
+                emitRequest(&request, k->doAction && k->ownPackage);
             }
-            
-            KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
-            request.setExternal(!k->ownPackage);
-            emitRequest(&request, k->doAction && k->ownPackage);
 
         } else { // TODO: show error 
             #ifdef K_DEBUG
@@ -333,10 +335,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
     } else if (root == "projectlist") {
                KTProjectsParser parser;
                if (parser.parse(package)) {
-                   KTListProjectDialog dialog;
-                   foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo()) {
+                   KTListProjectDialog dialog(k->params->server());
+                   QDesktopWidget desktop;
+                   dialog.show();
+                   dialog.move((int) (desktop.screenGeometry().width() - dialog.width())/2 ,
+                                (int) (desktop.screenGeometry().height() - dialog.height())/2);
+                   
+                   foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo())
                             dialog.addProject(info.name, info.author, info.description);
-                   }
 
                    if (dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty()) {
                        #ifdef K_DEBUG
@@ -344,7 +350,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        #endif
                        loadProjectFromServer(dialog.currentProject());
                    } else {
-                       //SQA: Disconnect client
+                       closeConnection();
                    }
                }
     } else if (root == "chat") {

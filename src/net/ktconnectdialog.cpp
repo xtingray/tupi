@@ -37,6 +37,7 @@
 #include "ktnetprojectmanagerparams.h"
 #include "tconfig.h"
 #include "kformfactory.h"
+#include "tosd.h"
 
 #include <QLineEdit>
 #include <QCheckBox>
@@ -154,12 +155,21 @@ void KTConnectDialog::saveSettings()
     TCONFIG->setValue("port", k->port->value());
     TCONFIG->setValue("login", k->login->text());
     
-    if (k->storePassword->isChecked()) {
+    if (k->storePassword->isChecked())
         TCONFIG->setValue("password", k->password->text());
-    } else {
+    else 
         TCONFIG->setValue("password", "");
-    }
     
     TCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
     TCONFIG->sync();
+}
+
+void KTConnectDialog::accept()
+{
+    if (k->password->text().isEmpty()) {
+        TOsd::self()->display(tr("Error"), tr("Please, fill in your password"), TOsd::Error);
+        return;
+    }
+
+    QDialog::accept();    
 }

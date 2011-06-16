@@ -220,6 +220,8 @@ void KTMainWindow::createNewLocalProject()
     enableToolViews(true);
     setMenuItemsContext(true);
 
+    KTMainWindow::requestType = NewLocalProject;
+
     viewNewDocument();
 }
 
@@ -261,13 +263,16 @@ void KTMainWindow::viewNewDocument()
 
     if (m_projectManager->isOpen()) {
 
+        if (KTMainWindow::requestType == NewLocalProject || KTMainWindow::requestType == NewNetProject)
+            TOsd::self()->display(tr("Information"), tr("Opening a new document..."));
+
         contextMode = KTProject::FRAMES_EDITION;
 
         // Setting undo/redo actions
         setUndoRedoActions();
 
+        // SQA: Check this instruction
         // messageToStatus(tr("Opening a new paint area..."));
-        TOsd::self()->display(tr("Information"), tr("Opening a new document..."));
 
         drawingTab = new KTViewDocument(m_projectManager->project());
         connectToDisplays(drawingTab);
@@ -333,6 +338,9 @@ void KTMainWindow::viewNewDocument()
         int thicknessValue = TCONFIG->value("Thickness", -1).toInt();
         m_penWidget->init();
         m_penWidget->setThickness(thicknessValue);
+
+        if (KTMainWindow::requestType == OpenLocalProject || KTMainWindow::requestType == OpenNetProject)
+            TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
     }
 }
 
@@ -365,6 +373,7 @@ void KTMainWindow::newProject()
     if (wizard->exec() != QDialog::Rejected) {
 
         if (wizard->useNetwork()) {
+            KTMainWindow::requestType = NewNetProject;
             setupNetworkProject(wizard->parameters());
         } else {
             setupLocalProject(wizard->parameters());
@@ -550,15 +559,22 @@ bool KTMainWindow::closeProject()
  * @return true if the network project can be configured
 */
 
-void KTMainWindow::setupNetworkProject(const QString& projectName, const QString &server, int port)
+// void KTMainWindow::setupNetworkProject(const QString& projectName, const QString &server, int port)
+void KTMainWindow::setupNetworkProject()
 {
     KTConnectDialog *netDialog = new KTConnectDialog(this);
+    QDesktopWidget desktop;
+    netDialog->show();
+    netDialog->move((int) (desktop.screenGeometry().width() - netDialog->width())/2 ,
+                    (int) (desktop.screenGeometry().height() - netDialog->height())/2);
 
+    /*
     if (!server.isEmpty())
         netDialog->setServer(server);
 
     if (port != -1)
         netDialog->setPort(port);
+    */
 
     KTNetProjectManagerParams *params = new KTNetProjectManagerParams();
 
@@ -567,7 +583,7 @@ void KTMainWindow::setupNetworkProject(const QString& projectName, const QString
         params->setPort(netDialog->port());
         params->setLogin(netDialog->login());
         params->setPassword(netDialog->password());
-        params->setProjectName(projectName);
+        // params->setProjectName(projectName);
 
         setupNetworkProject(params);
     }
@@ -594,8 +610,6 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
-
-        KTMainWindow::requestType = New;
     }
 }
 
@@ -609,18 +623,14 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
  * @return true if the local project can be configured
 */
 
-bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
+void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
         m_isNetworkProject = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
         setWindowTitle(params->projectName() + " - " + tr("Tupi: Magic 2D"));
-
-        return true;
     }
-
-    return false;
 }
 
 /**
@@ -688,15 +698,7 @@ void KTMainWindow::openProject(const QString &path)
         tabWidget()->setCurrentWidget(drawingTab);
 
         if (m_projectManager->loadProject(path)) {
-            if (QDir::isRelativePath(path))
-                m_fileName = QDir::currentPath() + "/" + path;
-            else
-                m_fileName = path;
 
-            setWindowTitle(m_projectManager->project()->projectName() + " - " + tr("Tupi: Magia 2D"));
-
-            viewNewDocument();
-			
             // SQA: Apparently this code is not required
             /*
             KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
@@ -707,6 +709,8 @@ void KTMainWindow::openProject(const QString &path)
             m_exposureSheet->handleProjectResponse(&response);
             m_timeLine->handleProjectResponse(&response);
             */
+
+            KTMainWindow::requestType = OpenLocalProject;
 
             int pos = m_recentProjects.indexOf(m_fileName);
 
@@ -726,8 +730,16 @@ void KTMainWindow::openProject(const QString &path)
 
             setUpdatesEnabled(true);
 
+            if (QDir::isRelativePath(path))
+                m_fileName = QDir::currentPath() + "/" + path;
+            else
+                m_fileName = path;
+
+            setWindowTitle(m_projectManager->project()->projectName() + " - " + tr("Tupi: Magia 2D"));
+            viewNewDocument();
+
             // Showing a info message in a bubble
-            TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
+            // TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
         } else {
                  setUpdatesEnabled(true);
                  TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
@@ -746,7 +758,8 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::openProjectFromServer()
 {
-    KTMainWindow::requestType = Open;
+    KTMainWindow::requestType = OpenNetProject;
+    setupNetworkProject();
 
     /*
     if (setupNetworkProject()) {
@@ -1278,6 +1291,11 @@ void KTMainWindow::expandColorView()
 
 void KTMainWindow::requestNewProject()
 {
-    if (KTMainWindow::requestType == New)
+    if (KTMainWindow::requestType == NewNetProject) {
         m_projectManager->setupNewProject();
+    } else {
+        tFatal() << "KTMainWindow::requestNewProject() - Calling the list of projects from Network";
+        KTListProjectsPackage package;
+        netProjectManagerHandler->sendPackage(package);
+    }
 }

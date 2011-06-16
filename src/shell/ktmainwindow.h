@@ -106,8 +106,10 @@ class KTMainWindow : public KTabbedMainWindow
 
         enum RequestType {
              None = 0,
-             New,
-             Open
+             NewLocalProject,
+             OpenLocalProject,
+             NewNetProject,
+             OpenNetProject
         };
 
         KTMainWindow(KTSplash *splash = 0, int parameters = 1);
@@ -141,9 +143,10 @@ class KTMainWindow : public KTabbedMainWindow
          void ui4localRequest(QWidget *widget);
          void flipTabs(int index);
 
-         void setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
+         // void setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
+         void setupNetworkProject();
          void setupNetworkProject(KTProjectManagerParams *params);
-         bool setupLocalProject(KTProjectManagerParams *params);
+         void setupLocalProject(KTProjectManagerParams *params);
          void setUndoRedoActions();
 
     protected:

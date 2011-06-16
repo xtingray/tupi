@@ -59,6 +59,9 @@ class KTConnectDialog : public QDialog
         QString password() const;
         QString server() const;
         int port() const;
+
+    private slots:
+        void accept();
         
     protected:
         void loadSettings();

@@ -98,7 +98,7 @@ bool KTRequestParser::endTag(const QString& qname)
     return true;
 }
 
-void KTRequestParser::text( const QString &ch )
+void KTRequestParser::text(const QString &ch)
 {
     if (currentTag() == "data")
         k->response->setData(QByteArray::fromBase64(QByteArray(ch.toLocal8Bit())));
