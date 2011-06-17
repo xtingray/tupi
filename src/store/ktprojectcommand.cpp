@@ -62,7 +62,7 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
     k->response->setExternal(request->isExternal());
 
     if (!k->response) 
-        tFatal << "KTProjectCommand::KTProjectCommand() - Unparsed response!";
+        tFatal() << "KTProjectCommand::KTProjectCommand() - Unparsed response!";
 
     initText();
 }
