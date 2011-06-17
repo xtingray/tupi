@@ -55,14 +55,14 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
     k->executed = false;
 
     KTRequestParser parser;
-    if (! parser.parse(request->xml()))
-        qFatal("==> KTProjectCommand::KTProjectCommand()");
+    if (!parser.parse(request->xml()))
+        tFatal() << "==> KTProjectCommand::KTProjectCommand()";
 
     k->response = parser.response();
     k->response->setExternal(request->isExternal());
 
     if (!k->response) 
-        qFatal("Unparsed response!");
+        tFatal << "KTProjectCommand::KTProjectCommand() - Unparsed response!";
 
     initText();
 }
@@ -72,6 +72,7 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, KTProjectRespons
     k->executor = executor;
     k->response = response;
     k->executed = false;
+
     initText();
 }
 
@@ -106,7 +107,7 @@ void KTProjectCommand::initText()
             default:
              {
                  #ifdef K_DEBUG
-                        tfDebug << "CAN'T HANDLE ID: " << k->response->part();
+                        tfDebug << "TProjectCommand::initText() - CAN'T HANDLE ID: " << k->response->part();
                   #endif
              }
             break;

@@ -36,10 +36,10 @@
 #ifndef KTPROJECTCOMMAND_H
 #define KTPROJECTCOMMAND_H
 
+#include "ktglobal_store.h"
+
 #include <QUndoCommand>
 #include <QVariant>
-
-#include "ktglobal_store.h"
 
 class KTProject;
 class KTProjectRequest;
@@ -52,8 +52,9 @@ class KTCommandExecutor;
 class KTProjectResponse;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTProjectCommand : public QUndoCommand
 {
     public:

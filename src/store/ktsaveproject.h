@@ -41,18 +41,20 @@
 class KTProject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTSaveProject : public QObject
 {
-    Q_OBJECT;
-    public:
-    KTSaveProject();
-    ~KTSaveProject();
+    Q_OBJECT
 
-    //virtual bool save(const QString &filename, const KTProject *project);
-    virtual bool save(const QString &filename, KTProject *project);
-    virtual bool load(const QString &filename, KTProject *project);
+    public:
+        KTSaveProject();
+        ~KTSaveProject();
+
+        //virtual bool save(const QString &filename, const KTProject *project);
+        virtual bool save(const QString &filename, KTProject *project);
+        virtual bool load(const QString &filename, KTProject *project);
 };
 
 #endif
