@@ -61,13 +61,18 @@
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {
-    TINIT;
+    #ifdef K_DEBUG
+           TINIT;
+    #endif
+
     setupActions();
 }
 
 Brush::~Brush()
 {
-    TEND;
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 }
 
 void Brush::init(KTGraphicsScene *scene)
@@ -144,7 +149,9 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
 
-    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), QPointF(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), 
+                                                                   scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
+                                                                   KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
 
     emit requested(&request);
 }

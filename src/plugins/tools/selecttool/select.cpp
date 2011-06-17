@@ -233,7 +233,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                     k->scene->currentSceneIndex(), 
                                     k->scene->currentLayerIndex(), 
-                                    k->scene->currentFrameIndex(), position, QPointF(), type,
+                                    k->scene->currentFrameIndex(), position, QPointF(), 
+                                    k->scene->spaceMode(), type,
                                     KTProjectRequest::Transform, doc.toString());
                          emit requested(&event);
                      } else {
@@ -541,7 +542,8 @@ void Select::applyFlip(InfoPanel::Flip flip)
                           KTProjectRequest event = KTRequestBuilder::createItemRequest(
                                                    k->scene->currentSceneIndex(),
                                                    k->scene->currentLayerIndex(),
-                                                   k->scene->currentFrameIndex(), position, QPointF(), type,
+                                                   k->scene->currentFrameIndex(), position, QPointF(), 
+                                                   k->scene->spaceMode(), type,
                                                    KTProjectRequest::Transform, doc.toString());
                           emit requested(&event);
                       }

@@ -191,7 +191,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
             KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
                             scene->currentLayerIndex(), scene->currentFrameIndex(), 
                             scene->currentFrame()->graphics().count(), QPointF(),
-                            KTLibraryObject::Item, KTProjectRequest::Add, 
+                            scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::Add, 
                             doc.toString()); // Adds to end
             emit requested(&event);
 
@@ -223,7 +223,8 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                     
                     KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                 scene->currentSceneIndex(), scene->currentLayerIndex(),
-                                scene->currentFrameIndex(), position, QPointF(), KTLibraryObject::Item, 
+                                scene->currentFrameIndex(), position, QPointF(), 
+                                scene->spaceMode(), KTLibraryObject::Item, 
                                 KTProjectRequest::Transform, doc.toString());
 
                     emit requested(&event);

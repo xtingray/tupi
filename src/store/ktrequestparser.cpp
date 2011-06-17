@@ -35,12 +35,11 @@
 
 #include "ktrequestparser.h"
 #include "tdebug.h"
+#include "ktprojectresponse.h"
+#include "ktlibraryobject.h"
 
 #include <QXmlSimpleReader>
 #include <QXmlInputSource>
-
-#include "ktprojectresponse.h"
-#include "ktlibraryobject.h"
 
 struct KTRequestParser::Private
 {
@@ -74,6 +73,8 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
     } else if (qname == "position") {
                static_cast<KTItemResponse *>(k->response)->setPosX(atts.value("x").toDouble());
                static_cast<KTItemResponse *>(k->response)->setPosY(atts.value("y").toDouble());
+    } else if (qname == "spaceMode") {
+               static_cast<KTItemResponse *>(k->response)->setSpaceMode(KTProject::Mode(atts.value("current").toInt()));
     } else if (qname == "frame") {
                static_cast<KTFrameResponse *>(k->response)->setFrameIndex(atts.value("index").toInt());
     } else if (qname == "data") {

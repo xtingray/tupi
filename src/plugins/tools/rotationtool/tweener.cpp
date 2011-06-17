@@ -450,7 +450,7 @@ void Tweener::applyTween()
                                             k->scene->currentLayerIndex(),
                                             k->startPoint,
                                             objectIndex,
-                                            QPointF(), type,
+                                            QPointF(), k->scene->spaceMode(), type,
                                             KTProjectRequest::SetTween,
                                             k->configurator->tweenToXml(k->startPoint, origin));
                  emit requested(&request);
@@ -504,15 +504,15 @@ void Tweener::applyTween()
                      KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
                                                                                     k->scene->currentLayerIndex(),
                                                                                     k->startPoint, -1,
-                                                                                    QPointF(), type, KTProjectRequest::Add,
-                                                                                    dom.toString());
+                                                                                    QPointF(), k->scene->spaceMode(), type, 
+                                                                                    KTProjectRequest::Add, dom.toString());
                      emit requested(&request);
 
                      request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
                                                                    k->scene->currentLayerIndex(),
                                                                    k->currentTween->startFrame(),
-                                                                   objectIndex, QPointF(), type,
-                                                                   KTProjectRequest::Remove);
+                                                                   objectIndex, QPointF(), k->scene->spaceMode(),
+                                                                   type, KTProjectRequest::Remove);
                      emit requested(&request);
 
                      frame = layer->frame(k->startPoint);
@@ -529,7 +529,7 @@ void Tweener::applyTween()
                                             k->scene->currentLayerIndex(),
                                             k->startPoint,
                                             objectIndex,
-                                            QPointF(), type,
+                                            QPointF(), k->scene->spaceMode(), type,
                                             KTProjectRequest::SetTween,
                                             k->configurator->tweenToXml(k->startPoint, origin));
                  emit requested(&request);

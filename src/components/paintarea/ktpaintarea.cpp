@@ -594,7 +594,7 @@ void KTPaintArea::deleteItems()
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                                   currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                                   currentScene->currentFrameIndex(), 
-                                                  itemIndex, QPointF(), type,
+                                                  itemIndex, QPointF(), k->spaceMode, type,
                                                   KTProjectRequest::Remove);
                          emit requestTriggered(&event);
                      } else {
@@ -638,8 +638,8 @@ void KTPaintArea::groupItems()
         if (strItems != ")") {
             KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(), 
                                      currentScene->currentLayerIndex(),
-                                     currentScene->currentFrameIndex(), firstItem, QPointF(), KTLibraryObject::Item,
-                                     KTProjectRequest::Group, strItems );
+                                     currentScene->currentFrameIndex(), firstItem, QPointF(), k->spaceMode,
+                                     KTLibraryObject::Item, KTProjectRequest::Group, strItems);
             emit requestTriggered(&event);
         }
     }
@@ -656,7 +656,8 @@ void KTPaintArea::ungroupItems()
                                               currentScene->currentSceneIndex(), 
                                               currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->indexOf(item), QPointF(), KTLibraryObject::Item,
+                                              currentScene->currentFrame()->indexOf(item), QPointF(), 
+                                              k->spaceMode, KTLibraryObject::Item,
                                               KTProjectRequest::Ungroup);
                      emit requestTriggered(&event);
             }
@@ -741,7 +742,7 @@ void KTPaintArea::pasteItems()
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 
-                                      total, point, type, 
+                                      total, point, k->spaceMode, type, 
                                       KTProjectRequest::Add, xml);
              emit requestTriggered(&event);
      }
@@ -844,13 +845,13 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
                               newPos = 0;
                               break;
                          case KTPaintArea::MoveFront:
-                              newPos = currentScene->currentFrame()->graphics().count()-1;
+                              newPos = currentScene->currentFrame()->graphics().count() - 1;
                               break;
                          case KTPaintArea::MoveBackwards:
-                              newPos = value-1;
+                              newPos = value - 1;
                               break;
                          case KTPaintArea::MoveForwards:
-                              newPos = value+1;
+                              newPos = value + 1;
                               break;
                          default: 
                               return;
@@ -858,7 +859,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
 
                  KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                           currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), value, QPointF(), 
-                                          KTLibraryObject::Item,  KTProjectRequest::Move, newPos);
+                                          k->spaceMode, KTLibraryObject::Item,  KTProjectRequest::Move, newPos);
                  emit requestTriggered(&event);
              }
     }

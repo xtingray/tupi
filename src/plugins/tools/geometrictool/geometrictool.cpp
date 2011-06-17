@@ -270,7 +270,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     
     KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
                              scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), position,
-                             KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
+                             scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
     
     emit requested(&event);
 }

@@ -158,8 +158,8 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                          if (!qgraphicsitem_cast<KTPathItem*>(item)) {
                              KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
                                                       scene->currentLayerIndex(), scene->currentFrameIndex(), 
-                                                      scene->currentFrame()->indexOf(item), QPointF(), KTLibraryObject::Item, 
-                                                      KTProjectRequest::Convert, 2);
+                                                      scene->currentFrame()->indexOf(item), QPointF(), scene->spaceMode(),
+                                                      KTLibraryObject::Item, KTProjectRequest::Convert, 2);
                              emit requested(&event);
                          } else {
                              k->nodeGroups << new KNodeGroup(item, scene);
@@ -177,7 +177,8 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                     
                          KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
                                                   scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
-                                                  QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
+                                                  QPointF(), scene->spaceMode(), KTLibraryObject::Item, 
+                                                  KTProjectRequest::EditNodes, doc.toString());
                     
                          foreach (QGraphicsView * view, scene->views())
                                   view->setUpdatesEnabled(false);

@@ -313,6 +313,16 @@ void KTItemResponse::setPosY(double coord)
     m_y = coord;
 }
 
+KTProject::Mode KTItemResponse::spaceMode()
+{
+    return m_mode;
+}
+
+void KTItemResponse::setSpaceMode(KTProject::Mode mode)
+{
+    m_mode = mode;
+}
+
 KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action)
 {
 }

@@ -34,13 +34,11 @@
  ***************************************************************************/
 
 #include "ktrequestbuilder.h"
-
-#include <QDomDocument>
-
 #include "tdebug.h"
-
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
+
+#include <QDomDocument>
 
 KTRequestBuilder::KTRequestBuilder()
 {
@@ -50,7 +48,8 @@ KTRequestBuilder::~KTRequestBuilder()
 {
 }
 
-KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, QPointF point, KTLibraryObject::Type type, int actionId, const QVariant &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, QPointF point, KTProject::Mode spaceMode, 
+                                                     KTLibraryObject::Type type, int actionId, const QVariant &arg, const QByteArray &data)
 {
     QDomDocument doc;
 
@@ -75,6 +74,9 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     position.setAttribute("x", point.x());
     position.setAttribute("y", point.y());
 
+    QDomElement space = doc.createElement("spaceMode");
+    space.setAttribute("current", spaceMode);
+
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
     action.setAttribute("arg", arg.toString());
@@ -84,6 +86,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     root.appendChild(action);
     item.appendChild(objectType);
     item.appendChild(position);
+    item.appendChild(space);
     frame.appendChild(item);
     layer.appendChild(frame);
     scene.appendChild(layer);
@@ -239,7 +242,11 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
     switch (response->part()) {
             case KTProjectRequest::Item:
                  {
-                    request = KTRequestBuilder::createItemRequest(static_cast<KTItemResponse*> (response)->sceneIndex(), static_cast<KTItemResponse*> (response)->layerIndex(), static_cast<KTItemResponse*> (response)->frameIndex(), static_cast<KTItemResponse*> (response)->itemIndex(), static_cast<KTItemResponse*> (response)->position(), KTLibraryObject::Type(static_cast<KTItemResponse*> (response)->itemType()), response->action(), response->arg().toString(), response->data());
+                    request = KTRequestBuilder::createItemRequest(static_cast<KTItemResponse*> (response)->sceneIndex(), static_cast<KTItemResponse*> (response)->layerIndex(), 
+                                                                  static_cast<KTItemResponse*> (response)->frameIndex(), static_cast<KTItemResponse*> (response)->itemIndex(), 
+                                                                  static_cast<KTItemResponse*> (response)->position(), KTProject::Mode(static_cast<KTItemResponse*> (response)->spaceMode()), 
+                                                                  KTLibraryObject::Type(static_cast<KTItemResponse*> (response)->itemType()), response->action(), response->arg().toString(), 
+                                                                  response->data());
                  }
             break;
             case KTProjectRequest::Frame:

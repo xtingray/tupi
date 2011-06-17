@@ -43,8 +43,9 @@
 
 /**
  * Response to request (aka KTProjectRequest)
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTProjectResponse
 {
     public:
@@ -135,12 +136,15 @@ class KTItemResponse : public KTFrameResponse
         QPointF position();
         void setPosX(double coord);
         void setPosY(double coord);
+        KTProject::Mode spaceMode();
+        void setSpaceMode(KTProject::Mode mode);
 
     private:
         int m_itemIndex;
         KTLibraryObject::Type m_itemType;
         double m_x;
         double m_y;
+        KTProject::Mode m_mode;
 };
 
 class KTLibraryResponse : public KTFrameResponse

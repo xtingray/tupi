@@ -96,6 +96,8 @@ PolyLine::~PolyLine()
 
 void PolyLine::init(KTGraphicsScene *scene)
 {
+    k->scene = scene;
+
     endItem();
 
     foreach (QGraphicsView *view,  scene->views()) {
@@ -200,7 +202,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
     
-    k->scene = scene;
+    // k->scene = scene;
     
     if (!k->nodegroup) {
         k->nodegroup = new KNodeGroup(k->item, scene);
@@ -213,11 +215,11 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     if (k->begin) {
         doc.appendChild(k->item->toXml(doc));
 
-        KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), 
-                                                                       k->scene->currentLayerIndex(), 
-                                                                       k->scene->currentFrameIndex(), 
-                                                                       k->scene->currentFrame()->graphicItemsCount(), 
-                                                                       QPointF(), KTLibraryObject::Item, 
+        KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
+                                                                       scene->currentLayerIndex(), 
+                                                                       scene->currentFrameIndex(), 
+                                                                       scene->currentFrame()->graphicItemsCount(), 
+                                                                       QPointF(), scene->spaceMode(), KTLibraryObject::Item, 
                                                                        KTProjectRequest::Add, doc.toString());
         emit requested(&request);
     } else if (!k->nodegroup->isSelected()) {
@@ -228,8 +230,8 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
             
                    KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
                                                                                 scene->currentFrameIndex(), position, 
-                                                                                QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, 
-                                                                                doc.toString());
+                                                                                QPointF(), scene->spaceMode(), KTLibraryObject::Item, 
+                                                                                KTProjectRequest::EditNodes, doc.toString());
                    k->nodegroup->restoreItem();
                    emit requested(&event);
                } else {
@@ -381,7 +383,8 @@ void PolyLine::nodeChanged()
                     doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
                 
                     KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                                                 position, QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
+                                                                                 position, QPointF(), k->scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::EditNodes, 
+                                                                                 doc.toString());
                     foreach (QGraphicsView * view, k->scene->views())
                              view->setUpdatesEnabled(false);
 

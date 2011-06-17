@@ -63,7 +63,7 @@
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFOX("items");
+           T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -72,13 +72,14 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     // int position = response->itemIndex();
     KTLibraryObject::Type type = response->itemType(); 
     QPointF point = response->position();
+    KTProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
 
     KTScene *scene = m_project->scene(scenePosition);
   
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -154,12 +155,13 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     KTLibraryObject::Type type = response->itemType();
+    KTProject::Mode mode = response->spaceMode();
 
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
 
@@ -235,6 +237,7 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
     int newPositon = response->arg().toInt();
+    KTProject::Mode mode = response->spaceMode();
 
     if (response->mode() == KTProjectResponse::Undo) {
         position = newPositon;
@@ -245,7 +248,7 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
     
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -279,18 +282,19 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFOX("items");
+           T_FUNCINFOX("items");
     #endif
     
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTProject::Mode mode = response->spaceMode();
     QString strList = response->arg().toString();
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -334,12 +338,13 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTProject::Mode mode = response->spaceMode();
     
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -448,13 +453,14 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTProject::Mode mode = response->spaceMode();
     int toType = response->arg().toInt();
     
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -521,13 +527,14 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFOX("items");
+           T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTProject::Mode mode = response->spaceMode();
     KTLibraryObject::Type type = response->itemType();
     QString xml = response->arg().toString();
     
@@ -535,7 +542,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
     
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
@@ -611,6 +618,7 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
 
     /*
@@ -623,7 +631,7 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
     
     if (scene) {
 
-        if (m_project->spaceContext() == KTProject::FRAMES_EDITION) {
+        if (mode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {

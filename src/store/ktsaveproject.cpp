@@ -134,13 +134,13 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
               QDomDocument doc;
               doc.appendChild(scene->toXml(doc));
 
-              QFile scn(projectDir.path() + "/scene" + QString::number(index) + ".tps");
+              QFile sceneFile(projectDir.path() + "/scene" + QString::number(index) + ".tps");
 
-              if (scn.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                  QTextStream st(&scn);
+              if (sceneFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                  QTextStream st(&sceneFile);
                   st << doc.toString();
                   index += 1;
-                  scn.close();
+                  sceneFile.close();
               } else {
                   #ifdef K_DEBUG
                          tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";

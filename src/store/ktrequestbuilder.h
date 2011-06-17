@@ -43,12 +43,15 @@
 #include "ktlibraryobject.h"
 
 #include "ktglobal_store.h"
+#include "ktproject.h"
 
 class KTProjectRequest;
 class KTProjectResponse;
+
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTRequestBuilder
 {
     protected:
@@ -63,7 +66,8 @@ class STORE_EXPORT KTRequestBuilder
 
         ~KTRequestBuilder();
         
-        static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, QPointF point, KTLibraryObject::Type type, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
+        static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, QPointF point, KTProject::Mode spaceMode, 
+                                                  KTLibraryObject::Type type, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
         
         static KTProjectRequest createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
         

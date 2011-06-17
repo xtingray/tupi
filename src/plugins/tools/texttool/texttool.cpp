@@ -132,7 +132,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 
     KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
                              scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), QPointF(),
-                             KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
+                             scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
 
     emit requested(&event);
 }
