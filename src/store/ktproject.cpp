@@ -336,7 +336,9 @@ void KTProject::fromXml(const QString &xml)
                                       setAuthor(e1.text());
 
                               } else if (e1.tagName() == "bgcolor") {
+
                                          setBgColor(QColor(e1.text()));
+
                               } else if (e1.tagName() == "description") {
 
                                          if (e1.firstChild().isText())
@@ -353,10 +355,12 @@ void KTProject::fromXml(const QString &xml)
                                            }
 
                                 } else if (e1.tagName() == "fps") {
+
                                            if (e1.firstChild().isText())
                                                setFPS(e1.text().toInt());
 
                                 }
+
                                 n1 = n1.nextSibling();
                           }
                    }
@@ -381,11 +385,11 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
     QDomElement author = doc.createElement("author");
     author.appendChild(doc.createTextNode(k->author));
 
-    QDomElement color = doc.createElement("bgcolor");
-    color.appendChild(doc.createTextNode(k->bgColor.name()));
-
     QDomElement description = doc.createElement("description");
     description.appendChild(doc.createTextNode(k->description));
+
+    QDomElement color = doc.createElement("bgcolor");
+    color.appendChild(doc.createTextNode(k->bgColor.name()));
 
     QDomElement size = doc.createElement("dimension");
     QString xy = QString::number(k->dimension.width()) + "," + QString::number(k->dimension.height());
@@ -414,13 +418,19 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
-    if (!k->isOpen)
+    if (!k->isOpen) {
+        tFatal() << "KTProject::createSymbol() - returning!";
         return false;
+    }
 
-    return k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) != 0;
+    if (k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) == 0)
+        tFatal() << "KTProject::createSymbol() - Object is NULL!";
+
+    return true;
 }
 
-bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex)
+bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, KTProject::Mode spaceMode, 
+                             int sceneIndex, int layerIndex, int frameIndex)
 {
     Q_UNUSED(name);
 
@@ -429,7 +439,7 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
 
     if (scene) {
 
-        if (k->spaceMode == KTProject::FRAMES_EDITION) {
+        if (spaceMode == KTProject::FRAMES_EDITION) {
 
             KTLayer *layer = scene->layer(layerIndex);
             if (layer) {
@@ -479,14 +489,15 @@ bool KTProject::removeSymbol(const QString &name)
     return k->library->removeObject(name, true);
 }
 
-bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
+bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &name, int sceneIndex, 
+                                   int layerIndex, int frameIndex)
 {
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
 
     if (scene) {
 
-        if (k->spaceMode == KTProject::FRAMES_EDITION) {
+        if (spaceMode == KTProject::FRAMES_EDITION) {
             KTLayer *layer = scene->layer(layerIndex);
 
             if (layer)
@@ -533,6 +544,8 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                         break;
                         case KTLibraryObject::Svg:
                         {
+                             tFatal() << "KTProject::addSymbolToProject() - Adding SVG object " << name;
+
                              QString path(object->dataPath());
                              KTSvgItem *svgItem = new KTSvgItem(path, frame);
                              svgItem->setSymbolName(name);
@@ -596,7 +609,35 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
         return true;
 
     foreach (KTScene *scene, k->scenes.values()) {
-             if (k->spaceMode == KTProject::FRAMES_EDITION) {
+             foreach (KTLayer *layer, scene->layers().values()) {
+                      foreach (KTFrame *frame, layer->frames().values()) {
+                               if (type != KTLibraryObject::Svg)
+                                   frame->removeItemFromFrame(name);
+                               else
+                                   frame->removeSvgItemFromFrame(name);
+                      }
+             }
+
+             KTBackground *bg = scene->background();
+             if (bg) {
+                 KTFrame *frame = bg->frame();
+                 if (frame) {
+                     if (type != KTLibraryObject::Svg)
+                         frame->removeItemFromFrame(name);
+                     else
+                         frame->removeSvgItemFromFrame(name);
+                 }
+             }
+    }
+
+    return true;
+
+    /*
+    if (type == KTLibraryObject::Folder)
+        return true;
+
+    foreach (KTScene *scene, k->scenes.values()) {
+             if (spaceMode == KTProject::FRAMES_EDITION) {
                  foreach (KTLayer *layer, scene->layers().values()) {
                           foreach (KTFrame *frame, layer->frames().values()) {
                                    if (type != KTLibraryObject::Svg)
@@ -620,6 +661,7 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
     }
 
     return true;
+    */
 }
 
 bool KTProject::updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId)
@@ -730,11 +772,10 @@ int KTProject::scenesTotal() const
 
 void KTProject::updateSpaceContext(int index)
 {
-    k->spaceMode = static_cast<KTProject::Mode>(index); 
+    k->spaceMode = KTProject::Mode(index); 
 }
 
 KTProject::Mode KTProject::spaceContext()
 {
     return k->spaceMode;
 }
-

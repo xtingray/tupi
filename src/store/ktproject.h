@@ -109,10 +109,11 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         bool moveScene(int position, int newPosition);
 
         bool createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder = QString());
-        bool removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex);
+        bool removeSymbol(const QString &name, KTLibraryObject::Type symbolType, KTProject::Mode spaceMode, 
+                          int sceneIndex, int layerIndex, int frameIndex);
         bool removeSymbol(const QString &name);
 
-        bool addSymbolToProject(const QString &name, int scene, int layer, int frame);
+        bool addSymbolToProject(KTProject::Mode spaceMode, const QString &name, int scene, int layer, int frame);
         bool removeSymbolFromProject(const QString &name, KTLibraryObject::Type type);
 
         bool updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId);

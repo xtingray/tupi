@@ -44,7 +44,6 @@
 #include <QDesktopWidget>
 
 #include "ktprojectresponse.h"
-//#include "ktrenderdialog.h"
 
 KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 {
@@ -55,19 +54,27 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     project = work;
 
     setObjectName("KTViewCamera_");
-    setWindowTitle(tr("Render Camera Preview"));
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QFont font = this->font();
-    font.setPointSize(8);
-    font.setUnderline(true);
-    QLabel *title = new QLabel(tr("Render Camera Preview"));
-    title->setFont(font);
+    font.setPointSize(10);
+    QLabel *description = new QLabel(work->projectName() + ": " + work->description());
+    description->setAlignment(Qt::AlignCenter);
+    description->setFont(font);
+
     QLabel *icon = new QLabel();
     icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
-    layout->addWidget(icon, 0, Qt::AlignCenter);
-    layout->addWidget(title, 0, Qt::AlignCenter);
+    QLabel *title = new QLabel(tr("Render Camera Preview"));
+
+    QWidget *titleWidget = new QWidget();
+    QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
+    titleLayout->setAlignment(Qt::AlignCenter);
+    titleLayout->addWidget(icon);
+    titleLayout->addWidget(title);
+
+    layout->addWidget(titleWidget, Qt::AlignCenter);
+    layout->addWidget(description, Qt::AlignCenter);
 
     m_animationArea = new KTAnimationArea(project);
     layout->addWidget(m_animationArea, 0, Qt::AlignCenter);

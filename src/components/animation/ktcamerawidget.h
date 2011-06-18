@@ -43,16 +43,19 @@ class KTViewCamera;
 class QSpinBox;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado 
  * @todo:
  * @li
  * - range of frames
  * - aspect ratio
 */
 
+// SQA: This class is not used anymore. Please, remove it! 
+
 class KTCameraWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KTCameraWidget(KTProject *project, QWidget *parent = 0);
         ~KTCameraWidget();

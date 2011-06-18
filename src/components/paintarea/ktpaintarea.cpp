@@ -807,7 +807,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
                  doc.appendChild(itemSerializable->toXml(doc));
 
                  KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, 
-                                            symName, KTLibraryObject::Item, doc.toString().toLocal8Bit(), QString());
+                                            symName, KTLibraryObject::Item, k->spaceMode, doc.toString().toLocal8Bit(), QString());
                  emit requestTriggered(&request);
              }
     }

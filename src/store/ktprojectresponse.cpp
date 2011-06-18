@@ -351,6 +351,16 @@ QString KTLibraryResponse::parent() const
     return parentNode;
 }
 
+KTProject::Mode KTLibraryResponse::spaceMode()
+{
+    return m_mode;
+}
+
+void KTLibraryResponse::setSpaceMode(KTProject::Mode mode)
+{
+    m_mode = mode;
+}
+
 KTProjectResponseFactory::KTProjectResponseFactory()
 {
 }

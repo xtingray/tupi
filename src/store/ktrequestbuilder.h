@@ -75,7 +75,8 @@ class STORE_EXPORT KTRequestBuilder
         
         static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
         
-        static KTProjectRequest createLibraryRequest(int actionId, const QVariant &arg, KTLibraryObject::Type type, const QByteArray &data, const QString &folder = QString(), int scene = -1, int layer = -1, int frame = -1);
+        static KTProjectRequest createLibraryRequest(int actionId, const QVariant &arg, KTLibraryObject::Type type, KTProject::Mode spaceMode,
+                                                     const QByteArray &data, const QString &folder = QString(), int scene = -1, int layer = -1, int frame = -1);
         
         static KTProjectRequest fromResponse(KTProjectResponse *response);
         

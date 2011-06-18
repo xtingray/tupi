@@ -86,11 +86,9 @@ class KTViewCamera : public QFrame
         QFrame *m_container;
         KTAnimationArea *m_animationArea;
 
-        //class KTCameraStatus;
         KTCameraStatus *m_status;
     
         KTProject *project;
-        //QCheckBox *m_loop;
 };
 
 #endif

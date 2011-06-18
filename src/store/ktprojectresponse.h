@@ -156,10 +156,13 @@ class KTLibraryResponse : public KTFrameResponse
         KTLibraryObject::Type symbolType() const;
         void setParent(const QString top);
         QString parent() const;
+        KTProject::Mode spaceMode();
+        void setSpaceMode(KTProject::Mode mode);
 
     private:
         KTLibraryObject::Type m_symbolType;
         QString parentNode;
+        KTProject::Mode m_mode;
 };
 
 class KTProjectResponseFactory

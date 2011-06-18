@@ -372,7 +372,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
     #ifdef K_DEBUG
-       T_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (svgItem) {
@@ -389,9 +389,18 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
             if (frame) {
                 svgItem->setOpacity(opacity);
                 // k->objectCounter++;
+                tDebug() << "KTGraphicsScene::addSvgObject() - Item added successful! [" 
+                         << k->framePosition.layer << ", " << k->framePosition.frame << "]"; 
                 addItem(svgItem);
+            } else {
+                #ifdef K_DEBUG
+                       tFatal() << "KTGraphicsScene::addSvgObject() - Error: Frame #" << k->framePosition.frame << " NO available!";
+                #endif
             }
-
+        } else {
+                #ifdef K_DEBUG
+                       tFatal() << "KTGraphicsScene::addSvgObject() - Error: Layer #" << k->framePosition.layer << " NO available!";
+                #endif
         }
     } else {
         #ifdef K_DEBUG

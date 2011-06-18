@@ -54,7 +54,7 @@
 /**
  * This class defines the About dialog of Tupi.
  * Here is where the dialog tabs are setted.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
@@ -140,13 +140,13 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     // 3: Tupi 
 
-    QTextBrowser *labtoonText = new QTextBrowser;
-    labtoonText->setOpenExternalLinks(true);
+    QTextBrowser *tupiText = new QTextBrowser;
+    tupiText->setOpenExternalLinks(true);
 
-    labtoonText->setSource(SHARE_DIR + "data/help/" + lang + "/tupi_short.html");
-    labtoonText->moveCursor(QTextCursor::Start);
+    tupiText->setSource(SHARE_DIR + "data/help/" + lang + "/tupi_short.html");
+    tupiText->moveCursor(QTextCursor::Start);
 
-    addTab(labtoonText, tr("Tupi"));
+    addTab(tupiText, tr("About"));
 
     // 4: Licence
 

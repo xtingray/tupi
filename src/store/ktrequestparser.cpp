@@ -86,6 +86,7 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
     } else if (qname == "symbol") {
                static_cast<KTLibraryResponse*>(k->response)->setSymbolType(KTLibraryObject::Type(atts.value("type").toInt()));
                static_cast<KTLibraryResponse*>(k->response)->setParent(atts.value("folder"));
+               static_cast<KTLibraryResponse*>(k->response)->setSpaceMode(KTProject::Mode(atts.value("spaceMode").toInt()));
     } else if (qname == "action") {
                k->response = KTProjectResponseFactory::create(atts.value("part").toInt(), atts.value("id").toInt());
                k->response->setArg(atts.value("arg"));

@@ -120,7 +120,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     setStatusBar(m_statusBar);
 
     // Naming the main frame...
-    setWindowTitle(tr("Tupi: Magic 2D"));
+    setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
@@ -228,7 +228,7 @@ void KTMainWindow::createNewLocalProject()
 void KTMainWindow::createNewNetProject(const QString &projectName)
 {
     m_isNetworkProject = true;
-    setWindowTitle(projectName + " - " + tr("Tupi: Magic 2D") + " " + tr("[net mode]"));
+    setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic") + " " + tr("[net mode]"));
 
     if (m_viewChat) {
         removeToolView(m_viewChat);
@@ -541,7 +541,7 @@ bool KTMainWindow::closeProject()
 
     setUpdatesEnabled(true);
 
-    setWindowTitle(tr("Tupi: Magic 2D"));
+    setWindowTitle(tr("Tupi: 2D Magic"));
 
     if (m_isNetworkProject) 
         netProjectManagerHandler->closeConnection();
@@ -629,7 +629,7 @@ void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
         m_isNetworkProject = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
-        setWindowTitle(params->projectName() + " - " + tr("Tupi: Magic 2D"));
+        setWindowTitle(params->projectName() + " - " + tr("Tupi: 2D Magic"));
     }
 }
 
@@ -1075,7 +1075,7 @@ void KTMainWindow::saveProject()
             int indexDot = name.lastIndexOf(".");
             name = name.left(indexDot);
 
-            setWindowTitle(name + " - " + tr("Tupi: Magic 2D"));
+            setWindowTitle(name + " - " + tr("Tupi: 2D Magic"));
         } else {
             TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
         }

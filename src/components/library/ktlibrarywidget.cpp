@@ -298,16 +298,18 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
 void KTLibraryWidget::insertObjectInWorkspace()
 {
     if (!k->libraryTree->currentItem()) { 
+        tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - There's no current selection!";
         return;
     } else if (k->libraryTree->currentItem()->text(2).length() == 0) {
-      return;
+               tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - It's a directory!";
+               return;
     }
 
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, objectKey,
-                               KTLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), 0, 
-                               QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+                               KTLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
+                               0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
     emit requestTriggered(&request);
 }
@@ -334,7 +336,7 @@ void KTLibraryWidget::removeCurrentGraphic()
     } 
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::RemoveSymbolFromProject, 
-                                                                      objectKey, type, 0);
+                                                                      objectKey, type, k->project->spaceContext(), 0);
     
     emit requestTriggered(&request);
 }
@@ -360,8 +362,11 @@ void KTLibraryWidget::importBitmap()
 
     QString symName = fileInfo.fileName();
 
+    tFatal() << "KTLibraryWidget::importBitmap() - Image filename: " << symName;
+
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
+        tFatal() << "KTLibraryWidget::importBitmap() - Raw Size: " << data.size(); 
         f.close();
 
         QPixmap *pixmap = new QPixmap(image);
@@ -369,6 +374,9 @@ void KTLibraryWidget::importBitmap()
         int picHeight = pixmap->height();
         int projectWidth = k->project->dimension().width();
         int projectHeight = k->project->dimension().height();
+
+        tFatal() << "KTLibraryWidget::importBitmap() - Image Size: " << "[" << picWidth << ", " << picHeight << "]";
+        tFatal() << "KTLibraryWidget::importBitmap() - Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
 
         if (picWidth > projectWidth || picHeight > projectHeight) {
             QDesktopWidget desktop;
@@ -416,8 +424,8 @@ void KTLibraryWidget::importBitmap()
         }
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, tag,
-                                                                          KTLibraryObject::Image, data, QString(), k->currentFrame.scene, 
-                                                                          k->currentFrame.layer, k->currentFrame.frame);
+                                                                          KTLibraryObject::Image, k->project->spaceContext(), data, QString(), 
+                                                                          k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
 
         data.clear();
@@ -442,6 +450,12 @@ void KTLibraryWidget::importSvg()
         QByteArray data = f.readAll();
         f.close();
 
+        // SQA: This block is just for debugging!   
+        tFatal() << "KTLibraryWidget::importSvg() - Inserting SVG into project: " << k->project->projectName();
+        int projectWidth = k->project->dimension().width();
+        int projectHeight = k->project->dimension().height();
+        tFatal() << "KTLibraryWidget::importSvg() - Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
+
         int i = 0;
         QString tag = symName;
         KTLibraryObject *object = k->library->findObject(tag);
@@ -455,8 +469,8 @@ void KTLibraryWidget::importSvg()
         }
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, tag,
-                                                     KTLibraryObject::Svg, data, QString(), k->currentFrame.scene, 
-                                                     k->currentFrame.layer, k->currentFrame.frame);
+                                                     KTLibraryObject::Svg, k->project->spaceContext(), data, QString(), 
+                                                     k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
     } else {
         TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(svgPath), TOsd::Error);
@@ -574,7 +588,7 @@ void KTLibraryWidget::importBitmapArray()
                              }
                            
                              KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
-                                                                          KTLibraryObject::Image, data, directory);
+                                                                          KTLibraryObject::Image, k->project->spaceContext(), data, directory);
                              emit requestTriggered(&request);
 
                              if (i < photograms.size()-1 && imagesCounter > 1) {
@@ -691,7 +705,7 @@ void KTLibraryWidget::importSvgArray()
                              f.close();
 
                              KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
-                                                                                       KTLibraryObject::Svg, data, directory);
+                                                                                       KTLibraryObject::Svg, k->project->spaceContext(), data, directory);
                              emit requestTriggered(&request);
 
                              if (i < photograms.size()-1 && svgCounter > 1) {
@@ -743,7 +757,7 @@ void KTLibraryWidget::importSound()
         f.close();
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
-                                                     KTLibraryObject::Sound, data);
+                                                     KTLibraryObject::Sound, k->project->spaceContext(), data);
         emit requestTriggered(&request);
     } else {
         TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(sound), TOsd::Error);

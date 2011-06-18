@@ -42,7 +42,7 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 
-// SQA: Check if this class is really called by someone 
+// SQA: This class is not used anymore. Please, remove it!
 
 KTCameraWidget::KTCameraWidget(KTProject *project, QWidget *parent) : KTModuleWidgetBase(parent)
 {

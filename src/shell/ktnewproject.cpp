@@ -43,6 +43,7 @@
 #include "tdebug.h"
 
 #include <QLineEdit>
+#include <QPlainTextEdit>
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QStyleOptionButton>
@@ -53,6 +54,8 @@ struct KTNewProject::Private
 {
     QLineEdit *projectName;
     QLineEdit *authorName;
+    QLineEdit *description;
+
     QColor color;
     QPushButton *colorButton;
     QSpinBox *fps;
@@ -61,11 +64,14 @@ struct KTNewProject::Private
     bool useNetwork;
 
     QGroupBox *netOptions;
+    QBoxLayout *netLayout;
 
     QLineEdit *server;
     QSpinBox *port;
     QLineEdit *login;
     QLineEdit *password;
+
+    QCheckBox *storePassword;
 };
 
 KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
@@ -91,6 +97,13 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     k->authorName = new QLineEdit(infoContainer);
     k->authorName->setText(QString::fromLocal8Bit(::getenv("USER")));
     layout->addWidget(k->authorName, 1, 1);
+
+    QLabel *labelDescription = new QLabel(tr("Description"), infoContainer);
+    layout->addWidget(labelDescription, 2, 0);
+
+    k->description = new QLineEdit(infoContainer);
+    k->description->setText(tr("Just for fun!"));
+    layout->addWidget(k->description, 2, 1);
 
     QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
 	
@@ -129,30 +142,20 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     layout->addWidget(panel, 3, 0);
     layout->addWidget(renderAndFps, 3, 1);
 
+    QCheckBox *activeNetOptions = new QCheckBox(tr("Multi-artist project"));
+    connect(activeNetOptions, SIGNAL(toggled(bool)), this, SLOT(enableNetOptions(bool)));
+
+    layout->addWidget(activeNetOptions, 4, 0, 1, 2, Qt::AlignLeft);
+
     addTab(infoContainer, tr("Project info"));
 
     QFrame *netContainer = new QFrame();
-    QBoxLayout *netLayout = new QBoxLayout(QBoxLayout::TopToBottom, netContainer);
-    netLayout->setAlignment(Qt::AlignHCenter);
-
-    QCheckBox *activeNetOptions = new QCheckBox(tr("Create a network project"));
-    connect(activeNetOptions, SIGNAL(toggled(bool)), this, SLOT(enableNetOptions(bool)));
-
-    QBoxLayout *labelLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    labelLayout->setAlignment(Qt::AlignHCenter);
-    labelLayout->addWidget(activeNetOptions);
-
-    netLayout->addLayout(labelLayout);
+    k->netLayout = new QBoxLayout(QBoxLayout::TopToBottom, netContainer);
+    k->netLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
     setupNetOptions();
 
-    netLayout->addWidget(k->netOptions);
-
     addTab(netContainer, tr("Network"));
-
-    // SQA: Only for devel issues
-    // enableTab(1, false);
-
     enableNetOptions(false);
 }
 
@@ -171,9 +174,6 @@ KTNewProject::~KTNewProject()
 
 void KTNewProject::setupNetOptions()
 {
-    k->netOptions = new QGroupBox(tr("Network"));
-    QVBoxLayout *layout = new QVBoxLayout(k->netOptions);
-
     k->server = new QLineEdit;
     k->port = new QSpinBox;
     k->port->setMinimum(1024);
@@ -192,7 +192,23 @@ void KTNewProject::setupNetOptions()
 
     k->password->setEchoMode(QLineEdit::Password);
 
-    layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Username") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port));
+    QPlainTextEdit *text = new QPlainTextEdit;
+    text->setMaximumHeight(70);
+    text->appendPlainText(QString("This feature allows you to work with another artists") 
+                           + QString(" around the Internet on the same project in real time."));
+    text->setEnabled(false);
+    k->netLayout->addWidget(text);
+
+    k->netOptions = new QGroupBox(tr("Settings"));
+    QVBoxLayout *layout = new QVBoxLayout(k->netOptions);
+    layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Username") << tr("Password") << tr("Server") << tr("Port"), 
+                         QWidgetList() << k->login << k->password << k->server << k->port));
+
+    k->netLayout->addWidget(k->netOptions);
+
+    // SQA: Pending field. Require GUI interface
+    // k->storePassword = new QCheckBox(tr("Store password"));
+    // k->netLayout->addWidget(k->storePassword);
 }
 
 KTProjectManagerParams *KTNewProject::parameters()
@@ -204,6 +220,7 @@ KTProjectManagerParams *KTNewProject::parameters()
         const QSize size(k->size->x(),k->size->y());
         params->setDimension(size);
         params->setFPS(k->fps->value());
+
         // Network settings
         params->setServer(k->server->text());
         params->setPort(k->port->value());
@@ -216,6 +233,7 @@ KTProjectManagerParams *KTNewProject::parameters()
     KTProjectManagerParams *params = new KTProjectManagerParams;
     params->setProjectName(k->projectName->text());
     params->setAuthor(k->authorName->text());
+    params->setDescription(k->description->text());
     params->setBgColor(k->color);
     const QSize size(k->size->x(),k->size->y());
     params->setDimension(size);
@@ -247,6 +265,10 @@ void KTNewProject::ok()
             return;
         }
 
+        if (k->server->text().isEmpty()) {
+            TOsd::self()->display(tr("Error"), tr("Please, fill in the server name or IP"), TOsd::Error);
+            return;
+        }
     }
 
     KTabDialog::ok();
@@ -255,11 +277,7 @@ void KTNewProject::ok()
 void KTNewProject::enableNetOptions(bool isEnabled)
 {
     k->useNetwork = isEnabled;
-
-    k->server->setEnabled(isEnabled);
-    k->port->setEnabled(isEnabled);
-    k->login->setEnabled(isEnabled);
-    k->password->setEnabled(isEnabled);
+    enableTab(1, isEnabled);
 }
 
 void KTNewProject::focusProjectLabel() 

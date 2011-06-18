@@ -77,7 +77,6 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
             #endif
 
             // SQA: Check if these lines are really needed
-            /*
             if (! projectDir.mkdir(projectDir.path())) {
                 #ifdef K_DEBUG
                        tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
@@ -88,7 +87,6 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
                        tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
                 #endif
             }
-            */
         }
     } else {
         if (!projectDir.exists()) {

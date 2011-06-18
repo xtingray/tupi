@@ -35,9 +35,7 @@
 
 #include "ktlibraryfolder.h"
 #include "ktlibraryobject.h"
-
 #include "tdebug.h"
-
 #include "ktprojectloader.h"
 #include "ktproject.h"
 
@@ -64,7 +62,8 @@ KTLibraryFolder::~KTLibraryFolder()
     delete k;
 }
 
-KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, const QString &folder, bool loaded)
+KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, 
+                                               const QString &folder, bool loaded)
 {
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
@@ -72,6 +71,7 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     object->setType(type);
 
     if (!object->loadRawData(data)) {
+        tFatal() << "KTLibraryFolder::createSymbol() - Object have no data raw!";
         delete object;
         return 0;
     }

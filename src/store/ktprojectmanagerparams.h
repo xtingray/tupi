@@ -41,8 +41,9 @@
 #include <QColor>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTProjectManagerParams
 {
     public:
