@@ -760,17 +760,6 @@ void KTMainWindow::openProjectFromServer()
 {
     KTMainWindow::requestType = OpenNetProject;
     setupNetworkProject();
-
-    /*
-    if (setupNetworkProject()) {
-        KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
-                                              (m_projectManager->handler());
-        if (handler->isValid()) {
-            KTListProjectsPackage package;
-            handler->sendPackage(package);
-        }
-    }
-    */
 }
 
 /**

@@ -106,8 +106,10 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
     setCurrentScene(0);
     k->currentTool = tr("Pencil");
 
-    if (graphicsScene()->scene())
+    if (graphicsScene()->scene()) {
+        tFatal() << "KTPaintArea::KTPaintArea() - calling -> graphicsScene()->setCurrentFrame(0, 0)";
         graphicsScene()->setCurrentFrame(0, 0);
+    }
 }
 
 KTPaintArea::~KTPaintArea()
@@ -122,6 +124,8 @@ void KTPaintArea::setCurrentScene(int index)
     #endif
 
     if (k->project->scenesTotal() > 0) {
+
+        tFatal() << "KTPaintArea::setCurrentScene() - Scene Index: " << index;
 
         KTScene *scene = k->project->scene(index);
         if (scene) {
@@ -261,6 +265,8 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                     }
 
                     setUpdatesEnabled(true);
+                   
+                    tFatal() << "KTPaintArea::frameResponse() - [" << event->layerIndex() << ", " << event->frameIndex() << "]";
                     guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
                     if (k->spaceMode == KTProject::FRAMES_EDITION) {
@@ -343,10 +349,13 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
             int frameIndex = guiScene->currentFrameIndex(); 
 
             if (scene->layersTotal() > 1) {
-                if (event->layerIndex() != 0)
+                if (event->layerIndex() != 0) {
+                    tFatal() << "KTPaintArea::layerResponse() - guiScene->setCurrentFrame() / Tracing 1";
                     guiScene->setCurrentFrame(event->layerIndex() - 1, frameIndex);
-                else
+                } else {
+                    tFatal() << "KTPaintArea::layerResponse() - guiScene->setCurrentFrame() / Tracing 2";
                     guiScene->setCurrentFrame(event->layerIndex() + 1, frameIndex);
+                }
 
                 if (k->spaceMode == KTProject::FRAMES_EDITION) {
                     guiScene->drawCurrentPhotogram();

@@ -235,8 +235,11 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
             return false;
     }
     */
-    
-    KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author(), netparams->description());
+
+    QString dimension = QString::number(netparams->dimension().width()) + "," + QString::number(netparams->dimension().height()); 
+
+    KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author(), netparams->description(),
+                                          netparams->bgColor().name(), dimension, QString::number(netparams->fps()));
     k->socket->send(newProjectPackage);
     
     return true;
@@ -321,10 +324,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        file.flush();
             
                        if (k->project) {
+                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - Opening file (net): " << file.fileName();
                            KTSaveProject *loader = new KTSaveProject;
                            loader->load(file.fileName(), k->project);
-                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - Calling out for new project!";  
-                           // emit openNewArea();
                            emit openNewArea(k->project->projectName());
                            delete loader;
                        } else {
@@ -346,7 +348,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
                    if (dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty()) {
                        #ifdef K_DEBUG
-                              tDebug() << "opening " << dialog.currentProject() << "project";
+                              tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << dialog.currentProject();
                        #endif
                        loadProjectFromServer(dialog.currentProject());
                    } else {

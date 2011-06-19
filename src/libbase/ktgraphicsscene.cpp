@@ -113,6 +113,7 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
     k->framePosition.frame = -1;
     k->spaceMode = KTProject::FRAMES_EDITION;
 
+    tFatal() << "KTGraphicsScene() - calling setCurrentFrame(0, 0)";
     setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
@@ -149,6 +150,8 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+
+    tFatal() << "KTGraphicsScene() - setCurrentFrame() [" << layer << ", " << frame << "]";
 
     if ((frame != k->framePosition.frame && k->framePosition.frame >= 0) || 
         (layer != k->framePosition.layer && k->framePosition.layer >= 0)) { 
@@ -812,10 +815,12 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
     cleanWorkSpace();
     k->scene = scene;
 
-    if (k->spaceMode == KTProject::FRAMES_EDITION)
+    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+        tFatal() << "KTGraphicsScene::setCurrentScene() - Following!";
         drawCurrentPhotogram();
-    else
+    } else {
         drawBackground();
+    }
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)

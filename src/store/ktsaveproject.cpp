@@ -188,6 +188,8 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
            T_FUNCINFO << fileName;
     #endif
 
+    tFatal() << "KTSaveProject::load() - Loading file: " << fileName;
+
     KTPackageHandler packageHandler;
 
     if (packageHandler.importPackage(fileName)) {
@@ -226,6 +228,8 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
                          if (! document.setContent(xml))
                              return false;
                          QDomElement root = document.documentElement();
+
+                         tFatal() << "KTSaveProject::load() - Loading scene: " << root.attribute("name");
 
                          KTScene *scene = project->createScene(root.attribute("name"), index, true);
                          scene->fromXml(xml);

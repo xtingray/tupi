@@ -115,7 +115,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                 return false;
             }
 
-        } else {
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
 
             KTBackground *bg = scene->background();
             if (bg) {
@@ -138,6 +138,12 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                     emit responsed(response);
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::createItem() - mode invalid!";
+            #endif
+
+            return false;
         }
     } else {
         #ifdef K_DEBUG
@@ -197,7 +203,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                 }
             }
 
-        } else {
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
 
             KTBackground *bg = scene->background();
 
@@ -214,11 +220,17 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                     return true;
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::removeItem() - mode invalid!";
+            #endif
+
+            return false;
         }
 
     } else {
         #ifdef K_DEBUG
-               tError() << "KTCommandExecutor::removeItem() - Error: " << tr("Scene doesn't exists!");
+               tError() << "KTCommandExecutor::removeItem() - Error: " << tr("Scene doesn't exist!");
         #endif
         return false;
     }
@@ -229,7 +241,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 bool KTCommandExecutor::moveItem(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFOX("items");
+           T_FUNCINFOX("items");
     #endif
 
     int scenePosition = response->sceneIndex();
@@ -249,7 +261,6 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
     if (scene) {
 
         if (mode == KTProject::FRAMES_EDITION) {
-
             KTLayer *layer = scene->layer(layerPosition);
             if (layer) {
                 KTFrame *frame = layer->frame(framePosition);
@@ -260,7 +271,7 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
                     }
                 }
             }
-        } else {
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
             KTBackground *bg = scene->background();
 
             if (bg) {
@@ -272,6 +283,12 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
                     }
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::moveItem() - mode invalid!";
+            #endif
+
+            return false;
         }
     }
 
@@ -308,20 +325,26 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
                     return true;
                 }
             }
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
+                   KTBackground *bg = scene->background();
+
+                   if (bg) {
+                       KTFrame *frame = bg->frame();
+                       if (frame) {
+                           QString::const_iterator itr = strList.constBegin();
+                           QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+                           response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
+
+                           emit responsed(response);
+                           return true;
+                       }
+                   }
         } else {
-            KTBackground *bg = scene->background();
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::groupItems() - mode invalid!";
+            #endif
 
-            if (bg) {
-                KTFrame *frame = bg->frame();
-                if (frame) {
-                    QString::const_iterator itr = strList.constBegin();
-                    QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-                    response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
-
-                    emit responsed(response);
-                    return true;
-                }
-            }
+            return false;
         }
     }
     
@@ -331,7 +354,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFOX("items");
+           T_FUNCINFOX("items");
     #endif
     
     int scenePosition = response->sceneIndex();
@@ -369,7 +392,7 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
                 }
             }
 
-        } else {
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
 
             KTBackground *bg = scene->background();
 
@@ -394,6 +417,12 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
                     return true;
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::ungroupItems() - mode invalid!";
+            #endif
+
+            return false;
         }
     }
 
@@ -490,7 +519,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
                 }
             }
 
-        } else {
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
 
             KTBackground *bg = scene->background();
 
@@ -518,7 +547,13 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
                     }
                 }
             }
-        } 
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::convertItem() - mode invalid!";
+            #endif
+
+            return false;
+        }
     }
 
     return false;
@@ -571,7 +606,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
                 }
             }
 
-        } else {
+        } else if (mode == KTProject::BACKGROUND_EDITION) {
 
             KTBackground *bg = scene->background();
 
@@ -600,6 +635,12 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
                     }
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::transformItem() - mode invalid!";
+            #endif
+
+            return false;
         }
     }
     
@@ -665,7 +706,7 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
                 }
             }
 
-        } else { 
+        } else if (mode == KTProject::BACKGROUND_EDITION) { 
 
             KTBackground *bg = scene->background();
 
@@ -699,6 +740,12 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
                     }
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTCommandExecutor::setPathItem() - mode invalid!";
+            #endif
+
+            return false;
         }
     }
 

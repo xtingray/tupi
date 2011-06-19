@@ -130,11 +130,13 @@ KTFrame *KTLayer::createFrame(QString name, int position, bool loaded)
     k->framesCount++;
     frame->setFrameName(name);
 
-    tFatal() << "KTProject::createFrame() - Inserting frame at position: " << position;
+    tFatal() << "KTLayer::createFrame() - Inserting frame at position: " << position;
     k->frames.insert(position, frame);
 
-    if (loaded)
+    if (loaded) {
+        tFatal() << "KTLayer::createFrame() - Loading frame within the interface";
         KTProjectLoader::createFrame(scene()->objectIndex(), objectIndex(), position, frame->frameName(), project());
+    }
 
     return frame;
 }

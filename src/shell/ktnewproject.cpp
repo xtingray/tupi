@@ -217,7 +217,9 @@ KTProjectManagerParams *KTNewProject::parameters()
         KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
         params->setProjectName(k->projectName->text());
         params->setAuthor(k->authorName->text());
-        const QSize size(k->size->x(),k->size->y());
+        params->setDescription(k->description->text());
+        params->setBgColor(k->color);
+        const QSize size(k->size->x(), k->size->y());
         params->setDimension(size);
         params->setFPS(k->fps->value());
 
@@ -235,7 +237,7 @@ KTProjectManagerParams *KTNewProject::parameters()
     params->setAuthor(k->authorName->text());
     params->setDescription(k->description->text());
     params->setBgColor(k->color);
-    const QSize size(k->size->x(),k->size->y());
+    const QSize size(k->size->x(), k->size->y());
     params->setDimension(size);
     params->setFPS(k->fps->value());
 

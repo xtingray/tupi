@@ -56,11 +56,11 @@ class KTProjectManagerParams
         void setAuthor(const QString &author);
         QString author() const;
 
-        void setBgColor(const QColor color);
-        QColor bgColor();
-
         void setDescription(const QString &description);
         QString description() const;
+
+        void setBgColor(const QColor color);
+        QColor bgColor();
 
         void setDimension(const QSize &dimension);
         QSize dimension() const;

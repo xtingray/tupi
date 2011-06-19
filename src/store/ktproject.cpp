@@ -223,7 +223,7 @@ KTScene *KTProject::createScene(QString name, int position, bool loaded)
 
     KTScene *scene = new KTScene(this);
 
-    tFatal() << "KTProject::createScene() - Inserting scene at position: " << position;
+    tFatal() << "KTProject::createScene() - Inserting scene " << name << " at position: " << position;
     k->scenes.insert(position, scene);
     k->sceneCounter++;
 
@@ -458,7 +458,7 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
                     }
                 }
             }
-        } else {
+        } else if (spaceMode == KTProject::BACKGROUND_EDITION) {
 
             KTBackground *bg = scene->background();
 
@@ -478,6 +478,10 @@ bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolTy
                     }
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTProject::removeSymbol() - spaceMode invalid!";
+            #endif
         }
     }
 
@@ -504,13 +508,19 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                 frame = layer->frame(frameIndex);
             else
                 return false;
-        } else { 
+        } else if (spaceMode == KTProject::BACKGROUND_EDITION) { 
             KTBackground *bg = scene->background();
 
             if (bg)
                 frame = bg->frame();
             else
                 return false;
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTProject::addSymbolToProject() - spaceMode invalid!";
+            #endif
+            
+            return false;
         }
 
         if (frame) {
@@ -631,37 +641,6 @@ bool KTProject::removeSymbolFromProject(const QString &name, KTLibraryObject::Ty
     }
 
     return true;
-
-    /*
-    if (type == KTLibraryObject::Folder)
-        return true;
-
-    foreach (KTScene *scene, k->scenes.values()) {
-             if (spaceMode == KTProject::FRAMES_EDITION) {
-                 foreach (KTLayer *layer, scene->layers().values()) {
-                          foreach (KTFrame *frame, layer->frames().values()) {
-                                   if (type != KTLibraryObject::Svg)
-                                       frame->removeItemFromFrame(name);
-                                   else
-                                       frame->removeSvgItemFromFrame(name);
-                          }
-                 }
-             } else {
-                 KTBackground *bg = scene->background();
-                 if (bg) {
-                     KTFrame *frame = bg->frame();
-                     if (frame) {
-                         if (type != KTLibraryObject::Svg)
-                             frame->removeItemFromFrame(name);
-                         else
-                             frame->removeSvgItemFromFrame(name);
-                     }
-                 }
-             }
-    }
-
-    return true;
-    */
 }
 
 bool KTProject::updateSymbolId(KTLibraryObject::Type type, const QString &oldId, const QString &newId)

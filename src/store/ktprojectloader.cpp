@@ -67,6 +67,8 @@ void KTProjectLoader::createItem(int scenePosition, int layerPosition, int frame
 
 void KTProjectLoader::createFrame(int scenePosition, int layerPosition, int framePosition, const QString &name, KTProject *project)
 {
+    tFatal() << "KTProjectLoader::createFrame() - Index: " << framePosition;
+
     KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Add);
     
     response.setSceneIndex(scenePosition);

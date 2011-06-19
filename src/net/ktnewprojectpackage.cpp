@@ -40,9 +40,12 @@ struct KTNewProjectPackage::Private
     QDomText name;
     QDomText author;
     QDomText description;
+    QDomText bgcolor;
+    QDomText dimension;
+    QDomText fps;
 };
 
-KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description ): QDomDocument(), k(new Private)
+KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description, const QString & bgcolor, const QString & dimension, const QString & fps): QDomDocument(), k(new Private)
 {
     QDomElement root = createElement("newproject");
     root.setAttribute("version", "0");
@@ -50,10 +53,17 @@ KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & a
     k->name = createTextNode(name);
     k->author = createTextNode(author);
     k->description = createTextNode(description);
+    k->bgcolor = createTextNode(bgcolor);
+    k->dimension = createTextNode(dimension);
+    k->fps = createTextNode(fps);
     
     root.appendChild(createElement("name")).appendChild(k->name);
     root.appendChild(createElement("author")).appendChild(k->author);
     root.appendChild(createElement("description")).appendChild(k->description);
+    root.appendChild(createElement("bgcolor")).appendChild(k->bgcolor);
+    root.appendChild(createElement("dimension")).appendChild(k->dimension);
+    root.appendChild(createElement("fps")).appendChild(k->fps);
+
     appendChild(root);
 }
 
@@ -74,4 +84,19 @@ void KTNewProjectPackage::setAuthor(const QString & author)
 void KTNewProjectPackage::setDescription(const QString & description)
 {
     k->description.setData(description);
+}
+
+void KTNewProjectPackage::setBgColor(const QString & bgcolor)
+{
+    k->bgcolor.setData(bgcolor);
+}
+
+void KTNewProjectPackage::setDimension(const QString & dimension)
+{
+    k->dimension.setData(dimension);
+}
+
+void KTNewProjectPackage::setFps(const QString & fps)
+{
+    k->fps.setData(fps);
 }

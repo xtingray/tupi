@@ -45,12 +45,17 @@
 class KTNewProjectPackage : public QDomDocument
 {
     public:
-        KTNewProjectPackage(const QString & name, const QString & author, const QString & description);
+        KTNewProjectPackage(const QString & name, const QString & author, const QString & description, 
+                            const QString & bgcolor, const QString & dimension, const QString & fps);
+
         ~KTNewProjectPackage();
         
         void setName(const QString & name);
         void setAuthor(const QString & author);
         void setDescription(const QString & description);
+        void setBgColor(const QString & bgcolor);
+        void setDimension(const QString & dimension);
+        void setFps(const QString & fps);
         
     private:
         struct Private;

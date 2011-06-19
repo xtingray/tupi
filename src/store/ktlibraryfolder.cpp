@@ -225,7 +225,7 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
     }
     
     #ifdef K_DEBUG
-        tDebug() << "KTLibraryFolder::findObject(): Cannot find object with id: " << id;
+           tDebug() << "KTLibraryFolder::findObject(): Cannot find object with id: " << id;
     #endif
     
     return 0;

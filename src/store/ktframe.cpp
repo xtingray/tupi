@@ -143,10 +143,16 @@ void KTFrame::fromXml(const QString &xml)
            T_FUNCINFO;
     #endif
 
+    tFatal() << "KTFrame::fromXml() - Loading frame!";
+
     QDomDocument document;
 	
-    if (! document.setContent(xml))
+    if (! document.setContent(xml)) {
+        #ifdef K_DEBUG
+               tError() << "KTFrame::fromXml() - File corrupted!";
+        #endif
         return;
+    }
 
     QDomElement root = document.documentElement();
     setFrameName(root.attribute("name", frameName()));
