@@ -201,6 +201,7 @@ KTProjectRequest KTRequestBuilder::createLibraryRequest(int actionId, const QVar
     QDomElement symbol = doc.createElement("symbol");
     symbol.setAttribute("folder", folder);
     symbol.setAttribute("type", type);
+    tFatal() << "KTRequestBuilder::createLibraryRequest() - spaceMode: " << spaceMode;
     symbol.setAttribute("spaceMode", spaceMode);
 
     QDomElement action = doc.createElement("action");

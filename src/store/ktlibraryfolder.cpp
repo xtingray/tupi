@@ -406,6 +406,8 @@ void KTLibraryFolder::loadItem(const QString &folder, QDomNode xml)
         QTextStream ts(&data);
         ts << objectData;
     }
+
+    tFatal() << "KTLibraryFolder::loadItem() - Calling KTProjectLoader::createSymbol()...";
   
     KTProjectLoader::createSymbol(KTLibraryObject::Type(object->type()),
                                   object->symbolName(), folder, data.toLocal8Bit(), k->project);

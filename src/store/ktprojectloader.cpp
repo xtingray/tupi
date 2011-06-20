@@ -105,6 +105,8 @@ void KTProjectLoader::createSoundLayer(int scenePosition, int layerPosition, con
 
 void KTProjectLoader::createScene(const QString &name, int scenePosition, KTProject *project)
 {
+    tFatal() << "KTProjectLoader::createScene() - Creating scene " << scenePosition;
+
     KTSceneResponse response(KTProjectRequest::Scene, KTProjectRequest::Add);
 
     response.setSceneIndex(scenePosition);
@@ -115,6 +117,8 @@ void KTProjectLoader::createScene(const QString &name, int scenePosition, KTProj
 
 void KTProjectLoader::createSymbol(KTLibraryObject::Type type, const QString &name, const QString &parent, const QByteArray &data, KTProject *project)
 {
+    tFatal() << "KTProjectLoader::createSymbol() - calling KTLibraryResponse()...";
+
     KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::Add);
     
     response.setArg(name);

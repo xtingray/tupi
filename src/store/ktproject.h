@@ -72,7 +72,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 
         enum Mode 
         {
-            FRAMES_EDITION = 0,
+            NONE = 0,
+            FRAMES_EDITION,
             BACKGROUND_EDITION 
         };
 

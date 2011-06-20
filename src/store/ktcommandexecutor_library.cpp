@@ -41,6 +41,8 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
+    tFatal() << "KTCommandExecutor::createSymbol() - Just tracing!";
+
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), 
                                 response->data(), response->parent())) {
         tFatal() << "KTCommandExecutor::createSymbol() - Creating symbol within library!";
@@ -83,6 +85,10 @@ bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
             emit responsed(response);
             return true;
         } 
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTCommandExecutor::addSymbolToProject() - No scenes available!";
+        #endif
     } 
 
     return false;

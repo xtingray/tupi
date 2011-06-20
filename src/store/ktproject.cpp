@@ -77,6 +77,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
            TINIT;
     #endif
 
+    k->spaceMode = KTProject::NONE;
     k->bgColor = QColor("#fff");
     k->sceneCounter = 0;
     k->isOpen = false;
@@ -282,7 +283,7 @@ KTScene *KTProject::scene(int position) const
 
     if (position < 0 || position >= k->scenes.count()) {
         #ifdef K_DEBUG
-               tFatal() << "KTProject::scene() - FATAL ERROR: index out of bound (" << position << ")";
+               tError() << "KTProject::scene() - FATAL ERROR: index out of bound (" << position << ")";
         #endif
         return 0;
     }
@@ -418,6 +419,8 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
+    tFatal() << "KTProject::createSymbol() - Creating symbol!";
+
     if (!k->isOpen) {
         tFatal() << "KTProject::createSymbol() - returning!";
         return false;
@@ -498,6 +501,8 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
 {
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
+
+    tFatal() << "KTProject::addSymbolToProject() - Adding symbol into the workspace!";
 
     if (scene) {
 
@@ -607,7 +612,16 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                 #endif
                 return false;
             }
+        } else {
+                #ifdef K_DEBUG
+                       tError() << "KTProject::addSymbolToProject() - Invalid frame!";
+                #endif
         }
+
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTProject::addSymbolToProject() - Invalid scene!";
+        #endif
     }
 
     return false;

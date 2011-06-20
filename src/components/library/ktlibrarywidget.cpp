@@ -307,6 +307,9 @@ void KTLibraryWidget::insertObjectInWorkspace()
 
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
+    tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - calling KTRequestBuilder::createLibraryRequest()...";
+    tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - spaceContext: " << k->project->spaceContext();
+
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, objectKey,
                                KTLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
                                0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
@@ -423,6 +426,8 @@ void KTLibraryWidget::importBitmap()
                object = k->library->findObject(tag);
         }
 
+        tFatal() << "KTLibraryWidget::importBitmap() - calling createLibraryRequest()...";
+
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, tag,
                                                                           KTLibraryObject::Image, k->project->spaceContext(), data, QString(), 
                                                                           k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
@@ -467,6 +472,8 @@ void KTLibraryWidget::importSvg()
                tag = name + "-" + QString::number(i) + extension;
                object = k->library->findObject(tag);
         }
+
+        tFatal() << "KTLibraryWidget::importSvg() - calling createLibraryRequest()...";
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, tag,
                                                      KTLibraryObject::Svg, k->project->spaceContext(), data, QString(), 
@@ -812,7 +819,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 insertObjectInWorkspace();
+                                 if (k->project->spaceContext() != KTProject::NONE)
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Svg:
@@ -820,7 +828,9 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 insertObjectInWorkspace();
+                                 tFatal() << "KTLibraryWidget::libraryResponse() - Adding SVG object...";
+                                 if (k->project->spaceContext() != KTProject::NONE)
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Sound:
