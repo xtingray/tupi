@@ -231,8 +231,10 @@ KTScene *KTProject::createScene(QString name, int position, bool loaded)
     // scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
     scene->setSceneName(name);
     
-    if (loaded)
+    if (loaded) {
+        tFatal() << "KTProject::createScene() - calling for KTProjectLoader::createScene() - Index: " << position;
         KTProjectLoader::createScene(scene->sceneName(), position, this);
+    }
 
     return scene;
 }
@@ -419,15 +421,20 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
-    tFatal() << "KTProject::createSymbol() - Creating symbol!";
+    tFatal() << "KTProject::createSymbol() - Creating symbol! Flag 1";
+    tFatal() << "KTProject::createSymbol() - Size: " << data.size(); 
 
     if (!k->isOpen) {
         tFatal() << "KTProject::createSymbol() - returning!";
         return false;
+    } else {
+        tFatal() << "KTProject::createSymbol() - it's open!";
     }
 
     if (k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) == 0)
         tFatal() << "KTProject::createSymbol() - Object is NULL!";
+
+    tFatal() << "KTProject::createSymbol() - Just tracing...";
 
     return true;
 }
@@ -763,9 +770,9 @@ int KTProject::scenesTotal() const
     return k->sceneCounter;
 }
 
-void KTProject::updateSpaceContext(int index)
+void KTProject::updateSpaceContext(KTProject::Mode mode)
 {
-    k->spaceMode = KTProject::Mode(index); 
+    k->spaceMode = mode; 
 }
 
 KTProject::Mode KTProject::spaceContext()

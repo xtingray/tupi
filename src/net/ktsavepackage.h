@@ -33,25 +33,24 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTPIXMAPITEM_H
-#define KTPIXMAPITEM_H
-
-#include "ktabstractserializable.h"
-#include "ktglobal_store.h"
-
-#include <QGraphicsPixmapItem>
+#ifndef KTSAVEPACKAGE_H
+#define KTSAVEPACKAGE_H
 
 /**
- * @author David Cuadrado
+ * @author Gustav Gonzalez  
 */
 
-class STORE_EXPORT KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractSerializable
+#include <QDomDocument>
+
+class KTSavePackage: public QDomDocument
 {
     public:
-        KTPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-        ~KTPixmapItem();
-        virtual void fromXml(const QString &xml);
-        virtual QDomElement toXml(QDomDocument &doc) const;
+        KTSavePackage(const QString & nameProject);
+        ~KTSavePackage();
+        void setProjectName(const QString & nameProject);
+        
+    private:
+        QDomElement m_project;
 };
 
 #endif

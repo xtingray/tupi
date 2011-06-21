@@ -197,7 +197,7 @@ class KTMainWindow : public KTabbedMainWindow
           void updateCurrentTab(int index);
 
           void requestNewProject();
-          void createNewNetProject(const QString &projectName);
+          void createNewNetProject(const QString &title);
 
     private slots:
           void messageToStatus(const QString &);
@@ -271,6 +271,7 @@ class KTMainWindow : public KTabbedMainWindow
           int lastTab;
           KTProject::Mode contextMode;
           KTMainWindow::RequestType requestType; 
+          QString projectName;
 
     signals:
           void responsed(KTProjectResponse *);

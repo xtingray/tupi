@@ -133,7 +133,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         bool isOpen();
         int scenesTotal() const;
 
-        void updateSpaceContext(int index);
+        void updateSpaceContext(KTProject::Mode mode);
         KTProject::Mode spaceContext();
 
     signals:

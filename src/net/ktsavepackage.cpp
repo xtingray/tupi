@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                           *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,25 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTPIXMAPITEM_H
-#define KTPIXMAPITEM_H
+#include "ktsavepackage.h"
 
-#include "ktabstractserializable.h"
-#include "ktglobal_store.h"
+// <saveproject version="0">
+//         <project name="proyecto 1" />
+// </saveproject>
 
-#include <QGraphicsPixmapItem>
-
-/**
- * @author David Cuadrado
-*/
-
-class STORE_EXPORT KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractSerializable
+KTSavePackage::KTSavePackage(const QString& projectName): QDomDocument()
 {
-    public:
-        KTPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-        ~KTPixmapItem();
-        virtual void fromXml(const QString &xml);
-        virtual QDomElement toXml(QDomDocument &doc) const;
-};
+    QDomElement root = createElement("saveproject");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    QDomElement m_project = createElement("project");
+    m_project.setAttribute("name", projectName);
+    root.appendChild(m_project);
+}
 
-#endif
+KTSavePackage::~KTSavePackage()
+{
+}
+
+void KTSavePackage::setProjectName(const QString& projectName)
+{
+    m_project.setAttribute("name", projectName);
+}

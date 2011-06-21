@@ -65,16 +65,36 @@ KTLibraryFolder::~KTLibraryFolder()
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, 
                                                const QString &folder, bool loaded)
 {
+    tFatal() << "KTLibraryFolder::createSymbol() - Flag 1"; 
+
+    if (data.isEmpty()) {
+        #ifdef K_DEBUG
+               tFatal() << "KTLibraryFolder::createSymbol() - Data is empty!";
+        #endif
+        return false;
+    }
+
+    if (data.isNull()) {
+        #ifdef K_DEBUG
+               tFatal() << "KTLibraryFolder::createSymbol() - Data is null!";
+        #endif
+        return false;
+    }
+
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
     object->setParent(this);
     object->setType(type);
 
     if (!object->loadRawData(data)) {
+
         tFatal() << "KTLibraryFolder::createSymbol() - Object have no data raw!";
+
         delete object;
         return 0;
     }
+
+    tFatal() << "KTLibraryFolder::createSymbol() - Flag 2";
 
     bool ret;
 
@@ -87,6 +107,8 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 
     if (loaded && ret)
         KTProjectLoader::createSymbol(type, name, id(), data, k->project);
+
+    tFatal() << "KTLibraryFolder::createSymbol() - Flag 3";
     
     return object;
 }

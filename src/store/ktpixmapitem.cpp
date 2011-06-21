@@ -36,7 +36,7 @@
 #include "ktpixmapitem.h"
 
 KTPixmapItem::KTPixmapItem(QGraphicsItem * parent, QGraphicsScene * scene)
-    : QGraphicsPixmapItem(parent, scene)
+                           : QGraphicsPixmapItem(parent, scene)
 {
     setTransformationMode(Qt::SmoothTransformation);
 }

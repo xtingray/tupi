@@ -71,21 +71,22 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
         projectDir.setPath(CACHE_DIR + "/" + name);    
         project->library()->updatePaths(CACHE_DIR + "/" + name);
         if (!projectDir.exists()) {
-            projectDir.rename(oldDirName, projectDir.path());
-            #ifdef K_DEBUG
-                   tDebug() << "KTSaveProject::save() - Directory renamed to " << projectDir.path();
-            #endif
-
-            // SQA: Check if these lines are really needed
-            if (! projectDir.mkdir(projectDir.path())) {
+            if (projectDir.rename(oldDirName, projectDir.path())) {
                 #ifdef K_DEBUG
-                       tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
+                       tDebug() << "KTSaveProject::save() - Directory renamed to " << projectDir.path();
                 #endif
-                return false;
             } else {
-                #ifdef K_DEBUG
-                       tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
-                #endif
+                // SQA: Check if these lines are really needed
+                if (! projectDir.mkdir(projectDir.path())) {
+                    #ifdef K_DEBUG
+                           tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
+                    #endif
+                    return false;
+                } else {
+                    #ifdef K_DEBUG
+                           tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
+                    #endif
+                }
             }
         }
     } else {
@@ -243,7 +244,9 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
                          return false;
                      }
             }
+
             project->setOpen(true);
+
             return true;
 
         } else {

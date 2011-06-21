@@ -850,7 +850,12 @@ void KTViewDocument::setSpaceContext()
 {
     QString option = k->spaceMode->currentText();
     int index = k->spaceMode->currentIndex();
-    k->project->updateSpaceContext(index);
+
+    if (index == 0)
+        k->project->updateSpaceContext(KTProject::FRAMES_EDITION);
+    else
+        k->project->updateSpaceContext(KTProject::BACKGROUND_EDITION);
+
     k->paintArea->updateSpaceContext();
 
     k->paintArea->updatePaintArea();
@@ -863,12 +868,17 @@ void KTViewDocument::setSpaceContext()
        }
    }
 
+   tFatal() << "KTViewDocument::setSpaceContext() - Defining space context: " << k->project->spaceContext();
+
    emit modeHasChanged(index);
 }
 
 KTProject::Mode KTViewDocument::spaceContext()
 {
-   return static_cast<KTProject::Mode>(k->spaceMode->currentIndex());
+   if (k->spaceMode->currentIndex() == 0)
+       return KTProject::FRAMES_EDITION;
+   else 
+       return KTProject::BACKGROUND_EDITION;
 }
 
 KTProject *KTViewDocument::project()

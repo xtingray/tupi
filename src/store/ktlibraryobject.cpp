@@ -220,6 +220,13 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
 {
     if (data.isEmpty()) {
         #ifdef K_DEBUG
+               tFatal() << "KTLibraryObject::loadData() - Data is empty!";
+        #endif
+        return false;
+    }
+
+    if (data.isNull()) {
+        #ifdef K_DEBUG
                tFatal() << "KTLibraryObject::loadData() - Data is null!";
         #endif
         return false;
@@ -242,8 +249,12 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
             break;
             case KTLibraryObject::Image:
             {
+                 tFatal() << "KTLibraryObject::loadRawData() - Loading image!";
+                 tFatal() << "KTLibraryObject::loadRawData() - Size: " << data.size();
+
                  QPixmap pixmap;
-                 pixmap.loadFromData(data);
+                 // pixmap.loadFromData(data, "PNG");
+                 pixmap.loadFromData(data, "JPG");
 
                  KTPixmapItem *item = new KTPixmapItem;
                  item->setPixmap(pixmap);
@@ -326,6 +337,10 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
 
 void KTLibraryObject::saveData(const QString &dataDir)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     switch (k->type) {
             case KTLibraryObject::Sound:
             {
@@ -365,16 +380,24 @@ void KTLibraryObject::saveData(const QString &dataDir)
             break;
             case KTLibraryObject::Image:
             {
-                 QString dest = dataDir + "/images/";
+                 tFatal() << "KTLibraryObject::saveData() - Saving file: " << k->symbolName;
+                 QString destination = dataDir + "/images/";
             
-                 if (! QFile::exists(dest)) {
+                 if (! QFile::exists(destination)) {
                      QDir dir;
-                     dir.mkpath(dest);
+                     dir.mkpath(destination);
+
+                     tFatal() << "KTLibraryObject::saveData() - Creating directory: " << destination;
                  }
-            
-                 (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(dest + k->symbolName, "PNG");
+
+                 bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName, "PNG");
+                 if (!isOk) {
+                     #ifdef K_DEBUG
+                            tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
+                     #endif
+                 }
           
-                 k->dataPath = dest + k->symbolName;
+                 k->dataPath = destination + k->symbolName;
             }
             break;
             default: 

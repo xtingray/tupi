@@ -42,6 +42,7 @@
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
     tFatal() << "KTCommandExecutor::createSymbol() - Just tracing!";
+    tFatal() << "KTCommandExecutor::createSymbol() - Size: " << response->data().size();
 
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), 
                                 response->data(), response->parent())) {

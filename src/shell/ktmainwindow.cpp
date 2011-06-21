@@ -61,6 +61,7 @@
 #include "ktlistpackage.h"
 #include "ktimportprojectpackage.h"
 #include "ktlistprojectspackage.h"
+#include "ktsavepackage.h"
 // #end
 
 // Qt
@@ -225,9 +226,10 @@ void KTMainWindow::createNewLocalProject()
     viewNewDocument();
 }
 
-void KTMainWindow::createNewNetProject(const QString &projectName)
+void KTMainWindow::createNewNetProject(const QString &title)
 {
     m_isNetworkProject = true;
+    projectName = title;
     setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic") + " " + tr("[net mode]"));
 
     if (m_viewChat) {
@@ -340,7 +342,7 @@ void KTMainWindow::viewNewDocument()
         m_penWidget->setThickness(thicknessValue);
 
         if (KTMainWindow::requestType == OpenLocalProject || KTMainWindow::requestType == OpenNetProject)
-            TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
+            TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
     }
 }
 
@@ -629,7 +631,8 @@ void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
         m_isNetworkProject = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
-        setWindowTitle(params->projectName() + " - " + tr("Tupi: 2D Magic"));
+        projectName = params->projectName();
+        setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic"));
     }
 }
 
@@ -670,23 +673,11 @@ void KTMainWindow::openProject()
 void KTMainWindow::openProject(const QString &path)
 {
     #ifdef K_DEBUG
-       tWarning() << "Opening project: " << path;
+           tWarning() << "Opening project: " << path;
     #endif
 
     if (path.isEmpty())
         return;
-
-    /*
-    if (path.endsWith(".ntup")) {
-        KTSaveNetProject loader;
-        KTNetProjectManagerParams *params = loader.params(path);
-        setupNetworkProject(params->projectName(), params->server(), params->port());
-        delete params;
-    } else if (path.endsWith(".tup")) {
-               m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
-               m_isNetworkProject = false;
-    }
-    */
 
     if (path.endsWith(".tup")) {
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
@@ -711,6 +702,7 @@ void KTMainWindow::openProject(const QString &path)
             */
 
             KTMainWindow::requestType = OpenLocalProject;
+            projectName = m_projectManager->project()->projectName();
 
             int pos = m_recentProjects.indexOf(m_fileName);
 
@@ -735,11 +727,11 @@ void KTMainWindow::openProject(const QString &path)
             else
                 m_fileName = path;
 
-            setWindowTitle(m_projectManager->project()->projectName() + " - " + tr("Tupi: Magia 2D"));
+            setWindowTitle(projectName + " - " + tr("Tupi: Magia 2D"));
             viewNewDocument();
 
             // Showing a info message in a bubble
-            // TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
+            // TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(projectName));
         } else {
                  setUpdatesEnabled(true);
                  TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
@@ -994,7 +986,7 @@ void KTMainWindow::showHelpPage(const QString &filePath)
 void KTMainWindow::saveAs()
 {
     QString home = getenv("HOME");
-    home.append("/" + m_projectManager->project()->projectName());
+    home.append("/" + projectName);
 
     isSaveDialogOpen = true;
 
@@ -1028,6 +1020,11 @@ void KTMainWindow::saveAs()
         file.remove();
     }
 
+    int dotIndex = name.lastIndexOf(".tup");
+    projectName = name.left(dotIndex);
+
+    tFatal() << "KTMainWindow::saveAs() - Project Name: " << projectName;
+
     m_fileName = fileName;
     isSaveDialogOpen = false;
 
@@ -1056,7 +1053,7 @@ void KTMainWindow::saveProject()
         }
 
         if (m_projectManager->saveProject(m_fileName)) {  
-            TOsd::self()->display(tr("Information"), tr("Project %1 saved").arg(m_projectManager->project()->projectName()));
+            TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> saved").arg(projectName));
             projectSaved = true;
             int indexPath = m_fileName.lastIndexOf("/");
             int indexFile = m_fileName.length() - indexPath;
@@ -1073,6 +1070,12 @@ void KTMainWindow::saveProject()
             isSaveDialogOpen = false;
     } else {
         tFatal() << "KTMainWindow::saveProject() - Saving from network!";
+        KTSavePackage package(projectName);
+        netProjectManagerHandler->sendPackage(package);
+
+        // SQA: This code is temporary. This instruction must be executed only
+        //      when the successful message comes from the server. Not before!
+        projectSaved = true;
     }
 }
 
