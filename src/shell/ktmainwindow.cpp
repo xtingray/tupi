@@ -1262,7 +1262,7 @@ void KTMainWindow::callSave()
 
 void KTMainWindow::expandExposureView(int index) 
 {
-    contextMode = static_cast<KTProject::Mode>(index);
+    contextMode = KTProject::Mode(index);
 
     if (contextMode == KTProject::FRAMES_EDITION) {
         exposureView->expandDock(true);

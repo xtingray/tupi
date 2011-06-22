@@ -848,7 +848,6 @@ void KTViewDocument::updateTimer()
 
 void KTViewDocument::setSpaceContext()
 {
-    QString option = k->spaceMode->currentText();
     int index = k->spaceMode->currentIndex();
 
     if (index == 0)
@@ -868,9 +867,7 @@ void KTViewDocument::setSpaceContext()
        }
    }
 
-   tFatal() << "KTViewDocument::setSpaceContext() - Defining space context: " << k->project->spaceContext();
-
-   emit modeHasChanged(index);
+   emit modeHasChanged(index + 1);
 }
 
 KTProject::Mode KTViewDocument::spaceContext()

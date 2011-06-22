@@ -38,11 +38,11 @@
 #include "ktitemfactory.h"
 #include "ktpixmapitem.h"
 
-#include <QTemporaryFile>
-#include <QDir>
-
 #include "kaudioplayer.h"
 #include "tdebug.h"
+
+#include <QTemporaryFile>
+#include <QDir>
 
 struct KTLibraryObject::Private
 {
