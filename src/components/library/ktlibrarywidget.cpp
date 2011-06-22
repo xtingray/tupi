@@ -356,7 +356,7 @@ void KTLibraryWidget::renameObject(QTreeWidgetItem* item)
 void KTLibraryWidget::importBitmap()
 {
     QString image = QFileDialog::getOpenFileName (this, tr("Import an image..."), QDir::homePath(),  
-                                                  tr("Images") + " (*.png *.xpm *.jpg *.gif)");
+                                                  tr("Images") + " (*.png *.xpm *.jpg *.jpeg *.gif)");
     if (image.isEmpty()) 
         return;
 

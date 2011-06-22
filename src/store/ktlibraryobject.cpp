@@ -50,6 +50,7 @@ struct KTLibraryObject::Private
     QVariant data;
     QString dataPath;
     QString symbolName;
+    QString extension;
 };
 
 KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent), k(new Private)
@@ -99,6 +100,8 @@ void KTLibraryObject::setSymbolName(const QString &name)
 {
     k->symbolName = name;
     k->symbolName.replace(QDir::separator(), "-");
+
+    k->extension = k->symbolName.section('.', 1, 1).toUpper();
 }
 
 QString KTLibraryObject::symbolName() const
@@ -112,7 +115,7 @@ void KTLibraryObject::fromXml(const QString &xml)
     
     if (! document.setContent(xml)) {
         #ifdef K_DEBUG  
-               tFatal() << "KTLibraryObject::fromXml -> Invalid XML structure!";
+               tError() << "KTLibraryObject::fromXml -> Invalid XML structure!";
         #endif
         return;
     }
@@ -152,7 +155,7 @@ void KTLibraryObject::fromXml(const QString &xml)
                 default:
                      {
                          #ifdef K_DEBUG
-                                tFatal() << "KTLibraryObject::fromXml() - Unknown object type: " << k->type;
+                                tError() << "KTLibraryObject::fromXml() - Unknown object type: " << k->type;
                          #endif
                      }
                 break;
@@ -249,12 +252,31 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
             break;
             case KTLibraryObject::Image:
             {
-                 tFatal() << "KTLibraryObject::loadRawData() - Loading image!";
+                 tFatal() << "KTLibraryObject::loadRawData() - Loading image: " << k->symbolName;
                  tFatal() << "KTLibraryObject::loadRawData() - Size: " << data.size();
 
+                 /*
+                 QFile file("/tmp/test");
+                 if (!file.open(QIODevice::WriteOnly))
+                     return false;
+
+                 file.write(data);
+                 file.close();
+                 */
+
                  QPixmap pixmap;
-                 // pixmap.loadFromData(data, "PNG");
-                 pixmap.loadFromData(data, "JPG");
+
+                 // QByteArray ba = k->extension.toLocal8Bit();
+                 // const char *extension = ba.data();
+                 // bool isOk = pixmap.loadFromData(data, extension);
+
+                 bool isOk = pixmap.loadFromData(data);
+
+                 if (!isOk) {
+                     #ifdef K_DEBUG
+                            tError() << "KTLibraryObject::loadRawData() - Can't load image " << k->symbolName;
+                     #endif
+                 }
 
                  KTPixmapItem *item = new KTPixmapItem;
                  item->setPixmap(pixmap);
@@ -390,7 +412,12 @@ void KTLibraryObject::saveData(const QString &dataDir)
                      tFatal() << "KTLibraryObject::saveData() - Creating directory: " << destination;
                  }
 
-                 bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName, "PNG");
+                 // QByteArray ba = k->extension.toLocal8Bit();
+                 // const char *extension = ba.data();
+                 // bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName, extension);
+
+                 bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName);
+
                  if (!isOk) {
                      #ifdef K_DEBUG
                             tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
