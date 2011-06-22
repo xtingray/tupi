@@ -101,7 +101,7 @@ class Configure
         Info.info << "Creating makefiles..." << $endl
 
         if RUBY_PLATFORM.downcase.include?("darwin")
-            qmakeLine = " 'CONFIG += console warn_on' 'CONFIG -= app_bundle' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation -L/sw/lib -L/opt/X11/lib -lX11' 'INCLUDEPATH += /sw/include /opt/X11/include'"
+            qmakeLine = " 'CONFIG += console warn_on' 'CONFIG -= app_bundle' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation -L/sw/lib' 'INCLUDEPATH += /sw/include'"
 	    @qmake.run(qmakeLine, true)
         else
             @qmake.run("", true)
