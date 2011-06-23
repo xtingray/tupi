@@ -5,40 +5,40 @@
 
 INSTALLS += tupidata \
             launcher \
-            icons \
-            tupiman \
-            copyright \
             target 
 
-unix {
-    INSTALLS += desktop
-
-    desktop.target = ../../launcher/tupi.desktop
-    desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
-    desktop.path = /applications/
-}
-
-target.path = /bin/ 
+tupidata.target = data
+tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
+tupidata.path = /data/
 
 launcher.target = ../../launcher/tupi
 launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin
 launcher.path = /bin/
 
-tupiman.target = ../components/help/help/man/tupi.1.gz
-tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
-tupiman.path = /man1/
+target.path = /bin/
 
-copyright.target = ../components/help/help/man/copyright
-copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
-copyright.path = /tupi/
+unix {
+    INSTALLS += desktop \ 
+                icons \ 
+                tupiman \
+                copyright
 
-icons.target = ../../launcher/icons/tupi.png
-icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
-icons.path = /pixmaps/
+    desktop.target = ../../launcher/tupi.desktop
+    desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
+    desktop.path = /applications/
 
-tupidata.target = data
-tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
-tupidata.path = /data/ 
+    icons.target = ../../launcher/icons/tupi.png
+    icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
+    icons.path = /pixmaps/
+
+    tupiman.target = ../components/help/help/man/tupi.1.gz
+    tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
+    tupiman.path = /man1/
+
+    copyright.target = ../components/help/help/man/copyright
+    copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
+    copyright.path = /tupi/
+}
 
 TRANSLATIONS += data/translations/tupi_es.ts \
                 data/translations/tupi_ca.ts \
@@ -53,6 +53,7 @@ HEADERS += ktmainwindow.h \
            ktapplication.h \
            # configwizard.h \
            ktlocalprojectmanagerhandler.h
+
 SOURCES += main.cpp \
            ktmainwindow.cpp \
            ktstatusbar.cpp \
