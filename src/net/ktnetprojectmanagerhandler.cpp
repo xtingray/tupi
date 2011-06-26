@@ -261,8 +261,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
            T_FUNCINFOX("net");
     #endif
 
-    tError() << "KTNetProjectManagerHandler::handlePackage() - Just tracing!";
-
     if (root == "request") {
         KTRequestParser parser;
         if (parser.parse(package)) {
@@ -362,15 +360,11 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                }
     } else if (root == "notice") {
                KTComunicationParser parser;
-               tError() << "TRACING: Following the white rabbit!";
                if (parser.parse(package)) {
                    QString message = parser.message();
-                   // TOsd::self()->display(tr("Notice"), message);
-                   // k->notices->addMessage(message);
-                   tError() << "TRACING: " << message;
-               } else {
-                   tError() << "TRACING: FAIL!"; 
-               }
+                   TOsd::self()->display(tr("Notice"), message);
+                   k->notices->addMessage("* " + message);
+               } 
     } else if (root == "wall") {
                KTComunicationParser parser;
                if (parser.parse(package)) {

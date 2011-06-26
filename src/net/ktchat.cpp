@@ -91,7 +91,8 @@ KTChat::~KTChat()
 
 void KTChat::addMessage(const QString &from, const QString &message)
 {
-    k->browser->append(QString("<%1> %2").arg(from).arg(message));
+    QString css = "font-size: 12px;"; 
+    k->browser->append("<div style=\"" + css + "\">" + QString("<b>&lt;%1&gt;</b>").arg(from) + " " + message + "</div>");
 }
 
 void KTChat::sendMessage()

@@ -90,7 +90,7 @@ KTNotice::~KTNotice()
 
 void KTNotice::addMessage(const QString &message)
 {
-    QString css = "margin:8px; padding: 2px; border: 3px solid #999999; font-size: 8px;";
+    QString css = "font-size: 12px;";
     k->browser->append("<div style=\"" + css + "\">" + message + "</div>");
 }
 
