@@ -7,12 +7,12 @@ SUBDIRS += themes \
            framework \
            libtupi \
            store \
-           net \
            libbase \
+           net \
            libui \
            components \
            shell \
            plugins
-CONFIG += release \
-warn_on
+
+CONFIG += release warn_on
 TEMPLATE = subdirs

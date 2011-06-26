@@ -49,13 +49,13 @@ class KTNotice: public QWidget
     public:
         KTNotice(QWidget *parent = 0);
         ~KTNotice();
-        void addMessage(const QString &from, const QString &message);
+        void addMessage(const QString &message);
         
     signals:
         void requestSendMessage(const QString &message);
         
     protected slots:
-        void sendMessage();
+        // void sendMessage();
         
     private:
         struct Private;

@@ -749,11 +749,20 @@ void KTPaintArea::pasteItems()
              }
 
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
+                                      currentScene->currentLayerIndex(),
+                                      currentScene->currentFrameIndex(),
+                                      total, QPoint(), k->spaceMode, type,   
+                                      KTProjectRequest::Add, xml);
+             emit requestTriggered(&event);
+
+             /* SQA: Pay attention to the point variable - Copy/Paste issue 
+             KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 
                                       total, point, k->spaceMode, type, 
                                       KTProjectRequest::Add, xml);
              emit requestTriggered(&event);
+             */
      }
 
      k->menuOn = false;

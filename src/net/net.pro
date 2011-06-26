@@ -3,6 +3,15 @@
 # Subdir relative project main directory: ./src/net
 # Target is a library: net
 
+INSTALLS += headers \
+            target
+
+target.path = /lib/
+
+headers.target = .
+headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
+headers.path = /include/tupinet/
+
 HEADERS += ktnetprojectmanagerparams.h \
            ktnetprojectmanagerhandler.h \
            ktnetsocket.h \
@@ -23,7 +32,7 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktimportprojectpackage.h \
            ktchatpackage.h \
            ktnotice.h \
-           ktnoticepackage.h \
+           # ktnoticepackage.h \
            ktcomunicationparser.h
 
 SOURCES += ktnetprojectmanagerparams.cpp \
@@ -46,15 +55,17 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktimportprojectpackage.cpp \
            ktchatpackage.cpp \
            ktnotice.cpp \
-           ktnoticepackage.cpp \
+           # ktnoticepackage.cpp \
            ktcomunicationparser.cpp
 
-CONFIG += release warn_on staticlib
+CONFIG += dll warn_on
 TEMPLATE = lib
-TARGET = ntup 
+TARGET = tupinet 
+
+include(net_config.pri)
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-include(net_config.pri)
 
 include(../../tupiglobal.pri)
+

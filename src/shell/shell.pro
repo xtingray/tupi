@@ -74,6 +74,7 @@ linux-g{
     TARGETDEPS += ../../src/libtupi/libtupi.so \
   ../../src/libui/libui.a \
   ../../src/store/libtupistore.so \
+  ../../src/net/libtupinet.so \
   ../../src/components/pen/libpen.a \
   ../../src/components/kinas/libkinas.a \
   ../../src/components/help/libhelp.a \

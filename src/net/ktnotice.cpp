@@ -50,13 +50,10 @@ class KTNotice::Private
         
         ~Private()
         {
-            delete lineEdit;
             delete browser;
         }
         
-        QLineEdit *lineEdit;
         QTextEdit *browser;
-        QPushButton *send;
 };
 
 KTNotice::KTNotice(QWidget *parent) : QWidget(parent), k(new Private())
@@ -64,12 +61,13 @@ KTNotice::KTNotice(QWidget *parent) : QWidget(parent), k(new Private())
     setAttribute(Qt::WA_DeleteOnClose);
     QGridLayout *layout = new QGridLayout(this);
     
-    setWindowTitle("chat");
+    setWindowTitle(tr("Notices"));
     
     k->browser = new QTextEdit;
     k->browser->setReadOnly(true);
     layout->addWidget(k->browser, 0, 0);
-    
+
+    /*    
     QHBoxLayout *box = new QHBoxLayout;
     
     k->lineEdit = new QLineEdit;
@@ -79,9 +77,10 @@ KTNotice::KTNotice(QWidget *parent) : QWidget(parent), k(new Private())
     box->addWidget(k->send);
     
     layout->addLayout(box, 1, 0);
-    
+
     connect(k->lineEdit, SIGNAL(returnPressed()), k->send, SLOT(animateClick()));
     connect(k->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
+    */
 }
 
 KTNotice::~KTNotice()
@@ -89,12 +88,13 @@ KTNotice::~KTNotice()
     delete k;
 }
 
-void KTNotice::addMessage(const QString &from, const QString &message)
+void KTNotice::addMessage(const QString &message)
 {
-    k->browser->append("<div style=\"margin:10px; padding: 2px; border: 3px solid#999999; \">" 
-                        + tr("notice") + ":<br/>" + message + "<br/>" + tr(" by ") + from + "</div>");
+    QString css = "margin:8px; padding: 2px; border: 3px solid #999999; font-size: 8px;";
+    k->browser->append("<div style=\"" + css + "\">" + message + "</div>");
 }
 
+/*
 void KTNotice::sendMessage()
 {
     QString text = k->lineEdit->text();
@@ -103,3 +103,4 @@ void KTNotice::sendMessage()
     if (!text.isEmpty())
         emit requestSendMessage(text);
 }
+*/

@@ -54,7 +54,7 @@
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
-#include "ktnoticepackage.h"
+// #include "ktnoticepackage.h"
 
 #include "kterrorparser.h"
 #include "ktprojectsparser.h"
@@ -96,7 +96,7 @@ struct KTNetProjectManagerHandler::Private
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), k(new Private)
 {
     #ifdef K_DEBUG
-       TINIT;
+           TINIT;
     #endif
 
     k->socket = new KTNetSocket(this);
@@ -112,16 +112,14 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     k->comunicationModule->setWindowIcon(QPixmap(THEME_DIR + "icons/chat.png"));
 
     k->chat = new KTChat;
-    k->comunicationModule->addTab(k->chat, tr("chat"));
+    k->comunicationModule->addTab(k->chat, tr("Chat"));
     
     connect(k->chat, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendChatMessage(const QString&)));
     
     k->notices = new KTNotice;
-    k->comunicationModule->addTab(k->notices, tr("notices"));
+    k->comunicationModule->addTab(k->notices, tr("Notices"));
     
-    connect(k->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
-
-    tFatal() << "KTNetProjectManagerHandler::KTNetProjectManagerHandler() - Constructor is done!";
+    // connect(k->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
 }
 
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
@@ -263,6 +261,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
            T_FUNCINFOX("net");
     #endif
 
+    tError() << "KTNetProjectManagerHandler::handlePackage() - Just tracing!";
+
     if (root == "request") {
         KTRequestParser parser;
         if (parser.parse(package)) {
@@ -362,10 +362,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                }
     } else if (root == "notice") {
                KTComunicationParser parser;
+               tError() << "TRACING: Following the white rabbit!";
                if (parser.parse(package)) {
-                   QString message = QObject::tr("Notice From") + ": "+ parser.login() + "\n" + parser.message();
-                   TOsd::self()->display(tr("Notice"), message);
-                   k->notices->addMessage(parser.login(), parser.message());
+                   QString message = parser.message();
+                   // TOsd::self()->display(tr("Notice"), message);
+                   // k->notices->addMessage(message);
+                   tError() << "TRACING: " << message;
+               } else {
+                   tError() << "TRACING: FAIL!"; 
                }
     } else if (root == "wall") {
                KTComunicationParser parser;
@@ -406,11 +410,13 @@ void KTNetProjectManagerHandler::sendChatMessage(const QString & message)
     sendPackage(package);
 }
 
+/*
 void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
 {
     KTNoticePackage package(message);
     sendPackage(package);
 }
+*/
 
 void KTNetProjectManagerHandler::connectionLost()
 {
