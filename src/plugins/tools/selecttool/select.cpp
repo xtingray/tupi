@@ -216,10 +216,23 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                      KTLibraryObject::Type type;
 
                      if (svg) {
-                         position  = k->scene->currentFrame()->indexOf(svg);
+
+                         if (k->scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                             position = k->scene->currentFrame()->indexOf(svg);
+                         } else if (k->scene->spaceMode() == KTProject::BACKGROUND_EDITION) {
+                                    KTBackground *bg = k->scene->scene()->background();
+                                    position = bg->frame()->indexOf(svg); 
+                         }
                          type = KTLibraryObject::Svg;
+
                      } else {
-                         position  = k->scene->currentFrame()->indexOf(manager->parentItem());
+
+                         if (k->scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                             position = k->scene->currentFrame()->indexOf(manager->parentItem());
+                         } else if (k->scene->spaceMode() == KTProject::BACKGROUND_EDITION) {
+                                    KTBackground *bg = k->scene->scene()->background();
+                                    position = bg->frame()->indexOf(manager->parentItem());
+                         }
                          type = KTLibraryObject::Item;
                      }
 
@@ -239,7 +252,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
-                                tDebug("selection") << "position is " << position; 
+                                tFatal() << "Select::release() - position is " << position; 
                          #endif
                      }
                  }
@@ -321,6 +334,8 @@ void Select::itemResponse(const KTItemResponse *event)
 
         if (scene) {
 
+            tFatal() << "Select::itemResponse() -> project->spaceContext(): " << project->spaceContext();
+
             if (project->spaceContext() == KTProject::FRAMES_EDITION) {
 
                 layer = scene->layer(event->layerIndex());
@@ -337,18 +352,18 @@ void Select::itemResponse(const KTItemResponse *event)
                         return;
                     }
                 }
-            } else {
-                KTBackground *bg = scene->background();
-                if (bg) {
-                    KTFrame *frame = bg->frame();
-                   if (frame) {
-                       if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
-                           item = frame->svg(event->itemIndex());
-                       } else if (frame->graphicItemsCount()>0) {
-                                  item = frame->item(event->itemIndex());
+            } else if (project->spaceContext() == KTProject::BACKGROUND_EDITION) {
+                       KTBackground *bg = scene->background();
+                       if (bg) {
+                           KTFrame *frame = bg->frame();
+                           if (frame) {
+                               if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
+                                   item = frame->svg(event->itemIndex());
+                               } else if (frame->graphicItemsCount()>0) {
+                                          item = frame->item(event->itemIndex());
+                               }
+                           }
                        }
-                   }
-                }
             }
         }
     } else {

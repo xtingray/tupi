@@ -36,14 +36,16 @@
 #ifndef POSITIONTWEENER_H
 #define POSITIONTWEENER_H
 
-#include <kttoolplugin.h>
+#include "kttoolplugin.h"
 #include "settings.h"
-
+#include "ktprojectresponse.h"
 
 /**
  * @author Jorge Cuadrado
  * 
 */
+
+// class KTLayerResponse;
 
 class Tweener : public KTToolPlugin
 {
@@ -67,6 +69,9 @@ class Tweener : public KTToolPlugin
         int toolType() const;
         void aboutToChangeScene(KTGraphicsScene *scene);
         bool isComplete() const;
+
+    protected:
+        void layerResponse(KTLayerResponse *event);
 
     private:
         int framesTotal();

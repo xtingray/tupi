@@ -116,6 +116,8 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
                 response->setArg(frame->frameName());
+
+                scene->removeTweensFromFrame(position);
                 
                 if (layer->removeFrame(position)) {
                     response->setState(doc.toString(0));

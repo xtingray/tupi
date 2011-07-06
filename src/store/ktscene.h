@@ -70,6 +70,7 @@ typedef KTIntHash<KTSoundLayer *> SoundLayers;
 class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 {
     Q_OBJECT
+
     public:
         /**
           * Default Constructor
@@ -169,7 +170,11 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
 
+        void removeTweensFromFrame(int frame);
+
     private:
+        void removeTweensFromLayer(int layer);
+
         struct Private;
         Private *const k;
 };

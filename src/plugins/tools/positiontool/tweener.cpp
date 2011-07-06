@@ -867,4 +867,9 @@ void Tweener::disableSelection()
     }
 }
 
+void Tweener::layerResponse(KTLayerResponse *)
+{
+    tFatal() << "Tweener::layerResponse() - Just tracing! :P";
+}
+
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

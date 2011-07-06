@@ -41,7 +41,8 @@
 #include <QHash>
 
 #define VERIFY_STEP(index) if (index > k->frames || k->frames == 0) { \
-                               tWarning("items") << "Invalid step " << index << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
+                               tWarning("items") << "Invalid step " << index << " for tweening, maximun step are " \
+                                                 << k->frames << "; In " << __FUNCTION__; \
                                return; }
 
 #define STEP(index) index / (double)k->frames

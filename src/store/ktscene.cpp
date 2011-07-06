@@ -195,9 +195,12 @@ bool KTScene::removeLayer(int position)
     KTLayer *layer = this->layer(position);
 
     if (layer) {
-        k->layers.remove(position);
 
+        removeTweensFromLayer(position + 1);
+
+        k->layers.remove(position);
         k->layerCount--;
+
         if (k->nameIndex == position + 1) {
             k->nameIndex--;
         } else {
@@ -398,27 +401,6 @@ void KTScene::updateTweenObject(int index, KTSvgItem *object)
     k->tweeningSvgObjects.replace(index, object);
 }
 
-/*
-int KTScene::indexOfTweenObject(const QString &name, KTLibraryObject::Type itemType, KTItemTweener::Type tweenType)
-{
-    if (itemType == KTLibraryObject::Item) {
-        for (int i=0; i<k->tweeningGraphicObjects.size(); i++) {
-             KTItemTweener *tween = k->tweeningGraphicObjects.at(i)->tween();
-             if ((tween->name().compare(name) == 0) && (tween->type() == tweenType))
-                 return i;
-        }
-    } else {
-        for (int i=0; i<k->tweeningSvgObjects.size(); i++) {
-             KTItemTweener *tween = k->tweeningSvgObjects.at(i)->tween();
-             if ((tween->name().compare(name) == 0) && (tween->type() == tweenType))
-                 return i;
-        }
-    }
-
-    return -1;
-}
-*/
-
 void KTScene::removeTweenObject(KTGraphicObject *object)
 {
     if (k->tweeningGraphicObjects.size() > 0)
@@ -477,6 +459,44 @@ void KTScene::removeTween(const QString &name, KTItemTweener::Type type)
                      object->removeTween();
                      removeTweenObject(object);
                  }
+             }
+    }
+}
+
+void KTScene::removeTweensFromLayer(int layer)
+{
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             tFatal() << "KTScene::removeTweensFromLayer() - Layer: " << object->frame()->layer()->layerIndex();
+             tFatal() << "KTScene::removeTweensFromLayer() - Index: " << layer;
+             if (object->frame()->layer()->layerIndex() == layer) {
+                 object->removeTween();
+                 removeTweenObject(object);
+             }
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (object->frame()->layer()->layerIndex() == layer) {
+                 object->removeTween();
+                 removeTweenObject(object);
+             }
+    }
+}
+
+void KTScene::removeTweensFromFrame(int frame)
+{
+    foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
+             tFatal() << "KTScene::removeTweensFromFrame() - Layer: " << object->frame()->index();
+             tFatal() << "KTScene::removeTweensFromFrame() - Index: " << frame;
+             if (object->frame()->index() == frame) {
+                 object->removeTween();
+                 removeTweenObject(object);
+             }
+    }
+
+    foreach (KTSvgItem *object, k->tweeningSvgObjects) {
+             if (object->frame()->index() == frame) {
+                 object->removeTween();
+                 removeTweenObject(object);
              }
     }
 }

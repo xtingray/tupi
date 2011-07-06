@@ -178,16 +178,20 @@ void KTGraphicsScene::drawCurrentPhotogram()
     if (k->framePosition.frame >= frames)
         k->framePosition.frame = frames - 1;
 
-    if (k->spaceMode == KTProject::FRAMES_EDITION)
+    tFatal() << "KTGraphicsScene::drawCurrentPhotogram() - spaceMode: " << k->spaceMode;
+
+    if (k->spaceMode == KTProject::FRAMES_EDITION) {
         drawPhotogram(k->framePosition.frame);
-    else
-        drawBackground();
+    } else if (k->spaceMode == KTProject::BACKGROUND_EDITION) {
+               cleanWorkSpace();
+               drawBackground();
+    }
 }
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
     #ifdef K_DEBUG
-       T_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     Q_CHECK_PTR(k->scene);
@@ -246,7 +250,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                          }
 
                          // Painting next frames
-                         if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
+                         if (k->onionSkin.next > 0 && layer->framesNumber() > photogram + 1) {
 
                              double opacity = k->opacity;
                              double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
@@ -416,9 +420,13 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 {
     QList<KTGraphicObject *> tweenList = k->scene->tweeningGraphicObjects();
 
+    tFatal() << "KTGraphicsScene::addTweeningObjects() - ObjectList size: " << tweenList.count();
+
     for (int i=0; i < tweenList.count(); i++) {
 
          KTGraphicObject *object = tweenList.at(i);
+
+         tFatal() << "KTGraphicsScene::addTweeningObjects() - Just tracing!";
 
          if (object->frame()->layer()->isVisible()) {
              int origin = object->frame()->index();
@@ -816,10 +824,9 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
     k->scene = scene;
 
     if (k->spaceMode == KTProject::FRAMES_EDITION) {
-        tFatal() << "KTGraphicsScene::setCurrentScene() - Following!";
         drawCurrentPhotogram();
-    } else {
-        drawBackground();
+    } else if (k->spaceMode == KTProject::BACKGROUND_EDITION) {
+               drawBackground();
     }
 }
 

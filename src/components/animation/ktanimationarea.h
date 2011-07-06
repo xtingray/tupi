@@ -36,22 +36,24 @@
 #ifndef AANIMATIONAREA_H
 #define AANIMATIONAREA_H
 
+#include "ktscene.h"
+#include "ktglobal.h"
+#include "ktabstractprojectresponsehandler.h"
+
 #include <QImage>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
 #include <QFrame>
 
-#include "ktscene.h"
-#include "ktglobal.h"
-#include "ktabstractprojectresponsehandler.h"
-
 /**
  * @author David Cuadrado
 */
+
 class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResponseHandler
 {
     Q_OBJECT
+
     public:
         KTAnimationArea(const KTProject *project, QWidget *parent = 0);
         ~KTAnimationArea();

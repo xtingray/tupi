@@ -829,8 +829,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
                                  tFatal() << "KTLibraryWidget::libraryResponse() - Adding SVG object...";
-                                 // if (k->project->spaceContext() != KTProject::NONE)
-                                 //     insertObjectInWorkspace();
+                                 if (k->project->spaceContext() != KTProject::NONE)
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Sound:
