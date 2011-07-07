@@ -307,6 +307,8 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             default:
                  break;
     }
+
+    graphicsScene()->frameResponse(event);
 }
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
@@ -382,6 +384,8 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
             viewport()->update();
         }
     }
+
+    graphicsScene()->layerResponse(event);
 }
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
@@ -403,7 +407,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
            case KTProjectRequest::Remove:
                 {
                     if (k->currentSceneIndex > 0) {
-                        setCurrentScene(k->currentSceneIndex);
+                        setCurrentScene(k->currentSceneIndex - 1);
                     } else {
                         if (k->currentSceneIndex == 0) {
                             k->project->clear();
@@ -426,6 +430,8 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                 }
                 break;
     }
+
+    graphicsScene()->sceneResponse(event);
 }
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
@@ -473,7 +479,6 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                         viewport()->update(scene()->sceneRect().toRect());
 
-                        // if (k->currentTool.compare(tr("Object Selection")) == 0)
                         if (guiScene->currentTool()->toolType() == KTToolInterface::Selection)
                             guiScene->currentTool()->init(graphicsScene());          
                     }

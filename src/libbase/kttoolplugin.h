@@ -37,16 +37,17 @@
 #define KTTOOLPLUGIN_H
 
 #include <QObject>
-#include "kttoolinterface.h"
 
+#include "kttoolinterface.h"
 #include "ktglobal.h"
+#include "ktprojectresponse.h"
 
 class KTGraphicsScene;
 class QGraphicsView;
 class KTInputDeviceInformation;
 class KTBrushManager;
-class KTItemResponse;
-class KTProjectRequest;
+// class KTItemResponse;
+// class KTProjectRequest;
 
 /**
  * @author David Cuadrado
@@ -80,6 +81,10 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         virtual void aboutToChangeScene(KTGraphicsScene *scene);
 
         virtual void itemResponse(const KTItemResponse *event);
+        virtual void frameResponse(const KTFrameResponse *event);
+        virtual void layerResponse(const KTLayerResponse *event);
+        virtual void sceneResponse(const KTSceneResponse *event);
+
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent *event);
 

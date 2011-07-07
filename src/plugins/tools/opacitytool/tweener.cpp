@@ -518,4 +518,25 @@ void Tweener::updateMode(Settings::Mode mode)
     }
 }
 
+void Tweener::sceneResponse(const KTSceneResponse *event)
+{
+    if (event->action() == KTProjectRequest::Remove) {
+        k->objects.clear();
+        k->configurator->notifySelection(false);
+        k->configurator->resetUI();
+    }
+}
+
+void Tweener::layerResponse(const KTLayerResponse *event)
+{
+    if (event->action() == KTProjectRequest::Remove)
+        init(k->scene);
+}
+
+void Tweener::frameResponse(const KTFrameResponse *event)
+{
+    if (event->action() == KTProjectRequest::Remove && k->scene->currentLayerIndex() == event->layerIndex())
+        init(k->scene);
+}
+
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

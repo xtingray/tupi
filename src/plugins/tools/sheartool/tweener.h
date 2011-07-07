@@ -36,8 +36,9 @@
 #ifndef ROTATIONTWEENER_H
 #define ROTATIONTWEENER_H
 
-#include <kttoolplugin.h>
+#include "kttoolplugin.h"
 #include "settings.h"
+#include "ktprojectresponse.h"
 
 /**
  * @author Gustav Gonzalez 
@@ -67,6 +68,10 @@ class Tweener : public KTToolPlugin
 
         virtual void updateScene(KTGraphicsScene *scene);
         virtual void saveConfig();
+
+        virtual void sceneResponse(const KTSceneResponse *event);
+        virtual void layerResponse(const KTLayerResponse *event);
+        virtual void frameResponse(const KTFrameResponse *event);
 
     private:
         void setupActions();

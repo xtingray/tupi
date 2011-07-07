@@ -105,7 +105,8 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
     int scenePos = response->sceneIndex();
     int layerPos = response->layerIndex();
     int position = response->frameIndex();
-    
+    int realPosition = response->arg().toInt();
+
     KTScene *scene = m_project->scene(scenePos);
     
     if (scene) {
@@ -117,7 +118,7 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
                 doc.appendChild(frame->toXml(doc));
                 response->setArg(frame->frameName());
 
-                scene->removeTweensFromFrame(position);
+                scene->removeTweensFromFrame(realPosition);
                 
                 if (layer->removeFrame(position)) {
                     response->setState(doc.toString(0));

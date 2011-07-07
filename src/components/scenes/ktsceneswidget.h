@@ -80,7 +80,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 
     public slots:
         void sendEvent(int action);
-        void selectScene(const QString & name, int index);
+        void selectScene(int index);
 };
 
 #endif

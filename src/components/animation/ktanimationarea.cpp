@@ -34,20 +34,18 @@
  ***************************************************************************/
 
 #include "ktanimationarea.h"
+#include "ktprojectresponse.h"
+#include "ktgraphicobject.h"
+#include "ktgraphicsscene.h"
+#include "ktanimationrenderer.h"
+#include "ktsoundlayer.h"
+#include "tdebug.h"
 
 #include <QGraphicsItem>
 #include <QApplication>
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QDesktopWidget>
-
-#include "ktprojectresponse.h"
-#include "ktgraphicobject.h"
-#include "ktgraphicsscene.h"
-#include "ktanimationrenderer.h"
-#include "ktsoundlayer.h"
-
-#include "tdebug.h"
 
 struct KTAnimationArea::Private
 {
@@ -291,10 +289,8 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
             break;
             case KTProjectRequest::Remove:
              {
-                 if (event->sceneIndex() == k->currentSceneIndex) {
-                     if (k->currentSceneIndex != 0)
-                         setCurrentScene(k->currentSceneIndex-1);
-                 }
+                 if (event->sceneIndex() == k->currentSceneIndex)
+                     setCurrentScene(k->currentSceneIndex);
              }
             break;
             default: 
@@ -414,6 +410,12 @@ void KTAnimationArea::setLoop(bool loop)
 void KTAnimationArea::setCurrentScene(int index)
 {
     k->currentSceneIndex = index;
+}
+
+void KTAnimationArea::updateSceneIndex()
+{
+    if (k->currentSceneIndex > 0)
+        k->currentSceneIndex--;
 }
 
 KTScene *KTAnimationArea::currentScene() const

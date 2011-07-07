@@ -34,14 +34,13 @@
  ***************************************************************************/
 
 #include "kttoolplugin.h"
-#include <QGraphicsView>
-
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
-#include "ktprojectresponse.h"
 #include "ktgraphicsscene.h"
 
 #include "tdebug.h"
+
+#include <QGraphicsView>
 
 struct KTToolPlugin::Private
 {
@@ -85,6 +84,21 @@ void KTToolPlugin::begin()
 void KTToolPlugin::end()
 {
     tDebug("tools") << "End: " << k->currentTool;
+}
+
+void KTToolPlugin::sceneResponse(const KTSceneResponse *event)
+{
+    Q_UNUSED(event);
+}
+
+void KTToolPlugin::layerResponse(const KTLayerResponse *event)
+{
+    Q_UNUSED(event);
+}
+
+void KTToolPlugin::frameResponse(const KTFrameResponse *event)
+{
+    Q_UNUSED(event);
 }
 
 void KTToolPlugin::itemResponse(const KTItemResponse *event)

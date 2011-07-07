@@ -37,8 +37,8 @@
 #define SELECT_H
 
 #include <QObject>
-#include <kttoolplugin.h>
 
+#include "kttoolplugin.h"
 #include "ktpathitem.h"
 #include "ktproject.h"
 #include "ktgraphicsscene.h"

@@ -136,7 +136,7 @@ void KTScenesWidget::sendEvent(int action)
     }
 }
 
-void KTScenesWidget::selectScene(const QString &name, int index)
+void KTScenesWidget::selectScene(int index)
 {
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
     emit localRequestTriggered(&event);
@@ -161,13 +161,19 @@ void KTScenesWidget::emitRequestInsertScene()
 
     event = KTRequestBuilder::createFrameRequest(index, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
     emit requestTriggered(&event);
+
+    k->tableScenes->selectScene(index);
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->tableScenes->indexCurrentScene(), KTProjectRequest::Remove);
+    int index = k->tableScenes->indexCurrentScene();
 
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Remove);
     emit requestTriggered(&event);
+
+    if (k->tableScenes->scenesCount() == 0)
+        emitRequestInsertScene();
 }
 
 void KTScenesWidget::closeAllScenes()

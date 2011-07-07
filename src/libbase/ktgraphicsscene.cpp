@@ -42,8 +42,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 
-#include <ktscene.h>
-#include <ktlayer.h>
+#include "ktscene.h"
+#include "ktlayer.h"
 
 #include "ktgraphicobject.h"
 #include "ktitemgroup.h"
@@ -61,7 +61,6 @@
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 
-#include "ktprojectresponse.h"
 #include "tdebug.h"
 #include "ktguideline.h"
 
@@ -194,7 +193,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
            T_FUNCINFO;
     #endif
 
-    Q_CHECK_PTR(k->scene);
+    // Q_CHECK_PTR(k->scene);
 
     if (photogram < 0 || !k->scene) 
         return;
@@ -1068,16 +1067,44 @@ bool KTGraphicsScene::event(QEvent *e)
     return QGraphicsScene::event(e);
 }
 
+void KTGraphicsScene::sceneResponse(KTSceneResponse *event)
+{
+    #ifdef K_DEBUG
+           T_FUNCINFOX("scene");
+    #endif
+
+    if (k->tool)
+        k->tool->sceneResponse(event);
+}
+
+void KTGraphicsScene::layerResponse(KTLayerResponse *event)
+{
+    #ifdef K_DEBUG
+           T_FUNCINFOX("scene");
+    #endif
+
+    if (k->tool)
+        k->tool->layerResponse(event);
+}
+
+void KTGraphicsScene::frameResponse(KTFrameResponse *event)
+{
+    #ifdef K_DEBUG
+           T_FUNCINFOX("scene");
+    #endif
+
+    if (k->tool) 
+        k->tool->frameResponse(event);
+}
+
 void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("scene");
     #endif
 
-    if (k->tool) {
-        // k->tool->init(this); // FIXME:k->tool->init(this); in itemResponse ???
+    if (k->tool) 
         k->tool->itemResponse(event);
-    }
 }
 
 bool KTGraphicsScene::isDrawing() const

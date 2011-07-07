@@ -41,6 +41,7 @@
 #include "ktglobal.h"
 #include "ktsvgitem.h"
 #include "ktproject.h"
+#include "ktprojectresponse.h"
 
 /**
  * @author David Cuadrado
@@ -52,7 +53,8 @@ class KTScene;
 class KTToolPlugin;
 class KTBrushManager;
 class QMouseEvent;
-class KTItemResponse;
+// class KTItemResponse;
+// class KTLayerResponse;
 
 class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
 {
@@ -95,6 +97,9 @@ class TUPI_EXPORT KTGraphicsScene : public QGraphicsScene
         KTBrushManager *brushManager() const;
         
         void itemResponse(KTItemResponse *event);
+        void frameResponse(KTFrameResponse *event);
+        void layerResponse(KTLayerResponse *event);
+        void sceneResponse(KTSceneResponse *event);
         
         void mouseMoved(QGraphicsSceneMouseEvent *event);
         void mouseReleased(QGraphicsSceneMouseEvent *event);

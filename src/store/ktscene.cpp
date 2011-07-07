@@ -485,8 +485,6 @@ void KTScene::removeTweensFromLayer(int layer)
 void KTScene::removeTweensFromFrame(int frame)
 {
     foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
-             tFatal() << "KTScene::removeTweensFromFrame() - Layer: " << object->frame()->index();
-             tFatal() << "KTScene::removeTweensFromFrame() - Index: " << frame;
              if (object->frame()->index() == frame) {
                  object->removeTween();
                  removeTweenObject(object);

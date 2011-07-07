@@ -45,8 +45,6 @@
  * 
 */
 
-// class KTLayerResponse;
-
 class Tweener : public KTToolPlugin
 {
     Q_OBJECT
@@ -70,8 +68,9 @@ class Tweener : public KTToolPlugin
         void aboutToChangeScene(KTGraphicsScene *scene);
         bool isComplete() const;
 
-    protected:
-        void layerResponse(KTLayerResponse *event);
+        virtual void sceneResponse(const KTSceneResponse *event);
+        virtual void layerResponse(const KTLayerResponse *event);
+        virtual void frameResponse(const KTFrameResponse *event);
 
     private:
         int framesTotal();

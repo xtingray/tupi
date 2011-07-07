@@ -39,15 +39,14 @@
 #include "tdebug.h"
 #include "tglobal.h"
 #include "koptionaldialog.h"
+#include "ktprojectrequest.h"
+#include "ktrequestbuilder.h"
 
 #include <QToolTip>
 #include <QPixmap>
 #include <QHBoxLayout>
 #include <QList>
 #include <QMenu>
-
-#include "ktprojectrequest.h"
-#include "ktrequestbuilder.h"
 
 struct KTExposureSheet::Private
 {
@@ -201,6 +200,7 @@ void KTExposureSheet::applyAction(int action)
     }
 
     switch (action) {
+
             case KTProjectActionBar::InsertLayer:
                {
                  int layer = k->currentTable->columnCount();
@@ -218,6 +218,7 @@ void KTExposureSheet::applyAction(int action)
                  }
                }
                break;
+
             case KTProjectActionBar::RemoveLayer:
                {
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), 
@@ -226,6 +227,7 @@ void KTExposureSheet::applyAction(int action)
                  emit requestTriggered(&event);
                }
                break;
+
             case KTProjectActionBar::InsertFrame:
                {
                  int usedFrames = k->currentTable->usedFrames(k->currentTable->currentColumn());
@@ -248,6 +250,7 @@ void KTExposureSheet::applyAction(int action)
 
                }
                break;
+
             case KTProjectActionBar::RemoveFrame:
                {
                  int scene = k->scenes->currentIndex();
@@ -275,6 +278,7 @@ void KTExposureSheet::applyAction(int action)
                      KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene, 
                                               layer, target, KTProjectRequest::Remove);
                      emit requestTriggered(&event);
+
                      if (target > 0)
                          selectFrame(layer, target-1);
                      else 
@@ -291,13 +295,14 @@ void KTExposureSheet::applyAction(int action)
                      selectFrame(layer, target);
 
                      KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, 
-                                                layer, lastFrame, KTProjectRequest::Remove);
+                                                layer, lastFrame, KTProjectRequest::Remove, target);
                      emit requestTriggered(&request);
                  }
 
                  k->fromMenu = false;
                }
                break;
+
             case KTProjectActionBar::MoveFrameUp:
                {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
@@ -306,6 +311,7 @@ void KTExposureSheet::applyAction(int action)
                  emit requestTriggered(&event);
                }
                break;
+
             case KTProjectActionBar::MoveFrameDown:
                {
                  if (k->currentTable->currentFrame()+1 == k->currentTable->framesTotalAtCurrentLayer())
@@ -317,6 +323,7 @@ void KTExposureSheet::applyAction(int action)
                  emit requestTriggered(&event);
                }
                break;
+
             case KTProjectActionBar::LockFrame:
                {
                  bool locked = k->currentTable->frameIsLocked(k->currentTable->currentColumn(), 
@@ -505,6 +512,13 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
                 k->scenes->TabWidget()->removeTab(e->sceneIndex());
                 //delete widget;
                 k->scenes->blockSignals(false);
+
+                int layer = k->currentTable->currentLayer();
+                int frame = k->currentTable->currentFrame() + 1;
+
+                KTProjectRequest request = KTRequestBuilder::createFrameRequest(e->sceneIndex() - 1, layer,
+                                           frame, KTProjectRequest::Select, "1");
+                emit requestTriggered(&request);
             }
            break;
            case KTProjectRequest::Move:

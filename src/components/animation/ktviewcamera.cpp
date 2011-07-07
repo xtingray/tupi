@@ -161,6 +161,9 @@ void KTViewCamera::updateSceneInfo()
 
 bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 {
+    if (response->action() == KTProjectRequest::Remove) 
+        m_animationArea->updateSceneIndex();
+
     if (response->part() == KTProjectRequest::Scene)
         updateSceneInfo();
 
