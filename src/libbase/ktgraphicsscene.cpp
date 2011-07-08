@@ -34,14 +34,6 @@
  ***************************************************************************/
 
 #include "ktgraphicsscene.h"
-
-#include <QGraphicsItem>
-#include <QSvgRenderer>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QKeyEvent>
-
 #include "ktscene.h"
 #include "ktlayer.h"
 
@@ -63,6 +55,13 @@
 
 #include "tdebug.h"
 #include "ktguideline.h"
+
+#include <QGraphicsItem>
+#include <QSvgRenderer>
+#include <QGraphicsView>
+#include <QStyleOptionGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
 
 /**
  * This class defines the data structure and methods for handling animation scenes.
@@ -195,10 +194,16 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     // Q_CHECK_PTR(k->scene);
 
+    tFatal() << "KTGraphicsScene::drawPhotogram() - flag: " << photogram;
+
     if (photogram < 0 || !k->scene) 
         return;
 
+    tFatal() << "KTGraphicsScene::drawPhotogram() - test 1";
+
     cleanWorkSpace();
+
+    tFatal() << "KTGraphicsScene::drawPhotogram() - test 2";
 
     bool valid = false;
 

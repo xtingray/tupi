@@ -103,7 +103,7 @@ void KTScenesWidget::setupTableScenes()
     addChild(searcher);
     addChild(k->tableScenes);
 
-    connect(k->tableScenes, SIGNAL(changeCurrent(QString , int)), 
+    connect(k->tableScenes, SIGNAL(changeCurrent(QString, int)), 
             this, SLOT(selectScene(QString, int)));
 
     /*
@@ -136,10 +136,16 @@ void KTScenesWidget::sendEvent(int action)
     }
 }
 
-void KTScenesWidget::selectScene(int index)
+void KTScenesWidget::selectScene(QString name, int index)
 {
+    Q_UNUSED(name);
+
+    tFatal() << "KTScenesWidget::selectScene() - Requesting selection for index: " << index;
+
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
-    emit localRequestTriggered(&event);
+    emit requestTriggered(&event);
+
+    // emit localRequestTriggered(&event);
 }
 
 void KTScenesWidget::emitRequestInsertScene()
@@ -148,12 +154,13 @@ void KTScenesWidget::emitRequestInsertScene()
            T_FUNCINFO;
     #endif
 
-    int index = k->tableScenes->indexCurrentScene() + 1;
+    // int index = k->tableScenes->indexCurrentScene() + 1;
+    // if (index == 0)
 
-    if (index == 0)
-        index = k->tableScenes->scenesCount();
+    int index = k->tableScenes->scenesCount();
 
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add, tr("Scene %1").arg(index + 1));
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add, 
+                                                                  tr("Scene %1").arg(index + 1));
     emit requestTriggered(&event);
 
     event = KTRequestBuilder::createLayerRequest(index, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
@@ -205,6 +212,7 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
             break;
             case KTProjectRequest::Select:
              {
+               tFatal() << "KTScenesWidget::sceneResponse() - Selecting scene index: " << e->sceneIndex();
                k->tableScenes->selectScene(e->sceneIndex());
              }
             break;

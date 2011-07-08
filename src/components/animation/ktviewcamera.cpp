@@ -156,16 +156,37 @@ void KTViewCamera::previousFrame()
 
 void KTViewCamera::updateSceneInfo()
 {
-    showSceneInfo(m_animationArea->currentScene());
+    KTScene *scene = m_animationArea->currentScene();
+    if (scene)
+        showSceneInfo(scene);
 }
 
 bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 {
-    if (response->action() == KTProjectRequest::Remove) 
-        m_animationArea->updateSceneIndex();
+    if (KTSceneResponse *sceneResponse = static_cast<KTSceneResponse *>(response)) {
 
-    if (response->part() == KTProjectRequest::Scene)
+        int index = sceneResponse->sceneIndex();
+
+        switch (sceneResponse->action()) {
+            case KTProjectRequest::Remove:
+            {
+                 tFatal() << "KTViewCamera::handleProjectResponse() - Removing index: " << sceneResponse->sceneIndex();
+                 tFatal() << "KTViewCamera::handleProjectResponse() - Scenes Total: " << project->scenesTotal();
+                 if (index > 0)
+                     m_animationArea->updateSceneIndex(index - 1);
+            }
+            break;
+            case KTProjectRequest::Select:
+            {
+                 tFatal() << "KTViewCamera::handleProjectResponse() - Selection index: " << sceneResponse->sceneIndex();
+                 if (index >= 0)
+                     m_animationArea->updateSceneIndex(index);
+            }
+            break;
+        }
+
         updateSceneInfo();
+    }
 
     return m_animationArea->handleResponse(response);
 }

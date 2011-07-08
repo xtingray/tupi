@@ -516,9 +516,11 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
                 int layer = k->currentTable->currentLayer();
                 int frame = k->currentTable->currentFrame() + 1;
 
-                KTProjectRequest request = KTRequestBuilder::createFrameRequest(e->sceneIndex() - 1, layer,
-                                           frame, KTProjectRequest::Select, "1");
-                emit requestTriggered(&request);
+                if (e->sceneIndex() > 0) {
+                    KTProjectRequest request = KTRequestBuilder::createFrameRequest(e->sceneIndex() - 1, layer,
+                                               frame, KTProjectRequest::Select, "1");
+                    emit requestTriggered(&request);
+                }
             }
            break;
            case KTProjectRequest::Move:

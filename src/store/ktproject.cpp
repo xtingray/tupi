@@ -121,6 +121,8 @@ void KTProject::loadLibrary(const QString &filename)
  */
 void KTProject::clear()
 {
+    tFatal() << "KTProject::clear() - Resetting project!";
+
     k->scenes.clear(true);
     k->sceneCounter = 0;
 
@@ -227,6 +229,7 @@ KTScene *KTProject::createScene(QString name, int position, bool loaded)
     tFatal() << "KTProject::createScene() - Inserting scene " << name << " at position: " << position;
     k->scenes.insert(position, scene);
     k->sceneCounter++;
+    tFatal() << "KTProject::createScene() - SceneSize: " << k->sceneCounter;
 
     // scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
     scene->setSceneName(name);
@@ -241,6 +244,7 @@ KTScene *KTProject::createScene(QString name, int position, bool loaded)
 
 void KTProject::updateScene(int position, KTScene *scene)
 {
+    tFatal() << "KTProject::updateScene() - Inserting scene in position: " << position;
     k->scenes.insert(position, scene);
 }
 
@@ -249,6 +253,10 @@ bool KTProject::removeScene(int position)
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+
+    tFatal() << "KTProject::removeScene() - Scenes total: " << scenesTotal();
+    tFatal() << "KTProject::removeScene() - Removing scene: " << position;
+
     KTScene *toRemove = scene(position);
 
     if (toRemove) {
@@ -256,8 +264,12 @@ bool KTProject::removeScene(int position)
         delete toRemove;
         toRemove = 0;
         k->sceneCounter--;
+        tFatal() << "KTProject::removeScene() - Scenes counter: " << k->sceneCounter;
+        tFatal() << "KTProject::removeScene() - Scenes total: " << scenesTotal();
 
         return true;
+    } else {
+        tFatal() << "KTProject::removeScene() - Error removing scene: " << position;
     }
 
     return false;
@@ -282,6 +294,16 @@ KTScene *KTProject::scene(int position) const
     #ifdef K_DEBUG
            T_FUNCINFOX("project")<< position;
     #endif
+
+    QList<int> list = k->scenes.indexes();
+    QString test = "";
+    for (int i = 0; i < list.size(); ++i) {
+         test += QString::number(list.at(i));
+         if (i < (list.size()-1)) 
+             test += " ";
+    }
+
+    tFatal() << "KTProject::scene() - Indexes: " << test;
 
     if (position < 0 || position >= k->scenes.count()) {
         #ifdef K_DEBUG

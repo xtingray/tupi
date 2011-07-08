@@ -126,12 +126,15 @@ void KTPaintArea::setCurrentScene(int index)
     if (k->project->scenesTotal() > 0) {
 
         tFatal() << "KTPaintArea::setCurrentScene() - Scene Index: " << index;
+        tFatal() << "KTPaintArea::setCurrentScene() - Scenes total: " << k->project->scenesTotal(); 
 
         KTScene *scene = k->project->scene(index);
         if (scene) {
+            tFatal() << "KTPaintArea::setCurrentScene() - Drawing scene: " << index;
             k->currentSceneIndex = index;
             graphicsScene()->setCurrentScene(scene);
         } else {
+            tFatal() << "KTPaintArea::setCurrentScene() - Drawing scene: -1";
             setDragMode(QGraphicsView::NoDrag);
             k->currentSceneIndex = -1;
             graphicsScene()->setCurrentScene(0);
@@ -266,7 +269,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
                     setUpdatesEnabled(true);
                    
-                    tFatal() << "KTPaintArea::frameResponse() - [" << event->layerIndex() << ", " << event->frameIndex() << "]";
+                    tFatal() << "KTPaintArea::frameResponse() - [" << event->sceneIndex() << ", " << event->layerIndex() << ", " << event->frameIndex() << "]";
                     guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
                     if (k->spaceMode == KTProject::FRAMES_EDITION) {
@@ -400,12 +403,24 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
     switch(event->action()) {
            case KTProjectRequest::Select:
                 {
-                    if (event->sceneIndex() >= 0)
-                        setCurrentScene(event->sceneIndex());
+                    if (event->sceneIndex() >= 0) {
+                        tFatal() << "KTPaintArea::sceneResponse() - Select index: " << event->sceneIndex(); 
+                        tFatal() << "KTPaintArea::sceneResponse() - Scenes size: " << k->project->scenesTotal();
+                        if (k->project->scenesTotal() == 1)
+                            setCurrentScene(0);
+                        else
+                            setCurrentScene(event->sceneIndex());
+                    }
                     break;
                 }
            case KTProjectRequest::Remove:
                 {
+                    tFatal() << "KTPaintArea::sceneResponse() - event->sceneIndex(): " << event->sceneIndex();
+                    tFatal() << "KTPaintArea::sceneResponse() - k->currentSceneIndex: " << k->currentSceneIndex;
+
+                    setCurrentScene(k->currentSceneIndex);
+
+                    /*
                     if (k->currentSceneIndex > 0) {
                         setCurrentScene(k->currentSceneIndex - 1);
                     } else {
@@ -420,6 +435,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                             viewport()->update();
                         }
                     }
+                    */
                 }
                 break;
            default: 

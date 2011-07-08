@@ -284,6 +284,7 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
     switch (event->action()) {
             case KTProjectRequest::Select:
              {
+                 tFatal() << "KTAnimationArea::sceneResponse() - selecting scene: " << event->sceneIndex();
                  setCurrentScene(event->sceneIndex());
              }
             break;
@@ -412,15 +413,26 @@ void KTAnimationArea::setCurrentScene(int index)
     k->currentSceneIndex = index;
 }
 
-void KTAnimationArea::updateSceneIndex()
+void KTAnimationArea::updateSceneIndex(int index)
 {
-    if (k->currentSceneIndex > 0)
-        k->currentSceneIndex--;
+    k->currentSceneIndex = index;
 }
 
 KTScene *KTAnimationArea::currentScene() const
 {
-    return k->project->scene(k->currentSceneIndex);
+    tFatal() << "KTAnimationArea::currentScene() - Requesting scene at index: " << k->currentSceneIndex;
+    tFatal() << "KTAnimationArea::currentScene() - Scenes Total: " << k->project->scenesTotal();
+
+    if (k->currentSceneIndex < k->project->scenesTotal()) {
+        return k->project->scene(k->currentSceneIndex);
+    } else {
+        if (k->project->scenesTotal() == 1) {
+            k->currentSceneIndex = 0;
+            return k->project->scene(0);
+        } 
+    }
+
+    return 0;
 }
 
 void KTAnimationArea::refreshAnimation(const KTProject *project) 

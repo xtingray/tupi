@@ -62,7 +62,7 @@ void KTCommandExecutor::getScenes(KTSceneResponse *response)
 bool KTCommandExecutor::createScene(KTSceneResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFO;
+           T_FUNCINFO;
     #endif
     
     int position = response->sceneIndex();
@@ -99,7 +99,7 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
 bool KTCommandExecutor::removeScene(KTSceneResponse *response)
 {
     #ifdef K_DEBUG
-        T_FUNCINFO;
+           T_FUNCINFO;
     #endif    
 
     int position = response->sceneIndex();

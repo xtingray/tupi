@@ -34,13 +34,11 @@
  ***************************************************************************/
 
 #include "ktcommandexecutor.h"
-
 #include "ktscene.h"
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
 #include "ktlayer.h"
 #include "ktframe.h"
-
 #include "ktprojectresponse.h"
 
 #include "tdebug.h"
@@ -302,6 +300,8 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
     // bool prioritary = response->arg().toBool();
 
     KTScene *scene = m_project->scene(scenePos);
+
+    tFatal() << "KTCommandExecutor::selectFrame() - Total scenes: " << m_project->scenesTotal();
 
     if (!scene || scenePos < 0 || position < 0)
         return false;
