@@ -196,3 +196,21 @@ bool KTCommandExecutor::setSceneVisibility(KTSceneResponse *response)
     
     return true;
 }
+
+bool KTCommandExecutor::resetScene(KTSceneResponse *response)
+{
+    int position = response->sceneIndex();
+    QString name = response->arg().toString();
+    KTScene *scene = m_project->scene(position);
+
+    tFatal() << "KTCommandExecutor::resetScene() - Reseting scene: " << position;
+
+    if (!scene)
+        return false;
+
+    scene->reset(name);
+
+    emit responsed(response);
+
+    return true;
+}

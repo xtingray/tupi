@@ -49,11 +49,13 @@ class KTProjectResponse;
 class KTLibraryResponse;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class KTCommandExecutor : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTCommandExecutor(KTProject *project);
         ~KTCommandExecutor();
@@ -110,6 +112,8 @@ class KTCommandExecutor : public QObject
         
         bool expandFrame(KTFrameResponse *response);
         bool pasteFrame( KTFrameResponse *response);
+
+        bool resetScene(KTSceneResponse *response);
         
     signals:
         void responsed(KTProjectResponse *response);

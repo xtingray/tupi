@@ -508,9 +508,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
            case KTProjectRequest::Remove:
             {
                 k->scenes->blockSignals(true);
-                //QWidget * widget = k->scenes->getTable(e->sceneIndex());
                 k->scenes->TabWidget()->removeTab(e->sceneIndex());
-                //delete widget;
                 k->scenes->blockSignals(false);
 
                 int layer = k->currentTable->currentLayer();
@@ -521,6 +519,18 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
                                                frame, KTProjectRequest::Select, "1");
                     emit requestTriggered(&request);
                 }
+            }
+           break;
+           case KTProjectRequest::Reset:
+            {
+                setScene(e->sceneIndex());
+                renameScene(e->sceneIndex(), e->arg().toString());
+
+                KTProjectRequest request = KTRequestBuilder::createFrameRequest(e->sceneIndex(), 0,
+                                            0, KTProjectRequest::Select, "1");
+                emit requestTriggered(&request);
+
+                k->currentTable->reset();
             }
            break;
            case KTProjectRequest::Move:

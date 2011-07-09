@@ -176,11 +176,14 @@ void KTScenesWidget::emitRequestRemoveScene()
 {
     int index = k->tableScenes->indexCurrentScene();
 
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Remove);
-    emit requestTriggered(&event);
-
-    if (k->tableScenes->scenesCount() == 0)
-        emitRequestInsertScene();
+    if (k->tableScenes->scenesCount() == 1) {
+        KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Reset, 
+                                                                      tr("Scene %1").arg(1));
+        emit requestTriggered(&event);
+    } else {
+        KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Remove);
+        emit requestTriggered(&event);
+    }
 }
 
 void KTScenesWidget::closeAllScenes()
@@ -203,6 +206,11 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
             case KTProjectRequest::Remove:
              {
                k->tableScenes->removeScene(e->sceneIndex());
+             }
+            break;
+            case KTProjectRequest::Reset:
+             {
+               k->tableScenes->renameScene(e->sceneIndex(), e->arg().toString());
              }
             break;
             case KTProjectRequest::Rename:

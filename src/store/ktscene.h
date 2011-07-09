@@ -171,6 +171,7 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         virtual QDomElement toXml(QDomDocument &doc) const;
 
         void removeTweensFromFrame(int frame);
+        void reset(QString &name);
 
     private:
         void removeTweensFromLayer(int layer);

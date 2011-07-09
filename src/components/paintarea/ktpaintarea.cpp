@@ -33,16 +33,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QGraphicsRectItem>
-#include <QPolygon>
-#include <QApplication>
-#include <QTimer>
-#include <QStyleOptionGraphicsItem>
-#include <QClipboard>
-#include <QMenu>
-
 #include "ktpaintarea.h"
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
@@ -71,6 +61,16 @@
 #include "ktproject.h"
 
 #include "tosd.h"
+
+#include <QGraphicsScene>
+#include <QMouseEvent>
+#include <QGraphicsRectItem>
+#include <QPolygon>
+#include <QApplication>
+#include <QTimer>
+#include <QStyleOptionGraphicsItem>
+#include <QClipboard>
+#include <QMenu>
 
 /**
  * This class defines the behavior of the main paint area when ilustration module is on
@@ -134,10 +134,14 @@ void KTPaintArea::setCurrentScene(int index)
             k->currentSceneIndex = index;
             graphicsScene()->setCurrentScene(scene);
         } else {
-            tFatal() << "KTPaintArea::setCurrentScene() - Drawing scene: -1";
-            setDragMode(QGraphicsView::NoDrag);
-            k->currentSceneIndex = -1;
-            graphicsScene()->setCurrentScene(0);
+            if (k->project->scenesTotal() == 1) {
+                tFatal() << "KTPaintArea::setCurrentScene() - Drawing scene: 0";
+                setDragMode(QGraphicsView::NoDrag);
+                k->currentSceneIndex = 0;
+                graphicsScene()->setCurrentScene(0);
+            } else {
+                tFatal() << "KTPaintArea::setCurrentScene() - Critial error!";
+            }
         }
     }
 }
@@ -418,7 +422,8 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                     tFatal() << "KTPaintArea::sceneResponse() - event->sceneIndex(): " << event->sceneIndex();
                     tFatal() << "KTPaintArea::sceneResponse() - k->currentSceneIndex: " << k->currentSceneIndex;
 
-                    setCurrentScene(k->currentSceneIndex);
+                    if (k->project->scenesTotal() > 0)
+                        setCurrentScene(k->currentSceneIndex);
 
                     /*
                     if (k->currentSceneIndex > 0) {
@@ -436,6 +441,11 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                         }
                     }
                     */
+                }
+                break;
+           case KTProjectRequest::Reset:
+                {
+                    setCurrentScene(0);
                 }
                 break;
            default: 

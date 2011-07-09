@@ -36,11 +36,6 @@
 #include "ktscene.h"
 #include "tdebug.h"
 
-#include <QDir>
-#include <QGraphicsItem>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-
 #include "ktgraphicobject.h"
 #include "ktsvgitem.h"
 #include "ktsoundlayer.h"
@@ -48,6 +43,11 @@
 #include "ktitemgroup.h"
 #include "ktprojectloader.h"
 #include "ktitemfactory.h"
+
+#include <QDir>
+#include <QGraphicsItem>
+#include <QGraphicsView>
+#include <QStyleOptionGraphicsItem>
 
 struct KTScene::Private
 {
@@ -57,7 +57,7 @@ struct KTScene::Private
     QString name;
     bool isLocked;
     int layerCount;
-    int nameIndex;
+    // int nameIndex;
     bool isVisible;
 
     QList<KTGraphicObject *> tweeningGraphicObjects;
@@ -68,7 +68,7 @@ KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
 {
     k->isLocked = false;
     k->layerCount = 0;
-    k->nameIndex = 0;
+    // k->nameIndex = 0;
     k->isVisible = true;
     k->background = new KTBackground(this);
 }
@@ -148,7 +148,7 @@ KTLayer *KTScene::createLayer(QString name, int position, bool loaded)
     }
 
     k->layerCount++;
-    k->nameIndex++;
+    // k->nameIndex++;
 
     KTLayer *layer = new KTLayer(this, k->layerCount);
 
@@ -178,7 +178,7 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
     KTSoundLayer *layer = new KTSoundLayer(this);
     k->layerCount++;
 
-    layer->setLayerName(tr("Sound layer %1").arg(k->nameIndex));
+    layer->setLayerName(tr("Sound layer %1").arg(k->layerCount));
 
     k->soundLayers.insert(position, layer);
 
@@ -201,6 +201,7 @@ bool KTScene::removeLayer(int position)
         k->layers.remove(position);
         k->layerCount--;
 
+        /*
         if (k->nameIndex == position + 1) {
             k->nameIndex--;
         } else {
@@ -208,6 +209,7 @@ bool KTScene::removeLayer(int position)
                 k->nameIndex = 0;
             }
         }
+        */
 
         QList<int> indexList = this->layers().indexes();
         int size = this->layersTotal();
@@ -601,4 +603,19 @@ QList<int> KTScene::layerIndexes()
 KTBackground* KTScene::background()
 {
     return k->background;
+}
+
+void KTScene::reset(QString &name)
+{
+    k->name = name;
+
+    k->background = new KTBackground(this);
+    k->layers.clear();
+
+    k->layerCount = 1;
+    KTLayer *layer = new KTLayer(this, k->layerCount);
+    layer->setLayerName(tr("Layer %1").arg(1));
+    layer->createFrame(tr("Frame %1").arg(1), 0, false);
+
+    k->layers.insert(0, layer);
 }

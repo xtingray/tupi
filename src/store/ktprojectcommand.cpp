@@ -419,6 +419,11 @@ void KTProjectCommand::sceneCommand()
                  k->executor->removeScene(response);
             }
             break;
+            case KTProjectRequest::Reset:
+            {
+                 k->executor->resetScene(response);
+            }
+            break;
             case KTProjectRequest::Move:
             {
                  k->executor->moveScene(response);

@@ -295,6 +295,7 @@ KTScene *KTProject::scene(int position) const
            T_FUNCINFOX("project")<< position;
     #endif
 
+    /*
     QList<int> list = k->scenes.indexes();
     QString test = "";
     for (int i = 0; i < list.size(); ++i) {
@@ -302,8 +303,8 @@ KTScene *KTProject::scene(int position) const
          if (i < (list.size()-1)) 
              test += " ";
     }
-
     tFatal() << "KTProject::scene() - Indexes: " << test;
+    */
 
     if (position < 0 || position >= k->scenes.count()) {
         #ifdef K_DEBUG

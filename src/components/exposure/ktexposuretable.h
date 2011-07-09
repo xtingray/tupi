@@ -36,7 +36,7 @@
 #ifndef KTEXPOSURETABLE_H
 #define KTEXPOSURETABLE_H
 
-#include<QTableWidget>
+#include <QTableWidget>
 
 //class KTExposureHeader;
 class KTExposureVerticalHeader;
@@ -45,6 +45,7 @@ class QMenu;
 /**
  * @author Jorge Cuadrado
 */
+
 class KTExposureTable : public QTableWidget
 {
     Q_OBJECT
@@ -88,6 +89,7 @@ class KTExposureTable : public QTableWidget
 
         void setMenu(QMenu *menu);
         void emitCellClicked(int frame, int layer);
+        void reset();
 		
     private:
         struct Private;
