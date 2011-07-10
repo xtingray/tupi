@@ -65,6 +65,8 @@ class KTScenesList : public KTreeListWidget
 
         void selectScene(int index);
 
+        bool nameExists(QString &name);
+
     protected:
         void mouseDoubleClickEvent(QMouseEvent *event);
 

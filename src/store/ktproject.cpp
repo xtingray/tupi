@@ -121,8 +121,6 @@ void KTProject::loadLibrary(const QString &filename)
  */
 void KTProject::clear()
 {
-    tFatal() << "KTProject::clear() - Resetting project!";
-
     k->scenes.clear(true);
     k->sceneCounter = 0;
 
@@ -226,25 +224,20 @@ KTScene *KTProject::createScene(QString name, int position, bool loaded)
 
     KTScene *scene = new KTScene(this);
 
-    tFatal() << "KTProject::createScene() - Inserting scene " << name << " at position: " << position;
     k->scenes.insert(position, scene);
     k->sceneCounter++;
-    tFatal() << "KTProject::createScene() - SceneSize: " << k->sceneCounter;
 
     // scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
     scene->setSceneName(name);
     
-    if (loaded) {
-        tFatal() << "KTProject::createScene() - calling for KTProjectLoader::createScene() - Index: " << position;
+    if (loaded)
         KTProjectLoader::createScene(scene->sceneName(), position, this);
-    }
 
     return scene;
 }
 
 void KTProject::updateScene(int position, KTScene *scene)
 {
-    tFatal() << "KTProject::updateScene() - Inserting scene in position: " << position;
     k->scenes.insert(position, scene);
 }
 
@@ -254,9 +247,6 @@ bool KTProject::removeScene(int position)
            T_FUNCINFO;
     #endif
 
-    tFatal() << "KTProject::removeScene() - Scenes total: " << scenesTotal();
-    tFatal() << "KTProject::removeScene() - Removing scene: " << position;
-
     KTScene *toRemove = scene(position);
 
     if (toRemove) {
@@ -264,27 +254,37 @@ bool KTProject::removeScene(int position)
         delete toRemove;
         toRemove = 0;
         k->sceneCounter--;
-        tFatal() << "KTProject::removeScene() - Scenes counter: " << k->sceneCounter;
-        tFatal() << "KTProject::removeScene() - Scenes total: " << scenesTotal();
+
+        #ifdef K_DEBUG
+               QList<int> list = k->scenes.indexes();
+               QString test = "";
+               for (int i = 0; i < list.size(); ++i) {
+                    test += QString::number(list.at(i));
+                    if (i < (list.size()-1))
+                        test += " ";
+               }
+               tDebug() << "KTProject::removeScene() - Current scene indexes: " << test;
+        #endif
 
         return true;
-    } else {
-        tFatal() << "KTProject::removeScene() - Error removing scene: " << position;
-    }
+    } 
 
     return false;
 }
 
 bool KTProject::moveScene(int position, int newPosition)
 {
-    if (position < 0 || position >= k->scenes.count() || newPosition < 0 || newPosition >= k->scenes.count()) {
+    // if (position < 0 || position >= k->scenes.count() || newPosition < 0 || newPosition >= k->scenes.count()) {
+
+    if (position < 0 || newPosition < 0) {
         #ifdef K_DEBUG
-               tWarning() << "Failed moving scene!";
+               tError() << "KTProject::moveScene() - Failed moving scene from " << position << " to " << newPosition; 
         #endif
         return false;
     }
 
-    k->scenes.copyObject(position, newPosition);
+    KTScene *scene = k->scenes.takeObject(position);
+    k->scenes.insert(newPosition, scene);
 
     return true;
 }
@@ -293,20 +293,20 @@ KTScene *KTProject::scene(int position) const
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("project")<< position;
+
+           QList<int> list = k->scenes.indexes();
+           QString test = "";
+           for (int i = 0; i < list.size(); ++i) {
+                test += QString::number(list.at(i));
+                if (i < (list.size()-1))
+                    test += " ";
+           }
+           tFatal() << "KTProject::scene() - Indexes: " << test;
     #endif
 
-    /*
-    QList<int> list = k->scenes.indexes();
-    QString test = "";
-    for (int i = 0; i < list.size(); ++i) {
-         test += QString::number(list.at(i));
-         if (i < (list.size()-1)) 
-             test += " ";
-    }
-    tFatal() << "KTProject::scene() - Indexes: " << test;
-    */
+    // if (position < 0 || position >= k->scenes.count()) {
 
-    if (position < 0 || position >= k->scenes.count()) {
+    if (position < 0) {
         #ifdef K_DEBUG
                tError() << "KTProject::scene() - FATAL ERROR: index out of bound (" << position << ")";
         #endif
@@ -444,20 +444,14 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
-    tFatal() << "KTProject::createSymbol() - Creating symbol! Flag 1";
-    tFatal() << "KTProject::createSymbol() - Size: " << data.size(); 
-
-    if (!k->isOpen) {
-        tFatal() << "KTProject::createSymbol() - returning!";
+    if (!k->isOpen)
         return false;
-    } else {
-        tFatal() << "KTProject::createSymbol() - it's open!";
+
+    if (k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) == 0) {
+        #ifdef K_DEBUG
+               tError() << "KTProject::createSymbol() - Object can't be created. Data is NULL!";
+        #endif
     }
-
-    if (k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) == 0)
-        tFatal() << "KTProject::createSymbol() - Object is NULL!";
-
-    tFatal() << "KTProject::createSymbol() - Just tracing...";
 
     return true;
 }
@@ -532,8 +526,6 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
     KTFrame *frame = 0;
     KTScene *scene = this->scene(sceneIndex);
 
-    tFatal() << "KTProject::addSymbolToProject() - Adding symbol into the workspace!";
-
     if (scene) {
 
         if (spaceMode == KTProject::FRAMES_EDITION) {
@@ -589,8 +581,6 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                         break;
                         case KTLibraryObject::Svg:
                         {
-                             tFatal() << "KTProject::addSymbolToProject() - Adding SVG object " << name;
-
                              QString path(object->dataPath());
                              KTSvgItem *svgItem = new KTSvgItem(path, frame);
                              svgItem->setSymbolName(name);
@@ -790,7 +780,8 @@ QString KTProject::dataDir() const
 
 int KTProject::scenesTotal() const
 {
-    return k->sceneCounter;
+    // return k->sceneCounter;
+    return k->scenes.count();
 }
 
 void KTProject::updateSpaceContext(KTProject::Mode mode)

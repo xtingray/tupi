@@ -36,8 +36,8 @@
 #ifndef KTREELISTWIDGET_H
 #define KTREELISTWIDGET_H
 
-#include <QTreeWidget>
 #include "tglobal.h"
+#include <QTreeWidget>
 
 /**
  * @author David Cuadrado

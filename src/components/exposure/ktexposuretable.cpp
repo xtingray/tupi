@@ -397,8 +397,6 @@ void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
 
 void KTExposureTable::removeLayer(int indexLayer)
 {
-    tFatal() << "KTExposureTable::removeLayer() - Removing index: " << indexLayer;
-
     setUpdatesEnabled(false);
     k->removingLayer = true;
 
@@ -593,5 +591,6 @@ void KTExposureTable::reset()
          QTableWidgetItem *item = takeItem(i, 0);
     }
 
+    k->header->setLastFrame(0, 1);
 }
 

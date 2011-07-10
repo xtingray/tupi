@@ -139,8 +139,11 @@ void KTScenesWidget::sendEvent(int action)
 void KTScenesWidget::selectScene(QString name, int index)
 {
     Q_UNUSED(name);
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
 
-    tFatal() << "KTScenesWidget::selectScene() - Requesting selection for index: " << index;
+    int total = k->tableScenes->scenesCount();
 
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
     emit requestTriggered(&event);
@@ -154,13 +157,16 @@ void KTScenesWidget::emitRequestInsertScene()
            T_FUNCINFO;
     #endif
 
-    // int index = k->tableScenes->indexCurrentScene() + 1;
-    // if (index == 0)
-
     int index = k->tableScenes->scenesCount();
+    int label = index + 1;
+    QString name = tr("Scene %1").arg(label);
 
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add, 
-                                                                  tr("Scene %1").arg(index + 1));
+    while (k->tableScenes->nameExists(name)) {
+           label++;
+           name = tr("Scene %1").arg(label);
+    }
+
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add, name); 
     emit requestTriggered(&event);
 
     event = KTRequestBuilder::createLayerRequest(index, 0, KTProjectRequest::Add, tr("Layer %1").arg(1));
@@ -174,6 +180,10 @@ void KTScenesWidget::emitRequestInsertScene()
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     int index = k->tableScenes->indexCurrentScene();
 
     if (k->tableScenes->scenesCount() == 1) {
@@ -195,6 +205,7 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("scenes");
+           SHOW_VAR(e->action());
     #endif
 
     switch (e->action()) {
@@ -220,7 +231,6 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
             break;
             case KTProjectRequest::Select:
              {
-               tFatal() << "KTScenesWidget::sceneResponse() - Selecting scene index: " << e->sceneIndex();
                k->tableScenes->selectScene(e->sceneIndex());
              }
             break;

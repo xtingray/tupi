@@ -111,7 +111,6 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
     k->framePosition.frame = -1;
     k->spaceMode = KTProject::FRAMES_EDITION;
 
-    tFatal() << "KTGraphicsScene() - calling setCurrentFrame(0, 0)";
     setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
@@ -149,8 +148,6 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
            T_FUNCINFO;
     #endif
 
-    tFatal() << "KTGraphicsScene() - setCurrentFrame() [" << layer << ", " << frame << "]";
-
     if ((frame != k->framePosition.frame && k->framePosition.frame >= 0) || 
         (layer != k->framePosition.layer && k->framePosition.layer >= 0)) { 
         if (k->tool->name().compare(tr("PolyLine")) == 0)
@@ -176,8 +173,6 @@ void KTGraphicsScene::drawCurrentPhotogram()
     if (k->framePosition.frame >= frames)
         k->framePosition.frame = frames - 1;
 
-    tFatal() << "KTGraphicsScene::drawCurrentPhotogram() - spaceMode: " << k->spaceMode;
-
     if (k->spaceMode == KTProject::FRAMES_EDITION) {
         drawPhotogram(k->framePosition.frame);
     } else if (k->spaceMode == KTProject::BACKGROUND_EDITION) {
@@ -194,16 +189,10 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     // Q_CHECK_PTR(k->scene);
 
-    tFatal() << "KTGraphicsScene::drawPhotogram() - flag: " << photogram;
-
     if (photogram < 0 || !k->scene) 
         return;
 
-    tFatal() << "KTGraphicsScene::drawPhotogram() - test 1";
-
     cleanWorkSpace();
-
-    tFatal() << "KTGraphicsScene::drawPhotogram() - test 2";
 
     bool valid = false;
 
@@ -424,13 +413,9 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
 {
     QList<KTGraphicObject *> tweenList = k->scene->tweeningGraphicObjects();
 
-    tFatal() << "KTGraphicsScene::addTweeningObjects() - ObjectList size: " << tweenList.count();
-
     for (int i=0; i < tweenList.count(); i++) {
 
          KTGraphicObject *object = tweenList.at(i);
-
-         tFatal() << "KTGraphicsScene::addTweeningObjects() - Just tracing!";
 
          if (object->frame()->layer()->isVisible()) {
              int origin = object->frame()->index();

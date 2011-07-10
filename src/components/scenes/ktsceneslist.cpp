@@ -159,3 +159,14 @@ void KTScenesList::callRename()
     if (item)
         emit itemRenamed(item);
 }
+
+bool KTScenesList::nameExists(QString &name)
+{
+    for (int i = 0; i < topLevelItemCount (); i++) {
+         QTreeWidgetItem *item = topLevelItem(i);
+         if (item->text(0).compare(name) == 0)
+             return true;
+    }
+
+    return false;
+}

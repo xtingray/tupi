@@ -559,11 +559,13 @@ void Tweener::updateMode(Settings::Mode mode)
 
 void Tweener::sceneResponse(const KTSceneResponse *event)
 {
-    if (event->action() == KTProjectRequest::Remove) {
-        k->objects.clear();
-        k->configurator->notifySelection(false);
-        k->configurator->resetUI();
+    if ((event->action() == KTProjectRequest::Remove || event->action() == KTProjectRequest::Reset)
+        && (k->scene->currentSceneIndex() == event->sceneIndex())) {
+        init(k->scene);
     }
+
+    if (event->action() == KTProjectRequest::Select)
+        init(k->scene);
 }
 
 void Tweener::layerResponse(const KTLayerResponse *event)

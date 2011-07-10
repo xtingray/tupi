@@ -106,10 +106,8 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
     setCurrentScene(0);
     k->currentTool = tr("Pencil");
 
-    if (graphicsScene()->scene()) {
-        tFatal() << "KTPaintArea::KTPaintArea() - calling -> graphicsScene()->setCurrentFrame(0, 0)";
+    if (graphicsScene()->scene())
         graphicsScene()->setCurrentFrame(0, 0);
-    }
 }
 
 KTPaintArea::~KTPaintArea()
@@ -125,22 +123,19 @@ void KTPaintArea::setCurrentScene(int index)
 
     if (k->project->scenesTotal() > 0) {
 
-        tFatal() << "KTPaintArea::setCurrentScene() - Scene Index: " << index;
-        tFatal() << "KTPaintArea::setCurrentScene() - Scenes total: " << k->project->scenesTotal(); 
-
         KTScene *scene = k->project->scene(index);
         if (scene) {
-            tFatal() << "KTPaintArea::setCurrentScene() - Drawing scene: " << index;
             k->currentSceneIndex = index;
             graphicsScene()->setCurrentScene(scene);
         } else {
             if (k->project->scenesTotal() == 1) {
-                tFatal() << "KTPaintArea::setCurrentScene() - Drawing scene: 0";
                 setDragMode(QGraphicsView::NoDrag);
                 k->currentSceneIndex = 0;
                 graphicsScene()->setCurrentScene(0);
             } else {
-                tFatal() << "KTPaintArea::setCurrentScene() - Critial error!";
+                #ifdef K_DEBUG
+                       tFatal() << "KTPaintArea::setCurrentScene() - No scenes available. Critical error around index " << index;
+                #endif
             }
         }
     }
@@ -249,6 +244,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
+           tDebug() << "KTPaintArea::frameResponse() - [" << event->sceneIndex() << ", " << event->layerIndex() << ", " << event->frameIndex() << "]";
     #endif
 
     if (graphicsScene()->isDrawing())
@@ -272,8 +268,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                     }
 
                     setUpdatesEnabled(true);
-                   
-                    tFatal() << "KTPaintArea::frameResponse() - [" << event->sceneIndex() << ", " << event->layerIndex() << ", " << event->frameIndex() << "]";
                     guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
                     if (k->spaceMode == KTProject::FRAMES_EDITION) {
@@ -358,13 +352,10 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
             int frameIndex = guiScene->currentFrameIndex(); 
 
             if (scene->layersTotal() > 1) {
-                if (event->layerIndex() != 0) {
-                    tFatal() << "KTPaintArea::layerResponse() - guiScene->setCurrentFrame() / Tracing 1";
+                if (event->layerIndex() != 0)
                     guiScene->setCurrentFrame(event->layerIndex() - 1, frameIndex);
-                } else {
-                    tFatal() << "KTPaintArea::layerResponse() - guiScene->setCurrentFrame() / Tracing 2";
+                else 
                     guiScene->setCurrentFrame(event->layerIndex() + 1, frameIndex);
-                }
 
                 if (k->spaceMode == KTProject::FRAMES_EDITION) {
                     guiScene->drawCurrentPhotogram();
@@ -408,8 +399,6 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
            case KTProjectRequest::Select:
                 {
                     if (event->sceneIndex() >= 0) {
-                        tFatal() << "KTPaintArea::sceneResponse() - Select index: " << event->sceneIndex(); 
-                        tFatal() << "KTPaintArea::sceneResponse() - Scenes size: " << k->project->scenesTotal();
                         if (k->project->scenesTotal() == 1)
                             setCurrentScene(0);
                         else
@@ -419,9 +408,6 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                 }
            case KTProjectRequest::Remove:
                 {
-                    tFatal() << "KTPaintArea::sceneResponse() - event->sceneIndex(): " << event->sceneIndex();
-                    tFatal() << "KTPaintArea::sceneResponse() - k->currentSceneIndex: " << k->currentSceneIndex;
-
                     if (k->project->scenesTotal() > 0)
                         setCurrentScene(k->currentSceneIndex);
 

@@ -148,14 +148,9 @@ KTLayer *KTScene::createLayer(QString name, int position, bool loaded)
     }
 
     k->layerCount++;
-    // k->nameIndex++;
 
     KTLayer *layer = new KTLayer(this, k->layerCount);
-
-    // layer->setLayerName(tr("Layer %1").arg(k->nameIndex));
     layer->setLayerName(name);
-
-    tFatal() << "KTScene::createLayer() - Inserting layer at position: " << position;
     k->layers.insert(position, layer);
 
     if (loaded)
@@ -468,8 +463,6 @@ void KTScene::removeTween(const QString &name, KTItemTweener::Type type)
 void KTScene::removeTweensFromLayer(int layer)
 {
     foreach (KTGraphicObject *object, k->tweeningGraphicObjects) {
-             tFatal() << "KTScene::removeTweensFromLayer() - Layer: " << object->frame()->layer()->layerIndex();
-             tFatal() << "KTScene::removeTweensFromLayer() - Index: " << layer;
              if (object->frame()->layer()->layerIndex() == layer) {
                  object->removeTween();
                  removeTweenObject(object);
@@ -611,6 +604,8 @@ void KTScene::reset(QString &name)
 
     k->background = new KTBackground(this);
     k->layers.clear();
+    k->tweeningGraphicObjects.clear();
+    k->tweeningSvgObjects.clear();
 
     k->layerCount = 1;
     KTLayer *layer = new KTLayer(this, k->layerCount);

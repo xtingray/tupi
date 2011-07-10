@@ -36,15 +36,6 @@
 #include "tweener.h"
 #include "configurator.h"
 
-#include <QPointF>
-#include <QKeySequence>
-#include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QMatrix>
-#include <QGraphicsLineItem>
-#include <QGraphicsView>
-#include <QDomDocument>
-
 #include "tglobal.h"
 #include "tdebug.h"
 #include "taction.h"
@@ -66,6 +57,15 @@
 #include "ktlibraryobject.h"
 #include "ktscene.h"
 #include "ktlayer.h"
+
+#include <QPointF>
+#include <QKeySequence>
+#include <QGraphicsPathItem>
+#include <QPainterPath>
+#include <QMatrix>
+#include <QGraphicsLineItem>
+#include <QGraphicsView>
+#include <QDomDocument>
 
 struct Tweener::Private
 {
@@ -99,6 +99,7 @@ Tweener::Tweener() : KTToolPlugin(), k(new Private)
     k->path = 0;
     k->group = 0;
     k->startPoint = 0;
+    k->currentTween = 0;
 }
 
 Tweener::~Tweener()
@@ -110,6 +111,9 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
+    // delete k->currentTween;
+    // k->currentTween = 0;
+
     delete k->path;
     k->path = 0;
     delete k->group;
@@ -869,11 +873,13 @@ void Tweener::disableSelection()
 
 void Tweener::sceneResponse(const KTSceneResponse *event)
 {
-    if (event->action() == KTProjectRequest::Remove) {
-        k->objects.clear();
-        k->configurator->notifySelection(false);
-        k->configurator->resetUI();
+    if ((event->action() == KTProjectRequest::Remove || event->action() == KTProjectRequest::Reset)
+        && (k->scene->currentSceneIndex() == event->sceneIndex())) {
+        init(k->scene);
     }
+
+    if (event->action() == KTProjectRequest::Select)
+        init(k->scene);
 }
 
 void Tweener::layerResponse(const KTLayerResponse *event)

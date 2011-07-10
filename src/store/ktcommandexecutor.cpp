@@ -34,13 +34,10 @@
  ***************************************************************************/
 
 #include "ktcommandexecutor.h"
-
-#include <ktproject.h>
-#include <ktscene.h>
-
+#include "ktproject.h"
+#include "ktscene.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
-
 #include "ktprojectresponse.h"
 
 #include "tdebug.h"
@@ -68,7 +65,8 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
     int position = response->sceneIndex();
     QString name = response->arg().toString();
     
-    if (position < 0 || position > m_project->scenes().count())
+    // if (position < 0 || position > m_project->scenes().count())
+    if (position < 0)
         return false;
     
     KTScene *scene = m_project->createScene(name, position);
@@ -103,7 +101,8 @@ bool KTCommandExecutor::removeScene(KTSceneResponse *response)
     #endif    
 
     int position = response->sceneIndex();
-    
+    int scenesTotal = m_project->scenesTotal();
+
     KTScene *toRemove = m_project->scene(position);
     
     if (toRemove) {
@@ -114,6 +113,12 @@ bool KTCommandExecutor::removeScene(KTSceneResponse *response)
         response->setArg(toRemove->sceneName());
         
         if (m_project->removeScene(position)) {
+
+            if (position+1 < scenesTotal) {
+                for (int i = position + 1; i < scenesTotal; i++)
+                     m_project->moveScene(i, i-1);
+            }
+
             emit responsed(response);
             return true;
         }
@@ -161,8 +166,6 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
     QString newName = response->arg().toString();
     KTScene *scene = m_project->scene(position);
 
-    tFatal() << "KTCommandExecutor::renameScene() - New name: " << newName;
-    
     if (!scene)
         return false;
     
@@ -202,8 +205,6 @@ bool KTCommandExecutor::resetScene(KTSceneResponse *response)
     int position = response->sceneIndex();
     QString name = response->arg().toString();
     KTScene *scene = m_project->scene(position);
-
-    tFatal() << "KTCommandExecutor::resetScene() - Reseting scene: " << position;
 
     if (!scene)
         return false;
