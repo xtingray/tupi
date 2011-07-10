@@ -170,15 +170,12 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
         switch (sceneResponse->action()) {
             case KTProjectRequest::Remove:
             {
-                 tFatal() << "KTViewCamera::handleProjectResponse() - Removing index: " << sceneResponse->sceneIndex();
-                 tFatal() << "KTViewCamera::handleProjectResponse() - Scenes Total: " << project->scenesTotal();
                  if (index > 0)
                      m_animationArea->updateSceneIndex(index - 1);
             }
             break;
             case KTProjectRequest::Select:
             {
-                 tFatal() << "KTViewCamera::handleProjectResponse() - Selection index: " << sceneResponse->sceneIndex();
                  if (index >= 0)
                      m_animationArea->updateSceneIndex(index);
             }

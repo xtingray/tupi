@@ -129,14 +129,10 @@ KTFrame *KTLayer::createFrame(QString name, int position, bool loaded)
     KTFrame *frame = new KTFrame(this);
     k->framesCount++;
     frame->setFrameName(name);
-
-    tFatal() << "KTLayer::createFrame() - Inserting frame at position: " << position;
     k->frames.insert(position, frame);
 
-    if (loaded) {
-        tFatal() << "KTLayer::createFrame() - Loading frame within the interface";
+    if (loaded)
         KTProjectLoader::createFrame(scene()->objectIndex(), objectIndex(), position, frame->frameName(), project());
-    }
 
     return frame;
 }
@@ -215,12 +211,8 @@ bool KTLayer::exchangeFrame(int from, int to)
 
 bool KTLayer::expandFrame(int position, int size)
 {
-    // tFatal() << "KTLayer::expandFrame -> Just Tracing!";
-
-    if (position < 0 || position >= k->frames.count()) {
-        tFatal() << "KTLayer::expandFrame -> pos: " << position << " - size: " << size;
+    if (position < 0 || position >= k->frames.count())
         return false;
-    }
 
     KTFrame *toExpand = frame(position);
 
