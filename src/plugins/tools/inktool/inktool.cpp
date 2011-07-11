@@ -186,7 +186,7 @@ void InkTool::smoothPath(QPainterPath &path, double smoothness, int from, int to
 void InkTool::setupActions()
 {
     TAction *inkpen = new TAction(QPixmap(THEME_DIR + "icons/ink.png"), tr("Ink"), this);
-    inkpen->setShortcut(QKeySequence(tr("I")) );
+    inkpen->setShortcut(QKeySequence(tr("K")) );
 
     QPixmap pix(THEME_DIR + "cursors/pen.png");
     inkpen->setCursor(QCursor(pix, 0, pix.height()));

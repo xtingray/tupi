@@ -35,31 +35,28 @@
 
 #include "ktcolorpalette.h"
 #include "tdebug.h"
+#include "kimagebutton.h"
+#include "tglobal.h"
+#include "tconfig.h"
+#include "ktpaintareaevent.h"
+#include "ktcolorvalue.h"
+#include "ktviewcolorcells.h"
+#include "ktcolorpicker.h"
+#include "ktluminancepicker.h"
+#include "ktgradientcreator.h"
+
+#include "ttoolbox.h"
+#include "kvhbox.h"
 
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QFrame>
 #include <QToolTip>
-#include "kimagebutton.h"
-#include "tglobal.h"
-#include "tconfig.h"
-
-#include "ktpaintareaevent.h"
-#include "ktcolorvalue.h"
-#include "ktviewcolorcells.h"
-
-#include "ktcolorpicker.h"
-#include "ktluminancepicker.h"
-#include "ktgradientcreator.h"
-
 #include <QComboBox>
 #include <QGroupBox>
 #include <QSplitter>
 #include <QMenu>
-
-#include "ttoolbox.h"
-#include "kvhbox.h"
 
 struct KTColorPalette::Private
 {
@@ -101,7 +98,10 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->centralWidget = new TToolBox(k->splitter);
 
     setupChooserTypeColor();
+
+    // SQA: Temporarily unavailable
     // setupGradientManager();
+
     setupDisplayColor();
     k->splitter->addWidget(k->centralWidget);
     k->centralWidget->setPalette(palette());

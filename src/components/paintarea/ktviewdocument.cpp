@@ -380,8 +380,8 @@ void KTViewDocument::loadPlugins()
                                    }
 
                                    if (toolName.compare(tr("Ink")) == 0) {
+                                       action->setDisabled(true);
                                        brushTools[1] = action;
-                                       k->brushesMenu->setDefaultAction(action);
                                    }
 
                                    if (toolName.compare(tr("Eraser")) == 0) {
@@ -543,7 +543,6 @@ void KTViewDocument::selectTool()
                      } else if (toolName.compare(tr("PolyLine"))==0 
                                 || toolName.compare(tr("Rectangle"))==0 
                                 || toolName.compare(tr("Ellipse"))==0) {
-                                tFatal() << "KTViewDocument::selectTool() - toolName: " << toolName;
                                 minWidth = 130;
                      }
 
