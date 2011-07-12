@@ -57,11 +57,23 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
+    QHBoxLayout *labelLayout = new QHBoxLayout;
+    labelLayout->setAlignment(Qt::AlignCenter);
+    labelLayout->setSpacing(0);
+
     QFont font = this->font();
     font.setPointSize(10);
-    QLabel *description = new QLabel(work->projectName() + ": " + work->description());
-    description->setAlignment(Qt::AlignCenter);
+    font.setBold(true);
+    QLabel *name = new QLabel(work->projectName() + ": ");
+    name->setFont(font);
+
+    font = this->font();
+    font.setPointSize(10);
+    QLabel *description = new QLabel(work->description());
     description->setFont(font);
+
+    labelLayout->addWidget(name); 
+    labelLayout->addWidget(description);
 
     QLabel *icon = new QLabel();
     icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
@@ -74,7 +86,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     titleLayout->addWidget(title);
 
     layout->addWidget(titleWidget, Qt::AlignCenter);
-    layout->addWidget(description, Qt::AlignCenter);
+    layout->addLayout(labelLayout, Qt::AlignCenter);
 
     m_animationArea = new KTAnimationArea(project);
     layout->addWidget(m_animationArea, 0, Qt::AlignCenter);
