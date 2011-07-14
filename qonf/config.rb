@@ -73,6 +73,24 @@ class Config
                 f << "CONFIG += " << @options.uniq.join(" ") << $endl
             end
         }
+
+        File.open("src/framework/tupconfig.pri", "w") { |f|
+            f << "# Generated automatically at #{Time.now}! PLEASE DO NOT EDIT!"<< $endl
+
+            f << "LIBS += -lavcodec -lavformat -lavutil" << $endl
+            f << "QT += opengl core gui svg xml network" << $endl
+            f << "DEFINES += HAVE_FFMPEG" << $endl
+            f << "unix {" << $endl
+            f << "   OBJECTS_DIR = .obj" << $endl
+            f << "   UI_DIR = .ui" << $endl
+            f << "   MOC_DIR = .moc" << $endl
+            f << "}" << $endl
+
+            if not @options.empty?
+                f << "CONFIG += " << @options.uniq.join(" ") << $endl
+            end
+        }
+
     end
     
     private

@@ -5,7 +5,8 @@
 
 SUBDIRS += quazip \
            potrace 
-KDEV_QTVER = 4
+
 CONFIG += release \
-warn_on
+          warn_on
+
 TEMPLATE = subdirs

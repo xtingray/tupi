@@ -11,21 +11,22 @@ HEADERS += crypt.h \
            quazipnewinfo.h \
            unzip.h \
            zip.h 
+
 SOURCES += ioapi.c \
            quazip.cpp \
            quazipfile.cpp \
            quazipnewinfo.cpp \
            unzip.c \
            zip.c 
-KDEV_QTVER = 4
+
+CONFIG += release warn_on qt staticlib
+TEMPLATE = lib
+QT -= gui
 LIBS += -lz
 INCLUDEPATH += .
+
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-qt \
-staticlib
-TEMPLATE = lib
-QT -= gui
+
+include(../../tupiglobal.pri)

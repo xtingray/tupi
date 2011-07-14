@@ -11,10 +11,13 @@ HEADERS += auxiliary.h \
            progress.h \
            trace.h \
            config.h 
+
 SOURCES += curve.c \
            decompose.c \
            potracelib.c \
            trace.c 
+
 CONFIG += release warn_on staticlib 
 TEMPLATE = lib 
 
+include(../../tupiglobal.pri)
