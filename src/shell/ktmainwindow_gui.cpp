@@ -219,7 +219,7 @@ void KTMainWindow::setupMenu()
 
     // Adding Option New	
     QMenu *newMenu = new QMenu(tr("&New"), this);
-    newMenu->setIcon(QPixmap(THEME_DIR + "icons/file_new.png"));
+    // newMenu->setIcon(QPixmap(THEME_DIR + "icons/file_new.png"));
     m_fileMenu->addMenu(newMenu);
     newMenu->addAction(m_actionManager->find("newproject"));
 
