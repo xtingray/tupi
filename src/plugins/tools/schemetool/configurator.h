@@ -33,40 +33,30 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "infopanel.h"
-#include "tglobal.h"
-#include "tdebug.h"
+#ifndef CONFIGURATOR_H
+#define CONFIGURATOR_H
 
-#include <QBoxLayout>
-#include <QTextEdit>
+#include <QLabel>
+#include <QSpinBox>
 
-InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
+/**
+ * @author Gustav Gonzalez 
+*/
+
+class Configurator : public QWidget
 {
-    #ifdef K_DEBUG
-           TINIT;
-    #endif
+    Q_OBJECT
 
-    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    public:
+        Configurator(QWidget *parent = 0);
+        ~Configurator();
+        int spacingValue();
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Tips"));
-    label->setAlignment(Qt::AlignHCenter); 
-    layout->addWidget(label);
+    signals:
+        void updateSpacing(int value);
 
-    mainLayout->addLayout(layout);
+    private:
+        QSpinBox *spacingBox;
+};
 
-    QTextEdit *textArea = new QTextEdit; 
-    textArea->setFixedHeight(250);
-    textArea->setHtml("<p><b>" + tr("Close line") + ":</b> " + tr("Esc key or Right mouse button") + "</p>"); 
-    mainLayout->addWidget(textArea);
-   
-    mainLayout->addStretch(2);
-}
-
-InfoPanel::~InfoPanel()
-{
-    #ifdef K_DEBUG
-           TEND;
-    #endif
-}
-
+#endif

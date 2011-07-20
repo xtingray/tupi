@@ -348,7 +348,7 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
-    QVector<TAction*> brushTools(8);
+    QVector<TAction*> brushTools(9);
     QVector<TAction*> tweenTools(7);
 
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
@@ -379,30 +379,35 @@ void KTViewDocument::loadPlugins()
                                        k->brushesMenu->setDefaultAction(action);
                                    }
 
-                                   if (toolName.compare(tr("Ink")) == 0) {
+                                   if (toolName.compare(tr("Scheme")) == 0) {
                                        // action->setDisabled(true);
                                        brushTools[1] = action;
                                    }
 
-                                   if (toolName.compare(tr("Eraser")) == 0) {
+                                   if (toolName.compare(tr("Ink")) == 0) {
                                        action->setDisabled(true);
                                        brushTools[2] = action;
                                    }
 
-                                   if (toolName.compare(tr("PolyLine")) == 0)
+                                   if (toolName.compare(tr("Eraser")) == 0) {
+                                       action->setDisabled(true);
                                        brushTools[3] = action;
+                                   }
 
-                                   if (toolName.compare(tr("Line")) == 0)
+                                   if (toolName.compare(tr("PolyLine")) == 0)
                                        brushTools[4] = action;
 
-                                   if (toolName.compare(tr("Rectangle")) == 0)
+                                   if (toolName.compare(tr("Line")) == 0)
                                        brushTools[5] = action;
 
-                                   if (toolName.compare(tr("Ellipse")) == 0)
+                                   if (toolName.compare(tr("Rectangle")) == 0)
                                        brushTools[6] = action;
 
-                                   if (toolName.compare(tr("Text")) == 0)
+                                   if (toolName.compare(tr("Ellipse")) == 0)
                                        brushTools[7] = action;
+
+                                   if (toolName.compare(tr("Text")) == 0)
+                                       brushTools[8] = action;
                                  }
                                  break;
                               case KTToolInterface::Tweener:

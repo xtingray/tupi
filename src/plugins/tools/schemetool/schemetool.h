@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,40 +33,67 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "infopanel.h"
-#include "tglobal.h"
-#include "tdebug.h"
+#ifndef SCHEMETOOL_H
+#define SCHEMETOOL_H
 
-#include <QBoxLayout>
-#include <QTextEdit>
+#include "kttoolplugin.h"
+#include "configurator.h"
+#include "ktpathitem.h"
 
-InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
+#include <QObject>
+#include <QSpinBox>
+#include <QTimer>
+
+class QKeySequence;
+
+/**
+ * @author David Cuadrado
+*/
+
+class SchemeTool : public KTToolPlugin
 {
-    #ifdef K_DEBUG
-           TINIT;
-    #endif
+    Q_OBJECT
+    
+    public:
+        SchemeTool();
+        virtual ~SchemeTool();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual QMap<QString, TAction *>actions() const;
+        int toolType() const;
+        virtual QWidget *configurator();
+        virtual void aboutToChangeTool();
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
 
-    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    private slots:
+        void updateSpacingVar(int value);
+        
+    private:
+        QPointF m_firstPoint;
+        QPointF m_oldPos;
+        QPointF previewPoint;
+        QPointF oldPosRight;
+        QPointF oldPosLeft;
+        QPainterPath m_path;
+        QPainterPath pathRight; 
+        QPainterPath pathLeft;
+        Configurator * m_configurator;
+        QMap<QString, TAction *> m_actions;
+        KTPathItem *m_item;
+        KTPathItem *itemRight;
+        KTPathItem *itemLeft;
+        int dotsCounter;
+        qreal penWidth;
+        qreal oldSlope;
+        int spacing;
+};
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Tips"));
-    label->setAlignment(Qt::AlignHCenter); 
-    layout->addWidget(label);
-
-    mainLayout->addLayout(layout);
-
-    QTextEdit *textArea = new QTextEdit; 
-    textArea->setFixedHeight(250);
-    textArea->setHtml("<p><b>" + tr("Close line") + ":</b> " + tr("Esc key or Right mouse button") + "</p>"); 
-    mainLayout->addWidget(textArea);
-   
-    mainLayout->addStretch(2);
-}
-
-InfoPanel::~InfoPanel()
-{
-    #ifdef K_DEBUG
-           TEND;
-    #endif
-}
-
+#endif

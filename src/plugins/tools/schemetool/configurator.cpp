@@ -33,14 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "infopanel.h"
+#include "configurator.h"
 #include "tglobal.h"
 #include "tdebug.h"
 
 #include <QBoxLayout>
 #include <QTextEdit>
 
-InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
+Configurator::Configurator(QWidget *parent) :QWidget(parent)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -48,25 +48,45 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Tips"));
-    label->setAlignment(Qt::AlignHCenter); 
-    layout->addWidget(label);
+    QTextEdit *textArea = new QTextEdit; 
+    textArea->setFixedHeight(170);
+    textArea->setHtml("<p>" + tr("This tool is just a <b>proof-of-concept</b> of the basic algorithm for free-tracing vectorial brushes") + "</p>"); 
+    mainLayout->addWidget(textArea);
 
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *label = new QLabel(tr("Parameters"));
+    label->setAlignment(Qt::AlignHCenter);
+    layout->addWidget(label);
     mainLayout->addLayout(layout);
 
-    QTextEdit *textArea = new QTextEdit; 
-    textArea->setFixedHeight(250);
-    textArea->setHtml("<p><b>" + tr("Close line") + ":</b> " + tr("Esc key or Right mouse button") + "</p>"); 
-    mainLayout->addWidget(textArea);
-   
+    QBoxLayout *spaceLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *spaceLabel = new QLabel(tr("Spacing"));
+    spaceLabel->setAlignment(Qt::AlignHCenter);
+    spaceLayout->addWidget(spaceLabel);
+
+    spacingBox = new QSpinBox();
+    spacingBox->setValue(2);
+    spacingBox->setSingleStep(1);
+    spacingBox->setMinimum(1);
+    spacingBox->setMaximum(10);
+    spaceLayout->addWidget(spacingBox);
+
+    connect(spacingBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSpacing(int)));
+
+    mainLayout->addLayout(spaceLayout);
+
     mainLayout->addStretch(2);
 }
 
-InfoPanel::~InfoPanel()
+Configurator::~Configurator()
 {
     #ifdef K_DEBUG
            TEND;
     #endif
+}
+
+int Configurator::spacingValue()
+{
+    return spacingBox->value();
 }
 

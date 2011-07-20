@@ -6,6 +6,7 @@
 SUBDIRS += common \
            penciltool \
            inktool \
+           schemetool \
            selecttool \
            contourselectiontool \
            texttool \
