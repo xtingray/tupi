@@ -380,7 +380,7 @@ void KTViewDocument::loadPlugins()
                                    }
 
                                    if (toolName.compare(tr("Ink")) == 0) {
-                                       action->setDisabled(true);
+                                       // action->setDisabled(true);
                                        brushTools[1] = action;
                                    }
 
