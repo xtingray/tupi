@@ -75,6 +75,7 @@ class SchemeTool : public KTToolPlugin
 
     private slots:
         void updateSpacingVar(int value);
+        void updateSizeToleranceVar(int value);
         
     private:
         QPointF m_firstPoint;
@@ -94,6 +95,7 @@ class SchemeTool : public KTToolPlugin
         qreal penWidth;
         qreal oldSlope;
         int spacing;
+        qreal tolerance;
         qreal widthVar; 
 };
 

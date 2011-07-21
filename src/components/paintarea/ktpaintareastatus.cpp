@@ -95,10 +95,13 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     k->zoom->setFocusPolicy(Qt::NoFocus);
     //k->zoom->setInsertPolicy(QComboBox::InsertBeforeCurrent);
 
+    for (int i = 500; i >= 250; i-=50)
+         k->zoom->addItem(QString::number(i), i);
+
     for (int i = 200; i >= 25; i-=25)
          k->zoom->addItem(QString::number(i), i);
 
-    k->zoom->setCurrentIndex(4);
+    k->zoom->setCurrentIndex(10);
 
     k->zoom->setValidator(new QIntValidator(10, 200,this));
     zoomLayout->addWidget(k->zoom);

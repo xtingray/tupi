@@ -65,15 +65,31 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     spaceLayout->addWidget(spaceLabel);
 
     spacingBox = new QSpinBox();
-    spacingBox->setValue(2);
     spacingBox->setSingleStep(1);
     spacingBox->setMinimum(1);
     spacingBox->setMaximum(10);
+    spacingBox->setValue(2);
     spaceLayout->addWidget(spacingBox);
 
     connect(spacingBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSpacing(int)));
 
     mainLayout->addLayout(spaceLayout);
+
+    QBoxLayout *sizeLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *sizeLabel = new QLabel(tr("Size Tolerance"));
+    sizeLabel->setAlignment(Qt::AlignHCenter);
+    sizeLayout->addWidget(sizeLabel);
+
+    sizeBox = new QSpinBox();
+    sizeBox->setSingleStep(50);
+    sizeBox->setMinimum(0);
+    sizeBox->setMaximum(500);
+    sizeBox->setValue(50);
+    sizeLayout->addWidget(sizeBox);
+
+    connect(sizeBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSizeTolerance(int)));
+
+    mainLayout->addLayout(sizeLayout);
 
     mainLayout->addStretch(2);
 }
@@ -90,3 +106,8 @@ int Configurator::spacingValue()
     return spacingBox->value();
 }
 
+qreal Configurator::sizeToleranceValue()
+{
+    tError() << "Configurator::sizeToleranceValue() - Value: " << sizeBox->value();
+    return sizeBox->value();
+}

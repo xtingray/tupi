@@ -51,12 +51,15 @@ class Configurator : public QWidget
         Configurator(QWidget *parent = 0);
         ~Configurator();
         int spacingValue();
+        qreal sizeToleranceValue();
 
     signals:
         void updateSpacing(int value);
+        void updateSizeTolerance(int value);
 
     private:
         QSpinBox *spacingBox;
+        QSpinBox *sizeBox;
 };
 
 #endif

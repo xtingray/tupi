@@ -85,7 +85,11 @@ void SchemeTool::init(KTGraphicsScene *scene)
     TCONFIG->beginGroup("PenParameters");
     int thickness = TCONFIG->value("Thickness", -1).toInt();
 
-    widthVar = (200*thickness)/100;
+    widthVar = (m_configurator->sizeToleranceValue()*thickness)/(qreal)100;
+
+    tError() << "SchemeTool::init() - thickness: " << thickness;
+    tError() << "SchemeTool::init() - tolerance: " << tolerance;
+    tError() << "SchemeTool::init() - widthVar: " << widthVar;
 
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
@@ -331,7 +335,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             if (previewPoint.x() < currentPoint.x()) {
                 if (previewPoint.y() < currentPoint.y()) {
                     #ifdef K_DEBUG
-                           tDebug() << "SchemeTool::move() - Going down-right";
+                           tDebug() << "    -> SchemeTool::move() - Going down-right";
                     #endif
                     if (y0 > y1) {
                         left = QPointF(x0, y0);
@@ -343,7 +347,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
 
                 } else if (previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
-                                  tDebug() << "SchemeTool::move() - Going up-right";
+                                  tDebug() << "    -> SchemeTool::move() - Going up-right";
                            #endif
                            if (x0 > x1) {
                                left = QPointF(x0, y0);
@@ -354,7 +358,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                            }
                 } else {
                      #ifdef K_DEBUG
-                            tDebug() << "SchemeTool::move() - Going right";
+                            tDebug() << "    -> SchemeTool::move() - Going right";
                      #endif
                      if (y0 > y1) {
                          left = QPointF(x0, y0);
@@ -367,7 +371,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             } else if (previewPoint.x() > currentPoint.x()) {
                 if (previewPoint.y() < currentPoint.y()) {
                      #ifdef K_DEBUG
-                            tDebug() << "SchemeTool::move() - Going down-left";
+                            tDebug() << "    -> SchemeTool::move() - Going down-left";
                      #endif
 
                     if (y0 > y1) {
@@ -379,7 +383,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                     }
                 } else if (previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
-                                  tDebug() << "SchemeTool::move() - Going up-left";
+                                  tDebug() << "    -> SchemeTool::move() - Going up-left";
                            #endif
 
                            if (x0 > x1) {
@@ -391,7 +395,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                            }
                 } else {
                      #ifdef K_DEBUG
-                            tDebug() << "SchemeTool::move() - Going left";
+                            tDebug() << "    -> SchemeTool::move() - Going left";
                      #endif
                      if (y0 > y1) {
                          right = QPointF(x0, y0);
@@ -404,7 +408,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             } else if (previewPoint.x() == currentPoint.x()) {
                        if (previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
-                                  tDebug() << "SchemeTool::move() - Going up";
+                                  tDebug() << "    -> SchemeTool::move() - Going up";
                            #endif
                            if (x0 > x1) {
                                left = QPointF(x0, y0);
@@ -415,7 +419,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                            }
                        } else {
                            #ifdef K_DEBUG
-                                  tDebug() << "SchemeTool::move() - Going down";
+                                  tDebug() << "    -> SchemeTool::move() - Going down";
                            #endif
                            if (x0 > x1) {
                                right = QPointF(x0, y0);
@@ -449,8 +453,8 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             emit requested(&request);
             */
 
-            KTEllipseItem *blueEllipse = new KTEllipseItem(QRectF(left - QPointF(1, 1), QSize(1, 1)));
-            QPen bluePen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            KTEllipseItem *blueEllipse = new KTEllipseItem(QRectF(left - QPointF(0.5, 0.5), QSize(1, 1)));
+            QPen bluePen(Qt::blue, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
             blueEllipse->setPen(bluePen);
             scene->includeObject(blueEllipse);
 
@@ -463,8 +467,8 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             emit requested(&request);
             */
 
-            KTEllipseItem *redEllipse = new KTEllipseItem(QRectF(right - QPointF(1, 1), QSize(1, 1)));
-            QPen redPen(Qt::red, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            KTEllipseItem *redEllipse = new KTEllipseItem(QRectF(right - QPointF(0.5, 0.5), QSize(1, 1)));
+            QPen redPen(Qt::red, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
             redEllipse->setPen(redPen);
             scene->includeObject(redEllipse);
 
@@ -490,7 +494,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             m_oldPos = currentPoint;
         }
 
-        KTEllipseItem *m_ellipse = new KTEllipseItem(QRectF(currentPoint, QSize(1, 1)));
+        KTEllipseItem *m_ellipse = new KTEllipseItem(QRectF(currentPoint - QPointF(0.5, 0.5), QSize(1, 1)));
         QPen pen(Qt::green, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_ellipse->setPen(pen);
         scene->includeObject(m_ellipse);
@@ -609,6 +613,7 @@ QWidget *SchemeTool::configurator()
     if (! m_configurator) {
         m_configurator = new Configurator;
         connect(m_configurator, SIGNAL(updateSpacing(int)), this, SLOT(updateSpacingVar(int)));
+        connect(m_configurator, SIGNAL(updateSizeTolerance(int)), this, SLOT(updateSizeToleranceVar(int)));
     }
 
     return m_configurator;
@@ -625,6 +630,11 @@ void SchemeTool::saveConfig()
 void SchemeTool::updateSpacingVar(int value)
 {
     spacing = value;
+}
+
+void SchemeTool::updateSizeToleranceVar(int value)
+{
+    tolerance = (qreal)value/(qreal)100;
 }
 
 Q_EXPORT_PLUGIN2(kt_brush, SchemeTool);
