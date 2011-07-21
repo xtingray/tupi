@@ -36,20 +36,20 @@
 #ifndef KTITEMFACTORY_H
 #define KTITEMFACTORY_H
 
+#include "kxmlparserbase.h"
+#include "ktglobal_store.h"
+
 #include <QStack>
 #include <QPen>
 #include <QBrush>
-
-#include "kxmlparserbase.h"
-
-#include "ktglobal_store.h"
 
 class QGraphicsItem;
 class KTLibrary;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTItemFactory : public KXmlParserBase
 {
     public:
@@ -68,8 +68,7 @@ class STORE_EXPORT KTItemFactory : public KXmlParserBase
     	 * Analiza etiquetas de apertura del documento XML
     	 */
     	bool startTag(const QString& qname, const QXmlAttributes& atts);
-    	
-    	void text( const QString & ch );
+    	void text(const QString &ch);
     	
     	/**
     	 * Analiza etiquetas de cierre del documento XML
@@ -86,7 +85,7 @@ class STORE_EXPORT KTItemFactory : public KXmlParserBase
     private:
     	void setItemPen(const QPen &pen);
     	void setItemBrush(const QBrush &brush);
-    	void setItemGradient(const QGradient& gradient, bool brush );
+    	void setItemGradient(const QGradient& gradient, bool brush);
     	
     	QPen itemPen() const;
     	QBrush itemBrush() const;

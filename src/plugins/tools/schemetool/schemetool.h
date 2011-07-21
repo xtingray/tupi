@@ -94,6 +94,7 @@ class SchemeTool : public KTToolPlugin
         qreal penWidth;
         qreal oldSlope;
         int spacing;
+        qreal widthVar; 
 };
 
 #endif

@@ -58,7 +58,7 @@ QDomElement KTLineItem::toXml(QDomDocument &doc) const
     root.setAttribute("x2", line().x2());
     root.setAttribute("y2", line().y2());
     
-    root.appendChild( KTSerializer::properties( this, doc));
+    root.appendChild(KTSerializer::properties(this, doc));
     
     QPen pen = this->pen();
     root.appendChild(KTSerializer::pen(&pen, doc));

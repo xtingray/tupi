@@ -50,7 +50,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
 
     QTextEdit *textArea = new QTextEdit; 
     textArea->setFixedHeight(170);
-    textArea->setHtml("<p>" + tr("This tool is just a <b>proof-of-concept</b> of the basic algorithm for free-tracing vectorial brushes") + "</p>"); 
+    textArea->setHtml("<p>" + tr("This tool is just a <b>proof-of-concept</b> of the basic algorithm for the Tupi's free-tracing vectorial brushes") + "</p>"); 
     mainLayout->addWidget(textArea);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -60,7 +60,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     mainLayout->addLayout(layout);
 
     QBoxLayout *spaceLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *spaceLabel = new QLabel(tr("Spacing"));
+    QLabel *spaceLabel = new QLabel(tr("Dot Spacing"));
     spaceLabel->setAlignment(Qt::AlignHCenter);
     spaceLayout->addWidget(spaceLabel);
 

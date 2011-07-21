@@ -268,7 +268,7 @@ QDomElement KTSerializer::pen(const QPen *pen, QDomDocument &doc)
     penElement.setAttribute("alpha", pen->color().alpha());
     penElement.setAttribute("capStyle", pen->capStyle());
     penElement.setAttribute("joinStyle", pen->joinStyle());
-    penElement.setAttribute("width", pen->width());
+    penElement.setAttribute("width", pen->widthF());
     penElement.setAttribute("miterLimit", pen->miterLimit());
     
     QBrush brush = pen->brush();
@@ -282,7 +282,7 @@ void KTSerializer::loadPen(QPen &pen, const QXmlAttributes &atts)
     pen.setCapStyle(Qt::PenCapStyle(atts.value("capStyle").toInt()));
     pen.setStyle(Qt::PenStyle(atts.value("style").toInt()));
     pen.setJoinStyle(Qt::PenJoinStyle(atts.value("joinStyle").toInt()));
-    pen.setWidth(atts.value("width").toInt());
+    pen.setWidthF(atts.value("width").toDouble());
     pen.setMiterLimit(atts.value("miterLimit").toInt());
     
     if (!atts.value("color").isEmpty()) {
