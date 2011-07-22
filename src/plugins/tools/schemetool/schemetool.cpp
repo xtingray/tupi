@@ -84,7 +84,7 @@ void SchemeTool::init(KTGraphicsScene *scene)
 
     TCONFIG->beginGroup("PenParameters");
     int thickness = TCONFIG->value("Thickness", -1).toInt();
-    qreal tolerance = m_configurator->sizeToleranceValue()/(qreal)100;
+    tolerance = m_configurator->sizeToleranceValue()/(qreal)100;
 
     widthVar = tolerance*thickness;
 
@@ -219,55 +219,83 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
 
             #ifdef K_DEBUG
                    tError() << "SchemeTool::move() - M: " << m;
-                   tError() << "SchemeTool::move() - M(inv): " << pm;
+                   if (isNAN)
+                       tError() << "SchemeTool::move() - M(inv): NAN";
+                   else
+                       tError() << "SchemeTool::move() - M(inv): " << pm;
             #endif
+
+            qreal hypotenuse;
 
             if (fabs(pm) < 5) { // Line's slope is close to 0
 
                 int cutter = penWidth;
                 bool found = false;
                 qreal limit;
-                qreal h;
                 int iterations = 0;
 
-                while (!found) {
+                if (tolerance < 1) {
+                    while (!found) {
                        iterations++;
                        x0 = currentPoint.x() - cutter;
                        y0 = (pm*(x0 - currentPoint.x())) + currentPoint.y();
 
                        x1 = currentPoint.x() + cutter;
                        y1 = (pm*(x1 - currentPoint.x())) + currentPoint.y();
-                       h = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
-                       limit = h - brushManager->pen().widthF();
+                       hypotenuse = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
+
+                       limit = hypotenuse - brushManager->pen().widthF();
 
                        if (fabs(limit) > widthVar) {
                            if (limit > 0) {
-                               cutter -= 0.2;
-                               if (cutter == 0)
-                                   found = true;
+                                   cutter -= 0.2;
+                                   if (cutter == 0)
+                                       found = true;
                            } else {
-                               cutter += 0.2;
+                                   cutter += 0.2;
                            }
                        } else {
-                           found = true;
+                               found = true;
                        }
 
                        if (iterations >10)
                            found = true;
+                    }
+                } else {
+                       int random = rand() % 101;
+
+                       qreal  plus = (qreal)random/(qreal)100 * (penWidth*tolerance);
+
+                       x0 = currentPoint.x() - plus;
+                       y0 = (pm*(x0 - currentPoint.x())) + currentPoint.y();
+
+                       x1 = currentPoint.x() + plus;
+                       y1 = (pm*(x1 - currentPoint.x())) + currentPoint.y();
+                       hypotenuse = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
                 }
 
-                tError() << "SchemeTool::move() - H1: " << h;
+                tError() << "SchemeTool::move() - H1: " << hypotenuse;
                 tError() << "SchemeTool::move() - Width: " << brushManager->pen().widthF();
                 tError() << "SchemeTool::move() - limit: " << limit;
-                tError() << "SchemeTool::move() - tolerance: " << widthVar;
+                tError() << "SchemeTool::move() - tolerance: " << tolerance;
                 tError() << "SchemeTool::move() - iterations: " << iterations;
                     
             } else { // Line's slope is 0 or very very close to
 
                     tError() << "SchemeTool::move() - Line's slope is 0!";
+                    tError() << "SchemeTool::move() - widthVar: " << widthVar;
+                    tError() << "SchemeTool::move() - tolerance: " << tolerance;
 
-                    int plus = random() % (int) widthVar;
-                    qreal delta = penWidth + plus;
+                    qreal delta;
+                    qreal plus;
+                    int random = rand() % 101;
+ 
+                    if (tolerance < 1)
+                        plus = rand() % (int) widthVar;
+                    else
+                        plus = (qreal)random/(qreal)100 * (penWidth*tolerance);
+
+                    delta = penWidth + plus;
 
                     x0 = currentPoint.x();
                     y0 = currentPoint.y() - delta;
@@ -275,12 +303,18 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                     x1 = currentPoint.x();
                     y1 = currentPoint.y() + delta;
 
-                    qreal h = fabs(y1 - y0);
-                    tError() << "SchemeTool::move() - H2: " << h;
+                    qreal hypotenuse = fabs(y1 - y0);
+                    tError() << "SchemeTool::move() - H2: " << hypotenuse;
             }
 
+            QPen perPen;
+
+            if ((int)hypotenuse == brushManager->pen().width())
+                perPen = QPen(QColor(255, 106, 255), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            else
+                perPen = QPen(Qt::black, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+
             KTLineItem *perpendicularLine = new KTLineItem();
-            QPen perPen(Qt::black, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
             perpendicularLine->setPen(perPen);
             perpendicularLine->setLine(QLineF(x0, y0, x1, y1));
             scene->includeObject(perpendicularLine);
@@ -615,6 +649,7 @@ void SchemeTool::updateSpacingVar(int value)
 
 void SchemeTool::updateSizeToleranceVar(int value)
 {
+    tError() << "SchemeTool::updateSizeToleranceVar() - Value: " << value;
     tolerance = (qreal)value/(qreal)100;
 }
 
