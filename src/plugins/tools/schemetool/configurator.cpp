@@ -81,7 +81,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     sizeLayout->addWidget(sizeLabel);
 
     sizeBox = new QSpinBox();
-    sizeBox->setSingleStep(50);
+    sizeBox->setSingleStep(10);
     sizeBox->setMinimum(0);
     sizeBox->setMaximum(500);
     sizeBox->setValue(50);

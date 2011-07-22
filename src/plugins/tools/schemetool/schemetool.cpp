@@ -84,8 +84,12 @@ void SchemeTool::init(KTGraphicsScene *scene)
 
     TCONFIG->beginGroup("PenParameters");
     int thickness = TCONFIG->value("Thickness", -1).toInt();
+    qreal tolerance = m_configurator->sizeToleranceValue()/(qreal)100;
 
-    widthVar = (m_configurator->sizeToleranceValue()*thickness)/(qreal)100;
+    widthVar = tolerance*thickness;
+
+    if (widthVar < 1)
+        widthVar = 1; 
 
     tError() << "SchemeTool::init() - thickness: " << thickness;
     tError() << "SchemeTool::init() - tolerance: " << tolerance;
@@ -184,7 +188,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
         if (mx != 0)
             m = my / mx;
         else
-            m = 10;
+            m = 100;
 
         m_path.moveTo(previewPoint);
         m_path.lineTo(currentPoint);
@@ -194,7 +198,8 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
         qreal slopeVar = abs(oldSlope - m);
         qreal distance = sqrt(pow(abs(currentPoint.x() - m_oldPos.x()), 2) + pow(abs(currentPoint.y() - m_oldPos.y()), 2));
 
-        if ((dotsCounter % spacing == 0 && distance > 10) || ((slopeVar >= 2) && (distance > 10))) {
+        // if ((dotsCounter % spacing == 0 && distance > 10) || ((slopeVar >= 1.5) && (distance > 10))) {
+        if ((dotsCounter % spacing == 0) || ((slopeVar >= 1) && (distance > 10))) {
 
             oldSlope = m;
 
@@ -205,105 +210,73 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             qreal y1;
             bool isNAN = false;
 
-            if (m != 0) {
+            if (m == 0) {
+                isNAN = true;
+                pm = 100; 
+            } else {
                 pm = (-1) * (1/m);
+            } 
 
-                #ifdef K_DEBUG
-                       tError() << "SchemeTool::move() - M(inv): " << pm;
-                #endif
+            #ifdef K_DEBUG
+                   tError() << "SchemeTool::move() - M: " << m;
+                   tError() << "SchemeTool::move() - M(inv): " << pm;
+            #endif
 
-                if (abs(pm) < 2) {
+            if (fabs(pm) < 5) { // Line's slope is close to 0
 
-                    int cutter = penWidth;
-                    bool found = false;
-                    qreal limit;
-                    qreal h;
+                int cutter = penWidth;
+                bool found = false;
+                qreal limit;
+                qreal h;
+                int iterations = 0;
 
-                    while (!found) {
-                           x0 = currentPoint.x() - cutter;
-                           y0 = (pm*(x0 - currentPoint.x())) + currentPoint.y(); 
+                while (!found) {
+                       iterations++;
+                       x0 = currentPoint.x() - cutter;
+                       y0 = (pm*(x0 - currentPoint.x())) + currentPoint.y();
 
-                           x1 = currentPoint.x() + cutter;
-                           y1 = (pm*(x1 - currentPoint.x())) + currentPoint.y();
+                       x1 = currentPoint.x() + cutter;
+                       y1 = (pm*(x1 - currentPoint.x())) + currentPoint.y();
+                       h = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
+                       limit = h - brushManager->pen().widthF();
 
-                           h = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
-                           limit = h - brushManager->pen().widthF();
-
-                           if (abs(limit) > widthVar) {
-                               if (limit > 0) {
-                                   cutter--;
-                               } else {
-                                   cutter++;
-                               }
-                           } else {
-                               found = true;
-                           }
-                    }
-
-                    tError() << "SchemeTool::move() - H: " << h;
-                    tError() << "SchemeTool::move() - Width: " << brushManager->pen().widthF();
-                    tError() << "SchemeTool::move() - limit: " << limit;
-                    tError() << "SchemeTool::move() - tolerance: " << widthVar;
-
-                } else {
-                    if (abs(pm) < 5) {
-
-                        int cutter = 2;
-                        bool found = false;
-                        qreal limit;
-                        qreal h;
-
-                        while (!found) {
-                               x0 = currentPoint.x() - cutter;
-                               y0 = (pm*(x0 - currentPoint.x())) + currentPoint.y();
-
-                               x1 = currentPoint.x() + cutter;
-                               y1 = (pm*(x1 - currentPoint.x())) + currentPoint.y();
-                               h = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
-                               limit = h - brushManager->pen().widthF();
-
-                               if (abs(limit) > widthVar) {
-                                   if (limit > 0) {
-                                       cutter -= 0.2;
-                                   } else {
-                                       cutter += 0.2;
-                                   }
-                               } else {
+                       if (fabs(limit) > widthVar) {
+                           if (limit > 0) {
+                               cutter -= 0.2;
+                               if (cutter == 0)
                                    found = true;
-                               }
-                        }
+                           } else {
+                               cutter += 0.2;
+                           }
+                       } else {
+                           found = true;
+                       }
 
-                        tError() << "SchemeTool::move() - H: " << h;
-                        tError() << "SchemeTool::move() - Width: " << brushManager->pen().widthF();
-                        tError() << "SchemeTool::move() - limit: " << limit;
-                        tError() << "SchemeTool::move() - tolerance: " << widthVar;
-                    
-                    } else {
-                        x0 = currentPoint.x();
-                        y0 = currentPoint.y() - penWidth;
-
-                        x1 = currentPoint.x();
-                        y1 = currentPoint.y() + penWidth;
-                    }
+                       if (iterations >10)
+                           found = true;
                 }
 
-            } else {
+                tError() << "SchemeTool::move() - H1: " << h;
+                tError() << "SchemeTool::move() - Width: " << brushManager->pen().widthF();
+                tError() << "SchemeTool::move() - limit: " << limit;
+                tError() << "SchemeTool::move() - tolerance: " << widthVar;
+                tError() << "SchemeTool::move() - iterations: " << iterations;
+                    
+            } else { // Line's slope is 0 or very very close to
 
-                #ifdef K_DEBUG
-                       tError() << "SchemeTool::move() - M(inv): NAN";
-                #endif
+                    tError() << "SchemeTool::move() - Line's slope is 0!";
 
-                pm = 10;
-                isNAN = true;
+                    int plus = random() % (int) widthVar;
+                    qreal delta = penWidth + plus;
 
-                x0 = currentPoint.x();
-                y0 = currentPoint.y() - penWidth;
+                    x0 = currentPoint.x();
+                    y0 = currentPoint.y() - delta;
 
-                x1 = currentPoint.x();
-                y1 = currentPoint.y() + penWidth;
+                    x1 = currentPoint.x();
+                    y1 = currentPoint.y() + delta;
 
-                qreal h = abs(y1 - y0);
-                tError() << "SchemeTool::move() - H: " << h; 
+                    qreal h = fabs(y1 - y0);
+                    tError() << "SchemeTool::move() - H2: " << h;
             }
 
             KTLineItem *perpendicularLine = new KTLineItem();
@@ -323,11 +296,11 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             */
 
             KTLineItem *rightAuxLine = new KTLineItem();
-            QPen redAuxPen(Qt::red, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+            QPen redAuxPen(QColor(255, 93, 0), 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
             rightAuxLine->setPen(redAuxPen);
 
             KTLineItem *leftAuxLine = new KTLineItem();
-            QPen leftAuxPen(Qt::blue, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+            QPen leftAuxPen(QColor(0, 195, 255), 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
             leftAuxLine->setPen(leftAuxPen);
 
             QPointF right;
@@ -396,8 +369,18 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                left = QPointF(x0, y0);
                                right = QPointF(x1, y1);
                            } else {
-                               left = QPointF(x1, y1);
-                               right = QPointF(x0, y0);
+                               if (x0 < x1) {
+                                   left = QPointF(x1, y1);
+                                   right = QPointF(x0, y0);
+                               } else { // x0 == x1
+                                   if (y0 > y1) {
+                                       left = QPointF(x1, y1);
+                                       right = QPointF(x0, y0);
+                                   } else {
+                                       left = QPointF(x0, y0);
+                                       right = QPointF(x1, y1);
+                                   }
+                               }
                            }
                 } else {
                      #ifdef K_DEBUG
