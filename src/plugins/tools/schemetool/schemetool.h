@@ -83,6 +83,7 @@ class SchemeTool : public KTToolPlugin
         QPointF previewPoint;
         QPointF oldPosRight;
         QPointF oldPosLeft;
+        QPointF connector;
         QPainterPath m_path;
         QPainterPath pathRight; 
         QPainterPath pathLeft;
@@ -97,6 +98,8 @@ class SchemeTool : public KTToolPlugin
         int spacing;
         qreal tolerance;
         qreal widthVar; 
+        int arrowSize;
+        int firstArrow;
 };
 
 #endif

@@ -119,6 +119,7 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
 
     dotsCounter = 1;
     m_firstPoint = input->pos();
+    connector = m_firstPoint;
 
     m_path = QPainterPath();
     m_path.moveTo(m_firstPoint);
@@ -158,7 +159,7 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     itemRight = new KTPathItem();
     QPen rightPen(Qt::red, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
     itemRight->setPen(rightPen);
-    itemRight->setBrush(brushManager->brush());
+    // itemRight->setBrush(brushManager->brush());
 
     scene->includeObject(itemRight);
 
@@ -167,6 +168,9 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     itemLeft->setPen(leftPen);
 
     scene->includeObject(itemLeft);
+
+    firstArrow = rand() % 10 + 1;
+    arrowSize = -1;
 }
 
 void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -195,11 +199,33 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
 
         m_item->setPath(m_path);
 
+        tError() << "SchemeTool::move() - Flag 1";
+
         qreal slopeVar = abs(oldSlope - m);
         qreal distance = sqrt(pow(abs(currentPoint.x() - m_oldPos.x()), 2) + pow(abs(currentPoint.y() - m_oldPos.y()), 2));
 
         // if ((dotsCounter % spacing == 0 && distance > 10) || ((slopeVar >= 1.5) && (distance > 10))) {
-        if ((dotsCounter % spacing == 0) || ((slopeVar >= 1) && (distance > 10))) {
+
+        tError() << "SchemeTool::move() - firstArrow: " << firstArrow;
+        tError() << "SchemeTool::move() - dotsCounter: " << dotsCounter;
+
+        if ((dotsCounter > firstArrow) && ((dotsCounter % spacing == 0) || ((slopeVar >= 1) && (distance > 10)))) {
+
+            if (arrowSize == -1) {
+                tError() << "SchemeTool::move() - Flag 3";
+                qreal pow1 = pow(currentPoint.x() - m_firstPoint.x(), 2);
+                qreal pow2 = pow(currentPoint.y() - m_firstPoint.y(), 2); 
+                arrowSize = sqrt(pow1 + pow2);
+                tError() << "SchemeTool::move() - Flag 3A - pow1: " << pow1;
+                tError() << "SchemeTool::move() - Flag 3A - pow2: " << pow2;
+                tError() << "SchemeTool::move() - Flag 3A - arrowSize: " << arrowSize;
+                if (arrowSize > 0)
+                    arrowSize = (rand() % arrowSize) + 1; 
+                else
+                    arrowSize = 5;
+            }
+
+            tError() << "SchemeTool::move() - Arrow Size: " << arrowSize;
 
             oldSlope = m;
 
@@ -235,7 +261,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
 
                 int cutter = penWidth;
                 bool found = false;
-                qreal limit;
+                qreal limit = 0;
                 int iterations = 0;
 
                 if (tolerance < 1) {
@@ -290,12 +316,16 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                     qreal plus;
                     int random = rand() % 101;
 
-                    if (tolerance == 0) 
+                    if (tolerance == 0) {
                         plus = 0; 
-                    else if (tolerance < 1)
-                             plus = rand() % (int) widthVar;
-                    else
+                    } else if (tolerance < 1) {
+                               if (widthVar > 0)
+                                   plus = rand() % (int) widthVar;
+                               else
+                                   plus = rand() % 5;
+                    } else {
                         plus = (qreal)random/(qreal)100 * (penWidth*tolerance);
+                    }
 
                     delta = penWidth + plus;
 
@@ -365,6 +395,10 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                         right = QPointF(x0, y0);
                     }
 
+                    qreal endX = currentPoint.x() + arrowSize;
+                    qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
+                    connector = QPoint(endX, endY);
+
                 } else if (previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                   tDebug() << "    -> SchemeTool::move() - Going up-right";
@@ -377,6 +411,10 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                left = QPointF(x1, y1);
                                right = QPointF(x0, y0);
                            }
+
+                           qreal endX = currentPoint.x() + arrowSize;
+                           qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
+                           connector = QPoint(endX, endY);
                 } else {
                      #ifdef K_DEBUG
                             tDebug() << "    -> SchemeTool::move() - Going right";
@@ -389,6 +427,10 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                          left = QPointF(x1, y1);
                          right = QPointF(x0, y0);
                      }
+
+                     qreal endX = currentPoint.x() + arrowSize;
+                     qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
+                     connector = QPoint(endX, endY);
                 }
             } else if (previewPoint.x() > currentPoint.x()) {
                 if (previewPoint.y() < currentPoint.y()) {
@@ -404,6 +446,11 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                         right = QPointF(x1, y1);
                         left = QPointF(x0, y0);
                     }
+
+                    qreal endX = currentPoint.x() - arrowSize;
+                    qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
+                    connector = QPoint(endX, endY);
+
                 } else if (previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                   tDebug() << "    -> SchemeTool::move() - Going up-left";
@@ -427,6 +474,11 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                    }
                                }
                            }
+
+                           qreal endX = currentPoint.x() - arrowSize;
+                           qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
+                           connector = QPoint(endX, endY);
+
                 } else {
                      #ifdef K_DEBUG
                             tDebug() << "    -> SchemeTool::move() - Going left";
@@ -439,6 +491,10 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                          right = QPointF(x1, y1);
                          left = QPointF(x0, y0);
                      }
+
+                     qreal endX = currentPoint.x() - arrowSize;
+                     qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
+                     connector = QPoint(endX, endY);
                 }
             } else if (previewPoint.x() == currentPoint.x()) {
                        if (previewPoint.y() > currentPoint.y()) {
@@ -453,6 +509,10 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                left = QPointF(x1, y1);
                                right = QPointF(x0, y0);
                            }
+
+                           qreal endX = currentPoint.x();
+                           qreal endY = currentPoint.y() - arrowSize;
+                           connector = QPoint(endX, endY);
                        } else {
                            #ifdef K_DEBUG
                                   tDebug() << "    -> SchemeTool::move() - Going down";
@@ -465,6 +525,10 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                right = QPointF(x1, y1);
                                left = QPointF(x0, y0);
                            }
+
+                           qreal endX = currentPoint.x();
+                           qreal endY = currentPoint.y() + arrowSize;
+                           connector = QPoint(endX, endY);
                        }
             }
 
@@ -557,13 +621,15 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
     Q_UNUSED(scene);
 
     QPointF currentPoint = input->pos();
+    qreal radius = brushManager->pen().width();
 
-    if (m_firstPoint == input->pos() && pathRight.elementCount() == 1) {
-        qreal radius = brushManager->pen().width();
+    if (m_firstPoint == currentPoint && pathRight.elementCount() == 1) {
         pathRight.addEllipse(input->pos().x()-(radius/2), input->pos().y()-(radius/2), radius, radius);
         pathLeft.addEllipse(input->pos().x() - (radius/2 + 1), input->pos().y() - (radius/2 + 1), radius + 2, radius + 2);
     } else {
-        KTEllipseItem *lastEllipse = new KTEllipseItem(QRectF(currentPoint, QSize(1, 1)));
+        // KTEllipseItem *lastEllipse = new KTEllipseItem(QRectF(currentPoint, QSize(1, 1)));
+
+        KTEllipseItem *lastEllipse = new KTEllipseItem(QRectF(connector, QSize(1, 1)));
         QPen greenPen(Qt::green, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         lastEllipse->setPen(greenPen);
         scene->includeObject(lastEllipse);
@@ -581,12 +647,53 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
     m_item->setPath(m_path);
 
     pathRight.moveTo(oldPosRight);
-    pathRight.lineTo(currentPoint);
+    pathRight.lineTo(connector);
     pathLeft.moveTo(oldPosLeft);
-    pathLeft.lineTo(currentPoint);
+    pathLeft.lineTo(connector);
 
     itemRight->setPath(pathRight);
     itemLeft->setPath(pathLeft);
+
+    QPen blackPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+
+    if (m_firstPoint != currentPoint) {
+
+    tError() << "SchemeTool::release() - Flag 1";
+    tError() << "SchemeTool::release() - Connector: [" << connector.x() << ", " << connector.y() << "]";
+
+    pathRight.moveTo(connector);
+    pathRight.lineTo(QPoint(0, 0));
+    pathLeft.moveTo(connector);
+    pathLeft.lineTo(QPoint(0, 0));
+
+    smoothPath(pathRight, 4);
+
+    tError() << "SchemeTool::release() - Flag 2";
+
+    smoothPath(pathLeft, 4);
+
+    tError() << "SchemeTool::release() - Flag 3";
+
+    KTPathItem *blackRight = new KTPathItem();
+    blackRight->setPen(blackPen);
+    blackRight->setPath(pathRight);
+    scene->includeObject(blackRight);
+
+    tError() << "SchemeTool::release() - Flag 4";
+
+    KTPathItem *blackLeft = new KTPathItem();
+    blackLeft->setPen(blackPen);
+    blackLeft->setPath(pathLeft);
+    scene->includeObject(blackLeft);
+
+    tError() << "SchemeTool::release() - Flag 5";
+
+    } else {
+        QPointF distance((radius + 2)/2, (radius + 2)/2);
+        KTEllipseItem *blackEllipse = new KTEllipseItem(QRectF(connector - distance, QSize(radius + 2, radius + 2)));
+        blackEllipse->setPen(blackPen);
+        scene->includeObject(blackEllipse);
+    }
 
     /*
     QDomDocument doc;
@@ -662,6 +769,33 @@ void SchemeTool::updateSizeToleranceVar(int value)
 {
     tError() << "SchemeTool::updateSizeToleranceVar() - Value: " << value;
     tolerance = (qreal)value/(qreal)100;
+}
+
+void SchemeTool::smoothPath(QPainterPath &path, double smoothness, int from, int to)
+{
+    QPolygonF pol;
+    QList<QPolygonF> polygons = path.toSubpathPolygons();
+
+    QList<QPolygonF>::iterator it = polygons.begin();
+
+    QPolygonF::iterator pointIt;
+
+    while (it != polygons.end()) {
+           pointIt = (*it).begin();
+
+           while (pointIt <= (*it).end()-2) {
+                  pol << (*pointIt);
+                  pointIt += 2;
+           }
+           ++it;
+    }
+
+    if (smoothness > 0) {
+        path = KTGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
+    } else {
+        path = QPainterPath();
+        path.addPolygon(pol);
+    }
 }
 
 Q_EXPORT_PLUGIN2(kt_brush, SchemeTool);
