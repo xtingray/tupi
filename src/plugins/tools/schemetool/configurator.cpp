@@ -91,6 +91,12 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
 
     mainLayout->addLayout(sizeLayout);
 
+    QBoxLayout *checkLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    checkbox = new QCheckBox(tr("Run simulation"));
+    checkLayout->addWidget(checkbox);
+
+    mainLayout->addLayout(checkLayout);
+
     mainLayout->addStretch(2);
 }
 

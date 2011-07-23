@@ -38,6 +38,7 @@
 
 #include <QLabel>
 #include <QSpinBox>
+#include <QCheckBox>
 
 /**
  * @author Gustav Gonzalez 
@@ -60,6 +61,7 @@ class Configurator : public QWidget
     private:
         QSpinBox *spacingBox;
         QSpinBox *sizeBox;
+        QCheckBox *checkbox;
 };
 
 #endif
