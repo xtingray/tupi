@@ -83,8 +83,8 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     sizeBox = new QSpinBox();
     sizeBox->setSingleStep(10);
     sizeBox->setMinimum(0);
-    sizeBox->setMaximum(500);
-    sizeBox->setValue(50);
+    sizeBox->setMaximum(200);
+    sizeBox->setValue(0);
     sizeLayout->addWidget(sizeBox);
 
     connect(sizeBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSizeTolerance(int)));

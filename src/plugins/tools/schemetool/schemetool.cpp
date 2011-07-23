@@ -218,7 +218,11 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             } 
 
             #ifdef K_DEBUG
-                   tError() << "SchemeTool::move() - M: " << m;
+                   if (m == 100)
+                       tError() << "SchemeTool::move() - M: NAN";
+                   else
+                       tError() << "SchemeTool::move() - M: " << m;
+
                    if (isNAN)
                        tError() << "SchemeTool::move() - M(inv): NAN";
                    else
@@ -264,7 +268,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                 } else {
                        int random = rand() % 101;
 
-                       qreal  plus = (qreal)random/(qreal)100 * (penWidth*tolerance);
+                       qreal plus = (qreal)random/(qreal)100 * (penWidth*tolerance);
 
                        x0 = currentPoint.x() - plus;
                        y0 = (pm*(x0 - currentPoint.x())) + currentPoint.y();
@@ -275,23 +279,21 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                 }
 
                 tError() << "SchemeTool::move() - H1: " << hypotenuse;
-                tError() << "SchemeTool::move() - Width: " << brushManager->pen().widthF();
+                tError() << "SchemeTool::move() - Width: " << brushManager->pen().width();
                 tError() << "SchemeTool::move() - limit: " << limit;
                 tError() << "SchemeTool::move() - tolerance: " << tolerance;
                 tError() << "SchemeTool::move() - iterations: " << iterations;
                     
             } else { // Line's slope is 0 or very very close to
 
-                    tError() << "SchemeTool::move() - Line's slope is 0!";
-                    tError() << "SchemeTool::move() - widthVar: " << widthVar;
-                    tError() << "SchemeTool::move() - tolerance: " << tolerance;
-
                     qreal delta;
                     qreal plus;
                     int random = rand() % 101;
- 
-                    if (tolerance < 1)
-                        plus = rand() % (int) widthVar;
+
+                    if (tolerance == 0) 
+                        plus = 0; 
+                    else if (tolerance < 1)
+                             plus = rand() % (int) widthVar;
                     else
                         plus = (qreal)random/(qreal)100 * (penWidth*tolerance);
 
@@ -303,16 +305,25 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                     x1 = currentPoint.x();
                     y1 = currentPoint.y() + delta;
 
-                    qreal hypotenuse = fabs(y1 - y0);
+                    hypotenuse = fabs(y1 - y0);
+
+                    tError() << "SchemeTool::move() - Line's slope is 0!";
+                    tError() << "SchemeTool::move() - widthVar: " << widthVar;
+                    tError() << "SchemeTool::move() - tolerance: " << tolerance;
                     tError() << "SchemeTool::move() - H2: " << hypotenuse;
+                    tError() << "SchemeTool::move() - Width: " << brushManager->pen().width();
             }
 
             QPen perPen;
 
-            if ((int)hypotenuse == brushManager->pen().width())
+            int h = hypotenuse;
+            if (h == brushManager->pen().width()) {
+                tError() << "SchemeTool::move() - VioLeT!: " << h;
                 perPen = QPen(QColor(255, 106, 255), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-            else
+            } else {
+                tError() << "SchemeTool::move() - Black!: " << h;
                 perPen = QPen(Qt::black, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+            }
 
             KTLineItem *perpendicularLine = new KTLineItem();
             perpendicularLine->setPen(perPen);
