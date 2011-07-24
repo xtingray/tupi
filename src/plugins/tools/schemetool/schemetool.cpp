@@ -45,6 +45,7 @@
 #include "ktlibraryobject.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
+#include "kttextitem.h"
 
 #include "taction.h"
 #include "talgorithm.h"
@@ -105,6 +106,13 @@ void SchemeTool::init(KTGraphicsScene *scene)
                  }
              }
     }
+
+    KTTextItem *textItem = new KTTextItem;
+    textItem->setPos(QPointF(5, 0));
+    textItem->setDefaultTextColor(QColor(0, 0, 0, 100));
+    textItem->setFont(QFont("Times", 10, QFont::Bold));
+    textItem->setPlainText("Note: Remember, this is just an experimental plugin for R&D interest");
+    scene->includeObject(textItem);
 }
 
 QStringList SchemeTool::keys() const
