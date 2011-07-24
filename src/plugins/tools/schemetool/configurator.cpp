@@ -92,10 +92,27 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     mainLayout->addLayout(sizeLayout);
 
     QBoxLayout *checkLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    checkbox = new QCheckBox(tr("Run simulation"));
-    checkLayout->addWidget(checkbox);
+    checkBox = new QCheckBox(tr("Run simulation"));
+    checkLayout->addWidget(checkBox);
+
+    connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(updateInterface(int)));
 
     mainLayout->addLayout(checkLayout);
+
+    QBoxLayout *smoothLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *smoothLabel = new QLabel(tr("Smoothness"));
+    smoothLabel->setAlignment(Qt::AlignHCenter);
+    smoothLayout->addWidget(smoothLabel);
+    smoothBox = new QDoubleSpinBox();
+
+    smoothBox->setValue(2.0);
+    smoothBox->setDecimals(2);
+    smoothBox->setSingleStep(0.1);
+    smoothBox->setMaximum(100);
+    smoothLayout->addWidget(smoothBox);
+
+    mainLayout->addLayout(smoothLayout);
+    smoothBox->setDisabled(true);
 
     mainLayout->addStretch(2);
 }
@@ -116,4 +133,24 @@ qreal Configurator::sizeToleranceValue()
 {
     tError() << "Configurator::sizeToleranceValue() - Value: " << sizeBox->value();
     return sizeBox->value();
+}
+
+bool Configurator::runSimulation()
+{
+    return checkBox->isChecked();
+}
+
+void Configurator::updateInterface(int state)
+{ 
+    tError() << "Configurator::updateInterface() - Tracing state: " << state;
+
+    if (state == 2)
+        smoothBox->setDisabled(false);
+    else
+        smoothBox->setDisabled(true);
+}
+
+double Configurator::smoothness() const
+{
+    return smoothBox->value();
 }

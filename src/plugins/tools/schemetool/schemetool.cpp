@@ -146,7 +146,6 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     m_ellipse->setPen(firstPointPen);
     scene->includeObject(m_ellipse);
 
-    /*
     QDomDocument doc;
     doc.appendChild(m_ellipse->toXml(doc));
 
@@ -154,7 +153,6 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
                                                                    scene->currentFrame()->graphics().count(), inception, scene->spaceMode(),
                                                                    KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
     emit requested(&request);
-    */
 
     itemRight = new KTPathItem();
     QPen rightPen(Qt::red, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
@@ -360,7 +358,6 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             perpendicularLine->setLine(QLineF(x0, y0, x1, y1));
             scene->includeObject(perpendicularLine);
 
-            /*
             QDomDocument doc;
             doc.appendChild(perpendicularLine->toXml(doc));
 
@@ -368,7 +365,6 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                                                            scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
                                                                            KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
             emit requested(&request);
-            */
 
             KTLineItem *rightAuxLine = new KTLineItem();
             QPen redAuxPen(QColor(255, 93, 0), 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
@@ -537,7 +533,6 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             scene->includeObject(rightAuxLine);
             scene->includeObject(leftAuxLine);
 
-            /*
             doc.clear();
             doc.appendChild(rightAuxLine->toXml(doc));
 
@@ -552,7 +547,6 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                                                           scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
                                                           KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
             emit requested(&request);
-            */
 
             QPointF inception = left - QPointF(0.5, 0.5);
             KTEllipseItem *blueEllipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
@@ -560,14 +554,12 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             blueEllipse->setPen(bluePen);
             scene->includeObject(blueEllipse);
 
-            /*
             doc.clear();
             doc.appendChild(blueEllipse->toXml(doc));
             request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                           scene->currentFrame()->graphics().count(), inception, scene->spaceMode(),
                                                           KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
             emit requested(&request);
-            */
 
             inception = right - QPointF(0.5, 0.5);
             KTEllipseItem *redEllipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
@@ -575,14 +567,12 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             redEllipse->setPen(redPen);
             scene->includeObject(redEllipse);
 
-            /*
             doc.clear();
             doc.appendChild(redEllipse->toXml(doc));
             request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                           scene->currentFrame()->graphics().count(), inception, scene->spaceMode(),
                                                           KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
             emit requested(&request);
-            */
 
             pathRight.moveTo(oldPosRight);
             pathRight.lineTo(right);
@@ -603,14 +593,12 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
         m_ellipse->setPen(pen);
         scene->includeObject(m_ellipse);
 
-        /*
         QDomDocument doc;
         doc.appendChild(m_ellipse->toXml(doc));
         KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                       scene->currentFrame()->graphics().count(), inception, scene->spaceMode(),
                                                       KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
         emit requested(&request);
-        */
     }
 
     previewPoint = currentPoint;
@@ -627,75 +615,21 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
         pathRight.addEllipse(input->pos().x()-(radius/2), input->pos().y()-(radius/2), radius, radius);
         pathLeft.addEllipse(input->pos().x() - (radius/2 + 1), input->pos().y() - (radius/2 + 1), radius + 2, radius + 2);
     } else {
-        // KTEllipseItem *lastEllipse = new KTEllipseItem(QRectF(currentPoint, QSize(1, 1)));
-
         KTEllipseItem *lastEllipse = new KTEllipseItem(QRectF(connector, QSize(1, 1)));
         QPen greenPen(Qt::green, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         lastEllipse->setPen(greenPen);
         scene->includeObject(lastEllipse);
 
-        /*
         QDomDocument doc;
         doc.appendChild(lastEllipse->toXml(doc));
         KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                       scene->currentFrame()->graphics().count(), currentPoint, scene->spaceMode(),
                                                       KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
         emit requested(&request);
-        */
     } 
 
     m_item->setPath(m_path);
 
-    pathRight.moveTo(oldPosRight);
-    pathRight.lineTo(connector);
-    pathLeft.moveTo(oldPosLeft);
-    pathLeft.lineTo(connector);
-
-    itemRight->setPath(pathRight);
-    itemLeft->setPath(pathLeft);
-
-    QPen blackPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-
-    if (m_firstPoint != currentPoint) {
-
-    tError() << "SchemeTool::release() - Flag 1";
-    tError() << "SchemeTool::release() - Connector: [" << connector.x() << ", " << connector.y() << "]";
-
-    pathRight.moveTo(connector);
-    pathRight.lineTo(QPoint(0, 0));
-    pathLeft.moveTo(connector);
-    pathLeft.lineTo(QPoint(0, 0));
-
-    smoothPath(pathRight, 4);
-
-    tError() << "SchemeTool::release() - Flag 2";
-
-    smoothPath(pathLeft, 4);
-
-    tError() << "SchemeTool::release() - Flag 3";
-
-    KTPathItem *blackRight = new KTPathItem();
-    blackRight->setPen(blackPen);
-    blackRight->setPath(pathRight);
-    scene->includeObject(blackRight);
-
-    tError() << "SchemeTool::release() - Flag 4";
-
-    KTPathItem *blackLeft = new KTPathItem();
-    blackLeft->setPen(blackPen);
-    blackLeft->setPath(pathLeft);
-    scene->includeObject(blackLeft);
-
-    tError() << "SchemeTool::release() - Flag 5";
-
-    } else {
-        QPointF distance((radius + 2)/2, (radius + 2)/2);
-        KTEllipseItem *blackEllipse = new KTEllipseItem(QRectF(connector - distance, QSize(radius + 2, radius + 2)));
-        blackEllipse->setPen(blackPen);
-        scene->includeObject(blackEllipse);
-    }
-
-    /*
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
 
@@ -717,7 +651,79 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
                                                   scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
                                                   KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
     emit requested(&request);
-    */
+
+    if (m_configurator->runSimulation()) {
+
+        pathRight.moveTo(oldPosRight);
+        pathRight.lineTo(connector);
+        pathLeft.moveTo(oldPosLeft);
+        pathLeft.lineTo(connector);
+
+        itemRight->setPath(pathRight);
+        itemLeft->setPath(pathLeft);
+
+        QPen blackPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+
+        if (m_firstPoint != currentPoint) {
+
+            tError() << "SchemeTool::release() - Flag 1";
+            tError() << "SchemeTool::release() - Connector: [" << connector.x() << ", " << connector.y() << "]";
+
+            pathRight.moveTo(connector);
+            pathRight.lineTo(QPoint(0, 0));
+            pathLeft.moveTo(connector);
+            pathLeft.lineTo(QPoint(0, 0));
+
+            smoothPath(pathRight, m_configurator->smoothness());
+
+            tError() << "SchemeTool::release() - Flag 2";
+
+            smoothPath(pathLeft, m_configurator->smoothness());
+
+            tError() << "SchemeTool::release() - Flag 3";
+
+            KTPathItem *blackRight = new KTPathItem();
+            blackRight->setPen(blackPen);
+            blackRight->setPath(pathRight);
+            scene->includeObject(blackRight);
+
+            tError() << "SchemeTool::release() - Flag 4";
+
+            KTPathItem *blackLeft = new KTPathItem();
+            blackLeft->setPen(blackPen);
+            blackLeft->setPath(pathLeft);
+            scene->includeObject(blackLeft);
+
+            tError() << "SchemeTool::release() - Flag 5";
+
+            QDomDocument doc;
+            doc.appendChild(blackRight->toXml(doc));
+            KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+                                                         scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
+                                                         KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+            emit requested(&request);
+
+            doc.clear();
+            doc.appendChild(blackLeft->toXml(doc));
+            request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+                                        scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
+                                        KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+            emit requested(&request);
+
+        } else {
+            QPointF distance((radius + 2)/2, (radius + 2)/2);
+            KTEllipseItem *blackEllipse = new KTEllipseItem(QRectF(connector - distance, QSize(radius + 2, radius + 2)));
+            blackEllipse->setPen(blackPen);
+            scene->includeObject(blackEllipse);
+
+            QDomDocument doc;
+            doc.appendChild(blackEllipse->toXml(doc));
+            KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+                                                         scene->currentFrame()->graphics().count(), currentPoint, scene->spaceMode(),
+                                                         KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+            emit requested(&request);
+        }
+    }
 }
 
 void SchemeTool::setupActions()

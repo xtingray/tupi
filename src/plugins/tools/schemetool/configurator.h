@@ -39,6 +39,7 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QDoubleSpinBox>
 
 /**
  * @author Gustav Gonzalez 
@@ -53,15 +54,21 @@ class Configurator : public QWidget
         ~Configurator();
         int spacingValue();
         qreal sizeToleranceValue();
+        bool runSimulation();
+        double smoothness() const;
 
     signals:
         void updateSpacing(int value);
         void updateSizeTolerance(int value);
 
+    private slots:
+        void updateInterface(int state);
+
     private:
         QSpinBox *spacingBox;
         QSpinBox *sizeBox;
-        QCheckBox *checkbox;
+        QCheckBox *checkBox;
+        QDoubleSpinBox *smoothBox;
 };
 
 #endif
