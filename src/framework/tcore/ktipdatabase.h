@@ -36,11 +36,11 @@
 #ifndef KTIPDATABASE_H
 #define KTIPDATABASE_H
 
+#include "tglobal.h"
+
 #include <QWidget>
 #include <QString>
 #include <QList>
-
-#include "tglobal.h"
 
 /**
  * @struct KTip
@@ -66,7 +66,7 @@ struct KTip
  * \</TipOfDay\>
  * @endverbatim
  * 
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
  */
 
 class K_CORE_EXPORT KTipDatabase : public QWidget

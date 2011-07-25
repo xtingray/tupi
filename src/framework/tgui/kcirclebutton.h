@@ -39,13 +39,13 @@
  * @file kcirclebutton.h
  * Include this file if you need the class KCircleButton
  */
+#include "tglobal.h"
 #include <QPushButton>
 #include <QStyleOptionButton>
-#include "tglobal.h"
 
 /**
  * @short The KCircleButton class provides a circular button
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KCircleButton : public QPushButton

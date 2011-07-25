@@ -36,8 +36,8 @@
 #ifndef KSQUEEZELABEL_H
 #define KSQUEEZELABEL_H
 
-#include <QLabel>
 #include "tglobal.h"
+#include <QLabel>
 
 /**
  * @if english
@@ -57,7 +57,7 @@
  * Si el texto es muy largo para ser llenado en el label es dividido en el espacio restante que son separadas por tres puntos.
  * 
  * @endif
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT KSqueezeLabel : public QLabel

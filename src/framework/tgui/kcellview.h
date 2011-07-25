@@ -58,7 +58,7 @@ class KCellViewItem : public QTableWidgetItem
 };
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
  */
 class KCellView : public QTableWidget
 {

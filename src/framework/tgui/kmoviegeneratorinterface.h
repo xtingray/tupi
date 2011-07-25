@@ -33,13 +33,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #ifndef KMOVIEGENERATORINTERFACE_H
 #define KMOVIEGENERATORINTERFACE_H
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class KMovieGeneratorInterface
 {
     public:

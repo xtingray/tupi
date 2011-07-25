@@ -43,8 +43,9 @@ class QMainWindow;
 
 /**
  * This class creates a TMainWindow from other QMainWindow
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class K_IDEAL_EXPORT TMainWindowFactory
 {
     public:

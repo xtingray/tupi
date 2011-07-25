@@ -36,13 +36,13 @@
 #ifndef TACTIONMANAGER_H
 #define TACTIONMANAGER_H
 
+#include "taction.h"
+#include "tglobal.h"
+
 #include <QObject>
 #include <QWidget>
 #include <QList>
 #include <QHash>
-
-#include "taction.h"
-#include "tglobal.h"
 
 typedef QList<QAction *> KActionList;
 typedef QHash<QString, QAction *> KActionDict;
@@ -53,7 +53,7 @@ class QMenuBar;
 
 /**
  * @short class TActionManager provides an action manager, this handler makes easier the access and sort of any action of the app.
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
 
 class K_GUI_EXPORT TActionManager : public QObject

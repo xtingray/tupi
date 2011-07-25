@@ -36,8 +36,8 @@
 #ifndef KAPPLICATIONPROPERTIES_H
 #define KAPPLICATIONPROPERTIES_H
 
-#include <QString>
 #include "tglobal.h"
+#include <QString>
 
 /**
  * @author David Cuadrado

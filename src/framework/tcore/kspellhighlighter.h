@@ -36,10 +36,10 @@
 #ifndef SPELLHIGHLIGHTER_H
 #define SPELLHIGHLIGHTER_H
 
-#include <QSyntaxHighlighter>
-
 #include "kspeller.h"
 #include "tglobal.h"
+
+#include <QSyntaxHighlighter>
 
 /**
  * @if english
@@ -53,7 +53,7 @@
  * new KSpellHighlighter(textEdit->document());
  * @endcode
  * @endif
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_CORE_EXPORT KSpellHighlighter : public QSyntaxHighlighter

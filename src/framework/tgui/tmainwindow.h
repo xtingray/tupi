@@ -51,7 +51,7 @@ class TMainWindowAbstractSettings;
 
 /**
  * iDeality Main Window
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_IDEAL_EXPORT TMainWindow : public QMainWindow

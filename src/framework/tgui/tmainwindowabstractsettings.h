@@ -36,14 +36,14 @@
 #ifndef TMAINWINDOWABSTRACTSETTINGS_H
 #define TMAINWINDOWABSTRACTSETTINGS_H
 
-#include <QObject>
 #include "kideality.h"
+#include <QObject>
 
 class KToolView;
 class TMainWindow;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class K_IDEAL_EXPORT TMainWindowAbstractSettings : public QObject

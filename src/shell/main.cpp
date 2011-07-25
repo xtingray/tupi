@@ -33,10 +33,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <ktapplication.h>
+#include "ktapplication.h"
 #include "ktsplash.h"
 #include "ktmainwindow.h"
-#include <ktwitter.h>
+#include "ktwitter.h"
 
 #include <qfile.h>
 #include <qtextstream.h>
