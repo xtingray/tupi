@@ -49,7 +49,9 @@
 
 TApplication::TApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
-    TINIT;
+    #ifdef K_DEBUG
+           TINIT;
+    #endif 
 
     QApplication::setEffectEnabled(Qt::UI_AnimateMenu, true);
     QApplication::setEffectEnabled(Qt::UI_AnimateCombo, true);
@@ -64,6 +66,10 @@ TApplication::TApplication(int & argc, char ** argv) : QApplication(argc, argv)
 TApplication::~TApplication()
 {
     TCONFIG->sync();
+
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 }
 
 void TApplication::applyTheme(const QString &file)

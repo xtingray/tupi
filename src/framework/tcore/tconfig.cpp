@@ -60,7 +60,9 @@ TConfig* TConfig::m_instance = 0;
 
 TConfig::TConfig() : QObject(), k(new Private)
 {
-    TINIT;
+    #ifdef K_DEBUG
+           TINIT;
+    #endif
 	
 #ifdef Q_WS_X11
     k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
@@ -87,7 +89,10 @@ TConfig::TConfig() : QObject(), k(new Private)
 
 TConfig::~TConfig()
 {
-    TEND;
+    #ifdef K_DEBUG
+           TEND;
+    #endif
+
     if (m_instance) 
         delete m_instance;
 }

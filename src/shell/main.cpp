@@ -88,7 +88,7 @@ class SleeperThread : public QThread
 /**
  * Main class of the application. 
  * This is the code where Tupi application starts.
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 /** 

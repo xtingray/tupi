@@ -111,7 +111,7 @@ void SchemeTool::init(KTGraphicsScene *scene)
     textItem->setPos(QPointF(5, 0));
     textItem->setDefaultTextColor(QColor(0, 0, 0, 100));
     textItem->setFont(QFont("Times", 10, QFont::Bold));
-    textItem->setPlainText("Note: Remember, this is just an experimental plugin for R&D interest");
+    textItem->setPlainText("Note: Remember, this is just an experimental plugin for R&D issues");
     scene->includeObject(textItem);
 }
 
