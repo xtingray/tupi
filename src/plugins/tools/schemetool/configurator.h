@@ -37,6 +37,7 @@
 #define CONFIGURATOR_H
 
 #include <QLabel>
+#include <QComboBox>
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
@@ -50,12 +51,15 @@ class Configurator : public QWidget
     Q_OBJECT
 
     public:
+        enum Structure { Basic = 0, Axial, Organic };
+
         Configurator(QWidget *parent = 0);
         ~Configurator();
         int spacingValue();
         qreal sizeToleranceValue();
         bool runSimulation();
         double smoothness() const;
+        Configurator::Structure structureType();
 
     signals:
         void updateSpacing(int value);
@@ -65,6 +69,7 @@ class Configurator : public QWidget
         void updateInterface(int state);
 
     private:
+        QComboBox *structureCombo;
         QSpinBox *spacingBox;
         QSpinBox *sizeBox;
         QCheckBox *checkBox;

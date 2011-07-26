@@ -87,7 +87,7 @@ class SchemeTool : public KTToolPlugin
         QPainterPath m_path;
         QPainterPath pathRight; 
         QPainterPath pathLeft;
-        Configurator * m_configurator;
+        Configurator *m_configurator;
         QMap<QString, TAction *> m_actions;
         KTPathItem *m_item;
         KTPathItem *itemRight;

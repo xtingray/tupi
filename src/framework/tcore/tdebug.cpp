@@ -58,7 +58,6 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QMessageBox>
-// #include <QTextBrowser>
 #include <QSyntaxHighlighter>
 #include <QMatrix>
 #include <QDesktopWidget>
@@ -67,7 +66,7 @@
 
 #endif
 
-#include <QSettings>
+// #include <QSettings>
 
 #if defined(Q_OS_UNIX)
 # define SHOW_ERROR "*** \033[0;31m%s\033[0;0m ***\n"
@@ -120,30 +119,21 @@ static class ConfigReader
         ~ConfigReader();
 
         QStringList areas;
-
         bool colorize;
         bool showArea;
         bool showAll;
-        bool forceDisableGUI;
-        DebugOutput defaultOutput;
+        DebugOutput outputType;
 } configReader;
-
-// SQA: This class needs refactoring, debugging values must be taken 
-//      from the tupi.cfg file 
 
 ConfigReader::ConfigReader()
 {
-    QSettings settings("tdebug");
-    settings.beginGroup("Iface");
+    areas = QStringList();
+    showArea = false;
+    showAll = true;
 
-    areas = settings.value("areas", QStringList()).toStringList();
-    showArea = settings.value("show_area", false).toBool();
-    showAll = settings.value("show_all", true).toBool();
-
-    defaultOutput= DebugOutput(settings.value("default", TShellOutput).toInt());
-    forceDisableGUI = false;
+    outputType = TShellOutput;
     colorize = false;
-    
+ 
 #ifdef Q_OS_UNIX
     QString terminal = QString::fromLocal8Bit(::getenv("TERM"));
     if (terminal == "linux" || terminal == "xterm")
@@ -153,31 +143,14 @@ ConfigReader::ConfigReader()
 
 ConfigReader::~ConfigReader()
 {
-    /*
-    QSettings settings("tdebug");
-    settings.beginGroup("Iface");
-
-    if (areas.isEmpty())
-        settings.setValue("areas", "");
-    else
-        settings.setValue("areas", areas);
-
-    settings.setValue("show_area", showArea);
-    settings.setValue("show_all", showAll);
-    settings.setValue("default", defaultOutput);
-
-    if (debugBrowser) {
-        if (debugBrowser->parentWidget() == 0)
-            delete debugBrowser;
-    }
-    */
 }
 
 #ifdef QT_GUI_LIB
 
 class DebugBrowserHighlighter : public QSyntaxHighlighter
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         DebugBrowserHighlighter(QTextDocument *doc);
         ~DebugBrowserHighlighter() {};
@@ -218,10 +191,6 @@ void DebugBrowserHighlighter::highlightBlock(const QString &text)
     if (sepIndex != last)
         sepIndex -= 1;
 
-    //QString area = text.left(sepIndex);
-    //if (!m_colors.contains(area)) 
-    //    return;
-
     QTextCharFormat format;
     format.setFontWeight(QFont::Bold);
     format.setForeground(QColor(26, 100, 26));
@@ -236,11 +205,6 @@ void DebugBrowserHighlighter::highlightBlock(const QString &text)
 
 static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
-    if ((o == TBoxOutput) || (o == TBrowserOutput && configReader.forceDisableGUI)) {
-        o = TShellOutput;
-        configReader.defaultOutput = TShellOutput;
-    }
-
     char const *output = "%s\n";
 
     if (configReader.colorize) {
@@ -250,16 +214,19 @@ static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
                       // output = "%s\n";
                     }
                break;
+
                case TWarningMsg:
                     {
                       output = SHOW_WARNING;
                     }
                break;
+
                case TErrorMsg:
                     {
                       output = SHOW_ERROR;
                     }
                break;
+
                case TFatalMsg:
                     {
                       output = SHOW_FATAL;
@@ -268,17 +235,16 @@ static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
         }
     }
 
-    // o = TBrowserOutput;
-
     switch (o) {
             case TShellOutput:
                {
                  fprintf(stderr, output, data);
                }
                break;
+
             case TFileOutput:
                {
-                 QFile outFile("tdebug.log");
+                 QFile outFile("tupi.log");
 
                  if (outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
                      outFile.write(data, strlen(data));
@@ -286,6 +252,7 @@ static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
                  }
                }
             break;
+
             #ifdef QT_GUI_LIB
             case TBoxOutput:
                {
@@ -295,16 +262,19 @@ static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
                                    QMessageBox::information(0, QObject::tr("Information"), data, QMessageBox::Ok);
                                }
                             break;
+
                             case TWarningMsg:
                                {
                                    QMessageBox::warning(0, QObject::tr("Warning"), data);
                                }
                             break;
+
                             case TErrorMsg:
                                {
                                    QMessageBox::critical(0, QObject::tr("Error"), data);
                                }
                             break;
+
                             case TFatalMsg:
                                {
                                    QMessageBox::critical(0, QObject::tr("Critical"), data);
@@ -326,6 +296,7 @@ static void tDebugOutput(DebugType t, DebugOutput o, const char *data)
                }
             break;
             #endif
+
             default: 
             break;
     }
@@ -347,7 +318,7 @@ TDebug::TDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
     }
 
     if (m_output == TDefault)
-        m_output = configReader.defaultOutput;
+        m_output = configReader.outputType;
 };
 
 TDebug::TDebug(const TDebug & k) : streamer(k.streamer), m_type(k.m_type), m_output(k.m_output), m_area(k.m_area)
@@ -356,17 +327,14 @@ TDebug::TDebug(const TDebug & k) : streamer(k.streamer), m_type(k.m_type), m_out
 
 TDebug::~TDebug()
 {
-    // if ((m_area.isEmpty() && configReader.showAll) || configReader.areas.contains(m_area))
-    // ::tDebugOutput(m_type, m_output, streamer->buffer.toLocal8Bit().data());
-
-    ::tDebugOutput(m_type, TBrowserOutput, streamer->buffer.toLocal8Bit().data());
+    ::tDebugOutput(m_type, configReader.outputType, streamer->buffer.toLocal8Bit().data());
 
     delete streamer;
 }
 
-void TDebug::setForceDisableGUI()
+void TDebug::setOutputChannel()
 {
-    configReader.forceDisableGUI = true;
+    configReader.outputType = TBrowserOutput;
 }
 
 TDebug& TDebug::operator << (const QDateTime& time) 
@@ -426,7 +394,6 @@ TDebug& TDebug::operator << (const QStringList & l)
 
     return *this;
 }
-
 
 TDebug& TDebug::operator << (const QVariant & v) 
 {

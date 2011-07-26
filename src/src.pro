@@ -11,8 +11,8 @@ SUBDIRS += themes \
            net \
            libui \
            components \
-           shell \
-           plugins
+           plugins \
+           shell
 
 CONFIG += release warn_on
 TEMPLATE = subdirs

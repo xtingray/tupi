@@ -59,6 +59,20 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     layout->addWidget(label);
     mainLayout->addLayout(layout);
 
+    QBoxLayout *structureLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *structureLabel = new QLabel(tr("Structure"));
+    structureLabel->setAlignment(Qt::AlignHCenter);
+    structureLayout->addWidget(structureLabel);
+
+    structureCombo = new QComboBox();
+    structureCombo->addItem(tr("Basic"));
+    structureCombo->addItem(tr("Axial"));
+    structureCombo->addItem(tr("Organic"));
+    structureCombo->setCurrentIndex(2);
+    structureLayout->addWidget(structureCombo);
+
+    mainLayout->addLayout(structureLayout);
+
     QBoxLayout *spaceLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *spaceLabel = new QLabel(tr("Dot Spacing"));
     spaceLabel->setAlignment(Qt::AlignHCenter);
@@ -131,7 +145,6 @@ int Configurator::spacingValue()
 
 qreal Configurator::sizeToleranceValue()
 {
-    tError() << "Configurator::sizeToleranceValue() - Value: " << sizeBox->value();
     return sizeBox->value();
 }
 
@@ -142,8 +155,6 @@ bool Configurator::runSimulation()
 
 void Configurator::updateInterface(int state)
 { 
-    tError() << "Configurator::updateInterface() - Tracing state: " << state;
-
     if (state == 2)
         smoothBox->setDisabled(false);
     else
@@ -153,4 +164,10 @@ void Configurator::updateInterface(int state)
 double Configurator::smoothness() const
 {
     return smoothBox->value();
+}
+
+Configurator::Structure Configurator::structureType()
+{
+    int index = structureCombo->currentIndex();
+    return Structure(index);
 }

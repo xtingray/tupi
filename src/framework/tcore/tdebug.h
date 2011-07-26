@@ -120,9 +120,11 @@ enum DebugOutput
 class K_CORE_EXPORT TDebug
 {
     public:
+
         class Streamer : public QObject
             {
                 public:
+
                     Streamer() : space(true) {}
                     ~Streamer() {};
                     QString buffer;
@@ -228,7 +230,7 @@ class K_CORE_EXPORT TDebug
         TDebug(const TDebug &);
         ~TDebug();
         
-        static void setForceDisableGUI();
+        static void setOutputChannel();
         
         inline TDebug &operator << (QTextStreamManipulator /*m*/)
         { 

@@ -37,18 +37,6 @@
 #include "ktsplash.h"
 #include "ktmainwindow.h"
 #include "ktwitter.h"
-
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
-#include <qmessagebox.h>
-#include <qdir.h>
-
-#include <QLocale>
-#include <QTranslator>
-#include <QDesktopWidget>
-#include <QThread>
-
 #include "tapplicationproperties.h"
 #include "tdebug.h"
 #include "kcollapsiblewidget.h"
@@ -62,6 +50,15 @@
 #include "kwaitstyle.h"
 #endif
 
+#include <QFile>
+#include <QTextStream>
+#include <QTextCodec>
+#include <QMessageBox>
+#include <QDir>
+#include <QLocale>
+#include <QTranslator>
+#include <QDesktopWidget>
+#include <QThread>
 #include <QPlastiqueStyle>
 
 #ifndef CONFIG_H
@@ -104,16 +101,9 @@ int main(int argc, char ** argv)
 {
     KTApplication application(argc, argv);
 
-    // SQA: This code is deprecated 
-    /*
-    if (application.isArg("help") || application.isArg("h")) {
-        usage();
-        application.exit(0);
-        return 0;
-    }
-    */
-
-    // qsrand(::time(0));
+#ifdef K_DEBUG
+       TDebug::setOutputChannel();
+#endif
 
 #ifdef Q_OS_UNIX
     // Initializing the crash handler, very useful to catch bugs
