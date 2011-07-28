@@ -140,8 +140,8 @@ void KTConnectDialog::loadSettings()
 {
     TCONFIG->beginGroup("Network");
     k->server->setText(TCONFIG->value("server", "localhost").toString());
-    k->port->setValue(TCONFIG->value("port", 6502).toInt());
-    k->login->setText(TCONFIG->value("login", "").toString());
+    k->port->setValue(TCONFIG->value("port", 5000).toInt());
+    k->login->setText(TCONFIG->value("login", QString::fromLocal8Bit(::getenv("USER"))).toString());
     k->password->setText(TCONFIG->value("password", "").toString());
     
     k->storePassword->setChecked(TCONFIG->value("storePassword").toInt());
