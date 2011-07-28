@@ -153,7 +153,6 @@ bool KTItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
                }
     } else if (qname == "ellipse") {
                QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble()));
-               tFatal() << "KTItemFactory::startTag() - POS: [" << atts.value("cx").toDouble() << ", " << atts.value("cy").toDouble() << "]";
 
                if (k->addToGroup) {
                    KTEllipseItem *item = qgraphicsitem_cast<KTEllipseItem *>(createItem(qname));
@@ -164,6 +163,7 @@ bool KTItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
                        k->item = createItem(qname);
 
                    qgraphicsitem_cast<KTEllipseItem *>(k->item)->setRect(rect);
+                    
                    k->objects.push(k->item);
                }
     } else if (qname == "button") {

@@ -500,7 +500,8 @@ QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &
     }
 
     if (loaded)
-        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, coords, KTLibraryObject::Item, xml, project());
+        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, 
+                                    coords, KTLibraryObject::Item, xml, project());
 
     return graphicItem;
 }
