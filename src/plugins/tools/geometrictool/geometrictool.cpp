@@ -263,6 +263,8 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
                doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_ellipse)->toXml(doc));
                QRectF rect = m_ellipse->rect();
                position = rect.topLeft();
+               tFatal() << "GeometricTool::release() - position: [" << position.x() << ", " << position.y() << "]";
+               tFatal() << "GeometricTool::release() - input: [" << input->pos().x() << ", " << input->pos().y() << "]";
     } else if (name() == tr("Line")) {
                doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_line)->toXml(doc));
                position = m_line->pos(); 

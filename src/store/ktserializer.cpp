@@ -34,12 +34,11 @@
  ***************************************************************************/
 
 #include "ktserializer.h"
+#include "ktsvg2qt.h"
+#include "tdebug.h"
 
 #include <QGraphicsItem>
 #include <QFont>
-
-#include "ktsvg2qt.h"
-#include "tdebug.h"
 
 KTSerializer::KTSerializer()
 {

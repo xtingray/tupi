@@ -334,8 +334,6 @@ void Select::itemResponse(const KTItemResponse *event)
 
         if (scene) {
 
-            tFatal() << "Select::itemResponse() -> project->spaceContext(): " << project->spaceContext();
-
             if (project->spaceContext() == KTProject::FRAMES_EDITION) {
 
                 layer = scene->layer(event->layerIndex());

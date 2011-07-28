@@ -33,17 +33,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#include "ktellipseitem.h"
+#include "ktsvg2qt.h"
+#include "ktgraphicalgorithm.h"
+#include "ktserializer.h"
+
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QBrush>
 #include "tdebug.h"
 #include <QPainter>
 #include <QPainterPath>
-
-#include "ktellipseitem.h"
-#include "ktsvg2qt.h"
-#include "ktgraphicalgorithm.h"
-#include "ktserializer.h"
 
 KTEllipseItem::KTEllipseItem(QGraphicsItem * parent, QGraphicsScene * scene): QGraphicsEllipseItem(parent, scene), m_dragOver(false)
 {

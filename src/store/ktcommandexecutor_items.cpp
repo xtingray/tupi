@@ -92,6 +92,8 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                         else
                             return false;
                     } else {
+
+                        tFatal() << "KTCommandExecutor::createItem() - XML: " << xml;
                         QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
 
                         if (item)

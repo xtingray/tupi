@@ -34,11 +34,8 @@
  ***************************************************************************/
 
 #include "ktitemfactory.h"
-#include <QGraphicsItem>
-
 #include "tdebug.h"
-#include <ktsvg2qt.h>
-
+#include "ktsvg2qt.h"
 #include "ktpathitem.h"
 #include "ktpixmapitem.h"
 #include "kttextitem.h"
@@ -49,9 +46,10 @@
 #include "ktitemgroup.h"
 #include "ktgraphiclibraryitem.h"
 #include "ktlibrary.h"
-
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
+
+#include <QGraphicsItem>
 
 struct KTItemFactory::Private
 {
@@ -149,12 +147,13 @@ bool KTItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
                    k->objects.push(item);
                } else {
                    if (!k->item)
-                       k->item = createItem( qname );
+                       k->item = createItem(qname);
                    qgraphicsitem_cast<KTRectItem *>(k->item)->setRect(rect);
                    k->objects.push(k->item);
                }
     } else if (qname == "ellipse") {
-               QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
+               QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble()));
+               tFatal() << "KTItemFactory::startTag() - POS: [" << atts.value("cx").toDouble() << ", " << atts.value("cy").toDouble() << "]";
 
                if (k->addToGroup) {
                    KTEllipseItem *item = qgraphicsitem_cast<KTEllipseItem *>(createItem(qname));
@@ -178,7 +177,7 @@ bool KTItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
                }
     } else if (qname == "text") {
                if (k->addToGroup) {
-                   KTTextItem *item = qgraphicsitem_cast<KTTextItem *>(createItem( qname ));
+                   KTTextItem *item = qgraphicsitem_cast<KTTextItem *>(createItem(qname));
                    k->objects.push(item);
                } else {
                    if (!k->item)

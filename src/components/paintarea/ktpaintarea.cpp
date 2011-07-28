@@ -765,6 +765,14 @@ void KTPaintArea::pasteItems()
                  total = currentScene->currentFrame()->svgItemsCount();
              }
 
+             /*
+             if (xml.startsWith("<ellipse")) {
+                 tFatal() << "KTPaintArea::pasteItems() - Tracing ellipse!"; 
+             } else {
+                 tFatal() << "KTPaintArea::pasteItems() - NO ellipse detected!: " << xml;
+             }
+             */
+
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(),
                                       currentScene->currentFrameIndex(),
