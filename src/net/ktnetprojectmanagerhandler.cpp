@@ -35,22 +35,16 @@
 
 #include "ktnetprojectmanagerhandler.h"
 #include "ktnetprojectmanagerparams.h"
-
 #include "ktprojectresponse.h"
-
 #include "tdebug.h"
 #include "tosd.h"
 
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
-
 #include "ktnetsocket.h"
-
 #include "ktprojectrequest.h"
-
 #include "ktnewprojectpackage.h"
 #include "ktconnectpackage.h"
-
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
@@ -414,7 +408,11 @@ void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
 
 void KTNetProjectManagerHandler::connectionLost()
 {
-    tDebug() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed!";
+    #ifdef K_DEBUG
+           tError() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed!";
+    #endif
+
+    emit connectionHasBeenLost();
 }
 
 void KTNetProjectManagerHandler::closeConnection()

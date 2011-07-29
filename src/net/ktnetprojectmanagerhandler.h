@@ -75,6 +75,9 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         QTabWidget *comunicationWidget();
         void closeConnection();
 
+    signals:
+        void connectionHasBeenLost();
+
     private:
         bool loadProjectFromServer(const QString &name);
         void emitRequest(KTProjectRequest *request, bool toStack);

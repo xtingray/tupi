@@ -434,6 +434,13 @@ bool KTMainWindow::closeProject()
 
     }
 
+    resetUI();
+
+    return true;
+}
+
+bool KTMainWindow::resetUI()
+{
     setCurrentTab(0);
 
     // if (colorView->isExpanded())
@@ -547,8 +554,6 @@ bool KTMainWindow::closeProject()
 
     if (m_isNetworkProject) 
         netProjectManagerHandler->closeConnection();
-
-    return true;
 }
 
 /**
@@ -609,6 +614,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
         netProjectManagerHandler =  new KTNetProjectManagerHandler;
         connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestNewProject()));
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
+        connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
@@ -1290,4 +1296,24 @@ void KTMainWindow::requestNewProject()
         KTListProjectsPackage package;
         netProjectManagerHandler->sendPackage(package);
     }
+}
+
+void KTMainWindow::unexpectedClose()
+{
+    QDesktopWidget desktop;
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Fatal Error"));
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setText(tr("The connection to the server has been lost."));
+    msgBox.setInformativeText(tr("Please, try to connect again in a while"));
+
+    msgBox.addButton(QString(tr("Close")), QMessageBox::DestructiveRole);
+
+    msgBox.show();
+    msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 ,
+                (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+
+    msgBox.exec();
+
+    resetUI();
 }

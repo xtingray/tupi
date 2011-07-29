@@ -148,6 +148,7 @@ class KTMainWindow : public KTabbedMainWindow
          void setupNetworkProject(KTProjectManagerParams *params);
          void setupLocalProject(KTProjectManagerParams *params);
          void setUndoRedoActions();
+         bool resetUI();
 
     protected:
          /**
@@ -177,6 +178,7 @@ class KTMainWindow : public KTabbedMainWindow
           void createNewLocalProject();
           void newProject();
           bool closeProject();
+          void unexpectedClose();
           void openProject();
           void openProjectFromServer();
           void importProjectToServer();
