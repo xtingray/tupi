@@ -1,3 +1,149 @@
-﻿<html dir="ltr"> <head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html dir="ltr">
+<head>
+<meta name="generator" content=
+"HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 <link rel="stylesheet" type="text/css" href="../css/tupi.css">
-</head> <body class="tupi_background5" dir="ltr"> <center><b>[Under Translation]</b></center> <p class="title">Help with translations</p> <p class="paragraph"> Due to the constant generation of new information from our development team and the need to communicate to the community and in different languages, we decided to make a particular call to all people with skills to translate text from one language to another.<br> Among the types of documents that constantly need to translate are: <ul> <li> News and Announcements from our website</li> <li> Tutorials, Manuals and Examples</li> <li> Support Files <b>Tupi</b> language (required for the program can be used in English, Spanish, Portuguese, Catalan, etc)</li> </ul> </p> <p class="paragraph"> For news and tutorials, just simply your desire to help and that you contact us, to tell us that you want particular text to be translated or if you want to assign one: always have something to translate. </p> <p class="paragraph"> On the other hand, What is language support? Simply put, this is the ability of an application to print all messages in a particular language. If you&#39;re interested in <b>Tupi</b> has support in Chinese, Arabic, French or another language of your interest, then you&#39;re in the right place for help. <br> In the case of language support files, you need to have some knowledge of tools and processes we use to create and manage these files. Follow the instructions and you can become one of our most important translators: </p> <p class="paragraph"> <b>1. </b><b>Learn what <i>linguist</i> and how it works.</b> First things first, <b>Tupi</b> is a software application developed with the <i>Qt</i> library, which is written in <i>C + +.</i> The good news is you do not have to learn <i>Qt</i> or <i>C + +</i> to help translate.<br> However, it is important to note that <i>Qt</i> is not only a library of development, but also includes several additional tools that facilitate application development. One is a <i>linguist,</i> a simple program that is included in the installation of <i>Qt</i> that allows you to create support for new languages ​​to <b>Tupi.</b> <center> <img src="./images/linguist01.png"> <p class="paragraph"> <b>Fig # 68.</b> Application <i>linguist</i> </p> </center> <p class="paragraph"> If you have <i>Qt</i> installed on your computer, you probably already have installed <i>linguist.</i> Looking for access to the application on the main menu of your graphical environment, in the section <i>Programming:</i> </p> <center> <img src="./images/linguist02.png"> <p class="paragraph"> <b>Fig # 69.</b> Opening <i>linguist</i> </p> </center> <p class="paragraph"> The raw material of this utility is a file <b>extension. &quot;Ts&quot;,</b> from which you can translate all the messages that are part of the <b>Tupi</b> language you want. The good news is that you do not have to start from scratch, because we already have one ( <a href="http://www.maefloresta.com">tupi_es.ts</a> ) on our website. Download it and rename it according to the language you want translated. For example, if you want to create support for <b>Tupi</b> Italian, then rename the file to <i>open it from the tupi_it.ts and linguist program like this:</i></p> <center> <table> <tr> <td> <img src="./images/linguist03.png"> </td> <td> <img src="./images/linguist04.png"> </td> </tr> </table> <p class="paragraph"> <b>Fig # 70.</b> Opening a translation file (. Ts) </p> </center> <p class="paragraph"> Now, let&#39;s look at the most important components of the program, specifically that we will use. The first is the list of contexts. His name sounds complex, but is nothing more than a list of groups of words. That is, each list item you see in the figure simply represents a group of words associated with that context. </p> <center> <img src="./images/linguist05.png"> <p class="paragraph"> <b>Fig # 71.</b> List of contexts </p> </center> <p class="paragraph"> The next component is the list of words or messages associated with a context. These messages are appearing in <b>Tupi</b> and are what we translate. Each context can have a variable number of messages to be translated. Regardless, all texts should be translated. </p> <center> <img src="./images/linguist06.png"> <p class="paragraph"> <b>Fig # 72.</b> List of words in a context </p> </center> <p class="paragraph"> So far, we have located the names of the groups (contexts) and the list of words for each context. Now, place the most important tool in the form of translations: </p> <center> <img src="./images/linguist07.png"> <p class="paragraph"> <b>Fig # 73.</b> Translation form </p> </center> <p class="paragraph"> Now let&#39;s see in detail what we have to consider fields in the form of translations: </p> <center> <img src="./images/linguist08.png"> <p class="paragraph"> <b>Fig # 74.</b> Translation form in detail </p> </center> <p class="paragraph"> Highlighted with <b><font color="#a90000">red</font></b> box contains the word that we translate, in this particular case, the word <i>&quot;Pen&quot;.</i> The <b><font color="#008400">green</font></b> box contains underlined the space where we put the translation of the word. In this particular case of translation into Spanish: <i>&quot;Pencil.&quot;</i><br> Okay, we saw a case in point, now do an overview of the process: Once you open the file for translation (eg <i>tupi_it.ts),</i> we select one by one, all contexts <b><font color="#157e15">(1).</font></b> For each selected context, we will have to click on each of the words listed in the second column of the interface <b><font color="#1d5d8a">(2),</font></b> to translate from the form located at the bottom <font color="#c81818"><b>(3).</b></font> Once we have gone through all the settings and there are no more words to translate, you have finished the task.<br> </p> <center> <img src="./images/linguist09.png"> <p class="paragraph"> <b>Fig # 75.</b> Main components of the application <i>linguist</i> </p> </center> <p class="paragraph"> Finally, we must save and send file by mail to our development team for inclusion in future versions of <b>Tupi.</b> </p> <center> <table> <tr> <td> <img src="./images/linguist10.png"> </td> <td> <img src="./images/linguist11.png"> </td> </tr> </table> <p class="paragraph"> <b>Fig # 76.</b> Saving the translation project (. Ts) </p> </center> <p class="paragraph"> If you want to learn more about <i>linguist,</i> you can consult the official manual here: <center> <a href="http://doc.qt.nokia.com/4.6/linguist-manual.html">http://doc.qt.nokia.com/4.6/linguist-manual.html</a> </center> </p> </p></body> </html>
+<title></title>
+</head>
+<body class="tupi_background5" dir="ltr">
+<center><b>[Under Translation]</b></center>
+<p class="title">Help with translations</p>
+<p class="paragraph">Due to the constant generation of new
+information from our development team and the need to communicate
+to the community and in different languages, we decided to make a
+particular call to all people with skills to translate text from
+one language to another.<br>
+Among the types of documents that constantly need to translate
+are:</p>
+<ul>
+<li>News and Announcements from our website</li>
+<li>Tutorials, Manuals and Examples</li>
+<li>Support Files <b>Tupi</b> language (required for the program
+can be used in English, Spanish, Portuguese, Catalan, etc)</li>
+</ul>
+<p class="paragraph">For news and tutorials, just simply your
+desire to help and that you contact us, to tell us that you want
+particular text to be translated or if you want to assign one:
+always have something to translate.</p>
+<p class="paragraph">On the other hand, What is language support?
+Simply put, this is the ability of an application to print all
+messages in a particular language. If you're interested in
+<b>Tupi</b> has support in Chinese, Arabic, French or another
+language of your interest, then you're in the right place for
+help.<br>
+In the case of language support files, you need to have some
+knowledge of tools and processes we use to create and manage these
+files. Follow the instructions and you can become one of our most
+important translators:</p>
+<p class="paragraph"><b>1.</b> <b>Learn what <i>linguist</i> and
+how it works.</b> First things first, <b>Tupi</b> is a software
+application developed with the <i>Qt</i> library, which is written
+in <i>C + +.</i> The good news is you do not have to learn
+<i>Qt</i> or <i>C + +</i> to help translate.<br>
+However, it is important to note that <i>Qt</i> is not only a
+library of development, but also includes several additional tools
+that facilitate application development. One is a <i>linguist,</i>
+a simple program that is included in the installation of <i>Qt</i>
+that allows you to create support for new languages
+&#8203;&#8203;to <b>Tupi.</b></p>
+<center><img src="./images/linguist01.png">
+<p class="paragraph"><b>Fig # 68.</b> Application
+<i>linguist</i></p>
+</center>
+<p class="paragraph">If you have <i>Qt</i> installed on your
+computer, you probably already have installed <i>linguist.</i>
+Looking for access to the application on the main menu of your
+graphical environment, in the section <i>Programming:</i></p>
+<center><img src="./images/linguist02.png">
+<p class="paragraph"><b>Fig # 69.</b> Opening <i>linguist</i></p>
+</center>
+<p class="paragraph">The raw material of this utility is a file
+<b>extension. "Ts",</b> from which you can translate all the
+messages that are part of the <b>Tupi</b> language you want. The
+good news is that you do not have to start from scratch, because we
+already have one ( <a href=
+"http://www.maefloresta.com">tupi_es.ts</a> ) on our website.
+Download it and rename it according to the language you want
+translated. For example, if you want to create support for
+<b>Tupi</b> Italian, then rename the file to <i>open it from the
+tupi_it.ts and linguist program like this:</i></p>
+<center>
+<table>
+<tr>
+<td><img src="./images/linguist03.png"></td>
+<td><img src="./images/linguist04.png"></td>
+</tr>
+</table>
+<p class="paragraph"><b>Fig # 70.</b> Opening a translation file (.
+Ts)</p>
+</center>
+<p class="paragraph">Now, let's look at the most important
+components of the program, specifically that we will use. The first
+is the list of contexts. His name sounds complex, but is nothing
+more than a list of groups of words. That is, each list item you
+see in the figure simply represents a group of words associated
+with that context.</p>
+<center><img src="./images/linguist05.png">
+<p class="paragraph"><b>Fig # 71.</b> List of contexts</p>
+</center>
+<p class="paragraph">The next component is the list of words or
+messages associated with a context. These messages are appearing in
+<b>Tupi</b> and are what we translate. Each context can have a
+variable number of messages to be translated. Regardless, all texts
+should be translated.</p>
+<center><img src="./images/linguist06.png">
+<p class="paragraph"><b>Fig # 72.</b> List of words in a
+context</p>
+</center>
+<p class="paragraph">So far, we have located the names of the
+groups (contexts) and the list of words for each context. Now,
+place the most important tool in the form of translations:</p>
+<center><img src="./images/linguist07.png">
+<p class="paragraph"><b>Fig # 73.</b> Translation form</p>
+</center>
+<p class="paragraph">Now let's see in detail what we have to
+consider fields in the form of translations:</p>
+<center><img src="./images/linguist08.png">
+<p class="paragraph"><b>Fig # 74.</b> Translation form in
+detail</p>
+</center>
+<p class="paragraph">Highlighted with <b><font color=
+"#A90000">red</font></b> box contains the word that we translate,
+in this particular case, the word <i>"Pen".</i> The <b><font color=
+"#008400">green</font></b> box contains underlined the space where
+we put the translation of the word. In this particular case of
+translation into Spanish: <i>"Pencil."</i><br>
+Okay, we saw a case in point, now do an overview of the process:
+Once you open the file for translation (eg <i>tupi_it.ts),</i> we
+select one by one, all contexts <b><font color=
+"#157E15">(1).</font></b> For each selected context, we will have
+to click on each of the words listed in the second column of the
+interface <b><font color="#1D5D8A">(2),</font></b> to translate
+from the form located at the bottom <font color=
+"#C81818"><b>(3).</b></font> Once we have gone through all the
+settings and there are no more words to translate, you have
+finished the task.<br></p>
+<center><img src="./images/linguist09.png">
+<p class="paragraph"><b>Fig # 75.</b> Main components of the
+application <i>linguist</i></p>
+</center>
+<p class="paragraph">Finally, we must save and send file by mail to
+our development team for inclusion in future versions of
+<b>Tupi.</b></p>
+<center>
+<table>
+<tr>
+<td><img src="./images/linguist10.png"></td>
+<td><img src="./images/linguist11.png"></td>
+</tr>
+</table>
+<p class="paragraph"><b>Fig # 76.</b> Saving the translation
+project (. Ts)</p>
+</center>
+<p class="paragraph">If you want to learn more about
+<i>linguist,</i> you can consult the official manual here:</p>
+<center><a href=
+"http://doc.qt.nokia.com/4.6/linguist-manual.html">http://doc.qt.nokia.com/4.6/linguist-manual.html</a></center>
+</body>
+</html>
