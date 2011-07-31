@@ -85,6 +85,8 @@ struct KTNetProjectManagerHandler::Private
     
     KTChat *chat;
     KTNotice *notices;
+
+    bool projectIsClosed; 
 };
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), k(new Private)
@@ -100,6 +102,7 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     k->params = 0;
     k->ownPackage = false;
     k->doAction = true;
+    k->projectIsClosed = false;
     
     k->comunicationModule = new QTabWidget;
     k->comunicationModule->setWindowTitle(tr("Communications"));
@@ -165,6 +168,10 @@ bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject 
 
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
+    // SQA: Check why this two variables are required as parameters here
+    Q_UNUSED(fileName);
+    Q_UNUSED(project);
+
     if (k->socket->state() != QAbstractSocket::ConnectedState)
         return false;
     
@@ -239,6 +246,8 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 
 bool KTNetProjectManagerHandler::closeProject()
 {
+    k->projectIsClosed = true;
+
     closeConnection();
 
     return KTAbstractProjectHandler::closeProject();
@@ -258,11 +267,15 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
     if (root == "request") {
         KTRequestParser parser;
         if (parser.parse(package)) {
-
-            if (parser.sign() == k->sign) 
+            tError() << "KTNetProjectManagerHandler::handlePackage() - sign: " << k->sign;
+            if (parser.sign() == k->sign) { 
                 k->ownPackage = true;
-            else 
+            } else {
                 k->ownPackage = false;
+            }
+
+            tError() << "KTNetProjectManagerHandler::handlePackage() - OwnPackage? : " << k->ownPackage;
+            tError() << "KTNetProjectManagerHandler::handlePackage() - doAction? : " << k->doAction;
             
             if (k->ownPackage && !k->doAction) {
                 if (parser.response()->part() == KTProjectRequest::Item) {
@@ -275,7 +288,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
                 return;
             } else {
+
                 tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing command coming from net";
+                tFatal() << "KTNetProjectManagerHandler::handlePackage() - isExternal?: " << !k->ownPackage;
                 KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
                 request.setExternal(!k->ownPackage);
                 emitRequest(&request, k->doAction && k->ownPackage);
@@ -412,7 +427,8 @@ void KTNetProjectManagerHandler::connectionLost()
            tError() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed!";
     #endif
 
-    emit connectionHasBeenLost();
+    if (!k->projectIsClosed)
+        emit connectionHasBeenLost();
 }
 
 void KTNetProjectManagerHandler::closeConnection()

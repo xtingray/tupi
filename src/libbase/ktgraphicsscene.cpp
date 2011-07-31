@@ -229,7 +229,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                              QString frameBehind = ""; 
                              for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
-                                  KTFrame * frame = layer->frame(frameIndex);
+                                  KTFrame *frame = layer->frame(frameIndex);
                                   QString previousFrame = frame->frameName();
                                   if (frame && previousFrame.compare(currentFrame) != 0 
                                             && frameBehind.compare(previousFrame) != 0) {

@@ -56,7 +56,7 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 
     KTRequestParser parser;
     if (!parser.parse(request->xml()))
-        tFatal() << "==> KTProjectCommand::KTProjectCommand()";
+        tFatal() << "==> KTProjectCommand::KTProjectCommand(): - Parser error!";
 
     k->response = parser.response();
     k->response->setExternal(request->isExternal());

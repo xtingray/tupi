@@ -36,21 +36,18 @@
 #ifndef KTPROJECTREQUEST_H
 #define KTPROJECTREQUEST_H
 
+#include "ktglobal_store.h"
+
 #include <QObject>
 #include <QString>
 #include <QVariant>
-#include "ktglobal_store.h"
 
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectRequest;
 class KTProjectRequest;
 class KTProjectResponse;
 
 class STORE_EXPORT KTProjectRequestArgument
 {
     public:
-
         KTProjectRequestArgument();
         KTProjectRequestArgument(const QString &v);
         ~KTProjectRequestArgument();
@@ -64,12 +61,13 @@ class STORE_EXPORT KTProjectRequestArgument
         QString toString();
         
     private:
-		QString m_value;
+        QString m_value;
 };
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTProjectRequest
 {
     public:

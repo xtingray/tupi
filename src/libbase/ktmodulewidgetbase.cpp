@@ -34,15 +34,11 @@
  ***************************************************************************/
 
 #include "ktmodulewidgetbase.h"
-#include <qtooltip.h>
+#include "tdebug.h"
 
 #include <QEvent>
 #include <QBoxLayout>
 #include <QDialog>
-
-#include "tdebug.h"
-
-#include <qobject.h>
 
 struct KTModuleWidgetBase::Private
 {

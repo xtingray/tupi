@@ -253,6 +253,17 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
     switch (event->action()) {
             case KTProjectRequest::Add:
                  {
+                    tFatal() << "KTPaintArea::frameResponse() - Adding frame!";
+                    tFatal() << "KTPaintArea::frameResponse() - Is external? -> " << event->external();
+
+                    /*
+                    if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                        guiScene->drawPhotogram(event->frameIndex());
+                    } else {
+                        guiScene->cleanWorkSpace();
+                        guiScene->drawBackground();
+                    }
+                    */
                     return;
                  }
                  break; 
@@ -261,13 +272,20 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Reset:
                  {
+                    tFatal() << "KTPaintArea::frameResponse() - Entering selection event!";
                     KTGraphicsScene *guiScene = graphicsScene();
                     if (event->action() == KTProjectRequest::Select) {
+                        tFatal() << "KTPaintArea::frameResponse() - Scene frame index: " << guiScene->currentFrameIndex();
+                        tFatal() << "KTPaintArea::frameResponse() - Event index: " << event->frameIndex();
                         if (guiScene->currentFrameIndex() != event->frameIndex())
                             emit frameChanged(event->frameIndex());
+                        else
+                            tFatal() << "KTPaintArea::frameResponse() - Same frame!";
                     }
 
-                    setUpdatesEnabled(true);
+                    // SQA: Check if this instruction is really required
+                    // setUpdatesEnabled(true);
+
                     guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
                     if (k->spaceMode == KTProject::FRAMES_EDITION) {

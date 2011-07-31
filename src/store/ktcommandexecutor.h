@@ -36,8 +36,8 @@
 #ifndef KTCOMMANDEXECUTOR_H
 #define KTCOMMANDEXECUTOR_H
 
-#include <QObject>
 #include "ktscene.h"
+#include <QObject>
 
 class KTProject;
 class KTProjectRequest;
@@ -63,7 +63,7 @@ class KTCommandExecutor : public QObject
         void getScenes(KTSceneResponse *response);
         bool createScene(KTSceneResponse *response);
         bool createLayer(KTLayerResponse *response);
-        bool createFrame(KTFrameResponse *response );
+        bool createFrame(KTFrameResponse *response);
         
         bool createItem(KTItemResponse *response);
         

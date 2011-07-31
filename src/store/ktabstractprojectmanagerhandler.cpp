@@ -46,10 +46,12 @@ KTAbstractProjectHandler::~KTAbstractProjectHandler()
 
 void KTAbstractProjectHandler::initialize(KTProjectManagerParams *params)
 {
+    Q_UNUSED(params);
 }
 
 bool KTAbstractProjectHandler::setupNewProject(KTProjectManagerParams *params)
 {
+    Q_UNUSED(params);
     return true;
 }
 
@@ -60,6 +62,7 @@ bool KTAbstractProjectHandler::closeProject()
 
 bool KTAbstractProjectHandler::commandExecuted(KTProjectResponse *response)
 {
+    Q_UNUSED(response);
     return true;
 }
 

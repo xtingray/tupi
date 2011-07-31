@@ -38,6 +38,9 @@
 
 #include "ktmodulewidgetbase.h"
 #include "ktexposuretable.h"
+#include "ktscenetabwidget.h"
+#include "kimagebutton.h"
+#include "ktprojectactionbar.h"
 
 // Qt
 #include <QButtonGroup>
@@ -46,12 +49,6 @@
 #include <QListWidget>
 #include <QList>
 #include <QActionGroup>
-
-//#include <kgui/ktabwidget.h>
-#include <ktscenetabwidget.h>
-#include "kimagebutton.h"
-
-#include "ktprojectactionbar.h"
 
 /**
 * @author Jorge Cuadrado

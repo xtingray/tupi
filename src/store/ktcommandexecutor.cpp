@@ -39,7 +39,6 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
-
 #include "tdebug.h"
 
 KTCommandExecutor::KTCommandExecutor(KTProject *project) : QObject(project), m_project(project)

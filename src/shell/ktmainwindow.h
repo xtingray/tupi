@@ -36,14 +36,6 @@
 #ifndef KTMAINWINDOW_H
 #define KTMAINWINDOW_H
 
-#include <QMainWindow>
-#include <QMenu>
-#include <QMenuBar>
-#include <QStatusBar>
-#include <QResizeEvent>
-#include <QCloseEvent>
-#include <QUndoStack>
-
 #include "tactionmanager.h"
 #include "ktviewdocument.h"
 
@@ -80,6 +72,14 @@
 #include "ktsplash.h"
 
 #include "ktviewdocument.h"
+
+#include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
+#include <QStatusBar>
+#include <QResizeEvent>
+#include <QCloseEvent>
+#include <QUndoStack>
 
 class KTProjectManagerParams;
 class KTNetProjectManagerParams;
@@ -148,7 +148,7 @@ class KTMainWindow : public KTabbedMainWindow
          void setupNetworkProject(KTProjectManagerParams *params);
          void setupLocalProject(KTProjectManagerParams *params);
          void setUndoRedoActions();
-         bool resetUI();
+         void resetUI();
 
     protected:
          /**

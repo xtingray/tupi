@@ -37,7 +37,6 @@
 #define KTABSTRACTPROJECTHANDLER_H
 
 #include "ktglobal_store.h"
-
 #include <QObject>
 
 class KTProjectResponse;

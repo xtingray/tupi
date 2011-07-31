@@ -205,26 +205,26 @@ void KTExposureSheet::applyAction(int action)
                {
                  int layer = k->currentTable->columnCount();
 
-                 KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(),
-                                                                               layer, KTProjectRequest::Add, tr("Layer %1").arg(layer + 1));
-                 emit requestTriggered(&event);
+                 KTProjectRequest request = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(),
+                                                                                 layer, KTProjectRequest::Add, tr("Layer %1").arg(layer + 1));
+                 emit requestTriggered(&request);
 
                  int framesNum = k->currentTable->usedFrames(k->currentTable->currentColumn());
 
                  for (int i=0;i < framesNum;i++) {
-                      event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), layer, i, 
-                                                                   KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
-                      emit requestTriggered(&event);
+                      request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), layer, i, 
+                                                                     KTProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                      emit requestTriggered(&request);
                  }
                }
                break;
 
             case KTProjectActionBar::RemoveLayer:
                {
-                 KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), 
-                                                                               k->currentTable->currentLayer(), 
-                                                                               KTProjectRequest::Remove);
-                 emit requestTriggered(&event);
+                 KTProjectRequest request = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), 
+                                                                                 k->currentTable->currentLayer(), 
+                                                                                 KTProjectRequest::Remove);
+                 emit requestTriggered(&request);
                }
                break;
 
@@ -265,9 +265,9 @@ void KTExposureSheet::applyAction(int action)
                      k->actionBar->emitActionSelected(KTProjectActionBar::LockFrame);
 
                  if (k->currentTable->framesTotalAtCurrentLayer() == 1) {
-                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
-                                              layer, target, KTProjectRequest::Reset);
-                     emit requestTriggered(&event);
+                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, target, 
+                                                                                     KTProjectRequest::Reset);
+                     emit requestTriggered(&request);
                      k->fromMenu = false;
 
                      return;
@@ -275,9 +275,9 @@ void KTExposureSheet::applyAction(int action)
 
                  // SQA: Take care about the first frame case and paint a message on the workspace 
                  if (target == lastFrame) {
-                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene, 
-                                              layer, target, KTProjectRequest::Remove);
-                     emit requestTriggered(&event);
+                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, target, 
+                                                                                     KTProjectRequest::Remove);
+                     emit requestTriggered(&request);
 
                      if (target > 0)
                          selectFrame(layer, target-1);
@@ -287,9 +287,9 @@ void KTExposureSheet::applyAction(int action)
                      // When the item deleted is not the last one
 
                      for (int index=target+1; index <= lastFrame; index++) {
-                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
-                                                   layer, index, KTProjectRequest::Move, index - 1);
-                          emit requestTriggered(&event);
+                          KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, index, 
+                                                                                          KTProjectRequest::Move, index - 1);
+                          emit requestTriggered(&request);
                      }
 
                      selectFrame(layer, target);
@@ -305,10 +305,10 @@ void KTExposureSheet::applyAction(int action)
 
             case KTProjectActionBar::MoveFrameUp:
                {
-                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
+                 KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                           k->currentTable->currentLayer(), k->currentTable->currentFrame(),
                                           KTProjectRequest::Exchange, k->currentTable->currentFrame()-1);
-                 emit requestTriggered(&event);
+                 emit requestTriggered(&request);
                }
                break;
 
@@ -317,10 +317,10 @@ void KTExposureSheet::applyAction(int action)
                  if (k->currentTable->currentFrame()+1 == k->currentTable->framesTotalAtCurrentLayer())
                      insertFrames(1);
 
-                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
-                                          k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                          KTProjectRequest::Exchange, k->currentTable->currentFrame()+1);
-                 emit requestTriggered(&event);
+                 KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
+                                            k->currentTable->currentLayer(), k->currentTable->currentFrame(),
+                                            KTProjectRequest::Exchange, k->currentTable->currentFrame()+1);
+                 emit requestTriggered(&request);
                }
                break;
 
@@ -329,10 +329,10 @@ void KTExposureSheet::applyAction(int action)
                  bool locked = k->currentTable->frameIsLocked(k->currentTable->currentColumn(), 
                                k->currentTable->currentFrame());
 
-                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
-                                          k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                          KTProjectRequest::Lock, !locked);
-                                          emit requestTriggered(&event);
+                 KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
+                                            k->currentTable->currentLayer(), k->currentTable->currentFrame(),
+                                            KTProjectRequest::Lock, !locked);
+                 emit requestTriggered(&request);
                }
                break;
     }
@@ -431,9 +431,9 @@ void KTExposureSheet::insertFrame(int indexLayer, int indexFrame)
 
 void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString & name)
 {
-    KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, indexFrame,
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, indexFrame,
                                                KTProjectRequest::Rename, name);
-    emit requestTriggered(&event);
+    emit requestTriggered(&request);
 }
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
@@ -450,23 +450,24 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 
 void KTExposureSheet::changeVisibilityLayer(int visualIndexLayer, bool visibility)
 {
-    KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), visualIndexLayer,
-                                               KTProjectRequest::View, visibility);
-    emit requestTriggered(&event);
+    KTProjectRequest request = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), visualIndexLayer,
+                                                  KTProjectRequest::View, visibility);
+    emit localRequestTriggered(&request);
+    // emit requestTriggered(&event);
 }
 
 void KTExposureSheet::renameLayer(int indexLayer, const QString & name)
 {
-    KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), indexLayer,
-                                               KTProjectRequest::Rename, name);
-    emit requestTriggered(&event);
+    KTProjectRequest request = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), indexLayer,
+                                                 KTProjectRequest::Rename, name);
+    emit requestTriggered(&request);
 }
 
 void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
 {
-    KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), oldIndex,
-                                               KTProjectRequest::Move, newIndex);
-    emit requestTriggered(&event);
+    KTProjectRequest request = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), oldIndex,
+                                                 KTProjectRequest::Move, newIndex);
+    emit requestTriggered(&request);
 }
 
 void KTExposureSheet::actionTriggered(QAction *action)
@@ -754,7 +755,8 @@ void KTExposureSheet::insertFrames(int n)
                                   KTProjectRequest::Move, index + n);
          emit requestTriggered(&event);
     }
-
+   
+    tError() << "KTExposureSheet::insertFrames(int n) - Just tracing!";
     selectFrame(layer, k->currentTable->currentFrame());
 }
 

@@ -36,10 +36,10 @@
 #ifndef KTSOCKETBASE_H
 #define KTSOCKETBASE_H
 
+#include "ktglobal.h"
+
 #include <QTcpSocket>
 #include <QDomDocument>
-
-#include "ktglobal.h"
 
 /**
  * @author David Cuadrado

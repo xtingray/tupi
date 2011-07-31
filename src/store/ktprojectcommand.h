@@ -41,11 +41,12 @@
 #include <QUndoCommand>
 #include <QVariant>
 
+// class KTProjectRequest;
+// class KTProjectRequest;
+// class KTProjectRequest;
+// class KTProjectRequest;
+
 class KTProject;
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectRequest;
 class KTProjectRequest;
 class KTPaintAreaEvent;
 class KTCommandExecutor;

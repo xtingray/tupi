@@ -439,7 +439,7 @@ bool KTMainWindow::closeProject()
     return true;
 }
 
-bool KTMainWindow::resetUI()
+void KTMainWindow::resetUI()
 {
     setCurrentTab(0);
 
@@ -553,7 +553,7 @@ bool KTMainWindow::resetUI()
     setWindowTitle(tr("Tupi: 2D Magic"));
 
     if (m_isNetworkProject) 
-        netProjectManagerHandler->closeConnection();
+        netProjectManagerHandler->closeProject();
 }
 
 /**

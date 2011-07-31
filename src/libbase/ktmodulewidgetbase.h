@@ -36,63 +36,62 @@
 #ifndef KTMODULEWIDGETBASE_H
 #define KTMODULEWIDGETBASE_H
 
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobject.h>
-#include <qevent.h>
-
-#include <QBoxLayout>
-#include <QDockWidget>
-
 #include "tosd.h"
 #include "ktprojectresponse.h"
 #include "ktabstractprojectresponsehandler.h"
 #include "ktglobal.h"
 
+#include <QLayout>
+#include <QSizePolicy> 
+#include <QObject>
+#include <QEvent>
+#include <QBoxLayout>
+#include <QDockWidget>
+
 /**
  * @author Jorge Cuadrado
 */
+
 class TUPI_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectResponseHandler
 {
-	Q_OBJECT;
-	
-	public:
-		KTModuleWidgetBase(QWidget *parent, const char *name = 0);
-		~KTModuleWidgetBase();
-		virtual void addChild(QWidget * child, Qt::Alignment alignment = 0);
-		void setFont(const QFont &);
-		
-		QBoxLayout *boxLayout();
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	protected:
-		virtual bool event( QEvent * e );
-		
-	public slots:
-		bool handleProjectResponse(KTProjectResponse *response);
-		
-	protected:
-		virtual void enterEvent(QEvent *e);
-		virtual void leaveEvent(QEvent *e);
-		virtual void frameResponse(KTFrameResponse *frameRequest);
-		virtual void layerResponse(KTLayerResponse  *layerRequest);
-		virtual void sceneResponse(KTSceneResponse  *sceneRequest);
-		virtual void projectResponse(KTProjectResponse  *projectRequest);
-		virtual void itemResponse(KTItemResponse  *event);
-		virtual void libraryResponse(KTLibraryResponse *libraryResponse);
-		
-	signals:
-		void documentModified(bool);
-		void sendToStatus(const QString &);
-		void toggle();
-		void activate(bool);
-		
-		void requestTriggered(const KTProjectRequest *event);
-		void localRequestTriggered(const KTProjectRequest *event);
-		void postPage(QWidget *widget);
+    Q_OBJECT
+    
+    public:
+        KTModuleWidgetBase(QWidget *parent, const char *name = 0);
+        ~KTModuleWidgetBase();
+        virtual void addChild(QWidget * child, Qt::Alignment alignment = 0);
+        void setFont(const QFont &);
+        QBoxLayout *boxLayout();
+        
+    private:
+        struct Private;
+        Private *const k;
+        
+    protected:
+        virtual bool event(QEvent *e);
+        
+    public slots:
+        bool handleProjectResponse(KTProjectResponse *response);
+        
+    protected:
+        virtual void enterEvent(QEvent *e);
+        virtual void leaveEvent(QEvent *e);
+        virtual void frameResponse(KTFrameResponse *frameRequest);
+        virtual void layerResponse(KTLayerResponse *layerRequest);
+        virtual void sceneResponse(KTSceneResponse *sceneRequest);
+        virtual void projectResponse(KTProjectResponse *projectRequest);
+        virtual void itemResponse(KTItemResponse *event);
+        virtual void libraryResponse(KTLibraryResponse *libraryResponse);
+        
+    signals:
+        void documentModified(bool);
+        void sendToStatus(const QString &);
+        void toggle();
+        void activate(bool);
+        
+        void requestTriggered(const KTProjectRequest *event);
+        void localRequestTriggered(const KTProjectRequest *event);
+        void postPage(QWidget *widget);
 };
 
 #endif
