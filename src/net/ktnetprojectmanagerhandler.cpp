@@ -372,7 +372,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                if (parser.parse(package)) {
                    QString message = parser.message();
                    TOsd::self()->display(tr("Notice"), message);
-                   k->notices->addMessage("* " + message);
+                   k->notices->addMessage(message);
                } 
     } else if (root == "wall") {
                KTComunicationParser parser;

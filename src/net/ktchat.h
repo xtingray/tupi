@@ -37,6 +37,7 @@
 #define KTCHAT_H
 
 #include <QWidget>
+#include <QKeyEvent>
 
 /**
  * @author David Cuadrado 
@@ -54,11 +55,15 @@ class KTChat : public QWidget
         
     signals:
         void requestSendMessage(const QString &message);
+
+    protected:
+        void keyPressEvent(QKeyEvent *event);
         
     protected slots:
         void sendMessage();
         
     private:
+        QString formatMessage(const QString &msg);
         struct Private;
         Private *const k;
 };

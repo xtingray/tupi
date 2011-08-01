@@ -40,6 +40,7 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QTime>
 
 class KTNotice::Private
 {
@@ -90,8 +91,21 @@ KTNotice::~KTNotice()
 
 void KTNotice::addMessage(const QString &message)
 {
+    QTime time = QTime::currentTime();
+    int hours = time.hour();
+    QString h = QString::number(hours);
+    if (hours < 10)
+        h = "0" + h;
+
+    int minutes = time.minute();
+    QString min = QString::number(minutes);
+    if (minutes < 10)
+        min = "0" + min;
+
+    QString record = "[" + h + ":" + min + "]";
+
     QString css = "font-size: 12px;";
-    k->browser->append("<div style=\"" + css + "\">" + message + "</div>");
+    k->browser->append("<div style=\"" + css + "\">" + record + " * " + message + "</div>");
 }
 
 /*
