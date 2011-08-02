@@ -43,14 +43,11 @@
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
-
 #include "ktprojectmanagerparams.h"
 #include "ktabstractprojectmanagerhandler.h"
-
 #include "ktprojectresponse.h"
 #include "ktrequestbuilder.h"
 #include "ktrequestparser.h"
-
 #include "talgorithm.h"
 #include "tdebug.h"
 
@@ -120,7 +117,6 @@ void KTProjectManager::setParams(KTProjectManagerParams *params)
 
     k->params = params;
 
-    tFatal() << "KTProjectManager::setParams() - Initializing project manager handler";
     k->handler->initialize(k->params);
 }
 
@@ -200,10 +196,8 @@ void KTProjectManager::closeProject()
         return;
 
     if (k->project->isOpen()) {
-        if (! k->handler->closeProject()) {
-            tError() << "KTProjectManager::closeProject() - Error while closing the project";
+        if (! k->handler->closeProject())
             return;
-        }
 
         k->project->clear();
     }
@@ -300,10 +294,13 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 
     // TODO: the handler must advise when to build the command
     
-    if (k->handler)
+    if (k->handler) {
         k->handler->handleProjectRequest(request);
-    else
-        qDebug("KTProjectManager::handleProjectRequest() - Error: No handler available");
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTProjectManager::handleProjectRequest() - Error: No handler available";
+        #endif
+    }
 }
 
 void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
@@ -349,7 +346,6 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
         }
 
         parser.response()->setExternal(request->isExternal());
-
         emit responsed(parser.response());
     }
 }
@@ -373,7 +369,7 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 
         if (addToStack)
             k->undoStack->push(command);
-         else 
+        else 
             command->redo();
     } else {
         #ifdef K_DEBUG
@@ -404,7 +400,7 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
     if (!k->handler) {
         emit responsed(response);
     } else if (k->handler->commandExecuted(response)) {
-        emit responsed(response);
+               emit responsed(response);
     }
 }
 

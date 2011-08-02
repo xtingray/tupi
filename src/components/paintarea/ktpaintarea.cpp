@@ -253,18 +253,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
     switch (event->action()) {
             case KTProjectRequest::Add:
                  {
-                    tFatal() << "KTPaintArea::frameResponse() - Adding frame!";
-                    tFatal() << "KTPaintArea::frameResponse() - Is external? -> " << event->external();
-
-                    /*
-                    if (k->spaceMode == KTProject::FRAMES_EDITION) {
-                        guiScene->drawPhotogram(event->frameIndex());
-                    } else {
-                        guiScene->cleanWorkSpace();
-                        guiScene->drawBackground();
-                    }
-                    */
-                    return;
                  }
                  break; 
 

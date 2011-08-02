@@ -96,6 +96,13 @@ void SchemeTool::init(KTGraphicsScene *scene)
     tError() << "SchemeTool::init() - tolerance: " << tolerance;
     tError() << "SchemeTool::init() - widthVar: " << widthVar;
 
+    KTTextItem *textItem = new KTTextItem;
+    textItem->setPos(QPointF(5, 0));
+    textItem->setDefaultTextColor(QColor(0, 0, 0, 100));
+    textItem->setFont(QFont("Times", 10, QFont::Bold));
+    textItem->setPlainText("Note: Remember, this is just an experimental plugin for R&D issues");
+    scene->includeObject(textItem);
+
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -106,13 +113,6 @@ void SchemeTool::init(KTGraphicsScene *scene)
                  }
              }
     }
-
-    KTTextItem *textItem = new KTTextItem;
-    textItem->setPos(QPointF(5, 0));
-    textItem->setDefaultTextColor(QColor(0, 0, 0, 100));
-    textItem->setFont(QFont("Times", 10, QFont::Bold));
-    textItem->setPlainText("Note: Remember, this is just an experimental plugin for R&D issues");
-    scene->includeObject(textItem);
 }
 
 QStringList SchemeTool::keys() const

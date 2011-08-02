@@ -171,7 +171,9 @@ void KTChat::sendMessage()
     if (!text.isEmpty()) {
         if (text.toLower().indexOf("<") != -1 && text.toLower().indexOf(">") != -1) {
             QString css = "font-size: 10px;";
-            k->browser->append("<div style=\"" + css + "\">" + "<b>" + tr("Error:") + "</b> " + tr("Invalid Message. It won't be sent. Please, don't use HTML tags") + "</div>");
+            k->browser->append("<div style=\"" + css + "\">" + "<b>" + tr("Error:") + "</b> " 
+                               + tr("Invalid Message. It won't be sent. Please, don't use HTML tags") 
+                               + "</div>");
         } else {
             k->lines->append(text);
             k->cursorUp = k->lines->size()-1;
@@ -185,29 +187,39 @@ void KTChat::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
             case (Qt::Key_Up):
-                  k->lineEdit->setText(k->lines->at(k->cursorDown));
-                  if (k->cursorDown == 0) {
-                      k->cursorUp = k->cursorDown + 1;
-                      k->cursorDown = k->lines->size() - 1;
-                  } else { 
-                      if (k->cursorDown == k->lines->size() - 1)
-                          k->cursorUp = 0;
-                      else
-                          k->cursorUp = k->cursorDown + 1;
-                      k->cursorDown--;
+                  if ((k->cursorDown >= 0) && (k->cursorDown <= k->lines->size()-1)) {
+                       QString text = k->lines->at(k->cursorDown);
+                       if (!text.isNull()) {
+                           k->lineEdit->setText(text);
+                           if (k->cursorDown == 0) {
+                               k->cursorUp = k->cursorDown + 1;
+                               k->cursorDown = k->lines->size() - 1;
+                           } else { 
+                               if (k->cursorDown == k->lines->size() - 1)
+                                   k->cursorUp = 0;
+                               else
+                                   k->cursorUp = k->cursorDown + 1;
+                               k->cursorDown--;
+                           }
+                      }
                   }
             break;
             case (Qt::Key_Down):
-                  k->lineEdit->setText(k->lines->at(k->cursorUp));
-                  if (k->cursorUp == k->lines->size() - 1) {
-                      k->cursorUp = 0;
-                      k->cursorDown = k->lines->size() - 2;
-                  } else {
-                      if (k->cursorUp == 0)
-                          k->cursorDown = k->lines->size() - 1;
-                      else
-                          k->cursorDown = k->cursorUp - 1;
-                      k->cursorUp++;
+                  if ((k->cursorUp >= 0) && (k->cursorUp <= k->lines->size()-1)) {
+                       QString text = k->lines->at(k->cursorUp);
+                       if (!text.isNull()) {
+                           k->lineEdit->setText(text);
+                           if (k->cursorUp == k->lines->size() - 1) {
+                               k->cursorUp = 0;
+                               k->cursorDown = k->lines->size() - 2;
+                           } else {
+                               if (k->cursorUp == 0)
+                                   k->cursorDown = k->lines->size() - 1;
+                               else
+                                   k->cursorDown = k->cursorUp - 1;
+                               k->cursorUp++;
+                           }
+                       }
                   }
             break;
     }

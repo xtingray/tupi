@@ -36,14 +36,16 @@
 #ifndef KTLOCALPROJECTMANAGERHANDLER_H
 #define KTLOCALPROJECTMANAGERHANDLER_H
 
-#include <ktabstractprojectmanagerhandler.h>
+#include "ktabstractprojectmanagerhandler.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTLocalProjectManagerHandler(QObject *parent = 0);
         ~KTLocalProjectManagerHandler();

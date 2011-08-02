@@ -48,19 +48,14 @@
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
-// #include "ktnoticepackage.h"
-
 #include "kterrorparser.h"
 #include "ktprojectsparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
 #include "ktackparser.h"
 #include "ktcomunicationparser.h"
-
 #include "ktrequestbuilder.h"
-
 #include "ktproject.h"
-
 #include "ktlistprojectdialog.h"
 #include "ktchat.h"
 #include "ktnotice.h"
@@ -71,10 +66,9 @@
 
 struct KTNetProjectManagerHandler::Private
 {
+    KTNetProjectManagerParams *params;
     KTNetSocket *socket;
     QString projectName, author;
-    
-    KTNetProjectManagerParams *params;
     KTProject *project;
     
     QString sign;
@@ -140,7 +134,15 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
         #ifdef K_DEBUG
                tDebug("net") << "KTNetProjectManagerHandler::handleProjectRequest() - SENDING PACKAGE: " << request->xml();
         #endif
-        k->socket->send(request->xml());
+
+        if (request->isValid()) {
+            emit sendCommand(request, true);
+            k->socket->send(request->xml());
+        } else {
+            #ifdef K_DEBUG
+                   tFatal() << "KTNetProjectManagerHandler::handleProjectRequest() - INVALID REQUEST! ID: " << request->id();
+            #endif
+        }
     }
 }
 
@@ -206,15 +208,12 @@ void KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
         KTConnectPackage connectPackage(k->params->login(), k->params->password());
         k->socket->send(connectPackage);
     } else {
-        tFatal() << "KTNetProjectManagerHandler::initialize() - Unable to connect to " << k->params->server() << ":" << k->params->port();
         TOsd::self()->display(tr("Error"), tr("Unable to connect to server"), TOsd::Error);
     }
 }
 
 bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 {
-    tFatal() << "KTNetProjectManagerHandler::setupNewProject() - Tracing first connection to server!";
-
     KTNetProjectManagerParams *netparams = dynamic_cast<KTNetProjectManagerParams*>(params);
     
     if (! netparams) 
@@ -266,17 +265,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
     if (root == "request") {
         KTRequestParser parser;
+
         if (parser.parse(package)) {
-            tError() << "KTNetProjectManagerHandler::handlePackage() - sign: " << k->sign;
             if (parser.sign() == k->sign) { 
                 k->ownPackage = true;
             } else {
                 k->ownPackage = false;
             }
 
-            tError() << "KTNetProjectManagerHandler::handlePackage() - OwnPackage? : " << k->ownPackage;
-            tError() << "KTNetProjectManagerHandler::handlePackage() - doAction? : " << k->doAction;
-            
             if (k->ownPackage && !k->doAction) {
                 if (parser.response()->part() == KTProjectRequest::Item) {
                     KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
@@ -285,12 +281,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                     request.setExternal(!k->ownPackage);
                     emit sendLocalCommand(&request);
                 }
-
                 return;
             } else {
-
-                tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing command coming from net";
-                tFatal() << "KTNetProjectManagerHandler::handlePackage() - isExternal?: " << !k->ownPackage;
                 KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
                 request.setExternal(!k->ownPackage);
                 emitRequest(&request, k->doAction && k->ownPackage);
@@ -316,9 +308,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    TOsd::Level level = TOsd::Level(parser.error().level);
                    QString title = "Information";
                    if (level == TOsd::Warning) {
-                              title = tr("Warning");
+                       title = tr("Warning");
                    } else if (level == TOsd::Error) {
-                              title = tr("Error");
+                       title = tr("Error");
                    }
                    TOsd::self()->display(title, parser.error().message, level);
                }
@@ -331,13 +323,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        file.flush();
             
                        if (k->project) {
-                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - Opening file (net): " << file.fileName();
                            KTSaveProject *loader = new KTSaveProject;
                            loader->load(file.fileName(), k->project);
                            emit openNewArea(k->project->projectName());
                            delete loader;
                        } else {
-                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - No project. No call";
+                           #ifdef K_DEBUG
+                                  tError() << "KTNetProjectManagerHandler::handlePackage() - Can't open project";
+                           #endif
                        }
                    }
                }

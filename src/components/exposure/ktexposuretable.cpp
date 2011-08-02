@@ -230,10 +230,8 @@ void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int current
             return;
         }
 
-        if (previousRow != currentSelectedRow || previousColumn != currentColumn) {
-            tError() << "KTExposureTable::emitRequestSelectFrame() - Just tracing!";
+        if (previousRow != currentSelectedRow || previousColumn != currentColumn)
             emit requestSelectFrame(currentLayer(), currentRow());
-        }
 
         if ((previousColumn != currentColumn) || (columnCount() == 1))
              k->header->updateSelection(currentColumn);
@@ -456,8 +454,6 @@ void KTExposureTable::emitRequestSetUsedFrame(int indexFrame, int indexLayer)
                       emit requestSetUsedFrame(column, frame);
              }
         }
-
-        tError() << "void KTExposureTable::emitRequestSetUsedFrame() - Just tracing!";
 
         emit requestSelectFrame(layer, indexFrame);
     } 
