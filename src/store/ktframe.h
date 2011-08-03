@@ -36,15 +36,15 @@
 #ifndef KTFRAME_H
 #define KTFRAME_H
 
-#include <QGraphicsScene>
-#include <QDomDocument>
-#include <QDomElement>
-
 #include "ktabstractserializable.h"
 #include "ktinthash.h"
 #include "ktsvgitem.h"
 #include "ktbackground.h"
 #include "ktglobal_store.h"
+
+#include <QGraphicsScene>
+#include <QDomDocument>
+#include <QDomElement>
 
 class KTFrame;
 class KTLayer;
@@ -152,6 +152,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        int getTopZLevel();
        QList<int> itemIndexes();
        QList<int> svgIndexes();
+
+       bool isEmpty();
        
     public:
        virtual void fromXml(const QString &xml);

@@ -406,7 +406,7 @@ void KTMainWindow::setupFileActions()
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "newproject", "file");
 
-    TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons/open.png"), tr( "Open project" ), QKeySequence(tr("Ctrl+O")), 
+    TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open project"), QKeySequence(tr("Ctrl+O")), 
                                     this, SLOT(openProject()), m_actionManager);
     m_actionManager->insert( openFile, "openproject", "file" );
     openFile->setStatusTip(tr("Load existent project"));

@@ -138,6 +138,8 @@ class KTItemResponse : public KTFrameResponse
         void setPosY(double coord);
         KTProject::Mode spaceMode();
         void setSpaceMode(KTProject::Mode mode);
+        bool frameIsEmpty();
+        void setFrameState(bool state);
 
     private:
         int m_itemIndex;
@@ -145,6 +147,7 @@ class KTItemResponse : public KTFrameResponse
         double m_x;
         double m_y;
         KTProject::Mode m_mode;
+        bool empty;
 };
 
 class KTLibraryResponse : public KTFrameResponse
@@ -158,11 +161,14 @@ class KTLibraryResponse : public KTFrameResponse
         QString parent() const;
         KTProject::Mode spaceMode();
         void setSpaceMode(KTProject::Mode mode);
+        bool frameIsEmpty();
+        void setFrameState(bool state);
 
     private:
         KTLibraryObject::Type m_symbolType;
         QString parentNode;
         KTProject::Mode m_mode;
+        bool empty;
 };
 
 class KTProjectResponseFactory

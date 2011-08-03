@@ -38,7 +38,6 @@
 
 #include <QTableWidget>
 
-//class KTExposureHeader;
 class KTExposureVerticalHeader;
 class QMenu;
 
@@ -56,8 +55,15 @@ class KTExposureTable : public QTableWidget
     public:
         enum Attribute
         {
-          IsUsed = 1000,
+          IsEmpty = 1000,
           IsLocked
+        };
+
+        enum FrameType 
+        {
+          Unset = 0,
+          Empty,
+          Used
         };
 
         KTExposureTable(QWidget * parent = 0);
@@ -90,6 +96,8 @@ class KTExposureTable : public QTableWidget
         void setMenu(QMenu *menu);
         void emitCellClicked(int frame, int layer);
         void reset();
+
+        void updateFrameState(int indexLayer, int indexFrame, KTExposureTable::FrameType value);
 		
     private:
         struct Private;

@@ -151,8 +151,15 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
             painter->drawRect(x, y, w, h);
         }
 
-        if (item->data(KTExposureTable::IsUsed).toBool() && !item->data(KTExposureTable::IsLocked).toBool()) {
-            painter->setPen(QColor(100,100,100,50));
+        if ((item->data(KTExposureTable::IsEmpty).toInt() == KTExposureTable::Empty) && !item->data(KTExposureTable::IsLocked).toBool()) {
+            QPen pen(QColor(100, 100, 100, 50));
+            pen.setStyle(Qt::DashLine);
+            painter->setPen(pen);
+            painter->drawRect(x, y, w, h);
+        }
+
+        if ((item->data(KTExposureTable::IsEmpty).toInt() == KTExposureTable::Used) && !item->data(KTExposureTable::IsLocked).toBool()) {
+            painter->setPen(QColor(0, 0, 0, 100));
             painter->drawRect(x, y, w, h);
         }
     }
@@ -180,6 +187,7 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     QTableWidgetItem *prototype = new QTableWidgetItem();
     prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable);
     prototype->setTextAlignment(Qt::AlignCenter);
+    prototype->setData(IsEmpty, Unset);
 
     setItemPrototype(prototype);
 
@@ -305,6 +313,12 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
     return false;
 }
 
+void KTExposureTable::updateFrameState(int indexLayer, int indexFrame, KTExposureTable::FrameType value)
+{
+    QTableWidgetItem *frame = item(indexFrame, indexLayer);
+    frame->setData(IsEmpty, value);
+}
+
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
     setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
@@ -322,16 +336,28 @@ int KTExposureTable::currentLayer() const
 
 int KTExposureTable::currentFrame() const
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     QTableWidgetItem *frame = currentItem();
 
+    /* SQA: Old code. Remove it!
     if (frame) {
-        if (frame->data(IsUsed).toBool())
+        if (frame->data(IsEmpty).toBool()) {
             return currentRow();
-        else
+        } else {
             return currentRow()-1; //???
+        }
+    }
+    */
+
+    if (frame) {
+        if (frame->data(KTExposureTable::IsEmpty).toInt() != Unset)
+            return currentRow();
     }
 
-    return currentRow()-1; //???
+    return 0;
 }
 
 void KTExposureTable::insertLayer(int index, const QString & name)
@@ -348,7 +374,7 @@ void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString 
     frame->setFont(QFont("Arial", 7, QFont::Normal, false));
     frame->setSizeHint(QSize(65, 10));
     frame->setText(name);
-    frame->setData(IsUsed, true);
+    frame->setData(IsEmpty, Empty);
     frame->setTextAlignment(Qt::AlignCenter);
 
     int logicalIndex = k->header->logicalIndex(indexLayer);
@@ -374,7 +400,7 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
     QTableWidgetItem * frame = item(indexFrame, logicalIndex);
 
     if (frame) {
-        if (frame->data(IsUsed).toBool()) {
+        if (frame->data(KTExposureTable::IsEmpty).toInt() != Unset) {
             if (locked)
                 frame->setBackgroundColor(QColor(250, 71, 53));
             else
@@ -469,7 +495,7 @@ bool KTExposureTable::edit(const QModelIndex & index, EditTrigger trigger, QEven
     QTableWidgetItem *item = itemFromIndex(index);
 
     if (item) {
-        if (item->data(IsUsed).toBool())
+        if (item->data(KTExposureTable::IsEmpty).toInt() != Unset)
             QTableWidget::edit(index, trigger, event);
         else
             return false;

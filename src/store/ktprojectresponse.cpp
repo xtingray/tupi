@@ -323,6 +323,16 @@ void KTItemResponse::setSpaceMode(KTProject::Mode mode)
     m_mode = mode;
 }
 
+bool KTItemResponse::frameIsEmpty()
+{
+    return empty;
+}
+
+void KTItemResponse::setFrameState(bool state)
+{
+    empty = state;
+}
+
 KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action)
 {
 }
@@ -359,6 +369,16 @@ KTProject::Mode KTLibraryResponse::spaceMode()
 void KTLibraryResponse::setSpaceMode(KTProject::Mode mode)
 {
     m_mode = mode;
+}
+
+bool KTLibraryResponse::frameIsEmpty()
+{
+    return empty;
+}
+
+void KTLibraryResponse::setFrameState(bool state)
+{
+    empty = state;
 }
 
 KTProjectResponseFactory::KTProjectResponseFactory()

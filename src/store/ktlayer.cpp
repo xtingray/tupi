@@ -35,9 +35,7 @@
 
 #include "ktlayer.h"
 #include "ktscene.h"
-
 #include "tdebug.h"
-
 #include "ktprojectloader.h"
 
 struct KTLayer::Private

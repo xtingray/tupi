@@ -49,7 +49,7 @@
 #include <QListWidget>
 #include <QList>
 #include <QActionGroup>
-
+ 
 /**
 * @author Jorge Cuadrado
 */
@@ -70,9 +70,11 @@ class KTExposureSheet : public KTModuleWidgetBase
         void insertFrames(int n);
 
     protected:
-        virtual void sceneResponse(KTSceneResponse *e);
-        virtual void layerResponse(KTLayerResponse *e);
-        virtual void frameResponse(KTFrameResponse *e);
+        virtual void sceneResponse(KTSceneResponse *event);
+        virtual void layerResponse(KTLayerResponse *event);
+        virtual void frameResponse(KTFrameResponse *event);
+        virtual void itemResponse(KTItemResponse *event);
+        virtual void libraryResponse(KTLibraryResponse *event);
 
     public slots:
         void closeAllScenes();
