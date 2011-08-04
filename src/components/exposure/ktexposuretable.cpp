@@ -152,14 +152,14 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         }
 
         if ((item->data(KTExposureTable::IsEmpty).toInt() == KTExposureTable::Empty) && !item->data(KTExposureTable::IsLocked).toBool()) {
-            QPen pen(QColor(100, 100, 100, 50));
+            QPen pen(QColor(100, 100, 100, 30));
             pen.setStyle(Qt::DashLine);
             painter->setPen(pen);
             painter->drawRect(x, y, w, h);
         }
 
         if ((item->data(KTExposureTable::IsEmpty).toInt() == KTExposureTable::Used) && !item->data(KTExposureTable::IsLocked).toBool()) {
-            painter->setPen(QColor(0, 0, 0, 100));
+            painter->setPen(QColor(0, 0, 0, 80));
             painter->drawRect(x, y, w, h);
         }
     }
@@ -311,6 +311,16 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
         #endif
     }
     return false;
+}
+
+KTExposureTable::FrameType KTExposureTable::frameState(int indexLayer, int indexFrame)
+{ 
+    KTExposureTable::FrameType type = KTExposureTable::Unset;
+    QTableWidgetItem *frame = item(indexFrame, indexLayer);
+    if (frame)
+        type = KTExposureTable::FrameType(frame->data(KTExposureTable::IsEmpty).toInt()); 
+
+    return type;
 }
 
 void KTExposureTable::updateFrameState(int indexLayer, int indexFrame, KTExposureTable::FrameType value)

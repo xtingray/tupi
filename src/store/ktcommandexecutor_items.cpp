@@ -100,6 +100,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                             return false;
                     }
 
+                    response->setFrameState(frame->isEmpty());
                     emit responsed(response);
 
                 } else {
@@ -183,13 +184,13 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                         return true;
                     } else {
                         KTGraphicObject *object = frame->graphic(response->itemIndex());
+
                         if (object) {
                             frame->removeGraphicAt(response->itemIndex());
-                            if (object->hasTween()) {
-                                tFatal() << "KTCommandExecutor::removeItem() - Remove tween from scene!";
+                            if (object->hasTween()) 
                                 scene->removeTweenObject(object);
-                            }
 
+                            response->setFrameState(frame->isEmpty());
                             emit responsed(response);
                             return true;
 

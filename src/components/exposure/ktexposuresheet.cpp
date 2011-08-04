@@ -725,30 +725,15 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 
 void KTExposureSheet::itemResponse(KTItemResponse *e)
 {
-    tFatal() << "KTExposureSheet::itemResponse() - Item!";
-
     switch (e->action()) {
             case KTProjectRequest::Add:
                  {
-                     tFatal() << "KTExposureSheet::itemResponse() - Adding item!";
-                     tFatal() << "KTExposureSheet::itemResponse() - Scene index: " << e->sceneIndex();
-                     tFatal() << "KTExposureSheet::itemResponse() - Layer index: " << e->layerIndex();
-                     tFatal() << "KTExposureSheet::itemResponse() - Frame index: " << e->frameIndex();
-                     tFatal() << "KTExposureSheet::itemResponse() - Item index: " << e->itemIndex();
-
                      if (e->spaceMode() == KTProject::FRAMES_EDITION && e->itemIndex() == 0)
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Used);
-                
                  }
                  break;
             case KTProjectRequest::Remove:
                  {
-                     tFatal() << "KTExposureSheet::itemResponse() - Removing item!";
-                     tFatal() << "KTExposureSheet::itemResponse() - Scene index: " << e->sceneIndex();
-                     tFatal() << "KTExposureSheet::itemResponse() - Layer index: " << e->layerIndex();
-                     tFatal() << "KTExposureSheet::itemResponse() - Frame index: " << e->frameIndex();
-                     tFatal() << "KTExposureSheet::itemResponse() - Item index: " << e->itemIndex();
-
                      if (e->spaceMode() == KTProject::FRAMES_EDITION && e->frameIsEmpty())
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Empty);
                  }
@@ -760,30 +745,17 @@ void KTExposureSheet::itemResponse(KTItemResponse *e)
 
 void KTExposureSheet::libraryResponse(KTLibraryResponse *e)
 {
-    tFatal() << "KTExposureSheet::libraryResponse() - Library Object!";
-
     switch (e->action()) {
             case KTProjectRequest::Add:
+            case KTProjectRequest::AddSymbolToProject:
                  {
-                     tFatal() << "KTExposureSheet::libraryResponse() - Adding library object!";
-                     tFatal() << "KTExposureSheet::libraryResponse() - Scene index: " << e->sceneIndex();
-                     tFatal() << "KTExposureSheet::libraryResponse() - Layer index: " << e->layerIndex();
-                     tFatal() << "KTExposureSheet::libraryResponse() - Frame index: " << e->frameIndex();
-                     tFatal() << "KTExposureSheet::libraryResponse() - Frame isEmpty(): " << e->frameIsEmpty();
-
-                     if (e->spaceMode() == KTProject::FRAMES_EDITION && !e->frameIsEmpty())
+                     if (e->spaceMode() == KTProject::FRAMES_EDITION && !e->frameIsEmpty() 
+                         && k->currentTable->frameState(e->layerIndex(), e->frameIndex()) == KTExposureTable::Empty)
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Used);
-
                  }
                  break;
             case KTProjectRequest::Remove:
                  {
-                     tFatal() << "KTExposureSheet::libraryResponse() - Removing library object!";
-                     tFatal() << "KTExposureSheet::libraryResponse() - Scene index: " << e->sceneIndex();
-                     tFatal() << "KTExposureSheet::libraryResponse() - Layer index: " << e->layerIndex();
-                     tFatal() << "KTExposureSheet::libraryResponse() - Frame index: " << e->frameIndex();
-                     tFatal() << "KTExposureSheet::libraryResponse() - Frame isEmpty(): " << e->frameIsEmpty();
-
                      if (e->spaceMode() == KTProject::FRAMES_EDITION && e->frameIsEmpty())
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Used);
                  }
@@ -825,7 +797,6 @@ void KTExposureSheet::insertFrames(int n)
          emit requestTriggered(&event);
     }
    
-    tError() << "KTExposureSheet::insertFrames(int n) - Just tracing!";
     selectFrame(layer, k->currentTable->currentFrame());
 }
 

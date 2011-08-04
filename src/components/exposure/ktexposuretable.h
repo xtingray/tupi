@@ -97,6 +97,7 @@ class KTExposureTable : public QTableWidget
         void emitCellClicked(int frame, int layer);
         void reset();
 
+        KTExposureTable::FrameType frameState(int indexLayer, int indexFrame);
         void updateFrameState(int indexLayer, int indexFrame, KTExposureTable::FrameType value);
 		
     private:

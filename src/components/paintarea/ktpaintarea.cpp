@@ -260,15 +260,10 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Reset:
                  {
-                    tFatal() << "KTPaintArea::frameResponse() - Entering selection event!";
                     KTGraphicsScene *guiScene = graphicsScene();
                     if (event->action() == KTProjectRequest::Select) {
-                        tFatal() << "KTPaintArea::frameResponse() - Scene frame index: " << guiScene->currentFrameIndex();
-                        tFatal() << "KTPaintArea::frameResponse() - Event index: " << event->frameIndex();
                         if (guiScene->currentFrameIndex() != event->frameIndex())
                             emit frameChanged(event->frameIndex());
-                        else
-                            tFatal() << "KTPaintArea::frameResponse() - Same frame!";
                     }
 
                     // SQA: Check if this instruction is really required

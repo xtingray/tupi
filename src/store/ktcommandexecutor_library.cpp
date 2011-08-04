@@ -44,13 +44,8 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-    tFatal() << "KTCommandExecutor::createSymbol() - Just tracing!";
-    tFatal() << "KTCommandExecutor::createSymbol() - Size: " << response->data().size();
-
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), 
                                 response->data(), response->parent())) {
-        tFatal() << "KTCommandExecutor::createSymbol() - Creating symbol within library!";
-
         emit responsed(response);
 
         return true;
@@ -65,13 +60,11 @@ bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 
         if (m_project->removeSymbol(response->arg().toString(), response->symbolType(), response->spaceMode(), 
             response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
-            tFatal() << "KTCommandExecutor::removeSymbol() - Removing symbol from workspace!";
             emit responsed(response);
             return true;
         } 
     } else {
         if (m_project->removeSymbol(response->arg().toString())) {
-            tFatal() << "KTCommandExecutor::removeSymbol() - Removing symbol from workspace!";
             emit responsed(response);
             return true;
         }
@@ -85,17 +78,13 @@ bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
     if (m_project->scenesTotal() > 0) {
         if (m_project->addSymbolToProject(response->spaceMode(), response->arg().toString(), 
             response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
-            tFatal() << "KTCommandExecutor::addSymbolToProject() - Adding symbol within work space!";
-      
             KTScene *scene = m_project->scene(response->sceneIndex()); 
             if (scene) {
                 KTLayer *layer = scene->layer(response->layerIndex());
                 if (layer) {
                     KTFrame *frame = layer->frame(response->frameIndex());
-                    if (frame) {
-                        tFatal() << "KTCommandExecutor::addSymbolToProject() - frame IsEmpty(): " << frame->isEmpty();
+                    if (frame)
                         response->setFrameState(frame->isEmpty());
-                    }
                 }
             }
             emit responsed(response);
@@ -121,10 +110,8 @@ bool KTCommandExecutor::removeSymbolFromProject(KTLibraryResponse *response)
                 KTLayer *layer = scene->layer(response->layerIndex());
                 if (layer) {
                     KTFrame *frame = layer->frame(response->frameIndex());
-                    if (frame) {
-                        tFatal() << "KTCommandExecutor::removeSymbolToProject() - frame IsEmpty(): " << frame->isEmpty();
+                    if (frame) 
                         response->setFrameState(frame->isEmpty());
-                    }
                 }
             }
             emit responsed(response);

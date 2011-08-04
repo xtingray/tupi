@@ -662,8 +662,6 @@ QList<int> KTFrame::svgIndexes()
 
 bool KTFrame::isEmpty()
 {
-    int total = graphicItemsCount() + svgItemsCount();
-    tError() << "KTFrame::isEmpty() - ItemsCount: " << total;
     if (graphicItemsCount() + svgItemsCount() > 0)
         return false;
 
