@@ -378,6 +378,7 @@ bool KTLibraryResponse::frameIsEmpty()
 
 void KTLibraryResponse::setFrameState(bool state)
 {
+    tFatal() << "KTLibraryResponse::setFrameState() - Setting state: " << state;
     empty = state;
 }
 
