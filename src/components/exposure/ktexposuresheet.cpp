@@ -713,6 +713,11 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                                                      k->nameCopyFrame + "- copy", e->external());
                          }
                      }
+
+                     if (e->frameIsEmpty())
+                         k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Empty);
+                     else
+                         k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Used);
                  }
                 break;
         }

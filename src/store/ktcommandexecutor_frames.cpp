@@ -403,6 +403,8 @@ bool KTCommandExecutor::pasteFrame(KTFrameResponse *response)
                 frame->clean();
                 frame->fromXml(copyFrame);
                 frame->setFrameName(name);
+
+                response->setFrameState(frame->isEmpty());
                 emit responsed(response);
 
                 return true;

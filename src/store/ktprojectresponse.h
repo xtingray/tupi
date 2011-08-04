@@ -119,9 +119,12 @@ class KTFrameResponse : public KTLayerResponse
         ~KTFrameResponse();
         int frameIndex() const;
         void setFrameIndex(int index);
+        bool frameIsEmpty();
+        void setFrameState(bool state);
 
     private:
         int m_frameIndex;
+        bool empty;
 };
 
 class KTItemResponse : public KTFrameResponse

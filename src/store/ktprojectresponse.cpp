@@ -268,6 +268,16 @@ void KTFrameResponse::setFrameIndex(int index)
     m_frameIndex = index;
 }
 
+bool KTFrameResponse::frameIsEmpty()
+{
+    return empty;
+}
+
+void KTFrameResponse::setFrameState(bool state)
+{
+    empty = state;
+}
+
 // ITEM
 
 KTItemResponse::KTItemResponse(int part, int action) : KTFrameResponse(part, action), m_itemIndex(-1)
