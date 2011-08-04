@@ -159,7 +159,7 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         }
 
         if ((item->data(KTExposureTable::IsEmpty).toInt() == KTExposureTable::Used) && !item->data(KTExposureTable::IsLocked).toBool()) {
-            painter->setPen(QColor(0, 0, 0, 80));
+            painter->setPen(QColor(0, 0, 0, 60));
             painter->drawRect(x, y, w, h);
         }
     }
@@ -327,6 +327,9 @@ void KTExposureTable::updateFrameState(int indexLayer, int indexFrame, KTExposur
 {
     QTableWidgetItem *frame = item(indexFrame, indexLayer);
     frame->setData(IsEmpty, value);
+
+    if (value == KTExposureTable::Used)
+        frame->setBackgroundColor(QColor(0xf0f0f0));
 }
 
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
