@@ -51,7 +51,7 @@ KTProjectParser::~KTProjectParser()
 
 bool KTProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-    if (root() == "project") {
+    if (root() == "server_project") {
         if (tag == "data")
             setReadText(true);
     }

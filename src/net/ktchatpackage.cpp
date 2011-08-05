@@ -37,7 +37,7 @@
 
 KTChatPackage::KTChatPackage(const QString &text) : QDomDocument()
 {
-    QDomElement root = createElement("chat");
+    QDomElement root = createElement("communication_chat");
     root.setAttribute("version", "0");
     appendChild(root);
     

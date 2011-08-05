@@ -37,7 +37,7 @@
 
 KTNoticePackage::KTNoticePackage(const QString &text): QDomDocument()
 {
-    QDomElement root = createElement("notice");
+    QDomElement root = createElement("communication_notice");
     root.setAttribute("version", 0);
     appendChild(root);
     

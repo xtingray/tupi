@@ -38,7 +38,7 @@
 
 KTImportProjectPackage::KTImportProjectPackage(const QString & projectPath)
 {
-    QDomElement root = createElement("importproject");
+    QDomElement root = createElement("project_import");
     root.setAttribute("version", "0");
     appendChild(root);
     setProject(projectPath);

@@ -35,13 +35,13 @@
 
 #include "ktsavepackage.h"
 
-// <saveproject version="0">
+// <project_save version="0">
 //         <project name="proyecto 1" />
-// </saveproject>
+// </project_save>
 
 KTSavePackage::KTSavePackage(const QString& projectName): QDomDocument()
 {
-    QDomElement root = createElement("saveproject");
+    QDomElement root = createElement("project_save");
     root.setAttribute("version", "0");
     appendChild(root);
     

@@ -37,16 +37,16 @@
 #include "kmd5hash.h"
 
 /*
-<connect version="0">
+<user_connect version="0">
     <client type="0"/> // 0 for Tupi artist clients - 1 for Tupi admin clients
     <login>user_login</login>
     <password>md5_hashed_password</password>
-</connect>
+</user_connect>
 */
 
 KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd) : QDomDocument()
 {
-    QDomElement root = createElement("connect");
+    QDomElement root = createElement("user_connect");
     root.setAttribute("version", "0");
     appendChild(root);
 

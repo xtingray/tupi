@@ -53,7 +53,7 @@ KTComunicationParser::~KTComunicationParser()
 
 bool KTComunicationParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-    if (root() == "chat" || root() == "notice" || root() == "wall") {
+    if (root() == "server_chat" || root() == "server_notice" || root() == "server_wall") {
         if (tag == "message") {
             k->message = atts.value("text");
             k->login = atts.value("from");

@@ -36,7 +36,7 @@
 #include "ktlistpackage.h"
 
 /*
-<list version="0" >
+<list version="0">
         <options pattern="string or regexp" type="0">
                 <caseSensitive enabled="0" />
                 <regexp enabled="0" />

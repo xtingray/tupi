@@ -263,7 +263,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
            T_FUNCINFOX("net");
     #endif
 
-    if (root == "request") {
+    if (root == "project_request") {
         KTRequestParser parser;
 
         if (parser.parse(package)) {
@@ -293,7 +293,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    tError() << "KTNetProjectManagerHandler::handlePackage() - Error parsing net request";
             #endif
         }
-    } else if (root == "ack") {
+    } else if (root == "server_ack") {
                // Checking the package
                KTAckParser parser;
                if (parser.parse(package)) {
@@ -302,7 +302,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    // TOsd::self()->display(tr("Information"), parser.motd());
                    emit authenticationSuccessful(); 
                }
-    } else if (root == "notification") {
+    } else if (root == "communication_notification") {
                KTErrorParser parser;
                if (parser.parse(package)) {
                    TOsd::Level level = TOsd::Level(parser.error().level);
@@ -314,7 +314,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    }
                    TOsd::self()->display(title, parser.error().message, level);
                }
-    } else if (root == "project") {
+    } else if (root == "server_project") {
                KTProjectParser parser;
                if (parser.parse(package)) {
                    QTemporaryFile file;
@@ -334,7 +334,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        }
                    }
                }
-    } else if (root == "projectlist") {
+    } else if (root == "server_projectlist") {
                KTProjectsParser parser;
                if (parser.parse(package)) {
                    KTListProjectDialog dialog(k->params->server());
@@ -355,19 +355,19 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        closeConnection();
                    }
                }
-    } else if (root == "chat") {
+    } else if (root == "communication_chat") {
                KTComunicationParser parser;
                if (parser.parse(package)) {
                    k->chat->addMessage(parser.login(), parser.message());
                }
-    } else if (root == "notice") {
+    } else if (root == "communication_notice") {
                KTComunicationParser parser;
                if (parser.parse(package)) {
                    QString message = parser.message();
                    TOsd::self()->display(tr("Notice"), message);
                    k->notices->addMessage(message);
                } 
-    } else if (root == "wall") {
+    } else if (root == "communication_wall") {
                KTComunicationParser parser;
                if (parser.parse(package)) {
                    QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();

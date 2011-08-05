@@ -37,7 +37,7 @@
 
 struct KTProjectsParser::Private
 {
-	QList<KTProjectsParser::ProjectInfo> projectsInfo;
+    QList<KTProjectsParser::ProjectInfo> projectsInfo;
 };
 
 KTProjectsParser::KTProjectsParser() : KTXmlParserBase(), k( new Private())
@@ -50,31 +50,30 @@ KTProjectsParser::~KTProjectsParser()
 
 bool KTProjectsParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "projectlist")
-	{
-		if(tag == "project")
-		{
-			ProjectInfo info;
-			info.name = atts.value("name");
-			info.author = atts.value("author");
-			info.description = atts.value("description");
-			k->projectsInfo << info;
-		}
-	}
-	return true;
+    if (root() == "server_projectlist") {
+        if (tag == "project") {
+            ProjectInfo info;
+            info.name = atts.value("name");
+            info.author = atts.value("author");
+            info.description = atts.value("description");
+            k->projectsInfo << info;
+        }
+    }
+
+    return true;
 }
 
 bool KTProjectsParser::endTag(const QString &tag)
 {
-	return true;
+    return true;
 }
 
 void KTProjectsParser::text(const QString &text)
 {
-	
+    
 }
 
 QList<KTProjectsParser::ProjectInfo> KTProjectsParser::projectsInfo()
 {
-	return k->projectsInfo;
+    return k->projectsInfo;
 }

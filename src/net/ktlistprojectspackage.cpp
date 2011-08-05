@@ -37,7 +37,7 @@
 
 KTListProjectsPackage::KTListProjectsPackage() : QDomDocument()
 {
-    QDomElement root = createElement("listprojects");
+    QDomElement root = createElement("project_list");
     appendChild(root);
 }
 

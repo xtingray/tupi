@@ -64,7 +64,7 @@ void KTRequestParser::initialize()
 
 bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 {
-    if (qname == "request") {
+    if (qname == "project_request") {
         k->sign = atts.value("sign");
     } else if (qname == "item") {
                static_cast<KTItemResponse *>(k->response)->setItemIndex(atts.value("index").toInt());

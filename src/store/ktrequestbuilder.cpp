@@ -53,7 +53,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
 {
     QDomDocument doc;
 
-    QDomElement root = doc.createElement("request");
+    QDomElement root = doc.createElement("project_request");
 
     QDomElement scene = doc.createElement("scene");
     scene.setAttribute("index", sceneIndex);
@@ -102,7 +102,7 @@ KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerI
 {
     QDomDocument doc;
 
-    QDomElement root = doc.createElement("request");
+    QDomElement root = doc.createElement("project_request");
 
     QDomElement scene = doc.createElement("scene");
     scene.setAttribute("index", sceneIndex);
@@ -134,7 +134,7 @@ KTProjectRequest KTRequestBuilder::createLayerRequest(int sceneIndex, int layerI
 {
     QDomDocument doc;
 
-    QDomElement root = doc.createElement("request");
+    QDomElement root = doc.createElement("project_request");
 
     QDomElement scene = doc.createElement("scene");
     scene.setAttribute("index", sceneIndex);
@@ -161,7 +161,7 @@ KTProjectRequest KTRequestBuilder::createLayerRequest(int sceneIndex, int layerI
 KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int actionId, const QVariant &arg, const QByteArray &data)
 {
     QDomDocument doc;
-    QDomElement root = doc.createElement("request");
+    QDomElement root = doc.createElement("project_request");
 
     QDomElement scene = doc.createElement("scene");
     scene.setAttribute("index", sceneIndex);
@@ -185,7 +185,7 @@ KTProjectRequest KTRequestBuilder::createLibraryRequest(int actionId, const QVar
                                                         const QByteArray &data, const QString &folder, int sceneIndex, int layerIndex, int frameIndex)
 {
     QDomDocument doc;
-    QDomElement root = doc.createElement("request");
+    QDomElement root = doc.createElement("project_request");
 
     QDomElement scene = doc.createElement("scene");
     scene.setAttribute("index", sceneIndex);

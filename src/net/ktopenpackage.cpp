@@ -35,13 +35,13 @@
 
 #include "ktopenpackage.h"
 
-// <open version="0">
+// <project_open version="0">
 //         <project name="proyecto 1" />
-// </open>
+// </project_open>
 
 KTOpenPackage::KTOpenPackage(const QString& projectName): QDomDocument()
 {
-    QDomElement root = createElement("openproject");
+    QDomElement root = createElement("project_open");
     root.setAttribute("version", "0");
     appendChild(root);
     

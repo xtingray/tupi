@@ -47,7 +47,7 @@ struct KTNewProjectPackage::Private
 
 KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description, const QString & bgcolor, const QString & dimension, const QString & fps): QDomDocument(), k(new Private)
 {
-    QDomElement root = createElement("newproject");
+    QDomElement root = createElement("project_new");
     root.setAttribute("version", "0");
     
     k->name = createTextNode(name);
