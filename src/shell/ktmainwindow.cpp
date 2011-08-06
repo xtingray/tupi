@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "ktmainwindow.h"
-
 #include "ktnewproject.h"
 #include "ktabout.h"
 #include "ktpackagehandler.h"
@@ -373,7 +372,6 @@ void KTMainWindow::newProject()
     // connectToDisplays(wizard);
 
     if (wizard->exec() != QDialog::Rejected) {
-
         if (wizard->useNetwork()) {
             KTMainWindow::requestType = NewNetProject;
             setupNetworkProject(wizard->parameters());
