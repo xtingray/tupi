@@ -35,6 +35,9 @@
 
 #include "ktprojectloader.h"
 #include "ktproject.h"
+// #include "ktscene.h"
+// #include "ktlayer.h"
+// #include "ktframe.h"
 #include "tdebug.h"
 
 #include "ktprojectresponse.h"
@@ -50,6 +53,8 @@ KTProjectLoader::~KTProjectLoader()
 
 void KTProjectLoader::createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, QPointF point, KTLibraryObject::Type type, const QString &xml, KTProject *project)
 {
+    tFatal() << "KTProjectLoader::createItem() - Index: " << itemPosition;
+
     KTItemResponse response(KTProjectRequest::Item, KTProjectRequest::Add);
 
     response.setSceneIndex(scenePosition);
@@ -59,7 +64,6 @@ void KTProjectLoader::createItem(int scenePosition, int layerPosition, int frame
     response.setItemType(type);
     response.setPosX(point.x());
     response.setPosY(point.y());
-    
     response.setArg(xml);
     
     project->emitResponse(&response);
@@ -70,12 +74,26 @@ void KTProjectLoader::createFrame(int scenePosition, int layerPosition, int fram
     tFatal() << "KTProjectLoader::createFrame() - Index: " << framePosition;
 
     KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Add);
-    
+
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);
     response.setFrameIndex(framePosition);
     response.setArg(name);
-    
+
+    /*
+    KTScene *scene = project->scene(scenePosition);
+    if (scene) {
+        KTLayer *layer = scene->layer(layerPosition);
+        if (layer) {
+            KTFrame *frame = layer->frame(framePosition);
+            if (frame) {
+                response.setFrameState(frame->isEmpty());
+                tFatal() << "KTProjectLoader::createFrame() - frame is empty?: " << frame->isEmpty();
+            }
+        }
+    }
+    */
+
     project->emitResponse(&response);
 }
 
@@ -120,7 +138,7 @@ void KTProjectLoader::createSymbol(KTLibraryObject::Type type, const QString &na
     tFatal() << "KTProjectLoader::createSymbol() - calling KTLibraryResponse()...";
 
     KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::Add);
-    
+   
     response.setArg(name);
     response.setData(data);
     response.setSymbolType(type);

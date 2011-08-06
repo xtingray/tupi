@@ -33,30 +33,26 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QGraphicsItem>
-#include <QGraphicsView>
-#include <QCursor>
-#include <QSvgRenderer>
-#include "tdebug.h"
-
 #include "ktframe.h"
 #include "ktlayer.h"
-
 #include "ktsvg2qt.h"
 #include "ktitemfactory.h"
 #include "ktserializer.h"
 #include "ktgraphicobject.h"
 #include "ktgraphiclibraryitem.h"
 #include "ktlibrary.h"
-
 #include "ktitemgroup.h"
 #include "ktitemtweener.h"
-
 #include "ktprojectloader.h"
-
 #include "ktscene.h"
 #include "ktlayer.h"
+#include "tdebug.h"
+
+#include <QApplication>
+#include <QGraphicsItem>
+#include <QGraphicsView>
+#include <QCursor>
+#include <QSvgRenderer>
 
 struct KTFrame::Private
 {
@@ -143,8 +139,6 @@ void KTFrame::fromXml(const QString &xml)
            T_FUNCINFO;
     #endif
 
-    tFatal() << "KTFrame::fromXml() - Loading frame!";
-
     QDomDocument document;
 	
     if (! document.setContent(xml)) {
@@ -156,6 +150,8 @@ void KTFrame::fromXml(const QString &xml)
 
     QDomElement root = document.documentElement();
     setFrameName(root.attribute("name", frameName()));
+
+    tFatal() << "KTFrame::fromXml() - Loading frame: " << k->name;
 
     QDomNode n = root.firstChild();
 

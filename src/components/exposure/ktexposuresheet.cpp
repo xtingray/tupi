@@ -630,6 +630,8 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
+                     tFatal() << "KTExposureSheet::frameResponse() - Adding frame!";                  
+
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
@@ -733,6 +735,8 @@ void KTExposureSheet::itemResponse(KTItemResponse *e)
     switch (e->action()) {
             case KTProjectRequest::Add:
                  {
+                     tFatal() << "KTExposureSheet::itemResponse() - Adding item!";
+
                      if (e->spaceMode() == KTProject::FRAMES_EDITION && e->itemIndex() == 0)
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Used);
                  }
