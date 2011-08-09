@@ -35,9 +35,6 @@
 
 #include "ktprojectloader.h"
 #include "ktproject.h"
-// #include "ktscene.h"
-// #include "ktlayer.h"
-// #include "ktframe.h"
 #include "tdebug.h"
 
 #include "ktprojectresponse.h"
@@ -53,8 +50,6 @@ KTProjectLoader::~KTProjectLoader()
 
 void KTProjectLoader::createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, QPointF point, KTLibraryObject::Type type, const QString &xml, KTProject *project)
 {
-    tFatal() << "KTProjectLoader::createItem() - Index: " << itemPosition;
-
     KTItemResponse response(KTProjectRequest::Item, KTProjectRequest::Add);
 
     response.setSceneIndex(scenePosition);
@@ -71,28 +66,12 @@ void KTProjectLoader::createItem(int scenePosition, int layerPosition, int frame
 
 void KTProjectLoader::createFrame(int scenePosition, int layerPosition, int framePosition, const QString &name, KTProject *project)
 {
-    tFatal() << "KTProjectLoader::createFrame() - Index: " << framePosition;
-
     KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Add);
 
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);
     response.setFrameIndex(framePosition);
     response.setArg(name);
-
-    /*
-    KTScene *scene = project->scene(scenePosition);
-    if (scene) {
-        KTLayer *layer = scene->layer(layerPosition);
-        if (layer) {
-            KTFrame *frame = layer->frame(framePosition);
-            if (frame) {
-                response.setFrameState(frame->isEmpty());
-                tFatal() << "KTProjectLoader::createFrame() - frame is empty?: " << frame->isEmpty();
-            }
-        }
-    }
-    */
 
     project->emitResponse(&response);
 }
@@ -123,8 +102,6 @@ void KTProjectLoader::createSoundLayer(int scenePosition, int layerPosition, con
 
 void KTProjectLoader::createScene(const QString &name, int scenePosition, KTProject *project)
 {
-    tFatal() << "KTProjectLoader::createScene() - Creating scene " << scenePosition;
-
     KTSceneResponse response(KTProjectRequest::Scene, KTProjectRequest::Add);
 
     response.setSceneIndex(scenePosition);
@@ -135,8 +112,6 @@ void KTProjectLoader::createScene(const QString &name, int scenePosition, KTProj
 
 void KTProjectLoader::createSymbol(KTLibraryObject::Type type, const QString &name, const QString &parent, const QByteArray &data, KTProject *project)
 {
-    tFatal() << "KTProjectLoader::createSymbol() - calling KTLibraryResponse()...";
-
     KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::Add);
    
     response.setArg(name);

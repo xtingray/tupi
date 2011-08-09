@@ -151,8 +151,6 @@ void KTFrame::fromXml(const QString &xml)
     QDomElement root = document.documentElement();
     setFrameName(root.attribute("name", frameName()));
 
-    tFatal() << "KTFrame::fromXml() - Loading frame: " << k->name;
-
     QDomNode n = root.firstChild();
 
     while (!n.isNull()) {

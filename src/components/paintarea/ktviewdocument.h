@@ -37,15 +37,14 @@
 #define KTVIEWAREA_H
 
 #include "ktdocumentruler.h"
-#include <QMainWindow>
-
 #include "tactionmanager.h"
 #include "tosd.h"
-
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
 #include "ktconfigurationarea.h"
 #include "ktglobal.h"
+
+#include <QMainWindow>
 
 class KTProjectRequest;
 class KTProject;
@@ -60,10 +59,10 @@ class KTProjectResponse;
 
 class KTViewDocument : public QMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
-        KTViewDocument(KTProject *project, QWidget *parent = 0 );
+        KTViewDocument(KTProject *project, QWidget *parent = 0, bool isLocal = true);
         ~KTViewDocument();
         void closeArea();
         QSize sizeHint() const;
@@ -91,7 +90,7 @@ class KTViewDocument : public QMainWindow
         void setZoomFactor(int porcent);
         void scaleRuler(double factor);
         void changeRulerOrigin(const QPointF &zero);
-        void updateTimer();
+        void saveTimer();
 
     private:
         struct Private;

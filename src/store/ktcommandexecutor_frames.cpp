@@ -310,7 +310,7 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
     
     if (layer) {
 
-        if (position < layer->framesNumber()) {
+        if (position < layer->framesTotal()) {
             KTFrame *frame = layer->frame(position);
         
             if (! frame) 

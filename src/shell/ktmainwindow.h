@@ -268,7 +268,7 @@ class KTMainWindow : public KTabbedMainWindow
           KToolView *exportView;
           KTViewCamera *viewCamera;
           bool isSaveDialogOpen; 
-          bool projectSaved;
+          // bool projectSaved;
           bool internetOn;
           int lastTab;
           KTProject::Mode contextMode;

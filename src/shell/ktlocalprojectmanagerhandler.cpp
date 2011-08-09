@@ -160,6 +160,7 @@ bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProjec
     bool result = false;
     KTSaveProject *loader = 0;
 
+    /*
     if (fileName.endsWith(".tup")) {
         loader = new KTSaveProject;
         result = loader->load(fileName, project);
@@ -167,6 +168,11 @@ bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProjec
     } else {
         result = false;
     }
+    */
+
+    loader = new KTSaveProject;
+    result = loader->load(fileName, project);
+    delete loader;
 
     return result;
 }

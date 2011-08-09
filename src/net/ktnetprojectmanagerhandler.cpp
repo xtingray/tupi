@@ -76,7 +76,6 @@ struct KTNetProjectManagerHandler::Private
     bool doAction;
     
     QTabWidget *comunicationModule;
-    
     KTChat *chat;
     KTNotice *notices;
 
@@ -263,6 +262,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
            T_FUNCINFOX("net");
     #endif
 
+    tError() << "KTNetProjectManagerHandler::handlePackage() - PKG:";
+    tError() << package;
+
     if (root == "project_request") {
         KTRequestParser parser;
 
@@ -301,18 +303,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    // TOsd::self()->display(tr("Information"), tr("Login successful!")); 
                    // TOsd::self()->display(tr("Information"), parser.motd());
                    emit authenticationSuccessful(); 
-               }
-    } else if (root == "communication_notification") {
-               KTErrorParser parser;
-               if (parser.parse(package)) {
-                   TOsd::Level level = TOsd::Level(parser.error().level);
-                   QString title = "Information";
-                   if (level == TOsd::Warning) {
-                       title = tr("Warning");
-                   } else if (level == TOsd::Error) {
-                       title = tr("Error");
-                   }
-                   TOsd::self()->display(title, parser.error().message, level);
                }
     } else if (root == "server_project") {
                KTProjectParser parser;
@@ -354,6 +344,18 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    } else {
                        closeConnection();
                    }
+               }
+    } else if (root == "communication_notification") {
+               KTErrorParser parser;
+               if (parser.parse(package)) {
+                   TOsd::Level level = TOsd::Level(parser.error().level);
+                   QString title = "Information";
+                   if (level == TOsd::Warning) {
+                       title = tr("Warning");
+                   } else if (level == TOsd::Error) {
+                              title = tr("Error");
+                   }
+                   TOsd::self()->display(title, parser.error().message, level);
                }
     } else if (root == "communication_chat") {
                KTComunicationParser parser;

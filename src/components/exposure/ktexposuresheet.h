@@ -41,6 +41,7 @@
 #include "ktscenetabwidget.h"
 #include "kimagebutton.h"
 #include "ktprojectactionbar.h"
+#include "ktproject.h"
 
 // Qt
 #include <QButtonGroup>
@@ -61,6 +62,7 @@ class KTExposureSheet : public KTModuleWidgetBase
     public:
         KTExposureSheet(QWidget *parent = 0);
         ~KTExposureSheet();
+        void updateFramesState(KTProject *project);
 
     private:
         struct Private;

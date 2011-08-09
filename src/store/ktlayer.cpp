@@ -325,7 +325,7 @@ int KTLayer::objectIndex() const
     return scene()->visualIndexOf(const_cast<KTLayer *>(this));
 }
 
-int KTLayer::framesNumber() const
+int KTLayer::framesTotal() const
 {
     return k->framesCount;
 }

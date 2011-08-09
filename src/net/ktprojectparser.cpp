@@ -41,7 +41,7 @@ struct KTProjectParser::Private
     QByteArray data;
 };
 
-KTProjectParser::KTProjectParser(): KTXmlParserBase() , k( new Private())
+KTProjectParser::KTProjectParser(): KTXmlParserBase() , k(new Private())
 {
 }
 

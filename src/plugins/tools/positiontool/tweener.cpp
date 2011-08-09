@@ -839,7 +839,7 @@ int Tweener::framesTotal()
     int total = 1;
     KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
     if (layer)
-        total = layer->framesNumber();
+        total = layer->framesTotal();
 
     return total;
 }

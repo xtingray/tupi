@@ -89,7 +89,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), k(new Pri
     #ifdef K_DEBUG
            TINIT;
     #endif
-
+    
     k->isModified = false;
     k->handler = 0;
 
@@ -244,12 +244,14 @@ bool KTProjectManager::isOpen() const
 
 bool KTProjectManager::isModified() const
 {
+    tFatal() << "KTProjectManager::isModified() - k->isModified: " << k->isModified;
     return k->isModified;
 }
 
 void KTProjectManager::undoModified()
 {
     k->isModified = false;
+    tFatal() << "KTProjectManager::undoModified() - k->isModified: " << k->isModified;
 }
 
 bool KTProjectManager::isValid() const

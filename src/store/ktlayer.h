@@ -38,13 +38,11 @@
 
 #include "ktabstractserializable.h"
 #include "ktframe.h"
+#include "ktinthash.h"
+#include "ktglobal_store.h"
 
 #include <QDomDocument>
 #include <QDomElement>
-
-#include "ktinthash.h"
-
-#include "ktglobal_store.h"
 
 typedef KTIntHash<KTFrame *> Frames;
 
@@ -59,6 +57,7 @@ class KTProject;
 class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 {
     Q_OBJECT
+
     public:
         /**
          * Default Constructor
@@ -135,7 +134,7 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
         //int logicalIndex() const;
         int objectIndex() const;
 
-        int framesNumber() const;
+        int framesTotal() const;
 
         //void setZLevel(int level);
         //int getZLevel();

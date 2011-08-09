@@ -128,7 +128,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Calling out the project manager
     m_projectManager = new KTProjectManager(this);
-    m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
+    // m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
 
     splash->setMessage(tr("Setting up the project manager"));
     SleeperThread::msleep(500);
@@ -241,7 +241,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
 
     enableToolViews(true);
     setMenuItemsContext(true);
-
+    m_exposureSheet->updateFramesState(m_projectManager->project());
     m_projectManager->setOpen(true);
 
     viewNewDocument();
@@ -275,7 +275,11 @@ void KTMainWindow::viewNewDocument()
         // SQA: Check this instruction
         // messageToStatus(tr("Opening a new paint area..."));
 
-        drawingTab = new KTViewDocument(m_projectManager->project());
+        if (!m_isNetworkProject)
+            drawingTab = new KTViewDocument(m_projectManager->project(), this, true);
+        else
+            drawingTab = new KTViewDocument(m_projectManager->project(), this, false);           
+
         connectToDisplays(drawingTab);
 
         drawingTab->setWindowTitle(tr("Animation"));
@@ -360,7 +364,7 @@ void KTMainWindow::newProject()
        tWarning() << "Creating new project...";
     #endif
 
-    projectSaved = false;
+    // projectSaved = false;
 
     KTNewProject *wizard = new KTNewProject(this);
     QDesktopWidget desktop;
@@ -544,7 +548,7 @@ void KTMainWindow::resetUI()
         exposureView->expandDock(false);
 
     m_statusBar->setStatus(tr(""));
-    projectSaved = false;
+    // projectSaved = false;
 
     setUpdatesEnabled(true);
 
@@ -564,7 +568,6 @@ void KTMainWindow::resetUI()
  * @return true if the network project can be configured
 */
 
-// void KTMainWindow::setupNetworkProject(const QString& projectName, const QString &server, int port)
 void KTMainWindow::setupNetworkProject()
 {
     KTConnectDialog *netDialog = new KTConnectDialog(this);
@@ -656,10 +659,10 @@ void KTMainWindow::openProject()
     // QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home, 
     //                   tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
 
-    QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home,
+    QString package = QFileDialog::getOpenFileName(this, tr("Open Tupi project"), home,
                       tr("Tupi Project Package (*.tup)"));
 
-    if (package.isEmpty()) 
+    if (package.isEmpty() || !package.endsWith(".tup")) 
         return;
 
     openProject(package);
@@ -680,13 +683,18 @@ void KTMainWindow::openProject(const QString &path)
            tWarning() << "Opening project: " << path;
     #endif
 
-    if (path.isEmpty())
+    if (path.isEmpty() || !path.endsWith(".tup"))
         return;
 
+    /*
     if (path.endsWith(".tup")) {
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_isNetworkProject = false;
     }
+    */
+
+    m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
+    m_isNetworkProject = false;
 
     if (closeProject()) {
         setUpdatesEnabled(false);
@@ -723,8 +731,9 @@ void KTMainWindow::openProject(const QString &path)
 
             enableToolViews(true);
             setMenuItemsContext(true);
-
             setUpdatesEnabled(true);
+
+            m_exposureSheet->updateFramesState(m_projectManager->project());
 
             if (QDir::isRelativePath(path))
                 m_fileName = QDir::currentPath() + "/" + path;
@@ -1058,7 +1067,7 @@ void KTMainWindow::saveProject()
 
         if (m_projectManager->saveProject(m_fileName)) {  
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> saved").arg(projectName));
-            projectSaved = true;
+            // projectSaved = true;
             int indexPath = m_fileName.lastIndexOf("/");
             int indexFile = m_fileName.length() - indexPath;
             QString name = m_fileName.right(indexFile - 1);
@@ -1079,7 +1088,7 @@ void KTMainWindow::saveProject()
 
         // SQA: This code is temporary. This instruction must be executed only
         //      when the successful message comes from the server. Not before!
-        projectSaved = true;
+        // projectSaved = true;
     }
 }
 
@@ -1260,7 +1269,9 @@ void KTMainWindow::exportProject()
 
 void KTMainWindow::callSave()
 {
-    if (projectSaved && m_projectManager->isModified())
+    // if (!projectSaved && m_projectManager->isModified()) {
+
+    if (m_projectManager->isModified())
         saveProject();
 }
 

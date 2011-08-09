@@ -40,6 +40,9 @@
 #include "koptionaldialog.h"
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
+#include "ktscene.h"
+#include "ktlayer.h"
+#include "ktframe.h"
 
 #include <QToolTip>
 #include <QPixmap>
@@ -630,8 +633,6 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
-                     tFatal() << "KTExposureSheet::frameResponse() - Adding frame!";                  
-
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
@@ -735,8 +736,6 @@ void KTExposureSheet::itemResponse(KTItemResponse *e)
     switch (e->action()) {
             case KTProjectRequest::Add:
                  {
-                     tFatal() << "KTExposureSheet::itemResponse() - Adding item!";
-
                      if (e->spaceMode() == KTProject::FRAMES_EDITION && e->itemIndex() == 0)
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Used);
                  }
@@ -819,3 +818,22 @@ void KTExposureSheet::lockFrame()
 {
     k->actionBar->emitActionSelected(KTProjectActionBar::LockFrame);
 }
+
+void KTExposureSheet::updateFramesState(KTProject *project)
+{
+    for (int i=0; i < project->scenesTotal(); i++) {
+         KTScene *scene = project->scene(i);
+         KTExposureTable *tab = k->scenes->getTable(i);
+         for (int j=0; j < scene->layersTotal(); j++) {
+              KTLayer *layer = scene->layer(j);
+              for (int k=0; k < layer->framesTotal(); k++) {
+                   KTFrame *frame = layer->frame(k);
+                   if (frame->isEmpty())
+                       tab->updateFrameState(j, k, KTExposureTable::Empty);
+                   else
+                       tab->updateFrameState(j, k, KTExposureTable::Used);
+              }
+         }
+    }
+}
+

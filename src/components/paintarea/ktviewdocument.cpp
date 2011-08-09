@@ -40,6 +40,18 @@
 #include "tdebug.h"
 #include "tconfig.h"
 
+#include "ktpaintareaproperties.h"
+#include "ktpluginmanager.h"
+#include "ktpaintarea.h"
+#include "ktprojectresponse.h"
+#include "ktpaintareaevent.h"
+#include "ktpaintareacommand.h"
+#include "ktgraphicsscene.h"
+
+#include "ktbrushmanager.h"
+#include "ktproject.h"
+#include "ktpaintareastatus.h"
+
 #include <QLayout>
 #include <QStatusBar>
 #include <QMenuBar>
@@ -59,18 +71,6 @@
 #include <QFrame>
 #include <QGridLayout>
 #include <QComboBox>
-
-#include "ktpaintareaproperties.h"
-#include "ktpluginmanager.h"
-#include "ktpaintarea.h"
-#include "ktprojectresponse.h"
-#include "ktpaintareaevent.h"
-#include "ktpaintareacommand.h"
-#include "ktgraphicsscene.h"
-
-#include "ktbrushmanager.h"
-#include "ktproject.h"
-#include "ktpaintareastatus.h"
 
 /**
  * This class defines all the environment for the Ilustration interface.
@@ -108,7 +108,7 @@ struct KTViewDocument::Private
     QTimer *timer;
 };
 
-KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
+KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal) : QMainWindow(parent), k(new Private)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -198,7 +198,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
-    updateTimer();
+    if (isLocal)
+        saveTimer();
 }
 
 KTViewDocument::~KTViewDocument()
@@ -207,7 +208,7 @@ KTViewDocument::~KTViewDocument()
         k->currentTool->saveConfig();
 
     delete k->configurationArea;
-    delete k->timer;
+    // delete k->timer;
     delete k;
 }
 
@@ -841,7 +842,7 @@ void KTViewDocument::callAutoSave()
     emit autoSave();
 }
 
-void KTViewDocument::updateTimer()
+void KTViewDocument::saveTimer()
 {
     TCONFIG->beginGroup("General");
     int autoSave = TCONFIG->value("AutoSave").toInt();
@@ -852,7 +853,7 @@ void KTViewDocument::updateTimer()
         autoSave = autoSave*60000;
         connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
         k->timer->start(autoSave);
-    }
+    } 
 }
 
 void KTViewDocument::setSpaceContext()

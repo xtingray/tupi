@@ -580,7 +580,7 @@ int KTScene::framesTotal()
 {
     int total = 0;
     foreach (KTLayer *layer, k->layers.values()) {
-             int frames =layer->framesNumber();
+             int frames =layer->framesTotal();
              if (frames > total)
                  total = frames;
     }

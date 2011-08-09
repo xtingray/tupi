@@ -168,7 +168,7 @@ void KTGraphicsScene::drawCurrentPhotogram()
     #endif
 
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
-    int frames = layer->framesNumber();
+    int frames = layer->framesTotal();
 
     if (k->framePosition.frame >= frames)
         k->framePosition.frame = frames - 1;
@@ -202,7 +202,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
          KTLayer *layer = k->scene->layer(i);
 
-         if (layer->framesNumber() > 0 && photogram < layer->framesNumber()) {
+         if (layer->framesTotal() > 0 && photogram < layer->framesTotal()) {
 
              KTFrame *mainFrame = layer->frame(photogram);
 
@@ -243,7 +243,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                          }
 
                          // Painting next frames
-                         if (k->onionSkin.next > 0 && layer->framesNumber() > photogram + 1) {
+                         if (k->onionSkin.next > 0 && layer->framesTotal() > photogram + 1) {
 
                              double opacity = k->opacity;
                              double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
@@ -1173,7 +1173,7 @@ int KTGraphicsScene::framesTotal()
 {
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     if (layer)
-        return layer->framesNumber();
+        return layer->framesTotal();
     else
         return -1;
 }
