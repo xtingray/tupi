@@ -48,7 +48,7 @@
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
-#include "kterrorparser.h"
+#include "ktnotificationparser.h"
 #include "ktprojectsparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
@@ -346,7 +346,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    }
                }
     } else if (root == "communication_notification") {
-               KTErrorParser parser;
+               KTNotificationParser parser;
                if (parser.parse(package)) {
                    TOsd::Level level = TOsd::Level(parser.error().level);
                    QString title = "Information";

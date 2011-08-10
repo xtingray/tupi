@@ -42,7 +42,7 @@
 
 #include "ktxmlparserbase.h"
 
-class KTErrorParser : public KTXmlParserBase
+class KTNotificationParser : public KTXmlParserBase
 {
     public:
         
@@ -52,17 +52,17 @@ class KTErrorParser : public KTXmlParserBase
             QString message;
         };
 
-        KTErrorParser();
-        ~KTErrorParser();
+        KTNotificationParser();
+        ~KTNotificationParser();
         
         virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
         virtual bool endTag(const QString &tag);
         virtual void text(const QString &text);
         
-        KTErrorParser::Error error();
+        KTNotificationParser::Error error();
     
     private:
-        KTErrorParser::Error m_error;
+        KTNotificationParser::Error m_error;
 };
 
 #endif

@@ -33,17 +33,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "kterrorparser.h"
+#include "ktnotificationparser.h"
 
-KTErrorParser::KTErrorParser(): KTXmlParserBase()
+KTNotificationParser::KTNotificationParser(): KTXmlParserBase()
 {
 }
 
-KTErrorParser::~KTErrorParser()
+KTNotificationParser::~KTNotificationParser()
 {
 }
 
-bool KTErrorParser::startTag(const QString &tag, const QXmlAttributes &atts)
+bool KTNotificationParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
     if (root() == "communication_notification") {
         if (tag == "message") {
@@ -55,18 +55,18 @@ bool KTErrorParser::startTag(const QString &tag, const QXmlAttributes &atts)
     return true;
 }
 
-bool KTErrorParser::endTag(const QString &tag)
+bool KTNotificationParser::endTag(const QString &tag)
 {
     return true;
 }
 
-void KTErrorParser::text(const QString &text)
+void KTNotificationParser::text(const QString &text)
 {
     if (currentTag() == "message")
         m_error.message = text;
 }
 
-KTErrorParser::Error KTErrorParser::error()
+KTNotificationParser::Error KTNotificationParser::error()
 {
     return m_error;
 }
