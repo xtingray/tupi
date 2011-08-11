@@ -610,8 +610,6 @@ void KTMainWindow::setupNetworkProject()
 void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
-        tFatal() << "KTMainWindow::setupNetworkProject() - Tracing network project!";
-
         netProjectManagerHandler =  new KTNetProjectManagerHandler;
         connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestNewProject()));
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
@@ -1037,8 +1035,6 @@ void KTMainWindow::saveAs()
     int dotIndex = name.lastIndexOf(".tup");
     projectName = name.left(dotIndex);
 
-    tFatal() << "KTMainWindow::saveAs() - Project Name: " << projectName;
-
     m_fileName = fileName;
     isSaveDialogOpen = false;
 
@@ -1083,7 +1079,6 @@ void KTMainWindow::saveProject()
         if (isSaveDialogOpen)
             isSaveDialogOpen = false;
     } else {
-        tFatal() << "KTMainWindow::saveProject() - Saving from network!";
         KTSavePackage package(projectName);
         netProjectManagerHandler->sendPackage(package);
     }
@@ -1298,7 +1293,6 @@ void KTMainWindow::requestNewProject()
     if (KTMainWindow::requestType == NewNetProject) {
         m_projectManager->setupNewProject();
     } else {
-        tFatal() << "KTMainWindow::requestNewProject() - Calling the list of projects from Network";
         KTListProjectsPackage package;
         netProjectManagerHandler->sendPackage(package);
     }
@@ -1326,5 +1320,5 @@ void KTMainWindow::unexpectedClose()
 
 void KTMainWindow::netProjectSaved()
 {
-    // m_projectManager->
+    m_projectManager->undoModified();
 }

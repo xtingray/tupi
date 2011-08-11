@@ -157,7 +157,9 @@ void KTProjectManager::setupNewProject()
     #endif
 
     if (!k->handler || !k->params) {
-        qDebug("ERROR: HANDLER!");
+        #ifdef K_DEBUG
+               tError() << "KTProjectManager::setupNewProject() - Error: No handler available or no params!";
+        #endif
         return;
     }
 
@@ -171,7 +173,9 @@ void KTProjectManager::setupNewProject()
     k->project->setFPS(k->params->fps());
 
     if (! k->handler->setupNewProject(k->params)) {
-        tDebug() << "KTProjectManager::setupNewProject() - Project settings error";
+        #ifdef K_DEBUG
+               tError() << "KTProjectManager::setupNewProject() - Error: Project params misconfiguration";
+        #endif
         return;
     }
 
@@ -219,7 +223,7 @@ bool KTProjectManager::loadProject(const QString &fileName)
 {
     if (! k->handler) {
         #ifdef K_DEBUG
-               tFatal() << "KTProjectManager::loadProject() - NO HANDLER!";
+               tFatal() << "KTProjectManager::loadProject() - Error: No handler!";
         #endif
         return false;
     }
@@ -244,14 +248,12 @@ bool KTProjectManager::isOpen() const
 
 bool KTProjectManager::isModified() const
 {
-    tFatal() << "KTProjectManager::isModified() - k->isModified: " << k->isModified;
     return k->isModified;
 }
 
 void KTProjectManager::undoModified()
 {
     k->isModified = false;
-    tFatal() << "KTProjectManager::undoModified() - k->isModified: " << k->isModified;
 }
 
 bool KTProjectManager::isValid() const
