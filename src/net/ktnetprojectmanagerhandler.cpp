@@ -348,14 +348,18 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
     } else if (root == "communication_notification") {
                KTNotificationParser parser;
                if (parser.parse(package)) {
-                   TOsd::Level level = TOsd::Level(parser.error().level);
+                   int code = parser.notification().code;
+
+                   tError() << "KTNetProjectManagerHandler::handlePackage() - code: " << code;
+
+                   TOsd::Level level = TOsd::Level(parser.notification().level);
                    QString title = "Information";
                    if (level == TOsd::Warning) {
                        title = tr("Warning");
                    } else if (level == TOsd::Error) {
                               title = tr("Error");
                    }
-                   TOsd::self()->display(title, parser.error().message, level);
+                   TOsd::self()->display(title, parser.notification().message, level);
                }
     } else if (root == "communication_chat") {
                KTComunicationParser parser;

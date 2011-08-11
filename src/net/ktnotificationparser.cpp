@@ -47,7 +47,8 @@ bool KTNotificationParser::startTag(const QString &tag, const QXmlAttributes &at
 {
     if (root() == "communication_notification") {
         if (tag == "message") {
-            m_error.level = atts.value("level").toInt();
+            package.level = atts.value("level").toInt();
+            package.code = atts.value("code").toInt();
             setReadText(true);
         }
     }
@@ -63,11 +64,13 @@ bool KTNotificationParser::endTag(const QString &tag)
 void KTNotificationParser::text(const QString &text)
 {
     if (currentTag() == "message")
-        m_error.message = text;
+        package.message = text;
 }
 
-KTNotificationParser::Error KTNotificationParser::error()
+KTNotificationParser::Notification KTNotificationParser::notification()
 {
-    return m_error;
+    return package;
 }
+
+
 

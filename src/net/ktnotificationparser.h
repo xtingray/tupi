@@ -46,9 +46,10 @@ class KTNotificationParser : public KTXmlParserBase
 {
     public:
         
-        struct Error
+        struct Notification 
         {
             int level;
+            int code;
             QString message;
         };
 
@@ -59,10 +60,11 @@ class KTNotificationParser : public KTXmlParserBase
         virtual bool endTag(const QString &tag);
         virtual void text(const QString &text);
         
-        KTNotificationParser::Error error();
+        KTNotificationParser::Notification notification();
+        int code();
     
     private:
-        KTNotificationParser::Error m_error;
+        KTNotificationParser::Notification package;
 };
 
 #endif
