@@ -616,6 +616,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
         connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestNewProject()));
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
         connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
+        connect(netProjectManagerHandler, SIGNAL(savingSuccessful()), this, SLOT(netProjectSaved()));
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
@@ -1085,10 +1086,6 @@ void KTMainWindow::saveProject()
         tFatal() << "KTMainWindow::saveProject() - Saving from network!";
         KTSavePackage package(projectName);
         netProjectManagerHandler->sendPackage(package);
-
-        // SQA: This code is temporary. This instruction must be executed only
-        //      when the successful message comes from the server. Not before!
-        // projectSaved = true;
     }
 }
 
@@ -1325,4 +1322,9 @@ void KTMainWindow::unexpectedClose()
     msgBox.exec();
 
     resetUI();
+}
+
+void KTMainWindow::netProjectSaved()
+{
+    // m_projectManager->
 }

@@ -76,6 +76,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         void closeConnection();
 
     signals:
+        void savingSuccessful();
         void connectionHasBeenLost();
 
     private:

@@ -200,6 +200,7 @@ class KTMainWindow : public KTabbedMainWindow
 
           void requestNewProject();
           void createNewNetProject(const QString &title);
+          void netProjectSaved();
 
     private slots:
           void messageToStatus(const QString &);

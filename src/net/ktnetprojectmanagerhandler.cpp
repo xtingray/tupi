@@ -351,6 +351,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    int code = parser.notification().code;
 
                    tError() << "KTNetProjectManagerHandler::handlePackage() - code: " << code;
+                   if (code == 380)
+                       emit savingSuccessful();
 
                    TOsd::Level level = TOsd::Level(parser.notification().level);
                    QString title = "Information";
