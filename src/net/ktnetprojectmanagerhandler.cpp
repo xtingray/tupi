@@ -80,6 +80,7 @@ struct KTNetProjectManagerHandler::Private
     KTNotice *notices;
 
     bool projectIsClosed; 
+    KTListProjectDialog *dialog;
 };
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), k(new Private)
@@ -262,8 +263,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
            T_FUNCINFOX("net");
     #endif
 
-    tError() << "KTNetProjectManagerHandler::handlePackage() - PKG:";
-    tError() << package;
+    tWarning() << "KTNetProjectManagerHandler::handlePackage() - PKG:";
+    tWarning() << package;
 
     if (root == "project_request") {
         KTRequestParser parser;
@@ -319,7 +320,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                            delete loader;
                        } else {
                            #ifdef K_DEBUG
-                                  tError() << "KTNetProjectManagerHandler::handlePackage() - Can't open project";
+                                  tError() << "KTNetProjectManagerHandler::handlePackage() - Error: Can't open project";
                            #endif
                        }
                    }
@@ -327,21 +328,22 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
     } else if (root == "server_projectlist") {
                KTProjectsParser parser;
                if (parser.parse(package)) {
-                   KTListProjectDialog dialog(k->params->server());
+                   k->dialog = new KTListProjectDialog(k->params->server());
                    QDesktopWidget desktop;
-                   dialog.show();
-                   dialog.move((int) (desktop.screenGeometry().width() - dialog.width())/2 ,
-                                (int) (desktop.screenGeometry().height() - dialog.height())/2);
+                   k->dialog->show();
+                   k->dialog->move((int) (desktop.screenGeometry().width() - k->dialog->width())/2 ,
+                                  (int) (desktop.screenGeometry().height() - k->dialog->height())/2);
                    
                    foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo())
-                            dialog.addProject(info.name, info.author, info.description);
+                            k->dialog->addProject(info.name, info.author, info.description);
 
-                   if (dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty()) {
+                   if (k->dialog->exec() == QDialog::Accepted && !k->dialog->currentProject().isEmpty()) {
                        #ifdef K_DEBUG
-                              tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << dialog.currentProject();
+                              tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << k->dialog->currentProject();
                        #endif
-                       loadProjectFromServer(dialog.currentProject());
+                       loadProjectFromServer(k->dialog->currentProject());
                    } else {
+                       k->projectIsClosed = true;
                        closeConnection();
                    }
                }
@@ -350,7 +352,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                if (parser.parse(package)) {
                    int code = parser.notification().code;
 
-                   tError() << "KTNetProjectManagerHandler::handlePackage() - code: " << code;
                    if (code == 380)
                        emit savingSuccessful();
 
@@ -383,7 +384,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                }
     } else {
       #ifdef K_DEBUG
-             tError("net") << "KTNetProjectManagerHandler::handlePackage() - Unknown package: " << root;
+             tError("net") << "KTNetProjectManagerHandler::handlePackage() - Error: Unknown package: " << root;
       #endif
     }
 }
@@ -425,11 +426,17 @@ void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
 void KTNetProjectManagerHandler::connectionLost()
 {
     #ifdef K_DEBUG
-           tError() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed!";
+           tWarning() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed";
     #endif
 
-    if (!k->projectIsClosed)
+    if (!k->projectIsClosed) {
+        if (k->dialog) {
+            if (k->dialog->isVisible())
+                k->dialog->close();
+        }
+
         emit connectionHasBeenLost();
+    }
 }
 
 void KTNetProjectManagerHandler::closeConnection()

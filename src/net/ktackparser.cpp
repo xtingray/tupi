@@ -37,7 +37,6 @@
 
 struct KTAckParser::Private
 {
-    QString motd;
     QString sign;
 };
 
@@ -52,11 +51,8 @@ KTAckParser::~KTAckParser()
 
 bool KTAckParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-    if (tag == "motd") {
+    if (tag == "sign")
         setReadText(true);
-    } else if (tag == "sign") {
-        setReadText(true);
-    }
     
     return true;
 }
@@ -68,19 +64,11 @@ bool KTAckParser::endTag(const QString &)
 
 void KTAckParser::text(const QString &msg)
 {
-    if (currentTag() == "motd") {
-        k->motd = msg;
-    } else if (currentTag() == "sign") {
-               k->sign = msg;
-    }
+    if (currentTag() == "sign")
+        k->sign = msg;
 }
 
 QString KTAckParser::sign() const
 {
     return k->sign;
-}
-
-QString KTAckParser::motd() const
-{
-    return k->motd;
 }

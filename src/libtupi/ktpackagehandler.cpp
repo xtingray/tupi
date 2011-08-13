@@ -66,13 +66,10 @@ KTPackageHandler::~KTPackageHandler()
 
 bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
 {
-    #ifdef K_DEBUG
-           tDebug() << "KTPackageHandler::makePackage() - Project Path: " << projectPath;
-           tDebug() << "KTPackageHandler::makePackage() - Package Path: " << packagePath;
-    #endif
-
     if (!QFile::exists(projectPath)) {
-        qWarning("KTPackageHandler::makePackage() - Project path doesn't exist!");
+        #ifdef K_DEBUG
+               tError() << "KTPackageHandler::makePackage() - Project path doesn't exist!";
+        #endif
         return false;
     }
     
@@ -81,14 +78,14 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 
     if (!zip.open(QuaZip::mdCreate)) {
         #ifdef K_DEBUG
-               tError() << "Error while create package: " << zip.getZipError();
+               tError() << "KTPackageHandler::makePackage() - Error while create package: " << zip.getZipError();
         #endif
         return false;
     }
     
     if (! compress(&zip, projectPath)) {
         #ifdef K_DEBUG
-               tError() << "Error while compress project" << zip.getZipError();
+               tError() << "KTPackageHandler::makePackage() - Error while compress project" << zip.getZipError();
         #endif
         return false;
     }
@@ -97,7 +94,7 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 
     if (zip.getZipError() != 0) {
         #ifdef K_DEBUG
-               tError() << "Error: " << zip.getZipError();
+               tError() << "KTPackageHandler::makePackage() - Error: " << zip.getZipError();
         #endif
         return false;
     }
@@ -107,10 +104,6 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 
 bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 {
-    #ifdef K_DEBUG
-           tDebug() << "KTPackageHandler::compress() - Compressing path: " << path;
-    #endif
-
     QFile inFile;
     QuaZipFile outFile(zip);
     char c;

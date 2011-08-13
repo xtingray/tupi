@@ -54,7 +54,7 @@ class KTAckParser : public KTXmlParserBase
         virtual void text(const QString &msg);
         
         QString sign() const;
-        QString motd() const;
+        // QString motd() const;
         
     private:
         struct Private;

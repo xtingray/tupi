@@ -79,7 +79,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
                 // SQA: Check if these lines are really needed
                 if (! projectDir.mkdir(projectDir.path())) {
                     #ifdef K_DEBUG
-                           tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
+                           tError() << "KTSaveProject::save() - Error: Can't create path " << projectDir.path();
                     #endif
                     return false;
                 } else {
@@ -93,7 +93,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
         if (!projectDir.exists()) {
             if (! projectDir.mkdir(projectDir.path())) {
                 #ifdef K_DEBUG
-                       tError() << "KTSaveProject::save() - Can't create path " << projectDir.path();
+                       tError() << "KTSaveProject::save() - Error: Can't create path " << projectDir.path();
                 #endif
                 return false;
             } else {
@@ -103,10 +103,6 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
             }
         }
     }
-
-    #ifdef K_DEBUG
-           tDebug("project") << "KTSaveProject::save() - Saving project to: " << projectDir.absolutePath();
-    #endif
 
     {
      // Save project
@@ -121,7 +117,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
          projectFile.close();
      } else {
          #ifdef K_DEBUG
-                tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/project.tpp";
+                tError() << "KTSaveProject::save() - Error: Can't create file " << projectDir.path() + "/project.tpp";
          #endif
      }
     }
@@ -142,7 +138,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
                   sceneFile.close();
               } else {
                   #ifdef K_DEBUG
-                         tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";
+                         tError() << "KTSaveProject::save() - Error: Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";
                   #endif
               }
      }
@@ -162,7 +158,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
          lbr.close();
      } else {
          #ifdef K_DEBUG
-                tError() << "KTSaveProject::save() - Can't create file " << projectDir.path() + "/library.tpl";
+                tError() << "KTSaveProject::save() - Error: Can't create file " << projectDir.path() + "/library.tpl";
          #endif
      }
     }
@@ -172,11 +168,11 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
 
     if (ok) {
         #ifdef K_DEBUG
-               tWarning() << tr("Project saved in %1").arg(fileName);
+               tWarning() << "Project saved in " << fileName;
         #endif
     } else {
         #ifdef K_DEBUG
-               tError() << tr("Project couldn't be saved in %1").arg(fileName);
+               tError() << "Error: Project couldn't be saved in " << fileName;
         #endif
     }
 
@@ -235,7 +231,7 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
                          file.close();
                      } else {
                          #ifdef K_DEBUG
-                                tError() << "KTSaveProject::load() - Can't open file " << scenePath;
+                                tError() << "KTSaveProject::load() - Error: Can't open file " << scenePath;
                          #endif
                          return false;
                      }
@@ -247,14 +243,14 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 
         } else {
             #ifdef K_DEBUG
-                   tError() << "KTSaveProject::load() - No scene files found (*.tps)";
+                   tError() << "KTSaveProject::load() - Error: No scene files found (*.tps)";
             #endif
             return false;
         }
     }
 
     #ifdef K_DEBUG
-           tError() << "KTSaveProject::load() - Can't import package (" << fileName << ")";
+           tError() << "KTSaveProject::load() - Error: Can't import package (" << fileName << ")";
     #endif
 
     return false;

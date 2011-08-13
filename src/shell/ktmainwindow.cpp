@@ -952,8 +952,8 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
 
 void KTMainWindow::ui4localRequest(QWidget *widget)
 {
-    connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_projectManager, 
-            SLOT(handleLocalRequest(const KTProjectRequest *)));
+    connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), 
+            m_projectManager, SLOT(handleLocalRequest(const KTProjectRequest *)));
 }
 
 /**
