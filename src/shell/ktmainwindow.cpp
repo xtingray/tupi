@@ -1315,7 +1315,8 @@ void KTMainWindow::unexpectedClose()
 
     msgBox.exec();
 
-    resetUI();
+    if (m_projectManager->isOpen())
+        resetUI();
 }
 
 void KTMainWindow::netProjectSaved()
