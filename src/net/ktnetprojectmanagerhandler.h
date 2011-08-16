@@ -72,7 +72,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         virtual bool isValid() const;
         void sendPackage(const QDomDocument &doc);
 
-        QTabWidget *comunicationWidget();
+        QTabWidget *communicationWidget();
         void closeConnection();
 
     signals:

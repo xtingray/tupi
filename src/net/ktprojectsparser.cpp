@@ -77,3 +77,8 @@ QList<KTProjectsParser::ProjectInfo> KTProjectsParser::projectsInfo()
 {
     return k->projectsInfo;
 }
+
+int KTProjectsParser::listSize()
+{
+    return k->projectsInfo.count();
+}

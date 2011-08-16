@@ -236,7 +236,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
         delete m_viewChat;
     }
 
-    m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::BottomDockWidgetArea, All, "Chat");
+    m_viewChat = addToolView(netProjectManagerHandler->communicationWidget(), Qt::BottomDockWidgetArea, All, "Chat");
     m_viewChat->setVisible(false);
 
     enableToolViews(true);
@@ -526,8 +526,6 @@ void KTMainWindow::resetUI()
     delete drawingTab;
     drawingTab = 0;
 
-    m_projectManager->closeProject();
-
     // Cleaning widgets
     m_exposureSheet->blockSignals(true);
     m_exposureSheet->closeAllScenes();
@@ -554,8 +552,12 @@ void KTMainWindow::resetUI()
 
     setWindowTitle(tr("Tupi: 2D Magic"));
 
-    if (m_isNetworkProject) 
-        netProjectManagerHandler->closeProject();
+    if (m_isNetworkProject) { 
+        m_viewChat->expandDock(false);
+        // netProjectManagerHandler->closeProject();
+    }
+
+    m_projectManager->closeProject();
 }
 
 /**
@@ -1300,6 +1302,9 @@ void KTMainWindow::requestNewProject()
 
 void KTMainWindow::unexpectedClose()
 {
+    if (m_projectManager->isOpen())
+        resetUI();
+
     QDesktopWidget desktop;
     QMessageBox msgBox;
     msgBox.setWindowTitle(tr("Fatal Error"));
@@ -1314,9 +1319,6 @@ void KTMainWindow::unexpectedClose()
                 (int) (desktop.screenGeometry().height() - msgBox.height())/2);
 
     msgBox.exec();
-
-    if (m_projectManager->isOpen())
-        resetUI();
 }
 
 void KTMainWindow::netProjectSaved()

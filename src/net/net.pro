@@ -33,7 +33,7 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktchatpackage.h \
            ktnotice.h \
            # ktnoticepackage.h \
-           ktcomunicationparser.h
+           ktcommunicationparser.h
 
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
@@ -56,7 +56,7 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktchatpackage.cpp \
            ktnotice.cpp \
            # ktnoticepackage.cpp \
-           ktcomunicationparser.cpp
+           ktcommunicationparser.cpp
 
 CONFIG += dll warn_on
 TEMPLATE = lib

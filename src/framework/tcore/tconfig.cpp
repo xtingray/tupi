@@ -74,7 +74,7 @@ TConfig::TConfig() : QObject(), k(new Private)
 
     if (!k->configDirectory.exists()) {
         k->firstTime = true;
-        tDebug() << tr("%1 doesn't exist. Creating...").arg(k->configDirectory.path()) << endl;
+        tDebug() << "*** TConfig::TConfig() - Config file doesn't exist. Creating path: " << k->configDirectory.path();
 
         if (!k->configDirectory.mkdir(k->configDirectory.path()))
             tError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;

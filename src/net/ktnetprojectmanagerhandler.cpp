@@ -53,7 +53,7 @@
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
 #include "ktackparser.h"
-#include "ktcomunicationparser.h"
+#include "ktcommunicationparser.h"
 #include "ktrequestbuilder.h"
 #include "ktproject.h"
 #include "ktlistprojectdialog.h"
@@ -75,11 +75,12 @@ struct KTNetProjectManagerHandler::Private
     bool ownPackage;
     bool doAction;
     
-    QTabWidget *comunicationModule;
+    QTabWidget *communicationModule;
     KTChat *chat;
     KTNotice *notices;
 
-    bool projectIsClosed; 
+    bool projectIsOpen; 
+    bool dialogIsOpen;
     KTListProjectDialog *dialog;
 };
 
@@ -96,19 +97,20 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
     k->params = 0;
     k->ownPackage = false;
     k->doAction = true;
-    k->projectIsClosed = false;
+    k->projectIsOpen = false;
+    k->dialogIsOpen = false;
     
-    k->comunicationModule = new QTabWidget;
-    k->comunicationModule->setWindowTitle(tr("Communications"));
-    k->comunicationModule->setWindowIcon(QPixmap(THEME_DIR + "icons/chat.png"));
+    k->communicationModule = new QTabWidget;
+    k->communicationModule->setWindowTitle(tr("Communications"));
+    k->communicationModule->setWindowIcon(QPixmap(THEME_DIR + "icons/chat.png"));
 
     k->chat = new KTChat;
-    k->comunicationModule->addTab(k->chat, tr("Chat"));
+    k->communicationModule->addTab(k->chat, tr("Chat"));
     
     connect(k->chat, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendChatMessage(const QString&)));
     
     k->notices = new KTNotice;
-    k->comunicationModule->addTab(k->notices, tr("Notices"));
+    k->communicationModule->addTab(k->notices, tr("Notices"));
     
     // connect(k->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
 }
@@ -116,7 +118,7 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 {
     #ifdef K_DEBUG
-       TEND;
+           TEND;
     #endif
 
     k->chat->close();
@@ -245,7 +247,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 
 bool KTNetProjectManagerHandler::closeProject()
 {
-    k->projectIsClosed = true;
+    k->projectIsOpen = false;
 
     closeConnection();
 
@@ -316,6 +318,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        if (k->project) {
                            KTSaveProject *loader = new KTSaveProject;
                            loader->load(file.fileName(), k->project);
+                           k->projectIsOpen = true;
                            emit openNewArea(k->project->projectName());
                            delete loader;
                        } else {
@@ -328,22 +331,30 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
     } else if (root == "server_projectlist") {
                KTProjectsParser parser;
                if (parser.parse(package)) {
-                   k->dialog = new KTListProjectDialog(k->params->server());
-                   QDesktopWidget desktop;
-                   k->dialog->show();
-                   k->dialog->move((int) (desktop.screenGeometry().width() - k->dialog->width())/2 ,
-                                  (int) (desktop.screenGeometry().height() - k->dialog->height())/2);
-                   
-                   foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo())
-                            k->dialog->addProject(info.name, info.author, info.description);
+                   if (parser.listSize() > 0) {
+                       k->dialog = new KTListProjectDialog(k->params->server());
+                       QDesktopWidget desktop;
+                       k->dialog->show();
+                       k->dialog->move((int) (desktop.screenGeometry().width() - k->dialog->width())/2,
+                                       (int) (desktop.screenGeometry().height() - k->dialog->height())/2);
+                       k->dialogIsOpen = true;
 
-                   if (k->dialog->exec() == QDialog::Accepted && !k->dialog->currentProject().isEmpty()) {
-                       #ifdef K_DEBUG
-                              tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << k->dialog->currentProject();
-                       #endif
-                       loadProjectFromServer(k->dialog->currentProject());
+                       foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo())
+                                k->dialog->addProject(info.name, info.author, info.description);
+
+                       if (k->dialog->exec() == QDialog::Accepted && !k->dialog->currentProject().isEmpty()) {
+                           #ifdef K_DEBUG
+                                  tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << k->dialog->currentProject();
+                           #endif
+                           k->dialogIsOpen = false;
+                           loadProjectFromServer(k->dialog->currentProject());
+                       } else {
+                           k->dialogIsOpen = false;
+                           closeConnection();
+                       }
                    } else {
-                       k->projectIsClosed = true;
+                       // TOsd::self()->display(tr("Information"), QObject::tr("No available projects in server"));
+                       TOsd::self()->display(tr("Information"), tr("No available projects in server"), TOsd::Warning);
                        closeConnection();
                    }
                }
@@ -355,6 +366,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    if (code == 380)
                        emit savingSuccessful();
 
+                   // if (code == 400 || code == 402)
+                   //    k->projectIsOpen = true;
+
                    TOsd::Level level = TOsd::Level(parser.notification().level);
                    QString title = "Information";
                    if (level == TOsd::Warning) {
@@ -365,19 +379,19 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    TOsd::self()->display(title, parser.notification().message, level);
                }
     } else if (root == "communication_chat") {
-               KTComunicationParser parser;
+               KTCommunicationParser parser;
                if (parser.parse(package)) {
                    k->chat->addMessage(parser.login(), parser.message());
                }
     } else if (root == "communication_notice") {
-               KTComunicationParser parser;
+               KTCommunicationParser parser;
                if (parser.parse(package)) {
                    QString message = parser.message();
                    TOsd::self()->display(tr("Notice"), message);
                    k->notices->addMessage(message);
                } 
     } else if (root == "communication_wall") {
-               KTComunicationParser parser;
+               KTCommunicationParser parser;
                if (parser.parse(package)) {
                    QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();
                    TOsd::self()->display(tr("Information"), message);
@@ -399,9 +413,9 @@ void KTNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
     k->socket->send(doc);
 }
 
-QTabWidget *KTNetProjectManagerHandler::comunicationWidget()
+QTabWidget *KTNetProjectManagerHandler::communicationWidget()
 {
-    return k->comunicationModule;
+    return k->communicationModule;
 }
 
 void KTNetProjectManagerHandler::setProject(KTProject *project)
@@ -429,13 +443,14 @@ void KTNetProjectManagerHandler::connectionLost()
            tWarning() << "KTNetProjectManagerHandler::connectionLost() - The socket has been closed";
     #endif
 
-    if (!k->projectIsClosed) {
+    if (k->dialogIsOpen) {
         if (k->dialog) {
             if (k->dialog->isVisible())
                 k->dialog->close();
         }
-
         emit connectionHasBeenLost();
+    } else if (k->projectIsOpen) {
+               emit connectionHasBeenLost();
     }
 }
 

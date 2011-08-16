@@ -60,6 +60,7 @@ class KTProjectsParser : public KTXmlParserBase
         virtual void text(const QString &text);
         
         QList<ProjectInfo> projectsInfo();
+        int listSize();
         
     private:
         struct Private;
