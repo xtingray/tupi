@@ -49,6 +49,7 @@ struct KTListProjectDialog::Private
     QTreeWidget *tree;
     KTreeWidgetSearchLine *search;
     QPushButton *accept, *cancel;
+    int index;
 };
 
 KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(), k(new Private)
@@ -93,6 +94,7 @@ KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(),
     layout->addLayout(buttons);
 
     setMinimumWidth(450); 
+    k->index = 0;
 }
 
 KTListProjectDialog::~KTListProjectDialog()
@@ -105,6 +107,11 @@ void KTListProjectDialog::addProject(const QString& name, const QString& author,
     item->setText(0, name);
     item->setText(1, author);
     item->setText(2, description);
+
+    if (k->index == 0)
+        k->tree->setCurrentItem(item);
+
+    k->index++;
 }
 
 QString KTListProjectDialog::currentProject()
