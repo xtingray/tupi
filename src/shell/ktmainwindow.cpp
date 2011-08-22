@@ -1004,16 +1004,15 @@ void KTMainWindow::saveAs()
 
     isSaveDialogOpen = true;
 
-    // QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home, 
-    //                    tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
-
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home,
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Project As"), home,
                        tr("Tupi Project Package (*.tup)"));
 
     if (fileName.isEmpty()) {
         isSaveDialogOpen = false;
         return;
     }
+
+    isSaveDialogOpen = false;
 
     int indexPath = fileName.lastIndexOf("/");
     int indexFile = fileName.length() - indexPath;
@@ -1038,7 +1037,13 @@ void KTMainWindow::saveAs()
     projectName = name.left(dotIndex);
 
     m_fileName = fileName;
-    isSaveDialogOpen = false;
+    // isSaveDialogOpen = false;
+
+    if (m_isNetworkProject) {
+        m_isNetworkProject = false;
+        m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
+        setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic"));
+    }
 
     save();
 }
@@ -1263,8 +1268,6 @@ void KTMainWindow::exportProject()
 
 void KTMainWindow::callSave()
 {
-    // if (!projectSaved && m_projectManager->isModified()) {
-
     if (m_projectManager->isModified())
         saveProject();
 }

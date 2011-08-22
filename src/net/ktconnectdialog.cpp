@@ -139,28 +139,28 @@ int KTConnectDialog::port() const
 void KTConnectDialog::loadSettings()
 {
     TCONFIG->beginGroup("Network");
-    k->server->setText(TCONFIG->value("server", "localhost").toString());
-    k->port->setValue(TCONFIG->value("port", 5000).toInt());
-    k->login->setText(TCONFIG->value("login", QString::fromLocal8Bit(::getenv("USER"))).toString());
-    k->password->setText(TCONFIG->value("password", "").toString());
+    k->server->setText(TCONFIG->value("Server", "localhost").toString());
+    k->port->setValue(TCONFIG->value("Port", 5000).toInt());
+    k->login->setText(TCONFIG->value("Login", QString::fromLocal8Bit(::getenv("USER"))).toString());
+    k->password->setText(TCONFIG->value("Password", "").toString());
     
-    k->storePassword->setChecked(TCONFIG->value("storePassword").toInt());
+    k->storePassword->setChecked(TCONFIG->value("StorePassword").toInt());
 }
 
 void KTConnectDialog::saveSettings()
 {
     TCONFIG->beginGroup("Network");
     
-    TCONFIG->setValue("server", k->server->text());
-    TCONFIG->setValue("port", k->port->value());
-    TCONFIG->setValue("login", k->login->text());
+    TCONFIG->setValue("Server", k->server->text());
+    TCONFIG->setValue("Port", k->port->value());
+    TCONFIG->setValue("Login", k->login->text());
     
     if (k->storePassword->isChecked())
-        TCONFIG->setValue("password", k->password->text());
+        TCONFIG->setValue("Password", k->password->text());
     else 
-        TCONFIG->setValue("password", "");
+        TCONFIG->setValue("Password", "");
     
-    TCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
+    TCONFIG->setValue("StorePassword", k->storePassword->isChecked() ? 1 : 0);
     TCONFIG->sync();
 }
 

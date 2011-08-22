@@ -94,6 +94,7 @@ struct KTViewDocument::Private
     int prevOnionValue;
     int nextOnionValue;
     double opacityFactor;
+    int autoSaveTime;
 
     KTPaintArea *paintArea;
 
@@ -204,6 +205,9 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
 
 KTViewDocument::~KTViewDocument()
 {
+    TCONFIG->beginGroup("General");
+    TCONFIG->setValue("AutoSave", k->autoSaveTime);
+
     if (k->currentTool)
         k->currentTool->saveConfig();
 
@@ -845,14 +849,14 @@ void KTViewDocument::callAutoSave()
 void KTViewDocument::saveTimer()
 {
     TCONFIG->beginGroup("General");
-    int autoSave = TCONFIG->value("AutoSave").toInt();
+    k->autoSaveTime = TCONFIG->value("AutoSave", 5).toInt();
 
     k->timer = new QTimer(this);
 
-    if (autoSave > 0) {
-        autoSave = autoSave*60000;
+    if (k->autoSaveTime > 0) {
+        int saveTime = k->autoSaveTime*60000;
         connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
-        k->timer->start(autoSave);
+        k->timer->start(saveTime);
     } 
 }
 

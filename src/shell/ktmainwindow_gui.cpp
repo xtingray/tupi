@@ -99,14 +99,14 @@ void KTMainWindow::createGUI()
     new TAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("Bitmap"), QKeySequence(tr("Alt+B")), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
 
-    new TAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("Bitmap Array"), QKeySequence(tr("Alt+Shift+B")), m_libraryWidget, SLOT(importBitmapArray()),
-                m_actionManager, "importbitmaparray");
+    new TAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("Bitmap Array"), QKeySequence(tr("Alt+Shift+B")), 
+                m_libraryWidget, SLOT(importBitmapArray()), m_actionManager, "importbitmaparray");
 
     new TAction(QPixmap(THEME_DIR + "icons/svg.png"), tr("SVG File"), QKeySequence(tr("Alt+S")), m_libraryWidget, SLOT(importSvg()),
                 m_actionManager, "importsvg");
 
-    new TAction(QPixmap(THEME_DIR + "icons/svg_array.png"), tr("SVG Array"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, SLOT(importSvgArray()),
-                m_actionManager, "importsvgarray");
+    new TAction(QPixmap(THEME_DIR + "icons/svg_array.png"), tr("SVG Array"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, 
+                SLOT(importSvgArray()), m_actionManager, "importsvgarray");
 
     //new TAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
     //            m_actionManager, "importaudiofile");
