@@ -293,7 +293,7 @@ bool KFormValidator::validate(QLineEdit *line)
         switch (state) {
                 case QValidator::Acceptable:
                 {
-                     pal.setBrush(QPalette::Base, Qt::green);
+                     // pal.setBrush(QPalette::Base, Qt::green);
                 }
                 break;
                 case QValidator::Intermediate:
@@ -304,8 +304,8 @@ bool KFormValidator::validate(QLineEdit *line)
                 break;
                 case QValidator::Invalid:
                 {
-                pal.setBrush(QPalette::Base, Qt::red);
-                ok = false;
+                     pal.setBrush(QPalette::Base, Qt::red);
+                     ok = false;
                 }
                 break;
         }
