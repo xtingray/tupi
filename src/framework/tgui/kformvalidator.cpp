@@ -263,17 +263,19 @@ void KFormValidator::validatesRegExpOf(const QString &regexp, QLineEdit *line)
 
 bool KFormValidator::validate()
 {
-    tFatal() << "KFormValidator::validate() - Just tracing!"; 
-
+    /* SQA: Check if this code is really required
     foreach (QLineEdit *child, m_childs) {
-             tFatal() << "KFormValidator::validate() - flag 1";
-             if (!validate(child))
+             if (!validate(child)) {
+                 tFatal() << "KFormValidator::validate() - field is wrong";
                  return false;
+             } else {
+                 tFatal() << "KFormValidator::validate() - field is ok";
+             }
     }
-    
+    */
+
     foreach (QObject *child, m_parent->children()) {
              if (QLineEdit *line = qobject_cast<QLineEdit *>(child)) {
-                 tFatal() << "KFormValidator::validate() - flag 2";
                  if (!validate(line))
                      return false;
              }
@@ -284,43 +286,47 @@ bool KFormValidator::validate()
 
 bool KFormValidator::validate(QLineEdit *line)
 {
-    bool ok = true;
-
-    if (line->validator() != 0) {
-        int pos = 0;
-        QString text = line->text();
-                
-        QValidator::State state = line->validator()->validate(text, pos);
-                
-        if (text.isEmpty())
-            state = QValidator::Invalid;
-                
+    if (line->text().isEmpty()) {
         QPalette pal = line->palette();
-                
-        switch (state) {
-                case QValidator::Acceptable:
-                {
-                     // pal.setBrush(QPalette::Base, Qt::green);
-                }
-                break;
-                case QValidator::Intermediate:
-                {
-                     pal.setBrush(QPalette::Base, Qt::yellow);
-                     ok = false;
-                }
-                break;
-                case QValidator::Invalid:
-                {
-                     pal.setBrush(QPalette::Base, Qt::red);
-                     ok = false;
-                }
-                break;
-        }
+        pal.setBrush(QPalette::Base, QColor(255, 140, 138));
         line->setPalette(pal);
-    }
+        return false;
+    } 
 
-    tFatal() << "KFormValidator::validate(QLineEdit) - ok value: " << ok;
-    tFatal() << "";
+    return true;
+
+    /* SQA: Check why this code crashes all the time
+    int pos = 0;
+    QPalette pal = line->palette();
+    QString word = QString(line->text());
+    QValidator::State state = line->validator()->validate(word, pos);
+
+    switch (state) {
+            case QValidator::Acceptable:
+            {
+                 // pal.setBrush(QPalette::Base, Qt::green);
+            }
+            break;
+            case QValidator::Intermediate:
+            {
+                 // pal.setBrush(QPalette::Base, Qt::yellow);
+                 pal.setBrush(QPalette::Base, QColor(255, 225, 138));
+                 ok = false;
+            }
+            break;
+            case QValidator::Invalid:
+            {
+                 // pal.setBrush(QPalette::Base, Qt::red);
+                 pal.setBrush(QPalette::Base, QColor(255, 140, 138));
+                 ok = false;
+            }
+            break;
+    }
+    line->setPalette(pal);
+
+    if (line->validator() == 0)
+        ok = false;
     
     return ok;
+    */
 }
