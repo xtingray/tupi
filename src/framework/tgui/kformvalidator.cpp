@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "kformvalidator.h"
+#include "tdebug.h"
 
 #include <QLineEdit>
 #include <QIntValidator>
@@ -92,7 +93,7 @@ bool KFormValidator::validatesRange(int i, int e)
     return ok;
 }
 
-bool KFormValidator::validatesRegExp( const QString &regexp)
+bool KFormValidator::validatesRegExp(const QString &regexp)
 {
     bool ok = false;
 
@@ -262,17 +263,23 @@ void KFormValidator::validatesRegExpOf(const QString &regexp, QLineEdit *line)
 
 bool KFormValidator::validate()
 {
-    bool ok = true;
-    
-    foreach (QLineEdit *child, m_childs)
-             ok = validate( child );
-    
-    foreach (QObject *child, m_parent->children()) {
-             if (QLineEdit *line = qobject_cast<QLineEdit *>(child))
-                 ok = validate(line);
+    tFatal() << "KFormValidator::validate() - Just tracing!"; 
+
+    foreach (QLineEdit *child, m_childs) {
+             tFatal() << "KFormValidator::validate() - flag 1";
+             if (!validate(child))
+                 return false;
     }
     
-    return ok;
+    foreach (QObject *child, m_parent->children()) {
+             if (QLineEdit *line = qobject_cast<QLineEdit *>(child)) {
+                 tFatal() << "KFormValidator::validate() - flag 2";
+                 if (!validate(line))
+                     return false;
+             }
+    }
+    
+    return true;
 }
 
 bool KFormValidator::validate(QLineEdit *line)
@@ -311,6 +318,9 @@ bool KFormValidator::validate(QLineEdit *line)
         }
         line->setPalette(pal);
     }
+
+    tFatal() << "KFormValidator::validate(QLineEdit) - ok value: " << ok;
+    tFatal() << "";
     
     return ok;
 }
