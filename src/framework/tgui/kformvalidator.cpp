@@ -286,6 +286,9 @@ bool KFormValidator::validate()
 
 bool KFormValidator::validate(QLineEdit *line)
 {
+    if (line->echoMode() == QLineEdit::Password)
+        return true;
+
     if (line->text().isEmpty()) {
         QPalette pal = line->palette();
         pal.setBrush(QPalette::Base, QColor(255, 140, 138));
