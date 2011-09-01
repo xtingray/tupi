@@ -1446,9 +1446,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="45.254834"
-     inkscape:cx="49.405777"
-     inkscape:cy="1003.8305"
+     inkscape:zoom="64"
+     inkscape:cx="14.200936"
+     inkscape:cy="998.81555"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -6329,5 +6329,23 @@
        inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/scheme.png"
        inkscape:export-xdpi="1020.22"
        inkscape:export-ydpi="1020.22" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 8.375368,52.379305 0.01604,0.199667 0.459394,-0.01072 -0.09488,0.271885 0.779216,-0.339303 -0.77533,-0.364961 0.07645,0.278555 z"
+       id="path7032-6-3-6-0-9-9-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi-manager/data/icons/right.png"
+       inkscape:export-xdpi="1940.0398"
+       inkscape:export-ydpi="1940.0398" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 11.582013,52.327352 -0.01604,0.199667 -0.459394,-0.01072 0.09488,0.271885 -0.779216,-0.339303 0.77533,-0.364961 -0.07645,0.278555 z"
+       id="path7032-6-3-6-0-9-9-9-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi-manager/data/icons/left.png"
+       inkscape:export-xdpi="1940.04"
+       inkscape:export-ydpi="1940.04" />
   </g>
 </svg>
