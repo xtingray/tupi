@@ -362,8 +362,10 @@ void KTProject::fromXml(const QString &xml)
                                       setAuthor(e1.text());
 
                               } else if (e1.tagName() == "bgcolor") {
-
-                                         setBgColor(QColor(e1.text()));
+                                         if (e1.text().isEmpty())
+                                             setBgColor(QColor("#ffffff"));
+                                         else
+                                             setBgColor(QColor(e1.text()));
 
                               } else if (e1.tagName() == "description") {
 
