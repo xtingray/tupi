@@ -33,39 +33,53 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTPROJECTSPARSER_H
-#define KTPROJECTSPARSER_H
+#include "ktprojectlistparser.h"
 
-#include "ktxmlparserbase.h"
-
-/**
- * @author Jorge Cuadrado
-*/
-
-class KTProjectsParser : public KTXmlParserBase
+struct KTProjectListParser::Private
 {
-    public:
-        struct ProjectInfo
-        {
-            QString name;
-            QString author;
-            QString description;
-        };
-        
-        KTProjectsParser();
-        virtual ~KTProjectsParser();
-        
-        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-        virtual bool endTag(const QString &tag);
-        virtual void text(const QString &text);
-        
-        QList<ProjectInfo> projectsInfo();
-        int listSize();
-        
-    private:
-        struct Private;
-        Private *const k;
-
+    QList<KTProjectListParser::ProjectInfo> projectsInfo;
 };
 
-#endif
+KTProjectListParser::KTProjectListParser() : KTXmlParserBase(), k( new Private())
+{
+}
+
+KTProjectListParser::~KTProjectListParser()
+{
+}
+
+bool KTProjectListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+    if (root() == "server_projectlist") {
+        if (tag == "project") {
+            ProjectInfo info;
+            info.name = atts.value("name");
+            info.author = atts.value("author");
+            info.description = atts.value("description");
+            info.date = atts.value("date");
+            k->projectsInfo << info;
+        }
+    }
+
+    return true;
+}
+
+bool KTProjectListParser::endTag(const QString &tag)
+{
+    return true;
+}
+
+void KTProjectListParser::text(const QString &text)
+{
+    
+}
+
+QList<KTProjectListParser::ProjectInfo> KTProjectListParser::projectsInfo()
+{
+    return k->projectsInfo;
+}
+
+int KTProjectListParser::listSize()
+{
+    return k->projectsInfo.count();
+}

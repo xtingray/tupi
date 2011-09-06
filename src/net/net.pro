@@ -25,7 +25,7 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktconnectdialog.h \
            ktprojectparser.h \
            ktlistprojectspackage.h \
-           ktprojectsparser.h \
+           ktprojectlistparser.h \
            ktlistprojectdialog.h \
            ktnotificationparser.h \
            ktackparser.h \
@@ -48,7 +48,7 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktconnectdialog.cpp \
            ktprojectparser.cpp \
            ktlistprojectspackage.cpp \
-           ktprojectsparser.cpp \
+           ktprojectlistparser.cpp \
            ktlistprojectdialog.cpp \
            ktnotificationparser.cpp \
            ktackparser.cpp \

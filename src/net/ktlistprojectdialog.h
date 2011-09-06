@@ -53,7 +53,7 @@ class KTListProjectDialog : public QDialog
     public:
         KTListProjectDialog(const QString &serverName);
         ~KTListProjectDialog();
-        void addProject(const QString& name, const QString& author, const QString& description);
+        void addProject(const QString &name, const QString &author, const QString &description, const QString &date);
         QString currentProject();
         
     private slots:

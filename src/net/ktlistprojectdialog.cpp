@@ -61,12 +61,13 @@ KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(),
     QHBoxLayout *search = new QHBoxLayout;
 
     k->tree = new QTreeWidget;
-    k->tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description"));
+    k->tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description") << tr("Date"));
     k->tree->header()->show();
 
     k->tree->setColumnWidth(0, 150);
     k->tree->setColumnWidth(1, 100);
     k->tree->setColumnWidth(2, 200);
+    k->tree->setColumnWidth(3, 55);
 
     k->search = new KTreeWidgetSearchLine(this, k->tree);
     search->addWidget(k->search);
@@ -93,7 +94,7 @@ KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(),
     buttons->addWidget(k->accept);
     layout->addLayout(buttons);
 
-    setMinimumWidth(450); 
+    setMinimumWidth(615); 
     k->index = 0;
 }
 
@@ -101,12 +102,13 @@ KTListProjectDialog::~KTListProjectDialog()
 {
 }
 
-void KTListProjectDialog::addProject(const QString& name, const QString& author, const QString& description)
+void KTListProjectDialog::addProject(const QString &name, const QString &author, const QString &description, const QString &date)
 {
     QTreeWidgetItem *item = new QTreeWidgetItem(k->tree);
     item->setText(0, name);
     item->setText(1, author);
     item->setText(2, description);
+    item->setText(3, date);
 
     if (k->index == 0)
         k->tree->setCurrentItem(item);

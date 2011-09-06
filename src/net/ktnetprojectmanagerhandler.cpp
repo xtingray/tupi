@@ -49,7 +49,7 @@
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
 #include "ktnotificationparser.h"
-#include "ktprojectsparser.h"
+#include "ktprojectlistparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
 #include "ktackparser.h"
@@ -329,7 +329,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    }
                }
     } else if (root == "server_projectlist") {
-               KTProjectsParser parser;
+               KTProjectListParser parser;
                if (parser.parse(package)) {
                    if (parser.listSize() > 0) {
                        k->dialog = new KTListProjectDialog(k->params->server());
@@ -339,8 +339,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                                        (int) (desktop.screenGeometry().height() - k->dialog->height())/2);
                        k->dialogIsOpen = true;
 
-                       foreach (KTProjectsParser::ProjectInfo info, parser.projectsInfo())
-                                k->dialog->addProject(info.name, info.author, info.description);
+                       foreach (KTProjectListParser::ProjectInfo info, parser.projectsInfo())
+                                k->dialog->addProject(info.name, info.author, info.description, info.date);
 
                        if (k->dialog->exec() == QDialog::Accepted && !k->dialog->currentProject().isEmpty()) {
                            #ifdef K_DEBUG
