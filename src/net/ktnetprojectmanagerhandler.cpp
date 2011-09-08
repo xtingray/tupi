@@ -63,12 +63,14 @@
 #include <QTemporaryFile>
 #include <QTabWidget>
 #include <QDesktopWidget>
+#include <QMessageBox>
 
 struct KTNetProjectManagerHandler::Private
 {
     KTNetProjectManagerParams *params;
     KTNetSocket *socket;
-    QString projectName, author;
+    QString projectName;
+    QString author;
     KTProject *project;
     
     QString sign;
@@ -268,36 +270,43 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
     tWarning() << "KTNetProjectManagerHandler::handlePackage() - PKG:";
     tWarning() << package;
 
-    if (root == "project_request") {
-        KTRequestParser parser;
+    if (root == "user_denied") {
+        tError() << "KTNetProjectManagerHandler::handlePackage() - BLOW!!!";
+        closeConnection();
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Error"));
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText(tr("Error: User \"%1\" is disabled.\nPlease, contact your admin to get access.").arg(k->params->login()));
+        msgBox.exec();
+    } else if (root == "project_request") {
+               KTRequestParser parser;
 
-        if (parser.parse(package)) {
-            if (parser.sign() == k->sign) { 
-                k->ownPackage = true;
-            } else {
-                k->ownPackage = false;
-            }
+               if (parser.parse(package)) {
+                   if (parser.sign() == k->sign)
+                       k->ownPackage = true;
+                   else
+                       k->ownPackage = false;
 
-            if (k->ownPackage && !k->doAction) {
-                if (parser.response()->part() == KTProjectRequest::Item) {
-                    KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
-                    KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), 
-                                               response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
-                    request.setExternal(!k->ownPackage);
-                    emit sendLocalCommand(&request);
-                }
-                return;
-            } else {
-                KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
-                request.setExternal(!k->ownPackage);
-                emitRequest(&request, k->doAction && k->ownPackage);
-            }
+                   if (k->ownPackage && !k->doAction) {
+                       if (parser.response()->part() == KTProjectRequest::Item) {
+                           KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
+                           KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), 
+                                                      response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
+                           request.setExternal(!k->ownPackage);
+                           emit sendLocalCommand(&request);
+                       }
+                       return;
+                   } else {
+                       KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
+                       request.setExternal(!k->ownPackage);
+                       emitRequest(&request, k->doAction && k->ownPackage);
+                   }
 
-        } else { // TODO: show error 
-            #ifdef K_DEBUG
-                   tError() << "KTNetProjectManagerHandler::handlePackage() - Error parsing net request";
-            #endif
-        }
+               } else { // TODO: show error 
+                   #ifdef K_DEBUG
+                          tError() << "KTNetProjectManagerHandler::handlePackage() - Error parsing net request";
+                   #endif
+               }
     } else if (root == "server_ack") {
                // Checking the package
                KTAckParser parser;
