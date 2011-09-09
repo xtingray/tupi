@@ -95,7 +95,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     layout->addWidget(labelAuthorName, 1, 0);
 
     k->authorName = new QLineEdit(infoContainer);
-    k->authorName->setText(QString::fromLocal8Bit(::getenv("USER")));
+    k->authorName->setText(tr("Your name"));
     layout->addWidget(k->authorName, 1, 1);
 
     QLabel *labelDescription = new QLabel(tr("Description"), infoContainer);

@@ -267,16 +267,17 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
            T_FUNCINFOX("net");
     #endif
 
-    tWarning() << "KTNetProjectManagerHandler::handlePackage() - PKG:";
-    tWarning() << package;
+    #ifdef K_DEBUG
+           tDebug() << "KTNetProjectManagerHandler::handlePackage() - PKG:";
+           tWarning() << package;
+    #endif
 
     if (root == "user_denied") {
-        tError() << "KTNetProjectManagerHandler::handlePackage() - BLOW!!!";
         closeConnection();
         QMessageBox msgBox;
-        msgBox.setWindowTitle(tr("Error"));
+        msgBox.setWindowTitle(tr("Fatal Error"));
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setText(tr("Error: User \"%1\" is disabled.\nPlease, contact your admin to get access.").arg(k->params->login()));
+        msgBox.setText(tr("User \"%1\" is disabled.\nPlease, contact your admin to get access.").arg(k->params->login()));
         msgBox.exec();
     } else if (root == "project_request") {
                KTRequestParser parser;
@@ -362,8 +363,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                            closeConnection();
                        }
                    } else {
-                       // TOsd::self()->display(tr("Information"), QObject::tr("No available projects in server"));
-                       TOsd::self()->display(tr("Information"), tr("No available projects in server"), TOsd::Warning);
+                       TOsd::self()->display(tr("Information"), tr("No available projects from server"), TOsd::Warning);
                        closeConnection();
                    }
                }
