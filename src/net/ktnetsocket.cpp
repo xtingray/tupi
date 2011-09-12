@@ -53,7 +53,7 @@ void KTNetSocket::readed(const QString &readed)
 {
     #ifdef K_DEBUG
         tDebug("net") << "KTNetSocket::readed() - PACKAGE ARRIVING: ";
-        tDebug("net")  << readed;
+        tWarning("net")  << readed;
     #endif
 
     QDomDocument doc;
@@ -62,7 +62,9 @@ void KTNetSocket::readed(const QString &readed)
         QString root = doc.documentElement().tagName();
         m_handler->handlePackage(root, readed);
     } else {
-        qDebug("KTNetSocket::readed() - Error: It isn't a document");
+        #ifdef K_DEBUG
+               tError() << "KTNetSocket::readed() - Error: Package isn't a DOM document";
+        #endif
     }
 }
 

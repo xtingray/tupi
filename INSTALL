@@ -41,7 +41,7 @@ these are the commands they should run to install Tupi dependencies:
 Note: If you are not using Ubuntu, check for the equivalent packages for your
 Linux distro
 
-2. Get the source and compile
+2. Get the source code and compile it
 
 - Get the Tupi source code from our Download section
   (http://www.maefloresta.com/portal/download_counter). Then, 
