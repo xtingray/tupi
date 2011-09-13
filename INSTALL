@@ -5,12 +5,12 @@ systems).
 
 1. Dependencies
 
-The compilation process of any software project requires a set of special 
-tools previously installed in your system. Usually, they are called 
-"dependencies".
+The compilation process of any software usually requires a set of special 
+tools previously installed in your system. Those additional components are 
+called "dependencies".
 
-In this case, before you start to compile Tupi, you have to ensure you 
-already got the next list of dependencies installed in your computer:
+In this case, before you start to compile Tupi, you must ensure to get 
+installed the next list of dependencies in your computer:
 
     * build-essential: All the C/C++ free compilers, libraries and utilities
       required to create a binary from any Unix-alike C/C++ source code (gcc,
