@@ -5,7 +5,7 @@ systems).
 
 1. Dependencies
 
-The compilation process of any software usually requires a set of special 
+The compilation process of any software usually requires a set of specific
 tools previously installed in your system. Those additional components are 
 called "dependencies".
 
