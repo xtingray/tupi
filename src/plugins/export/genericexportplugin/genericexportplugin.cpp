@@ -88,7 +88,7 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
     KTAnimationRenderer renderer(color);
 
     foreach (KTScene *scene, scenes) {
-             renderer.setScene(scene);
+             renderer.setScene(scene, size);
 
              int photogram = 0;
              while (renderer.nextPhotogram()) {

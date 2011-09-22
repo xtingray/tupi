@@ -37,20 +37,22 @@
 #define KTANIMATIONRENDERER_H
 
 #include <QColor>
+#include <QSize>
 
 class QPainter;
 class KTScene;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado
 */
+
 class KTAnimationRenderer
 {
     public:
         KTAnimationRenderer(const QColor color);
         ~KTAnimationRenderer();
 
-        void setScene(KTScene *scene);
+        void setScene(KTScene *scene, QSize dimension);
 
         bool nextPhotogram();
         void renderPhotogram(int index);

@@ -91,7 +91,7 @@ struct KTPaintArea::Private
     bool menuOn;
 };
 
-KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
+KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent, project->dimension()), k(new Private)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;

@@ -47,6 +47,7 @@
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QStyleOptionButton>
+#include <QComboBox>
 
 //SQA: Add a field to define the project description 
 
@@ -105,6 +106,21 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     k->description->setText(tr("Just for fun!"));
     layout->addWidget(k->description, 2, 1);
 
+    QBoxLayout *presetsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    QLabel *presetsLabel = new QLabel(tr("Presets") + " ");
+
+    QComboBox *presets = new QComboBox();
+    presets->addItem(tr("Free format"));
+    presets->addItem(tr("480p (PAL DV/DVD) - 25"));
+    presets->addItem(tr("576p (PAL DV/DVD) - 25"));
+    presets->addItem(tr("720p (HD) - 25"));
+    presets->addItem(tr("1280p (Full HD) - 25"));
+    connect(presets, SIGNAL(currentIndexChanged(int)), this, SLOT(setPresets(int)));
+
+    presetsLayout->addWidget(presetsLabel);
+    presetsLayout->addWidget(presets);
+    layout->addLayout(presetsLayout, 3, 0, 1, 2, Qt::AlignCenter);
+
     QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
 	
     QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -129,23 +145,26 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     fpsLayout->addWidget(k->fps);
     subLayout->addWidget(k->colorButton);
     subLayout->addLayout(fpsLayout);
+    // subLayout->addSpacing(30);
 
     k->size = new KXYSpinBox(tr("Dimension"), infoContainer);
-    k->size->setMaximum(5000);
+    k->size->setMinimum(50);
+    k->size->setMaximum(15000);
     k->size->setX(520);
     k->size->setY(380);
 
     QWidget *panel = new QWidget;
     QVBoxLayout *sizeLayout = new QVBoxLayout(panel);
     sizeLayout->addWidget(k->size);
+    // sizeLayout->addWidget(test);
 
-    layout->addWidget(panel, 3, 0);
-    layout->addWidget(renderAndFps, 3, 1);
+    layout->addWidget(panel, 4, 0);
+    layout->addWidget(renderAndFps, 4, 1);
 
     QCheckBox *activeNetOptions = new QCheckBox(tr("Multi-artist project"));
     connect(activeNetOptions, SIGNAL(toggled(bool)), this, SLOT(enableNetOptions(bool)));
 
-    layout->addWidget(activeNetOptions, 4, 0, 1, 2, Qt::AlignLeft);
+    layout->addWidget(activeNetOptions, 5, 0, 1, 2, Qt::AlignLeft);
 
     addTab(infoContainer, tr("Project info"));
 
@@ -303,4 +322,55 @@ void KTNewProject::setBgColor()
 
      k->colorButton->setPalette(QPalette(k->color));
      k->colorButton->setAutoFillBackground(true);
+}
+
+void KTNewProject::setPresets(int index)
+{
+    switch(index) {
+           case FREE: 
+           {
+               k->size->setX(520);
+               k->size->setY(380);
+               k->fps->setValue(24);
+               k->size->setEnabled(true);
+               k->fps->setEnabled(true);
+           }
+           break;
+           case FORMAT_480P:
+           {
+               k->size->setX(720);
+               k->size->setY(480);
+               k->fps->setValue(25);
+               k->size->setEnabled(false);
+               k->fps->setEnabled(false);
+           }
+           break;
+           case FORMAT_576P:
+           {
+               k->size->setX(720);
+               k->size->setY(576);
+               k->fps->setValue(25);
+               k->size->setEnabled(false);
+               k->fps->setEnabled(false);
+           }
+           break;
+           case FORMAT_720P:
+           {
+               k->size->setX(1280);
+               k->size->setY(720);
+               k->fps->setValue(25);
+               k->size->setEnabled(false);
+               k->fps->setEnabled(false);
+           }
+           break;
+           case FORMAT_1280P:
+           {
+               k->size->setX(1920);
+               k->size->setY(1280);
+               k->fps->setValue(25);
+               k->size->setEnabled(false);
+               k->fps->setEnabled(false);
+           }
+           break;
+    }
 }

@@ -128,7 +128,7 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
          painter.setRenderHint(QPainter::Antialiasing, true);
 
          foreach (KTScene *scene, scenes) {
-                  renderer.setScene(scene);
+                  renderer.setScene(scene, size);
 
                   while (renderer.nextPhotogram()) {
                          renderer.render(&painter);

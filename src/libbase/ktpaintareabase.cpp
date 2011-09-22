@@ -105,7 +105,7 @@ struct KTPaintAreaBase::Private
     KTGraphicsScene *scene;
 };
 
-KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(new Private)
+KTPaintAreaBase::KTPaintAreaBase(QWidget *parent, QSize dimension) : QGraphicsView(parent), k(new Private)
 {
     k->scene = new KTGraphicsScene();
     k->grid = 0;
@@ -114,7 +114,8 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(ne
     k->angle = 0;
 
     k->rotator = new KTPaintAreaRotator(this, this);
-    k->drawingRect = QRectF(QPointF(0,0), QSizeF(520, 380)); // FIXME: configurable
+    // k->drawingRect = QRectF(QPointF(0,0), QSizeF(520, 380)); // FIXME: configurable
+    k->drawingRect = QRectF(QPointF(0,0), dimension);
 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);

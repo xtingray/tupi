@@ -52,6 +52,14 @@ class KTNewProject : public KTabDialog
     Q_OBJECT
 
     public:
+
+        enum Format { FREE = 0, 
+                      FORMAT_480P,
+                      FORMAT_576P,
+                      FORMAT_720P,
+                      FORMAT_1280P
+                    };
+
         KTNewProject(QWidget *parent = 0);
         ~KTNewProject();
         KTProjectManagerParams *parameters();
@@ -66,6 +74,7 @@ class KTNewProject : public KTabDialog
 
     private slots:
         void setBgColor();
+        void setPresets(int index);
 
     public slots:
         void enableNetOptions(bool isEnabled);

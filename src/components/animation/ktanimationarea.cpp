@@ -74,7 +74,7 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 {
     k->container = parent;
 
-    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    // setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     k->project = project;
 
@@ -87,9 +87,10 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
     k->fps = 24;
 
-    setAttribute(Qt::WA_StaticContents);
+    // setAttribute(Qt::WA_StaticContents);
 
-    k->renderCamera = QImage(size(), QImage::Format_RGB32);
+    k->renderCamera = QImage(k->project->dimension(), QImage::Format_RGB32);
+    // k->renderCamera = QImage(size(), QImage::Format_RGB32);
     // k->renderCamera.fill(qRgb(255, 255, 255));
     // k->renderCamera.fill(k->project->bgColor().rgb());
 
@@ -325,7 +326,7 @@ void KTAnimationArea::render()
     k->photograms.clear();
 
     KTAnimationRenderer renderer(k->project->bgColor());
-    renderer.setScene(scene);
+    renderer.setScene(scene, k->project->dimension());
 
     QFont font = this->font();
     font.setPointSize(8);
@@ -343,7 +344,8 @@ void KTAnimationArea::render()
                         (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
 
     while (renderer.nextPhotogram()) {
-           QImage renderized = QImage(size(), QImage::Format_RGB32);
+           QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
+           // QImage renderized = QImage(size(), QImage::Format_RGB32);
            //renderized.fill(qRgb(255, 255, 255));
            //renderized.fill(k->project->bgColor().rgb());
 
@@ -365,7 +367,7 @@ void KTAnimationArea::initAnimationArea()
     k->currentFramePosition = 0;
 
     KTAnimationRenderer renderer(k->project->bgColor());
-    renderer.setScene(scene);
+    renderer.setScene(scene, k->project->dimension());
     renderer.renderPhotogram(0);
 
     QImage renderized = QImage(size(), QImage::Format_RGB32);

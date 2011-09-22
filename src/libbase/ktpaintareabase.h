@@ -36,10 +36,10 @@
 #ifndef KTPAINTAREABASE_H
 #define KTPAINTAREABASE_H
 
-#include <QGraphicsView>
-#include <kttoolplugin.h>
-
+#include "kttoolplugin.h"
 #include "ktglobal.h"
+
+#include <QGraphicsView>
 
 class QGraphicsRectItem;
 class KTBrushManager;
@@ -57,7 +57,7 @@ class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
     Q_OBJECT
 
     public:
-        KTPaintAreaBase(QWidget * parent = 0);
+        KTPaintAreaBase(QWidget * parent = 0, QSize dimension = QSize(520, 380));
         ~KTPaintAreaBase();
 
         void setBgColor(const QColor color);
