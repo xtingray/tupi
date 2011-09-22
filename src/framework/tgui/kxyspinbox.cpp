@@ -66,9 +66,9 @@ KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     m_separator = new QPushButton;
     // m_separator->setFlat(true);
     m_separator->setMaximumWidth(20);
-    m_separator->setIcon(QPixmap(THEME_DIR + "icons/svg.png"));
+    m_separator->setIcon(QPixmap(THEME_DIR + "icons/open_padlock.png"));
 
-    // layout->addWidget(m_separator);
+    layout->addWidget(m_separator);
 
     connect(m_separator, SIGNAL(clicked()), this, SLOT(toggleModify()));
     setLayout(layout);
@@ -85,30 +85,26 @@ KXYSpinBox::~KXYSpinBox()
 
 void KXYSpinBox::updateXValue()
 {
-     int value = (int) m_x->value()*380/520;
-     m_y->setValue(value);
+     // int value = (int) m_x->value()*380/520;
+     // m_y->setValue(value);
 
-     /*
      if (m_modifyTogether) {
          int y = m_y->value();
          if (m_x->value() != y)
              m_x->setValue(y);
      }
-     */
 }
 
 void KXYSpinBox::updateYValue()
 {
-     int value = (int) m_y->value()*520/380; 
-     m_x->setValue(value);
+     // int value = (int) m_y->value()*520/380; 
+     // m_x->setValue(value);
 
-     /*
      if (m_modifyTogether) {
          int x = m_x->value();
          if (m_y->value() != x)
              m_y->setValue(x);
      }
-     */
 }
 
 void KXYSpinBox::setModifyTogether(bool enable)
@@ -123,15 +119,13 @@ void KXYSpinBox::toggleModify()
         m_modifyTogether = true;
         m_separator->setIcon(QPixmap(THEME_DIR + "icons/padlock.png"));
 
-        /*
         int x = m_x->value();
         if (m_y->value() != x)
             m_y->setValue(x);
-        */
 
     } else {
         m_modifyTogether = false;
-        m_separator->setIcon(QPixmap(THEME_DIR + "icons/svg.png")); // open padlock
+        m_separator->setIcon(QPixmap(THEME_DIR + "icons/open_padlock.png")); // open padlock
     }
 }
 

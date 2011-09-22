@@ -1447,8 +1447,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="64"
-     inkscape:cx="14.200936"
-     inkscape:cy="998.81555"
+     inkscape:cx="22.006589"
+     inkscape:cy="1002.096"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -6347,5 +6347,86 @@
        inkscape:export-filename="/home/xtingray/tupi/sources/tupi-manager/data/icons/left.png"
        inkscape:export-xdpi="1940.04"
        inkscape:export-ydpi="1940.04" />
+    <g
+       id="g5306-9"
+       transform="matrix(0.50368244,0,0,0.50368244,-6.5235315,33.805026)"
+       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/padlock.png"
+       inkscape:export-xdpi="279"
+       inkscape:export-ydpi="279">
+      <path
+         inkscape:export-ydpi="170"
+         inkscape:export-xdpi="170"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/padlock.png"
+         sodipodi:nodetypes="ccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path5253-3-8"
+         d="m 45.409894,35.302305 -4.568466,0.02053 -0.0723,4.432362 6.408155,0.08839 -0.0944,-4.624303 -1.421145,-0.0404 0.454886,3.64824 -4.154253,0 -0.32544,-2.708788 4.762248,-0.08839 z"
+         style="fill:#008700;fill-opacity:1;stroke:none" />
+      <path
+         inkscape:export-ydpi="170"
+         inkscape:export-xdpi="170"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/padlock.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5255-6-7"
+         d="m 42.330898,35.320145 c -0.0028,-2.135681 3.051859,-2.329526 3.147097,0.0221"
+         style="fill:none;stroke:#008700;stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:export-ydpi="170"
+         inkscape:export-xdpi="170"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/padlock.png"
+         inkscape:connector-curvature="0"
+         id="path5259-7-2"
+         d="m 43.637495,36.877209 -0.0065,1.686311 0.707106,-0.0221 -0.104015,-1.730505 z"
+         style="fill:#008700;fill-opacity:1;stroke:none" />
+    </g>
+    <rect
+       style="fill:#008700;fill-opacity:0.25480766;stroke:none"
+       id="rect3484-8"
+       width="2.8212655"
+       height="1.9806831"
+       x="14.237011"
+       y="51.7066"
+       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/padlock.png"
+       inkscape:export-xdpi="279"
+       inkscape:export-ydpi="279" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 21.714106,51.532071 -2.785431,0.0494 -0.03642,2.232503 3.227675,0.04452 -0.04755,-2.32918 -0.715806,-0.02035 0.229118,1.837555 -2.092424,0 -0.163919,-1.364369 2.398661,-0.04452 z"
+       id="path5253-3-8-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/open_padlock.png"
+       inkscape:export-xdpi="697.09631"
+       inkscape:export-ydpi="697.09631" />
+    <path
+       style="fill:none;stroke:#008700;stroke-width:0.55405068;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 19.722166,51.070556 c 0.640301,-1.051377 1.709078,-0.316193 1.562423,0.576385"
+       id="path5255-6-7-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/open_padlock.png"
+       inkscape:export-xdpi="697.09631"
+       inkscape:export-ydpi="697.09631" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 20.337005,52.364386 -0.0033,0.849365 0.356157,-0.01113 -0.05239,-0.871625 z"
+       id="path5259-7-2-8"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/open_padlock.png"
+       inkscape:export-xdpi="697.09631"
+       inkscape:export-ydpi="697.09631"
+       sodipodi:nodetypes="ccccc" />
+    <rect
+       style="fill:#008700;fill-opacity:0.25480766;stroke:none"
+       id="rect3484-8-3"
+       width="2.8212655"
+       height="1.9806831"
+       x="19.118107"
+       y="51.691559"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/open_padlock.png"
+       inkscape:export-xdpi="697.09631"
+       inkscape:export-ydpi="697.09631" />
   </g>
 </svg>

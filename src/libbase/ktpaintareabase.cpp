@@ -383,7 +383,7 @@ void KTPaintAreaBase::drawPadLock(QPainter *painter, const QRectF &rect, QString
     QFontMetricsF fm(kfont);
 
     painter->setFont(kfont);
-    painter->fillRect(rect, QColor(201,201,201, 200));
+    painter->fillRect(rect, QColor(201, 201, 201, 200));
 
     QRectF shore = fm.boundingRect(text);
 
@@ -414,13 +414,13 @@ bool KTPaintAreaBase::canPaint() const
 
         if (frame) {
             #ifdef K_DEBUG
-                   tFatal() << "KTPaintAreaBase::canPaint() : SORRY, THE PROBLEM IS THE FRAME";
+                   tFatal() << "KTPaintAreaBase::canPaint() : Error! The problem is the frame";
             #endif
             return !frame->isLocked();
         }
     } else {
         #ifdef K_DEBUG
-               tFatal() << "KTPaintAreaBase::canPaint() : SORRY, THERE'S NO SCENE";
+               tFatal() << "KTPaintAreaBase::canPaint() : Error! There's no scene";
         #endif
     }
 
