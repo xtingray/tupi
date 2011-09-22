@@ -64,17 +64,18 @@ KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     layout->addLayout(internal);
 
     m_separator = new QPushButton;
-    m_separator->setFlat(true);
+    // m_separator->setFlat(true);
     m_separator->setMaximumWidth(20);
-    m_separator->setIcon(QPixmap(THEME_DIR + "/icons/vchain_broken.png"));
+    m_separator->setIcon(QPixmap(THEME_DIR + "icons/svg.png"));
 
-    //layout->addWidget(m_separator);
+    // layout->addWidget(m_separator);
 
-    //connect(m_separator, SIGNAL(clicked()), this, SLOT(toggleModify()));
+    connect(m_separator, SIGNAL(clicked()), this, SLOT(toggleModify()));
     setLayout(layout);
 
-    connect(m_x, SIGNAL(editingFinished()), this, SLOT(updateXValue()));
-    connect(m_y, SIGNAL(editingFinished()), this, SLOT(updateYValue()));
+    connect(m_x, SIGNAL(editingFinished()), this, SLOT(updateYValue()));
+    connect(m_y, SIGNAL(editingFinished()), this, SLOT(updateXValue()));
+
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 }
 
@@ -86,12 +87,28 @@ void KXYSpinBox::updateXValue()
 {
      int value = (int) m_x->value()*380/520;
      m_y->setValue(value);
+
+     /*
+     if (m_modifyTogether) {
+         int y = m_y->value();
+         if (m_x->value() != y)
+             m_x->setValue(y);
+     }
+     */
 }
 
 void KXYSpinBox::updateYValue()
 {
      int value = (int) m_y->value()*520/380; 
      m_x->setValue(value);
+
+     /*
+     if (m_modifyTogether) {
+         int x = m_x->value();
+         if (m_y->value() != x)
+             m_y->setValue(x);
+     }
+     */
 }
 
 void KXYSpinBox::setModifyTogether(bool enable)
@@ -104,13 +121,17 @@ void KXYSpinBox::toggleModify()
 {
     if (!m_modifyTogether) {
         m_modifyTogether = true;
-        m_separator->setIcon(QPixmap(THEME_DIR + "/icons/vchain.png"));
+        m_separator->setIcon(QPixmap(THEME_DIR + "icons/padlock.png"));
+
+        /*
         int x = m_x->value();
         if (m_y->value() != x)
             m_y->setValue(x);
+        */
+
     } else {
         m_modifyTogether = false;
-        m_separator->setIcon(QPixmap(THEME_DIR + "/icons/vchain_broken.png"));
+        m_separator->setIcon(QPixmap(THEME_DIR + "icons/svg.png")); // open padlock
     }
 }
 
