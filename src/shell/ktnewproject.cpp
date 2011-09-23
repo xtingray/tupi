@@ -185,7 +185,10 @@ KTNewProject::~KTNewProject()
         config->setValue("server", k->server->text());
         config->setValue("port", k->port->value());
         config->setValue("login", k->login->text());
-        config->setValue("password", k->password->text());
+        if (k->storePassword->isChecked())
+            config->setValue("password", k->password->text());
+        else
+            config->setValue("password", "");
     }
 
     delete k;
@@ -225,9 +228,8 @@ void KTNewProject::setupNetOptions()
 
     k->netLayout->addWidget(k->netOptions);
 
-    // SQA: Pending field. Require GUI interface
-    // k->storePassword = new QCheckBox(tr("Store password"));
-    // k->netLayout->addWidget(k->storePassword);
+    k->storePassword = new QCheckBox(tr("Store password"));
+    k->netLayout->addWidget(k->storePassword);
 }
 
 KTProjectManagerParams *KTNewProject::parameters()
