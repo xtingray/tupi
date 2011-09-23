@@ -185,10 +185,13 @@ KTNewProject::~KTNewProject()
         config->setValue("server", k->server->text());
         config->setValue("port", k->port->value());
         config->setValue("login", k->login->text());
-        if (k->storePassword->isChecked())
+        if (k->storePassword->isChecked()) {
             config->setValue("password", k->password->text());
-        else
+            config->setValue("StorePassword", "1");
+        } else {
             config->setValue("password", "");
+            config->setValue("StorePassword", "0");
+        }
     }
 
     delete k;
@@ -229,6 +232,7 @@ void KTNewProject::setupNetOptions()
     k->netLayout->addWidget(k->netOptions);
 
     k->storePassword = new QCheckBox(tr("Store password"));
+    k->storePassword->setChecked(TCONFIG->value("StorePassword").toInt());
     k->netLayout->addWidget(k->storePassword);
 }
 
