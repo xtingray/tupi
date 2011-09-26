@@ -44,7 +44,7 @@
 
 /**
  * This class defines the undo/redo functions for the paint area
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTPaintAreaCommand::Private

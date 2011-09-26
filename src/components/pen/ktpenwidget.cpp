@@ -38,10 +38,10 @@
 #include "tdebug.h"
 #include "tconfig.h"
 
-#include <QListWidget>
-
 #include "ktpaintareaevent.h"
 #include "ktpenthicknesswidget.h"
+
+#include <QListWidget>
 
 struct KTPenWidget::Private
 {

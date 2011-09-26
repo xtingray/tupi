@@ -100,7 +100,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     setupChooserTypeColor();
 
     // SQA: Temporarily unavailable
-    // setupGradientManager();
+    setupGradientManager();
 
     setupDisplayColor();
     k->splitter->addWidget(k->centralWidget);
@@ -167,7 +167,7 @@ void KTColorPalette::setupChooserTypeColor()
 void KTColorPalette::setupGradientManager()
 {
     k->gradientManager = new KTGradientCreator(this);
-    connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush& )), this, SLOT(setColor(const QBrush &)));
+    connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
     k->centralWidget->addPage(k->gradientManager,tr("Gradients"));
 }
 
@@ -187,7 +187,7 @@ void KTColorPalette::setupDisplayColor()
 
     viewColor->setLayout(vlayout);
 
-    k->labelType = new QComboBox( viewColor);
+    k->labelType = new QComboBox(viewColor);
     k->labelType->addItem(tr("Solid"));
     k->labelType->addItem(tr("Gradient"));
 
@@ -207,7 +207,7 @@ void KTColorPalette::setupDisplayColor()
     QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
     layoutName->setMargin(0);
 
-    layoutName->addWidget(new QLabel( "<b>HTML</b>", viewColor));
+    layoutName->addWidget(new QLabel("<b>HTML</b>", viewColor));
     k->nameColor = new QLineEdit(viewColor);
     QFontMetrics fm(font());
     k->nameColor->setMaximumWidth(fm.width("#000000"));
@@ -278,7 +278,7 @@ void KTColorPalette::setBG(const QBrush &brush)
     else
         changeBrushType(tr("Gradient"));
 
-    k->outlineAndFillColors->setCurrent( KDualColorButton::Background);
+    k->outlineAndFillColors->setCurrent(KDualColorButton::Background);
     setColor(brush);
 }
 
@@ -298,15 +298,15 @@ void KTColorPalette::changeTypeColor(KDualColorButton::DualColor s)
 void KTColorPalette::syncHsv(int h, int s, int v)
 {
     QColor tmpColor = k->outlineAndFillColors->currentColor().color();
-    tmpColor.setHsv( h, s, v, tmpColor.alpha() );
+    tmpColor.setHsv(h, s, v, tmpColor.alpha());
     if (k->luminancePicker == sender())
         setColor(tmpColor);
 }
 
-void KTColorPalette::setHS(int h , int s)
+void KTColorPalette::setHS(int h, int s)
 {
     QColor tmpColor = k->outlineAndFillColors->currentColor().color();
-    tmpColor.setHsv( h, s, k->luminancePicker->value(), tmpColor.alpha() );
+    tmpColor.setHsv(h, s, k->luminancePicker->value(), tmpColor.alpha());
     setColor(QBrush(tmpColor));
 }
 
@@ -333,9 +333,9 @@ void KTColorPalette::parsePaletteFile(const QString &file)
 
 void KTColorPalette::mousePressEvent(QMouseEvent * e)
 {
-    if (e->button () == Qt::RightButton) {
+    if (e->button() == Qt::RightButton) {
         QMenu *menu = new QMenu(tr("type brush"), this);
-        menu->exec(e->globalPos ());
+        menu->exec(e->globalPos());
         delete menu;
     }
 }
@@ -348,8 +348,8 @@ void KTColorPalette::changeBrushType(const QString& type)
         k->type = Gradient;
     }
 
-    if (type != k->labelType->currentText ()) {
-        int index =  k->labelType->findText(type);
+    if (type != k->labelType->currentText()) {
+        int index = k->labelType->findText(type);
         if (index >= 0)
             k->labelType->setCurrentIndex(index);
     }

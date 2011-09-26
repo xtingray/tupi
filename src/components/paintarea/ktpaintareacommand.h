@@ -42,7 +42,7 @@ class KTPaintArea;
 class KTPaintAreaEvent;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class KTPaintAreaCommand : public QUndoCommand
