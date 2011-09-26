@@ -42,7 +42,8 @@ unix {
 
 TRANSLATIONS += data/translations/tupi_es.ts \
                 data/translations/tupi_ca.ts \
-                data/translations/tupi_ru.ts
+                data/translations/tupi_ru.ts \
+                data/translations/tupi_cs.ts
 
 HEADERS += ktmainwindow.h \
            ktstatusbar.h \
@@ -88,7 +89,7 @@ linux-g{
   ../../src/components/twitter/libtwitter.a
 }
 
-FRAMEWORK_DIR = "../framework"
+FRAMEWORK_DIR = ../framework
 include($$FRAMEWORK_DIR/framework.pri)
 include(shell_config.pri)
 
