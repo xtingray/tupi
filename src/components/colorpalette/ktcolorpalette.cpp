@@ -57,10 +57,12 @@
 #include <QGroupBox>
 #include <QSplitter>
 #include <QMenu>
+#include <QTabWidget>
 
 struct KTColorPalette::Private
 {
     TToolBox *centralWidget;
+    QTabWidget *tab;
     KTViewColorCells *containerPalette;
     KTColorValue *displayColorValue;
     KTColorPicker *colorPicker;
@@ -96,11 +98,13 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     addChild(k->splitter);
 
     k->centralWidget = new TToolBox(k->splitter);
+    k->tab = new QTabWidget;
 
     setupChooserTypeColor();
-
     // SQA: Temporarily unavailable
     setupGradientManager();
+
+    k->centralWidget->addPage(k->tab, "");
 
     setupDisplayColor();
     k->splitter->addWidget(k->centralWidget);
@@ -161,14 +165,16 @@ void KTColorPalette::setupChooserTypeColor()
     k->displayColorValue->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
 
-    k->centralWidget->addPage(colorMixer, tr("Color Mixer"));
+    // k->centralWidget->addPage(colorMixer, tr("Color Mixer"));
+    k->tab->addTab(colorMixer, tr("Color Mixer"));
 }
 
 void KTColorPalette::setupGradientManager()
 {
     k->gradientManager = new KTGradientCreator(this);
     connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
-    k->centralWidget->addPage(k->gradientManager,tr("Gradients"));
+    // k->centralWidget->addPage(k->gradientManager, tr("Gradients"));
+    k->tab->addTab(k->gradientManager, tr("Gradients"));
 }
 
 void KTColorPalette::setupDisplayColor()
