@@ -1169,24 +1169,26 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
     tFatal() << "KTMainWindow::createCommand() - Just tracing!";
 
     if (!drawingTab) {
-        tFatal() << "KTMainWindow::createCommand() - ABORTED!";
+        tFatal() << "KTMainWindow::createCommand() - No drawingTab... Aborting!";
         return;
     }
 
     KTPaintAreaCommand *command = drawingTab->createCommand(event);
 
     if (command) { 
-        tFatal() << "KTMainWindow::createCommand() - POP 1!";
+        tFatal() << "KTMainWindow::createCommand() - Paint command is valid!";
         m_projectManager->undoHistory()->push(command);
 
-        if (event->action() == 2) {
-            tFatal() << "KTMainWindow::createCommand() - POP 2!";
+        // if (event->action() == 2) {
+        if (event->action() == KTPaintAreaEvent::ChangeColorPen) {
+            tFatal() << "KTMainWindow::createCommand() - event action == ChangeColorPen";
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
         } else {
-            tFatal() << "KTMainWindow::createCommand() - Pen wasn't updated! - FLAG 1";
+            tFatal() << "KTMainWindow::createCommand() - event action != ChangeColorPen";
+            tFatal() << "KTMainWindow::createCommand() - action: " << event->action();
         }
     } else {
-        tFatal() << "KTMainWindow::createCommand() - Pen wasn't updated! - FLAG 2";
+        tFatal() << "KTMainWindow::createCommand() - Paint command is NULL!";
     }
 }
 

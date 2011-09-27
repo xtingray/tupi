@@ -36,12 +36,13 @@
 #ifndef KTPAINTAREAEVENT_H
 #define KTPAINTAREAEVENT_H
 
-#include <ktprojectrequest.h>
+#include "ktprojectrequest.h"
 #include "ktglobal_store.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTPaintAreaEvent
 {
     public:

@@ -248,13 +248,13 @@ void KTColorPalette::setColor(const QBrush& brush)
     }
 
     if (k->outlineAndFillColors->background().color() != Qt::transparent) {
-        tFatal() << "KTColorPalette::setColor() - Flag 1 FOR THE COLOR";
+        tFatal() << "KTColorPalette::setColor() - Updating background color!";
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, k->outlineAndFillColors->background().color());
         emit paintAreaEventTriggered(&event);
     }
 
     if (k->outlineAndFillColors->foreground().color() != Qt::transparent) {
-        tFatal() << "KTColorPalette::setColor() - Flag 2 FOR THE COLOR";
+        tFatal() << "KTColorPalette::setColor() - Updating foreground color!";
         KTPaintAreaEvent event2(KTPaintAreaEvent::ChangeColorPen, k->outlineAndFillColors->foreground().color());
         emit paintAreaEventTriggered(&event2);
     }

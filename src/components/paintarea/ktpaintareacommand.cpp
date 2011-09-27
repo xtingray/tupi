@@ -100,6 +100,7 @@ void KTPaintAreaCommand::redo()
 
             case KTPaintAreaEvent::ChangeColorPen:
                  {
+                   tFatal() << "KTPaintAreaCommand::redo() - ChangeColorPen/Setting color!";
                    k->oldData = k->paintArea->brushManager()->pen().color();
                    k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->event->data()));
                  }

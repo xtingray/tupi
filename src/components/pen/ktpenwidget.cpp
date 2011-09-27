@@ -205,7 +205,7 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 
 void KTPenWidget::setPenColor(const QColor color)
 {
-    tFatal() << "KTPenWidget::setPenColor() - Tracing! - Go!";
+    tFatal() << "KTPenWidget::setPenColor() - Tracing! - Color: " << color.name();
     k->color = color;
     k->brush.setColor(k->color);
     k->pen.setColor(k->color);
@@ -234,7 +234,7 @@ void KTPenWidget::emitPenChanged()
 {
     emit penChanged(k->pen);
 
-    tFatal() << "KTPenWidget::emitPenChanged() - TART 1";
+    tFatal() << "KTPenWidget::emitPenChanged() - Pen has changed! launching KTPaintAreaEvent event!";
     
     KTPaintAreaEvent event(KTPaintAreaEvent::ChangePen, k->pen);
     emit paintAreaEventTriggered(&event);
@@ -244,7 +244,7 @@ void KTPenWidget::emitBrushChanged()
 {
     emit brushChanged(k->pen.brush());
 
-    tFatal() << "KTPenWidget::emitBrushChanged() - MUT 1";
+    tFatal() << "KTPenWidget::emitBrushChanged() - Brush has changed! launching KTPaintAreaEvent event!";
     
     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->pen.brush());
     emit paintAreaEventTriggered(&event);
