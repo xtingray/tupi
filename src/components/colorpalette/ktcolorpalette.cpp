@@ -44,8 +44,6 @@
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
 #include "ktgradientcreator.h"
-
-#include "ttoolbox.h"
 #include "kvhbox.h"
 
 #include <QBoxLayout>
@@ -61,7 +59,6 @@
 
 struct KTColorPalette::Private
 {
-    TToolBox *centralWidget;
     QTabWidget *tab;
     KTViewColorCells *containerPalette;
     KTColorValue *displayColorValue;
@@ -97,18 +94,14 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->splitter = new QSplitter(Qt::Vertical, this);
     addChild(k->splitter);
 
-    k->centralWidget = new TToolBox(k->splitter);
     k->tab = new QTabWidget;
 
     setupChooserTypeColor();
-    // SQA: Temporarily unavailable
     setupGradientManager();
 
-    k->centralWidget->addPage(k->tab, "");
-
     setupDisplayColor();
-    k->splitter->addWidget(k->centralWidget);
-    k->centralWidget->setPalette(palette());
+    k->tab->setPalette(palette());
+    k->splitter->addWidget(k->tab);
 
     TCONFIG->beginGroup("ColorPalette");
     QColor foreground = QColor(TCONFIG->value("LastForegroundColor", Qt::black).toString());
@@ -129,7 +122,7 @@ KTColorPalette::~KTColorPalette()
 
 void KTColorPalette::setupChooserTypeColor()
 {
-    QFrame *colorMixer = new QFrame(k->centralWidget);
+    QFrame *colorMixer = new QFrame;
     colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -165,7 +158,6 @@ void KTColorPalette::setupChooserTypeColor()
     k->displayColorValue->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
 
-    // k->centralWidget->addPage(colorMixer, tr("Color Mixer"));
     k->tab->addTab(colorMixer, tr("Color Mixer"));
 }
 
@@ -173,7 +165,6 @@ void KTColorPalette::setupGradientManager()
 {
     k->gradientManager = new KTGradientCreator(this);
     connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
-    // k->centralWidget->addPage(k->gradientManager, tr("Gradients"));
     k->tab->addTab(k->gradientManager, tr("Gradients"));
 }
 
@@ -182,7 +173,7 @@ void KTColorPalette::setupDisplayColor()
     //palettes
     k->containerPalette = new KTViewColorCells(k->splitter);
 
-    connect (k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(setColor(const QBrush&)));
+    connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(setColor(const QBrush&)));
 
     k->splitter->addWidget(k->containerPalette);
 
@@ -203,14 +194,15 @@ void KTColorPalette::setupDisplayColor()
 
     k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
     k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    connect(k->outlineAndFillColors,  SIGNAL(currentChanged(KDualColorButton::DualColor)),this, SLOT(changeTypeColor(KDualColorButton::DualColor)));
+    connect(k->outlineAndFillColors, SIGNAL(currentChanged(KDualColorButton::DualColor)),
+            this, SLOT(changeTypeColor(KDualColorButton::DualColor)));
 
-    connect(k->outlineAndFillColors, SIGNAL(fgChanged(const QBrush &)),this, SLOT(setFG(const QBrush &)));
-    connect(k->outlineAndFillColors, SIGNAL(bgChanged(const QBrush &)),this, SLOT(setBG(const QBrush &)));
+    connect(k->outlineAndFillColors, SIGNAL(fgChanged(const QBrush &)), this, SLOT(setFG(const QBrush &)));
+    connect(k->outlineAndFillColors, SIGNAL(bgChanged(const QBrush &)), this, SLOT(setBG(const QBrush &)));
 
     vlayout->addWidget(k->outlineAndFillColors);
 
-    QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
+    QBoxLayout *layoutName = new QBoxLayout(QBoxLayout::TopToBottom);
     layoutName->setMargin(0);
 
     layoutName->addWidget(new QLabel("<b>HTML</b>", viewColor));
@@ -337,7 +329,8 @@ void KTColorPalette::parsePaletteFile(const QString &file)
     k->containerPalette->readPaletteFile(file);
 }
 
-void KTColorPalette::mousePressEvent(QMouseEvent * e)
+/*
+void KTColorPalette::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton) {
         QMenu *menu = new QMenu(tr("type brush"), this);
@@ -345,6 +338,7 @@ void KTColorPalette::mousePressEvent(QMouseEvent * e)
         delete menu;
     }
 }
+*/
 
 void KTColorPalette::changeBrushType(const QString& type)
 {

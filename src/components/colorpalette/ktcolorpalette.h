@@ -42,16 +42,19 @@
 class KTColorPalette;
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class KTColorPalette : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         enum TypeBrush{ Solid = 0, Gradient };
         KTColorPalette(QWidget *parent = 0);
         ~KTColorPalette();
-        //FIXME: change this for QBrush
+
+        //SQA: change this for QBrush
         QPair<QColor, QColor> color();
         void parsePaletteFile(const QString &file);
 
@@ -65,8 +68,8 @@ class KTColorPalette : public KTModuleWidgetBase
         void setupGradientManager();
         void setupDisplayColor();
 
-    protected:
-        void mousePressEvent(QMouseEvent * e);
+    // protected:
+    //    void mousePressEvent(QMouseEvent * e);
 
     public slots:
         void setColor(const QBrush &brush);
