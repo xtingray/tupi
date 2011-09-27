@@ -1166,18 +1166,28 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-    if (!drawingTab) 
+    tFatal() << "KTMainWindow::createCommand() - Just tracing!";
+
+    if (!drawingTab) {
+        tFatal() << "KTMainWindow::createCommand() - ABORTED!";
         return;
+    }
 
     KTPaintAreaCommand *command = drawingTab->createCommand(event);
 
     if (command) { 
+        tFatal() << "KTMainWindow::createCommand() - POP 1!";
         m_projectManager->undoHistory()->push(command);
 
-        if (event->action() == 2)
+        if (event->action() == 2) {
+            tFatal() << "KTMainWindow::createCommand() - POP 2!";
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
+        } else {
+            tFatal() << "KTMainWindow::createCommand() - Pen wasn't updated! - FLAG 1";
+        }
+    } else {
+        tFatal() << "KTMainWindow::createCommand() - Pen wasn't updated! - FLAG 2";
     }
-
 }
 
 /**
