@@ -108,6 +108,7 @@ void KTPaintAreaCommand::redo()
 
             case KTPaintAreaEvent::ChangeBrush:
                  {
+                   tFatal() << "KTPaintAreaCommand::redo() - ChangeBrush/Setting brush!";
                    k->oldData = k->paintArea->brushManager()->brush();
                    k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->event->data()));
                  }

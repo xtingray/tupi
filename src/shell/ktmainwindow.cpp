@@ -1183,9 +1183,10 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
         if (event->action() == KTPaintAreaEvent::ChangeColorPen) {
             tFatal() << "KTMainWindow::createCommand() - event action == ChangeColorPen";
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
-        } else {
-            tFatal() << "KTMainWindow::createCommand() - event action != ChangeColorPen";
-            tFatal() << "KTMainWindow::createCommand() - action: " << event->action();
+        } else if (event->action() == KTPaintAreaEvent::ChangeBrush) {
+                   tFatal() << "KTMainWindow::createCommand() - event action == ChangeBrush";
+                   tFatal() << "KTMainWindow::createCommand() - action: " << event->action();
+                   m_penWidget->setBrush(qvariant_cast<QBrush>(event->data()));
         }
     } else {
         tFatal() << "KTMainWindow::createCommand() - Paint command is NULL!";

@@ -48,7 +48,7 @@
 class KTPaintAreaEvent;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTPenWidget : public KTModuleWidgetBase
@@ -62,7 +62,7 @@ class KTPenWidget : public KTModuleWidgetBase
     private:
         void emitPenChanged();
         void emitBrushChanged();
-        void updatePenParams();
+        // void updatePenParams();
         void addBrushesList();
         
     private:
@@ -73,6 +73,7 @@ class KTPenWidget : public KTModuleWidgetBase
         void init();
         void setThickness(int value);
         void setPenColor(const QColor color);
+        void setBrush(const QBrush brush);
         
     private slots:
         void setStyle(int s);

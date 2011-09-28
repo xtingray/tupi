@@ -60,7 +60,6 @@ struct KTColorPicker::Private
      };
 };
 
-
 QPoint KTColorPicker::colPt()
 { 
     return QPoint((360-k->hue)*(pWidth-1)/360, (255-k->sat)*(pHeight-1)/255); 
@@ -100,7 +99,7 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), k( new Private)
  
     k->pix = new QPixmap(QPixmap::fromImage(img));
     setAttribute(Qt::WA_NoSystemBackground);
-    setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed) );
+    setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 }
 
 KTColorPicker::~KTColorPicker()
@@ -157,7 +156,6 @@ void KTColorPicker::setS(int s)
     repaint(r);
 }
 
-
 void KTColorPicker::mouseMoveEvent(QMouseEvent *m)
 {
     QPoint p = m->pos() - contentsRect().topLeft();
@@ -172,7 +170,7 @@ void KTColorPicker::mousePressEvent(QMouseEvent *m)
     emit newCol(k->hue, k->sat);
 }
 
-void KTColorPicker::paintEvent(QPaintEvent* )
+void KTColorPicker::paintEvent(QPaintEvent*)
 {
     QPainter p(this);
     drawFrame(&p);

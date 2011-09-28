@@ -41,6 +41,7 @@ struct KTPenThicknessWidget::Private
     int thickness;
     int brush;
     QColor color;
+    QBrush currentBrush;
 };
 
 KTPenThicknessWidget::KTPenThicknessWidget(QWidget *parent) : QWidget(parent), k(new Private)
@@ -67,6 +68,13 @@ void KTPenThicknessWidget::setBrush(int index)
 {
     k->brush = index;
     update();
+}
+
+void KTPenThicknessWidget::setBrush(const QBrush brush)
+{
+    tFatal() << "KTPenThicknessWidget::setBrush() - Updating brush as gradient!";
+    k->currentBrush = brush;
+    k->brush = -1;
 }
 
 QSize KTPenThicknessWidget::minimumSizeHint() const
@@ -96,8 +104,18 @@ void KTPenThicknessWidget::paintEvent(QPaintEvent *)
      Qt::BrushStyle style = Qt::BrushStyle(k->brush);
      
      if (style != Qt::TexturePattern) {  
-         brush = QBrush(Qt::BrushStyle(k->brush));
-         brush.setColor(k->color);
+         if (k->brush != -1) {
+             tFatal() << "KTPenThicknessWidget::paintEvent() - Setting pre-def brush";
+             brush = QBrush(Qt::BrushStyle(k->brush));
+             brush.setColor(k->color);
+         } else {
+             if (k->currentBrush.gradient()) {
+                 tFatal() << "KTPenThicknessWidget::paintEvent() - Setting gradient brush";
+                 brush = k->currentBrush;
+             } else {
+                 tFatal() << "KTPenThicknessWidget::paintEvent() - Warning! NO gradient!";
+             }
+         }
          QPen pen(Qt::NoPen);
          painter.setPen(pen);
          painter.setBrush(brush);

@@ -98,8 +98,8 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
 
     setupChooserTypeColor();
     setupGradientManager();
-
     setupDisplayColor();
+
     k->tab->setPalette(palette());
     k->splitter->addWidget(k->tab);
 
@@ -172,7 +172,6 @@ void KTColorPalette::setupDisplayColor()
 {
     //palettes
     k->containerPalette = new KTViewColorCells(k->splitter);
-
     connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(setColor(const QBrush&)));
 
     k->splitter->addWidget(k->containerPalette);
@@ -207,8 +206,9 @@ void KTColorPalette::setupDisplayColor()
 
     layoutName->addWidget(new QLabel("<b>HTML</b>", viewColor));
     k->nameColor = new QLineEdit(viewColor);
-    QFontMetrics fm(font());
-    k->nameColor->setMaximumWidth(fm.width("#000000"));
+    k->nameColor->setMaximumWidth(70);
+    k->nameColor->setMaxLength(7);
+    k->nameColor->setText("#000000");
 	
     connect(k->nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
     layoutName->addWidget(k->nameColor);
@@ -235,7 +235,6 @@ void KTColorPalette::setColor(const QBrush& brush)
             k->luminancePicker->setCol(color.hue(), color.saturation(), color.value());
             k->containerPalette->setColor(brush);
             k->displayColorValue->setColor(color);
-
         }
     } else if (brush.gradient()) {
                QGradient gradient(*brush.gradient());
@@ -245,6 +244,11 @@ void KTColorPalette::setColor(const QBrush& brush)
                k->outlineAndFillColors->setCurrentColor(gradient);
                if (sender() != k->gradientManager)
                    k->gradientManager->setGradient(gradient);
+
+               tFatal() << "KTColorPalette::setColor() - Sending gradient value!";
+               KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, brush);
+               emit paintAreaEventTriggered(&event);
+               return;
     }
 
     if (k->outlineAndFillColors->background().color() != Qt::transparent) {
@@ -346,8 +350,8 @@ void KTColorPalette::changeBrushType(const QString& type)
 {
     if (type == tr("Solid")) {
         k->type = Solid;
-    } else if(type == tr("Gradient")) {
-        k->type = Gradient;
+    } else if (type == tr("Gradient")) {
+               k->type = Gradient;
     }
 
     if (type != k->labelType->currentText()) {

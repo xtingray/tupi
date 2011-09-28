@@ -52,7 +52,6 @@ struct KTPenWidget::Private
     QListWidget *brushesList;
     QPen pen;
     QBrush brush;
-    QColor color;
     KTPenThicknessWidget *thickPreview;
 };
 
@@ -153,7 +152,7 @@ void KTPenWidget::setThickness(int value)
 {
     if (value > 0) {
         k->pen.setWidth(value);
-        updatePenParams();
+        // updatePenParams();
 
         TCONFIG->beginGroup("PenParameters");
         TCONFIG->setValue("Thickness", value);
@@ -165,7 +164,7 @@ void KTPenWidget::setThickness(int value)
 void KTPenWidget::setStyle(int s)
 {
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
-    updatePenParams();
+    // updatePenParams();
 
     emitPenChanged();
 }
@@ -173,7 +172,7 @@ void KTPenWidget::setStyle(int s)
 void KTPenWidget::setJoinStyle(int s)
 {
     k->pen.setJoinStyle(Qt::PenJoinStyle(k->joinStyle->itemData(s).toInt()));
-    updatePenParams();
+    // updatePenParams();
 
     emitPenChanged();
 }
@@ -181,7 +180,7 @@ void KTPenWidget::setJoinStyle(int s)
 void KTPenWidget::setCapStyle(int s)
 {
     k->pen.setCapStyle(Qt::PenCapStyle(k->capStyle->itemData(s).toInt()));
-    updatePenParams();
+    // updatePenParams();
 
     emitPenChanged();
 }
@@ -198,7 +197,7 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
         k->brush.setStyle(Qt::BrushStyle(index+1));
     }
 
-    updatePenParams(); 
+    // updatePenParams(); 
 
     emitPenChanged();
 }
@@ -206,10 +205,18 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 void KTPenWidget::setPenColor(const QColor color)
 {
     tFatal() << "KTPenWidget::setPenColor() - Tracing! - Color: " << color.name();
-    k->color = color;
-    k->brush.setColor(k->color);
-    k->pen.setColor(k->color);
+    k->brush.setColor(color);
     k->thickPreview->setColor(color);
+}
+
+void KTPenWidget::setBrush(const QBrush brush)
+{
+    tFatal() << "KTPenWidget::setBrush() - Tracing!";
+    k->brush = brush;
+    k->thickPreview->setBrush(brush);
+
+    emitPenChanged();
+    // emitBrushChanged();
 }
 
 void KTPenWidget::init()
@@ -232,6 +239,7 @@ QPen KTPenWidget::pen() const
 
 void KTPenWidget::emitPenChanged()
 {
+    k->pen.setBrush(k->brush);
     emit penChanged(k->pen);
 
     tFatal() << "KTPenWidget::emitPenChanged() - Pen has changed! launching KTPaintAreaEvent event!";
@@ -242,19 +250,21 @@ void KTPenWidget::emitPenChanged()
 
 void KTPenWidget::emitBrushChanged()
 {
-    emit brushChanged(k->pen.brush());
+    //emit brushChanged(k->pen.brush());
+    emit brushChanged(k->brush);
 
     tFatal() << "KTPenWidget::emitBrushChanged() - Brush has changed! launching KTPaintAreaEvent event!";
     
-    KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->pen.brush());
+    KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->brush);
     emit paintAreaEventTriggered(&event);
 }
 
+/*
 void KTPenWidget::updatePenParams()
 {
-    //k->pen.setColor(k->color);
     k->pen.setBrush(k->brush);
 }
+*/
 
 void KTPenWidget::addBrushesList()
 {

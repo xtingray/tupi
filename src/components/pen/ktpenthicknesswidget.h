@@ -61,6 +61,7 @@ class KTPenThicknessWidget : public QWidget
         QSize sizeHint() const;
         void setColor(const QColor color);
         void setBrush(int index);
+        void setBrush(const QBrush brush);
 
     public slots:
         void render(int thickness);
