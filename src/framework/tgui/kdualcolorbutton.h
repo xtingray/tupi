@@ -163,7 +163,7 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
          */
         void currentChanged(KDualColorButton::ColorSpace s);
 
-        void selectionChanged(ColorSpace space);
+        void selectionChanged(KDualColorButton::ColorSpace space);
 
     protected:
         /**

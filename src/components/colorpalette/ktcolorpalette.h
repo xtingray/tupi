@@ -83,6 +83,7 @@ class KTColorPalette : public KTModuleWidgetBase
         void setHS(int h, int s);
         void changeBrushType(const QString&);
         void updateColor(const QBrush& brush);
+        void updateColorSpace(KDualColorButton::ColorSpace space);
 		
     signals:
         void paintAreaEventTriggered(const KTPaintAreaEvent *event);

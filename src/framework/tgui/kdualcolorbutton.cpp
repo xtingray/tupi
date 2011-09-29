@@ -220,11 +220,13 @@ void KDualColorButton::mousePressEvent(QMouseEvent *ev)
 
     if (fgRect.contains(mPos)) {
         curColor = Foreground;
+        tFatal() << "KDualColorButton::mousePressEvent() - emitting foreground signal!";
         emit selectionChanged(Foreground);
         miniCtlFlag = false;
     } else if (bgRect.contains(mPos)) {
                curColor = Background;
-                emit selectionChanged(Background);
+               tFatal() << "KDualColorButton::mousePressEvent() - emitting background signal!";
+               emit selectionChanged(Background);
                miniCtlFlag = false;
     } else if (ev->pos().x() > fgRect.width()) {
                // We handle the swap and reset controls as soon as the mouse is

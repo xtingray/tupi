@@ -195,8 +195,11 @@ void KTColorPalette::setupDisplayColor()
     k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     k->currentSpace = KDualColorButton::Foreground;
 
-    connect(k->outlineAndFillColors, SIGNAL(currentChanged(KDualColorButton::DualColor)),
-            this, SLOT(changeTypeColor(KDualColorButton::DualColor)));
+    connect(k->outlineAndFillColors, SIGNAL(currentChanged(KDualColorButton::ColorSpace)),
+            this, SLOT(changeTypeColor(KDualColorButton::ColorSpace)));
+
+    connect(k->outlineAndFillColors, SIGNAL(selectionChanged(KDualColorButton::ColorSpace)),
+            this, SLOT(updateColorSpace(KDualColorButton::ColorSpace)));
 
     connect(k->outlineAndFillColors, SIGNAL(fgChanged(const QBrush &)), this, SLOT(setFG(const QBrush &)));
     connect(k->outlineAndFillColors, SIGNAL(bgChanged(const QBrush &)), this, SLOT(setBG(const QBrush &)));
@@ -280,6 +283,12 @@ void KTColorPalette::updateColor(const QBrush& brush)
     }
 }
 
+void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
+{
+    tFatal() << "KTColorPalette::changeTypeColor() - Picking button #" << space;
+    k->currentSpace = space;
+}
+
 void KTColorPalette::setFG(const QBrush &brush)
 {
     if (brush.color().isValid())
@@ -305,13 +314,9 @@ void KTColorPalette::setBG(const QBrush &brush)
 void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
 {
     if (s == KDualColorButton::Background) {
-        tFatal() << "KTColorPalette::changeTypeColor() - Picking the Background button!";
-        k->currentSpace = KDualColorButton::Background;
         k->outlineAndFillColors->setCurrent(s);
         setColor(k->outlineAndFillColors->background());
     } else {
-        tFatal() << "KTColorPalette::changeTypeColor() - Picking the Foreground button!";
-        k->currentSpace = KDualColorButton::Foreground;
         k->outlineAndFillColors->setCurrent(s);
         k->flagGradient = false;
         setColor(k->outlineAndFillColors->foreground());
