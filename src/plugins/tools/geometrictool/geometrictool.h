@@ -36,16 +36,15 @@
 #ifndef AGEOMETRICTOOLPLUGIN_H
 #define AGEOMETRICTOOLPLUGIN_H
 
+#include "kttoolplugin.h"
+#include "ktrectitem.h"
+#include "ktellipseitem.h"
+#include "ktlineitem.h"
+#include "infopanel.h"
+
 #include <QObject>
 #include <QLabel>
 #include <QKeyEvent>
-
-#include <kttoolplugin.h>
-#include <ktrectitem.h>
-#include <ktellipseitem.h>
-#include <ktlineitem.h>
-
-#include "infopanel.h"
 
 /**
  * @author David Cuadrado

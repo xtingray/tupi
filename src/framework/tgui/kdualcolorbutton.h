@@ -73,17 +73,17 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
 {
     Q_OBJECT
 
-    Q_ENUMS(DualColor)
+    Q_ENUMS(ColorSpace)
     Q_PROPERTY(QBrush foreground READ foreground WRITE setForeground)
     Q_PROPERTY(QBrush background READ background WRITE setBackground)
     Q_PROPERTY(QBrush currentColor READ currentColor WRITE setCurrentColor STORED false DESIGNABLE false)
-    Q_PROPERTY(DualColor current READ current WRITE setCurrent)
+    Q_PROPERTY(ColorSpace current READ current WRITE setCurrent)
 
     public:
 
-        enum DualColor {Foreground, Background};
+        enum ColorSpace {Foreground, Background};
         /**
-        * Constructs a new DDualColorButton using the default black and white
+        * Constructs a new KDualColorButton using the default black and white
         * colors.
         *
         */
@@ -92,7 +92,7 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         KDualColorButton(QWidget *parent=0);
 
         /**
-        * Constructs a new DDualColorButton with the supplied foreground and
+        * Constructs a new KDualColorButton with the supplied foreground and
         * background colors.
         */
         /// KDE4 remove name argument
@@ -113,7 +113,7 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         /**
         * Returns the current color item selected by the user.
         */
-        DualColor current() const;
+        ColorSpace current() const;
 
         /**
         * Returns the color of the selected item.
@@ -140,7 +140,7 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         /**
          * Sets the current selected color item.
          */
-        void setCurrent(DualColor s);
+        void setCurrent(ColorSpace s);
 
         /**
          * Sets the color of the selected item.
@@ -161,9 +161,9 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         /**
          * Emitted when the user changes the current color selection.
          */
-        void currentChanged(KDualColorButton::DualColor s);
+        void currentChanged(KDualColorButton::ColorSpace s);
 
-        // void selectionChanged();
+        void selectionChanged(ColorSpace space);
 
     protected:
         /**
@@ -176,10 +176,10 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         virtual void metrics(QRect &fgRect, QRect &bgRect);
         virtual void paintEvent(QPaintEvent *ev);
         virtual void mousePressEvent(QMouseEvent *ev);
-        virtual void mouseMoveEvent(QMouseEvent* ev);
+        // virtual void mouseMoveEvent(QMouseEvent* ev);
         // Dnd
-        virtual void dragEnterEvent(QDragEnterEvent *ev);
-        virtual void dropEvent(QDropEvent *ev);
+        // virtual void dragEnterEvent(QDragEnterEvent *ev);
+        // virtual void dropEvent(QDropEvent *ev);
 
     private:
         QPixmap *arrowBitmap;
@@ -187,7 +187,7 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         QBrush fg, bg;
         QPoint mPos;
         bool dragFlag, miniCtlFlag;
-        DualColor curColor, tmpColor;
+        ColorSpace curColor, tmpColor;
 };
 
 #endif

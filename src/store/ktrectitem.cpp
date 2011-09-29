@@ -34,23 +34,21 @@
  ***************************************************************************/
 
 #include "ktrectitem.h"
-#include <QGraphicsSceneDragDropEvent>
-
-#include <QMimeData>
-#include <QBrush>
-#include <QGraphicsScene>
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
 
-KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene ) : QGraphicsRectItem(parent, scene)
+#include <QGraphicsSceneDragDropEvent>
+#include <QMimeData>
+#include <QBrush>
+#include <QGraphicsScene>
+
+KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsRectItem(parent, scene)
 {
     setAcceptDrops(true);
 }
 
-KTRectItem::KTRectItem(const QRectF& rect, QGraphicsItem * parent , QGraphicsScene * scene)
-: QGraphicsRectItem(rect, parent, scene)
+KTRectItem::KTRectItem(const QRectF& rect, QGraphicsItem * parent , QGraphicsScene * scene) : QGraphicsRectItem(rect, parent, scene)
 {
-    
 }
 
 KTRectItem::~KTRectItem()
@@ -105,7 +103,7 @@ void KTRectItem::dropEvent(QGraphicsSceneDragDropEvent *event)
     if (event->mimeData()->hasColor()) {
         setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
     } else if (event->mimeData()->hasImage()) {
-        setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
+               setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
     }
     update();
 }
@@ -126,16 +124,13 @@ bool KTRectItem::contains(const QPointF & point) const
     QPolygonF::iterator it1 = pol.begin();
     QPolygonF::iterator it2 = pol.begin()+1;
     
-    while(it2 != pol.end())
-    {
-        QRectF rect( (*it1).x(), (*it1).y(), (*it2).x()-(*it1).x(), (*it2).y()-(*it1).y() );
+    while (it2 != pol.end()) {
+           QRectF rect((*it1).x(), (*it1).y(), (*it2).x()-(*it1).x(), (*it2).y()-(*it1).y());
         
-        if ( rect.intersects(rectS))
-        {
-            return true;
-        }
-        ++it1;
-        ++it2;
+           if (rect.intersects(rectS))
+               return true;
+           ++it1;
+           ++it2;
     }
     
     return false;

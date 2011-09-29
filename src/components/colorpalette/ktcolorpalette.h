@@ -50,13 +50,15 @@ class KTColorPalette : public KTModuleWidgetBase
     Q_OBJECT
 
     public:
-        enum TypeBrush{ Solid = 0, Gradient };
+        enum BrushType{ Solid = 0, Gradient };
+
         KTColorPalette(QWidget *parent = 0);
         ~KTColorPalette();
 
         //SQA: change this for QBrush
         QPair<QColor, QColor> color();
         void parsePaletteFile(const QString &file);
+        void init();
 
     private:
         struct Private;
@@ -76,10 +78,11 @@ class KTColorPalette : public KTModuleWidgetBase
         void setFG(const QBrush &brush);
         void setBG(const QBrush &brush);
         void updateColor();
-        void changeTypeColor(KDualColorButton::DualColor s);
+        void changeTypeColor(KDualColorButton::ColorSpace s);
         void syncHsv(int h, int s, int v);
         void setHS(int h, int s);
         void changeBrushType(const QString&);
+        void updateColor(const QBrush& brush);
 		
     signals:
         void paintAreaEventTriggered(const KTPaintAreaEvent *event);

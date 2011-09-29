@@ -105,7 +105,7 @@ QBrush KDualColorButton::background() const
     return bg;
 }
 
-KDualColorButton::DualColor KDualColorButton::current() const
+KDualColorButton::ColorSpace KDualColorButton::current() const
 {
     return curColor;
 }
@@ -146,7 +146,7 @@ void KDualColorButton::setCurrentColor(const QBrush &c)
     update();
 }
 
-void KDualColorButton::setCurrent(DualColor s)
+void KDualColorButton::setCurrent(ColorSpace s)
 {
     curColor = s;
     update();
@@ -186,6 +186,7 @@ void KDualColorButton::paintEvent(QPaintEvent *)
     p.drawPixmap(0, fgRect.bottom()+2, *resetPixmap);
 }
 
+/*
 void KDualColorButton::dragEnterEvent(QDragEnterEvent *ev)
 {
     // ev->accept(isEnabled() && KColorDrag::canDecode(ev));
@@ -195,7 +196,6 @@ void KDualColorButton::dragEnterEvent(QDragEnterEvent *ev)
 void KDualColorButton::dropEvent(QDropEvent *ev)
 {
     Q_UNUSED(ev);
-    /*
       QColor c;
       if (KColorDrag::decode(ev, c)) {
           if (curColor == Foreground) {
@@ -207,8 +207,8 @@ void KDualColorButton::dropEvent(QDropEvent *ev)
           }
           update();
       }
-    */
 }
+*/
 
 void KDualColorButton::mousePressEvent(QMouseEvent *ev)
 {
@@ -220,11 +220,11 @@ void KDualColorButton::mousePressEvent(QMouseEvent *ev)
 
     if (fgRect.contains(mPos)) {
         curColor = Foreground;
-        emit currentChanged(Foreground);
+        emit selectionChanged(Foreground);
         miniCtlFlag = false;
     } else if (bgRect.contains(mPos)) {
                curColor = Background;
-               emit currentChanged(Background);
+                emit selectionChanged(Background);
                miniCtlFlag = false;
     } else if (ev->pos().x() > fgRect.width()) {
                // We handle the swap and reset controls as soon as the mouse is
@@ -233,23 +233,20 @@ void KDualColorButton::mousePressEvent(QMouseEvent *ev)
                fg = bg;
                bg = c;
                emit fgChanged(fg);
-               // emit currentChanged(Foreground );
                emit bgChanged(bg);
-               // emit currentChanged(Background );
                miniCtlFlag = true;
     } else if (ev->pos().x() < bgRect.x()) {
                fg.setColor(Qt::black);
-               bg.setColor( QColor(0,0,0,0));
+               bg.setColor(QColor(0,0,0,0));
                emit fgChanged(fg);
                emit bgChanged(bg);
-               // emit currentChanged(Foreground );
-               // emit currentChanged(Background );
                miniCtlFlag = true;
     }
 
     update();
 }
 
+/*
 void KDualColorButton::mouseMoveEvent(QMouseEvent* ev)
 {
     QWidget::mouseMoveEvent(ev);
@@ -284,5 +281,7 @@ void KDualColorButton::mouseMoveEvent(QMouseEvent* ev)
     drag->setMimeData(mimeData);
     drag->setPixmap(pix);
 
-    /*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
+    // Qt::DropAction dropAction = 
+    drag->start(Qt::MoveAction);
 }
+*/

@@ -36,14 +36,15 @@
 #ifndef KTRECTITEM_H
 #define KTRECTITEM_H
 
-#include <QGraphicsRectItem>
-
 #include "ktabstractserializable.h"
 #include "ktglobal_store.h"
 
+#include <QGraphicsRectItem>
+
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTRectItem : public QGraphicsRectItem, public KTAbstractSerializable
 {
     public:

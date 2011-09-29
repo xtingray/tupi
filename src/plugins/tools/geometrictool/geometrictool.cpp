@@ -34,28 +34,25 @@
  ***************************************************************************/
 
 #include "geometrictool.h"
-
-#include <QKeySequence>
-#include <QDebug>
-#include <QImage>
-#include <QPaintDevice>
-#include <QGraphicsView>
-
 #include "tglobal.h"
 #include "tdebug.h"
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
-
-#include "ktrequestbuilder.h"
 #include "ktlibraryobject.h"
-
-#include "ktscene.h"
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
+#include "ktscene.h"
+#include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 #include "ktbrushmanager.h"
+
+#include <QKeySequence>
+#include <QDebug>
+#include <QImage>
+#include <QPaintDevice>
+#include <QGraphicsView>
 
 GeometricTool::GeometricTool()
 {

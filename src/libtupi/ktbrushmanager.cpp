@@ -39,7 +39,7 @@
 /**
  * This class handles the set of brushes for painting.
  * Here is where methods to set/unset brushes are defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTBrushManager::Private

@@ -339,6 +339,8 @@ void KTMainWindow::viewNewDocument()
 
         m_projectManager->undoModified();
 
+        m_colorPalette->init();
+
         TCONFIG->beginGroup("PenParameters");
         int thicknessValue = TCONFIG->value("Thickness", -1).toInt();
         m_penWidget->init();
@@ -1186,7 +1188,7 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
         } else if (event->action() == KTPaintAreaEvent::ChangeBrush) {
                    tFatal() << "KTMainWindow::createCommand() - event action == ChangeBrush";
                    tFatal() << "KTMainWindow::createCommand() - action: " << event->action();
-                   m_penWidget->setBrush(qvariant_cast<QBrush>(event->data()));
+                   // m_penWidget->setBrush(qvariant_cast<QBrush>(event->data()));
         }
     } else {
         tFatal() << "KTMainWindow::createCommand() - Paint command is NULL!";
@@ -1331,7 +1333,7 @@ void KTMainWindow::unexpectedClose()
     msgBox.addButton(QString(tr("Close")), QMessageBox::DestructiveRole);
 
     msgBox.show();
-    msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 ,
+    msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2,
                 (int) (desktop.screenGeometry().height() - msgBox.height())/2);
 
     msgBox.exec();
