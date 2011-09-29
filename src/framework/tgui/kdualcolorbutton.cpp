@@ -39,11 +39,9 @@
 #include "kcolorarrow.xpm"
 #include "kcolorreset.xpm"
 
+#include <qdrawutil.h>
 #include <QPainter>
 #include <QBitmap>
-
-#include <qdrawutil.h>
-
 #include <QDragEnterEvent>
 #include <QPixmap>
 #include <QMouseEvent>
@@ -58,7 +56,7 @@ KDualColorButton::KDualColorButton(QWidget *parent) : QWidget(parent)
 
     resetPixmap = new QPixmap((const char **)dcolorreset_xpm);
     fg = QBrush(Qt::black, Qt::SolidPattern);
-    bg = QBrush( QColor(0,0,0,0), Qt::SolidPattern);
+    bg = QBrush(QColor(0, 0, 0, 0), Qt::SolidPattern);
 	
     curColor = Foreground;
     dragFlag = false;
@@ -95,8 +93,6 @@ KDualColorButton::~KDualColorButton()
 {
     delete arrowBitmap;
     delete resetPixmap;
-
-    TEND;
 }
 
 QBrush KDualColorButton::foreground() const
@@ -175,7 +171,7 @@ void KDualColorButton::paintEvent(QPaintEvent *)
     QBrush fgAdjusted = fg;
 
     QMatrix m;
-    m.scale( (float)(bgRect.width()) / 100.0, (float)(bgRect.height()) / 100.0);
+    m.scale((float)(bgRect.width()) / 100.0, (float)(bgRect.height()) / 100.0);
     bgAdjusted.setMatrix(m);
 	
     m.reset();
