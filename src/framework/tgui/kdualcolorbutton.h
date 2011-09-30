@@ -155,7 +155,7 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         /**
          * Emitted when the user changes the current color selection.
          */
-        void currentChanged(KDualColorButton::ColorSpace s);
+        // void currentChanged(KDualColorButton::ColorSpace s);
         void selectionChanged(KDualColorButton::ColorSpace space);
         void switchColors();
         void resetColors();

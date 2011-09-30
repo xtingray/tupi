@@ -59,18 +59,21 @@
 
 struct KTColorPalette::Private
 {
+    QSplitter *splitter;
     QTabWidget *tab;
+
     KTViewColorCells *containerPalette;
     KTColorValue *displayColorValue;
     KTColorPicker *colorPicker;
     KTLuminancePicker *luminancePicker;
     KTGradientCreator *gradientManager;
+
+    QComboBox *labelType;
     QLineEdit *nameColor;
     KDualColorButton *outlineAndFillColors;
     QBrush currentOutlineColor;
     QBrush currentFillColor;
-    QComboBox *labelType;
-    QSplitter *splitter;
+
     bool flagGradient;
     BrushType type;
     KDualColorButton::ColorSpace currentSpace;
@@ -97,6 +100,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
 
     setupChooserTypeColor();
     setupGradientManager();
+
     setupDisplayColor();
 
     k->tab->setPalette(palette());
@@ -195,14 +199,11 @@ void KTColorPalette::setupDisplayColor()
     k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     k->currentSpace = KDualColorButton::Foreground;
 
-    connect(k->outlineAndFillColors, SIGNAL(currentChanged(KDualColorButton::ColorSpace)),
-            this, SLOT(changeTypeColor(KDualColorButton::ColorSpace)));
-
     connect(k->outlineAndFillColors, SIGNAL(selectionChanged(KDualColorButton::ColorSpace)),
             this, SLOT(updateColorSpace(KDualColorButton::ColorSpace)));
 
-    connect(k->outlineAndFillColors, SIGNAL(fgChanged(const QBrush &)), this, SLOT(setFG(const QBrush &)));
-    connect(k->outlineAndFillColors, SIGNAL(bgChanged(const QBrush &)), this, SLOT(setBG(const QBrush &)));
+    connect(k->outlineAndFillColors, SIGNAL(switchColors()), this, SLOT(switchColors()));
+    connect(k->outlineAndFillColors, SIGNAL(resetColors()), this, SLOT(resetColors()));
 
     vlayout->addWidget(k->outlineAndFillColors);
 
@@ -258,26 +259,28 @@ void KTColorPalette::setColor(const QBrush& brush)
                */
     }
 
-    // if (k->outlineAndFillColors->background().color() != Qt::transparent) {
-        tFatal() << "KTColorPalette::setColor() - Updating background color!";
-        // KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->outlineAndFillColors->background().color());
-        KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, brush);
-        emit paintAreaEventTriggered(&event);
-    // }
+    tFatal() << "KTColorPalette::setColor() - Updating background color!";
+    // KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->outlineAndFillColors->background().color());
+    KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, brush);
+    emit paintAreaEventTriggered(&event);
 
-    // if (k->outlineAndFillColors->foreground().color() != Qt::transparent) {
-        tFatal() << "KTColorPalette::setColor() - Updating foreground color!";
-        KTPaintAreaEvent event2(KTPaintAreaEvent::ChangeColorPen, k->outlineAndFillColors->foreground().color());
-        emit paintAreaEventTriggered(&event2);
-    // }
+    tFatal() << "KTColorPalette::setColor() - Updating foreground color!";
+    KTPaintAreaEvent event2(KTPaintAreaEvent::ChangeColorPen, k->outlineAndFillColors->foreground().color());
+    emit paintAreaEventTriggered(&event2);
 }
 
 void KTColorPalette::updateColor(const QBrush& brush)
 {
     if (k->currentSpace == KDualColorButton::Foreground) {
+        k->outlineAndFillColors->setForeground(brush);
+        k->currentOutlineColor = brush;
+        k->nameColor->setText(brush.color().name());
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, brush.color());
         emit paintAreaEventTriggered(&event);
     } else {
+        k->outlineAndFillColors->setBackground(brush);
+        k->currentFillColor = brush;
+        k->nameColor->setText(brush.color().name());
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, brush);
         emit paintAreaEventTriggered(&event);
     }
@@ -287,6 +290,10 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
 {
     tFatal() << "KTColorPalette::changeTypeColor() - Picking button #" << space;
     k->currentSpace = space;
+    if (k->currentSpace == KDualColorButton::Foreground)
+        k->nameColor->setText(k->currentOutlineColor.color().name());
+    else
+        k->nameColor->setText(k->currentFillColor.color().name());
 }
 
 void KTColorPalette::setFG(const QBrush &brush)
@@ -390,12 +397,40 @@ void KTColorPalette::init()
 {
     QBrush brush = QBrush(Qt::transparent);
 
-    setFG(QBrush(Qt::black));
-    setBG(brush);
+    k->currentOutlineColor = QBrush(Qt::black);
+    k->currentFillColor = brush;
+
+    k->outlineAndFillColors->setForeground(QBrush(Qt::black));
+    k->outlineAndFillColors->setBackground(brush);
 
     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, Qt::black);
     emit paintAreaEventTriggered(&event);
 
     event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, brush);
     emit paintAreaEventTriggered(&event);
+}
+
+void KTColorPalette::switchColors()
+{
+     QBrush tmp = k->currentOutlineColor;
+     k->currentOutlineColor = k->currentFillColor;
+     k->currentFillColor = tmp;
+
+     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, k->currentOutlineColor.color());
+     emit paintAreaEventTriggered(&event);
+
+     event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, k->currentFillColor);
+     emit paintAreaEventTriggered(&event);
+}
+
+void KTColorPalette::resetColors()
+{
+     k->currentOutlineColor = QBrush(Qt::black);
+     k->currentFillColor = QBrush(Qt::transparent);
+
+     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, k->currentOutlineColor.color());
+     emit paintAreaEventTriggered(&event);
+
+     event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, k->currentFillColor);
+     emit paintAreaEventTriggered(&event);
 }

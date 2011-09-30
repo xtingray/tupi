@@ -73,7 +73,7 @@ class KTColorPalette : public KTModuleWidgetBase
     // protected:
     //    void mousePressEvent(QMouseEvent * e);
 
-    public slots:
+    private slots:
         void setColor(const QBrush &brush);
         void setFG(const QBrush &brush);
         void setBG(const QBrush &brush);
@@ -84,6 +84,8 @@ class KTColorPalette : public KTModuleWidgetBase
         void changeBrushType(const QString&);
         void updateColor(const QBrush& brush);
         void updateColorSpace(KDualColorButton::ColorSpace space);
+        void switchColors();
+        void resetColors();
 		
     signals:
         void paintAreaEventTriggered(const KTPaintAreaEvent *event);
