@@ -69,6 +69,7 @@ class QBitmap;
  *
  * @author Daniel M. Duley <mosfet@kde.org>
  */
+
 class K_GUI_EXPORT KDualColorButton : public QWidget
 {
     Q_OBJECT
@@ -148,22 +149,16 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         void setCurrentColor(const QBrush &c);
 
     signals:
-        /**
-         * Emitted when the foreground color is changed.
-         */
-        void fgChanged(const QBrush &c);
-
-        /**
-         * Emitted when the background color is changed.
-         */
-        void bgChanged(const QBrush &c);
+        // void fgChanged(const QBrush &c);
+        // void bgChanged(const QBrush &c);
 
         /**
          * Emitted when the user changes the current color selection.
          */
         void currentChanged(KDualColorButton::ColorSpace s);
-
         void selectionChanged(KDualColorButton::ColorSpace space);
+        void switchColors();
+        void resetColors();
 
     protected:
         /**
@@ -176,18 +171,10 @@ class K_GUI_EXPORT KDualColorButton : public QWidget
         virtual void metrics(QRect &fgRect, QRect &bgRect);
         virtual void paintEvent(QPaintEvent *ev);
         virtual void mousePressEvent(QMouseEvent *ev);
-        // virtual void mouseMoveEvent(QMouseEvent* ev);
-        // Dnd
-        // virtual void dragEnterEvent(QDragEnterEvent *ev);
-        // virtual void dropEvent(QDropEvent *ev);
 
     private:
-        QPixmap *arrowBitmap;
-        QPixmap *resetPixmap;
-        QBrush fg, bg;
-        QPoint mPos;
-        bool dragFlag, miniCtlFlag;
-        ColorSpace curColor, tmpColor;
+        struct Private;
+        Private *const k;
 };
 
 #endif
