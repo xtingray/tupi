@@ -94,14 +94,15 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     setWindowIcon(QPixmap(THEME_DIR + "icons/color_palette.png"));
 
     k->splitter = new QSplitter(Qt::Vertical, this);
-    addChild(k->splitter);
-
     k->tab = new QTabWidget;
 
+    setupDisplayColor();
+
+    addChild(k->splitter);
+
+    setupMainPalette();
     setupChooserTypeColor();
     setupGradientManager();
-
-    setupDisplayColor();
 
     k->tab->setPalette(palette());
     k->splitter->addWidget(k->tab);
@@ -121,6 +122,60 @@ KTColorPalette::~KTColorPalette()
     TCONFIG->setValue("LastForegroundColor", color().first);
     TCONFIG->setValue("LastBackgroundColor", color().second);
     delete k;
+}
+
+void KTColorPalette::setupDisplayColor()
+{
+    //////////
+    QFrame *viewColor = new QFrame(this);
+    QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    vlayout->setMargin(0);
+
+    viewColor->setLayout(vlayout);
+
+    k->labelType = new QComboBox(viewColor);
+    k->labelType->addItem(tr("Solid"));
+    k->labelType->addItem(tr("Gradient"));
+
+    connect(k->labelType, SIGNAL(activated(const QString &)), this, SLOT(changeBrushType(const QString &)));
+
+    vlayout->addWidget(k->labelType);
+
+    k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
+    k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    k->currentSpace = KDualColorButton::Foreground;
+
+    connect(k->outlineAndFillColors, SIGNAL(selectionChanged(KDualColorButton::ColorSpace)),
+            this, SLOT(updateColorSpace(KDualColorButton::ColorSpace)));
+
+    connect(k->outlineAndFillColors, SIGNAL(switchColors()), this, SLOT(switchColors()));
+    connect(k->outlineAndFillColors, SIGNAL(resetColors()), this, SLOT(resetColors()));
+
+    vlayout->addWidget(k->outlineAndFillColors);
+
+    QBoxLayout *layoutName = new QBoxLayout(QBoxLayout::TopToBottom);
+    layoutName->setMargin(0);
+
+    layoutName->addWidget(new QLabel("<b>HTML</b>", viewColor));
+    k->nameColor = new QLineEdit(viewColor);
+    k->nameColor->setMaximumWidth(70);
+    k->nameColor->setMaxLength(7);
+    k->nameColor->setText("#000000");
+
+    connect(k->nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
+    layoutName->addWidget(k->nameColor);
+    vlayout->addLayout(layoutName);
+
+    addChild(viewColor);
+}
+
+void KTColorPalette::setupMainPalette()
+{
+    //palettes
+    k->containerPalette = new KTViewColorCells(k->splitter);
+    connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(updateColor(const QBrush&)));
+
+    k->splitter->addWidget(k->containerPalette);
 }
 
 void KTColorPalette::setupChooserTypeColor()
@@ -159,7 +214,7 @@ void KTColorPalette::setupChooserTypeColor()
     layout->addWidget(k->displayColorValue);
 
     k->displayColorValue->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
+    connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColor(const QBrush &)));
 
     k->tab->addTab(colorMixer, tr("Color Mixer"));
 }
@@ -169,58 +224,6 @@ void KTColorPalette::setupGradientManager()
     k->gradientManager = new KTGradientCreator(this);
     connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
     k->tab->addTab(k->gradientManager, tr("Gradients"));
-}
-
-void KTColorPalette::setupDisplayColor()
-{
-    //palettes
-    k->containerPalette = new KTViewColorCells(k->splitter);
-    // connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(setColor(const QBrush&)));
-    connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(updateColor(const QBrush&)));
-
-    k->splitter->addWidget(k->containerPalette);
-
-    //////////
-    QFrame *viewColor = new QFrame(this);
-    QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
-    vlayout->setMargin(0);
-
-    viewColor->setLayout(vlayout);
-
-    k->labelType = new QComboBox(viewColor);
-    k->labelType->addItem(tr("Solid"));
-    k->labelType->addItem(tr("Gradient"));
-
-    connect(k->labelType, SIGNAL(activated(const QString &)), this, SLOT(changeBrushType(const QString &)));
-
-    vlayout->addWidget(k->labelType);
-
-    k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
-    k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    k->currentSpace = KDualColorButton::Foreground;
-
-    connect(k->outlineAndFillColors, SIGNAL(selectionChanged(KDualColorButton::ColorSpace)),
-            this, SLOT(updateColorSpace(KDualColorButton::ColorSpace)));
-
-    connect(k->outlineAndFillColors, SIGNAL(switchColors()), this, SLOT(switchColors()));
-    connect(k->outlineAndFillColors, SIGNAL(resetColors()), this, SLOT(resetColors()));
-
-    vlayout->addWidget(k->outlineAndFillColors);
-
-    QBoxLayout *layoutName = new QBoxLayout(QBoxLayout::TopToBottom);
-    layoutName->setMargin(0);
-
-    layoutName->addWidget(new QLabel("<b>HTML</b>", viewColor));
-    k->nameColor = new QLineEdit(viewColor);
-    k->nameColor->setMaximumWidth(70);
-    k->nameColor->setMaxLength(7);
-    k->nameColor->setText("#000000");
-	
-    connect(k->nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
-    layoutName->addWidget(k->nameColor);
-    vlayout->addLayout(layoutName);
-
-    addChild(viewColor);
 }
 
 void KTColorPalette::setColor(const QBrush& brush)
@@ -238,7 +241,7 @@ void KTColorPalette::setColor(const QBrush& brush)
                 k->outlineAndFillColors->setCurrentColor(color);
 
             k->nameColor->setText(color.name());
-            k->luminancePicker->setCol(color.hue(), color.saturation(), color.value());
+            k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
             k->containerPalette->setColor(brush);
             k->displayColorValue->setColor(color);
         }
@@ -271,19 +274,23 @@ void KTColorPalette::setColor(const QBrush& brush)
 
 void KTColorPalette::updateColor(const QBrush& brush)
 {
+    QColor color = brush.color();
+
     if (k->currentSpace == KDualColorButton::Foreground) {
         k->outlineAndFillColors->setForeground(brush);
         k->currentOutlineColor = brush;
-        k->nameColor->setText(brush.color().name());
-        KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, brush.color());
+        KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, color);
         emit paintAreaEventTriggered(&event);
     } else {
         k->outlineAndFillColors->setBackground(brush);
         k->currentFillColor = brush;
-        k->nameColor->setText(brush.color().name());
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, brush);
         emit paintAreaEventTriggered(&event);
     }
+
+    k->nameColor->setText(color.name());
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorValue->setColor(color);
 }
 
 void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
@@ -296,6 +303,7 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
         k->nameColor->setText(k->currentFillColor.color().name());
 }
 
+/*
 void KTColorPalette::setFG(const QBrush &brush)
 {
     if (brush.color().isValid())
@@ -317,6 +325,7 @@ void KTColorPalette::setBG(const QBrush &brush)
     k->outlineAndFillColors->setCurrent(KDualColorButton::Background);
     setColor(brush);
 }
+*/
 
 void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
 {

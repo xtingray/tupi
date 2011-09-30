@@ -34,14 +34,14 @@
  ***************************************************************************/
 
 #include "ktluminancepicker.h"
+#include "tdebug.h"
 
 #include <QPainter>
 #include <qdrawutil.h>
-#include "tdebug.h"
 
 struct KTLuminancePicker::Private
 {
-    int val;
+    int value;
     int hue;
     int sat;
     QPixmap *pix;
@@ -64,11 +64,10 @@ int KTLuminancePicker::val2y(int v)
     return coff + (255-v)*k/255;
 }
 
-KTLuminancePicker::KTLuminancePicker(QWidget* parent)
-	:QWidget(parent), k( new Private)
+KTLuminancePicker::KTLuminancePicker(QWidget* parent) : QWidget(parent), k(new Private)
 {
     k->hue = 100; 
-    k->val = 100; 
+    k->value = 100; 
     k->sat = 100;
     k->pix = 0;
 }
@@ -81,33 +80,33 @@ KTLuminancePicker::~KTLuminancePicker()
     #endif
 }
 
-void KTLuminancePicker::mouseMoveEvent(QMouseEvent *m)
+void KTLuminancePicker::mouseMoveEvent(QMouseEvent *event)
 {
-    setVal(y2val(m->y()));
-	
+    setValue(y2val(event->y()));
 }
 
-void KTLuminancePicker::mousePressEvent(QMouseEvent *m)
+void KTLuminancePicker::mousePressEvent(QMouseEvent *event)
 {
-    setVal(y2val(m->y()));
+    setValue(y2val(event->y()));
 }
 
-void KTLuminancePicker::setVal(int v)
+void KTLuminancePicker::setValue(int v)
 {
-    if (k->val == v)
+    if (k->value == v)
         return;
-    k->val = qMax(0, qMin(v,255));
+
+    k->value = qMax(0, qMin(v,255));
     delete k->pix; k->pix=0;
     repaint();
 
-    emit newHsv(k->hue, k->sat, k->val);
+    emit newHsv(k->hue, k->sat, k->value);
 }
 
 //receives from a k->hue,k->sat chooser and relays.
-void KTLuminancePicker::setCol(int h, int s)
+void KTLuminancePicker::setColor(int h, int s)
 {
-    setCol(h, s, k->val);
-    emit newHsv(h, s, k->val);
+    setColor(h, s, k->value);
+    emit newHsv(h, s, k->value);
 }
 
 void KTLuminancePicker::paintEvent(QPaintEvent *)
@@ -139,24 +138,25 @@ void KTLuminancePicker::paintEvent(QPaintEvent *)
     p.setPen(g.foreground().color());
     p.setBrush(g.foreground());
     QPolygon a;
-    int y = val2y(k->val);
+    int y = val2y(k->value);
     a.setPoints(3, w, y, w+5, y+5, w+5, y-5);
     p.eraseRect(w, 0, 5, height());
     p.drawPolygon(a);
 }
 
-void KTLuminancePicker::setCol(int h, int s , int v)
+void KTLuminancePicker::setColor(int h, int s , int v)
 {
-    k->val = v;
+    k->value = v;
     k->hue = h;
     k->sat = s;
     delete k->pix; 
     k->pix = 0;
+
     repaint();
 }
 
-int  KTLuminancePicker::value()
+int KTLuminancePicker::value()
 {
-    return k->val;
+    return k->value;
 }
 

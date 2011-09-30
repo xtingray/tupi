@@ -44,15 +44,16 @@
 class KTLuminancePicker : public QWidget
 {
     Q_OBJECT
+
     public:
         KTLuminancePicker(QWidget* parent=0);
         ~KTLuminancePicker();
         int value();
 
     public slots:
-        void setCol(int h, int s, int v);
-        void setCol(int h, int s);
-        void setVal(int v);
+        void setColor(int h, int s, int v);
+        void setColor(int h, int s);
+        void setValue(int v);
 
     signals:
         void newHsv(int h, int s, int v);

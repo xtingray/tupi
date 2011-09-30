@@ -66,17 +66,18 @@ class KTColorPalette : public KTModuleWidgetBase
 
     private:
         void setupButtons();
+        void setupDisplayColor();
+        void setupMainPalette();
         void setupChooserTypeColor();
         void setupGradientManager();
-        void setupDisplayColor();
 
     // protected:
     //    void mousePressEvent(QMouseEvent * e);
 
     private slots:
         void setColor(const QBrush &brush);
-        void setFG(const QBrush &brush);
-        void setBG(const QBrush &brush);
+        // void setFG(const QBrush &brush);
+        // void setBG(const QBrush &brush);
         void updateColor();
         void changeTypeColor(KDualColorButton::ColorSpace s);
         void syncHsv(int h, int s, int v);
