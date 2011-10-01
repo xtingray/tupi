@@ -190,9 +190,9 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     connect(k->status, SIGNAL(colorUpdated(const QColor)), this, SLOT(updateBgColor(const QColor)));
     connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
 
-    // SQA: Verify if this code is doing something
-    connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
-            SLOT(setBrush(const QBrush &)));
+    // SQA: Verify if this code is doing something / SLOT setBrush() doesn't exist
+    // connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
+    //         SLOT(setBrush(const QBrush &)));
 
     connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), k->status, 
             SLOT(setPen(const QPen &)));

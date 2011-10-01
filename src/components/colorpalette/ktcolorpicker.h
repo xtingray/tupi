@@ -41,19 +41,20 @@
 class KTColorPicker : public QFrame
 {
     Q_OBJECT
+
     public:
         KTColorPicker(QWidget* parent);
         ~KTColorPicker();
         int hue();
-        int sat();
+        int saturation();
 
     public slots:
-        void setCol(int h, int s);
+        void setColor(int h, int s);
         void setH(int h);
         void setS(int s);
 
     signals:
-        void newCol(int h, int s);
+        void newColor(int h, int s);
 
     protected:
         QSize sizeHint() const;
@@ -65,10 +66,10 @@ class KTColorPicker : public QFrame
         struct Private;
         Private *const k;
 
-        QPoint colPt();
-        int huePt(const QPoint &pt);
-        int satPt(const QPoint &pt);
-        void setCol(const QPoint &pt);
+        QPoint colorPoint();
+        int huePoint(const QPoint &pt);
+        int saturationPoint(const QPoint &pt);
+        void setColor(const QPoint &pt);
 };
 
 #endif

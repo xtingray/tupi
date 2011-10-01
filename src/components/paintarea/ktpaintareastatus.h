@@ -36,7 +36,7 @@
 #ifndef KTPAINTAREASTATUS_H
 #define KTPAINTAREASTATUS_H
 
-#include <qstatusbar.h>
+#include <QStatusBar>
 
 class KTViewDocument;
 
