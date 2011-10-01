@@ -173,7 +173,7 @@ void KTColorPalette::setupMainPalette()
 {
     //palettes
     k->containerPalette = new KTViewColorCells(k->splitter);
-    connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(updateColor(const QBrush&)));
+    connect(k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(updateColorFromPalette(const QBrush&)));
 
     k->splitter->addWidget(k->containerPalette);
 }
@@ -272,14 +272,12 @@ void KTColorPalette::setColor(const QBrush& brush)
     emit paintAreaEventTriggered(&event2);
 }
 
-void KTColorPalette::updateColor(const QBrush& brush)
+void KTColorPalette::setGlobalColors(QBrush brush)
 {
-    QColor color = brush.color();
-
     if (k->currentSpace == KDualColorButton::Foreground) {
         k->outlineAndFillColors->setForeground(brush);
         k->currentOutlineColor = brush;
-        KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, color);
+        KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, brush.color());
         emit paintAreaEventTriggered(&event);
     } else {
         k->outlineAndFillColors->setBackground(brush);
@@ -288,14 +286,22 @@ void KTColorPalette::updateColor(const QBrush& brush)
         emit paintAreaEventTriggered(&event);
     }
 
-    k->nameColor->setText(color.name());
-    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->nameColor->setText(brush.color().name());
+}
+
+void KTColorPalette::updateColorFromPalette(const QBrush& brush)
+{
+    setGlobalColors(brush);
+
+    QColor color = brush.color();
+    // k->nameColor->setText(color.name());
     k->displayColorValue->setColor(color);
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
 }
 
 void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
 {
-    tFatal() << "KTColorPalette::changeTypeColor() - Picking button #" << space;
+    tFatal() << "KTColorPalette::updateColorSpace() - Picking button #" << space;
     k->currentSpace = space;
     if (k->currentSpace == KDualColorButton::Foreground)
         k->nameColor->setText(k->currentOutlineColor.color().name());
@@ -325,7 +331,6 @@ void KTColorPalette::setBG(const QBrush &brush)
     k->outlineAndFillColors->setCurrent(KDualColorButton::Background);
     setColor(brush);
 }
-*/
 
 void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
 {
@@ -339,13 +344,17 @@ void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
         k->flagGradient = true;
     }
 }
+*/
 
 void KTColorPalette::syncHsv(int h, int s, int v)
 {
     QColor tmpColor = k->outlineAndFillColors->currentColor().color();
     tmpColor.setHsv(h, s, v, tmpColor.alpha());
-    if (k->luminancePicker == sender())
-        setColor(tmpColor);
+
+    // if (k->luminancePicker == sender())
+    //     setColor(tmpColor);
+
+    setGlobalColors(QBrush(tmpColor));
 }
 
 void KTColorPalette::setHS(int h, int s)

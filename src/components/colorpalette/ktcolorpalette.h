@@ -70,6 +70,7 @@ class KTColorPalette : public KTModuleWidgetBase
         void setupMainPalette();
         void setupChooserTypeColor();
         void setupGradientManager();
+        void setGlobalColors(QBrush brush);
 
     // protected:
     //    void mousePressEvent(QMouseEvent * e);
@@ -79,11 +80,11 @@ class KTColorPalette : public KTModuleWidgetBase
         // void setFG(const QBrush &brush);
         // void setBG(const QBrush &brush);
         void updateColor();
-        void changeTypeColor(KDualColorButton::ColorSpace s);
+        // void changeTypeColor(KDualColorButton::ColorSpace s);
         void syncHsv(int h, int s, int v);
         void setHS(int h, int s);
         void changeBrushType(const QString&);
-        void updateColor(const QBrush& brush);
+        void updateColorFromPalette(const QBrush& brush);
         void updateColorSpace(KDualColorButton::ColorSpace space);
         void switchColors();
         void resetColors();
