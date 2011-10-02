@@ -49,12 +49,12 @@ class KTColorPicker : public QFrame
         int saturation();
 
     public slots:
-        void setColor(int h, int s);
-        void setH(int h);
-        void setS(int s);
+        void setColor(int hue, int saturation);
+        void setHUE(int hue);
+        void setSaturation(int saturation);
 
     signals:
-        void newColor(int h, int s);
+        void newColor(int hue, int saturation);
 
     protected:
         QSize sizeHint() const;

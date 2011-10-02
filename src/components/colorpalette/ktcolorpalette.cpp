@@ -194,8 +194,8 @@ void KTColorPalette::setupChooserTypeColor()
 
     k->colorPicker = new KTColorPicker(colorMixer);
     connect(k->colorPicker, SIGNAL(newColor(int, int)), this, SLOT(setHS(int, int)));
-    connect(k->displayColorValue, SIGNAL(hueChanged(int)), k->colorPicker, SLOT(setH(int)));
-    connect(k->displayColorValue, SIGNAL(saturationChanged(int)), k->colorPicker, SLOT(setS(int)));
+    connect(k->displayColorValue, SIGNAL(hueChanged(int)), k->colorPicker, SLOT(setHUE(int)));
+    connect(k->displayColorValue, SIGNAL(saturationChanged(int)), k->colorPicker, SLOT(setSaturation(int)));
 
     layoutContainer->addWidget(k->colorPicker, 0, Qt::AlignLeft);
 
@@ -214,7 +214,7 @@ void KTColorPalette::setupChooserTypeColor()
     layout->addWidget(k->displayColorValue);
 
     k->displayColorValue->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush &)));
+    // connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     k->tab->addTab(colorMixer, tr("Color Mixer"));
 }
@@ -292,14 +292,14 @@ void KTColorPalette::setGlobalColors(const QBrush &brush)
 void KTColorPalette::updateColorFromPalette(const QBrush &brush)
 {
     setGlobalColors(brush);
-
     QColor color = brush.color();
-    k->displayColorValue->setColor(color);
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorValue->setColor(color);
 }
 
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)
 {
+    tFatal() << "KTColorPalette::updateColorFromDisplay() - Just TRACING!";
     setGlobalColors(brush);
 
     QColor color = brush.color();
@@ -310,48 +310,17 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
 {
     tFatal() << "KTColorPalette::updateColorSpace() - Picking button #" << space;
     k->currentSpace = space;
+
+    QColor color;
     if (k->currentSpace == KDualColorButton::Foreground)
-        k->nameColor->setText(k->currentOutlineColor.color().name());
+        color = k->currentOutlineColor.color().name();
     else
-        k->nameColor->setText(k->currentFillColor.color().name());
+        color = k->currentFillColor.color().name();
+
+    k->nameColor->setText(color.name());
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorValue->setColor(color);
 }
-
-/*
-void KTColorPalette::setFG(const QBrush &brush)
-{
-    if (brush.color().isValid())
-        changeBrushType(tr("Solid"));
-    else
-        changeBrushType(tr("Gradient"));
-
-    k->outlineAndFillColors->setCurrent(KDualColorButton::Foreground);
-    setColor(brush);
-}
-
-void KTColorPalette::setBG(const QBrush &brush)
-{
-    if (brush.color().isValid())
-        changeBrushType(tr("Solid"));
-    else
-        changeBrushType(tr("Gradient"));
-
-    k->outlineAndFillColors->setCurrent(KDualColorButton::Background);
-    setColor(brush);
-}
-
-void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
-{
-    if (s == KDualColorButton::Background) {
-        k->outlineAndFillColors->setCurrent(s);
-        setColor(k->outlineAndFillColors->background());
-    } else {
-        k->outlineAndFillColors->setCurrent(s);
-        k->flagGradient = false;
-        setColor(k->outlineAndFillColors->foreground());
-        k->flagGradient = true;
-    }
-}
-*/
 
 void KTColorPalette::syncHsv(int h, int s, int v)
 {
@@ -359,15 +328,23 @@ void KTColorPalette::syncHsv(int h, int s, int v)
     color.setHsv(h, s, v, color.alpha());
 
     setGlobalColors(QBrush(color));
-    k->colorPicker->setColor(color.hue(), color.saturation());
     k->displayColorValue->setColor(color);
+    k->colorPicker->setColor(color.hue(), color.saturation());
 }
 
 void KTColorPalette::setHS(int h, int s)
 {
+    tFatal() << "KTColorPalette::setHS() - Tracing slot!";
+
     QColor color = k->outlineAndFillColors->currentColor().color();
     color.setHsv(h, s, k->luminancePicker->value(), color.alpha());
-    // setColor(QBrush(color));
+
+    setGlobalColors(QBrush(color));
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorValue->setColor(color);
+
+    // k->colorPicker->setColor(color.hue(), color.saturation());
+    // k->displayColorValue->setColor(color);
 }
 
 void KTColorPalette::updateColor()
@@ -462,3 +439,41 @@ void KTColorPalette::resetColors()
      event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, k->currentFillColor);
      emit paintAreaEventTriggered(&event);
 }
+
+/*
+void KTColorPalette::setFG(const QBrush &brush)
+{
+    if (brush.color().isValid())
+        changeBrushType(tr("Solid"));
+    else
+        changeBrushType(tr("Gradient"));
+
+    k->outlineAndFillColors->setCurrent(KDualColorButton::Foreground);
+    setColor(brush);
+}
+
+void KTColorPalette::setBG(const QBrush &brush)
+{
+    if (brush.color().isValid())
+        changeBrushType(tr("Solid"));
+    else
+        changeBrushType(tr("Gradient"));
+
+    k->outlineAndFillColors->setCurrent(KDualColorButton::Background);
+    setColor(brush);
+}
+
+void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
+{
+    if (s == KDualColorButton::Background) {
+        k->outlineAndFillColors->setCurrent(s);
+        setColor(k->outlineAndFillColors->background());
+    } else {
+        k->outlineAndFillColors->setCurrent(s);
+        k->flagGradient = false;
+        setColor(k->outlineAndFillColors->foreground());
+        k->flagGradient = true;
+    }
+}
+*/
+

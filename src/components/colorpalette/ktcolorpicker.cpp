@@ -98,7 +98,7 @@ int KTColorPicker::huePoint(const QPoint &pt)
 
 int KTColorPicker::saturationPoint(const QPoint &pt)
 { 
-    return 255 - pt.y()*255/(pHeight-1) ; 
+    return 255 - pt.y()*255/(pHeight-1); 
 }
 
 void KTColorPicker::setColor(const QPoint &pt)
@@ -112,44 +112,47 @@ QSize KTColorPicker::sizeHint() const
     return QSize(pWidth + 2*frameWidth(), pHeight + 2*frameWidth());
 }
 
-void KTColorPicker::setColor(int h, int s)
+void KTColorPicker::setColor(int hue, int saturation)
 {
-    int nhue = qMin(qMax(0,h), 359);
-    int nsat = qMin(qMax(0,s), 255);
+    int nhue = qMin(qMax(0, hue), 359);
+    int nsat = qMin(qMax(0, saturation), 255);
 
-    if (nhue == k->hue && nsat == k->saturation)
+    if (nhue == k->hue && nsat == k->saturation) {
+        tFatal() << "KTColorPicker::setColor() - Same values... exiting!!!";
         return;
+    }
 
-    QRect r(colorPoint(), QSize(20,20));
-    k->hue = nhue; k->saturation = nsat;
-    r = r.unite(QRect(colorPoint(), QSize(20,20)));
-    r.translate(contentsRect().x()-9, contentsRect().y()-9);
+    QRect rect(colorPoint(), QSize(20,20));
+    k->hue = nhue; 
+    k->saturation = nsat;
+    rect = rect.unite(QRect(colorPoint(), QSize(20,20)));
+    rect.translate(contentsRect().x()-9, contentsRect().y()-9);
 
-    repaint(r);
+    repaint(rect);
 }
 
-void KTColorPicker::setH(int h)
+void KTColorPicker::setHUE(int hue)
 {
-    int nhue = qMin(qMax(0,h), 359);
-    if (nhue == k->hue)
+    int newHue = qMin(qMax(0, hue), 359);
+    if (newHue == k->hue)
         return;
 
-    QRect r(colorPoint(), QSize(20,20));
-    k->hue = nhue;
-    r = r.unite(QRect(colorPoint(), QSize(20,20)));
-    r.translate(contentsRect().x()-9, contentsRect().y()-9);
+    QRect rect(colorPoint(), QSize(20, 20));
+    k->hue = newHue;
+    rect = rect.unite(QRect(colorPoint(), QSize(20, 20)));
+    rect.translate(contentsRect().x()-9, contentsRect().y()-9);
 
-    repaint(r);
+    repaint(rect);
 }
 
-void KTColorPicker::setS(int s)
+void KTColorPicker::setSaturation(int saturation)
 {
-    int nsat = qMin(qMax(0,s), 255);
-    if (nsat == k->saturation)
+    int newSat = qMin(qMax(0, saturation), 255);
+    if (newSat == k->saturation)
         return;
 
     QRect rect(colorPoint(), QSize(20,20));
-    k->saturation = nsat;
+    k->saturation = newSat;
     rect = rect.unite(QRect(colorPoint(), QSize(20,20)));
     rect.translate(contentsRect().x()-9, contentsRect().y()-9);
 
