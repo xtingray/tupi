@@ -335,7 +335,19 @@ void KTColorPalette::syncHsv(int h, int s, int v)
 
 void KTColorPalette::setHS(int h, int s)
 {
-    tFatal() << "KTColorPalette::setHS() - Tracing slot!";
+    tFatal() << "KTColorPalette::setHS() - H: " << h;
+    tFatal() << "KTColorPalette::setHS() - S: " << s;
+
+    QColor color;
+    // color.setHsv(h, s, k->luminancePicker->value(), color.alpha());
+    color.setHsv(h, s, 255, 255);
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorForms->setColor(color);
+
+    tFatal() << "KTColorPalette::setHS() - Color: " << color.name();
+    tDebug() << "";
+
+    setGlobalColors(QBrush(color));
 
     /*
     QColor color = k->outlineAndFillColors->currentColor().color();
