@@ -63,13 +63,13 @@ struct KTColorPalette::Private
     QTabWidget *tab;
 
     KTViewColorCells *containerPalette;
-    KTColorValue *displayColorValue;
-    KTColorPicker *colorPicker;
+    KTColorValue *displayColorForms;
+    KTColorPicker *colorPickerArea;
     KTLuminancePicker *luminancePicker;
     KTGradientCreator *gradientManager;
 
     QComboBox *labelType;
-    QLineEdit *nameColor;
+    QLineEdit *htmlNameColor;
     KDualColorButton *outlineAndFillColors;
     QBrush currentOutlineColor;
     QBrush currentFillColor;
@@ -141,6 +141,7 @@ void KTColorPalette::setupDisplayColor()
 
     vlayout->addWidget(k->labelType);
 
+    // foreground/background color buttons
     k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
     k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     k->currentSpace = KDualColorButton::Foreground;
@@ -157,13 +158,13 @@ void KTColorPalette::setupDisplayColor()
     layoutName->setMargin(0);
 
     layoutName->addWidget(new QLabel("<b>HTML</b>", viewColor));
-    k->nameColor = new QLineEdit(viewColor);
-    k->nameColor->setMaximumWidth(70);
-    k->nameColor->setMaxLength(7);
-    k->nameColor->setText("#000000");
+    k->htmlNameColor = new QLineEdit(viewColor);
+    k->htmlNameColor->setMaximumWidth(70);
+    k->htmlNameColor->setMaxLength(7);
+    k->htmlNameColor->setText("#000000");
 
-    connect(k->nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
-    layoutName->addWidget(k->nameColor);
+    connect(k->htmlNameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
+    layoutName->addWidget(k->htmlNameColor);
     vlayout->addLayout(layoutName);
 
     addChild(viewColor);
@@ -187,34 +188,34 @@ void KTColorPalette::setupChooserTypeColor()
 
     colorMixer->setLayout(layout);
 
-    k->displayColorValue = new KTColorValue(colorMixer);
+    k->displayColorForms = new KTColorValue(colorMixer);
 
     QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
     layoutContainer->addStretch(2);
 
-    k->colorPicker = new KTColorPicker(colorMixer);
-    connect(k->colorPicker, SIGNAL(newColor(int, int)), this, SLOT(setHS(int, int)));
-    connect(k->displayColorValue, SIGNAL(hueChanged(int)), k->colorPicker, SLOT(setHUE(int)));
-    connect(k->displayColorValue, SIGNAL(saturationChanged(int)), k->colorPicker, SLOT(setSaturation(int)));
+    k->colorPickerArea = new KTColorPicker(colorMixer);
+    connect(k->colorPickerArea, SIGNAL(newColor(int, int)), this, SLOT(setHS(int, int)));
+    connect(k->displayColorForms, SIGNAL(hueChanged(int)), k->colorPickerArea, SLOT(setHUE(int)));
+    connect(k->displayColorForms, SIGNAL(saturationChanged(int)), k->colorPickerArea, SLOT(setSaturation(int)));
 
-    layoutContainer->addWidget(k->colorPicker, 0, Qt::AlignLeft);
+    layoutContainer->addWidget(k->colorPickerArea, 0, Qt::AlignLeft);
 
     k->luminancePicker = new KTLuminancePicker(colorMixer);
     connect(k->luminancePicker, SIGNAL(newHsv(int, int, int)), this, SLOT(syncHsv(int, int, int)));
 
     k->luminancePicker->setMaximumWidth(15);
     k->luminancePicker->setMinimumWidth(15);
-    connect(k->displayColorValue, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setValue(int)));
+    connect(k->displayColorForms, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setValue(int)));
 
     layoutContainer->addWidget(k->luminancePicker, 0, Qt::AlignLeft);
     layoutContainer->setSpacing(3);
     layoutContainer->addStretch(2);
 
     layout->addLayout(layoutContainer);
-    layout->addWidget(k->displayColorValue);
+    layout->addWidget(k->displayColorForms);
 
-    k->displayColorValue->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    // connect(k->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
+    k->displayColorForms->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    // connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     k->tab->addTab(colorMixer, tr("Color Mixer"));
 }
@@ -234,16 +235,16 @@ void KTColorPalette::setColor(const QBrush& brush)
         if (k->type == Gradient)
             k->gradientManager->setCurrentColor(color);
 
-        if (k->displayColorValue && k->outlineAndFillColors && k->colorPicker && k->nameColor && k->luminancePicker) {
+        if (k->displayColorForms && k->outlineAndFillColors && k->colorPickerArea && k->htmlNameColor && k->luminancePicker) {
 
-            k->colorPicker->setColor(color.hue(), color.saturation());
+            k->colorPickerArea->setColor(color.hue(), color.saturation());
             if (k->type == Solid)
                 k->outlineAndFillColors->setCurrentColor(color);
 
-            k->nameColor->setText(color.name());
+            k->htmlNameColor->setText(color.name());
             k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
             k->containerPalette->setColor(brush);
-            k->displayColorValue->setColor(color);
+            k->displayColorForms->setColor(color);
         }
     } else if (brush.gradient()) {
                QGradient gradient(*brush.gradient());
@@ -286,7 +287,7 @@ void KTColorPalette::setGlobalColors(const QBrush &brush)
         emit paintAreaEventTriggered(&event);
     }
 
-    k->nameColor->setText(brush.color().name());
+    k->htmlNameColor->setText(brush.color().name());
 }
 
 void KTColorPalette::updateColorFromPalette(const QBrush &brush)
@@ -294,7 +295,7 @@ void KTColorPalette::updateColorFromPalette(const QBrush &brush)
     setGlobalColors(brush);
     QColor color = brush.color();
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
-    k->displayColorValue->setColor(color);
+    k->displayColorForms->setColor(color);
 }
 
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)
@@ -317,9 +318,9 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
     else
         color = k->currentFillColor.color().name();
 
-    k->nameColor->setText(color.name());
+    k->htmlNameColor->setText(color.name());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
-    k->displayColorValue->setColor(color);
+    k->displayColorForms->setColor(color);
 }
 
 void KTColorPalette::syncHsv(int h, int s, int v)
@@ -328,29 +329,31 @@ void KTColorPalette::syncHsv(int h, int s, int v)
     color.setHsv(h, s, v, color.alpha());
 
     setGlobalColors(QBrush(color));
-    k->displayColorValue->setColor(color);
-    k->colorPicker->setColor(color.hue(), color.saturation());
+    k->displayColorForms->setColor(color);
+    k->colorPickerArea->setColor(color.hue(), color.saturation());
 }
 
 void KTColorPalette::setHS(int h, int s)
 {
     tFatal() << "KTColorPalette::setHS() - Tracing slot!";
 
+    /*
     QColor color = k->outlineAndFillColors->currentColor().color();
     color.setHsv(h, s, k->luminancePicker->value(), color.alpha());
 
     setGlobalColors(QBrush(color));
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
-    k->displayColorValue->setColor(color);
+    k->displayColorForms->setColor(color);
+    */
 
-    // k->colorPicker->setColor(color.hue(), color.saturation());
-    // k->displayColorValue->setColor(color);
+    // k->colorPickerArea->setColor(color.hue(), color.saturation());
+    // k->displayColorForms->setColor(color);
 }
 
 void KTColorPalette::updateColor()
 {
-    QColor tmpColor(k->nameColor->text());
-    tmpColor.setAlpha(k->displayColorValue->alpha());
+    QColor tmpColor(k->htmlNameColor->text());
+    tmpColor.setAlpha(k->displayColorForms->alpha());
     setColor(tmpColor);
 }
 
@@ -405,7 +408,7 @@ void KTColorPalette::init()
     k->outlineAndFillColors->setForeground(QBrush(color));
     k->outlineAndFillColors->setBackground(brush);
 
-    k->colorPicker->setColor(color.hue(), color.saturation());
+    k->colorPickerArea->setColor(color.hue(), color.saturation());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
 
     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, Qt::black);
