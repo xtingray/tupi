@@ -144,7 +144,6 @@ void KTColorPalette::setupDisplayColor()
     // foreground/background color buttons
     k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
     k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    k->currentSpace = KDualColorButton::Foreground;
 
     connect(k->outlineAndFillColors, SIGNAL(selectionChanged(KDualColorButton::ColorSpace)),
             this, SLOT(updateColorSpace(KDualColorButton::ColorSpace)));
@@ -188,15 +187,17 @@ void KTColorPalette::setupChooserTypeColor()
 
     colorMixer->setLayout(layout);
 
-    k->displayColorForms = new KTColorValue(colorMixer);
-
     QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
     layoutContainer->addStretch(2);
 
     k->colorPickerArea = new KTColorPicker(colorMixer);
     connect(k->colorPickerArea, SIGNAL(newColor(int, int)), this, SLOT(setHS(int, int)));
+
+    k->displayColorForms = new KTColorValue(colorMixer);
+    k->displayColorForms->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     connect(k->displayColorForms, SIGNAL(hueChanged(int)), k->colorPickerArea, SLOT(setHUE(int)));
     connect(k->displayColorForms, SIGNAL(saturationChanged(int)), k->colorPickerArea, SLOT(setSaturation(int)));
+    // connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     layoutContainer->addWidget(k->colorPickerArea, 0, Qt::AlignLeft);
 
@@ -213,9 +214,6 @@ void KTColorPalette::setupChooserTypeColor()
 
     layout->addLayout(layoutContainer);
     layout->addWidget(k->displayColorForms);
-
-    k->displayColorForms->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    // connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     k->tab->addTab(colorMixer, tr("Color Mixer"));
 }
@@ -300,11 +298,12 @@ void KTColorPalette::updateColorFromPalette(const QBrush &brush)
 
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)
 {
-    tFatal() << "KTColorPalette::updateColorFromDisplay() - Just TRACING!";
-    setGlobalColors(brush);
+    tFatal() << "KTColorPalette::updateColorFromDisplay() - Just tracing color: " << brush.color().name();
+    // setGlobalColors(brush);
 
-    QColor color = brush.color();
-    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    // QColor color = brush.color();
+    // k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    // k->colorPickerArea->setColor(color.hue(), color.saturation());
 }
 
 void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
@@ -330,17 +329,20 @@ void KTColorPalette::syncHsv(int h, int s, int v)
 
     setGlobalColors(QBrush(color));
     k->displayColorForms->setColor(color);
-    k->colorPickerArea->setColor(color.hue(), color.saturation());
+    // k->colorPickerArea->setColor(color.hue(), color.saturation());
 }
 
-void KTColorPalette::setHS(int h, int s)
+void KTColorPalette::setHS(int hue, int saturation)
 {
-    tFatal() << "KTColorPalette::setHS() - H: " << h;
-    tFatal() << "KTColorPalette::setHS() - S: " << s;
+    tFatal() << "KTColorPalette::setHS() - H: " << hue;
+    tFatal() << "KTColorPalette::setHS() - S: " << saturation;
+
+    int luminance = 255;
+    if (hue == 0 && saturation == 0)
+        luminance = 0;
 
     QColor color;
-    // color.setHsv(h, s, k->luminancePicker->value(), color.alpha());
-    color.setHsv(h, s, 255, 255);
+    color.setHsv(hue, saturation, luminance, 255);
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
 
@@ -348,18 +350,6 @@ void KTColorPalette::setHS(int h, int s)
     tDebug() << "";
 
     setGlobalColors(QBrush(color));
-
-    /*
-    QColor color = k->outlineAndFillColors->currentColor().color();
-    color.setHsv(h, s, k->luminancePicker->value(), color.alpha());
-
-    setGlobalColors(QBrush(color));
-    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
-    k->displayColorForms->setColor(color);
-    */
-
-    // k->colorPickerArea->setColor(color.hue(), color.saturation());
-    // k->displayColorForms->setColor(color);
 }
 
 void KTColorPalette::updateColor()
@@ -383,17 +373,6 @@ void KTColorPalette::parsePaletteFile(const QString &file)
     k->containerPalette->readPaletteFile(file);
 }
 
-/*
-void KTColorPalette::mousePressEvent(QMouseEvent *e)
-{
-    if (e->button() == Qt::RightButton) {
-        QMenu *menu = new QMenu(tr("type brush"), this);
-        menu->exec(e->globalPos());
-        delete menu;
-    }
-}
-*/
-
 void KTColorPalette::changeBrushType(const QString& type)
 {
     if (type == tr("Solid")) {
@@ -411,6 +390,7 @@ void KTColorPalette::changeBrushType(const QString& type)
 
 void KTColorPalette::init()
 {
+    k->currentSpace = KDualColorButton::Foreground;
     QBrush brush = QBrush(Qt::transparent);
 
     QColor color = Qt::black;
@@ -422,6 +402,7 @@ void KTColorPalette::init()
 
     k->colorPickerArea->setColor(color.hue(), color.saturation());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorForms->setColor(color);
 
     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, Qt::black);
     emit paintAreaEventTriggered(&event);
@@ -445,7 +426,8 @@ void KTColorPalette::switchColors()
 
 void KTColorPalette::resetColors()
 {
-     k->currentOutlineColor = QBrush(Qt::black);
+     QColor color = Qt::black;
+     k->currentOutlineColor = QBrush(color);
      k->currentFillColor = QBrush(Qt::transparent);
 
      KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, k->currentOutlineColor.color());
@@ -453,6 +435,10 @@ void KTColorPalette::resetColors()
 
      event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, k->currentFillColor);
      emit paintAreaEventTriggered(&event);
+
+    k->colorPickerArea->setColor(color.hue(), color.saturation());
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+    k->displayColorForms->setColor(color);
 }
 
 /*

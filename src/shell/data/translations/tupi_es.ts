@@ -1538,7 +1538,7 @@
     </message>
     <message>
         <source>Your name</source>
-        <translation type="unfinished">Su Nombre</translation>
+        <translation type="unfinished">Mi nombre</translation>
     </message>
     <message>
         <source>Description</source>
