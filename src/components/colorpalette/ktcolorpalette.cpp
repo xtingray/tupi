@@ -197,7 +197,9 @@ void KTColorPalette::setupChooserTypeColor()
     k->displayColorForms->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     connect(k->displayColorForms, SIGNAL(hueChanged(int)), k->colorPickerArea, SLOT(setHUE(int)));
     connect(k->displayColorForms, SIGNAL(saturationChanged(int)), k->colorPickerArea, SLOT(setSaturation(int)));
-    // connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
+    // connect(k->displayColorForms, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setValue(int)));
+
+    connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     layoutContainer->addWidget(k->colorPickerArea, 0, Qt::AlignLeft);
 
@@ -206,7 +208,6 @@ void KTColorPalette::setupChooserTypeColor()
 
     k->luminancePicker->setMaximumWidth(15);
     k->luminancePicker->setMinimumWidth(15);
-    connect(k->displayColorForms, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setValue(int)));
 
     layoutContainer->addWidget(k->luminancePicker, 0, Qt::AlignLeft);
     layoutContainer->setSpacing(3);
@@ -299,16 +300,15 @@ void KTColorPalette::updateColorFromPalette(const QBrush &brush)
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)
 {
     tFatal() << "KTColorPalette::updateColorFromDisplay() - Just tracing color: " << brush.color().name();
-    // setGlobalColors(brush);
+    setGlobalColors(brush);
 
-    // QColor color = brush.color();
-    // k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
-    // k->colorPickerArea->setColor(color.hue(), color.saturation());
+    QColor color = brush.color();
+    k->colorPickerArea->setColor(color.hue(), color.saturation());
+    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
 }
 
 void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
 {
-    tFatal() << "KTColorPalette::updateColorSpace() - Picking button #" << space;
     k->currentSpace = space;
 
     QColor color;
@@ -316,6 +316,10 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
         color = k->currentOutlineColor.color().name();
     else
         color = k->currentFillColor.color().name();
+
+    tFatal() << "KTColorPalette::updateColorSpace() - Picking button #" << space;
+    tFatal() << "KTColorPalette::updateColorSpace() - Color: " << color.name();
+    tFatal() << "KTColorPalette::updateColorSpace() - Alpha: " << color.alpha();
 
     k->htmlNameColor->setText(color.name());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());

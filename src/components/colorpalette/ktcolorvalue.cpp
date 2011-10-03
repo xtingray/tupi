@@ -50,10 +50,13 @@
 struct KTItemColorValue::Private
 {
     QSpinBox *value;
+
+    /*
     ~Private()
      {
        delete value;
      };
+    */
 };
 
 KTItemColorValue::KTItemColorValue(const QString &text, QWidget *parent) : QFrame(parent), k(new Private)
