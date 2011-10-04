@@ -94,10 +94,6 @@
         <translation>Výběr obrysu</translation>
     </message>
     <message>
-        <source>Nodes selection </source>
-        <translation>Výběr uzlu</translation>
-    </message>
-    <message>
         <source>N</source>
         <translation>N</translation>
     </message>

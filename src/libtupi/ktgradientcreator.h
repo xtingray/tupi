@@ -42,13 +42,11 @@
 #include "kimagebutton.h"
 #include "kcirclebutton.h"
 #include "kxyspinbox.h"
+#include "ktglobal.h"
 
 #include <QFrame>
-
 #include <QComboBox>
 #include <QBoxLayout>
-
-#include "ktglobal.h"
 
 class SpinControl;
 
@@ -62,8 +60,9 @@ class SpinControl;
   * 
   * @endif
   *
-  * @author Jorge Cuadrado <kuadrosx@toonka.com>
+  * @author Jorge Cuadrado
   */
+
 class TUPI_EXPORT KTGradientCreator : public QFrame
 {
     Q_OBJECT
@@ -112,13 +111,19 @@ class TUPI_EXPORT KTGradientCreator : public QFrame
          * Devuelve el tamano ideal
          */
         virtual QSize sizeHint () const;
-        
+
+    private:
+        struct Private;
+        Private *const k;
+
+    /*
     private:
         KTGradientSelector *m_selector;
         KTGradientViewer *m_viewer;
         QComboBox *m_type, *m_spread ;
         QSpinBox *m_radius, *m_angle;
         SpinControl *m_spinControl;
+    */
         
     public slots:
         /**
@@ -166,8 +171,9 @@ class TUPI_EXPORT KTGradientCreator : public QFrame
 };
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
  */
+
 class TUPI_EXPORT SpinControl: public QGroupBox
 {
     Q_OBJECT

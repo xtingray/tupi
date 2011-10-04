@@ -78,10 +78,6 @@
         <translation>Выделение Контуров</translation>
     </message>
     <message>
-        <source>Nodes selection </source>
-        <translation>Выделение узлов</translation>
-    </message>
-    <message>
         <source>N</source>
         <translation>N</translation>
     </message>

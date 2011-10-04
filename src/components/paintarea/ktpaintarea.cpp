@@ -41,13 +41,10 @@
 #include "ktpaintarearotator.h"
 #include "ktimagedevice.h"
 #include "ktgraphicsscene.h"
-
 #include "tconfig.h"
 #include "tapplication.h"
 #include "tdebug.h"
-
 #include "kttextitem.h"
-
 #include "ktlibrarydialog.h"
 #include "ktlibraryobject.h"
 #include "ktrequestbuilder.h"
@@ -58,8 +55,8 @@
 #include "ktsvgitem.h"
 #include "ktpixmapitem.h"
 #include "node.h"
+#include "kcontrolnode.h"
 #include "ktproject.h"
-
 #include "tosd.h"
 
 #include <QGraphicsScene>
@@ -152,6 +149,14 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
                tFatal() << "KTPaintArea::mousePressEvent() - Frame is locked!";
         #endif
         return;
+    }
+
+    if (k->currentTool.compare(tr("Contour Selection")) == 0) {
+        // If a node is the target... abort!
+        if (event->buttons() == Qt::RightButton) {
+            if (qgraphicsitem_cast<KControlNode *>(scene()->itemAt(mapToScene(event->pos()))))
+                return;
+        }
     }
 
     if (k->currentTool.compare(tr("Object Selection")) == 0) {

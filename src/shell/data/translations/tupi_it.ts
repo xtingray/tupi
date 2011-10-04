@@ -100,11 +100,6 @@
         <translation type="unfinished">Selezione contorno</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="267"/>
-        <source>Nodes selection </source>
-        <translation type="unfinished">Selezione dei nodi</translation>
-    </message>
-    <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="268"/>
         <source>N</source>
         <translation type="unfinished">N</translation>

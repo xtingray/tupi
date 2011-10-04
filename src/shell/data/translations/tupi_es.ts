@@ -103,10 +103,6 @@
         <translation>Selección de Contorno</translation>
     </message>
     <message>
-        <source>Nodes Selection</source>
-        <translation>Selección de Nodos</translation>
-    </message>
-    <message>
         <source>N</source>
         <translation>N</translation>
     </message>

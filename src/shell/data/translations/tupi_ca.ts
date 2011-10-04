@@ -78,10 +78,6 @@
         <translation>Selecció de contorn</translation>
     </message>
     <message>
-        <source>Nodes selection </source>
-        <translation>Selecció de nodes</translation>
-    </message>
-    <message>
         <source>Ctrl+M</source>
         <translation>Ctrl+M</translation>
     </message>

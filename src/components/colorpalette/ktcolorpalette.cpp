@@ -197,8 +197,6 @@ void KTColorPalette::setupChooserTypeColor()
     k->displayColorForms->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     connect(k->displayColorForms, SIGNAL(hueChanged(int)), k->colorPickerArea, SLOT(setHUE(int)));
     connect(k->displayColorForms, SIGNAL(saturationChanged(int)), k->colorPickerArea, SLOT(setSaturation(int)));
-    // connect(k->displayColorForms, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setValue(int)));
-
     connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     layoutContainer->addWidget(k->colorPickerArea, 0, Qt::AlignLeft);
@@ -315,7 +313,7 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
     if (k->currentSpace == KDualColorButton::Foreground)
         color = k->currentOutlineColor.color().name();
     else
-        color = k->currentFillColor.color().name();
+        color = k->outlineAndFillColors->background().color();
 
     tFatal() << "KTColorPalette::updateColorSpace() - Picking button #" << space;
     tFatal() << "KTColorPalette::updateColorSpace() - Color: " << color.name();
@@ -381,15 +379,21 @@ void KTColorPalette::changeBrushType(const QString& type)
 {
     if (type == tr("Solid")) {
         k->type = Solid;
+        if (k->tab->currentIndex() != Solid)
+            k->tab->setCurrentIndex(Solid);
     } else if (type == tr("Gradient")) {
                k->type = Gradient;
+               if (k->tab->currentIndex() != Gradient)
+                   k->tab->setCurrentIndex(Gradient);
     }
 
+    /*
     if (type != k->labelType->currentText()) {
         int index = k->labelType->findText(type);
         if (index >= 0)
             k->labelType->setCurrentIndex(index);
     }
+    */
 }
 
 void KTColorPalette::init()

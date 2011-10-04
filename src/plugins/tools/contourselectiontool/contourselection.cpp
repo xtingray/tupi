@@ -34,11 +34,6 @@
  ***************************************************************************/
 
 #include "contourselection.h"
-
-#include <QPointF>
-#include <QKeySequence>
-#include <QList>
-
 #include "taction.h"
 #include "tdebug.h"
 #include "tglobal.h"
@@ -49,8 +44,6 @@
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktserializer.h"
-
-#include <QGraphicsView>
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
@@ -59,6 +52,10 @@
 #include "ktproxyitem.h"
 #include "ktlibraryobject.h"
 
+#include <QGraphicsView>
+#include <QPointF>
+#include <QKeySequence>
+#include <QList>
 #include <QDebug>
 #include <QTimer>
 
@@ -67,7 +64,6 @@ struct ContourSelection::Private
     QMap<QString, TAction *> actions;
     QList<KNodeGroup*> nodeGroups; 
     KTGraphicsScene *scene;
-
 };
 
 ContourSelection::ContourSelection(): k(new Private)
@@ -309,7 +305,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-    TAction *select = new TAction(QPixmap(THEME_DIR + "icons/nodes.png"), tr("Nodes selection "), this);
+    TAction *select = new TAction(QPixmap(THEME_DIR + "icons/nodes.png"), tr("Contour Selection"), this);
     select->setShortcut(QKeySequence(tr("N")));
 
     k->actions.insert(tr("Contour Selection"), select);
