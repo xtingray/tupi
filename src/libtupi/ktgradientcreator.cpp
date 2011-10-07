@@ -152,22 +152,29 @@ void KTGradientCreator::setGradient(const QBrush & brush)
 {
     const QGradient *gradient = brush.gradient();
 
-    k->type->setCurrentIndex(gradient->type());
-    k->spread->setCurrentIndex(gradient->spread());
-    k->selector->setStops(gradient->stops());
-    k->viewer->setGradient(gradient);
-    k->spinControl->setSpin(gradient->type());
+    if (gradient) {
+        k->type->setCurrentIndex(gradient->type());
+        k->spread->setCurrentIndex(gradient->spread());
+        k->selector->setStops(gradient->stops());
+        k->viewer->setGradient(gradient);
+        k->spinControl->setSpin(gradient->type());
 
-    if (gradient->type() == QGradient::RadialGradient) {
-        k->spinControl->setRadius((int) static_cast<const QRadialGradient*>(gradient)->radius());
-    } else if (gradient->type() == QGradient::ConicalGradient) {
-               k->spinControl->setAngle((int) static_cast<const QConicalGradient*>(gradient)->angle());
+        if (gradient->type() == QGradient::RadialGradient) {
+            k->spinControl->setRadius((int) static_cast<const QRadialGradient*>(gradient)->radius());
+        } else if (gradient->type() == QGradient::ConicalGradient) {
+                   k->spinControl->setAngle((int) static_cast<const QConicalGradient*>(gradient)->angle());
+        }
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTGradientCreator::setGradient() - Error: Brush has no gradient (null)";
+        #endif
     }
 }
 
 void KTGradientCreator::emitGradientChanged()
 {
     k->viewer->changeGradientStops(k->selector->gradientStops());
+
     emit gradientChanged(k->viewer->gradient());
 }
 
@@ -176,7 +183,7 @@ QBrush KTGradientCreator::currentGradient()
     return QBrush(k->viewer->gradient());
 }
 
-QSize KTGradientCreator::sizeHint () const
+QSize KTGradientCreator::sizeHint() const
 {
     QSize size = QFrame::sizeHint();
     

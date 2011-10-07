@@ -81,7 +81,7 @@ class KTViewDocument : public QMainWindow
         KTProject::Mode spaceContext();
         KTProject *project();
 
-    public slots:
+    private slots:
         void setNextOnionSkin(int n);
         void setPreviousOnionSkin(int n);
 

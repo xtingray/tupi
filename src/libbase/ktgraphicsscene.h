@@ -36,12 +36,12 @@
 #ifndef KTGRAPHICSSCENE_H
 #define KTGRAPHICSSCENE_H
 
-#include <QGraphicsScene>
-
 #include "ktglobal.h"
 #include "ktsvgitem.h"
 #include "ktproject.h"
 #include "ktprojectresponse.h"
+
+#include <QGraphicsScene>
 
 /**
  * @author David Cuadrado

@@ -36,31 +36,31 @@
 #ifndef KTITEMCONVERTER_H
 #define KTITEMCONVERTER_H
 
-#include <QAbstractGraphicsShapeItem>
-
 class KTPathItem;
 class KTEllipseItem;
 class KTRectItem;
 class KTLineItem;
 
+#include <QAbstractGraphicsShapeItem>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTItemConverter
 {
-	private:
-		KTItemConverter();
-		
-	public:
-		~KTItemConverter();
-		
-		static void copyProperties(QGraphicsItem *src, QGraphicsItem *dest);
-		
-		static KTPathItem *convertToPath(QGraphicsItem *item);
-		static KTEllipseItem *convertToEllipse(QGraphicsItem *item);
-		static KTRectItem *convertToRect(QGraphicsItem *item);
-		static KTLineItem *convertToLine(QGraphicsItem *item);
+    private:
+        KTItemConverter();
+        
+    public:
+        ~KTItemConverter();
+        
+        static void copyProperties(QGraphicsItem *src, QGraphicsItem *dest);
+        
+        static KTPathItem *convertToPath(QGraphicsItem *item);
+        static KTEllipseItem *convertToEllipse(QGraphicsItem *item);
+        static KTRectItem *convertToRect(QGraphicsItem *item);
+        static KTLineItem *convertToLine(QGraphicsItem *item);
 };
 
 #endif

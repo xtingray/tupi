@@ -88,7 +88,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->currentOutlineColor = Qt::black;
     k->currentFillColor = Qt::transparent;
     k->flagGradient = true;
-    k->type = Solid;
+    // k->type = Solid;
 
     setWindowTitle(tr("Color Palette"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/color_palette.png"));
@@ -133,6 +133,7 @@ void KTColorPalette::setupDisplayColor()
 
     viewColor->setLayout(vlayout);
 
+/*
     k->labelType = new QComboBox(viewColor);
     k->labelType->addItem(tr("Solid"));
     k->labelType->addItem(tr("Gradient"));
@@ -140,6 +141,7 @@ void KTColorPalette::setupDisplayColor()
     connect(k->labelType, SIGNAL(activated(const QString &)), this, SLOT(changeBrushType(const QString &)));
 
     vlayout->addWidget(k->labelType);
+*/
 
     // foreground/background color buttons
     k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
@@ -220,7 +222,8 @@ void KTColorPalette::setupChooserTypeColor()
 void KTColorPalette::setupGradientManager()
 {
     k->gradientManager = new KTGradientCreator(this);
-    connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
+    connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(updateGradientColor(const QBrush &)));
+
     k->tab->addTab(k->gradientManager, tr("Gradients"));
 }
 
@@ -245,7 +248,7 @@ void KTColorPalette::setColor(const QBrush& brush)
         }
     } else if (brush.gradient()) {
                QGradient gradient(*brush.gradient());
-               changeBrushType(tr("Gradient"));
+               // changeBrushType(tr("Gradient"));
 
                k->containerPalette->setColor(gradient);
                k->outlineAndFillColors->setCurrentColor(gradient);
@@ -293,6 +296,7 @@ void KTColorPalette::updateColorFromPalette(const QBrush &brush)
     QColor color = brush.color();
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
+    k->gradientManager->setCurrentColor(color);
 }
 
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)
@@ -311,7 +315,8 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
 
     QColor color;
     if (k->currentSpace == KDualColorButton::Foreground)
-        color = k->currentOutlineColor.color().name();
+        color = k->outlineAndFillColors->foreground().color();
+        // color = k->currentOutlineColor.color().name();
     else
         color = k->outlineAndFillColors->background().color();
 
@@ -322,6 +327,12 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
     k->htmlNameColor->setText(color.name());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
+}
+
+void KTColorPalette::updateGradientColor(const QBrush &brush)
+{
+    tFatal() << "KTColorPalette::updateGradientColor() - Just tracing!";
+    setGlobalColors(brush);
 }
 
 void KTColorPalette::syncHsv(int h, int s, int v)
@@ -375,6 +386,7 @@ void KTColorPalette::parsePaletteFile(const QString &file)
     k->containerPalette->readPaletteFile(file);
 }
 
+/*
 void KTColorPalette::changeBrushType(const QString& type)
 {
     if (type == tr("Solid")) {
@@ -387,14 +399,14 @@ void KTColorPalette::changeBrushType(const QString& type)
                    k->tab->setCurrentIndex(Gradient);
     }
 
-    /*
+    // This code has been deprecated!
     if (type != k->labelType->currentText()) {
         int index = k->labelType->findText(type);
         if (index >= 0)
             k->labelType->setCurrentIndex(index);
     }
-    */
 }
+*/
 
 void KTColorPalette::init()
 {
@@ -411,6 +423,7 @@ void KTColorPalette::init()
     k->colorPickerArea->setColor(color.hue(), color.saturation());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
+    k->gradientManager->setCurrentColor(Qt::white);
 
     KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, Qt::black);
     emit paintAreaEventTriggered(&event);
@@ -447,6 +460,7 @@ void KTColorPalette::resetColors()
     k->colorPickerArea->setColor(color.hue(), color.saturation());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
+    k->gradientManager->setCurrentColor(Qt::white);
 }
 
 /*

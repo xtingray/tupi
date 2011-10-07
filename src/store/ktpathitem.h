@@ -37,8 +37,9 @@
 #define KTPATHITEM_H
 
 #include "ktabstractserializable.h"
-#include <QGraphicsPathItem>
 #include "ktglobal_store.h"
+
+#include <QGraphicsPathItem>
 
 /**
  * @author David Cuadrado

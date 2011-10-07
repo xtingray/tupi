@@ -430,8 +430,14 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
     return false;
 }
 
-static QGraphicsItem * convert(QGraphicsItem *item, int toType)
+static QGraphicsItem *convert(QGraphicsItem *item, int toType)
 {
+    tFatal() << "KTPathItem::Type: " << KTPathItem::Type;
+    tFatal() << "KTRectItem::Type: " <<  KTRectItem::Type;
+    tFatal() << "KTEllipseItem::Type: " <<  KTEllipseItem::Type;
+    tFatal() << "KTProxyItem::Type: " <<  KTProxyItem::Type;
+    tFatal() << "KTLineItem::Type: " <<  KTLineItem::Type;
+
     switch (toType) {
             case KTPathItem::Type: // Path
             {
@@ -503,7 +509,9 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
                         if (toType == item->type()) 
                             return false;
                     
-                        QGraphicsItem * itemConverted = convert(item, toType);
+                        QGraphicsItem *itemConverted = convert(item, toType);
+
+                        tFatal() << "KTCommandExecutor::convertItem() - item new type: " << toType;
                     
                         if (itemConverted) {
                             // scene->removeItem(item); // FIXME?

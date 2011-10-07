@@ -95,6 +95,7 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 
         case KTRectItem::Type:
         {
+            tFatal() << "KTItemConverter::convertToPath() - Converting rectangle to path!";
             ppath.addRect(qgraphicsitem_cast<KTRectItem *>(item)->rect());
         }
         break;

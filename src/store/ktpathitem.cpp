@@ -34,16 +34,16 @@
  ***************************************************************************/
 
 #include "ktpathitem.h"
-#include <QGraphicsSceneDragDropEvent>
-#include <QMimeData>
-#include <QBrush>
 #include "tdebug.h"
-#include <QPainter>
-#include <QPainterPath>
 #include "ktsvg2qt.h"
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
 
+#include <QMimeData>
+#include <QBrush>
+#include <QGraphicsSceneDragDropEvent>
+#include <QPainter>
+#include <QPainterPath>
 #include <QCursor>
 
 KTPathItem::KTPathItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)

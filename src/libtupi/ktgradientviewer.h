@@ -36,10 +36,11 @@
 #ifndef KTGRADIENTVIEWER_H
 #define KTGRADIENTVIEWER_H
 
+#include "ktglobal.h"
+
 #include <QFrame>
 #include <QGradient>
 #include <QList>
-#include "ktglobal.h"
 
 /**
  * @if english
@@ -53,7 +54,7 @@
  * @n-Si es Radial: el centro, punto focal 
  * @n-Si es Conico: el centro,
  * @endif
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 class TUPI_EXPORT KTGradientViewer : public QFrame
 {
@@ -108,11 +109,11 @@ class TUPI_EXPORT KTGradientViewer : public QFrame
 		void setGradient(const QGradient* gradient);
 		
 	protected:
-		virtual void paintEvent( QPaintEvent * );
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void mouseMoveEvent( QMouseEvent * e );
+		virtual void paintEvent(QPaintEvent *);
+		virtual void mousePressEvent(QMouseEvent *event);
+		virtual void mouseMoveEvent(QMouseEvent *event);
 		virtual QSize sizeHint() const;
-		virtual void resizeEvent ( QResizeEvent * event );
+		virtual void resizeEvent(QResizeEvent *event);
 		
 	private:
 		QPointF normalizePoint(const QPointF &);
@@ -137,7 +138,7 @@ class TUPI_EXPORT KTGradientViewer : public QFrame
 		* @endif
 		* @see QGradient
 		 */
-		void changeGradientStops( const QGradientStops& );
+		void changeGradientStops(const QGradientStops&);
 		/**
 		 * @if english
 		 * Translate

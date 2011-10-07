@@ -36,14 +36,6 @@
 #include "brush.h"
 #include "brush.xpm"
 
-#include <QPointF>
-#include <QKeySequence>
-#include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QMatrix>
-#include <QGraphicsLineItem>
-#include <QGraphicsView>
-
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
 #include "ktgraphicalgorithm.h"
@@ -58,6 +50,14 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tconfig.h"
+
+#include <QPointF>
+#include <QKeySequence>
+#include <QGraphicsPathItem>
+#include <QPainterPath>
+#include <QMatrix>
+#include <QGraphicsLineItem>
+#include <QGraphicsView>
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {
@@ -96,6 +96,10 @@ QStringList Brush::keys() const
 
 void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     m_firstPoint = input->pos();
 
     m_path = QPainterPath();
@@ -127,7 +131,14 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
 
 void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(scene);
+
+    if (!m_item)
+        return;
 
     double smoothness = m_configurator->exactness();
 
@@ -135,9 +146,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
         smoothness = 0;
         qreal radius = ((qreal) brushManager->pen().width()) / ((qreal) 2);
         m_path.addEllipse(input->pos().x(), input->pos().y(), radius, radius);
-    }
-
-    m_firstPoint = QPoint(0,0);
+    } 
 
     smoothPath(m_path, smoothness);
 

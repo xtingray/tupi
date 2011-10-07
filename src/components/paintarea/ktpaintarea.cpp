@@ -967,6 +967,7 @@ void KTPaintArea::setOnionFactor(double value)
 
 void KTPaintArea::keyPressEvent(QKeyEvent *event)
 {
+    /* This code has been deprecated 
     if (k->currentTool.compare(tr("Object Selection")) == 0 
         || k->currentTool.compare(tr("Contour Selection")) == 0
         || k->currentTool.compare(tr("Rectangle")) == 0
@@ -974,8 +975,19 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
         KTPaintAreaBase::keyPressEvent(event);
         return;
     }
+    */
 
-    KTGraphicsScene* scene = graphicsScene();
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
+    if (k->currentTool.compare(tr("Pencil")) != 0) {
+        if (k->currentTool.compare(tr("Object Selection")) == 0) {
+            if (!selected.isEmpty()) {
+                KTPaintAreaBase::keyPressEvent(event);
+                return;
+            }
+        }
+    }
+
+    KTGraphicsScene *scene = graphicsScene();
 
     if (event->key() == Qt::Key_Left && scene->currentFrameIndex() > 0) {
         KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),

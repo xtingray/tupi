@@ -50,7 +50,7 @@ class KTColorPalette : public KTModuleWidgetBase
     Q_OBJECT
 
     public:
-        enum BrushType{ Solid = 0, Gradient };
+        enum BrushType { Solid = 0, Gradient };
 
         KTColorPalette(QWidget *parent = 0);
         ~KTColorPalette();
@@ -83,10 +83,11 @@ class KTColorPalette : public KTModuleWidgetBase
         // void changeTypeColor(KDualColorButton::ColorSpace s);
         void syncHsv(int h, int s, int v);
         void setHS(int h, int s);
-        void changeBrushType(const QString &name);
+        // void changeBrushType(const QString &name);
         void updateColorFromPalette(const QBrush& brush);
         void updateColorFromDisplay(const QBrush& brush);
         void updateColorSpace(KDualColorButton::ColorSpace space);
+        void updateGradientColor(const QBrush &brush);
         void switchColors();
         void resetColors();
 		

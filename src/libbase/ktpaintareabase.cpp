@@ -33,6 +33,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#include "ktpaintareabase.h"
+#include "ktbrushmanager.h"
+#include "ktinputdeviceinformation.h"
+#include "kttextitem.h"
+#include "ktpaintarearotator.h"
+#include "ktgraphicsscene.h"
+#include "ktgraphicalgorithm.h"
+
+// Tupi Framework 
+#include "ktscene.h"
+#include "tconfig.h"
+#include "tdebug.h"
+#include "tapplication.h"
+#include "tosd.h"
+
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QGraphicsSceneMouseEvent>
@@ -42,22 +57,6 @@
 #include <QTimer>
 #include <QStyleOptionGraphicsItem>
 #include <QClipboard>
-
-#include "ktpaintareabase.h"
-#include "ktbrushmanager.h"
-#include "ktinputdeviceinformation.h"
-#include "kttextitem.h"
-#include "ktpaintarearotator.h"
-
-#include "ktgraphicsscene.h"
-#include "ktgraphicalgorithm.h"
-
-// Tupi Framework 
-#include <ktscene.h>
-#include "tconfig.h"
-#include "tdebug.h"
-#include "tapplication.h"
-#include "tosd.h"
 
 #include <cmath>
 
@@ -207,12 +206,12 @@ void KTPaintAreaBase::setTool(KTToolPlugin *tool)
         return;
 
     if (tool)
-        disconnect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
-                   SIGNAL(requestTriggered(const KTProjectRequest *)));
+        disconnect(tool, SIGNAL(requested(const KTProjectRequest *)), 
+                   this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 
     k->scene->setTool(tool);
-    connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
-            SIGNAL(requestTriggered(const KTProjectRequest*)));
+    connect(tool, SIGNAL(requested(const KTProjectRequest *)), 
+            this, SIGNAL(requestTriggered(const KTProjectRequest*)));
 }
 
 bool KTPaintAreaBase::drawGrid() const

@@ -80,10 +80,24 @@
 
 struct KTViewDocument::Private
 {
-    QActionGroup *gridGroup, *editGroup, *viewNextGroup, *viewZoomGroup, *viewPreviousGroup;
-    QMenu *brushesMenu, *motionMenu, *selectionMenu, *fillMenu, *filterMenu, *viewToolMenu;
-    QMenu *toolsMenu, *editMenu, *viewMenu, *orderMenu;
-    QAction *aUndo, *aRedo, *aClose;
+    QActionGroup *gridGroup; 
+    QActionGroup *editGroup; 
+    QActionGroup *viewNextGroup; 
+    QActionGroup *viewZoomGroup; 
+    QActionGroup *viewPreviousGroup;
+    QMenu *brushesMenu;
+    QMenu *motionMenu;
+    QMenu *selectionMenu;
+    QMenu *fillMenu;
+    QMenu *filterMenu;
+    QMenu *viewToolMenu;
+    QMenu *toolsMenu;
+    QMenu *editMenu;
+    QMenu *viewMenu;
+    QMenu *orderMenu;
+    QAction *aUndo;
+    QAction *aRedo;
+    QAction *aClose;
     QToolBar *barGrid, *toolbar;
     QDoubleSpinBox *zoomFactorSpin;
     QDoubleSpinBox *onionFactorSpin;
@@ -98,7 +112,8 @@ struct KTViewDocument::Private
 
     KTPaintArea *paintArea;
 
-    KTDocumentRuler *verticalRuler, *horizontalRuler;
+    KTDocumentRuler *verticalRuler;
+    KTDocumentRuler *horizontalRuler;
     TActionManager *actionManager;
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
@@ -356,6 +371,8 @@ void KTViewDocument::loadPlugins()
     QVector<TAction*> brushTools(9);
     QVector<TAction*> tweenTools(7);
 
+    TAction *pencil;
+
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
@@ -381,6 +398,7 @@ void KTViewDocument::loadPlugins()
                                  {
                                    if (toolName.compare(tr("Pencil")) == 0) {
                                        brushTools[0] = action;
+                                       pencil = action;
                                        k->brushesMenu->setDefaultAction(action);
                                    }
 
@@ -505,10 +523,10 @@ void KTViewDocument::loadPlugins()
              }
     }
 
-    TAction *pencil = brushTools.at(0);
-    pencil->trigger();
     brushTools.clear();
     tweenTools.clear();
+
+    pencil->trigger();
 }
 
 void KTViewDocument::selectTool()

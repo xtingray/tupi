@@ -88,7 +88,7 @@ void ContourSelection::init(KTGraphicsScene *scene)
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       if (!qgraphicsitem_cast<KControlNode *>(item)) {
                           if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
-                              if (item->zValue() >= 10000) {
+                              if (item->zValue() >= 10000 && qgraphicsitem_cast<KTPathItem *>(item)) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -135,21 +135,22 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
     
     if (scene->selectedItems().count() > 0) {
 
-        QList<QGraphicsItem *> selecteds = scene->selectedItems();
+        QList<QGraphicsItem *> currentSelection = scene->selectedItems();
         QList<KNodeGroup *>::iterator it = k->nodeGroups.begin();
         QList<KNodeGroup *>::iterator itEnd = k->nodeGroups.end();
 
         while (it != itEnd) {
                int parentIndex = scene->selectedItems().indexOf((*it)->parentItem());
                if (parentIndex != -1)
-                   selecteds.removeAt(parentIndex);
+                   currentSelection.removeAt(parentIndex);
                else
                    delete k->nodeGroups.takeAt(k->nodeGroups.indexOf((*it)));
                ++it;
         }
 
-        foreach (QGraphicsItem *item, selecteds) {
+        foreach (QGraphicsItem *item, currentSelection) {
                  if (item) {
+                     // SQA: Critical! KControlNode cast doesn't work / qgraphicsitem_cast issue / app crash!  
                      if (!qgraphicsitem_cast<KControlNode *>(item)) {
                          if (!qgraphicsitem_cast<KTPathItem*>(item)) {
                              KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
@@ -163,7 +164,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                      }
             }
         }
-        
+
         foreach (KNodeGroup *group, k->nodeGroups) {
                  if (!group->changedNodes().isEmpty()) {
                      int position  = scene->currentFrame()->indexOf(group->parentItem());
@@ -182,7 +183,9 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                          group->restoreItem();
                          emit requested(&event);
                      } else {
-                         tDebug("selection") << "position is " << position; 
+                         #ifdef K_DEBUG
+                                tFatal() << "ContourSelection::release() - Position is " << position;
+                         #endif
                      }
                      group->clearChangesNodes();
                  }
@@ -190,9 +193,9 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 
     } else {
 
-        foreach (KNodeGroup *group, k->nodeGroups) {
+        foreach (KNodeGroup *group, k->nodeGroups)
                  group->clear();
-        }
+
         k->nodeGroups.clear();
         qDeleteAll(k->nodeGroups);
     }
@@ -200,7 +203,10 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 
 void ContourSelection::itemResponse(const KTItemResponse *response)
 {
-    T_FUNCINFOX("selection");
+    #ifdef K_DEBUG
+           T_FUNCINFOX("selection");
+    #endif
+
     KTProject *project = k->scene->scene()->project();
     QGraphicsItem *item = 0;
     KTScene *scene = 0;
