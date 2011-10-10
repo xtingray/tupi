@@ -296,7 +296,7 @@ void KTColorPalette::updateColorFromPalette(const QBrush &brush)
     QColor color = brush.color();
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
-    k->gradientManager->setCurrentColor(color);
+    // k->gradientManager->setCurrentColor(color);
 }
 
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)

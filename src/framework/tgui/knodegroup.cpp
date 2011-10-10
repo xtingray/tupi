@@ -145,7 +145,8 @@ QHash<int, QPointF> KNodeGroup::changedNodes()
 
 void KNodeGroup::clearChangesNodes()
 {
-    k->changedNodes.clear();
+    if (!k->changedNodes.isEmpty())
+        k->changedNodes.clear();
 }
 
 void KNodeGroup::restoreItem()
