@@ -493,8 +493,12 @@
         <translation>Gradientes</translation>
     </message>
     <message>
-        <source>Solid</source>
-        <translation>Solido</translation>
+        <source>Contour</source>
+        <translation>Borde</translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation>Relleno</translation>
     </message>
     <message>
         <source>Gradient</source>

@@ -33,69 +33,29 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTCOLORPALETTE_H
-#define KTCOLORPALETTE_H
+#ifndef TICON_H
+#define TICON_H
 
-#include "ktmodulewidgetbase.h"
-#include "kdualcolorbutton.h"
-#include "ticon.h"
+#include "tglobal.h"
 
-class KTColorPalette;
+#include <QIcon>
+#include <QBrush>
+#include <QColor>
 
-/**
- * @author Jorge Cuadrado
-*/
-
-class KTColorPalette : public KTModuleWidgetBase
+class K_GUI_EXPORT TIcon : public QIcon
 {
-    Q_OBJECT
-
     public:
-        enum BrushType { Solid = 0, Gradient };
 
-        KTColorPalette(QWidget *parent = 0);
-        ~KTColorPalette();
+        TIcon(const QPixmap &pixmap, const QBrush &brush);
+        ~TIcon();
 
-        //SQA: change this for QBrush
-        QPair<QColor, QColor> color();
-        void parsePaletteFile(const QString &file);
-        void init();
+        QBrush currentBrush() const;
+        QColor currentColor() const;
 
     private:
+        void paint(QPainter *painter, const QRect &rect, Qt::Alignment alignment = Qt::AlignCenter, Mode mode = Normal, State state = Off) const;
         struct Private;
         Private *const k;
-
-    private:
-        void setupButtons();
-        void setupDisplayColor();
-        void setupMainPalette();
-        void setupChooserTypeColor();
-        void setupGradientManager();
-        void setGlobalColors(const QBrush &brush);
-        QIcon setComboColor(const QColor &color) const;
-
-    // protected:
-    //    void mousePressEvent(QMouseEvent * e);
-
-    private slots:
-        void setColor(const QBrush &brush);
-        // void setFG(const QBrush &brush);
-        // void setBG(const QBrush &brush);
-        void updateColor();
-        // void changeTypeColor(KDualColorButton::ColorSpace s);
-        void syncHsv(int h, int s, int v);
-        void setHS(int h, int s);
-        void setColorSpace(int type);
-        void updateColorFromPalette(const QBrush& brush);
-        void updateColorFromDisplay(const QBrush& brush);
-        void updateColorSpace(KDualColorButton::ColorSpace space);
-        void updateGradientColor(const QBrush &brush);
-        void switchColors();
-        void resetColors();
-        void updateColorType(int index);
-		
-    signals:
-        void paintAreaEventTriggered(const KTPaintAreaEvent *event);
 };
 
 #endif

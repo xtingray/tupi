@@ -36,11 +36,12 @@
 #ifndef KRADIOBUTTONGROUP_H
 #define KRADIOBUTTONGROUP_H
 
+#include "tglobal.h"
+
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QBoxLayout>
 #include <QButtonGroup>
-#include "tglobal.h"
 
 /**
  * @author David Cuadrado

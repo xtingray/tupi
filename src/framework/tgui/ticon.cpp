@@ -33,69 +33,38 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTCOLORPALETTE_H
-#define KTCOLORPALETTE_H
-
-#include "ktmodulewidgetbase.h"
-#include "kdualcolorbutton.h"
 #include "ticon.h"
+#include "tdebug.h"
 
-class KTColorPalette;
+#include <qdrawutil.h>
+#include <QPainter>
 
-/**
- * @author Jorge Cuadrado
-*/
-
-class KTColorPalette : public KTModuleWidgetBase
+struct TIcon::Private
 {
-    Q_OBJECT
-
-    public:
-        enum BrushType { Solid = 0, Gradient };
-
-        KTColorPalette(QWidget *parent = 0);
-        ~KTColorPalette();
-
-        //SQA: change this for QBrush
-        QPair<QColor, QColor> color();
-        void parsePaletteFile(const QString &file);
-        void init();
-
-    private:
-        struct Private;
-        Private *const k;
-
-    private:
-        void setupButtons();
-        void setupDisplayColor();
-        void setupMainPalette();
-        void setupChooserTypeColor();
-        void setupGradientManager();
-        void setGlobalColors(const QBrush &brush);
-        QIcon setComboColor(const QColor &color) const;
-
-    // protected:
-    //    void mousePressEvent(QMouseEvent * e);
-
-    private slots:
-        void setColor(const QBrush &brush);
-        // void setFG(const QBrush &brush);
-        // void setBG(const QBrush &brush);
-        void updateColor();
-        // void changeTypeColor(KDualColorButton::ColorSpace s);
-        void syncHsv(int h, int s, int v);
-        void setHS(int h, int s);
-        void setColorSpace(int type);
-        void updateColorFromPalette(const QBrush& brush);
-        void updateColorFromDisplay(const QBrush& brush);
-        void updateColorSpace(KDualColorButton::ColorSpace space);
-        void updateGradientColor(const QBrush &brush);
-        void switchColors();
-        void resetColors();
-        void updateColorType(int index);
-		
-    signals:
-        void paintAreaEventTriggered(const KTPaintAreaEvent *event);
+    QBrush brush;
 };
 
-#endif
+TIcon::TIcon(const QPixmap &pixmap, const QBrush &brush) : QIcon(pixmap), k(new Private)
+{
+    k->brush = brush;
+}
+
+TIcon::~TIcon()
+{
+}
+
+QBrush TIcon::currentBrush() const
+{
+    return k->brush;
+}
+
+QColor TIcon::currentColor() const
+{
+    return k->brush.color();
+}
+
+void TIcon::paint(QPainter *painter, const QRect &rect, Qt::Alignment alignment, Mode mode, State state) const
+{
+    painter->setPen(QPen(Qt::black));
+    painter->fillRect(rect, k->brush);
+}

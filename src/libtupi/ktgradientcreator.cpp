@@ -116,7 +116,7 @@ void KTGradientCreator::setCurrentColor(const QColor &color)
     k->selector->setCurrentColor(color);
     k->viewer->createGradient();
 
-    emit gradientChanged(QBrush(k->viewer->gradient()));
+    // emit gradientChanged(QBrush(k->viewer->gradient()));
 }
 
 int KTGradientCreator::gradientType()

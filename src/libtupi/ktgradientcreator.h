@@ -66,6 +66,7 @@ class SpinControl;
 class TUPI_EXPORT KTGradientCreator : public QFrame
 {
     Q_OBJECT
+
     public:
         /**
          * @if english

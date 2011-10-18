@@ -38,6 +38,7 @@ HEADERS += taction.h \
            kfontchooser.h \
            kformfactory.h \
            kformvalidator.h \
+           ticon.h \
            kideality.h \
            kimagebutton.h \
            kimageeffect.h \
@@ -108,6 +109,7 @@ SOURCES += taction.cpp \
            kfontchooser.cpp \
            kformfactory.cpp \
            kformvalidator.cpp \
+           ticon.cpp \ 
            kimagebutton.cpp \
            kimageeffect.cpp \
            kindicatordrawer.cpp \

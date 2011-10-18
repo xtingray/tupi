@@ -34,17 +34,20 @@
  ***************************************************************************/
 
 #include "ktgradientselector.h"
-
-#include <qdrawutil.h>
 #include "tdebug.h"
 #include "kimageeffect.h"
 
+#include <qdrawutil.h>
 #include <QMatrix>
 #include <QPolygon>
 
-KTGradientSelector::KTGradientSelector(QWidget *parent) : QAbstractSlider(parent), m_currentArrowIndex(0), m_gradient(0,0,1,1), m_update(true), m_maxArrows(10), m_currentColor(Qt::black)
+KTGradientSelector::KTGradientSelector(QWidget *parent) 
+    : QAbstractSlider(parent), m_currentArrowIndex(0), m_gradient(0,0,1,1), m_update(true), m_maxArrows(10), m_currentColor(Qt::black)
 {
-    TINIT;
+    #ifdef K_DEBUG
+           TINIT;
+    #endif
+
     _orientation = Qt::Horizontal;
     init();
 }
@@ -71,7 +74,9 @@ void KTGradientSelector::init()
 
 KTGradientSelector::~KTGradientSelector()
 {
-    TEND;
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 }
 
 QRect KTGradientSelector::contentsRect() const
@@ -87,6 +92,7 @@ void  KTGradientSelector::setMaxArrows(int value)
     m_maxArrows = value;
     while (m_maxArrows < m_arrows.count())
            m_arrows.removeLast();
+
     update();
 }
 
@@ -99,12 +105,13 @@ void KTGradientSelector::paintEvent(QPaintEvent *)
     drawContents(&painter);
 
     for (int i = 0; i < m_arrows.count(); i++) {
+
          painter.setBrush(m_arrows[i]->color());
 
          if (i == m_currentArrowIndex)
-             painter.setPen(QPen(palette().highlight(), 3));
+             painter.setPen(QPen(palette().highlight(), 1));
          else
-             painter.setPen(Qt::black);
+             painter.setPen(Qt::gray);
 
          painter.drawPath(m_arrows[i]->form());
     }
@@ -112,31 +119,29 @@ void KTGradientSelector::paintEvent(QPaintEvent *)
     painter.end();
 }
 
-void KTGradientSelector::mousePressEvent(QMouseEvent *e)
+void KTGradientSelector::mousePressEvent(QMouseEvent *event)
 {
     bool select = false;
     for (int i = 0; i < m_arrows.count(); i++) {
          KGradientArrow *aArrow = m_arrows[i];
-         if (aArrow->contains(e->pos())) {
+         if (aArrow->contains(event->pos())) {
              m_currentArrowIndex = i;
              select = true;
              break;
          }
     }
 
-    if (m_arrows.count() > 2 && e->button() == Qt::RightButton) {
+    if (m_arrows.count() > 2 && event->button() == Qt::RightButton) {
         m_arrows.removeAt(m_currentArrowIndex);
         m_currentArrowIndex = 0;
         repaint();
     }
     else if (!select) {
              int val;
-             if (orientation() == Qt::Vertical) {
-                 val = (maximum() - minimum()) * (height()-e->y())
-                       / (height()) + minimum();
-             } else {
-                 val = (maximum() - minimum()) * (width()-e->x())/width() + minimum();
-             }
+             if (orientation() == Qt::Vertical)
+                 val = (maximum() - minimum()) * (height() - event->y()) / (height()) + minimum();
+             else
+                 val = (maximum() - minimum()) * (width() - event->x()) / width() + minimum();
 
              if (!m_arrows.isEmpty())
                  addArrow(calcArrowPos(val), m_arrows[m_currentArrowIndex]->color());
@@ -145,21 +150,21 @@ void KTGradientSelector::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void KTGradientSelector::mouseMoveEvent(QMouseEvent *e)
-{
-    moveArrow(e->pos());
+void KTGradientSelector::mouseMoveEvent(QMouseEvent *event) {
+    moveArrow(event->pos());
 }
 
-void KTGradientSelector::wheelEvent(QWheelEvent *e)
+void KTGradientSelector::wheelEvent(QWheelEvent *event)
 {
-    int val = value() + e->delta()/120;
+    int val = value() + event->delta()/120;
     setValue(val);
 }
 
-void  KTGradientSelector::resizeEvent(QResizeEvent * event)
+void  KTGradientSelector::resizeEvent(QResizeEvent *event)
 {
     QAbstractSlider::setRange(0,width());
     QAbstractSlider::setMaximum(width());
+
     m_update = true;
 
     for (int i =0; i < m_arrows.count(); i++)
@@ -185,13 +190,10 @@ void KTGradientSelector::moveArrow(const QPoint &pos)
 
     int val;
 
-    if (orientation() == Qt::Vertical) {
-        val = (maximum() - minimum()) * (height()-pos.y())
-                / (height()) + minimum();
-    } else {
-        val = (maximum() - minimum()) * (width()-pos.x())
-                / (width()) + minimum();
-    }
+    if (orientation() == Qt::Vertical)
+        val = (maximum() - minimum()) * (height()-pos.y()) / (height()) + minimum();
+    else
+        val = (maximum() - minimum()) * (width()-pos.x()) / (width()) + minimum();
 
     setValue(val);
     
@@ -206,12 +208,10 @@ QPoint KTGradientSelector::calcArrowPos(int val)
     QPoint p;
 
     if (orientation() == Qt::Vertical) {
-        p.setY(height() - ((height()-10) * val
-                / (maximum() - minimum()) + 5));
+        p.setY(height() - ((height()-10) * val / (maximum() - minimum()) + 5));
         p.setX(width() - 10);
     } else {
-        p.setX(width() - ((width()) * val
-                / (maximum() - minimum())));
+        p.setX(width() - ((width()) * val / (maximum() - minimum())));
         p.setY(height() - 10);
     }
 

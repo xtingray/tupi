@@ -36,6 +36,8 @@
 #ifndef KTGRADIENTSELECTOR_H
 #define KTGRADIENTSELECTOR_H
 
+#include "ktglobal.h"
+
 #include <QAbstractSlider>
 #include <QColor>
 #include <QImage>
@@ -49,7 +51,6 @@
 #include <QPainterPath>
 
 #include <QList>
-#include "ktglobal.h"
 
 /**
  * @if english
@@ -57,26 +58,28 @@
  * @elseif spanish
  * @short Esta clase provee de una simple interfaz grafica para generar "GradientStops".
  * @endif
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
  */
 
 class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
 {
-   Q_OBJECT;
+   Q_OBJECT
    
    private:
+
       class KGradientArrow : public QObject
       {
          public:
+
             KGradientArrow(QPoint pos, const QColor& color, QObject *parent = 0) : QObject(parent), m_color(color)
             {
                QPolygon array(6);
-               array.setPoint(0, pos.x()+0, pos.y()+0);
-               array.setPoint(1, pos.x()+5, pos.y()+5);
-               array.setPoint(2, pos.x()+5, pos.y()+9);
-               array.setPoint(3, pos.x()-5, pos.y()+9);
-               array.setPoint(4, pos.x()-5, pos.y()+5);
-               array.setPoint(5, pos.x()+0, pos.y()+0);
+               array.setPoint(0, pos.x() + 0, pos.y() + 0);
+               array.setPoint(1, pos.x() + 5, pos.y() + 5);
+               array.setPoint(2, pos.x() + 5, pos.y() + 9);
+               array.setPoint(3, pos.x() - 5, pos.y() + 9);
+               array.setPoint(4, pos.x() - 5, pos.y() + 5);
+               array.setPoint(5, pos.x() + 0, pos.y() + 0);
 
                m_form.addPolygon(array);
             }
@@ -88,7 +91,7 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
                return m_form.currentPosition().x();
             }
 
-            bool contains(const QPoint & pt)
+            bool contains(const QPoint &pt)
             {
                return m_form.contains(pt);
             }
@@ -96,7 +99,6 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
             void moveArrow(const QPoint &pos)
             {   
                QMatrix matrix;
-   
                matrix.translate(pos.x() - m_form.currentPosition().x(), 0);
    
                m_form = matrix.map(m_form);
@@ -120,7 +122,6 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
             void moveVertical(const QPoint &pos)
             {
                QMatrix matrix;
-   
                matrix.translate(0, pos.y() - m_form.currentPosition().y());
    
                m_form = matrix.map(m_form);
@@ -128,8 +129,7 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
 
             QPainterPath m_form;
             QColor m_color;
-      
-      };;
+      };
       
    public:
 
@@ -210,7 +210,7 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
        * Crea el "GradienStops" actual apartir de las flechas acutales.
        * @endif
        */
-      void  createGradient();
+      void createGradient();
       
       /**
        * @if english
@@ -234,16 +234,16 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
       virtual void drawContents(QPainter *);
       
       virtual void paintEvent(QPaintEvent *);
-      virtual void mousePressEvent(QMouseEvent *e);
-      virtual void mouseMoveEvent(QMouseEvent *e);
-      virtual void wheelEvent(QWheelEvent *);
+      virtual void mousePressEvent(QMouseEvent *event);
+      virtual void mouseMoveEvent(QMouseEvent *event);
+      virtual void wheelEvent(QWheelEvent *event);
 
       virtual QSize minimumSize() const
       { 
          return sizeHint(); 
       }
 
-      virtual void resizeEvent (QResizeEvent * event);
+      virtual void resizeEvent(QResizeEvent * event);
 
       virtual QSize sizeHint() const
       {
@@ -253,12 +253,11 @@ class TUPI_EXPORT KTGradientSelector : public QAbstractSlider
    private:
       QPoint calcArrowPos(int val);
       void moveArrow(const QPoint &pos);
-
       double valueToGradient(int _value) const;
-      Qt::Orientation _orientation;
-      
-   private:
       void init();
+
+   private:
+      Qt::Orientation _orientation;
       int m_currentArrowIndex;
       QLinearGradient m_gradient;
       QList<KGradientArrow*> m_arrows;

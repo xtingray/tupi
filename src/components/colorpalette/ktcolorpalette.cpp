@@ -77,6 +77,8 @@ struct KTColorPalette::Private
     bool flagGradient;
     BrushType type;
     KDualColorButton::ColorSpace currentSpace;
+    KTColorPalette::BrushType fgType;
+    KTColorPalette::BrushType bgType; 
 };
 
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
@@ -95,6 +97,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
 
     k->splitter = new QSplitter(Qt::Vertical, this);
     k->tab = new QTabWidget;
+    connect(k->tab, SIGNAL(currentChanged(int)), this, SLOT(updateColorType(int)));
 
     setupDisplayColor();
 
@@ -133,15 +136,14 @@ void KTColorPalette::setupDisplayColor()
 
     viewColor->setLayout(vlayout);
 
-/*
     k->labelType = new QComboBox(viewColor);
-    k->labelType->addItem(tr("Solid"));
-    k->labelType->addItem(tr("Gradient"));
 
-    connect(k->labelType, SIGNAL(activated(const QString &)), this, SLOT(changeBrushType(const QString &)));
+    k->labelType->addItem(setComboColor(Qt::black), tr("Contour"));
+    k->labelType->addItem(setComboColor(Qt::transparent), tr("Fill"));
+
+    connect(k->labelType, SIGNAL(activated(int)), this, SLOT(setColorSpace(int)));
 
     vlayout->addWidget(k->labelType);
-*/
 
     // foreground/background color buttons
     k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
@@ -222,9 +224,11 @@ void KTColorPalette::setupChooserTypeColor()
 void KTColorPalette::setupGradientManager()
 {
     k->gradientManager = new KTGradientCreator(this);
-    connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(updateGradientColor(const QBrush &)));
+    // connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush&)), this, SLOT(updateGradientColor(const QBrush &)));
 
     k->tab->addTab(k->gradientManager, tr("Gradients"));
+    // SQA: Temporary code
+    k->tab->setTabEnabled(1, false);
 }
 
 void KTColorPalette::setColor(const QBrush& brush)
@@ -277,12 +281,16 @@ void KTColorPalette::setGlobalColors(const QBrush &brush)
 {
     if (k->currentSpace == KDualColorButton::Foreground) {
         k->outlineAndFillColors->setForeground(brush);
+        k->labelType->setItemIcon(KDualColorButton::Foreground, setComboColor(brush.color()));
         k->currentOutlineColor = brush;
+
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeColorPen, brush.color());
         emit paintAreaEventTriggered(&event);
     } else {
         k->outlineAndFillColors->setBackground(brush);
+        k->labelType->setItemIcon(KDualColorButton::Background, setComboColor(brush.color()));
         k->currentFillColor = brush;
+
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, brush);
         emit paintAreaEventTriggered(&event);
     }
@@ -296,7 +304,7 @@ void KTColorPalette::updateColorFromPalette(const QBrush &brush)
     QColor color = brush.color();
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
     k->displayColorForms->setColor(color);
-    // k->gradientManager->setCurrentColor(color);
+    k->gradientManager->setCurrentColor(color);
 }
 
 void KTColorPalette::updateColorFromDisplay(const QBrush &brush)
@@ -319,6 +327,8 @@ void KTColorPalette::updateColorSpace(KDualColorButton::ColorSpace space)
         // color = k->currentOutlineColor.color().name();
     else
         color = k->outlineAndFillColors->background().color();
+
+    k->labelType->setCurrentIndex(k->currentSpace);
 
     tFatal() << "KTColorPalette::updateColorSpace() - Picking button #" << space;
     tFatal() << "KTColorPalette::updateColorSpace() - Color: " << color.name();
@@ -386,9 +396,26 @@ void KTColorPalette::parsePaletteFile(const QString &file)
     k->containerPalette->readPaletteFile(file);
 }
 
-/*
-void KTColorPalette::changeBrushType(const QString& type)
+void KTColorPalette::setColorSpace(int type)
 {
+    k->currentSpace = KDualColorButton::ColorSpace(type);
+    k->outlineAndFillColors->setCurrent(k->currentSpace);
+
+    if (k->currentSpace == KDualColorButton::Foreground) {
+        if (k->fgType == Solid && k->tab->currentIndex() != 0) {
+            k->tab->setCurrentIndex(0);
+        } else if (k->fgType == Gradient && k->tab->currentIndex() != 1) {
+                   k->tab->setCurrentIndex(1);
+        }
+    } else {
+        if (k->bgType == Solid && k->tab->currentIndex() != 0) {
+            k->tab->setCurrentIndex(0);
+        } else if (k->bgType == Gradient && k->tab->currentIndex() != 1) {
+                   k->tab->setCurrentIndex(1);
+        }
+    }   
+
+    /*
     if (type == tr("Solid")) {
         k->type = Solid;
         if (k->tab->currentIndex() != Solid)
@@ -405,8 +432,8 @@ void KTColorPalette::changeBrushType(const QString& type)
         if (index >= 0)
             k->labelType->setCurrentIndex(index);
     }
+    */
 }
-*/
 
 void KTColorPalette::init()
 {
@@ -419,6 +446,9 @@ void KTColorPalette::init()
 
     k->outlineAndFillColors->setForeground(QBrush(color));
     k->outlineAndFillColors->setBackground(brush);
+
+    k->labelType->setItemIcon(KDualColorButton::Foreground, setComboColor(Qt::black));
+    k->labelType->setItemIcon(KDualColorButton::Background, setComboColor(Qt::transparent));
 
     k->colorPickerArea->setColor(color.hue(), color.saturation());
     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
@@ -443,6 +473,9 @@ void KTColorPalette::switchColors()
 
      event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, k->currentFillColor);
      emit paintAreaEventTriggered(&event);
+
+     k->labelType->setItemIcon(KDualColorButton::Foreground, setComboColor(k->currentOutlineColor.color()));
+     k->labelType->setItemIcon(KDualColorButton::Background, setComboColor(k->currentFillColor.color()));
 }
 
 void KTColorPalette::resetColors()
@@ -457,10 +490,13 @@ void KTColorPalette::resetColors()
      event = KTPaintAreaEvent(KTPaintAreaEvent::ChangeBrush, k->currentFillColor);
      emit paintAreaEventTriggered(&event);
 
-    k->colorPickerArea->setColor(color.hue(), color.saturation());
-    k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
-    k->displayColorForms->setColor(color);
-    k->gradientManager->setCurrentColor(Qt::white);
+     k->labelType->setItemIcon(KDualColorButton::Foreground, setComboColor(k->currentOutlineColor.color()));
+     k->labelType->setItemIcon(KDualColorButton::Background, setComboColor(k->currentFillColor.color()));
+
+     k->colorPickerArea->setColor(color.hue(), color.saturation());
+     k->luminancePicker->setColor(color.hue(), color.saturation(), color.value());
+     k->displayColorForms->setColor(color);
+    // k->gradientManager->setCurrentColor(Qt::white);
 }
 
 /*
@@ -499,4 +535,31 @@ void KTColorPalette::changeTypeColor(KDualColorButton::ColorSpace s)
     }
 }
 */
+
+QIcon KTColorPalette::setComboColor(const QColor &color) const
+{
+    QPixmap pixmap(10, 10);
+    pixmap.fill(color);
+    //TIcon icon(pixmap, QBrush(color));
+    QIcon icon(pixmap); 
+
+    return icon;
+}
+
+void KTColorPalette::updateColorType(int index)
+{
+    if (index == KTColorPalette::Solid) {
+        tFatal() << "KTColorPalette::updateColorType() - Solid Color!";
+        if (k->currentSpace == KDualColorButton::Foreground)
+            k->fgType = Solid; 
+        else
+            k->bgType = Solid;
+    } else {
+        tFatal() << "KTColorPalette::updateColorType() - Gradient Color!";
+        if (k->currentSpace == KDualColorButton::Foreground) 
+            k->fgType = Gradient;
+        else
+            k->bgType = Gradient;
+    }
+}
 
