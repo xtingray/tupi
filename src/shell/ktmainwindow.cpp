@@ -259,7 +259,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
 void KTMainWindow::viewNewDocument()
 {
     #ifdef K_DEBUG
-       T_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (m_projectManager->isOpen()) {
@@ -717,6 +717,11 @@ void KTMainWindow::openProject(const QString &path)
             m_timeLine->handleProjectResponse(&response);
             */
 
+            if (QDir::isRelativePath(path))
+                m_fileName = QDir::currentPath() + "/" + path;
+            else
+                m_fileName = path;
+
             KTMainWindow::requestType = OpenLocalProject;
             projectName = m_projectManager->project()->projectName();
 
@@ -728,7 +733,7 @@ void KTMainWindow::openProject(const QString &path)
                 else
                     m_recentProjects.push_front(m_fileName);
             } else {
-                    m_recentProjects.push_front(m_recentProjects.takeAt(pos));
+                m_recentProjects.push_front(m_recentProjects.takeAt(pos));
             }
 
             updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
@@ -738,11 +743,6 @@ void KTMainWindow::openProject(const QString &path)
             setUpdatesEnabled(true);
 
             m_exposureSheet->updateFramesState(m_projectManager->project());
-
-            if (QDir::isRelativePath(path))
-                m_fileName = QDir::currentPath() + "/" + path;
-            else
-                m_fileName = path;
 
             setWindowTitle(projectName + " - " + tr("Tupi: Magia 2D"));
             viewNewDocument();
@@ -1154,6 +1154,8 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
     TCONFIG->beginGroup("General");
     TCONFIG->setValue("LastProject", lastProject);
     TCONFIG->setValue("Recents", m_recentProjects);
+
+    tFatal() << "KTMainWindow::closeEvent() - Recents count: " << m_recentProjects.count();
 
     TMainWindow::closeEvent(event);
 }
