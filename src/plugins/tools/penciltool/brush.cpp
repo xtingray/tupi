@@ -196,9 +196,7 @@ void Brush::setupActions()
 {
     TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
     pencil->setShortcut(QKeySequence(tr("P")) );
-
-    QPixmap pix(THEME_DIR + "cursors/pencil.png");
-    pencil->setCursor(QCursor(pix, 0, pix.height()));
+    pencil->setCursor(QCursor(THEME_DIR + "cursors/pencil.png"));
 
     m_actions.insert(tr("Pencil"), pencil);
 }
