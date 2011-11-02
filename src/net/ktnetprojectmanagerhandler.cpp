@@ -129,8 +129,11 @@ KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 
 void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* request)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFOX("net");
+    #endif
+
     // This comes from the project before the command execution
-    
     // SQA: Save a copy of the events or queued packages and resend to the GUI when the "Ok" package 
     // comes from the server 
 
@@ -152,17 +155,28 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFOX("net");
+    #endif
+
     if (response->mode() == KTProjectResponse::Do) {
         k->doAction = true;
         return true;
-    }
-    
+    } 
+
     KTProjectRequest request = KTRequestBuilder::fromResponse(response);
-    handleProjectRequest(&request);
-    
     k->doAction = false;
-    
-    return false;
+
+    if (response->mode() != KTProjectResponse::Undo && response->mode() != KTProjectResponse::Redo) {
+        handleProjectRequest(&request);
+    } else { 
+        if (k->socket->state() == QAbstractSocket::ConnectedState) {
+            if (request.isValid())
+                k->socket->send(request.xml());
+        }
+    }
+
+    return true;
 }
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject *project)
@@ -290,6 +304,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
                    if (k->ownPackage && !k->doAction) {
                        if (parser.response()->part() == KTProjectRequest::Item) {
+                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing local package!";
                            KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
                            KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), 
                                                       response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
@@ -298,6 +313,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                        }
                        return;
                    } else {
+                       tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing remote package!";
                        KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
                        request.setExternal(!k->ownPackage);
                        emitRequest(&request, k->doAction && k->ownPackage);
@@ -375,9 +391,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    if (code == 380)
                        emit savingSuccessful();
 
-                   // if (code == 400 || code == 402)
-                   //    k->projectIsOpen = true;
-
                    TOsd::Level level = TOsd::Level(parser.notification().level);
                    QString title = "Information";
                    if (level == TOsd::Warning) {
@@ -385,6 +398,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                    } else if (level == TOsd::Error) {
                               title = tr("Error");
                    }
+
                    TOsd::self()->display(title, parser.notification().message, level);
                }
     } else if (root == "communication_chat") {
@@ -437,14 +451,6 @@ void KTNetProjectManagerHandler::sendChatMessage(const QString & message)
     KTChatPackage package(message);
     sendPackage(package);
 }
-
-/*
-void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
-{
-    KTNoticePackage package(message);
-    sendPackage(package);
-}
-*/
 
 void KTNetProjectManagerHandler::connectionLost()
 {

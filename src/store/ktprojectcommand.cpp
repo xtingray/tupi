@@ -55,14 +55,20 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
     k->executed = false;
 
     KTRequestParser parser;
-    if (!parser.parse(request->xml()))
-        tFatal() << "==> KTProjectCommand::KTProjectCommand(): - Parser error!";
+    if (!parser.parse(request->xml())) {
+        #ifdef K_DEBUG
+               tFatal() << "==> KTProjectCommand::KTProjectCommand(): - Parser error!";
+        #endif
+    }
 
     k->response = parser.response();
     k->response->setExternal(request->isExternal());
 
-    if (!k->response) 
-        tFatal() << "KTProjectCommand::KTProjectCommand() - Unparsed response!";
+    if (!k->response) {
+        #ifdef K_DEBUG
+               tFatal() << "==> KTProjectCommand::KTProjectCommand() - Unparsed response!";
+        #endif
+    }
 
     initText();
 }
@@ -217,13 +223,11 @@ void KTProjectCommand::redo()
             break;
             case KTProjectRequest::Item:
             {
-                 tFatal() << "KTProjectCommand::redo() - Item request!";
                  itemCommand();
             }
             break;
             case KTProjectRequest::Library:
             {
-                 tFatal() << "KTProjectCommand::redo() - Just tracing library redo()!";
                  libraryCommand();
             }
             break;
@@ -266,13 +270,11 @@ void KTProjectCommand::undo()
             break;
             case KTProjectRequest::Item:
             {
-                 tFatal() << "KTProjectCommand::undo() - Item request!";
                  itemCommand();
             }
             break;
             case KTProjectRequest::Library:
             {
-                 tFatal() << "KTProjectCommand::undo() - Just tracing library undo()!";
                  libraryCommand();
             }
             break;

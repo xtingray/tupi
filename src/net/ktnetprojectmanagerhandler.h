@@ -64,7 +64,6 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 
         virtual void handleProjectRequest(const KTProjectRequest* event);
         virtual bool commandExecuted(KTProjectResponse *response);
-
         virtual bool saveProject(const QString &fileName, KTProject *project);
         virtual bool loadProject(const QString &fileName, KTProject *project);
 
@@ -86,7 +85,6 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 
     private slots:
         void sendChatMessage(const QString & message);
-        // void sendNoticeMessage(const QString & message);
         void connectionLost();
 
     private:

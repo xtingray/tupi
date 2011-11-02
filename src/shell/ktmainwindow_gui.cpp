@@ -581,20 +581,22 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
     m_recentProjects.clear();
 
     foreach (QString recent, recents) {
+
              // if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
-             tFatal() << "KTMainWindow::updateOpenRecentMenu() - Recent item: " << recent;
              if (!recent.isEmpty()) {
-                 tFatal() << "KTMainWindow::updateOpenRecentMenu() - Flag 1";
+
                  m_recentProjects << recent;
                  action[i] = new QAction(QPixmap(THEME_DIR + "icons/recent_files.png"), recent, this); 
                  action[i]->setIconVisibleInMenu(true);
                  menu->addAction(action[i]);
                  connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
                  i++;
+
              } else {
-                 tFatal() << "KTMainWindow::updateOpenRecentMenu() - Cleaning the recent list";
+
                  m_recentProjectsMenu->setEnabled(false);
                  return; 
+
              }
     }
 

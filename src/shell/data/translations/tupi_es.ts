@@ -2040,6 +2040,10 @@
         <translation>Capa %1</translation>
     </message>
     <message>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
+    </message>
+    <message>
         <source>Sound layer %1</source>
         <translation>Capa de sonido %1</translation>
     </message>

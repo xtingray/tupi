@@ -158,6 +158,10 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 
 bool KTCommandExecutor::removeItem(KTItemResponse *response)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFOX("items");
+    #endif
+
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
@@ -196,7 +200,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 
                         } else {
                             #ifdef K_DEBUG
-                                   tError() << "KTCommandExecutor::removeItem() - Error: " << tr("Invalid object index") << response->itemIndex();
+                                   tError() << "KTCommandExecutor::removeItem() - Error: " << "Invalid object index (value: " << response->itemIndex() << ")";
                             #endif
                             return false;
                         }
@@ -215,7 +219,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                     if (type == KTLibraryObject::Svg) 
                         frame->removeSvgAt(response->itemIndex());
                     else
-                         frame->removeGraphicAt(response->itemIndex());
+                        frame->removeGraphicAt(response->itemIndex());
 
                     emit responsed(response);
                     return true;

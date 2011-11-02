@@ -229,7 +229,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
 {
     m_isNetworkProject = true;
     projectName = title;
-    setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic") + " " + tr("[net mode]"));
+    setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic") + " " + tr("[ %1 | net mode ]").arg(netUser));
 
     if (m_viewChat) {
         removeToolView(m_viewChat);
@@ -594,7 +594,8 @@ void KTMainWindow::setupNetworkProject()
     if (netDialog->exec() == QDialog::Accepted) {
         params->setServer(netDialog->server());
         params->setPort(netDialog->port());
-        params->setLogin(netDialog->login());
+        netUser = netDialog->login();
+        params->setLogin(netUser);
         params->setPassword(netDialog->password());
         // params->setProjectName(projectName);
 
@@ -1154,8 +1155,6 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
     TCONFIG->beginGroup("General");
     TCONFIG->setValue("LastProject", lastProject);
     TCONFIG->setValue("Recents", m_recentProjects);
-
-    tFatal() << "KTMainWindow::closeEvent() - Recents count: " << m_recentProjects.count();
 
     TMainWindow::closeEvent(event);
 }

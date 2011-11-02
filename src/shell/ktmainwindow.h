@@ -275,6 +275,7 @@ class KTMainWindow : public KTabbedMainWindow
           KTProject::Mode contextMode;
           KTMainWindow::RequestType requestType; 
           QString projectName;
+          QString netUser;
 
     signals:
           void responsed(KTProjectResponse *);

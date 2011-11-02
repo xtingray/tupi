@@ -454,6 +454,10 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!graphicsScene()->isDrawing()) {
 
         switch(event->action()) {
@@ -465,12 +469,14 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                case KTProjectRequest::Remove:
                     { 
+                        tFatal() << "KTPaintArea::itemResponse() - Remove Operation";
                         if (!k->deleteMode) {
                             KTGraphicsScene *guiScene = graphicsScene();
                             if (!guiScene->scene())
                                 return;
 
                             if (k->spaceMode == KTProject::FRAMES_EDITION) {
+                                tFatal() << "KTPaintArea::itemResponse() - Tracing update!";
                                 guiScene->drawCurrentPhotogram();
                             } else {
                                 guiScene->cleanWorkSpace();

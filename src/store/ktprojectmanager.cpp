@@ -369,6 +369,7 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
     #endif
 
     if (request->isValid()) {
+        tFatal() << "KTProjectManager::createCommand() - Tracing a command!";
         KTProjectCommand *command = new KTProjectCommand(k->commandExecutor, request);
 
         if (addToStack)
@@ -402,9 +403,13 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
         k->isModified = true;
 
     if (!k->handler) {
+        // SQA: Check if this is the right way to handle this condition 
         emit responsed(response);
-    } else if (k->handler->commandExecuted(response)) {
-               emit responsed(response);
+    } else if (k->isNetworked) {
+               if (k->handler->commandExecuted(response))
+                   emit responsed(response);
+    } else { // Local request
+        emit responsed(response);
     }
 }
 
