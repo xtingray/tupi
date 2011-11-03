@@ -65,6 +65,7 @@ class KTNewProject : public KTabDialog
         KTProjectManagerParams *parameters();
         bool useNetwork() const;
         void focusProjectLabel();
+        QString login() const;
 
     public slots:
         void ok();

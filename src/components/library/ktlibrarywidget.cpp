@@ -297,6 +297,10 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
 
 void KTLibraryWidget::insertObjectInWorkspace()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!k->libraryTree->currentItem()) { 
         tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - There's no current selection!";
         return;
@@ -819,8 +823,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 // if (k->project->spaceContext() != KTProject::NONE)
-                                 //     insertObjectInWorkspace();
+                                 if (k->project->spaceContext() != KTProject::NONE)
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Svg:

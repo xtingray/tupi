@@ -380,3 +380,8 @@ void KTNewProject::setPresets(int index)
            break;
     }
 }
+
+QString KTNewProject::login() const
+{
+    return k->login->text();
+}

@@ -382,6 +382,7 @@ void KTMainWindow::newProject()
         if (wizard->useNetwork()) {
             KTMainWindow::requestType = NewNetProject;
             setupNetworkProject(wizard->parameters());
+            netUser = wizard->login();
         } else {
             setupLocalProject(wizard->parameters());
             createNewLocalProject();
@@ -624,7 +625,6 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
-        netUser = params->author();
     }
 }
 
