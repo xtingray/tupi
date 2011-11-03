@@ -36,7 +36,7 @@
 #ifndef KTNETPROJECTMANAGERPARAMS_H
 #define KTNETPROJECTMANAGERPARAMS_H
 
-#include <ktprojectmanagerparams.h>
+#include "ktprojectmanagerparams.h"
 
 /**
  * @author David Cuadrado

@@ -624,6 +624,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
+        netUser = params->author();
     }
 }
 

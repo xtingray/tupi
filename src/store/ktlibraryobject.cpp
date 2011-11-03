@@ -34,10 +34,8 @@
  ***************************************************************************/
 
 #include "ktlibraryobject.h"
-
 #include "ktitemfactory.h"
 #include "ktpixmapitem.h"
-
 #include "kaudioplayer.h"
 #include "tdebug.h"
 
@@ -51,6 +49,7 @@ struct KTLibraryObject::Private
     QString dataPath;
     QString symbolName;
     QString extension;
+    QByteArray rawData; 
 };
 
 KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent), k(new Private)
@@ -234,7 +233,8 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
         #endif
         return false;
     }
-    
+
+    k->rawData = data;
     bool ok = true;
 
     switch (k->type) {
@@ -266,11 +266,22 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
 
                  QPixmap pixmap;
 
+                 /*
+                 QFile file("/tmp/test.gif");
+                 file.open(QIODevice::WriteOnly);
+                 file.write(data);
+                 file.close();
+                 */
+
                  // QByteArray ba = k->extension.toLocal8Bit();
                  // const char *extension = ba.data();
                  // bool isOk = pixmap.loadFromData(data, extension);
 
+                 tFatal() << "KTLibraryObject::loadRawData() - Flag 1";
+
                  bool isOk = pixmap.loadFromData(data);
+
+                 tFatal() << "KTLibraryObject::loadRawData() - Flag 2";
 
                  if (!isOk) {
                      #ifdef K_DEBUG
@@ -405,17 +416,20 @@ void KTLibraryObject::saveData(const QString &dataDir)
                  tFatal() << "KTLibraryObject::saveData() - Saving file: " << k->symbolName;
                  QString destination = dataDir + "/images/";
             
-                 if (! QFile::exists(destination)) {
+                 if (!QFile::exists(destination)) {
                      QDir dir;
                      dir.mkpath(destination);
 
-                     tFatal() << "KTLibraryObject::saveData() - Creating directory: " << destination;
+                     #ifdef K_DEBUG
+                            tDebug() << "KTLibraryObject::saveData() - Creating directory: " << destination;
+                     #endif
                  }
 
                  // QByteArray ba = k->extension.toLocal8Bit();
                  // const char *extension = ba.data();
                  // bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName, extension);
 
+                 /*
                  bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName);
 
                  if (!isOk) {
@@ -423,8 +437,25 @@ void KTLibraryObject::saveData(const QString &dataDir)
                             tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
                      #endif
                  }
+                 */
           
                  k->dataPath = destination + k->symbolName;
+
+                 QFile file(k->dataPath);
+                 if (!file.open(QIODevice::WriteOnly)) {
+                     #ifdef K_DEBUG
+                            tError() << "KTLibraryObject::saveData() - Insufficient permissions to save file " << destination + k->symbolName;
+                     #endif
+                 } else {
+                     qint64 isOk = file.write(k->rawData);
+                     file.close();
+
+                     if (isOk == -1) {
+                         #ifdef K_DEBUG
+                                tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
+                         #endif
+                     }
+                 }
             }
             break;
             default: 

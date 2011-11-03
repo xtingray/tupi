@@ -76,7 +76,7 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 
     if (data.isNull()) {
         #ifdef K_DEBUG
-               tFatal() << "KTLibraryFolder::createSymbol() - Data is null!";
+               tError() << "KTLibraryFolder::createSymbol() - Data is null!";
         #endif
         return false;
     }
@@ -87,8 +87,9 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     object->setType(type);
 
     if (!object->loadRawData(data)) {
-
-        tFatal() << "KTLibraryFolder::createSymbol() - Object have no data raw!";
+        #ifdef K_DEBUG
+               tError() << "KTLibraryFolder::createSymbol() - Object have no data raw!";
+        #endif
 
         delete object;
         return 0;
