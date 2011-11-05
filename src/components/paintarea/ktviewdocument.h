@@ -91,6 +91,8 @@ class KTViewDocument : public QMainWindow
         void scaleRuler(double factor);
         void changeRulerOrigin(const QPointF &zero);
         void saveTimer();
+        void showFullScreen();
+        void closeFullScreen();
 
     private:
         struct Private;

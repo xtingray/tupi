@@ -231,4 +231,11 @@ void Brush::saveConfig()
     }
 }
 
+void Brush::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
+}
+
+
 Q_EXPORT_PLUGIN2(kt_brush, Brush);

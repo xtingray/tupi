@@ -51,6 +51,7 @@
 #include "ktbrushmanager.h"
 #include "ktproject.h"
 #include "ktpaintareastatus.h"
+#include "ktcanvas.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -71,6 +72,7 @@
 #include <QFrame>
 #include <QGridLayout>
 #include <QComboBox>
+#include <QDesktopWidget>
 
 /**
  * This class defines all the environment for the Ilustration interface.
@@ -109,8 +111,10 @@ struct KTViewDocument::Private
     int nextOnionValue;
     double opacityFactor;
     int autoSaveTime;
+    bool fullScreenOn;
 
     KTPaintArea *paintArea;
+    KTCanvas *fullScreen;
 
     KTDocumentRuler *verticalRuler;
     KTDocumentRuler *horizontalRuler;
@@ -135,6 +139,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     k->project = project;
     k->currentTool = 0;
     k->onionEnabled = true;
+    k->fullScreenOn = false;
+
     k->actionManager = new TActionManager(this);
 
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
@@ -274,6 +280,11 @@ void KTViewDocument::setupDrawActions()
                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
     showGrid->setCheckable(true);
 
+    TAction *fullScreen = new TAction(QPixmap(THEME_DIR + "icons/subgrid.png"),
+                                    tr("Full Screen"), QKeySequence(tr("Ctrl+F11")),
+                                    this, SLOT(showFullScreen()), k->actionManager, "full_screen");
+    fullScreen->setCheckable(true);
+
     TAction *copy = new TAction(QPixmap(THEME_DIR + "icons/copy.png"), 
                                 tr("Copy"), QKeySequence(tr("Ctrl+C")),
                                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
@@ -371,11 +382,12 @@ void KTViewDocument::loadPlugins()
     QVector<TAction*> brushTools(9);
     QVector<TAction*> tweenTools(7);
 
-    TAction *pencil;
+    TAction *pencil = 0;
 
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
+             connect(tool, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
              QStringList::iterator it;
              QStringList keys = tool->keys();
@@ -710,6 +722,7 @@ void KTViewDocument::createToolBar()
     k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("show_grid"));
+    k->barGrid->addAction(k->actionManager->find("full_screen"));
     k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("group"));
@@ -962,4 +975,23 @@ void KTViewDocument::setOnionFactor(double opacity)
     TCONFIG->setValue("OnionFactor", opacity);
 
     k->paintArea->setOnionFactor(opacity);
+}
+
+void KTViewDocument::showFullScreen()
+{
+    k->fullScreenOn = true;
+
+    k->fullScreen = new KTCanvas(this, Qt::Window, k->paintArea->graphicsScene()); 
+    QDesktopWidget desktop;
+    k->fullScreen->setFixedSize(desktop.screenGeometry().width(), 
+                                desktop.screenGeometry().height());
+    k->fullScreen->exec(); 
+}
+
+void KTViewDocument::closeFullScreen()
+{
+    if (k->fullScreenOn) {
+        k->fullScreen->close();
+        k->fullScreenOn = false;
+    }
 }

@@ -33,57 +33,23 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef BRUSH_H
-#define BRUSH_H
+#ifndef KTCANVAS_H
+#define KTCANVAS_H
 
-#include <QObject>
-#include <QSpinBox>
-#include <QTimer>
+#include "ktgraphicsscene.h"
 
-#include "kttoolplugin.h"
-#include "exactnessconfigurator.h"
-#include "ktpathitem.h"
+#include <QDialog>
+#include <QKeyEvent>
 
-class QKeySequence;
+class KTGraphicsScene;
 
-/**
- * @author David Cuadrado
-*/
-
-class Brush : public KTToolPlugin
+class KTCanvas : public QDialog
 {
     Q_OBJECT
-    
-    public:
-        Brush();
-        virtual ~Brush();
-        
-        virtual void init(KTGraphicsScene *scene);
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual QMap<QString, TAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-        virtual void aboutToChangeTool();
-        virtual void saveConfig();
-        virtual void keyPressEvent(QKeyEvent *event);
-        
-    private:
-        void setupActions();
-        void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
 
-    signals:
-        void closeHugeCanvas();
-        
-    private:
-        QPointF m_firstPoint;
-        QPointF m_oldPos;
-        QPainterPath m_path;
-        ExactnessConfigurator * m_configurator;
-        QMap<QString, TAction *> m_actions;
-        KTPathItem *m_item;
+    public:
+        KTCanvas(QWidget *parent=0, Qt::WindowFlags f=0, KTGraphicsScene *scene=0);
+        ~KTCanvas();
 };
 
 #endif

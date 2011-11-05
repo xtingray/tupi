@@ -13,7 +13,9 @@ HEADERS += ktpaintarea.h \
            ktlibrarydialog.h \
            ktcolorwidget.h \
            ktbrushstatus.h \
-           kttoolstatus.h
+           kttoolstatus.h \
+           ktcanvas.h
+
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
            ktviewdocument.cpp \
@@ -24,7 +26,8 @@ SOURCES += ktpaintarea.cpp \
            ktlibrarydialog.cpp \
            ktcolorwidget.cpp \
            ktbrushstatus.cpp \
-           kttoolstatus.cpp
+           kttoolstatus.cpp \
+           ktcanvas.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib
