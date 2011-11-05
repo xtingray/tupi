@@ -45,7 +45,7 @@
 #include <QIcon>
 #include <QGraphicsView>
 
-KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scene) : QDialog(parent, flags)
+KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scene, const QSize size) : QDialog(parent, flags)
 {
     setModal(true);
     setWindowTitle(tr("Tupi: 2D Magic"));
@@ -53,6 +53,7 @@ KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scen
 
     QGraphicsView *graphicsView = new QGraphicsView;
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
+    graphicsView->setFixedSize(size);
 
     /*
     graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
@@ -63,6 +64,7 @@ KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scen
     graphicsView->setScene(scene);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(graphicsView);
     setLayout(layout);
 }

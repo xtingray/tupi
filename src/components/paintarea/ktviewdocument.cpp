@@ -981,10 +981,12 @@ void KTViewDocument::showFullScreen()
 {
     k->fullScreenOn = true;
 
-    k->fullScreen = new KTCanvas(this, Qt::Window, k->paintArea->graphicsScene()); 
     QDesktopWidget desktop;
-    k->fullScreen->setFixedSize(desktop.screenGeometry().width(), 
-                                desktop.screenGeometry().height());
+    int w = desktop.screenGeometry().width();
+    int h = desktop.screenGeometry().height();
+
+    k->fullScreen = new KTCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), QSize(w, h)); 
+    k->fullScreen->setFixedSize(w, h); 
     k->fullScreen->exec(); 
 }
 
