@@ -315,6 +315,9 @@ void GeometricTool::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift)
         proportion = false;
+
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
 }
 
 Q_EXPORT_PLUGIN2(kt_geometric, GeometricTool)

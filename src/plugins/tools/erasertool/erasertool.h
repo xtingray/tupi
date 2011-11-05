@@ -36,15 +36,15 @@
 #ifndef ERASERTOOLPLUGIN_H
 #define ERASERTOOLPLUGIN_H
 
+#include "kttoolplugin.h"
+
 #include <QObject>
 #include <QLabel>
-
-#include <kttoolplugin.h>
 
 class KTPathItem;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class EraserTool : public KTToolPlugin
@@ -72,6 +72,10 @@ class EraserTool : public KTToolPlugin
         void aboutToChangeScene(KTGraphicsScene *scene);
         virtual void aboutToChangeTool();
         virtual void saveConfig();
+        virtual void keyPressEvent(QKeyEvent *event);
+
+    signals:
+        void closeHugeCanvas();
         
     private:
         void setupActions();

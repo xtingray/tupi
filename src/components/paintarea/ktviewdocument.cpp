@@ -387,7 +387,9 @@ void KTViewDocument::loadPlugins()
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
-             connect(tool, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
+
+             if (tool->toolType() == KTToolInterface::Brush)
+                 connect(tool, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
              QStringList::iterator it;
              QStringList keys = tool->keys();

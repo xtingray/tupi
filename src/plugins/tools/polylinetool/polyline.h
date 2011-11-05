@@ -36,7 +36,7 @@
 #ifndef POLYLINE_H
 #define POLYLINE_H
 
-#include <kttoolplugin.h>
+#include "kttoolplugin.h"
 #include "ktpathitem.h"
 #include "infopanel.h"
 #include "kcontrolnode.h"
@@ -60,7 +60,7 @@ class PolyLine : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         
-        virtual void keyPressEvent(QKeyEvent *event);
+        // virtual void keyPressEvent(QKeyEvent *event);
 
         virtual QMap<QString, TAction *>actions() const;
         
@@ -71,6 +71,9 @@ class PolyLine : public KTToolPlugin
         virtual void aboutToChangeTool();
         void itemResponse(const KTItemResponse *response);
         virtual void saveConfig();
+
+    signals:
+        void closeHugeCanvas();
 
     private:
         void setupActions();

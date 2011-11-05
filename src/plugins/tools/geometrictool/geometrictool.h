@@ -74,6 +74,9 @@ class GeometricTool : public KTToolPlugin
         void aboutToChangeScene(KTGraphicsScene *scene);
         virtual void aboutToChangeTool();
         virtual void saveConfig();
+
+    signals:
+        void closeHugeCanvas();
         
     private:
         void setupActions();

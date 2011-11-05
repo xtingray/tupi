@@ -331,16 +331,27 @@ void PolyLine::itemResponse(const KTItemResponse *response)
     }
 }
 
+/*
 void PolyLine::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() != Qt::Key_Escape) {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    if (event->key() == Qt::Key_Escape) {
+        tFatal() << "PolyLine::keyPressEvent(QKeyEvent *event) - Tracing Esc!";
+        emit closeHugeCanvas();
+    } else if (event->key() == Qt::Key_X) {
+               tFatal() << "PolyLine::keyPressEvent(QKeyEvent *event) - Tracing X key!";
+               endItem();
+               event->accept();
+    } else {
+        tFatal() << "PolyLine::keyPressEvent(QKeyEvent *event) - Tracing any other key!";
         event->ignore();
         return;
-    } else {
-        endItem();
-        event->accept();
     }
 }
+*/
 
 void PolyLine::endItem()
 {
@@ -362,7 +373,7 @@ void PolyLine::endItem()
 void PolyLine::nodeChanged()
 {
     #ifdef K_DEBUG
-       T_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     if (k->nodegroup) {

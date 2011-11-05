@@ -34,29 +34,24 @@
  ***************************************************************************/
 
 #include "erasertool.h"
-
-#include <QKeySequence>
-#include <QDebug>
-#include <QImage>
-#include <QPaintDevice>
-
 #include "tglobal.h"
 #include "tdebug.h"
-
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
 #include "ktpathitem.h"
-
 #include "ktitemconverter.h"
-
 #include "ktscene.h"
-
-#include <QGraphicsView>
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
 #include "ktbrushmanager.h"
+
+#include <QGraphicsView>
+#include <QKeySequence>
+#include <QDebug>
+#include <QImage>
+#include <QPaintDevice>
 
 EraserTool::EraserTool()
 {
@@ -167,6 +162,12 @@ void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, c
 
 void EraserTool::saveConfig()
 {
+}
+
+void EraserTool::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
 }
 
 Q_EXPORT_PLUGIN2(kt_eraser, EraserTool)

@@ -477,4 +477,10 @@ void InkTool::saveConfig()
     }
 }
 
+void InkTool::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
+}
+
 Q_EXPORT_PLUGIN2(kt_brush, InkTool);
