@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "brush.h"
-#include "brush.xpm"
+#include "penciltool.h"
+// #include "penciltool.xpm"
 
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
@@ -59,7 +59,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsView>
 
-Brush::Brush() : m_configurator(0), m_item(0)
+PencilTool::PencilTool() : m_configurator(0), m_item(0)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -68,14 +68,14 @@ Brush::Brush() : m_configurator(0), m_item(0)
     setupActions();
 }
 
-Brush::~Brush()
+PencilTool::~PencilTool()
 {
     #ifdef K_DEBUG
            TEND;
     #endif
 }
 
-void Brush::init(KTGraphicsScene *scene)
+void PencilTool::init(KTGraphicsScene *scene)
 {
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
@@ -89,12 +89,12 @@ void Brush::init(KTGraphicsScene *scene)
     }
 }
 
-QStringList Brush::keys() const
+QStringList PencilTool::keys() const
 {
     return QStringList() << tr("Pencil");
 }
 
-void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void PencilTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -113,7 +113,7 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
     scene->includeObject(m_item);
 }
 
-void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void PencilTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -129,7 +129,7 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
     m_oldPos = lastPoint;
 }
 
-void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void PencilTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -165,7 +165,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
     emit requested(&request);
 }
 
-void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
+void PencilTool::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 {
     QPolygonF pol;
     QList<QPolygonF> polygons = path.toSubpathPolygons();
@@ -192,7 +192,7 @@ void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
     }
 }
 
-void Brush::setupActions()
+void PencilTool::setupActions()
 {
     TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
     pencil->setShortcut(QKeySequence(tr("P")) );
@@ -201,17 +201,17 @@ void Brush::setupActions()
     m_actions.insert(tr("Pencil"), pencil);
 }
 
-QMap<QString, TAction *> Brush::actions() const
+QMap<QString, TAction *> PencilTool::actions() const
 {
     return m_actions;
 }
 
-int Brush::toolType() const
+int PencilTool::toolType() const
 {
     return KTToolInterface::Brush;
 }
 
-QWidget *Brush::configurator() 
+QWidget *PencilTool::configurator() 
 {
     if (! m_configurator)
         m_configurator = new ExactnessConfigurator;
@@ -219,23 +219,23 @@ QWidget *Brush::configurator()
     return m_configurator;
 }
 
-void Brush::aboutToChangeTool() 
+void PencilTool::aboutToChangeTool() 
 {
 }
 
-void Brush::saveConfig()
+void PencilTool::saveConfig()
 {
     if (m_configurator) {
-        TCONFIG->beginGroup("BrushTool");
+        TCONFIG->beginGroup("PencilTool");
         TCONFIG->setValue("Smoothness", m_configurator->exactness());
     }
 }
 
-void Brush::keyPressEvent(QKeyEvent *event)
+void PencilTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
         emit closeHugeCanvas();
 }
 
 
-Q_EXPORT_PLUGIN2(kt_brush, Brush);
+Q_EXPORT_PLUGIN2(kt_brush, PencilTool);

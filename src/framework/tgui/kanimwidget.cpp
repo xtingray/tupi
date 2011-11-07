@@ -35,14 +35,13 @@
 
 #include "kanimwidget.h"
 #include "tapplication.h"
+#include "tdebug.h"
 
 #include <QPixmap>
 #include <QHideEvent>
 #include <QShowEvent>
 #include <QPainter>
 #include <QFontMetricsF>
-
-#include "tdebug.h"
 
 class KAnimWidget::Controller
 {

@@ -6,9 +6,9 @@
 INSTALLS += target 
 target.path = /plugins/
 
-HEADERS += brush.h \
+HEADERS += penciltool.h \
            exactnessconfigurator.h
-SOURCES += brush.cpp \
+SOURCES += penciltool.cpp \
            exactnessconfigurator.cpp
 
 CONFIG += plugin warn_on

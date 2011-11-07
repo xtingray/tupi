@@ -34,29 +34,24 @@
  ***************************************************************************/
 
 #include "polyline.h"
-
-#include <QGraphicsView>
-#include <QGraphicsPathItem>
-#include <QGraphicsLineItem>
-
-#include <QPainterPath>
-#include <QMatrix>
-
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktrequestbuilder.h"
 #include "ktlibraryobject.h"
-
 #include "tdebug.h"
 #include "tglobal.h"
 #include "taction.h"
-
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
 #include "ktbrushmanager.h"
-
 #include "ktprojectresponse.h"
+
+#include <QGraphicsView>
+#include <QGraphicsPathItem>
+#include <QGraphicsLineItem>
+#include <QPainterPath>
+#include <QMatrix>
 
 struct PolyLine::Private
 {
@@ -331,7 +326,6 @@ void PolyLine::itemResponse(const KTItemResponse *response)
     }
 }
 
-/*
 void PolyLine::keyPressEvent(QKeyEvent *event)
 {
     #ifdef K_DEBUG
@@ -351,7 +345,6 @@ void PolyLine::keyPressEvent(QKeyEvent *event)
         return;
     }
 }
-*/
 
 void PolyLine::endItem()
 {

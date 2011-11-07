@@ -52,6 +52,7 @@
 #include "ktproject.h"
 #include "ktpaintareastatus.h"
 #include "ktcanvas.h"
+#include "polyline.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -278,12 +279,13 @@ void KTViewDocument::setupDrawActions()
     TAction *showGrid = new TAction(QPixmap(THEME_DIR + "icons/subgrid.png"), 
                                     tr("Show grid"), QKeySequence(tr("#")),
                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
+    showGrid->setStatusTip(tr("Show a grid over the canvas"));
     showGrid->setCheckable(true);
 
-    TAction *fullScreen = new TAction(QPixmap(THEME_DIR + "icons/subgrid.png"),
-                                    tr("Full Screen"), QKeySequence(tr("Ctrl+F11")),
+    TAction *fullScreen = new TAction(QPixmap(THEME_DIR + "icons/full_screen.png"),
+                                    tr("Full screen"), QKeySequence(tr("Ctrl+F11")),
                                     this, SLOT(showFullScreen()), k->actionManager, "full_screen");
-    fullScreen->setCheckable(true);
+    fullScreen->setStatusTip(tr("Open a full screen view of canvas"));
 
     TAction *copy = new TAction(QPixmap(THEME_DIR + "icons/copy.png"), 
                                 tr("Copy"), QKeySequence(tr("Ctrl+C")),
@@ -431,8 +433,11 @@ void KTViewDocument::loadPlugins()
                                        brushTools[3] = action;
                                    }
 
-                                   if (toolName.compare(tr("PolyLine")) == 0)
+                                   if (toolName.compare(tr("PolyLine")) == 0) {
                                        brushTools[4] = action;
+                                       KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
+                                       connect(k->paintArea, SIGNAL(closePolyLine()), tool, SLOT(endItem()));
+                                   }
 
                                    if (toolName.compare(tr("Line")) == 0)
                                        brushTools[5] = action;
@@ -443,8 +448,10 @@ void KTViewDocument::loadPlugins()
                                    if (toolName.compare(tr("Ellipse")) == 0)
                                        brushTools[7] = action;
 
-                                   if (toolName.compare(tr("Text")) == 0)
+                                   if (toolName.compare(tr("Text")) == 0) {
+                                       action->setDisabled(true);
                                        brushTools[8] = action;
+                                   }
                                  }
                                  break;
                               case KTToolInterface::Tweener:
@@ -886,11 +893,12 @@ void KTViewDocument::saveTimer()
 
     k->timer = new QTimer(this);
 
-    if (k->autoSaveTime > 0) {
-        int saveTime = k->autoSaveTime*60000;
-        connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
-        k->timer->start(saveTime);
-    } 
+    if (k->autoSaveTime < 0 || k->autoSaveTime > 60) 
+        k->autoSaveTime = 5;
+
+    int saveTime = k->autoSaveTime*60000;
+    connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
+    k->timer->start(saveTime);
 }
 
 void KTViewDocument::setSpaceContext()
@@ -986,6 +994,13 @@ void KTViewDocument::showFullScreen()
     QDesktopWidget desktop;
     int w = desktop.screenGeometry().width();
     int h = desktop.screenGeometry().height();
+
+    /*
+    QSize projectSize = k->project->dimension();
+    if (projectSize.width() > projectSize.height())
+
+    else
+    */
 
     k->fullScreen = new KTCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), QSize(w, h)); 
     k->fullScreen->setFixedSize(w, h); 

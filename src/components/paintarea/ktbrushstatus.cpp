@@ -34,15 +34,14 @@
  ***************************************************************************/
 
 #include "ktbrushstatus.h"
+#include "tseparator.h"
+#include "tdebug.h"
 
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QPen>
 #include <QBrush>
 #include <QColorDialog>
-
-#include "tseparator.h"
-#include "tdebug.h"
 
 KTBrushStatus::KTBrushStatus(const QString &label, bool bg)
 {

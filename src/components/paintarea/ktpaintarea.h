@@ -78,6 +78,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void requestTriggered(const KTProjectRequest *event);
         void itemAddedOnSelection(KTGraphicsScene *);
         void frameChanged(int);
+        void closePolyLine();
 
     public slots:
         void deleteItems();

@@ -35,21 +35,19 @@
 
 #include "texttool.h"
 
-#include <QPointF>
-#include <QFontMetrics>
-#include <QKeySequence>
-#include <QGraphicsView>
-
 #include "tglobal.h"
 #include "ktscene.h"
-
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
 #include "ktlibraryobject.h"
-
 #include "ktrequestbuilder.h"
+
+#include <QPointF>
+#include <QFontMetrics>
+#include <QKeySequence>
+#include <QGraphicsView>
 
 TextTool::TextTool()
 {
@@ -172,6 +170,12 @@ void TextTool::setupActions()
 
 void TextTool::saveConfig()
 {
+}
+
+void TextTool::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
 }
 
 Q_EXPORT_PLUGIN2(kt_textool, TextTool);

@@ -57,7 +57,7 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
     QTextEdit *textArea = new QTextEdit; 
     textArea->setFixedHeight(250);
-    textArea->setHtml("<p><b>" + tr("Close line") + ":</b> " + tr("Esc key or Right mouse button") + "</p>"); 
+    textArea->setHtml("<p><b>" + tr("Close line") + ":</b> " + tr("C key or Right mouse button") + "</p>"); 
     mainLayout->addWidget(textArea);
    
     mainLayout->addStretch(2);

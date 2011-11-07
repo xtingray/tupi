@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="es">
 <context>
-    <name>Brush</name>
+    <name>PencilTool</name>
     <message>
         <source>Pencil</source>
         <translation>Lapiz</translation>
@@ -312,8 +312,8 @@
         <translation>Finalizar trazo</translation>
     </message>
     <message>
-        <source>Esc key or Right mouse button</source>
-        <translation>Tecla Escape o botón derecho del ratón</translation>
+        <source>C key or Right mouse button</source>
+        <translation>Tecla C o botón derecho del ratón</translation>
     </message>
     <message>
         <source>Set width/height proportional dimensions</source>
@@ -1671,6 +1671,10 @@
         <translation>Adicionar a biblioteca...</translation>
     </message>
     <message>
+        <source>PolyLine</source>
+        <translation>Polilínea</translation>
+    </message>
+    <message>
         <source>Object Selection</source>
         <translation>Selección de Objetos</translation>
     </message>
@@ -2284,6 +2288,18 @@
     <message>
         <source>Show grid</source>
         <translation>Mostrar malla</translation>
+    </message>
+    <message>
+        <source>Show a grid over the canvas</source>
+        <translation>Dibuja una malla sobre el canvas</translation>
+    </message>
+    <message>
+        <source>Full screen</source>
+        <translation>Pantalla completa</translation>
+    </message>
+    <message>
+        <source>Open a full screen view of canvas</source>
+        <translation>Vista del canvas en pantalla completa</translation>
     </message>
     <message>
         <source>#</source>

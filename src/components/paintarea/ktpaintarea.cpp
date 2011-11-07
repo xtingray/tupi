@@ -973,6 +973,10 @@ void KTPaintArea::setOnionFactor(double value)
 
 void KTPaintArea::keyPressEvent(QKeyEvent *event)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     /* This code has been deprecated 
     if (k->currentTool.compare(tr("Object Selection")) == 0 
         || k->currentTool.compare(tr("Contour Selection")) == 0
@@ -982,6 +986,16 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
         return;
     }
     */
+
+    tFatal() << "KTPaintArea::keyPressEvent() - PolyLine: " << k->currentTool;
+
+    if (k->currentTool.compare(tr("PolyLine")) == 0) {
+        tFatal() << "KTPaintArea::keyPressEvent() - Tracing polyline event!";
+        if (event->key() == Qt::Key_X) {
+            tFatal() << "KTPaintArea::keyPressEvent() - Do something!";
+            emit closePolyLine();
+        }
+    }
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();
     if (k->currentTool.compare(tr("Pencil")) != 0) {
@@ -1001,6 +1015,7 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
                                                                         scene->currentFrameIndex() - 1, 
                                                                         KTProjectRequest::Select, "1");
         emit requestTriggered(&request);
+        return;
     }
 
     if (event->key() == Qt::Key_Right) {
@@ -1021,6 +1036,7 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
                                                                         scene->currentFrameIndex() + 1, 
                                                                         KTProjectRequest::Select, "1");
         emit requestTriggered(&request);
+        return;
     }
 }
 

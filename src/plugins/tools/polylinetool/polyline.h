@@ -60,7 +60,7 @@ class PolyLine : public KTToolPlugin
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         
-        // virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyPressEvent(QKeyEvent *event);
 
         virtual QMap<QString, TAction *>actions() const;
         
@@ -77,10 +77,10 @@ class PolyLine : public KTToolPlugin
 
     private:
         void setupActions();
-        void endItem();
         
     private slots:
         void nodeChanged();
+        void endItem();
         
     private:
         struct Private;

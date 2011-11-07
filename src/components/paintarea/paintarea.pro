@@ -36,6 +36,9 @@ TARGET = paintarea
 SELECTION_DIR = ../../plugins/tools/selecttool
 INCLUDEPATH += $$SELECTION_DIR
 
+POLYLINE_DIR = ../../plugins/tools/polylinetool
+INCLUDEPATH += $$POLYLINE_DIR
+
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 include(../components_config.pri)

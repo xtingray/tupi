@@ -73,7 +73,7 @@ KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(),
     search->addWidget(k->search);
 
     QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR + "icons/magnifying.png"));
+    button->setIcon(QIcon(THEME_DIR + "icons/zoom.png"));
 
     search->addWidget(button);
     connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));

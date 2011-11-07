@@ -34,6 +34,14 @@
  ***************************************************************************/
 
 #include "ktpaintareastatus.h"
+#include "tseparator.h"
+#include "tdebug.h"
+#include "ktviewdocument.h"
+#include "ktglobal.h"
+#include "ktbrushmanager.h"
+#include "ktcolorwidget.h"
+#include "ktbrushstatus.h"
+#include "kttoolstatus.h"
 
 #include <QComboBox>
 #include <QCheckBox>
@@ -42,22 +50,12 @@
 #include <QIntValidator>
 #include <QObject>
 
-#include "tseparator.h"
-#include "tdebug.h"
-
-#include "ktviewdocument.h"
-#include "ktglobal.h"
-#include "ktbrushmanager.h"
-#include "ktcolorwidget.h"
-#include "ktbrushstatus.h"
-#include "kttoolstatus.h"
-
 ////////////////
 
 struct KTPaintAreaStatus::Private
 {
     KTViewDocument *viewDocument;
-    QLabel *frameLabel;
+    QLabel *frameNumber;
     QComboBox *zoom;
     QComboBox *rotation;
     QCheckBox *antialiasHint;
@@ -77,8 +75,13 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     QHBoxLayout *frameLayout = new QHBoxLayout(frameContainer);
     frameLayout->setSpacing(3);
     frameLayout->setMargin(1);
-    k->frameLabel = new QLabel(tr("Frame #001"));
-    frameLayout->addWidget(k->frameLabel);
+    QLabel *frameLabel = new QLabel("");
+    frameLabel->setToolTip(tr("Current Frame"));
+    QPixmap framePix(THEME_DIR + "icons/frame_number.png");
+    frameLabel->setPixmap(framePix);
+    k->frameNumber = new QLabel(tr("#001"));
+    frameLayout->addWidget(frameLabel);
+    frameLayout->addWidget(k->frameNumber);
 
     addPermanentWidget(frameContainer);
 
@@ -87,7 +90,13 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     zoomLayout->setSpacing(3);
     zoomLayout->setMargin(1);
 
-    zoomLayout->addWidget(new QLabel(tr("Zoom")));
+    QLabel *zoomTool = new QLabel("");
+    zoomTool->setToolTip(tr("Zoom"));
+    QPixmap pix(THEME_DIR + "icons/zoom_small.png");
+    zoomTool->setPixmap(pix);
+    // zoomTool->setMaximumSize(15, 15);
+
+    zoomLayout->addWidget(zoomTool);
 
     k->zoom = new QComboBox();
     k->zoom->setDuplicatesEnabled(false);
@@ -116,7 +125,14 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     rotLayout->setSpacing(3);
     rotLayout->setMargin(1);
 
-    rotLayout->addWidget(new QLabel(tr("Rotate")));
+    // rotLayout->addWidget(new QLabel(tr("Rotate")));
+
+    QLabel *rotateLabel = new QLabel("");
+    rotateLabel->setToolTip(tr("Rotate Workspace"));
+    QPixmap rotatePix(THEME_DIR + "icons/rotate_workspace.png");
+    rotateLabel->setPixmap(rotatePix);
+
+    rotLayout->addWidget(rotateLabel);
 
     k->rotation = new QComboBox();
     k->rotation->setDuplicatesEnabled(false);
@@ -231,6 +247,7 @@ void KTPaintAreaStatus::updateFrameIndex(int index)
     else if (index < 100)
              text = "0" + QString::number(index);
 
-    k->frameLabel->setText(tr("Frame #") + text);
+    // k->frameLabel->setText(tr("Frame #") + text);
+    k->frameNumber->setText(tr("#") + text);
 }
 

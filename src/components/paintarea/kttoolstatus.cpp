@@ -34,12 +34,11 @@
  ***************************************************************************/
 
 #include "kttoolstatus.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
 #include <QLabel>
 #include <QHBoxLayout>
-
-#include "tdebug.h"
-#include "tconfig.h"
 
 KTToolStatus::KTToolStatus()
 {
@@ -51,7 +50,7 @@ KTToolStatus::KTToolStatus()
     QPixmap pix(THEME_DIR + "icons/pencil.png");
     tool->setToolTip(tr("Current Tool"));
     tool->setPixmap(pix);
-    tool->setMaximumSize(20, 20);
+    // tool->setMaximumSize(20, 20);
 
     layout->addWidget(new QLabel(tr("Current Tool")));
     layout->addSpacing(3);

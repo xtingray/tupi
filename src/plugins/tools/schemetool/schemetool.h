@@ -68,6 +68,10 @@ class SchemeTool : public KTToolPlugin
         virtual QWidget *configurator();
         virtual void aboutToChangeTool();
         virtual void saveConfig();
+        virtual void keyPressEvent(QKeyEvent *event);
+
+    signals:
+        void closeHugeCanvas();
         
     private:
         void setupActions();

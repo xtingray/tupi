@@ -84,9 +84,9 @@ QStringList ViewTool::keys() const
 
 void ViewTool::setupActions()
 {
-    TAction *zoomAction = new TAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
+    TAction *zoomAction = new TAction(QIcon(THEME_DIR + "icons/zoom.png"), tr("Zoom"), this);
     zoomAction->setShortcut(QKeySequence(tr("Z")));
-    zoomAction->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
+    zoomAction->setCursor(QCursor(THEME_DIR + "cursors/zoom.png"));
     
     m_actions.insert(tr("Zoom"), zoomAction);
     

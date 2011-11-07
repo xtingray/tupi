@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef BRUSH_H
-#define BRUSH_H
+#ifndef PENCILTOOL_H
+#define PENCILTOOL_H
 
 #include <QObject>
 #include <QSpinBox>
@@ -50,13 +50,13 @@ class QKeySequence;
  * @author David Cuadrado
 */
 
-class Brush : public KTToolPlugin
+class PencilTool : public KTToolPlugin
 {
     Q_OBJECT
     
     public:
-        Brush();
-        virtual ~Brush();
+        PencilTool();
+        virtual ~PencilTool();
         
         virtual void init(KTGraphicsScene *scene);
         virtual QStringList keys() const;

@@ -65,7 +65,11 @@ class TextTool : public KTToolPlugin
         void aboutToChangeScene(KTGraphicsScene *scene);
         void aboutToChangeTool();
         virtual void saveConfig();
-        
+        virtual void keyPressEvent(QKeyEvent *event);
+
+    signals:
+        void closeHugeCanvas();
+ 
     private:
         void setupActions();
         

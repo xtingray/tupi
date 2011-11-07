@@ -746,4 +746,10 @@ void SchemeTool::smoothPath(QPainterPath &path, double smoothness, int from, int
     }
 }
 
+void SchemeTool::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
+}
+
 Q_EXPORT_PLUGIN2(kt_brush, SchemeTool);
