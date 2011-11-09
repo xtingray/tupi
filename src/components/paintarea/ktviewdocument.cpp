@@ -111,6 +111,7 @@ struct KTViewDocument::Private
     int prevOnionValue;
     int nextOnionValue;
     double opacityFactor;
+    int viewAngle;
     int autoSaveTime;
     bool fullScreenOn;
 
@@ -141,6 +142,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     k->currentTool = 0;
     k->onionEnabled = true;
     k->fullScreenOn = false;
+    k->viewAngle = 0;
 
     k->actionManager = new TActionManager(this);
 
@@ -260,6 +262,7 @@ QPainter::RenderHints KTViewDocument::renderHints() const
 
 void KTViewDocument::setRotationAngle(int angle)
 {
+    k->viewAngle = angle;
     k->paintArea->setRotationAngle(angle);
 }
 
@@ -835,11 +838,13 @@ void KTViewDocument::toggleShowGrid()
     k->paintArea->setDrawGrid(!k->paintArea->drawGrid());
 }
 
-void KTViewDocument::setZoomFactor(int /*percent*/)
+/*
+void KTViewDocument::setZoomFactor(int percent)
 {
     k->zoomFactorSpin->blockSignals(true);
     k->zoomFactorSpin->blockSignals(false);
 }
+*/
 
 void KTViewDocument::scaleRuler(double factor)
 {
@@ -992,18 +997,21 @@ void KTViewDocument::showFullScreen()
     k->fullScreenOn = true;
 
     QDesktopWidget desktop;
-    int w = desktop.screenGeometry().width();
-    int h = desktop.screenGeometry().height();
+    int screenW = desktop.screenGeometry().width();
+    int screenH = desktop.screenGeometry().height();
 
-    /*
+    double scale = 1;
+
     QSize projectSize = k->project->dimension();
-    if (projectSize.width() > projectSize.height())
-
+    if (projectSize.width() < projectSize.height())
+        scale = (double) (screenW - 50) / (double) projectSize.width();
     else
-    */
+        scale = (double) (screenH - 50) / (double) projectSize.height();
 
-    k->fullScreen = new KTCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), QSize(w, h)); 
-    k->fullScreen->setFixedSize(w, h); 
+    k->fullScreen = new KTCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
+                                 k->paintArea->centerPoint(), QSize(screenW, screenH), projectSize, scale,
+                                 k->viewAngle, k->project->bgColor()); 
+    k->fullScreen->setFixedSize(screenW, screenH); 
     k->fullScreen->exec(); 
 }
 

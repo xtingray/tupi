@@ -38,6 +38,7 @@
 
 #include "ktcolorwidget.h"
 
+#include <QPixmap>
 #include <QPen>
 #include <QBrush>
 #include <QColor>
@@ -49,7 +50,7 @@ class KTBrushStatus : public QWidget
     Q_OBJECT
 
     public:
-        KTBrushStatus(const QString &label, bool bg);
+        KTBrushStatus(const QString &label, const QPixmap &pix, bool bg);
         ~KTBrushStatus();
 
         void setForeground(const QPen &pen);

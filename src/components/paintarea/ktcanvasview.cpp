@@ -33,67 +33,48 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktbrushstatus.h"
-#include "tseparator.h"
+#include "ktcanvasview.h"
 #include "tdebug.h"
 
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QPen>
-#include <QBrush>
-#include <QColorDialog>
-
-KTBrushStatus::KTBrushStatus(const QString &label, const QPixmap &pix, bool bg)
+struct KTCanvasView::Private
 {
-    background = bg;
+    QSize screenSize;
+    QSize projectSize;
+    QColor bg;
+};
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(2);
-    layout->setSpacing(2);
-
-    brush = new KTColorWidget;
-    connect(brush, SIGNAL(clicked()), this, SLOT(updateColour()));
-
-    QLabel *icon = new QLabel("");
-    icon->setToolTip(label);
-    icon->setPixmap(pix);
-
-    layout->addWidget(icon);
-    layout->addSpacing(3);
-    layout->addWidget(brush);
+KTCanvasView::KTCanvasView(QWidget *parent, const QSize &screenSize, 
+                           const QSize &projectSize, const QColor &bg) : QGraphicsView(parent), k(new Private)
+{
+    k->screenSize = screenSize;
+    k->projectSize = projectSize;
+    k->bg = bg;
 }
 
-KTBrushStatus::~KTBrushStatus()
+KTCanvasView::~KTCanvasView()
 {
 }
 
-void KTBrushStatus::setForeground(const QPen &pen)
+void KTCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    brush->setBrush(pen.brush());
-}
+    QGraphicsView::drawBackground(painter, rect);
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
 
-void KTBrushStatus::setColor(const QColor &color)
-{
-    QBrush square(color);
-    brush->setBrush(square);
-}
+    painter->setPen(QPen(Qt::NoPen));
 
-void KTBrushStatus::updateColour()
-{
-    if (background) {
-        QColor color = QColorDialog::getColor(brush->color(), this);
-        if (color.isValid()) {
-            setColor(color);
-            emit colorUpdated(color);
-        }
+    QRectF drawingRect = QRectF(rect.topLeft(), k->screenSize);
+    painter->fillRect(drawingRect, k->bg);
 
-    } else {
-        emit colorRequested();
-    }
-}
+    double w = (double) k->projectSize.width() / (double) 2;
+    double h = (double) k->projectSize.height() / (double) 2;
 
-void KTBrushStatus::setTooltip(const QString &tip)
-{
-    brush->setToolTip(tip);
+    painter->setPen(QPen(QColor(200, 200, 200, 255), 0.2));
+    QPointF topLeft = rect.center() - QPointF(w, h); 
+    QRectF workspace = QRectF(topLeft, k->projectSize);
+
+    painter->drawRect(drawingRect);
+    painter->drawRect(workspace);
+    painter->restore();
 }
 

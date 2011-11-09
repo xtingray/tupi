@@ -77,6 +77,7 @@ class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
         QRectF drawingRect() const;
         KTGraphicsScene *graphicsScene() const;
         QPointF viewPosition();
+        QPointF centerPoint() const;
 
     private:
         virtual void saveState();

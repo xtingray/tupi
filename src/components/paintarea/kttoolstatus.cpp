@@ -52,7 +52,10 @@ KTToolStatus::KTToolStatus()
     tool->setPixmap(pix);
     // tool->setMaximumSize(20, 20);
 
-    layout->addWidget(new QLabel(tr("Current Tool")));
+    QLabel *label = new QLabel(tr("Current Tool"));
+    QFont font("Helvetica", 8, QFont::Normal);
+    label->setFont(font);
+    layout->addWidget(label);
     layout->addSpacing(3);
     layout->addWidget(tool);
 }

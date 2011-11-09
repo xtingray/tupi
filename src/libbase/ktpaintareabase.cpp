@@ -113,8 +113,7 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget *parent, QSize dimension) : QGraphicsVi
     k->angle = 0;
 
     k->rotator = new KTPaintAreaRotator(this, this);
-    // k->drawingRect = QRectF(QPointF(0,0), QSizeF(520, 380)); // FIXME: configurable
-    k->drawingRect = QRectF(QPointF(0,0), dimension);
+    k->drawingRect = QRectF(QPointF(0, 0), dimension);
 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);
@@ -320,13 +319,13 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
     //painter->setRenderHint(QPainter::Antialiasing, false);
 
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setPen(QPen(QColor(0,0,0,180), 2));
+    painter->setPen(QPen(QColor(0, 0, 0, 180), 2));
     // painter->fillRect(k->drawingRect, Qt::white);
     painter->fillRect(k->drawingRect, k->bgcolor);
     painter->drawRect(k->drawingRect);
 
-    //emit changedZero(painter->matrix().map(QPointF(0,0)));
-    emit changedZero(painter->worldTransform().map(QPointF(0,0)));
+    //emit changedZero(painter->matrix().map(QPointF(0, 0)));
+    emit changedZero(painter->worldTransform().map(QPointF(0, 0)));
 
     // if enabled draw grid
     if (k->drawGrid) {
@@ -430,6 +429,11 @@ bool KTPaintAreaBase::canPaint() const
 void KTPaintAreaBase::centerDrawingArea()
 {
     centerOn(k->drawingRect.center());
+}
+
+QPointF KTPaintAreaBase::centerPoint() const
+{
+    return k->drawingRect.center();
 }
 
 void KTPaintAreaBase::wheelEvent(QWheelEvent *event)

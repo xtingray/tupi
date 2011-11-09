@@ -39,7 +39,7 @@
 #include "ktgraphicsscene.h"
 
 #include <QDialog>
-#include <QKeyEvent>
+#include <QPointF>
 #include <QSize>
 
 class KTGraphicsScene;
@@ -49,7 +49,10 @@ class KTCanvas : public QDialog
     Q_OBJECT
 
     public:
-        KTCanvas(QWidget *parent=0, Qt::WindowFlags f=0, KTGraphicsScene *scene=0, const QSize size = QSize(0, 0));
+        KTCanvas(QWidget *parent=0, Qt::WindowFlags f=0, KTGraphicsScene *scene=0, 
+                 const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
+                 const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
+                 int angle=0, const QColor &bg = QColor(Qt::white));
         ~KTCanvas();
 };
 

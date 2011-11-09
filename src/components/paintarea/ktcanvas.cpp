@@ -38,6 +38,7 @@
 #include "tglobal.h"
 #include "tconfig.h"
 #include "tdebug.h"
+#include "ktcanvasview.h"
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -45,23 +46,24 @@
 #include <QIcon>
 #include <QGraphicsView>
 
-KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scene, const QSize size) : QDialog(parent, flags)
+KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scene, 
+                   const QPointF centerPoint, const QSize &screenSize, const QSize &projectSize, double scaleFactor,
+                   int angle, const QColor &bg) : QDialog(parent, flags)
 {
     setModal(true);
     setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
-    QGraphicsView *graphicsView = new QGraphicsView;
+    KTCanvasView *graphicsView = new KTCanvasView(this, screenSize, projectSize, bg);
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
-    graphicsView->setFixedSize(size);
-
-    /*
-    graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+    graphicsView->setFixedSize(screenSize.width(), screenSize.height());
     graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    */
+    graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     graphicsView->setScene(scene);
+    graphicsView->centerOn(centerPoint);
+    graphicsView->scale(scaleFactor, scaleFactor);
+    graphicsView->rotate(angle);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);

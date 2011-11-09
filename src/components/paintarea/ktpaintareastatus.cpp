@@ -151,23 +151,26 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 
     ///////
 
-    k->antialiasHint = new QCheckBox(tr("Antialiasing"));
-    k->antialiasHint->setFocusPolicy(Qt::NoFocus);
+    k->antialiasHint = new QCheckBox;
+    k->antialiasHint->setIcon(QIcon(QPixmap(THEME_DIR + "icons/antialiasing.png")));
+    k->antialiasHint->setToolTip(tr("Antialiasing"));
+    // k->antialiasHint->setFocusPolicy(Qt::NoFocus);
     k->antialiasHint->setCheckable(true);
     k->antialiasHint->setChecked(true);
-    k->antialiasHint->setFixedHeight(22);
+    k->antialiasHint->setFixedWidth(36);
+    k->antialiasHint->setFixedHeight(23);
     addPermanentWidget(k->antialiasHint);
 
     connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint()));
 
-    k->bgStatus = new KTBrushStatus(tr("Current Background"), true);
+    k->bgStatus = new KTBrushStatus(tr("Background Color"), QPixmap(THEME_DIR + "icons/background_color.png"), true);
     k->bgStatus->setTooltip(tr("Click here to change background color"));
     addPermanentWidget(k->bgStatus);
     k->bgStatus->setColor(k->viewDocument->project()->bgColor());
 
     connect(k->bgStatus, SIGNAL(colorUpdated(const QColor)), this, SIGNAL(colorUpdated(const QColor)));
 
-    k->brushStatus = new KTBrushStatus(tr("Current Brush"), false);
+    k->brushStatus = new KTBrushStatus(tr("Brush Color"), QPixmap(THEME_DIR + "icons/brush_color.png"), false);
     k->brushStatus->setTooltip(tr("Click here to change brush color"));
     addPermanentWidget(k->brushStatus);
 

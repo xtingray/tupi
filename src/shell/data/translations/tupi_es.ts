@@ -1784,12 +1784,12 @@
         <translation>Antialiasing</translation>
     </message>
     <message>
-        <source>Current Brush</source>
-        <translation>Brocha</translation>
+        <source>Brush Color</source>
+        <translation>Color de Brocha</translation>
     </message>
     <message>
-        <source>Current Background</source>
-        <translation>Fondo</translation>
+        <source>Background Color</source>
+        <translation>Color de Fondo</translation>
     </message>
     <message>
         <source>Zoom</source>

@@ -87,7 +87,7 @@ class KTViewDocument : public QMainWindow
 
         void toggleShowGrid();
 
-        void setZoomFactor(int porcent);
+        // void setZoomFactor(int porcent);
         void scaleRuler(double factor);
         void changeRulerOrigin(const QPointF &zero);
         void saveTimer();

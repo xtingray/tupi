@@ -33,67 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktbrushstatus.h"
-#include "tseparator.h"
-#include "tdebug.h"
+#ifndef KTCANVASVIEW_H
+#define KTCANVASVIEW_H
 
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QPen>
-#include <QBrush>
-#include <QColorDialog>
+#include <QGraphicsView>
+#include <QPainter>
+#include <QRectF>
 
-KTBrushStatus::KTBrushStatus(const QString &label, const QPixmap &pix, bool bg)
+class KTCanvasView : public QGraphicsView 
 {
-    background = bg;
+    Q_OBJECT
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(2);
-    layout->setSpacing(2);
+    public:
+        KTCanvasView(QWidget *parent=0, const QSize &screenSize = QSize(0, 0), 
+                     const QSize &projectSize = QSize(0, 0), const QColor &bg = QColor(Qt::white));
+        ~KTCanvasView();
 
-    brush = new KTColorWidget;
-    connect(brush, SIGNAL(clicked()), this, SLOT(updateColour()));
+    protected:
+        virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
-    QLabel *icon = new QLabel("");
-    icon->setToolTip(label);
-    icon->setPixmap(pix);
+    private:
+        struct Private;
+        Private *const k;
+};
 
-    layout->addWidget(icon);
-    layout->addSpacing(3);
-    layout->addWidget(brush);
-}
-
-KTBrushStatus::~KTBrushStatus()
-{
-}
-
-void KTBrushStatus::setForeground(const QPen &pen)
-{
-    brush->setBrush(pen.brush());
-}
-
-void KTBrushStatus::setColor(const QColor &color)
-{
-    QBrush square(color);
-    brush->setBrush(square);
-}
-
-void KTBrushStatus::updateColour()
-{
-    if (background) {
-        QColor color = QColorDialog::getColor(brush->color(), this);
-        if (color.isValid()) {
-            setColor(color);
-            emit colorUpdated(color);
-        }
-
-    } else {
-        emit colorRequested();
-    }
-}
-
-void KTBrushStatus::setTooltip(const QString &tip)
-{
-    brush->setToolTip(tip);
-}
-
+#endif
