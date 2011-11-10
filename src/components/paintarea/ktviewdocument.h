@@ -139,8 +139,8 @@ class KTViewDocument : public QMainWindow
         void modeHasChanged(int mode);
         void expandColorPanel();
 
-    protected:
-        // void closeEvent(QCloseEvent *e);
+    // protected:
+    // void closeEvent(QCloseEvent *e);
 };
 
 #endif

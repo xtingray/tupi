@@ -133,3 +133,9 @@ QMenu *KTToolPlugin::menu() const
 void KTToolPlugin::saveConfig() 
 {
 }
+
+QCursor KTToolPlugin::cursor() const
+{
+    return 0;
+}
+

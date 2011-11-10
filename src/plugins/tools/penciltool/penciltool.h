@@ -36,13 +36,13 @@
 #ifndef PENCILTOOL_H
 #define PENCILTOOL_H
 
-#include <QObject>
-#include <QSpinBox>
-#include <QTimer>
-
 #include "kttoolplugin.h"
 #include "exactnessconfigurator.h"
 #include "ktpathitem.h"
+
+#include <QObject>
+#include <QSpinBox>
+#include <QTimer>
 
 class QKeySequence;
 
@@ -69,6 +69,7 @@ class PencilTool : public KTToolPlugin
         virtual void aboutToChangeTool();
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual QCursor cursor() const;
         
     private:
         void setupActions();
@@ -76,7 +77,12 @@ class PencilTool : public KTToolPlugin
 
     signals:
         void closeHugeCanvas();
-        
+
+    private:
+        struct Private;
+        Private *const k;
+
+    /*
     private:
         QPointF m_firstPoint;
         QPointF m_oldPos;
@@ -84,6 +90,8 @@ class PencilTool : public KTToolPlugin
         ExactnessConfigurator * m_configurator;
         QMap<QString, TAction *> m_actions;
         KTPathItem *m_item;
+        QCursor m_cursor;
+    */
 };
 
 #endif

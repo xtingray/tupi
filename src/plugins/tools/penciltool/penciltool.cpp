@@ -59,20 +59,28 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsView>
 
-PencilTool::PencilTool() : m_configurator(0), m_item(0)
+struct PencilTool::Private
 {
-    #ifdef K_DEBUG
-           TINIT;
-    #endif
+    QPointF firstPoint;
+    QPointF oldPos;
+    QPainterPath path;
+    ExactnessConfigurator *configurator;
+    QMap<QString, TAction *> actions;
+    KTPathItem *item;
+    QCursor cursor;
+};
+
+PencilTool::PencilTool() : k(new Private)
+{
+    k->configurator = 0;
+    k->item = 0;
+    k->cursor = QCursor(THEME_DIR + "cursors/pencil.png");
 
     setupActions();
 }
 
 PencilTool::~PencilTool()
 {
-    #ifdef K_DEBUG
-           TEND;
-    #endif
 }
 
 void PencilTool::init(KTGraphicsScene *scene)
@@ -96,21 +104,17 @@ QStringList PencilTool::keys() const
 
 void PencilTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
+    k->firstPoint = input->pos();
 
-    m_firstPoint = input->pos();
+    k->path = QPainterPath();
+    k->path.moveTo(k->firstPoint);
 
-    m_path = QPainterPath();
-    m_path.moveTo(m_firstPoint);
+    k->oldPos = input->pos();
 
-    m_oldPos = input->pos();
+    k->item = new KTPathItem();
+    k->item->setPen(brushManager->pen());
 
-    m_item = new KTPathItem();
-    m_item->setPen(brushManager->pen());
-
-    scene->includeObject(m_item);
+    scene->includeObject(k->item);
 }
 
 void PencilTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -122,41 +126,37 @@ void PencilTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
     foreach (QGraphicsView * view, scene->views())
              view->setDragMode(QGraphicsView::NoDrag);
 
-    m_path.moveTo(m_oldPos);
-    m_path.lineTo(lastPoint);
+    k->path.moveTo(k->oldPos);
+    k->path.lineTo(lastPoint);
 
-    m_item->setPath(m_path);
-    m_oldPos = lastPoint;
+    k->item->setPath(k->path);
+    k->oldPos = lastPoint;
 }
 
 void PencilTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     Q_UNUSED(scene);
 
-    if (!m_item)
+    if (!k->item)
         return;
 
-    double smoothness = m_configurator->exactness();
+    double smoothness = k->configurator->exactness();
 
-    if (m_firstPoint == input->pos() && m_path.elementCount() == 1) {
+    if (k->firstPoint == input->pos() && k->path.elementCount() == 1) {
         smoothness = 0;
         qreal radius = ((qreal) brushManager->pen().width()) / ((qreal) 2);
-        m_path.addEllipse(input->pos().x(), input->pos().y(), radius, radius);
+        k->path.addEllipse(input->pos().x(), input->pos().y(), radius, radius);
     } 
 
-    smoothPath(m_path, smoothness);
+    smoothPath(k->path, smoothness);
 
-    m_item->setBrush(brushManager->brush());
-    m_item->setPath(m_path);
+    k->item->setBrush(brushManager->brush());
+    k->item->setPath(k->path);
 
     // Add KTProjectRequest
 
     QDomDocument doc;
-    doc.appendChild(m_item->toXml(doc));
+    doc.appendChild(k->item->toXml(doc));
 
     KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), 
                                                                    scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
@@ -195,15 +195,15 @@ void PencilTool::smoothPath(QPainterPath &path, double smoothness, int from, int
 void PencilTool::setupActions()
 {
     TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
-    pencil->setShortcut(QKeySequence(tr("P")) );
-    pencil->setCursor(QCursor(THEME_DIR + "cursors/pencil.png"));
+    pencil->setShortcut(QKeySequence(tr("P")));
+    pencil->setCursor(k->cursor);
 
-    m_actions.insert(tr("Pencil"), pencil);
+    k->actions.insert(tr("Pencil"), pencil);
 }
 
 QMap<QString, TAction *> PencilTool::actions() const
 {
-    return m_actions;
+    return k->actions;
 }
 
 int PencilTool::toolType() const
@@ -213,10 +213,10 @@ int PencilTool::toolType() const
 
 QWidget *PencilTool::configurator() 
 {
-    if (! m_configurator)
-        m_configurator = new ExactnessConfigurator;
+    if (! k->configurator)
+        k->configurator = new ExactnessConfigurator;
 
-    return m_configurator;
+    return k->configurator;
 }
 
 void PencilTool::aboutToChangeTool() 
@@ -225,9 +225,9 @@ void PencilTool::aboutToChangeTool()
 
 void PencilTool::saveConfig()
 {
-    if (m_configurator) {
+    if (k->configurator) {
         TCONFIG->beginGroup("PencilTool");
-        TCONFIG->setValue("Smoothness", m_configurator->exactness());
+        TCONFIG->setValue("Smoothness", k->configurator->exactness());
     }
 }
 
@@ -237,5 +237,9 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
         emit closeHugeCanvas();
 }
 
+QCursor PencilTool::cursor() const
+{
+    return k->cursor;
+}
 
 Q_EXPORT_PLUGIN2(kt_brush, PencilTool);

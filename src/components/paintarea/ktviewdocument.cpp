@@ -376,7 +376,7 @@ void KTViewDocument::createTools()
 
     // View menu
     k->viewToolMenu = new QMenu(tr("View"), k->toolbar);
-    k->viewToolMenu->setIcon(QPixmap(THEME_DIR + "icons/magnifying.png"));
+    k->viewToolMenu->setIcon(QPixmap(THEME_DIR + "icons/zoom.png"));
     connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->viewToolMenu->menuAction());
@@ -994,6 +994,14 @@ void KTViewDocument::setOnionFactor(double opacity)
 
 void KTViewDocument::showFullScreen()
 {
+    if (k->currentTool->toolType() != KTToolInterface::Brush) {
+        TAction *tool = qobject_cast<TAction *>(k->brushesMenu->defaultAction());
+        if (tool) {
+            k->currentTool = qobject_cast<KTToolPlugin *>(tool->parent());
+            tool->trigger();
+        }
+    }
+
     k->fullScreenOn = true;
 
     QDesktopWidget desktop;
@@ -1012,6 +1020,7 @@ void KTViewDocument::showFullScreen()
                                  k->paintArea->centerPoint(), QSize(screenW, screenH), projectSize, scale,
                                  k->viewAngle, k->project->bgColor()); 
     k->fullScreen->setFixedSize(screenW, screenH); 
+    k->fullScreen->updateCursor(k->currentTool->cursor());
     k->fullScreen->exec(); 
 }
 

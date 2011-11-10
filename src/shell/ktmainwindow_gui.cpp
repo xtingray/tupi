@@ -570,10 +570,6 @@ void KTMainWindow::setupToolBar()
 
 void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
 {	
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     int i = 0;
     QAction *action[recents.length()];
 

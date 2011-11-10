@@ -36,18 +36,16 @@
 #ifndef KTTOOLPLUGIN_H
 #define KTTOOLPLUGIN_H
 
-#include <QObject>
-
 #include "kttoolinterface.h"
 #include "ktglobal.h"
 #include "ktprojectresponse.h"
+
+#include <QObject>
 
 class KTGraphicsScene;
 class QGraphicsView;
 class KTInputDeviceInformation;
 class KTBrushManager;
-// class KTItemResponse;
-// class KTProjectRequest;
 
 /**
  * @author David Cuadrado
@@ -59,7 +57,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
     Q_INTERFACES(KTToolInterface);
     
     public:
-        explicit KTToolPlugin(QObject * parent = 0);
+        explicit KTToolPlugin(QObject *parent = 0);
         ~KTToolPlugin();
         
         void setName(const QString &tool);
@@ -89,6 +87,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         virtual void keyReleaseEvent(QKeyEvent *event);
 
         virtual QMenu *menu() const;
+        virtual QCursor cursor() const;
         
     signals:
         void requested(const KTProjectRequest *request);

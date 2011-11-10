@@ -36,6 +36,11 @@
 #ifndef ATOOLINTERFACE_H
 #define ATOOLINTERFACE_H
 
+#include "ktframe.h"
+#include "taction.h"
+#include "qplugin.h" // Q_EXPORT_PLUGIN
+#include "ktglobal.h"
+
 #include <QStringList>
 #include <QRect>
 #include <QPoint>
@@ -47,13 +52,6 @@
 #include <QHash>
 #include <QCursor>
 #include <QMouseEvent>
-
-#include "ktframe.h"
-
-#include "taction.h"
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
-#include "ktglobal.h"
 
 class KTScene;
 

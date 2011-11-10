@@ -74,27 +74,30 @@ class GeometricTool : public KTToolPlugin
         void aboutToChangeScene(KTGraphicsScene *scene);
         virtual void aboutToChangeTool();
         virtual void saveConfig();
+        virtual QCursor cursor() const;
 
     signals:
         void closeHugeCanvas();
         
     private:
         void setupActions();
-        
+
+    private:
+        struct Private;
+        Private *const k;
+
+    /*
     private:
         KTRectItem *m_rect;
         KTEllipseItem *m_ellipse;
         KTLineItem *m_line;
-
         InfoPanel *m_configurator;
-
         bool added;
         QPointF firstPoint;
-
         QMap<QString, TAction *> m_actions;
         bool proportion;
-        
         QGraphicsItem *m_item;
+    */
 };
 
 #endif

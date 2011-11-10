@@ -69,13 +69,18 @@ struct PolyLine::Private
     KTGraphicsScene *scene;
     
     QGraphicsLineItem *line1, *line2;
+    InfoPanel *configurator;
+    QCursor cursor;
 };
 
-PolyLine::PolyLine(): k(new Private), m_configurator(0)
+PolyLine::PolyLine(): k(new Private)
 {
+    k->configurator = 0;
     k->begin = false;
     k->nodegroup = 0;
     k->item = 0;
+
+    k->cursor = QCursor(THEME_DIR + "cursors/polyline.png");
     
     k->line1 = new QGraphicsLineItem(0, 0, 0, 0);
     k->line1->setPen(QPen(QColor(55, 177, 50)));
@@ -415,7 +420,7 @@ void PolyLine::setupActions()
 {
     TAction *pencil = new TAction(QIcon(THEME_DIR + "icons/polyline.png"), tr("PolyLine"), this);
     pencil->setShortcut(QKeySequence(tr("S")));
-    pencil->setCursor(QCursor(THEME_DIR + "cursors/polyline.png"));
+    pencil->setCursor(k->cursor);
     
     k->actions.insert(tr("PolyLine"), pencil);
 }
@@ -432,10 +437,10 @@ int PolyLine::toolType() const
 
 QWidget *PolyLine::configurator() 
 {
-    if (! m_configurator)
-        m_configurator = new InfoPanel;
+    if (! k->configurator)
+        k->configurator = new InfoPanel;
 
-    return m_configurator;
+    return k->configurator;
 }
 
 void PolyLine::aboutToChangeScene(KTGraphicsScene *)
@@ -466,6 +471,11 @@ void PolyLine::aboutToChangeTool()
 
 void PolyLine::saveConfig()
 {
+}
+
+QCursor PolyLine::cursor() const
+{
+    return k->cursor;
 }
 
 Q_EXPORT_PLUGIN2(kt_polyline, PolyLine);

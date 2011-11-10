@@ -71,6 +71,7 @@ class PolyLine : public KTToolPlugin
         virtual void aboutToChangeTool();
         void itemResponse(const KTItemResponse *response);
         virtual void saveConfig();
+        virtual QCursor cursor() const;
 
     signals:
         void closeHugeCanvas();
@@ -85,7 +86,6 @@ class PolyLine : public KTToolPlugin
     private:
         struct Private;
         Private * const k;
-        InfoPanel *m_configurator;
 };
 
 #endif

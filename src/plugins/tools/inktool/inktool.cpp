@@ -64,18 +64,11 @@
 
 InkTool::InkTool() : m_configurator(0), m_item(0)
 {
-    #ifdef K_DEBUG
-           TINIT;
-    #endif
-
     setupActions();
 }
 
 InkTool::~InkTool()
 {
-    #ifdef K_DEBUG
-           TEND;
-    #endif
 }
 
 void InkTool::init(KTGraphicsScene *scene)

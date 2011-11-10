@@ -57,7 +57,7 @@ KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scen
     KTCanvasView *graphicsView = new KTCanvasView(this, screenSize, projectSize, bg);
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
     graphicsView->setFixedSize(screenSize.width(), screenSize.height());
-    graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    // graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     graphicsView->setScene(scene);
@@ -73,4 +73,9 @@ KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scen
 
 KTCanvas::~KTCanvas()
 {
+}
+
+void KTCanvas::updateCursor(const QCursor &cursor)
+{
+    setCursor(cursor);
 }

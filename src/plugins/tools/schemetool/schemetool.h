@@ -69,6 +69,7 @@ class SchemeTool : public KTToolPlugin
         virtual void aboutToChangeTool();
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual QCursor cursor() const;
 
     signals:
         void closeHugeCanvas();
@@ -80,7 +81,12 @@ class SchemeTool : public KTToolPlugin
     private slots:
         void updateSpacingVar(int value);
         void updateSizeToleranceVar(int value);
-        
+
+    private:
+        struct Private;
+        Private *const k;
+
+    /*        
     private:
         QPointF m_firstPoint;
         QPointF m_oldPos;
@@ -104,6 +110,7 @@ class SchemeTool : public KTToolPlugin
         qreal widthVar; 
         int arrowSize;
         int firstArrow;
+    */
 };
 
 #endif

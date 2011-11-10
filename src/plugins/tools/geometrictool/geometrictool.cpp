@@ -36,7 +36,6 @@
 #include "geometrictool.h"
 #include "tglobal.h"
 #include "tdebug.h"
-
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
@@ -54,7 +53,23 @@
 #include <QPaintDevice>
 #include <QGraphicsView>
 
-GeometricTool::GeometricTool()
+struct GeometricTool::Private
+{
+    KTRectItem *rect;
+    KTEllipseItem *ellipse;
+    KTLineItem *line;
+    InfoPanel *configurator;
+    bool added;
+    QPointF firstPoint;
+    QMap<QString, TAction *> actions;
+    bool proportion;
+    QGraphicsItem *item;
+    QCursor squareCursor;
+    QCursor circleCursor;
+    QCursor lineCursor;
+};
+
+GeometricTool::GeometricTool() : k(new Private)
 {
     setupActions();
 }
@@ -70,7 +85,7 @@ QStringList GeometricTool::keys() const
 
 void GeometricTool::init(KTGraphicsScene *scene)
 {
-    proportion = false;
+    k->proportion = false;
 
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
@@ -88,21 +103,24 @@ void GeometricTool::setupActions()
 {
     TAction *action1 = new TAction(QIcon(THEME_DIR + "icons/square.png"), tr("Rectangle"), this);
     action1->setShortcut(QKeySequence(tr("R")));
-    action1->setCursor(QCursor(THEME_DIR + "cursors/square.png"));
+    k->squareCursor = QCursor(THEME_DIR + "cursors/square.png");
+    action1->setCursor(k->squareCursor);
     
-    m_actions.insert( tr("Rectangle"), action1);
+    k->actions.insert(tr("Rectangle"), action1);
     
     TAction *action2 = new TAction(QIcon(THEME_DIR + "icons/ellipse.png"), tr("Ellipse"), this);
     action2->setShortcut(QKeySequence(tr("C")));
-    action2->setCursor(QCursor(THEME_DIR + "cursors/circle.png"));
+    k->circleCursor = QCursor(THEME_DIR + "cursors/circle.png");
+    action2->setCursor(k->circleCursor);
     
-    m_actions.insert(tr("Ellipse"), action2);
+    k->actions.insert(tr("Ellipse"), action2);
     
     TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/line.png"), tr("Line"), this);
     action3->setShortcut(QKeySequence(tr("L")));
-    action3->setCursor(QCursor(THEME_DIR + "cursors/line.png"));
+    k->lineCursor = QCursor(THEME_DIR + "cursors/line.png");
+    action3->setCursor(k->lineCursor);
 
-    m_actions.insert(tr("Line"), action3);
+    k->actions.insert(tr("Line"), action3);
 }
 
 void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -113,30 +131,30 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
     if (input->buttons() == Qt::LeftButton) {
         
         if (name() == tr("Rectangle")) {
-            added = false;
-            m_rect = new KTRectItem(QRectF(input->pos(), QSize(0,0)));
-            m_rect->setPen(brushManager->pen());
-            m_rect->setBrush(brushManager->brush());
+            k->added = false;
+            k->rect = new KTRectItem(QRectF(input->pos(), QSize(0,0)));
+            k->rect->setPen(brushManager->pen());
+            k->rect->setBrush(brushManager->brush());
 
-            firstPoint = input->pos();
+            k->firstPoint = input->pos();
 
         } else if (name() == tr("Ellipse")) {
 
-                   added = false;
-                   m_ellipse = new KTEllipseItem(QRectF(input->pos(), QSize(0,0)));
-                   m_ellipse->setPen(brushManager->pen());
-                   m_ellipse->setBrush(brushManager->brush());
+                   k->added = false;
+                   k->ellipse = new KTEllipseItem(QRectF(input->pos(), QSize(0,0)));
+                   k->ellipse->setPen(brushManager->pen());
+                   k->ellipse->setBrush(brushManager->brush());
 
-                   firstPoint = input->pos();
+                   k->firstPoint = input->pos();
 
         } else if (name() == tr("Line")) {
 
-                   added = false;
-                   m_line = new KTLineItem();
-                   m_line->setLine(QLineF(input->pos().x(), input->pos().y(), input->pos().x(), input->pos().y()));
-                   m_line->setPen(brushManager->pen());
+                   k->added = false;
+                   k->line = new KTLineItem();
+                   k->line->setLine(QLineF(input->pos().x(), input->pos().y(), input->pos().x(), input->pos().y()));
+                   k->line->setPen(brushManager->pen());
 
-                   firstPoint = input->pos();
+                   k->firstPoint = input->pos();
         }
     }
 }
@@ -148,27 +166,27 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
     
     if (name() == tr("Rectangle") || name() == tr("Ellipse")) {
 
-        if (!added) {
+        if (!k->added) {
             if (name() == tr("Rectangle"))
-                scene->includeObject(m_rect);
+                scene->includeObject(k->rect);
             else
-                scene->includeObject(m_ellipse);
-            added = true;
+                scene->includeObject(k->ellipse);
+            k->added = true;
         }
 
         int xMouse = input->pos().x();
         int yMouse = input->pos().y();
-        int xInit = firstPoint.x();
-        int yInit = firstPoint.y();
+        int xInit = k->firstPoint.x();
+        int yInit = k->firstPoint.y();
 
         QRectF rect;
 
         if (name() == tr("Rectangle"))
-            rect = m_rect->rect();
+            rect = k->rect->rect();
         else
-            rect = m_ellipse->rect();
+            rect = k->ellipse->rect();
 
-        if (proportion) {
+        if (k->proportion) {
 
             int width = abs(xMouse - xInit);
             int height = abs(yMouse - yInit);
@@ -229,19 +247,19 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         }
 
         if (name() == tr("Rectangle"))
-            m_rect->setRect(rect);
+            k->rect->setRect(rect);
         else
-            m_ellipse->setRect(rect);
+            k->ellipse->setRect(rect);
 
     } else if (name() == tr("Line")) {
 
-        if (!added) {
-            scene->includeObject(m_line);
-            added = true;
+        if (!k->added) {
+            scene->includeObject(k->line);
+            k->added = true;
         }
 
-        QLineF line(firstPoint.x(), firstPoint.y(), input->pos().x(), input->pos().y()); 
-        m_line->setLine(line);
+        QLineF line(k->firstPoint.x(), k->firstPoint.y(), input->pos().x(), input->pos().y()); 
+        k->line->setLine(line);
     }
 }
 
@@ -254,15 +272,15 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     QPointF position;
 
     if (name() == tr("Rectangle")) {
-        doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_rect)->toXml(doc));
-        position = m_rect->pos();
+        doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->rect)->toXml(doc));
+        position = k->rect->pos();
     } else if (name() == tr("Ellipse")) {
-               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_ellipse)->toXml(doc));
-               QRectF rect = m_ellipse->rect();
+               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->ellipse)->toXml(doc));
+               QRectF rect = k->ellipse->rect();
                position = rect.topLeft();
     } else if (name() == tr("Line")) {
-               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_line)->toXml(doc));
-               position = m_line->pos(); 
+               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->line)->toXml(doc));
+               position = k->line->pos(); 
     }
     
     KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
@@ -274,7 +292,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 
 QMap<QString, TAction *> GeometricTool::actions() const
 {
-    return m_actions;
+    return k->actions;
 }
 
 int GeometricTool::toolType() const
@@ -285,10 +303,10 @@ int GeometricTool::toolType() const
 QWidget *GeometricTool::configurator()
 {
     if (name() == tr("Rectangle") || name() == tr("Ellipse")) {
-        m_configurator = new InfoPanel;
-        return m_configurator;
+        k->configurator = new InfoPanel;
+        return k->configurator;
     } else {
-      return  0;
+        return  0;
     }
 }
 
@@ -307,17 +325,32 @@ void GeometricTool::saveConfig()
 
 void GeometricTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Shift)
-        proportion = true;
+    if (event->key() == Qt::Key_Shift) {
+        tFatal() << "GeometricTool::keyPressEvent() - Typing key shift!";
+        k->proportion = true;
+    }
 }
 
 void GeometricTool::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift)
-        proportion = false;
+        k->proportion = false;
 
     if (event->key() == Qt::Key_Escape)
         emit closeHugeCanvas();
+}
+
+QCursor GeometricTool::cursor() const
+{
+    if (name() == tr("Rectangle")) {
+        return k->squareCursor;
+    } else if (name() == tr("Ellipse")) {
+               return k->circleCursor;
+    } else if (name() == tr("Line")) {
+               return k->lineCursor;
+    }
+
+    return 0;
 }
 
 Q_EXPORT_PLUGIN2(kt_geometric, GeometricTool)

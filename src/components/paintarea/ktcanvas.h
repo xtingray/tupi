@@ -54,6 +54,7 @@ class KTCanvas : public QDialog
                  const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
                  int angle=0, const QColor &bg = QColor(Qt::white));
         ~KTCanvas();
+        void updateCursor(const QCursor &cursor);
 };
 
 #endif

@@ -312,8 +312,8 @@
         <translation>Finalizar trazo</translation>
     </message>
     <message>
-        <source>C key or Right mouse button</source>
-        <translation>Tecla C o botón derecho del ratón</translation>
+        <source>X key or Right mouse button</source>
+        <translation>Tecla X o botón derecho del ratón</translation>
     </message>
     <message>
         <source>Set width/height proportional dimensions</source>
@@ -1697,6 +1697,10 @@
     <message>
         <source>Ellipse</source>
         <translation>Elipse</translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation>Línea</translation>
     </message>
     <message>
         <source>No items selected</source>

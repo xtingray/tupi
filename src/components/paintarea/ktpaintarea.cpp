@@ -977,7 +977,7 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
            T_FUNCINFO;
     #endif
 
-    /* This code has been deprecated 
+    /* SQA: This code has been deprecated 
     if (k->currentTool.compare(tr("Object Selection")) == 0 
         || k->currentTool.compare(tr("Contour Selection")) == 0
         || k->currentTool.compare(tr("Rectangle")) == 0
@@ -987,14 +987,17 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
     }
     */
 
-    tFatal() << "KTPaintArea::keyPressEvent() - PolyLine: " << k->currentTool;
+    tFatal() << "KTPaintArea::keyPressEvent() - Key: " << k->currentTool;
 
     if (k->currentTool.compare(tr("PolyLine")) == 0) {
-        tFatal() << "KTPaintArea::keyPressEvent() - Tracing polyline event!";
-        if (event->key() == Qt::Key_X) {
-            tFatal() << "KTPaintArea::keyPressEvent() - Do something!";
+        if (event->key() == Qt::Key_X)
             emit closePolyLine();
-        }
+        return;
+    }
+
+    if (k->currentTool.compare(tr("Rectangle")) == 0 || k->currentTool.compare(tr("Ellipse")) == 0) {
+        KTPaintAreaBase::keyPressEvent(event);
+        return;
     }
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();
