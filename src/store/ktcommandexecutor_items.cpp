@@ -436,11 +436,13 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 
 static QGraphicsItem *convert(QGraphicsItem *item, int toType)
 {
+    /* SQA: Debugging tracers
     tFatal() << "KTPathItem::Type: " << KTPathItem::Type;
     tFatal() << "KTRectItem::Type: " <<  KTRectItem::Type;
     tFatal() << "KTEllipseItem::Type: " <<  KTEllipseItem::Type;
     tFatal() << "KTProxyItem::Type: " <<  KTProxyItem::Type;
     tFatal() << "KTLineItem::Type: " <<  KTLineItem::Type;
+    */
 
     switch (toType) {
             case KTPathItem::Type: // Path
