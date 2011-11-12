@@ -36,13 +36,13 @@
 #ifndef SELECT_H
 #define SELECT_H
 
-#include <QObject>
-
 #include "kttoolplugin.h"
 #include "ktpathitem.h"
 #include "ktproject.h"
 #include "ktgraphicsscene.h"
 #include "infopanel.h"
+
+#include <QObject>
 
 class KTItemResponse;
 class NodeManager;
@@ -77,9 +77,13 @@ class Select : public KTToolPlugin
         
         virtual void itemResponse(const KTItemResponse *event);
         virtual void saveConfig();
+        QCursor cursor() const;
 
     //signals:
     //    void itemAddedOnSelection();
+
+    signals:
+        void closeHugeCanvas();
 
     private:
         void setupActions();

@@ -295,18 +295,18 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 
 void ContourSelection::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() != Qt::Key_Delete) {
-        event->ignore();
-        return;
-    }
+    if (event->key() == Qt::Key_Delete) {
+        bool deleted = false;
     
-    bool deleted = false;
-    
-    foreach (KNodeGroup *nodegroup, k->nodeGroups)
-             deleted = deleted || (nodegroup->removeSelectedNodes() > 0);
+        foreach (KNodeGroup *nodegroup, k->nodeGroups)
+                 deleted = deleted || (nodegroup->removeSelectedNodes() > 0);
 
-    if (deleted)
-        event->accept();
+        if (deleted)
+            event->accept();
+    }
+
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
 }
 
 void ContourSelection::setupActions()
@@ -353,6 +353,11 @@ void ContourSelection::aboutToChangeTool()
 
 void ContourSelection::saveConfig()
 {
+}
+
+QCursor ContourSelection::cursor() const
+{
+    return QCursor(Qt::ArrowCursor);
 }
 
 Q_EXPORT_PLUGIN2(kt_editNodes, ContourSelection)

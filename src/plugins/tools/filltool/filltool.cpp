@@ -34,38 +34,39 @@
  ***************************************************************************/
 
 #include "filltool.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "kpathhelper.h"
+#include "ktrectitem.h"
+#include "ktellipseitem.h"
+#include "ktlineitem.h"
+#include "ktpathitem.h"
+#include "ktserializer.h"
+#include "ktitemconverter.h"
+#include "ktrequestbuilder.h"
+#include "ktlibraryobject.h"
+#include "ktscene.h"
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktbrushmanager.h"
+#include "cliphelper.h"
 
 #include <QKeySequence>
 #include <QDebug>
 #include <QImage>
 #include <QPaintDevice>
-
-#include "tglobal.h"
-#include "tdebug.h"
-#include "kpathhelper.h"
-
-#include "ktrectitem.h"
-#include "ktellipseitem.h"
-#include "ktlineitem.h"
-#include "ktpathitem.h"
-
-#include "ktserializer.h"
-
-#include "ktitemconverter.h"
-#include "ktrequestbuilder.h"
-#include "ktlibraryobject.h"
-
-#include "ktscene.h"
-
 #include <QGraphicsView>
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
-#include "ktprojectrequest.h"
-#include "ktbrushmanager.h"
 
-#include "cliphelper.h"
+struct FillTool::Private
+{
+    QMap<QString, TAction *> actions;
+    KTGraphicsScene *scene;
+    QCursor insideCursor;
+    QCursor contourCursor;
+};
 
-FillTool::FillTool()
+FillTool::FillTool() : k(new Private)
 {
     setupActions();
 }
@@ -89,7 +90,7 @@ void FillTool::init(KTGraphicsScene *scene)
              }
     }
 
-    m_scene = scene;
+    k->scene = scene;
 }
 
 QStringList FillTool::keys() const
@@ -101,20 +102,22 @@ void FillTool::setupActions()
 {
     TAction *action1 = new TAction(QIcon(THEME_DIR + "icons/inside.png"), tr("Internal fill"), this);
     action1->setShortcut(QKeySequence(tr("I")));
-    action1->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
-    m_actions.insert(tr("Internal fill"), action1);
+    k->insideCursor = QCursor(THEME_DIR + "cursors/paint.png");
+    action1->setCursor(k->insideCursor);
+    k->actions.insert(tr("Internal fill"), action1);
     
     /*
     TAction *action2 = new TAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
     action2->setShortcut(QKeySequence(tr("Ctrl+F")));
     action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
-    m_actions.insert(tr("Shape fill"), action2);
+    k->actions.insert(tr("Shape fill"), action2);
     */
     
     TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
     action3->setShortcut(QKeySequence(tr("B")));
-    action3->setCursor(QCursor(THEME_DIR + "cursors/contour_fill.png"));
-    m_actions.insert(tr("Contour fill"), action3);
+    k->contourCursor = QCursor(THEME_DIR + "cursors/contour_fill.png");
+    action3->setCursor(k->contourCursor);
+    k->actions.insert(tr("Contour fill"), action3);
 }
 
 void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -248,12 +251,12 @@ void FillTool::release(const KTInputDeviceInformation *, KTBrushManager *, KTGra
 
 QMap<QString, TAction *> FillTool::actions() const
 {
-    return m_actions;
+    return k->actions;
 }
 
 int FillTool::toolType() const
 {
-    return Fill;
+    return KTToolInterface::Fill;
 }
         
 QWidget *FillTool::configurator()
@@ -267,7 +270,7 @@ void FillTool::aboutToChangeScene(KTGraphicsScene *)
 
 void FillTool::aboutToChangeTool() 
 {
-    foreach (QGraphicsItem *item, m_scene->items()) {
+    foreach (QGraphicsItem *item, k->scene->items()) {
              item->setFlag(QGraphicsItem::ItemIsSelectable, false);
              item->setFlag(QGraphicsItem::ItemIsFocusable, false);
     }
@@ -275,13 +278,13 @@ void FillTool::aboutToChangeTool()
 
 QPainterPath FillTool::mapPath(const QPainterPath &path, const QPointF &pos)
 {
-    QMatrix tr1;
-    tr1.translate(pos.x(), pos.y());
+    QMatrix transform;
+    transform.translate(pos.x(), pos.y());
     
-    QPainterPath p1 = tr1.map(path);
-    p1.closeSubpath();
+    QPainterPath painter = transform.map(path);
+    painter.closeSubpath();
     
-    return p1;
+    return painter;
 }
 
 QPainterPath FillTool::mapPath(const QGraphicsPathItem *item)
@@ -291,6 +294,23 @@ QPainterPath FillTool::mapPath(const QGraphicsPathItem *item)
 
 void FillTool::saveConfig()
 {
+}
+
+void FillTool::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        emit closeHugeCanvas();
+}
+
+QCursor FillTool::cursor() const
+{
+    if (name() == tr("Internal fill")) {
+        return k->insideCursor;
+    } else if (name() == tr("Contour fill")) {
+               return k->contourCursor;
+    }
+
+    return 0;
 }
 
 Q_EXPORT_PLUGIN2(kt_fill, FillTool)

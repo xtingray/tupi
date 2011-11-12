@@ -48,9 +48,8 @@
 
 KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scene, 
                    const QPointF centerPoint, const QSize &screenSize, const QSize &projectSize, double scaleFactor,
-                   int angle, const QColor &bg) : QDialog(parent, flags)
+                   int angle, const QColor &bg) : QFrame(parent, flags)
 {
-    setModal(true);
     setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
@@ -58,7 +57,7 @@ KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scen
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
     graphicsView->setFixedSize(screenSize.width(), screenSize.height());
     // graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    // graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     graphicsView->setScene(scene);
     graphicsView->centerOn(centerPoint);

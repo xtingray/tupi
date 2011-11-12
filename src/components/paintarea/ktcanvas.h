@@ -38,13 +38,16 @@
 
 #include "ktgraphicsscene.h"
 
-#include <QDialog>
+#include <QFrame>
+// #include <QDialog>
 #include <QPointF>
 #include <QSize>
 
 class KTGraphicsScene;
 
-class KTCanvas : public QDialog
+// class KTCanvas : public QDialog
+
+class KTCanvas : public QFrame
 {
     Q_OBJECT
 

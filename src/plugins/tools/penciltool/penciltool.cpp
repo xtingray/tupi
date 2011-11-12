@@ -235,6 +235,8 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
         emit closeHugeCanvas();
+    else
+        tFatal() << "PencilTool::keyPressEvent() - Key: " << event->key();
 }
 
 QCursor PencilTool::cursor() const

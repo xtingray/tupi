@@ -78,6 +78,10 @@ class ContourSelection : public KTToolPlugin
         virtual void itemResponse(const KTItemResponse *event);
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void saveConfig();
+        virtual QCursor cursor() const;
+
+    signals:
+        void closeHugeCanvas();
         
     private:
         void setupActions();

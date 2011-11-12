@@ -36,19 +36,19 @@
 #ifndef VIEWTOOL_H
 #define VIEWTOOL_H
 
+#include "kttoolplugin.h"
+#include "zoomconfigurator.h"
+
 #include <QObject>
 #include <QLabel>
-
-#include <kttoolplugin.h>
 #include <QGraphicsRectItem>
-
-#include "zoomconfigurator.h"
 
 class KTGraphicsScene;
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
+
 class ViewTool: public KTToolPlugin
 {
     Q_OBJECT
@@ -71,10 +71,20 @@ class ViewTool: public KTToolPlugin
         void aboutToChangeScene(KTGraphicsScene *scene);
         virtual void aboutToChangeTool();
         virtual void saveConfig();
-        
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual QCursor cursor() const;
+
+    signals:
+        void closeHugeCanvas();
+ 
     private:
         void setupActions();
-        
+
+    private:
+        struct Private;
+        Private *const k;
+
+    /*
     private:
         QMap<QString, TAction *> m_actions;
         QGraphicsRectItem *m_rect;
@@ -82,6 +92,7 @@ class ViewTool: public KTToolPlugin
         QPointF firstPoint; 
         KTGraphicsScene *m_scene;
         ZoomConfigurator *m_configurator;
+    */
 };
 
 #endif

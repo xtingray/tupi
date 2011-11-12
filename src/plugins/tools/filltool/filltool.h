@@ -36,11 +36,11 @@
 #ifndef FILLTOOLPLUGIN_H
 #define FILLTOOLPLUGIN_H
 
-#include <QObject>
-#include <QLabel>
-
 #include "kttoolplugin.h"
 #include "ktgraphicsscene.h"
+
+#include <QObject>
+#include <QLabel>
 
 class KTPathItem;
 
@@ -83,13 +83,24 @@ class FillTool : public KTToolPlugin
         QPainterPath mapPath(const QGraphicsPathItem *item);
 
         virtual void saveConfig();
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual QCursor cursor() const;
+
+    signals:
+        void closeHugeCanvas();
  
     private:
         void setupActions();
-        
+
+    private:
+        struct Private;
+        Private *const k;
+ 
+    /*       
     private:
         QMap<QString, TAction *> m_actions;
         KTGraphicsScene *m_scene;
+    */
 };
 
 #endif

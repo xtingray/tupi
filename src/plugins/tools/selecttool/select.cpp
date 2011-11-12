@@ -34,6 +34,21 @@
  ***************************************************************************/
 
 #include "select.h"
+#include "taction.h"
+#include "tdebug.h"
+#include "tglobal.h"
+#include "talgorithm.h"
+#include "ktgraphicalgorithm.h"
+#include "ktscene.h"
+#include "ktlayer.h"
+#include "ktsvgitem.h"
+#include "ktgraphicobject.h"
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "nodemanager.h"
+#include "ktserializer.h"
+#include "ktrequestbuilder.h"
+#include "ktprojectresponse.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -41,26 +56,6 @@
 #include <QGraphicsView>
 #include <QTimer>
 #include <cmath>
-
-#include "taction.h"
-#include "tdebug.h"
-#include "tglobal.h"
-#include "talgorithm.h"
-
-#include "ktgraphicalgorithm.h"
-#include "ktscene.h"
-#include "ktlayer.h"
-#include "ktsvgitem.h"
-#include "ktgraphicobject.h"
-
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
-
-#include "nodemanager.h"
-#include "ktserializer.h"
-
-#include "ktrequestbuilder.h"
-#include "ktprojectresponse.h"
 
 struct Select::Private
 {
@@ -70,7 +65,7 @@ struct Select::Private
     bool selectionFlag;
 };
 
-Select::Select(): k(new Private),  m_configurator(0)
+Select::Select(): k(new Private), m_configurator(0)
 {
     setupActions();
 }
@@ -426,6 +421,11 @@ void Select::saveConfig()
 
 void Select::keyPressEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_Escape) {
+        emit closeHugeCanvas();
+        return;
+    }
+
     if (k->scene) {
         if (!k->selectionFlag)
             return;
@@ -562,6 +562,11 @@ void Select::applyFlip(InfoPanel::Flip flip)
                       }
              }
     }
+}
+
+QCursor Select::cursor() const
+{
+    return QCursor(Qt::ArrowCursor);
 }
 
 Q_EXPORT_PLUGIN2(kt_select, Select);

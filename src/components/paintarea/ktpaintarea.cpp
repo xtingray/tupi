@@ -987,7 +987,10 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
     }
     */
 
-    tFatal() << "KTPaintArea::keyPressEvent() - Key: " << k->currentTool;
+    #ifdef K_DEBUG
+           tWarning() << "KTPaintArea::keyPressEvent() - Current tool: " << k->currentTool;
+           tWarning() << "KTPaintArea::keyPressEvent() - Key: " << event->key();
+    #endif
 
     if (k->currentTool.compare(tr("PolyLine")) == 0) {
         if (event->key() == Qt::Key_X)

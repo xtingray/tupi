@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktapplication.h"
 #include "ktviewdocument.h"
+#include "ktapplication.h"
 
 // Tupi Framework 
 #include "tdebug.h"
@@ -113,6 +113,7 @@ struct KTViewDocument::Private
     double opacityFactor;
     int viewAngle;
     int autoSaveTime;
+    TAction *fullScreenAction;
     bool fullScreenOn;
 
     KTPaintArea *paintArea;
@@ -285,10 +286,10 @@ void KTViewDocument::setupDrawActions()
     showGrid->setStatusTip(tr("Show a grid over the canvas"));
     showGrid->setCheckable(true);
 
-    TAction *fullScreen = new TAction(QPixmap(THEME_DIR + "icons/full_screen.png"),
+    k->fullScreenAction = new TAction(QPixmap(THEME_DIR + "icons/full_screen.png"),
                                     tr("Full screen"), QKeySequence(tr("Ctrl+F11")),
                                     this, SLOT(showFullScreen()), k->actionManager, "full_screen");
-    fullScreen->setStatusTip(tr("Open a full screen view of canvas"));
+    k->fullScreenAction->setStatusTip(tr("Open a full screen view of canvas"));
 
     TAction *copy = new TAction(QPixmap(THEME_DIR + "icons/copy.png"), 
                                 tr("Copy"), QKeySequence(tr("Ctrl+C")),
@@ -349,16 +350,9 @@ void KTViewDocument::createTools()
     // Brushes menu
     k->brushesMenu = new QMenu(tr("Brushes"), k->toolbar);
     k->brushesMenu->setIcon(QPixmap(THEME_DIR + "icons/brush.png"));
-    connect(k->brushesMenu, SIGNAL(triggered (QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
+    connect(k->brushesMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->brushesMenu->menuAction());
-
-    // Motion menu
-    k->motionMenu = new QMenu(tr("Tweening"), k->toolbar);
-    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons/tweening.png"));
-    connect(k->motionMenu, SIGNAL(triggered (QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
-
-    k->toolbar->addAction(k->motionMenu->menuAction());
 
     // Selection menu
     k->selectionMenu = new QMenu(tr("Selection"), k->toolbar);
@@ -380,6 +374,13 @@ void KTViewDocument::createTools()
     connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->viewToolMenu->menuAction());
+
+    // Motion Tween menu
+    k->motionMenu = new QMenu(tr("Tweening"), k->toolbar);
+    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons/tweening.png"));
+    connect(k->motionMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
+
+    k->toolbar->addAction(k->motionMenu->menuAction());
 }
 
 void KTViewDocument::loadPlugins()
@@ -393,7 +394,7 @@ void KTViewDocument::loadPlugins()
 
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
 
-             if (tool->toolType() == KTToolInterface::Brush)
+             if (tool->toolType() != KTToolInterface::Tweener)
                  connect(tool, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
              QStringList::iterator it;
@@ -588,6 +589,7 @@ void KTViewDocument::selectTool()
         switch (tool->toolType()) {
 
                 case KTToolInterface::Brush: 
+                     k->fullScreenAction->setDisabled(false);
                      if (toolName.compare(tr("Pencil"))==0) {
                          minWidth = 130;
                      } else if (toolName.compare(tr("Text"))==0) {
@@ -605,6 +607,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Tweener:
+                     k->fullScreenAction->setDisabled(true);
                      minWidth = 220;
                      k->motionMenu->setDefaultAction(action);
                      k->motionMenu->setActiveAction(action);
@@ -613,6 +616,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Fill:
+                     k->fullScreenAction->setDisabled(false);
                      k->fillMenu->setDefaultAction(action);
                      k->fillMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -620,6 +624,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Selection:
+                     k->fullScreenAction->setDisabled(false);
                      k->selectionMenu->setDefaultAction(action);
                      k->selectionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -632,6 +637,7 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::View:
+                     k->fullScreenAction->setDisabled(false);
                      k->viewToolMenu->setDefaultAction(action);
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -994,13 +1000,8 @@ void KTViewDocument::setOnionFactor(double opacity)
 
 void KTViewDocument::showFullScreen()
 {
-    if (k->currentTool->toolType() != KTToolInterface::Brush) {
-        TAction *tool = qobject_cast<TAction *>(k->brushesMenu->defaultAction());
-        if (tool) {
-            k->currentTool = qobject_cast<KTToolPlugin *>(tool->parent());
-            tool->trigger();
-        }
-    }
+    if (k->currentTool->toolType() == KTToolInterface::Tweener)
+        return;
 
     k->fullScreenOn = true;
 
@@ -1021,7 +1022,7 @@ void KTViewDocument::showFullScreen()
                                  k->viewAngle, k->project->bgColor()); 
     k->fullScreen->setFixedSize(screenW, screenH); 
     k->fullScreen->updateCursor(k->currentTool->cursor());
-    k->fullScreen->exec(); 
+    k->fullScreen->show();
 }
 
 void KTViewDocument::closeFullScreen()
