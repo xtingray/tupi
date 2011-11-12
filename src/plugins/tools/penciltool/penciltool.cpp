@@ -233,10 +233,50 @@ void PencilTool::saveConfig()
 
 void PencilTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape)
+    tFatal() << "PencilTool::keyPressEvent() - Key: " << event->key();
+
+    if (event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
-    else
-        tFatal() << "PencilTool::keyPressEvent() - Key: " << event->key();
+        return;
+    }
+
+    KTToolPlugin::BrushesTool tool;
+
+    switch (event->key()) {
+            case Qt::Key_M:
+                 tool = KTToolPlugin::Scheme;
+            break;
+
+            case Qt::Key_K:
+                 tool = KTToolPlugin::Ink;
+            break;
+
+            case Qt::Key_E:
+                 tool = KTToolPlugin::Eraser;
+            break;
+
+            case Qt::Key_S:
+                 tool = KTToolPlugin::PolyLine;
+            break;
+
+            case Qt::Key_L:
+                 tool = KTToolPlugin::Line;
+            break;
+
+            case Qt::Key_R:
+                 tool = KTToolPlugin::Rectangle;
+            break;
+
+            case Qt::Key_C:
+                 tool = KTToolPlugin::Ellipse;
+            break;
+
+            case Qt::Key_T:
+                 tool = KTToolPlugin::Text;
+            break;
+    }
+
+    emit callForPlugin(KTToolPlugin::Brushes, tool);
 }
 
 QCursor PencilTool::cursor() const

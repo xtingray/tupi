@@ -35,7 +35,6 @@
 
 #include "tweener.h"
 #include "configurator.h"
-
 #include "tglobal.h"
 #include "tdebug.h"
 #include "taction.h"

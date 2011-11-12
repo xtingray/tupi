@@ -238,6 +238,7 @@ KTViewDocument::~KTViewDocument()
 
     delete k->configurationArea;
     // delete k->timer;
+
     delete k;
 }
 
@@ -394,8 +395,10 @@ void KTViewDocument::loadPlugins()
 
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
 
-             if (tool->toolType() != KTToolInterface::Tweener)
+             if (tool->toolType() != KTToolInterface::Tweener) {
                  connect(tool, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
+                 connect(tool, SIGNAL(callForPlugin(int, int)), this, SLOT(loadPlugin(int, int)));
+             }
 
              QStringList::iterator it;
              QStringList keys = tool->keys();
@@ -506,7 +509,7 @@ void KTViewDocument::loadPlugins()
                                  {
                                    k->fillMenu->addAction(action);
                                    if (toolName.compare(tr("Internal fill")) == 0)
-                                      k->fillMenu->setDefaultAction(action);
+                                       k->fillMenu->setDefaultAction(action);
                                  }
                                  break;
                                case KTToolInterface::View:
@@ -552,6 +555,32 @@ void KTViewDocument::loadPlugins()
     tweenTools.clear();
 
     pencil->trigger();
+}
+
+void KTViewDocument::loadPlugin(int menu, int index)
+{
+    tFatal() << "KTViewDocument::loadPlugin() - Loading plugin #" << index;
+    TAction *action = 0;
+
+    if (menu == KTToolPlugin::Brushes) {
+        QList<QAction*> brushActions = k->brushesMenu->actions();
+        if (index < brushActions.size()) {
+            action = (TAction *) brushActions[index];
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTViewDocument::loadPlugin() - Error: Invalid Index / No plugin loaded";
+                   return;
+            #endif
+        }
+    }
+
+    if (action) {
+        action->trigger();
+        selectToolFromMenu(action);
+
+        if (k->fullScreenOn)
+            k->fullScreen->updateCursor(k->currentTool->cursor());
+    }
 }
 
 void KTViewDocument::selectTool()
@@ -687,6 +716,10 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
             if (tool)
                 tool->trigger();
         }
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTViewDocument::selectToolFromMenu() - Error: Action with NO parent!";
+        #endif
     } 
 }
 
@@ -1000,7 +1033,7 @@ void KTViewDocument::setOnionFactor(double opacity)
 
 void KTViewDocument::showFullScreen()
 {
-    if (k->currentTool->toolType() == KTToolInterface::Tweener)
+    if (k->fullScreenOn || k->currentTool->toolType() == KTToolInterface::Tweener)
         return;
 
     k->fullScreenOn = true;

@@ -62,12 +62,13 @@ class KTViewDocument : public QMainWindow
     Q_OBJECT
 
     public:
+
         KTViewDocument(KTProject *project, QWidget *parent = 0, bool isLocal = true);
         ~KTViewDocument();
         void closeArea();
         QSize sizeHint() const;
 
-        void setAntialiasing(bool useIt );
+        void setAntialiasing(bool useIt);
         void setOpenGL(bool useIt);
         void setDrawGrid(bool draw);
 
@@ -93,6 +94,7 @@ class KTViewDocument : public QMainWindow
         void saveTimer();
         void showFullScreen();
         void closeFullScreen();
+        void loadPlugin(int menu, int index);
 
     private:
         struct Private;

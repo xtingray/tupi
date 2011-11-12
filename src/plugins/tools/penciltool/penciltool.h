@@ -77,6 +77,7 @@ class PencilTool : public KTToolPlugin
 
     signals:
         void closeHugeCanvas();
+        void callForPlugin(int menu, int index);
 
     private:
         struct Private;

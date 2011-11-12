@@ -15,6 +15,7 @@ HEADERS += buttonspanel.h \
            stepsviewer.h \
            spinboxdelegate.h \
            target.h
+
 SOURCES += buttonspanel.cpp \
            tweenmanager.cpp \
            stepsviewer.cpp \
