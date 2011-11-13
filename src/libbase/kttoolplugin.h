@@ -59,7 +59,10 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
     public:
 
         enum MenuIndex { Brushes = 0, Selection, Fill, Zoom, Tweener };
-        enum BrushesTool { Pencil = 0, Scheme, Ink, Eraser, PolyLine, Line, Rectangle, Ellipse, Text };
+        enum BrushTools { Pencil = 0, Scheme, Ink, Eraser, PolyLine, Line, Rectangle, Ellipse, Text };
+        enum SelectTools { Nodes = 0, Objects };
+        enum FillTools { Inside = 0, Contour };
+        enum ViewTools { View = 0, Hand };
 
         explicit KTToolPlugin(QObject *parent = 0);
         ~KTToolPlugin();

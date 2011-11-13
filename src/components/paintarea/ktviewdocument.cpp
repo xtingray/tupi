@@ -89,11 +89,12 @@ struct KTViewDocument::Private
     QActionGroup *viewZoomGroup; 
     QActionGroup *viewPreviousGroup;
     QMenu *brushesMenu;
-    QMenu *motionMenu;
     QMenu *selectionMenu;
     QMenu *fillMenu;
-    QMenu *filterMenu;
     QMenu *viewToolMenu;
+    QMenu *motionMenu;
+
+    QMenu *filterMenu;
     QMenu *toolsMenu;
     QMenu *editMenu;
     QMenu *viewMenu;
@@ -562,19 +563,76 @@ void KTViewDocument::loadPlugin(int menu, int index)
     tFatal() << "KTViewDocument::loadPlugin() - Loading plugin #" << index;
     TAction *action = 0;
 
-    if (menu == KTToolPlugin::Brushes) {
-        QList<QAction*> brushActions = k->brushesMenu->actions();
-        if (index < brushActions.size()) {
-            action = (TAction *) brushActions[index];
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "KTViewDocument::loadPlugin() - Error: Invalid Index / No plugin loaded";
-                   return;
-            #endif
-        }
+    switch (menu) {
+            case KTToolPlugin::Brushes:
+                 {
+                     QList<QAction*> brushActions = k->brushesMenu->actions();
+                     if (index < brushActions.size()) {
+                         action = (TAction *) brushActions[index];
+                     } else {
+                         #ifdef K_DEBUG
+                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Brush Index / No plugin loaded";
+                                return;
+                         #endif
+                     }
+                 }
+            break;
+
+            case KTToolPlugin::Selection:
+                 {
+                     QList<QAction*> selectionActions = k->selectionMenu->actions();
+                     if (index < selectionActions.size()) {
+                         action = (TAction *) selectionActions[index];
+                     } else {
+                         #ifdef K_DEBUG
+                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Selection Index / No plugin loaded";
+                                return;
+                         #endif
+                     }
+                 }
+            break;
+
+            case KTToolPlugin::Fill:
+                 {
+                     QList<QAction*> fillActions = k->fillMenu->actions();
+                     if (index < fillActions.size()) {
+                         action = (TAction *) fillActions[index];
+                     } else {
+                         #ifdef K_DEBUG
+                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Fill Index / No plugin loaded";
+                                return;
+                         #endif
+                     }
+                 }
+            break;
+
+            case KTToolPlugin::Zoom:
+                 {
+                     QList<QAction*> viewActions = k->viewToolMenu->actions();
+                     if (index < viewActions.size()) {
+                         action = (TAction *) viewActions[index];
+                     } else {
+                         #ifdef K_DEBUG
+                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Zoom Index / No plugin loaded";
+                                return;
+                         #endif
+                     }
+                 }
+            break;
+
+            default:
+                 {
+                     #ifdef K_DEBUG
+                            tError() << "KTViewDocument::loadPlugin() - Error: Invalid Menu Index / No plugin loaded";
+                            return;
+                     #endif
+                 }
+            break;
     }
 
-    if (action) {
+    QString toolName = tr("%1").arg(action->text());
+
+    if (action && toolName.compare(k->currentTool->name()) != 0) {
         action->trigger();
         selectToolFromMenu(action);
 

@@ -74,7 +74,6 @@ PencilTool::PencilTool() : k(new Private)
 {
     k->configurator = 0;
     k->item = 0;
-    k->cursor = QCursor(THEME_DIR + "cursors/pencil.png");
 
     setupActions();
 }
@@ -196,6 +195,7 @@ void PencilTool::setupActions()
 {
     TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
     pencil->setShortcut(QKeySequence(tr("P")));
+    k->cursor = QCursor(THEME_DIR + "cursors/pencil.png");
     pencil->setCursor(k->cursor);
 
     k->actions.insert(tr("Pencil"), pencil);
@@ -240,9 +240,14 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    KTToolPlugin::BrushesTool tool;
+    KTToolPlugin::MenuIndex menu = KTToolPlugin::Brushes;
+    int tool = KTToolPlugin::Pencil;
 
     switch (event->key()) {
+            case Qt::Key_P:
+                 tool = KTToolPlugin::Pencil;
+            break;
+
             case Qt::Key_M:
                  tool = KTToolPlugin::Scheme;
             break;
@@ -274,9 +279,39 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
             case Qt::Key_T:
                  tool = KTToolPlugin::Text;
             break;
+
+            case Qt::Key_O:
+                 menu = KTToolPlugin::Selection;
+                 tool = KTToolPlugin::Objects;
+            break;
+
+            case Qt::Key_N:
+                 menu = KTToolPlugin::Selection;
+                 tool = KTToolPlugin::Nodes;
+            break;
+
+            case Qt::Key_I:
+                 menu = KTToolPlugin::Fill;
+                 tool = KTToolPlugin::Inside;
+            break;
+
+            case Qt::Key_B:
+                 menu = KTToolPlugin::Fill;
+                 tool = KTToolPlugin::Contour;
+            break;
+
+            case Qt::Key_Z:
+                 menu = KTToolPlugin::Zoom;
+                 tool = KTToolPlugin::View;
+            break;
+
+            case Qt::Key_H:
+                 menu = KTToolPlugin::Zoom;
+                 tool = KTToolPlugin::Hand;
+            break;
     }
 
-    emit callForPlugin(KTToolPlugin::Brushes, tool);
+    emit callForPlugin(menu, tool);
 }
 
 QCursor PencilTool::cursor() const
