@@ -6,11 +6,11 @@
 INSTALLS += target 
 target.path = /plugins/ 
 
-HEADERS += select.h \
+HEADERS += selecttool.h \
            node.h \
            nodemanager.h \ 
            infopanel.h
-SOURCES += select.cpp \
+SOURCES += selecttool.cpp \
            node.cpp \
            nodemanager.cpp \ 
            infopanel.cpp

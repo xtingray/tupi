@@ -74,6 +74,7 @@ class PencilTool : public KTToolPlugin
     private:
         void setupActions();
         void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
+        // QPair<int, int> setKeyAction(int key);
 
     signals:
         void closeHugeCanvas();

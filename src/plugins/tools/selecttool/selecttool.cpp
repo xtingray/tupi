@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "select.h"
+#include "selecttool.h"
 #include "taction.h"
 #include "tdebug.h"
 #include "tglobal.h"
@@ -57,7 +57,7 @@
 #include <QTimer>
 #include <cmath>
 
-struct Select::Private
+struct SelectTool::Private
 {
     QMap<QString, TAction *> actions;
     QList<NodeManager*> nodeManagers;
@@ -65,17 +65,17 @@ struct Select::Private
     bool selectionFlag;
 };
 
-Select::Select(): k(new Private), m_configurator(0)
+SelectTool::SelectTool(): k(new Private), m_configurator(0)
 {
     setupActions();
 }
 
-Select::~Select()
+SelectTool::~SelectTool()
 {
     delete k;
 }
 
-void Select::init(KTGraphicsScene *scene)
+void SelectTool::init(KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
@@ -94,7 +94,7 @@ void Select::init(KTGraphicsScene *scene)
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
                       QDomElement root = dom.documentElement();
-                      tFatal() << "Select::init() - XML: ";
+                      tFatal() << "SelectTool::init() - XML: ";
                       tFatal() << dom.toString();
                       */
 
@@ -114,12 +114,12 @@ void Select::init(KTGraphicsScene *scene)
     }
 }
 
-QStringList Select::keys() const
+QStringList SelectTool::keys() const
 {
     return QStringList() << tr("Select");
 }
 
-void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SelectTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -160,7 +160,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
     k->scene = scene;
 }
 
-void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SelectTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -168,7 +168,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
         QTimer::singleShot(0, this, SLOT(syncNodes()));
 }
 
-void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
@@ -247,7 +247,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
-                                tFatal() << "Select::release() - position is " << position; 
+                                tFatal() << "SelectTool::release() - position is " << position; 
                          #endif
                      }
                  }
@@ -255,7 +255,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
     } 
 }
 
-void Select::setupActions()
+void SelectTool::setupActions()
 {
     TAction *select = new TAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("O")));
@@ -263,17 +263,17 @@ void Select::setupActions()
     k->actions.insert(tr("Select"), select);
 }
 
-QMap<QString, TAction *> Select::actions() const
+QMap<QString, TAction *> SelectTool::actions() const
 {
     return k->actions;
 }
 
-int Select::toolType() const
+int SelectTool::toolType() const
 {
     return KTToolInterface::Selection;
 }
 
-QWidget *Select::configurator() 
+QWidget *SelectTool::configurator() 
 {
     if (! m_configurator) {
         m_configurator = new InfoPanel;
@@ -283,7 +283,7 @@ QWidget *Select::configurator()
     return m_configurator;
 }
 
-void Select::aboutToChangeScene(KTGraphicsScene *scene)
+void SelectTool::aboutToChangeScene(KTGraphicsScene *scene)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
@@ -292,7 +292,7 @@ void Select::aboutToChangeScene(KTGraphicsScene *scene)
     init(scene);
 }
 
-void Select::aboutToChangeTool()
+void SelectTool::aboutToChangeTool()
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
@@ -310,7 +310,7 @@ void Select::aboutToChangeTool()
     }
 }
 
-void Select::itemResponse(const KTItemResponse *event)
+void SelectTool::itemResponse(const KTItemResponse *event)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
@@ -361,7 +361,7 @@ void Select::itemResponse(const KTItemResponse *event)
         }
     } else {
         #ifdef K_DEBUG
-               tFatal() << "Select::itemResponse - Project does not exist";
+               tFatal() << "SelectTool::itemResponse - Project does not exist";
         #endif
         return;
     }
@@ -384,7 +384,7 @@ void Select::itemResponse(const KTItemResponse *event)
 
                  } else {
                      #ifdef K_DEBUG
-                            tFatal() << "Select::itemResponse - No item found";
+                            tFatal() << "SelectTool::itemResponse - No item found";
                      #endif
                  }
             }
@@ -402,7 +402,7 @@ void Select::itemResponse(const KTItemResponse *event)
     }
 }
 
-void Select::syncNodes()
+void SelectTool::syncNodes()
 {
     foreach (NodeManager* node, k->nodeManagers) {
              if (node) {
@@ -415,73 +415,72 @@ void Select::syncNodes()
     }
 }
 
-void Select::saveConfig()
+void SelectTool::saveConfig()
 {
 }
 
-void Select::keyPressEvent(QKeyEvent *event)
+void SelectTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
-        return;
-    }
+    } else if (event->modifiers() == Qt::AltModifier) {
+               if (event->key() == Qt::Key_R) {
+                   verifyActiveSelection();
+                   foreach (NodeManager *nodeManager, k->nodeManagers) {
+                            nodeManager->toggleAction();
+                            break;
+                   }
+               }
+    } else if ((event->key() == Qt::Key_Left) || (event->key() == Qt::Key_Up) 
+               || (event->key() == Qt::Key_Right) || (event->key() == Qt::Key_Down)) {
 
+               int delta = 5;
+
+               if (event->modifiers()==Qt::ShiftModifier)
+                   delta = 1;
+
+               if (event->modifiers()==Qt::ControlModifier)
+                   delta = 10;
+
+               QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
+
+               foreach (QGraphicsItem *item, selectedObjects) {
+                        if (event->key() == Qt::Key_Left)
+                            item->moveBy(-delta, 0);
+
+                        if (event->key() == Qt::Key_Up)
+                            item->moveBy(0, -delta);
+
+                        if (event->key() == Qt::Key_Right)
+                            item->moveBy(delta, 0);
+
+                        if (event->key() == Qt::Key_Down)
+                            item->moveBy(0, delta);
+
+                        QTimer::singleShot(0, this, SLOT(syncNodes()));
+               }
+    } else if (event->modifiers() == Qt::ShiftModifier) {
+               verifyActiveSelection();
+               foreach (NodeManager *nodeManager, k->nodeManagers)
+                        nodeManager->setProportion(true);
+    } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
+               QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
+               if (flags.first != -1 && flags.second != -1)
+                   emit callForPlugin(flags.first, flags.second);
+    }
+}
+
+void SelectTool::verifyActiveSelection()
+{
     if (k->scene) {
         if (!k->selectionFlag)
             return;
     } else {
         return;
     }
-
-    if (event->modifiers() == Qt::ShiftModifier) {
-        foreach (NodeManager *nodeManager, k->nodeManagers) {
-                 nodeManager->setProportion(true);
-        }
-    }
-
-    if (event->key() == Qt::Key_R) { 
-        if (event->modifiers() == Qt::AltModifier) {
-            foreach (NodeManager *nodeManager, k->nodeManagers) {
-                     nodeManager->toggleAction();
-                     break;
-            }
-
-            return;
-        }
-    }
-
-    if ((event->key() == Qt::Key_Left) || (event->key() == Qt::Key_Up) 
-         || (event->key() == Qt::Key_Right) || (event->key() == Qt::Key_Down)) {
-
-        int delta = 5;
-
-        if (event->modifiers()==Qt::ShiftModifier)
-            delta = 1;
-
-        if (event->modifiers()==Qt::ControlModifier)
-            delta = 10;
-
-        QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
-
-        foreach (QGraphicsItem *item, selectedObjects) {
-                 if (event->key() == Qt::Key_Left)
-                     item->moveBy(-delta, 0);
-
-                 if (event->key() == Qt::Key_Up)
-                     item->moveBy(0, -delta);
-
-                 if (event->key() == Qt::Key_Right)
-                     item->moveBy(delta, 0);
-
-                 if (event->key() == Qt::Key_Down)
-                     item->moveBy(0, delta);
-
-                 QTimer::singleShot(0, this, SLOT(syncNodes()));
-        }
-    }
 }
 
-void Select::updateItems(KTGraphicsScene *scene)
+void SelectTool::updateItems(KTGraphicsScene *scene)
 {
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
@@ -502,7 +501,7 @@ void Select::updateItems(KTGraphicsScene *scene)
     }
 }
 
-void Select::applyFlip(InfoPanel::Flip flip)
+void SelectTool::applyFlip(InfoPanel::Flip flip)
 {
     QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
 
@@ -564,9 +563,9 @@ void Select::applyFlip(InfoPanel::Flip flip)
     }
 }
 
-QCursor Select::cursor() const
+QCursor SelectTool::cursor() const
 {
     return QCursor(Qt::ArrowCursor);
 }
 
-Q_EXPORT_PLUGIN2(kt_select, Select);
+Q_EXPORT_PLUGIN2(kt_select, SelectTool);

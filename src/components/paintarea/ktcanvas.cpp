@@ -76,5 +76,6 @@ KTCanvas::~KTCanvas()
 
 void KTCanvas::updateCursor(const QCursor &cursor)
 {
+    tFatal() << "KTCanvas::updateCursor() - Setting cursor!";
     setCursor(cursor);
 }

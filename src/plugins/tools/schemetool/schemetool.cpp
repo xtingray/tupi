@@ -129,7 +129,7 @@ void SchemeTool::init(KTGraphicsScene *scene)
 
     KTTextItem *textItem = new KTTextItem;
     textItem->setPos(QPointF(5, 0));
-    textItem->setDefaultTextColor(QColor(0, 0, 0, 100));
+    textItem->setDefaultTextColor(QColor(0, 0, 0, 80));
     textItem->setFont(QFont("Times", 10, QFont::Bold));
     textItem->setPlainText("Note: Remember, this is just an experimental plugin for R&D issues");
     scene->includeObject(textItem);
@@ -777,8 +777,13 @@ void SchemeTool::smoothPath(QPainterPath &path, double smoothness, int from, int
 
 void SchemeTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
+    } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
+               QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
+               if (flags.first != -1 && flags.second != -1)
+                   emit callForPlugin(flags.first, flags.second);
+    }
 }
 
 QCursor SchemeTool::cursor() const

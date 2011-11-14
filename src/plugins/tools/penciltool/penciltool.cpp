@@ -240,10 +240,18 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
+    if (flags.first != -1 && flags.second != -1)
+        emit callForPlugin(flags.first, flags.second);
+}
+
+/*
+QPair<int, int> PencilTool::setKeyAction(int key)
+{
     KTToolPlugin::MenuIndex menu = KTToolPlugin::Brushes;
     int tool = KTToolPlugin::Pencil;
 
-    switch (event->key()) {
+    switch (key) {
             case Qt::Key_P:
                  tool = KTToolPlugin::Pencil;
             break;
@@ -311,8 +319,13 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
             break;
     }
 
-    emit callForPlugin(menu, tool);
+    QPair<int, int> flags;
+    flags.first = menu;
+    flags.second = tool;
+
+    return flags;
 }
+*/
 
 QCursor PencilTool::cursor() const
 {

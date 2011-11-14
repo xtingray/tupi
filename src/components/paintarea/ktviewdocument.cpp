@@ -560,7 +560,7 @@ void KTViewDocument::loadPlugins()
 
 void KTViewDocument::loadPlugin(int menu, int index)
 {
-    tFatal() << "KTViewDocument::loadPlugin() - Loading plugin #" << index;
+    tFatal() << "KTViewDocument::loadPlugin() - Loading plugin #" << index << " from menu #" << menu;
     TAction *action = 0;
 
     switch (menu) {
@@ -609,11 +609,12 @@ void KTViewDocument::loadPlugin(int menu, int index)
             case KTToolPlugin::Zoom:
                  {
                      QList<QAction*> viewActions = k->viewToolMenu->actions();
+                     tFatal() << "KTViewDocument::loadPlugin() - viewActions.size(): " << viewActions.size();
                      if (index < viewActions.size()) {
                          action = (TAction *) viewActions[index];
                      } else {
                          #ifdef K_DEBUG
-                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Zoom Index / No plugin loaded";
+                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Zoom Index (" << index << ") / No plugin loaded";
                                 return;
                          #endif
                      }
@@ -632,12 +633,23 @@ void KTViewDocument::loadPlugin(int menu, int index)
 
     QString toolName = tr("%1").arg(action->text());
 
-    if (action && toolName.compare(k->currentTool->name()) != 0) {
+    if (action) { // && toolName.compare(k->currentTool->name()) != 0) {
         action->trigger();
-        selectToolFromMenu(action);
+        tFatal() << "KTViewDocument::loadPlugin() - Loading action: " << toolName << " & Calling selectToolFromMenu()";
+        // selectToolFromMenu(action);
+        selectTool();
 
-        if (k->fullScreenOn)
+        if (k->fullScreenOn) {
+            tFatal() << "KTViewDocument::loadPlugin() - k->currentTool: " << k->currentTool->name();
             k->fullScreen->updateCursor(k->currentTool->cursor());
+        } else {
+            tFatal() << "KTViewDocument::loadPlugin() - No full screen";
+        }
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTViewDocument::loadPlugin() - Error: Action pointer is NULL!";
+               return;
+        #endif
     }
 }
 
@@ -753,6 +765,10 @@ void KTViewDocument::selectTool()
 
         if ((tool->toolType() == KTToolInterface::Tweener) && (k->spaceMode->currentIndex() != 0))
             k->spaceMode->setCurrentIndex(0);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTViewDocument::selectTool() - Error: Action from sender() is NULL";
+        #endif
     }
 }
 

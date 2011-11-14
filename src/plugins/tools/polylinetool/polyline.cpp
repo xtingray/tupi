@@ -343,12 +343,19 @@ void PolyLine::keyPressEvent(QKeyEvent *event)
     } else if (event->key() == Qt::Key_X) {
                tFatal() << "PolyLine::keyPressEvent(QKeyEvent *event) - Tracing X key!";
                endItem();
-               event->accept();
-    } else {
+               // event->accept();
+    } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
+               QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
+               if (flags.first != -1 && flags.second != -1)
+                   emit callForPlugin(flags.first, flags.second);
+    }
+    /* SQA: This code must be removed
+    else {
         tFatal() << "PolyLine::keyPressEvent(QKeyEvent *event) - Tracing any other key!";
         event->ignore();
         return;
     }
+    */
 }
 
 void PolyLine::endItem()

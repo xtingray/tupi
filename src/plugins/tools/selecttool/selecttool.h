@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SELECT_H
-#define SELECT_H
+#ifndef SELECTTOOL_H
+#define SELECTTOOL_H
 
 #include "kttoolplugin.h"
 #include "ktpathitem.h"
@@ -51,13 +51,13 @@ class NodeManager;
  * @author Jorge Cuadrado
 */
 
-class Select : public KTToolPlugin
+class SelectTool : public KTToolPlugin
 {
     Q_OBJECT
     
     public:
-        Select();
-        virtual ~Select();
+        SelectTool();
+        virtual ~SelectTool();
         
         virtual void init(KTGraphicsScene *scene);
         virtual QStringList keys() const;
@@ -79,14 +79,13 @@ class Select : public KTToolPlugin
         virtual void saveConfig();
         QCursor cursor() const;
 
-    //signals:
-    //    void itemAddedOnSelection();
-
     signals:
         void closeHugeCanvas();
+        void callForPlugin(int menu, int index);
 
     private:
         void setupActions();
+        void verifyActiveSelection();
         
     private:
         struct Private;
