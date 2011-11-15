@@ -633,7 +633,7 @@ void KTViewDocument::loadPlugin(int menu, int index)
 
     QString toolName = tr("%1").arg(action->text());
 
-    if (action) { // && toolName.compare(k->currentTool->name()) != 0) {
+    if (action && toolName.compare(k->currentTool->name()) != 0) {
         tFatal() << "KTViewDocument::loadPlugin() - Loading action: " << toolName;
         action->trigger();
         // tFatal() << "KTViewDocument::loadPlugin() - Calling selectTool()";
@@ -784,6 +784,10 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
         TAction *tool = qobject_cast<TAction *>(menu->activeAction());
 
         if (tool) {
+            if (tool->text().compare(k->currentTool->name()) == 0) {
+                tFatal() << "KTViewDocument::selectToolFromMenu() - Getting out!";
+                return;
+            }
             tool->trigger(); // this call selectTool()
         } else {
             tool = qobject_cast<TAction *>(menu->defaultAction());
