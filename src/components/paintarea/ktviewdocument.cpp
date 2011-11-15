@@ -560,7 +560,7 @@ void KTViewDocument::loadPlugins()
 
 void KTViewDocument::loadPlugin(int menu, int index)
 {
-    tFatal() << "KTViewDocument::loadPlugin() - Loading plugin #" << index << " from menu #" << menu;
+    tFatal() << "KTViewDocument::loadPlugin(menu, index) - Loading plugin #" << index << " from menu #" << menu;
     TAction *action = 0;
 
     switch (menu) {
@@ -634,10 +634,10 @@ void KTViewDocument::loadPlugin(int menu, int index)
     QString toolName = tr("%1").arg(action->text());
 
     if (action) { // && toolName.compare(k->currentTool->name()) != 0) {
+        tFatal() << "KTViewDocument::loadPlugin() - Loading action: " << toolName;
         action->trigger();
-        tFatal() << "KTViewDocument::loadPlugin() - Loading action: " << toolName << " & Calling selectToolFromMenu()";
-        // selectToolFromMenu(action);
-        selectTool();
+        // tFatal() << "KTViewDocument::loadPlugin() - Calling selectTool()";
+        // selectTool();
 
         if (k->fullScreenOn) {
             tFatal() << "KTViewDocument::loadPlugin() - k->currentTool: " << k->currentTool->name();
