@@ -242,6 +242,10 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          }
 
+                         // valid = true;
+                         // k->layerCounter = i;
+                         addFrame(mainFrame, KTGraphicsScene::Current);
+
                          // Painting next frames
                          if (k->onionSkin.next > 0 && layer->framesTotal() > photogram + 1) {
 
@@ -270,7 +274,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          valid = true;
                          k->layerCounter = i;
-                         addFrame(mainFrame, KTGraphicsScene::Current);
+                         // addFrame(mainFrame, KTGraphicsScene::Current);
                      }
                   }
               }
@@ -849,6 +853,7 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
         drawBackground();
     }
 
+    /* SQA: Code under revision
     if (k->tool) {
         if (k->tool->toolType() == KTToolPlugin::Selection) {
             foreach (KTLineGuide *line, k->lines) {
@@ -867,7 +872,12 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
                  line->setEnabledSyncCursor(false);
         }
     }
+    */
 
+    if (k->tool)
+        k->tool->aboutToChangeTool();
+
+    k->tool = tool;
     k->tool->init(this);
 }
 

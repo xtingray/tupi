@@ -42,12 +42,15 @@
 /**
  * @author Gustav Gonzalez <info@maefloresta.com>
 */
+
 class KTDebugTerm : public QWidget 
 {
     Q_OBJECT
+
     public:
         KTDebugTerm(QWidget *parent = 0, int width = 0);
         ~KTDebugTerm();
+
     private:
         QTextEdit *debugBrowser;
 };

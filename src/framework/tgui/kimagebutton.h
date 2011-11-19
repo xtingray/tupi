@@ -36,12 +36,13 @@
 #ifndef KIMAGEBUTTON_H
 #define KIMAGEBUTTON_H
 
+#include "tglobal.h"
+
 #include <QPushButton>
 #include <QImage>
 #include <QPixmap>
 #include <QIcon>
 #include <QTimer>
-#include "tglobal.h"
 
 /**
  * A image pressable
@@ -61,8 +62,8 @@ class K_GUI_EXPORT KImageButton : public QPushButton
         void setAnimated(bool anim);
         
     protected:
-        void enterEvent(QEvent *e);
-        void leaveEvent(QEvent *e);
+        void enterEvent(QEvent *event);
+        void leaveEvent(QEvent *event);
         
     private slots:
         void animate();

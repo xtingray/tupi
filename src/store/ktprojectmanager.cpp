@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "ktprojectmanager.h"
-
 #include "ktproject.h"
 #include "ktscene.h"
 #include "ktlayer.h"
@@ -296,7 +295,7 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
            tWarning() << request->xml();
     #endif
 
-    // TODO: the handler must advise when to build the command
+    // SQA: the handler must advise when to build the command
     
     if (k->handler) {
         k->handler->handleProjectRequest(request);
@@ -339,9 +338,6 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
                 }
             } else if (response->action() == KTProjectRequest::Paste) {
                        response->setArg(k->copyFrame);
-
-                       // SQA: Bad code. Remove
-                       // handleProjectRequest(& KTRequestBuilder::fromResponse(response));
 
                        KTProjectRequest request = KTRequestBuilder::fromResponse(response);
                        handleProjectRequest(&request);

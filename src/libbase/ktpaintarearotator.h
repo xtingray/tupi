@@ -36,17 +36,19 @@
 #ifndef KTPAINTAREAROTATOR_H
 #define KTPAINTAREAROTATOR_H
 
-#include <QObject>
 #include "ktglobal.h"
+#include <QObject>
 
 class KTPaintAreaBase;
 
 /**
-    @author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado
 */
+
 class TUPI_EXPORT KTPaintAreaRotator : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view);
         ~KTPaintAreaRotator();

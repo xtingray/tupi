@@ -46,7 +46,7 @@
 #include <QVariant>
 #include <QSize>
 #include <QEvent>
-#include <QTimer>
+// #include <QTimer>
 
 #ifdef QT_GUI_LIB
 

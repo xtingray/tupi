@@ -46,6 +46,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QDesktopWidget>
+#include <QTimer>
 
 struct KTAnimationArea::Private
 {
@@ -113,6 +114,11 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
 KTAnimationArea::~KTAnimationArea()
 {
+    k->timer->stop();
+    k->playBackTimer->stop();
+
+    delete k->timer;
+    delete k->playBackTimer;
     delete k;
 }
 
@@ -174,7 +180,7 @@ void KTAnimationArea::play()
 void KTAnimationArea::playBack()
 {
    #ifdef K_DEBUG
-          tDebug("camera") << "Playing back!";
+          tDebug("camera") << "KTAnimationArea::playBack() - Starting procedure";
    #endif
 
    if (k->timer->isActive())
@@ -193,7 +199,7 @@ void KTAnimationArea::playBack()
 void KTAnimationArea::stop()
 {
     #ifdef K_DEBUG
-           tDebug("camera") << "Stopping";
+           tDebug("camera") << "KTAnimationArea::stop() - Stopping player";
     #endif
    
     if (k->timer->isActive())
@@ -390,9 +396,9 @@ QSize KTAnimationArea::sizeHint() const
     return k->renderCamera.size();
 }
 
-void  KTAnimationArea::resizeEvent(QResizeEvent * e)
+void  KTAnimationArea::resizeEvent(QResizeEvent *event)
 {
-    QFrame::resizeEvent(e);
+    QFrame::resizeEvent(event);
 
     stop();
 

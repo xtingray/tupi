@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "ktconfigurationarea.h"
+#include "tdebug.h"
 
 #include <QLabel>
 #include <QTextBrowser>
@@ -48,8 +49,6 @@
 #include <QStyleOptionButton>
 #include <QTimer>
 //#include <QVBoxLayout>
-
-#include "tdebug.h"
 
 struct KTConfigurationArea::Private
 {
@@ -117,9 +116,9 @@ void KTConfigurationArea::shrink()
     #endif
 
     QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parentWidget());
-    if (!mainWindow || ! widget()) {
+    if (!mainWindow || !widget()) {
         #ifdef K_DEBUG
-               T_FUNCINFO << "Fatal error";
+               tError() << "KTConfigurationArea::shrink() - Fatal error!";
         #endif
         return;
     }
@@ -129,19 +128,20 @@ void KTConfigurationArea::shrink()
 
     mainWindow->setMouseTracking(true);
 
-    int wOffset = 0, hOffset= 0;
+    int wOffset = 0;
+    int hOffset= 0;
 
     Qt::DockWidgetArea position = mainWindow->dockWidgetArea(this);
 
     if (position == Qt::BottomDockWidgetArea) {
         wOffset = 20;
-        hOffset = -(y() * 2 + pm - 1); // FIXME FIXME FIXME
+        hOffset = -(y() * 2 + pm - 1); // SQA: FIXME FIXME FIXME
     } else if (position == Qt::LeftDockWidgetArea) {
-        wOffset = width()+(pm/2)+1;
-        hOffset = height() / 2;
+               wOffset = width()+(pm/2)+1;
+               hOffset = height() / 2;
     } else if (position == Qt::RightDockWidgetArea) {
-        wOffset = -(pm/2)+1;
-        hOffset = height() / 2;
+               wOffset = -(pm/2)+1;
+               hOffset = height() / 2;
     }
 
     QMouseEvent press(QEvent::MouseButtonPress,
@@ -154,7 +154,12 @@ void KTConfigurationArea::shrink()
     qApp->processEvents();
 
     int df = 0;
-    int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
+    int x1 = 0;
+    int x2 = 0;
+    int y1 = 0;
+    int y2 = 0;
+    int xRelease = 0;
+    int yRelease = 0;
 
     if (position == Qt::BottomDockWidgetArea) {
         df = widget()->height();
@@ -209,7 +214,7 @@ void KTConfigurationArea::shrink()
     mainWindow->setMouseTracking(hmt);
 }
 
-void KTConfigurationArea::enterEvent(QEvent *)
+void KTConfigurationArea::enterEvent(QEvent *event)
 {
     if (k->locker.isActive()) 
         k->locker.stop();
@@ -220,7 +225,7 @@ void KTConfigurationArea::enterEvent(QEvent *)
     k->shower.start(300);
 }
 
-void KTConfigurationArea::leaveEvent(QEvent *)
+void KTConfigurationArea::leaveEvent(QEvent *event)
 {
     if (k->shower.isActive())
         k->shower.stop();
@@ -257,7 +262,7 @@ void KTConfigurationArea::hideConfigurator()
     if (widget && !isFloating ()) {
         // widget->setMinimumWidth(10);
         widget->setVisible(false);
-        setFeatures(QDockWidget::NoDockWidgetFeatures );
+        setFeatures(QDockWidget::NoDockWidgetFeatures);
 
         // =================
 
@@ -274,17 +279,17 @@ void KTConfigurationArea::hideConfigurator()
         shrink();
 
         if (!k->toolTipShowed) {
-			QToolTip::showText (k->mousePos, tr("Cursor here for expand"), this );
-			k->toolTipShowed = true;
+            QToolTip::showText (k->mousePos, tr("Cursor here for expand"), this);
+            k->toolTipShowed = true;
         }
     }
 
     k->mousePos = QCursor::pos();
 }
 
-void KTConfigurationArea::paintEvent (QPaintEvent *e)
+void KTConfigurationArea::paintEvent(QPaintEvent *event)
 {
-    QDockWidget::paintEvent(e);
+    QDockWidget::paintEvent(event);
     bool draw = false;
 
     if (widget()) {
@@ -301,11 +306,11 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setRenderHint(QPainter::TextAntialiasing, true);
 
-        // painter.setBrush( palette().highlight() );
+        // painter.setBrush( palette().highlight());
         // QPainterPath path;
         // 		
         // QPolygon pol;
-        // pol << rect().topRight()-QPoint(0,-40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0,40);
+        // pol << rect().topRight()-QPoint(0, -40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0, 40);
         // path.addPolygon(pol);
         // 		
         // painter.drawPath(path);
@@ -315,7 +320,7 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
         painter.setFont(font);
 
         QStyleOptionButton buttonOption;
-        buttonOption.initFrom( this );
+        buttonOption.initFrom(this);
 		
         buttonOption.text = tr("Properties");
         buttonOption.icon = QIcon();
@@ -327,10 +332,10 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 
         buttonOption.features = QStyleOptionButton::DefaultButton;
 
-        style()->drawControl( QStyle::CE_PushButton, &buttonOption, &painter, this );
+        style()->drawControl(QStyle::CE_PushButton, &buttonOption, &painter, this);
 		
         // QString text = tr("Properties");
         // QFontMetricsF fm(painter.font());
-        // painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
+        // painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text);
     }
 }

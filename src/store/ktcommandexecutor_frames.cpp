@@ -388,7 +388,7 @@ bool KTCommandExecutor::pasteFrame(KTFrameResponse *response)
     int layerPos = response->layerIndex();
     int position = response->frameIndex();
     QString copyFrame = response->arg().toString();
-    
+
     KTScene *scene = m_project->scene(scenePos);
     if (scene) {
         KTLayer *layer = scene->layer(layerPos);
@@ -411,5 +411,6 @@ bool KTCommandExecutor::pasteFrame(KTFrameResponse *response)
             }
         }
     }
+
     return false;
 }

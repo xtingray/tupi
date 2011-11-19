@@ -42,7 +42,7 @@
 
 #include <QObject>
 #include <QSpinBox>
-#include <QTimer>
+// #include <QTimer>
 
 class QKeySequence;
 
@@ -74,7 +74,6 @@ class PencilTool : public KTToolPlugin
     private:
         void setupActions();
         void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
-        // QPair<int, int> setKeyAction(int key);
 
     signals:
         void closeHugeCanvas();
@@ -83,17 +82,6 @@ class PencilTool : public KTToolPlugin
     private:
         struct Private;
         Private *const k;
-
-    /*
-    private:
-        QPointF m_firstPoint;
-        QPointF m_oldPos;
-        QPainterPath m_path;
-        ExactnessConfigurator * m_configurator;
-        QMap<QString, TAction *> m_actions;
-        KTPathItem *m_item;
-        QCursor m_cursor;
-    */
 };
 
 #endif

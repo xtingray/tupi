@@ -67,6 +67,9 @@ KTwitterWidget::KTwitterWidget(QWidget *parent) : QWidget(parent)
 
 KTwitterWidget::~KTwitterWidget()
 {
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 }
 
 void KTwitterWidget::setDocument(const QString &doc)

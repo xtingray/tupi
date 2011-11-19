@@ -145,6 +145,10 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
 
 KTPenWidget::~KTPenWidget()
 {
+    #ifdef K_DEBUG
+           TEND;
+    #endif
+
     delete k;
 }
 

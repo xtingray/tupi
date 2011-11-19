@@ -274,10 +274,11 @@ void ViewTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
-    } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
-               QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
-               if (flags.first != -1 && flags.second != -1)
-                   emit callForPlugin(flags.first, flags.second);
+    // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
+    } else {
+        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        if (flags.first != -1 && flags.second != -1)
+            emit callForPlugin(flags.first, flags.second);
     }
 }
 

@@ -38,7 +38,6 @@
 #include "ktoolview.h"
 #include "kviewbutton.h"
 #include "tmainwindowabstractsettings.h"
-
 #include "tdebug.h"
 
 #include <QTimer>
@@ -107,7 +106,9 @@ void DefaultSettings::save(TMainWindow *w)
 
 void DefaultSettings::restore(TMainWindow *w)
 {
-    tFatal() << "*** Restoring Interface...";
+    #ifdef K_DEBUG
+           tFatal() << "Restoring Interface...";
+    #endif
 
     QSettings settings(qApp->applicationName(), "ideality", this);
 

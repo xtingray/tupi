@@ -34,24 +34,22 @@
  ***************************************************************************/
 
 #include "ktsymboleditor.h"
+#include "ktlibraryobject.h"
+#include "ktpluginmanager.h"
+#include "kttoolplugin.h"
+// Tupi Framework
+#include "taction.h"
+#include "tdebug.h"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QToolBar>
 #include <QTimer>
 
-#include "ktlibraryobject.h"
-#include "ktpluginmanager.h"
-#include "kttoolplugin.h"
-
-// Tupi Framework 
-#include "taction.h"
-#include "tdebug.h"
-
 /**
  * This class defines the toolbar at the left side of the paint area.
  * Here is where tool plugins are loaded and where the toolbar is created.
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class View : public QGraphicsView
@@ -118,8 +116,7 @@ KTSymbolEditor::~KTSymbolEditor()
 
 void KTSymbolEditor::setSymbol(KTLibraryObject *object)
 {
-    if(  QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(object->data()) )
-    {
+    if (QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(object->data())) {
         k->symbol = object;
         k->scene->addItem(item);
     }
@@ -130,61 +127,61 @@ void KTSymbolEditor::loadTools()
     QActionGroup *group = new QActionGroup(this);
     group->setExclusive(true);
     
-    foreach(QObject *plugin, KTPluginManager::instance()->tools() )
-    {
-        KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
+    foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
+             KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
         
-        QStringList::iterator it;
-        QStringList keys = tool->keys();
+             QStringList::iterator it;
+             QStringList keys = tool->keys();
             
-        for (it = keys.begin(); it != keys.end(); ++it)
-        {
-            tDebug("plugins") << "*******Tool Loaded: " << *it;
+             for (it = keys.begin(); it != keys.end(); ++it) {
+                  #ifdef K_DEBUG
+                         tDebug("plugins") << "*** Tool Loaded: " << *it;
+                  #endif
             
-            TAction *act = tool->actions()[*it];
-            if ( act )
-            {
-                connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
+                  TAction *act = tool->actions()[*it];
+                  if (act) {
+                      connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
                 
-                switch( tool->toolType() )
-                {
-                    case KTToolInterface::Selection:
-                    {
-                        k->selectionTools->addAction(act);
-                    }
-                    break;
-                    case KTToolInterface::Fill:
-                    {
-                        k->fillTools->addAction(act);
-                    }
-                    break;
-                    case KTToolInterface::View:
-                    {
-                        k->viewTools->addAction(act);
-                    }
-                    break;
-                    case KTToolInterface::Brush:
-                    {
-                        k->brushTools->addAction(act);
-                    }
-                    break;
-                }
+                      switch (tool->toolType()) {
+                              case KTToolInterface::Selection:
+                              {
+                                   k->selectionTools->addAction(act);
+                              }
+                              break;
+                              case KTToolInterface::Fill:
+                              {
+                                   k->fillTools->addAction(act);
+                              }
+                              break;
+                              case KTToolInterface::View:
+                              {
+                                   k->viewTools->addAction(act);
+                              }
+                              break;
+                              case KTToolInterface::Brush:
+                              {
+                                   k->brushTools->addAction(act);
+                              }
+                              break;
+                      }
                 
-                group->addAction(act);
-                act->setCheckable(true);
-                act->setParent(plugin);
-            }
-        }
+                      group->addAction(act);
+                      act->setCheckable(true);
+                      act->setParent(plugin);
+                  }
+             }
     }
 }
 
 void KTSymbolEditor::selectTool()
 {
-    T_FUNCINFO;
+    #ifdef K_DEBUG
+           T_FUNCINFO;                         
+    #endif
+
     TAction *action = qobject_cast<TAction *>(sender());
     
-    if ( action )
-    {
+    if (action) {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         tool->setName(action->text());
     }

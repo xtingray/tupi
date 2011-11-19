@@ -41,11 +41,13 @@
 class QPushButton;
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado
 */
+
 class KTConfigurationArea : public QDockWidget
 {
     Q_OBJECT
+
     public:
         KTConfigurationArea(QWidget *parent = 0);
         ~KTConfigurationArea();
@@ -65,13 +67,13 @@ class KTConfigurationArea : public QDockWidget
         void toggleLock();
 
    protected:
-        void enterEvent(QEvent *e);
-        void leaveEvent(QEvent *e);
-        void paintEvent (QPaintEvent *e);
+        void enterEvent(QEvent *event);
+        void leaveEvent(QEvent *event);
+        void paintEvent (QPaintEvent *event);
 
-        private:
-             struct Private;
-             Private *const k;
+   private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

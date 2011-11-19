@@ -87,7 +87,7 @@ void KTLineGuide::setEnabledSyncCursor(bool enabled)
     k->enabled = enabled;
 }
 
-QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & value )
+QVariant KTLineGuide::itemChange(GraphicsItemChange change, const QVariant & value)
 {
     if (change == ItemPositionChange) {
         if (k->orientation == Qt::Vertical)
@@ -100,7 +100,7 @@ QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & va
 }
 
 /* 
-void KTLineGuide::hoverEnterEvent(QGraphicsSceneHoverEvent * e)
+void KTLineGuide::hoverEnterEvent(QGraphicsSceneHoverEvent *e)
  {
      QGraphicsSceneMouseEvent *event = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMousePress);
      event->setButtons(Qt::LeftButton);
@@ -116,7 +116,7 @@ void KTLineGuide::hoverEnterEvent(QGraphicsSceneHoverEvent * e)
  }
 */
 
-void KTLineGuide::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
+void KTLineGuide::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 {
     if (k->enabled)
         syncCursor();
@@ -153,8 +153,7 @@ bool KTLineGuide::sceneEvent(QEvent *e)
 void KTLineGuide::syncCursor()
 {
     QPointF globalPos;
-    if(scene())
-    {
+    if (scene()) {
         foreach (QGraphicsView *view, scene()->views())
                  globalPos = view->viewport()->mapToGlobal(scenePos().toPoint() + view->mapFromScene(QPointF(0,0))) ;
     }

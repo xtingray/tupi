@@ -92,10 +92,6 @@ struct SchemeTool::Private
 
 SchemeTool::SchemeTool() : k(new Private)
 {
-    #ifdef K_DEBUG
-           TINIT;
-    #endif
-
     k->configurator = 0;
     k->item = 0;
     k->cursor = QCursor(THEME_DIR + "cursors/contour.png");
@@ -105,9 +101,6 @@ SchemeTool::SchemeTool() : k(new Private)
 
 SchemeTool::~SchemeTool()
 {
-    #ifdef K_DEBUG
-           TEND;
-    #endif
 }
 
 void SchemeTool::init(KTGraphicsScene *scene)
@@ -779,10 +772,11 @@ void SchemeTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
-    } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
-               QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
-               if (flags.first != -1 && flags.second != -1)
-                   emit callForPlugin(flags.first, flags.second);
+    // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
+    } else {
+        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        if (flags.first != -1 && flags.second != -1)
+            emit callForPlugin(flags.first, flags.second);
     }
 }
 

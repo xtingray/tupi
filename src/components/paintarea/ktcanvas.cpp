@@ -38,7 +38,7 @@
 #include "tglobal.h"
 #include "tconfig.h"
 #include "tdebug.h"
-#include "ktcanvasview.h"
+// #include "ktcanvasview.h"
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -53,7 +53,8 @@ KTCanvas::KTCanvas(QWidget *parent, Qt::WindowFlags flags, KTGraphicsScene *scen
     setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
-    KTCanvasView *graphicsView = new KTCanvasView(this, screenSize, projectSize, bg);
+    // KTCanvasView *graphicsView = new KTCanvasView(this, screenSize, projectSize, bg);
+    graphicsView = new KTCanvasView(this, screenSize, projectSize, bg);
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
     graphicsView->setFixedSize(screenSize.width(), screenSize.height());
     // graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
@@ -77,5 +78,6 @@ KTCanvas::~KTCanvas()
 void KTCanvas::updateCursor(const QCursor &cursor)
 {
     tFatal() << "KTCanvas::updateCursor() - Setting cursor!";
-    setCursor(cursor);
+    // setCursor(cursor);
+    graphicsView->viewport()->setCursor(cursor);
 }

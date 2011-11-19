@@ -58,8 +58,8 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
     
     public:
 
-        enum MenuIndex { InvalidMenu = -1, Brushes = 0, Selection, Fill, Zoom, Tweener };
-        enum BrushTools { InvalidBrush = -1, Pencil = 0, Scheme, Ink, Eraser, PolyLine, Line, Rectangle, Ellipse, Text };
+        enum MenuIndex { InvalidMenu = -1, Brushes = 0, Selection, Fill, Zoom, Tweener, Arrows };
+        enum BrushTools { InvalidBrush = -1, Pencil = 0, Scheme, Ink, Eraser, PolyLine, Line, Rectangle, Ellipse, Text, FrameBack, FrameForward, QuickCopy };
         enum SelectTools { InvalidSelection = -1, Nodes = 0, Objects };
         enum FillTools { InvalidFill = -1, Inside = 0, Contour };
         enum ViewTools { InvalidView = -1, View = 0, Hand };
@@ -95,7 +95,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 
         virtual QMenu *menu() const;
         virtual QCursor cursor() const;
-        QPair<int, int> setKeyAction(int key);
+        QPair<int, int> setKeyAction(int key, Qt::KeyboardModifiers modifiers);
         
     signals:
         void requested(const KTProjectRequest *request);

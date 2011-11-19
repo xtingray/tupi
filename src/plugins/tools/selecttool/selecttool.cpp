@@ -123,6 +123,8 @@ void SelectTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
 {
     Q_UNUSED(brushManager);
 
+    k->selectionFlag = false;
+
     // If Control key is pressed / allow multiple selection 
     if (input->keyModifiers() != Qt::ControlModifier) {
         foreach (NodeManager *nodeManager, k->nodeManagers) {
@@ -257,6 +259,8 @@ void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *
 
 void SelectTool::setupActions()
 {
+    k->selectionFlag = false;
+
     TAction *select = new TAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("O")));
 
@@ -361,7 +365,7 @@ void SelectTool::itemResponse(const KTItemResponse *event)
         }
     } else {
         #ifdef K_DEBUG
-               tFatal() << "SelectTool::itemResponse - Project does not exist";
+               tError() << "SelectTool::itemResponse - Project does not exist";
         #endif
         return;
     }
@@ -384,7 +388,7 @@ void SelectTool::itemResponse(const KTItemResponse *event)
 
                  } else {
                      #ifdef K_DEBUG
-                            tFatal() << "SelectTool::itemResponse - No item found";
+                            tError() << "SelectTool::itemResponse - No item found";
                      #endif
                  }
             }
@@ -434,39 +438,45 @@ void SelectTool::keyPressEvent(QKeyEvent *event)
     } else if ((event->key() == Qt::Key_Left) || (event->key() == Qt::Key_Up) 
                || (event->key() == Qt::Key_Right) || (event->key() == Qt::Key_Down)) {
 
-               int delta = 5;
+               if (!k->selectionFlag) {
+                   QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+                   if (flags.first != -1 && flags.second != -1)
+                       emit callForPlugin(flags.first, flags.second);
+               } else {
+                   int delta = 5;
 
-               if (event->modifiers()==Qt::ShiftModifier)
-                   delta = 1;
+                   if (event->modifiers()==Qt::ShiftModifier)
+                       delta = 1;
 
-               if (event->modifiers()==Qt::ControlModifier)
-                   delta = 10;
+                   if (event->modifiers()==Qt::ControlModifier)
+                       delta = 10;
 
-               QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
+                   QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
 
-               foreach (QGraphicsItem *item, selectedObjects) {
-                        if (event->key() == Qt::Key_Left)
-                            item->moveBy(-delta, 0);
+                   foreach (QGraphicsItem *item, selectedObjects) {
+                            if (event->key() == Qt::Key_Left)
+                                item->moveBy(-delta, 0);
 
-                        if (event->key() == Qt::Key_Up)
-                            item->moveBy(0, -delta);
+                            if (event->key() == Qt::Key_Up)
+                                item->moveBy(0, -delta);
 
-                        if (event->key() == Qt::Key_Right)
-                            item->moveBy(delta, 0);
+                            if (event->key() == Qt::Key_Right)
+                                item->moveBy(delta, 0);
 
-                        if (event->key() == Qt::Key_Down)
-                            item->moveBy(0, delta);
+                            if (event->key() == Qt::Key_Down)
+                                item->moveBy(0, delta);
 
-                        QTimer::singleShot(0, this, SLOT(syncNodes()));
+                            QTimer::singleShot(0, this, SLOT(syncNodes()));
+                   }
                }
     } else if (event->modifiers() == Qt::ShiftModifier) {
                verifyActiveSelection();
                foreach (NodeManager *nodeManager, k->nodeManagers)
                         nodeManager->setProportion(true);
-    } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
-               QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
-               if (flags.first != -1 && flags.second != -1)
-                   emit callForPlugin(flags.first, flags.second);
+    } else {
+        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        if (flags.first != -1 && flags.second != -1)
+            emit callForPlugin(flags.first, flags.second);
     }
 }
 

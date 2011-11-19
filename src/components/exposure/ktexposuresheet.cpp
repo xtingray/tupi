@@ -189,7 +189,7 @@ void KTExposureSheet::renameScene(int index, const QString &name)
 void KTExposureSheet::applyAction(int action)
 {
     #ifdef K_DEBUG
-           T_FUNCINFO<< "action: " << action;
+           T_FUNCINFO << "KTExposureSheet::applyAction() - action: " << action;
     #endif
 
      k->currentTable = k->scenes->getCurrentTable();
@@ -373,8 +373,13 @@ void KTExposureSheet::emitRequestCopyCurrentFrame()
 
 void KTExposureSheet::emitRequestPasteInCurrentFrame()
 {
-    if (k->nameCopyFrame.isEmpty())
+    if (k->nameCopyFrame.isEmpty()) {
+        #ifdef K_DEBUG
+               tError() << "KTExposureSheet::emitRequestPasteInCurrentFrame() - The copied frame name is empty!";
+        #endif
+
         return;
+    }
 
     if (k->currentTable->usedFrames(k->currentTable->currentLayer()) <= k->currentTable->currentRow()) {
         for(int i = k->currentTable->usedFrames(k->currentTable->currentLayer()); 

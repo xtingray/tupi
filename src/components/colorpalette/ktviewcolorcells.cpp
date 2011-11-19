@@ -78,14 +78,14 @@ KTViewColorCells::~KTViewColorCells()
         brushesDir.mkdir(brushesDir.path());
 
     #ifdef K_DEBUG
-           tDebug("palette") << brushesDir.path();
+           tWarning("palette") << "KTViewColorCells::~KTViewColorCells() - Saving color palettes in: " << brushesDir.path();
     #endif
 
     for (int i = 0; i < k->containerPalette->count(); i++) {
          KTCellsColor *palette = qobject_cast<KTCellsColor *>(k->containerPalette->widget(i));
          if (palette) {
-             if(!palette->isReadOnly())
-                palette->save(CONFIG_DIR + "palettes/" + palette->name() + ".tpal");
+             if (!palette->isReadOnly())
+                 palette->save(CONFIG_DIR + "palettes/" + palette->name() + ".tpal");
          }
     }
 

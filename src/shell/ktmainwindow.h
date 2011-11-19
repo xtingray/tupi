@@ -38,7 +38,6 @@
 
 #include "tactionmanager.h"
 #include "ktviewdocument.h"
-
 #include "ktanimationspace.h"
 #include "ktpreferences.h"
 
@@ -59,10 +58,8 @@
 #include "ktexportwidget.h"
 
 #include "ktviewdocument.h"
-
 #include "ktabbedmainwindow.h"
 #include "ktstatusbar.h"
-
 #include "tosd.h"
 #include "ktoolview.h"
 
@@ -70,8 +67,6 @@
 #include "ktprojectmanager.h"
 #include "ktnetprojectmanagerhandler.h"
 #include "ktsplash.h"
-
-#include "ktviewdocument.h"
 
 #include <QMainWindow>
 #include <QMenu>

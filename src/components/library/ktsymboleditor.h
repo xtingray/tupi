@@ -41,11 +41,13 @@
 class KTLibraryObject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTSymbolEditor : public QMainWindow
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTSymbolEditor(QWidget *parent = 0);
         ~KTSymbolEditor();
@@ -62,5 +64,3 @@ class KTSymbolEditor : public QMainWindow
 };
 
 #endif
-
-

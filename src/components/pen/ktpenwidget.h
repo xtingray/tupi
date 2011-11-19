@@ -36,12 +36,11 @@
 #ifndef KTPENWIDGET_H
 #define KTPENWIDGET_H
 
+#include "ktmodulewidgetbase.h"
+#include "keditspinbox.h"
+
 #include <QPen>
 #include <QListWidgetItem>
-
-#include <ktmodulewidgetbase.h>
-
-#include "keditspinbox.h"
 #include <QComboBox>
 #include <QLabel>
 
@@ -54,6 +53,7 @@ class KTPaintAreaEvent;
 class KTPenWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KTPenWidget(QWidget *parent = 0);
         ~KTPenWidget();
@@ -64,10 +64,6 @@ class KTPenWidget : public KTModuleWidgetBase
         void emitBrushChanged();
         // void updatePenParams();
         void addBrushesList();
-        
-    private:
-        struct Private;
-        Private *const k;
         
     public slots:
         void init();
@@ -85,6 +81,10 @@ class KTPenWidget : public KTModuleWidgetBase
         void penChanged(const QPen &pen);
         void brushChanged(const QBrush &brush);
         void paintAreaEventTriggered(const KTPaintAreaEvent *e);
+
+    private:
+        struct Private;
+        Private *const k;
 
 };
 

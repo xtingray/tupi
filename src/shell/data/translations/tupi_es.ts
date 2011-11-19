@@ -2778,7 +2778,7 @@
     </message>
 </context>
 <context>
-    <name>Select</name>
+    <name>SelectTool</name>
     <message>
         <source>Select</source>
         <translation>Select</translation>

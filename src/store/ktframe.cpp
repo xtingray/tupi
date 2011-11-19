@@ -144,6 +144,8 @@ void KTFrame::fromXml(const QString &xml)
     if (! document.setContent(xml)) {
         #ifdef K_DEBUG
                tError() << "KTFrame::fromXml() - File corrupted!";
+               tWarning() << "Content:";
+               tWarning() << xml;
         #endif
         return;
     }

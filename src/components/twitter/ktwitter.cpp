@@ -87,6 +87,10 @@ void KTwitter::start()
 }
 
 KTwitter::~KTwitter(){
+    #ifdef K_DEBUG
+           TEND;
+    #endif
+
     delete k;
 }
 
@@ -109,35 +113,61 @@ void KTwitter::closeRequest(QNetworkReply *reply)
                 checkSoftwareUpdates(array);
                 requestFile(TWITTER_HOST +  USER_TIMELINE_URL);
             } else {
-                if (answer.contains("status", Qt::CaseSensitive) && (!answer.contains("Twitter is over capacity") && !answer.contains("whale_error.gif") && !answer.contains("503 Error")))
+                if (answer.contains("status", Qt::CaseSensitive) && (!answer.contains("Twitter is over capacity") 
+                    && !answer.contains("whale_error.gif") && !answer.contains("503 Error"))) {
                     formatStatus(array);
-                else
-                    qWarning("KTwitter::closeRequest : Invalid data!");
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "KTwitter::closeRequest() - Network Error: Invalid data!";
+                    #endif
+                }
             }
         }
     } else {
-        tFatal() << "KTwitter::closeRequest -> NO NETWORK? :S";
+        #ifdef K_DEBUG
+               tError() << "KTwitter::closeRequest() - Network Error: Gosh! No Internet? :S";
+        #endif
     } 
 }
 
 void KTwitter::slotError(QNetworkReply::NetworkError error)
 {
     switch (error) {
-            case QNetworkReply::HostNotFoundError :
-                 qWarning("Network Error: Host not found");
+            case QNetworkReply::HostNotFoundError:
+                 { 
+                 #ifdef K_DEBUG
+                        tError() << "KTwitter::slotError() - Network Error: Host not found";
+                 #endif
+                 }
             break;
-            case QNetworkReply::TimeoutError :
-                 qWarning("Network Error: Time out!");
+            case QNetworkReply::TimeoutError:
+                 {
+                 #ifdef K_DEBUG
+                        tError() << "KTwitter::slotError() - Network Error: Time out!";
+                 #endif
+                 }
             break;
-            case QNetworkReply::ConnectionRefusedError :
-                 qWarning("Network Error: Connection Refused!");
+            case QNetworkReply::ConnectionRefusedError:
+                 {
+                 #ifdef K_DEBUG
+                        tError() << "KTwitter::slotError() - Network Error: Connection Refused!";
+                 #endif
+                 }
             break;
-            case QNetworkReply::ContentNotFoundError :
-                 qWarning("Network Error: Content not found!");
+            case QNetworkReply::ContentNotFoundError:
+                 {
+                 #ifdef K_DEBUG
+                        tError() << "KTwitter::slotError() - Network Error: Content not found!";
+                 #endif
+                 }
             break;
-            case QNetworkReply::UnknownNetworkError :
+            case QNetworkReply::UnknownNetworkError:
             default:
-                 qWarning("Network Error: Unknown Network error!");
+                 {
+                 #ifdef K_DEBUG
+                        tError() << "KTwitter::slotError() - Network Error: Unknown Network error!";
+                 #endif
+                 }
             break;
     }
 }

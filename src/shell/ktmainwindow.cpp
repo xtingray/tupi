@@ -108,7 +108,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
               m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
-       TINIT;
+           TINIT;
     #endif
 
     // Loading audio player plugin
@@ -201,6 +201,9 @@ KTMainWindow::~KTMainWindow()
 
     delete KTPluginManager::instance();
     delete TOsd::self();
+ 
+    delete m_projectManager;
+    delete penView;
 }
 
 /**

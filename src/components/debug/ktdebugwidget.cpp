@@ -41,10 +41,10 @@
 
 KTDebugWidget::KTDebugWidget(QWidget *parent, int width) : KTModuleWidgetBase(parent, "Debug Terminal")
 {
-#ifdef K_DEBUG
-    TINIT;
-#endif
-
+    #ifdef K_DEBUG
+           TINIT;
+    #endif
+  
     setWindowTitle(tr("Debug Console"));
     setWindowIcon(QIcon(THEME_DIR + "icons/debug.png"));
 
@@ -59,7 +59,7 @@ KTDebugWidget::KTDebugWidget(QWidget *parent, int width) : KTModuleWidgetBase(pa
 
 KTDebugWidget::~KTDebugWidget()
 {
-#ifdef K_DEBUG
-    TEND;
-#endif
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 }

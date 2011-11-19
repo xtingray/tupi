@@ -329,7 +329,7 @@ void GeometricTool::keyPressEvent(QKeyEvent *event)
         tFatal() << "GeometricTool::keyPressEvent() - Typing key shift!";
         k->proportion = true;
     } else {
-        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
+        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)
             emit callForPlugin(flags.first, flags.second);
     }

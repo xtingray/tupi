@@ -63,7 +63,7 @@ KAudioPlayer *KAudioPlayer::instance()
 
 void KAudioPlayer::loadEngine(const QString &engineKey)
 {
-    tDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
+    // tDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
     
     QDir m_pluginDirectory = QDir(PLUGIN_DIR);
     

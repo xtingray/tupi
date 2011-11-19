@@ -52,6 +52,7 @@
 #include "ktprojectresponse.h"
 
 #include "ktscene.h"
+#include "ktlayer.h"
 #include "ktsvgitem.h"
 #include "ktpixmapitem.h"
 #include "node.h"
@@ -64,7 +65,7 @@
 #include <QGraphicsRectItem>
 #include <QPolygon>
 #include <QApplication>
-#include <QTimer>
+// #include <QTimer>
 #include <QStyleOptionGraphicsItem>
 #include <QClipboard>
 #include <QMenu>
@@ -86,6 +87,7 @@ struct KTPaintArea::Private
     QPointF oldPosition;
     QPointF position;
     bool menuOn;
+    QString frameCopy;
 };
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent, project->dimension()), k(new Private)
@@ -109,6 +111,10 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
 
 KTPaintArea::~KTPaintArea()
 {
+    #ifdef K_DEBUG
+           TEND;
+    #endif
+
     delete k;
 }
 
@@ -949,6 +955,7 @@ void KTPaintArea::setCurrentTool(QString tool)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
+           SHOW_VAR(tool);
     #endif
 
     k->currentTool = tool;
@@ -1013,40 +1020,100 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    KTGraphicsScene *scene = graphicsScene();
-
-    if (event->key() == Qt::Key_Left && scene->currentFrameIndex() > 0) {
-        KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
-                                                                        scene->currentLayerIndex(),
-                                                                        scene->currentFrameIndex() - 1, 
-                                                                        KTProjectRequest::Select, "1");
-        emit requestTriggered(&request);
+    if (event->key() == Qt::Key_Left) {
+        goOneFrameBack();
         return;
     }
 
     if (event->key() == Qt::Key_Right) {
-
-        int framesTotal = scene->framesTotal(); 
-        int frameIndex = scene->currentFrameIndex() + 1; 
-
-        if (frameIndex == framesTotal) {
-            KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
-                                                         scene->currentLayerIndex(), 
-                                                         frameIndex, 
-                                                         KTProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
-            emit requestTriggered(&request);
-        }
-
-        KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
-                                                                        scene->currentLayerIndex(),
-                                                                        scene->currentFrameIndex() + 1, 
-                                                                        KTProjectRequest::Select, "1");
-        emit requestTriggered(&request);
-        return;
+        if (event->modifiers() == Qt::ControlModifier)
+            quickCopy();
+        else 
+            goOneFrameForward();
     }
 }
 
 void KTPaintArea::keyReleaseEvent(QKeyEvent *event)
 {
     KTPaintAreaBase::keyReleaseEvent(event);
+}
+
+void KTPaintArea::goOneFrameBack()
+{
+    KTGraphicsScene *scene = graphicsScene();
+
+    if (scene->currentFrameIndex() > 0) {
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                                        scene->currentLayerIndex(),
+                                                                        scene->currentFrameIndex() - 1,
+                                                                        KTProjectRequest::Select, "1");
+        emit requestTriggered(&request);
+    }
+}
+
+void KTPaintArea::goOneFrameForward()
+{
+    tFatal() << "KTPaintArea::goOneFrameForward() - Adding a new frame!";
+
+    KTGraphicsScene *scene = graphicsScene();
+    int framesTotal = scene->framesTotal();
+    int frameIndex = scene->currentFrameIndex() + 1;
+
+    if (frameIndex == framesTotal) {
+        KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                     scene->currentLayerIndex(),
+                                                     frameIndex,
+                                                     KTProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
+        emit requestTriggered(&request);
+    }
+
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                                    scene->currentLayerIndex(),
+                                                                    scene->currentFrameIndex() + 1,
+                                                                    KTProjectRequest::Select, "1");
+    emit requestTriggered(&request);
+}
+
+void KTPaintArea::copyCurrentFrame()
+{
+    tFatal() << "KTPaintArea::copyCurrentFrame() - Copy current frame!";
+
+    KTGraphicsScene *gScene = graphicsScene();
+
+    KTScene *scene = k->project->scene(gScene->currentSceneIndex());
+    if (scene) {
+        KTLayer *layer = scene->layer(gScene->currentLayerIndex());
+        if (layer) {
+            KTFrame *frame = layer->frame(gScene->currentFrameIndex());
+            if (frame) {
+                QDomDocument doc;
+                doc.appendChild(frame->toXml(doc));
+                k->frameCopy = doc.toString(0);
+            }
+        }
+    }
+
+}
+
+void KTPaintArea::pasteDataOnCurrentFrame()
+{
+    tFatal() << "KTPaintArea::pasteDataOnCurrentFrame() - Pasting data on buffer!";
+
+    KTGraphicsScene *scene = graphicsScene();
+
+
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                                    scene->currentLayerIndex(), 
+                                                                    scene->currentFrameIndex(),
+                                                                    KTProjectRequest::Paste, k->frameCopy);
+    emit requestTriggered(&request);
+}
+
+void KTPaintArea::quickCopy()
+{
+    tFatal() << "KTPaintArea::quickCopy() - Fast copy!";
+
+    copyCurrentFrame();
+    goOneFrameForward();
+    pasteDataOnCurrentFrame();
 }

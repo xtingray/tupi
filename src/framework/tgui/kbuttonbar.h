@@ -88,9 +88,9 @@ class K_IDEAL_EXPORT KButtonBar : public QToolBar
         void doNotHide();
 
     protected:
-        virtual void mousePressEvent(QMouseEvent *e);
-        virtual void enterEvent(QEvent *e);
-        virtual void leaveEvent(QEvent *e);
+        virtual void mousePressEvent(QMouseEvent *event);
+        virtual void enterEvent(QEvent *event);
+        virtual void leaveEvent(QEvent *event);
 
     private:
         QButtonGroup m_buttons;

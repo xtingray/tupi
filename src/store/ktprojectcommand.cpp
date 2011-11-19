@@ -188,7 +188,7 @@ KTProjectCommand::~KTProjectCommand()
 void KTProjectCommand::redo()
 {
     #ifdef K_DEBUG
-        T_FUNCINFO << k->response->part();
+           T_FUNCINFO << k->response->part();
     #endif    
 
     if (k->executed) {
@@ -201,9 +201,9 @@ void KTProjectCommand::redo()
     switch (k->response->part()) {
             case KTProjectRequest::Project:
             {
-            #ifdef K_DEBUG
-                tDebug() << "Project response isn't handle";
-            #endif
+                 #ifdef K_DEBUG
+                        tDebug() << "Project response isn't handle";
+                 #endif
             }
             break;
             case KTProjectRequest::Frame:
@@ -233,9 +233,9 @@ void KTProjectCommand::redo()
             break;
             default:
             {
-            #ifdef K_DEBUG
-                T_FUNCINFO << ("Unknown project response!");
-            #endif
+                 #ifdef K_DEBUG
+                        tError() << "KTProjectCommand::redo() - Error: Unknown project response";
+                 #endif
             }
             break;
     }
@@ -281,7 +281,7 @@ void KTProjectCommand::undo()
             default:
             {
                  #ifdef K_DEBUG
-                        T_FUNCINFO << ("Unknown project response!");
+                        tError() << "KTProjectCommand::undo() - Error: Unknown project response";
                  #endif
             }
             break;
@@ -291,7 +291,7 @@ void KTProjectCommand::undo()
 void KTProjectCommand::frameCommand()
 {
     #ifdef K_DEBUG
-        T_FUNCINFO;
+           T_FUNCINFO;
     #endif
 
     KTFrameResponse *response = static_cast<KTFrameResponse *>(k->response);
@@ -353,6 +353,11 @@ void KTProjectCommand::frameCommand()
             }
             break;
             default: 
+            {
+                 #ifdef K_DEBUG
+                        tError() << "KTProjectCommand::frameCommand() - Error: Unknown project response";
+                 #endif
+            }
             break;
     }
 }
@@ -398,6 +403,11 @@ void KTProjectCommand::layerCommand()
             }
             break;
             default: 
+            {
+                 #ifdef K_DEBUG
+                        tError() << "KTProjectCommand::layerCommand() - Error: Unknown project response";
+                 #endif
+            }
             break;
     }
 }
@@ -452,6 +462,11 @@ void KTProjectCommand::sceneCommand()
             }
             break;
             default: 
+            {
+                 #ifdef K_DEBUG
+                        tError() << "KTProjectCommand::sceneCommand() - Error: Unknown project response";
+                 #endif
+            }
             break;
     }
 }
@@ -529,6 +544,11 @@ void KTProjectCommand::itemCommand()
             }
             break;
             default: 
+            {
+                 #ifdef K_DEBUG
+                        tError() << "KTProjectCommand::itemCommand() - Error: Unknown project response";
+                 #endif
+            }
             break;
     }
 }
@@ -565,12 +585,23 @@ void KTProjectCommand::libraryCommand()
                  k->executor->removeSymbolFromProject(response);
             }
             break;
+
+            default:
+            {
+                 #ifdef K_DEBUG
+                        tError() << "KTProjectCommand::libraryCommand() - Error: Unknown project response";
+                 #endif
+            }
+            break;
     }
 }
 
 void KTProjectCommand::paintAreaCommand()
 {
-    qFatal("FIX ME in ktprojectcommand.cpp");
+
+    #ifdef K_DEBUG
+           tError() << "KTProjectCommand::paintAreaCommand() - Error: FIX ME in ktprojectcommand.cpp";
+    #endif
 
     /*
      if (redo)

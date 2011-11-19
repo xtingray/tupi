@@ -139,7 +139,7 @@ QCursor KTToolPlugin::cursor() const
     return 0;
 }
 
-QPair<int, int> KTToolPlugin::setKeyAction(int key)
+QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
     KTToolPlugin::MenuIndex menu = KTToolPlugin::Brushes;
     int tool = KTToolPlugin::Pencil;
@@ -153,6 +153,7 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key)
                  tool = KTToolPlugin::Scheme;
             break;
 
+            /* SQA: Temporarily disabled
             case Qt::Key_K:
                  tool = KTToolPlugin::Ink;
             break;
@@ -160,6 +161,7 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key)
             case Qt::Key_E:
                  tool = KTToolPlugin::Eraser;
             break;
+            */
 
             case Qt::Key_S:
                  tool = KTToolPlugin::PolyLine;
@@ -177,9 +179,11 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key)
                  tool = KTToolPlugin::Ellipse;
             break;
 
+            /* SQA: Temporarily disabled
             case Qt::Key_T:
                  tool = KTToolPlugin::Text;
             break;
+            */
 
             case Qt::Key_O:
                  menu = KTToolPlugin::Selection;
@@ -209,6 +213,19 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key)
             case Qt::Key_H:
                  menu = KTToolPlugin::Zoom;
                  tool = KTToolPlugin::Hand;
+            break;
+
+            case Qt::Key_Right:
+                 menu = KTToolPlugin::Arrows;
+                 if (modifiers == Qt::ControlModifier)
+                     tool = KTToolPlugin::QuickCopy;
+                 else
+                     tool = KTToolPlugin::FrameForward;
+            break;
+
+            case Qt::Key_Left:
+                 menu = KTToolPlugin::Arrows;
+                 tool = KTToolPlugin::FrameBack;
             break;
 
             default:

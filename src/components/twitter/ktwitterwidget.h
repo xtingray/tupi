@@ -42,7 +42,7 @@
 #include <QTextDocument>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTwitterWidget : public QWidget

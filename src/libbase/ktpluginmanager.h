@@ -36,8 +36,8 @@
 #ifndef KTPLUGINMANAGER_H
 #define KTPLUGINMANAGER_H
 
-#include <QObject>
 #include "ktglobal.h"
+#include <QObject>
 
 class QPluginLoader;
 
@@ -48,6 +48,7 @@ class QPluginLoader;
 class TUPI_EXPORT KTPluginManager : public QObject
 {
     Q_OBJECT
+
     private:
         KTPluginManager(QObject *parent = 0);
         
@@ -63,12 +64,17 @@ class TUPI_EXPORT KTPluginManager : public QObject
         
         QObjectList tools() const;
         QObjectList filters() const;
-        
+
+    /*
     private:
         QObjectList m_tools;
         QObjectList m_filters;
-        
         QList<QPluginLoader *> m_loaders;
+    */
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

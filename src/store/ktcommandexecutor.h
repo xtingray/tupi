@@ -120,6 +120,7 @@ class KTCommandExecutor : public QObject
         
     private:
         KTProject *m_project;
+        KTFrame *copyFrame;
 };
 
 #endif

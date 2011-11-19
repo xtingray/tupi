@@ -68,6 +68,11 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void updateSpaceContext();
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent *event);
+        void goOneFrameBack();
+        void goOneFrameForward();
+        void copyCurrentFrame();
+        void pasteDataOnCurrentFrame();
+        void quickCopy();
 
     public slots:
         void setNextFramesOnionSkinCount(int n);
@@ -92,7 +97,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void requestMoveSelectedItems(QAction *action);
 
     protected:
-        void mousePressEvent(QMouseEvent * event);
+        void mousePressEvent(QMouseEvent *event);
         void frameResponse(KTFrameResponse *event);
         void layerResponse(KTLayerResponse *event);
         void sceneResponse(KTSceneResponse *event);

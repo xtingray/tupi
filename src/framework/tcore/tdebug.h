@@ -36,6 +36,8 @@
 #ifndef TDEBUG_H
 #define TDEBUG_H
 
+#include "tglobal.h"
+
 #include <QTextStream>
 #include <QStringList>
 #include <QTextEdit>
@@ -43,8 +45,6 @@
 #ifdef QT_GUI_LIB
 #include <QColor>
 #endif
-
-#include "tglobal.h"
 
 /**
  * @author David Cuadrado

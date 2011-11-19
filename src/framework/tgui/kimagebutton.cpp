@@ -34,17 +34,15 @@
  ***************************************************************************/
 
 #include "kimagebutton.h"
+#include "tdebug.h"
 
 #include <QPainter>
 #include <QPixmap>
 #include <QLayout>
 #include <QBitmap>
-
 #include <QStyle>
 #include <QStyleOptionButton>
 #include <QStylePainter>
-
-#include "tdebug.h"
 
 class KImageButton::Animation
 {
@@ -162,7 +160,6 @@ void KImageButton::resizeEvent(QResizeEvent *e)
 
     painter.setBackgroundColor(paletteBackgroundColor());
     painter.eraseRect(m_drawer.rect());
- 
     painter.end();
  
     QPixmap buffer = getPixmap();

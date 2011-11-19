@@ -82,9 +82,23 @@ PencilTool::~PencilTool()
 {
 }
 
+void PencilTool::setupActions()
+{
+    TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
+    pencil->setShortcut(QKeySequence(tr("P")));
+    k->cursor = QCursor(THEME_DIR + "cursors/pencil.png");
+    pencil->setCursor(k->cursor);
+
+    k->actions.insert(tr("Pencil"), pencil);
+}
+
 void PencilTool::init(KTGraphicsScene *scene)
 {
-    foreach (QGraphicsView * view, scene->views()) {
+    #ifdef K_DEBUG
+           T_FUNCINFOX("tools");
+    #endif
+
+    foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
              if (QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene())) {
@@ -191,16 +205,6 @@ void PencilTool::smoothPath(QPainterPath &path, double smoothness, int from, int
     }
 }
 
-void PencilTool::setupActions()
-{
-    TAction *pencil = new TAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
-    pencil->setShortcut(QKeySequence(tr("P")));
-    k->cursor = QCursor(THEME_DIR + "cursors/pencil.png");
-    pencil->setCursor(k->cursor);
-
-    k->actions.insert(tr("Pencil"), pencil);
-}
-
 QMap<QString, TAction *> PencilTool::actions() const
 {
     return k->actions;
@@ -233,99 +237,15 @@ void PencilTool::saveConfig()
 
 void PencilTool::keyPressEvent(QKeyEvent *event)
 {
-    tFatal() << "PencilTool::keyPressEvent() - Key: " << event->key();
-
     if (event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
         return;
     }
 
-    QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key());
+    QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
     if (flags.first != -1 && flags.second != -1)
         emit callForPlugin(flags.first, flags.second);
 }
-
-/*
-QPair<int, int> PencilTool::setKeyAction(int key)
-{
-    KTToolPlugin::MenuIndex menu = KTToolPlugin::Brushes;
-    int tool = KTToolPlugin::Pencil;
-
-    switch (key) {
-            case Qt::Key_P:
-                 tool = KTToolPlugin::Pencil;
-            break;
-
-            case Qt::Key_M:
-                 tool = KTToolPlugin::Scheme;
-            break;
-
-            case Qt::Key_K:
-                 tool = KTToolPlugin::Ink;
-            break;
-
-            case Qt::Key_E:
-                 tool = KTToolPlugin::Eraser;
-            break;
-
-            case Qt::Key_S:
-                 tool = KTToolPlugin::PolyLine;
-            break;
-
-            case Qt::Key_L:
-                 tool = KTToolPlugin::Line;
-            break;
-
-            case Qt::Key_R:
-                 tool = KTToolPlugin::Rectangle;
-            break;
-
-            case Qt::Key_C:
-                 tool = KTToolPlugin::Ellipse;
-            break;
-
-            case Qt::Key_T:
-                 tool = KTToolPlugin::Text;
-            break;
-
-            case Qt::Key_O:
-                 menu = KTToolPlugin::Selection;
-                 tool = KTToolPlugin::Objects;
-            break;
-
-            case Qt::Key_N:
-                 menu = KTToolPlugin::Selection;
-                 tool = KTToolPlugin::Nodes;
-            break;
-
-            case Qt::Key_I:
-                 menu = KTToolPlugin::Fill;
-                 tool = KTToolPlugin::Inside;
-            break;
-
-            case Qt::Key_B:
-                 menu = KTToolPlugin::Fill;
-                 tool = KTToolPlugin::Contour;
-            break;
-
-            case Qt::Key_Z:
-                 menu = KTToolPlugin::Zoom;
-                 tool = KTToolPlugin::View;
-            break;
-
-            case Qt::Key_H:
-                 menu = KTToolPlugin::Zoom;
-                 tool = KTToolPlugin::Hand;
-            break;
-    }
-
-    QPair<int, int> flags;
-    flags.first = menu;
-    flags.second = tool;
-
-    return flags;
-}
-*/
 
 QCursor PencilTool::cursor() const
 {

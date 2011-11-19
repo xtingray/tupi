@@ -58,7 +58,7 @@ TOsd::TOsd(QWidget * parent) : QWidget(parent), m_timer(0)
     connect(&m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
 
     m_timer = new QTimer(this);
-    connect(m_timer, SIGNAL(timeout()), SLOT( hide()));
+    connect(m_timer, SIGNAL(timeout()), SLOT(hide()));
 
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
 
@@ -67,6 +67,8 @@ TOsd::TOsd(QWidget * parent) : QWidget(parent), m_timer(0)
 
 TOsd::~TOsd()
 {
+    m_timer->stop();
+
     delete m_animator;
     delete m_timer;
 }

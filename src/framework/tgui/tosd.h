@@ -36,13 +36,14 @@
 #ifndef TOSD_H
 #define TOSD_H
 
+#include "tglobal.h"
+#include "tapplicationproperties.h"
+
 #include <QWidget>
 #include <QPixmap>
 #include <QPaintEvent>
 #include <QTimer>
 #include <QTextDocument>
-#include "tglobal.h"
-#include "tapplicationproperties.h"
 
 /**
  * @author David Cuadrado
@@ -74,8 +75,8 @@ class K_GUI_EXPORT TOsd : public QWidget
         void animate();
 
     protected:
-        void paintEvent(QPaintEvent * e);
-        void mousePressEvent(QMouseEvent * e);
+        void paintEvent(QPaintEvent *event);
+        void mousePressEvent(QMouseEvent *event);
 
     private:
         void drawPixmap(const QBrush &background, const QBrush &foreground);

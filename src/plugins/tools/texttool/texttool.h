@@ -69,6 +69,7 @@ class TextTool : public KTToolPlugin
 
     signals:
         void closeHugeCanvas();
+        void callForPlugin(int menu, int index);
  
     private:
         void setupActions();

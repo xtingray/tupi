@@ -40,11 +40,13 @@
 #include <QImage>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTImageDevice : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTImageDevice(QWidget *parent = 0);
         ~KTImageDevice();

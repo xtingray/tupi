@@ -99,15 +99,19 @@ struct KTViewDocument::Private
     QMenu *editMenu;
     QMenu *viewMenu;
     QMenu *orderMenu;
-    QAction *aUndo;
-    QAction *aRedo;
-    QAction *aClose;
-    QToolBar *barGrid, *toolbar;
+
+    // QAction *aUndo;
+    // QAction *aRedo;
+    // QAction *aClose;
+
+    QToolBar *barGrid;
+    QToolBar *toolbar;
+
     QDoubleSpinBox *zoomFactorSpin;
     QDoubleSpinBox *onionFactorSpin;
-
     QSpinBox *prevOnionSkinSpin;
     QSpinBox *nextOnionSkinSpin;
+
     bool onionEnabled;
     int prevOnionValue;
     int nextOnionValue;
@@ -231,15 +235,20 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
 
 KTViewDocument::~KTViewDocument()
 {
+    #ifdef K_DEBUG
+           TEND;
+    #endif
+
     TCONFIG->beginGroup("General");
     TCONFIG->setValue("AutoSave", k->autoSaveTime);
 
     if (k->currentTool)
         k->currentTool->saveConfig();
 
-    delete k->configurationArea;
+    // k->timer->stop();
     // delete k->timer;
 
+    delete k->configurationArea;
     delete k;
 }
 
@@ -560,10 +569,22 @@ void KTViewDocument::loadPlugins()
 
 void KTViewDocument::loadPlugin(int menu, int index)
 {
-    tFatal() << "KTViewDocument::loadPlugin(menu, index) - Loading plugin #" << index << " from menu #" << menu;
     TAction *action = 0;
 
     switch (menu) {
+
+            case KTToolPlugin::Arrows:
+                 {
+                     if (index == KTToolPlugin::FrameBack) {
+                         k->paintArea->goOneFrameBack();
+                     } else if (index == KTToolPlugin::FrameForward) {
+                                k->paintArea->goOneFrameForward();
+                     } else if (index == KTToolPlugin::QuickCopy) {
+                                k->paintArea->quickCopy();
+                     }
+                 }
+            break;
+
             case KTToolPlugin::Brushes:
                  {
                      QList<QAction*> brushActions = k->brushesMenu->actions();
@@ -609,7 +630,6 @@ void KTViewDocument::loadPlugin(int menu, int index)
             case KTToolPlugin::Zoom:
                  {
                      QList<QAction*> viewActions = k->viewToolMenu->actions();
-                     tFatal() << "KTViewDocument::loadPlugin() - viewActions.size(): " << viewActions.size();
                      if (index < viewActions.size()) {
                          action = (TAction *) viewActions[index];
                      } else {
@@ -631,20 +651,14 @@ void KTViewDocument::loadPlugin(int menu, int index)
             break;
     }
 
-    QString toolName = tr("%1").arg(action->text());
-
-    if (action && toolName.compare(k->currentTool->name()) != 0) {
-        tFatal() << "KTViewDocument::loadPlugin() - Loading action: " << toolName;
-        action->trigger();
-        // tFatal() << "KTViewDocument::loadPlugin() - Calling selectTool()";
-        // selectTool();
-
-        if (k->fullScreenOn) {
-            tFatal() << "KTViewDocument::loadPlugin() - k->currentTool: " << k->currentTool->name();
-            k->fullScreen->updateCursor(k->currentTool->cursor());
-        } else {
-            tFatal() << "KTViewDocument::loadPlugin() - No full screen";
-        }
+    if (action) {
+        QString toolName = tr("%1").arg(action->text());
+        if (toolName.compare(k->currentTool->name()) != 0) {
+            if (k->fullScreenOn) {
+                action->trigger();
+                k->fullScreen->updateCursor(action->cursor());
+            }
+        } 
     } else {
         #ifdef K_DEBUG
                tError() << "KTViewDocument::loadPlugin() - Error: Action pointer is NULL!";
@@ -784,19 +798,22 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
         TAction *tool = qobject_cast<TAction *>(menu->activeAction());
 
         if (tool) {
-            if (tool->text().compare(k->currentTool->name()) == 0) {
-                tFatal() << "KTViewDocument::selectToolFromMenu() - Getting out!";
+            if (tool->text().compare(k->currentTool->name()) == 0)
                 return;
-            }
-            tool->trigger(); // this call selectTool()
+            tool->trigger(); // this line calls selectTool()
         } else {
             tool = qobject_cast<TAction *>(menu->defaultAction());
-            if (tool)
+            if (tool) {
                 tool->trigger();
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "KTViewDocument::selectToolFromMenu() - Default action is NULL";
+                #endif
+            }
         }
     } else {
         #ifdef K_DEBUG
-               tError() << "KTViewDocument::selectToolFromMenu() - Error: Action with NO parent!";
+               tError() << "KTViewDocument::selectToolFromMenu() - Error: Action with NO parent! Aborting...";
         #endif
     } 
 }

@@ -33,15 +33,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QDesktopWidget>
-#include <QRect>
-
 #include "ktapplication.h"
-// #include "configwizard.h"
-
-// Tupi Framework 
+// Tupi Framework
 #include "tapplicationproperties.h"
 #include "tdebug.h"
+
+#include <QDesktopWidget>
+#include <QRect>
 
 /**
  * Support Class for main.cpp
@@ -56,6 +54,9 @@ KTApplication::KTApplication(int &argc, char **argv) : TApplication(argc, argv)
 
 KTApplication::~KTApplication()
 {
+    #ifdef K_DEBUG
+           qDebug("[Destroying ~KTApplication]");
+    #endif
 }
 
 bool KTApplication::firstRun()
@@ -95,12 +96,12 @@ bool KTApplication::firstRun()
 void KTApplication::createCache(const QString &cacheDir)
 {
     QDir cache(cacheDir);
-    if (! cache.exists()) {
+    if (!cache.exists()) {
         #ifdef K_DEBUG
                tDebug() << tr("Initializing repository %1").arg(cacheDir);
         #endif
 
-       if (! cache.mkdir(cacheDir)) {
+       if (!cache.mkdir(cacheDir)) {
            #ifdef K_DEBUG
                   tError() << tr("Can not create the projects repository");
            #endif

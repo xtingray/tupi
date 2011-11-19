@@ -37,6 +37,7 @@
 #define KTCANVAS_H
 
 #include "ktgraphicsscene.h"
+#include "ktcanvasview.h"
 
 #include <QFrame>
 // #include <QDialog>
@@ -58,6 +59,9 @@ class KTCanvas : public QFrame
                  int angle=0, const QColor &bg = QColor(Qt::white));
         ~KTCanvas();
         void updateCursor(const QCursor &cursor);
+
+    private:
+        KTCanvasView *graphicsView;
 };
 
 #endif

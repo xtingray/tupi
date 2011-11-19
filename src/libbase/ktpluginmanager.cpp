@@ -36,7 +36,6 @@
 #include "ktpluginmanager.h"
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
-
 #include "tglobal.h"
 #include "tdebug.h"
 
@@ -45,7 +44,14 @@
 
 KTPluginManager *KTPluginManager::s_instance = 0;
 
-KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent)
+struct KTPluginManager::Private
+{
+    QObjectList tools;
+    QObjectList filters;
+    QList<QPluginLoader *> loaders;
+};
+
+KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent), k(new Private)
 {
 }
 
@@ -64,38 +70,49 @@ KTPluginManager *KTPluginManager::instance()
 
 void KTPluginManager::loadPlugins()
 {
-    m_filters.clear();
-    m_tools.clear();
-    
-    QDir m_pluginDirectory = QDir(PLUGINS_DIR);
+    #ifdef K_DEBUG
+           tDebug("plugins") << "KTPluginManager::loadPlugins() - Loading plugins...";
+    #endif
 
-    foreach (QString fileName, m_pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dylib", QDir::Files)) {
-        QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
-        QObject *plugin = qobject_cast<QObject*>(loader->instance());
+    k->filters.clear();
+    k->tools.clear();
+    
+    QDir pluginDirectory = QDir(PLUGINS_DIR);
+
+    foreach (QString fileName, pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dylib", QDir::Files)) {
+             QPluginLoader *loader = new QPluginLoader(pluginDirectory.absoluteFilePath(fileName));
+             QObject *plugin = qobject_cast<QObject*>(loader->instance());
+
+             #ifdef K_DEBUG
+                    tDebug("plugins") << "*** Trying to load plugin from: " << fileName;
+             #endif
         
-        tDebug("plugins") << "****** Trying to load plugin from: " << fileName;
-        
-        if (plugin) {
-            AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
-            KTToolInterface *aTool = qobject_cast<KTToolInterface *>(plugin);
+             if (plugin) {
+                 AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
+                 KTToolInterface *tool = qobject_cast<KTToolInterface *>(plugin);
             
-            if (aFilter) {
-                m_filters << plugin;
-            } else if (aTool) {
-                m_tools << plugin;
-            }
+                 if (filter) {
+                     k->filters << plugin;
+                 } else if (tool) {
+                            k->tools << plugin;
+                 }
             
-            m_loaders << loader;
-        } else {
-            tFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
-        }
+                 k->loaders << loader;
+             } else {
+                 #ifdef K_DEBUG
+                        tError("plugins") << "KTPluginManager::loadPlugins() - Cannot load plugin, error was: " << loader->errorString();
+                 #endif
+             }
     }
 }
 
 void KTPluginManager::unloadPlugins()
 {
-    tDebug("plugins") << "Unloading plugins...";
-    foreach (QPluginLoader *loader, m_loaders) {
+    #ifdef K_DEBUG
+           tDebug("plugins") << "KTPluginManager::unloadPlugins() - Unloading plugins...";
+    #endif
+
+    foreach (QPluginLoader *loader, k->loaders) {
              delete loader->instance();
              delete loader;
     }
@@ -103,10 +120,10 @@ void KTPluginManager::unloadPlugins()
 
 QObjectList KTPluginManager::tools() const
 {
-    return m_tools;
+    return k->tools;
 }
 
 QObjectList KTPluginManager::filters() const
 {
-    return m_filters;
+    return k->filters;
 }

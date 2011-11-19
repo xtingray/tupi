@@ -42,18 +42,18 @@
 
 KTDebugTerm::KTDebugTerm(QWidget *parent, int width) : QWidget(parent)
 {
-#ifdef K_DEBUG
-    TINIT;
-    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this); 
-    mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
-    debugBrowser = TDebug::browser(this, width);
-    mainLayout->addWidget(debugBrowser);
-#endif
+    #ifdef K_DEBUG
+           TINIT;
+           QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this); 
+           mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
+           debugBrowser = TDebug::browser(this, width);
+           mainLayout->addWidget(debugBrowser);
+    #endif
 }
 
 KTDebugTerm::~KTDebugTerm()
 {
-#ifdef K_DEBUG
-    TEND;
-#endif
+    #ifdef K_DEBUG
+           TEND;
+    #endif
 }

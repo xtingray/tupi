@@ -43,7 +43,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QPaintEvent>
-#include <QTimer>
+// #include <QTimer>
 #include <QFrame>
 
 /**
@@ -92,13 +92,13 @@ class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRespo
     signals:
         void progressStep(int, int);
         void toStatusBar(const QString &, int);
-        void sceneChanged(const KTScene *newScene );
+        void sceneChanged(const KTScene *newScene);
 
         void requestTriggered(const KTProjectRequest *event);
 
     protected:
-        void paintEvent(QPaintEvent *e);
-        void resizeEvent(QResizeEvent * event);
+        void paintEvent(QPaintEvent *event);
+        void resizeEvent(QResizeEvent *event);
 
     private:
         struct Private;
