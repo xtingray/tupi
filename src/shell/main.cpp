@@ -159,7 +159,7 @@ int main(int argc, char ** argv)
     KTwitter *ktwitter = new KTwitter();
     ktwitter->start();
 
-    // SQA: KTooN gui styles must be re-factored 
+    // SQA: Tupi gui styles must be re-factored 
     // Setting the gui style for the interface
 #ifdef ENABLE_TUPISTYLE
     QApplication::setStyle(new KWaitStyle());
