@@ -601,14 +601,18 @@ void KTViewDocument::loadPlugin(int menu, int index)
 
             case KTToolPlugin::Selection:
                  {
-                     QList<QAction*> selectionActions = k->selectionMenu->actions();
-                     if (index < selectionActions.size()) {
-                         action = (TAction *) selectionActions[index];
+                     if (index == KTToolPlugin::Delete) {
+                         k->paintArea->deleteItems();
                      } else {
-                         #ifdef K_DEBUG
-                                tError() << "KTViewDocument::loadPlugin() - Error: Invalid Selection Index / No plugin loaded";
-                                return;
-                         #endif
+                         QList<QAction*> selectionActions = k->selectionMenu->actions();
+                         if (index < selectionActions.size()) {
+                             action = (TAction *) selectionActions[index];
+                         } else {
+                             #ifdef K_DEBUG
+                                    tError() << "KTViewDocument::loadPlugin() - Error: Invalid Selection Index / No plugin loaded";
+                                    return;
+                             #endif
+                         }
                      }
                  }
             break;

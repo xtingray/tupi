@@ -586,6 +586,10 @@ bool KTPaintArea::canPaint() const
 
 void KTPaintArea::deleteItems()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFOX("paintarea");
+    #endif
+
     if (k->currentTool.compare(tr("Object Selection")) != 0 && k->currentTool.compare(tr("Contour Selection")) != 0)
         return;
 

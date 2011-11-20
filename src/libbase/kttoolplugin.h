@@ -59,7 +59,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
     public:
 
         enum MenuIndex { InvalidMenu = -1, Brushes = 0, Selection, Fill, Zoom, Tweener, Arrows };
-        enum BrushTools { InvalidBrush = -1, Pencil = 0, Scheme, Ink, Eraser, PolyLine, Line, Rectangle, Ellipse, Text, FrameBack, FrameForward, QuickCopy };
+        enum BrushTools { InvalidBrush = -1, Pencil = 0, Scheme, Ink, Eraser, PolyLine, Line, Rectangle, Ellipse, Text, FrameBack, FrameForward, QuickCopy, Delete };
         enum SelectTools { InvalidSelection = -1, Nodes = 0, Objects };
         enum FillTools { InvalidFill = -1, Inside = 0, Contour };
         enum ViewTools { InvalidView = -1, View = 0, Hand };

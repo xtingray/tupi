@@ -295,6 +295,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 
 void ContourSelection::keyPressEvent(QKeyEvent *event)
 {
+    /* SQA: This code seems to have to effect :S
     if (event->key() == Qt::Key_Delete) {
         bool deleted = false;
     
@@ -303,8 +304,11 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
         if (deleted)
             event->accept();
-    } else if (event->key() == Qt::Key_Escape) {
-               emit closeHugeCanvas();
+    }
+    */
+
+    if (event->key() == Qt::Key_Escape) {
+        emit closeHugeCanvas();
     } else {
         QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)

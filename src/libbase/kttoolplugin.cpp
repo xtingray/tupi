@@ -228,6 +228,11 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifi
                  tool = KTToolPlugin::FrameBack;
             break;
 
+            case Qt::Key_Delete:
+                 menu = KTToolPlugin::Selection;
+                 tool = KTToolPlugin::Delete;
+            break;
+
             default:
             {
                  menu = KTToolPlugin::InvalidMenu;
