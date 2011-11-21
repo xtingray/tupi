@@ -78,7 +78,14 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     setFlag(ItemSendsGeometryChanges, true);
     
     setPos(pos);
-    setZValue(graphicParent->zValue() + 1);
+
+
+    int itemsCount = scene->items().count();
+    if (itemsCount > 0)
+        setZValue(graphicParent->zValue() + itemsCount + 1);
+    else
+        setZValue(graphicParent->zValue() + 1);
+
     setGraphicParent(graphicParent);
 }
 

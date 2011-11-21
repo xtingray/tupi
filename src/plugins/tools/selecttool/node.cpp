@@ -83,7 +83,12 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
     k->generalState = Scale;
     
     setPos(pos);
-    setZValue(parent->zValue() + 1);
+
+    int itemsCount = parent->scene()->items().count();
+    if (itemsCount > 0)
+        setZValue(parent->zValue() + itemsCount + 1);
+    else
+        setZValue(parent->zValue() + 1);
 }
 
 Node::~Node()
