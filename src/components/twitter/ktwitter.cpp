@@ -54,6 +54,7 @@ struct KTwitter::Private
     QNetworkAccessManager *manager;
     QNetworkRequest request;
     QNetworkReply *reply;
+
     QString version;
     QString revision;
     QString codeName;
@@ -97,10 +98,6 @@ KTwitter::~KTwitter()
 
 void KTwitter::requestFile(QString target)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     k->request.setUrl(QUrl(target));
     k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
     k->reply = k->manager->get(k->request);
@@ -108,10 +105,6 @@ void KTwitter::requestFile(QString target)
 
 void KTwitter::closeRequest(QNetworkReply *reply)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     QByteArray array = reply->readAll();
     QString answer(array);
 
@@ -142,10 +135,6 @@ void KTwitter::closeRequest(QNetworkReply *reply)
 
 void KTwitter::slotError(QNetworkReply::NetworkError error)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     switch (error) {
             case QNetworkReply::HostNotFoundError:
                  { 
