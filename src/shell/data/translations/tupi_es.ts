@@ -230,7 +230,7 @@
         <translation>I</translation>
     </message>
     <message>
-        <source>Contour fill</source>
+        <source>Line fill</source>
         <translation>Relleno de Contorno</translation>
     </message>
     <message>
@@ -1179,8 +1179,8 @@
         <translation type="unfinished">&amp;Editar</translation>
     </message>
     <message>
-        <source>&amp;Insert</source>
-        <translation type="unfinished">&amp;Insertar</translation>
+        <source>&amp;Import</source>
+        <translation type="unfinished">&amp;Importar</translation>
     </message>
     <message>
         <source>&amp;Window</source>

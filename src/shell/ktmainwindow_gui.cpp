@@ -270,7 +270,7 @@ void KTMainWindow::setupMenu()
     // Setting up the insert menu
     // setupInsertActions();
     // Menu Insert
-    m_insertMenu = new QMenu(tr("&Insert"), this);
+    m_insertMenu = new QMenu(tr("&Import"), this);
     menuBar()->addMenu(m_insertMenu);
 
     // Adding Options insert scene, insert layer and insert frame

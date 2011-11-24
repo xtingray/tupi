@@ -95,6 +95,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 
         void addSelectedItemsToLibrary();
         void requestMoveSelectedItems(QAction *action);
+        void goToFrame(int index);
 
     protected:
         void mousePressEvent(QMouseEvent *event);

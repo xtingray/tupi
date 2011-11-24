@@ -1071,17 +1071,11 @@ void KTPaintArea::goOneFrameForward()
         emit requestTriggered(&request);
     }
 
-    KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
-                                                                    scene->currentLayerIndex(),
-                                                                    scene->currentFrameIndex() + 1,
-                                                                    KTProjectRequest::Select, "1");
-    emit requestTriggered(&request);
+    goToFrame(scene->currentFrameIndex() + 1);
 }
 
 void KTPaintArea::copyCurrentFrame()
 {
-    tFatal() << "KTPaintArea::copyCurrentFrame() - Copy current frame!";
-
     KTGraphicsScene *gScene = graphicsScene();
 
     KTScene *scene = k->project->scene(gScene->currentSceneIndex());
@@ -1101,8 +1095,6 @@ void KTPaintArea::copyCurrentFrame()
 
 void KTPaintArea::pasteDataOnCurrentFrame()
 {
-    tFatal() << "KTPaintArea::pasteDataOnCurrentFrame() - Pasting data on buffer!";
-
     KTGraphicsScene *scene = graphicsScene();
 
 
@@ -1115,9 +1107,18 @@ void KTPaintArea::pasteDataOnCurrentFrame()
 
 void KTPaintArea::quickCopy()
 {
-    tFatal() << "KTPaintArea::quickCopy() - Fast copy!";
-
     copyCurrentFrame();
     goOneFrameForward();
     pasteDataOnCurrentFrame();
 }
+
+void KTPaintArea::goToFrame(int index)
+{
+    KTGraphicsScene *scene = graphicsScene();
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
+                                                                    scene->currentLayerIndex(),
+                                                                    index,
+                                                                    KTProjectRequest::Select, "1");
+    emit requestTriggered(&request);
+}
+

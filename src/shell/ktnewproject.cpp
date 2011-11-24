@@ -48,6 +48,7 @@
 #include <QColorDialog>
 #include <QStyleOptionButton>
 #include <QComboBox>
+#include <QLineEdit>
 
 //SQA: Add a field to define the project description 
 

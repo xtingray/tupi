@@ -95,7 +95,7 @@ void FillTool::init(KTGraphicsScene *scene)
 
 QStringList FillTool::keys() const
 {
-    return QStringList() << tr("Internal fill") << tr("Contour fill");
+    return QStringList() << tr("Internal fill") << tr("Line fill");
 }
 
 void FillTool::setupActions()
@@ -113,11 +113,11 @@ void FillTool::setupActions()
     k->actions.insert(tr("Shape fill"), action2);
     */
     
-    TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
+    TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Line fill"), this);
     action3->setShortcut(QKeySequence(tr("B")));
     k->contourCursor = QCursor(THEME_DIR + "cursors/contour_fill.png");
     action3->setCursor(k->contourCursor);
-    k->actions.insert(tr("Contour fill"), action3);
+    k->actions.insert(tr("Line fill"), action3);
 }
 
 void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -215,7 +215,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                 if (position >= 0) {
                     if (name() == tr("Internal fill")) {
                         shape->setBrush(brushManager->pen().brush());
-                    } else if (name() == tr("Contour fill")) {
+                    } else if (name() == tr("Line fill")) {
                                QPen pen = shape->pen();
                                pen.setBrush(brushManager->pen().brush());
                                shape->setPen(pen);
@@ -312,7 +312,7 @@ QCursor FillTool::cursor() const
 {
     if (name() == tr("Internal fill")) {
         return k->insideCursor;
-    } else if (name() == tr("Contour fill")) {
+    } else if (name() == tr("Line fill")) {
                return k->contourCursor;
     }
 

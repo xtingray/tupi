@@ -132,7 +132,7 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KWizardPage(tr("Configure Tupi"), 
 
     KVHBox *hbox2 = new KVHBox(container, Qt::Horizontal);
 
-    m_ktrepos = new QLineEdit(QDir::tempPath(),hbox2);
+    m_ktrepos = new QLineEdit(QDir::tempPath(), hbox2);
 
     connect(m_ktrepos, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 

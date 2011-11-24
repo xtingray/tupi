@@ -49,13 +49,15 @@
 #include <QHBoxLayout>
 #include <QIntValidator>
 #include <QObject>
+#include <QLineEdit>
 
 ////////////////
 
 struct KTPaintAreaStatus::Private
 {
     KTViewDocument *viewDocument;
-    QLabel *frameNumber;
+
+    QLineEdit *frameField; 
     QComboBox *zoom;
     QComboBox *rotation;
     QCheckBox *antialiasHint;
@@ -63,6 +65,7 @@ struct KTPaintAreaStatus::Private
     KTBrushStatus *bgStatus;
     KTToolStatus *toolStatus;
     qreal scaleFactor;
+    int currentFrame;
 };
 
 KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent), k( new Private)
@@ -72,6 +75,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     k->scaleFactor = 100;
 
     QWidget *frameContainer = new QWidget;
+    frameContainer->setFixedWidth(70);
     QHBoxLayout *frameLayout = new QHBoxLayout(frameContainer);
     frameLayout->setSpacing(3);
     frameLayout->setMargin(1);
@@ -79,9 +83,16 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     frameLabel->setToolTip(tr("Current Frame"));
     QPixmap framePix(THEME_DIR + "icons/frame_number.png");
     frameLabel->setPixmap(framePix);
-    k->frameNumber = new QLabel(tr("#001"));
+
+    k->frameField = new QLineEdit(frameContainer);
+    k->frameField->setFixedWidth(40);
+    k->frameField->setAlignment(Qt::AlignRight);
+    k->frameField->setValidator(new QIntValidator(1, 999, this));
+    k->frameField->setText(tr("1"));
+    connect(k->frameField, SIGNAL(editingFinished()), this, SLOT(updateFramePointer()));
+
     frameLayout->addWidget(frameLabel);
-    frameLayout->addWidget(k->frameNumber);
+    frameLayout->addWidget(k->frameField);
 
     addPermanentWidget(frameContainer);
 
@@ -101,7 +112,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     k->zoom = new QComboBox();
     k->zoom->setDuplicatesEnabled(false);
     k->zoom->setEditable(true);
-    k->zoom->setFocusPolicy(Qt::NoFocus);
+    //k->zoom->setFocusPolicy(Qt::NoFocus);
     //k->zoom->setInsertPolicy(QComboBox::InsertBeforeCurrent);
 
     for (int i = 500; i >= 250; i-=50)
@@ -112,7 +123,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 
     k->zoom->setCurrentIndex(10);
 
-    k->zoom->setValidator(new QIntValidator(10, 200,this));
+    k->zoom->setValidator(new QIntValidator(10, 200, this));
     zoomLayout->addWidget(k->zoom);
     zoomLayout->addWidget(new QLabel(tr("%")));
 
@@ -141,7 +152,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     for (int i = 0; i < 360; i+=30)
          k->rotation->addItem(QString::number(i), i);
 
-    k->rotation->setValidator(new QIntValidator(-360, 360,this));
+    k->rotation->setValidator(new QIntValidator(-360, 360, this));
 
     rotLayout->addWidget(k->rotation);
 
@@ -242,15 +253,27 @@ void KTPaintAreaStatus::updateTool(const QString &label, const QPixmap &pixmap)
 
 void KTPaintAreaStatus::updateFrameIndex(int index)
 {
-    QString text = "00"; 
     index++;
-
-    if (index < 10)
-        text += QString::number(index);
-    else if (index < 100)
-             text = "0" + QString::number(index);
-
-    // k->frameLabel->setText(tr("Frame #") + text);
-    k->frameNumber->setText(tr("#") + text);
+    k->currentFrame = index;
+    QString text = QString::number(index); 
+    k->frameField->setText(text);
 }
 
+void KTPaintAreaStatus::updateFramePointer()
+{
+    QString text = k->frameField->text();
+    int index = text.toInt(); 
+    
+    if (k->currentFrame != index) {
+        if (index <= k->viewDocument->currentFramesTotal()) {
+            k->currentFrame = index;
+            index--;
+            if (index >= 0) {
+                emit newFramePointer(index);
+                tFatal() << "KTPaintAreaStatus::updateFramePointer() - Index: " << index;
+            }
+        } else {
+            k->frameField->setText(QString::number(k->currentFrame));
+        }
+    }
+}

@@ -50,6 +50,8 @@
 
 #include "ktbrushmanager.h"
 #include "ktproject.h"
+#include "ktscene.h"
+#include "ktlayer.h"
 #include "ktpaintareastatus.h"
 #include "ktcanvas.h"
 #include "polyline.h"
@@ -218,6 +220,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     setStatusBar(k->status);
     connect(k->status, SIGNAL(colorRequested()), this, SIGNAL(expandColorPanel()));
     connect(k->status, SIGNAL(colorUpdated(const QColor)), this, SLOT(updateBgColor(const QColor)));
+    connect(k->status, SIGNAL(newFramePointer(int)), k->paintArea, SLOT(goToFrame(int)));
     connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
 
     // SQA: Verify if this code is doing something / SLOT setBrush() doesn't exist
@@ -824,6 +827,8 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 
 bool KTViewDocument::handleProjectResponse(KTProjectResponse *event)
 {
+    tError() << "KTViewDocument::handleProjectResponse() - FLAG 1";
+
     return k->paintArea->handleResponse(event);
 }
 
@@ -1032,16 +1037,18 @@ void KTViewDocument::callAutoSave()
 void KTViewDocument::saveTimer()
 {
     TCONFIG->beginGroup("General");
-    k->autoSaveTime = TCONFIG->value("AutoSave", 5).toInt();
+    k->autoSaveTime = TCONFIG->value("AutoSave", 10).toInt();
 
     k->timer = new QTimer(this);
 
-    if (k->autoSaveTime < 0 || k->autoSaveTime > 60) 
-        k->autoSaveTime = 5;
+    if (k->autoSaveTime != 0) {
+        if (k->autoSaveTime < 0 || k->autoSaveTime > 60) 
+            k->autoSaveTime = 5;
 
-    int saveTime = k->autoSaveTime*60000;
-    connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
-    k->timer->start(saveTime);
+        int saveTime = k->autoSaveTime*60000;
+        connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
+        k->timer->start(saveTime);
+    }
 }
 
 void KTViewDocument::setSpaceContext()
@@ -1079,6 +1086,22 @@ KTProject::Mode KTViewDocument::spaceContext()
 KTProject *KTViewDocument::project()
 {
    return k->project;
+}
+
+int KTViewDocument::currentFramesTotal()
+{
+   int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+   int layerIndex = k->paintArea->graphicsScene()->currentLayerIndex();
+
+   KTScene *scene = k->project->scene(sceneIndex);
+
+   if (scene) {
+       KTLayer *layer = scene->layer(layerIndex);
+       if (layer)
+           return layer->framesTotal();
+    }
+
+    return -1;
 }
 
 void KTViewDocument::updateBgColor(const QColor color)

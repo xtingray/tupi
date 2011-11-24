@@ -1,4 +1,4 @@
-# Generated automatically at Mon Nov 21 22:07:04 -0500 2011! PLEASE DO NOT EDIT!
+# Generated automatically at Wed Nov 23 17:15:49 -0500 2011! PLEASE DO NOT EDIT!
 LIBS += -laspell -lavcodec -lavformat -ltupifwgui -ltupifwcore -ltupifwsound -lz
 QT += opengl core gui svg xml network
 DEFINES += HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.1\\\" CODE_NAME=\\\"Paola\\\" REVISION=\\\"git11\\\" K_DEBUG
