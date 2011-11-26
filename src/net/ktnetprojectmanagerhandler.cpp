@@ -223,7 +223,7 @@ void KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     bool connected = k->socket->waitForConnected(1000);
 
     if (connected) {
-        KTConnectPackage connectPackage(k->params->login(), k->params->password());
+        KTConnectPackage connectPackage(k->params->server(), k->params->login(), k->params->password());
         k->socket->send(connectPackage);
     } else {
         TOsd::self()->display(tr("Error"), tr("Unable to connect to server"), TOsd::Error);
@@ -291,7 +291,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
         QMessageBox msgBox;
         msgBox.setWindowTitle(tr("Fatal Error"));
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setText(tr("User \"%1\" is disabled.\nPlease, contact your admin to get access.").arg(k->params->login()));
+        msgBox.setText(tr("User \"%1\" is disabled.\nPlease, contact the animation server admin to get access.").arg(k->params->login()));
         msgBox.exec();
     } else if (root == "project_request") {
                KTRequestParser parser;

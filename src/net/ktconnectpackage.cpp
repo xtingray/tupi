@@ -34,7 +34,11 @@
  ***************************************************************************/
 
 #include "ktconnectpackage.h"
+#include "talgorithm.h"
 #include "kmd5hash.h"
+#include "tdebug.h"
+
+#include <QStringList>
 
 /*
 <user_connect version="0">
@@ -44,7 +48,7 @@
 </user_connect>
 */
 
-KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd) : QDomDocument()
+KTConnectPackage::KTConnectPackage(const QString &server, const QString &login, const QString &passwd) : QDomDocument()
 {
     QDomElement root = createElement("user_connect");
     root.setAttribute("version", "0");
@@ -55,7 +59,22 @@ KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
     root.appendChild(client);
 
     root.appendChild(createElement("login")).appendChild(createTextNode(login));
-    root.appendChild(createElement("password")).appendChild(createTextNode(KMD5Hash::hash(passwd)));
+
+    if (server.compare("tupitube.com") != 0) {
+        root.appendChild(createElement("password")).appendChild(createTextNode(KMD5Hash::hash(passwd)));
+    } else {
+        QString salt = TAlgorithm::randomString(15);
+
+        QDomElement token = createElement("salt");
+        token.setAttribute("method", "sha512");
+        token.appendChild(createTextNode(salt));
+        root.appendChild(token);
+
+        QStringList passwdList = KMD5Hash::passwords(passwd);
+        for (int i = 0; i < passwdList.size(); ++i) { 
+             root.appendChild(createElement("password")).appendChild(createTextNode(passwdList.at(i)));
+        }
+    }
 }
 
 KTConnectPackage::~KTConnectPackage()

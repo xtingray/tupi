@@ -11,7 +11,6 @@
 **
 ** NO WARRANTY is given for this code.
 ** Use it at your own risk.
- *   Copyright (C) 2010 Labtoon SAS - http://www.labtoon.org               *
 ** It should produce correct SHA1 digests, but no security-related test has been made.
 **
 ** Copyright (C) 2005 Angius Fabrizio. All rights reserved.
@@ -36,6 +35,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QByteArray>
 #include <QtCore/QBitArray>
+#include <QCryptographicHash>
 
 // 512K buffer
 #define MD5_READ_BUFFER 524288
@@ -306,4 +306,27 @@ void KMD5Hash::md5Transform(unsigned int buf[4], unsigned int const in[16])
     buf[1] += b;
     buf[2] += c;
     buf[3] += d;
+}
+
+QStringList KMD5Hash::passwords(const QString &plainPass)
+{
+    QStringList salts;
+    salts << "0x9c1decb8$.ef28d34789ea2.f910b7cd7e6";
+    salts << "0xda.695dcdc873555$929eb4bd.5c7da923d";
+    salts << "0xc67a98dce7f0036$.7b8b0ce36a8.3d206c";
+    QString prefix("$S$.");
+    QStringList passList;
+
+    for (int i = 0; i < salts.size(); ++i) {
+         QString step1 = plainPass + salts.at(i);
+         QByteArray hash1 = QCryptographicHash::hash(step1.toUtf8(), QCryptographicHash::Sha1);
+         QString step2 = hash1.toHex();
+         QByteArray hash2 = QCryptographicHash::hash(step2.toUtf8(), QCryptographicHash::Md5);
+         QString step3 = hash2.toHex();
+         QByteArray hash3 = QCryptographicHash::hash(step3.toUtf8(), QCryptographicHash::Sha1);
+         QString step4 = prefix + hash3.toHex();
+         passList << step4;
+    }
+
+    return passList;
 }

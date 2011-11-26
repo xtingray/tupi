@@ -37,6 +37,8 @@
 #include "tglobal.h"
 #include "tapplicationproperties.h"
 
+#include <QStringList>
+
 class QByteArray;
 class QString;
 class QFile;
@@ -49,6 +51,7 @@ class K_CORE_EXPORT KMD5Hash
         static QString hashData(const char* bytes, int size);
         static QString hashFile(QFile& file);
         static QString hashFile(const QString& filename);
+        static QStringList passwords(const QString &plainPass);
 
     private:
         struct md5Context
