@@ -48,6 +48,7 @@ struct TApplicationProperties::Private
     QString shareDir;
     QString dataDir;
     QString themeDir;
+    QString repositoryDir;
     QString pluginDir;
     QString version;
     QString codeName;
@@ -92,6 +93,11 @@ void TApplicationProperties::setPluginDir(const QString &path)
 void TApplicationProperties::setCacheDir(const QString &path)
 {
     k->cacheDir = path;
+}
+
+void TApplicationProperties::setRepositoryDir(const QString &path)
+{
+    k->repositoryDir = path;
 }
 
 void TApplicationProperties::setVersion(const QString &path)
@@ -156,6 +162,11 @@ QString TApplicationProperties::configDir() const
 QString TApplicationProperties::cacheDir() const
 {
     return k->cacheDir;
+}
+
+QString TApplicationProperties::repositoryDir() const
+{
+    return k->repositoryDir;
 }
 
 QString TApplicationProperties::version() const

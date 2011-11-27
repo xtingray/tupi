@@ -54,7 +54,7 @@
 #define HOME_DIR kAppProp->homeDir()
 #define CONFIG_DIR kAppProp->configDir()
 #define PLUGINS_DIR kAppProp->pluginDir()
-
 #define CACHE_DIR kAppProp->cacheDir()
+#define REPOSITORY_DIR kAppProp->repositoryDir()
 
 #endif

@@ -987,6 +987,10 @@
         <translation>Tupí: Magia 2D</translation>
     </message>
     <message>
+        <source>by</source>
+        <translation>por</translation>
+    </message>
+    <message>
         <source>Setting up the project manager</source>
         <translation type="unfinished">Configurando el administrador de proyectos</translation>
     </message>

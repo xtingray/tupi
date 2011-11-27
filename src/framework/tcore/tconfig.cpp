@@ -64,13 +64,13 @@ TConfig::TConfig() : QObject(), k(new Private)
            TINIT;
     #endif
 	
-#ifdef Q_WS_X11
-    k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
-#elif defined(Q_WS_WIN)
-    k->configDirectory.setPath(QDir::homePath() + "/" + QCoreApplication::applicationName());
-#elif defined(Q_WS_MAC)
-    k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
-#endif
+    #ifdef Q_WS_X11
+           k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
+    #elif defined(Q_WS_WIN)
+                  k->configDirectory.setPath(QDir::homePath() + "/" + QCoreApplication::applicationName());
+    #elif defined(Q_WS_MAC)
+                  k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
+    #endif
 
     if (!k->configDirectory.exists()) {
         k->firstTime = true;
@@ -118,7 +118,7 @@ void TConfig::init()
         k->isOk = k->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
 
         if (!k->isOk)
-            tDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
+            tDebug() << QObject::tr("TConfig::init(): Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
 
         config.close();
    }

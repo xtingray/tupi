@@ -232,7 +232,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
 {
     m_isNetworkProject = true;
     projectName = title;
-    setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic") + " " + tr("[ %1 | net mode ]").arg(netUser));
+    setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + tr("[ by %1 | net mode ]").arg(netUser));
 
     if (m_viewChat) {
         removeToolView(m_viewChat);
@@ -628,6 +628,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
+        author = params->author();
     }
 }
 
@@ -648,7 +649,8 @@ void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
         projectName = params->projectName();
-        setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic"));
+        author = params->author();
+        setWindowTitle(tr("Tupi: 2D Magic") +  " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
 }
 
@@ -749,7 +751,7 @@ void KTMainWindow::openProject(const QString &path)
 
             m_exposureSheet->updateFramesState(m_projectManager->project());
 
-            setWindowTitle(projectName + " - " + tr("Tupi: Magia 2D"));
+            setWindowTitle(tr("Tupi: Magia 2D") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
             viewNewDocument();
 
             // Showing a info message in a bubble
@@ -1050,7 +1052,7 @@ void KTMainWindow::saveAs()
     if (m_isNetworkProject) {
         m_isNetworkProject = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
-        setWindowTitle(projectName + " - " + tr("Tupi: 2D Magic"));
+        setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
 
     save();
@@ -1086,7 +1088,7 @@ void KTMainWindow::saveProject()
             int indexDot = name.lastIndexOf(".");
             name = name.left(indexDot);
 
-            setWindowTitle(name + " - " + tr("Tupi: 2D Magic"));
+            setWindowTitle(tr("Tupi: 2D Magic") +  " - " + name + " [ " + tr("by") +  " " +  author + " ]");
         } else {
             TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
         }

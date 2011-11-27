@@ -56,6 +56,7 @@ class K_CORE_EXPORT TApplicationProperties
         void setThemeDir(const QString &path);
         void setPluginDir(const QString &path);
         void setCacheDir(const QString &path);
+        void setRepositoryDir(const QString &path);
         void setVersion(const QString &path);
         void setCodeName(const QString &path);
         void setRevision(const QString &path);
@@ -67,6 +68,7 @@ class K_CORE_EXPORT TApplicationProperties
         virtual QString pluginDir() const;
         virtual QString configDir() const;
         virtual QString cacheDir() const;
+        virtual QString repositoryDir() const;
         virtual QString version() const;
         virtual QString codeName() const;
         virtual QString revision() const;

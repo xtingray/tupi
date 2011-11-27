@@ -270,6 +270,7 @@ class KTMainWindow : public KTabbedMainWindow
           KTProject::Mode contextMode;
           KTMainWindow::RequestType requestType; 
           QString projectName;
+          QString author;
           QString netUser;
 
     signals:
