@@ -99,7 +99,7 @@
 <context>
     <name>ContourSelection</name>
     <message>
-        <source>Contour Selection</source>
+        <source>Line Selection</source>
         <translation>Selección de Contorno</translation>
     </message>
     <message>
@@ -1687,7 +1687,7 @@
         <translation>Lapiz</translation>
     </message>
     <message>
-        <source>Contour Selection</source>
+        <source>Line Selection</source>
         <translation>Selección de Contorno</translation>
     </message>
     <message>

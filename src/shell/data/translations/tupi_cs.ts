@@ -90,7 +90,7 @@
 <context>
     <name>ContourSelection</name>
     <message>
-        <source>Contour Selection</source>
+        <source>Line Selection</source>
         <translation>Výběr obrysu</translation>
     </message>
     <message>

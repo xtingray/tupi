@@ -117,7 +117,7 @@
     <message>
         <location filename="../src/plugins/tools/contourselectiontool/contourselection.cpp" line="100"/>
         <location filename="../src/plugins/tools/contourselectiontool/contourselection.cpp" line="286"/>
-        <source>Contour Selection</source>
+        <source>Line Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

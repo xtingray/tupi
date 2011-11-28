@@ -96,7 +96,7 @@
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="96"/>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="271"/>
-        <source>Contour Selection</source>
+        <source>Line Selection</source>
         <translation type="unfinished">Selezione contorno</translation>
     </message>
     <message>

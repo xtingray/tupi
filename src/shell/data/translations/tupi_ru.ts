@@ -74,7 +74,7 @@
 <context>
     <name>ContourSelection</name>
     <message>
-        <source>Contour Selection</source>
+        <source>Line Selection</source>
         <translation>Выделение Контуров</translation>
     </message>
     <message>

@@ -157,7 +157,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    if (k->currentTool.compare(tr("Contour Selection")) == 0) {
+    if (k->currentTool.compare(tr("Line Selection")) == 0) {
         // If a node is the target... abort!
         if (event->buttons() == Qt::RightButton) {
             if (qgraphicsitem_cast<KControlNode *>(scene()->itemAt(mapToScene(event->pos()))))
@@ -590,7 +590,7 @@ void KTPaintArea::deleteItems()
            T_FUNCINFOX("paintarea");
     #endif
 
-    if (k->currentTool.compare(tr("Object Selection")) != 0 && k->currentTool.compare(tr("Contour Selection")) != 0)
+    if (k->currentTool.compare(tr("Object Selection")) != 0 && k->currentTool.compare(tr("Line Selection")) != 0)
         return;
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();
@@ -990,7 +990,7 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
 
     /* SQA: This code has been deprecated 
     if (k->currentTool.compare(tr("Object Selection")) == 0 
-        || k->currentTool.compare(tr("Contour Selection")) == 0
+        || k->currentTool.compare(tr("Line Selection")) == 0
         || k->currentTool.compare(tr("Rectangle")) == 0
         || k->currentTool.compare(tr("Ellipse")) == 0) {
         KTPaintAreaBase::keyPressEvent(event);
