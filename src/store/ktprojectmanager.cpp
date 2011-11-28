@@ -365,7 +365,6 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
     #endif
 
     if (request->isValid()) {
-        tFatal() << "KTProjectManager::createCommand() - Tracing a command!";
         KTProjectCommand *command = new KTProjectCommand(k->commandExecutor, request);
 
         if (addToStack)

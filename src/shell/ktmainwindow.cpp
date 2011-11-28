@@ -1176,30 +1176,30 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-    tFatal() << "KTMainWindow::createCommand() - Just tracing!";
+    // tFatal() << "KTMainWindow::createCommand() - Just tracing!";
 
     if (!drawingTab) {
-        tFatal() << "KTMainWindow::createCommand() - No drawingTab... Aborting!";
+        // tFatal() << "KTMainWindow::createCommand() - No drawingTab... Aborting!";
         return;
     }
 
     KTPaintAreaCommand *command = drawingTab->createCommand(event);
 
     if (command) { 
-        tFatal() << "KTMainWindow::createCommand() - Paint command is valid!";
+        // tFatal() << "KTMainWindow::createCommand() - Paint command is valid!";
         m_projectManager->undoHistory()->push(command);
 
         // if (event->action() == 2) {
         if (event->action() == KTPaintAreaEvent::ChangeColorPen) {
-            tFatal() << "KTMainWindow::createCommand() - event action == ChangeColorPen";
+            // tFatal() << "KTMainWindow::createCommand() - event action == ChangeColorPen";
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
         } else if (event->action() == KTPaintAreaEvent::ChangeBrush) {
-                   tFatal() << "KTMainWindow::createCommand() - event action == ChangeBrush";
-                   tFatal() << "KTMainWindow::createCommand() - action: " << event->action();
+                   // tFatal() << "KTMainWindow::createCommand() - event action == ChangeBrush";
+                   // tFatal() << "KTMainWindow::createCommand() - action: " << event->action();
                    // m_penWidget->setBrush(qvariant_cast<QBrush>(event->data()));
         }
     } else {
-        tFatal() << "KTMainWindow::createCommand() - Paint command is NULL!";
+        // tFatal() << "KTMainWindow::createCommand() - Paint command is NULL!";
     }
 }
 

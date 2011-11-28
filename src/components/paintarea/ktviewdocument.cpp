@@ -820,15 +820,13 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
         }
     } else {
         #ifdef K_DEBUG
-               tError() << "KTViewDocument::selectToolFromMenu() - Error: Action with NO parent! Aborting...";
+               tFatal() << "KTViewDocument::selectToolFromMenu() - Error: Action with NO parent! Aborting...";
         #endif
     } 
 }
 
 bool KTViewDocument::handleProjectResponse(KTProjectResponse *event)
 {
-    tError() << "KTViewDocument::handleProjectResponse() - FLAG 1";
-
     return k->paintArea->handleResponse(event);
 }
 

@@ -130,7 +130,6 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
     #endif
 
     if (request->isValid()) {
-        tFatal() << "KTLocalProjectManagerHandler::handleProjectRequest() - sending command to execution!";
         emit sendCommand(request, true);
         //emit sendCommand(request, isUndoCommand(request->xml()));
     } else {
