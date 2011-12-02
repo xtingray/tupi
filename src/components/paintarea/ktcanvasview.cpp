@@ -36,11 +36,14 @@
 #include "ktcanvasview.h"
 #include "tdebug.h"
 
+#include <QTimer>
+
 struct KTCanvasView::Private
 {
     QSize screenSize;
     QSize projectSize;
     QColor bg;
+    QTimer *timer;
 };
 
 KTCanvasView::KTCanvasView(QWidget *parent, const QSize &screenSize, 
@@ -49,6 +52,11 @@ KTCanvasView::KTCanvasView(QWidget *parent, const QSize &screenSize,
     k->screenSize = screenSize;
     k->projectSize = projectSize;
     k->bg = bg;
+
+    k->timer = new QTimer(this);
+    int saveTime = 1*15000;
+    connect(k->timer, SIGNAL(timeout()), this, SLOT(updateCanvas()));
+    k->timer->start(saveTime);
 }
 
 KTCanvasView::~KTCanvasView()
@@ -78,3 +86,12 @@ void KTCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
     painter->restore();
 }
 
+void KTCanvasView::updateCanvas()
+{
+    this->scene()->update(); 
+}
+
+void KTCanvasView::stopUpdateTimer()
+{
+    k->timer->stop();
+}

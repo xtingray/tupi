@@ -43,6 +43,7 @@
 // #include <QDialog>
 #include <QPointF>
 #include <QSize>
+#include <QCloseEvent>
 
 class KTGraphicsScene;
 
@@ -59,6 +60,9 @@ class KTCanvas : public QFrame
                  int angle=0, const QColor &bg = QColor(Qt::white));
         ~KTCanvas();
         void updateCursor(const QCursor &cursor);
+
+   protected:
+        void closeEvent(QCloseEvent *event);
 
     private:
         KTCanvasView *graphicsView;

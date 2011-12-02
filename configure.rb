@@ -98,8 +98,8 @@ _EOH_
     # config.addIncludePath(RQonf::CONFIG["includepath"])
     
     config.addDefine('VERSION=\\\\\"0.1\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Paola\\\\\"')
-    config.addDefine('REVISION=\\\\\"git11\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Gemo\\\\\"')
+    config.addDefine('REVISION=\\\\\"git12\\\\\"')
 
     Info.info << "Debug support... "
 

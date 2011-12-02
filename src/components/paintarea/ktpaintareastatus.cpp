@@ -73,6 +73,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     setSizeGripEnabled(false);
     k->viewDocument = parent;
     k->scaleFactor = 100;
+    k->currentFrame = 1;
 
     QWidget *frameContainer = new QWidget;
     frameContainer->setFixedWidth(70);
@@ -87,7 +88,6 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     k->frameField = new QLineEdit(frameContainer);
     k->frameField->setFixedWidth(40);
     k->frameField->setAlignment(Qt::AlignRight);
-    k->frameField->setValidator(new QIntValidator(1, 999, this));
     k->frameField->setText(tr("1"));
     connect(k->frameField, SIGNAL(editingFinished()), this, SLOT(updateFramePointer()));
 
@@ -262,18 +262,33 @@ void KTPaintAreaStatus::updateFrameIndex(int index)
 void KTPaintAreaStatus::updateFramePointer()
 {
     QString text = k->frameField->text();
-    int index = text.toInt(); 
-    
-    if (k->currentFrame != index) {
-        if (index <= k->viewDocument->currentFramesTotal()) {
-            k->currentFrame = index;
-            index--;
-            if (index >= 0) {
-                emit newFramePointer(index);
-                tFatal() << "KTPaintAreaStatus::updateFramePointer() - Index: " << index;
-            }
-        } else {
+
+    if (text.length() == 0) {
+        k->frameField->setText(QString::number(k->currentFrame));
+        return;
+    }
+
+    bool ok = false;
+    int index = text.toInt(&ok); 
+   
+    if (ok) {
+
+        if (index < 1 || index > 999) {
             k->frameField->setText(QString::number(k->currentFrame));
+            return;
         }
+
+        if (k->currentFrame != index) {
+            if (index <= k->viewDocument->currentFramesTotal()) {
+                k->currentFrame = index;
+                index--;
+                if (index >= 0)
+                    emit newFramePointer(index);
+            } else {
+                k->frameField->setText(QString::number(k->currentFrame));
+            }
+        }
+    } else {
+        k->frameField->setText(QString::number(k->currentFrame));
     }
 }

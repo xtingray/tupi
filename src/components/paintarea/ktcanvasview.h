@@ -48,9 +48,13 @@ class KTCanvasView : public QGraphicsView
         KTCanvasView(QWidget *parent=0, const QSize &screenSize = QSize(0, 0), 
                      const QSize &projectSize = QSize(0, 0), const QColor &bg = QColor(Qt::white));
         ~KTCanvasView();
+        void stopUpdateTimer();
 
     protected:
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
+
+    private slots:
+        void updateCanvas();
 
     private:
         struct Private;

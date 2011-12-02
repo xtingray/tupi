@@ -79,3 +79,9 @@ void KTCanvas::updateCursor(const QCursor &cursor)
 {
     graphicsView->viewport()->setCursor(cursor);
 }
+
+void KTCanvas::closeEvent(QCloseEvent *event)
+{
+    graphicsView->stopUpdateTimer();
+    event->accept();
+}
