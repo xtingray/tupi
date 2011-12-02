@@ -188,7 +188,7 @@ void KTProjectActionBar::setup(Actions actions)
         }
         
         button->setToolTip(tr("Move frame up"));
-        button->setShortcut(QKeySequence(tr("F9")));
+        button->setShortcut(QKeySequence(tr("F8")));
 
         k->actions.addButton(button, MoveFrameUp);
         
@@ -207,7 +207,7 @@ void KTProjectActionBar::setup(Actions actions)
         }
  
         button->setToolTip(tr("Move frame down"));
-        button->setShortcut(QKeySequence(tr("F10")));
+        button->setShortcut(QKeySequence(tr("F9")));
         
         k->actions.addButton(button, MoveFrameDown);
         
@@ -218,7 +218,7 @@ void KTProjectActionBar::setup(Actions actions)
     if (actions & LockFrame) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/padlock.png"), size);
         button->setToolTip(tr("Lock frame"));
-        button->setShortcut(QKeySequence(tr("F11")));
+        button->setShortcut(QKeySequence(tr("F10")));
         
         k->actions.addButton(button, LockFrame);
         

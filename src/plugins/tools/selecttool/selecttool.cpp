@@ -425,7 +425,7 @@ void SelectTool::saveConfig()
 
 void SelectTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape) {
+    if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
     } else if (event->modifiers() == Qt::AltModifier) {
                if (event->key() == Qt::Key_R) {

@@ -47,9 +47,10 @@ struct KNodeGroup::Private
     QPointF pos;
     QHash<int, QPointF> changedNodes;
     QGraphicsScene *scene;
+    GroupType type;
 };
 
-KNodeGroup::KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): k(new Private)
+KNodeGroup::KNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type): k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -57,12 +58,13 @@ KNodeGroup::KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): k(new Pri
 
     k->parentItem = parent;
     k->scene = scene;
+    k->type = type;
     
     if (QGraphicsPathItem *pathItem = qgraphicsitem_cast<QGraphicsPathItem *>(parent))
         createNodes(pathItem);
 }
 
-QGraphicsItem * KNodeGroup::parentItem()
+QGraphicsItem *KNodeGroup::parentItem()
 {
     return k->parentItem;
 }
@@ -91,6 +93,10 @@ void KNodeGroup::clear()
 
 void KNodeGroup::syncNodes(const QPainterPath &path)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->nodes.isEmpty())
         return;
 
@@ -104,6 +110,10 @@ void KNodeGroup::syncNodes(const QPainterPath &path)
 
 void KNodeGroup::syncNodesFromParent()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->parentItem) {
         if (qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem))
             syncNodes(k->parentItem->sceneMatrix().map(qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path()));
@@ -125,6 +135,10 @@ void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 
 void KNodeGroup::moveElementTo(int index, const QPointF& pos)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
     path.setElementPositionAt(index, pos.x(), pos.y());
     QPainterPath::Element e = path.elementAt(0);
@@ -189,6 +203,10 @@ int KNodeGroup::removeSelectedNodes()
 
 void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (pathItem) {
 
         qDeleteAll(k->nodes);
@@ -197,6 +215,10 @@ void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
         QPainterPath path = pathItem->sceneMatrix().map(pathItem->path());
         saveParentProperties();
         int index = 0;
+
+        int level = k->scene->items().count();
+        if (k->type != PositionTween && k->type != CompoundTween)
+            level += pathItem->zValue();
         
         while (index < path.elementCount()) {
                QPainterPath::Element e = path.elementAt(index);
@@ -205,7 +227,7 @@ void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
                    if (index - 2 < 0) 
                        continue;
                    if (path.elementAt(index-2).type == QPainterPath::CurveToElement) {
-                       KControlNode *node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                       KControlNode *node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene, level);
                        QPainterPath::Element e1 = path.elementAt(index-1);
                        node->setLeft(new KControlNode(index-1, this, e1, pathItem, k->scene));
                     

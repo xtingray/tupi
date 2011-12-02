@@ -159,7 +159,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                                                       KTLibraryObject::Item, KTProjectRequest::Convert, 2);
                              emit requested(&event);
                          } else {
-                             k->nodeGroups << new KNodeGroup(item, scene);
+                             k->nodeGroups << new KNodeGroup(item, scene, KNodeGroup::LineSelection);
                          }
                      }
             }
@@ -243,7 +243,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
             case KTProjectRequest::Convert:
             {
                  if (item && scene) {
-                     KNodeGroup *node = new KNodeGroup(item, k->scene);
+                     KNodeGroup *node = new KNodeGroup(item, k->scene, KNodeGroup::LineSelection);
                      k->nodeGroups << node;
                  }
             }
@@ -307,7 +307,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
     }
     */
 
-    if (event->key() == Qt::Key_Escape) {
+    if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
     } else {
         QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());

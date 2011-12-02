@@ -301,8 +301,6 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 
     KTScene *scene = m_project->scene(scenePos);
 
-    tFatal() << "KTCommandExecutor::selectFrame() - Total scenes: " << m_project->scenesTotal();
-
     if (!scene || scenePos < 0 || position < 0)
         return false;
     

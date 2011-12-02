@@ -141,78 +141,78 @@ QCursor KTToolPlugin::cursor() const
 
 QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
-    KTToolPlugin::MenuIndex menu = KTToolPlugin::Brushes;
-    int tool = KTToolPlugin::Pencil;
+    KTToolPlugin::MenuIndex menu = KTToolPlugin::BrushesMenu;
+    int tool = KTToolPlugin::PencilTool;
 
     switch (key) {
             case Qt::Key_P:
-                 tool = KTToolPlugin::Pencil;
+                 tool = KTToolPlugin::PencilTool;
             break;
 
             case Qt::Key_M:
-                 tool = KTToolPlugin::Scheme;
+                 tool = KTToolPlugin::SchemeTool;
             break;
 
             /* SQA: Temporarily disabled
             case Qt::Key_K:
-                 tool = KTToolPlugin::Ink;
+                 tool = KTToolPlugin::InkTool;
             break;
 
             case Qt::Key_E:
-                 tool = KTToolPlugin::Eraser;
+                 tool = KTToolPlugin::EraserTool;
             break;
             */
 
             case Qt::Key_S:
-                 tool = KTToolPlugin::PolyLine;
+                 tool = KTToolPlugin::PolyLineTool;
             break;
 
             case Qt::Key_L:
-                 tool = KTToolPlugin::Line;
+                 tool = KTToolPlugin::LineTool;
             break;
 
             case Qt::Key_R:
-                 tool = KTToolPlugin::Rectangle;
+                 tool = KTToolPlugin::RectangleTool;
             break;
 
             case Qt::Key_C:
-                 tool = KTToolPlugin::Ellipse;
+                 tool = KTToolPlugin::EllipseTool;
             break;
 
             /* SQA: Temporarily disabled
             case Qt::Key_T:
-                 tool = KTToolPlugin::Text;
+                 tool = KTToolPlugin::TextTool;
             break;
             */
 
             case Qt::Key_O:
-                 menu = KTToolPlugin::Selection;
-                 tool = KTToolPlugin::Objects;
+                 menu = KTToolPlugin::SelectionMenu;
+                 tool = KTToolPlugin::ObjectsTool;
             break;
 
             case Qt::Key_N:
-                 menu = KTToolPlugin::Selection;
-                 tool = KTToolPlugin::Nodes;
+                 menu = KTToolPlugin::SelectionMenu;
+                 tool = KTToolPlugin::NodesTool;
             break;
 
             case Qt::Key_I:
-                 menu = KTToolPlugin::Fill;
-                 tool = KTToolPlugin::Inside;
+                 menu = KTToolPlugin::FillMenu;
+                 tool = KTToolPlugin::InsideTool;
             break;
 
             case Qt::Key_B:
-                 menu = KTToolPlugin::Fill;
-                 tool = KTToolPlugin::Contour;
+                 menu = KTToolPlugin::FillMenu;
+                 tool = KTToolPlugin::ContourTool;
             break;
 
             case Qt::Key_Z:
-                 menu = KTToolPlugin::Zoom;
-                 tool = KTToolPlugin::View;
+                 menu = KTToolPlugin::ZoomMenu;
+                 tool = KTToolPlugin::ViewTool;
             break;
 
             case Qt::Key_H:
-                 menu = KTToolPlugin::Zoom;
-                 tool = KTToolPlugin::Hand;
+                 menu = KTToolPlugin::ZoomMenu;
+                 tool = KTToolPlugin::HandTool;
             break;
 
             case Qt::Key_Right:
@@ -229,7 +229,7 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifi
             break;
 
             case Qt::Key_Delete:
-                 menu = KTToolPlugin::Selection;
+                 menu = KTToolPlugin::SelectionMenu;
                  tool = KTToolPlugin::Delete;
             break;
 

@@ -205,7 +205,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     // k->scene = scene;
     
     if (!k->nodegroup) {
-        k->nodegroup = new KNodeGroup(k->item, scene);
+        k->nodegroup = new KNodeGroup(k->item, scene, KNodeGroup::Polyline);
         connect(k->nodegroup, SIGNAL(nodeReleased()), this, SLOT(nodeChanged()));
     } else {
         k->nodegroup->createNodes(k->item);
@@ -337,7 +337,7 @@ void PolyLine::keyPressEvent(QKeyEvent *event)
            T_FUNCINFO;
     #endif
 
-    if (event->key() == Qt::Key_Escape) {
+    if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
         tFatal() << "PolyLine::keyPressEvent(QKeyEvent *event) - Tracing Esc!";
         emit closeHugeCanvas();
     } else if (event->key() == Qt::Key_X) {

@@ -63,13 +63,13 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     int indexDot = name.lastIndexOf(".");
     name = name.left(indexDot);
 
-    QString oldDirName = CACHE_DIR + "/" + project->projectName();
+    QString oldDirName = CACHE_DIR + project->projectName();
     QDir projectDir(oldDirName);
 
     if (name.compare(project->projectName()) != 0) {
         project->setProjectName(name);
-        projectDir.setPath(CACHE_DIR + "/" + name);    
-        project->library()->updatePaths(CACHE_DIR + "/" + name);
+        projectDir.setPath(CACHE_DIR + name);    
+        project->library()->updatePaths(CACHE_DIR + name);
         if (!projectDir.exists()) {
             if (projectDir.rename(oldDirName, projectDir.path())) {
                 #ifdef K_DEBUG

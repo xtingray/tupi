@@ -390,7 +390,7 @@ void Tweener::setCreatePath()
         if (k->group) {
             k->group->createNodes(k->path);
         } else {
-            k->group = new KNodeGroup(k->path, k->scene);
+            k->group = new KNodeGroup(k->path, k->scene, KNodeGroup::CompoundTween);
             connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->createNodes(k->path);
         }

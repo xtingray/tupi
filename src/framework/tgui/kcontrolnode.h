@@ -57,7 +57,7 @@ class KControlNode : public QGraphicsItem
         enum State { Pressed = 1, Released };
         
         KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0),  
-                     QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+                     QGraphicsItem * parent = 0, QGraphicsScene * scene = 0, int level = 0);
         
         ~KControlNode();
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);

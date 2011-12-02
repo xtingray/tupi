@@ -438,7 +438,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                          object->item()->setTransformOriginPoint(tween->transformOriginPoint());
 
                          if (stepItem->has(KTTweenerStep::Position)) {
-                             tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying position...";
+                             // tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying position...";
                              QPointF point = QPoint(-adjustX, -adjustY);
                              object->setLastTweenPos(stepItem->position() + point);
                              object->item()->setPos(tween->transformOriginPoint());
@@ -449,9 +449,9 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                              object->item()->setTransformOriginPoint(rect.center());
                              double angle = stepItem->rotation();
                              object->item()->setRotation(angle);
-                             tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
+                             // tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
                          } else {
-                             tFatal() << "KTGraphicsScene::addTweeningObjects() - No rotation parameter!";
+                             // tFatal() << "KTGraphicsScene::addTweeningObjects() - No rotation parameter!";
                          }
                          
                      } else {
@@ -523,7 +523,7 @@ void KTGraphicsScene::addTweeningObjects(int photogram)
                                 if (stepItem->has(KTTweenerStep::Rotation)) {
                                     double angle = stepItem->rotation();
                                     object->item()->setRotation(angle);
-                                    tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
+                                    // tFatal() << "KTGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
                                 }
 
                                 addGraphicObject(object);
@@ -902,7 +902,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if ((k->tool->toolType() == KTToolPlugin::Brush || k->tool->toolType() == KTToolPlugin::Tweener) 
                  && event->isAccepted()) {
                 return;
-            }
+            } 
 
             // If there's no frame... the tool is disabled 
 

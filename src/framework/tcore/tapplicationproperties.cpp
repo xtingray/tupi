@@ -161,12 +161,12 @@ QString TApplicationProperties::configDir() const
 
 QString TApplicationProperties::cacheDir() const
 {
-    return k->cacheDir;
+    return k->cacheDir + "/";
 }
 
 QString TApplicationProperties::repositoryDir() const
 {
-    return k->repositoryDir;
+    return k->repositoryDir + "/";
 }
 
 QString TApplicationProperties::version() const

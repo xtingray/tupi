@@ -50,6 +50,7 @@
 struct KControlNode::Private
 {
     int index;
+    int level;
     QGraphicsItem *graphicParent;
     KControlNode *centralNode;
     KControlNode *leftNode;
@@ -60,7 +61,7 @@ struct KControlNode::Private
 };
 
 KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, 
-                           QGraphicsItem *graphicParent, QGraphicsScene *scene) : 
+                           QGraphicsItem *graphicParent, QGraphicsScene *scene, int level) : 
                            QGraphicsItem(0, scene), k(new Private)
 {
     k->index  = index;
@@ -71,6 +72,7 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     k->unchanged = true;
     k->nodeGroup = nodeGroup;
     k->scene = scene;
+    k->level = level;
     
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, true);
@@ -79,10 +81,8 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     
     setPos(pos);
 
-
-    int itemsCount = scene->items().count();
-    if (itemsCount > 0)
-        setZValue(graphicParent->zValue() + itemsCount + 1);
+    if (k->level > 0)
+        setZValue(k->level + 1);
     else
         setZValue(graphicParent->zValue() + 1);
 
@@ -265,11 +265,9 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-    */
 
     Q_UNUSED(event);
 

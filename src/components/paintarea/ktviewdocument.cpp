@@ -301,7 +301,7 @@ void KTViewDocument::setupDrawActions()
     showGrid->setCheckable(true);
 
     k->fullScreenAction = new TAction(QPixmap(THEME_DIR + "icons/full_screen.png"),
-                                    tr("Full screen"), QKeySequence(tr("Ctrl+F11")),
+                                    tr("Full screen"), QKeySequence(tr("F11")),
                                     this, SLOT(showFullScreen()), k->actionManager, "full_screen");
     k->fullScreenAction->setStatusTip(tr("Open a full screen view of canvas"));
 
@@ -588,7 +588,7 @@ void KTViewDocument::loadPlugin(int menu, int index)
                  }
             break;
 
-            case KTToolPlugin::Brushes:
+            case KTToolPlugin::BrushesMenu:
                  {
                      QList<QAction*> brushActions = k->brushesMenu->actions();
                      if (index < brushActions.size()) {
@@ -602,7 +602,7 @@ void KTViewDocument::loadPlugin(int menu, int index)
                  }
             break;
 
-            case KTToolPlugin::Selection:
+            case KTToolPlugin::SelectionMenu:
                  {
                      if (index == KTToolPlugin::Delete) {
                          k->paintArea->deleteItems();
@@ -620,7 +620,7 @@ void KTViewDocument::loadPlugin(int menu, int index)
                  }
             break;
 
-            case KTToolPlugin::Fill:
+            case KTToolPlugin::FillMenu:
                  {
                      QList<QAction*> fillActions = k->fillMenu->actions();
                      if (index < fillActions.size()) {
@@ -634,7 +634,7 @@ void KTViewDocument::loadPlugin(int menu, int index)
                  }
             break;
 
-            case KTToolPlugin::Zoom:
+            case KTToolPlugin::ZoomMenu:
                  {
                      QList<QAction*> viewActions = k->viewToolMenu->actions();
                      if (index < viewActions.size()) {

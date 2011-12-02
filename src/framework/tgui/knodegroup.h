@@ -51,18 +51,20 @@ class KNodeGroup : public QObject
     Q_OBJECT
 
     public:
-        KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene);
+        enum GroupType { Polyline, LineSelection, PositionTween, CompoundTween };
+
+        KNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type);
         ~KNodeGroup();
 
         void clear();
         
-        QGraphicsItem * parentItem();
-        void syncNodes(const QPainterPath & path);
+        QGraphicsItem *parentItem();
+        void syncNodes(const QPainterPath &path);
         void syncNodesFromParent();
         
         void setParentItem(QGraphicsItem *);
         
-        void moveElementTo(int index, const QPointF& pos);
+        void moveElementTo(int index, const QPointF &pos);
         QHash<int, QPointF > changedNodes();
         void clearChangesNodes();
         void restoreItem();

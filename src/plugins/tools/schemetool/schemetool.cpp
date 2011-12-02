@@ -770,7 +770,7 @@ void SchemeTool::smoothPath(QPainterPath &path, double smoothness, int from, int
 
 void SchemeTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape) {
+    if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
     // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
     } else {

@@ -373,12 +373,11 @@ void Tweener::setCreatePath()
         if (k->group) {
             k->group->createNodes(k->path);
         } else {
-            k->group = new KNodeGroup(k->path, k->scene);
+            k->group = new KNodeGroup(k->path, k->scene, KNodeGroup::PositionTween);
             connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->createNodes(k->path);
         }
         k->group->expandAllNodes();
-
     }
 
     k->editMode = Settings::Path;
@@ -673,6 +672,10 @@ void Tweener::applyTween()
 
 void Tweener::updatePath()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->configurator->updateSteps(k->path);
 }
 
