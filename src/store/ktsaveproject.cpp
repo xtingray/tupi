@@ -164,15 +164,15 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     }
 
     KTPackageHandler packageHandler;
-    bool ok = packageHandler.makePackage(projectDir.path(), fileName);
+    bool ok = packageHandler.makePackage(projectDir.path(), fileName, "");
 
     if (ok) {
         #ifdef K_DEBUG
-               tWarning() << "Project saved in " << fileName;
+               tWarning() << "KTSaveProject::save() - Project saved in " << fileName;
         #endif
     } else {
         #ifdef K_DEBUG
-               tError() << "Error: Project couldn't be saved in " << fileName;
+               tError() << "KTSaveProject::save() - Error: Project couldn't be saved in " << fileName;
         #endif
     }
 

@@ -53,6 +53,7 @@
 struct KTPackageHandler::Private
 {
     QString importedProjectPath;
+    QString uid;
 };
 
 KTPackageHandler::KTPackageHandler() : k(new Private)
@@ -64,8 +65,10 @@ KTPackageHandler::~KTPackageHandler()
     delete k;
 }
 
-bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
+bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath, const QString &uid)
 {
+    k->uid = uid;
+
     if (!QFile::exists(projectPath)) {
         #ifdef K_DEBUG
                tError() << "KTPackageHandler::makePackage() - Project path doesn't exist!";
@@ -82,7 +85,7 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
         #endif
         return false;
     }
-    
+
     if (! compress(&zip, projectPath)) {
         #ifdef K_DEBUG
                tError() << "KTPackageHandler::makePackage() - Error while compress project" << zip.getZipError();
@@ -107,13 +110,13 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
     QFile inFile;
     QuaZipFile outFile(zip);
     char c;
-    
+
     QFileInfoList files= QDir(path).entryInfoList();
     
     foreach (QFileInfo file, files) {
              QString filePath = path + "/" + file.fileName();
-        
-             if (file.fileName().startsWith(".")) 
+
+             if (file.fileName().startsWith("."))
                  continue;
         
              if (file.isDir()) {
@@ -153,6 +156,9 @@ QString KTPackageHandler::stripRepositoryFromPath(QString path)
 {
     path.remove(CACHE_DIR);
 
+    if (k->uid.length() > 0)
+        path.remove(k->uid);
+
     if (path[0] == QDir::separator())
         path.remove(0, 1);
 
@@ -164,7 +170,9 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
     QuaZip zip(packagePath);
     
     if (!zip.open(QuaZip::mdUnzip)) {
-        tDebug() << "Error while open package: " << zip.getZipError();
+        #ifdef K_DEBUG
+               tDebug() << "KTPackageHandler::importPackage() - Error while open package: " << zip.getZipError();
+        #endif
         return false;
     }
 

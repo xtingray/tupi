@@ -275,7 +275,7 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request, bool toS
     emit sendCommand(request, toStack);
 }
 
-void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package)
+void KTNetProjectManagerHandler::handlePackage(const QString &root, const QString &package)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("net");

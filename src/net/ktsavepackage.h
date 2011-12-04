@@ -45,12 +45,8 @@
 class KTSavePackage: public QDomDocument
 {
     public:
-        KTSavePackage(const QString & nameProject);
+        KTSavePackage();
         ~KTSavePackage();
-        void setProjectName(const QString & nameProject);
-        
-    private:
-        QDomElement m_project;
 };
 
 #endif

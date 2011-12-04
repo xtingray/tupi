@@ -232,7 +232,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
 {
     m_isNetworkProject = true;
     projectName = title;
-    setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + tr("[ by %1 | net mode ]").arg(netUser));
+    setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " " + tr("[ by %1 | net mode ]").arg(netUser));
 
     if (m_viewChat) {
         removeToolView(m_viewChat);
@@ -1096,7 +1096,7 @@ void KTMainWindow::saveProject()
         if (isSaveDialogOpen)
             isSaveDialogOpen = false;
     } else {
-        KTSavePackage package(projectName);
+        KTSavePackage package;
         netProjectManagerHandler->sendPackage(package);
     }
 }
