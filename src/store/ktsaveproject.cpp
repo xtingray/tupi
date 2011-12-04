@@ -164,7 +164,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
     }
 
     KTPackageHandler packageHandler;
-    bool ok = packageHandler.makePackage(projectDir.path(), fileName, "");
+    bool ok = packageHandler.makePackage(projectDir.path(), fileName);
 
     if (ok) {
         #ifdef K_DEBUG
