@@ -318,6 +318,7 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 
     if (parser.parse(request->xml())) {
         if (KTFrameResponse *response = static_cast<KTFrameResponse *>(parser.response())) {
+
             k->sceneIndex = response->sceneIndex();
             k->layerIndex = response->layerIndex();
             k->frameIndex = response->frameIndex();

@@ -60,7 +60,7 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-    
+
     int position = response->sceneIndex();
     QString name = response->arg().toString();
     

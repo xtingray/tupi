@@ -110,7 +110,7 @@ void KTScenesList::changeCurrentScene()
         if (name.length() == 0)
             return;
         int index = indexCurrentScene();
-        emit(changeCurrent(name, index));
+        emit changeCurrent(name, index);
     }
 }
 
@@ -134,7 +134,11 @@ int KTScenesList::moveCurrentSceneDown()
 
 int KTScenesList::indexCurrentScene()
 {
-    return indexOfTopLevelItem(currentItem());
+    int index = indexOfTopLevelItem(currentItem());
+    if (index < 0)
+        index = 0;
+
+    return index;
 }
 
 QString KTScenesList::nameCurrentScene()
