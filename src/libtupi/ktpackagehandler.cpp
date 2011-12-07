@@ -53,7 +53,6 @@
 struct KTPackageHandler::Private
 {
     QString importedProjectPath;
-    QString uid;
 };
 
 KTPackageHandler::KTPackageHandler() : k(new Private)
@@ -65,13 +64,11 @@ KTPackageHandler::~KTPackageHandler()
     delete k;
 }
 
-bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath, const QString &uid)
+bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
 {
-    k->uid = uid;
-
     if (!QFile::exists(projectPath)) {
         #ifdef K_DEBUG
-               tError() << "KTPackageHandler::makePackage() - Project path doesn't exist!";
+               tError() << "KTPackageHandler::makePackage() - Project path doesn't exist -> " << projectPath;
         #endif
         return false;
     }
@@ -155,9 +152,6 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 QString KTPackageHandler::stripRepositoryFromPath(QString path)
 {
     path.remove(CACHE_DIR);
-
-    if (k->uid.length() > 0)
-        path.remove(k->uid);
 
     if (path[0] == QDir::separator())
         path.remove(0, 1);

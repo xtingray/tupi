@@ -49,6 +49,7 @@ struct KTListProjectDialog::Private
     QTreeWidget *tree;
     KTreeWidgetSearchLine *search;
     QPushButton *accept, *cancel;
+    QList<QString> codeList;
     int index;
 };
 
@@ -102,8 +103,10 @@ KTListProjectDialog::~KTListProjectDialog()
 {
 }
 
-void KTListProjectDialog::addProject(const QString &name, const QString &author, const QString &description, const QString &date)
+void KTListProjectDialog::addProject(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date)
 {
+    k->codeList.append(filename);
+
     QTreeWidgetItem *item = new QTreeWidgetItem(k->tree);
     item->setText(0, name);
     item->setText(1, author);
@@ -116,12 +119,12 @@ void KTListProjectDialog::addProject(const QString &name, const QString &author,
     k->index++;
 }
 
-QString KTListProjectDialog::currentProject()
+QString KTListProjectDialog::projectID()
 {
-    QTreeWidgetItem *item = k->tree->currentItem();
+    int index = k->tree->currentIndex().row(); 
 
-    if (item)
-        return item->text(0);
+    if (index >= 0)
+        return k->codeList.at(index);
 
     return "";
 }

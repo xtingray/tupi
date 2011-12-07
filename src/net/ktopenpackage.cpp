@@ -36,25 +36,20 @@
 #include "ktopenpackage.h"
 
 // <project_open version="0">
-//         <project name="proyecto 1" />
+//     <project id="0-00000000000000" />
 // </project_open>
 
-KTOpenPackage::KTOpenPackage(const QString& projectName): QDomDocument()
+KTOpenPackage::KTOpenPackage(const QString &projectID): QDomDocument()
 {
     QDomElement root = createElement("project_open");
     root.setAttribute("version", "0");
     appendChild(root);
     
-    QDomElement m_project = createElement("project");
-    m_project.setAttribute("name", projectName);
-    root.appendChild(m_project);
+    QDomElement project = createElement("project");
+    project.setAttribute("id", projectID);
+    root.appendChild(project);
 }
 
 KTOpenPackage::~KTOpenPackage()
 {
-}
-
-void KTOpenPackage::setProjectName(const QString& projectName)
-{
-    m_project.setAttribute("name", projectName);
 }

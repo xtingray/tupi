@@ -45,12 +45,8 @@
 class KTOpenPackage: public QDomDocument
 {
     public:
-        KTOpenPackage(const QString & nameProject);
+        KTOpenPackage(const QString &projectID);
         ~KTOpenPackage();
-        void setProjectName(const QString & nameProject);
-        
-    private:
-        QDomElement m_project;
 };
 
 #endif

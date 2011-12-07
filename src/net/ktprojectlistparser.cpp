@@ -53,6 +53,7 @@ bool KTProjectListParser::startTag(const QString &tag, const QXmlAttributes &att
     if (root() == "server_projectlist") {
         if (tag == "project") {
             ProjectInfo info;
+            info.file = atts.value("filename");
             info.name = atts.value("name");
             info.author = atts.value("author");
             info.description = atts.value("description");

@@ -51,6 +51,7 @@ class KTProjectListParser : public KTXmlParserBase
             QString author;
             QString description;
             QString date;
+            QString file;
         };
         
         KTProjectListParser();

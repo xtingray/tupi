@@ -52,7 +52,7 @@ class TUPI_EXPORT KTPackageHandler
         KTPackageHandler();
         ~KTPackageHandler();
         
-        bool makePackage(const QString &projectPath, const QString &packagePath, const QString &uid = QString());
+        bool makePackage(const QString &projectPath, const QString &packagePath);
         bool importPackage(const QString &packagePath);
         
         QString importedProjectPath() const;

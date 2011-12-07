@@ -192,18 +192,20 @@ bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject 
     Q_UNUSED(fileName);
     Q_UNUSED(project);
 
+    /*
     if (k->socket->state() != QAbstractSocket::ConnectedState)
         return false;
     
     return loadProjectFromServer(k->params->projectName());
-}
-
-bool KTNetProjectManagerHandler::loadProjectFromServer(const QString &name)
-{
-    KTOpenPackage package(name);
-    k->socket->send(package);
+    */
 
     return true;
+}
+
+void KTNetProjectManagerHandler::loadProjectFromServer(const QString &projectID)
+{
+    KTOpenPackage package(projectID);
+    k->socket->send(package);
 }
 
 void KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
@@ -366,14 +368,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                        k->dialogIsOpen = true;
 
                        foreach (KTProjectListParser::ProjectInfo info, parser.projectsInfo())
-                                k->dialog->addProject(info.name, info.author, info.description, info.date);
+                                k->dialog->addProject(info.file, info.name, info.author, info.description, info.date);
 
-                       if (k->dialog->exec() == QDialog::Accepted && !k->dialog->currentProject().isEmpty()) {
+                       if (k->dialog->exec() == QDialog::Accepted && !k->dialog->projectID().isEmpty()) {
                            #ifdef K_DEBUG
-                                  tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << k->dialog->currentProject();
+                                  tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << k->dialog->projectID();
                            #endif
                            k->dialogIsOpen = false;
-                           loadProjectFromServer(k->dialog->currentProject());
+                           loadProjectFromServer(k->dialog->projectID());
                        } else {
                            k->dialogIsOpen = false;
                            closeConnection();

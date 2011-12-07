@@ -79,7 +79,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         void connectionHasBeenLost();
 
     private:
-        bool loadProjectFromServer(const QString &name);
+        void loadProjectFromServer(const QString &projectID);
         void emitRequest(KTProjectRequest *request, bool toStack);
         void setProject(KTProject *project);
 
