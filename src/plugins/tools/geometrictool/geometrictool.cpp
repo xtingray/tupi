@@ -103,7 +103,7 @@ void GeometricTool::setupActions()
 {
     TAction *action1 = new TAction(QIcon(THEME_DIR + "icons/square.png"), tr("Rectangle"), this);
     action1->setShortcut(QKeySequence(tr("R")));
-    k->squareCursor = QCursor(THEME_DIR + "cursors/square.png");
+    k->squareCursor = QCursor(THEME_DIR + "cursors/square.png", 0, 0);
     action1->setCursor(k->squareCursor);
     
     k->actions.insert(tr("Rectangle"), action1);
@@ -117,7 +117,7 @@ void GeometricTool::setupActions()
     
     TAction *action3 = new TAction(QIcon(THEME_DIR + "icons/line.png"), tr("Line"), this);
     action3->setShortcut(QKeySequence(tr("L")));
-    k->lineCursor = QCursor(THEME_DIR + "cursors/line.png");
+    k->lineCursor = QCursor(THEME_DIR + "cursors/line.png", 0, 0);
     action3->setCursor(k->lineCursor);
 
     k->actions.insert(tr("Line"), action3);

@@ -39,6 +39,7 @@
 #include "tapplicationproperties.h"
 
 #include <QDialog>
+#include <QTreeWidget>
 
 /**
  * @author Jorge Cuadrado
@@ -51,15 +52,18 @@ class KTListProjectDialog : public QDialog
     Q_OBJECT
 
     public:
-        KTListProjectDialog(const QString &serverName);
+        KTListProjectDialog(int works, int contributions, const QString &serverName);
         ~KTListProjectDialog();
-        void addProject(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date);
+        void addWork(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date);
+        void addContribution(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date);
         QString projectID();
         
     private slots:
         void execAccept(QTreeWidgetItem *item, int index);
+        void updateSelection();
     
     private:
+        QTreeWidget *tree();
         struct Private;
         Private *const k;
 };

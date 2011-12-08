@@ -94,7 +94,7 @@ SchemeTool::SchemeTool() : k(new Private)
 {
     k->configurator = 0;
     k->item = 0;
-    k->cursor = QCursor(THEME_DIR + "cursors/contour.png");
+    k->cursor = QCursor(THEME_DIR + "cursors/contour.png", 0, 15);
 
     setupActions();
 }

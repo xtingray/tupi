@@ -51,8 +51,10 @@ KTAckParser::~KTAckParser()
 
 bool KTAckParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-    if (tag == "sign")
-        setReadText(true);
+    if (root() == "server_ack") {
+        if (tag == "sign")
+            setReadText(true);
+    }
     
     return true;
 }

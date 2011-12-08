@@ -61,8 +61,10 @@ class KTProjectListParser : public KTXmlParserBase
         virtual bool endTag(const QString &tag);
         virtual void text(const QString &text);
         
-        QList<ProjectInfo> projectsInfo();
-        int listSize();
+        QList<ProjectInfo> works();
+        QList<ProjectInfo> contributions();
+        int workSize();
+        int contributionSize();
         
     private:
         struct Private;

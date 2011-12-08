@@ -34,10 +34,13 @@
  ***************************************************************************/
 
 #include "ktprojectlistparser.h"
+#include "tdebug.h"
 
 struct KTProjectListParser::Private
 {
-    QList<KTProjectListParser::ProjectInfo> projectsInfo;
+    QList<KTProjectListParser::ProjectInfo> works;
+    QList<KTProjectListParser::ProjectInfo> contributions;
+    bool pivot; 
 };
 
 KTProjectListParser::KTProjectListParser() : KTXmlParserBase(), k( new Private())
@@ -51,14 +54,23 @@ KTProjectListParser::~KTProjectListParser()
 bool KTProjectListParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
     if (root() == "server_projectlist") {
-        if (tag == "project") {
-            ProjectInfo info;
-            info.file = atts.value("filename");
-            info.name = atts.value("name");
-            info.author = atts.value("author");
-            info.description = atts.value("description");
-            info.date = atts.value("date");
-            k->projectsInfo << info;
+ 
+        if (tag == "works") {
+            k->pivot = false;
+        } else if (tag == "contributions") {
+            k->pivot = true;
+        } else if (tag == "project") {
+                   ProjectInfo info;
+                   info.file = atts.value("filename");
+                   info.name = atts.value("name");
+                   info.author = atts.value("author");
+                   info.description = atts.value("description");
+                   info.date = atts.value("date");
+
+                   if (k->pivot)
+                       k->contributions << info;
+                   else
+                       k->works << info;
         }
     }
 
@@ -75,12 +87,22 @@ void KTProjectListParser::text(const QString &text)
     
 }
 
-QList<KTProjectListParser::ProjectInfo> KTProjectListParser::projectsInfo()
+QList<KTProjectListParser::ProjectInfo> KTProjectListParser::works()
 {
-    return k->projectsInfo;
+    return k->works;
 }
 
-int KTProjectListParser::listSize()
+QList<KTProjectListParser::ProjectInfo> KTProjectListParser::contributions()
 {
-    return k->projectsInfo.count();
+    return k->contributions;
+}
+
+int KTProjectListParser::workSize()
+{
+    return k->works.count();
+}
+
+int KTProjectListParser::contributionSize()
+{
+    return k->contributions.count();
 }

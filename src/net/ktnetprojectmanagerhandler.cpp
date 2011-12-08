@@ -359,16 +359,21 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
     } else if (root == "server_projectlist") {
                KTProjectListParser parser;
                if (parser.parse(package)) {
-                   if (parser.listSize() > 0) {
-                       k->dialog = new KTListProjectDialog(k->params->server());
+                   int works = parser.workSize();
+                   int contributions = parser.contributionSize();
+                   if ((works + contributions) > 0) {
+                       k->dialog = new KTListProjectDialog(works, contributions, k->params->server());
                        QDesktopWidget desktop;
                        k->dialog->show();
                        k->dialog->move((int) (desktop.screenGeometry().width() - k->dialog->width())/2,
                                        (int) (desktop.screenGeometry().height() - k->dialog->height())/2);
                        k->dialogIsOpen = true;
 
-                       foreach (KTProjectListParser::ProjectInfo info, parser.projectsInfo())
-                                k->dialog->addProject(info.file, info.name, info.author, info.description, info.date);
+                       foreach (KTProjectListParser::ProjectInfo info, parser.works())
+                                k->dialog->addWork(info.file, info.name, info.author, info.description, info.date);
+
+                       foreach (KTProjectListParser::ProjectInfo info, parser.contributions())
+                                k->dialog->addContribution(info.file, info.name, info.author, info.description, info.date);
 
                        if (k->dialog->exec() == QDialog::Accepted && !k->dialog->projectID().isEmpty()) {
                            #ifdef K_DEBUG
@@ -377,6 +382,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                            k->dialogIsOpen = false;
                            loadProjectFromServer(k->dialog->projectID());
                        } else {
+                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - k->dialog->projectID(): " << k->dialog->projectID();
                            k->dialogIsOpen = false;
                            closeConnection();
                        }

@@ -36,24 +36,28 @@
 #include "ktlistprojectdialog.h"
 #include "ktreelistwidget.h"
 #include "ktreewidgetsearchline.h"
+#include "tdebug.h"
 
 #include <QToolButton>
-#include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
+#include <QLabel>
 
 struct KTListProjectDialog::Private
 {
-    QTreeWidget *tree;
+    QTreeWidget *works;
+    QTreeWidget *contributions;
     KTreeWidgetSearchLine *search;
     QPushButton *accept, *cancel;
-    QList<QString> codeList;
+    QList<QString> workList;
+    QList<QString> contribList;
     int index;
+    QString filename;
 };
 
-KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(), k(new Private)
+KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QString &serverName) : QDialog(), k(new Private)
 {
     setWindowTitle(tr("Projects List from Server") + " - [ " + serverName  + " ]");
     setModal(true);
@@ -61,32 +65,41 @@ KTListProjectDialog::KTListProjectDialog(const QString &serverName) : QDialog(),
     setLayout(layout);
     QHBoxLayout *search = new QHBoxLayout;
 
-    k->tree = new QTreeWidget;
-    k->tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description") << tr("Date"));
-    k->tree->header()->show();
+    if (works > 0) {
+        k->works = tree();
+        connect(k->works, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateSelection()));
+        connect(k->works, SIGNAL(itemSelectionChanged()), this, SLOT(updateSelection()));
+        connect(k->works, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem *, int)));
 
-    k->tree->setColumnWidth(0, 150);
-    k->tree->setColumnWidth(1, 100);
-    k->tree->setColumnWidth(2, 200);
-    k->tree->setColumnWidth(3, 55);
+        k->search = new KTreeWidgetSearchLine(this, k->works);
+        search->addWidget(k->search);
+        QToolButton *button = new QToolButton;
+        button->setIcon(QIcon(THEME_DIR + "icons/zoom.png"));
+        search->addWidget(button);
+        connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
 
-    k->search = new KTreeWidgetSearchLine(this, k->tree);
-    search->addWidget(k->search);
+        QLabel *worksLabel = new QLabel(tr("My works:"));
 
-    QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR + "icons/zoom.png"));
+        layout->addLayout(search);
+        layout->addWidget(worksLabel);
+        layout->addWidget(k->works);
+    }
 
-    search->addWidget(button);
-    connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
-    
-    connect(k->tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem * , int)));
-    
-    layout->addLayout(search);
-    layout->addWidget(k->tree);
+    if (contributions > 0) {
+        k->contributions = tree();
+        connect(k->contributions, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateSelection()));
+        connect(k->contributions, SIGNAL(itemSelectionChanged()), this, SLOT(updateSelection()));
+        connect(k->contributions, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem *, int)));
+        QLabel *contribLabel = new QLabel(tr("My contributions:"));
+
+        layout->addWidget(contribLabel);
+        layout->addWidget(k->contributions);
+    }
     
     //----
     QHBoxLayout *buttons = new QHBoxLayout;
     k->accept = new QPushButton(tr("OK"));
+    k->accept->setDefault(true);
     k->cancel = new QPushButton("Cancel");
     connect(k->accept, SIGNAL(clicked ()), this, SLOT(accept()));
     connect(k->cancel, SIGNAL(clicked()), this, SLOT(reject()));
@@ -103,34 +116,74 @@ KTListProjectDialog::~KTListProjectDialog()
 {
 }
 
-void KTListProjectDialog::addProject(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date)
+QTreeWidget *KTListProjectDialog::tree()
 {
-    k->codeList.append(filename);
+    QTreeWidget *tree = new QTreeWidget;
+    tree->setFixedHeight(120);
+    tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description") << tr("Date"));
+    tree->header()->show();
 
-    QTreeWidgetItem *item = new QTreeWidgetItem(k->tree);
+    tree->setColumnWidth(0, 150);
+    tree->setColumnWidth(1, 100);
+    tree->setColumnWidth(2, 200);
+    tree->setColumnWidth(3, 55);
+
+    return tree;
+}
+
+void KTListProjectDialog::addWork(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date)
+{
+    k->workList.append(filename);
+
+    QTreeWidgetItem *item = new QTreeWidgetItem(k->works);
     item->setText(0, name);
     item->setText(1, author);
     item->setText(2, description);
     item->setText(3, date);
 
-    if (k->index == 0)
-        k->tree->setCurrentItem(item);
+    if (k->index == 0) {
+        k->works->setCurrentItem(item);
+        k->filename = filename;
+    }
 
     k->index++;
 }
 
+void KTListProjectDialog::addContribution(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date)
+{
+    k->contribList.append(filename);
+
+    QTreeWidgetItem *item = new QTreeWidgetItem(k->contributions);
+    item->setText(0, name);
+    item->setText(1, author);
+    item->setText(2, description);
+    item->setText(3, date);
+}
+
 QString KTListProjectDialog::projectID()
 {
-    int index = k->tree->currentIndex().row(); 
-
-    if (index >= 0)
-        return k->codeList.at(index);
-
-    return "";
+    return k->filename;
 }
 
 void KTListProjectDialog::execAccept(QTreeWidgetItem *item, int index)
 {
+    Q_UNUSED(item);
+
     if (index >= 0)
         accept();
+}
+
+void KTListProjectDialog::updateSelection()
+{
+    if (k->works->hasFocus()) {
+        k->contributions->clearSelection();
+        int index = k->works->currentIndex().row(); 
+        k->filename = k->workList.at(index);
+    }
+
+    if (k->contributions->hasFocus()) {
+        k->works->clearSelection();
+        int index = k->contributions->currentIndex().row();
+        k->filename = k->contribList.at(index);
+    }
 }
