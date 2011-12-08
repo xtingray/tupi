@@ -2348,7 +2348,7 @@
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="611"/>
-        <source>Preview Frames</source>
+        <source>Previous Frames</source>
         <translation type="unfinished">Preview Fotogrammi</translation>
     </message>
     <message>

@@ -2048,7 +2048,7 @@
         <translation>Действия в области рисования</translation>
     </message>
     <message>
-        <source>Preview Frames</source>
+        <source>Previous Frames</source>
         <translation>Предыдущие кадры</translation>
     </message>
     <message>

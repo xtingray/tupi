@@ -2474,7 +2474,7 @@
         <translation>Paint area actions</translation>
     </message>
     <message>
-        <source>Preview Frames</source>
+        <source>Previous Frames</source>
         <translation>Marcos previos</translation>
     </message>
     <message>

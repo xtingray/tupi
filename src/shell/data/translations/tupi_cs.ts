@@ -2444,7 +2444,7 @@
         <translation>Činnosti pro oblast malování</translation>
     </message>
     <message>
-        <source>Preview Frames</source>
+        <source>Previous Frames</source>
         <translation>Předchozí snímky</translation>
     </message>
     <message>

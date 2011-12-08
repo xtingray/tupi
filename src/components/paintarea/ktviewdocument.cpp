@@ -884,11 +884,11 @@ void KTViewDocument::createToolBar()
     k->barGrid->addSeparator();
 
     TCONFIG->beginGroup("OnionParameters");
-    int preview = TCONFIG->value("PreviewFrames", -1).toInt();
+    int preview = TCONFIG->value("PreviousFrames", -1).toInt();
     int next = TCONFIG->value("NextFrames", -1).toInt();
 
     k->prevOnionSkinSpin = new QSpinBox(this);
-    k->prevOnionSkinSpin->setToolTip(tr("Preview Frames"));
+    k->prevOnionSkinSpin->setToolTip(tr("Previous Frames"));
     connect(k->prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
 
     if (preview > 0)
@@ -961,7 +961,7 @@ void KTViewDocument::setCursor(const QCursor &)
 void KTViewDocument::setPreviousOnionSkin(int level)
 {
     TCONFIG->beginGroup("OnionParameters");
-    TCONFIG->setValue("PreviewFrames", level);
+    TCONFIG->setValue("PreviousFrames", level);
 
     k->paintArea->setPreviousFramesOnionSkinCount(level);
 }
