@@ -1009,7 +1009,9 @@ void KTPaintArea::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    if (k->currentTool.compare(tr("Rectangle")) == 0 || k->currentTool.compare(tr("Ellipse")) == 0) {
+    if (k->currentTool.compare(tr("Rectangle")) == 0 
+        || k->currentTool.compare(tr("Ellipse")) == 0 
+        || k->currentTool.compare(tr("Line")) == 0) {
         KTPaintAreaBase::keyPressEvent(event);
         return;
     }

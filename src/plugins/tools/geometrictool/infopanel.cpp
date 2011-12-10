@@ -34,13 +34,13 @@
  ***************************************************************************/
 
 #include "infopanel.h"
-#include <QBoxLayout>
-#include <QTextEdit>
-
 #include "tglobal.h"
 #include "tdebug.h"
 
-InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
+#include <QBoxLayout>
+#include <QTextEdit>
+
+InfoPanel::InfoPanel(InfoPanel::ToolType type, QWidget *parent) : QWidget(parent)
 {
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
@@ -55,10 +55,16 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 
     // SQA: Check this code with several screen resolutions. It must looks good with everyone! 
     textArea->setFont(QFont("Arial", 8, QFont::Normal, false));
-    textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Set width/height proportional dimensions") + "</p>");
+
+    if (type == InfoPanel::Line) {
+        textArea->append("<p><b>" + tr("Mouse Double Click") + ":</b> " +  tr("Close the line path") + "</p>");
+        textArea->append("<p><b>" + tr("Shift") + ":</b> " +  tr("Align line to horizontal/vertical axis") + "</p>"); 
+    } else {
+        textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Set width/height proportional dimensions") + "</p>");
+    }
 
     QString text = textArea->document()->toPlainText();
-    int height = (text.length()*270)/230;
+    int height = 150;
 
     textArea->setFixedHeight(height);
 

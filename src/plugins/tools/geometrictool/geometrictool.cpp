@@ -39,6 +39,7 @@
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
+#include "ktpathitem.h"
 #include "ktlibraryobject.h"
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
@@ -47,6 +48,7 @@
 #include "ktprojectrequest.h"
 #include "ktbrushmanager.h"
 
+#include <cmath>
 #include <QKeySequence>
 #include <QDebug>
 #include <QImage>
@@ -58,9 +60,12 @@ struct GeometricTool::Private
     KTRectItem *rect;
     KTEllipseItem *ellipse;
     KTLineItem *line;
+    KTPathItem *path;
+    KTGraphicsScene *scene;
     InfoPanel *configurator;
     bool added;
-    QPointF firstPoint;
+    QPointF currentPoint;
+    QPointF lastPoint;
     QMap<QString, TAction *> actions;
     bool proportion;
     QGraphicsItem *item;
@@ -71,6 +76,8 @@ struct GeometricTool::Private
 
 GeometricTool::GeometricTool() : k(new Private)
 {
+    k->scene = 0;
+    k->path = 0;
     setupActions();
 }
 
@@ -85,6 +92,13 @@ QStringList GeometricTool::keys() const
 
 void GeometricTool::init(KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    k->scene = scene;
+    delete k->path;
+    k->path = 0;
     k->proportion = false;
 
     foreach (QGraphicsView * view, scene->views()) {
@@ -125,9 +139,13 @@ void GeometricTool::setupActions()
 
 void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    
+
     if (input->buttons() == Qt::LeftButton) {
         
         if (name() == tr("Rectangle")) {
@@ -136,7 +154,7 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
             k->rect->setPen(brushManager->pen());
             k->rect->setBrush(brushManager->brush());
 
-            k->firstPoint = input->pos();
+            k->currentPoint = input->pos();
 
         } else if (name() == tr("Ellipse")) {
 
@@ -145,22 +163,41 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
                    k->ellipse->setPen(brushManager->pen());
                    k->ellipse->setBrush(brushManager->brush());
 
-                   k->firstPoint = input->pos();
+                   k->currentPoint = input->pos();
 
         } else if (name() == tr("Line")) {
+                   k->currentPoint = input->pos();
 
-                   k->added = false;
-                   k->line = new KTLineItem();
-                   k->line->setLine(QLineF(input->pos().x(), input->pos().y(), input->pos().x(), input->pos().y()));
-                   k->line->setPen(brushManager->pen());
+                   if (k->path) {
+                       // QPointF point = k->path->mapFromParent(k->currentPoint);
+                       QPainterPath path = k->path->path();
+                       path.cubicTo(k->lastPoint, k->lastPoint, k->lastPoint);
+                       k->path->setPath(path);
+                   } else {
+                       k->path = new KTPathItem;
+                       k->path->setPen(brushManager->pen());
+                       k->path->setBrush(brushManager->brush());
 
-                   k->firstPoint = input->pos();
+                       QPainterPath path;
+                       path.moveTo(k->currentPoint);
+                       k->path->setPath(path);
+                       scene->includeObject(k->path);
+
+                       k->line = new KTLineItem();
+                       k->line->setPen(brushManager->pen());
+                       k->line->setLine(QLineF(input->pos().x(), input->pos().y(), input->pos().x(), input->pos().y()));
+                       scene->addItem(k->line);
+                   }
         }
-    }
+    } 
 }
 
 void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
     
@@ -176,8 +213,8 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 
         int xMouse = input->pos().x();
         int yMouse = input->pos().y();
-        int xInit = k->firstPoint.x();
-        int yInit = k->firstPoint.y();
+        int xInit = k->currentPoint.x();
+        int yInit = k->currentPoint.y();
 
         QRectF rect;
 
@@ -250,21 +287,15 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
             k->rect->setRect(rect);
         else
             k->ellipse->setRect(rect);
-
-    } else if (name() == tr("Line")) {
-
-        if (!k->added) {
-            scene->includeObject(k->line);
-            k->added = true;
-        }
-
-        QLineF line(k->firstPoint.x(), k->firstPoint.y(), input->pos().x(), input->pos().y()); 
-        k->line->setLine(line);
-    }
+    } 
 }
 
 void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
@@ -279,8 +310,12 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
                QRectF rect = k->ellipse->rect();
                position = rect.topLeft();
     } else if (name() == tr("Line")) {
-               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->line)->toXml(doc));
-               position = k->line->pos(); 
+               return;
+
+               // doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->line)->toXml(doc));
+               // position = k->line->pos();
+               doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->path)->toXml(doc));
+               position = k->path->boundingRect().topLeft(); 
     }
     
     KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
@@ -302,21 +337,35 @@ int GeometricTool::toolType() const
         
 QWidget *GeometricTool::configurator()
 {
-    if (name() == tr("Rectangle") || name() == tr("Ellipse")) {
-        k->configurator = new InfoPanel;
-        return k->configurator;
-    } else {
-        return  0;
-    }
+    InfoPanel::ToolType toolType = InfoPanel::Line;
+
+    if (name() == tr("Rectangle"))
+        toolType = InfoPanel::Rectangle;
+    else if (name() == tr("Ellipse"))
+             toolType = InfoPanel::Ellipse;
+
+    k->configurator = new InfoPanel(toolType);
+    return k->configurator;
 }
 
 void GeometricTool::aboutToChangeScene(KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(scene);
+
+    endItem();
 }
 
 void GeometricTool::aboutToChangeTool() 
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    endItem();
 }
 
 void GeometricTool::saveConfig()
@@ -326,7 +375,6 @@ void GeometricTool::saveConfig()
 void GeometricTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift) {
-        tFatal() << "GeometricTool::keyPressEvent() - Typing key shift!";
         k->proportion = true;
     } else {
         QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
@@ -355,6 +403,84 @@ QCursor GeometricTool::cursor() const
     }
 
     return 0;
+}
+
+void GeometricTool::endItem()
+{
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    if (k->path) {
+        QDomDocument doc;
+        QPointF position;
+
+        doc.appendChild(dynamic_cast<KTAbstractSerializable *>(k->path)->toXml(doc));
+        position = QPointF(0, 0);
+
+        KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                 k->scene->currentFrameIndex(), k->scene->currentFrame()->graphics().count(), position,
+                                 k->scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+
+        emit requested(&event);
+
+        k->path = 0;
+    }
+}
+
+void GeometricTool::updatePos(QPointF pos)
+{
+    if (k->path) {
+        QLineF line;
+        if (k->proportion) {
+            qreal dx = pos.x() - k->currentPoint.x();
+            qreal dy = pos.y() - k->currentPoint.y();
+            qreal m = fabs(dx/dy);
+
+            if (m > 1) {
+                line = QLineF(k->currentPoint.x(), k->currentPoint.y(), pos.x(), k->currentPoint.y());
+                k->lastPoint = QPointF(pos.x(), k->currentPoint.y());
+            } else {
+                line = QLineF(k->currentPoint.x(), k->currentPoint.y(), k->currentPoint.x(), pos.y());
+                k->lastPoint = QPointF(k->currentPoint.x(), pos.y());
+            }
+
+        } else {
+            line = QLineF(k->currentPoint, pos);
+            k->lastPoint = pos;
+        }
+        if (k->line)
+            k->line->setLine(line);
+    }
+}
+
+void GeometricTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene)
+{
+    Q_UNUSED(input);
+    Q_UNUSED(scene);
+
+    endItem();
+}
+
+void GeometricTool::sceneResponse(const KTSceneResponse *event)
+{
+    Q_UNUSED(event);
+    if (name() == tr("Line")) 
+        init(k->scene);
+}
+
+void GeometricTool::layerResponse(const KTLayerResponse *event)
+{
+    Q_UNUSED(event);
+    if (name() == tr("Line")) 
+        init(k->scene);
+}
+
+void GeometricTool::frameResponse(const KTFrameResponse *event)
+{
+    Q_UNUSED(event);
+    if (name() == tr("Line")) 
+        init(k->scene);
 }
 
 Q_EXPORT_PLUGIN2(kt_geometric, GeometricTool)

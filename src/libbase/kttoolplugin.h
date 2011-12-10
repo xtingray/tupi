@@ -93,6 +93,8 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent *event);
 
+        virtual void updatePos(QPointF pos);
+
         virtual QMenu *menu() const;
         virtual QCursor cursor() const;
         QPair<int, int> setKeyAction(int key, Qt::KeyboardModifiers modifiers);

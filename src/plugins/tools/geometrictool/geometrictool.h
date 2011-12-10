@@ -65,6 +65,11 @@ class GeometricTool : public KTToolPlugin
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent *event);
+        virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene);
+
+        virtual void sceneResponse(const KTSceneResponse *event);
+        virtual void layerResponse(const KTLayerResponse *event);
+        virtual void frameResponse(const KTFrameResponse *event);
 
         virtual QMap<QString, TAction *> actions() const;
         
@@ -75,6 +80,7 @@ class GeometricTool : public KTToolPlugin
         virtual void aboutToChangeTool();
         virtual void saveConfig();
         virtual QCursor cursor() const;
+        void updatePos(QPointF pos);
 
     signals:
         void closeHugeCanvas();
@@ -84,6 +90,7 @@ class GeometricTool : public KTToolPlugin
         void setupActions();
 
     private:
+        void endItem();
         struct Private;
         Private *const k;
 

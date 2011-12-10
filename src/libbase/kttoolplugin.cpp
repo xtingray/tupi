@@ -139,6 +139,10 @@ QCursor KTToolPlugin::cursor() const
     return 0;
 }
 
+void KTToolPlugin::updatePos(QPointF pos)
+{
+}
+
 QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
     KTToolPlugin::MenuIndex menu = KTToolPlugin::BrushesMenu;
@@ -246,5 +250,7 @@ QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifi
 
     return flags;
 }
+
+
 
 

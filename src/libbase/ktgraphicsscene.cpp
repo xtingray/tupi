@@ -899,6 +899,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // This condition locks all the tools while workspace is rotated 
     if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
         if (k->tool) {      
+
             if ((k->tool->toolType() == KTToolPlugin::Brush || k->tool->toolType() == KTToolPlugin::Tweener) 
                  && event->isAccepted()) {
                 return;
@@ -914,7 +915,8 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         k->isDrawing = true;
                         k->tool->press(k->inputInformation, k->brushManager, this);
                     } else {
-                        if (k->tool->name().compare(tr("Zoom")) || k->tool->name().compare(tr("PolyLine"))) {
+                        // if (k->tool->name().compare(tr("Zoom")) == 0 || k->tool->name().compare(tr("PolyLine")) == 0) {
+                        if (k->tool->name().compare(tr("PolyLine")) == 0) {
                             k->tool->press(k->inputInformation, k->brushManager, this);
                             return;
                         }
@@ -928,6 +930,11 @@ void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
     mouseMoved(event);
+
+    if (k->tool) {
+        if (k->tool->name().compare(tr("Line")) == 0)
+            k->tool->updatePos(event->scenePos());
+    }
 }
 
 void KTGraphicsScene::mouseMoved(QGraphicsSceneMouseEvent *event)

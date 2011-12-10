@@ -335,6 +335,18 @@
         <source>Crossed Flip</source>
         <translation>Voltear en ambos Ejes</translation>
     </message>
+    <message>
+        <source>Mouse Double Click</source>
+        <translation>Doble Clic</translation>
+    </message>
+    <message>
+        <source>Close the line path</source>
+        <translation>Terminar trazo</translation>
+    </message>
+    <message>
+        <source>Align line to horizontal/vertical axis</source>
+        <translation>Alinear trayecto a eje horizontal/vertical</translation>
+    </message>
 </context>
 <context>
     <name>KCommandHistory</name>
@@ -712,6 +724,10 @@
     <message>
         <source>Zoom</source>
         <translation>Acercamiento</translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation>Línea</translation>
     </message>
 </context>
 <context>
@@ -1805,11 +1821,11 @@
     </message>
     <message>
         <source>Click here to change background color</source>
-        <translation>Haz click aquí para cambiar el color del fondo</translation>
+        <translation>Haz clic aquí para cambiar el color del fondo</translation>
     </message>
     <message>
         <source>Click here to change brush color</source>
-        <translation>Haz click aquí para cambiar el color de la brocha</translation>
+        <translation>Haz clic aquí para cambiar el color de la brocha</translation>
     </message>
 </context>
 <context>
