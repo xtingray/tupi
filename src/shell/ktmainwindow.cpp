@@ -582,16 +582,8 @@ void KTMainWindow::setupNetworkProject()
     KTConnectDialog *netDialog = new KTConnectDialog(this);
     QDesktopWidget desktop;
     netDialog->show();
-    netDialog->move((int) (desktop.screenGeometry().width() - netDialog->width())/2 ,
+    netDialog->move((int) (desktop.screenGeometry().width() - netDialog->width())/2,
                     (int) (desktop.screenGeometry().height() - netDialog->height())/2);
-
-    /*
-    if (!server.isEmpty())
-        netDialog->setServer(server);
-
-    if (port != -1)
-        netDialog->setPort(port);
-    */
 
     KTNetProjectManagerParams *params = new KTNetProjectManagerParams();
 
@@ -621,7 +613,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
         netProjectManagerHandler =  new KTNetProjectManagerHandler;
-        connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestNewProject()));
+        connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestProject()));
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
         connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
         connect(netProjectManagerHandler, SIGNAL(savingSuccessful()), this, SLOT(netProjectSaved()));
@@ -667,9 +659,6 @@ void KTMainWindow::openProject()
 {
     const char *home = getenv("HOME");
 
-    // QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home, 
-    //                   tr("Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)"));
-
     QString package = QFileDialog::getOpenFileName(this, tr("Open Tupi project"), home,
                       tr("Tupi Project Package (*.tup)"));
 
@@ -691,7 +680,7 @@ void KTMainWindow::openProject()
 void KTMainWindow::openProject(const QString &path)
 {
     #ifdef K_DEBUG
-           tWarning() << "Opening project: " << path;
+           tWarning() << "KTMainWindow::openProject() - Opening project: " << path;
     #endif
 
     if (path.isEmpty() || !path.endsWith(".tup"))
@@ -751,6 +740,10 @@ void KTMainWindow::openProject(const QString &path)
 
             m_exposureSheet->updateFramesState(m_projectManager->project());
 
+            author = m_projectManager->project()->author();
+            if (author.length() <= 0)
+                author = "Anonymous";
+
             setWindowTitle(tr("Tupi: Magia 2D") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
             viewNewDocument();
 
@@ -789,20 +782,8 @@ void KTMainWindow::openProjectFromServer()
 
 void KTMainWindow::importProjectToServer()
 {
-    /*
-    if (setupNetworkProject()) {
-        KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
-                                               (m_projectManager->handler());
-
-        if (handler->isValid()) {
-            const char *home = getenv("HOME");
-            QString file = QFileDialog::getOpenFileName(this, tr("Import project package"), 
-                                                     home, tr("Tupi Project Package (*.tup)"));
-            KTImportProjectPackage package(file);		
-            handler->sendPackage(package);
-        }
-    }
-    */
+    KTMainWindow::requestType = ImportProjectToNet;
+    setupNetworkProject();
 }
 
 /**
@@ -1316,13 +1297,34 @@ void KTMainWindow::expandColorView()
         colorView->expandDock(true);
 }
 
-void KTMainWindow::requestNewProject()
+void KTMainWindow::requestProject()
 {
     if (KTMainWindow::requestType == NewNetProject) {
         m_projectManager->setupNewProject();
-    } else {
-        KTListProjectsPackage package;
-        netProjectManagerHandler->sendPackage(package);
+    } else if (KTMainWindow::requestType == OpenNetProject) {
+               KTListProjectsPackage package;
+               netProjectManagerHandler->sendPackage(package);
+    } else if (KTMainWindow::requestType == ImportProjectToNet) {
+               const char *home = getenv("HOME");
+               QString file = QFileDialog::getOpenFileName(this, tr("Import project package"),
+                                                           home, tr("Tupi Project Package (*.tup)"));
+               if (file.length() > 0) {
+                   QFile project(file);
+                   if (project.exists()) {
+                       if (project.size() > 0) {
+                           KTImportProjectPackage package(file);
+                           netProjectManagerHandler->sendPackage(package);
+                        } else {
+                           TOsd::self()->display(tr("Error"), tr("Can't import project. File is empty!"), TOsd::Error);
+                           netProjectManagerHandler->closeProject();
+                        }
+                   } else {
+                        TOsd::self()->display(tr("Error"), tr("Can't save the project. File doesn't exist!"), TOsd::Error);
+                        netProjectManagerHandler->closeProject();
+                   }
+               } else {
+                   netProjectManagerHandler->closeProject();
+               }
     }
 }
 

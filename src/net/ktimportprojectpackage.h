@@ -36,7 +36,7 @@
 #ifndef KTIMPORTPROJECTPACKAGE_H
 #define KTIMPORTPROJECTPACKAGE_H 
 
-#include<QDomDocument>
+#include <QDomDocument>
 
 /**
  * @author Jorge Cuadrado
@@ -47,10 +47,6 @@ class KTImportProjectPackage : public QDomDocument
     public:
         KTImportProjectPackage(const QString &projectPath);
         ~KTImportProjectPackage();
-        void setProject(const QString & projectPath);
-        
-    private:
-        QDomElement m_data;
 };
 
 #endif

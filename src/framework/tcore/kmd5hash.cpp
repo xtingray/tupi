@@ -32,10 +32,11 @@
 
 #include "kmd5hash.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QByteArray>
-#include <QtCore/QBitArray>
+#include <QFile>
+#include <QByteArray>
+#include <QBitArray>
 #include <QCryptographicHash>
+#include <QTextCodec>
 
 // 512K buffer
 #define MD5_READ_BUFFER 524288

@@ -36,27 +36,22 @@
 #include "ktimportprojectpackage.h"
 #include <QFile>
 
-KTImportProjectPackage::KTImportProjectPackage(const QString & projectPath)
+KTImportProjectPackage::KTImportProjectPackage(const QString &projectPath)
 {
     QDomElement root = createElement("project_import");
     root.setAttribute("version", "0");
     appendChild(root);
-    setProject(projectPath);
+
+    QFile file(projectPath);
+    file.open(QIODevice::ReadOnly);
+    QByteArray data = file.readAll().toBase64();
+
+    QDomElement content = createElement("data");
+    content.setAttribute("file", projectPath);
+    content.appendChild(createCDATASection(data));
+    root.appendChild(content);
 }
 
 KTImportProjectPackage::~KTImportProjectPackage()
 {
-
-}
-
-void KTImportProjectPackage::setProject(const QString &projectPath)
-{
-    QFile file(projectPath);
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll().toBase64();
-    
-    removeChild(m_data);
-    m_data = createElement("data");
-    m_data.appendChild(createCDATASection(data));
-    firstChild().appendChild(m_data);
 }

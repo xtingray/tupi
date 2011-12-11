@@ -104,7 +104,8 @@ class KTMainWindow : public KTabbedMainWindow
              NewLocalProject,
              OpenLocalProject,
              NewNetProject,
-             OpenNetProject
+             OpenNetProject,
+             ImportProjectToNet
         };
 
         KTMainWindow(KTSplash *splash = 0, int parameters = 1);
@@ -193,7 +194,7 @@ class KTMainWindow : public KTabbedMainWindow
           void addPage(QWidget *widget);
           void updateCurrentTab(int index);
 
-          void requestNewProject();
+          void requestProject();
           void createNewNetProject(const QString &title);
           void netProjectSaved();
 
