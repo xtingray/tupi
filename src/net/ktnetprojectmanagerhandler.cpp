@@ -45,7 +45,7 @@
 #include "ktprojectrequest.h"
 #include "ktnewprojectpackage.h"
 #include "ktconnectpackage.h"
-#include "ktsavenetproject.h"
+#include "tupinetfilemanager.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
 #include "ktnotificationparser.h"
@@ -130,7 +130,7 @@ KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* request)
 {
     #ifdef K_DEBUG
-           T_FUNCINFOX("net");
+           T_FUNCINFO;
     #endif
 
     // This comes from the project before the command execution
@@ -139,7 +139,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
     if (k->socket->state() == QAbstractSocket::ConnectedState) {
         #ifdef K_DEBUG
-               tDebug("net") << "KTNetProjectManagerHandler::handleProjectRequest() - SENDING PACKAGE: " << request->xml();
+               tWarning() << "KTNetProjectManagerHandler::handleProjectRequest() - SENDING PACKAGE: " << request->xml();
         #endif
 
         if (request->isValid()) {
@@ -156,7 +156,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
     #ifdef K_DEBUG
-           T_FUNCINFOX("net");
+           T_FUNCINFO;
     #endif
 
     if (response->mode() == KTProjectResponse::Do) {
@@ -181,7 +181,7 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject *project)
 {
-    KTSaveNetProject saver(k->params->server(), k->params->port());
+    TupiNetFileManager saver(k->params->server(), k->params->port());
     
     return saver.save(fileName, project);
 }
@@ -344,7 +344,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                        file.flush();
             
                        if (k->project) {
-                           KTSaveProject *loader = new KTSaveProject;
+                           TupiFileManager *loader = new TupiFileManager;
                            loader->load(file.fileName(), k->project);
                            k->projectIsOpen = true;
                            emit openNewArea(k->project->projectName());

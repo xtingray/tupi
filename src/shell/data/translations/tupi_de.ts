@@ -2076,7 +2076,7 @@
 <context>
     <name>KTSaveProject</name>
     <message>
-        <location filename="../../../store/ktsaveproject.cpp" line="123"/>
+        <location filename="../../../store/tupifilemanager.cpp" line="123"/>
         <source>Project saved in %1!</source>
         <translation>Projekt gespeichert in %1!</translation>
     </message>

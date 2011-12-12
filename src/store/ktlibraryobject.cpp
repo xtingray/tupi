@@ -255,33 +255,8 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
                  tFatal() << "KTLibraryObject::loadRawData() - Loading image: " << k->symbolName;
                  tFatal() << "KTLibraryObject::loadRawData() - Size: " << data.size();
 
-                 /*
-                 QFile file("/tmp/test");
-                 if (!file.open(QIODevice::WriteOnly))
-                     return false;
-
-                 file.write(data);
-                 file.close();
-                 */
-
                  QPixmap pixmap;
-
-                 /*
-                 QFile file("/tmp/test.gif");
-                 file.open(QIODevice::WriteOnly);
-                 file.write(data);
-                 file.close();
-                 */
-
-                 // QByteArray ba = k->extension.toLocal8Bit();
-                 // const char *extension = ba.data();
-                 // bool isOk = pixmap.loadFromData(data, extension);
-
-                 tFatal() << "KTLibraryObject::loadRawData() - Flag 1";
-
                  bool isOk = pixmap.loadFromData(data);
-
-                 tFatal() << "KTLibraryObject::loadRawData() - Flag 2";
 
                  if (!isOk) {
                      #ifdef K_DEBUG
@@ -302,7 +277,7 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
             break;
             case KTLibraryObject::Sound:
             {
-                 QTemporaryFile soundFile(QDir::tempPath() + "/tupi_sound_file_XXXXXX");
+                 QTemporaryFile soundFile(QDir::tempPath() + QDir::separator() + "tupi_sound_file_XXXXXX");
                  soundFile.setAutoRemove(false);
 
                  if (soundFile.open()) {
@@ -327,12 +302,12 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
     switch (k->type) {
             case KTLibraryObject::Image:
             {
-                 k->dataPath = dataDir + "/images/" + k->dataPath;
+                 k->dataPath = dataDir + QDir::separator() + "images" + QDir::separator() + k->dataPath;
             
-                 QFile f(k->dataPath);
+                 QFile file(k->dataPath);
             
-                 if (f.open(QIODevice::ReadOnly)) {
-                     loadRawData(f.readAll());
+                 if (file.open(QIODevice::ReadOnly)) {
+                     loadRawData(file.readAll());
                  } else {
                      #ifdef K_DEBUG
                             tFatal() << "KTLibraryObject::loadDataFromPath() - Image: Can't access file: " << k->dataPath;
@@ -342,17 +317,17 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
             case KTLibraryObject::Sound:
             {
-                 k->dataPath = dataDir + "/audio/" + k->dataPath;
+                 k->dataPath = dataDir + QDir::separator() + "audio" + QDir::separator() + k->dataPath;
             }
             break;
             case KTLibraryObject::Svg:
             {
-                 k->dataPath = dataDir + "/svg/" + k->dataPath;
+                 k->dataPath = dataDir + QDir::separator() + "svg" + QDir::separator() + k->dataPath;
 
-                 QFile f(k->dataPath);
+                 QFile file(k->dataPath);
 
-                 if (f.open(QIODevice::ReadOnly)) {
-                     loadRawData(f.readAll());
+                 if (file.open(QIODevice::ReadOnly)) {
+                     loadRawData(file.readAll());
                  } else {
                      #ifdef K_DEBUG
                             tFatal() << "KTLibraryObject::loadDataFromPath() - Svg: Can't access file";
@@ -377,7 +352,7 @@ void KTLibraryObject::saveData(const QString &dataDir)
     switch (k->type) {
             case KTLibraryObject::Sound:
             {
-                 QString saved = dataDir + "/audio/";
+                 QString saved = dataDir + QDir::separator() + "audio" + QDir::separator();
             
                  if (! QFile::exists(saved)) {
                      QDir dir;
@@ -394,7 +369,7 @@ void KTLibraryObject::saveData(const QString &dataDir)
             break;
             case KTLibraryObject::Svg:
             {
-                 QString saved = dataDir + "/svg/";
+                 QString saved = dataDir + QDir::separator() + "svg" + QDir::separator();
 
                  if (! QFile::exists(saved)) {
                      QDir dir;
@@ -413,8 +388,9 @@ void KTLibraryObject::saveData(const QString &dataDir)
             break;
             case KTLibraryObject::Image:
             {
-                 tFatal() << "KTLibraryObject::saveData() - Saving file: " << k->symbolName;
-                 QString destination = dataDir + "/images/";
+                 tFatal() << "KTLibraryObject::saveData() - Saving image file -> " << k->symbolName;
+
+                 QString destination = dataDir + QDir::separator() + "images" + QDir::separator();
             
                  if (!QFile::exists(destination)) {
                      QDir dir;
@@ -425,20 +401,6 @@ void KTLibraryObject::saveData(const QString &dataDir)
                      #endif
                  }
 
-                 // QByteArray ba = k->extension.toLocal8Bit();
-                 // const char *extension = ba.data();
-                 // bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName, extension);
-
-                 /*
-                 bool isOk = (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(destination + k->symbolName);
-
-                 if (!isOk) {
-                     #ifdef K_DEBUG
-                            tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
-                     #endif
-                 }
-                 */
-          
                  k->dataPath = destination + k->symbolName;
 
                  QFile file(k->dataPath);
@@ -453,6 +415,10 @@ void KTLibraryObject::saveData(const QString &dataDir)
                      if (isOk == -1) {
                          #ifdef K_DEBUG
                                 tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
+                         #endif
+                     } else {
+                         #ifdef K_DEBUG
+                                tWarning() << "KTLibraryObject::saveData() - Image file saved successfully -> " << destination + k->symbolName;
                          #endif
                      }
                  }

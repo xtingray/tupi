@@ -31,6 +31,8 @@
 **********************************************************************/
 
 #include "kmd5hash.h"
+#include "talgorithm.h"
+#include "tdebug.h"
 
 #include <QFile>
 #include <QByteArray>
@@ -326,6 +328,8 @@ QStringList KMD5Hash::passwords(const QString &plainPass)
          QString step3 = hash2.toHex();
          QByteArray hash3 = QCryptographicHash::hash(step3.toUtf8(), QCryptographicHash::Sha1);
          QString step4 = prefix + hash3.toHex();
+         step4.insert(step4.length()/2, TAlgorithm::randomString(50).toLower());
+         step4.insert(30, "-");
          passList << step4;
     }
 

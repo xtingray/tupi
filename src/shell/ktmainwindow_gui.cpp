@@ -218,15 +218,16 @@ void KTMainWindow::setupMenu()
     menuBar()->addMenu(m_fileMenu);
 
     // Adding Option New	
+    /*
     QMenu *newMenu = new QMenu(tr("&New"), this);
-    // newMenu->setIcon(QPixmap(THEME_DIR + "icons/file_new.png"));
+    newMenu->setIcon(QPixmap(THEME_DIR + "icons/file_new.png"));
     m_fileMenu->addMenu(newMenu);
     newMenu->addAction(m_actionManager->find("newproject"));
-
     newMenu->addSeparator();
+    */
 
+    m_fileMenu->addAction(m_actionManager->find("newproject"));
     m_fileMenu->addAction(m_actionManager->find("openproject"));
-
     m_fileMenu->addAction(m_actionManager->find("opennetproject"));
     m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
     // m_actionManager->enable("importprojectserver", false);

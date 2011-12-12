@@ -180,6 +180,9 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 
     bool next = zip.goToFirstFile();
 
+    tFatal() << "KTPackageHandler::importPackage() - packagePath: " << packagePath; 
+    tFatal() << "KTPackageHandler::importPackage() - zip file: " << file.getActualFileName();
+
     while (next) {
 
            if (!zip.getCurrentFileInfo(&info)) {
@@ -196,7 +199,9 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
                return false;
            }
         
-           name = CACHE_DIR + "/" + file.getActualFileName();
+           name = CACHE_DIR + file.getActualFileName();
+
+           tFatal() << "KTPackageHandler::importPackage() - file path: " << name;
 
            if (name.endsWith(QDir::separator()))
                name.remove(name.count()-1, 1);

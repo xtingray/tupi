@@ -2467,7 +2467,7 @@
 <context>
     <name>KTSaveProject</name>
     <message>
-        <location filename="../src/store/ktsaveproject.cpp" line="132"/>
+        <location filename="../src/store/tupifilemanager.cpp" line="132"/>
         <source>Project saved in %1!</source>
         <translation type="unfinished"></translation>
     </message>

@@ -36,7 +36,7 @@
 #ifndef KTSAVENETPROJECT_H
 #define KTSAVENETPROJECT_H 
 
-#include "ktsaveproject.h"
+#include "tupifilemanager.h"
 
 #include <QString>
 
@@ -46,13 +46,13 @@ class KTNetProjectManagerParams;
  * @author David Cuadrado
 */
 
-class KTSaveNetProject : public KTSaveProject
+class TupiNetFileManager : public TupiFileManager 
 {
     public:
 
-        KTSaveNetProject();
-        KTSaveNetProject(const QString &server, int port);
-        ~KTSaveNetProject();
+        TupiNetFileManager();
+        TupiNetFileManager(const QString &server, int port);
+        ~TupiNetFileManager();
         
         virtual bool save(const QString &filename, const KTProject *project);
         virtual bool load(const QString &filename, KTProject *project);

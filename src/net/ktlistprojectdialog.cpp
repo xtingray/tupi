@@ -49,8 +49,6 @@ struct KTListProjectDialog::Private
 {
     QTreeWidget *works;
     QTreeWidget *contributions;
-    KTreeWidgetSearchLine *search;
-    QPushButton *accept, *cancel;
     QList<QString> workList;
     QList<QString> contribList;
     int index;
@@ -59,53 +57,77 @@ struct KTListProjectDialog::Private
 
 KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QString &serverName) : QDialog(), k(new Private)
 {
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/open.png")));
     setWindowTitle(tr("Projects List from Server") + " - [ " + serverName  + " ]");
     setModal(true);
+
     QVBoxLayout *layout = new QVBoxLayout(this);
     setLayout(layout);
-    QHBoxLayout *search = new QHBoxLayout;
 
     if (works > 0) {
         k->works = tree();
-        connect(k->works, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateSelection()));
-        connect(k->works, SIGNAL(itemSelectionChanged()), this, SLOT(updateSelection()));
+        connect(k->works, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateWorkTree()));
+        connect(k->works, SIGNAL(itemSelectionChanged()), this, SLOT(updateWorkTree()));
         connect(k->works, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem *, int)));
-
-        k->search = new KTreeWidgetSearchLine(this, k->works);
-        search->addWidget(k->search);
-        QToolButton *button = new QToolButton;
-        button->setIcon(QIcon(THEME_DIR + "icons/zoom.png"));
-        search->addWidget(button);
-        connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
-
-        QLabel *worksLabel = new QLabel(tr("My works:"));
-
-        layout->addLayout(search);
-        layout->addWidget(worksLabel);
-        layout->addWidget(k->works);
     }
 
     if (contributions > 0) {
         k->contributions = tree();
-        connect(k->contributions, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateSelection()));
-        connect(k->contributions, SIGNAL(itemSelectionChanged()), this, SLOT(updateSelection()));
+        connect(k->contributions, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateContribTree()));
+        connect(k->contributions, SIGNAL(itemSelectionChanged()), this, SLOT(updateContribTree()));
         connect(k->contributions, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem *, int)));
-        QLabel *contribLabel = new QLabel(tr("My contributions:"));
+    }
 
+    QHBoxLayout *search = new QHBoxLayout;
+    KTreeWidgetSearchLine *searchLine = 0;
+    QToolButton *button = new QToolButton;
+    button->setIcon(QIcon(THEME_DIR + "icons/zoom.png"));
+
+    QLabel *worksLabel = new QLabel(tr("My works:"));
+    QLabel *contribLabel = new QLabel(tr("My contributions:"));
+
+    if (works > 0 && contributions > 0) {
+        QList<QTreeWidget *> trees;
+        trees << k->works << k->contributions;
+        searchLine = new KTreeWidgetSearchLine(this, trees);
+        search->addWidget(searchLine);
+        search->addWidget(button);
+
+        layout->addLayout(search);
+        layout->addWidget(worksLabel);
+        layout->addWidget(k->works);
         layout->addWidget(contribLabel);
         layout->addWidget(k->contributions);
+    } else if (works > 0) {
+               searchLine = new KTreeWidgetSearchLine(this, k->works);
+               search->addWidget(searchLine);
+               search->addWidget(button);
+
+               layout->addLayout(search);
+               layout->addWidget(worksLabel);
+               layout->addWidget(k->works);
+    } else if (contributions > 0) {
+               searchLine = new KTreeWidgetSearchLine(this, k->contributions);
+               search->addWidget(searchLine);
+               search->addWidget(button);
+
+               layout->addLayout(search);
+               layout->addWidget(contribLabel);
+               layout->addWidget(k->contributions);
     }
-    
+
+    connect(button, SIGNAL(clicked()), searchLine, SLOT(clear()));
+
     //----
     QHBoxLayout *buttons = new QHBoxLayout;
-    k->accept = new QPushButton(tr("OK"));
-    k->accept->setDefault(true);
-    k->cancel = new QPushButton("Cancel");
-    connect(k->accept, SIGNAL(clicked ()), this, SLOT(accept()));
-    connect(k->cancel, SIGNAL(clicked()), this, SLOT(reject()));
+    QPushButton *accept = new QPushButton(tr("OK"));
+    accept->setDefault(true);
+    QPushButton *cancel = new QPushButton("Cancel");
+    connect(accept, SIGNAL(clicked ()), this, SLOT(accept()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 
-    buttons->addWidget(k->cancel);
-    buttons->addWidget(k->accept);
+    buttons->addWidget(cancel);
+    buttons->addWidget(accept);
     layout->addLayout(buttons);
 
     setMinimumWidth(615); 
@@ -173,16 +195,21 @@ void KTListProjectDialog::execAccept(QTreeWidgetItem *item, int index)
         accept();
 }
 
-void KTListProjectDialog::updateSelection()
+void KTListProjectDialog::updateWorkTree()
 {
     if (k->works->hasFocus()) {
-        k->contributions->clearSelection();
+        if (k->contribList.size() > 0)
+            k->contributions->clearSelection();
         int index = k->works->currentIndex().row(); 
         k->filename = k->workList.at(index);
     }
+}
 
+void KTListProjectDialog::updateContribTree()
+{
     if (k->contributions->hasFocus()) {
-        k->works->clearSelection();
+        if (k->workList.size() > 0)
+            k->works->clearSelection();
         int index = k->contributions->currentIndex().row();
         k->filename = k->contribList.at(index);
     }

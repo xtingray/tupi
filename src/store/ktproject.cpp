@@ -453,6 +453,10 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
         #ifdef K_DEBUG
                tError() << "KTProject::createSymbol() - Object can't be created. Data is NULL!";
         #endif
+    } else {
+        #ifdef K_DEBUG
+               tWarning() << "KTProject::createSymbol() - Object added successfully -> " << name;
+        #endif
     }
 
     return true;
@@ -569,7 +573,8 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                                  libraryItem->moveBy((k->dimension.width() - imageW)/2, (k->dimension.height() - imageH)/2);
                              else
                                  libraryItem->moveBy(0, 0);
-
+           
+                             tError() << "KTProject::addSymbolToProject() - Adding image item: " << name;
                              frame->addItem(name, libraryItem);
                         }
                         break;
@@ -630,7 +635,7 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
 
             } else {
                 #ifdef K_DEBUG 
-                       tFatal() << "KTProject::addSymbolToProject() - Object NOT found at library! " << name;
+                       tError() << "KTProject::addSymbolToProject() - Object NOT found at library! " << name;
                 #endif
                 return false;
             }
@@ -749,7 +754,7 @@ bool KTProject::deleteDataDir()
                      if (dir.exists(subdir)) {
                          dir.cd(subdir);
                          foreach (QString file, dir.entryList()) {
-                                  QString absolute = dir.absolutePath() + "/" + file;
+                                  QString absolute = dir.absolutePath() + QDir::separator() + file;
 
                                   if (!file.startsWith(".")) {
                                       QFileInfo finfo(absolute);
@@ -777,7 +782,7 @@ bool KTProject::deleteDataDir()
 
 QString KTProject::dataDir() const
 {
-    return CACHE_DIR + "/" + k->name;
+    return CACHE_DIR + k->name;
 }
 
 int KTProject::scenesTotal() const

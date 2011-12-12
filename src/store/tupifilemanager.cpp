@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktsaveproject.h"
+#include "tupifilemanager.h"
 #include "ktproject.h"
 #include "ktscene.h"
 #include "ktlibrary.h"
@@ -43,18 +43,18 @@
 
 #include <QDir>
 
-KTSaveProject::KTSaveProject() : QObject()
+TupiFileManager::TupiFileManager() : QObject()
 {
 }
 
-KTSaveProject::~KTSaveProject()
+TupiFileManager::~TupiFileManager()
 {
 }
 
-bool KTSaveProject::save(const QString &fileName, KTProject *project)
+bool TupiFileManager::save(const QString &fileName, KTProject *project)
 {
     #ifdef K_DEBUG
-           tDebug() << "KTSaveProject::save() - Saving file " << fileName;
+           tDebug() << "TupiFileManager::save() - Saving file " << fileName;
     #endif
 
     int indexPath = fileName.lastIndexOf("/");
@@ -73,18 +73,18 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
         if (!projectDir.exists()) {
             if (projectDir.rename(oldDirName, projectDir.path())) {
                 #ifdef K_DEBUG
-                       tDebug() << "KTSaveProject::save() - Directory renamed to " << projectDir.path();
+                       tDebug() << "TupiFileManager::save() - Directory renamed to " << projectDir.path();
                 #endif
             } else {
                 // SQA: Check if these lines are really needed
                 if (! projectDir.mkdir(projectDir.path())) {
                     #ifdef K_DEBUG
-                           tError() << "KTSaveProject::save() - Error: Can't create path " << projectDir.path();
+                           tError() << "TupiFileManager::save() - Error: Can't create path " << projectDir.path();
                     #endif
                     return false;
                 } else {
                     #ifdef K_DEBUG
-                           tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
+                           tDebug() << "TupiFileManager::save() - Directory " << projectDir.path() << " created successfully";
                     #endif
                 }
             }
@@ -93,12 +93,12 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
         if (!projectDir.exists()) {
             if (! projectDir.mkdir(projectDir.path())) {
                 #ifdef K_DEBUG
-                       tError() << "KTSaveProject::save() - Error: Can't create path " << projectDir.path();
+                       tError() << "TupiFileManager::save() - Error: Can't create path " << projectDir.path();
                 #endif
                 return false;
             } else {
                 #ifdef K_DEBUG
-                       tDebug() << "KTSaveProject::save() - Directory " << projectDir.path() << " created successfully";
+                       tDebug() << "TupiFileManager::save() - Directory " << projectDir.path() << " created successfully";
                 #endif
             }
         }
@@ -117,7 +117,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
          projectFile.close();
      } else {
          #ifdef K_DEBUG
-                tError() << "KTSaveProject::save() - Error: Can't create file " << projectDir.path() + "/project.tpp";
+                tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + "/project.tpp";
          #endif
      }
     }
@@ -138,7 +138,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
                   sceneFile.close();
               } else {
                   #ifdef K_DEBUG
-                         tError() << "KTSaveProject::save() - Error: Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";
+                         tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";
                   #endif
               }
      }
@@ -158,7 +158,7 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
          lbr.close();
      } else {
          #ifdef K_DEBUG
-                tError() << "KTSaveProject::save() - Error: Can't create file " << projectDir.path() + "/library.tpl";
+                tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + "/library.tpl";
          #endif
      }
     }
@@ -168,26 +168,31 @@ bool KTSaveProject::save(const QString &fileName, KTProject *project)
 
     if (ok) {
         #ifdef K_DEBUG
-               tWarning() << "KTSaveProject::save() - Project saved in " << fileName;
+               tWarning() << "TupiFileManager::save() - Project saved in " << fileName;
         #endif
     } else {
         #ifdef K_DEBUG
-               tError() << "KTSaveProject::save() - Error: Project couldn't be saved in " << fileName;
+               tError() << "TupiFileManager::save() - Error: Project couldn't be saved in " << fileName;
         #endif
     }
 
     return ok;
 }
 
-bool KTSaveProject::load(const QString &fileName, KTProject *project)
+bool TupiFileManager::load(const QString &fileName, KTProject *project)
 {
     #ifdef K_DEBUG
            T_FUNCINFO << fileName;
     #endif
 
+    tError() << "TupiFileManager::load() - Loading file: " << fileName;
+
     KTPackageHandler packageHandler;
 
     if (packageHandler.importPackage(fileName)) {
+
+        tError() << "TupiFileManager::load() - importedProjectPath(): " << packageHandler.importedProjectPath();
+
         QDir projectDir(packageHandler.importedProjectPath());
 
         QFile pfile(projectDir.path() + "/project.tpp");
@@ -197,10 +202,10 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
             pfile.close();
         } else {
             #ifdef K_DEBUG
-                   tError() << "KTSaveProject::load() - Error while open .tpp file. Name: " << pfile.fileName();
-                   tError() << "KTSaveProject::load() - Path: " << projectDir.path();
-                   tError() << "KTSaveProject::load() - Error Description: " << pfile.errorString();
-                   tError() << "KTSaveProject::load() - Error type: " << pfile.error();
+                   tError() << "TupiFileManager::load() - Error while open .tpp file. Name: " << pfile.fileName();
+                   tError() << "TupiFileManager::load() - Path: " << projectDir.path();
+                   tError() << "TupiFileManager::load() - Error Description: " << pfile.errorString();
+                   tError() << "TupiFileManager::load() - Error type: " << pfile.error();
             #endif
             return false;
         }
@@ -231,7 +236,7 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
                          file.close();
                      } else {
                          #ifdef K_DEBUG
-                                tError() << "KTSaveProject::load() - Error: Can't open file " << scenePath;
+                                tError() << "TupiFileManager::load() - Error: Can't open file " << scenePath;
                          #endif
                          return false;
                      }
@@ -243,14 +248,14 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 
         } else {
             #ifdef K_DEBUG
-                   tError() << "KTSaveProject::load() - Error: No scene files found (*.tps)";
+                   tError() << "TupiFileManager::load() - Error: No scene files found (*.tps)";
             #endif
             return false;
         }
     }
 
     #ifdef K_DEBUG
-           tError() << "KTSaveProject::load() - Error: Can't import package (" << fileName << ")";
+           tError() << "TupiFileManager::load() - Error: Can't import package (" << fileName << ")";
     #endif
 
     return false;

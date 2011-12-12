@@ -56,7 +56,7 @@
 // #ifdef USE_NET
 #include "ktnetprojectmanagerparams.h"
 #include "ktconnectdialog.h"
-#include "ktsavenetproject.h"
+// #include "tupinetfilemanager.h"
 #include "ktlistpackage.h"
 #include "ktimportprojectpackage.h"
 #include "ktlistprojectspackage.h"

@@ -38,23 +38,23 @@
 #include <QDomDocument>
 #include <QDomElement>
 
-#include "ktsavenetproject.h"
+#include "tupinetfilemanager.h"
 #include "ktproject.h"
 #include "ktnetprojectmanagerparams.h"
 
-KTSaveNetProject::KTSaveNetProject() : KTSaveProject()
+TupiNetFileManager::TupiNetFileManager() : TupiFileManager()
 {
 }
 
-KTSaveNetProject::KTSaveNetProject(const QString &server, int port) : KTSaveProject(), m_server(server), m_port(port)
+TupiNetFileManager::TupiNetFileManager(const QString &server, int port) : TupiFileManager(), m_server(server), m_port(port)
 {
 }
 
-KTSaveNetProject::~KTSaveNetProject()
+TupiNetFileManager::~TupiNetFileManager()
 {
 }
 
-bool KTSaveNetProject::save(const QString &_filename, const KTProject *project)
+bool TupiNetFileManager::save(const QString &_filename, const KTProject *project)
 {
     QString filename = _filename;
     
@@ -101,12 +101,12 @@ bool KTSaveNetProject::save(const QString &_filename, const KTProject *project)
     return true;
 }
 
-bool KTSaveNetProject::load(const QString &, KTProject *)
+bool TupiNetFileManager::load(const QString &, KTProject *)
 {
     return false;
 }
 
-KTNetProjectManagerParams *KTSaveNetProject::params(const QString &filename)
+KTNetProjectManagerParams *TupiNetFileManager::params(const QString &filename)
 {
     KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
     

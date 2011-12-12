@@ -34,13 +34,18 @@
  ***************************************************************************/
 
 #include "ktlibrarywidget.h"
-
 #include "tglobal.h"
 #include "tapplication.h"
-
-#include "tdebug.h"
 #include "koptionaldialog.h"
 #include "tconfig.h"
+#include "ktlibrary.h"
+#include "ktproject.h"
+#include "ktlibraryobject.h"
+#include "ktsymboleditor.h"
+#include "ktrequestbuilder.h"
+#include "tosd.h"
+#include "kaudioplayer.h"
+#include "tdebug.h"
 
 #include <QApplication>
 #include <QGroupBox>
@@ -55,20 +60,10 @@
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
 #include <QComboBox>
-
-#include <ktrequestbuilder.h>
+#include <QTreeWidgetItemIterator>
 
 #include <cstdlib>
 #include <ctime>
-#include <QTreeWidgetItemIterator>
-
-#include "ktlibrary.h"
-#include "ktproject.h"
-#include "ktlibraryobject.h"
-#include "ktsymboleditor.h"
-
-#include "tosd.h"
-#include "kaudioplayer.h"
 
 #define RETURN_IF_NOT_LIBRARY if (!k->library) return;
 
@@ -242,7 +237,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
 
         if (!object) {
             #ifdef K_DEBUG
-                   tFatal() << "KTLibraryWidget::previewItem() - Cannot find the object: " << item->text(1) + "." + item->text(2).toLower();
+                   tError() << "KTLibraryWidget::previewItem() - Cannot find the object: " << item->text(1) + "." + item->text(2).toLower();
             #endif
             QGraphicsTextItem *msg = new QGraphicsTextItem(tr("No preview available"));
             k->display->render(static_cast<QGraphicsItem *>(msg));
@@ -823,8 +818,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 if (k->project->spaceContext() != KTProject::NONE)
-                                     insertObjectInWorkspace();
+                                 // if (k->project->spaceContext() != KTProject::NONE)
+                                 //     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Svg:

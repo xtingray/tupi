@@ -60,7 +60,8 @@ class KTListProjectDialog : public QDialog
         
     private slots:
         void execAccept(QTreeWidgetItem *item, int index);
-        void updateSelection();
+        void updateWorkTree();
+        void updateContribTree();
     
     private:
         QTreeWidget *tree();

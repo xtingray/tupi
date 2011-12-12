@@ -44,8 +44,9 @@
 class KTProject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
-*/
+ * @author David Cuadrado
+*/ 
+
 class STORE_EXPORT KTLibrary : public KTLibraryFolder
 {
     Q_OBJECT;

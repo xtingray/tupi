@@ -45,7 +45,7 @@ HEADERS += ktlayer.h \
            ktrequestparser.h \
            ktprojectresponse.h \
            ktabstractprojectresponsehandler.h \
-           ktsaveproject.h \
+           tupifilemanager.h \
            ktprojectloader.h \
            ktgraphiclibraryitem.h \
            ktitemtweener.h \
@@ -89,7 +89,7 @@ SOURCES += ktlayer.cpp \
            ktprojectresponse.cpp \
            ktabstractprojectresponsehandler.cpp \
            ktitemfactory.cpp \
-           ktsaveproject.cpp \
+           tupifilemanager.cpp \
            ktprojectloader.cpp \
            ktgraphiclibraryitem.cpp \
            ktitemtweener.cpp \

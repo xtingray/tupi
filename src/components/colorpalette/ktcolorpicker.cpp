@@ -103,7 +103,7 @@ int KTColorPicker::saturationPoint(const QPoint &pt)
 
 void KTColorPicker::setColor(const QPoint &pt)
 { 
-    tFatal() << "KTColorPicker::setColor() - Setting new color point!";
+    // tFatal() << "KTColorPicker::setColor() - Setting new color point!";
     setColor(huePoint(pt), saturationPoint(pt)); 
 }
 
@@ -118,7 +118,7 @@ void KTColorPicker::setColor(int hue, int saturation)
     int nsat = qMin(qMax(0, saturation), 255);
 
     if (nhue == k->hue && nsat == k->saturation) {
-        tFatal() << "KTColorPicker::setColor() - Same values... exiting!!!";
+        // tFatal() << "KTColorPicker::setColor() - Same values... exiting!!!";
         return;
     }
 

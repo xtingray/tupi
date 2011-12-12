@@ -65,11 +65,11 @@ KTLibraryFolder::~KTLibraryFolder()
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, 
                                                const QString &folder, bool loaded)
 {
-    tFatal() << "KTLibraryFolder::createSymbol() - Flag 1"; 
+    tFatal() << "KTLibraryFolder::createSymbol() - Creating symbol " << name; 
 
     if (data.isEmpty()) {
         #ifdef K_DEBUG
-               tFatal() << "KTLibraryFolder::createSymbol() - Data is empty!";
+               tError() << "KTLibraryFolder::createSymbol() - Data is empty!";
         #endif
         return false;
     }
@@ -95,8 +95,6 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
         return 0;
     }
 
-    tFatal() << "KTLibraryFolder::createSymbol() - Flag 2";
-
     bool ret;
 
     if (folder.length() == 0)
@@ -109,8 +107,6 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     if (loaded && ret)
         KTProjectLoader::createSymbol(type, name, id(), data, k->project);
 
-    tFatal() << "KTLibraryFolder::createSymbol() - Flag 3";
-    
     return object;
 }
 
@@ -248,7 +244,7 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
     }
     
     #ifdef K_DEBUG
-           tDebug() << "KTLibraryFolder::findObject(): Cannot find object with id: " << id;
+           tError() << "KTLibraryFolder::findObject() - Can't find object with id -> " << id;
     #endif
     
     return 0;
@@ -262,7 +258,7 @@ KTLibraryFolder *KTLibraryFolder::findFolder(const QString &id) const
     }
    
     #ifdef K_DEBUG
-        tDebug() << "KTLibraryFolder::findFolder(): Cannot find folder with id: " << id;
+        tDebug() << "KTLibraryFolder::findFolder(): Can't find folder with id: " << id;
     #endif
    
     return 0;
@@ -276,7 +272,7 @@ bool KTLibraryFolder::folderExists(const QString &id) const
     }
   
     #ifdef K_DEBUG
-        tDebug() << "KTLibraryFolder::folderExists() - Cannot find folder with id: " << id;
+        tDebug() << "KTLibraryFolder::folderExists() - Can't find folder with id: " << id;
     #endif
   
     return false;

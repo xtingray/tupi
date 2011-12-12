@@ -36,7 +36,7 @@
 #include "ktlocalprojectmanagerhandler.h"
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
-#include "ktsaveproject.h"
+#include "tupifilemanager.h"
 #include "tdebug.h"
 
 #include <QDomDocument>
@@ -142,14 +142,13 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
 bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, KTProject *project)
 {
     bool result = false;
-    QString fn = fileName;
+    QString file = fileName;
 
     if (!fileName.endsWith(".tup"))
-        fn += ".tup";
+        file += ".tup";
 
-    KTSaveProject *saver = new KTSaveProject;
-    result = saver->save(fn, project);
-
+    TupiFileManager *saver = new TupiFileManager;
+    result = saver->save(file, project);
     delete saver;
 
     return result;
@@ -158,19 +157,9 @@ bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, KTProjec
 bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
     bool result = false;
-    KTSaveProject *loader = 0;
 
-    /*
-    if (fileName.endsWith(".tup")) {
-        loader = new KTSaveProject;
-        result = loader->load(fileName, project);
-        delete loader;
-    } else {
-        result = false;
-    }
-    */
-
-    loader = new KTSaveProject;
+    TupiFileManager *loader = 0;
+    loader = new TupiFileManager;
     result = loader->load(fileName, project);
     delete loader;
 

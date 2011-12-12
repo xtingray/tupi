@@ -178,9 +178,6 @@ void KTProjectManager::setupNewProject()
         return;
     }
 
-    // k->project->setOpen(true);
-    // setupProjectDir();
-
     if (!k->isNetworked) {
         KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, tr("Scene %1").arg(1));
         handleProjectRequest(&request);
@@ -310,7 +307,7 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
-           tWarning() << "Package: ";
+           tWarning() << "Local Package: ";
            tWarning() << request->xml();
     #endif
 

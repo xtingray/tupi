@@ -20,7 +20,7 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktopenpackage.h \
            ktsavepackage.h \
            ktnewprojectpackage.h \
-           ktsavenetproject.h \
+           tupinetfilemanager.h \
            ktchat.h \
            ktconnectdialog.h \
            ktprojectparser.h \
@@ -43,7 +43,7 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktopenpackage.cpp \
            ktsavepackage.cpp \
            ktnewprojectpackage.cpp \
-           ktsavenetproject.cpp \
+           tupinetfilemanager.cpp \
            ktchat.cpp \
            ktconnectdialog.cpp \
            ktprojectparser.cpp \

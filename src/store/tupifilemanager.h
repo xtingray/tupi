@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTSAVEPROJECT_H 
-#define KTSAVEPROJECT_H
+#ifndef TUPIFILEMANAGER_H 
+#define TUPIFILEMANAGER_H
 
 #include <QObject>
 
@@ -44,13 +44,13 @@ class KTProject;
  * @author David Cuadrado
 */
 
-class KTSaveProject : public QObject
+class TupiFileManager : public QObject
 {
     Q_OBJECT
 
     public:
-        KTSaveProject();
-        ~KTSaveProject();
+        TupiFileManager();
+        ~TupiFileManager();
 
         //virtual bool save(const QString &filename, const KTProject *project);
         virtual bool save(const QString &filename, KTProject *project);
