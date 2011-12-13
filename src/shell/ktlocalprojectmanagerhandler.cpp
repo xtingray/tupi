@@ -147,9 +147,9 @@ bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, KTProjec
     if (!fileName.endsWith(".tup"))
         file += ".tup";
 
-    TupiFileManager *saver = new TupiFileManager;
-    result = saver->save(file, project);
-    delete saver;
+    TupiFileManager *manager = new TupiFileManager;
+    result = manager->save(file, project);
+    delete manager;
 
     return result;
 }
@@ -158,10 +158,9 @@ bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProjec
 {
     bool result = false;
 
-    TupiFileManager *loader = 0;
-    loader = new TupiFileManager;
-    result = loader->load(fileName, project);
-    delete loader;
+    TupiFileManager *manager = new TupiFileManager;
+    result = manager->load(fileName, project);
+    delete manager;
 
     return result;
 }

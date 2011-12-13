@@ -95,6 +95,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         int fps() const;
 
         bool deleteDataDir();
+        void setDataDir(const QString &path);
         QString dataDir() const;
 
         KTScene *scene(int position) const;

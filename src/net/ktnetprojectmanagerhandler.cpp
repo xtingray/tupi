@@ -181,9 +181,9 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject *project)
 {
-    TupiNetFileManager saver(k->params->server(), k->params->port());
+    TupiNetFileManager manager(k->params->server(), k->params->port());
     
-    return saver.save(fileName, project);
+    return manager.save(fileName, project);
 }
 
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
@@ -344,11 +344,11 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                        file.flush();
             
                        if (k->project) {
-                           TupiFileManager *loader = new TupiFileManager;
-                           loader->load(file.fileName(), k->project);
+                           TupiFileManager *manager = new TupiFileManager;
+                           manager->load(file.fileName(), k->project);
                            k->projectIsOpen = true;
                            emit openNewArea(k->project->projectName());
-                           delete loader;
+                           delete manager;
                        } else {
                            #ifdef K_DEBUG
                                   tError() << "KTNetProjectManagerHandler::handlePackage() - Error: Can't open project";

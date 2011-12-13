@@ -51,7 +51,6 @@ class KTProjectParser : public KTXmlParserBase
         virtual bool endTag(const QString &tag);
         virtual void text(const QString &text);
        
-        QString projectID(); 
         QByteArray data();
         
     private:

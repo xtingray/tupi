@@ -49,6 +49,7 @@ class QuaZip;
 class TUPI_EXPORT KTPackageHandler
 {
     public:
+
         KTPackageHandler();
         ~KTPackageHandler();
         
@@ -56,6 +57,7 @@ class TUPI_EXPORT KTPackageHandler
         bool importPackage(const QString &packagePath);
         
         QString importedProjectPath() const;
+        QString projectDirectory() const;
         
     private:
         bool compress(QuaZip *zip, const QString &path);

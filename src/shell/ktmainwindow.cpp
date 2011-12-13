@@ -128,7 +128,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Calling out the project manager
     m_projectManager = new KTProjectManager(this);
-    // m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
 
     splash->setMessage(tr("Setting up the project manager"));
     SleeperThread::msleep(500);
@@ -370,16 +369,12 @@ void KTMainWindow::newProject()
        tWarning() << "Creating new project...";
     #endif
 
-    // projectSaved = false;
-
     KTNewProject *wizard = new KTNewProject(this);
     QDesktopWidget desktop;
     wizard->show();
     wizard->move((int) (desktop.screenGeometry().width() - wizard->width())/2 , 
                  (int) (desktop.screenGeometry().height() - wizard->height())/2);
     wizard->focusProjectLabel();
-
-    // connectToDisplays(wizard);
 
     if (wizard->exec() != QDialog::Rejected) {
         if (wizard->useNetwork()) {
@@ -686,13 +681,6 @@ void KTMainWindow::openProject(const QString &path)
     if (path.isEmpty() || !path.endsWith(".tup"))
         return;
 
-    /*
-    if (path.endsWith(".tup")) {
-        m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
-        m_isNetworkProject = false;
-    }
-    */
-
     m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
     m_isNetworkProject = false;
 
@@ -702,19 +690,8 @@ void KTMainWindow::openProject(const QString &path)
 
         if (m_projectManager->loadProject(path)) {
 
-            // SQA: Apparently this code is not required
-            /*
-            KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
-            response.setSceneIndex(0);
-            response.setLayerIndex(0);
-            response.setFrameIndex(0);
-            drawingTab->handleProjectResponse(&response);
-            m_exposureSheet->handleProjectResponse(&response);
-            m_timeLine->handleProjectResponse(&response);
-            */
-
             if (QDir::isRelativePath(path))
-                m_fileName = QDir::currentPath() + "/" + path;
+                m_fileName = QDir::currentPath() + QDir::separator() + path;
             else
                 m_fileName = path;
 
@@ -746,9 +723,6 @@ void KTMainWindow::openProject(const QString &path)
 
             setWindowTitle(tr("Tupi: Magia 2D") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
             viewNewDocument();
-
-            // Showing a info message in a bubble
-            // TOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(projectName));
         } else {
                  setUpdatesEnabled(true);
                  TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
@@ -991,7 +965,7 @@ void KTMainWindow::showHelpPage(const QString &filePath)
 void KTMainWindow::saveAs()
 {
     QString home = getenv("HOME");
-    home.append("/" + projectName);
+    home.append(QDir::separator() + projectName);
 
     isSaveDialogOpen = true;
 
@@ -1028,7 +1002,6 @@ void KTMainWindow::saveAs()
     projectName = name.left(dotIndex);
 
     m_fileName = fileName;
-    // isSaveDialogOpen = false;
 
     if (m_isNetworkProject) {
         m_isNetworkProject = false;

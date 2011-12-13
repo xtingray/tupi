@@ -181,7 +181,6 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
     bool next = zip.goToFirstFile();
 
     tFatal() << "KTPackageHandler::importPackage() - packagePath: " << packagePath; 
-    tFatal() << "KTPackageHandler::importPackage() - zip file: " << file.getActualFileName();
 
     while (next) {
 
@@ -295,4 +294,12 @@ bool KTPackageHandler::createPath(const QString &filePath)
 QString KTPackageHandler::importedProjectPath() const
 {
     return k->importedProjectPath;
+}
+
+QString KTPackageHandler::projectDirectory() const
+{
+    int index =  k->importedProjectPath.lastIndexOf(QDir::separator());
+    QString directory = k->importedProjectPath.right(k->importedProjectPath.length() - (index + 1));
+
+    return directory;
 }

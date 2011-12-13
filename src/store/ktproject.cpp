@@ -57,10 +57,10 @@ struct KTProject::Private
     QString author;
     QColor bgColor;
     QString description;
-
     QSize dimension;
     int fps;
-    QString dataDir;
+    QString cachePath; 
+
     Scenes scenes;
     int sceneCounter;
     KTLibrary *library;
@@ -82,7 +82,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
     k->sceneCounter = 0;
     k->isOpen = false;
     k->library = new KTLibrary("library", this);
-    // k->spaceMode = KTProject::FRAMES_EDITION;
+    k->cachePath = "";
 }
 
 /**
@@ -132,6 +132,7 @@ void KTProject::clear()
  */
 void KTProject::setProjectName(const QString &name)
 {
+    tError() << "KTProject::setProjectName() - k->name: " << name;
     k->name = name;
 }
 
@@ -151,7 +152,7 @@ void KTProject::setBgColor(const QColor color)
 /**
  * This function sets project description
  */
-void KTProject::setDescription(const QString& description)
+void KTProject::setDescription(const QString &description)
 {
     k->description = description;
 }
@@ -170,6 +171,11 @@ void KTProject::setDimension(const QSize dimension)
 void KTProject::setFPS(const int fps)
 {
     k->fps = fps;
+}
+
+void KTProject::setDataDir(const QString &path)
+{
+    k->cachePath = path;
 }
 
 /**
@@ -215,6 +221,11 @@ QSize KTProject::dimension() const
 int KTProject::fps() const
 {
     return k->fps;
+}
+
+QString KTProject::dataDir() const
+{
+    return k->cachePath;
 }
 
 KTScene *KTProject::createScene(QString name, int position, bool loaded)
@@ -293,15 +304,6 @@ KTScene *KTProject::scene(int position) const
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("project")<< position;
-
-           QList<int> list = k->scenes.indexes();
-           QString test = "";
-           for (int i = 0; i < list.size(); ++i) {
-                test += QString::number(list.at(i));
-                if (i < (list.size()-1))
-                    test += " ";
-           }
-           tFatal() << "KTProject::scene() - Indexes: " << test;
     #endif
 
     // if (position < 0 || position >= k->scenes.count()) {
@@ -446,12 +448,16 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
-    if (!k->isOpen)
+    if (!k->isOpen) {
+        #ifdef K_DEBUG
+               tError() << "KTProject::createSymbol() - Fatal error: project is NOT open!";
+        #endif
         return false;
+    }
 
     if (k->library->createSymbol(KTLibraryObject::Type(type), name, data, folder) == 0) {
         #ifdef K_DEBUG
-               tError() << "KTProject::createSymbol() - Object can't be created. Data is NULL!";
+               tError() << "KTProject::createSymbol() - Fatal error: object can't be created. Data is NULL!";
         #endif
     } else {
         #ifdef K_DEBUG
@@ -747,7 +753,7 @@ bool KTProject::deleteDataDir()
         if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg")) {
 
             #ifdef K_DEBUG
-                   tDebug("project") << "Removing directory " << dir.absolutePath(); 
+                   tWarning("project") << "KTProject::deleteDataDir() - Removing directory -> " << dir.absolutePath(); 
             #endif
 
             foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg") {
@@ -780,14 +786,8 @@ bool KTProject::deleteDataDir()
     return false;
 }
 
-QString KTProject::dataDir() const
-{
-    return CACHE_DIR + k->name;
-}
-
 int KTProject::scenesTotal() const
 {
-    // return k->sceneCounter;
     return k->scenes.count();
 }
 

@@ -57,7 +57,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
            tDebug() << "TupiFileManager::save() - Saving file " << fileName;
     #endif
 
-    int indexPath = fileName.lastIndexOf("/");
+    int indexPath = fileName.lastIndexOf(QDir::separator());
     int indexFile = fileName.length() - indexPath;
     QString name = fileName.right(indexFile - 1);
     int indexDot = name.lastIndexOf(".");
@@ -106,7 +106,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
 
     {
      // Save project
-     QFile projectFile(projectDir.path() + "/project.tpp");
+     QFile projectFile(projectDir.path() + QDir::separator() + "project.tpp");
 
      if (projectFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
          QTextStream ts(&projectFile);
@@ -117,7 +117,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
          projectFile.close();
      } else {
          #ifdef K_DEBUG
-                tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + "/project.tpp";
+                tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + QDir::separator() + "project.tpp";
          #endif
      }
     }
@@ -129,7 +129,8 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
               QDomDocument doc;
               doc.appendChild(scene->toXml(doc));
 
-              QFile sceneFile(projectDir.path() + "/scene" + QString::number(index) + ".tps");
+              QString scenePath = projectDir.path() + QDir::separator() + "scene" + QString::number(index) + ".tps";
+              QFile sceneFile(scenePath);
 
               if (sceneFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
                   QTextStream st(&sceneFile);
@@ -138,7 +139,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
                   sceneFile.close();
               } else {
                   #ifdef K_DEBUG
-                         tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + "/scene" + QString::number(index) + ".tps";
+                         tError() << "TupiFileManager::save() - Error: Can't create file " << scenePath;
                   #endif
               }
      }
@@ -146,7 +147,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
 
     {
      // Save library
-     QFile lbr(projectDir.path() + "/library.tpl");
+     QFile lbr(projectDir.path() + QDir::separator() + "library.tpl");
 
      if (lbr.open(QIODevice::WriteOnly | QIODevice::Text)) {
          QTextStream ts(&lbr);
@@ -158,7 +159,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
          lbr.close();
      } else {
          #ifdef K_DEBUG
-                tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + "/library.tpl";
+                tError() << "TupiFileManager::save() - Error: Can't create file " << projectDir.path() + QDir::separator() + "library.tpl";
          #endif
      }
     }
@@ -195,7 +196,7 @@ bool TupiFileManager::load(const QString &fileName, KTProject *project)
 
         QDir projectDir(packageHandler.importedProjectPath());
 
-        QFile pfile(projectDir.path() + "/project.tpp");
+        QFile pfile(projectDir.path() + QDir::separator() + "project.tpp");
 
         if (pfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             project->fromXml(QString::fromLocal8Bit(pfile.readAll()));
@@ -210,7 +211,8 @@ bool TupiFileManager::load(const QString &fileName, KTProject *project)
             return false;
         }
 
-        project->loadLibrary(projectDir.path() + "/library.tpl");
+        project->setDataDir(packageHandler.importedProjectPath());
+        project->loadLibrary(projectDir.path() + QDir::separator() + "library.tpl");
 
         QStringList scenes = projectDir.entryList(QStringList() << "*.tps", QDir::Readable | QDir::Files);
 
@@ -218,7 +220,7 @@ bool TupiFileManager::load(const QString &fileName, KTProject *project)
 
             int index = 0;
             foreach (QString scenePath, scenes) {
-                     scenePath = projectDir.path() + "/" + scenePath;
+                     scenePath = projectDir.path() + QDir::separator() + scenePath;
 
                      QFile file(scenePath);
 

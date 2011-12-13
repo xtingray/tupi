@@ -138,10 +138,11 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler, bool isNetw
     k->handler = handler;
     k->handler->setParent(this);
     k->handler->setProject(k->project);
-    k->isNetworked = isNetworked;
 
     connect(k->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
     connect(k->handler, SIGNAL(sendLocalCommand(const KTProjectRequest *)), this, SLOT(handleLocalRequest(const KTProjectRequest *)));
+
+    k->isNetworked = isNetworked;
 }
 
 KTAbstractProjectHandler *KTProjectManager::handler() const
@@ -179,6 +180,8 @@ void KTProjectManager::setupNewProject()
     }
 
     if (!k->isNetworked) {
+        k->project->setDataDir(CACHE_DIR + k->params->projectName());
+
         KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, tr("Scene %1").arg(1));
         handleProjectRequest(&request);
 
@@ -219,7 +222,7 @@ bool KTProjectManager::loadProject(const QString &fileName)
 {
     if (! k->handler) {
         #ifdef K_DEBUG
-               tFatal() << "KTProjectManager::loadProject() - Error: No handler!";
+               tError() << "KTProjectManager::loadProject() - Fatal Error: No project handler available!";
         #endif
         return false;
     }
@@ -229,6 +232,10 @@ bool KTProjectManager::loadProject(const QString &fileName)
     if (ok) {
         k->project->setOpen(true);
         k->isModified = false;
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTProjectManager::loadProject() - Fatal Error: Can't load project -> " << fileName;
+        #endif
     }
 
     return ok;
