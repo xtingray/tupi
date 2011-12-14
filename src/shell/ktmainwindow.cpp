@@ -458,6 +458,9 @@ void KTMainWindow::resetUI()
 
     //if (helpView->isExpanded())
         helpView->expandDock(false);
+
+    //if (scenesView->isExpanded())
+        scenesView->expandDock(false);
     
     //if (timeView->isExpanded())
         timeView->expandDock(false);
@@ -540,9 +543,6 @@ void KTMainWindow::resetUI()
     m_fileName = QString();
 
     enableToolViews(false);
-
-    if (scenesView->isExpanded())
-        scenesView->expandDock(false);
 
     if (exposureView->isExpanded())
         exposureView->expandDock(false);
@@ -772,7 +772,7 @@ void KTMainWindow::importProjectToServer()
 void KTMainWindow::save()
 {
     #ifdef K_DEBUG
-       tDebug("project") << "KTMainWindow::save() - Saving...";
+           tWarning("project") << "KTMainWindow::save() - Saving...";
     #endif
     QTimer::singleShot(0, this, SLOT(saveProject()));
 }
@@ -1131,7 +1131,9 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
     if (!drawingTab) {
-        // tFatal() << "KTMainWindow::createCommand() - No drawingTab... Aborting!";
+        #ifdef K_DEBUG
+               tFatal() << "KTMainWindow::createCommand() - No drawingTab... Aborting!";
+        #endif
         return;
     }
 

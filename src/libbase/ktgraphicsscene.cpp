@@ -807,6 +807,8 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
            T_FUNCINFO;
     #endif
 
+    setCurrentFrame(0, 0);
+
     if (k->tool)
         k->tool->aboutToChangeScene(this);
 
