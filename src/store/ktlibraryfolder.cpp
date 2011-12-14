@@ -41,6 +41,7 @@
 
 #include <QFileInfo>
 #include <QFile>
+#include <QDir>
 
 struct KTLibraryFolder::Private
 {
@@ -65,18 +66,16 @@ KTLibraryFolder::~KTLibraryFolder()
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, 
                                                const QString &folder, bool loaded)
 {
-    tFatal() << "KTLibraryFolder::createSymbol() - Creating symbol " << name; 
-
     if (data.isEmpty()) {
         #ifdef K_DEBUG
-               tError() << "KTLibraryFolder::createSymbol() - Data is empty!";
+               tError() << "KTLibraryFolder::createSymbol() - [ Fatal Error ] - Data is empty!";
         #endif
         return false;
     }
 
     if (data.isNull()) {
         #ifdef K_DEBUG
-               tError() << "KTLibraryFolder::createSymbol() - Data is null!";
+               tError() << "KTLibraryFolder::createSymbol() - [ Fatal Error ] - Data is null!";
         #endif
         return false;
     }
@@ -88,7 +87,7 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 
     if (!object->loadRawData(data)) {
         #ifdef K_DEBUG
-               tError() << "KTLibraryFolder::createSymbol() - Object have no data raw!";
+               tError() << "KTLibraryFolder::createSymbol() - [ Fatal Error ] - Object have no data raw!";
         #endif
 
         delete object;
@@ -244,7 +243,7 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
     }
     
     #ifdef K_DEBUG
-           tError() << "KTLibraryFolder::findObject() - Can't find object with id -> " << id;
+           tError() << "KTLibraryFolder::findObject() - [ Fatal Error ] - Can't find object with id -> " << id;
     #endif
     
     return 0;
@@ -258,7 +257,7 @@ KTLibraryFolder *KTLibraryFolder::findFolder(const QString &id) const
     }
    
     #ifdef K_DEBUG
-        tDebug() << "KTLibraryFolder::findFolder(): Can't find folder with id: " << id;
+           tError() << "KTLibraryFolder::findFolder() - [ Fatal Error ] - Can't find folder with id -> " << id;
     #endif
    
     return 0;
@@ -272,7 +271,7 @@ bool KTLibraryFolder::folderExists(const QString &id) const
     }
   
     #ifdef K_DEBUG
-        tDebug() << "KTLibraryFolder::folderExists() - Can't find folder with id: " << id;
+           tError() << "KTLibraryFolder::folderExists() - [ Fatal Error ] - Can't find folder with id -> " << id;
     #endif
   
     return false;
@@ -293,7 +292,7 @@ bool KTLibraryFolder::renameObject(const QString &folder, const QString &oldId, 
        
     } else {
         #ifdef K_DEBUG
-               tDebug() << "KTLibraryFolder::renameObject() - Object not found: " << oldId;
+               tError() << "KTLibraryFolder::renameObject() - [ Fatal Error ] - Object not found -> " << oldId;
         #endif
     }
 
@@ -426,8 +425,6 @@ void KTLibraryFolder::loadItem(const QString &folder, QDomNode xml)
         ts << objectData;
     }
 
-    tFatal() << "KTLibraryFolder::loadItem() - Calling KTProjectLoader::createSymbol()...";
-  
     KTProjectLoader::createSymbol(KTLibraryObject::Type(object->type()),
                                   object->symbolName(), folder, data.toLocal8Bit(), k->project);
 }
@@ -461,13 +458,13 @@ void KTLibraryFolder::updatePaths(const QString &newPath)
              QString path = "";
 
              if (k->objects[oid]->type() == KTLibraryObject::Image)
-                 path = newPath + "/images/" + filename; 
+                 path = newPath + QDir::separator() + "images" + QDir::separator() + filename; 
 
              if (k->objects[oid]->type() == KTLibraryObject::Svg)
-                 path = newPath + "/svg/" + filename;
+                 path = newPath + QDir::separator() + "svg" + QDir::separator() + filename;
 
              if (k->objects[oid]->type() == KTLibraryObject::Sound)
-                 path = newPath + "/audio/" + filename;
+                 path = newPath + QDir::separator() + "audio" + QDir::separator() + filename;
 
              k->objects[oid]->setDataPath(path);
 

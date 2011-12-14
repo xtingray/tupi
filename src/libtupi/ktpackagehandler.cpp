@@ -177,10 +177,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
     QString name;
     char c;
     QuaZipFileInfo info;
-
     bool next = zip.goToFirstFile();
-
-    tFatal() << "KTPackageHandler::importPackage() - packagePath: " << packagePath; 
 
     while (next) {
 
@@ -199,8 +196,6 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
            }
         
            name = CACHE_DIR + file.getActualFileName();
-
-           tFatal() << "KTPackageHandler::importPackage() - file path: " << name;
 
            if (name.endsWith(QDir::separator()))
                name.remove(name.count()-1, 1);

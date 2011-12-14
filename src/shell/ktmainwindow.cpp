@@ -1130,8 +1130,6 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-    // tFatal() << "KTMainWindow::createCommand() - Just tracing!";
-
     if (!drawingTab) {
         // tFatal() << "KTMainWindow::createCommand() - No drawingTab... Aborting!";
         return;

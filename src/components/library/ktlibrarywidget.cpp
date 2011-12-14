@@ -297,17 +297,18 @@ void KTLibraryWidget::insertObjectInWorkspace()
     #endif
 
     if (!k->libraryTree->currentItem()) { 
-        tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - There's no current selection!";
+        #ifdef K_DEBUG
+               tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - There's no current selection!";
+        #endif
         return;
     } else if (k->libraryTree->currentItem()->text(2).length() == 0) {
-               tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - It's a directory!";
+               #ifdef K_DEBUG
+                      tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - It's a directory!";
+               #endif
                return;
     }
 
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
-
-    tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - calling KTRequestBuilder::createLibraryRequest()...";
-    tFatal() << "KTLibraryWidget::insertObjectInWorkspace() - spaceContext: " << k->project->spaceContext();
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, objectKey,
                                KTLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
@@ -364,11 +365,9 @@ void KTLibraryWidget::importBitmap()
 
     QString symName = fileInfo.fileName();
 
-    tFatal() << "KTLibraryWidget::importBitmap() - Image filename: " << symName;
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
-        tFatal() << "KTLibraryWidget::importBitmap() - Raw Size: " << data.size(); 
         f.close();
 
         QPixmap *pixmap = new QPixmap(image);
@@ -377,8 +376,10 @@ void KTLibraryWidget::importBitmap()
         int projectWidth = k->project->dimension().width();
         int projectHeight = k->project->dimension().height();
 
-        tFatal() << "KTLibraryWidget::importBitmap() - Image Size: " << "[" << picWidth << ", " << picHeight << "]";
-        tFatal() << "KTLibraryWidget::importBitmap() - Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
+        #ifdef K_DEBUG
+               tFatal() << "KTLibraryWidget::importBitmap() - Image filename: " << symName << " | Raw Size: " << data.size();
+               tFatal() << "KTLibraryWidget::importBitmap() - Image Size: " << "[" << picWidth << ", " << picHeight << "]" << " | Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
+        #endif
 
         if (picWidth > projectWidth || picHeight > projectHeight) {
             QDesktopWidget desktop;
@@ -424,8 +425,6 @@ void KTLibraryWidget::importBitmap()
                tag = name + "-" + QString::number(i) + extension;
                object = k->library->findObject(tag);
         }
-
-        tFatal() << "KTLibraryWidget::importBitmap() - calling createLibraryRequest()...";
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, tag,
                                                                           KTLibraryObject::Image, k->project->spaceContext(), data, QString(), 

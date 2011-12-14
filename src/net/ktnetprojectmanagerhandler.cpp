@@ -306,7 +306,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
 
                    if (k->ownPackage && !k->doAction) {
                        if (parser.response()->part() == KTProjectRequest::Item) {
-                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing local package!";
                            KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
                            KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), 
                                                       response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
@@ -315,7 +314,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                        }
                        return;
                    } else {
-                       tFatal() << "KTNetProjectManagerHandler::handlePackage() - Executing remote package!";
                        KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response());
                        request.setExternal(!k->ownPackage);
                        emitRequest(&request, k->doAction && k->ownPackage);
@@ -382,7 +380,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                            k->dialogIsOpen = false;
                            loadProjectFromServer(k->dialog->projectID());
                        } else {
-                           tFatal() << "KTNetProjectManagerHandler::handlePackage() - k->dialog->projectID(): " << k->dialog->projectID();
                            k->dialogIsOpen = false;
                            closeConnection();
                        }

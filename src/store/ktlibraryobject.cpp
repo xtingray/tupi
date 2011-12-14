@@ -99,7 +99,6 @@ void KTLibraryObject::setSymbolName(const QString &name)
 {
     k->symbolName = name;
     k->symbolName.replace(QDir::separator(), "-");
-
     k->extension = k->symbolName.section('.', 1, 1).toUpper();
 }
 
@@ -114,7 +113,7 @@ void KTLibraryObject::fromXml(const QString &xml)
     
     if (! document.setContent(xml)) {
         #ifdef K_DEBUG  
-               tError() << "KTLibraryObject::fromXml -> Invalid XML structure!";
+               tError() << "KTLibraryObject::fromXml - [ Fatal Error ] - Invalid XML structure!";
         #endif
         return;
     }
@@ -222,14 +221,14 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
 {
     if (data.isEmpty()) {
         #ifdef K_DEBUG
-               tFatal() << "KTLibraryObject::loadData() - Data is empty!";
+               tError() << "KTLibraryObject::loadData() - [ Fatal Error ] - Data is empty!";
         #endif
         return false;
     }
 
     if (data.isNull()) {
         #ifdef K_DEBUG
-               tFatal() << "KTLibraryObject::loadData() - Data is null!";
+               tError() << "KTLibraryObject::loadData() - [ Fatal Error ] - Data is null!";
         #endif
         return false;
     }
@@ -252,15 +251,12 @@ bool KTLibraryObject::loadRawData(const QByteArray &data)
             break;
             case KTLibraryObject::Image:
             {
-                 tFatal() << "KTLibraryObject::loadRawData() - Loading image: " << k->symbolName;
-                 tFatal() << "KTLibraryObject::loadRawData() - Size: " << data.size();
-
                  QPixmap pixmap;
                  bool isOk = pixmap.loadFromData(data);
 
                  if (!isOk) {
                      #ifdef K_DEBUG
-                            tError() << "KTLibraryObject::loadRawData() - Can't load image " << k->symbolName;
+                            tError() << "KTLibraryObject::loadRawData() - [ Fatal Error ] - Can't load image -> " << k->symbolName;
                      #endif
                  }
 
@@ -310,7 +306,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
                      loadRawData(file.readAll());
                  } else {
                      #ifdef K_DEBUG
-                            tFatal() << "KTLibraryObject::loadDataFromPath() - Fatal Error: Can't access image file -> " << k->dataPath;
+                            tError() << "KTLibraryObject::loadDataFromPath() - [ Fatal Error ] - Can't access image file -> " << k->dataPath;
                      #endif
                  }
             }
@@ -330,7 +326,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
                      loadRawData(file.readAll());
                  } else {
                      #ifdef K_DEBUG
-                            tFatal() << "KTLibraryObject::loadDataFromPath() - Svg: Can't access file";
+                            tError() << "KTLibraryObject::loadDataFromPath() - [ Fatal Error ] - Can't access SVG file -> " << k->dataPath;
                      #endif
                  }
             }
@@ -388,8 +384,6 @@ void KTLibraryObject::saveData(const QString &dataDir)
             break;
             case KTLibraryObject::Image:
             {
-                 tFatal() << "KTLibraryObject::saveData() - Saving image file -> " << k->symbolName;
-
                  QString destination = dataDir + QDir::separator() + "images" + QDir::separator();
             
                  if (!QFile::exists(destination)) {
@@ -397,7 +391,7 @@ void KTLibraryObject::saveData(const QString &dataDir)
                      dir.mkpath(destination);
 
                      #ifdef K_DEBUG
-                            tDebug() << "KTLibraryObject::saveData() - Creating directory: " << destination;
+                            tWarning() << "KTLibraryObject::saveData() - Creating directory -> " << destination;
                      #endif
                  }
 
@@ -406,7 +400,7 @@ void KTLibraryObject::saveData(const QString &dataDir)
                  QFile file(k->dataPath);
                  if (!file.open(QIODevice::WriteOnly)) {
                      #ifdef K_DEBUG
-                            tError() << "KTLibraryObject::saveData() - Insufficient permissions to save file " << destination + k->symbolName;
+                            tError() << "KTLibraryObject::saveData() - [ Fatal Error ] - Insufficient permissions to save file -> " << destination + k->symbolName;
                      #endif
                  } else {
                      qint64 isOk = file.write(k->rawData);
@@ -414,7 +408,7 @@ void KTLibraryObject::saveData(const QString &dataDir)
 
                      if (isOk == -1) {
                          #ifdef K_DEBUG
-                                tError() << "KTLibraryObject::saveData() - Can't save file " << destination + k->symbolName;
+                                tError() << "KTLibraryObject::saveData() - [ Fatal Error ] - Can't save file -> " << destination + k->symbolName;
                          #endif
                      } else {
                          #ifdef K_DEBUG

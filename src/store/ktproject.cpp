@@ -132,7 +132,6 @@ void KTProject::clear()
  */
 void KTProject::setProjectName(const QString &name)
 {
-    tError() << "KTProject::setProjectName() - k->name: " << name;
     k->name = name;
 }
 
@@ -266,17 +265,6 @@ bool KTProject::removeScene(int position)
         toRemove = 0;
         k->sceneCounter--;
 
-        #ifdef K_DEBUG
-               QList<int> list = k->scenes.indexes();
-               QString test = "";
-               for (int i = 0; i < list.size(); ++i) {
-                    test += QString::number(list.at(i));
-                    if (i < (list.size()-1))
-                        test += " ";
-               }
-               tDebug() << "KTProject::removeScene() - Current scene indexes: " << test;
-        #endif
-
         return true;
     } 
 
@@ -285,8 +273,6 @@ bool KTProject::removeScene(int position)
 
 bool KTProject::moveScene(int position, int newPosition)
 {
-    // if (position < 0 || position >= k->scenes.count() || newPosition < 0 || newPosition >= k->scenes.count()) {
-
     if (position < 0 || newPosition < 0) {
         #ifdef K_DEBUG
                tError() << "KTProject::moveScene() - Failed moving scene from " << position << " to " << newPosition; 
@@ -305,8 +291,6 @@ KTScene *KTProject::scene(int position) const
     #ifdef K_DEBUG
            T_FUNCINFOX("project")<< position;
     #endif
-
-    // if (position < 0 || position >= k->scenes.count()) {
 
     if (position < 0) {
         #ifdef K_DEBUG
@@ -580,7 +564,6 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                              else
                                  libraryItem->moveBy(0, 0);
            
-                             tError() << "KTProject::addSymbolToProject() - Adding image item: " << name;
                              frame->addItem(name, libraryItem);
                         }
                         break;

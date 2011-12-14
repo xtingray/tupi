@@ -186,16 +186,11 @@ bool TupiFileManager::load(const QString &fileName, KTProject *project)
            T_FUNCINFO << fileName;
     #endif
 
-    tError() << "TupiFileManager::load() - Loading file: " << fileName;
-
     KTPackageHandler packageHandler;
 
     if (packageHandler.importPackage(fileName)) {
 
-        tError() << "TupiFileManager::load() - importedProjectPath(): " << packageHandler.importedProjectPath();
-
         QDir projectDir(packageHandler.importedProjectPath());
-
         QFile pfile(projectDir.path() + QDir::separator() + "project.tpp");
 
         if (pfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
