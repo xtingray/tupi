@@ -42,6 +42,8 @@
 
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
+#include "genericexportplugin.h"
+// #include "ktexportpluginobject.h"
 #include "ktpaintarea.h"
 #include "ktprojectresponse.h"
 #include "ktpaintareaevent.h"
@@ -55,6 +57,7 @@
 #include "ktpaintareastatus.h"
 #include "ktcanvas.h"
 #include "polyline.h"
+#include "ktimagedialog.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -122,6 +125,7 @@ struct KTViewDocument::Private
     int autoSaveTime;
     TAction *fullScreenAction;
     bool fullScreenOn;
+    bool isLocal;
 
     KTPaintArea *paintArea;
     KTCanvas *fullScreen;
@@ -151,6 +155,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     k->onionEnabled = true;
     k->fullScreenOn = false;
     k->viewAngle = 0;
+    k->isLocal = isLocal;
 
     k->actionManager = new TActionManager(this);
 
@@ -232,7 +237,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
-    if (isLocal)
+    if (k->isLocal)
         saveTimer();
 }
 
@@ -351,12 +356,30 @@ void KTViewDocument::setupDrawActions()
                                k->actionManager, "onionfactor");
 
     onionFactor->setStatusTip(tr("Set onion skin factor default value"));
+
+    TCONFIG->beginGroup("Network");
+    QString server = TCONFIG->value("Server").toString();
+
+    QString description = tr("Export Current Frame As Image");
+    QString toolTip = tr("Export the current frame as image");
+    QString icon = "icons/export_frame.png";
+
+    if (!k->isLocal && server.compare("tupitube.com") == 0) {
+        description = tr("Post Current Image");
+        toolTip = tr("Post the current image in your gallery");
+        icon = "icons/net_document.png";
+    } 
+
+    TAction *postImage = new TAction(QPixmap(THEME_DIR + icon),
+                                     description, QKeySequence(tr("@")),
+                                     this, SLOT(postImage()), k->actionManager, "post_image");
+    postImage->setStatusTip(toolTip);
 }
 
 void KTViewDocument::createTools()
 {
     k->toolbar = new QToolBar(tr("Draw tools"), this);
-    k->toolbar->setIconSize(QSize(16,16));
+    k->toolbar->setIconSize(QSize(16, 16));
     addToolBar(Qt::LeftToolBarArea, k->toolbar);
 
     connect(k->toolbar, SIGNAL(actionTriggered(QAction *)), this, SLOT(selectToolFromMenu(QAction *)));
@@ -418,7 +441,7 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         tDebug("plugins") << "*** Tool Loaded: " << *it;
+                         tDebug("plugins") << "KTViewDocument::loadPlugins() - Tool Loaded: " << *it;
                   #endif
 
                   TAction *action = tool->actions()[*it];
@@ -859,7 +882,7 @@ void KTViewDocument::updateZoomFactor(double f)
 void KTViewDocument::createToolBar()
 {
     k->barGrid = new QToolBar(tr("Paint area actions"), this);
-    k->barGrid->setIconSize(QSize(16,16));
+    k->barGrid->setIconSize(QSize(16, 16));
 
     addToolBar(k->barGrid);
 
@@ -928,8 +951,14 @@ void KTViewDocument::createToolBar()
 
     connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
     setSpaceContext();
-
     k->barGrid->addWidget(k->spaceMode);
+    k->barGrid->addSeparator();
+
+    TCONFIG->beginGroup("Network");
+    QString server = TCONFIG->value("Server").toString();
+
+    k->barGrid->addAction(k->actionManager->find("post_image"));
+    k->barGrid->addSeparator();
 }
 
 void KTViewDocument::closeArea()
@@ -1183,5 +1212,41 @@ void KTViewDocument::closeFullScreen()
     if (k->fullScreenOn) {
         k->fullScreen->close();
         k->fullScreenOn = false;
+    }
+}
+
+void KTViewDocument::postImage()
+{
+    TCONFIG->beginGroup("Network");
+    QString server = TCONFIG->value("Server").toString();
+    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+    int frameIndex = k->paintArea->graphicsScene()->currentFrameIndex();
+
+    if (!k->isLocal && server.compare("tupitube.com") == 0) {
+        QString title = "";
+        QString description = "";
+        KTImageDialog *dialog = new KTImageDialog(this);
+        dialog->show();
+        QDesktopWidget desktop;
+        dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                          (int) (desktop.screenGeometry().height() - dialog->height())/2);
+
+        if (dialog->exec() != QDialog::Rejected) {
+            title = dialog->imageTitle();
+            description = dialog->imageDescription();
+            emit requestExportImageToServer(frameIndex, sceneIndex, title, description);
+        }
+    } else {
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Export Frame As"), QDir::homePath(),
+                                                        tr("Images") + " (*.png *.jpg)");
+        if (!fileName.isNull()) {
+            GenericExportPlugin exporter;
+            bool isOk = exporter.exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->scene(sceneIndex), k->project->dimension());
+            updatePaintArea();
+            if (isOk)
+                TOsd::self()->display(tr("Information"), tr("Frame has been exported successfully"));           
+            else
+                TOsd::self()->display(tr("Error"), tr("Can't export frame as image"), TOsd::Error);
+        }
     }
 }

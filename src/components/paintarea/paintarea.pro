@@ -15,7 +15,8 @@ HEADERS += ktpaintarea.h \
            ktbrushstatus.h \
            kttoolstatus.h \
            ktcanvas.h \
-           ktcanvasview.h
+           ktcanvasview.h \
+           ktimagedialog.h
 
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
@@ -29,11 +30,15 @@ SOURCES += ktpaintarea.cpp \
            ktbrushstatus.cpp \
            kttoolstatus.cpp \
            ktcanvas.cpp \
-           ktcanvasview.cpp
+           ktcanvasview.cpp \
+           ktimagedialog.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib
 TARGET = paintarea
+
+PLUGIN_DIR = ../../plugins/export/genericexportplugin
+INCLUDEPATH += $$PLUGIN_DIR
 
 SELECTION_DIR = ../../plugins/tools/selecttool
 INCLUDEPATH += $$SELECTION_DIR

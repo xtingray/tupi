@@ -34,15 +34,13 @@
  ***************************************************************************/
 
 #include "genericexportplugin.h"
-
+#include "ktlayer.h"
+#include "ktanimationrenderer.h"
 #include "tglobal.h"
 #include "tdebug.h"
 
 #include <QImage>
 #include <QPainter>
-
-#include "ktlayer.h"
-#include "ktanimationrenderer.h"
 
 GenericExportPlugin::GenericExportPlugin()
 {
@@ -65,6 +63,8 @@ KTExportInterface::Formats GenericExportPlugin::availableFormats()
 bool GenericExportPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, 
                                          KTExportInterface::Format format, const QSize &size, int fps)
 {
+    Q_UNUSED(fps);
+
     QFileInfo fileInfo(filePath);
 
     QDir dir = fileInfo.dir();
@@ -104,13 +104,42 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
 
                     index += QString("%1").arg(photogram);
 
-                    image.save(fileInfo.absolutePath() + "/" + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension);
+                    image.save(fileInfo.absolutePath() + QDir::separator() + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension);
 
                     photogram++;
              }
     }
 
     return true;
+}
+
+bool GenericExportPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size)
+{
+    QString path = filePath;
+    const char *extension;
+
+    if (filePath.endsWith(".PNG", Qt::CaseInsensitive)) {
+        extension = "PNG";
+    } else if (filePath.endsWith(".JPG", Qt::CaseInsensitive) || filePath.endsWith("JPEG", Qt::CaseInsensitive)) {
+               extension = "JPG";
+    } else {
+        extension = "PNG"; 
+        path += ".png";  
+    }
+
+    KTAnimationRenderer renderer(color);
+    renderer.setScene(scene, size);
+
+    renderer.renderPhotogram(frameIndex);
+    QImage image(size, QImage::Format_RGB32);
+
+    {
+        QPainter painter(&image);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        renderer.render(&painter);
+    }
+
+    return image.save(path, extension);
 }
 
 const char* GenericExportPlugin::getExceptionMsg() {

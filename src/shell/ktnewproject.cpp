@@ -183,14 +183,14 @@ KTNewProject::~KTNewProject()
 {
     if (k->useNetwork) {
         TConfig *config = kApp->config("Network");
-        config->setValue("server", k->server->text());
-        config->setValue("port", k->port->value());
-        config->setValue("login", k->login->text());
+        config->setValue("Server", k->server->text());
+        config->setValue("Port", k->port->value());
+        config->setValue("Login", k->login->text());
         if (k->storePassword->isChecked()) {
-            config->setValue("password", k->password->text());
+            config->setValue("Password", k->password->text());
             config->setValue("StorePassword", "1");
         } else {
-            config->setValue("password", "");
+            config->setValue("Password", "");
             config->setValue("StorePassword", "0");
         }
     }
@@ -210,11 +210,11 @@ void KTNewProject::setupNetOptions()
 
     TConfig *config = kApp->config("Network");
 
-    k->server->setText(config->value("server", "localhost").toString());
-    k->port->setValue(config->value("port", 5000).toInt());
+    k->server->setText(config->value("Server", "localhost").toString());
+    k->port->setValue(config->value("Port", 5000).toInt());
 
-    k->login->setText(config->value("login", "").toString());
-    k->password->setText(config->value("password", "").toString());
+    k->login->setText(config->value("Login", "").toString());
+    k->password->setText(config->value("Password", "").toString());
 
     k->password->setEchoMode(QLineEdit::Password);
 

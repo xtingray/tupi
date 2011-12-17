@@ -234,7 +234,7 @@ void KTMainWindow::setupMenu()
 
     // Adding Option Open Recent	
     m_recentProjectsMenu = new QMenu(tr("Recents"), this);
-    m_recentProjectsMenu->setIcon(QPixmap(THEME_DIR + "icons/recent_files.png"));
+    // m_recentProjectsMenu->setIcon(QPixmap(THEME_DIR + "icons/recent_files.png"));
 
     TCONFIG->beginGroup("General");
     QStringList recents = TCONFIG->value("Recents").toString().split(';');

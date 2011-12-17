@@ -115,6 +115,7 @@ class KTViewDocument : public QMainWindow
         void enableOnionFeature();
         void setDefaultOnionFactor();
         void setOnionFactor(double value);
+        void postImage();
 
     private slots:
         void showPos(const QPointF &p);	
@@ -141,6 +142,7 @@ class KTViewDocument : public QMainWindow
         void autoSave();
         void modeHasChanged(int mode);
         void expandColorPanel();
+        void requestExportImageToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
 
     // protected:
     // void closeEvent(QCloseEvent *e);

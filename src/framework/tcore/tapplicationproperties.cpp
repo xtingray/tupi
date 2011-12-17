@@ -118,9 +118,9 @@ void TApplicationProperties::setRevision(const QString &path)
 QString TApplicationProperties::shareDir() const
 {
     if (k->shareDir.isEmpty())
-        return k->homeDir + "/share";
+        return k->homeDir + QDir::separator() + "share";
 
-    return k->shareDir + "/";
+    return k->shareDir + QDir::separator();
 }
 
 QString TApplicationProperties::dataDir() const
@@ -130,7 +130,7 @@ QString TApplicationProperties::dataDir() const
         if (locale.length() < 2)
             locale = "en";
 
-        return k->shareDir + "/data/" + locale + "/";
+        return k->shareDir + QDir::separator() + "data" + QDir::separator() + locale + QDir::separator();
     }
 
     return k->dataDir;
@@ -138,35 +138,35 @@ QString TApplicationProperties::dataDir() const
 
 QString TApplicationProperties::homeDir() const
 {
-    return k->homeDir + "/";
+    return k->homeDir + QDir::separator();
 }
 
 QString TApplicationProperties::themeDir() const
 {
     if (k->themeDir.isEmpty())
-        return k->shareDir + "/themes/default" + "/";
+        return k->shareDir + QDir::separator() + "themes" + QDir::separator() + "default" + QDir::separator();
 
     return k->themeDir;
 }
 
 QString TApplicationProperties::pluginDir() const
 {
-    return k->pluginDir + "/";
+    return k->pluginDir + QDir::separator();
 }
 
 QString TApplicationProperties::configDir() const
 {
-    return QDir::homePath() + "/." + qApp->applicationName() + "/";
+    return QDir::homePath() + QDir::separator() + "." + qApp->applicationName() + QDir::separator();
 }
 
 QString TApplicationProperties::cacheDir() const
 {
-    return k->cacheDir + "/";
+    return k->cacheDir + QDir::separator();
 }
 
 QString TApplicationProperties::repositoryDir() const
 {
-    return k->repositoryDir + "/";
+    return k->repositoryDir + QDir::separator();
 }
 
 QString TApplicationProperties::version() const

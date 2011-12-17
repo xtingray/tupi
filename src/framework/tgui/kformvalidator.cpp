@@ -146,7 +146,7 @@ bool KFormValidator::validatesRangeOf(int i, int e, const QString &name)
     return ok;
 }
 
-bool KFormValidator::validatesRegExpOf( const QString &regexp, const QString &name)
+bool KFormValidator::validatesRegExpOf(const QString &regexp, const QString &name)
 {
     bool ok = false;
 

@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,60 +33,24 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTNETPROJECTMANAGER_H
-#define KTNETPROJECTMANAGER_H
+#ifndef KTIMAGEDIALOG_H
+#define KTIMAGEDIALOG_H
 
-#include "ktabstractprojectmanagerhandler.h"
+#include <QDialog>
 
-#include <QDomDocument>
-#include <QTabWidget>
-
-class KTChat;
-class KTProjectCommand;
-class KTNetSocket;
-class KTNetProjectManagerParams;
-
-/**
- * @author David Cuadrado
-*/
-
-class KTNetProjectManagerHandler : public KTAbstractProjectHandler
+class KTImageDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        KTNetProjectManagerHandler(QObject *parent = 0);
-        ~KTNetProjectManagerHandler();
-
-        virtual void initialize(KTProjectManagerParams *params);
-        virtual bool setupNewProject(KTProjectManagerParams *params);
-        virtual bool closeProject();
-
-        virtual void handleProjectRequest(const KTProjectRequest* event);
-        virtual bool commandExecuted(KTProjectResponse *response);
-        virtual bool saveProject(const QString &fileName, KTProject *project);
-        virtual bool loadProject(const QString &fileName, KTProject *project);
-
-        void handlePackage(const QString &root, const QString &package);
-        virtual bool isValid() const;
-        void sendPackage(const QDomDocument &doc);
-
-        QTabWidget *communicationWidget();
-        void closeConnection();
-
-    signals:
-        void savingSuccessful();
-        void connectionHasBeenLost();
-
-    private:
-        void loadProjectFromServer(const QString &projectID);
-        void emitRequest(KTProjectRequest *request, bool toStack);
-        void setProject(KTProject *project);
+        KTImageDialog(QWidget *parent=0);
+        ~KTImageDialog();
+        QString imageTitle() const;
+        QString imageDescription() const;
 
     private slots:
-        void sendChatMessage(const QString & message);
-        void connectionLost();
-        void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
+        void checkData();
+        void resetLineColor(const QString &);
 
     private:
         struct Private;

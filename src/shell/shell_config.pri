@@ -3,6 +3,7 @@ QT += xml opengl svg
 
 COLORPALETTE_DIR = ../../src/components/colorpalette
 ANIMATION_DIR = ../../src/components/animation
+PLUGIN_DIR = ../../src/plugins/export/genericexportplugin
 PAINTAREA_DIR = ../../src/components/paintarea
 PEN_DIR = ../../src/components/pen
 KINAS_DIR = ../../src/components/kinas 
@@ -22,8 +23,8 @@ QUAZIP_DIR = ../../3rdparty/quazip
 LIBBASE_DIR = ../../src/libbase
 NET_DIR = ../../src/net
 
-
 include($$COLORPALETTE_DIR/colorpalette.pri)
+include($$PLUGIN_DIR/genericexportplugin.pri)
 include($$PAINTAREA_DIR/paintarea.pri)
 include($$ANIMATION_DIR/animation.pri)
 include($$PEN_DIR/pen.pri)

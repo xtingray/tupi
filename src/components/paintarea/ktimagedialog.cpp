@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,97 +33,98 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktpluginmanager.h"
-#include "ktfilterinterface.h"
-#include "kttoolinterface.h"
+#include "ktimagedialog.h"
+#include "tapplicationproperties.h"
 #include "tglobal.h"
+#include "tconfig.h"
 #include "tdebug.h"
 
-#include <QPluginLoader>
-#include <QDir>
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QIcon>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QPushButton>
 
-KTPluginManager *KTPluginManager::s_instance = 0;
-
-struct KTPluginManager::Private
+struct KTImageDialog::Private
 {
-    QObjectList tools;
-    QObjectList filters;
-    QList<QPluginLoader *> loaders;
+    QLineEdit *lineEdit;
+    QTextEdit *descText;
 };
 
-KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent), k(new Private)
+KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
+{
+    setModal(true);
+    setWindowTitle(tr("Image Properties"));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
+
+    QLabel *titleLabel = new QLabel(tr("Title"));
+    k->lineEdit = new QLineEdit(tr("My Picture"));
+    connect(k->lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
+    titleLabel->setBuddy(k->lineEdit);
+
+    k->descText = new QTextEdit;
+    k->descText->setAcceptRichText(false);
+    k->descText->setFixedSize(QSize(300, 80));
+    k->descText->setText(tr("Just a little taste of my style :)"));
+
+    QHBoxLayout *topLayout = new QHBoxLayout;
+    topLayout->addWidget(titleLabel);
+    topLayout->addWidget(k->lineEdit);
+
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    buttonLayout->addStretch(1);
+    QPushButton *ok = new QPushButton(tr("Post Image"));
+    connect(ok, SIGNAL(clicked()), this, SLOT(checkData()));
+    buttonLayout->addWidget(ok);
+
+    QPushButton *cancel = new QPushButton(tr("Cancel"));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
+    buttonLayout->addWidget(cancel);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    QLabel *descLabel = new QLabel(tr("Description"));
+    layout->addLayout(topLayout);
+    layout->addWidget(descLabel);
+    layout->addWidget(k->descText);
+    layout->addLayout(buttonLayout);
+    setLayout(layout);
+}
+
+KTImageDialog::~KTImageDialog()
 {
 }
 
-KTPluginManager::~KTPluginManager()
+void KTImageDialog::checkData()
 {
-    unloadPlugins();
-}
-
-KTPluginManager *KTPluginManager::instance()
-{
-    if (!s_instance)
-        s_instance = new KTPluginManager;
-    
-    return s_instance;
-}
-
-void KTPluginManager::loadPlugins()
-{
-    #ifdef K_DEBUG
-           tWarning("plugins") << "KTPluginManager::loadPlugins() - Loading plugins...";
-    #endif
-
-    k->filters.clear();
-    k->tools.clear();
-    
-    QDir pluginDirectory = QDir(PLUGINS_DIR);
-
-    foreach (QString fileName, pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dylib", QDir::Files)) {
-             QPluginLoader *loader = new QPluginLoader(pluginDirectory.absoluteFilePath(fileName));
-             QObject *plugin = qobject_cast<QObject*>(loader->instance());
-
-             #ifdef K_DEBUG
-                    tDebug("plugins") << "*** Trying to load plugin from: " << fileName;
-             #endif
-        
-             if (plugin) {
-                 AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
-                 KTToolInterface *tool = qobject_cast<KTToolInterface *>(plugin);
-            
-                 if (filter) {
-                     k->filters << plugin;
-                 } else if (tool) {
-                            k->tools << plugin;
-                 }
-            
-                 k->loaders << loader;
-             } else {
-                 #ifdef K_DEBUG
-                        tError("plugins") << "KTPluginManager::loadPlugins() - Cannot load plugin, error was: " << loader->errorString();
-                 #endif
-             }
+    if (k->lineEdit->text().length() == 0) {
+        k->lineEdit->setText(tr("Set a title for the picture here!"));
+        k->lineEdit->selectAll();
+        return;
     }
+
+    QDialog::accept();
 }
 
-void KTPluginManager::unloadPlugins()
+void KTImageDialog::resetLineColor(const QString &)
 {
-    #ifdef K_DEBUG
-           tWarning("plugins") << "KTPluginManager::unloadPlugins() - Unloading plugins...";
-    #endif
+    QPalette pal = k->lineEdit->palette();
+    if (k->lineEdit->text().length() > 0 && k->lineEdit->text().compare(tr("Set a title for the picture here!")) != 0) 
+        pal.setBrush(QPalette::Base, Qt::white);
+    else 
+        pal.setBrush(QPalette::Base, QColor(255, 140, 138));
 
-    foreach (QPluginLoader *loader, k->loaders) {
-             delete loader->instance();
-             delete loader;
-    }
+     k->lineEdit->setPalette(pal);
 }
 
-QObjectList KTPluginManager::tools() const
+QString KTImageDialog::imageTitle() const
 {
-    return k->tools;
+     return k->lineEdit->text();
 }
 
-QObjectList KTPluginManager::filters() const
+QString KTImageDialog::imageDescription() const
 {
-    return k->filters;
+     return k->descText->toPlainText();
 }
+

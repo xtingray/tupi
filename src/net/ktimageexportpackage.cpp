@@ -33,64 +33,34 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTNETPROJECTMANAGER_H
-#define KTNETPROJECTMANAGER_H
+#include "ktimageexportpackage.h"
 
-#include "ktabstractprojectmanagerhandler.h"
+// <project_image version="0">
+//     <image scene="0" frame="0" />
+//         <title>Image Title</title>
+//         <description>Image Description</description>          
+//     </image>
+// </project_image>
 
-#include <QDomDocument>
-#include <QTabWidget>
-
-class KTChat;
-class KTProjectCommand;
-class KTNetSocket;
-class KTNetProjectManagerParams;
-
-/**
- * @author David Cuadrado
-*/
-
-class KTNetProjectManagerHandler : public KTAbstractProjectHandler
+KTImageExportPackage::KTImageExportPackage(int frameIndex, int sceneIndex, const QString &title, const QString &description): QDomDocument()
 {
-    Q_OBJECT
+    QDomElement root = createElement("project_image");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    QDomElement image = createElement("image");
+    image.setAttribute("scene", sceneIndex);
+    image.setAttribute("frame", frameIndex);
 
-    public:
-        KTNetProjectManagerHandler(QObject *parent = 0);
-        ~KTNetProjectManagerHandler();
+    QDomText titleDom = createTextNode(title);
+    QDomText descDom = createTextNode(description);
 
-        virtual void initialize(KTProjectManagerParams *params);
-        virtual bool setupNewProject(KTProjectManagerParams *params);
-        virtual bool closeProject();
+    image.appendChild(createElement("title")).appendChild(titleDom);
+    image.appendChild(createElement("description")).appendChild(descDom);
+    
+    root.appendChild(image);
+}
 
-        virtual void handleProjectRequest(const KTProjectRequest* event);
-        virtual bool commandExecuted(KTProjectResponse *response);
-        virtual bool saveProject(const QString &fileName, KTProject *project);
-        virtual bool loadProject(const QString &fileName, KTProject *project);
-
-        void handlePackage(const QString &root, const QString &package);
-        virtual bool isValid() const;
-        void sendPackage(const QDomDocument &doc);
-
-        QTabWidget *communicationWidget();
-        void closeConnection();
-
-    signals:
-        void savingSuccessful();
-        void connectionHasBeenLost();
-
-    private:
-        void loadProjectFromServer(const QString &projectID);
-        void emitRequest(KTProjectRequest *request, bool toStack);
-        void setProject(KTProject *project);
-
-    private slots:
-        void sendChatMessage(const QString & message);
-        void connectionLost();
-        void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
-
-    private:
-        struct Private;
-        Private *const k;
-};
-
-#endif
+KTImageExportPackage::~KTImageExportPackage()
+{
+}

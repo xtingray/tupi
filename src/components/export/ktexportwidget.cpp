@@ -34,6 +34,10 @@
  ***************************************************************************/
 
 #include "ktexportwidget.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "kitemselector.h"
+#include "kxyspinbox.h"
 
 // Qt
 #include <QApplication>
@@ -48,26 +52,19 @@
 #include <QToolButton>
 #include <QFileDialog>
 #include <QMessageBox>
-
-#include "tglobal.h"
-#include "tdebug.h"
-
-#include "kitemselector.h"
-#include "kxyspinbox.h"
-
 #include <QtDebug>
 
 /**
  * This class handles the whole process to export a project into a movie format.
  * The export widget uses a wizard to guide the process: format, escenes, target file
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class SelectPlugin : public KExportWizardPage
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
-        //SelectPlugin(const KTExportWidget *kt);
         SelectPlugin();
         ~SelectPlugin();
 
@@ -268,9 +265,10 @@ const char* SelectPlugin::getFileExtension()
 
 class SelectScenes : public KExportWizardPage
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
-        SelectScenes(const KTExportWidget *kt);
+        SelectScenes(const KTExportWidget *widget);
         ~SelectScenes();
 
         bool isComplete() const;
@@ -291,13 +289,13 @@ class SelectScenes : public KExportWizardPage
 
 };
 
-SelectScenes::SelectScenes(const KTExportWidget *kt) : KExportWizardPage(tr("Select Scenes"))
+SelectScenes::SelectScenes(const KTExportWidget *widget) : KExportWizardPage(tr("Select Scenes"))
 {
     setTag("SCENE");
     m_selector = new KItemSelector;
 
     connect(m_selector, SIGNAL(changed()), this, SLOT(updateState()));
-    connect(kt, SIGNAL(updateScenes()), this, SLOT(updateScenesList()));
+    connect(widget, SIGNAL(updateScenes()), this, SLOT(updateScenesList()));
 
     setWidget(m_selector);
 }
@@ -326,14 +324,14 @@ void SelectScenes::setScenes(const QList<KTScene *> &scenes)
 
     foreach (KTScene *scene, scenes) {
              #ifdef K_DEBUG
-                    tDebug("export") << "Adding " << scene->sceneName();
+                    tDebug("export") << "SelectScenes::setScenes() - Adding " << scene->sceneName();
              #endif
-             m_selector->addItem(QString("%1: ").arg(pos)+scene->sceneName());
+             m_selector->addItem(QString("%1: ").arg(pos) + scene->sceneName());
              pos++;
     }
 
     #ifdef K_DEBUG
-           tDebug("export") << "Loop: " << pos;
+           tWarning("export") << "SelectScenes::setScenes() - Available Scenes: " << pos - 1;
     #endif
 
     m_selector->selectFirstItem();
@@ -356,9 +354,10 @@ void SelectScenes::updateScenesList()
 
 class ExportTo : public KExportWizardPage
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
-        ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *kt);
+        ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *widget);
         ~ExportTo();
 
         bool isComplete() const;
@@ -537,7 +536,7 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 #if defined(Q_OS_UNIX)
 
     if ((extension.compare(".jpg") != 0) && (extension.compare(".png") != 0)) {
-        filename += "/";
+        filename += QDir::separator();
         filename += m_project->projectName();
         filename += extension;
     } 
@@ -574,9 +573,8 @@ void ExportTo::chooseDirectory()
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
 
-    if (filename.length() > 0) {
+    if (filename.length() > 0)
         m_filePath->setText(filename);
-    }
 }
 
 void ExportTo::updateState(const QString &name)
@@ -599,7 +597,7 @@ void ExportTo::exportIt()
     if ((extension.compare(".jpg") != 0) && (extension.compare(".png") != 0)) {
         filename = m_filePath->text();
 
-        int indexPath = filename.lastIndexOf("/");
+        int indexPath = filename.lastIndexOf(QDir::separator());
         int indexFile = filename.length() - indexPath;
         name = filename.right(indexFile - 1);
         path = filename.left(indexPath + 1);
@@ -609,7 +607,7 @@ void ExportTo::exportIt()
 
         if (path.length() == 0) {
             path = getenv ("HOME");
-            filename = path + "/" + name;
+            filename = path + QDir::separator() + name;
         }
 
         if (QFile::exists(filename)) {
@@ -634,7 +632,7 @@ void ExportTo::exportIt()
         if (path.length() == 0)
             path = getenv("HOME");
 
-        filename = path + "/" + name;
+        filename = path + QDir::separator() + name;
     }
 
     QDir directory(path);
@@ -658,13 +656,13 @@ void ExportTo::exportIt()
     if (m_currentExporter) {
 
         #ifdef K_DEBUG
-               tDebug() << "Exporting to file: " << filename;
+               tWarning() << "ExportTo::exportIt() - Exporting to file: " << filename;
         #endif
 
         QList<KTScene *> scenes = scenesToExport();
 
         #ifdef K_DEBUG
-               tDebug() << "Exporting " << scenes.count() << " scenes";
+               tWarning() << "ExportTo::exportIt() - Exporting " << scenes.count() << " scenes";
         #endif
 
         if (scenes.count() > 0) 
@@ -754,7 +752,7 @@ void KTExportWidget::loadPlugins()
                      m_plugins.insert(exporter->key(), exporter);
                  } else {
                      #ifdef K_DEBUG
-                            tError() << "Can't load: " << fileName;
+                            tError() << "KTExportWidget::loadPlugins() - [ Fatal Error ] - Can't load plugin -> " << fileName;
                      #endif
                  }
              }
@@ -764,6 +762,7 @@ void KTExportWidget::loadPlugins()
 void KTExportWidget::setExporter(const QString &plugin)
 {
     if (m_plugins.contains(plugin)) {
+        tFatal() << "KTExportWidget::setExporter() - Tracing plugin: " << plugin;
         KTExportInterface* currentExporter = m_plugins[plugin];
         m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
         m_exportToPage->setCurrentExporter(currentExporter);

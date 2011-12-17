@@ -36,15 +36,15 @@
 #ifndef GENERICEXPORTPLUGIN_H
 #define GENERICEXPORTPLUGIN_H
 
-#include <ktexportpluginobject.h>
+#include "ktexportpluginobject.h"
 #include <QColor>
 
 /**
-    @author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado
 */
 class GenericExportPlugin : public KTExportPluginObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         GenericExportPlugin();
@@ -53,6 +53,7 @@ class GenericExportPlugin : public KTExportPluginObject
         KTExportInterface::Formats availableFormats();
 
         virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
+        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size);
         virtual const char* getExceptionMsg();
         const char *errorMsg;
 

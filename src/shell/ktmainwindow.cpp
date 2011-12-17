@@ -282,6 +282,13 @@ void KTMainWindow::viewNewDocument()
         else
             drawingTab = new KTViewDocument(m_projectManager->project(), this, false);           
 
+        TCONFIG->beginGroup("Network");
+        QString server = TCONFIG->value("Server").toString();
+        if (m_isNetworkProject && server.compare("tupitube.com") == 0) {
+            connect(drawingTab, SIGNAL(requestExportImageToServer(int, int, const QString &, const QString &)),                         
+                    netProjectManagerHandler, SLOT(sendExportImageRequestToServer(int, int, const QString &, const QString &)));
+        }
+
         connectToDisplays(drawingTab);
 
         drawingTab->setWindowTitle(tr("Animation"));

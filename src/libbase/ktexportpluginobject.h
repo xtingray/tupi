@@ -36,18 +36,19 @@
 #ifndef KTEXPORTPLUGINOBJECT_H
 #define KTEXPORTPLUGINOBJECT_H
 
-#include <QObject>
 #include "ktglobal.h"
-
 #include "ktexportinterface.h"
 
+#include <QObject>
+
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
  */
 
 class TUPI_EXPORT KTExportPluginObject : public QObject, public KTExportInterface
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     Q_INTERFACES(KTExportInterface);
     
     public:

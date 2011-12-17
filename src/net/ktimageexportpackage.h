@@ -33,64 +33,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTNETPROJECTMANAGER_H
-#define KTNETPROJECTMANAGER_H
-
-#include "ktabstractprojectmanagerhandler.h"
-
-#include <QDomDocument>
-#include <QTabWidget>
-
-class KTChat;
-class KTProjectCommand;
-class KTNetSocket;
-class KTNetProjectManagerParams;
+#ifndef KTIMAGEEXPORTPACKAGE_H
+#define KTIMAGEEXPORTPACKAGE_H
 
 /**
- * @author David Cuadrado
+ * @author Gustav Gonzalez
 */
 
-class KTNetProjectManagerHandler : public KTAbstractProjectHandler
+#include <QDomDocument>
+
+class KTImageExportPackage : public QDomDocument
 {
-    Q_OBJECT
-
     public:
-        KTNetProjectManagerHandler(QObject *parent = 0);
-        ~KTNetProjectManagerHandler();
-
-        virtual void initialize(KTProjectManagerParams *params);
-        virtual bool setupNewProject(KTProjectManagerParams *params);
-        virtual bool closeProject();
-
-        virtual void handleProjectRequest(const KTProjectRequest* event);
-        virtual bool commandExecuted(KTProjectResponse *response);
-        virtual bool saveProject(const QString &fileName, KTProject *project);
-        virtual bool loadProject(const QString &fileName, KTProject *project);
-
-        void handlePackage(const QString &root, const QString &package);
-        virtual bool isValid() const;
-        void sendPackage(const QDomDocument &doc);
-
-        QTabWidget *communicationWidget();
-        void closeConnection();
-
-    signals:
-        void savingSuccessful();
-        void connectionHasBeenLost();
-
-    private:
-        void loadProjectFromServer(const QString &projectID);
-        void emitRequest(KTProjectRequest *request, bool toStack);
-        void setProject(KTProject *project);
-
-    private slots:
-        void sendChatMessage(const QString & message);
-        void connectionLost();
-        void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
-
-    private:
-        struct Private;
-        Private *const k;
+        KTImageExportPackage(int frameIndex, int sceneIndex, const QString &title, const QString &description);
+        ~KTImageExportPackage();
 };
 
 #endif

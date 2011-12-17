@@ -45,6 +45,7 @@
 #include "ktprojectrequest.h"
 #include "ktnewprojectpackage.h"
 #include "ktconnectpackage.h"
+#include "ktimageexportpackage.h"
 #include "tupinetfilemanager.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
@@ -478,4 +479,11 @@ void KTNetProjectManagerHandler::closeConnection()
 {
     if (k->socket->isOpen())
         k->socket->close();
+}
+
+void KTNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, int sceneIndex, 
+                                                                const QString &title, const QString &description)
+{
+    KTImageExportPackage package(frameIndex, sceneIndex, title, description);
+    sendPackage(package);
 }
