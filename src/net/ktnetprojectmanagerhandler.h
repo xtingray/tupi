@@ -74,6 +74,8 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         QTabWidget *communicationWidget();
         void closeConnection();
 
+        void sendVideoRequest(const QList<int> sceneIndexes);
+
     signals:
         void savingSuccessful();
         void connectionHasBeenLost();

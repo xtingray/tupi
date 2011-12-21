@@ -1793,6 +1793,37 @@
        y1="20.75281"
        x2="40.211685"
        y2="16.28406" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4548-7-8-4-3"
+       id="linearGradient4963-8"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.43547914,0,0,0.43547914,23.23795,24.787389)"
+       x1="40.328125"
+       y1="20.75281"
+       x2="40.211685"
+       y2="16.28406" />
+    <linearGradient
+       id="linearGradient4548-7-8-4-3">
+      <stop
+         style="stop-color:#008700;stop-opacity:1;"
+         offset="0"
+         id="stop4550-7-6-0-1" />
+      <stop
+         style="stop-color:#008700;stop-opacity:0;"
+         offset="1"
+         id="stop4552-6-2-3-8" />
+    </linearGradient>
+    <linearGradient
+       y2="16.28406"
+       x2="40.211685"
+       y1="20.75281"
+       x1="40.328125"
+       gradientTransform="matrix(0.43547914,0,0,0.43547914,32.065781,24.915391)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3994"
+       xlink:href="#linearGradient4548-7-8-4-3"
+       inkscape:collect="always" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1802,8 +1833,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="32.000001"
-     inkscape:cx="65.439198"
-     inkscape:cy="1011.4967"
+     inkscape:cx="44.771601"
+     inkscape:cy="1018.1796"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1830,6 +1861,17 @@
      inkscape:label="Capa 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:0;stroke:none"
+       id="rect4017"
+       width="2.53125"
+       height="2.84375"
+       x="44.625"
+       y="30.737215"
+       ry="0.018034328"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export.png"
+       inkscape:export-xdpi="947"
+       inkscape:export-ydpi="947" />
     <g
        id="g4814"
        transform="matrix(0.34363739,0,0,0.34363739,2.2730521,39.865593)">
@@ -1857,7 +1899,7 @@
     </g>
     <g
        id="g4565"
-       transform="matrix(0.39530177,0,0,0.39530177,36.762318,14.609437)">
+       transform="matrix(0.39530177,0,0,0.39530177,37.168568,17.078187)">
       <rect
          inkscape:export-ydpi="224.71411"
          inkscape:export-xdpi="224.71411"
@@ -7228,15 +7270,22 @@
        inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/import_project.png"
        inkscape:export-xdpi="947.27002"
        inkscape:export-ydpi="947.27002" />
-    <path
-       style="fill:#008700;fill-opacity:1;stroke:none"
-       d="m 45.015625,31.03125 0.03125,2.34375 0.214174,-0.0221 -0.0404,-2.321653 z m 0.234375,0 0.0625,2.34375 1.34375,-0.03125 -0.0625,-2.3125 z m 1.373104,0 0.07165,2.290403 0.211493,0.0221 -0.09375,-2.3125 z m -1.248104,0.1875 1.0625,0 0.03125,0.5625 -1.0625,0 z m 1.09375,0.6875 L 46.5,32.46875 45.4375,32.5 45.40625,31.9375 z m -1.03125,0.71875 1.0625,0 0.03125,0.5625 -1.0625,0.03125 z"
-       id="path4318-7-8-2-1-8"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+    <g
+       id="g4788"
+       transform="translate(-0.070311,-0.04403346)"
        inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export.png"
-       inkscape:export-xdpi="1220"
-       inkscape:export-ydpi="1220" />
+       inkscape:export-xdpi="947"
+       inkscape:export-ydpi="947">
+      <path
+         inkscape:export-ydpi="1220"
+         inkscape:export-xdpi="1220"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export.png"
+         sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path4318-7-8-2-1-8"
+         d="m 45.015625,31.03125 0.03125,2.34375 0.214174,-0.0221 -0.0404,-2.321653 z m 0.234375,0 0.0625,2.34375 1.34375,-0.03125 -0.0625,-2.3125 z m 1.373104,0 0.07165,2.290403 0.211493,0.0221 -0.09375,-2.3125 z m -1.248104,0.1875 1.0625,0 0.03125,0.5625 -1.0625,0 z m 1.09375,0.6875 L 46.5,32.46875 45.4375,32.5 45.40625,31.9375 z m -1.03125,0.71875 1.0625,0 0.03125,0.5625 -1.0625,0.03125 z"
+         style="fill:#008700;fill-opacity:1;stroke:none" />
+    </g>
     <path
        style="fill:url(#linearGradient3958-2);fill-opacity:1;stroke:#008700;stroke-width:0.11542948;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 57.864612,61.263827 c 0.232744,0.678486 -0.28833,1.068284 -0.735525,1.068284 -0.447195,0 -0.809719,-0.356431 -0.809719,-0.79611 0,-0.43968 0.362524,-0.796111 0.809719,-0.796111 0.323779,0 0.616431,0.189639 0.744107,0.482182"
@@ -7335,5 +7384,43 @@
        inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export_frame.png"
        inkscape:export-xdpi="715.30231"
        inkscape:export-ydpi="715.30231" />
+    <path
+       style="fill:url(#linearGradient3994);fill-opacity:1;stroke:#008700;stroke-width:0.11542948;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 50.261298,31.768607 c 0.232744,0.678486 -0.28833,1.068284 -0.735525,1.068284 -0.447195,0 -0.809719,-0.356431 -0.809719,-0.79611 0,-0.43968 0.362524,-0.796111 0.809719,-0.796111 0.323779,0 0.616431,0.189639 0.744107,0.482182"
+       id="path4545-8-2-1-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csssc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/video_gallery.png"
+       inkscape:export-xdpi="947.27002"
+       inkscape:export-ydpi="947.27002" />
+    <path
+       style="fill:none;stroke:#008700;stroke-width:0.11542948;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 50.276202,31.954405 c -0.177515,0.520696 -1.290207,0.610235 -1.549523,0.120517"
+       id="path7034-3-6-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/video_gallery.png"
+       inkscape:export-xdpi="947.27002"
+       inkscape:export-ydpi="947.27002" />
+    <rect
+       style="fill:#ffffff;fill-opacity:0;stroke:none"
+       id="rect4017-2"
+       width="2.53125"
+       height="2.84375"
+       x="51.203125"
+       y="31.096588"
+       ry="0.018034328"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export.png"
+       inkscape:export-xdpi="947"
+       inkscape:export-ydpi="947" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 51.960937,31.15909 0.03125,2.34375 0.214174,-0.0221 -0.0404,-2.321653 z m 0.234375,0 0.0625,2.34375 1.34375,-0.03125 -0.0625,-2.3125 z m 1.373104,0 0.07165,2.290403 0.211493,0.0221 -0.09375,-2.3125 z m -1.248104,0.1875 1.0625,0 0.03125,0.5625 -1.0625,0 z m 1.09375,0.6875 0.03125,0.5625 -1.0625,0.03125 -0.03125,-0.5625 z m -1.03125,0.71875 1.0625,0 0.03125,0.5625 -1.0625,0.03125 z"
+       id="path4318-7-8-2-1-8-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export_button.png"
+       inkscape:export-xdpi="1220"
+       inkscape:export-ydpi="1220" />
   </g>
 </svg>

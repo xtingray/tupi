@@ -36,15 +36,13 @@
 #ifndef KTEXPORTWIDGET_H
 #define KTEXPORTWIDGET_H
 
-#include <ktmodulewidgetbase.h>
+#include "ktmodulewidgetbase.h"
 #include "ktproject.h"
+#include "ktexportpluginobject.h"
+#include "kexportwizard.h"
 
 #include <QListWidget>
 #include <QHash>
-
-#include "ktexportpluginobject.h"
-
-#include "kexportwizard.h"
 
 class QButtonGroup;
 class QLineEdit;
@@ -53,11 +51,13 @@ class SelectScenes;
 class ExportTo;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
+
 class KTExportWidget : public KExportWizard
 {
     Q_OBJECT
+
     public:
         KTExportWidget(const KTProject *project, QWidget *parent = 0);
         ~KTExportWidget();
@@ -77,7 +77,5 @@ class KTExportWidget : public KExportWizard
         QHash<QString, KTExportInterface *> m_plugins;
         const QString tag;
 };
-
-
 
 #endif

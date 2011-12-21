@@ -60,11 +60,11 @@ class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRespo
 
         QSize sizeHint() const;
         void setLoop(bool l);
-        void setCurrentScene(int index);
         void updateSceneIndex(int index);
         KTScene *currentScene() const;
+        int currentSceneIndex();
         void setFPS(int fps);
-        void refreshAnimation(const KTProject *project);
+        void refreshAnimation();
 
     private:
         void initAnimationArea();
@@ -93,7 +93,6 @@ class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRespo
         void progressStep(int, int);
         void toStatusBar(const QString &, int);
         void sceneChanged(const KTScene *newScene);
-
         void requestTriggered(const KTProjectRequest *event);
 
     protected:

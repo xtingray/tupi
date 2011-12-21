@@ -487,3 +487,8 @@ void KTNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, 
     KTImageExportPackage package(frameIndex, sceneIndex, title, description);
     sendPackage(package);
 }
+
+void KTNetProjectManagerHandler::sendVideoRequest(const QList<int> sceneIndexes)
+{
+    tError() << "KTNetProjectManagerHandler::sendVideoRequest() - Sending video request!";
+}

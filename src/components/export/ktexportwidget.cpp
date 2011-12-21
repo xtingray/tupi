@@ -700,7 +700,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
            TINIT;
     #endif
 
-    setWindowTitle(tr("Export"));
+    setWindowTitle(tr("Export to Video"));
     setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
 
     m_pluginSelectionPage = new SelectPlugin();
@@ -717,15 +717,13 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     addPage(m_exportImages);
 
     connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
-
     connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportToPage, SLOT(setCurrentFormat(int, const QString &)));
-    connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
-
     connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportImages, SLOT(setCurrentFormat(int, const QString &)));
+
+    connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
     connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportImages, SLOT(setScenesIndexes(const QList<int> &)));
 
     loadPlugins();
-
     m_pluginSelectionPage->selectFirstItem();
 }
 
@@ -762,7 +760,6 @@ void KTExportWidget::loadPlugins()
 void KTExportWidget::setExporter(const QString &plugin)
 {
     if (m_plugins.contains(plugin)) {
-        tFatal() << "KTExportWidget::setExporter() - Tracing plugin: " << plugin;
         KTExportInterface* currentExporter = m_plugins[plugin];
         m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
         m_exportToPage->setCurrentExporter(currentExporter);

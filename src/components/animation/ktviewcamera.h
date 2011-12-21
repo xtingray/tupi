@@ -58,21 +58,23 @@ class KTViewCamera : public QFrame
     Q_OBJECT
 
     public:
-        KTViewCamera(KTProject *work, QWidget *parent = 0);
+        KTViewCamera(KTProject *work, bool isNetworked = false, QWidget *parent = 0);
         ~KTViewCamera();
 
         QSize sizeHint() const;
-        void updateSceneInfo();
+        // void updateSceneInfo();
 
     private slots:
-        void showSceneInfo(const KTScene *scene);
         void setLoop();
+        void selectScene(int index);
 
     public slots:
         bool handleProjectResponse(KTProjectResponse *event);
         void setFPS(int fps);
-        void updatePhotograms(KTProject *project);
+        // void updatePhotograms(KTProject *project);
+        void updatePhotograms();
         void exportDialog();
+        void postDialog();
         void doPlay();
         void doPlayBack();
         void doStop();
@@ -81,14 +83,11 @@ class KTViewCamera : public QFrame
 
     signals:
         void requestTriggered(const KTProjectRequest *event);
+        void requestForExportVideoToServer(const QList<int> indexes);
 
     private:
-        QFrame *m_container;
-        KTAnimationArea *m_animationArea;
-
-        KTCameraStatus *m_status;
-    
-        KTProject *project;
+        struct Private;
+        Private *const k;
 };
 
 #endif

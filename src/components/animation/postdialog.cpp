@@ -33,7 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktimagedialog.h"
+#include "postdialog.h"
+#include "kitemselector.h"
 #include "tapplicationproperties.h"
 #include "tglobal.h"
 #include "tconfig.h"
@@ -47,31 +48,21 @@
 #include <QTextEdit>
 #include <QPushButton>
 
-struct KTImageDialog::Private
+struct PostDialog::Private
 {
-    QLineEdit *lineEdit;
-    QTextEdit *descText;
+    KItemSelector *selector;
+    QPushButton *postButton;
+    QList<int> scenes;
 };
 
-KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
+PostDialog::PostDialog(QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    setWindowTitle(tr("Image Properties"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
+    setWindowTitle(tr("Select scenes to export"));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/export.png")));
 
-    QLabel *titleLabel = new QLabel(tr("Title"));
-    k->lineEdit = new QLineEdit(tr("My Picture"));
-    connect(k->lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
-    titleLabel->setBuddy(k->lineEdit);
-
-    k->descText = new QTextEdit;
-    k->descText->setAcceptRichText(false);
-    k->descText->setFixedSize(QSize(300, 80));
-    k->descText->setText(tr("Just a little taste of my style :)"));
-
-    QHBoxLayout *topLayout = new QHBoxLayout;
-    topLayout->addWidget(titleLabel);
-    topLayout->addWidget(k->lineEdit);
+    k->selector = new KItemSelector;
+    connect(k->selector, SIGNAL(changed()), this, SLOT(updateState()));
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
@@ -80,53 +71,51 @@ KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
     connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
     buttonLayout->addWidget(cancel);
 
-    QPushButton *ok = new QPushButton(tr("Post Image"));
-    connect(ok, SIGNAL(clicked()), this, SLOT(checkData()));
-    buttonLayout->addWidget(ok);
-    ok->setDefault(true);
+    k->postButton = new QPushButton(tr("Post Video"));
+    k->postButton->setEnabled(false);
+    connect(k->postButton, SIGNAL(clicked()), this, SLOT(setData()));
+    k->postButton->setDefault(true);
+    buttonLayout->addWidget(k->postButton);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    QLabel *descLabel = new QLabel(tr("Description"));
-    layout->addLayout(topLayout);
-    layout->addWidget(descLabel);
-    layout->addWidget(k->descText);
+    layout->addWidget(k->selector);
     layout->addLayout(buttonLayout);
     setLayout(layout);
 }
 
-KTImageDialog::~KTImageDialog()
+PostDialog::~PostDialog()
 {
 }
 
-void KTImageDialog::checkData()
+void PostDialog::setScenes(const QList<KTScene *> &scenes)
 {
-    if (k->lineEdit->text().length() == 0) {
-        k->lineEdit->setText(tr("Set a title for the picture here!"));
-        k->lineEdit->selectAll();
-        return;
+    k->selector->clear();
+    int pos = 1;
+
+    foreach (KTScene *scene, scenes) {
+             k->selector->addItem(QString("%1: ").arg(pos) + scene->sceneName());
+             pos++;
     }
 
+    k->selector->selectFirstItem();
+}
+
+void PostDialog::updateState()
+{
+    if (k->selector->selectedItems().count() > 0)
+        k->postButton->setEnabled(true);
+    else
+        k->postButton->setEnabled(false);
+}
+
+void PostDialog::setData()
+{
+    k->scenes = k->selector->selectedIndexes();
     QDialog::accept();
 }
 
-void KTImageDialog::resetLineColor(const QString &)
+
+QList<int> PostDialog::sceneIndexes() const
 {
-    QPalette pal = k->lineEdit->palette();
-    if (k->lineEdit->text().length() > 0 && k->lineEdit->text().compare(tr("Set a title for the picture here!")) != 0) 
-        pal.setBrush(QPalette::Base, Qt::white);
-    else 
-        pal.setBrush(QPalette::Base, QColor(255, 140, 138));
-
-     k->lineEdit->setPalette(pal);
-}
-
-QString KTImageDialog::imageTitle() const
-{
-     return k->lineEdit->text();
-}
-
-QString KTImageDialog::imageDescription() const
-{
-     return k->descText->toPlainText();
-}
-
+    return k->scenes;
+} 

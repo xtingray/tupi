@@ -36,13 +36,13 @@
 #ifndef KTCAMERASTATUS_H
 #define KTCAMERASTATUS_H
 
+#include "ktviewcamera.h"
+
 #include <QFrame>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QComboBox>
-
-#include "ktviewcamera.h"
 
 class KTViewCamera;
 
@@ -51,21 +51,22 @@ class KTCameraStatus : public QFrame
     Q_OBJECT
 
     public:
-        KTCameraStatus(KTViewCamera *camera = 0, QWidget *parent = 0);
+        KTCameraStatus(KTViewCamera *camera = 0, bool isNetworked = false, QWidget *parent = 0);
         ~KTCameraStatus();
 
+        void setScenes(KTProject *project);
         void setFPS(int frames);
         int getFPS();
-        void setSceneName(const QString &name);
+        void setCurrentScene(int index);
         void setFramesTotal(const QString &frames);
         bool isLooping();
 
+    signals:
+        void sceneIndexChanged(int index);
+
     private:
-        QComboBox *fps; 
-        QLabel *sceneName;
-        QLabel *framesTotal;
-        QCheckBox *loopBox;
-        bool loop;
+        struct Private;
+        Private *const k;
 };
 
 #endif

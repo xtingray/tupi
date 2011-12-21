@@ -115,16 +115,14 @@ class KTViewDocument : public QMainWindow
         void enableOnionFeature();
         void setDefaultOnionFactor();
         void setOnionFactor(double value);
+        void exportImage();
         void postImage();
 
     private slots:
         void showPos(const QPointF &p);	
         void setCursor(const QCursor &c);
-
         void updateZoomFactor( double f);
-        // void configure();
         void selectToolFromMenu(QAction *act);
-        //void firstCommand();
         void callAutoSave();
 
     public slots:

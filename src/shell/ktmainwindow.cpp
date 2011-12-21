@@ -56,7 +56,6 @@
 // #ifdef USE_NET
 #include "ktnetprojectmanagerparams.h"
 #include "ktconnectdialog.h"
-// #include "tupinetfilemanager.h"
 #include "ktlistpackage.h"
 #include "ktimportprojectpackage.h"
 #include "ktlistprojectspackage.h"
@@ -216,20 +215,20 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewLocalProject()
 {
+    KTMainWindow::requestType = NewLocalProject;
+
     m_projectManager->setupNewProject();
     m_projectManager->setOpen(true);
  
     enableToolViews(true);
     setMenuItemsContext(true);
 
-    KTMainWindow::requestType = NewLocalProject;
-
-    viewNewDocument();
+    setWorkSpace();
 }
 
 void KTMainWindow::createNewNetProject(const QString &title)
 {
-    m_isNetworkProject = true;
+    isNetworked = true;
     projectName = title;
     setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " " + tr("[ by %1 | net mode ]").arg(netUser));
 
@@ -246,7 +245,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
     m_exposureSheet->updateFramesState(m_projectManager->project());
     m_projectManager->setOpen(true);
 
-    viewNewDocument();
+    setWorkSpace();
 }
 
 /**
@@ -258,7 +257,7 @@ void KTMainWindow::createNewNetProject(const QString &title)
  * @endif
 */
 
-void KTMainWindow::viewNewDocument()
+void KTMainWindow::setWorkSpace()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -274,17 +273,11 @@ void KTMainWindow::viewNewDocument()
         // Setting undo/redo actions
         setUndoRedoActions();
 
-        // SQA: Check this instruction
-        // messageToStatus(tr("Opening a new paint area..."));
-
-        if (!m_isNetworkProject)
-            drawingTab = new KTViewDocument(m_projectManager->project(), this, true);
-        else
-            drawingTab = new KTViewDocument(m_projectManager->project(), this, false);           
+        drawingTab = new KTViewDocument(m_projectManager->project(), this, isNetworked ? false : true);
 
         TCONFIG->beginGroup("Network");
         QString server = TCONFIG->value("Server").toString();
-        if (m_isNetworkProject && server.compare("tupitube.com") == 0) {
+        if (isNetworked && server.compare("tupitube.com") == 0) {
             connect(drawingTab, SIGNAL(requestExportImageToServer(int, int, const QString &, const QString &)),                         
                     netProjectManagerHandler, SLOT(sendExportImageRequestToServer(int, int, const QString &, const QString &)));
         }
@@ -292,7 +285,6 @@ void KTMainWindow::viewNewDocument()
         connectToDisplays(drawingTab);
 
         drawingTab->setWindowTitle(tr("Animation"));
-
         addWidget(drawingTab);
 
         connectToDisplays(drawingTab);
@@ -304,8 +296,11 @@ void KTMainWindow::viewNewDocument()
         drawingTab->setAntialiasing(true);
 
         // KTViewCamera *
-        viewCamera = new KTViewCamera(m_projectManager->project());
+        viewCamera = new KTViewCamera(m_projectManager->project(), isNetworked);
         ui4project(viewCamera);
+
+        if (isNetworked)
+            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QList<int>)), this, SLOT(postVideo(const QList<int>)));
 
         animationTab = new KTAnimationspace(viewCamera);
         animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/play.png"));
@@ -343,7 +338,7 @@ void KTMainWindow::viewNewDocument()
 
         exposureView->expandDock(true);
 
-        if (!m_isNetworkProject)
+        if (!isNetworked)
             connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         m_projectManager->undoModified();
@@ -561,7 +556,7 @@ void KTMainWindow::resetUI()
 
     setWindowTitle(tr("Tupi: 2D Magic"));
 
-    if (m_isNetworkProject) { 
+    if (isNetworked) { 
         m_viewChat->expandDock(false);
         // netProjectManagerHandler->closeProject();
     }
@@ -639,7 +634,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
-        m_isNetworkProject = false;
+        isNetworked = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
         projectName = params->projectName();
@@ -689,7 +684,7 @@ void KTMainWindow::openProject(const QString &path)
         return;
 
     m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
-    m_isNetworkProject = false;
+    isNetworked = false;
 
     if (closeProject()) {
         setUpdatesEnabled(false);
@@ -729,7 +724,7 @@ void KTMainWindow::openProject(const QString &path)
                 author = "Anonymous";
 
             setWindowTitle(tr("Tupi: Magia 2D") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
-            viewNewDocument();
+            setWorkSpace();
         } else {
                  setUpdatesEnabled(true);
                  TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
@@ -796,10 +791,9 @@ void KTMainWindow::save()
 void KTMainWindow::preferences()
 {
     m_statusBar->setStatus(tr("Preferences Dialog Opened"));
+
     KTPreferences *preferences = new KTPreferences(this);
-
     connect(preferences, SIGNAL(timerChanged()), drawingTab, SLOT(updateTimer()));
-
     preferences->show();
 
     QDesktopWidget desktop;
@@ -807,7 +801,6 @@ void KTMainWindow::preferences()
                       (int) (desktop.screenGeometry().height() - preferences->height())/2);
 
     preferences->exec();
-
     delete preferences;
 }
 
@@ -1010,8 +1003,8 @@ void KTMainWindow::saveAs()
 
     m_fileName = fileName;
 
-    if (m_isNetworkProject) {
-        m_isNetworkProject = false;
+    if (isNetworked) {
+        isNetworked = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
@@ -1030,7 +1023,7 @@ void KTMainWindow::saveAs()
 
 void KTMainWindow::saveProject()
 {
-    if (!m_isNetworkProject) {
+    if (!isNetworked) {
 
         if (isSaveDialogOpen)
             return;
@@ -1183,15 +1176,12 @@ void KTMainWindow::updateCurrentTab(int index)
     // SQA: Check/Test the content of this method
 
     if (index == 1) {  // Player mode 
-
         if (lastTab == 2)
             helpView->expandDock(false);
-        viewCamera->updatePhotograms(m_projectManager->project());
         lastTab = 1;
+        viewCamera->updatePhotograms();
         viewCamera->setFocus();
-
     } else {
-
         if (index == 0) { // Animation mode
             if (lastTab == 1)
                 viewCamera->doStop();
@@ -1332,4 +1322,9 @@ void KTMainWindow::unexpectedClose()
 void KTMainWindow::netProjectSaved()
 {
     m_projectManager->undoModified();
+}
+
+void KTMainWindow::postVideo(const QList<int> sceneIndexes)
+{
+    netProjectManagerHandler->sendVideoRequest(sceneIndexes);
 }

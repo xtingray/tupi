@@ -35,23 +35,34 @@
 
 #include "ktviewcamera.h"
 #include "ktexportwidget.h"
+#include "postdialog.h"
 #include "tdebug.h"
 #include "tseparator.h"
+#include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
+#include "ktrequestbuilder.h"
 
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QDesktopWidget>
 
-#include "ktprojectresponse.h"
+struct KTViewCamera::Private
+{
+    QFrame *container;
+    KTAnimationArea *animationArea;
+    KTCameraStatus *status;
+    KTProject *project;
+    int currentSceneIndex;
+};
 
-KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
+KTViewCamera::KTViewCamera(KTProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
     #endif
 
-    project = work;
+    k->project = project;
 
     setObjectName("KTViewCamera_");
 
@@ -64,12 +75,12 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     QFont font = this->font();
     font.setPointSize(10);
     font.setBold(true);
-    QLabel *name = new QLabel(work->projectName() + ": ");
+    QLabel *name = new QLabel(k->project->projectName() + ": ");
     name->setFont(font);
 
     font = this->font();
     font.setPointSize(10);
-    QLabel *description = new QLabel(work->description());
+    QLabel *description = new QLabel(k->project->description());
     description->setFont(font);
 
     labelLayout->addWidget(name); 
@@ -88,8 +99,8 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     layout->addWidget(titleWidget, Qt::AlignCenter);
     layout->addLayout(labelLayout, Qt::AlignCenter);
 
-    m_animationArea = new KTAnimationArea(project);
-    layout->addWidget(m_animationArea, 0, Qt::AlignCenter);
+    k->animationArea = new KTAnimationArea(k->project);
+    layout->addWidget(k->animationArea, 0, Qt::AlignCenter);
 
     KTCameraBar *m_bar = new KTCameraBar;
     layout->addWidget(m_bar, 0, Qt::AlignCenter);
@@ -97,20 +108,18 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 
     connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
     connect(m_bar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
-    connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
-    connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
-    connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
+    connect(m_bar, SIGNAL(stop()), k->animationArea, SLOT(stop()));
+    connect(m_bar, SIGNAL(ff()), k->animationArea, SLOT(nextFrame()));
+    connect(m_bar, SIGNAL(rew()), k->animationArea, SLOT(previousFrame()));
 
-    m_status = new KTCameraStatus(this);
+    k->status = new KTCameraStatus(this, isNetworked);
+    k->status->setScenes(k->project); 
+    connect(k->status, SIGNAL(sceneIndexChanged(int)), this, SLOT(selectScene(int)));
 
-    KTScene *scene = project->scene(0);
-    if (scene)
-        m_status->setSceneName(scene->sceneName());
-
-    m_status->setFPS(project->fps());
+    k->status->setFPS(k->project->fps());
     setLoop();
 
-    layout->addWidget(m_status, 0, Qt::AlignCenter|Qt::AlignTop);
+    layout->addWidget(k->status, 0, Qt::AlignCenter|Qt::AlignTop);
 
     setLayout(layout);
 }
@@ -122,15 +131,9 @@ KTViewCamera::~KTViewCamera()
     #endif
 }
 
-void KTViewCamera::showSceneInfo(const KTScene *scene)
-{
-    if (scene)
-        m_status->setSceneName(scene->sceneName());
-}
-
 void KTViewCamera::setLoop()
 {
-    m_animationArea->setLoop(m_status->isLooping());
+    k->animationArea->setLoop(k->status->isLooping());
 }
 
 QSize KTViewCamera::sizeHint() const
@@ -141,37 +144,39 @@ QSize KTViewCamera::sizeHint() const
 
 void KTViewCamera::doPlay()
 {
-    m_animationArea->play();
-    updateSceneInfo();
+    k->animationArea->play();
+    // updateSceneInfo();
 }
 
 void KTViewCamera::doPlayBack()
 {
-    m_animationArea->playBack();
-    updateSceneInfo();
+    k->animationArea->playBack();
+    // updateSceneInfo();
 }
 
 void KTViewCamera::doStop()
 {
-    m_animationArea->stop();
+    k->animationArea->stop();
 }
 
 void KTViewCamera::nextFrame()
 {
-    m_animationArea->nextFrame();
+    k->animationArea->nextFrame();
 }
 
 void KTViewCamera::previousFrame()
 {
-    m_animationArea->previousFrame();
+    k->animationArea->previousFrame();
 }
 
+/*
 void KTViewCamera::updateSceneInfo()
 {
-    KTScene *scene = m_animationArea->currentScene();
+    KTScene *scene = k->animationArea->currentScene();
     if (scene)
         showSceneInfo(scene);
 }
+*/
 
 bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 {
@@ -180,50 +185,111 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
         int index = sceneResponse->sceneIndex();
 
         switch (sceneResponse->action()) {
+            case KTProjectRequest::Add:
+            {
+                 k->status->setScenes(k->project);
+                 k->status->setCurrentScene(index);
+            }
+            break;
             case KTProjectRequest::Remove:
             {
-                 if (index > 0)
-                     m_animationArea->updateSceneIndex(index - 1);
+                 if (index < 0)
+                     break;
+
+                 k->status->setScenes(k->project);
+
+                 if (index == k->project->scenesTotal())
+                     index--;
+
+                 k->animationArea->updateSceneIndex(index);
+                 k->status->setCurrentScene(index);
+            }
+            break;
+            case KTProjectRequest::Reset:
+            {
+                 k->status->setScenes(k->project);
             }
             break;
             case KTProjectRequest::Select:
             {
-                 if (index >= 0)
-                     m_animationArea->updateSceneIndex(index);
+                 if (index >= 0) {
+                     k->animationArea->updateSceneIndex(index);
+                     k->status->setCurrentScene(index);
+                 }
+            }
+            break;
+            case KTProjectRequest::Rename:
+            {
+                 k->status->setScenes(k->project);
+                 k->status->setCurrentScene(index);
+            }
+            break;
+            default:
+            {
+                 tError() << "KTViewCamera::handleProjectResponse() - action(): " << sceneResponse->action();
             }
             break;
         }
-
-        updateSceneInfo();
     }
 
-    return m_animationArea->handleResponse(response);
+    return k->animationArea->handleResponse(response);
 }
 
 void KTViewCamera::setFPS(int fps)
 {
     fps++;
-    project->setFPS(fps);
-    //m_status->setFPS(fps);
-    m_animationArea->setFPS(fps);
+    k->project->setFPS(fps);
+    //k->status->setFPS(fps);
+    k->animationArea->setFPS(fps);
 }
 
-void KTViewCamera::updatePhotograms(KTProject *project)
+void KTViewCamera::updatePhotograms()
 {
-    m_animationArea->refreshAnimation(project);
-    KTScene *scene = project->scene(0);
-    QString total = "";
-    total = total.setNum(scene->framesTotal()); 
-    m_status->setFramesTotal(total); 
+    k->animationArea->refreshAnimation();
+    KTScene *scene = k->animationArea->currentScene(); 
+    if (scene) {
+        QString total = "";
+        total = total.setNum(scene->framesTotal()); 
+        k->status->setFramesTotal(total); 
+    }
 }
 
 void KTViewCamera::exportDialog()
 {
     QDesktopWidget desktop;
 
-    KTExportWidget *exportWidget = new KTExportWidget(project, this);
+    KTExportWidget *exportWidget = new KTExportWidget(k->project, this);
     exportWidget->show();
     exportWidget->move((int) (desktop.screenGeometry().width() - exportWidget->width())/2, 
                        (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
     exportWidget->exec();
 }
+
+void KTViewCamera::postDialog()
+{
+    QDesktopWidget desktop;
+
+    PostDialog *postWidget = new PostDialog(this);
+    postWidget->setScenes(k->project->scenes().values());
+    postWidget->show();
+    postWidget->move((int) (desktop.screenGeometry().width() - postWidget->width())/2,
+                       (int) (desktop.screenGeometry().height() - postWidget->height())/2);
+
+    if (postWidget->exec() != QDialog::Rejected) {
+        QList<int> scenes = postWidget->sceneIndexes();
+        emit requestForExportVideoToServer(scenes);
+    }
+
+}
+
+void KTViewCamera::selectScene(int index)
+{
+    if (index != k->animationArea->currentSceneIndex()) {
+        k->animationArea->updateSceneIndex(index);
+        updatePhotograms();
+
+        KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
+        emit requestTriggered(&event);
+    }
+}
+

@@ -48,7 +48,7 @@ KTabDialog::KTabDialog(QWidget *parent, bool modal) : QDialog(parent)
     mainLayout->addWidget(m_tabWidget);
     setLayout(mainLayout);
     
-    setupButtons(Ok|Cancel);
+    setupButtons(Cancel|Ok);
     
     setModal(modal);
 }
@@ -103,18 +103,19 @@ void KTabDialog::setupButtons(int buttons)
         m_buttons.insert( Apply, applyButton);
     }
     
-    if (buttons & Ok) {
-        QPushButton *okButton = new QPushButton(tr("OK"));
-        connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
-        buttonLayout->addWidget(okButton);
-        m_buttons.insert( Ok, okButton);
-    }
-    
     if (buttons & Cancel) {
         QPushButton *cancelButton = new QPushButton(tr("Cancel"));
         connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
         buttonLayout->addWidget(cancelButton);
-        m_buttons.insert( Cancel, cancelButton);
+        m_buttons.insert(Cancel, cancelButton);
+    }
+
+    if (buttons & Ok) {
+        QPushButton *okButton = new QPushButton(tr("OK"));
+        connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
+        okButton->setDefault(true);
+        buttonLayout->addWidget(okButton);
+        m_buttons.insert(Ok, okButton);
     }
     
     static_cast<QVBoxLayout *>(layout())->addLayout(buttonLayout);

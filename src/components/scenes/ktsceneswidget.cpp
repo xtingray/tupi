@@ -103,6 +103,8 @@ void KTScenesWidget::setupTableScenes()
     addChild(searcher);
     addChild(k->tableScenes);
 
+    // SQA: All these connections are really necessary? Please check! 
+
     connect(k->tableScenes, SIGNAL(changeCurrent(QString, int)), 
             this, SLOT(selectScene(QString, int)));
 
@@ -147,8 +149,6 @@ void KTScenesWidget::selectScene(QString name, int index)
 
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
     emit requestTriggered(&event);
-
-    // emit localRequestTriggered(&event);
 }
 
 void KTScenesWidget::emitRequestInsertScene()

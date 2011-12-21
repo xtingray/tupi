@@ -137,9 +137,7 @@ class KTMainWindow : public KTabbedMainWindow
          void ui4project(QWidget *widget);
          void ui4paintArea(QWidget *widget);
          void ui4localRequest(QWidget *widget);
-         void flipTabs(int index);
 
-         // void setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
          void setupNetworkProject();
          void setupNetworkProject(KTProjectManagerParams *params);
          void setupLocalProject(KTProjectManagerParams *params);
@@ -167,10 +165,9 @@ class KTMainWindow : public KTabbedMainWindow
 
     public slots:
           void openProject(const QString &path);
-          // void internetEnabled();
 
     private slots:
-          void viewNewDocument();
+          void setWorkSpace();
           void createNewLocalProject();
           void newProject();
           bool closeProject();
@@ -211,6 +208,7 @@ class KTMainWindow : public KTabbedMainWindow
           void callSave();
           void expandExposureView(int index);
           void expandColorView();
+          void postVideo(const QList<int> sceneIndexes);
 
     private:
           KTProjectManager *m_projectManager;
@@ -236,9 +234,10 @@ class KTMainWindow : public KTabbedMainWindow
 
           QMenu *m_recentProjectsMenu;
 
-    private: // Network variables
+    // Network variables
+    private:
           KTNetProjectManagerHandler *netProjectManagerHandler;
-          bool m_isNetworkProject;
+          bool isNetworked;
           KToolView *m_viewChat;
 
     // Components
@@ -265,7 +264,6 @@ class KTMainWindow : public KTabbedMainWindow
           KToolView *exportView;
           KTViewCamera *viewCamera;
           bool isSaveDialogOpen; 
-          // bool projectSaved;
           bool internetOn;
           int lastTab;
           KTProject::Mode contextMode;

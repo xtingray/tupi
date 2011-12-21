@@ -35,10 +35,8 @@
 
 #include "ktcamerastatus.h"
 #include "ktexportwidget.h"
-
 #include "tdebug.h"
 #include "tconfig.h"
-
 #include "tseparator.h"
 
 #include <QStatusBar>
@@ -47,8 +45,18 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QComboBox>
 
-KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(parent)
+struct KTCameraStatus::Private
+{
+    QComboBox *fps;
+    QComboBox *scenes;
+    QLabel *framesTotal;
+    QCheckBox *loopBox;
+    bool loop;
+};
+
+KTCameraStatus::KTCameraStatus(KTViewCamera *camera, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -58,86 +66,97 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
     setMidLineWidth(2);
     setLineWidth(1);
 
-    QBoxLayout *m_sceneInfoLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
-    m_sceneInfoLayout->addStretch(1);
+    QBoxLayout *sceneInfoLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
+    sceneInfoLayout->addStretch(1);
 
-    m_sceneInfoLayout->setSpacing(0);
-    m_sceneInfoLayout->setMargin(3);
+    sceneInfoLayout->setSpacing(0);
+    sceneInfoLayout->setMargin(3);
 
     QFont font = this->font();
     font.setPointSize(6);
 
-    sceneName = new QLabel;
-    sceneName->setFont(font);
-
     QLabel *sceneNameText = new QLabel("<B>" + tr("Scene name") + ":</B> ");
     sceneNameText->setFont(font);
 
-    m_sceneInfoLayout->addWidget(sceneNameText,1);
-    m_sceneInfoLayout->addWidget(sceneName,1);
+    k->scenes = new QComboBox();
+    k->scenes->setIconSize(QSize(15, 15));
+    k->scenes->setMaximumWidth(120);
+    k->scenes->setFont(font);
+    connect(k->scenes, SIGNAL(activated(int)), this, SIGNAL(sceneIndexChanged(int)));
 
-    m_sceneInfoLayout->addSpacing(20);
+    sceneInfoLayout->addWidget(sceneNameText, 1);
+    sceneInfoLayout->addWidget(k->scenes, 1);
+    sceneInfoLayout->addSpacing(20);
 
     QLabel *label = new QLabel("<B>" + tr("Frames total") + ":</B> ");
     label->setFont(font);
 
-    framesTotal = new QLabel;
-    framesTotal->setFont(font);
+    k->framesTotal = new QLabel;
+    k->framesTotal->setFont(font);
 
-    m_sceneInfoLayout->addWidget(label, 1);
-    m_sceneInfoLayout->addWidget(framesTotal, 1);
+    sceneInfoLayout->addWidget(label, 1);
+    sceneInfoLayout->addWidget(k->framesTotal, 1);
 
-    m_sceneInfoLayout->addSpacing(20);
+    sceneInfoLayout->addSpacing(20);
 
     QLabel *fpsText = new QLabel("<B>" + tr("FPS") + ":</B> ");
     fpsText->setFont(font);
 
-    fps = new QComboBox();
-    fps->setIconSize(QSize(15, 15));
-    fps->setMaximumWidth(120);
-    fps->setFont(font);
+    k->fps = new QComboBox();
+    k->fps->setIconSize(QSize(15, 15));
+    k->fps->setMaximumWidth(120);
+    k->fps->setFont(font);
 
     for (int i=1; i<100; i++)
-         fps->addItem(QString::number(i));
+         k->fps->addItem(QString::number(i));
 
-    fps->setCurrentIndex(23);
+    k->fps->setCurrentIndex(23);
+    connect(k->fps, SIGNAL(currentIndexChanged(int)), camera, SLOT(setFPS(int)));
 
-    //connect(fps, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
-    connect(fps, SIGNAL(currentIndexChanged(int)), camera, SLOT(setFPS(int)));
+    sceneInfoLayout->addWidget(fpsText, 1);
+    sceneInfoLayout->addWidget(k->fps, 1);
 
-    m_sceneInfoLayout->addWidget(fpsText, 1);
-    m_sceneInfoLayout->addWidget(fps, 1);
+    sceneInfoLayout->addSpacing(20);
 
-    m_sceneInfoLayout->addSpacing(20);
-
-    loopBox = new QCheckBox();
+    k->loopBox = new QCheckBox();
     QPixmap pix(THEME_DIR + "icons/loop.png");
-    loopBox->setToolTip(tr("Loop"));
-    loopBox->setIcon(pix); 
-    loopBox->setFocusPolicy(Qt::NoFocus);
+    k->loopBox->setToolTip(tr("Loop"));
+    k->loopBox->setIcon(pix); 
+    k->loopBox->setFocusPolicy(Qt::NoFocus);
 
-    loopBox->setShortcut(QKeySequence(tr("Ctrl+L")));
+    k->loopBox->setShortcut(QKeySequence(tr("Ctrl+L")));
 
-    connect(loopBox, SIGNAL(clicked()), camera, SLOT(setLoop()));
+    connect(k->loopBox, SIGNAL(clicked()), camera, SLOT(setLoop()));
 
     TCONFIG->beginGroup("AnimationParameters");
-    loop = TCONFIG->value("Loop").toBool();
-    if (loop)
-        loopBox->setChecked(true);
+    k->loop = TCONFIG->value("Loop").toBool();
+    if (k->loop)
+        k->loopBox->setChecked(true);
 
-    m_sceneInfoLayout->addWidget(loopBox,1);
+    sceneInfoLayout->addWidget(k->loopBox, 1);
 
-    m_sceneInfoLayout->addSpacing(20);
+    sceneInfoLayout->addSpacing(20);
 
     QPushButton *exportButton = new QPushButton(tr("Export"));
-    exportButton->setIcon(QIcon(THEME_DIR + "icons/export.png"));
+    exportButton->setIcon(QIcon(THEME_DIR + "icons/export_button.png"));
     exportButton->setFont(font);
     exportButton->setFocusPolicy(Qt::NoFocus);
 
     connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));
-    m_sceneInfoLayout->addWidget(exportButton, 1);
+    sceneInfoLayout->addWidget(exportButton, 1);
 
-    setLayout(m_sceneInfoLayout);
+    if (isNetworked) {
+        sceneInfoLayout->addSpacing(5);
+        QPushButton *postButton = new QPushButton(tr("Post"));
+        postButton->setIcon(QIcon(THEME_DIR + "icons/import_project.png"));
+        postButton->setFont(font);
+        postButton->setFocusPolicy(Qt::NoFocus);
+
+        connect(postButton, SIGNAL(pressed()), camera, SLOT(postDialog()));
+        sceneInfoLayout->addWidget(postButton, 1);
+    }
+
+    setLayout(sceneInfoLayout);
 }
 
 KTCameraStatus::~KTCameraStatus()
@@ -150,31 +169,43 @@ KTCameraStatus::~KTCameraStatus()
 void KTCameraStatus::setFPS(int frames)
 {
     if (frames > 0 && frames < 100)
-        fps->setCurrentIndex(frames-1);
+        k->fps->setCurrentIndex(frames-1);
     else
-        fps->setCurrentIndex(24);
+        k->fps->setCurrentIndex(24);
 }
 
 int KTCameraStatus::getFPS()
 {
-    return fps->currentText().toInt(); 
+    return k->fps->currentText().toInt(); 
 }
 
-void KTCameraStatus::setSceneName(const QString &name)
+void KTCameraStatus::setCurrentScene(int index)
 {
-    sceneName->setText(name);
+    if (k->scenes->currentIndex() != index)
+        k->scenes->setCurrentIndex(index);
+}
+
+void KTCameraStatus::setScenes(KTProject *project)
+{
+    if (k->scenes->count())
+        k->scenes->clear(); 
+
+    foreach (KTScene *scene, project->scenes().values()) { 
+             if (scene)
+                 k->scenes->addItem(scene->sceneName());
+    }
 }
 
 void KTCameraStatus::setFramesTotal(const QString &frames)
 {
-    framesTotal->setText(frames);
+    k->framesTotal->setText(frames);
 }
 
 bool KTCameraStatus::isLooping()
 {
-    loop = loopBox->isChecked();
+    k->loop = k->loopBox->isChecked();
     TCONFIG->beginGroup("AnimationParameters");
-    TCONFIG->setValue("Loop", loop);
+    TCONFIG->setValue("Loop", k->loop);
 
-    return loop;
+    return k->loop;
 }

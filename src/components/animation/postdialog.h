@@ -33,100 +33,29 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktimagedialog.h"
-#include "tapplicationproperties.h"
-#include "tglobal.h"
-#include "tconfig.h"
-#include "tdebug.h"
+#ifndef POSTDIALOG_H
+#define POSTDIALOG_H
 
+#include "ktscene.h"
 #include <QDialog>
-#include <QVBoxLayout>
-#include <QIcon>
-#include <QLabel>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QPushButton>
 
-struct KTImageDialog::Private
+class PostDialog : public QDialog
 {
-    QLineEdit *lineEdit;
-    QTextEdit *descText;
+    Q_OBJECT
+
+    public:
+        PostDialog(QWidget *parent=0);
+        ~PostDialog();
+        void setScenes(const QList<KTScene *> &scenes);
+        QList<int> sceneIndexes() const;
+
+    private slots:
+        void updateState();
+        void setData();
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
-KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
-{
-    setModal(true);
-    setWindowTitle(tr("Image Properties"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
-
-    QLabel *titleLabel = new QLabel(tr("Title"));
-    k->lineEdit = new QLineEdit(tr("My Picture"));
-    connect(k->lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
-    titleLabel->setBuddy(k->lineEdit);
-
-    k->descText = new QTextEdit;
-    k->descText->setAcceptRichText(false);
-    k->descText->setFixedSize(QSize(300, 80));
-    k->descText->setText(tr("Just a little taste of my style :)"));
-
-    QHBoxLayout *topLayout = new QHBoxLayout;
-    topLayout->addWidget(titleLabel);
-    topLayout->addWidget(k->lineEdit);
-
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
-    buttonLayout->addStretch(1);
-
-    QPushButton *cancel = new QPushButton(tr("Cancel"));
-    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
-    buttonLayout->addWidget(cancel);
-
-    QPushButton *ok = new QPushButton(tr("Post Image"));
-    connect(ok, SIGNAL(clicked()), this, SLOT(checkData()));
-    buttonLayout->addWidget(ok);
-    ok->setDefault(true);
-
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    QLabel *descLabel = new QLabel(tr("Description"));
-    layout->addLayout(topLayout);
-    layout->addWidget(descLabel);
-    layout->addWidget(k->descText);
-    layout->addLayout(buttonLayout);
-    setLayout(layout);
-}
-
-KTImageDialog::~KTImageDialog()
-{
-}
-
-void KTImageDialog::checkData()
-{
-    if (k->lineEdit->text().length() == 0) {
-        k->lineEdit->setText(tr("Set a title for the picture here!"));
-        k->lineEdit->selectAll();
-        return;
-    }
-
-    QDialog::accept();
-}
-
-void KTImageDialog::resetLineColor(const QString &)
-{
-    QPalette pal = k->lineEdit->palette();
-    if (k->lineEdit->text().length() > 0 && k->lineEdit->text().compare(tr("Set a title for the picture here!")) != 0) 
-        pal.setBrush(QPalette::Base, Qt::white);
-    else 
-        pal.setBrush(QPalette::Base, QColor(255, 140, 138));
-
-     k->lineEdit->setPalette(pal);
-}
-
-QString KTImageDialog::imageTitle() const
-{
-     return k->lineEdit->text();
-}
-
-QString KTImageDialog::imageDescription() const
-{
-     return k->descText->toPlainText();
-}
-
+#endif

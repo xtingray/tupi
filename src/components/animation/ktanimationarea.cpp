@@ -52,31 +52,23 @@ struct KTAnimationArea::Private
 {
     QWidget *container;
     QImage renderCamera;
-
     const KTProject *project;
-
     bool draw;
     bool cyclicAnimation;
-
     int currentFramePosition;
     int currentSceneIndex;
     int fps;
-
     QTimer *timer;
     QTimer *playBackTimer;
+    bool isRendered;
 
     QList<QImage> photograms;
     QList<KTSoundLayer *> sounds;
-
-    bool isRendered;
 };
 
 KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k(new Private)
 {
     k->container = parent;
-
-    // setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-
     k->project = project;
 
     k->draw = false;
@@ -88,12 +80,7 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
     k->fps = 24;
 
-    // setAttribute(Qt::WA_StaticContents);
-
     k->renderCamera = QImage(k->project->dimension(), QImage::Format_RGB32);
-    // k->renderCamera = QImage(size(), QImage::Format_RGB32);
-    // k->renderCamera.fill(qRgb(255, 255, 255));
-    // k->renderCamera.fill(k->project->bgColor().rgb());
 
     k->timer = new QTimer(this);
     k->playBackTimer = new QTimer(this);
@@ -101,14 +88,7 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
     connect(k->timer, SIGNAL(timeout()), this, SLOT(advance()));
     connect(k->playBackTimer, SIGNAL(timeout()), this, SLOT(back()));
 
-    setCurrentScene(0);
-
-    /*
-    KTScene *scene = project->scene(0);
-    KTLayer *layer = scene->layer(0);
-    if (layer->framesNumber() > 1)
-        nextFrame();
-    */
+    updateSceneIndex(0);
 }
 
 
@@ -156,7 +136,7 @@ void KTAnimationArea::paintEvent(QPaintEvent *)
 void KTAnimationArea::play()
 {
    #ifdef K_DEBUG
-          tDebug("camera") << "KTAnimationArea::play() - Playing at " << k->fps << " FPS";
+          tWarning("camera") << "KTAnimationArea::play() - Playing at " << k->fps << " FPS";
    #endif
 
    if (k->playBackTimer->isActive()) 
@@ -180,7 +160,7 @@ void KTAnimationArea::play()
 void KTAnimationArea::playBack()
 {
    #ifdef K_DEBUG
-          tDebug("camera") << "KTAnimationArea::playBack() - Starting procedure";
+          tWarning("camera") << "KTAnimationArea::playBack() - Starting procedure...";
    #endif
 
    if (k->timer->isActive())
@@ -199,7 +179,7 @@ void KTAnimationArea::playBack()
 void KTAnimationArea::stop()
 {
     #ifdef K_DEBUG
-           tDebug("camera") << "KTAnimationArea::stop() - Stopping player";
+           tWarning("camera") << "KTAnimationArea::stop() - Stopping player!";
     #endif
    
     if (k->timer->isActive())
@@ -291,13 +271,13 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
     switch (event->action()) {
             case KTProjectRequest::Select:
              {
-                 setCurrentScene(event->sceneIndex());
+                 updateSceneIndex(event->sceneIndex());
              }
             break;
             case KTProjectRequest::Remove:
              {
                  if (event->sceneIndex() == k->currentSceneIndex)
-                     setCurrentScene(k->currentSceneIndex);
+                     updateSceneIndex(k->currentSceneIndex);
              }
             break;
             default: 
@@ -351,9 +331,6 @@ void KTAnimationArea::render()
 
     while (renderer.nextPhotogram()) {
            QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
-           // QImage renderized = QImage(size(), QImage::Format_RGB32);
-           //renderized.fill(qRgb(255, 255, 255));
-           //renderized.fill(k->project->bgColor().rgb());
 
            QPainter painter(&renderized);
            painter.setRenderHint(QPainter::Antialiasing);
@@ -377,8 +354,6 @@ void KTAnimationArea::initAnimationArea()
     renderer.renderPhotogram(0);
 
     QImage renderized = QImage(size(), QImage::Format_RGB32);
-    // renderized.fill(qRgb(255, 255, 255));
-    // renderized.fill(k->project->bgColor().rgb());
 
     QPainter painter(&renderized);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -403,8 +378,6 @@ void  KTAnimationArea::resizeEvent(QResizeEvent *event)
     stop();
 
     k->renderCamera = QImage(size(), QImage::Format_RGB32);
-    // k->renderCamera.fill(qRgb(255, 255, 255));
-    // k->renderCamera.fill(k->project->bgColor().rgb());
     k->isRendered = false;
 
     update();
@@ -415,14 +388,14 @@ void KTAnimationArea::setLoop(bool loop)
     k->cyclicAnimation = loop;
 }
 
-void KTAnimationArea::setCurrentScene(int index)
+void KTAnimationArea::updateSceneIndex(int index)
 {
     k->currentSceneIndex = index;
 }
 
-void KTAnimationArea::updateSceneIndex(int index)
+int KTAnimationArea::currentSceneIndex()
 {
-    k->currentSceneIndex = index;
+    return k->currentSceneIndex;
 }
 
 KTScene *KTAnimationArea::currentScene() const
@@ -439,10 +412,7 @@ KTScene *KTAnimationArea::currentScene() const
     return 0;
 }
 
-void KTAnimationArea::refreshAnimation(const KTProject *project) 
+void KTAnimationArea::refreshAnimation()
 {
-    k->project = project;
-    //render();
-    //repaint();
     initAnimationArea();
 }

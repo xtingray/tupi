@@ -557,6 +557,11 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
            case KTProjectRequest::Select:
             {
                 setScene(e->sceneIndex());
+                if (k->currentTable && k->scenes) {
+                    k->scenes->blockSignals(true);
+                    k->currentTable->selectFrame(0, 0);
+                    k->scenes->blockSignals(false);
+                }
             }
            break;
     }

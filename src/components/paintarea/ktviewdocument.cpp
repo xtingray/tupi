@@ -357,23 +357,20 @@ void KTViewDocument::setupDrawActions()
 
     onionFactor->setStatusTip(tr("Set onion skin factor default value"));
 
+    TAction *exportImage = new TAction(QPixmap(THEME_DIR + "icons/export_frame.png"),
+                                     "Export Current Frame As Image", QKeySequence(tr("@")),
+                                     this, SLOT(exportImage()), k->actionManager, "export_image");
+    exportImage->setStatusTip("Export the current frame as image");
+
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    QString description = tr("Export Current Frame As Image");
-    QString toolTip = tr("Export the current frame as image");
-    QString icon = "icons/export_frame.png";
-
     if (!k->isLocal && server.compare("tupitube.com") == 0) {
-        description = tr("Post Current Image");
-        toolTip = tr("Post the current image in your gallery");
-        icon = "icons/net_document.png";
-    } 
-
-    TAction *postImage = new TAction(QPixmap(THEME_DIR + icon),
-                                     description, QKeySequence(tr("@")),
-                                     this, SLOT(postImage()), k->actionManager, "post_image");
-    postImage->setStatusTip(toolTip);
+        TAction *postImage = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"),
+                                         "Export Current Frame To Gallery", QKeySequence(tr("@")),
+                                         this, SLOT(postImage()), k->actionManager, "post_image");
+        postImage->setStatusTip("Export the current frame to gallery");
+    }
 }
 
 void KTViewDocument::createTools()
@@ -954,10 +951,14 @@ void KTViewDocument::createToolBar()
     k->barGrid->addWidget(k->spaceMode);
     k->barGrid->addSeparator();
 
+    k->barGrid->addAction(k->actionManager->find("export_image"));
+
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    k->barGrid->addAction(k->actionManager->find("post_image"));
+    if (!k->isLocal && server.compare("tupitube.com") == 0)
+        k->barGrid->addAction(k->actionManager->find("post_image"));
+
     k->barGrid->addSeparator();
 }
 
@@ -1215,38 +1216,40 @@ void KTViewDocument::closeFullScreen()
     }
 }
 
-void KTViewDocument::postImage()
+void KTViewDocument::exportImage()
 {
-    TCONFIG->beginGroup("Network");
-    QString server = TCONFIG->value("Server").toString();
     int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
     int frameIndex = k->paintArea->graphicsScene()->currentFrameIndex();
 
-    if (!k->isLocal && server.compare("tupitube.com") == 0) {
-        QString title = "";
-        QString description = "";
-        KTImageDialog *dialog = new KTImageDialog(this);
-        dialog->show();
-        QDesktopWidget desktop;
-        dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
-                          (int) (desktop.screenGeometry().height() - dialog->height())/2);
-
-        if (dialog->exec() != QDialog::Rejected) {
-            title = dialog->imageTitle();
-            description = dialog->imageDescription();
-            emit requestExportImageToServer(frameIndex, sceneIndex, title, description);
-        }
-    } else {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Export Frame As"), QDir::homePath(),
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Frame As"), QDir::homePath(),
                                                         tr("Images") + " (*.png *.jpg)");
-        if (!fileName.isNull()) {
-            GenericExportPlugin exporter;
-            bool isOk = exporter.exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->scene(sceneIndex), k->project->dimension());
-            updatePaintArea();
-            if (isOk)
-                TOsd::self()->display(tr("Information"), tr("Frame has been exported successfully"));           
-            else
-                TOsd::self()->display(tr("Error"), tr("Can't export frame as image"), TOsd::Error);
-        }
+    if (!fileName.isNull()) {
+        GenericExportPlugin exporter;
+        bool isOk = exporter.exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->scene(sceneIndex), k->project->dimension());
+        updatePaintArea();
+        if (isOk)
+            TOsd::self()->display(tr("Information"), tr("Frame has been exported successfully"));
+        else
+            TOsd::self()->display(tr("Error"), tr("Can't export frame as image"), TOsd::Error);
+    }
+}
+
+void KTViewDocument::postImage()
+{
+    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+    int frameIndex = k->paintArea->graphicsScene()->currentFrameIndex();
+
+    QString title = "";
+    QString description = "";
+    KTImageDialog *dialog = new KTImageDialog(this);
+    dialog->show();
+    QDesktopWidget desktop;
+    dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                 (int) (desktop.screenGeometry().height() - dialog->height())/2);
+
+    if (dialog->exec() != QDialog::Rejected) {
+        title = dialog->imageTitle();
+        description = dialog->imageDescription();
+        emit requestExportImageToServer(frameIndex, sceneIndex, title, description);
     }
 }
