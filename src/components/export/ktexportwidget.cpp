@@ -349,7 +349,7 @@ void SelectScenes::updateState()
 
 void SelectScenes::updateScenesList()
 {
-    // TODO: Add code pending
+    // SQA: Pending code right over here
 }
 
 class ExportTo : public KExportWizardPage
@@ -422,10 +422,10 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     QHBoxLayout *filePathLayout = new QHBoxLayout;
 
-    if (!exportImages)
-        filePathLayout->addWidget(new QLabel(tr("File: ")));
-    else
+    if (exportImages)
         filePathLayout->addWidget(new QLabel(tr("Directory: ")));
+    else
+        filePathLayout->addWidget(new QLabel(tr("File: ")));
 
     QString prefix = m_project->projectName() + "_img";
     m_prefix = new QLineEdit(prefix);
@@ -694,37 +694,147 @@ QList<KTScene *> ExportTo::scenesToExport() const
     return scenes;
 }
 
-KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExportWizard(parent), m_project(project)
+class VideoProperties : public KExportWizardPage
+{
+    Q_OBJECT
+
+    public:
+        VideoProperties(const KTExportWidget *widget);
+        ~VideoProperties();
+
+        bool isComplete() const;
+        void reset();
+
+    signals:
+        void isDone();
+
+    private slots:
+        void resetLineColor(const QString &text);
+        void postIt();
+        void setScenesIndexes(const QList<int> &indexes);
+
+    private:
+        QLineEdit *lineEdit;
+        QTextEdit *descText;
+        QList<int> scenes;
+};
+
+VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPage(tr("Set Video Properties"))
+{
+    setTag("PROPERTIES");
+
+    connect(widget, SIGNAL(saveVideoToServer()), this, SLOT(postIt()));
+
+    QWidget *container = new QWidget;
+    QVBoxLayout *layout = new QVBoxLayout(container);
+
+    QLabel *titleLabel = new QLabel(tr("Title"));
+    lineEdit = new QLineEdit(tr("My Picture"));
+    connect(lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
+    titleLabel->setBuddy(lineEdit);
+
+    QLabel *descLabel = new QLabel(tr("Description"));
+
+    descText = new QTextEdit;
+    descText->setAcceptRichText(false);
+    descText->setFixedHeight(80);
+    descText->setText(tr("Just a little taste of my style :)"));
+
+    QHBoxLayout *topLayout = new QHBoxLayout;
+    topLayout->addWidget(titleLabel);
+    topLayout->addWidget(lineEdit);
+
+    layout->addLayout(topLayout);
+    layout->addWidget(descLabel);
+    layout->addWidget(descText);
+
+    setWidget(container);
+}
+
+VideoProperties::~VideoProperties()
+{
+}
+
+bool VideoProperties::isComplete() const
+{
+    return true;
+}
+
+void VideoProperties::reset()
+{
+}
+
+void VideoProperties::postIt()
+{
+    if (lineEdit->text().length() > 0) {
+        emit isDone();
+    } else {
+        lineEdit->setText(tr("Set a title for the picture here!"));
+        lineEdit->selectAll();
+    }
+}
+
+void VideoProperties::resetLineColor(const QString &)
+{
+    QPalette palette = lineEdit->palette();
+    if (lineEdit->text().length() > 0 && lineEdit->text().compare(tr("Set a title for the picture here!")) != 0)
+        palette.setBrush(QPalette::Base, Qt::white);
+    else
+        palette.setBrush(QPalette::Base, QColor(255, 140, 138));
+
+     lineEdit->setPalette(palette);
+}
+
+void VideoProperties::setScenesIndexes(const QList<int> &indexes)
+{
+    scenes = indexes;
+}
+
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent, bool isLocal) : KExportWizard(parent), m_project(project)
 {
     #ifdef K_DEBUG
            TINIT;
     #endif
 
-    setWindowTitle(tr("Export to Video"));
-    setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
+    if (isLocal) {
+        setWindowTitle(tr("Export to Video"));
+        setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
 
-    m_pluginSelectionPage = new SelectPlugin();
-    addPage(m_pluginSelectionPage);
+        m_pluginSelectionPage = new SelectPlugin();
+        addPage(m_pluginSelectionPage);
 
-    m_scenesSelectionPage = new SelectScenes(this);
-    m_scenesSelectionPage->setScenes(project->scenes().values());
-    addPage(m_scenesSelectionPage);
+        m_scenesSelectionPage = new SelectScenes(this);
+        m_scenesSelectionPage->setScenes(project->scenes().values());
+        addPage(m_scenesSelectionPage);
 
-    m_exportToPage = new ExportTo(project, false, tr("Export to Video File"), this);
-    addPage(m_exportToPage);
+        m_exportToPage = new ExportTo(project, false, tr("Export to Video File"), this);
+        addPage(m_exportToPage);
 
-    m_exportImages = new ExportTo(project, true, tr("Export to Images Array"), this);
-    addPage(m_exportImages);
+        m_exportImages = new ExportTo(project, true, tr("Export to Images Array"), this);
+        addPage(m_exportImages);
 
-    connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
-    connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportToPage, SLOT(setCurrentFormat(int, const QString &)));
-    connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportImages, SLOT(setCurrentFormat(int, const QString &)));
+        connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
+        connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportToPage, SLOT(setCurrentFormat(int, const QString &)));
+        connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportImages, SLOT(setCurrentFormat(int, const QString &)));
 
-    connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
-    connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportImages, SLOT(setScenesIndexes(const QList<int> &)));
+        connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
+        connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportImages, SLOT(setScenesIndexes(const QList<int> &)));
 
-    loadPlugins();
-    m_pluginSelectionPage->selectFirstItem();
+        loadPlugins();
+        m_pluginSelectionPage->selectFirstItem();
+    } else {
+        setWindowTitle(tr("Post Video in Gallery"));
+        setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
+
+        m_scenesSelectionPage = new SelectScenes(this);
+        m_scenesSelectionPage->setScenes(project->scenes().values());
+        addPage(m_scenesSelectionPage);
+
+        videoProperties = new VideoProperties(this);
+        addPage(videoProperties);
+
+        connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), videoProperties, SLOT(setScenesIndexes(const QList<int> &)));
+    }
 }
 
 KTExportWidget::~KTExportWidget()

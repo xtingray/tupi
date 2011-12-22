@@ -36,8 +36,8 @@
 #ifndef DITEMSELECTOR_H
 #define DITEMSELECTOR_H
 
-#include <QWidget>
 #include "tapplicationproperties.h"
+#include <QWidget>
 
 /**
  * @author David Cuadrado

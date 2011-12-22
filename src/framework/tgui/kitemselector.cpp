@@ -47,7 +47,7 @@ struct KItemSelector::Private
     QListWidget *selected;
 };
 
-KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private )
+KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k(new Private)
 {
     QHBoxLayout *layout = new QHBoxLayout;
 
@@ -60,20 +60,18 @@ KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private 
     controlBox->setMargin(2);
     controlBox->addStretch();
 
-    QToolButton *bnext = new QToolButton;
-    bnext->setIcon(QPixmap(THEME_DIR + "icons/export_scene.png"));
-    //bnext->setText(">>");
-    connect(bnext, SIGNAL(clicked()), this, SLOT(addCurrent()));
+    QToolButton *nextButton = new QToolButton;
+    nextButton->setIcon(QPixmap(THEME_DIR + "icons/export_scene.png"));
+    connect(nextButton, SIGNAL(clicked()), this, SLOT(addCurrent()));
 
-    controlBox->addWidget(bnext);
+    controlBox->addWidget(nextButton);
     controlBox->setSpacing(5);
 
-    QToolButton *bprev = new QToolButton;
-    //bprev->setText("<<");
-    bprev->setIcon(QPixmap(THEME_DIR + "icons/unexport_scene.png"));
-    connect(bprev, SIGNAL(clicked()), this, SLOT(removeCurrent()));
+    QToolButton *previousButton = new QToolButton;
+    previousButton->setIcon(QPixmap(THEME_DIR + "icons/unexport_scene.png"));
+    connect(previousButton, SIGNAL(clicked()), this, SLOT(removeCurrent()));
 
-    controlBox->addWidget(bprev);
+    controlBox->addWidget(previousButton);
     controlBox->addStretch();
 
     layout->addLayout(controlBox);
@@ -92,7 +90,8 @@ KItemSelector::~KItemSelector()
 
 void KItemSelector::selectFirstItem() {
      if (k->available->item(0)) {
-         k->available->item(0)->setSelected(true);
+         // k->available->item(0)->setSelected(true);
+         k->available->setCurrentRow(0);
          emit changed();
      }
 }

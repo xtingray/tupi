@@ -49,6 +49,7 @@ class QLineEdit;
 class SelectPlugin;
 class SelectScenes;
 class ExportTo;
+class VideoProperties;
 
 /**
  * @author David Cuadrado
@@ -59,7 +60,7 @@ class KTExportWidget : public KExportWizard
     Q_OBJECT
 
     public:
-        KTExportWidget(const KTProject *project, QWidget *parent = 0);
+        KTExportWidget(const KTProject *project, QWidget *parent = 0, bool isLocal = true);
         ~KTExportWidget();
 
     private slots:
@@ -73,6 +74,7 @@ class KTExportWidget : public KExportWizard
         SelectScenes *m_scenesSelectionPage;
         ExportTo *m_exportToPage;
         ExportTo *m_exportImages;
+        VideoProperties *videoProperties;
         const KTProject *m_project;
         QHash<QString, KTExportInterface *> m_plugins;
         const QString tag;

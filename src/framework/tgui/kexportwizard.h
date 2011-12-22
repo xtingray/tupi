@@ -36,15 +36,15 @@
 #ifndef KEXPORTWIZARD_H
 #define KEXPORTWIZARD_H
 
+#include "kvhbox.h"
+#include "tglobal.h"
+#include "ktoolview.h"
+
 #include <QDialog>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QStackedWidget>
-
-#include "kvhbox.h"
-#include "tglobal.h"
-#include "ktoolview.h"
 
 class KExportWizardPage;
 
@@ -76,18 +76,14 @@ class K_GUI_EXPORT KExportWizard : public QDialog
         void cancelled();
         void updateScenes();
         void saveFile();
+        void saveVideoToServer();
         void exportArray();
         void setFileName();
         void isDone();
 
     private:
-        QStackedWidget m_history;
-        QPushButton *m_cancelButton;
-        QPushButton *m_backButton;
-        QPushButton *m_nextButton;
-        QHBoxLayout *m_buttonLayout;
-        QVBoxLayout *m_mainLayout;
-        QString format;
+        struct Private;
+        Private *const k;
 };
 
 #include <QFrame>
@@ -104,8 +100,8 @@ class KExportWizardPage : public KVHBox
         virtual bool isComplete() const = 0;
         virtual void reset() = 0;
 
-        void setPixmap(const QPixmap &px);
-        void setWidget(QWidget *w);
+        void setPixmap(const QPixmap &pixmap);
+        void setWidget(QWidget *widget);
         void setTag(const QString &label);
         const QString getTag();
 
@@ -119,10 +115,8 @@ class KExportWizardPage : public KVHBox
         void formatSelected(int format, const QString &extension);
 
     private:
-        QFrame *m_container;
-        QGridLayout *m_layout;
-        QLabel *m_image;
-        QString tag;
+        struct Private;
+        Private *const k;
 };
 
 #endif

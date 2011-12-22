@@ -344,9 +344,15 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
             
                        if (k->project) {
                            TupiFileManager *manager = new TupiFileManager;
-                           manager->load(file.fileName(), k->project);
-                           k->projectIsOpen = true;
-                           emit openNewArea(k->project->projectName());
+                           bool isOk = manager->load(file.fileName(), k->project);
+                           if (isOk) {
+                               k->projectIsOpen = true;
+                               emit openNewArea(k->project->projectName());
+                           } else {
+                               #ifdef K_DEBUG
+                                      tError() << "KTNetProjectManagerHandler::handlePackage() - Error: Net project can't be opened";
+                               #endif
+                           }
                            delete manager;
                        } else {
                            #ifdef K_DEBUG

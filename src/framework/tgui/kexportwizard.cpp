@@ -44,26 +44,39 @@
 #include <QBitmap>
 #include <QDebug>
 
-KExportWizard::KExportWizard(QWidget *parent) : QDialog(parent)
+struct KExportWizard::Private
 {
-    m_cancelButton = new QPushButton(tr("Cancel"));
-    m_backButton = new QPushButton(tr("Back"));
-    m_nextButton = new QPushButton(tr("Next"));
+    QStackedWidget *history;
+    QPushButton *cancelButton;
+    QPushButton *backButton;
+    QPushButton *nextButton;
+    QHBoxLayout *buttonLayout;
+    QVBoxLayout *mainLayout;
+    QString format;
+};
 
-    connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
-    connect(m_backButton, SIGNAL(clicked()), this, SLOT(back()));
-    connect(m_nextButton, SIGNAL(clicked()), this, SLOT(next()));
+KExportWizard::KExportWizard(QWidget *parent) : QDialog(parent), k(new Private)
+{
+    k->cancelButton = new QPushButton(tr("Cancel"));
+    k->backButton = new QPushButton(tr("Back"));
+    k->nextButton = new QPushButton(tr("Next"));
 
-    m_buttonLayout = new QHBoxLayout;
-    m_buttonLayout->addStretch(1);
-    m_buttonLayout->addWidget(m_cancelButton);
-    m_buttonLayout->addWidget(m_backButton);
-    m_buttonLayout->addWidget(m_nextButton);
+    connect(k->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+    connect(k->backButton, SIGNAL(clicked()), this, SLOT(back()));
+    connect(k->nextButton, SIGNAL(clicked()), this, SLOT(next()));
 
-    m_mainLayout = new QVBoxLayout;
-    m_mainLayout->addWidget(&m_history);
-    m_mainLayout->addLayout(m_buttonLayout);
-    setLayout(m_mainLayout);
+    k->buttonLayout = new QHBoxLayout;
+    k->buttonLayout->addStretch(1);
+    k->buttonLayout->addWidget(k->cancelButton);
+    k->buttonLayout->addWidget(k->backButton);
+    k->buttonLayout->addWidget(k->nextButton);
+
+    k->history = new QStackedWidget;
+
+    k->mainLayout = new QVBoxLayout;
+    k->mainLayout->addWidget(k->history);
+    k->mainLayout->addLayout(k->buttonLayout);
+    setLayout(k->mainLayout);
 }
 
 KExportWizard::~KExportWizard()
@@ -73,25 +86,25 @@ KExportWizard::~KExportWizard()
 KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
 {
     QString tag = newPage->getTag();
-    newPage->setParent(&m_history);
+    newPage->setParent(k->history);
     newPage->show();
 
-    m_history.addWidget(newPage);
+    k->history->addWidget(newPage);
 
-    if (m_history.count() == 1) { // First Page
+    if (k->history->count() == 1) { // First Page
         newPage->setFocus();
-        m_backButton->setEnabled(false);
-        m_nextButton->setDefault(true);
+        k->backButton->setEnabled(false);
+        k->nextButton->setDefault(true);
     } 
 
-    m_nextButton->setEnabled(newPage->isComplete());
+    k->nextButton->setEnabled(newPage->isComplete());
     connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
     connect(newPage, SIGNAL(emptyField()), this, SLOT(disableButton()));
 
-    if (tag.compare("PLUGIN")==0)
+    if (tag.compare("PLUGIN") == 0)
         connect(newPage, SIGNAL(formatSelected(int, const QString &)), this, SLOT(setFormat(int, const QString &)));
 
-    if (tag.compare("EXPORT")==0 || tag.compare("IMAGES")==0) 
+    if (tag.compare("EXPORT") == 0 || tag.compare("IMAGES") == 0 || tag.compare("PROPERTIES") == 0) 
         connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
 
     return newPage;
@@ -99,12 +112,12 @@ KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
 
 void KExportWizard::showPage(KExportWizardPage *page)
 {
-    m_history.setCurrentWidget(page);
+    k->history->setCurrentWidget(page);
 }
 
 void KExportWizard::showPage(int index)
 {
-    m_history.setCurrentIndex(index);
+    k->history->setCurrentIndex(index);
 }
 
 void KExportWizard::cancel()
@@ -114,56 +127,57 @@ void KExportWizard::cancel()
 
 void KExportWizard::back()
 {
-    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
+    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(k->history->currentWidget());
     QString tag = current->getTag();
 
     if (current)
         current->aboutToBackPage();
 
-    if (tag.compare("IMAGES")==0)
-        m_history.setCurrentIndex(m_history.currentIndex()-2);
+    if (tag.compare("IMAGES") == 0)
+        k->history->setCurrentIndex(k->history->currentIndex()-2);
     else
-        m_history.setCurrentIndex(m_history.currentIndex()-1);
+        k->history->setCurrentIndex(k->history->currentIndex()-1);
     
-    if (tag.compare("SCENE")==0)
-        m_backButton->setEnabled(false);
+    if (tag.compare("SCENE") == 0 || tag.compare("PROPERTIES") == 0)
+        k->backButton->setEnabled(false);
 
-    m_nextButton->setText("Next >");
-    m_nextButton->setEnabled(true);
+    k->nextButton->setEnabled(true);
 
-    if ((tag.compare("EXPORT")==0) && (!m_nextButton->isEnabled())) 
-        m_nextButton->setEnabled(true);
+    if (tag.compare("EXPORT") == 0 || tag.compare("IMAGES") == 0 || tag.compare("PROPERTIES") == 0) 
+        k->nextButton->setText(tr("Next"));
 }
 
 void KExportWizard::next()
 {
-    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
+    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(k->history->currentWidget());
     QString tag = current->getTag();
 
     if (current)
         current->aboutToNextPage();
 
-    //m_history.setCurrentIndex(m_history.currentIndex()+1);
-
-    if (tag.compare("PLUGIN")==0) {
-        m_backButton->setEnabled(true);
-        m_history.setCurrentIndex(m_history.currentIndex()+1);
+    if (tag.compare("PLUGIN") == 0) {
+        k->backButton->setEnabled(true);
+        k->history->setCurrentIndex(k->history->currentIndex()+1);
     }
 
-    if (tag.compare("EXPORT")==0) {
+    if (tag.compare("EXPORT") == 0)
         emit saveFile();
-    }
 
-    if (tag.compare("IMAGES")==0) {
+    if (tag.compare("IMAGES") == 0)
         emit exportArray();
-    }
 
-    if (tag.compare("SCENE")==0)  {
+    if (tag.compare("PROPERTIES") == 0)
+        emit saveVideoToServer();
+
+    if (tag.compare("SCENE") == 0)  {
+        k->nextButton->setText(tr("Save")); 
+        k->backButton->setEnabled(true);
         emit setFileName();
-        if (format.compare(".jpg") == 0 || format.compare(".png") == 0)
-            m_history.setCurrentIndex(m_history.currentIndex()+2);
+
+        if (k->format.compare(".jpg") == 0 || k->format.compare(".png") == 0)
+            k->history->setCurrentIndex(k->history->currentIndex()+2);
         else
-            m_history.setCurrentIndex(m_history.currentIndex()+1);
+            k->history->setCurrentIndex(k->history->currentIndex()+1);
     } 
 
     pageCompleted();
@@ -171,24 +185,27 @@ void KExportWizard::next()
 
 void KExportWizard::pageCompleted()
 {
-    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
+    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(k->history->currentWidget());
     QString tag = current->getTag();
 
-    if (tag.compare("EXPORT")!=0 && tag.compare("IMAGES")!=0) {
-        m_nextButton->setEnabled(current->isComplete());
+    if (tag.compare("SCENE") == 0 || tag.compare("PLUGIN")== 0) {
+        k->nextButton->setEnabled(current->isComplete());
     } else {
-        m_nextButton->setText(tr("Save"));
-        m_nextButton->setEnabled(true);
+        if (tag.compare("IMAGES") == 0 || tag.compare("EXPORT"))
+            k->nextButton->setText(tr("Save"));
+        if (tag.compare("PROPERTIES") == 0)
+            k->nextButton->setText(tr("Post"));
+        k->nextButton->setEnabled(true);
     }
 
-    if (m_history.currentIndex() == 1)
+    if (k->history->currentIndex() == 1)
         emit updateScenes();
 }
 
 void KExportWizard::disableButton() 
 {
-    if (m_nextButton->isEnabled())
-        m_nextButton->setEnabled(false);
+    if (k->nextButton->isEnabled())
+        k->nextButton->setEnabled(false);
 }
 
 void KExportWizard::closeDialog()
@@ -198,23 +215,30 @@ void KExportWizard::closeDialog()
 
 void KExportWizard::setFormat(int code, const QString &extension)
 {
-    format = extension;
+    k->format = extension;
 }
 
-KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)
+struct KExportWizardPage::Private
 {
-    KVHBox *theTitle = new KVHBox(this, Qt::Vertical);
-    new QLabel(title, theTitle);
-    new TSeparator(theTitle);
-    boxLayout()->setAlignment(theTitle, Qt::AlignTop);
+    QFrame *container;
+    QGridLayout *layout;
+    QLabel *image;
+    QString tag;
+};
 
-    m_container = new QFrame(this);
+KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KVHBox(parent), k(new Private)
+{
+    KVHBox *boxTitle = new KVHBox(this, Qt::Vertical);
+    new QLabel(title, boxTitle);
+    new TSeparator(boxTitle);
+    boxLayout()->setAlignment(boxTitle, Qt::AlignTop);
 
-    m_layout = new QGridLayout(m_container);
+    k->container = new QFrame(this);
+    k->layout = new QGridLayout(k->container);
 
-    m_image = new QLabel;
-    m_layout->addWidget(m_image, 0, 0, Qt::AlignLeft);
-    m_image->hide();
+    k->image = new QLabel;
+    k->layout->addWidget(k->image, 0, 0, Qt::AlignLeft);
+    k->image->hide();
 
     new TSeparator(this);
 
@@ -223,23 +247,23 @@ KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KV
 
 void KExportWizardPage::setPixmap(const QPixmap &px)
 {
-    m_image->setPixmap(px);
-    m_image->show();
+    k->image->setPixmap(px);
+    k->image->show();
 }
 
 void KExportWizardPage::setWidget(QWidget *w)
 {
-    m_layout->addWidget(w, 0, 1);
+    k->layout->addWidget(w, 0, 1);
 }
 
 void KExportWizardPage::setTag(const QString &label)
 {
-    tag = label;
+    k->tag = label;
 }
 
 const QString KExportWizardPage::getTag()
 {
-    return tag;
+    return k->tag;
 }
 
 KExportWizardPage::~KExportWizardPage() {};

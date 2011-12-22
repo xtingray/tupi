@@ -64,9 +64,11 @@ KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
     connect(k->lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
     titleLabel->setBuddy(k->lineEdit);
 
+    QLabel *descLabel = new QLabel(tr("Description"));
+
     k->descText = new QTextEdit;
     k->descText->setAcceptRichText(false);
-    k->descText->setFixedSize(QSize(300, 80));
+    k->descText->setFixedHeight(80);
     k->descText->setText(tr("Just a little taste of my style :)"));
 
     QHBoxLayout *topLayout = new QHBoxLayout;
@@ -86,7 +88,6 @@ KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
     ok->setDefault(true);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    QLabel *descLabel = new QLabel(tr("Description"));
     layout->addLayout(topLayout);
     layout->addWidget(descLabel);
     layout->addWidget(k->descText);
@@ -111,13 +112,13 @@ void KTImageDialog::checkData()
 
 void KTImageDialog::resetLineColor(const QString &)
 {
-    QPalette pal = k->lineEdit->palette();
+    QPalette palette = k->lineEdit->palette();
     if (k->lineEdit->text().length() > 0 && k->lineEdit->text().compare(tr("Set a title for the picture here!")) != 0) 
-        pal.setBrush(QPalette::Base, Qt::white);
+        palette.setBrush(QPalette::Base, Qt::white);
     else 
-        pal.setBrush(QPalette::Base, QColor(255, 140, 138));
+        palette.setBrush(QPalette::Base, QColor(255, 140, 138));
 
-     k->lineEdit->setPalette(pal);
+     k->lineEdit->setPalette(palette);
 }
 
 QString KTImageDialog::imageTitle() const

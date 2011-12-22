@@ -35,7 +35,7 @@
 
 #include "ktviewcamera.h"
 #include "ktexportwidget.h"
-#include "postdialog.h"
+// #include "postdialog.h"
 #include "tdebug.h"
 #include "tseparator.h"
 #include "ktprojectrequest.h"
@@ -269,17 +269,13 @@ void KTViewCamera::postDialog()
 {
     QDesktopWidget desktop;
 
-    PostDialog *postWidget = new PostDialog(this);
-    postWidget->setScenes(k->project->scenes().values());
-    postWidget->show();
-    postWidget->move((int) (desktop.screenGeometry().width() - postWidget->width())/2,
-                       (int) (desktop.screenGeometry().height() - postWidget->height())/2);
+    KTExportWidget *exportWidget = new KTExportWidget(k->project, this, false);
+    exportWidget->show();
+    exportWidget->move((int) (desktop.screenGeometry().width() - exportWidget->width())/2,
+                       (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
+    exportWidget->exec();
 
-    if (postWidget->exec() != QDialog::Rejected) {
-        QList<int> scenes = postWidget->sceneIndexes();
-        emit requestForExportVideoToServer(scenes);
-    }
-
+    tFatal() << "KTViewCamera::postDialog() - It's done!";
 }
 
 void KTViewCamera::selectScene(int index)

@@ -7,14 +7,12 @@ HEADERS += ktviewcamera.h \
            ktcamerabar.h \
            ktanimationarea.h \
            # ktcamerawidget.h \
-           ktcamerastatus.h \
-           postdialog.h
+           ktcamerastatus.h
 SOURCES += ktviewcamera.cpp \
            ktcamerabar.cpp \
            ktanimationarea.cpp \
            # ktcamerawidget.cpp \
-           ktcamerastatus.cpp \
-           postdialog.cpp
+           ktcamerastatus.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib
