@@ -74,7 +74,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         QTabWidget *communicationWidget();
         void closeConnection();
 
-        void sendVideoRequest(const QList<int> sceneIndexes);
+        void sendVideoRequest(const QString &title, const QString &description, const QList<int> sceneIndexes);
 
     signals:
         void savingSuccessful();
@@ -86,7 +86,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         void setProject(KTProject *project);
 
     private slots:
-        void sendChatMessage(const QString & message);
+        void sendChatMessage(const QString &message);
         void connectionLost();
         void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
 

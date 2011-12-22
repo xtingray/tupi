@@ -46,6 +46,7 @@
 #include "ktnewprojectpackage.h"
 #include "ktconnectpackage.h"
 #include "ktimageexportpackage.h"
+#include "ktvideoexportpackage.h"
 #include "tupinetfilemanager.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
@@ -494,7 +495,8 @@ void KTNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, 
     sendPackage(package);
 }
 
-void KTNetProjectManagerHandler::sendVideoRequest(const QList<int> sceneIndexes)
+void KTNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &description, const QList<int> sceneIndexes)
 {
-    tError() << "KTNetProjectManagerHandler::sendVideoRequest() - Sending video request!";
+    KTVideoExportPackage package(title, description, sceneIndexes);
+    sendPackage(package);
 }

@@ -33,65 +33,40 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTLIBRARYWIDGET_H
-#define KTLIBRARYWIDGET_H
+#include "ktvideoexportpackage.h"
 
-#include "ktmodulewidgetbase.h"
-#include "ktitempreview.h"
-#include "kimagebutton.h"
-#include "ktgctable.h"
+// <project_video version="0">
+//     <video scenes="0, 1, 2, N" />
+//         <title>Video Title</title>
+//         <description>Video Description</description>          
+//     </video>
+// </project_video>
 
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
-#include <QDir>
-#include <QMouseEvent>
-
-class KTLibrary;
-
-/**
- * @author David Cuadrado
-*/
-
-class KTLibraryWidget : public KTModuleWidgetBase
+KTVideoExportPackage::KTVideoExportPackage(const QString &title, const QString &description, const QList<int> sceneIndexes): QDomDocument()
 {
-    Q_OBJECT
+    QDomElement root = createElement("project_video");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    QDomElement video = createElement("video");
 
-    public:
-        KTLibraryWidget(QWidget *parent = 0);
-        ~KTLibraryWidget();
-        void resetGUI();
-        void setLibrary(KTLibrary *library);
-        void setNetworking(bool isNetworked);
+    QString indexes = "";
+    for (int i=0; i < sceneIndexes.size(); i++)
+         indexes += QString::number(sceneIndexes.at(i)) + ","; 
 
-    protected:
-        virtual void libraryResponse(KTLibraryResponse *response);
-        virtual void frameResponse(KTFrameResponse *response);
+    indexes.remove(indexes.length() - 1, 1);
 
-    private slots:
-        void addFolder();
-        void previewItem(QTreeWidgetItem *);
-        void insertObjectInWorkspace();
-        void removeCurrentGraphic();
-        void renameObject(QTreeWidgetItem* item);
-        void importGraphicObject();
-        void refreshItem(QTreeWidgetItem *item);
-        void updateLibrary(QString node, QString target);
-        void activeRefresh(QTreeWidgetItem *item);
+    video.setAttribute("scenes", indexes);
 
-    public slots:
-        void importBitmap();
-        void importSvg();
-        void importBitmapArray();
-        void importSvgArray();
-        void importSound();
+    QDomText titleDom = createTextNode(title);
+    QDomText descDom = createTextNode(description);
 
-    signals:
-        void requestCurrentGraphic();
+    video.appendChild(createElement("title")).appendChild(titleDom);
+    video.appendChild(createElement("description")).appendChild(descDom);
+    
+    root.appendChild(video);
+}
 
-    private:
-        struct Private;
-        Private *const k;
-};
-
-#endif
+KTVideoExportPackage::~KTVideoExportPackage()
+{
+}

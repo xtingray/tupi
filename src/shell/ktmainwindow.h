@@ -208,7 +208,7 @@ class KTMainWindow : public KTabbedMainWindow
           void callSave();
           void expandExposureView(int index);
           void expandColorView();
-          void postVideo(const QList<int> sceneIndexes);
+          void postVideo(const QString &title, const QString &description, const QList<int> sceneIndexes);
 
     private:
           KTProjectManager *m_projectManager;
@@ -231,7 +231,6 @@ class KTMainWindow : public KTabbedMainWindow
           QMenu *m_helpMenu;
 
           QStringList m_recentProjects;
-
           QMenu *m_recentProjectsMenu;
 
     // Network variables

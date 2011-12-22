@@ -299,8 +299,13 @@ void KTMainWindow::setWorkSpace()
         viewCamera = new KTViewCamera(m_projectManager->project(), isNetworked);
         ui4project(viewCamera);
 
+        m_libraryWidget->setNetworking(isNetworked);
+
         if (isNetworked)
-            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QList<int>)), this, SLOT(postVideo(const QList<int>)));
+            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QList<int>)), 
+                    this, SLOT(postVideo(const QString &, const QString &, const QList<int>)));
+        else
+            connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         animationTab = new KTAnimationspace(viewCamera);
         animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/play.png"));
@@ -338,8 +343,8 @@ void KTMainWindow::setWorkSpace()
 
         exposureView->expandDock(true);
 
-        if (!isNetworked)
-            connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
+        // if (!isNetworked)
+        //     connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         m_projectManager->undoModified();
 
@@ -634,6 +639,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
+        tError() << "KTMainWindow::setupLocalProject() - isNetworked : false";
         isNetworked = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
@@ -1324,7 +1330,7 @@ void KTMainWindow::netProjectSaved()
     m_projectManager->undoModified();
 }
 
-void KTMainWindow::postVideo(const QList<int> sceneIndexes)
+void KTMainWindow::postVideo(const QString &title, const QString &description, const QList<int> sceneIndexes)
 {
-    netProjectManagerHandler->sendVideoRequest(sceneIndexes);
+    netProjectManagerHandler->sendVideoRequest(title, description, sceneIndexes);
 }

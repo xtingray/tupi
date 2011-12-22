@@ -88,7 +88,7 @@ void KTMainWindow::createGUI()
 
     // Adding the objects library widget to the left side of the interface
 
-    m_libraryWidget = new KTLibraryWidget();
+    m_libraryWidget = new KTLibraryWidget(this);
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
 
     libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Animation, "Library", QKeySequence(tr("Shift+L")));

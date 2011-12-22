@@ -704,6 +704,10 @@ class VideoProperties : public KExportWizardPage
 
         bool isComplete() const;
         void reset();
+        QString title() const;
+        QString description() const;
+        QList<int> scenesList() const;
+        bool successful();
 
     signals:
         void isDone();
@@ -717,11 +721,14 @@ class VideoProperties : public KExportWizardPage
         QLineEdit *lineEdit;
         QTextEdit *descText;
         QList<int> scenes;
+        bool isOk;
 };
 
 VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPage(tr("Set Video Properties"))
 {
     setTag("PROPERTIES");
+
+    isOk = false;
 
     connect(widget, SIGNAL(saveVideoToServer()), this, SLOT(postIt()));
 
@@ -757,16 +764,32 @@ VideoProperties::~VideoProperties()
 
 bool VideoProperties::isComplete() const
 {
-    return true;
+    return isOk;
 }
 
 void VideoProperties::reset()
 {
 }
 
+QString VideoProperties::title() const
+{
+     return lineEdit->text();
+}
+
+QString VideoProperties::description() const
+{
+     return descText->toPlainText();
+}
+
+QList<int> VideoProperties::scenesList() const
+{
+     return scenes;
+}
+
 void VideoProperties::postIt()
 {
     if (lineEdit->text().length() > 0) {
+        isOk = true;
         emit isDone();
     } else {
         lineEdit->setText(tr("Set a title for the picture here!"));
@@ -875,6 +898,26 @@ void KTExportWidget::setExporter(const QString &plugin)
         m_exportToPage->setCurrentExporter(currentExporter);
         m_exportImages->setCurrentExporter(currentExporter);
     }
+}
+
+QString KTExportWidget::videoTitle() const
+{
+    return videoProperties->title();
+}
+
+QString KTExportWidget::videoDescription() const
+{
+    return videoProperties->description();
+}
+
+QList<int> KTExportWidget::videoScenes() const
+{
+    return videoProperties->scenesList();
+}
+
+bool KTExportWidget::isComplete()
+{
+    return videoProperties->isComplete();
 }
 
 #include "ktexportwidget.moc"

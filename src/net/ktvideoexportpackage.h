@@ -33,65 +33,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTLIBRARYWIDGET_H
-#define KTLIBRARYWIDGET_H
-
-#include "ktmodulewidgetbase.h"
-#include "ktitempreview.h"
-#include "kimagebutton.h"
-#include "ktgctable.h"
-
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
-#include <QDir>
-#include <QMouseEvent>
-
-class KTLibrary;
+#ifndef KTVIDEOEXPORTTPACKAGE_H
+#define KTVIDEOEXPORTPACKAGE_H
 
 /**
- * @author David Cuadrado
+ * @author Gustav Gonzalez
 */
 
-class KTLibraryWidget : public KTModuleWidgetBase
+#include <QDomDocument>
+#include <QList>
+
+class KTVideoExportPackage : public QDomDocument
 {
-    Q_OBJECT
-
     public:
-        KTLibraryWidget(QWidget *parent = 0);
-        ~KTLibraryWidget();
-        void resetGUI();
-        void setLibrary(KTLibrary *library);
-        void setNetworking(bool isNetworked);
-
-    protected:
-        virtual void libraryResponse(KTLibraryResponse *response);
-        virtual void frameResponse(KTFrameResponse *response);
-
-    private slots:
-        void addFolder();
-        void previewItem(QTreeWidgetItem *);
-        void insertObjectInWorkspace();
-        void removeCurrentGraphic();
-        void renameObject(QTreeWidgetItem* item);
-        void importGraphicObject();
-        void refreshItem(QTreeWidgetItem *item);
-        void updateLibrary(QString node, QString target);
-        void activeRefresh(QTreeWidgetItem *item);
-
-    public slots:
-        void importBitmap();
-        void importSvg();
-        void importBitmapArray();
-        void importSvgArray();
-        void importSound();
-
-    signals:
-        void requestCurrentGraphic();
-
-    private:
-        struct Private;
-        Private *const k;
+        KTVideoExportPackage(const QString &title, const QString &description, const QList<int> sceneIndexes);
+        ~KTVideoExportPackage();
 };
 
 #endif

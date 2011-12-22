@@ -93,6 +93,7 @@ struct KTLibraryWidget::Private
     QString oldId;
     bool renaming;
     bool mkdir;
+    bool isNetworked;
 
     struct Frame
     {
@@ -107,6 +108,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     #ifdef K_DEBUG
            TINIT;
     #endif
+
     k->childCount = 0;
     k->renaming = false;
     k->mkdir = false;
@@ -203,6 +205,11 @@ void KTLibraryWidget::setLibrary(KTLibrary *library)
 {
     k->library = library;
     k->project = library->project(); 
+}
+
+void KTLibraryWidget::setNetworking(bool isNetworked)
+{
+    k->isNetworked = isNetworked;
 }
 
 void KTLibraryWidget::addFolder()
@@ -817,8 +824,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 // if (k->project->spaceContext() != KTProject::NONE)
-                                 //     insertObjectInWorkspace();
+                                 if (!k->isNetworked && k->project->spaceContext() != KTProject::NONE)
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Svg:
@@ -826,8 +833,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 // if (k->project->spaceContext() != KTProject::NONE)
-                                 //     insertObjectInWorkspace();
+                                 if (!k->isNetworked && k->project->spaceContext() != KTProject::NONE)
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case KTLibraryObject::Sound:

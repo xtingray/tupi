@@ -224,11 +224,12 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
                  k->status->setCurrentScene(index);
             }
             break;
+            /*
             default:
             {
-                 tError() << "KTViewCamera::handleProjectResponse() - action(): " << sceneResponse->action();
             }
             break;
+            */
         }
     }
 
@@ -275,7 +276,8 @@ void KTViewCamera::postDialog()
                        (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
     exportWidget->exec();
 
-    tFatal() << "KTViewCamera::postDialog() - It's done!";
+    if (exportWidget->isComplete() != QDialog::Rejected)
+        emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoDescription(), exportWidget->videoScenes()); 
 }
 
 void KTViewCamera::selectScene(int index)
