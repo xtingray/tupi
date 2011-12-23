@@ -208,7 +208,7 @@ class KTMainWindow : public KTabbedMainWindow
           void callSave();
           void expandExposureView(int index);
           void expandColorView();
-          void postVideo(const QString &title, const QString &description, const QList<int> sceneIndexes);
+          void postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes);
 
     private:
           KTProjectManager *m_projectManager;

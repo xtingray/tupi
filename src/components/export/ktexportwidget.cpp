@@ -637,14 +637,12 @@ void ExportTo::exportIt()
 
     QDir directory(path);
     if (!directory.exists()) {
-        //QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
-        TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), TOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" doesn't exist! Please, choose another path."), TOsd::Error);
         return;
     } else {
         QFile file(directory.filePath(name));
         if (!file.open(QIODevice::ReadWrite)) {
             file.remove();
-            //QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
             TOsd::self()->display(tr("Error"), tr("You have no permission to create this file. Please, choose another path."), TOsd::Error);
             return;
         }

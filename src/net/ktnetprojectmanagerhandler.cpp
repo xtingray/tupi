@@ -495,8 +495,8 @@ void KTNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, 
     sendPackage(package);
 }
 
-void KTNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &description, const QList<int> sceneIndexes)
+void KTNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
 {
-    KTVideoExportPackage package(title, description, sceneIndexes);
+    KTVideoExportPackage package(title, description, fps, sceneIndexes);
     sendPackage(package);
 }

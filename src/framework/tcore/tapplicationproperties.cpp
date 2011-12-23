@@ -37,7 +37,6 @@
 
 #include <QDir>
 #include <QLocale>
-
 #include <QApplication>
 
 TApplicationProperties *TApplicationProperties::s_instance = 0;

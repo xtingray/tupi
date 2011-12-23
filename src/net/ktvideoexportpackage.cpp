@@ -36,19 +36,20 @@
 #include "ktvideoexportpackage.h"
 
 // <project_video version="0">
-//     <video scenes="0, 1, 2, N" />
+//     <video fps="24" scenes="0, 1, 2, N" />
 //         <title>Video Title</title>
 //         <description>Video Description</description>          
 //     </video>
 // </project_video>
 
-KTVideoExportPackage::KTVideoExportPackage(const QString &title, const QString &description, const QList<int> sceneIndexes): QDomDocument()
+KTVideoExportPackage::KTVideoExportPackage(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes): QDomDocument()
 {
     QDomElement root = createElement("project_video");
     root.setAttribute("version", "0");
     appendChild(root);
     
     QDomElement video = createElement("video");
+    video.setAttribute("fps", fps);
 
     QString indexes = "";
     for (int i=0; i < sceneIndexes.size(); i++)

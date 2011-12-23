@@ -302,8 +302,8 @@ void KTMainWindow::setWorkSpace()
         m_libraryWidget->setNetworking(isNetworked);
 
         if (isNetworked)
-            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QList<int>)), 
-                    this, SLOT(postVideo(const QString &, const QString &, const QList<int>)));
+            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, int, const QList<int>)), 
+                    this, SLOT(postVideo(const QString &, const QString &, int, const QList<int>)));
         else
             connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
@@ -1330,7 +1330,7 @@ void KTMainWindow::netProjectSaved()
     m_projectManager->undoModified();
 }
 
-void KTMainWindow::postVideo(const QString &title, const QString &description, const QList<int> sceneIndexes)
+void KTMainWindow::postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
 {
-    netProjectManagerHandler->sendVideoRequest(title, description, sceneIndexes);
+    netProjectManagerHandler->sendVideoRequest(title, description, fps, sceneIndexes);
 }

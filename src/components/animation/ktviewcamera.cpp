@@ -277,7 +277,7 @@ void KTViewCamera::postDialog()
     exportWidget->exec();
 
     if (exportWidget->isComplete() != QDialog::Rejected)
-        emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoDescription(), exportWidget->videoScenes()); 
+        emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
 }
 
 void KTViewCamera::selectScene(int index)

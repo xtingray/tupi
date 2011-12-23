@@ -665,7 +665,7 @@ void KTPaintArea::groupItems()
 
     if (!selected.isEmpty()) {
         QString strItems= "";
-        KTGraphicsScene* currentScene = graphicsScene();
+        KTGraphicsScene *currentScene = graphicsScene();
         int firstItem = -1;
 
         if (currentScene) {
