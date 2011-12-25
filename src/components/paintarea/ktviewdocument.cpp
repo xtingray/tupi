@@ -1132,6 +1132,11 @@ int KTViewDocument::currentFramesTotal()
     return -1;
 }
 
+int KTViewDocument::currentSceneIndex()
+{
+    return k->paintArea->graphicsScene()->currentSceneIndex();
+}
+
 void KTViewDocument::updateBgColor(const QColor color)
 {
    k->project->setBgColor(color);

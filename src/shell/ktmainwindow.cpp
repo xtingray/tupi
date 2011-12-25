@@ -358,6 +358,8 @@ void KTMainWindow::setWorkSpace()
 
         if (KTMainWindow::requestType == OpenLocalProject || KTMainWindow::requestType == OpenNetProject)
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
+
+        connect(m_projectManager, SIGNAL(modified()), this, SLOT(updatePlayer()));
     }
 }
 
@@ -639,7 +641,6 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 void KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
-        tError() << "KTMainWindow::setupLocalProject() - isNetworked : false";
         isNetworked = false;
         m_projectManager->setHandler(new KTLocalProjectManagerHandler, false);
         m_projectManager->setParams(params);
@@ -668,7 +669,9 @@ void KTMainWindow::openProject()
     if (package.isEmpty() || !package.endsWith(".tup")) 
         return;
 
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor)); 
     openProject(package);
+    QApplication::restoreOverrideCursor();
 }
 
 /**
@@ -1185,7 +1188,7 @@ void KTMainWindow::updateCurrentTab(int index)
         if (lastTab == 2)
             helpView->expandDock(false);
         lastTab = 1;
-        viewCamera->updatePhotograms();
+        viewCamera->updateFramesTotal();
         viewCamera->setFocus();
     } else {
         if (index == 0) { // Animation mode
@@ -1333,4 +1336,10 @@ void KTMainWindow::netProjectSaved()
 void KTMainWindow::postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
 {
     netProjectManagerHandler->sendVideoRequest(title, description, fps, sceneIndexes);
+}
+
+void KTMainWindow::updatePlayer()
+{
+    tError() << "KTMainWindow::updatePlayer() - Just tracing!: " << drawingTab->currentSceneIndex();
+    viewCamera->updateScenes(drawingTab->currentSceneIndex());
 }

@@ -183,9 +183,11 @@ void KTGraphicsScene::drawCurrentPhotogram()
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+    */
 
     // Q_CHECK_PTR(k->scene);
 
@@ -296,9 +298,11 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
 void KTGraphicsScene::drawBackground()
 {
+    /*
     #ifdef K_DEBUG
        T_FUNCINFO;
     #endif
+    */
 
     Q_CHECK_PTR(k->scene);
 
@@ -345,9 +349,11 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity, Context mode)
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
+    /*
     #ifdef K_DEBUG
        T_FUNCINFO;
     #endif
+    */
 
         QGraphicsItem *item = object->item();
         k->onionSkin.opacityMap.insert(item, opacity);
@@ -375,9 +381,11 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+    */
 
     if (svgItem) {
 
@@ -393,8 +401,8 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
             if (frame) {
                 svgItem->setOpacity(opacity);
                 // k->objectCounter++;
-                tDebug() << "KTGraphicsScene::addSvgObject() - Item added successful! [" 
-                         << k->framePosition.layer << ", " << k->framePosition.frame << "]"; 
+                // tDebug() << "KTGraphicsScene::addSvgObject() - Item added successful! [" 
+                //          << k->framePosition.layer << ", " << k->framePosition.frame << "]"; 
                 addItem(svgItem);
             } else {
                 #ifdef K_DEBUG

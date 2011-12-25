@@ -194,6 +194,7 @@ class KTMainWindow : public KTabbedMainWindow
           void requestProject();
           void createNewNetProject(const QString &title);
           void netProjectSaved();
+          void updatePlayer();
 
     private slots:
           void messageToStatus(const QString &);

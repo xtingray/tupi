@@ -215,6 +215,9 @@ bool KTProjectManager::saveProject(const QString &fileName)
     bool result = k->handler->saveProject(fileName, k->project);
     k->isModified = !result;
 
+    if (k->isModified)
+        emit modified();
+
     return result;
 }
 
@@ -399,8 +402,10 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
            T_FUNCINFO << response->action();
     #endif
 
-    if (response->action() != KTProjectRequest::Select)
+    if (response->action() != KTProjectRequest::Select) {
         k->isModified = true;
+        emit modified();
+    }
 
     if (!k->handler) {
         // SQA: Check if this is the right way to handle this condition 

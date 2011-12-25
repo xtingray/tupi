@@ -35,7 +35,6 @@
 
 #include "ktviewcamera.h"
 #include "ktexportwidget.h"
-// #include "postdialog.h"
 #include "tdebug.h"
 #include "tseparator.h"
 #include "ktprojectrequest.h"
@@ -145,13 +144,11 @@ QSize KTViewCamera::sizeHint() const
 void KTViewCamera::doPlay()
 {
     k->animationArea->play();
-    // updateSceneInfo();
 }
 
 void KTViewCamera::doPlayBack()
 {
     k->animationArea->playBack();
-    // updateSceneInfo();
 }
 
 void KTViewCamera::doStop()
@@ -168,15 +165,6 @@ void KTViewCamera::previousFrame()
 {
     k->animationArea->previousFrame();
 }
-
-/*
-void KTViewCamera::updateSceneInfo()
-{
-    KTScene *scene = k->animationArea->currentScene();
-    if (scene)
-        showSceneInfo(scene);
-}
-*/
 
 bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 {
@@ -240,13 +228,11 @@ void KTViewCamera::setFPS(int fps)
 {
     fps++;
     k->project->setFPS(fps);
-    //k->status->setFPS(fps);
     k->animationArea->setFPS(fps);
 }
 
-void KTViewCamera::updatePhotograms()
+void KTViewCamera::updateFramesTotal()
 {
-    k->animationArea->refreshAnimation();
     KTScene *scene = k->animationArea->currentScene(); 
     if (scene) {
         QString total = "";
@@ -283,11 +269,18 @@ void KTViewCamera::postDialog()
 void KTViewCamera::selectScene(int index)
 {
     if (index != k->animationArea->currentSceneIndex()) {
-        k->animationArea->updateSceneIndex(index);
-        updatePhotograms();
-
         KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
         emit requestTriggered(&event);
+
+        doStop();
+        k->animationArea->updateSceneIndex(index);
+        k->animationArea->updateAnimationArea();
+        doPlay();
     }
+}
+
+void KTViewCamera::updateScenes(int sceneIndex)
+{
+    k->animationArea->updatePhotograms(sceneIndex);
 }
 

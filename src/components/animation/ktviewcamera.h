@@ -62,7 +62,7 @@ class KTViewCamera : public QFrame
         ~KTViewCamera();
 
         QSize sizeHint() const;
-        // void updateSceneInfo();
+        void updateScenes(int sceneIndex);
 
     private slots:
         void setLoop();
@@ -71,8 +71,7 @@ class KTViewCamera : public QFrame
     public slots:
         bool handleProjectResponse(KTProjectResponse *event);
         void setFPS(int fps);
-        // void updatePhotograms(KTProject *project);
-        void updatePhotograms();
+        void updateFramesTotal();
         void exportDialog();
         void postDialog();
         void doPlay();

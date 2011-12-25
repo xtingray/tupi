@@ -82,6 +82,7 @@ class KTViewDocument : public QMainWindow
         KTProject::Mode spaceContext();
         KTProject *project();
         int currentFramesTotal();
+        int currentSceneIndex();
 
     private slots:
         void setNextOnionSkin(int n);

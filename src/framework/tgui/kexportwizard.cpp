@@ -170,7 +170,7 @@ void KExportWizard::next()
         emit saveVideoToServer();
 
     if (tag.compare("SCENE") == 0)  {
-        k->nextButton->setText(tr("Save")); 
+        k->nextButton->setText(tr("Export")); 
         k->backButton->setEnabled(true);
         emit setFileName();
 
@@ -192,7 +192,7 @@ void KExportWizard::pageCompleted()
         k->nextButton->setEnabled(current->isComplete());
     } else {
         if (tag.compare("IMAGES") == 0 || tag.compare("EXPORT"))
-            k->nextButton->setText(tr("Save"));
+            k->nextButton->setText(tr("Export"));
         if (tag.compare("PROPERTIES") == 0)
             k->nextButton->setText(tr("Post"));
         k->nextButton->setEnabled(true);

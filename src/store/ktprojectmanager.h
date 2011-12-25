@@ -99,6 +99,7 @@ class STORE_EXPORT KTProjectManager : public QObject
     signals:
         void responsed(KTProjectResponse *reponse);
         void requestOpenProject(const QString& filename);
+        void modified(); 
         //void updateAnimationModule(KTProject *project, int sceneIndex, int layerIndex, int frameIndex);
 
     private:
