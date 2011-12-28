@@ -41,8 +41,14 @@
 
 // SQA: Add support for renaming and moving objects from the list
 
-KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent)
+struct KTScenesList::Private
 {
+   int scenesTotal;
+};
+
+KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent), k(new Private)
+{
+    k->scenesTotal = 0;
     setHeaderLabels(QStringList() << "");
     header()->setResizeMode(QHeaderView::ResizeToContents);
     setColumnCount(1);
@@ -58,10 +64,14 @@ KTScenesList::~KTScenesList()
 
 void KTScenesList::insertScene(int index, const QString &name)
 {
+    k->scenesTotal++;
     QTreeWidgetItem *newScene = new QTreeWidgetItem(this);
     newScene->setText(0, name);
     newScene->setFlags(newScene->flags() | Qt::ItemIsEditable);
     insertTopLevelItem(index, newScene);
+
+    if (index == 0)
+        setCurrentItem(newScene);
 }
 
 /*
@@ -77,13 +87,16 @@ int KTScenesList::removeCurrentScene()
 
     if (currentItem()) {
         delete currentItem();
+        k->scenesTotal--;
+        return index;
     }
 
-    return index;
+    return -1;
 }
 
 void KTScenesList::removeScene(int index)
 {
+    k->scenesTotal--;
     delete topLevelItem(index);
 }
 
@@ -148,7 +161,8 @@ QString KTScenesList::nameCurrentScene()
 
 int KTScenesList::scenesCount()
 {
-    return topLevelItemCount();
+    // return topLevelItemCount();
+    return k->scenesTotal;
 }
 
 void KTScenesList::mouseDoubleClickEvent(QMouseEvent *event)
@@ -166,11 +180,24 @@ void KTScenesList::callRename()
 
 bool KTScenesList::nameExists(QString &name)
 {
-    for (int i = 0; i < topLevelItemCount (); i++) {
+    for (int i = 0; i < topLevelItemCount(); i++) {
          QTreeWidgetItem *item = topLevelItem(i);
          if (item->text(0).compare(name) == 0)
              return true;
     }
 
     return false;
+}
+
+void KTScenesList::resetUI()
+{
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    blockSignals(true);
+    clearSelection();
+    k->scenesTotal = 0;
+    clear();
+    blockSignals(false);
 }

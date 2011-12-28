@@ -166,7 +166,7 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
     #endif
 
     if (position < 0 || position > k->soundLayers.count()) {
-        tDebug() << "Error in createSoundLayer";
+        tDebug() << "KTScene::createSoundLayer() - [ Fatal Error ] - Index incorrect!";
         return 0;
     }
 
@@ -185,6 +185,10 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
 
 bool KTScene::removeLayer(int position)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO << position;
+    #endif
+
     // Q_CHECK_PTR(layers);
 
     KTLayer *layer = this->layer(position);

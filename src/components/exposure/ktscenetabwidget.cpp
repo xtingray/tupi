@@ -42,13 +42,19 @@
 
 #include "tdebug.h"
 
-KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent)
+struct KTSceneTabWidget::Private
+{
+    QHash<int, KTExposureTable *> tables;
+    QTabWidget *tabber;
+};
+
+KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent), k(new Private)
 {
    QVBoxLayout *layout = new QVBoxLayout(this);
    layout->setMargin(1);
 
-   tabber = new QTabWidget;
-   layout->addWidget(tabber);
+   k->tabber = new QTabWidget;
+   layout->addWidget(k->tabber);
 
    setLayout(layout);
 }
@@ -57,16 +63,16 @@ KTSceneTabWidget::~KTSceneTabWidget()
 {
 }
 
-QTabWidget* KTSceneTabWidget::TabWidget()
+QTabWidget* KTSceneTabWidget::tabWidget()
 {
-   return tabber;
+   return k->tabber;
 }
 
 void KTSceneTabWidget::removeAllTabs()
 {
-    int count = tabber->count();
+    int count = k->tabber->count();
     for (int i = 0; i < count; i++)
-         delete tabber->currentWidget();
+         delete k->tabber->currentWidget();
 }
 
 void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable *table) {
@@ -84,8 +90,8 @@ void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable 
     layout->addWidget(table);
     frame->setLayout(layout);
 
-    tables.insert(index, table);
-    tabber->insertTab(index, frame, name);
+    k->tables.insert(index, table);
+    k->tabber->insertTab(index, frame, name);
 }
 
 KTExposureTable* KTSceneTabWidget::getCurrentTable() 
@@ -97,7 +103,7 @@ KTExposureTable* KTSceneTabWidget::getCurrentTable()
 
 KTExposureTable* KTSceneTabWidget::getTable(int index)
 {
-    KTExposureTable *table = tables.value(index);
+    KTExposureTable *table = k->tables.value(index);
 
     if (table)
         return table;
@@ -107,11 +113,11 @@ KTExposureTable* KTSceneTabWidget::getTable(int index)
 
 int KTSceneTabWidget::currentIndex()
 {
-    int index = tabber->currentIndex();
+    int index = k->tabber->currentIndex();
     return index;
 }
 
 int KTSceneTabWidget::count()
 {
-    return tabber->count();
+    return k->tabber->count();
 }

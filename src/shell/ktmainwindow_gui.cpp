@@ -74,7 +74,7 @@ void KTMainWindow::createGUI()
     addToPerspective(colorView->toggleViewAction(), Animation);
 
     connectToDisplays(m_colorPalette);
-    ui4paintArea(m_colorPalette);
+    connectWidgetToPaintArea(m_colorPalette);
 
     // Adding the pen parameters widget to the left side of the interface 
 
@@ -84,7 +84,7 @@ void KTMainWindow::createGUI()
     addToPerspective(penView->toggleViewAction(), Animation);
 
     connectToDisplays(m_penWidget);
-    ui4paintArea(m_penWidget);
+    connectWidgetToPaintArea(m_penWidget);
 
     // Adding the objects library widget to the left side of the interface
 
@@ -115,8 +115,8 @@ void KTMainWindow::createGUI()
     //m_actionManager->enable("importsvg", false);
     //m_actionManager->enable("importsvgarray", false);
 
-    ui4project(m_libraryWidget);
-    ui4localRequest(m_libraryWidget);
+    connectWidgetToManager(m_libraryWidget);
+    connectWidgetToLocalManager(m_libraryWidget);
 
     // Adding the scenes widget to the right side of the interface
 
@@ -125,8 +125,8 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(scenesView->toggleViewAction(), "show scenes");
     addToPerspective(scenesView->toggleViewAction(), Animation);
 
-    ui4project(m_scenes);
-    ui4localRequest(m_scenes);
+    connectWidgetToManager(m_scenes);
+    connectWidgetToLocalManager(m_scenes);
     connectToDisplays(m_scenes);
 
     // Adding the exposure sheet to the right side of the interface
@@ -135,8 +135,8 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(exposureView->toggleViewAction(), "show exposure");
     addToPerspective(exposureView->toggleViewAction(), Animation);
 
-    ui4project(m_exposureSheet);
-    ui4localRequest(m_exposureSheet);
+    connectWidgetToManager(m_exposureSheet);
+    connectWidgetToLocalManager(m_exposureSheet);
     connectToDisplays(m_exposureSheet);
 
     // Adding the help widget to the right side of the interface
@@ -162,8 +162,8 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(timeView->toggleViewAction(), "show timeline");
     addToPerspective(timeView->toggleViewAction(), Animation);
 
-    ui4project(m_timeLine);
-    ui4localRequest(m_timeLine);
+    connectWidgetToManager(m_timeLine);
+    connectWidgetToLocalManager(m_timeLine);
     connectToDisplays(m_timeLine);
 
 #if defined(QT_GUI_LIB) && defined(K_DEBUG)

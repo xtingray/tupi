@@ -115,6 +115,7 @@ KTViewCamera::KTViewCamera(KTProject *project, bool isNetworked, QWidget *parent
     k->status->setScenes(k->project); 
     connect(k->status, SIGNAL(sceneIndexChanged(int)), this, SLOT(selectScene(int)));
 
+    updateFramesTotal();
     k->status->setFPS(k->project->fps());
     setLoop();
 
@@ -168,6 +169,10 @@ void KTViewCamera::previousFrame()
 
 bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (KTSceneResponse *sceneResponse = static_cast<KTSceneResponse *>(response)) {
 
         int index = sceneResponse->sceneIndex();
@@ -184,12 +189,10 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
                  if (index < 0)
                      break;
 
-                 k->status->setScenes(k->project);
-
                  if (index == k->project->scenesTotal())
                      index--;
 
-                 k->animationArea->updateSceneIndex(index);
+                 k->status->setScenes(k->project);
                  k->status->setCurrentScene(index);
             }
             break;
@@ -201,7 +204,8 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
             case KTProjectRequest::Select:
             {
                  if (index >= 0) {
-                     k->animationArea->updateSceneIndex(index);
+                     k->currentSceneIndex = index;
+                     updateFramesTotal();
                      k->status->setCurrentScene(index);
                  }
             }
@@ -281,6 +285,12 @@ void KTViewCamera::selectScene(int index)
 
 void KTViewCamera::updateScenes(int sceneIndex)
 {
-    k->animationArea->updatePhotograms(sceneIndex);
+    k->animationArea->resetPhotograms(sceneIndex);
 }
+
+void KTViewCamera::updateFirstFrame()
+{
+    k->animationArea->updateAnimationArea();
+}
+
 

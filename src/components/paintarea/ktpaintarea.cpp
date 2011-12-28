@@ -404,8 +404,12 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
            T_FUNCINFO;
     #endif
 
-    if (graphicsScene()->isDrawing()) 
+    if (graphicsScene()->isDrawing()) {
+        #ifdef K_DEBUG
+               tFatal() << "KTPaintArea::sceneResponse() - Exiting from method. User is drawing!";
+        #endif
         return;
+    }
 
     switch(event->action()) {
            case KTProjectRequest::Select:
@@ -475,14 +479,12 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                case KTProjectRequest::Remove:
                     { 
-                        tFatal() << "KTPaintArea::itemResponse() - Remove Operation";
                         if (!k->deleteMode) {
                             KTGraphicsScene *guiScene = graphicsScene();
                             if (!guiScene->scene())
                                 return;
 
                             if (k->spaceMode == KTProject::FRAMES_EDITION) {
-                                tFatal() << "KTPaintArea::itemResponse() - Tracing update!";
                                 guiScene->drawCurrentPhotogram();
                             } else {
                                 guiScene->cleanWorkSpace();
@@ -1059,8 +1061,6 @@ void KTPaintArea::goOneFrameBack()
 
 void KTPaintArea::goOneFrameForward()
 {
-    tFatal() << "KTPaintArea::goOneFrameForward() - Adding a new frame!";
-
     KTGraphicsScene *scene = graphicsScene();
     int framesTotal = scene->framesTotal();
     int frameIndex = scene->currentFrameIndex() + 1;

@@ -84,7 +84,7 @@ KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "
     addChild(k->actionBar, Qt::AlignCenter);
 
     k->scenes = new KTSceneTabWidget(this);
-    connect(k->scenes->TabWidget(), SIGNAL(currentChanged(int)), this, SLOT(emitRequestChangeScene(int)));
+    connect(k->scenes->tabWidget(), SIGNAL(currentChanged(int)), this, SLOT(emitRequestChangeScene(int)));
     addChild(k->scenes);
     createMenu();
 }
@@ -183,7 +183,7 @@ void KTExposureSheet::addScene(int index, const QString &name)
 
 void KTExposureSheet::renameScene(int index, const QString &name)
 {
-    k->scenes->TabWidget()->setTabText(index, name);
+    k->scenes->tabWidget()->setTabText(index, name);
 }
 
 void KTExposureSheet::applyAction(int action)
@@ -348,7 +348,7 @@ void KTExposureSheet::setScene(int index)
 
     if (k->scenes->count() >= index) {
         k->scenes->blockSignals(true);
-        k->scenes->TabWidget()->setCurrentIndex(index);		
+        k->scenes->tabWidget()->setCurrentIndex(index);		
         k->currentTable = k->scenes->getCurrentTable();
         k->scenes->blockSignals(false);
     }
@@ -516,16 +516,26 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
            case KTProjectRequest::Remove:
             {
                 k->scenes->blockSignals(true);
-                k->scenes->TabWidget()->removeTab(e->sceneIndex());
+                k->scenes->tabWidget()->removeTab(e->sceneIndex());
                 k->scenes->blockSignals(false);
 
                 int layer = k->currentTable->currentLayer();
                 int frame = k->currentTable->currentFrame() + 1;
+              
+                tError() << "KTExposureSheet::sceneResponse() - Total scenes: " << k->scenes->tabWidget()->count();
+                tError() << "KTExposureSheet::sceneResponse() - Removing scene index: " << e->sceneIndex();
+                tError() << "KTExposureSheet::sceneResponse() - Selecting frame from scene index: " << e->sceneIndex() - 1;
 
-                if (e->sceneIndex() > 0) {
-                    KTProjectRequest request = KTRequestBuilder::createFrameRequest(e->sceneIndex() - 1, layer,
+                if (e->sceneIndex() == 0 && k->scenes->tabWidget()->count() == 1) {
+                    KTProjectRequest request = KTRequestBuilder::createFrameRequest(0, layer,
                                                frame, KTProjectRequest::Select, "1");
                     emit requestTriggered(&request);
+                } else {
+                    if (e->sceneIndex() > 0) {
+                        KTProjectRequest request = KTRequestBuilder::createFrameRequest(e->sceneIndex() - 1, layer,
+                                                   frame, KTProjectRequest::Select, "1");
+                        emit requestTriggered(&request);
+                    }
                 }
             }
            break;
@@ -643,6 +653,8 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
+                     tError() << "KTExposureSheet::frameResponse - Adding frame index: " << e->frameIndex();
+
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
@@ -693,6 +705,8 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
+                     tError() << "KTExposureSheet::frameResponse - Selecting frame index: " << e->frameIndex();
+
                      table->blockSignals(true);
                      // setScene(e->sceneIndex());
                      table->selectFrame(e->layerIndex(), e->frameIndex());
@@ -736,7 +750,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
         }
     } else {
         #ifdef K_DEBUG
-               tFatal() << "KTExposureSheet::frameResponse -> Scene index invalid: " << e->sceneIndex();
+               tError() << "KTExposureSheet::frameResponse - [ Fatal Error ] - Scene index is invalid -> " << e->sceneIndex();
         #endif
     }
 }

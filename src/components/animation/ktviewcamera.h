@@ -61,6 +61,7 @@ class KTViewCamera : public QFrame
         KTViewCamera(KTProject *work, bool isNetworked = false, QWidget *parent = 0);
         ~KTViewCamera();
 
+        void updateFirstFrame();
         QSize sizeHint() const;
         void updateScenes(int sceneIndex);
 

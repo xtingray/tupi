@@ -54,7 +54,7 @@
 struct KTScenesWidget::Private
 {
     QButtonGroup *buttonGroup;
-    KTScenesList *tableScenes;
+    KTScenesList *scenesTable;
 
     bool renaming;
     QString oldId;
@@ -95,28 +95,28 @@ void KTScenesWidget::setupButtons()
 
 void KTScenesWidget::setupTableScenes()
 {
-    k->tableScenes = new KTScenesList(this);
+    k->scenesTable = new KTScenesList(this);
 
-    KTreeWidgetSearchLine *searcher = new KTreeWidgetSearchLine(this, k->tableScenes);
+    KTreeWidgetSearchLine *searcher = new KTreeWidgetSearchLine(this, k->scenesTable);
     searcher->setClickMessage(tr("Filter here..."));
 
     addChild(searcher);
-    addChild(k->tableScenes);
+    addChild(k->scenesTable);
 
     // SQA: All these connections are really necessary? Please check! 
 
-    connect(k->tableScenes, SIGNAL(changeCurrent(QString, int)), 
+    connect(k->scenesTable, SIGNAL(changeCurrent(QString, int)), 
             this, SLOT(selectScene(QString, int)));
 
     /*
-    connect(k->tableScenes, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), 
+    connect(k->scenesTable, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), 
             this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
     */
 
-    connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this,
+    connect(k->scenesTable, SIGNAL(itemRenamed(QTreeWidgetItem *)), this,
             SLOT(renameObject(QTreeWidgetItem*)));
 
-    connect(k->tableScenes, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this,
+    connect(k->scenesTable, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this,
                                    SLOT(refreshItem(QTreeWidgetItem*)));
 }
 
@@ -145,7 +145,7 @@ void KTScenesWidget::selectScene(QString name, int index)
            T_FUNCINFO;
     #endif
 
-    int total = k->tableScenes->scenesCount();
+    // int total = k->scenesTable->scenesCount();
 
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
     emit requestTriggered(&event);
@@ -157,11 +157,11 @@ void KTScenesWidget::emitRequestInsertScene()
            T_FUNCINFO;
     #endif
 
-    int index = k->tableScenes->scenesCount();
+    int index = k->scenesTable->scenesCount();
     int label = index + 1;
     QString name = tr("Scene %1").arg(label);
 
-    while (k->tableScenes->nameExists(name)) {
+    while (k->scenesTable->nameExists(name)) {
            label++;
            name = tr("Scene %1").arg(label);
     }
@@ -175,7 +175,7 @@ void KTScenesWidget::emitRequestInsertScene()
     event = KTRequestBuilder::createFrameRequest(index, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
     emit requestTriggered(&event);
 
-    k->tableScenes->selectScene(index);
+    k->scenesTable->selectScene(index);
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
@@ -184,9 +184,9 @@ void KTScenesWidget::emitRequestRemoveScene()
            T_FUNCINFO;
     #endif
 
-    int index = k->tableScenes->indexCurrentScene();
+    int index = k->scenesTable->indexCurrentScene();
 
-    if (k->tableScenes->scenesCount() == 1) {
+    if (k->scenesTable->scenesCount() == 1) {
         KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Reset, 
                                                                       tr("Scene %1").arg(1));
         emit requestTriggered(&event);
@@ -198,7 +198,12 @@ void KTScenesWidget::emitRequestRemoveScene()
 
 void KTScenesWidget::closeAllScenes()
 {
-    k->tableScenes->removeAll();
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    k->scenesTable->resetUI();
+    // k->scenesTable->removeAll();
 }
 
 void KTScenesWidget::sceneResponse(KTSceneResponse *e)
@@ -208,30 +213,32 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
            SHOW_VAR(e->action());
     #endif
 
+    int index = e->sceneIndex();
+
     switch (e->action()) {
             case KTProjectRequest::Add:
              {
-               k->tableScenes->insertScene(e->sceneIndex(), e->arg().toString());
+               k->scenesTable->insertScene(index, e->arg().toString());
              }
             break;
             case KTProjectRequest::Remove:
              {
-               k->tableScenes->removeScene(e->sceneIndex());
+               k->scenesTable->removeScene(index);
              }
             break;
             case KTProjectRequest::Reset:
              {
-               k->tableScenes->renameScene(e->sceneIndex(), e->arg().toString());
+               k->scenesTable->renameScene(index, e->arg().toString());
              }
             break;
             case KTProjectRequest::Rename:
              {
-               k->tableScenes->renameScene(e->sceneIndex(), e->arg().toString());
+               k->scenesTable->renameScene(index, e->arg().toString());
              }
             break;
             case KTProjectRequest::Select:
              {
-               k->tableScenes->selectScene(e->sceneIndex());
+               k->scenesTable->selectScene(index);
              }
             break;
             default: 
@@ -244,14 +251,14 @@ void KTScenesWidget::renameObject(QTreeWidgetItem* item)
     if (item) {
         k->renaming = true;
         k->oldId = item->text(1);
-        k->tableScenes->editItem(item, 0);
+        k->scenesTable->editItem(item, 0);
     } 
 }
 
 void KTScenesWidget::refreshItem(QTreeWidgetItem *item)
 {
     if (k->renaming) {
-        KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->tableScenes->indexCurrentScene(), 
+        KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->scenesTable->indexCurrentScene(), 
                                                                       KTProjectRequest::Rename, item->text(0));
         emit requestTriggered(&event);
         k->renaming = false;

@@ -66,6 +66,7 @@ class KTScenesList : public KTreeListWidget
         void selectScene(int index);
 
         bool nameExists(QString &name);
+        void resetUI();
 
     protected:
         void mouseDoubleClickEvent(QMouseEvent *event);
@@ -81,6 +82,10 @@ class KTScenesList : public KTreeListWidget
     signals:
         void itemRenamed(QTreeWidgetItem *);
         void changeCurrent(QString name, int index);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

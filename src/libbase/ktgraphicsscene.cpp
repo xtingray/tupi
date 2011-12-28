@@ -740,6 +740,10 @@ int KTGraphicsScene::currentLayerIndex() const
 
 int KTGraphicsScene::currentSceneIndex() const
 {
+    #ifdef K_DEBUG
+       T_FUNCINFO;
+    #endif
+
     if (!k->scene)
         return -1;
 
@@ -1110,7 +1114,7 @@ void KTGraphicsScene::frameResponse(KTFrameResponse *event)
            T_FUNCINFOX("scene");
     #endif
 
-    if (k->tool) 
+    if (k->tool)
         k->tool->frameResponse(event);
 }
 

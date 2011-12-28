@@ -63,8 +63,9 @@ class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRespo
         KTScene *currentScene() const;
         int currentSceneIndex();
         void setFPS(int fps);
+        void resetPhotograms(int sceneIndex);
         void updateAnimationArea();
-        void updatePhotograms(int sceneIndex);
+        // void updatePhotograms(int sceneIndex);
 
     public slots:
         virtual void render();
@@ -97,7 +98,8 @@ class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRespo
         void resizeEvent(QResizeEvent *event);
 
     private:
-        void resetPhotograms(int sceneIndex);
+        void initPhotogramsArray();
+        void addPhotogramsArray(int index);
         void updateFirstFrame();
         struct Private;
         Private *const k;

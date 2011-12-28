@@ -134,9 +134,9 @@ class KTMainWindow : public KTabbedMainWindow
          void setupActions();
          void setMenuItemsContext(bool flag);
 
-         void ui4project(QWidget *widget);
-         void ui4paintArea(QWidget *widget);
-         void ui4localRequest(QWidget *widget);
+         void connectWidgetToManager(QWidget *widget);
+         void connectWidgetToPaintArea(QWidget *widget);
+         void connectWidgetToLocalManager(QWidget *widget);
 
          void setupNetworkProject();
          void setupNetworkProject(KTProjectManagerParams *params);
@@ -194,7 +194,7 @@ class KTMainWindow : public KTabbedMainWindow
           void requestProject();
           void createNewNetProject(const QString &title);
           void netProjectSaved();
-          void updatePlayer();
+          void updatePlayer(bool remove);
 
     private slots:
           void messageToStatus(const QString &);

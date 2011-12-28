@@ -56,19 +56,26 @@ class K_GUI_EXPORT KTSceneTabWidget : public QFrame
     public:
         KTSceneTabWidget(QWidget *parent = 0);
         ~KTSceneTabWidget();
-        QTabWidget* TabWidget();
+        QTabWidget* tabWidget();
         void addScene(int index, const QString &name, KTExposureTable *table = 0);
         KTExposureTable* getCurrentTable();
         KTExposureTable* getTable(int index);
         int currentIndex();
         int count();
 
+    /*
     private:
         QHash<int, KTExposureTable *> tables;
         QTabWidget *tabber;
+    */
 
     public slots:
         void removeAllTabs();
+
+    private:
+        struct Private;
+        Private *const k;
+
 };
 
 #endif

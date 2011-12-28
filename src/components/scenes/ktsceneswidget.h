@@ -62,10 +62,6 @@ class KTScenesWidget : public KTModuleWidgetBase
         void closeAllScenes();
 
     private:
-        struct Private;
-        Private *const k;
-
-    private:
         void setupButtons();
         void setupTableScenes();
 
@@ -81,6 +77,10 @@ class KTScenesWidget : public KTModuleWidgetBase
     public slots:
         void sendEvent(int action);
         void selectScene(QString name, int index);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

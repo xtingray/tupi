@@ -288,8 +288,8 @@ void KTMainWindow::setWorkSpace()
         addWidget(drawingTab);
 
         connectToDisplays(drawingTab);
-        ui4project(drawingTab);
-        ui4localRequest(drawingTab);
+        connectWidgetToManager(drawingTab);
+        connectWidgetToLocalManager(drawingTab);
         connect(drawingTab, SIGNAL(modeHasChanged(int)), this, SLOT(expandExposureView(int))); 
         connect(drawingTab, SIGNAL(expandColorPanel()), this, SLOT(expandColorView()));
       
@@ -297,7 +297,7 @@ void KTMainWindow::setWorkSpace()
 
         // KTViewCamera *
         viewCamera = new KTViewCamera(m_projectManager->project(), isNetworked);
-        ui4project(viewCamera);
+        connectWidgetToManager(viewCamera);
 
         m_libraryWidget->setNetworking(isNetworked);
 
@@ -359,7 +359,7 @@ void KTMainWindow::setWorkSpace()
         if (KTMainWindow::requestType == OpenLocalProject || KTMainWindow::requestType == OpenNetProject)
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
 
-        connect(m_projectManager, SIGNAL(modified()), this, SLOT(updatePlayer()));
+        connect(m_projectManager, SIGNAL(modified(bool)), this, SLOT(updatePlayer(bool)));
     }
 }
 
@@ -375,7 +375,7 @@ void KTMainWindow::setWorkSpace()
 void KTMainWindow::newProject()
 {
     #ifdef K_DEBUG
-       tWarning() << "Creating new project...";
+           tWarning() << "Creating new project...";
     #endif
 
     KTNewProject *wizard = new KTNewProject(this);
@@ -411,6 +411,10 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!m_projectManager->isOpen())
         return true;
 
@@ -454,6 +458,10 @@ bool KTMainWindow::closeProject()
 
 void KTMainWindow::resetUI()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     setCurrentTab(0);
 
     // if (colorView->isExpanded())
@@ -568,6 +576,7 @@ void KTMainWindow::resetUI()
         // netProjectManagerHandler->closeProject();
     }
 
+    disconnect(m_projectManager, SIGNAL(modified(bool)), this, SLOT(updatePlayer(bool)));
     m_projectManager->closeProject();
 }
 
@@ -890,7 +899,7 @@ void KTMainWindow::importPalettes()
  * @endif
 */
 
-void KTMainWindow::ui4project(QWidget *widget)
+void KTMainWindow::connectWidgetToManager(QWidget *widget)
 {
     connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, 
             SLOT(handleProjectRequest(const KTProjectRequest *)));
@@ -911,7 +920,7 @@ void KTMainWindow::ui4project(QWidget *widget)
  * @endif
 */
 
-void KTMainWindow::ui4paintArea(QWidget *widget)
+void KTMainWindow::connectWidgetToPaintArea(QWidget *widget)
 {
     connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, 
             SLOT(createCommand(const KTPaintAreaEvent *)));
@@ -926,7 +935,7 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
  * @endif
 */
 
-void KTMainWindow::ui4localRequest(QWidget *widget)
+void KTMainWindow::connectWidgetToLocalManager(QWidget *widget)
 {
     connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), 
             m_projectManager, SLOT(handleLocalRequest(const KTProjectRequest *)));
@@ -1188,7 +1197,7 @@ void KTMainWindow::updateCurrentTab(int index)
         if (lastTab == 2)
             helpView->expandDock(false);
         lastTab = 1;
-        viewCamera->updateFramesTotal();
+        viewCamera->updateFirstFrame();
         viewCamera->setFocus();
     } else {
         if (index == 0) { // Animation mode
@@ -1338,8 +1347,14 @@ void KTMainWindow::postVideo(const QString &title, const QString &description, i
     netProjectManagerHandler->sendVideoRequest(title, description, fps, sceneIndexes);
 }
 
-void KTMainWindow::updatePlayer()
+void KTMainWindow::updatePlayer(bool remove)
 {
-    tError() << "KTMainWindow::updatePlayer() - Just tracing!: " << drawingTab->currentSceneIndex();
-    viewCamera->updateScenes(drawingTab->currentSceneIndex());
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    if (!remove) {
+        int sceneIndex = drawingTab->currentSceneIndex();
+        viewCamera->updateScenes(sceneIndex);
+    } 
 }

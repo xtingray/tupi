@@ -215,8 +215,8 @@ bool KTProjectManager::saveProject(const QString &fileName)
     bool result = k->handler->saveProject(fileName, k->project);
     k->isModified = !result;
 
-    if (k->isModified)
-        emit modified();
+    // if (k->isModified)
+    //     emit modified(false);
 
     return result;
 }
@@ -404,7 +404,14 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
 
     if (response->action() != KTProjectRequest::Select) {
         k->isModified = true;
-        emit modified();
+        if (KTSceneResponse *sceneResponse = static_cast<KTSceneResponse *>(response)) {
+            if (response->action() == KTProjectRequest::Remove)
+                emit modified(true);
+            else
+                emit modified(false);
+        } else {
+            emit modified(false);
+        }
     }
 
     if (!k->handler) {

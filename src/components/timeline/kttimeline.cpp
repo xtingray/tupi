@@ -229,7 +229,6 @@ void KTTimeLine::sceneResponse(KTSceneResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 tFatal() << "KTTimeLine::sceneResponse <- Doing Scene selection!";
                  k->container->setCurrentIndex(response->sceneIndex());
             }
             break;
