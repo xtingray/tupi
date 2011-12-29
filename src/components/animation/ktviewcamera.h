@@ -72,7 +72,7 @@ class KTViewCamera : public QFrame
     public slots:
         bool handleProjectResponse(KTProjectResponse *event);
         void setFPS(int fps);
-        void updateFramesTotal();
+        void updateFramesTotal(int sceneIndex);
         void exportDialog();
         void postDialog();
         void doPlay();

@@ -115,7 +115,7 @@ KTViewCamera::KTViewCamera(KTProject *project, bool isNetworked, QWidget *parent
     k->status->setScenes(k->project); 
     connect(k->status, SIGNAL(sceneIndexChanged(int)), this, SLOT(selectScene(int)));
 
-    updateFramesTotal();
+    updateFramesTotal(0);
     k->status->setFPS(k->project->fps());
     setLoop();
 
@@ -205,7 +205,7 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
             {
                  if (index >= 0) {
                      k->currentSceneIndex = index;
-                     updateFramesTotal();
+                     updateFramesTotal(index);
                      k->status->setCurrentScene(index);
                  }
             }
@@ -235,9 +235,9 @@ void KTViewCamera::setFPS(int fps)
     k->animationArea->setFPS(fps);
 }
 
-void KTViewCamera::updateFramesTotal()
+void KTViewCamera::updateFramesTotal(int sceneIndex)
 {
-    KTScene *scene = k->animationArea->currentScene(); 
+    KTScene *scene = k->project->scene(sceneIndex);
     if (scene) {
         QString total = "";
         total = total.setNum(scene->framesTotal()); 

@@ -105,13 +105,7 @@ void KTScenesWidget::setupTableScenes()
 
     // SQA: All these connections are really necessary? Please check! 
 
-    connect(k->scenesTable, SIGNAL(changeCurrent(QString, int)), 
-            this, SLOT(selectScene(QString, int)));
-
-    /*
-    connect(k->scenesTable, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), 
-            this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
-    */
+    connect(k->scenesTable, SIGNAL(changeCurrent(int)), this, SLOT(selectScene(int)));
 
     connect(k->scenesTable, SIGNAL(itemRenamed(QTreeWidgetItem *)), this,
             SLOT(renameObject(QTreeWidgetItem*)));
@@ -138,14 +132,11 @@ void KTScenesWidget::sendEvent(int action)
     }
 }
 
-void KTScenesWidget::selectScene(QString name, int index)
+void KTScenesWidget::selectScene(int index)
 {
-    Q_UNUSED(name);
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-
-    // int total = k->scenesTable->scenesCount();
 
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
     emit requestTriggered(&event);
@@ -175,7 +166,8 @@ void KTScenesWidget::emitRequestInsertScene()
     event = KTRequestBuilder::createFrameRequest(index, 0, 0, KTProjectRequest::Add, tr("Frame %1").arg(1));
     emit requestTriggered(&event);
 
-    k->scenesTable->selectScene(index);
+    event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
+    emit requestTriggered(&event);
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
@@ -184,7 +176,7 @@ void KTScenesWidget::emitRequestRemoveScene()
            T_FUNCINFO;
     #endif
 
-    int index = k->scenesTable->indexCurrentScene();
+    int index = k->scenesTable->currentSceneIndex();
 
     if (k->scenesTable->scenesCount() == 1) {
         KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Reset, 
@@ -192,6 +184,11 @@ void KTScenesWidget::emitRequestRemoveScene()
         emit requestTriggered(&event);
     } else {
         KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Remove);
+        emit requestTriggered(&event);
+
+        if (k->scenesTable->scenesCount() == index)
+            index--;
+        event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
         emit requestTriggered(&event);
     }
 }
@@ -203,7 +200,6 @@ void KTScenesWidget::closeAllScenes()
     #endif
 
     k->scenesTable->resetUI();
-    // k->scenesTable->removeAll();
 }
 
 void KTScenesWidget::sceneResponse(KTSceneResponse *e)
@@ -238,7 +234,8 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
             break;
             case KTProjectRequest::Select:
              {
-               k->scenesTable->selectScene(index);
+               if (k->scenesTable->currentSceneIndex() != index)
+                   k->scenesTable->selectScene(index);
              }
             break;
             default: 
@@ -258,7 +255,7 @@ void KTScenesWidget::renameObject(QTreeWidgetItem* item)
 void KTScenesWidget::refreshItem(QTreeWidgetItem *item)
 {
     if (k->renaming) {
-        KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->scenesTable->indexCurrentScene(), 
+        KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->scenesTable->currentSceneIndex(), 
                                                                       KTProjectRequest::Rename, item->text(0));
         emit requestTriggered(&event);
         k->renaming = false;

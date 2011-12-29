@@ -41,7 +41,8 @@
 #include "tapplicationproperties.h"
 
 #include <QTabWidget>
-#include <QHash>
+// #include <QHash>
+#include <QList>
 #include <QLabel>
 #include <QFrame>
 
@@ -56,21 +57,20 @@ class K_GUI_EXPORT KTSceneTabWidget : public QFrame
     public:
         KTSceneTabWidget(QWidget *parent = 0);
         ~KTSceneTabWidget();
-        QTabWidget* tabWidget();
         void addScene(int index, const QString &name, KTExposureTable *table = 0);
+        void removeScene(int index);
+        void renameScene(int index, const QString &name);
         KTExposureTable* getCurrentTable();
         KTExposureTable* getTable(int index);
+        void setCurrentIndex(int index);
         int currentIndex();
         int count();
 
-    /*
-    private:
-        QHash<int, KTExposureTable *> tables;
-        QTabWidget *tabber;
-    */
-
     public slots:
         void removeAllTabs();
+
+    signals:
+        void currentChanged(int index);
 
     private:
         struct Private;

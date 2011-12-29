@@ -158,9 +158,11 @@ void KTAnimationArea::setFPS(int fps)
 
 void KTAnimationArea::paintEvent(QPaintEvent *)
 {
+   /*
    #ifdef K_DEBUG
           T_FUNCINFO;
    #endif
+   */
 
    if (!k->firstShoot) {
        if (k->currentFramePosition > -1 && k->currentFramePosition < k->photograms.count())

@@ -227,8 +227,6 @@ void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int current
            T_FUNCINFO;
     #endif
 
-    tError() << "KTExposureTable::emitRequestSelectFrame() - CR: " << currentSelectedRow << " - CC: " << currentColumn;
-
     if (!k->removingLayer) { 
 
         if (k->removingFrame) {
@@ -334,8 +332,6 @@ void KTExposureTable::updateFrameState(int indexLayer, int indexFrame, KTExposur
 
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
-    tError() << "KTExposureTable::selectFrame() - Layer Index: " << indexLayer;
-    tError() << "KTExposureTable::selectFrame() - Frame Index: " << indexFrame;
     setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
 }
 

@@ -34,17 +34,18 @@
  ***************************************************************************/
 
 #include "ktscenetabwidget.h"
+#include "tdebug.h"
+
 #include <QWheelEvent>
 #include <QTabBar>
 #include <QVBoxLayout>
 #include <QFrame>
 #include <QLabel>
 
-#include "tdebug.h"
-
 struct KTSceneTabWidget::Private
 {
-    QHash<int, KTExposureTable *> tables;
+    // QHash<int, KTExposureTable *> tables;
+    QList<KTExposureTable *> tables;
     QTabWidget *tabber;
 };
 
@@ -54,6 +55,8 @@ KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent), k(new Priv
    layout->setMargin(1);
 
    k->tabber = new QTabWidget;
+   connect(k->tabber, SIGNAL(currentChanged(int)), this, SIGNAL(currentChanged(int)));
+
    layout->addWidget(k->tabber);
 
    setLayout(layout);
@@ -63,16 +66,20 @@ KTSceneTabWidget::~KTSceneTabWidget()
 {
 }
 
+/*
 QTabWidget* KTSceneTabWidget::tabWidget()
 {
    return k->tabber;
 }
+*/
 
 void KTSceneTabWidget::removeAllTabs()
 {
     int count = k->tabber->count();
     for (int i = 0; i < count; i++)
          delete k->tabber->currentWidget();
+
+    k->tables.clear();
 }
 
 void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable *table) {
@@ -94,21 +101,52 @@ void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable 
     k->tabber->insertTab(index, frame, name);
 }
 
+void KTSceneTabWidget::removeScene(int index) 
+{
+    // k->tables.remove(index);
+    k->tables.removeAt(index);
+
+    blockSignals(true);
+    k->tabber->removeTab(index);
+    blockSignals(false);
+
+    tError() << "KTSceneTabWidget::removeScene() - Removing scene at index: " << index;
+    tError() << "KTSceneTabWidget::removeScene() - Scenes count: " << k->tables.count();
+}
+
+void KTSceneTabWidget::renameScene(int index, const QString &name)
+{
+    k->tabber->setTabText(index, name);
+}
+
 KTExposureTable* KTSceneTabWidget::getCurrentTable() 
 {
     int index = currentIndex();
+
+    tError() << "KTSceneTabWidget::getCurrentTable() - Getting table at index: " << index;
 
     return getTable(index);
 }
 
 KTExposureTable* KTSceneTabWidget::getTable(int index)
 {
-    KTExposureTable *table = k->tables.value(index);
+    // KTExposureTable *table = k->tables.value(index);
+    KTExposureTable *table = k->tables.at(index);
 
-    if (table)
+    if (table) {
         return table;
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTSceneTabWidget::getTable() - [ Fatal Error ] - Invalid table index: " << index;
+        #endif
+    }
 
     return 0;
+}
+
+void KTSceneTabWidget::setCurrentIndex(int index)
+{
+    k->tabber->setCurrentIndex(index);
 }
 
 int KTSceneTabWidget::currentIndex()
@@ -119,5 +157,6 @@ int KTSceneTabWidget::currentIndex()
 
 int KTSceneTabWidget::count()
 {
-    return k->tabber->count();
+    // return k->tabber->count();
+    return k->tables.count();
 }

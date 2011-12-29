@@ -137,7 +137,8 @@ void KTPaintArea::setCurrentScene(int index)
                 graphicsScene()->setCurrentScene(0);
             } else {
                 #ifdef K_DEBUG
-                       tFatal() << "KTPaintArea::setCurrentScene() - No scenes available. Critical error around index " << index;
+                       tError() << "KTPaintArea::setCurrentScene() - [ Fatal Error ] -  No scenes available. Invalid index -> " << index;
+                       tError() << "KTPaintArea::setCurrentScene() - Scenes total -> " << k->project->scenesTotal();
                 #endif
             }
         }
@@ -424,24 +425,9 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                 }
            case KTProjectRequest::Remove:
                 {
+                    /*
                     if (k->project->scenesTotal() > 0)
                         setCurrentScene(k->currentSceneIndex);
-
-                    /*
-                    if (k->currentSceneIndex > 0) {
-                        setCurrentScene(k->currentSceneIndex - 1);
-                    } else {
-                        if (k->currentSceneIndex == 0) {
-                            k->project->clear();
-
-                            KTGraphicsScene *guiScene = graphicsScene();
-                            if (!guiScene->scene())
-                                return;
-
-                            guiScene->removeScene();
-                            viewport()->update();
-                        }
-                    }
                     */
                 }
                 break;

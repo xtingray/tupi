@@ -55,7 +55,7 @@ KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent), k(new Pri
 
     setItemDelegate(new KTScenesDelegate(this));
 
-    connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(changeCurrentScene()));
+    connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene())); 
 }
 
 KTScenesList::~KTScenesList()
@@ -74,16 +74,9 @@ void KTScenesList::insertScene(int index, const QString &name)
         setCurrentItem(newScene);
 }
 
-/*
-void KTScenesList::changeCurrentName(QString name)
-{
-    currentItem()->setText(0, name);
-} 
-*/
-
 int KTScenesList::removeCurrentScene()
 {
-    int index = indexCurrentScene();
+    int index = currentSceneIndex();
 
     if (currentItem()) {
         delete currentItem();
@@ -119,17 +112,14 @@ void KTScenesList::selectScene(int index)
 void KTScenesList::changeCurrentScene()
 {
     if (currentItem()) {
-        QString name = currentItem()->text(0);
-        if (name.length() == 0)
-            return;
-        int index = indexCurrentScene();
-        emit changeCurrent(name, index);
+        int index = currentSceneIndex();
+        emit changeCurrent(index);
     }
 }
 
 int KTScenesList::moveCurrentSceneUp()
 {
-    int index = indexCurrentScene();
+    int index = currentSceneIndex();
     if (index > 0)
         insertTopLevelItem(index-1, takeTopLevelItem(index));
 
@@ -138,14 +128,14 @@ int KTScenesList::moveCurrentSceneUp()
 
 int KTScenesList::moveCurrentSceneDown()
 {
-    int index = indexCurrentScene();
+    int index = currentSceneIndex();
     if (index < topLevelItemCount()-1) 
         insertTopLevelItem(index+1, takeTopLevelItem(index));
 
     return index;
 }
 
-int KTScenesList::indexCurrentScene()
+int KTScenesList::currentSceneIndex()
 {
     int index = indexOfTopLevelItem(currentItem());
     if (index < 0)
@@ -161,7 +151,6 @@ QString KTScenesList::nameCurrentScene()
 
 int KTScenesList::scenesCount()
 {
-    // return topLevelItemCount();
     return k->scenesTotal;
 }
 
@@ -200,4 +189,23 @@ void KTScenesList::resetUI()
     k->scenesTotal = 0;
     clear();
     blockSignals(false);
+}
+
+void KTScenesList::keyPressEvent(QKeyEvent *event)
+{
+    int index = currentSceneIndex();
+
+    if (event->key() == Qt::Key_Down)
+        index++;
+
+    if (event->key() == Qt::Key_Up)
+        index--;
+
+    if (index > -1) {
+        QTreeWidgetItem *item = topLevelItem(index);
+        if (item) {
+            setCurrentItem(item);
+            emit changeCurrent(index);
+        }
+    }
 }

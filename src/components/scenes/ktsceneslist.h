@@ -40,6 +40,8 @@
 #include "ktscenesdelegate.h"
 
 #include <QMouseEvent>
+#include <QKeyEvent>
+#include <QTreeWidgetItem>
 
 /**
  * @author Jorge Cuadrado
@@ -55,7 +57,7 @@ class KTScenesList : public KTreeListWidget
         void insertScene(int index, const QString &name);
 
         int removeCurrentScene();
-        int indexCurrentScene();
+        int currentSceneIndex();
         int scenesCount();
 
         QString nameCurrentScene();
@@ -68,20 +70,21 @@ class KTScenesList : public KTreeListWidget
         bool nameExists(QString &name);
         void resetUI();
 
-    protected:
-        void mouseDoubleClickEvent(QMouseEvent *event);
-
-    private slots:
-        void callRename();
-        void changeCurrentScene();
-
     public slots:
         int moveCurrentSceneUp();
         int moveCurrentSceneDown();
 
+    protected:
+        virtual void keyPressEvent(QKeyEvent *event);
+        void mouseDoubleClickEvent(QMouseEvent *event);
+
     signals:
         void itemRenamed(QTreeWidgetItem *);
-        void changeCurrent(QString name, int index);
+        void changeCurrent(int index);
+
+    private slots:
+        void callRename();
+        void changeCurrentScene();
 
     private:
         struct Private;

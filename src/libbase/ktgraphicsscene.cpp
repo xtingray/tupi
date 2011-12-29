@@ -708,7 +708,7 @@ void KTGraphicsScene::addSvgTweeningObjects(int photogram)
                  }
              } else {
                  #ifdef K_DEBUG
-                           tFatal() << "KTGraphicsScene::addSvgTweeningObjects() - No tween found!";
+                        tFatal() << "KTGraphicsScene::addSvgTweeningObjects() - No tween found!";
                  #endif
              }
          }
