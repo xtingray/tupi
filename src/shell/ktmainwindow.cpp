@@ -360,6 +360,8 @@ void KTMainWindow::setWorkSpace()
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
 
         connect(m_projectManager, SIGNAL(modified(bool)), this, SLOT(updatePlayer(bool)));
+
+        m_exposureSheet->setScene(0);
     }
 }
 
