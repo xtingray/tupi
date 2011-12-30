@@ -536,7 +536,8 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 #if defined(Q_OS_UNIX)
 
     if ((extension.compare(".jpg") != 0) && (extension.compare(".png") != 0)) {
-        filename += QDir::separator();
+        if (!filename.endsWith(QDir::separator()))
+            filename += QDir::separator();
         filename += m_project->projectName();
         filename += extension;
     } 
@@ -606,7 +607,7 @@ void ExportTo::exportIt()
             name += extension;
 
         if (path.length() == 0) {
-            path = getenv ("HOME");
+            path = getenv("HOME");
             filename = path + QDir::separator() + name;
         }
 

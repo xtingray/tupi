@@ -36,13 +36,12 @@
 #ifndef KTEXPORTINTERFACE_H
 #define KTEXPORTINTERFACE_H
 
+#include "ktscene.h"
+#include "qplugin.h" // Q_EXPORT_PLUGIN
+
 #include <QStringList>
 #include <QDir>
 #include <QColor>
-
-// #include "ktexportpluginobject.h"
-#include "ktscene.h"
-#include "qplugin.h" // Q_EXPORT_PLUGIN
 
 /**
  * @author David Cuadrado

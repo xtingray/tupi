@@ -37,13 +37,16 @@
 #define FFMPEGPLUGIN_H
 
 #include "ktexportpluginobject.h"
+#include "ktexportinterface.h"
+#include "kmoviegeneratorinterface.h"
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado
 */
+
 class FFMpegPlugin : public KTExportPluginObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         FFMpegPlugin();
@@ -54,6 +57,9 @@ class FFMpegPlugin : public KTExportPluginObject
         virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
         virtual const char* getExceptionMsg();
         const char *errorMsg;
+
+    private:
+        KMovieGeneratorInterface::Format videoFormat(KTExportInterface::Format format);
 };
 
 #endif

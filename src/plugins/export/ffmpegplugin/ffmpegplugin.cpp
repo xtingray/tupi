@@ -39,6 +39,7 @@
 #include "tdebug.h"
 #include "tglobal.h"
 #include "kffmpegmoviegenerator.h"
+// #include "kmoviegeneratorinterface.h"
 
 #include <QImage>
 #include <QPainter>
@@ -64,61 +65,82 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
     return KTExportInterface::OGV | KTExportInterface::MPEG | KTExportInterface::SWF | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
-bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+KMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Format format)
 {
-    KFFMpegMovieGenerator *generator = 0;
-
     switch (format) {
             case KTExportInterface::OGV:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::OGV, size, fps);
+                   return KFFMpegMovieGenerator::OGV;
                  }
                  break;
             case KTExportInterface::SWF:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::SWF, size, fps);
+                   return KFFMpegMovieGenerator::SWF;
                  }
                  break;
             case KTExportInterface::MPEG:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MPEG, size, fps);
+                   return KFFMpegMovieGenerator::MPEG;
                  }
                  break;
             case KTExportInterface::AVI:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::AVI, size, fps);
+                   return KFFMpegMovieGenerator::AVI;
                  }
                  break;
             case KTExportInterface::RM:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::RM, size, fps);
+                   return KFFMpegMovieGenerator::RM;
                  }
                  break;
             case KTExportInterface::MOV:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MOV, size, fps);
+                   return KFFMpegMovieGenerator::MOV;
                  }
                  break;
             case KTExportInterface::ASF:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::ASF, size, fps);
+                   return KFFMpegMovieGenerator::ASF;
                  }
                  break;
             case KTExportInterface::GIF:
                  {
-                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::GIF, size, fps);
+                   return KFFMpegMovieGenerator::GIF;
                  }
                  break;
-            default: 
-                 return false;
+            case KTExportInterface::PNG:
+            case KTExportInterface::JPEG:
+            case KTExportInterface::XPM:
+            case KTExportInterface::SMIL:
+            case KTExportInterface::NONE:
+                 {
+                   return KFFMpegMovieGenerator::NONE;
+                 }
     }
+
+    return KFFMpegMovieGenerator::NONE;
+}
+
+bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format fmt, const QSize &size, int fps)
+{
+    qreal duration = 0;
+    foreach (KTScene *scene, scenes)
+             duration += (qreal) scene->framesTotal() / (qreal) fps;
+
+    KFFMpegMovieGenerator *generator = 0;
+    KMovieGeneratorInterface::Format format = videoFormat(fmt);
+
+    if (format == KFFMpegMovieGenerator::NONE)
+        return false;
+
+    generator = new KFFMpegMovieGenerator(format, size, fps, duration);
 
     KTAnimationRenderer renderer(color);
     {
          if (!generator->movieHeaderOk()) {
              errorMsg = generator->getErrorMsg();
              #ifdef K_DEBUG
-                    tError() << "FFMpegPlugin::exportToFormat() - FATAL : can't create video";
+                    tError() << "FFMpegPlugin::exportToFormat() - [ Fatal Error ] - Can't create video -> " << filePath;
              #endif
              delete generator;
              return false;
@@ -128,6 +150,7 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
          painter.setRenderHint(QPainter::Antialiasing, true);
 
          foreach (KTScene *scene, scenes) {
+                  tWarning() << "FFMpegPlugin::exportToFormat() - Rendering scene: " << scene->sceneName();
                   renderer.setScene(scene, size);
 
                   while (renderer.nextPhotogram()) {

@@ -45,8 +45,8 @@
 class KFFMpegMovieGenerator : public KMovieGenerator
 {
     public:
-        KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
-        KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps = 24);
+        KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps = 24, double duration = 0);
+        KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps = 24, double duration = 0);
         ~KFFMpegMovieGenerator();
         virtual bool movieHeaderOk();
         virtual const char* getErrorMsg();
