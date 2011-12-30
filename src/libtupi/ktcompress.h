@@ -40,8 +40,9 @@
 
 /**
  * This class (un)compress and (un)hash a string
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTCompress
 {
     public:

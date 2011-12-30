@@ -47,11 +47,12 @@
 class QGraphicsItem;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
  * @todo:
  * - Serialize fonts
  * 
 */
+
 class KTSerializer
 {
     public:

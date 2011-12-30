@@ -34,18 +34,17 @@
  ***************************************************************************/
 
 #include "ktanimationspace.h"
+#include "tdebug.h"
 
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QLinearGradient>
 #include <QBoxLayout>
 
-#include "tdebug.h"
-
 /**
  * This class defines the space which contains the Animation Mode interface.
  * Here is where the visual space for Animation Mode is defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 KTAnimationspace::KTAnimationspace(KTViewCamera *internal, QWidget *parent) : QMainWindow(parent)

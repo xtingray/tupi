@@ -42,7 +42,7 @@
 #include "ktglobal.h"
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
  */
 
 class TUPI_EXPORT KTGraphicalAlgorithm

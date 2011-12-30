@@ -39,12 +39,13 @@
 #include <QHeaderView>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * @author David Cuadrado
+**/
 
 class KTTLRuler : public QHeaderView
 {
     Q_OBJECT
+
     public:
         KTTLRuler(QWidget *parent = 0);
         ~KTTLRuler();

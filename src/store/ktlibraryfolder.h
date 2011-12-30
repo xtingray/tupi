@@ -36,14 +36,14 @@
 #ifndef KTLIBRARYFOLDER_H
 #define KTLIBRARYFOLDER_H
 
+#include "ktabstractserializable.h"
+#include "ktlibraryobject.h"
+#include "ktglobal_store.h"
+
 #include <QObject>
 #include <QHash>
 #include <QMap>
 #include <QByteArray>
-
-#include "ktabstractserializable.h"
-#include "ktlibraryobject.h"
-#include "ktglobal_store.h"
 
 class KTProject;
 class KTLibraryFolder;
@@ -56,11 +56,12 @@ typedef QMap<QString, KTLibraryObject *> LibraryObjects;
 //typedef QMap<QString, KTLibraryFolder *> Folders;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
+ * @author David Cuadrado
+**/
+
 class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializable
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         KTLibraryFolder(const QString &id, KTProject *project, QObject *parent = 0);

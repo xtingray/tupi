@@ -36,24 +36,24 @@
 #ifndef KTFRAMEGROUP_H
 #define KTFRAMEGROUP_H
 
-#include <ktframe.h>
+#include "ktframe.h"
 #include "ktglobal_store.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class STORE_EXPORT KTFrameGroup : public KTFrame
 {
-	public:
-		KTFrameGroup(KTLayer *parent = 0);
-		~KTFrameGroup();
-		
-		void addFrame(KTFrame *frame);
-		
-		
-	private:
-		QList<KTFrame *> m_frames;
+    public:
+        KTFrameGroup(KTLayer *parent = 0);
+        ~KTFrameGroup();
+        
+        void addFrame(KTFrame *frame);
+        
+        
+    private:
+        QList<KTFrame *> m_frames;
 };
 
 #endif

@@ -40,7 +40,7 @@
 /**
  * This class defines a copy of a graphic object.
  * Here is where methods to handle a graphic object copy are defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTProxyItem::Private 

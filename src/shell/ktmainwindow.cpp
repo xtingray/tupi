@@ -632,6 +632,7 @@ void KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
         connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
         connect(netProjectManagerHandler, SIGNAL(savingSuccessful()), this, SLOT(netProjectSaved()));
+        connect(netProjectManagerHandler, SIGNAL(postOperationDone()), this, SLOT(resetMousePointer()));
 
         m_projectManager->setHandler(netProjectManagerHandler, true);
         m_projectManager->setParams(params);
@@ -1070,6 +1071,8 @@ void KTMainWindow::saveProject()
         if (isSaveDialogOpen)
             isSaveDialogOpen = false;
     } else {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
         KTSavePackage package;
         netProjectManagerHandler->sendPackage(package);
     }
@@ -1342,6 +1345,7 @@ void KTMainWindow::unexpectedClose()
 void KTMainWindow::netProjectSaved()
 {
     m_projectManager->undoModified();
+    QApplication::restoreOverrideCursor();
 }
 
 void KTMainWindow::postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
@@ -1359,4 +1363,9 @@ void KTMainWindow::updatePlayer(bool remove)
         int sceneIndex = drawingTab->currentSceneIndex();
         viewCamera->updateScenes(sceneIndex);
     } 
+}
+
+void KTMainWindow::resetMousePointer()
+{
+    QApplication::restoreOverrideCursor();
 }

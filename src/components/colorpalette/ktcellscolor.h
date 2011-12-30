@@ -39,15 +39,16 @@
 #include "kcellview.h"
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
+ * @author Jorge Cuadrado
+**/
+
 class KTCellsColor : public KCellView
 {
     Q_OBJECT
-    public:
 
+    public:
         enum Type{Color = 0, Gradient};
-        KTCellsColor(QWidget *parent = 0, Type type= Color);
+        KTCellsColor(QWidget *parent = 0, Type type = Color);
         virtual ~KTCellsColor();
 
         void setReadOnly(bool enable);

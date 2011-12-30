@@ -39,8 +39,8 @@
 #include "ktpalettedocument.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * @author David Cuadrado
+**/
 
 class KTPaletteImporter
 {

@@ -45,8 +45,9 @@
 class KTLibraryObject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializable
 {
     public:

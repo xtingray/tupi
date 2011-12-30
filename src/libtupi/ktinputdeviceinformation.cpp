@@ -41,7 +41,7 @@
 /**
  * This class captures and process all the mouse/tablet events.
  *
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 struct KTInputDeviceInformation::Private

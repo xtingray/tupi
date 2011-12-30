@@ -33,17 +33,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
-
 #include "ktpreferences.h"
 #include "ktpaintareaconfig.h"
-
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tapplication.h"
 #include "kformfactory.h"
+
+#include <qfile.h>
+#include <qtextstream.h>
+#include <qtextcodec.h>
 
 #include <QLabel>
 #include <QLineEdit>
@@ -53,12 +52,13 @@
 /**
  * This class handles the preferences dialog for Tupi.
  * Here is where the forms of the Tupi preferences dialog are defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTPreferences::GeneralPage : public QWidget
 {
     Q_OBJECT
+
     public:
         GeneralPage();
         ~GeneralPage();

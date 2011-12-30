@@ -36,47 +36,49 @@
 #ifndef KTBUTTONITEM_H
 #define KTBUTTONITEM_H
 
+#include "ktabstractserializable.h"
+#include "ktglobal_store.h"
+
 #include <QGraphicsItem>
 #include <QIcon>
 #include <QFont>
 
-#include <ktabstractserializable.h>
-#include "ktglobal_store.h"
-
 /**
- * @author David Cuadrado <krawek@gmail.com>
-*/
+ * @author David Cuadrado
+**/
+
 class STORE_EXPORT KTButtonItem : public QObject, public QGraphicsItem, public KTAbstractSerializable
 {
-	Q_OBJECT;
-	public:
-		KTButtonItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTButtonItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-		virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w);
-		QRectF boundingRect() const;
-		
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-		
-	public:
-		void setIconSize(const QSize &size);
-		void setIcon(const QIcon &icon);
-		void setText(const QString &text);
-		void setFont(const QFont &font);
-		
-	signals:
-		void clicked();
-		
-	private:
-		QSize m_iconSize;
-		QIcon m_icon;
-		QString m_text;
-		QFont m_font;
+    Q_OBJECT
+
+    public:
+        KTButtonItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTButtonItem();
+        
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w);
+        QRectF boundingRect() const;
+        
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+        
+    public:
+        void setIconSize(const QSize &size);
+        void setIcon(const QIcon &icon);
+        void setText(const QString &text);
+        void setFont(const QFont &font);
+        
+    signals:
+        void clicked();
+        
+    private:
+        QSize m_iconSize;
+        QIcon m_icon;
+        QString m_text;
+        QFont m_font;
 };
 
 #endif

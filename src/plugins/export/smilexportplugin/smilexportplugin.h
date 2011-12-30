@@ -36,19 +36,19 @@
 #ifndef SMILEXPORTPLUGIN_H
 #define SMILEXPORTPLUGIN_H
 
-#include <ktexportpluginobject.h>
+#include "ktexportpluginobject.h"
 
 #include <QDomDocument>
 #include <QDomElement>
 #include <QColor>
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado
 */
 
 class SmilExportPlugin : public KTExportPluginObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         SmilExportPlugin();

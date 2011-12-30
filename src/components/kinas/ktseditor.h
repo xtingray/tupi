@@ -40,11 +40,13 @@
 #include <QMimeData>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
-*/
+    @author David Cuadrado
+**/
+
 class KTSEditor : public QTextEdit
 {
     Q_OBJECT
+
     public:
         KTSEditor(QWidget *parent = 0);
         ~KTSEditor();

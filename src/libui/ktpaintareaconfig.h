@@ -42,11 +42,12 @@
 class KColorButton;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 class KTPaintAreaConfig : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTPaintAreaConfig(QWidget *parent = 0);
         ~KTPaintAreaConfig();

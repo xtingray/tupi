@@ -183,9 +183,16 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject *project)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    /*
     TupiNetFileManager manager(k->params->server(), k->params->port());
-    
     return manager.save(fileName, project);
+    */
+
+    return true;
 }
 
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
@@ -401,8 +408,17 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                if (parser.parse(package)) {
                    int code = parser.notification().code;
 
-                   if (code == 380)
-                       emit savingSuccessful();
+                   switch(code) {
+                          case 380:
+                               emit savingSuccessful();
+                          break;
+                          case 100:
+                          case 101:
+                          case 382:
+                          case 383:
+                               emit postOperationDone();
+                          break;
+                   }
 
                    TOsd::Level level = TOsd::Level(parser.notification().level);
                    QString title = "Information";

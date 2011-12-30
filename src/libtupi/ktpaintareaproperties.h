@@ -36,12 +36,13 @@
 #ifndef KTPAINTAREAPROPERTIES_H 
 #define KTPAINTAREAPROPERTIES_H
 
-#include <QColor>
 #include "ktglobal.h"
+#include <QColor>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * @author David Cuadrado
+**/
+
 struct TUPI_EXPORT KTPaintAreaProperties
 {
     public:

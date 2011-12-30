@@ -37,12 +37,13 @@
 #define KTITEMGROUP_H
 
 #include "ktabstractserializable.h"
-#include <QGraphicsItemGroup>
 #include "ktglobal_store.h"
 
+#include <QGraphicsItemGroup>
+
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
- */
+ * @author Jorge Cuadrado
+ **/
 
 class STORE_EXPORT KTItemGroup: public KTAbstractSerializable, public QGraphicsItemGroup
 {

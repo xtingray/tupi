@@ -36,15 +36,17 @@
 #ifndef KTWORKSPACE_H
 #define KTWORKSPACE_H
 
-#include <QMainWindow>
 #include "ktviewcamera.h"
+#include <QMainWindow>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * @author David Cuadrado
+**/
+
 class KTAnimationspace : public QMainWindow
 {
     Q_OBJECT
+
     public:
         KTAnimationspace(KTViewCamera *internal, QWidget *parent = 0);
         ~KTAnimationspace();

@@ -44,7 +44,7 @@
 /**
  * This class defines the options panel in the bottom of the paint area.
  * Controls for Rotation, Antialising and OpenGL
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTColorWidget : public QWidget

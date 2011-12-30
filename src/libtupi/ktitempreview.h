@@ -42,11 +42,12 @@ class QGraphicsItem;
 
 /**
  * This class render a QGraphicsItem 
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
+
 class KTItemPreview : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         KTItemPreview(QWidget *parent = 0);

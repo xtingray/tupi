@@ -39,16 +39,16 @@
 #include <QProgressBar>
 #include <QLabel>
 #include <QTimer>
-
 #include <QStatusBar>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 class KTStatusBar : public QStatusBar
 {
     Q_OBJECT
+
     public:
         KTStatusBar(QWidget *parent);
         ~KTStatusBar();

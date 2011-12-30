@@ -40,11 +40,13 @@
 class QGraphicsItem;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
-*/
+ * @author David Cuadrado
+**/
+
 class KTLibraryDialog : public QDialog
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTLibraryDialog();
         ~KTLibraryDialog();

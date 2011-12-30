@@ -36,12 +36,13 @@
 #ifndef KTLINEGUIDE_H
 #define KTLINEGUIDE_H
 
-#include <QGraphicsItem>
 #include "ktglobal.h"
+#include <QGraphicsItem>
 
 /**
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
-*/
+ * @author Jorge Cuadrado
+**/
+
 class TUPI_EXPORT KTLineGuide : public QGraphicsItem
 {
     public:

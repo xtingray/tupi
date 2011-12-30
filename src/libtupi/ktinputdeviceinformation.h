@@ -36,17 +36,19 @@
 #ifndef KTINPUTDEVICEINFORMATION_H
 #define KTINPUTDEVICEINFORMATION_H
 
+#include "ktglobal.h"
+
 #include <QObject>
 #include <QPoint>
-#include "ktglobal.h"
 
 class QGraphicsSceneMouseEvent;
 class QMouseEvent;
 class QTabletEvent;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
-*/
+ * @author David Cuadrado
+**/
+
 class TUPI_EXPORT KTInputDeviceInformation : public QObject
 {
     public:

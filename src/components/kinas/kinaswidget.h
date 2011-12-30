@@ -36,19 +36,21 @@
 #ifndef KINASWIDGET_H
 #define KINASWIDGET_H
 
-#include <ktmodulewidgetbase.h>
-#include <QSplitter>
-#include <QTabWidget>
-
+#include "ktmodulewidgetbase.h"
 #include "ktseditor.h"
 #include "ktsfunctionview.h"
 
+#include <QSplitter>
+#include <QTabWidget>
+
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * @author David Cuadrado
+**/
+
 class KinasWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KinasWidget(QWidget *parent = 0);
         ~KinasWidget();

@@ -210,6 +210,7 @@ class KTMainWindow : public KTabbedMainWindow
           void expandExposureView(int index);
           void expandColorView();
           void postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes);
+          void resetMousePointer();
 
     private:
           KTProjectManager *m_projectManager;

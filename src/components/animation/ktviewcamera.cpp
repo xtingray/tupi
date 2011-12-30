@@ -266,8 +266,10 @@ void KTViewCamera::postDialog()
                        (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
     exportWidget->exec();
 
-    if (exportWidget->isComplete() != QDialog::Rejected)
+    if (exportWidget->isComplete() != QDialog::Rejected) {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
+    }
 }
 
 void KTViewCamera::selectScene(int index)

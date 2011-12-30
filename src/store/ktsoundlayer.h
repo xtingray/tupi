@@ -36,11 +36,12 @@
 #ifndef KTSOUNDLAYER_H
 #define KTSOUNDLAYER_H
 
-#include <ktlayer.h>
+#include "ktlayer.h"
 
 /**
-    @author David Cuadrado <krawek@gmail.com>
-*/
+    @author David Cuadrado
+**/
+
 class KTSoundLayer : public KTLayer
 {
     public:

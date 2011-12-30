@@ -36,17 +36,17 @@
 #ifndef KTABSTRACTSERIALIZABLE_H
 #define KTABSTRACTSERIALIZABLE_H
 
-#include <QString>
+#include "ktglobal_store.h"
 
+#include <QString>
 #include <QDomDocument>
 #include <QDomElement>
-#include "ktglobal_store.h"
 
 /**
  * @if spanish
- * Clase abstracta para clases que necesiten ser guardadas, como los frames, scenas, items, etc.
+ * Clase abstracta para clases que necesiten ser guardadas, como los frames, scenes, items, etc.
  * @endif
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class STORE_EXPORT KTAbstractSerializable

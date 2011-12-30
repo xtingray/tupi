@@ -41,12 +41,13 @@
 #include "ktglobal_store.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado
 */
 
 class STORE_EXPORT KTTextItem : public QGraphicsTextItem, public KTAbstractSerializable
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTTextItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
         ~KTTextItem();

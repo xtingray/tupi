@@ -36,8 +36,8 @@
 #ifndef KTABSTRACTPROJECTRESPONSEHANDLER_H
 #define KTABSTRACTPROJECTRESPONSEHANDLER_H
 
-#include <QObject>
 #include "ktglobal_store.h"
+#include <QObject>
 
 class KTPaintAreaEvent;
 class KTProjectResponse;
@@ -48,8 +48,9 @@ class KTLayerResponse;
 class KTLibraryResponse;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
+ * @author David Cuadrado
+**/
+
 class STORE_EXPORT KTAbstractProjectResponseHandler
 {
     public:

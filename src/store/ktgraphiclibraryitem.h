@@ -36,16 +36,16 @@
 #ifndef KTGRAPHICLIBRARYITEM_H
 #define KTGRAPHICLIBRARYITEM_H
 
-#include <ktproxyitem.h>
-#include <ktabstractserializable.h>
-
-#include <ktglobal_store.h>
+#include "ktproxyitem.h"
+#include "ktabstractserializable.h"
+#include "ktglobal_store.h"
 
 class KTLibraryObject;
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
+ * @author David Cuadrado
+**/
+
 class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractSerializable
 {
     public:
@@ -67,7 +67,6 @@ class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractS
     private:
         struct Private;
         Private *const k;
-
 };
 
 #endif

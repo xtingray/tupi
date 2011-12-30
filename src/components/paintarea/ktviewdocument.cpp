@@ -1255,6 +1255,7 @@ void KTViewDocument::postImage()
     if (dialog->exec() != QDialog::Rejected) {
         title = dialog->imageTitle();
         description = dialog->imageDescription();
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         emit requestExportImageToServer(frameIndex, sceneIndex, title, description);
     }
 }

@@ -58,7 +58,7 @@ struct LayerItem
 };
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
  */
 class KTExposureHeader: public QHeaderView
 {

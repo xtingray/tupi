@@ -34,6 +34,12 @@
  ***************************************************************************/
 
 #include "ktthemeselector.h"
+#include "tglobal.h"
+#include "tdebug.h"
+#include "tseparator.h"
+#include "kcolorbutton.h"
+#include "tapplication.h"
+#include "kstylecombobox.h"
 
 // Qt
 #include <QFileDialog>
@@ -45,20 +51,10 @@
 #include <QCheckBox>
 #include <QInputDialog>
 
-// Tupi Framework 
-#include "tglobal.h"
-#include "tdebug.h"
-
-#include "tseparator.h"
-
-#include "kcolorbutton.h"
-#include "tapplication.h"
-#include "kstylecombobox.h"
-
 /**
  * This class defines the themes manager for Tupi.
  * Here is where methods related to themes management are defined.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 KTThemeSelector::KTThemeSelector(QWidget *parent) : KVHBox(parent, Qt::Vertical)

@@ -735,7 +735,7 @@ VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPa
     QVBoxLayout *layout = new QVBoxLayout(container);
 
     QLabel *titleLabel = new QLabel(tr("Title"));
-    lineEdit = new QLineEdit(tr("My Picture"));
+    lineEdit = new QLineEdit(tr("My Video"));
     connect(lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
     titleLabel->setBuddy(lineEdit);
 

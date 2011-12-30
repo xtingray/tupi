@@ -45,11 +45,13 @@ class QTableWidget;
 class QTableWidgetItem;
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
-*/
+ * @author Jorge Cuadrado
+**/
+
 class ZoomConfigurator : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         ZoomConfigurator(QWidget *parent = 0);
         ~ZoomConfigurator();

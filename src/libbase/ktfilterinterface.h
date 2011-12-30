@@ -36,6 +36,11 @@
 #ifndef AFILTERINTERFACE_H
 #define AFILTERINTERFACE_H
 
+#include "ktframe.h"
+#include "taction.h"
+
+#include "qplugin.h" // Q_EXPORT_PLUGIN
+
 #include <QStringList>
 #include <QRect>
 #include <QPoint>
@@ -47,16 +52,12 @@
 
 #include <cmath> // sin,cos
 
-#include "ktframe.h"
-#include "taction.h"
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
-
 class QKeySequence;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * @author David Cuadrado
+**/
+
 class TUPI_EXPORT AFilterInterface
 {
     public:

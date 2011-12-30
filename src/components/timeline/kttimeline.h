@@ -36,11 +36,11 @@
 #ifndef KTTIMELINE_H
 #define KTTIMELINE_H
 
-#include <ktmodulewidgetbase.h>
-#include <QSplitter>
-
-#include <QStackedWidget>
+#include "ktmodulewidgetbase.h"
 #include "ttabwidget.h"
+
+#include <QSplitter>
+#include <QStackedWidget>
 
 class KTLayerManager;
 class KTFramesTable;
@@ -49,12 +49,13 @@ class KTFramesTableItem;
 class KTLibrary;
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
-*/
+ * @author David Cuadrado
+**/
 
 class KTTimeLine : public KTModuleWidgetBase
 {
     Q_OBJECT
+
     public:
         KTTimeLine(QWidget *parent = 0);
         ~KTTimeLine();

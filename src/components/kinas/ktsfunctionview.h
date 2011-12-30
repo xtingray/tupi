@@ -39,11 +39,13 @@
 #include <QTreeWidget>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
-*/
+    @author David Cuadrado
+**/
+
 class KTSFunctionView : public QTreeWidget
 {
     Q_OBJECT
+
     public:
         KTSFunctionView(QWidget *parent = 0);
         ~KTSFunctionView();

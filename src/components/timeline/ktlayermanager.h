@@ -40,12 +40,12 @@
 #include "ktlayercontrols.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 **/
 
 class KTLayerManager : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     public:
         

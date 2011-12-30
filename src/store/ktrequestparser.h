@@ -36,16 +36,16 @@
 #ifndef KTREQUESTPARSER_H
 #define KTREQUESTPARSER_H
 
-#include <ktxmlparserbase.h>
-
+#include "ktxmlparserbase.h"
 #include "ktprojectrequest.h"
 #include "ktglobal_store.h"
 
 class KTProjectResponse;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
-*/
+ * @author David Cuadrado
+**/
+
 class STORE_EXPORT KTRequestParser : public KTXmlParserBase
 {
     public:

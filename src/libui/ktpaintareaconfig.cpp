@@ -34,19 +34,18 @@
  ***************************************************************************/
 
 #include "ktpaintareaconfig.h"
+#include "kcolorbutton.h"
+#include "tconfig.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QLabel>
 
-#include "kcolorbutton.h"
-#include "tconfig.h"
-
 /**
  * This class handles the preferences dialog for the paint area settings.
  * Here is where the paint area parameters are set.
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 KTPaintAreaConfig::KTPaintAreaConfig(QWidget *parent) : QWidget(parent)
@@ -63,7 +62,7 @@ void KTPaintAreaConfig::setupPage()
 {
     QFrame *page = new QFrame;
     QGridLayout *pageLayout = new QGridLayout(page);
-    page->setFrameStyle(QFrame::Box | QFrame::Sunken );
+    page->setFrameStyle(QFrame::Box | QFrame::Sunken);
     
     TCONFIG->beginGroup("PaintArea");
     

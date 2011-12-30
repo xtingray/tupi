@@ -45,7 +45,7 @@
 /**
  * This class defines enumerations used in the whole code of the project.
  *
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
 namespace Tupi 

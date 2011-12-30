@@ -34,6 +34,9 @@
  ***************************************************************************/
 
 #include "configwizard.h"
+#include "tdebug.h"
+#include "kimageeffect.h"
+#include "tglobal.h"
 
 #include <QLabel>
 #include <QLayout>
@@ -44,11 +47,6 @@
 
 // #include "wizard1.xpm"
 // #include "wizard2.xpm"
-
-// Tupi Framework 
-#include "tdebug.h"
-#include "kimageeffect.h"
-#include "tglobal.h"
 
 ConfigWizard::ConfigWizard() : KWizard(0)
 {

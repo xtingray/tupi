@@ -36,6 +36,9 @@
 #ifndef KTLAYERINDEX_H
 #define KTLAYERINDEX_H
 
+#include "kimagebutton.h"
+#include "ktprojectrequest.h"
+
 #include <QPushButton>
 #include <QToolTip>
 #include <QLabel>
@@ -43,16 +46,13 @@
 #include <QButtonGroup>
 #include <QTableWidget>
 
-#include "kimagebutton.h"
-#include "ktprojectrequest.h"
-
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 **/
 
 class KTLayerIndex : public QTableWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
     
     friend class KTLayerIndexItemDelegate;
     
