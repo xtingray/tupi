@@ -1208,9 +1208,8 @@ void KTViewDocument::showFullScreen()
     k->fullScreen = new KTCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
                                  k->paintArea->centerPoint(), QSize(screenW, screenH), projectSize, scale,
                                  k->viewAngle, k->project->bgColor()); 
-    k->fullScreen->setFixedSize(screenW, screenH); 
     k->fullScreen->updateCursor(k->currentTool->cursor());
-    k->fullScreen->show();
+    k->fullScreen->showFullScreen();
 }
 
 void KTViewDocument::closeFullScreen()
