@@ -374,8 +374,11 @@ void GeometricTool::saveConfig()
 
 void GeometricTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Shift) {
-        k->proportion = true;
+    if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
+        emit closeHugeCanvas();
+        return;
+    } else if (event->key() == Qt::Key_Shift) {
+               k->proportion = true;
     } else {
         QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)
@@ -387,9 +390,6 @@ void GeometricTool::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Shift)
         k->proportion = false;
-
-    if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape)
-        emit closeHugeCanvas();
 }
 
 QCursor GeometricTool::cursor() const

@@ -41,7 +41,6 @@
 #include "tapplicationproperties.h"
 
 #include <QTabWidget>
-// #include <QHash>
 #include <QList>
 #include <QLabel>
 #include <QFrame>

@@ -471,7 +471,12 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     QSize dimension = m_project->dimension(); 
     m_size = new KXYSpinBox(tr("Size"));
-    m_size->setMaximum(1024);
+
+    int maxDimension = dimension.width();
+    if (maxDimension < dimension.height())
+        maxDimension = dimension.height();
+
+    m_size->setMaximum(maxDimension);
     m_size->setX(dimension.width());
     m_size->setY(dimension.height());
 

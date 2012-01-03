@@ -44,7 +44,6 @@
 
 struct KTSceneTabWidget::Private
 {
-    // QHash<int, KTExposureTable *> tables;
     QList<KTExposureTable *> tables;
     QTabWidget *tabber;
 };
@@ -56,7 +55,6 @@ KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent), k(new Priv
 
    k->tabber = new QTabWidget;
    connect(k->tabber, SIGNAL(currentChanged(int)), this, SIGNAL(currentChanged(int)));
-
    layout->addWidget(k->tabber);
 
    setLayout(layout);
@@ -65,13 +63,6 @@ KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent), k(new Priv
 KTSceneTabWidget::~KTSceneTabWidget()
 {
 }
-
-/*
-QTabWidget* KTSceneTabWidget::tabWidget()
-{
-   return k->tabber;
-}
-*/
 
 void KTSceneTabWidget::removeAllTabs()
 {

@@ -282,8 +282,6 @@ void KTMainWindow::setWorkSpace()
                     netProjectManagerHandler, SLOT(sendExportImageRequestToServer(int, int, const QString &, const QString &)));
         }
 
-        connectToDisplays(drawingTab);
-
         drawingTab->setWindowTitle(tr("Animation"));
         addWidget(drawingTab);
 
@@ -294,6 +292,35 @@ void KTMainWindow::setWorkSpace()
         connect(drawingTab, SIGNAL(expandColorPanel()), this, SLOT(expandColorView()));
       
         drawingTab->setAntialiasing(true);
+
+        int width = drawingTab->workSpaceSize().width();
+        int height = drawingTab->workSpaceSize().height();
+        int pWidth = m_projectManager->project()->dimension().width();
+        int pHeight = m_projectManager->project()->dimension().height();
+
+        /*
+        tError() << "W: " << width;
+        tError() << "H: " << height;
+        tError() << "Pw: " << pWidth;
+        tError() << "Ph: " << pHeight;
+        */
+
+        double proportion = 1;
+
+        if (pWidth > pHeight)
+            proportion = (double) width / (double) pWidth;
+        else
+            proportion = (double) height / (double) pHeight;
+
+        if (proportion <= 0.3) {
+            drawingTab->setZoomView("15");
+        } else if (proportion > 0.3 && proportion <= 0.75) {
+                   drawingTab->setZoomView("25");
+        } else if (proportion > 0.75 && proportion <= 1.5) {
+                   drawingTab->setZoomView("50");
+        } else if (proportion > 1.5 && proportion < 2) {
+                   drawingTab->setZoomView("75");
+        }
 
         // KTViewCamera *
         viewCamera = new KTViewCamera(m_projectManager->project(), isNetworked);

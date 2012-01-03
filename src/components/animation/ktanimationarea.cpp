@@ -55,6 +55,7 @@ struct KTAnimationArea::Private
     QWidget *container;
     QImage renderCamera;
     bool firstShoot;
+    bool isScaled;
     const KTProject *project;
     bool cyclicAnimation;
     int currentFramePosition;
@@ -68,9 +69,10 @@ struct KTAnimationArea::Private
     QList<QImage> photograms; 
     QList<photoArray> animationList;
     QList<bool> renderControl;
+    QSize dimension;
 };
 
-KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k(new Private)
+KTAnimationArea::KTAnimationArea(const KTProject *project, const QSize viewSize, bool isScaled, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -78,6 +80,13 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
     k->container = parent;
     k->project = project;
+    k->isScaled = isScaled;
+
+    if (k->isScaled)
+        k->dimension = viewSize;
+    else
+        k->dimension = k->project->dimension();
+
     k->cyclicAnimation = false;
     k->fps = 24;
     k->currentSceneIndex = 0;
@@ -399,10 +408,18 @@ void KTAnimationArea::render()
 
     while (renderer.nextPhotogram()) {
            QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
+
            QPainter painter(&renderized);
            painter.setRenderHint(QPainter::Antialiasing);
            renderer.render(&painter);
-           photogramList << renderized;
+
+           if (k->isScaled) {
+               QImage resized = renderized.scaledToWidth(k->dimension.width(), Qt::SmoothTransformation);
+               photogramList << resized;
+           } else {
+               photogramList << renderized;
+           }
+
            progressDialog.setValue(i);
            i++;
     }
@@ -515,6 +532,10 @@ void KTAnimationArea::updateAnimationArea()
 
 void KTAnimationArea::updateFirstFrame()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->currentSceneIndex > -1 && k->currentSceneIndex < k->animationList.count()) {
         KTScene *scene = k->project->scene(k->currentSceneIndex);
         if (scene) { 
@@ -528,7 +549,13 @@ void KTAnimationArea::updateFirstFrame()
             painter.setRenderHint(QPainter::Antialiasing);
             renderer.render(&painter);
 
-            k->renderCamera = firstFrame;
+            if (k->isScaled) {
+                QImage resized = firstFrame.scaledToWidth(k->dimension.width(), Qt::SmoothTransformation);
+                k->renderCamera = resized;
+            } else {
+                k->renderCamera = firstFrame;
+            }
+
             k->firstShoot = true;
         } else {
             #ifdef K_DEBUG

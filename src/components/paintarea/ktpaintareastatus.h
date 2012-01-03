@@ -52,15 +52,16 @@ class KTPaintAreaStatus : public QStatusBar
         KTPaintAreaStatus(KTViewDocument *parent);
         ~KTPaintAreaStatus();
         void updateTool(const QString &label, const QPixmap &pixmap);
+        void setZoomFactor(const QString &text);
 
     public slots:
+        void applyZoom(const QString &text);
         void setPen(const QPen &pen);
 
     private slots:
         void selectAntialiasingHint();
         void selectRenderer(int id);
-        void applyRotation(const QString & text);
-        void applyZoom(const QString & text);
+        void applyRotation(const QString &text);
         void updateFrameIndex(int index);
         void updateFramePointer();
 

@@ -145,8 +145,10 @@ struct KTViewDocument::Private
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal) : QMainWindow(parent), k(new Private)
 {
     #ifdef K_DEBUG
-           T_FUNCINFO;
+           TINIT;
     #endif
+
+    tFatal() << "KTViewDocument::KTViewDocument() - Tracing!";
 
     setWindowIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
 
@@ -289,6 +291,11 @@ void KTViewDocument::setRotationAngle(int angle)
 void KTViewDocument::setZoom(qreal factor)
 {
     k->paintArea->setZoom(factor);
+}
+
+void KTViewDocument::setZoomView(const QString &percent)
+{
+    k->status->setZoomFactor(percent);
 }
 
 void KTViewDocument::showPos(const QPointF &p)
@@ -1040,6 +1047,11 @@ QSize KTViewDocument::sizeHint() const
     return size.expandedTo(QApplication::globalStrut());
 }
 
+QSize KTViewDocument::workSpaceSize() const
+{
+    return k->paintArea->size();
+}
+
 KTBrushManager *KTViewDocument::brushManager() const
 {
     return k->paintArea->brushManager();
@@ -1258,3 +1270,4 @@ void KTViewDocument::postImage()
         emit requestExportImageToServer(frameIndex, sceneIndex, title, description);
     }
 }
+

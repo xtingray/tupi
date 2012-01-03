@@ -83,6 +83,8 @@ class KTViewDocument : public QMainWindow
         KTProject *project();
         int currentFramesTotal();
         int currentSceneIndex();
+        void setZoomView(const QString &percent);
+        QSize workSpaceSize() const;
 
     private slots:
         void setNextOnionSkin(int n);

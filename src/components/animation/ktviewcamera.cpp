@@ -98,7 +98,26 @@ KTViewCamera::KTViewCamera(KTProject *project, bool isNetworked, QWidget *parent
     layout->addWidget(titleWidget, Qt::AlignCenter);
     layout->addLayout(labelLayout, Qt::AlignCenter);
 
-    k->animationArea = new KTAnimationArea(k->project);
+    int width = size().width();
+    int height = size().height();
+    int pWidth = project->dimension().width();
+    int pHeight = project->dimension().height();
+
+    if (pWidth < width && pHeight < height) {
+        k->animationArea = new KTAnimationArea(k->project);
+    } else {
+        QSize dimension;
+        if (pWidth > pHeight) {
+            int newH = (pHeight*width)/pWidth;
+            dimension = QSize(width, newH);
+        } else {
+            int newW = (pWidth*height)/pHeight;
+            dimension = QSize(newW, height);
+        }
+
+        k->animationArea = new KTAnimationArea(k->project, dimension, true);
+    }
+
     layout->addWidget(k->animationArea, 0, Qt::AlignCenter);
 
     KTCameraBar *m_bar = new KTCameraBar;

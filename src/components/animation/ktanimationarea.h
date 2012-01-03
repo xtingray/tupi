@@ -54,7 +54,7 @@ class TUPI_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRespo
     Q_OBJECT
 
     public:
-        KTAnimationArea(const KTProject *project, QWidget *parent = 0);
+        KTAnimationArea(const KTProject *project, const QSize viewSize = QSize(), bool isScaled = false, QWidget *parent = 0);
         ~KTAnimationArea();
 
         QSize sizeHint() const;
