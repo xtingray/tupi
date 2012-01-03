@@ -339,7 +339,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
         // SQA: This procedure is very heavy. Must be optimized
         //      Some kind of previously loaded buffer is required
-        painter->setPen(QPen(QColor(0,0,180, 50), 1));
+        painter->setPen(QPen(QColor(0, 0, 180, 50), 1));
         int maxX = k->drawingRect.width() + 100;
         int maxY = k->drawingRect.height() + 100; 
         for (int i = -100; i <= maxX; i += 10)

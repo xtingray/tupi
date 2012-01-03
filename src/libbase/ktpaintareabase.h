@@ -57,7 +57,7 @@ class TUPI_EXPORT KTPaintAreaBase : public QGraphicsView
     Q_OBJECT
 
     public:
-        KTPaintAreaBase(QWidget * parent = 0, QSize dimension = QSize(520, 380));
+        KTPaintAreaBase(QWidget * parent = 0, QSize dimension = QSize(0, 0));
         ~KTPaintAreaBase();
 
         void setBgColor(const QColor color);

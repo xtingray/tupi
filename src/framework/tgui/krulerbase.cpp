@@ -100,7 +100,7 @@ KRulerBase::KRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(pa
         k->pArrow.translate(13,0);
     }
 
-    setMouseTracking (true);
+    setMouseTracking(true);
 
     connect(this, SIGNAL(displayMenu(KRulerBase *, QPoint)), this, SLOT(showMenu(KRulerBase *, QPoint)));
 

@@ -130,8 +130,8 @@ struct KTViewDocument::Private
     KTPaintArea *paintArea;
     KTCanvas *fullScreen;
 
-    KTDocumentRuler *verticalRuler;
-    KTDocumentRuler *horizontalRuler;
+    // KTDocumentRuler *verticalRuler;
+    // KTDocumentRuler *horizontalRuler;
     TActionManager *actionManager;
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
@@ -148,8 +148,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
            TINIT;
     #endif
 
-    tFatal() << "KTViewDocument::KTViewDocument() - Tracing!";
-
     setWindowIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
 
     k->project = project;
@@ -165,7 +163,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     QGridLayout *layout = new QGridLayout(frame);
 
     k->paintArea = new KTPaintArea(project, frame);
-    connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
+    // SQA: Rulers need absolut refactoring
+    // connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
 
     TCONFIG->beginGroup("OnionParameters");
     k->opacityFactor = TCONFIG->value("OnionFactor", -1).toDouble();
@@ -176,11 +175,14 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     setCentralWidget(frame);
 
     layout->addWidget(k->paintArea, 1, 1);
+
+    // SQA: Rulers need absolut refactoring
+    /*
     k->horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
     k->verticalRuler = new KTDocumentRuler(Qt::Vertical);
-
     layout->addWidget(k->horizontalRuler, 0, 1);
     layout->addWidget(k->verticalRuler, 1, 0);
+    */
 
     Tupi::RenderType renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt()); 
 
@@ -202,12 +204,14 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     }
     
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), this, SLOT(showPos(const QPointF &)));
-    
+
+    // SQA: Rulers need absolut refactoring
+    /*
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, 
                           SLOT(movePointers(const QPointF&)));
-    
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->horizontalRuler, 
                           SLOT(movePointers(const QPointF&)));
+    */
 
     connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 
@@ -1036,8 +1040,10 @@ void KTViewDocument::scaleRuler(double factor)
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)
 {
+    /*
     k->verticalRuler->setZeroAt(zero);
     k->horizontalRuler->setZeroAt(zero);
+    */
 }
 
 QSize KTViewDocument::sizeHint() const

@@ -45,6 +45,7 @@
 class KTDocumentRuler : public KRulerBase
 {
     Q_OBJECT
+
     public:
         KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
         ~KTDocumentRuler();

@@ -85,38 +85,57 @@ KTViewCamera::KTViewCamera(KTProject *project, bool isNetworked, QWidget *parent
     labelLayout->addWidget(name); 
     labelLayout->addWidget(description);
 
-    QLabel *icon = new QLabel();
-    icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
-    QLabel *title = new QLabel(tr("Render Camera Preview"));
-
-    QWidget *titleWidget = new QWidget();
-    QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
-    titleLayout->setAlignment(Qt::AlignCenter);
-    titleLayout->addWidget(icon);
-    titleLayout->addWidget(title);
-
-    layout->addWidget(titleWidget, Qt::AlignCenter);
-    layout->addLayout(labelLayout, Qt::AlignCenter);
-
     int width = size().width();
     int height = size().height();
     int pWidth = project->dimension().width();
     int pHeight = project->dimension().height();
 
+    QString scale = "[ " + tr("Scale") + " ";
+
     if (pWidth < width && pHeight < height) {
         k->animationArea = new KTAnimationArea(k->project);
+        scale += "1:1";
     } else {
         QSize dimension;
+        double proportion = 1;
         if (pWidth > pHeight) {
             int newH = (pHeight*width)/pWidth;
             dimension = QSize(width, newH);
+            proportion = (double) pWidth / (double) width; 
         } else {
             int newW = (pWidth*height)/pHeight;
             dimension = QSize(newW, height);
+            proportion = (double) pHeight / (double) height;
         }
 
+        scale += "1:" + QString::number(proportion, 'g', 2);
         k->animationArea = new KTAnimationArea(k->project, dimension, true);
     }
+
+    scale += " ]";
+
+    QLabel *icon = new QLabel();
+    icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
+    QLabel *title = new QLabel(tr("Render Camera Preview"));
+    QLabel *scaleLabel = new QLabel(scale);
+    scaleLabel->setFont(font);
+
+    QWidget *titleWidget = new QWidget();
+    QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
+    titleLayout->setContentsMargins(0, 0, 0, 0);
+    titleLayout->setAlignment(Qt::AlignCenter);
+    titleLayout->addWidget(icon);
+    titleLayout->addWidget(title);
+
+    QWidget *scaleWidget = new QWidget();
+    QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
+    scaleLayout->setContentsMargins(0, 0, 0, 0);
+    scaleLayout->setAlignment(Qt::AlignCenter);
+    scaleLayout->addWidget(scaleLabel);
+
+    layout->addWidget(titleWidget, 0, Qt::AlignCenter);
+    layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
+    layout->addLayout(labelLayout, Qt::AlignCenter);
 
     layout->addWidget(k->animationArea, 0, Qt::AlignCenter);
 

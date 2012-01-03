@@ -73,7 +73,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, bool isNetworked, QWidget *
     sceneInfoLayout->setMargin(3);
 
     QFont font = this->font();
-    font.setPointSize(6);
+    font.setPointSize(8);
 
     QLabel *sceneNameText = new QLabel("<B>" + tr("Scene name") + ":</B> ");
     sceneNameText->setFont(font);
