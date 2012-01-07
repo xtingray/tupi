@@ -58,6 +58,7 @@
 #include "ktcanvas.h"
 #include "polyline.h"
 #include "ktimagedialog.h"
+#include "tupiruler.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -130,8 +131,9 @@ struct KTViewDocument::Private
     KTPaintArea *paintArea;
     KTCanvas *fullScreen;
 
-    // KTDocumentRuler *verticalRuler;
-    // KTDocumentRuler *horizontalRuler;
+    TupiRuler *verticalRuler;
+    TupiRuler *horizontalRuler;
+
     TActionManager *actionManager;
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
@@ -163,8 +165,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     QGridLayout *layout = new QGridLayout(frame);
 
     k->paintArea = new KTPaintArea(project, frame);
-    // SQA: Rulers need absolut refactoring
-    // connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
 
     TCONFIG->beginGroup("OnionParameters");
     k->opacityFactor = TCONFIG->value("OnionFactor", -1).toDouble();
@@ -176,13 +176,12 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
 
     layout->addWidget(k->paintArea, 1, 1);
 
-    // SQA: Rulers need absolut refactoring
-    /*
-    k->horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
-    k->verticalRuler = new KTDocumentRuler(Qt::Vertical);
+    k->horizontalRuler = new TupiRuler(Qt::Horizontal, this);
+    k->verticalRuler = new TupiRuler(Qt::Vertical, this);
     layout->addWidget(k->horizontalRuler, 0, 1);
     layout->addWidget(k->verticalRuler, 1, 0);
-    */
+
+    connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(updateScaleVars(double)));
 
     Tupi::RenderType renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt()); 
 
@@ -205,18 +204,12 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), this, SLOT(showPos(const QPointF &)));
 
-    // SQA: Rulers need absolut refactoring
-    /*
-    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, 
-                          SLOT(movePointers(const QPointF&)));
-    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->horizontalRuler, 
-                          SLOT(movePointers(const QPointF&)));
-    */
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, SLOT(movePointers(const QPointF&)));
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->horizontalRuler, SLOT(movePointers(const QPointF&)));
 
     connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 
-    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest *)), this, 
-                          SIGNAL(requestTriggered(const KTProjectRequest *)));
+    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest *)), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 
     setupDrawActions();
 
@@ -295,6 +288,8 @@ void KTViewDocument::setRotationAngle(int angle)
 void KTViewDocument::setZoom(qreal factor)
 {
     k->paintArea->setZoom(factor);
+    k->verticalRuler->setRulerZoom(factor);
+    k->horizontalRuler->setRulerZoom(factor);
 }
 
 void KTViewDocument::setZoomView(const QString &percent)
@@ -1020,30 +1015,17 @@ void KTViewDocument::toggleShowGrid()
     k->paintArea->setDrawGrid(!k->paintArea->drawGrid());
 }
 
-/*
-void KTViewDocument::setZoomFactor(int percent)
+void KTViewDocument::updateScaleVars(double factor)
 {
-    k->zoomFactorSpin->blockSignals(true);
-    k->zoomFactorSpin->blockSignals(false);
-}
-*/
-
-void KTViewDocument::scaleRuler(double factor)
-{
-    Q_UNUSED(factor);
-    /*
-    double sep = factor * k->verticalRuler->scaleFactor();
-    k->verticalRuler->scale(sep);
-    k->horizontalRuler->scale(sep);
-    */
+    k->status->updateZoomFactor(factor);
+    k->verticalRuler->setRulerZoom(factor);
+    k->horizontalRuler->setRulerZoom(factor);
 }
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)
 {
-    /*
-    k->verticalRuler->setZeroAt(zero);
-    k->horizontalRuler->setZeroAt(zero);
-    */
+    k->verticalRuler->setOrigin(zero.y());
+    k->horizontalRuler->setOrigin(zero.x());
 }
 
 QSize KTViewDocument::sizeHint() const

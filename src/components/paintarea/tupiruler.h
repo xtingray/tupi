@@ -6,9 +6,9 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,46 +33,50 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTPAINTAREASTATUS_H
-#define KTPAINTAREASTATUS_H
+#ifndef TUPIRULER_H
+#define TUPIRULER_H
 
-#include <QStatusBar>
+#include <QWidget>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QRectF>
+#include <QPoint>
+#include <QSize>
 
-class KTViewDocument;
+#define RULER_BREADTH 20
 
-/**
- * @author David Cuadrado
-*/
-
-class KTPaintAreaStatus : public QStatusBar
+class TupiRuler : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(qreal origin READ origin WRITE setOrigin)
+    Q_PROPERTY(qreal rulerZoom READ rulerZoom WRITE setRulerZoom)
 
     public:
-        KTPaintAreaStatus(KTViewDocument *parent);
-        ~KTPaintAreaStatus();
-        void updateTool(const QString &label, const QPixmap &pixmap);
-        void setZoomFactor(const QString &text);
-        void updateZoomFactor(double factor);
+        TupiRuler(Qt::Orientation rulerType, QWidget *parent);
+        ~TupiRuler();
+
+        QSize minimumSizeHint() const;
+        Qt::Orientation rulerType() const;
+        qreal origin() const;
+        qreal rulerZoom() const;
 
     public slots:
-        void applyZoom(const QString &text);
-        void setPen(const QPen &pen);
+        void setOrigin(const qreal origin);
+        void setRulerZoom(const qreal rulerZoom);
+        void movePointers(const QPointF pos);
 
-    private slots:
-        void selectAntialiasingHint();
-        void selectRenderer(int id);
-        void applyRotation(const QString &text);
-        void updateFrameIndex(int index);
-        void updateFramePointer();
-
-    signals:
-        void colorRequested();
-        void colorUpdated(const QColor color);
-        void newFramePointer(int index);
+    protected:
+        void paintEvent(QPaintEvent* event);
 
     private:
-        void updateZoomField(const QString &text);
+        void translateArrow(double dx, double dy);
+        void drawAScaleMeter(QPainter *painter, QRectF rulerRectr);
+        void drawFromOriginTo(QPainter *painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step);
+        void drawMaximizedRuler(QPainter *painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step);
+        void drawSimpleRuler(QPainter *painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step);
+
+    private:
         struct Private;
         Private *const k;
 };

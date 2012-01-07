@@ -6,7 +6,7 @@
 HEADERS += ktpaintarea.h \
            ktconfigurationarea.h \
            ktviewdocument.h \
-           ktdocumentruler.h \
+           # ktdocumentruler.h \
            ktpaintareastatus.h \
            ktimagedevice.h \
            ktpaintareacommand.h \
@@ -16,12 +16,13 @@ HEADERS += ktpaintarea.h \
            kttoolstatus.h \
            ktcanvas.h \
            ktcanvasview.h \
-           ktimagedialog.h
+           ktimagedialog.h \
+           tupiruler.h
 
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
            ktviewdocument.cpp \
-           ktdocumentruler.cpp \
+           # ktdocumentruler.cpp \
            ktpaintareastatus.cpp \
            ktimagedevice.cpp \
            ktpaintareacommand.cpp \
@@ -31,7 +32,8 @@ SOURCES += ktpaintarea.cpp \
            kttoolstatus.cpp \
            ktcanvas.cpp \
            ktcanvasview.cpp \
-           ktimagedialog.cpp
+           ktimagedialog.cpp \
+           tupiruler.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib

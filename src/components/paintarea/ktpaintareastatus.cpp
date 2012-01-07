@@ -238,7 +238,6 @@ void KTPaintAreaStatus::applyRotation(const QString & text)
 void KTPaintAreaStatus::applyZoom(const QString &text)
 {
     int input = text.toInt();
-
     qreal factor = (qreal)input / (qreal)k->scaleFactor;
 
     k->viewDocument->setZoom(factor);
@@ -247,13 +246,30 @@ void KTPaintAreaStatus::applyZoom(const QString &text)
 
 void KTPaintAreaStatus::setZoomFactor(const QString &text)
 {
+    updateZoomField(text);
+    applyZoom(text);
+}
+
+void KTPaintAreaStatus::updateZoomField(const QString &text)
+{
     int index = k->zoom->findText(text);
     if (index != -1)
         k->zoom->setCurrentIndex(index);
     else
         k->zoom->setEditText(text);
+}
 
-    applyZoom(text);
+void KTPaintAreaStatus::updateZoomFactor(double factor) 
+{
+    double newFactor = k->scaleFactor * factor;
+    QString number = QString::number(newFactor);
+    int index = number.indexOf(".");
+    if (index != -1)
+        number = number.left(index + 2);
+
+    updateZoomField(number);
+
+    k->scaleFactor = newFactor;
 }
 
 void KTPaintAreaStatus::updateTool(const QString &label, const QPixmap &pixmap)

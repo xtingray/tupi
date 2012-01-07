@@ -62,7 +62,6 @@ class KTViewDocument : public QMainWindow
     Q_OBJECT
 
     public:
-
         KTViewDocument(KTProject *project, QWidget *parent = 0, bool isLocal = true);
         ~KTViewDocument();
         void closeArea();
@@ -93,7 +92,7 @@ class KTViewDocument : public QMainWindow
         void toggleShowGrid();
 
         // void setZoomFactor(int porcent);
-        void scaleRuler(double factor);
+        void updateScaleVars(double factor);
         void changeRulerOrigin(const QPointF &zero);
         void saveTimer();
         void showFullScreen();

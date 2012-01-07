@@ -438,10 +438,14 @@ QPointF KTPaintAreaBase::centerPoint() const
 
 void KTPaintAreaBase::wheelEvent(QWheelEvent *event)
 {
+    scaleView(pow((double)2, event->delta() / 520.0));
+
+    /*
     if (event->modifiers() == Qt::ControlModifier)
         scaleView(pow((double)2, -event->delta() / 240.0));
     else
         QGraphicsView::wheelEvent(event);
+    */
 }
 
 bool KTPaintAreaBase::viewportEvent(QEvent *e)
