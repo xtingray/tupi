@@ -2,17 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="it">
 <context>
-    <name>PencilTool</name>
-    <message>
-        <source>Pencil</source>
-        <translation>Matita</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-</context>
-<context>
     <name>ButtonsPanel</name>
     <message>
         <source>Edit Tween</source>
@@ -24,49 +13,51 @@
     </message>
 </context>
 <context>
-    <name>CWFirstPage</name>
-    <message>
-        <source>Welcome</source>
-        <translation>Benvenuto</translation>
-    </message>
-    <message>
-        <source>&lt;h1&gt;Welcome to the Tupi Configuration wizard!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- Tupi is a 2D Animation Toolkit designed by animators for animators.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- Tupi is free/open software and it is covered under the GNU GPL license terms.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- Tupi is Software Project developed by Toonka Films (http://www.toonka.com)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;This is an &quot;easy to use tool&quot; to allow you to configure your Tupi environment.&lt;br&gt;&lt;br&gt;Please, choose the &quot;Next&quot; button to setting up some parameters&lt;br&gt; required to use Tupi correctly or use the &quot;Cancel&quot; button&lt;br&gt; to close this dialog. Enjoy Tupi!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--The Tupi Team&lt;/em&gt;&lt;br&gt;&lt;br&gt;</source>
-        <translation>&lt;h1&gt;Benvenuto nello strumento di configurazione di Tupi!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- Tupi è uno strumento per l&apos;animazione 2D sviluppato da animatori per animatori.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- Tupi è un software libero, rilasciato sotto la licenza GNU GPL.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- Tupi è un progetto sviluppato da LabToon (http://www.labtoon.org)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;Questo è uno strumento che ti permette di personalizzare facilmente il tuo ambiente di lavoro.&lt;br&gt;&lt;br&gt;Premere il pulsante &quot;Seguente&quot; per configurare alcuni parametri&lt;br&gt; richiesti per utilizzare Tupi correttamente oppure premere il pulsante &quot;Cancella&quot;&lt;br&gt; per chiudere questa finestra. Divertiti con Tupi!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--Tupi Team&lt;/em&gt;&lt;br&gt;&lt;br&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>CWSecondPage</name>
-    <message>
-        <source>Configure Tupi</source>
-        <translation>Configura Tupi</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Step 1&lt;h3&gt;</source>
-        <translation>Passo 1</translation>
-    </message>
-    <message>
-        <source>Choose your Tupi installation directory</source>
-        <translation>Seleziona la cartella di installazione di Tupi</translation>
-    </message>
-    <message>
-        <source>Choose the directory where Tupi is installed</source>
-        <translation>Seleziona la cartella dove è installato Tupi</translation>
-    </message>
-    <message>
-        <source>Browse...</source>
-        <translation>Sfoglia...</translation>
-    </message>
-    <message>
-        <source>Choose a temporal directory</source>
-        <translation>Seleziona una cartella temporanea</translation>
-    </message>
-    <message>
-        <source>Choose the directory for temporal files</source>
-        <translation>Seleziona la cartella per i file temporanei</translation>
-    </message>
-</context>
-<context>
     <name>Configurator</name>
+    <message>
+        <source>Smoothness</source>
+        <translation>Smussamento</translation>
+    </message>
+    <message>
+        <source>My Values:</source>
+        <translation>Valori:</translation>
+    </message>
+    <message>
+        <source>This tool is just a &lt;b&gt;proof-of-concept&lt;/b&gt; of the basic algorithm for the Tupi&apos;s free-tracing vectorial brushes</source>
+        <translation>Questo strumento è solo una &lt;b&gt;prova di concetto&lt;/b&gt; per l&apos;algoritmo di disegno a mano libera</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <source>Structure</source>
+        <translation>Struttura</translation>
+    </message>
+    <message>
+        <source>Basic</source>
+        <translation type="unfinished">Base</translation>
+    </message>
+    <message>
+        <source>Axial</source>
+        <translation type="unfinished">Assiale</translation>
+    </message>
+    <message>
+        <source>Organic</source>
+        <translation type="unfinished">Organica</translation>
+    </message>
+    <message>
+        <source>Dot Spacing</source>
+        <translation type="unfinished">Spaziatura a punti</translation>
+    </message>
+    <message>
+        <source>Size Tolerance</source>
+        <translation type="unfinished">Tolleranza</translation>
+    </message>
+    <message>
+        <source>Run simulation</source>
+        <translation>Esegui simulazione</translation>
+    </message>
     <message>
         <source>Position Tween</source>
         <translation>Intercalazione di posizione</translation>
@@ -100,7 +91,7 @@
     <name>ContourSelection</name>
     <message>
         <source>Line Selection</source>
-        <translation>Seleziona percorso</translation>
+        <translation>Selezione di una linea</translation>
     </message>
     <message>
         <source>N</source>
@@ -108,18 +99,34 @@
     </message>
 </context>
 <context>
-    <name>CrashWidget</name>
+    <name>Day</name>
     <message>
-        <source>What&apos;s happening?</source>
-        <translation>Che succede?</translation>
+        <source>Mon</source>
+        <translation>Lun</translation>
     </message>
     <message>
-        <source>Executable information</source>
-        <translation>Informazioni sull&apos;eseguibile</translation>
+        <source>Tue</source>
+        <translation>Mar</translation>
     </message>
     <message>
-        <source>Backtrace</source>
-        <translation>Backtrace</translation>
+        <source>Wed</source>
+        <translation>Mer</translation>
+    </message>
+    <message>
+        <source>Thu</source>
+        <translation>Gio</translation>
+    </message>
+    <message>
+        <source>Fri</source>
+        <translation>Ven</translation>
+    </message>
+    <message>
+        <source>Sat</source>
+        <translation>Sab</translation>
+    </message>
+    <message>
+        <source>Sun</source>
+        <translation>Dom</translation>
     </message>
 </context>
 <context>
@@ -137,7 +144,7 @@
     <name>ExactnessConfigurator</name>
     <message>
         <source>Smoothness</source>
-        <translation type="unfinished">Scorrevolezza</translation>
+        <translation>Smussamento</translation>
     </message>
     <message>
         <source>My Values:</source>
@@ -151,12 +158,12 @@
         <translation>Prefisso dei nomi immagine:</translation>
     </message>
     <message>
-        <source>File: </source>
-        <translation>File: </translation>
-    </message>
-    <message>
         <source>Directory: </source>
         <translation>Cartella: </translation>
+    </message>
+    <message>
+        <source>File: </source>
+        <translation>File: </translation>
     </message>
     <message>
         <source>i.e. &lt;B&gt;%1&lt;/B&gt;01.png / &lt;B&gt;%1&lt;/B&gt;01.jpg</source>
@@ -164,7 +171,7 @@
     </message>
     <message>
         <source>Size</source>
-        <translation>Dimensione</translation>
+        <translation type="unfinished">Dimensione</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -191,12 +198,12 @@
         <translation>Il file esiste già. Sovrascriverlo?</translation>
     </message>
     <message>
-        <source>Images name prefix can&apos;t be empty! Please, type a prefix.</source>
-        <translation>Il prefisso dei nomi delle immagini non può essere omesso! Inserisci un prefisso.</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Images name prefix can&apos;t be empty! Please, type a prefix.</source>
+        <translation>Il prefisso dei nomi delle immagini non può essere omesso! Inserisci un prefisso.</translation>
     </message>
     <message>
         <source>Directory &quot;</source>
@@ -204,7 +211,7 @@
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
-        <translation>Non hai i permessi per creare il file. Scegli un altro percorso.</translation>
+        <translation>Non hai i permessi necessari per creare il file. Scegli un altro percorso.</translation>
     </message>
     <message>
         <source>Format problem. Tupi Internal error.</source>
@@ -212,7 +219,7 @@
     </message>
     <message>
         <source>Information</source>
-        <translation>Informazione</translation>
+        <translation type="unfinished">Informazione</translation>
     </message>
     <message>
         <source>ERROR!</source>
@@ -226,16 +233,20 @@
         <translation>Applica riempimento</translation>
     </message>
     <message>
-        <source>I</source>
-        <translation>I</translation>
-    </message>
-    <message>
         <source>Line fill</source>
         <translation>Applica contorno</translation>
     </message>
     <message>
+        <source>I</source>
+        <translation>I</translation>
+    </message>
+    <message>
         <source>B</source>
         <translation>B</translation>
+    </message>
+    <message>
+        <source>Shape fill</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -257,8 +268,8 @@
         <translation>R</translation>
     </message>
     <message>
-        <source>E</source>
-        <translation>E</translation>
+        <source>C</source>
+        <translation>C</translation>
     </message>
     <message>
         <source>L</source>
@@ -267,6 +278,26 @@
 </context>
 <context>
     <name>InfoPanel</name>
+    <message>
+        <source>Flips</source>
+        <translation>Trasformazioni</translation>
+    </message>
+    <message>
+        <source>Horizontal Flip</source>
+        <translation>Rifletti orizzontalmente</translation>
+    </message>
+    <message>
+        <source>Vertical Flip</source>
+        <translation>Rifletti verticalmente</translation>
+    </message>
+    <message>
+        <source>Crossed Flip</source>
+        <translation>Rifletti completamente</translation>
+    </message>
+    <message>
+        <source>Tips</source>
+        <translation>Suggerimenti</translation>
+    </message>
     <message>
         <source>Rotation mode</source>
         <translation>Modalità di rotazione</translation>
@@ -308,6 +339,26 @@
         <translation>Scalatura proporzionale della selezione</translation>
     </message>
     <message>
+        <source>Mouse Double Click</source>
+        <translation>Doppio clic</translation>
+    </message>
+    <message>
+        <source>Close the line path</source>
+        <translation>Chiudi tracciato</translation>
+    </message>
+    <message>
+        <source>Shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align line to horizontal/vertical axis</source>
+        <translation>Allinea la linea agli assi verticale/orizzontale</translation>
+    </message>
+    <message>
+        <source>Set width/height proportional dimensions</source>
+        <translation>Imposta dimensioni di larghezza/altezza proporzionali</translation>
+    </message>
+    <message>
         <source>Close line</source>
         <translation>Chiudi linea</translation>
     </message>
@@ -315,25 +366,51 @@
         <source>X key or Right mouse button</source>
         <translation>Tasto X o pulsante destro del mouse</translation>
     </message>
+</context>
+<context>
+    <name>InkTool</name>
     <message>
-        <source>Set width/height proportional dimensions</source>
-        <translation>Imposta dimensioni di larghezza/altezza proporzionali</translation>
+        <source>Ink</source>
+        <translation>Inchiostra</translation>
     </message>
     <message>
-        <source>Flips</source>
-        <translation>Trasformazioni</translation>
+        <source>K</source>
+        <translation>K</translation>
+    </message>
+</context>
+<context>
+    <name>KButtonBar</name>
+    <message>
+        <source>Left button bar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Horizontal Flip</source>
-        <translation>Rifletti orizzontalmente</translation>
+        <source>Right button bar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Vertical Flip</source>
-        <translation>Rifletti verticalmente</translation>
+        <source>Bottom button bar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Crossed Flip</source>
-        <translation>Rifletti completamente</translation>
+        <source>Top button bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only icons</source>
+        <translation>Solo icone</translation>
+    </message>
+    <message>
+        <source>Only texts</source>
+        <translation>Solo testo</translation>
+    </message>
+    <message>
+        <source>Exclusive space</source>
+        <translation type="unfinished">Spazio esclusivo</translation>
+    </message>
+    <message>
+        <source>Auto hide</source>
+        <translation>Nascondi automaticamente</translation>
     </message>
 </context>
 <context>
@@ -348,18 +425,52 @@
     </message>
 </context>
 <context>
+    <name>KDatePicker</name>
+    <message>
+        <source>Week %1</source>
+        <translation>Settimana %1</translation>
+    </message>
+</context>
+<context>
     <name>KExportWizard</name>
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <source>Save</source>
-        <translation>Salva</translation>
+        <source>Back</source>
+        <translation>Indietro</translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation>Avanti</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation>Esporta</translation>
+    </message>
+    <message>
+        <source>Post</source>
+        <translation type="unfinished">Pubblica</translation>
+    </message>
+</context>
+<context>
+    <name>KFlashWidget</name>
+    <message>
+        <source>Flashing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please install gnash from http://gnash.org</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>KFontChooser</name>
+    <message>
+        <source>Family</source>
+        <translation>Famiglia</translation>
+    </message>
     <message>
         <source>Style</source>
         <translation>Stile</translation>
@@ -368,19 +479,50 @@
         <source>Size</source>
         <translation>Dimensione</translation>
     </message>
+    <message>
+        <source>Normal</source>
+        <translation>Normale</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Corsivo</translation>
+    </message>
+    <message>
+        <source>Oblique</source>
+        <translation>Obliquo</translation>
+    </message>
 </context>
 <context>
     <name>KOptionalDialog</name>
     <message>
+        <source>Don&apos;t show again</source>
+        <translation>Non mostrare di nuovo</translation>
+    </message>
+    <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation>Accetta</translation>
+    </message>
+</context>
+<context>
+    <name>KRulerBase</name>
+    <message>
+        <source>Change scale to 5...</source>
+        <translation type="unfinished">Usa il fattore di scala 5...</translation>
+    </message>
+    <message>
+        <source>Change scale to 10...</source>
+        <translation type="unfinished">Usa il fattore di scala 10...</translation>
     </message>
 </context>
 <context>
     <name>KTAbout</name>
     <message>
         <source>About</source>
-        <translation>A proposito</translation>
+        <translation>Riguardo a</translation>
     </message>
     <message>
         <source>Credits</source>
@@ -389,10 +531,6 @@
     <message>
         <source>Thanks</source>
         <translation>Ringraziamenti</translation>
-    </message>
-    <message>
-        <source>Tupi</source>
-        <translation>Tupí</translation>
     </message>
     <message>
         <source>License Agreement</source>
@@ -407,18 +545,14 @@
     <name>KTAnimationArea</name>
     <message>
         <source>Rendering...</source>
-        <translation>Rendering...</translation>
+        <translation type="unfinished">Rendering...</translation>
     </message>
 </context>
 <context>
-    <name>KTApplication</name>
+    <name>KTBackground</name>
     <message>
-        <source>Initializing repository %1</source>
-        <translation>Inizializza il repository %1</translation>
-    </message>
-    <message>
-        <source>Can not create the projects repository</source>
-        <translation>Non è possibile creare il repository dei progetti</translation>
+        <source>landscape</source>
+        <translation type="unfinished">paesaggio</translation>
     </message>
 </context>
 <context>
@@ -441,7 +575,7 @@
     </message>
     <message>
         <source>Forward</source>
-        <translation>Avanti</translation>
+        <translation>Avanza</translation>
     </message>
 </context>
 <context>
@@ -464,11 +598,22 @@
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation>Ctrl+L</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export</source>
         <translation>Esporta</translation>
+    </message>
+    <message>
+        <source>Post</source>
+        <translation type="unfinished">Pubblica</translation>
+    </message>
+</context>
+<context>
+    <name>KTCanvas</name>
+    <message>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupí: Magia 2D</translation>
     </message>
 </context>
 <context>
@@ -477,20 +622,20 @@
         <source>Send</source>
         <translation>Invia</translation>
     </message>
+    <message>
+        <source>Error:</source>
+        <translation>Errore:</translation>
+    </message>
+    <message>
+        <source>Invalid Message. It won&apos;t be sent. Please, don&apos;t use HTML tags</source>
+        <translation>Messaggio non è valido e non sarà inviato. Non usare marcatura HTML</translation>
+    </message>
 </context>
 <context>
     <name>KTColorPalette</name>
     <message>
         <source>Color Palette</source>
         <translation>Tavolozza</translation>
-    </message>
-    <message>
-        <source>Color Mixer</source>
-        <translation>Compositore dei colori</translation>
-    </message>
-    <message>
-        <source>Gradients</source>
-        <translation>Gradienti</translation>
     </message>
     <message>
         <source>Contour</source>
@@ -501,19 +646,19 @@
         <translation>Riempimento</translation>
     </message>
     <message>
-        <source>Gradient</source>
-        <translation>Gradiente</translation>
+        <source>Color Mixer</source>
+        <translation>Miscelatore di colori</translation>
     </message>
     <message>
-        <source>type brush</source>
-        <translation>Tipo di pennello</translation>
+        <source>Gradients</source>
+        <translation>Gradienti</translation>
     </message>
 </context>
 <context>
     <name>KTColorValue</name>
     <message>
-        <source>percent</source>
-        <translation>Porcentuale</translation>
+        <source>Percent</source>
+        <translation>Percentuale</translation>
     </message>
 </context>
 <context>
@@ -528,6 +673,10 @@
     </message>
     <message>
         <source>Scene doesn&apos;t exists!</source>
+        <translation>La scena non esiste!</translation>
+    </message>
+    <message>
+        <source>Scene doesn&apos;t exist!</source>
         <translation>La scena non esiste!</translation>
     </message>
 </context>
@@ -568,20 +717,13 @@
         <source>Store password</source>
         <translation>Ricorda la password</translation>
     </message>
-</context>
-<context>
-    <name>KTCrashWidget</name>
     <message>
-        <source>What&apos;s happening?</source>
-        <translation>Che succede?</translation>
+        <source>Error</source>
+        <translation>Errore</translation>
     </message>
     <message>
-        <source>Executable information</source>
-        <translation>Informazione sull&apos;eseguibile</translation>
-    </message>
-    <message>
-        <source>Backtrace</source>
-        <translation>Backtrace</translation>
+        <source>Please, fill in your password</source>
+        <translation>Inserisci la password</translation>
     </message>
 </context>
 <context>
@@ -594,8 +736,8 @@
 <context>
     <name>KTExportWidget</name>
     <message>
-        <source>Export</source>
-        <translation>Esporta</translation>
+        <source>Export to Video</source>
+        <translation>Esporta come video</translation>
     </message>
     <message>
         <source>Export to Video File</source>
@@ -603,7 +745,11 @@
     </message>
     <message>
         <source>Export to Images Array</source>
-        <translation>Espora come serie di immagini</translation>
+        <translation>Esporta come serie di immagini</translation>
+    </message>
+    <message>
+        <source>Post Video in Gallery</source>
+        <translation type="unfinished">Pubblica il video in galleria</translation>
     </message>
 </context>
 <context>
@@ -619,6 +765,18 @@
     <message>
         <source>Insert</source>
         <translation>Inserisci</translation>
+    </message>
+    <message>
+        <source>1 frame</source>
+        <translation>1 fotogramma</translation>
+    </message>
+    <message>
+        <source>5 frames</source>
+        <translation>5 fotogrammi</translation>
+    </message>
+    <message>
+        <source>10 frames</source>
+        <translation>10 fotogrammi</translation>
     </message>
     <message>
         <source>Remove frame</source>
@@ -641,24 +799,12 @@
         <translation>Espandi</translation>
     </message>
     <message>
-        <source>1 frame</source>
-        <translation>1 fotogramma</translation>
-    </message>
-    <message>
-        <source>5 frames</source>
-        <translation>5 fotogrammi</translation>
-    </message>
-    <message>
-        <source>10 frames</source>
-        <translation>10 fotogrammi</translation>
+        <source>Layer %1</source>
+        <translation>Livello %1</translation>
     </message>
     <message>
         <source>Frame %1</source>
         <translation>Fotogramma %1</translation>
-    </message>
-    <message>
-        <source>Layer %1</source>
-        <translation>Livello %1</translation>
     </message>
 </context>
 <context>
@@ -668,8 +814,20 @@
         <translation>Nuova cartella %1</translation>
     </message>
     <message>
+        <source>Rename</source>
+        <translation>Rinomina</translation>
+    </message>
+    <message>
         <source>Delete</source>
         <translation>Elimina</translation>
+    </message>
+    <message>
+        <source>Edit with Inkscape</source>
+        <translation>Modifica con Inkscape</translation>
+    </message>
+    <message>
+        <source>Edit with Gimp</source>
+        <translation>Modifica con Gimp</translation>
     </message>
     <message>
         <source>Options</source>
@@ -710,6 +868,18 @@
         <translation>Polilinea</translation>
     </message>
     <message>
+        <source>/Step: 0</source>
+        <translation>/Passo: 0</translation>
+    </message>
+    <message>
+        <source>/Step: </source>
+        <translation>/Passo:</translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation>Linea</translation>
+    </message>
+    <message>
         <source>Zoom</source>
         <translation>Ingrandimento</translation>
     </message>
@@ -726,6 +896,41 @@
     <message>
         <source>Help</source>
         <translation>Aiuto</translation>
+    </message>
+</context>
+<context>
+    <name>KTImageDialog</name>
+    <message>
+        <source>Image Properties</source>
+        <translation>Proprietà dell&apos;immagine</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation>Titolo</translation>
+    </message>
+    <message>
+        <source>My Picture</source>
+        <translation type="unfinished">La mia immagine</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrizione</translation>
+    </message>
+    <message>
+        <source>Just a little taste of my style :)</source>
+        <translation>Una piccola esibizione del mio stile :)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Post Image</source>
+        <translation>Pubblica l&apos;immagine</translation>
+    </message>
+    <message>
+        <source>Set a title for the picture here!</source>
+        <translation>Metti qui il titolo dell&apos;immagine!</translation>
     </message>
 </context>
 <context>
@@ -772,31 +977,12 @@
         <source>Layer</source>
         <translation>Livello</translation>
     </message>
-    <message>
-        <source>Frame %1</source>
-        <translation>Fotogramma %1</translation>
-    </message>
 </context>
 <context>
     <name>KTLayerIndex</name>
     <message>
         <source>Layers</source>
         <translation>Livelli</translation>
-    </message>
-</context>
-<context>
-    <name>KTLayerManager</name>
-    <message>
-        <source>Layer</source>
-        <translation>Livello</translation>
-    </message>
-    <message>
-        <source>L</source>
-        <translation>L</translation>
-    </message>
-    <message>
-        <source>V</source>
-        <translation>V</translation>
     </message>
 </context>
 <context>
@@ -841,20 +1027,32 @@
         <translation>Aggiungi un oggetto alla biblioteca</translation>
     </message>
     <message>
-        <source>Remove the selected object from library</source>
-        <translation>Rimuovi l&apos;oggetto selezionato dalla biblioteca</translation>
-    </message>
-    <message>
-        <source>Inserts the selected object into the drawing area</source>
-        <translation>Inserisci l&apos;oggetto selezionato nell&apos;area di disegno</translation>
-    </message>
-    <message>
         <source>Adds a folder to the object&apos;s list</source>
         <translation>Aggiungi una cartella alla lista degli oggetti</translation>
     </message>
     <message>
+        <source>Inserts the selected object into the drawing area</source>
+        <translation type="unfinished">Inserisci l&apos;oggetto selezionato nell&apos;area di disegno</translation>
+    </message>
+    <message>
+        <source>Directory</source>
+        <translation>Cartella</translation>
+    </message>
+    <message>
+        <source>No preview available</source>
+        <translation>Nessuna anteprima disponibile</translation>
+    </message>
+    <message>
         <source>Import an image...</source>
         <translation>Importa un&apos;immagine...</translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation>Immagini</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished">Informazione</translation>
     </message>
     <message>
         <source>Image is bigger than workspace.</source>
@@ -865,36 +1063,28 @@
         <translation>Ridimensionare?</translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Cannot open file: %1</source>
+        <translation>Impossibile aprire il file: %1</translation>
+    </message>
+    <message>
         <source>Import a SVG file...</source>
         <translation>Importa un file SVG...</translation>
     </message>
     <message>
-        <source>Images</source>
-        <translation>Immagini</translation>
-    </message>
-    <message>
-        <source>Cannot open file: %1</source>
-        <translation>Non è possibile aprire il file: %1</translation>
+        <source>Vectorial</source>
+        <translation>Vettoriale</translation>
     </message>
     <message>
         <source>Choose the images directory...</source>
-        <translation>Scegli la cartella per le immagini...</translation>
-    </message>
-    <message>
-        <source>Choose the SVG files directory...</source>
-        <translation>Scegli la cartella per i file SVG...</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informazione</translation>
+        <translation type="unfinished">Scegli la cartella per le immagini...</translation>
     </message>
     <message>
         <source>Image files found: %1.</source>
         <translation>File delle immagini trovati: %1.</translation>
-    </message>
-    <message>
-        <source>%1 SVG files will be loaded.</source>
-        <translation>%1 file SVG saranno caricati.</translation>
     </message>
     <message>
         <source>Files are too big, so they will be resized.</source>
@@ -913,32 +1103,40 @@
         <translation>Caricamento delle immagini...</translation>
     </message>
     <message>
-        <source>Loading SVG files...</source>
-        <translation>Caricamento dei file SVG...</translation>
+        <source>Frame %1</source>
+        <translation>Fotogramma %1</translation>
     </message>
     <message>
         <source>Loading image #%1</source>
         <translation>Caricamento dell&apos;immagine #%1</translation>
     </message>
     <message>
-        <source>Loading SVG file #%1</source>
-        <translation>Caricamento del file SVG #%1</translation>
-    </message>
-    <message>
         <source>ERROR!</source>
         <translation>ERRORE!</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
         <source>ERROR: Can&apos;t open file %1. Please, check file permissions and try again.</source>
-        <translation>ERRORE: non si può aprire il file %1. Per favore, controlla i permessi del file e ritenta.</translation>
+        <translation type="unfinished">ERRORE: impossibile aprire il file %1. Per favore, controlla i permessi del file e ritenta.</translation>
     </message>
     <message>
         <source>No image files were found.&lt;br/&gt;Please, try another directory</source>
         <translation>Nessun file immagine trovato.&lt;br/&gt;Per favore, tenta con un&apos;altra cartella</translation>
+    </message>
+    <message>
+        <source>Choose the SVG files directory...</source>
+        <translation type="unfinished">Scegli la cartella per i file SVG...</translation>
+    </message>
+    <message>
+        <source>%1 SVG files will be loaded.</source>
+        <translation>%1 file SVG saranno caricati.</translation>
+    </message>
+    <message>
+        <source>Loading SVG files...</source>
+        <translation>Caricamento dei file SVG...</translation>
+    </message>
+    <message>
+        <source>Loading SVG file #%1</source>
+        <translation>Caricamento del file SVG #%1</translation>
     </message>
     <message>
         <source>No SVG files were found.&lt;br/&gt;Please, try another directory</source>
@@ -946,15 +1144,11 @@
     </message>
     <message>
         <source>Import audio file...</source>
-        <translation>Importa file audio...</translation>
+        <translation>Importa file sonoro...</translation>
     </message>
     <message>
         <source>Sound file</source>
         <translation>File sonoro</translation>
-    </message>
-    <message>
-        <source>Frame %1</source>
-        <translation>Fotogramma %1</translation>
     </message>
 </context>
 <context>
@@ -964,475 +1158,32 @@
         <translation>Lista dei progetti sul server</translation>
     </message>
     <message>
-        <source>name</source>
-        <translation>nome</translation>
+        <source>My works:</source>
+        <translation>I miei lavori:</translation>
     </message>
     <message>
-        <source>author</source>
-        <translation>autore</translation>
-    </message>
-    <message>
-        <source>description</source>
-        <translation>descrizione</translation>
+        <source>My contributions:</source>
+        <translation type="unfinished">I miei contributi:</translation>
     </message>
     <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-</context>
-<context>
-    <name>KTMainWindow</name>
     <message>
-        <source>Tupi: Magic 2D</source>
-        <translation>Tupí: Magia 2D</translation>
+        <source>Name</source>
+        <translation>Nome</translation>
     </message>
     <message>
-        <source>by</source>
-        <translation>di</translation>
+        <source>Author</source>
+        <translation>Autore</translation>
     </message>
     <message>
-        <source>Setting up the project manager</source>
-        <translation>Inizializzazione del gestore dei progetti</translation>
+        <source>Description</source>
+        <translation>Descrizione</translation>
     </message>
     <message>
-        <source>Loading action manager...</source>
-        <translation>Caricamento del gestore delle azioni...</translation>
-    </message>
-    <message>
-        <source>Creating menu bar...</source>
-        <translation>Creazione della barra del menù...</translation>
-    </message>
-    <message>
-        <source>Creating GUI...</source>
-        <translation>Creazione della GUI...</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informazione</translation>
-    </message>
-    <message>
-        <source>Opening a new document...</source>
-        <translation>Apertura di un nuovo progetto...</translation>
-    </message>
-    <message>
-        <source>Animation</source>
-        <translation>Animazione</translation>
-    </message>
-    <message>
-        <source>Player</source>
-        <translation>Riproduttore</translation>
-    </message>
-    <message>
-        <source>Question</source>
-        <translation>Domanda</translation>
-    </message>
-    <message>
-        <source>The document has been modified.</source>
-        <translation>Il progetto è stato modificato.</translation>
-    </message>
-    <message>
-        <source>Do you want to save the project?</source>
-        <translation>Vuoi salvare il progetto?</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Salva</translation>
-    </message>
-    <message>
-        <source>Discard</source>
-        <translation>Scarta</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Import project package</source>
-        <translation>Importa il pacchetto del progetto</translation>
-    </message>
-    <message>
-        <source>Tupi Project Package (*.tup);;Tupi Net Project (*.ntup)</source>
-        <translation>Progetto di Tupi (*.tup);;Progetto di Tupi in rete (*.ntup)</translation>
-    </message>
-    <message>
-        <source>Project %1 opened!</source>
-        <translation>Progetto %1 aperto!</translation>
-    </message>
-    <message>
-        <source>Cannot open project!</source>
-        <translation>Impossibile aprire il progetto!</translation>
-    </message>
-    <message>
-        <source>Tupi Project Package (*.tup)</source>
-        <translation>File di progetto (*.tup)</translation>
-    </message>
-    <message>
-        <source>Preferences Dialog Opened</source>
-        <translation>Finestra delle preferenze aperta</translation>
-    </message>
-    <message>
-        <source>Tip of the day</source>
-        <translation>Suggerimento del giorno</translation>
-    </message>
-    <message>
-        <source>Ctrl+T</source>
-        <translation>Ctrl+T</translation>
-    </message>
-    <message>
-        <source>Show on start</source>
-        <translation>Mostra all&apos;avvio</translation>
-    </message>
-    <message>
-        <source>Previous tip</source>
-        <translation>Precedente</translation>
-    </message>
-    <message>
-        <source>Next tip</source>
-        <translation>Successivo</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Chiudi</translation>
-    </message>
-    <message>
-        <source>Import gimp palettes</source>
-        <translation>Importa tavolozza di Gimp</translation>
-    </message>
-    <message>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation>Tavolozza di Gimp (*.gpl)</translation>
-    </message>
-    <message>
-        <source>Importing palettes</source>
-        <translation>Importazione delle tavolozze</translation>
-    </message>
-    <message>
-        <source>Build project package</source>
-        <translation>Creazione file di progetto</translation>
-    </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation>Cartella &quot;</translation>
-    </message>
-    <message>
-        <source>You have no permission to create this file. Please, choose another path.</source>
-        <translation>Non hai i permessi per creare il file . Per favore, scegli un altro percorso.</translation>
-    </message>
-    <message>
-        <source>Project %1 saved</source>
-        <translation>Progetto %1 salvato</translation>
-    </message>
-    <message>
-        <source>Cannot save the project!</source>
-        <translation>Impossibile salvare il progetto!</translation>
-    </message>
-    <message>
-        <source>New camera</source>
-        <translation>Nuova camera</translation>
-    </message>
-    <message>
-        <source>Shift+P</source>
-        <translation>Shift+P</translation>
-    </message>
-    <message>
-        <source>Bitmap</source>
-        <translation>Immagine</translation>
-    </message>
-    <message>
-        <source>Alt+B</source>
-        <translation>Alt+B</translation>
-    </message>
-    <message>
-        <source>Bitmap Array</source>
-        <translation>Serie di Immagini</translation>
-    </message>
-    <message>
-        <source>Alt+Shift+B</source>
-        <translation>Alt+Shift+B</translation>
-    </message>
-    <message>
-        <source>SVG File</source>
-        <translation>File SVG</translation>
-    </message>
-    <message>
-        <source>Alt+S</source>
-        <translation>Alt+S</translation>
-    </message>
-    <message>
-        <source>SVG Array</source>
-        <translation>Serie di file SVG</translation>
-    </message>
-    <message>
-        <source>Alt+Shift+S</source>
-        <translation>Alt+Shift+S</translation>
-    </message>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;File</translation>
-    </message>
-    <message>
-        <source>&amp;New</source>
-        <translation>&amp;Nuovo</translation>
-    </message>
-    <message>
-        <source>Recents</source>
-        <translation>Recenti</translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation>&amp;Modifica</translation>
-    </message>
-    <message>
-        <source>&amp;Import</source>
-        <translation>&amp;Importa</translation>
-    </message>
-    <message>
-        <source>&amp;Window</source>
-        <translation>&amp;Finestra</translation>
-    </message>
-    <message>
-        <source>Modules</source>
-        <translation>Moduli</translation>
-    </message>
-    <message>
-        <source>News</source>
-        <translation>Notizie</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Aiuto</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Aiuto</translation>
-    </message>
-    <message>
-        <source>New project</source>
-        <translation>Nuovo progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+N</source>
-        <translation>Ctrl+N</translation>
-    </message>
-    <message>
-        <source>Open new project</source>
-        <translation>Apri un nuovo progetto</translation>
-    </message>
-    <message>
-        <source>Open project</source>
-        <translation>Apri progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
-    </message>
-    <message>
-        <source>Load existent project</source>
-        <translation>Carica progetto esistente</translation>
-    </message>
-    <message>
-        <source>Open project from server...</source>
-        <translation>Apri progetto dal server...</translation>
-    </message>
-    <message>
-        <source>Import project to server...</source>
-        <translation>Importa progetto dal server...</translation>
-    </message>
-    <message>
-        <source>Save project</source>
-        <translation>Salva il progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+S</source>
-        <translation>Ctrl+S</translation>
-    </message>
-    <message>
-        <source>Save current project in current location</source>
-        <translation>Salva il progetto corrente nella posizione attuale</translation>
-    </message>
-    <message>
-        <source>Save project &amp;As...</source>
-        <translation type="unfinished">Salva il progetto &amp;con nome...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+S</source>
-        <translation>Ctrl+Shift+S</translation>
-    </message>
-    <message>
-        <source>Open dialog box to save current project in any location</source>
-        <translation>Apri la finestra per salvare il progetto in un percorso qualsiasi</translation>
-    </message>
-    <message>
-        <source>Cl&amp;ose project</source>
-        <translation>C&amp;hiudi il progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
-    </message>
-    <message>
-        <source>Close active project</source>
-        <translation>Chiudi il progetto attivo</translation>
-    </message>
-    <message>
-        <source>&amp;Import GIMP palettes</source>
-        <translation>&amp;Importa tavolozze di Gimp</translation>
-    </message>
-    <message>
-        <source>Ctrl+G</source>
-        <translation>Ctrl+G</translation>
-    </message>
-    <message>
-        <source>Import palettes</source>
-        <translation>Importa tavolozze</translation>
-    </message>
-    <message>
-        <source>&amp;Export Project</source>
-        <translation>&amp;Esporta il progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+R</source>
-        <translation>Ctrl+R</translation>
-    </message>
-    <message>
-        <source>Export project to several video formats</source>
-        <translation>Esporta il progetto in vari formati video</translation>
-    </message>
-    <message>
-        <source>E&amp;xit</source>
-        <translation>Esc&amp;i</translation>
-    </message>
-    <message>
-        <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
-    </message>
-    <message>
-        <source>Close application</source>
-        <translation>Chiudi l&apos;applicazione</translation>
-    </message>
-    <message>
-        <source>Launch configuration wizard...</source>
-        <translation>Avvia l&apos;assistente di configurazione...</translation>
-    </message>
-    <message>
-        <source>Launch first configuration wizard</source>
-        <translation>Avvia l&apos;assistente di configurazione iniziale</translation>
-    </message>
-    <message>
-        <source>Pr&amp;eferences...</source>
-        <translation>Pr&amp;eferenze...</translation>
-    </message>
-    <message>
-        <source>Ctrl+P</source>
-        <translation>Ctrl+P</translation>
-    </message>
-    <message>
-        <source>Opens the preferences dialog box</source>
-        <translation>Apri la finestra delle preferenze</translation>
-    </message>
-    <message>
-        <source>About Tupi</source>
-        <translation>A proposito di Tupi</translation>
-    </message>
-    <message>
-        <source>Ctrl+K</source>
-        <translation>Ctrl+K</translation>
-    </message>
-    <message>
-        <source>Bar Actions</source>
-        <translation>Barra delle azioni</translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Ctrl+Z</source>
-        <translation>Ctrl+Z</translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation>Ripeti</translation>
-    </message>
-    <message>
-        <source>Ctrl+Y</source>
-        <translation>Ctrl+Y</translation>
-    </message>
-    <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Magia 2D</translation>
-    </message>
-    <message>
-        <source>[net mode]</source>
-        <translation>[in rete]</translation>
-    </message>
-    <message>
-        <source>Project &lt;b&gt;%1&lt;/b&gt; opened!</source>
-        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; aperto!</translation>
-    </message>
-    <message>
-        <source></source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Open Tupi project</source>
-        <translation>Apri progetto di Tupi</translation>
-    </message>
-    <message>
-        <source>Tupi: Magia 2D</source>
-        <translation>Tupi: Magia 2D</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Save Project As</source>
-        <translation>Salva il progetto con nome</translation>
-    </message>
-    <message>
-        <source>Project &lt;b&gt;%1&lt;/b&gt; saved</source>
-        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; salvato</translation>
-    </message>
-    <message>
-        <source>Fatal Error</source>
-        <translation>Errore fatale</translation>
-    </message>
-    <message>
-        <source>The connection to the server has been lost.</source>
-        <translation>La connessione con il server è caduta.</translation>
-    </message>
-    <message>
-        <source>Please, try to connect again in a while</source>
-        <translation>Ritenta la connessione tra un po&apos;</translation>
-    </message>
-    <message>
-        <source>Shift+B</source>
-        <translation>Shift+B</translation>
-    </message>
-    <message>
-        <source>Shift+L</source>
-        <translation>Shift+L</translation>
-    </message>
-    <message>
-        <source>Shift+C</source>
-        <translation>Shift+C</translation>
-    </message>
-    <message>
-        <source>Shift+E</source>
-        <translation>Shift+E</translation>
-    </message>
-    <message>
-        <source>Shift+H</source>
-        <translation>Shift+H</translation>
-    </message>
-    <message>
-        <source>Shift+T</source>
-        <translation>Shift+T</translation>
-    </message>
-    <message>
-        <source>Shift+D</source>
-        <translation>Shift+D</translation>
+        <source>Date</source>
+        <translation>Data</translation>
     </message>
 </context>
 <context>
@@ -1442,182 +1193,69 @@
         <translation>Comunicazioni</translation>
     </message>
     <message>
-        <source>chat</source>
-        <translation>chat</translation>
+        <source>Chat</source>
+        <translation>Chat</translation>
     </message>
     <message>
-        <source>notices</source>
-        <translation>notifiche</translation>
+        <source>Notices</source>
+        <translation>Notifiche</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Unable to connect to server</source>
+        <translation>Impossibile connettersi al server</translation>
+    </message>
+    <message>
+        <source>Fatal Error</source>
+        <translation>Errore fatale</translation>
+    </message>
+    <message>
+        <source>User &quot;%1&quot; is disabled.
+Please, contact the animation server admin to get access.</source>
+        <translation>L&apos;utente &quot;%1&quot; non è abilitato.
+Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation>Informazione</translation>
+        <translation type="unfinished">Informazione</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-</context>
-<context>
-    <name>KTNewProject</name>
-    <message>
-        <source>Create a new project</source>
-        <translation>Crea un nuovo progetto</translation>
+        <source>No available projects from server</source>
+        <translation>Non ci sono progetti disponibili sul server</translation>
     </message>
     <message>
-        <source>Project Name</source>
-        <translation>Nome</translation>
+        <source>Warning</source>
+        <translation type="unfinished">Avvertimento</translation>
     </message>
     <message>
-        <source>my_project</source>
-        <translation>mio_progetto</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation>Autore</translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation>Sfondo</translation>
-    </message>
-    <message>
-        <source>Click here to change background color</source>
-        <translation>Clicca qui per cambiare il colore di sfondo</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation>Blanco</translation>
-    </message>
-    <message>
-        <source>Dimension</source>
-        <translation>Dimensioni</translation>
-    </message>
-    <message>
-        <source>Options</source>
-        <translation>Opzioni</translation>
-    </message>
-    <message>
-        <source>FPS</source>
-        <translation>FPS</translation>
-    </message>
-    <message>
-        <source>Project info</source>
-        <translation>Proprietà</translation>
-    </message>
-    <message>
-        <source>Create a network project</source>
-        <translation>Progetto in rete</translation>
-    </message>
-    <message>
-        <source>Network</source>
-        <translation>Rete</translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation>Utente</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Server</source>
-        <translation>Server</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Porta</translation>
-    </message>
-    <message>
-        <source>Please, set a name for the project</source>
-        <translation>Assegna un nome al progetto</translation>
-    </message>
-    <message>
-        <source>Please, fill in your username</source>
-        <translation>Inserisci il tuo nome utente</translation>
-    </message>
-    <message>
-        <source>Please, fill in your password</source>
-        <translation>Inserisci la tua password</translation>
-    </message>
-    <message>
-        <source>Your name</source>
-        <translation>Il mio nome</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Descrizione</translation>
-    </message>
-    <message>
-        <source>Just for fun!</source>
-        <translation>Per divertimento!</translation>
-    </message>
-    <message>
-        <source>Presets</source>
-        <translation>Formati</translation>
-    </message>
-    <message>
-        <source>Free format</source>
-        <translation>Dimensioni libere</translation>
-    </message>
-    <message>
-        <source>480p (PAL DV/DVD) - 25</source>
-        <translation>480p (PAL DV/DVD) - 25</translation>
-    </message>
-    <message>
-        <source>576p (PAL DV/DVD) - 25</source>
-        <translation>576p (PAL DV/DVD) - 25</translation>
-    </message>
-    <message>
-        <source>720p (HD) - 25</source>
-        <translation>720p (HD) - 25</translation>
-    </message>
-    <message>
-        <source>1280p (Full HD) - 25</source>
-        <translation>1280p (Full HD) - 25</translation>
-    </message>
-    <message>
-        <source>Multi-artist project</source>
-        <translation>Progetto multi-artista</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Impostazioni di rete</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Utente</translation>
-    </message>
-    <message>
-        <source>Store password</source>
-        <translation>Ricorda la password</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Please, fill in the server name or IP</source>
-        <translation>Inserisci il nome o l&apos;indirizzo IP del server</translation>
+        <source>Notice</source>
+        <translation>Notifica</translation>
     </message>
 </context>
 <context>
     <name>KTNotice</name>
     <message>
-        <source>Send</source>
-        <translation>Invia</translation>
-    </message>
-    <message>
-        <source>notice</source>
-        <translation>notifica</translation>
-    </message>
-    <message>
-        <source> by </source>
-        <translation> di </translation>
+        <source>Notices</source>
+        <translation>Notifiche</translation>
     </message>
 </context>
 <context>
     <name>KTPaintArea</name>
+    <message>
+        <source>Pencil</source>
+        <translation>Matita</translation>
+    </message>
+    <message>
+        <source>Line Selection</source>
+        <translation>Selezione di una linea</translation>
+    </message>
+    <message>
+        <source>Object Selection</source>
+        <translation>Selezione di un oggetto</translation>
+    </message>
     <message>
         <source>Drawing area</source>
         <translation>Area di disegno</translation>
@@ -1628,7 +1266,7 @@
     </message>
     <message>
         <source>Ctrl+X</source>
-        <translation>Ctrl+X</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy</source>
@@ -1636,7 +1274,7 @@
     </message>
     <message>
         <source>Ctrl+C</source>
-        <translation>Ctrl+C</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Paste</source>
@@ -1644,7 +1282,7 @@
     </message>
     <message>
         <source>Ctrl+V</source>
-        <translation>Ctrl+V</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1656,7 +1294,7 @@
     </message>
     <message>
         <source>Send to back</source>
-        <translation>Metti sullo sfondo</translation>
+        <translation>Porta sul fondo</translation>
     </message>
     <message>
         <source>Bring to front</source>
@@ -1675,24 +1313,16 @@
         <translation>Aggiungi alla biblioteca...</translation>
     </message>
     <message>
-        <source>PolyLine</source>
-        <translation>Polilinea</translation>
-    </message>
-    <message>
-        <source>Object Selection</source>
-        <translation type="unfinished">Seleziona oggetto</translation>
-    </message>
-    <message>
-        <source>Pencil</source>
-        <translation>Matita</translation>
-    </message>
-    <message>
-        <source>Line Selection</source>
-        <translation type="unfinished">Seleziona tracciato</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>Errore</translation>
+    </message>
+    <message>
+        <source>No items selected</source>
+        <translation>Nessun oggetto selezionato</translation>
+    </message>
+    <message>
+        <source>PolyLine</source>
+        <translation>Polilinea</translation>
     </message>
     <message>
         <source>Rectangle</source>
@@ -1707,38 +1337,6 @@
         <translation>Linea</translation>
     </message>
     <message>
-        <source>No items selected</source>
-        <translation>Nessun elemento selezionato</translation>
-    </message>
-    <message>
-        <source>Position Tween</source>
-        <translation>Intercalazione di posizione</translation>
-    </message>
-    <message>
-        <source>Rotation Tween</source>
-        <translation>Intercalazione di rotazione</translation>
-    </message>
-    <message>
-        <source>Scale Tween</source>
-        <translation>Intercalazione di scala</translation>
-    </message>
-    <message>
-        <source>Shear Tween</source>
-        <translation>Intercalazione di rottura</translation>
-    </message>
-    <message>
-        <source>Opacity Tween</source>
-        <translation>Intercalazione di opacità</translation>
-    </message>
-    <message>
-        <source>Coloring Tween</source>
-        <translation>Intercalazione di colore</translation>
-    </message>
-    <message>
-        <source>Compound Tween</source>
-        <translation>Intercalazione composta</translation>
-    </message>
-    <message>
         <source>Frame %1</source>
         <translation>Fotogramma %1</translation>
     </message>
@@ -1750,8 +1348,16 @@
         <translation>OpenGL non supportato</translation>
     </message>
     <message>
+        <source>No Scene!</source>
+        <translation>Nessuna scena!</translation>
+    </message>
+    <message>
         <source>Locked!</source>
         <translation>Bloccato!</translation>
+    </message>
+    <message>
+        <source>No Frames!</source>
+        <translation>Nessun fotogramma!</translation>
     </message>
     <message>
         <source>No Layers!</source>
@@ -1766,7 +1372,7 @@
     </message>
     <message>
         <source>Grid separation</source>
-        <translation>Distanziamento della griglia</translation>
+        <translation>Spaziatura della griglia</translation>
     </message>
     <message>
         <source>Background color</source>
@@ -1778,38 +1384,50 @@
     </message>
     <message>
         <source>Onion skin background </source>
-        <translation>Sfondo della carta da lucido </translation>
+        <translation>Sfondo della carta da lucido</translation>
     </message>
 </context>
 <context>
     <name>KTPaintAreaStatus</name>
     <message>
-        <source>Rotate</source>
-        <translation>Ruota</translation>
+        <source>Current Frame</source>
+        <translation>Fotogramma corrente</translation>
     </message>
     <message>
-        <source>Antialiasing</source>
-        <translation>Antialiasing</translation>
-    </message>
-    <message>
-        <source>Brush Color</source>
-        <translation>Colore del pennello</translation>
-    </message>
-    <message>
-        <source>Background Color</source>
-        <translation>Colore di sfondo</translation>
+        <source>1</source>
+        <translation>1</translation>
     </message>
     <message>
         <source>Zoom</source>
         <translation>Ingrandimento</translation>
     </message>
     <message>
+        <source>%</source>
+        <translation>%</translation>
+    </message>
+    <message>
+        <source>Rotate Workspace</source>
+        <translation>Ruota lo spazio di lavoro</translation>
+    </message>
+    <message>
+        <source>Antialiasing</source>
+        <translation>Antialiasing</translation>
+    </message>
+    <message>
+        <source>Background Color</source>
+        <translation>Colore di sfondo</translation>
+    </message>
+    <message>
         <source>Click here to change background color</source>
         <translation>Clicca qui per cambiare il colore di sfondo</translation>
     </message>
     <message>
+        <source>Brush Color</source>
+        <translation>Colore del pennino</translation>
+    </message>
+    <message>
         <source>Click here to change brush color</source>
-        <translation>Clicca qui per cambiare il colore del pennello</translation>
+        <translation>Clicca qui per cambiare il colore del pennino</translation>
     </message>
 </context>
 <context>
@@ -1820,19 +1438,19 @@
     </message>
     <message>
         <source>Thickness</source>
-        <translation>Spessore</translation>
+        <translation>Dimensione</translation>
     </message>
     <message>
         <source>Dashes</source>
-        <translation>Tratti</translation>
+        <translation>Tratto</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation>Solido</translation>
+        <translation>Unito</translation>
     </message>
     <message>
         <source>Dash</source>
-        <translation>Tratto</translation>
+        <translation>Tratti</translation>
     </message>
     <message>
         <source>Dot</source>
@@ -1848,31 +1466,31 @@
     </message>
     <message>
         <source>Cap</source>
-        <translation>Bordo</translation>
+        <translation>Estremità</translation>
     </message>
     <message>
         <source>Flat</source>
-        <translation>Piatto</translation>
+        <translation>Piatta</translation>
     </message>
     <message>
         <source>Square</source>
-        <translation>Quadrato</translation>
+        <translation>Squadrata</translation>
     </message>
     <message>
         <source>Round</source>
-        <translation>Arrotondato</translation>
+        <translation>Arrotondata</translation>
     </message>
     <message>
         <source>Join</source>
-        <translation>Giunzione</translation>
+        <translation>Giuntura</translation>
     </message>
     <message>
         <source>Miter</source>
-        <translation>Punta</translation>
+        <translation>Ad angolo acuto</translation>
     </message>
     <message>
         <source>Bevel</source>
-        <translation>Angolo retto</translation>
+        <translation>Ad angolo retto</translation>
     </message>
     <message>
         <source>Brush</source>
@@ -1887,7 +1505,7 @@
     </message>
     <message>
         <source>General</source>
-        <translation>Generale</translation>
+        <translation type="unfinished">Generale</translation>
     </message>
     <message>
         <source>Theme</source>
@@ -1926,73 +1544,66 @@
     </message>
 </context>
 <context>
-    <name>KTProject</name>
-    <message>
-        <source>Scene %1</source>
-        <translation>Scena %1</translation>
-    </message>
-</context>
-<context>
     <name>KTProjectActionBar</name>
-    <message>
-        <source>Insert frame</source>
-        <translation>Inserisci un fotogramma</translation>
-    </message>
-    <message>
-        <source>Remove the frame</source>
-        <translation>Rimuovi il fotogramma</translation>
-    </message>
-    <message>
-        <source>Move frame up</source>
-        <translation>Sposta il fotogramma su</translation>
-    </message>
-    <message>
-        <source>F9</source>
-        <translation>F9</translation>
-    </message>
-    <message>
-        <source>Move frame down</source>
-        <translation>Sposta il fotogramma giù</translation>
-    </message>
-    <message>
-        <source>F10</source>
-        <translation>F10</translation>
-    </message>
-    <message>
-        <source>Lock frame</source>
-        <translation>Blocca il fotogramma</translation>
-    </message>
-    <message>
-        <source>F11</source>
-        <translation>F11</translation>
-    </message>
     <message>
         <source>Insert a layer</source>
         <translation>Inserisci un livello</translation>
     </message>
     <message>
         <source>F5</source>
-        <translation>F5</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove the layer</source>
-        <translation>Rimuovi un livello</translation>
+        <translation>Elimina il livello</translation>
     </message>
     <message>
         <source>F6</source>
-        <translation>F6</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Move layer up</source>
-        <translation>Alza il livello</translation>
+        <translation type="unfinished">Alza il livello</translation>
+    </message>
+    <message>
+        <source>F9</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Move layer down</source>
-        <translation>Abbassa il livello</translation>
+        <translation type="unfinished">Abbassa il livello</translation>
+    </message>
+    <message>
+        <source>F10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert frame</source>
+        <translation>Inserisci un fotogramma</translation>
+    </message>
+    <message>
+        <source>Remove the frame</source>
+        <translation>Elimina il fotogramma</translation>
+    </message>
+    <message>
+        <source>Move frame up</source>
+        <translation type="unfinished">Sposta il fotogramma su</translation>
+    </message>
+    <message>
+        <source>F8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move frame down</source>
+        <translation type="unfinished">Sposta il fotogramma giù</translation>
+    </message>
+    <message>
+        <source>Lock frame</source>
+        <translation type="unfinished">Blocca il fotogramma</translation>
     </message>
     <message>
         <source>Lock layer</source>
-        <translation>Blocca il livello</translation>
+        <translation type="unfinished">Blocca il livello</translation>
     </message>
     <message>
         <source>Insert a scene</source>
@@ -2000,7 +1611,19 @@
     </message>
     <message>
         <source>Remove the scene</source>
-        <translation>Rimuovi una scena</translation>
+        <translation>Elimina la scena</translation>
+    </message>
+    <message>
+        <source>Move scene up</source>
+        <translation type="unfinished">Sposta la scena su</translation>
+    </message>
+    <message>
+        <source>Move scene down</source>
+        <translation type="unfinished">Sposta la scena giù</translation>
+    </message>
+    <message>
+        <source>Lock scene</source>
+        <translation type="unfinished">Blocca la scena</translation>
     </message>
     <message>
         <source>Do you want to remove this frame?</source>
@@ -2035,18 +1658,11 @@
     </message>
 </context>
 <context>
-    <name>KTSaveProject</name>
-    <message>
-        <source>Project saved in %1!</source>
-        <translation>Progetto salvato in %1!</translation>
-    </message>
-    <message>
-        <source>Project saved in %1</source>
-        <translation>Progetto salvato in %1! {1?}</translation>
-    </message>
-</context>
-<context>
     <name>KTScene</name>
+    <message>
+        <source>Sound layer %1</source>
+        <translation>Livello sonoro %1</translation>
+    </message>
     <message>
         <source>Layer %1</source>
         <translation>Livello %1</translation>
@@ -2054,10 +1670,6 @@
     <message>
         <source>Frame %1</source>
         <translation>Fotogramma %1</translation>
-    </message>
-    <message>
-        <source>Sound layer %1</source>
-        <translation>Livello sonoro %1</translation>
     </message>
 </context>
 <context>
@@ -2091,13 +1703,6 @@
     </message>
 </context>
 <context>
-    <name>KTSplash</name>
-    <message>
-        <source>Version </source>
-        <translation>Versione </translation>
-    </message>
-</context>
-<context>
     <name>KTSymbolEditor</name>
     <message>
         <source>Symbol editor</source>
@@ -2105,7 +1710,7 @@
     </message>
     <message>
         <source>Brushes</source>
-        <translation>Pennelli</translation>
+        <translation>Pennini</translation>
     </message>
     <message>
         <source>Selection</source>
@@ -2124,7 +1729,7 @@
     <name>KTThemeSelector</name>
     <message>
         <source>General</source>
-        <translation>Generale</translation>
+        <translation type="unfinished">Generale</translation>
     </message>
     <message>
         <source>Text</source>
@@ -2132,7 +1737,7 @@
     </message>
     <message>
         <source>Base</source>
-        <translation>Base</translation>
+        <translation type="unfinished">Base</translation>
     </message>
     <message>
         <source>Foreground</source>
@@ -2156,19 +1761,19 @@
     </message>
     <message>
         <source>Light</source>
-        <translation>Illuminazione</translation>
+        <translation type="unfinished">Illuminazione</translation>
     </message>
     <message>
         <source>Midlight</source>
-        <translation>Illuminazione media</translation>
+        <translation type="unfinished">Illuminazione media</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation>Oscurità</translation>
+        <translation type="unfinished">Oscurità</translation>
     </message>
     <message>
         <source>Mid</source>
-        <translation>Medio</translation>
+        <translation type="unfinished">Medio</translation>
     </message>
     <message>
         <source>Selections</source>
@@ -2176,19 +1781,19 @@
     </message>
     <message>
         <source>Highlight</source>
-        <translation>Evidenziato</translation>
+        <translation type="unfinished">Evidenziato</translation>
     </message>
     <message>
         <source>Highlighted Text</source>
-        <translation>Testo evidenziato</translation>
+        <translation type="unfinished">Testo evidenziato</translation>
     </message>
     <message>
         <source>Text effects</source>
-        <translation>Effetti del testo</translation>
+        <translation type="unfinished">Effetti del testo</translation>
     </message>
     <message>
         <source>Bright Text</source>
-        <translation>Testo brillante</translation>
+        <translation type="unfinished">Testo brillante</translation>
     </message>
     <message>
         <source>Link</source>
@@ -2238,16 +1843,16 @@
         <translation>Linea temporale</translation>
     </message>
     <message>
-        <source>Scene %1</source>
-        <translation>Scena %1</translation>
+        <source>Frame %1</source>
+        <translation>Fotogramma %1</translation>
     </message>
     <message>
         <source>Layer %1</source>
         <translation>Livello %1</translation>
     </message>
     <message>
-        <source>Frame %1</source>
-        <translation>Fotogramma %1</translation>
+        <source>Scene %1</source>
+        <translation>Scena %1</translation>
     </message>
 </context>
 <context>
@@ -2260,8 +1865,12 @@
 <context>
     <name>KTViewCamera</name>
     <message>
+        <source>Scale</source>
+        <translation type="unfinished">Scala</translation>
+    </message>
+    <message>
         <source>Render Camera Preview</source>
-        <translation>Anteprima della videocamera</translation>
+        <translation type="unfinished">Anteprima del punto di vista</translation>
     </message>
 </context>
 <context>
@@ -2298,6 +1907,10 @@
         <translation>Mostra la griglia</translation>
     </message>
     <message>
+        <source>#</source>
+        <translation>#</translation>
+    </message>
+    <message>
         <source>Show a grid over the canvas</source>
         <translation>Mostra una griglia sul foglio</translation>
     </message>
@@ -2306,12 +1919,12 @@
         <translation>A tutto schermo</translation>
     </message>
     <message>
-        <source>Open a full screen view of canvas</source>
-        <translation>Apri il foglio a tutto schermo</translation>
+        <source>F11</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>#</source>
-        <translation>#</translation>
+        <source>Open a full screen view of canvas</source>
+        <translation>Apre una veduta a tutto schermo del foglio</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -2319,7 +1932,7 @@
     </message>
     <message>
         <source>Ctrl+C</source>
-        <translation>Ctrl+C</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copies the selection and puts it onto the clipboard</source>
@@ -2331,23 +1944,19 @@
     </message>
     <message>
         <source>Ctrl+V</source>
-        <translation>Ctrl+V</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pastes the clipboard into the current document</source>
-        <translation>Copia gli appunti nel progetto corrente</translation>
-    </message>
-    <message>
-        <source>&amp;Cut</source>
-        <translation>&amp;Cut</translation>
-    </message>
-    <message>
-        <source>Ctrl+X</source>
-        <translation>Ctrl+X</translation>
+        <translation>Incolla il contenuto degli appunti sul foglio</translation>
     </message>
     <message>
         <source>Cut</source>
         <translation>Taglia</translation>
+    </message>
+    <message>
+        <source>Ctrl+X</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cuts the selected items</source>
@@ -2363,11 +1972,11 @@
     </message>
     <message>
         <source>&amp;Group</source>
-        <translation>&amp;Raggruppa</translation>
+        <translation>Ra&amp;ggruppa</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation>Ctrl+G</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Group the selected objects into a single one</source>
@@ -2375,19 +1984,43 @@
     </message>
     <message>
         <source>&amp;Ungroup</source>
-        <translation>&amp;Separa</translation>
+        <translation>Sciogli il gr&amp;uppo</translation>
     </message>
     <message>
         <source>Ctrl+Shift+G</source>
-        <translation>Ctrl+Shift+G</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ungroups the selected object</source>
-        <translation>Separa gli elementi dell&apos;oggetto selezionato</translation>
+        <translation>Scioglie il gruppo di oggetti selezionato</translation>
+    </message>
+    <message>
+        <source>Onion Skin</source>
+        <translation>Effetto carta da lucido</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable/Disable onion skin</source>
+        <translation>Abilita/Disabilita l&apos;effetto carta da lucido</translation>
+    </message>
+    <message>
+        <source>Onion Skin Factor</source>
+        <translation>Trasparenza della carta da lucido</translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
-        <translation>Ctrl+Shift+S</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set onion skin factor default value</source>
+        <translation>Imposta la trasparenza della carta da lucido al valore predefinito</translation>
+    </message>
+    <message>
+        <source>@</source>
+        <translation>@</translation>
     </message>
     <message>
         <source>Draw tools</source>
@@ -2395,7 +2028,7 @@
     </message>
     <message>
         <source>Brushes</source>
-        <translation>Pennelli</translation>
+        <translation>Pennini</translation>
     </message>
     <message>
         <source>Selection</source>
@@ -2410,8 +2043,24 @@
         <translation>Vista</translation>
     </message>
     <message>
+        <source>Tweening</source>
+        <translation>Intercalazione</translation>
+    </message>
+    <message>
         <source>Pencil</source>
         <translation>Matita</translation>
+    </message>
+    <message>
+        <source>Scheme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ink</source>
+        <translation>Inchiostra</translation>
+    </message>
+    <message>
+        <source>Eraser</source>
+        <translation>Gomma</translation>
     </message>
     <message>
         <source>PolyLine</source>
@@ -2463,68 +2112,31 @@
     </message>
     <message>
         <source>Object Selection</source>
-        <translation>Selezione degli oggetti</translation>
+        <translation>Selezione di un oggetto</translation>
     </message>
     <message>
         <source>Internal fill</source>
-        <translation>Riempimento</translation>
+        <translation>Applica riempimento</translation>
+    </message>
+    <message>
+        <source>Zoom</source>
+        <translation>Ingrandimento</translation>
+    </message>
+    <message>
+        <source>%1</source>
+        <translation>%1</translation>
     </message>
     <message>
         <source>Paint area actions</source>
         <translation>Azioni dell&apos;area di disegno</translation>
     </message>
     <message>
-        <source>Preview Frames</source>
-        <translation>Anteprima fotogrammi</translation>
-    </message>
-    <message>
-        <source>Onion Skin</source>
-        <translatorcomment>La onionskin paper è la carta da lucido, usata in passato anche da ingegneri e architetti quando i progetti si disegnavano a mano.</translatorcomment>
-        <translation>Effetto carta da lucido</translation>
-    </message>
-    <message>
-        <source>Onion Skin Factor</source>
-        <translation>Fattore di trasparenza</translation>
-    </message>
-    <message>
-        <source>Enable/Disable onion skin</source>
-        <translation>Abilita/disabilita l&apos;effetto carta da lucido</translation>
-    </message>
-    <message>
-        <source>Set onion skin factor default value</source>
-        <translation>Applica il valore di opacità predefinito alla carta da lucido</translation>
+        <source>Previous Frames</source>
+        <translation>Fotogrammi precedenti</translation>
     </message>
     <message>
         <source>Next Frames</source>
         <translation>Fotogrammi successivi</translation>
-    </message>
-    <message>
-        <source>&amp;Tools</source>
-        <translation>Strumen&amp;ti</translation>
-    </message>
-    <message>
-        <source>&amp;Order</source>
-        <translation>&amp;Ordina</translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation>&amp;Modifica</translation>
-    </message>
-    <message>
-        <source>&amp;View</source>
-        <translation>&amp;Vista</translation>
-    </message>
-    <message>
-        <source>Eraser</source>
-        <translation>Gomma</translation>
-    </message>
-    <message>
-        <source>Filters</source>
-        <translation>Filtri</translation>
-    </message>
-    <message>
-        <source>Zoom</source>
-        <translation>Ingrandimento</translation>
     </message>
     <message>
         <source>Frames Mode</source>
@@ -2534,6 +2146,30 @@
         <source>Background Mode</source>
         <translation>Modalità fondale</translation>
     </message>
+    <message>
+        <source>Export Frame As</source>
+        <translation>Esporta i fotogrammi come</translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation>Immagini</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informazione</translation>
+    </message>
+    <message>
+        <source>Frame has been exported successfully</source>
+        <translation>Il fotogramma è stato esportato con successo</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Can&apos;t export frame as image</source>
+        <translation>Impossibile esportare il fotogramma come immagine</translation>
+    </message>
 </context>
 <context>
     <name>KTabDialog</name>
@@ -2542,19 +2178,53 @@
         <translation>Aiuto</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
+        <source>Apply</source>
+        <translation>Applica</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 <context>
     <name>KTermTab</name>
     <message>
+        <source>New</source>
+        <translation>Nuova</translation>
+    </message>
+    <message>
         <source>Close</source>
         <translation>Chiudi</translation>
+    </message>
+    <message>
+        <source>Console %1</source>
+        <translation>Console %1</translation>
+    </message>
+</context>
+<context>
+    <name>KTreeWidgetSearchLine</name>
+    <message>
+        <source>Search</source>
+        <translation>Cerca</translation>
+    </message>
+    <message>
+        <source>Search Columns</source>
+        <translation>Cerca colonne</translation>
+    </message>
+    <message>
+        <source>All Visible Columns</source>
+        <translation>Tutte le colonne visibili</translation>
+    </message>
+</context>
+<context>
+    <name>KTreeWidgetSearchLineWidget</name>
+    <message>
+        <source>Clear</source>
+        <translation>Pulisci</translation>
     </message>
 </context>
 <context>
@@ -2593,11 +2263,7 @@
     </message>
     <message>
         <source>Followers</source>
-        <translation>Seguaci</translation>
-    </message>
-    <message>
-        <source>ref.</source>
-        <translation>rif.</translation>
+        <translation type="unfinished">Seguaci</translation>
     </message>
 </context>
 <context>
@@ -2608,10 +2274,40 @@
     </message>
 </context>
 <context>
+    <name>KViewButton</name>
+    <message>
+        <source>Menu</source>
+        <translation>Menù</translation>
+    </message>
+    <message>
+        <source>Only icon</source>
+        <translation type="unfinished">Solo icone</translation>
+    </message>
+    <message>
+        <source>Only text</source>
+        <translation>Solo testo</translation>
+    </message>
+    <message>
+        <source>Mouse sensibility</source>
+        <translation>Sensibilità del mouse</translation>
+    </message>
+</context>
+<context>
     <name>KinasWidget</name>
     <message>
         <source>Tupi Script</source>
-        <translation>Modo Script</translation>
+        <translation type="unfinished">Tupi Script</translation>
+    </message>
+</context>
+<context>
+    <name>PencilTool</name>
+    <message>
+        <source>Pencil</source>
+        <translation>Matita</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
     </message>
 </context>
 <context>
@@ -2628,6 +2324,14 @@
 <context>
     <name>PositionSettings</name>
     <message>
+        <source>Component</source>
+        <translation>Componente</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Posizione</translation>
+    </message>
+    <message>
         <source>Starting at frame</source>
         <translation>Inizia al fotogramma</translation>
     </message>
@@ -2640,8 +2344,16 @@
         <translation>Rimuovi intercalazione</translation>
     </message>
     <message>
+        <source>Info</source>
+        <translation>Informazioni</translation>
+    </message>
+    <message>
         <source>You must define a path for this Tween!</source>
         <translation>Devi definire un percorso per questa intercalazione!</translation>
+    </message>
+    <message>
+        <source>Position Tween is set!</source>
+        <translation>L&apos;intercalazione di posizione è impostata!</translation>
     </message>
     <message>
         <source>Close Tween properties</source>
@@ -2651,36 +2363,104 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Notice From</source>
-        <translation>Notifica da</translation>
+        <source>TConfig::init(): Configuration file is corrupted %1:%2: %3</source>
+        <translation type="unfinished">TConfig::init(): il file di configurazione è corrotto %1:%2: %3</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informazioni</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Avvertimento</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Critical</source>
+        <translation>Critico</translation>
+    </message>
+    <message>
+        <source>Not implemented yet.</source>
+        <translation>Non ancora implementato.</translation>
+    </message>
+    <message>
+        <source>I can&apos;t analize the theme file: %1</source>
+        <translation type="unfinished">Impossibile analizzare il file del tema: %1</translation>
+    </message>
+    <message>
+        <source>I can&apos;t analize the theme document</source>
+        <translation type="unfinished">Impossibile analizzare il documento del tema</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create a TMainWindow from TMainWindow</source>
+        <translation>Impossibile creare TMainWindow da TMainWindow</translation>
+    </message>
+    <message>
+        <source>add</source>
+        <translation>aggiungi</translation>
+    </message>
+    <message>
+        <source>remove</source>
+        <translation>elimina</translation>
+    </message>
+    <message>
+        <source>move</source>
+        <translation>sposta</translation>
+    </message>
+    <message>
+        <source>lock</source>
+        <translation>blocca</translation>
+    </message>
+    <message>
+        <source>rename</source>
+        <translation>rinomina</translation>
+    </message>
+    <message>
+        <source>select</source>
+        <translation>seleziona</translation>
+    </message>
+    <message>
+        <source>edit node</source>
+        <translation>modifica nodo</translation>
+    </message>
+    <message>
+        <source>view</source>
+        <translation>vista</translation>
+    </message>
+    <message>
+        <source>transform</source>
+        <translation>trasforma</translation>
+    </message>
+    <message>
+        <source>convert</source>
+        <translation>converti</translation>
     </message>
     <message>
         <source>Wall From</source>
-        <translation>Muro da</translation>
+        <translation type="unfinished">Wall From</translation>
     </message>
     <message>
-        <source>Fatal error</source>
+        <source>Fatal Error</source>
         <translation>Errore fatale</translation>
     </message>
     <message>
-        <source>%1 is crashing...</source>
-        <translation>%1 si è bloccato...</translation>
+        <source>Well, Tupi has crashed...</source>
+        <translation>Be&apos;, Tupi è andato in crash...</translation>
     </message>
     <message>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
     <message>
+        <source>Re-launch Tupi</source>
+        <translation>Riavvia Tupi</translation>
+    </message>
+    <message>
         <source>This is a general failure</source>
         <translation>Errore generale</translation>
-    </message>
-    <message>
-        <source>Missing...</source>
-        <translation>Mancanza...</translation>
-    </message>
-    <message>
-        <source>You need configure the application</source>
-        <translation>Devi configurare l&apos;applicazione</translation>
     </message>
     <message>
         <source>Initializing...</source>
@@ -2695,12 +2475,12 @@
         <translation>Caricato!</translation>
     </message>
     <message>
-        <source>Magic 2D</source>
-        <translation>Magia 2D</translation>
+        <source>2D Animation Toolkit</source>
+        <translation type="unfinished">2D Animation Toolkit</translation>
     </message>
     <message>
         <source>Usage: %1 [option]</source>
-        <translation>Uso: %1 [opzione]</translation>
+        <translation>Utilizzo: %1 [opzione]</translation>
     </message>
     <message>
         <source>Options: </source>
@@ -2708,93 +2488,18 @@
     </message>
     <message>
         <source>		Reconfigure %1</source>
-        <translation>Riconfigurare %1</translation>
-    </message>
-    <message>
-        <source>add</source>
-        <translation type="unfinished">add</translation>
-    </message>
-    <message>
-        <source>remove</source>
-        <translation type="unfinished">remove</translation>
-    </message>
-    <message>
-        <source>move</source>
-        <translation type="unfinished">move</translation>
-    </message>
-    <message>
-        <source>lock</source>
-        <translation type="unfinished">lock</translation>
-    </message>
-    <message>
-        <source>rename</source>
-        <translation type="unfinished">rename</translation>
-    </message>
-    <message>
-        <source>select</source>
-        <translation type="unfinished">select</translation>
-    </message>
-    <message>
-        <source>edit node</source>
-        <translation type="unfinished">edit node</translation>
-    </message>
-    <message>
-        <source>view</source>
-        <translation type="unfinished">view</translation>
-    </message>
-    <message>
-        <source>transform</source>
-        <translation type="unfinished">transform</translation>
-    </message>
-    <message>
-        <source>convert</source>
-        <translation type="unfinished">convert</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informazione</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>2D Animation Toolkit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fatal Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Well, Tupi has crashed...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Re-launch Tupi</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Riconfigura %1</translation>
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
+    <name>SchemeTool</name>
     <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API error %1</translation>
-    </message>
-</context>
-<context>
-    <name>SelectTool</name>
-    <message>
-        <source>Select</source>
-        <translation>Seleziona</translation>
+        <source>Scheme</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Object Selection</source>
-        <translation>Seleziona oggetto</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
+        <source>M</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2856,161 +2561,192 @@
     </message>
 </context>
 <context>
+    <name>SelectTool</name>
+    <message>
+        <source>Select</source>
+        <translation>Seleziona</translation>
+    </message>
+    <message>
+        <source>Object Selection</source>
+        <translation>Selezione di un oggetto</translation>
+    </message>
+    <message>
+        <source>O</source>
+        <translation>O</translation>
+    </message>
+</context>
+<context>
     <name>Settings</name>
     <message>
         <source>Name</source>
-        <translation>Nome</translation>
-    </message>
-    <message>
-        <source>Starting at frame</source>
-        <translation>Inizia al fotogramma</translation>
-    </message>
-    <message>
-        <source>Ending at frame</source>
-        <translation>Termina al fotogramma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Opzioni</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select object</source>
-        <translation>Seleziona oggetto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Set Properties</source>
-        <translation>Proprietà</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starting at frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Frames Total</source>
-        <translation>Totale dei fotogrammi</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation>Tipo</translation>
-    </message>
-    <message>
-        <source>Continous</source>
-        <translation>Continuo</translation>
-    </message>
-    <message>
-        <source>Partial</source>
-        <translation>Parziale</translation>
-    </message>
-    <message>
-        <source>Direction</source>
-        <translation>Direzione</translation>
-    </message>
-    <message>
-        <source>Clockwise</source>
-        <translation>Senso orario</translation>
-    </message>
-    <message>
-        <source>Counterclockwise</source>
-        <translation>Senso antiorario</translation>
-    </message>
-    <message>
-        <source>Loop</source>
-        <translation>Ripeti</translation>
-    </message>
-    <message>
-        <source>Speed (Degrees/Frame)</source>
-        <translation>Velocità (Gradi/Fotogramma)</translation>
-    </message>
-    <message>
-        <source>Degrees Range</source>
-        <translation>Gradi di rotazione</translation>
-    </message>
-    <message>
-        <source>Start at</source>
-        <translation>Inizia a</translation>
-    </message>
-    <message>
-        <source>Finish at</source>
-        <translation>Termina a</translation>
-    </message>
-    <message>
-        <source>Loop with Reverse</source>
-        <translation>Ripeti con ritorno</translation>
-    </message>
-    <message>
-        <source>Cancel Tween</source>
-        <translation>Annulla intercalazione</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save Tween</source>
-        <translation>Salva intercalazione</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Update Tween</source>
-        <translation>Aggiorna intercalazione</translation>
+        <source>Cancel Tween</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close Tween properties</source>
-        <translation>Chiudi la finestra delle proprietà</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Scale in</source>
-        <translation>Scala a</translation>
-    </message>
-    <message>
-        <source>Shear in</source>
-        <translation>Dividi a</translation>
-    </message>
-    <message>
-        <source>Width &amp; Height</source>
-        <translation>Larghezza e altezza</translation>
-    </message>
-    <message>
-        <source>Only Width</source>
-        <translation>Solo larghezza</translation>
-    </message>
-    <message>
-        <source>Only Height</source>
-        <translation>Solo altezza</translation>
-    </message>
-    <message>
-        <source>Scaling Factor</source>
-        <translation>Fattore di scala</translation>
-    </message>
-    <message>
-        <source>Iterations</source>
-        <translation>Iterazioni</translation>
-    </message>
-    <message>
-        <source>Initial Opacity</source>
-        <translation>Opacità iniziale</translation>
-    </message>
-    <message>
-        <source>Ending Opacity</source>
-        <translation>Opacità finale</translation>
+        <source>Select objects for Tweening first!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You must select at least one object!</source>
-        <translation>Devi selezionare almeno un oggetto!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You must define a path for this Tween!</source>
-        <translation>Devi definire un percorso per questa intercalazione!</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update Tween</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close Tween properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ending at frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Partial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed (Degrees/Frame)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Counterclockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Degrees Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finish at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loop with Reverse</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You must set Tween properties first!</source>
-        <translation>Devi prima impostare le proprietà dell&apos;intercalazione!</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Width &amp; Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scaling Factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Iterations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shear in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initial Opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ending Opacity</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>White</source>
-        <translation>Bianco</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initial Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ending Color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SpinControl</name>
     <message>
-        <source>Radius</source>
-        <translation>Raggio</translation>
+        <source>radius</source>
+        <translation>raggio</translation>
     </message>
     <message>
-        <source>Angle</source>
-        <translation>Angolo</translation>
+        <source>angle</source>
+        <translation>angolo</translation>
     </message>
 </context>
 <context>
@@ -3025,10 +2761,36 @@
     </message>
 </context>
 <context>
+    <name>TActionManager</name>
+    <message>
+        <source>Cannot insert action with id: </source>
+        <translation>Impossibile inserire l&apos;azione con id: </translation>
+    </message>
+</context>
+<context>
+    <name>TConfig</name>
+    <message>
+        <source>I can&apos;t create %1</source>
+        <translation>Non posso creare %1</translation>
+    </message>
+</context>
+<context>
     <name>TWizard</name>
     <message>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+    <message>
+        <source>&lt; &amp;Back</source>
+        <translation type="unfinished">&lt; &amp;Indietro</translation>
+    </message>
+    <message>
+        <source>Next &gt;</source>
+        <translation type="unfinished">Avanti &gt;</translation>
+    </message>
+    <message>
+        <source>&amp;Finish</source>
+        <translation type="unfinished">&amp;Finisci</translation>
     </message>
 </context>
 <context>
@@ -3056,12 +2818,12 @@
         <translation>Crea una nuova intercalazione</translation>
     </message>
     <message>
-        <source>Tween name already exists!</source>
-        <translation>Il nome dell&apos;intercalazione esiste già!</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Tween name already exists!</source>
+        <translation>Il nome dell&apos;intercalazione esiste già!</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -3083,52 +2845,8 @@
         <translation>Intercalazione di posizione</translation>
     </message>
     <message>
-        <source>Rotation Tween</source>
-        <translation>Intercalazione di rotazione</translation>
-    </message>
-    <message>
-        <source>Scale Tween</source>
-        <translation>Intercalazione di scala</translation>
-    </message>
-    <message>
-        <source>Shear Tween</source>
-        <translation>Intercalazione di rottura</translation>
-    </message>
-    <message>
-        <source>Opacity Tween</source>
-        <translation>Intercalazione di opacità</translation>
-    </message>
-    <message>
-        <source>Coloring Tween</source>
-        <translation>Intercalazione di colore</translation>
-    </message>
-    <message>
-        <source>Compound Tween</source>
-        <translation>Intercalazione composta</translation>
-    </message>
-    <message>
         <source>Shift+W</source>
-        <translation>Shift+W</translation>
-    </message>
-    <message>
-        <source>Shift+R</source>
-        <translation>Shift+R</translation>
-    </message>
-    <message>
-        <source>Shift+S</source>
-        <translation>Shift+S</translation>
-    </message>
-    <message>
-        <source>Shift+O</source>
-        <translation>Shift+O</translation>
-    </message>
-    <message>
-        <source>Shift+U</source>
-        <translation>Shift+U</translation>
-    </message>
-    <message>
-        <source>Shift+C</source>
-        <translation>Shift+C</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
@@ -3143,8 +2861,68 @@
         <translation>Fotogramma %1</translation>
     </message>
     <message>
+        <source>Info</source>
+        <translation>Informazioni</translation>
+    </message>
+    <message>
         <source>Tween %1 applied!</source>
         <translation>Intercalazione %1 applicata!</translation>
+    </message>
+    <message>
+        <source>Rotation Tween</source>
+        <translation>Intercalazione di rotazione</translation>
+    </message>
+    <message>
+        <source>Shift+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale Tween</source>
+        <translation>Intercalazione di scala</translation>
+    </message>
+    <message>
+        <source>Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shear Tween</source>
+        <translation>Intercalazione di rottura</translation>
+    </message>
+    <message>
+        <source>Shift+H</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opacity Tween</source>
+        <translation>Intercalazione di opacità</translation>
+    </message>
+    <message>
+        <source>Shift+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coloring Tween</source>
+        <translation>Intercalazione di colore</translation>
+    </message>
+    <message>
+        <source>Coloring Tween can&apos;t be applied to raster images</source>
+        <translation>L&apos;intercalazione di colore non può essere applicata ad immagini raster</translation>
+    </message>
+    <message>
+        <source>Coloring Tween can&apos;t be applied to Svg files</source>
+        <translation>L&apos;intercalazione di colore non può essere applicata a file SVG</translation>
+    </message>
+    <message>
+        <source>Shift+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compound Tween</source>
+        <translation>Intercalazione composta</translation>
+    </message>
+    <message>
+        <source>Shift+X</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3162,20 +2940,114 @@
         <translation>Seleziona oggetto</translation>
     </message>
     <message>
+        <source>Set Tweeners</source>
+        <translation type="unfinished">Assegna gli intercalatori</translation>
+    </message>
+    <message>
+        <source>Tweeners</source>
+        <translation type="unfinished">Intercalatori</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Posizione</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation>Rotazione</translation>
+    </message>
+    <message>
+        <source>Scale</source>
+        <translation>Scala</translation>
+    </message>
+    <message>
+        <source>Shear</source>
+        <translation type="unfinished">Rottura</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacità</translation>
+    </message>
+    <message>
+        <source>Coloring</source>
+        <translation>Colorazione</translation>
+    </message>
+    <message>
         <source>Save Tween</source>
         <translation>Salva intercalazione</translation>
     </message>
     <message>
         <source>Cancel Tween</source>
-        <translation>Elimina intercalazione</translation>
+        <translation>Rimuovi intercalazione</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation>Informazioni</translation>
+    </message>
+    <message>
+        <source>Select objects for Tweening first!</source>
+        <translation type="unfinished">Seleziona prima gli oggetti per l&apos;intercalazione!</translation>
     </message>
     <message>
         <source>Update Tween</source>
-        <translation>Aggiorna intercalazione</translation>
+        <translation type="unfinished">Aggiorna intercalazione</translation>
     </message>
     <message>
         <source>Close Tween properties</source>
-        <translation>Chiudi finestra delle proprietà</translation>
+        <translation>Chiudi le proprietà delle intercalazioni</translation>
+    </message>
+</context>
+<context>
+    <name>TweenerTable</name>
+    <message>
+        <source>Position</source>
+        <translation>Posizione</translation>
+    </message>
+    <message>
+        <source>Rotation</source>
+        <translation>Rotazione</translation>
+    </message>
+    <message>
+        <source>Scale</source>
+        <translation>Scala</translation>
+    </message>
+    <message>
+        <source>Shear</source>
+        <translation type="unfinished">Rottura</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacità</translation>
+    </message>
+    <message>
+        <source>Coloring</source>
+        <translation>Colorazione</translation>
+    </message>
+</context>
+<context>
+    <name>VideoProperties</name>
+    <message>
+        <source>Set Video Properties</source>
+        <translation>Imposta le proprietà del film</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation>Titolo</translation>
+    </message>
+    <message>
+        <source>My Video</source>
+        <translation>Il mio film</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrizione</translation>
+    </message>
+    <message>
+        <source>Just a little taste of my style :)</source>
+        <translation>Una piccola esibizione del mio stile :)</translation>
+    </message>
+    <message>
+        <source>Set a title for the picture here!</source>
+        <translation>Metti qui il titolo dell&apos;immagine!</translation>
     </message>
 </context>
 <context>
@@ -3185,12 +3057,12 @@
         <translation>Ingrandimento</translation>
     </message>
     <message>
-        <source>Z</source>
-        <translation>Z</translation>
-    </message>
-    <message>
         <source>Hand</source>
         <translation>Mano</translation>
+    </message>
+    <message>
+        <source>Z</source>
+        <translation>Z</translation>
     </message>
     <message>
         <source>H</source>
@@ -3200,20 +3072,623 @@
 <context>
     <name>ZoomConfigurator</name>
     <message>
-        <source>Zoom Mode</source>
-        <translation>Modalità ingrandimento</translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation>Ingrandisci</translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation>Rimpicciolisci</translation>
-    </message>
-    <message>
         <source>Scale Factor</source>
         <translation>Fattore di scala</translation>
+    </message>
+    <message>
+        <source>Tips</source>
+        <translation>Suggerimenti</translation>
+    </message>
+    <message>
+        <source>Zoom Square mode</source>
+        <translation>Modalità area di ingrandimento</translation>
+    </message>
+    <message>
+        <source>Press Ctrl key + Mouse left button</source>
+        <translation>Premi Ctrl + tasto sinistro del mouse</translation>
+    </message>
+</context>
+<context>
+    <name>KTApplication</name>
+    <message>
+        <source>Initializing repository %1</source>
+        <translation type="unfinished">Inizializza il deposito %1</translation>
+    </message>
+    <message>
+        <source>Can not create the projects repository</source>
+        <translation>Non è possibile creare il repository dei progetti</translation>
+    </message>
+</context>
+<context>
+    <name>KTCrashWidget</name>
+    <message>
+        <source>What&apos;s happening?</source>
+        <translation>Che succede?</translation>
+    </message>
+    <message>
+        <source>Executable information</source>
+        <translation>Informazioni sull&apos;eseguibile</translation>
+    </message>
+    <message>
+        <source>Backtrace</source>
+        <translation>Backtrace</translation>
+    </message>
+</context>
+<context>
+    <name>KTMainWindow</name>
+    <message>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupí: Magia 2D</translation>
+    </message>
+    <message>
+        <source>Setting up the project manager</source>
+        <translation>Inizializzazione del gestore dei progetti</translation>
+    </message>
+    <message>
+        <source>Loading action manager...</source>
+        <translation>Caricamento del gestore delle azioni...</translation>
+    </message>
+    <message>
+        <source>Creating menu bar...</source>
+        <translation>Creazione della barra del menù...</translation>
+    </message>
+    <message>
+        <source>Creating GUI...</source>
+        <translation>Creazione della GUI...</translation>
+    </message>
+    <message>
+        <source>[ by %1 | net mode ]</source>
+        <translation type="unfinished">[ di %1 | modalità di rete ]</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informazione</translation>
+    </message>
+    <message>
+        <source>Opening a new document...</source>
+        <translation>Apertura di un nuovo progetto...</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation>Animazione</translation>
+    </message>
+    <message>
+        <source>Player</source>
+        <translation>Riproduttore</translation>
+    </message>
+    <message>
+        <source>Project &lt;b&gt;%1&lt;/b&gt; opened!</source>
+        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; aperto!</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>Domanda</translation>
+    </message>
+    <message>
+        <source>The document has been modified.</source>
+        <translation>Il progetto è stato modificato.</translation>
+    </message>
+    <message>
+        <source>Do you want to save the project?</source>
+        <translation>Vuoi salvare il progetto?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Salva</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Scarta</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>by</source>
+        <translation>di</translation>
+    </message>
+    <message>
+        <source>Open Tupi project</source>
+        <translation>Apri progetto di Tupi</translation>
+    </message>
+    <message>
+        <source>Tupi Project Package (*.tup)</source>
+        <translation>Progetto di Tupi (*.tup)</translation>
+    </message>
+    <message>
+        <source>Tupi: Magia 2D</source>
+        <translation>Tupi: Magia 2D</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Cannot open project!</source>
+        <translation>Impossibile aprire il progetto!</translation>
+    </message>
+    <message>
+        <source>Preferences Dialog Opened</source>
+        <translation>Finestra delle preferenze aperta</translation>
+    </message>
+    <message>
+        <source>Tip of the day</source>
+        <translation>Suggerimento del giorno</translation>
+    </message>
+    <message>
+        <source>Show on start</source>
+        <translation>Mostra all&apos;avvio</translation>
+    </message>
+    <message>
+        <source>Previous tip</source>
+        <translation>Precedente</translation>
+    </message>
+    <message>
+        <source>Next tip</source>
+        <translation>Successivo</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Chiudi</translation>
+    </message>
+    <message>
+        <source>Import gimp palettes</source>
+        <translation type="unfinished">Importa tavolozza di Gimp</translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.gpl)</source>
+        <translation>Tavolozza di Gimp (*.gpl)</translation>
+    </message>
+    <message>
+        <source>Importing palettes</source>
+        <translation>Importazione delle tavolozze</translation>
+    </message>
+    <message>
+        <source>Save Project As</source>
+        <translation>Salva progetto con nome</translation>
+    </message>
+    <message>
+        <source>Directory &quot;</source>
+        <translation>Cartella &quot;</translation>
+    </message>
+    <message>
+        <source>You have no permission to create this file. Please, choose another path.</source>
+        <translation>Non hai i permessi per creare il file . Per favore, scegli un altro percorso.</translation>
+    </message>
+    <message>
+        <source>Project &lt;b&gt;%1&lt;/b&gt; saved</source>
+        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; salvato</translation>
+    </message>
+    <message>
+        <source>Cannot save the project!</source>
+        <translation>Impossibile salvare il progetto!</translation>
+    </message>
+    <message>
+        <source>New camera</source>
+        <translation type="unfinished">Nuovo punto di vista</translation>
+    </message>
+    <message>
+        <source>Import project package</source>
+        <translation>Importa il pacchetto del progetto</translation>
+    </message>
+    <message>
+        <source>Can&apos;t import project. File is empty!</source>
+        <translation>Impossibile importare il progetto. Il file è vuoto!</translation>
+    </message>
+    <message>
+        <source>Can&apos;t save the project. File doesn&apos;t exist!</source>
+        <translation>Impossibile salvare il progetto. Il file non esiste!</translation>
+    </message>
+    <message>
+        <source>Fatal Error</source>
+        <translation>Errore fatale</translation>
+    </message>
+    <message>
+        <source>The connection to the server has been lost.</source>
+        <translation>La connessione con il server è caduta.</translation>
+    </message>
+    <message>
+        <source>Please, try to connect again in a while</source>
+        <translation>Ritenta la connessione in seguito</translation>
+    </message>
+    <message>
+        <source>Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap</source>
+        <translation type="unfinished">Immagine</translation>
+    </message>
+    <message>
+        <source>Alt+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap Array</source>
+        <translation type="unfinished">Serie di Immagini</translation>
+    </message>
+    <message>
+        <source>Alt+Shift+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG File</source>
+        <translation>File SVG</translation>
+    </message>
+    <message>
+        <source>Alt+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG Array</source>
+        <translation>Serie di file SVG</translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+H</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;File</translation>
+    </message>
+    <message>
+        <source>Recents</source>
+        <translation>Recenti</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Modifica</translation>
+    </message>
+    <message>
+        <source>&amp;Import</source>
+        <translation>&amp;Importa</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Finestra</translation>
+    </message>
+    <message>
+        <source>Modules</source>
+        <translation>Moduli</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation>Aiuto</translation>
+    </message>
+    <message>
+        <source>News</source>
+        <translation>Notizie</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Aiuto</translation>
+    </message>
+    <message>
+        <source>New project</source>
+        <translation>Nuovo progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open new project</source>
+        <translation>Apri un nuovo progetto</translation>
+    </message>
+    <message>
+        <source>Open project</source>
+        <translation>Apri progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load existent project</source>
+        <translation>Carica progetto esistente</translation>
+    </message>
+    <message>
+        <source>Open project from server...</source>
+        <translation>Apri progetto dal server...</translation>
+    </message>
+    <message>
+        <source>Import project to server...</source>
+        <translation type="unfinished">Esporta progetto sul server...</translation>
+    </message>
+    <message>
+        <source>Save project</source>
+        <translation>Salva il progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current project in current location</source>
+        <translation type="unfinished">Salva il progetto corrente nella posizione attuale</translation>
+    </message>
+    <message>
+        <source>Save project &amp;As...</source>
+        <translation>Salva il progetto &amp;con nome...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open dialog box to save current project in any location</source>
+        <translation>Apri la finestra per salvare il progetto in un percorso qualsiasi</translation>
+    </message>
+    <message>
+        <source>Cl&amp;ose project</source>
+        <translation>C&amp;hiudi il progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close active project</source>
+        <translation>Chiudi il progetto attivo</translation>
+    </message>
+    <message>
+        <source>&amp;Import GIMP palettes</source>
+        <translation>&amp;Importa tavolozze di Gimp</translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import palettes</source>
+        <translation>Importa tavolozze</translation>
+    </message>
+    <message>
+        <source>&amp;Export Project</source>
+        <translation>&amp;Esporta il progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export project to several video formats</source>
+        <translation>Esporta il progetto in vari formati video</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>&amp;Esci</translation>
+    </message>
+    <message>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close application</source>
+        <translation>Chiudi l&apos;applicazione</translation>
+    </message>
+    <message>
+        <source>Launch configuration wizard...</source>
+        <translation>Avvia l&apos;assistente di configurazione...</translation>
+    </message>
+    <message>
+        <source>Launch first configuration wizard</source>
+        <translation>Avvia l&apos;assistente di configurazione iniziale</translation>
+    </message>
+    <message>
+        <source>Pr&amp;eferences...</source>
+        <translation>Pr&amp;eferenze...</translation>
+    </message>
+    <message>
+        <source>Ctrl+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opens the preferences dialog box</source>
+        <translation type="unfinished">Apre la finestra delle preferenze</translation>
+    </message>
+    <message>
+        <source>About Tupi</source>
+        <translation>Informazioni su Tupi</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bar Actions</source>
+        <translation type="unfinished">Barra delle azioni</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation>Ripeti</translation>
+    </message>
+    <message>
+        <source>Ctrl+Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KTNewProject</name>
+    <message>
+        <source>Create a new project</source>
+        <translation>Crea un nuovo progetto</translation>
+    </message>
+    <message>
+        <source>Project Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>my_project</source>
+        <translation>mio_progetto</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation>Autore</translation>
+    </message>
+    <message>
+        <source>Your name</source>
+        <translation>Il mio nome</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrizione</translation>
+    </message>
+    <message>
+        <source>Just for fun!</source>
+        <translation>Per divertimento!</translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation>Formato</translation>
+    </message>
+    <message>
+        <source>Free format</source>
+        <translation>Dimensioni libere</translation>
+    </message>
+    <message>
+        <source>480p (PAL DV/DVD) - 25</source>
+        <translation>480p (PAL DV/DVD) - 25</translation>
+    </message>
+    <message>
+        <source>576p (PAL DV/DVD) - 25</source>
+        <translation>576p (PAL DV/DVD) - 25</translation>
+    </message>
+    <message>
+        <source>720p (HD) - 25</source>
+        <translation>720p (HD) - 25</translation>
+    </message>
+    <message>
+        <source>1280p (Full HD) - 25</source>
+        <translation>1280p (Full HD) - 25</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation>Opzioni</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>Sfondo</translation>
+    </message>
+    <message>
+        <source>Click here to change background color</source>
+        <translation>Clicca qui per cambiare il colore di sfondo</translation>
+    </message>
+    <message>
+        <source>FPS</source>
+        <translation>FPS</translation>
+    </message>
+    <message>
+        <source>Dimension</source>
+        <translation>Dimensioni</translation>
+    </message>
+    <message>
+        <source>Multi-artist project</source>
+        <translation>Progetto multi-artista</translation>
+    </message>
+    <message>
+        <source>Project info</source>
+        <translation>Proprietà</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Rete</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Impostazioni di rete</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Utente</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <source>Server</source>
+        <translation>Server</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Porta</translation>
+    </message>
+    <message>
+        <source>Store password</source>
+        <translation>Ricorda la password</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Please, set a name for the project</source>
+        <translation>Assegna un nome al progetto</translation>
+    </message>
+    <message>
+        <source>Please, fill in your username</source>
+        <translation>Inserisci il nome utente</translation>
+    </message>
+    <message>
+        <source>Please, fill in your password</source>
+        <translation>Inserisci la password</translation>
+    </message>
+    <message>
+        <source>Please, fill in the server name or IP</source>
+        <translation>Inserisci il nome o l&apos;indirizzo IP del server</translation>
+    </message>
+    <message>
+        <source>White</source>
+        <translation>Bianco</translation>
+    </message>
+</context>
+<context>
+    <name>KTSplash</name>
+    <message>
+        <source>Version </source>
+        <translation>Versione </translation>
     </message>
 </context>
 </TS>
