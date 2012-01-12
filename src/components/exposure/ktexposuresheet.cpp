@@ -769,6 +769,11 @@ void KTExposureSheet::itemResponse(KTItemResponse *e)
                          k->currentTable->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Empty);
                  }
                  break;
+            case KTProjectRequest::SetTween:
+                 {
+                     // tError() << "KTExposureSheet::itemResponse() - Tracing!";
+                 }
+                 break;
             default:
                  break;
     }

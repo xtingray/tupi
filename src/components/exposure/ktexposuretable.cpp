@@ -159,8 +159,14 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         }
 
         if ((item->data(KTExposureTable::IsEmpty).toInt() == KTExposureTable::Used) && !item->data(KTExposureTable::IsLocked).toBool()) {
-            painter->setPen(QColor(0, 0, 0, 60));
-            painter->drawRect(x, y, w, h);
+            QPainterPath path(QPointF(x, y));
+            path.lineTo(x, y + h - 3);
+            path.lineTo(x + 3, y + h);
+            path.lineTo(x + w, y + h);
+            path.lineTo(x + w, y + 4);
+            path.lineTo(x + w - 8, y); 
+
+            painter->fillPath(path, QBrush(QColor(0, 102, 255, 80)));
         }
     }
 }

@@ -516,16 +516,6 @@ void Tweener::applyTween()
         return;
     }
 
-    // SQA: Remove this code
-    /*
-    if (k->startPoint != k->scene->currentFrameIndex()) {
-        KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                       k->scene->currentLayerIndex(),
-                                                                       k->startPoint, KTProjectRequest::Select, "1");
-        emit requested(&request);
-    }
-    */
-  
     if (!k->scene->scene()->tweenExists(name, KTItemTweener::Position)) {
 
         foreach (QGraphicsItem *item, k->objects) {   

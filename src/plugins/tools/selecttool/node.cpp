@@ -108,8 +108,8 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
    
     if (k->typeNode != Center) {
         if (k->action == Rotate) {
-            color = QColor(31, 183, 180);
-            color.setAlpha(150);
+            color = QColor(255, 102, 0);
+            color.setAlpha(180);
         } else {
             color = QColor("green");
             color.setAlpha(200);
@@ -154,7 +154,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 QRectF Node::boundingRect() const
 {
-    QSizeF size(8, 8);
+    QSizeF size(10, 10);
     QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
 
     return rect;
@@ -186,7 +186,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
     /* 
     #if K_DEBUG
         QRectF r = k->parent->sceneMatrix().inverted().mapRect(k->parent->sceneBoundingRect());
-        scene()->addRect(r, QPen(Qt::magenta), QBrush(QColor(100,100,200,50)));
+        scene()->addRect(r, QPen(Qt::magenta), QBrush(QColor(100, 100, 200, 50)));
         scene()->update(r);
     #endif
     */

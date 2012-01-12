@@ -826,6 +826,8 @@ bool KTCommandExecutor::setTween(KTItemResponse *response)
                     }
                 }
 
+                emit responsed(response);
+
                 return true;
             }
         }
