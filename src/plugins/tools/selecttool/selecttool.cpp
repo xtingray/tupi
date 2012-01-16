@@ -83,9 +83,6 @@ void SelectTool::init(KTGraphicsScene *scene)
            T_FUNCINFOX("tools");
     #endif
 
-    k->scaleFactor = 1;
-    k->realFactor = 1;
-
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
     k->scene = scene;
@@ -267,6 +264,8 @@ void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *
 void SelectTool::setupActions()
 {
     k->selectionFlag = false;
+    k->scaleFactor = 1;
+    k->realFactor = 1;
 
     TAction *select = new TAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("O")));
@@ -588,7 +587,20 @@ QCursor SelectTool::cursor() const
 void SelectTool::resizeNodes(qreal scaleFactor)
 {
     k->scaleFactor *= scaleFactor;
+    updateRealZoomFactor();
 
+    foreach (NodeManager *manager, k->nodeManagers)
+             manager->resizeNodes(k->realFactor);
+}
+
+void SelectTool::updateZoomFactor(qreal globalFactor)
+{
+    k->scaleFactor = globalFactor;
+    updateRealZoomFactor();
+}
+
+void SelectTool::updateRealZoomFactor()
+{
     if (k->scaleFactor <= 1)
         k->realFactor = 1;
     else if (k->scaleFactor > 1 && k->scaleFactor < 1.5)
@@ -599,9 +611,8 @@ void SelectTool::resizeNodes(qreal scaleFactor)
              k->realFactor = 0.4;
     else if (k->scaleFactor > 3)
              k->realFactor = 0.3;
-
-    foreach (NodeManager *manager, k->nodeManagers)
-             manager->resizeNodes(k->realFactor);
+    else if (k->scaleFactor > 4)
+             k->realFactor = 0.2;
 }
 
 Q_EXPORT_PLUGIN2(kt_select, SelectTool);

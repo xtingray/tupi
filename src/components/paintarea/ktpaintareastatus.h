@@ -54,6 +54,7 @@ class KTPaintAreaStatus : public QStatusBar
         void updateTool(const QString &label, const QPixmap &pixmap);
         void setZoomFactor(const QString &text);
         void updateZoomFactor(double factor);
+        qreal currentZoomFactor();
 
     public slots:
         void applyZoom(const QString &text);

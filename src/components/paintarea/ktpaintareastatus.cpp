@@ -259,6 +259,11 @@ void KTPaintAreaStatus::updateZoomField(const QString &text)
         k->zoom->setEditText(text);
 }
 
+qreal KTPaintAreaStatus::currentZoomFactor()
+{
+    return k->scaleFactor;
+}
+
 void KTPaintAreaStatus::updateZoomFactor(double factor) 
 {
     double newFactor = k->scaleFactor * factor;

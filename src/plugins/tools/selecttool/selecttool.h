@@ -80,6 +80,7 @@ class SelectTool : public KTToolPlugin
         QCursor cursor() const;
 
         void resizeNodes(qreal scaleFactor);
+        void updateZoomFactor(qreal globalFactor);
 
     signals:
         void closeHugeCanvas();
@@ -88,6 +89,7 @@ class SelectTool : public KTToolPlugin
     private:
         void setupActions();
         void verifyActiveSelection();
+        void updateRealZoomFactor();
         
     private:
         struct Private;

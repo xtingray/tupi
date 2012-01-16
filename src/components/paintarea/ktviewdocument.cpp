@@ -817,6 +817,13 @@ void KTViewDocument::selectTool()
 
         if ((tool->toolType() == KTToolInterface::Tweener) && (k->spaceMode->currentIndex() != 0))
             k->spaceMode->setCurrentIndex(0);
+
+        if (toolName.compare(tr("Object Selection"))==0) {
+            qreal globalFactor = k->status->currentZoomFactor();
+            qreal factor = globalFactor*0.01;
+            tool->updateZoomFactor(factor);
+        }
+
     } else {
         #ifdef K_DEBUG
                tError() << "KTViewDocument::selectTool() - Error: Action from sender() is NULL";
@@ -1030,7 +1037,6 @@ void KTViewDocument::updateScaleVars(double factor)
         if (k->currentTool->name().compare(tr("Object Selection")) == 0)
             k->currentTool->resizeNodes(factor);
     }
-
 }
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)

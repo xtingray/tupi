@@ -149,6 +149,11 @@ void KTToolPlugin::resizeNodes(qreal factor)
     Q_UNUSED(factor);
 }
 
+void KTToolPlugin::updateZoomFactor(qreal factor)
+{
+    Q_UNUSED(factor);
+}
+
 QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
     KTToolPlugin::MenuIndex menu = KTToolPlugin::BrushesMenu;
