@@ -63,6 +63,8 @@ struct SelectTool::Private
     QList<NodeManager*> nodeManagers;
     KTGraphicsScene *scene;
     bool selectionFlag;
+    qreal scaleFactor;
+    qreal realFactor;
 };
 
 SelectTool::SelectTool(): k(new Private), m_configurator(0)
@@ -80,6 +82,9 @@ void SelectTool::init(KTGraphicsScene *scene)
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
     #endif
+
+    k->scaleFactor = 1;
+    k->realFactor = 1;
 
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
@@ -154,6 +159,7 @@ void SelectTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
             
                  if (!found) {
                      NodeManager *manager = new NodeManager(item, scene);
+                     manager->resizeNodes(k->realFactor);
                      k->nodeManagers << manager;
                  }
              }
@@ -197,6 +203,7 @@ void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *
         foreach (QGraphicsItem *item, selectedObjects) {
                  if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
                      NodeManager *manager = new NodeManager(item, scene);
+                     manager->resizeNodes(k->realFactor);
                      k->nodeManagers << manager;
                  }
         }
@@ -576,6 +583,25 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
 QCursor SelectTool::cursor() const
 {
     return QCursor(Qt::ArrowCursor);
+}
+
+void SelectTool::resizeNodes(qreal scaleFactor)
+{
+    k->scaleFactor *= scaleFactor;
+
+    if (k->scaleFactor <= 1)
+        k->realFactor = 1;
+    else if (k->scaleFactor > 1 && k->scaleFactor < 1.5)
+             k->realFactor = 0.8;
+    else if (k->scaleFactor >= 1.5 && k->scaleFactor < 2)
+             k->realFactor = 0.6;
+    else if (k->scaleFactor >= 2 && k->scaleFactor <= 3)
+             k->realFactor = 0.4;
+    else if (k->scaleFactor > 3)
+             k->realFactor = 0.3;
+
+    foreach (NodeManager *manager, k->nodeManagers)
+             manager->resizeNodes(k->realFactor);
 }
 
 Q_EXPORT_PLUGIN2(kt_select, SelectTool);

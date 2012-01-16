@@ -85,6 +85,8 @@ class NodeManager : public QObject
         bool proportionalScale();
         void clear();
 
+        void resizeNodes(qreal factor);
+
     private:
         QHash<Node::TypeNode, Node *> m_nodes;
         QGraphicsItem * m_parent;

@@ -79,6 +79,8 @@ class SelectTool : public KTToolPlugin
         virtual void saveConfig();
         QCursor cursor() const;
 
+        void resizeNodes(qreal scaleFactor);
+
     signals:
         void closeHugeCanvas();
         void callForPlugin(int menu, int index);

@@ -233,16 +233,24 @@ void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int current
            T_FUNCINFO;
     #endif
 
+    // tError() << "KTExposureTable::emitRequestSelectFrame() - Current frame: " << currentSelectedRow;
+    // tError() << "KTExposureTable::emitRequestSelectFrame() - Previous frame: " << previousRow;
+
     if (!k->removingLayer) { 
 
         if (k->removingFrame) {
             k->removingFrame = false;
+
             if ((previousColumn != currentColumn) || (columnCount() == 1))
                  k->header->updateSelection(currentColumn);
+
+            if (previousRow != currentSelectedRow) 
+                emit requestSelectFrame(currentLayer(), currentRow());
+
             return;
         }
 
-        if (previousRow != currentSelectedRow || previousColumn != currentColumn)
+        if (previousColumn != currentColumn || previousRow != currentSelectedRow)
             emit requestSelectFrame(currentLayer(), currentRow());
 
         if ((previousColumn != currentColumn) || (columnCount() == 1))
@@ -279,18 +287,18 @@ KTExposureTable::~KTExposureTable()
     delete k;
 }
 
-QString KTExposureTable::frameName(int indexLayer, int indexFrame)
+QString KTExposureTable::frameName(int layerIndex, int frameIndex)
 {
-    QTableWidgetItem *frame = item(indexFrame , indexLayer);
+    QTableWidgetItem *frame = item(frameIndex , layerIndex);
     if (frame)
         return frame->text();
 
     return "";
 }
 
-void KTExposureTable::setFrameName(int indexLayer, int indexFrame, const QString & name)
+void KTExposureTable::setFrameName(int layerIndex, int frameIndex, const QString &name)
 {
-    QTableWidgetItem *frame = item(indexFrame , indexLayer);
+    QTableWidgetItem *frame = item(frameIndex , layerIndex);
     frame->setFont(QFont("Arial", 7, QFont::Normal, false));
 
     if (frame) {
@@ -299,46 +307,53 @@ void KTExposureTable::setFrameName(int indexLayer, int indexFrame, const QString
     }
 }
 
-void KTExposureTable::setLayerName(int indexLayer, const QString & name)
+void KTExposureTable::setLayerName(int layerIndex, const QString & name)
 {
-    k->header->setLayerName(k->header->logicalIndex(indexLayer), name);
+    k->header->setLayerName(k->header->logicalIndex(layerIndex), name);
 }
 
-bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
+bool KTExposureTable::frameIsLocked(int layerIndex, int frameIndex)
 {
-    QTableWidgetItem *frame = item(indexFrame, indexLayer);
+    QTableWidgetItem *frame = item(frameIndex, layerIndex);
     if (frame) {
         return frame->data(IsLocked).toBool();
     } else {
         #ifdef K_DEBUG
-               tWarning() << "KTExposureTable::frameIsLocked() - Layer: " << indexLayer << ", Frame: " << indexFrame << " doesn't exist";
+               tWarning() << "KTExposureTable::frameIsLocked() - Layer: " << layerIndex << ", Frame: " << frameIndex << " doesn't exist";
         #endif
     }
     return false;
 }
 
-KTExposureTable::FrameType KTExposureTable::frameState(int indexLayer, int indexFrame)
+KTExposureTable::FrameType KTExposureTable::frameState(int layerIndex, int frameIndex)
 { 
     KTExposureTable::FrameType type = KTExposureTable::Unset;
-    QTableWidgetItem *frame = item(indexFrame, indexLayer);
+    QTableWidgetItem *frame = item(frameIndex, layerIndex);
     if (frame)
         type = KTExposureTable::FrameType(frame->data(KTExposureTable::IsEmpty).toInt()); 
 
     return type;
 }
 
-void KTExposureTable::updateFrameState(int indexLayer, int indexFrame, KTExposureTable::FrameType value)
+void KTExposureTable::updateFrameState(int layerIndex, int frameIndex, KTExposureTable::FrameType value)
 {
-    QTableWidgetItem *frame = item(indexFrame, indexLayer);
-    frame->setData(IsEmpty, value);
-
-    if (value == KTExposureTable::Used)
-        frame->setBackgroundColor(QColor(0xf0f0f0));
+    QTableWidgetItem *frame = item(frameIndex, layerIndex);
+    if (frame) {
+        frame->setData(IsEmpty, value);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTExposureTable::updateFrameState() - Error: No frame at [" << layerIndex << ", " << frameIndex << "]";
+        #endif
+    }
 }
 
-void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
+void KTExposureTable::selectFrame(int layerIndex, int frameIndex)
 {
-    setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    setCurrentCell(frameIndex, k->header->logicalIndex(layerIndex));
 }
 
 void KTExposureTable::setMenu(QMenu *menu)
@@ -359,16 +374,6 @@ int KTExposureTable::currentFrame() const
 
     QTableWidgetItem *frame = currentItem();
 
-    /* SQA: Old code. Remove it!
-    if (frame) {
-        if (frame->data(IsEmpty).toBool()) {
-            return currentRow();
-        } else {
-            return currentRow()-1; //???
-        }
-    }
-    */
-
     if (frame) {
         if (frame->data(KTExposureTable::IsEmpty).toInt() != Unset)
             return currentRow();
@@ -384,24 +389,23 @@ void KTExposureTable::insertLayer(int index, const QString & name)
     k->header->insertLayer(index, name);
 }
 
-void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString & name, bool external)
+void KTExposureTable::insertFrame(int layerIndex, int frameIndex, const QString & name, bool external)
 {
     QTableWidgetItem *frame = new QTableWidgetItem;
-    frame->setBackgroundColor(QColor(0xe6e6e6));
     frame->setFont(QFont("Arial", 7, QFont::Normal, false));
     frame->setSizeHint(QSize(65, 10));
     frame->setText(name);
     frame->setData(IsEmpty, Empty);
     frame->setTextAlignment(Qt::AlignCenter);
 
-    int logicalIndex = k->header->logicalIndex(indexLayer);
+    int logicalIndex = k->header->logicalIndex(layerIndex);
 
     k->header->setLastFrame(logicalIndex, k->header->lastFrame(logicalIndex) + 1);
 
     setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 
-    for (int i = k->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
-         exchangeFrame(indexLayer, i , indexLayer, i-1, external);
+    for (int i = k->header->lastFrame(logicalIndex)-1; i > frameIndex; i--)
+         exchangeFrame(layerIndex, i , layerIndex, i-1, external);
 
     if (k->header->lastFrame(logicalIndex) == rowCount()) {
         setRowCount(k->header->lastFrame(logicalIndex) + 100);
@@ -411,10 +415,10 @@ void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString 
     }
 }
 
-void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
+void KTExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
 {
-    int logicalIndex = k->header->logicalIndex(indexLayer);
-    QTableWidgetItem * frame = item(indexFrame, logicalIndex);
+    int logicalIndex = k->header->logicalIndex(layerIndex);
+    QTableWidgetItem * frame = item(frameIndex, logicalIndex);
 
     if (frame) {
         if (frame->data(KTExposureTable::IsEmpty).toInt() != Unset) {
@@ -428,9 +432,9 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
     }
 }
 
-void KTExposureTable::setLockLayer(int indexLayer, bool locked)
+void KTExposureTable::setLockLayer(int layerIndex, bool locked)
 {
-    k->header->setLockLayer(indexLayer, locked);
+    k->header->setLockLayer(layerIndex, locked);
 }
 
 void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
@@ -438,30 +442,38 @@ void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
     k->header->setVisibilityChanged(k->header->logicalIndex(visualIndex), visibility);
 }
 
-void KTExposureTable::removeLayer(int indexLayer)
+void KTExposureTable::removeLayer(int layerIndex)
 {
     setUpdatesEnabled(false);
     k->removingLayer = true;
 
-    k->header->removeLayer(indexLayer);
-    removeColumn(indexLayer);
+    k->header->removeLayer(layerIndex);
+    removeColumn(layerIndex);
 
     setUpdatesEnabled(true);
 }
 
-void KTExposureTable::removeFrame(int indexLayer, int indexFrame, bool fromMenu)
+void KTExposureTable::removeFrame(int layerIndex, int frameIndex, bool fromMenu)
 {
-    //setUpdatesEnabled(false);
+    blockSignals(true);
+
     k->removingFrame = fromMenu;
 
-    QTableWidgetItem *item  = takeItem(indexFrame, indexLayer);
+    QTableWidgetItem *item = takeItem(frameIndex, layerIndex);
+
     if (item) {
-        for (int index = indexFrame + 1; index < k->header->lastFrame(indexLayer); index++) {
-             QTableWidgetItem * idx  = takeItem(index, indexLayer);
+        /*
+        for (int index = frameIndex + 1; index < k->header->lastFrame(layerIndex); index++) {
+             QTableWidgetItem *idx = takeItem(index, layerIndex);
              if (idx)
-                 setItem(index - 1, indexLayer, idx);
+                 setItem(index - 1, layerIndex, idx);
         }
-        k->header->setLastFrame(indexLayer, k->header->lastFrame(indexLayer)-1);
+        */
+        k->header->setLastFrame(layerIndex, k->header->lastFrame(layerIndex)-1);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "KTExposureTable::removeFrame() - No item available at [" << layerIndex << ", " << frameIndex << "]";
+        #endif
     }
 
     //setUpdatesEnabled(true);
@@ -484,25 +496,25 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
     k->header->moveLayer(oldPosLayer, newPosLayer);
 }
 
-void KTExposureTable::emitRequestSetUsedFrame(int indexFrame, int indexLayer)
+void KTExposureTable::emitRequestSetUsedFrame(int frameIndex, int layerIndex)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
 
-    int layer = k->header->visualIndex(indexLayer);
-    int lastFrame = k->header->lastFrame(indexLayer); 
+    int layer = k->header->visualIndex(layerIndex);
+    int lastFrame = k->header->lastFrame(layerIndex); 
 
-    if (indexFrame >= lastFrame) {
+    if (frameIndex >= lastFrame) {
         for (int column=0; column<columnCount(); column++) {
              int used = usedFrames(column); 
              if (lastFrame >= used) {
-                 for (int frame=used; frame <= indexFrame; frame++)
+                 for (int frame=used; frame <= frameIndex; frame++)
                       emit requestSetUsedFrame(column, frame);
              }
         }
 
-        emit requestSelectFrame(layer, indexFrame);
+        emit requestSelectFrame(layer, frameIndex);
     } 
 }
 
@@ -566,20 +578,32 @@ int KTExposureTable::framesTotalAtCurrentLayer()
     return k->header->lastFrame(currentLayer());
 }
 
-void KTExposureTable::keyPressEvent(QKeyEvent * event)
+void KTExposureTable::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Up) {
         int row = currentRow()-1;
-        if (row > -1)
+        if (row > -1) {
             setCurrentCell(row, currentColumn());
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTExposureTable::keyPressEvent() - Error: wrong frame index: " << row;
+            #endif
+        }
+
         return;
     }
 
     if (event->key() == Qt::Key_Down) {
         int limit = rowCount()-1;
         int next = currentRow()+1;
-        if (next <= limit)
+        if (next <= limit) {
             setCurrentCell(next, currentColumn());
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "KTExposureTable::keyPressEvent() - Error: wrong frame index: " << next;
+            #endif
+        }
+
         return;
     }
 

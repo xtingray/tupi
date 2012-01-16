@@ -72,23 +72,23 @@ class KTExposureTable : public QTableWidget
         int currentLayer() const;
         int currentFrame() const;
         void insertLayer(int index, const QString & name);
-        void insertFrame(int indexLayer, int indexFrame, const QString & name, bool external);
-        void removeLayer(int indexLayer);
-        void removeFrame(int indexLayer, int indexFrame, bool fromMenu);
+        void insertFrame(int layerIndex, int frameIndex, const QString & name, bool external);
+        void removeLayer(int layerIndex);
+        void removeFrame(int layerIndex, int frameIndex, bool fromMenu);
         void exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
         void moveLayer(int oldPosLayer, int newPosLayer);
 
-        void setLockFrame(int indexLayer, int indexFrame, bool locked);
-        void setLockLayer(int indexLayer,  bool locked);
+        void setLockFrame(int layerIndex, int frameIndex, bool locked);
+        void setLockLayer(int layerIndex,  bool locked);
         void setVisibilityChanged(int visualIndex, bool visibility);
         int usedFrames(int column) const;
 
-        QString frameName(int indexLayer, int indexFrame);
-        void setFrameName(int indexLayer, int indexFrame,const QString & name);
-        void setLayerName(int indexLayer, const QString & name);
+        QString frameName(int layerIndex, int frameIndex);
+        void setFrameName(int layerIndex, int frameIndex,const QString & name);
+        void setLayerName(int layerIndex, const QString & name);
 
-        bool frameIsLocked(int indexLayer, int indexFrame);
-        void selectFrame(int indexLayer, int indexFrame);
+        bool frameIsLocked(int layerIndex, int frameIndex);
+        void selectFrame(int layerIndex, int frameIndex);
         int layersTotal();
         int framesTotal();
         int framesTotalAtCurrentLayer();
@@ -97,15 +97,15 @@ class KTExposureTable : public QTableWidget
         void emitCellClicked(int frame, int layer);
         void reset();
 
-        KTExposureTable::FrameType frameState(int indexLayer, int indexFrame);
-        void updateFrameState(int indexLayer, int indexFrame, KTExposureTable::FrameType value);
+        KTExposureTable::FrameType frameState(int layerIndex, int frameIndex);
+        void updateFrameState(int layerIndex, int frameIndex, KTExposureTable::FrameType value);
 		
     private:
         struct Private;
         Private *const k;
 
     private slots:
-        void emitRequestSetUsedFrame(int indexFrame,  int indexLayer);
+        void emitRequestSetUsedFrame(int frameIndex,  int layerIndex);
         void emitRequestRenameFrame(QTableWidgetItem * item);
         void emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn);
         void emitRequestMoveLayer(int logicalIndex, int oldVisualIndex, int newVisualIndex);
@@ -122,11 +122,11 @@ class KTExposureTable : public QTableWidget
         void commitData(QWidget * editor);
 
     signals:
-        void requestSetUsedFrame(int indexLayer, int indexFrame);
-        void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
-        void requestSelectFrame(int indexLayer, int indexFrame);
+        void requestSetUsedFrame(int layerIndex, int frameIndex);
+        void requestRenameFrame(int layerIndex, int frameIndex,const QString & name);
+        void requestSelectFrame(int layerIndex, int frameIndex);
 
-        void requestRenameLayer(int indexLayer, const QString & name);
+        void requestRenameLayer(int layerIndex, const QString & name);
         void requestMoveLayer(int oldIndex, int newIndex);
         void requestChangeVisibilityLayer(int visualIndexLayer, bool visibility);
 };

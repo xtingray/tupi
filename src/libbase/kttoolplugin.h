@@ -98,6 +98,7 @@ class TUPI_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         virtual QMenu *menu() const;
         virtual QCursor cursor() const;
         QPair<int, int> setKeyAction(int key, Qt::KeyboardModifiers modifiers);
+        virtual void resizeNodes(qreal factor);
         
     signals:
         void requested(const KTProjectRequest *request);

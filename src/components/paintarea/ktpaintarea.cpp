@@ -1109,4 +1109,3 @@ void KTPaintArea::goToFrame(int index)
                                                                     KTProjectRequest::Select, "1");
     emit requestTriggered(&request);
 }
-

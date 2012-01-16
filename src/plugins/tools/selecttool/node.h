@@ -61,7 +61,7 @@ class Node : public QObject, public QGraphicsItem
         
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
         QRectF boundingRect() const;
-        
+        void resize(qreal factor);
         
         void setAction(ActionNode action);
         int actionNode();

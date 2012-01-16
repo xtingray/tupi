@@ -97,7 +97,7 @@ KTFrame::~KTFrame()
     delete k;
 }
 
-void KTFrame::clean()
+void KTFrame::clear()
 {
     k->graphics.clear(true);
     k->svg.clear(true);

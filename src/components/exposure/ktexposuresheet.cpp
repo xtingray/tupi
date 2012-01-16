@@ -127,6 +127,11 @@ void KTExposureSheet::createMenu()
     k->menu->addAction(removeOne);
     connect(removeOne, SIGNAL(triggered()), this, SLOT(removeOne()));
 
+    QAction *clearAction = new QAction(QIcon(THEME_DIR + "icons/new.png"), tr("Clear frame"), this);
+    clearAction->setIconVisibleInMenu(true);
+    k->menu->addAction(clearAction);
+    connect(clearAction, SIGNAL(triggered()), this, SLOT(clearFrame()));
+
     QAction *lockAction = new QAction(QIcon(THEME_DIR + "icons/padlock.png"), tr("Lock/Unlock frame"), this);
     lockAction->setIconVisibleInMenu(true);
     k->menu->addAction(lockAction);
@@ -192,7 +197,7 @@ void KTExposureSheet::applyAction(int action)
            T_FUNCINFO << "KTExposureSheet::applyAction() - action: " << action;
     #endif
 
-     k->currentTable = k->scenesContainer->getCurrentTable();
+    k->currentTable = k->scenesContainer->getCurrentTable();
 
     if (k->currentTable == 0) {
         #ifdef K_DEBUG
@@ -270,8 +275,7 @@ void KTExposureSheet::applyAction(int action)
                      KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, target, 
                                                                                      KTProjectRequest::Reset);
                      emit requestTriggered(&request);
-                     k->fromMenu = false;
-
+                     k->fromMenu = false; 
                      return;
                  }
 
@@ -289,16 +293,22 @@ void KTExposureSheet::applyAction(int action)
                      // When the item deleted is not the last one
 
                      for (int index=target+1; index <= lastFrame; index++) {
+                          KTExposureTable::FrameType type;
+                          type = k->currentTable->frameState(layer, index);
+                          k->currentTable->updateFrameState(layer, index - 1, type);
+
+                          QString label = k->currentTable->frameName(layer, index);
+                          renameFrame(layer, index - 1, label);
+
                           KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, index, 
                                                                                           KTProjectRequest::Move, index - 1);
                           emit requestTriggered(&request);
                      }
 
-                     selectFrame(layer, target);
-
-                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, 
-                                                layer, lastFrame, KTProjectRequest::Remove, target);
+                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, lastFrame, KTProjectRequest::Remove);
                      emit requestTriggered(&request);
+
+                     selectFrame(layer, target);
                  }
 
                  k->fromMenu = false;
@@ -671,7 +681,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Reset:
                  {
-                     // No action required for this specific request
+                     table->updateFrameState(e->layerIndex(), e->frameIndex(), KTExposureTable::Empty);
                      return;
                  }
                 break;
@@ -843,6 +853,22 @@ void KTExposureSheet::removeOne()
 {
     k->fromMenu = true;
     k->actionBar->emitActionSelected(KTProjectActionBar::RemoveFrame);
+}
+
+void KTExposureSheet::clearFrame()
+{
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    int scene = k->scenesContainer->currentIndex();
+    int layer = k->currentTable->currentLayer();
+    int frame = k->currentTable->currentFrame();
+
+    KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene, layer, frame, KTProjectRequest::Reset);
+    emit requestTriggered(&event);
+
+    k->currentTable->updateFrameState(layer, frame, KTExposureTable::Empty);
 }
 
 void KTExposureSheet::lockFrame()

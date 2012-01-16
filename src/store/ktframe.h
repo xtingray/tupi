@@ -145,7 +145,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        void setRepeat(int repeat);
        int repeat() const;
        
-       void clean();
+       void clear();
        int graphicItemsCount();
        int svgItemsCount();
 

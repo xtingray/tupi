@@ -249,6 +249,12 @@ void NodeManager::setActionNode(Node::ActionNode action)
              node->setAction(action);
 }
 
+void NodeManager::resizeNodes(qreal factor)
+{
+    foreach (Node *node, m_nodes)
+             node->resize(factor);
+}
+
 void NodeManager::setVisible(bool visible)
 {
     foreach (Node *node, m_nodes)

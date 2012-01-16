@@ -141,6 +141,12 @@ QCursor KTToolPlugin::cursor() const
 
 void KTToolPlugin::updatePos(QPointF pos)
 {
+    Q_UNUSED(pos);
+}
+
+void KTToolPlugin::resizeNodes(qreal factor)
+{
+    Q_UNUSED(factor);
 }
 
 QPair<int, int> KTToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)

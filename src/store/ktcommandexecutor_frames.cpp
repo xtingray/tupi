@@ -398,7 +398,7 @@ bool KTCommandExecutor::pasteFrame(KTFrameResponse *response)
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
                 response->setArg(doc.toString(0));
-                frame->clean();
+                frame->clear();
                 frame->fromXml(copyFrame);
                 frame->setFrameName(name);
 

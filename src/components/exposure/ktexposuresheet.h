@@ -97,6 +97,7 @@ class KTExposureSheet : public KTModuleWidgetBase
         void insertFiveFrames();
         void insertTenFrames();
         void removeOne();
+        void clearFrame();
         void lockFrame();
 		
         void insertFrame(int indexLayer, int indexFrame);

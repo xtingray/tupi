@@ -70,6 +70,7 @@ struct Node::Private
     ActionNode generalState; 
     QGraphicsItem * parent;
     NodeManager *manager;
+    QSizeF size;
 };
 
 Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem *parent,
@@ -79,6 +80,8 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsFocusable, true);
+
+    k->size = QSizeF(10, 10);
 
     k->generalState = Scale;
     
@@ -154,8 +157,8 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 QRectF Node::boundingRect() const
 {
-    QSizeF size(10, 10);
-    QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
+    // k->size = QSizeF(10, 10);
+    QRectF rect(QPointF(-k->size.width()/2, -k->size.height()/2), k->size);
 
     return rect;
 }
@@ -331,4 +334,9 @@ void Node::keyReleaseEvent(QKeyEvent *event)
 {
     Q_UNUSED(event);
     k->manager->setProportion(false);
+}
+
+void Node::resize(qreal factor)
+{
+    setScale(factor);
 }

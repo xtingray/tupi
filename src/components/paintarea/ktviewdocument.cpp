@@ -290,6 +290,11 @@ void KTViewDocument::setZoom(qreal factor)
     k->paintArea->setZoom(factor);
     k->verticalRuler->setRulerZoom(factor);
     k->horizontalRuler->setRulerZoom(factor);
+
+    if (k->currentTool) {
+        if (k->currentTool->name().compare(tr("Object Selection")) == 0)
+            k->currentTool->resizeNodes(factor);
+    }
 }
 
 void KTViewDocument::setZoomView(const QString &percent)
@@ -1020,6 +1025,12 @@ void KTViewDocument::updateScaleVars(double factor)
     k->status->updateZoomFactor(factor);
     k->verticalRuler->setRulerZoom(factor);
     k->horizontalRuler->setRulerZoom(factor);
+
+    if (k->currentTool) {
+        if (k->currentTool->name().compare(tr("Object Selection")) == 0)
+            k->currentTool->resizeNodes(factor);
+    }
+
 }
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)
