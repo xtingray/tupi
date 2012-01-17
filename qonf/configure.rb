@@ -223,7 +223,7 @@ class Configure
         }
 
         newfile = "[Desktop Entry]\n"
-        newfile += "Encoding=UTF-8\n"
+        # newfile += "Encoding=UTF-8\n"
         newfile += "Name=Tupi: 2D Magic\n"
         newfile += "Name[es]=Tupí: Magia 2D\n"
         newfile += "Name[pt]=Tupí: Magia 2D\n"

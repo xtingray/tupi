@@ -47,6 +47,7 @@
 extern "C" {
 #include "libavformat/avformat.h"
 #include "libavcodec/avcodec.h"
+#include "libavutil/mathematics.h"
 }
 #endif
 
@@ -342,7 +343,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
             av_init_packet(&pkt);
 
             if (c->coded_frame->pts != (int64_t) AV_NOPTS_VALUE) 
-                pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
+                pkt.pts = av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
 
             if (c->coded_frame->key_frame)
 		pkt.flags |= AV_PKT_FLAG_KEY;
