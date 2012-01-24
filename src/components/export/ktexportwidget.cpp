@@ -46,6 +46,7 @@
 #include <QButtonGroup>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QComboBox>
 #include <QPushButton>
 #include <QLabel>
 #include <QIntValidator>
@@ -728,7 +729,7 @@ class VideoProperties : public KExportWizardPage
         bool isOk;
 };
 
-VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPage(tr("Set Video Properties"))
+VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPage(tr("Set Work Properties"))
 {
     setTag("PROPERTIES");
 
@@ -738,6 +739,11 @@ VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPa
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
+
+    QLabel *exportLabel = new QLabel(tr("Export as"));
+    QComboBox *exportCombo = new QComboBox();
+    exportCombo->addItem(QIcon(THEME_DIR + "icons/export.png"), tr("Video File"));
+    exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
 
     QLabel *titleLabel = new QLabel(tr("Title"));
     lineEdit = new QLineEdit(tr("My Video"));
@@ -751,10 +757,16 @@ VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPa
     descText->setFixedHeight(80);
     descText->setText(tr("Just a little taste of my style :)"));
 
+    QHBoxLayout *exportLayout = new QHBoxLayout;
+    exportLayout->setAlignment(Qt::AlignHCenter);
+    exportLayout->addWidget(exportLabel);
+    exportLayout->addWidget(exportCombo);
+
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(titleLabel);
     topLayout->addWidget(lineEdit);
 
+    layout->addLayout(exportLayout);
     layout->addLayout(topLayout);
     layout->addWidget(descLabel);
     layout->addWidget(descText);
@@ -850,7 +862,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent, bool i
         loadPlugins();
         m_pluginSelectionPage->selectFirstItem();
     } else {
-        setWindowTitle(tr("Post Video in Gallery"));
+        setWindowTitle(tr("Post Work in Gallery"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
 
         m_scenesSelectionPage = new SelectScenes(this);

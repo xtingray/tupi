@@ -101,7 +101,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     c->codec_type = AVMEDIA_TYPE_VIDEO;   
 
     /* put sample parameters */
-    c->bit_rate = 800000;
+    // c->bit_rate = 800000;
+    c->bit_rate = 6000000;
     /* resolution must be a multiple of two */
     c->width = w;  
     c->height = h; 
