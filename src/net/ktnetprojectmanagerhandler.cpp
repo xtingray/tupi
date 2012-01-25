@@ -47,6 +47,7 @@
 #include "ktconnectpackage.h"
 #include "ktimageexportpackage.h"
 #include "ktvideoexportpackage.h"
+#include "ktstoryboardexportpackage.h"
 #include "tupinetfilemanager.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
@@ -186,6 +187,9 @@ bool KTNetProjectManagerHandler::saveProject(const QString &fileName, KTProject 
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+
+    Q_UNUSED(fileName);
+    Q_UNUSED(project);
 
     /*
     TupiNetFileManager manager(k->params->server(), k->params->port());
@@ -414,6 +418,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                           break;
                           case 100:
                           case 101:
+                          case 102:
                           case 382:
                           case 383:
                                emit postOperationDone();
@@ -514,5 +519,11 @@ void KTNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, 
 void KTNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
 {
     KTVideoExportPackage package(title, description, fps, sceneIndexes);
+    sendPackage(package);
+}
+
+void KTNetProjectManagerHandler::sendStoryboardRequest(const QString &title, const QString &description, const QList<int> sceneIndexes)
+{
+    KTStoryboardExportPackage package(title, description, sceneIndexes);
     sendPackage(package);
 }

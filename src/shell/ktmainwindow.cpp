@@ -328,11 +328,14 @@ void KTMainWindow::setWorkSpace()
 
         m_libraryWidget->setNetworking(isNetworked);
 
-        if (isNetworked)
+        if (isNetworked) {
             connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, int, const QList<int>)), 
                     this, SLOT(postVideo(const QString &, const QString &, int, const QList<int>)));
-        else
+            connect(viewCamera, SIGNAL(requestForExportStoryboardToServer(const QString &, const QString &, const QList<int>)),
+                    this, SLOT(postStoryboard(const QString &, const QString &, const QList<int>)));
+        } else {
             connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
+        }
 
         animationTab = new KTAnimationspace(viewCamera);
         animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/play.png"));
@@ -1378,6 +1381,11 @@ void KTMainWindow::netProjectSaved()
 void KTMainWindow::postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
 {
     netProjectManagerHandler->sendVideoRequest(title, description, fps, sceneIndexes);
+}
+
+void KTMainWindow::postStoryboard(const QString &title, const QString &description, const QList<int> sceneIndexes)
+{
+    netProjectManagerHandler->sendStoryboardRequest(title, description, sceneIndexes);
 }
 
 void KTMainWindow::updatePlayer(bool remove)

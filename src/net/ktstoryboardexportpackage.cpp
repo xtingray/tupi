@@ -33,62 +33,39 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTVIEWCAMERA_H
-#define KTVIEWCAMERA_H
+#include "ktstoryboardexportpackage.h"
 
-#include "kcirclebuttonbar.h"
-#include "kvhbox.h"
-#include "ktanimationarea.h"
-#include "ktcamerabar.h"
-#include "ktcamerastatus.h"
+// <project_storyboard version="0">
+//     <storyboard scenes="0, 1, 2, N" />
+//         <title>Storyboard Title</title>
+//         <description>Storyboard Description</description>          
+//     </storyboard>
+// </project_storyboard>
 
-#include <QMainWindow>
-#include <QFrame>
-
-class KTProjectResponse;
-class QCheckBox;
-class KTCameraStatus;
-
-/**
- * @author David Cuadrado 
-*/
-
-class KTViewCamera : public QFrame
+KTStoryboardExportPackage::KTStoryboardExportPackage(const QString &title, const QString &description, const QList<int> sceneIndexes): QDomDocument()
 {
-    Q_OBJECT
+    QDomElement root = createElement("project_storyboard");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    QString indexes = "";
+    for (int i=0; i < sceneIndexes.size(); i++)
+         indexes += QString::number(sceneIndexes.at(i)) + ","; 
 
-    public:
-        KTViewCamera(KTProject *work, bool isNetworked = false, QWidget *parent = 0);
-        ~KTViewCamera();
+    indexes.remove(indexes.length() - 1, 1);
 
-        void updateFirstFrame();
-        QSize sizeHint() const;
-        void updateScenes(int sceneIndex);
+    QDomElement story = createElement("storyboard");
+    story.setAttribute("scenes", indexes);
 
-    private slots:
-        void setLoop();
-        void selectScene(int index);
+    QDomText titleDom = createTextNode(title);
+    QDomText descDom = createTextNode(description);
 
-    public slots:
-        bool handleProjectResponse(KTProjectResponse *event);
-        void setFPS(int fps);
-        void updateFramesTotal(int sceneIndex);
-        void exportDialog();
-        void postDialog();
-        void doPlay();
-        void doPlayBack();
-        void doStop();
-        void nextFrame();
-        void previousFrame();
+    story.appendChild(createElement("title")).appendChild(titleDom);
+    story.appendChild(createElement("description")).appendChild(descDom);
+    
+    root.appendChild(story);
+}
 
-    signals:
-        void requestTriggered(const KTProjectRequest *event);
-        void requestForExportVideoToServer(const QString &title, const QString &description, int fps, const QList<int> indexes);
-        void requestForExportStoryboardToServer(const QString &title, const QString &description, const QList<int> indexes);
-
-    private:
-        struct Private;
-        Private *const k;
-};
-
-#endif
+KTStoryboardExportPackage::~KTStoryboardExportPackage()
+{
+}

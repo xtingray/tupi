@@ -33,62 +33,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTVIEWCAMERA_H
-#define KTVIEWCAMERA_H
-
-#include "kcirclebuttonbar.h"
-#include "kvhbox.h"
-#include "ktanimationarea.h"
-#include "ktcamerabar.h"
-#include "ktcamerastatus.h"
-
-#include <QMainWindow>
-#include <QFrame>
-
-class KTProjectResponse;
-class QCheckBox;
-class KTCameraStatus;
+#ifndef KTSTORYBOARDEXPORTTPACKAGE_H
+#define KTSTORYBOARDEXPORTPACKAGE_H
 
 /**
- * @author David Cuadrado 
+ * @author Gustav Gonzalez
 */
 
-class KTViewCamera : public QFrame
+#include <QDomDocument>
+#include <QList>
+
+class KTStoryboardExportPackage : public QDomDocument
 {
-    Q_OBJECT
-
     public:
-        KTViewCamera(KTProject *work, bool isNetworked = false, QWidget *parent = 0);
-        ~KTViewCamera();
-
-        void updateFirstFrame();
-        QSize sizeHint() const;
-        void updateScenes(int sceneIndex);
-
-    private slots:
-        void setLoop();
-        void selectScene(int index);
-
-    public slots:
-        bool handleProjectResponse(KTProjectResponse *event);
-        void setFPS(int fps);
-        void updateFramesTotal(int sceneIndex);
-        void exportDialog();
-        void postDialog();
-        void doPlay();
-        void doPlayBack();
-        void doStop();
-        void nextFrame();
-        void previousFrame();
-
-    signals:
-        void requestTriggered(const KTProjectRequest *event);
-        void requestForExportVideoToServer(const QString &title, const QString &description, int fps, const QList<int> indexes);
-        void requestForExportStoryboardToServer(const QString &title, const QString &description, const QList<int> indexes);
-
-    private:
-        struct Private;
-        Private *const k;
+        KTStoryboardExportPackage(const QString &title, const QString &description, const QList<int> sceneIndexes);
+        ~KTStoryboardExportPackage();
 };
 
 #endif

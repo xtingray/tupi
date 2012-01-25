@@ -60,12 +60,14 @@ class KTExportWidget : public KExportWizard
     Q_OBJECT
 
     public:
+        enum Format { Video = 0, Storyboard };
         KTExportWidget(const KTProject *project, QWidget *parent = 0, bool isLocal = true);
         ~KTExportWidget();
         QString videoTitle() const;
         QString videoDescription() const;
         QList<int> videoScenes() const;
         bool isComplete();
+        KTExportWidget::Format workType();
 
     private slots:
         void setExporter(const QString &plugin);

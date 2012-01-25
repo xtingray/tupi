@@ -35,7 +35,8 @@ HEADERS += ktnetprojectmanagerparams.h \
            # ktnoticepackage.h \
            ktcommunicationparser.h \
            ktimageexportpackage.h \
-           ktvideoexportpackage.h
+           ktvideoexportpackage.h \
+           ktstoryboardexportpackage.h
 
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
@@ -60,7 +61,8 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            # ktnoticepackage.cpp \
            ktcommunicationparser.cpp \
            ktimageexportpackage.cpp \
-           ktvideoexportpackage.cpp
+           ktvideoexportpackage.cpp \
+           ktstoryboardexportpackage.cpp
 
 CONFIG += dll warn_on
 TEMPLATE = lib

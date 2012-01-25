@@ -75,6 +75,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         void closeConnection();
 
         void sendVideoRequest(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes);
+        void sendStoryboardRequest(const QString &title, const QString &description, const QList<int> sceneIndexes);
 
     signals:
         void savingSuccessful();

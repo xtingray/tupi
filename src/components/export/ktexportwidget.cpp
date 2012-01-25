@@ -477,7 +477,8 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
     if (maxDimension < dimension.height())
         maxDimension = dimension.height();
 
-    m_size->setMaximum(maxDimension);
+    m_size->setMaximum(maxDimension*2);
+
     m_size->setX(dimension.width());
     m_size->setY(dimension.height());
 
@@ -670,10 +671,18 @@ void ExportTo::exportIt()
                tWarning() << "ExportTo::exportIt() - Exporting " << scenes.count() << " scenes";
         #endif
 
-        if (scenes.count() > 0) 
+        if (scenes.count() > 0) { 
+            int width = (int) m_size->x();
+            int height = (int) m_size->y();
+            /* ffmpeg requirement: resolution must be a multiple of two */
+            if (width%2 != 0)
+                width++;
+            if (height%2 != 0)
+                height++;
+
             done = m_currentExporter->exportToFormat(m_project->bgColor(), filename, scenes, m_currentFormat, 
-                                                     QSize((int)m_size->x(),(int)m_size->y()), 
-                                                     m_fps->value());
+                                                     QSize(width, height), m_fps->value());
+        }
     } else {
         TOsd::self()->display(tr("Error"), tr("Format problem. Tupi Internal error."), TOsd::Error);
     }
@@ -713,6 +722,7 @@ class VideoProperties : public KExportWizardPage
         QString description() const;
         QList<int> scenesList() const;
         bool successful();
+        KTExportWidget::Format workType();
 
     signals:
         void isDone();
@@ -723,6 +733,7 @@ class VideoProperties : public KExportWizardPage
         void setScenesIndexes(const QList<int> &indexes);
 
     private:
+        QComboBox *exportCombo;
         QLineEdit *lineEdit;
         QTextEdit *descText;
         QList<int> scenes;
@@ -741,7 +752,7 @@ VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPa
     QVBoxLayout *layout = new QVBoxLayout(container);
 
     QLabel *exportLabel = new QLabel(tr("Export as"));
-    QComboBox *exportCombo = new QComboBox();
+    exportCombo = new QComboBox();
     exportCombo->addItem(QIcon(THEME_DIR + "icons/export.png"), tr("Video File"));
     exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
 
@@ -827,6 +838,11 @@ void VideoProperties::resetLineColor(const QString &)
 void VideoProperties::setScenesIndexes(const QList<int> &indexes)
 {
     scenes = indexes;
+}
+
+KTExportWidget::Format VideoProperties::workType()
+{
+    return KTExportWidget::Format(exportCombo->currentIndex());
 }
 
 KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent, bool isLocal) : KExportWizard(parent), m_project(project)
@@ -934,6 +950,11 @@ QList<int> KTExportWidget::videoScenes() const
 bool KTExportWidget::isComplete()
 {
     return videoProperties->isComplete();
+}
+
+KTExportWidget::Format KTExportWidget::workType()
+{
+    return videoProperties->workType();
 }
 
 #include "ktexportwidget.moc"

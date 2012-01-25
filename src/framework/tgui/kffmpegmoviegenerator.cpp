@@ -97,22 +97,23 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
 
     c = st->codec;
     c->codec_id = CodecID(codec_id);
-    // c->codec_type = CODEC_TYPE_VIDEO;
     c->codec_type = AVMEDIA_TYPE_VIDEO;   
 
     /* put sample parameters */
     // c->bit_rate = 800000;
     c->bit_rate = 6000000;
+
     /* resolution must be a multiple of two */
     c->width = w;  
     c->height = h; 
 
     c->time_base.den = fps;
     c->time_base.num = 1;
-    c->gop_size = 12; /* emit one intra frame every twelve frames at most */
+    // c->gop_size = 12; /* emit one intra frame every twelve frames at most */
+    c->gop_size = 2;
     c->pix_fmt = PIX_FMT_YUV420P;
 
-    c->gop_size = 12; /* emit one intra frame every twelve frames at most */
+    // c->gop_size = 12; /* emit one intra frame every twelve frames at most */
     if (c->codec_id == CODEC_ID_MPEG2VIDEO) {
 	/* just for testing, we also add B frames */
 	c->max_b_frames = 2;
