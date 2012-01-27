@@ -421,6 +421,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                           case 102:
                           case 382:
                           case 383:
+                          case 384:
                                emit postOperationDone();
                           break;
                    }
