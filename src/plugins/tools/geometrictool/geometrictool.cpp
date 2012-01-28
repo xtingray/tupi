@@ -44,6 +44,7 @@
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
 #include "ktscene.h"
+#include "ktframe.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 #include "ktbrushmanager.h"
@@ -169,7 +170,6 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
                    k->currentPoint = input->pos();
 
                    if (k->path) {
-                       // QPointF point = k->path->mapFromParent(k->currentPoint);
                        QPainterPath path = k->path->path();
                        path.cubicTo(k->lastPoint, k->lastPoint, k->lastPoint);
                        k->path->setPath(path);
@@ -186,6 +186,11 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
                        k->line = new KTLineItem();
                        k->line->setPen(brushManager->pen());
                        k->line->setLine(QLineF(input->pos().x(), input->pos().y(), input->pos().x(), input->pos().y()));
+
+                       KTFrame *frame = scene->currentFrame();
+                       int zLevel = frame->getTopZLevel();
+                       k->line->setZValue(zLevel);
+
                        scene->addItem(k->line);
                    }
         }

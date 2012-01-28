@@ -563,7 +563,9 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                                  libraryItem->moveBy((k->dimension.width() - imageW)/2, (k->dimension.height() - imageH)/2);
                              else
                                  libraryItem->moveBy(0, 0);
-           
+
+                             int zLevel = frame->getTopZLevel();
+                             libraryItem->setZValue(zLevel);
                              frame->addItem(name, libraryItem);
                         }
                         break;
@@ -572,6 +574,9 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                              // SQA: Just out of curiosity, check if this case really happens!
                              // tFatal() << "KTProject::addSymbolToProject() - Just tracing text!";
                              KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+
+                             int zLevel = frame->getTopZLevel();
+                             libraryItem->setZValue(zLevel);
                              frame->addItem(name, libraryItem);
                         }
                         break;
@@ -598,12 +603,16 @@ bool KTProject::addSymbolToProject(KTProject::Mode spaceMode, const QString &nam
                                  svgItem->moveBy(0, 0);
                              }
 
+                             int zLevel = frame->getTopZLevel();
+                             svgItem->setZValue(zLevel);
                              frame->addSvgItem(name, svgItem);
                         }
                         break;
                         case KTLibraryObject::Item:
                         {
                              KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                             int zLevel = frame->getTopZLevel();
+                             libraryItem->setZValue(zLevel);
                              frame->addItem(name, libraryItem);
                         }
                         break;

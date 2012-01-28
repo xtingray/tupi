@@ -764,7 +764,7 @@ void KTPaintArea::pasteItems()
         k->position = viewPosition();
     }
     
-    QPointF point = k->position - k->oldPosition;
+    // QPointF point = k->position - k->oldPosition;
 
     foreach (QString xml, k->copiesXml) {
              KTLibraryObject::Type type = KTLibraryObject::Item;
