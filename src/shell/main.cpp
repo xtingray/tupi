@@ -129,6 +129,7 @@ int main(int argc, char ** argv)
     }
 
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
+    kAppProp->setBinDir(QString::fromLocal8Bit(::getenv("TUPI_BIN")));
     kAppProp->setPluginDir(QString::fromLocal8Bit(::getenv("TUPI_PLUGIN")));
     kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("TUPI_SHARE")));
 

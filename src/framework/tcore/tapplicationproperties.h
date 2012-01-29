@@ -50,9 +50,10 @@ class K_CORE_EXPORT TApplicationProperties
         virtual ~TApplicationProperties();
 
     public:
+        void setHomeDir(const QString &path);
+        void setBinDir(const QString &path);
         void setShareDir(const QString &path);
         void setDataDir(const QString &path);
-        void setHomeDir(const QString &path);
         void setThemeDir(const QString &path);
         void setPluginDir(const QString &path);
         void setCacheDir(const QString &path);
@@ -61,9 +62,10 @@ class K_CORE_EXPORT TApplicationProperties
         void setCodeName(const QString &path);
         void setRevision(const QString &path);
 
+        virtual QString homeDir() const;
+        virtual QString binDir() const;
         virtual QString shareDir() const;
         virtual QString dataDir() const;
-        virtual QString homeDir() const;
         virtual QString themeDir() const;
         virtual QString pluginDir() const;
         virtual QString configDir() const;

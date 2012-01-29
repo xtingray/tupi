@@ -309,7 +309,7 @@ void crashTrapper(int sig)
 #ifdef K_DEBUG
         if (QFile::exists("/usr/bin/sudo") && QFile::exists("/usr/bin/gdb")) {
             QString gdb;
-            gdb = "/usr/bin/sudo /usr/bin/gdb -n -nw -batch -ex where " + HOME_DIR + "bin/tupi.bin --pid=";
+            gdb = "/usr/bin/sudo /usr/bin/gdb -n -nw -batch -ex where " + BIN_DIR + "tupi.bin --pid=";
             gdb += QString::number(::getppid());
             bt = runCommand(gdb);
 
@@ -318,7 +318,7 @@ void crashTrapper(int sig)
             bt = bt.simplified();
         } 
 #endif
-        execInfo = runCommand("file " + HOME_DIR + "bin/tupi.bin");
+        execInfo = runCommand("file " + BIN_DIR + "tupi.bin");
 
         // Widget
         QDesktopWidget desktop;

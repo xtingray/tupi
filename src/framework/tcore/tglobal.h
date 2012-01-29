@@ -48,10 +48,11 @@
 
 // #include "tapplicationproperties.h"
 
+#define HOME_DIR kAppProp->homeDir()
+#define BIN_DIR kAppProp->binDir()
 #define SHARE_DIR kAppProp->shareDir()
 #define DATA_DIR kAppProp->dataDir()
 #define THEME_DIR kAppProp->themeDir()
-#define HOME_DIR kAppProp->homeDir()
 #define CONFIG_DIR kAppProp->configDir()
 #define PLUGINS_DIR kAppProp->pluginDir()
 #define CACHE_DIR kAppProp->cacheDir()

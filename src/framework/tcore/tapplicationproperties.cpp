@@ -44,6 +44,7 @@ TApplicationProperties *TApplicationProperties::s_instance = 0;
 struct TApplicationProperties::Private
 {
     QString homeDir;
+    QString binDir;
     QString shareDir;
     QString dataDir;
     QString themeDir;
@@ -64,6 +65,16 @@ TApplicationProperties::~TApplicationProperties()
     delete k;
 }
 
+void TApplicationProperties::setHomeDir(const QString &path)
+{
+    k->homeDir = path;
+}
+
+void TApplicationProperties::setBinDir(const QString &path)
+{
+    k->binDir = path;
+}
+
 void TApplicationProperties::setShareDir(const QString &path)
 {
     k->shareDir = path;
@@ -72,11 +83,6 @@ void TApplicationProperties::setShareDir(const QString &path)
 void TApplicationProperties::setDataDir(const QString &path)
 {
     k->dataDir = path;
-}
-
-void TApplicationProperties::setHomeDir(const QString &path)
-{
-    k->homeDir = path;
 }
 
 void TApplicationProperties::setThemeDir(const QString &path)
@@ -114,6 +120,16 @@ void TApplicationProperties::setRevision(const QString &path)
     k->revision = path;
 }
 
+QString TApplicationProperties::homeDir() const
+{
+    return k->homeDir + QDir::separator();
+}
+
+QString TApplicationProperties::binDir() const
+{
+    return k->binDir + QDir::separator();
+}
+
 QString TApplicationProperties::shareDir() const
 {
     if (k->shareDir.isEmpty())
@@ -133,11 +149,6 @@ QString TApplicationProperties::dataDir() const
     }
 
     return k->dataDir;
-}
-
-QString TApplicationProperties::homeDir() const
-{
-    return k->homeDir + QDir::separator();
 }
 
 QString TApplicationProperties::themeDir() const
