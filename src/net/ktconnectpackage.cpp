@@ -43,12 +43,12 @@
 /*
 <user_connect version="0">
     <client type="0"/> // 0 for Tupi artist clients - 1 for Tupi admin clients
-    <login>user_login</login>
+    <username>user_username</username>
     <password>md5_hashed_password</password>
 </user_connect>
 */
 
-KTConnectPackage::KTConnectPackage(const QString &server, const QString &login, const QString &passwd) : QDomDocument()
+KTConnectPackage::KTConnectPackage(const QString &server, const QString &username, const QString &passwd) : QDomDocument()
 {
     QDomElement root = createElement("user_connect");
     root.setAttribute("version", "0");
@@ -58,7 +58,7 @@ KTConnectPackage::KTConnectPackage(const QString &server, const QString &login, 
     client.setAttribute("type", 0);
     root.appendChild(client);
 
-    root.appendChild(createElement("login")).appendChild(createTextNode(login));
+    root.appendChild(createElement("username")).appendChild(createTextNode(username));
 
     if (server.compare("tupitube.com") != 0) {
         root.appendChild(createElement("password")).appendChild(createTextNode(KMD5Hash::hash(passwd)));

@@ -45,7 +45,7 @@
 class KTConnectPackage : public QDomDocument
 {
     public:
-        KTConnectPackage(const QString &server, const QString &login, const QString &passwd);
+        KTConnectPackage(const QString &server, const QString &username, const QString &passwd);
         ~KTConnectPackage();
 };
 
