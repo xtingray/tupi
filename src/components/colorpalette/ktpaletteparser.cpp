@@ -129,8 +129,9 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
                    k->gradient->setSpread(spread);
         } else if (tag == "Stop") {
                    QColor c(atts.value("colorName") );
-                   c.setAlpha(atts.value("alpha").toInt() );
-                   k->gradientStops << qMakePair(atts.value("value").toDouble(), c);	
+                   c.setAlpha(atts.value("alpha").toInt());
+                   // k->gradientStops << qMakePair(atts.value("value").toDouble(), c);	
+                   k->gradientStops << qMakePair((qreal)(atts.value("value").toDouble()), c);
         }
      }
 
