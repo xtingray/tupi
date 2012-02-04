@@ -3,7 +3,8 @@
 # Subdir relative project main directory: ./src/framework
 # Target is a subdirs project 
 
-SUBDIRS += tcore tgui tsound tplugins
+# SUBDIRS += tcore tgui tsound tplugins
+SUBDIRS += tcore tgui tsound
 CONFIG += release warn_on
 TEMPLATE = subdirs
 
