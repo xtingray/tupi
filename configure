@@ -1,7 +1,11 @@
 #!/bin/bash
 
+function checkQt {
+  hash qmake-qt4 2>&- || { echo >&2 "Fatal error: Package \"qmake/qmake-qt4\" is not installed on your system. Aborting..."; exit 1; }
+}
+
 hash ruby 2>&- || { echo >&2 "Fatal error: Package \"ruby\" is not installed on your system. Aborting..."; exit 1; }
-hash qmake 2>&- || { echo >&2 "Fatal error: Package \"qmake\" is not installed on your system. Aborting..."; exit 1; }
+hash qmake 2>&- || checkQt 
 
 export RUBYLIB=.:${RUBYLIB}
 ruby configure.rb $*
