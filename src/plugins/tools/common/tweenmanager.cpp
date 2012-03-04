@@ -139,6 +139,21 @@ void TweenManager::addTween()
         } else {
             TOsd::self()->display(tr("Error"), tr("Tween name already exists!"), TOsd::Error);
         }
+    } else {
+        int i = 0;
+        while (true) {
+               QString num = QString::number(i); 
+               if (i < 10)
+                   num = "0" + QString::number(i);
+
+               QString name = "tween" + num; 
+               QList<QListWidgetItem *> items = k->tweensList->findItems(name, Qt::MatchExactly);
+               if (items.count() == 0) {
+                   k->input->setText(name);
+                   break;
+               }
+               i++;
+        }
     }
 }
 

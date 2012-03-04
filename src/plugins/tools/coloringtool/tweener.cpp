@@ -525,7 +525,7 @@ void Tweener::applyTween()
 void Tweener::removeTweenFromProject(const QString &name)
 {
     KTScene *scene = k->scene->scene();
-    scene->removeTween(name, KTItemTweener::Scale);
+    scene->removeTween(name, KTItemTweener::Coloring);
 
     foreach (QGraphicsView * view, k->scene->views()) {
              foreach (QGraphicsItem *item, view->scene()->items()) {
