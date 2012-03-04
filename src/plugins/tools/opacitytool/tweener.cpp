@@ -489,7 +489,7 @@ void Tweener::removeTweenFromProject(const QString &name)
     foreach (QGraphicsView * view, k->scene->views()) {
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       QString tip = item->toolTip();
-                      if (tip.startsWith(tr("Scale Tween") + ": " + name))
+                      if (tip.startsWith(tr("Opacity Tween") + ": " + name))
                           item->setToolTip("");
              }
     }
