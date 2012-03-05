@@ -98,9 +98,15 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
                      painter.setRenderHint(QPainter::Antialiasing, true);
                      renderer.render(&painter);
                     }
+
                     QString index = "";
-                    if (photogram < 10)
+                    if (photogram < 10) {
+                        index = "000";
+                    } else if (photogram < 100) {
+                               index = "00";
+                    } else {
                         index = "0";
+                    }
 
                     index += QString("%1").arg(photogram);
 
