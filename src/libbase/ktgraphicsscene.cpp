@@ -967,6 +967,16 @@ void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    if (k->tool->toolType() == KTToolInterface::Brush) {
+        if (event->button() == Qt::RightButton) {
+            return;
+        }
+    }
+
     if (currentFrame()) {
         if (currentFrame()->isLocked()) {
             #ifdef K_DEBUG

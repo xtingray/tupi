@@ -22,6 +22,7 @@ class Test
     end
     
     def run(config, conf, debug, isLucid)
+
         parser = Parser.new
         parser.os = DetectOS::OS[DetectOS.whatOS].to_s.downcase
         

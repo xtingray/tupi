@@ -70,7 +70,7 @@ class PencilTool : public KTToolPlugin
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);
         virtual QCursor cursor() const;
-        
+
     private:
         void setupActions();
         void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);

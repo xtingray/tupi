@@ -97,6 +97,7 @@ class QMake
     end
     
     def run(args = "", recur = false)
+
         options = ""
         if recur
             options += "-r"

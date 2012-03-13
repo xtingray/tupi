@@ -98,6 +98,7 @@ void PencilTool::init(KTGraphicsScene *scene)
            T_FUNCINFOX("tools");
     #endif
 
+    /*
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -107,6 +108,12 @@ void PencilTool::init(KTGraphicsScene *scene)
                           item->setFlag(QGraphicsItem::ItemIsMovable, false);
                  }
              }
+    }
+    */
+
+    foreach (QGraphicsItem *item, scene->items()) {
+             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+             item->setFlag(QGraphicsItem::ItemIsMovable, false);
     }
 }
 
@@ -148,7 +155,7 @@ void PencilTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
 
 void PencilTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-    Q_UNUSED(scene);
+    Q_UNUSED(brushManager);
 
     if (!k->item)
         return;
