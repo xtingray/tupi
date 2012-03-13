@@ -16,17 +16,15 @@ Depends: ${misc:Depends}, libaspell15, libavcodec53 (>= 4:0.7.2~),
  libc6 (>= 2.12.1-0~), libgcc1 (>= 1:4.5.1-7~), libgl1-mesa-glx, libglu1-mesa, libqt4-network (>= 4:4.7.0~), 
  libqt4-opengl (>= 4:4.7.0~), libqt4-svg (>= 4:4.7.0~), libqt4-xml (>= 4:4.7.0~), 
  libqtcore4 (>= 4:4.7.0~), libqtgui4 (>= 4:4.7.0~), libstdc++6 (>= 4.5.1-7~), zlib1g
-Description: 2D Animation design and authoring tool
+Description: 2D animation design and authoring tool
  Tupi: 2D Magic is a design and authoring tool for digital artists 
  interested  in 2D Animation,  offering  an  interface  experience 
  focused on 8-100 years old kids. It's source code is based on the 
  KTooN project.
-
  Some of  its main  features are: basic illustration tools (shapes, 
  fill, text),  gradient tools, onion  skin, brushes  editor, pencil 
  with smoothness  support, basic  object library (for svg files and 
  raster images) and many others.
-
  Using its modules of Animation and Reproduction  you can export 2D
  projects to several formats as OGG, MPEG, AVI, MOV and SWF. 
  Additionally, the  option of  exporting  Image arrays as output is 
