@@ -290,7 +290,7 @@ QCursor ViewTool::cursor() const
               return k->zoomCursor;
    }
 
-   return 0;
+   return QCursor(Qt::ArrowCursor);
 }
 
 Q_EXPORT_PLUGIN2(kt_view, ViewTool)

@@ -1,4 +1,4 @@
-# Generated automatically at Tue Mar 13 16:11:41 -0500 2012! PLEASE DO NOT EDIT!
+# Generated automatically at Mon Mar 19 19:31:55 -0500 2012! PLEASE DO NOT EDIT!
 LIBS += -lz -laspell -lavcodec -lavformat -ltupifwgui -ltupifwcore -ltupifwsound
 QT += opengl core gui svg xml network
 DEFINES += HAVE_ZLIB HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.1\\\" CODE_NAME=\\\"Gemo\\\" REVISION=\\\"git12\\\" K_DEBUG

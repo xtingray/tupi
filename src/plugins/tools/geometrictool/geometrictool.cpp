@@ -407,7 +407,7 @@ QCursor GeometricTool::cursor() const
                return k->lineCursor;
     }
 
-    return 0;
+    return QCursor(Qt::ArrowCursor);
 }
 
 void GeometricTool::endItem()

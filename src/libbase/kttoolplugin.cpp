@@ -41,6 +41,8 @@
 #include "tdebug.h"
 
 #include <QGraphicsView>
+#include <QCursor>
+#include <QMenu>
 
 struct KTToolPlugin::Private
 {
@@ -127,7 +129,8 @@ void KTToolPlugin::keyReleaseEvent(QKeyEvent *event)
 
 QMenu *KTToolPlugin::menu() const
 {
-    return 0;
+    QMenu *menu = new QMenu(new QWidget);
+    return menu;
 }
 
 void KTToolPlugin::saveConfig() 
@@ -136,7 +139,7 @@ void KTToolPlugin::saveConfig()
 
 QCursor KTToolPlugin::cursor() const
 {
-    return 0;
+    return QCursor(Qt::ArrowCursor); 
 }
 
 void KTToolPlugin::updatePos(QPointF pos)

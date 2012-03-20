@@ -316,7 +316,7 @@ QCursor FillTool::cursor() const
                return k->contourCursor;
     }
 
-    return 0;
+    return QCursor(Qt::ArrowCursor);
 }
 
 Q_EXPORT_PLUGIN2(kt_fill, FillTool)

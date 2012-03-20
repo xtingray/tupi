@@ -46,18 +46,13 @@ int main()
 {
 	av_register_all();
 
-        #if defined(__APPLE__) || defined(K_LUCID)
+        #if defined(K_LUCID)
                AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
         #else
                AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
         #endif
 
-        #if defined(__APPLE__)
-               AVFormatContext *oc = av_alloc_format_context();
-        #else
-               AVFormatContext *oc = avformat_alloc_context();
-        #endif
-	
+        AVFormatContext *oc = avformat_alloc_context();
 	oc->oformat = fmt;
 	
 	AVCodecContext *c;
@@ -66,7 +61,6 @@ int main()
 	st = av_new_stream(oc, 0);
 	
 	c = st->codec;
-	
 	c->time_base.den = 24;
 	c->time_base.num = 1;
 	c->gop_size = 12;
