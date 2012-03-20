@@ -228,7 +228,7 @@ int main(int argc, char ** argv)
     #ifdef K_DEBUG
            tWarning() << "main.cpp - Loading plugins from: " << SHARE_DIR << " + plugins";
     #endif
-    QApplication::addLibraryPath(SHARE_DIR + "plugins");
+    QApplication::addLibraryPath(kAppProp->pluginDir());
 
     // Loading visual components required for the Crash Handler
     #ifdef Q_OS_UNIX

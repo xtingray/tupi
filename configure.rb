@@ -117,11 +117,6 @@ _EOH_
     unix.addVariable("UI_DIR", ".ui")
     unix.addVariable("OBJECTS_DIR", ".obj")
 
-    if RUBY_PLATFORM.downcase.include?("darwin")
-       config.addLib("-L/sw/lib")
-       config.addIncludePath("/sw/include")
-    end
-
      # The file tupiglobal.pri contains all the global variables for the compilation process        
     config.save("tupiglobal.pri")
     conf.createMakefiles

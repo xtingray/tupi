@@ -101,7 +101,7 @@ class Configure
         Info.info << "Creating makefiles..." << $endl
 
         if RUBY_PLATFORM.downcase.include?("darwin")
-            qmakeLine = " 'CONFIG += console warn_on' 'CONFIG -= app_bundle' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation -L/sw/lib' 'INCLUDEPATH += /sw/include'"
+            qmakeLine = " 'CONFIG += console warn_on' 'CONFIG -= app_bundle' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation'"
 	    @qmake.run(qmakeLine, true)
         else
             @qmake.run("", true)
@@ -211,7 +211,7 @@ class Configure
         newfile += "export TUPI_BIN=\"" + launcher_bindir + "\"\n\n"
 
         if RUBY_PLATFORM.downcase.include?("darwin")
-           newfile += "export DYLD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
+           newfile += "export DYLD_FALLBACK_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$DYLD_FALLBACK_LIBRARY_PATH\"\n\n"
         else
            newfile += "export LD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
         end
