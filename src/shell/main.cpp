@@ -226,7 +226,7 @@ int main(int argc, char ** argv)
 
     // Looking for plugins for Tupi
     #ifdef K_DEBUG
-           tWarning() << "main.cpp - Loading plugins from: " << SHARE_DIR << " + plugins";
+           tWarning() << "main.cpp - Loading plugins from: " << kAppProp->pluginDir();
     #endif
     QApplication::addLibraryPath(kAppProp->pluginDir());
 
