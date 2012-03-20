@@ -10,16 +10,16 @@ module RQonf
 
 class Configure
     attr_reader :qmake, :statusFile
-    
+
     def initialize(args)
         @statusFile = Dir.getwd+"/configure.status"
-        
+
         @tests = []
         @testsDir = Dir.getwd
-        
+
         @options = {}
         parseArgs(args)
-        
+
         @qmake = QMake.new
         @statusFile = Dir.getwd + "/configure.status"
 
@@ -68,11 +68,11 @@ class Configure
     def argumentValue(arg)
         @options[arg].to_s
     end
-    
+
     def setTestDir(dir)
         @testsDir = dir
     end
-    
+
     def verifyQtVersion(minqtversion, qtdir)
         Info.info << "Checking for Qt >= " << minqtversion << "... "
 
@@ -88,7 +88,7 @@ class Configure
         @tests.clear
         findTest(@testsDir)
     end
-    
+
     def runTests(config, conf, debug, isLucid)
         @tests.each { |test|
             if not test.run(config, conf, debug, isLucid) and not test.optional
@@ -96,7 +96,7 @@ class Configure
             end
         }
     end
-    
+
     def createMakefiles
         Info.info << "Creating makefiles..." << $endl
 
@@ -106,16 +106,16 @@ class Configure
         else
             @qmake.run("", true)
         end
-        
+
         Info.info << "Updating makefiles and source code..." << $endl
-        
+
         @makefiles = Makefile::findMakefiles(Dir.getwd)
-        
+
         @makefiles.each { |makefile|
                            Makefile::override(makefile)
         }
     end
-    
+
     private
     def parseArgs(args)
 
@@ -148,13 +148,13 @@ class Configure
 
         end
     end
-    
+
     def findTest(path)
         if $DEBUG
             Info.warn << "Searching qonfs in: " << path << $endl
         end
         Dir.foreach(path) { |f|
-            
+
             file = "#{path}/#{f}"
 
             if File.stat(file).directory?
@@ -173,19 +173,19 @@ class Configure
            @options['prefix'] = "/usr/local/tupi"
         end
         if @options['bindir'].nil? then
-           @options['bindir'] = @options['prefix'] + "/bin" 
+           @options['bindir'] = @options['prefix'] + "/bin"
         end
         if @options['libdir'].nil? then
-           @options['libdir'] = @options['prefix'] + "/lib" 
+           @options['libdir'] = @options['prefix'] + "/lib"
         end
         if @options['includedir'].nil? then
-           @options['includedir'] = @options['prefix'] + "/include" 
+           @options['includedir'] = @options['prefix'] + "/include"
         end
         if @options['sharedir'].nil? then
            @options['sharedir'] = @options['prefix'] + "/share"
         end
 
-        launcher_prefix = @options['prefix'] 
+        launcher_prefix = @options['prefix']
         launcher_sharedir = @options['sharedir']
         launcher_libdir = @options['libdir']
         launcher_includedir = @options['includedir']
@@ -195,11 +195,11 @@ class Configure
            @options['debian-build'] = "/usr"
         else
            @options['debian-build'] = @options['prefix']
-           launcher_prefix = "/usr" 
-           launcher_sharedir = "/usr/share/tupi" 
-           launcher_libdir = "/usr/lib" 
+           launcher_prefix = "/usr"
+           launcher_sharedir = "/usr/share/tupi"
+           launcher_libdir = "/usr/lib"
            launcher_includedir = "/usr/include"
-           launcher_bindir = "/usr/bin" 
+           launcher_bindir = "/usr/bin"
         end
 
         newfile = "#!/bin/bash\n\n"
@@ -222,26 +222,28 @@ class Configure
                    f << newfile
         }
 
-        newfile = "[Desktop Entry]\n"
-        # newfile += "Encoding=UTF-8\n"
-        newfile += "Name=Tupi: 2D Magic\n"
-        newfile += "Name[es]=Tupí: Magia 2D\n"
-        newfile += "Name[pt]=Tupí: Magia 2D\n"
-        newfile += "Name[ru]=Tupi: 2D Magic\n"
-        newfile += "Exec=" + launcher_bindir + "/tupi\n"
-        newfile += "Icon=tupi.png\n"
-        newfile += "Type=Application\n"
-        newfile += "MimeType=application/tup;application/ntup;\n"
-        newfile += "Categories=Application;Graphics;2DGraphics;RasterGraphics;\n"
-        newfile += "Comment=2D Animation Toolkit\n"
-        newfile += "Comment[es]=Herramienta para Animación 2D\n"
-        newfile += "Comment[pt]=Ferramenta de animação 2D\n"
-        newfile += "Comment[ru]=Создание двухмерной векторной анимации\n"
-        newfile += "Terminal=false\n"
+        if RUBY_PLATFORM.downcase.include?("linux")
+            newfile = "[Desktop Entry]\n"
+            # newfile += "Encoding=UTF-8\n"
+            newfile += "Name=Tupi: 2D Magic\n"
+            newfile += "Name[es]=Tupí: Magia 2D\n"
+            newfile += "Name[pt]=Tupí: Magia 2D\n"
+            newfile += "Name[ru]=Tupi: 2D Magic\n"
+            newfile += "Exec=" + launcher_bindir + "/tupi\n"
+            newfile += "Icon=tupi.png\n"
+            newfile += "Type=Application\n"
+            newfile += "MimeType=application/tup;application/ntup;\n"
+            newfile += "Categories=Application;Graphics;2DGraphics;RasterGraphics;\n"
+            newfile += "Comment=2D Animation Toolkit\n"
+            newfile += "Comment[es]=Herramienta para Animación 2D\n"
+            newfile += "Comment[pt]=Ferramenta de animação 2D\n"
+            newfile += "Comment[ru]=Создание двухмерной векторной анимации\n"
+            newfile += "Terminal=false\n"
 
-        launcher = File.open("launcher/tupi.desktop", "w") { |f|
-                   f << newfile
-        }
+            File.open("launcher/tupi.desktop", "w") { |f|
+                      f << newfile
+            }
+        end
 
         newmakefile = ""
         File.open("src/components/help/help/css/tupi.ini", "r") { |f|
@@ -254,7 +256,7 @@ class Configure
                         else
                            newmakefile += line
                         end
-                        
+
                         index += 1
                   end
         }
