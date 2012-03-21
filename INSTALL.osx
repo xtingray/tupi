@@ -12,7 +12,7 @@ below:
 
 1. Install the XCode Developer Tools available at:
               https://developer.apple.com/downloads/index.action 
-   Version 4.1 or later if your OSX version is Lion, and version 3.2 or later if
+   Version 4.1 or later and Command Line Tools for Xcode if your OSX version is Lion, and version 3.2 or later if
    your OSX version is Snow Leopard.
    Note: an Apple ID account is required to download XCode
 
