@@ -1,5 +1,13 @@
 *.obj
 *.o
+*.so
+*.a
+*.moc/
+*.0
+*.1
+bin/
+src/framework/tgui/qrc_tgui_images.cpp
+
 configure.tests/aspell/Makefile
 configure.tests/aspell/aspell
 configure.tests/ffmpeg/Makefile
