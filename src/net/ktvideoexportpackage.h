@@ -46,7 +46,7 @@
 class KTVideoExportPackage : public QDomDocument
 {
     public:
-        KTVideoExportPackage(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes);
+        KTVideoExportPackage(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
         ~KTVideoExportPackage();
 };
 

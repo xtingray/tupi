@@ -748,8 +748,8 @@
         <translation>Esporta come serie di immagini</translation>
     </message>
     <message>
-        <source>Post Video in Gallery</source>
-        <translation type="unfinished">Pubblica il video in galleria</translation>
+        <source>Post Work in Gallery</source>
+        <translation>Pubblica lavoro in galleria</translation>
     </message>
 </context>
 <context>
@@ -781,6 +781,10 @@
     <message>
         <source>Remove frame</source>
         <translation>Rimuovi fotogramma</translation>
+    </message>
+    <message>
+        <source>Clear frame</source>
+        <translation>Pulisci fotogramma</translation>
     </message>
     <message>
         <source>Lock/Unlock frame</source>
@@ -1903,6 +1907,10 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
 <context>
     <name>KTViewDocument</name>
     <message>
+        <source>Object Selection</source>
+        <translation>Selezione di un oggetto</translation>
+    </message>
+    <message>
         <source>Show grid</source>
         <translation>Mostra la griglia</translation>
     </message>
@@ -2109,10 +2117,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Compound Tween</source>
         <translation>Intercalazione composta</translation>
-    </message>
-    <message>
-        <source>Object Selection</source>
-        <translation>Selezione di un oggetto</translation>
     </message>
     <message>
         <source>Internal fill</source>
@@ -3026,7 +3030,19 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
 <context>
     <name>VideoProperties</name>
     <message>
-        <source>Set Video Properties</source>
+        <source>Set Work Properties</source>
+        <translation>Imposta le proprietà del lavoro</translation>
+    </message>
+    <message>
+        <source>Export as</source>
+        <translation>Esporta come</translation>
+    </message>
+    <message>
+        <source>Video File</source>
+        <translation>File Video</translation>
+    </message>
+    <message>
+        <source>Storyboard</source>
         <translation>Imposta le proprietà del film</translation>
     </message>
     <message>

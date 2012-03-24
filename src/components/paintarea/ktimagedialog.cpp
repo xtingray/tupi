@@ -49,7 +49,8 @@
 
 struct KTImageDialog::Private
 {
-    QLineEdit *lineEdit;
+    QLineEdit *titleEdit;
+    QLineEdit *topicEdit;
     QTextEdit *descText;
 };
 
@@ -60,9 +61,14 @@ KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     QLabel *titleLabel = new QLabel(tr("Title"));
-    k->lineEdit = new QLineEdit(tr("My Picture"));
-    connect(k->lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
-    titleLabel->setBuddy(k->lineEdit);
+    k->titleEdit = new QLineEdit(tr("My Picture"));
+    connect(k->titleEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTitleColor(const QString &)));
+    titleLabel->setBuddy(k->titleEdit);
+
+    QLabel *topicLabel = new QLabel(tr("Title"));
+    k->topicEdit = new QLineEdit(tr("#topic1 #topic2 #topic3"));
+    connect(k->topicEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTopicColor(const QString &)));
+    topicLabel->setBuddy(k->topicEdit);
 
     QLabel *descLabel = new QLabel(tr("Description"));
 
@@ -73,7 +79,11 @@ KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
 
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(titleLabel);
-    topLayout->addWidget(k->lineEdit);
+    topLayout->addWidget(k->titleEdit);
+
+    QHBoxLayout *middleLayout = new QHBoxLayout;
+    middleLayout->addWidget(topicLabel);
+    middleLayout->addWidget(k->topicEdit);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
@@ -89,6 +99,7 @@ KTImageDialog::KTImageDialog(QWidget *parent) : QDialog(parent), k(new Private)
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addLayout(topLayout);
+    layout->addLayout(middleLayout);
     layout->addWidget(descLabel);
     layout->addWidget(k->descText);
     layout->addLayout(buttonLayout);
@@ -101,29 +112,51 @@ KTImageDialog::~KTImageDialog()
 
 void KTImageDialog::checkData()
 {
-    if (k->lineEdit->text().length() == 0) {
-        k->lineEdit->setText(tr("Set a title for the picture here!"));
-        k->lineEdit->selectAll();
+    if (k->titleEdit->text().length() == 0) {
+        k->titleEdit->setText(tr("Set a title for the picture here!"));
+        k->titleEdit->selectAll();
+        return;
+    }
+
+    if (k->topicEdit->text().length() == 0) {
+        k->topicEdit->setText(tr("Set a title for the picture here!"));
+        k->topicEdit->selectAll();
         return;
     }
 
     QDialog::accept();
 }
 
-void KTImageDialog::resetLineColor(const QString &)
+void KTImageDialog::resetTitleColor(const QString &)
 {
-    QPalette palette = k->lineEdit->palette();
-    if (k->lineEdit->text().length() > 0 && k->lineEdit->text().compare(tr("Set a title for the picture here!")) != 0) 
+    QPalette palette = k->titleEdit->palette();
+    if (k->titleEdit->text().length() > 0 && k->titleEdit->text().compare(tr("Set a title for the picture here!")) != 0) 
         palette.setBrush(QPalette::Base, Qt::white);
     else 
         palette.setBrush(QPalette::Base, QColor(255, 140, 138));
 
-     k->lineEdit->setPalette(palette);
+    k->titleEdit->setPalette(palette);
+}
+
+void KTImageDialog::resetTopicColor(const QString &)
+{
+    QPalette palette = k->topicEdit->palette();
+    if (k->topicEdit->text().length() > 0 && k->topicEdit->text().compare(tr("Set some topic tags for the picture here!")) != 0)
+        palette.setBrush(QPalette::Base, Qt::white);
+    else
+        palette.setBrush(QPalette::Base, QColor(255, 140, 138));
+
+    k->topicEdit->setPalette(palette);
 }
 
 QString KTImageDialog::imageTitle() const
 {
-     return k->lineEdit->text();
+     return k->titleEdit->text();
+}
+
+QString KTImageDialog::imageTopics() const
+{
+     return k->topicEdit->text();
 }
 
 QString KTImageDialog::imageDescription() const

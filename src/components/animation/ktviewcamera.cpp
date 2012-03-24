@@ -307,9 +307,9 @@ void KTViewCamera::postDialog()
     if (exportWidget->isComplete() != QDialog::Rejected) {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         if (exportWidget->workType() == KTExportWidget::Video)
-            emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
+            emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
         else
-            emit requestForExportStoryboardToServer(exportWidget->videoTitle(), exportWidget->videoDescription(), exportWidget->videoScenes());
+            emit requestForExportStoryboardToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), exportWidget->videoScenes());
     }
 }
 

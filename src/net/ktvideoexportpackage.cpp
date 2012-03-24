@@ -38,11 +38,12 @@
 // <project_video version="0">
 //     <video fps="24" scenes="0, 1, 2, N" />
 //         <title>Video Title</title>
+//         <topics>Video Topics</topics>
 //         <description>Video Description</description>          
 //     </video>
 // </project_video>
 
-KTVideoExportPackage::KTVideoExportPackage(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes): QDomDocument()
+KTVideoExportPackage::KTVideoExportPackage(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes): QDomDocument()
 {
     QDomElement root = createElement("project_video");
     root.setAttribute("version", "0");
@@ -58,11 +59,12 @@ KTVideoExportPackage::KTVideoExportPackage(const QString &title, const QString &
     indexes.remove(indexes.length() - 1, 1);
 
     video.setAttribute("scenes", indexes);
-
     QDomText titleDom = createTextNode(title);
+    QDomText topicDom = createTextNode(topics);
     QDomText descDom = createTextNode(description);
 
     video.appendChild(createElement("title")).appendChild(titleDom);
+    video.appendChild(createElement("topics")).appendChild(topicDom);
     video.appendChild(createElement("description")).appendChild(descDom);
     
     root.appendChild(video);

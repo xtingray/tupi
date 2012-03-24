@@ -45,7 +45,7 @@
 class KTImageExportPackage : public QDomDocument
 {
     public:
-        KTImageExportPackage(int frameIndex, int sceneIndex, const QString &title, const QString &description);
+        KTImageExportPackage(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
         ~KTImageExportPackage();
 };
 

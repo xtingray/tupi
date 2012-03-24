@@ -46,7 +46,7 @@
 class KTStoryboardExportPackage : public QDomDocument
 {
     public:
-        KTStoryboardExportPackage(const QString &title, const QString &description, const QList<int> sceneIndexes);
+        KTStoryboardExportPackage(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
         ~KTStoryboardExportPackage();
 };
 

@@ -38,11 +38,12 @@
 // <project_image version="0">
 //     <image scene="0" frame="0" />
 //         <title>Image Title</title>
+//         <topics>Image Topics</topics>
 //         <description>Image Description</description>          
 //     </image>
 // </project_image>
 
-KTImageExportPackage::KTImageExportPackage(int frameIndex, int sceneIndex, const QString &title, const QString &description): QDomDocument()
+KTImageExportPackage::KTImageExportPackage(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description): QDomDocument()
 {
     QDomElement root = createElement("project_image");
     root.setAttribute("version", "0");
@@ -53,9 +54,11 @@ KTImageExportPackage::KTImageExportPackage(int frameIndex, int sceneIndex, const
     image.setAttribute("frame", frameIndex);
 
     QDomText titleDom = createTextNode(title);
+    QDomText topicDom = createTextNode(topics);
     QDomText descDom = createTextNode(description);
 
     image.appendChild(createElement("title")).appendChild(titleDom);
+    image.appendChild(createElement("topics")).appendChild(topicDom);
     image.appendChild(createElement("description")).appendChild(descDom);
     
     root.appendChild(image);

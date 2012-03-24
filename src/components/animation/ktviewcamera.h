@@ -83,8 +83,8 @@ class KTViewCamera : public QFrame
 
     signals:
         void requestTriggered(const KTProjectRequest *event);
-        void requestForExportVideoToServer(const QString &title, const QString &description, int fps, const QList<int> indexes);
-        void requestForExportStoryboardToServer(const QString &title, const QString &description, const QList<int> indexes);
+        void requestForExportVideoToServer(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> indexes);
+        void requestForExportStoryboardToServer(const QString &title, const QString &topics, const QString &description, const QList<int> indexes);
 
     private:
         struct Private;

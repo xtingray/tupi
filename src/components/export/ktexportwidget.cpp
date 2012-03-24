@@ -719,6 +719,7 @@ class VideoProperties : public KExportWizardPage
         bool isComplete() const;
         void reset();
         QString title() const;
+        QString topics() const;
         QString description() const;
         QList<int> scenesList() const;
         bool successful();
@@ -728,13 +729,15 @@ class VideoProperties : public KExportWizardPage
         void isDone();
 
     private slots:
-        void resetLineColor(const QString &text);
+        void resetTitleColor(const QString &text);
+        void resetTopicsColor(const QString &text);
         void postIt();
         void setScenesIndexes(const QList<int> &indexes);
 
     private:
         QComboBox *exportCombo;
-        QLineEdit *lineEdit;
+        QLineEdit *titleEdit;
+        QLineEdit *topicsEdit;
         QTextEdit *descText;
         QList<int> scenes;
         bool isOk;
@@ -757,9 +760,14 @@ VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPa
     exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
 
     QLabel *titleLabel = new QLabel(tr("Title"));
-    lineEdit = new QLineEdit(tr("My Video"));
-    connect(lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetLineColor(const QString &)));
-    titleLabel->setBuddy(lineEdit);
+    titleEdit = new QLineEdit(tr("My Video"));
+    connect(titleEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTitleColor(const QString &)));
+    titleLabel->setBuddy(titleEdit);
+
+    QLabel *topicsLabel = new QLabel(tr("Topics"));
+    topicsEdit = new QLineEdit(tr("#topic1 #topic2 #topic3"));
+    connect(topicsEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTopicsColor(const QString &)));
+    topicsLabel->setBuddy(topicsEdit);
 
     QLabel *descLabel = new QLabel(tr("Description"));
 
@@ -775,10 +783,15 @@ VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPa
 
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(titleLabel);
-    topLayout->addWidget(lineEdit);
+    topLayout->addWidget(titleEdit);
+
+    QHBoxLayout *middleLayout = new QHBoxLayout;
+    middleLayout->addWidget(topicsLabel);
+    middleLayout->addWidget(topicsEdit);
 
     layout->addLayout(exportLayout);
     layout->addLayout(topLayout);
+    layout->addLayout(middleLayout);
     layout->addWidget(descLabel);
     layout->addWidget(descText);
 
@@ -800,7 +813,12 @@ void VideoProperties::reset()
 
 QString VideoProperties::title() const
 {
-     return lineEdit->text();
+     return titleEdit->text();
+}
+
+QString VideoProperties::topics() const
+{
+     return topicsEdit->text();
 }
 
 QString VideoProperties::description() const
@@ -815,24 +833,44 @@ QList<int> VideoProperties::scenesList() const
 
 void VideoProperties::postIt()
 {
-    if (lineEdit->text().length() > 0) {
-        isOk = true;
-        emit isDone();
-    } else {
-        lineEdit->setText(tr("Set a title for the picture here!"));
-        lineEdit->selectAll();
+    if (titleEdit->text().length() == 0) {
+        titleEdit->setText(tr("Set a title for the picture here!"));
+        titleEdit->selectAll();
+        isOk = false;
+        return;
     }
+
+    if (topicsEdit->text().length() == 0) {
+        topicsEdit->setText(tr("Set some topic tags for the picture here!"));
+        topicsEdit->selectAll();
+        isOk = false;
+        return;
+    }
+
+    isOk = true;
+    emit isDone();
 }
 
-void VideoProperties::resetLineColor(const QString &)
+void VideoProperties::resetTitleColor(const QString &)
 {
-    QPalette palette = lineEdit->palette();
-    if (lineEdit->text().length() > 0 && lineEdit->text().compare(tr("Set a title for the picture here!")) != 0)
+    QPalette palette = titleEdit->palette();
+    if (titleEdit->text().length() > 0 && titleEdit->text().compare(tr("Set a title for the picture here!")) != 0)
         palette.setBrush(QPalette::Base, Qt::white);
     else
         palette.setBrush(QPalette::Base, QColor(255, 140, 138));
 
-     lineEdit->setPalette(palette);
+    titleEdit->setPalette(palette);
+}
+
+void VideoProperties::resetTopicsColor(const QString &)
+{
+    QPalette palette = topicsEdit->palette();
+    if (topicsEdit->text().length() > 0 && topicsEdit->text().compare(tr("Set some topic tags for the picture here!")) != 0)
+        palette.setBrush(QPalette::Base, Qt::white);
+    else
+        palette.setBrush(QPalette::Base, QColor(255, 140, 138));
+
+    topicsEdit->setPalette(palette);
 }
 
 void VideoProperties::setScenesIndexes(const QList<int> &indexes)
@@ -935,6 +973,11 @@ void KTExportWidget::setExporter(const QString &plugin)
 QString KTExportWidget::videoTitle() const
 {
     return videoProperties->title();
+}
+
+QString KTExportWidget::videoTopics() const
+{
+    return videoProperties->topics();
 }
 
 QString KTExportWidget::videoDescription() const

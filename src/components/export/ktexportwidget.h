@@ -64,6 +64,7 @@ class KTExportWidget : public KExportWizard
         KTExportWidget(const KTProject *project, QWidget *parent = 0, bool isLocal = true);
         ~KTExportWidget();
         QString videoTitle() const;
+        QString videoTopics() const;
         QString videoDescription() const;
         QList<int> videoScenes() const;
         bool isComplete();

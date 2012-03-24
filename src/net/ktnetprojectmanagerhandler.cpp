@@ -511,20 +511,20 @@ void KTNetProjectManagerHandler::closeConnection()
 }
 
 void KTNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, int sceneIndex, 
-                                                                const QString &title, const QString &description)
+                                                                const QString &title, const QString &topics, const QString &description)
 {
-    KTImageExportPackage package(frameIndex, sceneIndex, title, description);
+    KTImageExportPackage package(frameIndex, sceneIndex, title, topics, description);
     sendPackage(package);
 }
 
-void KTNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
+void KTNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes)
 {
-    KTVideoExportPackage package(title, description, fps, sceneIndexes);
+    KTVideoExportPackage package(title, topics, description, fps, sceneIndexes);
     sendPackage(package);
 }
 
-void KTNetProjectManagerHandler::sendStoryboardRequest(const QString &title, const QString &description, const QList<int> sceneIndexes)
+void KTNetProjectManagerHandler::sendStoryboardRequest(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes)
 {
-    KTStoryboardExportPackage package(title, description, sceneIndexes);
+    KTStoryboardExportPackage package(title, topics, description, sceneIndexes);
     sendPackage(package);
 }

@@ -278,8 +278,8 @@ void KTMainWindow::setWorkSpace()
         TCONFIG->beginGroup("Network");
         QString server = TCONFIG->value("Server").toString();
         if (isNetworked && server.compare("tupitube.com") == 0) {
-            connect(drawingTab, SIGNAL(requestExportImageToServer(int, int, const QString &, const QString &)),                         
-                    netProjectManagerHandler, SLOT(sendExportImageRequestToServer(int, int, const QString &, const QString &)));
+            connect(drawingTab, SIGNAL(requestExportImageToServer(int, int, const QString &, const QString &, const QString &)),                         
+                    netProjectManagerHandler, SLOT(sendExportImageRequestToServer(int, int, const QString &, const QString &, const QString &)));
         }
 
         drawingTab->setWindowTitle(tr("Animation"));
@@ -329,10 +329,10 @@ void KTMainWindow::setWorkSpace()
         m_libraryWidget->setNetworking(isNetworked);
 
         if (isNetworked) {
-            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, int, const QList<int>)), 
-                    this, SLOT(postVideo(const QString &, const QString &, int, const QList<int>)));
-            connect(viewCamera, SIGNAL(requestForExportStoryboardToServer(const QString &, const QString &, const QList<int>)),
-                    this, SLOT(postStoryboard(const QString &, const QString &, const QList<int>)));
+            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QString &, int, const QList<int>)), 
+                    this, SLOT(postVideo(const QString &, const QString &, const QString &, int, const QList<int>)));
+            connect(viewCamera, SIGNAL(requestForExportStoryboardToServer(const QString &, const QString &, const QString &, const QList<int>)),
+                    this, SLOT(postStoryboard(const QString &, const QString &, const QString &, const QList<int>)));
         } else {
             connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
         }
@@ -1378,14 +1378,14 @@ void KTMainWindow::netProjectSaved()
     QApplication::restoreOverrideCursor();
 }
 
-void KTMainWindow::postVideo(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes)
+void KTMainWindow::postVideo(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes)
 {
-    netProjectManagerHandler->sendVideoRequest(title, description, fps, sceneIndexes);
+    netProjectManagerHandler->sendVideoRequest(title, topics, description, fps, sceneIndexes);
 }
 
-void KTMainWindow::postStoryboard(const QString &title, const QString &description, const QList<int> sceneIndexes)
+void KTMainWindow::postStoryboard(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes)
 {
-    netProjectManagerHandler->sendStoryboardRequest(title, description, sceneIndexes);
+    netProjectManagerHandler->sendStoryboardRequest(title, topics, description, sceneIndexes);
 }
 
 void KTMainWindow::updatePlayer(bool remove)

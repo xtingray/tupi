@@ -1260,8 +1260,6 @@ void KTViewDocument::postImage()
     int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
     int frameIndex = k->paintArea->graphicsScene()->currentFrameIndex();
 
-    QString title = "";
-    QString description = "";
     KTImageDialog *dialog = new KTImageDialog(this);
     dialog->show();
     QDesktopWidget desktop;
@@ -1269,10 +1267,11 @@ void KTViewDocument::postImage()
                  (int) (desktop.screenGeometry().height() - dialog->height())/2);
 
     if (dialog->exec() != QDialog::Rejected) {
-        title = dialog->imageTitle();
-        description = dialog->imageDescription();
+        QString title = dialog->imageTitle();
+        QString topics = dialog->imageTopics();
+        QString description = dialog->imageDescription();
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        emit requestExportImageToServer(frameIndex, sceneIndex, title, description);
+        emit requestExportImageToServer(frameIndex, sceneIndex, title, topics, description);
     }
 }
 

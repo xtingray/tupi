@@ -74,8 +74,8 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
         QTabWidget *communicationWidget();
         void closeConnection();
 
-        void sendVideoRequest(const QString &title, const QString &description, int fps, const QList<int> sceneIndexes);
-        void sendStoryboardRequest(const QString &title, const QString &description, const QList<int> sceneIndexes);
+        void sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
+        void sendStoryboardRequest(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
 
     signals:
         void savingSuccessful();
@@ -90,7 +90,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
     private slots:
         void sendChatMessage(const QString &message);
         void connectionLost();
-        void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
+        void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
 
     private:
         struct Private;

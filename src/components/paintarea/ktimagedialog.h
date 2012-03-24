@@ -46,11 +46,13 @@ class KTImageDialog : public QDialog
         KTImageDialog(QWidget *parent=0);
         ~KTImageDialog();
         QString imageTitle() const;
+        QString imageTopics() const;
         QString imageDescription() const;
 
     private slots:
         void checkData();
-        void resetLineColor(const QString &);
+        void resetTitleColor(const QString &);
+        void resetTopicColor(const QString &);
 
     private:
         struct Private;

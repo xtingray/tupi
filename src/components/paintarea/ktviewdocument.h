@@ -142,7 +142,7 @@ class KTViewDocument : public QMainWindow
         void autoSave();
         void modeHasChanged(int mode);
         void expandColorPanel();
-        void requestExportImageToServer(int frameIndex, int sceneIndex, const QString &title, const QString &description);
+        void requestExportImageToServer(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
 
     // protected:
     // void closeEvent(QCloseEvent *e);
