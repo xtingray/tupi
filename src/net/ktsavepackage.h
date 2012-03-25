@@ -45,7 +45,7 @@
 class KTSavePackage: public QDomDocument
 {
     public:
-        KTSavePackage();
+        KTSavePackage(bool exitFlag);
         ~KTSavePackage();
 };
 

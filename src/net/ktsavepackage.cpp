@@ -38,10 +38,12 @@
 // <project_save version="0">
 // </project_save>
 
-KTSavePackage::KTSavePackage(): QDomDocument()
+KTSavePackage::KTSavePackage(bool exitFlag): QDomDocument()
 {
     QDomElement root = createElement("project_save");
     root.setAttribute("version", "0");
+    root.setAttribute("exit", exitFlag ? 1 : 0);
+
     appendChild(root);
 }
 

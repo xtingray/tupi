@@ -217,6 +217,7 @@ class KTMainWindow : public KTabbedMainWindow
           KTProjectManager *m_projectManager;
           Tupi::RenderType m_renderType;
           QString m_fileName;
+          bool lastSave;
 
     private:
           KTViewDocument *drawingTab;

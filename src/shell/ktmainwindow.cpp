@@ -178,6 +178,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     }
 
     KTMainWindow::requestType = None;
+    lastSave = false;
 }
 
 /**
@@ -472,6 +473,7 @@ bool KTMainWindow::closeProject()
 
         switch (ret) {
             case QMessageBox::AcceptRole:
+                 lastSave = true;
                  saveProject();
                  break;
             case QMessageBox::DestructiveRole:
@@ -1075,7 +1077,6 @@ void KTMainWindow::saveAs()
 void KTMainWindow::saveProject()
 {
     if (!isNetworked) {
-
         if (isSaveDialogOpen)
             return;
 
@@ -1101,10 +1102,14 @@ void KTMainWindow::saveProject()
         if (isSaveDialogOpen)
             isSaveDialogOpen = false;
     } else {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        KTSavePackage package;
+        KTSavePackage package(lastSave);
         netProjectManagerHandler->sendPackage(package);
+
+        if (!lastSave)
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        else
+            lastSave = false;
     }
 }
 
