@@ -114,6 +114,10 @@ Configurator::~Configurator()
 
 void Configurator::loadTweenList(QList<QString> tweenList)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->tweenManager->loadTweenList(tweenList);
     if (tweenList.count() > 0)
         activeButtonsPanel(true); 

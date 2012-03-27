@@ -496,7 +496,9 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                         }
 
                         viewport()->update(scene()->sceneRect().toRect());
-                        guiScene->currentTool()->init(graphicsScene());          
+
+                        if (guiScene->currentTool()->toolType() != KTToolInterface::Tweener)
+                            guiScene->currentTool()->init(graphicsScene());          
                     }
                     break;
         }

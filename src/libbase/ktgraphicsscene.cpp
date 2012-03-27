@@ -892,6 +892,7 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
         k->tool->aboutToChangeTool();
 
     k->tool = tool;
+
     k->tool->init(this);
 }
 

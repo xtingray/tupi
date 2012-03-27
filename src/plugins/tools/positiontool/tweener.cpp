@@ -684,6 +684,10 @@ void Tweener::saveConfig()
 
 void Tweener::updateScene(KTGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->mode = k->configurator->mode();
 
     if (k->mode == Settings::Edit) {
@@ -870,8 +874,13 @@ void Tweener::disableSelection()
 
 void Tweener::sceneResponse(const KTSceneResponse *event)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if ((event->action() == KTProjectRequest::Remove || event->action() == KTProjectRequest::Reset)
         && (k->scene->currentSceneIndex() == event->sceneIndex())) {
+        tError() << "Tracing 1";
         init(k->scene);
     }
 
@@ -881,12 +890,20 @@ void Tweener::sceneResponse(const KTSceneResponse *event)
 
 void Tweener::layerResponse(const KTLayerResponse *event)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (event->action() == KTProjectRequest::Remove)
         init(k->scene);        
 }
 
 void Tweener::frameResponse(const KTFrameResponse *event)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (event->action() == KTProjectRequest::Remove && k->scene->currentLayerIndex() == event->layerIndex())
         init(k->scene);
 }
