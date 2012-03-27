@@ -101,7 +101,7 @@ class Configure
         Info.info << "Creating makefiles..." << $endl
 
         if RUBY_PLATFORM.downcase.include?("darwin")
-            qmakeLine = " 'QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6' 'CONFIG += x86 ppc console static warn_on' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation'"
+            qmakeLine = " 'QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6' 'CONFIG += console static warn_on' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation'"
 	    @qmake.run(qmakeLine, true)
         else
             @qmake.run("", true)

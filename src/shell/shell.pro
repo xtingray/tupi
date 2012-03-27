@@ -18,7 +18,7 @@ launcher.path = /bin/
 target.path = /bin/
 
 macx {
-    CONFIG += x86 ppc static console
+    CONFIG += static console
     ICON = ../../launcher/icons/tupi.icns
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6
     QMAKE_INFO_PLIST = ./Info.plist
