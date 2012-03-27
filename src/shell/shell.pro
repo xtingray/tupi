@@ -18,9 +18,10 @@ launcher.path = /bin/
 target.path = /bin/
 
 macx {
-    CONFIG -= app_bundle
-    CONFIG += warn_on static console
-
+    CONFIG += x86 ppc static console
+    ICON = ../../launcher/icons/tupi.icns
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6
+    QMAKE_INFO_PLIST = ./Info.plist
     INSTALLS += icons \
                 tupiman \
                 copyright

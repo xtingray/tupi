@@ -8,7 +8,7 @@
  *   2010:                                                                 *
  *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -83,17 +83,17 @@ class SleeperThread : public QThread
 };
 
 /**
- * Main class of the application. 
+ * Main class of the application.
  * This is the code where Tupi application starts.
  * @author David Cuadrado
 */
 
-/** 
+/**
  * This method defines the console line options to run Tupi
  */
 void usage();
 
-/** 
+/**
  * This method is the first one invoked when Tupi is launched
  */
 
@@ -117,38 +117,50 @@ int main(int argc, char ** argv)
 
     // Time to define global variables for Tupi
     TCONFIG->beginGroup("General");
-
+    QDir appDirPath(QApplication::applicationDirPath());
     if (! TCONFIG->isOk()) {
 #if defined(K_DEBUG)
         TCONFIG->setValue("Debug", "true");
 #else
         TCONFIG->setValue("Debug", "false");
 #endif
+#if defined(__APPLE__)
+        tWarning() << "main.cpp - Using application dir: " << QApplication::applicationDirPath();
+
+        TCONFIG->setValue("Home", appDirPath.absolutePath());
+#else
         TCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("TUPI_HOME")));
+#endif
         TCONFIG->setValue("Cache", QDir::tempPath());
     }
 
+#if defined(__APPLE__)
+    kAppProp->setHomeDir(TCONFIG->value("Home").toString());
+    kAppProp->setBinDir(appDirPath.absolutePath());
+    kAppProp->setPluginDir(appDirPath.absolutePath() + "plugins");
+    kAppProp->setShareDir(appDirPath.absolutePath()+ "usr");
+#else
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(QString::fromLocal8Bit(::getenv("TUPI_BIN")));
     kAppProp->setPluginDir(QString::fromLocal8Bit(::getenv("TUPI_PLUGIN")));
     kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("TUPI_SHARE")));
-
+#endif
     QString locale = QString(QLocale::system().name()).left(2);
 
     if (locale.length() < 2)
         locale = "en";
 
-    QDir dir(SHARE_DIR + "data/" + locale + "/");
+    QDir dir(kAppProp->shareDir() + "data/" + locale + "/");
     if (! dir.exists())
-        kAppProp->setDataDir(SHARE_DIR + "data/en/");
+        kAppProp->setDataDir(kAppProp->shareDir() + "data/en/");
     else
-        kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
+        kAppProp->setDataDir(kAppProp->shareDir() + "data/" + locale + "/");
 
-    kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
+    kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default" + "/");
 
     /*
     tDebug() << "HOME_DIR: " << HOME_DIR;
-    tDebug() << "SHARE_DIR: " << SHARE_DIR;
+    tDebug() << "kAppProp->shareDir(): " << kAppProp->shareDir();
     tDebug() << "DATA_DIR: " << DATA_DIR;
     tDebug() << "THEME_DIR: " << THEME_DIR;
     */
@@ -160,7 +172,7 @@ int main(int argc, char ** argv)
     KTwitter *ktwitter = new KTwitter();
     ktwitter->start();
 
-    // SQA: Tupi gui styles must be re-factored 
+    // SQA: Tupi gui styles must be re-factored
     // Setting the gui style for the interface
 #ifdef ENABLE_TUPISTYLE
     QApplication::setStyle(new KWaitStyle());
@@ -178,7 +190,7 @@ int main(int argc, char ** argv)
                   tFatal () << "********************* You need configure the application" << endl;
            #endif
 
-           QMessageBox::critical(0, QObject::tr("Missing..."), 
+           QMessageBox::critical(0, QObject::tr("Missing..."),
                                  QObject::tr("You need configure the application"));
            application.exit(-1);
            return -1;
@@ -193,20 +205,20 @@ int main(int argc, char ** argv)
     // Time to apply the theme for the application GUI
     QString themefile = TCONFIG->value("ThemeFile").toString();
 
-    if (! themefile.isEmpty()) 
+    if (! themefile.isEmpty())
         application.applyTheme(themefile);
 
     // Loading localization files... now you got Tupi in your native language
 
     QTranslator *translator = new QTranslator;
-    translator->load(SHARE_DIR + "data/translations/" + "tupi_" + locale + ".qm");
+    translator->load(kAppProp->shareDir() + "data/translations/" + "tupi_" + locale + ".qm");
     application.installTranslator(translator);
 
-    // Time to show the Tupi initial splash 
+    // Time to show the Tupi initial splash
     KTSplash *splash = new KTSplash;
     splash->show();
     QDesktopWidget desktop;
-    splash->move((int) (desktop.screenGeometry().width() - splash->width())/2, 
+    splash->move((int) (desktop.screenGeometry().width() - splash->width())/2,
                  (int) (desktop.screenGeometry().height() - splash->height())/2);
 
     splash->setMessage(QObject::tr("Initializing..."));
@@ -243,11 +255,11 @@ int main(int argc, char ** argv)
             mainWindow.openProject(project);
     }
 
-    // It's time to play with Tupi!	
+    // It's time to play with Tupi!
     return application.exec();
 }
 
-/** 
+/**
  * This method defines the console line options to run Tupi
  */
 
@@ -268,7 +280,7 @@ void usage()
     puts(QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0]).toLocal8Bit());
     puts(QObject::tr("Options: ").toLocal8Bit());
     puts("-r, --reconfigure");
-    puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit()); 
+    puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit());
 #endif
 }
 
