@@ -125,7 +125,6 @@ int main(int argc, char ** argv)
         TCONFIG->setValue("Debug", "false");
 #endif
 #if defined(__APPLE__)
-        tWarning() << "main.cpp - Using application dir: " << QApplication::applicationDirPath();
 
         TCONFIG->setValue("Home", appDirPath.absolutePath());
 #else
@@ -137,8 +136,8 @@ int main(int argc, char ** argv)
 #if defined(__APPLE__)
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(appDirPath.absolutePath());
-    kAppProp->setPluginDir(appDirPath.absolutePath() + "plugins");
-    kAppProp->setShareDir(appDirPath.absolutePath()+ "usr");
+    kAppProp->setPluginDir(appDirPath.absolutePath() + "/plugins");
+    kAppProp->setShareDir(appDirPath.absolutePath()+ "/share");
 #else
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(QString::fromLocal8Bit(::getenv("TUPI_BIN")));
