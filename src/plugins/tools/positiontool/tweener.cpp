@@ -110,8 +110,9 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
-    // delete k->currentTween;
-    // k->currentTween = 0;
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
 
     delete k->path;
     k->path = 0;
@@ -509,6 +510,10 @@ void Tweener::applyReset()
 
 void Tweener::applyTween()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     QString name = k->configurator->currentTweenName();
 
     if (name.length() == 0) {

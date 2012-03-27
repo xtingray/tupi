@@ -267,6 +267,10 @@ void Configurator::editTween()
 
 void Configurator::closeTweenProperties()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->mode == Settings::Add)
         k->tweenManager->removeItemFromList();
 
@@ -310,6 +314,10 @@ void Configurator::notifySelection(bool flag)
 
 void Configurator::closeSettingsPanel()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->state == Properties) {
         activeTweenManagerPanel(true);
         activePropertiesPanel(false);
@@ -331,6 +339,10 @@ void Configurator::applyItem()
 
 void Configurator::resetUI()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->tweenManager->resetUI();
     closeSettingsPanel();
     k->settingsPanel->notifySelection(false);

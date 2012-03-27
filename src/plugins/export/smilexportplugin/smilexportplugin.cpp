@@ -83,6 +83,11 @@ bool SmilExportPlugin::exportToFormat(const QColor color, const QString &filePat
     return true;
 }
 
+bool SmilExportPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size)
+{
+    return false;
+}
+
 void SmilExportPlugin::initSmil()
 {
     m_smil = QDomDocument("smil PUBLIC \"-//W3C//DTD SMIL 2.0//EN\" \"http://www.w3.org/2001/SMIL20/SMIL20.dtd\"");

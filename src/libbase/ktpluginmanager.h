@@ -64,13 +64,7 @@ class TUPI_EXPORT KTPluginManager : public QObject
         
         QObjectList tools() const;
         QObjectList filters() const;
-
-    /*
-    private:
-        QObjectList m_tools;
-        QObjectList m_filters;
-        QList<QPluginLoader *> m_loaders;
-    */
+        QObjectList formats() const;
 
     private:
         struct Private;

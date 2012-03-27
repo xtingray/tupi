@@ -166,6 +166,11 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
     return true;
 }
 
+bool FFMpegPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size)
+{
+    return false;
+}
+
 const char* FFMpegPlugin::getExceptionMsg() {
     return errorMsg;
 }
