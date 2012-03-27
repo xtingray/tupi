@@ -73,6 +73,7 @@ class TUPI_EXPORT KTExportInterface
         virtual QString key() const = 0;
         virtual Formats availableFormats() = 0;
         virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps) = 0;
+        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size) = 0;
         virtual const char* getExceptionMsg() = 0;
 };
 

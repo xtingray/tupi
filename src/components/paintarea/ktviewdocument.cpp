@@ -42,8 +42,7 @@
 
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
-#include "genericexportplugin.h"
-// #include "ktexportpluginobject.h"
+#include "ktexportinterface.h"
 #include "ktpaintarea.h"
 #include "ktprojectresponse.h"
 #include "ktpaintareaevent.h"
@@ -142,6 +141,8 @@ struct KTViewDocument::Private
 
     KTProject *project;
     QTimer *timer;
+
+    KTExportInterface *imagePlugin;
 };
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal) : QMainWindow(parent), k(new Private)
@@ -430,6 +431,18 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
+    foreach (QObject *plugin, KTPluginManager::instance()->formats()) {
+             if (plugin) {
+                 KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
+                 if (exporter) {
+                     if (exporter->key().compare(tr("Image Arrays")) == 0) {
+                         k->imagePlugin = exporter;
+                         break;
+                     }
+                 }
+             }
+    }
+
     QVector<TAction*> brushTools(9);
     QVector<TAction*> tweenTools(7);
 
@@ -1245,8 +1258,7 @@ void KTViewDocument::exportImage()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export Frame As"), QDir::homePath(),
                                                         tr("Images") + " (*.png *.jpg)");
     if (!fileName.isNull()) {
-        GenericExportPlugin exporter;
-        bool isOk = exporter.exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->scene(sceneIndex), k->project->dimension());
+        bool isOk = k->imagePlugin->exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->scene(sceneIndex), k->project->dimension()); 
         updatePaintArea();
         if (isOk)
             TOsd::self()->display(tr("Information"), tr("Frame has been exported successfully"));
@@ -1274,4 +1286,3 @@ void KTViewDocument::postImage()
         emit requestExportImageToServer(frameIndex, sceneIndex, title, topics, description);
     }
 }
-

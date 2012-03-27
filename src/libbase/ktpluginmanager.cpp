@@ -36,6 +36,7 @@
 #include "ktpluginmanager.h"
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
+#include "ktexportinterface.h"
 #include "tglobal.h"
 #include "tdebug.h"
 
@@ -48,6 +49,7 @@ struct KTPluginManager::Private
 {
     QObjectList tools;
     QObjectList filters;
+    QObjectList formats;
     QList<QPluginLoader *> loaders;
 };
 
@@ -76,6 +78,7 @@ void KTPluginManager::loadPlugins()
 
     k->filters.clear();
     k->tools.clear();
+    k->formats.clear();
     
     QDir pluginDirectory = QDir(PLUGINS_DIR);
 
@@ -89,14 +92,21 @@ void KTPluginManager::loadPlugins()
         
              if (plugin) {
                  AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
-                 KTToolInterface *tool = qobject_cast<KTToolInterface *>(plugin);
-            
+                 
                  if (filter) {
                      k->filters << plugin;
-                 } else if (tool) {
-                            k->tools << plugin;
+                 } else {
+                     KTToolInterface *tool = qobject_cast<KTToolInterface *>(plugin);
+                     if (tool) {
+                         k->tools << plugin;
+                     } else {
+                         KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin); 
+                         if (exporter) {
+                             k->formats << plugin;
+                         }
+                     } 
                  }
-            
+
                  k->loaders << loader;
              } else {
                  #ifdef K_DEBUG
@@ -127,3 +137,9 @@ QObjectList KTPluginManager::filters() const
 {
     return k->filters;
 }
+
+QObjectList KTPluginManager::formats() const
+{
+    return k->formats;
+}
+

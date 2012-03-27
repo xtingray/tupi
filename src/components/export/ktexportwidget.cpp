@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "ktexportwidget.h"
+#include "ktpluginmanager.h"
 #include "tglobal.h"
 #include "tdebug.h"
 #include "kitemselector.h"
@@ -939,6 +940,21 @@ KTExportWidget::~KTExportWidget()
 
 void KTExportWidget::loadPlugins()
 {
+    foreach (QObject *plugin, KTPluginManager::instance()->formats()) {
+             if (plugin) {
+                 KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
+                 if (exporter) {
+                     m_pluginSelectionPage->addPlugin(exporter->key());
+                     m_plugins.insert(exporter->key(), exporter);
+                 } else {
+                     #ifdef K_DEBUG
+                            tError() << "KTExportWidget::loadPlugins() - [ Fatal Error ] - Can't load export plugin";
+                     #endif
+                 }
+             }
+    }
+
+    /*
     QDir pluginDirectory = QDir(PLUGINS_DIR);
 
     foreach (QString fileName, pluginDirectory.entryList(QDir::Files)) {
@@ -958,6 +974,7 @@ void KTExportWidget::loadPlugins()
                  }
              }
     }
+    */
 }
 
 void KTExportWidget::setExporter(const QString &plugin)
