@@ -46,14 +46,15 @@ class KMovieGeneratorInterface
         enum Format
              {
                NONE = 0,
-               OGV  = 1 << 0,
-               SWF  = 1 << 1,
-               MPEG = 1 << 2,
-               AVI  = 1 << 3,
-               RM   = 1 << 4,
-               ASF  = 1 << 5,
-               MOV  = 1 << 6,
-               GIF  = 1 << 7
+               WEBM = 1 << 0,
+               OGV  = 1 << 1,
+               SWF  = 1 << 2,
+               MPEG = 1 << 3,
+               AVI  = 1 << 4,
+               RM   = 1 << 5,
+               ASF  = 1 << 6,
+               MOV  = 1 << 7,
+               GIF  = 1 << 8
              };
 
         Q_DECLARE_FLAGS(Formats, Format);

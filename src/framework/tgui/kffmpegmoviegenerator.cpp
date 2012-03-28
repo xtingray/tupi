@@ -159,6 +159,9 @@ static AVFrame *allocPicture(enum PixelFormat pix_fmt, int width, int height)
 void KFFMpegMovieGenerator::Private::chooseFileExtension(int format)
 {
     switch (format) {
+            case WEBM:
+                 movieFile += ".webm";
+                 break;
             case OGV:
                  movieFile += ".ogv";
                  break;

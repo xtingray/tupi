@@ -1,4 +1,4 @@
-# Generated automatically at Tue Mar 27 12:30:36 -0500 2012! PLEASE DO NOT EDIT!
+# Generated automatically at Tue Mar 27 23:49:07 -0500 2012! PLEASE DO NOT EDIT!
 LIBS += -lavcodec -lavformat -lavutil
 QT += opengl core gui svg xml network
 DEFINES += HAVE_FFMPEG

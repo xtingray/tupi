@@ -157,6 +157,11 @@ void SelectPlugin::setFormats(KTExportInterface::Formats formats)
 {
     m_formatList->clear();
 
+    if (formats & KTExportInterface::WEBM) {
+        QListWidgetItem *format = new QListWidgetItem(tr("WEBM Video"), m_formatList);
+        format->setData(3124, KTExportInterface::WEBM);
+    }
+
     if (formats & KTExportInterface::OGV) {
         QListWidgetItem *format = new QListWidgetItem(tr("OGV Video"), m_formatList);
         format->setData(3124, KTExportInterface::OGV);
@@ -215,6 +220,9 @@ void SelectPlugin::setFormats(KTExportInterface::Formats formats)
 
 char const* SelectPlugin::getFormatExtension(const QString format) 
 { 
+    if (format.compare(tr("WEBM Video")) == 0)
+        return ".webm";
+
     if (format.compare(tr("OGV Video")) == 0)
         return ".ogv";
 

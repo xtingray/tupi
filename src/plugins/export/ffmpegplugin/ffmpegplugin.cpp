@@ -62,12 +62,18 @@ QString FFMpegPlugin::key() const
 
 KTExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-    return KTExportInterface::OGV | KTExportInterface::MPEG | KTExportInterface::SWF | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
+    return KTExportInterface::WEBM | KTExportInterface::OGV | KTExportInterface::MPEG | KTExportInterface::SWF | KTExportInterface::AVI 
+           | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
 KMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Format format)
 {
     switch (format) {
+            case KTExportInterface::WEBM:
+                 {
+                   return KFFMpegMovieGenerator::WEBM;
+                 }
+                 break;
             case KTExportInterface::OGV:
                  {
                    return KFFMpegMovieGenerator::OGV;
