@@ -63,14 +63,15 @@ bool KTProjectListParser::startTag(const QString &tag, const QXmlAttributes &att
                    ProjectInfo info;
                    info.file = atts.value("filename");
                    info.name = atts.value("name");
-                   info.author = atts.value("author");
                    info.description = atts.value("description");
                    info.date = atts.value("date");
 
-                   if (k->pivot)
+                   if (k->pivot) {
+                       info.author = atts.value("author");
                        k->contributions << info;
-                   else
+                   } else {
                        k->works << info;
+                   }
         }
     }
 

@@ -324,3 +324,9 @@ void KTPaintAreaStatus::updateFramePointer()
         k->frameField->setText(QString::number(k->currentFrame));
     }
 }
+
+void KTPaintAreaStatus::setBgColor(QColor color)
+{
+    k->bgStatus->setColor(color);
+}
+

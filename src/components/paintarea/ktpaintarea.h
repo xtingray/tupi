@@ -84,6 +84,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void itemAddedOnSelection(KTGraphicsScene *);
         void frameChanged(int);
         void closePolyLine();
+        void updateStatusBgColor(const QColor color);
 
     public slots:
         void deleteItems();

@@ -54,9 +54,11 @@ class KTListProjectDialog : public QDialog
     public:
         KTListProjectDialog(int works, int contributions, const QString &serverName);
         ~KTListProjectDialog();
-        void addWork(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date);
+        void addWork(const QString &filename, const QString &name, const QString &description, const QString &date);
         void addContribution(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date);
-        QString projectID();
+        QString projectID() const;
+        QString owner() const;
+        bool workIsMine();
         
     private slots:
         void execAccept(QTreeWidgetItem *item, int index);
@@ -64,7 +66,7 @@ class KTListProjectDialog : public QDialog
         void updateContribTree();
     
     private:
-        QTreeWidget *tree();
+        QTreeWidget *tree(bool myWorks);
         struct Private;
         Private *const k;
 };

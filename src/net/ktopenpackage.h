@@ -45,7 +45,7 @@
 class KTOpenPackage: public QDomDocument
 {
     public:
-        KTOpenPackage(const QString &projectID);
+        KTOpenPackage(const QString &projectID, const QString &owner);
         ~KTOpenPackage();
 };
 

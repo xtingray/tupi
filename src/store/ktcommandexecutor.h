@@ -109,11 +109,11 @@ class KTCommandExecutor : public QObject
         bool removeSymbolFromProject(KTLibraryResponse *response);
         
         bool setTween(KTItemResponse *response);
-        
         bool expandFrame(KTFrameResponse *response);
         bool pasteFrame( KTFrameResponse *response);
-
         bool resetScene(KTSceneResponse *response);
+
+        void setBgColor(KTSceneResponse *response);
         
     signals:
         void responsed(KTProjectResponse *response);

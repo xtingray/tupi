@@ -55,6 +55,7 @@ class KTPaintAreaStatus : public QStatusBar
         void setZoomFactor(const QString &text);
         void updateZoomFactor(double factor);
         qreal currentZoomFactor();
+        void setBgColor(QColor color);
 
     public slots:
         void applyZoom(const QString &text);

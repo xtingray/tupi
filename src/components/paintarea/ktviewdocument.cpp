@@ -40,6 +40,7 @@
 #include "tdebug.h"
 #include "tconfig.h"
 
+#include "ktrequestbuilder.h"
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
 #include "ktexportinterface.h"
@@ -183,6 +184,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent, bool isLocal
     layout->addWidget(k->verticalRuler, 1, 0);
 
     connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(updateScaleVars(double)));
+    connect(k->paintArea, SIGNAL(updateStatusBgColor(QColor)), this, SLOT(updateStatusBgColor(QColor)));
 
     Tupi::RenderType renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt()); 
 
@@ -1169,8 +1171,13 @@ int KTViewDocument::currentSceneIndex()
 
 void KTViewDocument::updateBgColor(const QColor color)
 {
-   k->project->setBgColor(color);
-   k->paintArea->setBgColor(color);
+   if (k->isLocal) {
+       k->project->setBgColor(color);
+       k->paintArea->setBgColor(color);
+   } else {
+       KTProjectRequest event = KTRequestBuilder::createSceneRequest(currentSceneIndex(), KTProjectRequest::BgColor, color.name());
+       emit requestTriggered(&event);
+   }
 }
 
 void KTViewDocument::enableOnionFeature()
@@ -1285,4 +1292,9 @@ void KTViewDocument::postImage()
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         emit requestExportImageToServer(frameIndex, sceneIndex, title, topics, description);
     }
+}
+
+void KTViewDocument::updateStatusBgColor(const QColor color)
+{
+    k->status->setBgColor(color);
 }

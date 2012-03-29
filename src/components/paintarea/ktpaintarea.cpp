@@ -436,6 +436,14 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                     setCurrentScene(0);
                 }
                 break;
+           case KTProjectRequest::BgColor:
+                {
+                    QString colorName = event->arg().toString();
+                    QColor color(colorName);
+                    setBgColor(color);
+                    emit updateStatusBgColor(color);
+                }
+                break;
            default: 
                 {
                     #ifdef K_DEBUG

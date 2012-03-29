@@ -51,8 +51,11 @@ struct KTListProjectDialog::Private
     QTreeWidget *contributions;
     QList<QString> workList;
     QList<QString> contribList;
+    QList<QString> authors;
     int index;
     QString filename;
+    QString owner;
+    bool isMine;
 };
 
 KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QString &serverName) : QDialog(), k(new Private)
@@ -65,14 +68,14 @@ KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QSt
     setLayout(layout);
 
     if (works > 0) {
-        k->works = tree();
+        k->works = tree(true);
         connect(k->works, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateWorkTree()));
         connect(k->works, SIGNAL(itemSelectionChanged()), this, SLOT(updateWorkTree()));
         connect(k->works, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem *, int)));
     }
 
     if (contributions > 0) {
-        k->contributions = tree();
+        k->contributions = tree(false);
         connect(k->contributions, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(updateContribTree()));
         connect(k->contributions, SIGNAL(itemSelectionChanged()), this, SLOT(updateContribTree()));
         connect(k->contributions, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem *, int)));
@@ -138,32 +141,42 @@ KTListProjectDialog::~KTListProjectDialog()
 {
 }
 
-QTreeWidget *KTListProjectDialog::tree()
+QTreeWidget *KTListProjectDialog::tree(bool myWorks)
 {
     QTreeWidget *tree = new QTreeWidget;
     tree->setFixedHeight(120);
-    tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description") << tr("Date"));
+    if (myWorks)
+        tree->setHeaderLabels(QStringList() << tr("Name") << tr("Description") << tr("Date"));
+    else
+        tree->setHeaderLabels(QStringList() << tr("Name") << tr("Author") << tr("Description") << tr("Date"));
+
     tree->header()->show();
 
-    tree->setColumnWidth(0, 150);
-    tree->setColumnWidth(1, 100);
-    tree->setColumnWidth(2, 200);
-    tree->setColumnWidth(3, 55);
+    if (myWorks) {
+        tree->setColumnWidth(0, 200);
+        tree->setColumnWidth(1, 250);
+        tree->setColumnWidth(2, 55);
+    } else {
+        tree->setColumnWidth(0, 150);
+        tree->setColumnWidth(1, 100);
+        tree->setColumnWidth(2, 200);
+        tree->setColumnWidth(3, 55);
+    }
 
     return tree;
 }
 
-void KTListProjectDialog::addWork(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date)
+void KTListProjectDialog::addWork(const QString &filename, const QString &name, const QString &description, const QString &date)
 {
     k->workList.append(filename);
 
     QTreeWidgetItem *item = new QTreeWidgetItem(k->works);
     item->setText(0, name);
-    item->setText(1, author);
-    item->setText(2, description);
-    item->setText(3, date);
+    item->setText(1, description);
+    item->setText(2, date);
 
     if (k->index == 0) {
+        k->isMine = true;
         k->works->setCurrentItem(item);
         k->filename = filename;
     }
@@ -174,6 +187,7 @@ void KTListProjectDialog::addWork(const QString &filename, const QString &name, 
 void KTListProjectDialog::addContribution(const QString &filename, const QString &name, const QString &author, const QString &description, const QString &date)
 {
     k->contribList.append(filename);
+    k->authors.append(author);
 
     QTreeWidgetItem *item = new QTreeWidgetItem(k->contributions);
     item->setText(0, name);
@@ -182,9 +196,14 @@ void KTListProjectDialog::addContribution(const QString &filename, const QString
     item->setText(3, date);
 }
 
-QString KTListProjectDialog::projectID()
+QString KTListProjectDialog::projectID() const
 {
     return k->filename;
+}
+
+QString KTListProjectDialog::owner() const
+{
+    return k->owner;
 }
 
 void KTListProjectDialog::execAccept(QTreeWidgetItem *item, int index)
@@ -202,6 +221,7 @@ void KTListProjectDialog::updateWorkTree()
             k->contributions->clearSelection();
         int index = k->works->currentIndex().row(); 
         k->filename = k->workList.at(index);
+        k->isMine = true;
     }
 }
 
@@ -211,6 +231,14 @@ void KTListProjectDialog::updateContribTree()
         if (k->workList.size() > 0)
             k->works->clearSelection();
         int index = k->contributions->currentIndex().row();
+        k->isMine = false;
         k->filename = k->contribList.at(index);
+        k->owner = k->authors.at(index);
     }
 }
+
+bool KTListProjectDialog::workIsMine()
+{
+    return k->isMine;
+}
+

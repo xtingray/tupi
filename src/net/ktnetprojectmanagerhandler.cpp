@@ -73,7 +73,7 @@ struct KTNetProjectManagerHandler::Private
     KTNetProjectManagerParams *params;
     KTNetSocket *socket;
     QString projectName;
-    QString author;
+    QString username;
     KTProject *project;
     
     QString sign;
@@ -215,9 +215,9 @@ bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject 
     return true;
 }
 
-void KTNetProjectManagerHandler::loadProjectFromServer(const QString &projectID)
+void KTNetProjectManagerHandler::loadProjectFromServer(const QString &projectID, const QString &owner)
 {
-    KTOpenPackage package(projectID);
+    KTOpenPackage package(projectID, owner);
     k->socket->send(package);
 }
 
@@ -240,6 +240,7 @@ void KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
     if (connected) {
         KTConnectPackage connectPackage(k->params->server(), k->params->login(), k->params->password());
         k->socket->send(connectPackage);
+        k->username = k->params->login();
     } else {
         TOsd::self()->display(tr("Error"), tr("Unable to connect to server"), TOsd::Error);
     }
@@ -257,7 +258,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
     #endif    
 
     k->projectName = netparams->projectName();
-    k->author = netparams->author();
+    // k->author = netparams->author();
    
     /* 
     if (! k->socket->isOpen()) {
@@ -387,7 +388,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                        k->dialogIsOpen = true;
 
                        foreach (KTProjectListParser::ProjectInfo info, parser.works())
-                                k->dialog->addWork(info.file, info.name, info.author, info.description, info.date);
+                                k->dialog->addWork(info.file, info.name, info.description, info.date);
 
                        foreach (KTProjectListParser::ProjectInfo info, parser.contributions())
                                 k->dialog->addContribution(info.file, info.name, info.author, info.description, info.date);
@@ -397,7 +398,10 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root, const QStrin
                                   tDebug() << "KTNetProjectManagerHandler::handlePackage() - opening project " << k->dialog->projectID();
                            #endif
                            k->dialogIsOpen = false;
-                           loadProjectFromServer(k->dialog->projectID());
+                           if (k->dialog->workIsMine())
+                               loadProjectFromServer(k->dialog->projectID(), k->username);
+                           else
+                               loadProjectFromServer(k->dialog->projectID(), k->dialog->owner());
                        } else {
                            k->dialogIsOpen = false;
                            closeConnection();

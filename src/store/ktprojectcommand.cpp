@@ -461,6 +461,12 @@ void KTProjectCommand::sceneCommand()
                  k->executor->setSceneVisibility(response);
             }
             break;
+            case KTProjectRequest::BgColor:
+            {
+                 k->executor->setBgColor(response);
+            }
+            break;
+
             default: 
             {
                  #ifdef K_DEBUG

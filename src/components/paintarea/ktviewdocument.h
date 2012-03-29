@@ -98,6 +98,7 @@ class KTViewDocument : public QMainWindow
         void showFullScreen();
         void closeFullScreen();
         void loadPlugin(int menu, int index);
+        void updateStatusBgColor(const QColor color);
 
     private:
         struct Private;

@@ -132,7 +132,8 @@ class STORE_EXPORT KTProjectRequest
             Paste = 21,
 
             // scenes
-            GetInfo = 22 
+            GetInfo = 22, 
+            BgColor = 23
         };
         
         enum Part

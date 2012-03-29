@@ -214,3 +214,11 @@ bool KTCommandExecutor::resetScene(KTSceneResponse *response)
 
     return true;
 }
+
+void KTCommandExecutor::setBgColor(KTSceneResponse *response)
+{
+    QString colorName = response->arg().toString();
+    m_project->setBgColor(QColor(colorName));
+
+    emit responsed(response);
+}
