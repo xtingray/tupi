@@ -505,7 +505,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                         viewport()->update(scene()->sceneRect().toRect());
 
-                        if (guiScene->currentTool()->toolType() != KTToolInterface::Tweener)
+                        if (guiScene->currentTool()->toolType() != KTToolInterface::Tweener && k->currentTool.compare(tr("PolyLine")) != 0)
                             guiScene->currentTool()->init(graphicsScene());          
                     }
                     break;
