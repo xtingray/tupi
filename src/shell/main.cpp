@@ -73,6 +73,8 @@
 #define HAVE_FFMPEG
 #endif
 
+using namespace std;
+
 class SleeperThread : public QThread
 {
     public:
