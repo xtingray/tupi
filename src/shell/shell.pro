@@ -22,21 +22,6 @@ macx {
     ICON = ../../launcher/icons/tupi.icns
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6
     QMAKE_INFO_PLIST = ./Info.plist
-    INSTALLS += icons \
-                tupiman \
-                copyright
-
-    icons.target = ../../launcher/icons/tupi.png
-    icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
-    icons.path = /pixmaps/
-
-    tupiman.target = ../components/help/help/man/tupi.1.gz
-    tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
-    tupiman.path = /man1/
-
-    copyright.target = ../components/help/help/man/copyright
-    copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
-    copyright.path = /tupi/
 }
 
 unix:!mac {
