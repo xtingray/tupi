@@ -20,8 +20,9 @@ target.path = /bin/
 macx {
     CONFIG += console
     ICON = ../../launcher/icons/tupi.icns
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7
     QMAKE_INFO_PLIST = ./Info.plist
+    TARGET = ../../bin/Tupi
 }
 
 unix:!mac {
@@ -45,6 +46,8 @@ unix:!mac {
     copyright.target = ../components/help/help/man/copyright
     copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
     copyright.path = /tupi/
+
+    TARGET = ../../bin/tupi.bin
 }
 
 TRANSLATIONS += data/translations/tupi_es.ts \
@@ -75,7 +78,6 @@ SOURCES += main.cpp \
            ktlocalprojectmanagerhandler.cpp
 
 CONFIG += warn_on
-TARGET = ../../bin/tupi.bin
 TEMPLATE = app
 
 linux-g{
