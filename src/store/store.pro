@@ -3,9 +3,16 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
-INSTALLS += headers \
-            target 
-target.path = /lib/ 
+INSTALLS += headers 
+
+macx {
+INSTALLS += otool
+otool.path = /lib/
+otool.extra = ../../tools/update_dylib_path.rb $(TARGET)
+}
+
+INSTALLS += target
+target.path = /lib/
 
 headers.target = .
 headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
@@ -53,6 +60,7 @@ HEADERS += ktlayer.h \
            ktsoundlayer.h \
            ktsvgitem.h \
            ktbackground.h
+
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
