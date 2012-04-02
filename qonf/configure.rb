@@ -212,7 +212,7 @@ module RQonf
 
       if RUBY_PLATFORM.downcase.include?("darwin")
         newfile += "export DYLD_FALLBACK_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$DYLD_FALLBACK_LIBRARY_PATH\"\n\n"
-        newfile += "open ${TUPI_BIN}/tupi.bin.app $*"
+        newfile += "open ${TUPI_BIN}/Tupi.app $*"
       else
         newfile += "export LD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
         newfile += "exec ${TUPI_BIN}/tupi.bin $*"
