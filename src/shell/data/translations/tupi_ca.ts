@@ -1253,7 +1253,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Multi-artist project</source>
+        <source>Tupitube project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

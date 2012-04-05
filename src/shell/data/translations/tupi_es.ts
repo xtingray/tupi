@@ -1593,8 +1593,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Multi-artist project</source>
-        <translation type="unfinished">Proyecto Multi-artista</translation>
+        <source>Tupitube project</source>
+        <translation type="unfinished">Proyecto Tupitube</translation>
     </message>
     <message>
         <source>Settings</source>

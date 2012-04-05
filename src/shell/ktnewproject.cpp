@@ -162,7 +162,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     layout->addWidget(panel, 4, 0);
     layout->addWidget(renderAndFps, 4, 1);
 
-    QCheckBox *activeNetOptions = new QCheckBox(tr("Multi-artist project"));
+    QCheckBox *activeNetOptions = new QCheckBox(tr("Tupitube project"));
     connect(activeNetOptions, SIGNAL(toggled(bool)), this, SLOT(enableNetOptions(bool)));
 
     layout->addWidget(activeNetOptions, 5, 0, 1, 2, Qt::AlignLeft);

@@ -3640,8 +3640,8 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
         <translation>Dimensioni</translation>
     </message>
     <message>
-        <source>Multi-artist project</source>
-        <translation>Progetto multi-artista</translation>
+        <source>Tupitube project</source>
+        <translation>Progetto Tupitube</translation>
     </message>
     <message>
         <source>Project info</source>

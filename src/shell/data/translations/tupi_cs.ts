@@ -1622,8 +1622,8 @@
         <translation>FPS</translation>
     </message>
     <message>
-        <source>Multi-artist project</source>
-        <translation>Projekt více umělců</translation>
+        <source>Tupitube project</source>
+        <translation>Tupitube project</translation>
     </message>
     <message>
         <source>Project info</source>
