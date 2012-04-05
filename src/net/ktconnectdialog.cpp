@@ -139,7 +139,7 @@ int KTConnectDialog::port() const
 void KTConnectDialog::loadSettings()
 {
     TCONFIG->beginGroup("Network");
-    k->server->setText(TCONFIG->value("Server", "localhost").toString());
+    k->server->setText(TCONFIG->value("Server", "tupitube.com").toString());
     k->port->setValue(TCONFIG->value("Port", 5000).toInt());
     k->login->setText(TCONFIG->value("Login", QString::fromLocal8Bit(::getenv("USER"))).toString());
     k->password->setText(TCONFIG->value("Password", "").toString());

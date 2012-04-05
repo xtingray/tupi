@@ -210,7 +210,7 @@ void KTNewProject::setupNetOptions()
 
     TConfig *config = kApp->config("Network");
 
-    k->server->setText(config->value("Server", "localhost").toString());
+    k->server->setText(config->value("Server", "tupitube.com").toString());
     k->port->setValue(config->value("Port", 5000).toInt());
 
     k->login->setText(config->value("Login", "").toString());
