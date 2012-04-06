@@ -34,17 +34,16 @@
  ***************************************************************************/
 
 #include "ktsplash.h"
+#include "timageeffect.h"
+#include "tdebug.h"
+#include "tglobal.h"
 
-#include <qpixmap.h>
-#include <qbitmap.h>
-#include <qimage.h>
+#include <QPixmap>
+#include <QBitmap>
+#include <QImage>
 #include <QtDebug>
 
 #include <cmath> //abs
-
-#include "kimageeffect.h"
-#include "tdebug.h"
-#include "tglobal.h"
 
 //------------------ CONSTRUCTOR -----------------
 

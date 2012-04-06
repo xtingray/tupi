@@ -36,13 +36,13 @@
 #ifndef KTCELLSCOLOR_H
 #define KTCELLSCOLOR_H
 
-#include "kcellview.h"
+#include "tcellview.h"
 
 /**
  * @author Jorge Cuadrado
 **/
 
-class KTCellsColor : public KCellView
+class KTCellsColor : public TCellView
 {
     Q_OBJECT
 

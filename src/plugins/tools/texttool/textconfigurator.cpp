@@ -34,8 +34,8 @@
  ***************************************************************************/
 
 #include "textconfigurator.h"
-#include "kfontchooser.h"
-#include "kspellhighlighter.h"
+#include "tfontchooser.h"
+// #include "kspellhighlighter.h"
 #include "tdebug.h"
 
 #include <QBoxLayout>
@@ -47,7 +47,7 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     setLayout(layout);
 
-    m_fontChooser = new KFontChooser;
+    m_fontChooser = new TFontChooser;
     layout->addWidget(m_fontChooser);
 
     m_text = new QTextEdit(this);
@@ -61,7 +61,7 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
     connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
     changeFont();
 
-    new KSpellHighlighter(m_text->document());
+    // new KSpellHighlighter(m_text->document());
 }
 
 TextConfigurator::~TextConfigurator()

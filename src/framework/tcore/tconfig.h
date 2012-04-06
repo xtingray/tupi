@@ -51,7 +51,7 @@ class TConfig;
  * this is a dom config handler
 */
 
-class K_CORE_EXPORT TConfig : public QObject
+class T_CORE_EXPORT TConfig : public QObject
 {
     Q_OBJECT
 

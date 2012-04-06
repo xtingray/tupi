@@ -8,9 +8,9 @@ target.path = /lib/
 headers.path = /include/tupisound
 headers.files += *.h
 
-HEADERS += kaudioengineiface.h \
-           kaudioplayer.h
-SOURCES += kaudioplayer.cpp
+HEADERS += taudioengineiface.h \
+           taudioplayer.h
+SOURCES += taudioplayer.cpp
 
 CONFIG += release warn_on dll
 TEMPLATE = lib 

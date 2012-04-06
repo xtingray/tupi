@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "ktpaintareaconfig.h"
-#include "kcolorbutton.h"
+#include "tcolorbutton.h"
 #include "tconfig.h"
 
 #include <QVBoxLayout>
@@ -67,7 +67,7 @@ void KTPaintAreaConfig::setupPage()
     TCONFIG->beginGroup("PaintArea");
     
     pageLayout->addWidget(new QLabel(tr("Grid color")), 0, 0);
-    m_gridColor = new KColorButton;
+    m_gridColor = new TColorButton;
     pageLayout->addWidget(m_gridColor, 0, 1);
     
     m_gridColor->setColor(qvariant_cast<QColor>(TCONFIG->value("GridColor", QColor(Qt::gray))));
@@ -82,19 +82,19 @@ void KTPaintAreaConfig::setupPage()
     m_gridSeparation->setValue(10);
     
     pageLayout->addWidget(new QLabel(tr("Background color")), 2, 0);
-    m_backgroundColor = new KColorButton;
+    m_backgroundColor = new TColorButton;
     pageLayout->addWidget(m_backgroundColor, 2, 1);
     
     m_backgroundColor->setColor(qvariant_cast<QColor>(TCONFIG->value("BackgroundColor", QColor(Qt::white))));
     
     pageLayout->addWidget(new QLabel(tr("Onion skin color")), 3, 0);
-    m_onionSkinColor = new KColorButton;
+    m_onionSkinColor = new TColorButton;
     pageLayout->addWidget(m_onionSkinColor, 3, 1);
     
     m_onionSkinColor->setColor(qvariant_cast<QColor>(TCONFIG->value("OnionSkinColor", QColor(Qt::lightGray))));
     
     pageLayout->addWidget(new QLabel(tr("Onion skin background ")), 4, 0);
-    m_onionSkinBackground = new KColorButton;
+    m_onionSkinBackground = new TColorButton;
     pageLayout->addWidget(m_onionSkinBackground, 4, 1);
     
     m_onionSkinBackground->setColor(qvariant_cast<QColor>(TCONFIG->value("OnionSkinBackground", 

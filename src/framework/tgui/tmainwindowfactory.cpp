@@ -35,9 +35,9 @@
 
 #include "tmainwindowfactory.h"
 
-#include <ktabbedmainwindow.h>
-#include <kstackedmainwindow.h>
-#include <kworkspacemainwindow.h>
+#include "tabbedmainwindow.h"
+#include "tstackedmainwindow.h"
+#include "tworkspacemainwindow.h"
 
 #include <QDockWidget>
 #include <QToolBar>
@@ -105,7 +105,7 @@ TMainWindowFactory::~TMainWindowFactory()
 }
 
 /**
- * if centralWidget() is a QTabWidget an instance of KTabbedMainWindow will be created
+ * if centralWidget() is a QTabWidget an instance of TabbedMainWindow will be created
  * @param other 
  * @return 
  */
@@ -123,8 +123,8 @@ TMainWindow *TMainWindowFactory::create(QMainWindow *other)
 
     if (QWidget *central = other->centralWidget()) {
         if (QTabWidget *tabWidget = dynamic_cast<QTabWidget *>(central)) {
-            mainWindow = new KTabbedMainWindow;
-            static_cast<KTabbedMainWindow *>(mainWindow)->setTabWidget(tabWidget);
+            mainWindow = new TabbedMainWindow;
+            static_cast<TabbedMainWindow *>(mainWindow)->setTabWidget(tabWidget);
         } else {
             mainWindow = new TMainWindow;
             central->setParent(mainWindow);

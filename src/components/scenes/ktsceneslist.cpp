@@ -46,7 +46,7 @@ struct KTScenesList::Private
    int scenesTotal;
 };
 
-KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent), k(new Private)
+KTScenesList::KTScenesList(QWidget *parent) : TreeListWidget(parent), k(new Private)
 {
     k->scenesTotal = 0;
     setHeaderLabels(QStringList() << "");

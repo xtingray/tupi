@@ -39,9 +39,9 @@
 #include "ktgradientselector.h"
 #include "ktgradientviewer.h"
 
-#include "kimagebutton.h"
-#include "kcirclebutton.h"
-#include "kxyspinbox.h"
+#include "timagebutton.h"
+#include "tcirclebutton.h"
+#include "txyspinbox.h"
 #include "ktglobal.h"
 
 #include <QFrame>

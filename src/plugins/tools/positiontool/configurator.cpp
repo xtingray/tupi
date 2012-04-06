@@ -40,8 +40,8 @@
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
 #include "tosd.h"
-#include "kradiobuttongroup.h"
-#include "kimagebutton.h"
+#include "tradiobuttongroup.h"
+#include "timagebutton.h"
 #include "tdebug.h"
 
 #include <QLabel>
@@ -64,8 +64,8 @@ struct Configurator::Private
 
     bool selectionDone;
 
-    KImageButton *removeButton;
-    KImageButton *editButton;
+    TImageButton *removeButton;
+    TImageButton *editButton;
 
     Settings::Mode mode; 
     GuiState state;

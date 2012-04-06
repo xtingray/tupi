@@ -38,7 +38,7 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "taction.h"
-#include "knodegroup.h"
+#include "tnodegroup.h"
 #include "tosd.h"
 #include "ktsvg2qt.h"
 #include "ktinputdeviceinformation.h"
@@ -77,7 +77,7 @@ struct Tweener::Private
 
     KTItemTweener *currentTween;
 
-    KNodeGroup *group;
+    TNodeGroup *group;
 
     bool pathAdded;
     int startPoint;
@@ -390,7 +390,7 @@ void Tweener::setCreatePath()
         if (k->group) {
             k->group->createNodes(k->path);
         } else {
-            k->group = new KNodeGroup(k->path, k->scene, KNodeGroup::CompoundTween);
+            k->group = new TNodeGroup(k->path, k->scene, TNodeGroup::CompoundTween);
             connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->createNodes(k->path);
         }

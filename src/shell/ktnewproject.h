@@ -37,9 +37,9 @@
 #define KTNEWPROYECT_H
 
 #include "tosd.h"
-#include "ktabdialog.h"
+#include "tabdialog.h"
 #include "twizard.h"
-#include "kxyspinbox.h"
+#include "txyspinbox.h"
 
 class KTProjectManagerParams;
 
@@ -47,7 +47,7 @@ class KTProjectManagerParams;
  * @author Jorge Cuadrado
 */
 
-class KTNewProject : public KTabDialog
+class KTNewProject : public TabDialog
 {
     Q_OBJECT
 

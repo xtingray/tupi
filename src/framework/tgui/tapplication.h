@@ -36,6 +36,12 @@
 #ifndef TAPPLICATION_H
 #define TAPPLICATION_H
 
+#include "thememanager.h"
+#include "tvhbox.h"
+#include "twizard.h"
+#include "tconfig.h"
+#include "tglobal.h"
+
 #include <QApplication>
 #include <QMap>
 #include <QColorGroup>
@@ -46,18 +52,12 @@
 #include <QFileDialog>
 #include <QDialog>
 
-#include "kthememanager.h"
-#include "kvhbox.h"
-#include "twizard.h"
-#include "tconfig.h"
-#include "tglobal.h"
-
 class QApplication;
 class QString;
-class KThemeDocument;
+class ThemeDocument;
 class QPalette;
 class TActionManager;
-class KAction;
+class TAction;
 
 typedef QMap<QString, QString> ParseArgs;
 
@@ -73,7 +73,7 @@ typedef QMap<QString, QString> ParseArgs;
  * @TODO
  * @li We need have a cache directory (like /tmp in un*x)
 */
-class K_GUI_EXPORT TApplication : public QApplication
+class T_GUI_EXPORT TApplication : public QApplication
 {
     Q_OBJECT
     public:
@@ -151,9 +151,9 @@ class K_GUI_EXPORT TApplication : public QApplication
          * @if spanish
          * Aplica un tema a toda la aplicacion desde un documento XML
          * @endif
-         * @param kd KThemeDocument variable
+         * @param kd ThemeDocument variable
          */
-        void applyTheme(const KThemeDocument &kd);
+        void applyTheme(const ThemeDocument &kd);
         
         /**
          * @if english
@@ -234,7 +234,7 @@ class K_GUI_EXPORT TApplication : public QApplication
         
     private:
         ParseArgs m_parseArgs;
-        KThemeManager m_themeManager;
+        ThemeManager m_themeManager;
         TActionManager *m_actionManager;
 };
 

@@ -36,7 +36,7 @@
 #include "ktconnectdialog.h"
 #include "ktnetprojectmanagerparams.h"
 #include "tconfig.h"
-#include "kformfactory.h"
+#include "tformfactory.h"
 #include "tosd.h"
 
 #include <QLineEdit>
@@ -79,7 +79,7 @@ KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), k(new Priva
     k->port->setMinimum(1);
     k->port->setMaximum(65000);
     
-    QGridLayout *layout = KFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port);
+    QGridLayout *layout = TFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port);
     
     k->storePassword = new QCheckBox(tr("Store password"));
     layout->addWidget(k->storePassword, 5, 1);

@@ -34,14 +34,12 @@
  ***************************************************************************/
 
 #include "ktsoundlayer.h"
-
-#include <QFileInfo>
-
-#include "kaudioplayer.h"
-
+#include "taudioplayer.h"
 #include "ktlibrary.h"
 #include "ktproject.h"
 #include "ktlibraryobject.h"
+
+#include <QFileInfo>
 
 struct KTSoundLayer::Private
 {
@@ -67,7 +65,7 @@ void KTSoundLayer::fromSymbol(const QString &symbolName)
         if (object->type() == KTLibraryObject::Sound) {
             k->symbolName = symbolName;
             k->filePath = object->dataPath();
-            k->playerId = KAudioPlayer::instance()->load(k->filePath);
+            k->playerId = TAudioPlayer::instance()->load(k->filePath);
         }
     }
 }
@@ -79,14 +77,14 @@ QString KTSoundLayer::filePath() const
 
 void KTSoundLayer::play()
 {
-    KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
-    KAudioPlayer::instance()->play();
+    TAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+    TAudioPlayer::instance()->play();
 }
 
 void KTSoundLayer::stop()
 {
-    KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
-    KAudioPlayer::instance()->stop();
+    TAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+    TAudioPlayer::instance()->stop();
 }
 
 void KTSoundLayer::fromXml(const QString &xml)

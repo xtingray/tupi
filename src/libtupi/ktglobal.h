@@ -38,7 +38,7 @@
 
 #include "tglobal.h"
 
-#define TUPI_EXPORT K_GUI_EXPORT
+#define TUPI_EXPORT T_GUI_EXPORT
 
 #define LIBRARY_DIR CONFIG_DIR+"/libraries"
 

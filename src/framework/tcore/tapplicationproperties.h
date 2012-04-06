@@ -43,7 +43,7 @@
  * @author David Cuadrado
 */
 
-class K_CORE_EXPORT TApplicationProperties
+class T_CORE_EXPORT TApplicationProperties
 {
     protected:
         TApplicationProperties();

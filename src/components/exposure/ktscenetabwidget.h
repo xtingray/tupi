@@ -49,7 +49,7 @@
  * @author Gustav Gonzalez 
 */
 
-class K_GUI_EXPORT KTSceneTabWidget : public QFrame
+class T_GUI_EXPORT KTSceneTabWidget : public QFrame
 {
     Q_OBJECT
 

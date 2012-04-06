@@ -45,7 +45,7 @@
 
 struct KTPenWidget::Private
 {
-    KEditSpinBox *thickness;
+    TEditSpinBox *thickness;
     QComboBox *capStyle;
     QComboBox *joinStyle;
     QComboBox *style;
@@ -68,7 +68,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     k->thickPreview = new KTPenThicknessWidget(this);
     k->thickPreview->render(thicknessValue);
 
-    k->thickness = new KEditSpinBox(thicknessValue, 1, 100, 1, tr("Thickness"));
+    k->thickness = new TEditSpinBox(thicknessValue, 1, 100, 1, tr("Thickness"));
     k->thickness->setValue(thicknessValue);
 
     connect(k->thickness, SIGNAL(valueChanged(int)), this, SLOT(setThickness(int)));

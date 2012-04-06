@@ -40,8 +40,8 @@
 #include <QMap>
 #include <QButtonGroup>
 
-#include "kwidgetlistview.h"
-#include "kflatbutton.h"
+#include "twidgetlistview.h"
+#include "tflatbutton.h"
 
 #include "tglobal.h"
 
@@ -53,7 +53,7 @@ class QListWidgetItem;
  * @author David Cuadrado
 */
 
-class K_GUI_EXPORT TConfigurationDialog : public QDialog
+class T_GUI_EXPORT TConfigurationDialog : public QDialog
 {
     Q_OBJECT
 

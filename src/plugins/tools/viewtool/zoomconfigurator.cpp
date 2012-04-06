@@ -39,7 +39,7 @@
 #include <QButtonGroup>
 #include <QLabel>
 
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tseparator.h"
 
 #include "tglobal.h"

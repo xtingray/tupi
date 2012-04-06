@@ -58,10 +58,10 @@
 #include "ktexportwidget.h"
 
 #include "ktviewdocument.h"
-#include "ktabbedmainwindow.h"
+#include "tabbedmainwindow.h"
 #include "ktstatusbar.h"
 #include "tosd.h"
-#include "ktoolview.h"
+#include "toolview.h"
 
 // Including headers about projects management
 #include "ktprojectmanager.h"
@@ -85,7 +85,7 @@ class KTProjectResponse;
  * @author David Cuadrado
 */
 
-class KTMainWindow : public KTabbedMainWindow
+class KTMainWindow : public TabbedMainWindow
 {
     Q_OBJECT
 
@@ -241,7 +241,7 @@ class KTMainWindow : public KTabbedMainWindow
     private:
           KTNetProjectManagerHandler *netProjectManagerHandler;
           bool isNetworked;
-          KToolView *m_viewChat;
+          ToolView *m_viewChat;
 
     // Components
     private:
@@ -256,15 +256,15 @@ class KTMainWindow : public KTabbedMainWindow
           KTLibraryWidget *m_libraryWidget;
           KTColorPalette *m_colorPalette;
           KTPenWidget *m_penWidget;
-          KToolView *exposureView;
-          KToolView *colorView;
-          KToolView *penView;
-          KToolView *libraryView;
-          KToolView *scenesView;  
-          KToolView *helpView;
-          KToolView *timeView;
-          KToolView *debugView;
-          KToolView *exportView;
+          ToolView *exposureView;
+          ToolView *colorView;
+          ToolView *penView;
+          ToolView *libraryView;
+          ToolView *scenesView;  
+          ToolView *helpView;
+          ToolView *timeView;
+          ToolView *debugView;
+          ToolView *exportView;
           KTViewCamera *viewCamera;
           bool isSaveDialogOpen; 
           bool internetOn;

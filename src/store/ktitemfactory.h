@@ -36,7 +36,7 @@
 #ifndef KTITEMFACTORY_H
 #define KTITEMFACTORY_H
 
-#include "kxmlparserbase.h"
+#include "txmlparserbase.h"
 #include "ktglobal_store.h"
 
 #include <QStack>
@@ -50,7 +50,7 @@ class KTLibrary;
  * @author David Cuadrado
 */
 
-class STORE_EXPORT KTItemFactory : public KXmlParserBase
+class STORE_EXPORT KTItemFactory : public TXmlParserBase
 {
     public:
         enum Type

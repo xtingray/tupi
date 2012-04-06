@@ -45,8 +45,8 @@
 
 #include "tseparator.h"
 #include "tconfig.h"
-#include "koptionaldialog.h"
-#include "kimagebutton.h"
+#include "toptionaldialog.h"
+#include "timagebutton.h"
 
 struct KTProjectActionBar::Private
 {
@@ -106,7 +106,7 @@ void KTProjectActionBar::setup(Actions actions)
     int size = 16;
 
    if (actions & InsertLayer) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
         button->setToolTip(tr("Insert a layer"));
         button->setShortcut(QKeySequence(tr("F5")));
         //button->setEnabled(false);
@@ -118,7 +118,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
 
     if (actions & RemoveLayer) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
         button->setToolTip(tr("Remove the layer"));
         button->setShortcut(QKeySequence(tr("F6")));
         //button->setEnabled(false);
@@ -130,7 +130,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
 
     if (actions & MoveLayerUp) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
         button->setToolTip(tr("Move layer up"));
         button->setShortcut(QKeySequence(tr("F9")));
 
@@ -141,7 +141,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & MoveLayerDown) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
         button->setToolTip(tr("Move layer down"));
         button->setShortcut(QKeySequence(tr("F10")));
 
@@ -157,7 +157,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & InsertFrame) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
         button->setToolTip(tr("Insert frame"));
         button->setShortcut(QKeySequence(Qt::Key_Plus));
         
@@ -168,7 +168,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & RemoveFrame) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
         button->setToolTip(tr("Remove the frame"));
         button->setShortcut(QKeySequence(Qt::Key_Minus));
         
@@ -179,12 +179,12 @@ void KTProjectActionBar::setup(Actions actions)
     }
      
     if (actions & MoveFrameUp) {
-        KImageButton *button;
+        TImageButton *button;
         if (k->container.compare("Exposure") == 0) {
-            button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
+            button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
         } else {
             if (k->container.compare("TimeLine") == 0)
-                button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_backward.png"), size);
+                button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_backward.png"), size);
         }
         
         button->setToolTip(tr("Move frame up"));
@@ -197,13 +197,13 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & MoveFrameDown) {
-        KImageButton *button;
+        TImageButton *button;
 
         if (k->container.compare("Exposure") == 0) {
-            button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
+            button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
         } else {
             if (k->container.compare("TimeLine") == 0)
-                button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_forward.png"), size);
+                button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_forward.png"), size);
         }
  
         button->setToolTip(tr("Move frame down"));
@@ -216,7 +216,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & LockFrame) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/padlock.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/padlock.png"), size);
         button->setToolTip(tr("Lock frame"));
         button->setShortcut(QKeySequence(tr("F10")));
         
@@ -227,7 +227,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
 
     if (actions & LockLayer) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), 22);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), 22);
         button->setToolTip(tr("Lock layer"));
         
         k->actions.addButton(button, LockLayer);
@@ -237,7 +237,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
 
     if (actions & InsertScene) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
         button->setToolTip(tr("Insert a scene"));
         
         k->actions.addButton(button, InsertScene);
@@ -247,7 +247,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
      
     if (actions & RemoveScene) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);  // TODO
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);  // TODO
         button->setToolTip(tr("Remove the scene"));
 
         k->actions.addButton(button, RemoveScene);
@@ -257,7 +257,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
 
     if (actions & MoveSceneUp) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
         button->setToolTip(tr("Move scene up"));
         
         k->actions.addButton(button, MoveSceneUp);
@@ -267,7 +267,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
      
     if (actions & MoveSceneDown) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_down.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_scene_down.png"), size);
         button->setToolTip( tr("Move scene down"));
         
         k->actions.addButton(button, MoveSceneDown);
@@ -277,7 +277,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & LockScene) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/lock_scene.png"), size);
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/lock_scene.png"), size);
         button->setToolTip(tr("Lock scene"));
         
         k->actions.addButton(button, LockScene);
@@ -338,9 +338,9 @@ void KTProjectActionBar::insertBlankSpace(int position)
     k->buttonLayout->insertWidget(position + 1, widget, 1, Qt::AlignCenter);
 }
 
-KImageButton *KTProjectActionBar::button(Action action)
+TImageButton *KTProjectActionBar::button(Action action)
 {
-    return qobject_cast<KImageButton *>(k->actions.button(action));
+    return qobject_cast<TImageButton *>(k->actions.button(action));
 }
 
 void KTProjectActionBar::emitActionSelected(int action)
@@ -353,7 +353,7 @@ void KTProjectActionBar::emitActionSelected(int action)
             bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveWithoutAskFrame", false));
 
             if (! noAsk) {
-                KOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
+                TOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
                 dialog.setModal(true);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,
@@ -374,7 +374,7 @@ void KTProjectActionBar::emitActionSelected(int action)
             bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveWithoutAskLayer", false));
 
             if (! noAsk) {
-                KOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
+                TOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,
                             (int) (desktop.screenGeometry().height() - dialog.sizeHint().height())/2);
@@ -394,7 +394,7 @@ void KTProjectActionBar::emitActionSelected(int action)
             bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveWithoutAskScene", false));
 
             if (! noAsk) {
-                KOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
+                TOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,
                             (int) (desktop.screenGeometry().height() - dialog.sizeHint().height())/2);

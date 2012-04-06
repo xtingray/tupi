@@ -52,7 +52,7 @@ struct KTPaletteParser::Private
      }
 };
 
-KTPaletteParser::KTPaletteParser(): KXmlParserBase(), k(new Private)
+KTPaletteParser::KTPaletteParser(): TXmlParserBase(), k(new Private)
 {
      // TINIT;
      k->paletteName = "";

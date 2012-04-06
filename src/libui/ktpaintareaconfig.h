@@ -39,7 +39,7 @@
 #include <QWidget>
 #include <QSpinBox>
 
-class KColorButton;
+class TColorButton;
 
 /**
  * @author David Cuadrado
@@ -62,7 +62,7 @@ class KTPaintAreaConfig : public QWidget
         void setupPage();
         
     private:
-        KColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
+        TColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
         QSpinBox *m_gridSeparation;
 };
 

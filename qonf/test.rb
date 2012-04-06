@@ -58,14 +58,6 @@ class Test
                    end
                 end
 
-                if File.dirname(@rules).end_with?("aspell")
-                   if conf.hasArgument?("with-aspell")
-                      aspellLib = conf.argumentValue("with-aspell") + "/lib"
-                      extraLib += "-L#{aspellLib}"
-                      extraInclude = conf.argumentValue("with-aspell") + "/include"
-                   end
-                end
-
                 qmakeLine = ""
                  
                 if extraLib.length > 0 

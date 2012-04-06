@@ -37,14 +37,14 @@
 #define CONTOURSELECTION_H
 
 #include "ktpathitem.h"
-#include "kcontrolnode.h"
-#include "knodegroup.h"
+#include "tcontrolnode.h"
+#include "tnodegroup.h"
 #include "kttoolplugin.h"
 
 #include <QObject>
 #include <QSpinBox>
 
-class KControlNode;
+class TControlNode;
 class KTItemResponse;
 class KTGraphicsScene;
 

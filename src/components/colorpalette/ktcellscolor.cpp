@@ -33,7 +33,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "ktcellscolor.h"
 #include "tdebug.h"
 #include "ktpalettedocument.h"
@@ -53,8 +52,7 @@ struct KTCellsColor::Private
     QPoint startDragPosition;
 };
 
-KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: KCellView(16, parent), k(new Private)
+KTCellsColor::KTCellsColor(QWidget *parent, Type type) : TCellView(16, parent), k(new Private)
 {
     k->type = type;
     k->readOnly = false;
@@ -121,7 +119,7 @@ void KTCellsColor::save( const QString &path)
     }
 }
 
-void KTCellsColor::dragEnterEvent( QDragEnterEvent *event )
+void KTCellsColor::dragEnterEvent(QDragEnterEvent *event)
 {
     setFocus();
 
@@ -137,7 +135,7 @@ void KTCellsColor::dragEnterEvent( QDragEnterEvent *event )
     }
 }
 
-void KTCellsColor::dropEvent( QDropEvent *event )
+void KTCellsColor::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasColor()) {
         QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
@@ -157,21 +155,21 @@ void KTCellsColor::dropEvent( QDropEvent *event )
 
 void KTCellsColor::mousePressEvent(QMouseEvent* e)
 {
-    KCellView::mousePressEvent(e);
+    TCellView::mousePressEvent(e);
     k->startDragPosition = e->pos();
 }
 
 void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 {
-    KCellView::mouseMoveEvent(e);
+    TCellView::mouseMoveEvent(e);
 
-    if ((e->pos() - k->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
+    if ((e->pos() - k->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem())
         return;
 
-    QDrag *drag = new QDrag( this );
+    QDrag *drag = new QDrag(this);
     QPixmap pix( 25, 25 );
     QColor color =  currentItem()->background().color();
-    pix.fill( color);
+    pix.fill(color);
 
     QPainter painter(&pix);
     painter.drawRect( 0, 0, pix.width(), pix.height() );

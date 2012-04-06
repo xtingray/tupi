@@ -39,7 +39,7 @@
 #include "ktmodulewidgetbase.h"
 #include "ktproject.h"
 #include "ktexportpluginobject.h"
-#include "kexportwizard.h"
+#include "texportwizard.h"
 
 #include <QListWidget>
 #include <QHash>
@@ -55,7 +55,7 @@ class VideoProperties;
  * @author David Cuadrado
 */
 
-class KTExportWidget : public KExportWizard
+class KTExportWidget : public TExportWizard
 {
     Q_OBJECT
 

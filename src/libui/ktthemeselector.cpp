@@ -37,9 +37,9 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tseparator.h"
-#include "kcolorbutton.h"
+#include "tcolorbutton.h"
 #include "tapplication.h"
-#include "kstylecombobox.h"
+#include "tstylecombobox.h"
 
 // Qt
 #include <QFileDialog>
@@ -57,7 +57,7 @@
  * @author David Cuadrado
 */
 
-KTThemeSelector::KTThemeSelector(QWidget *parent) : KVHBox(parent, Qt::Vertical)
+KTThemeSelector::KTThemeSelector(QWidget *parent) : TVHBox(parent, Qt::Vertical)
 {
     setupChooseColor();
     loadSchemes();
@@ -69,8 +69,8 @@ KTThemeSelector::~KTThemeSelector()
 
 void KTThemeSelector::setupChooseColor()
 {
-    KVHBox *hbox = new KVHBox(this, Qt::Horizontal);
-    KVHBox *box1 = new KVHBox(hbox, Qt::Vertical);
+    TVHBox *hbox = new TVHBox(this, Qt::Horizontal);
+    TVHBox *box1 = new TVHBox(hbox, Qt::Vertical);
     box1->boxLayout()->setMargin(10);
     m_general = new QGroupBox(tr("General"), box1);
     
@@ -89,7 +89,7 @@ void KTThemeSelector::setupChooseColor()
     
     for (int i = 0; i < labels1.count(); i++) {
          layout1->addWidget(new QLabel(labels1[i], m_general), i, 0 );
-         KColorButton *button = new KColorButton(m_general);
+         TColorButton *button = new TColorButton(m_general);
          button->setObjectName(names[i]);
          QPalette pal = button->palette();
          pal.setColor(QPalette::Button, colors[i]);
@@ -113,7 +113,7 @@ void KTThemeSelector::setupChooseColor()
     
     for (int i = 0; i < labels2.count(); i++) {
          layout2->addWidget(new QLabel(labels2[i], m_effects), i, 0);
-         KColorButton *button = new KColorButton(m_effects);
+         TColorButton *button = new TColorButton(m_effects);
          button->setObjectName(names2[i]);
          QPalette pal = button->palette();
          pal.setColor(QPalette::Button, colors[i]);
@@ -124,7 +124,7 @@ void KTThemeSelector::setupChooseColor()
     }
     ////////////
     
-    KVHBox *box2 = new KVHBox(hbox, Qt::Vertical);
+    TVHBox *box2 = new TVHBox(hbox, Qt::Vertical);
     box2->boxLayout()->setMargin(10);
     m_selections = new QGroupBox(tr("Selections"), box2);
     
@@ -137,7 +137,7 @@ void KTThemeSelector::setupChooseColor()
     
     for (int i = 0; i < labels3.count(); i++) {
          layout3->addWidget(new QLabel(labels3[i], m_selections), i, 0);
-         KColorButton *button = new KColorButton(m_selections);
+         TColorButton *button = new TColorButton(m_selections);
          button->setObjectName(names3[i]);
          QPalette pal = button->palette();
          pal.setColor(QPalette::Button, colors[i]);
@@ -158,7 +158,7 @@ void KTThemeSelector::setupChooseColor()
     
     for (int i = 0; i < labels4.count(); i++) {
          layout4->addWidget(new QLabel(labels4[i], m_textEffects), i, 0 );
-         KColorButton *button = new KColorButton(m_textEffects);
+         TColorButton *button = new TColorButton(m_textEffects);
          button->setObjectName(names4[i]);
          QPalette pal = button->palette();
          pal.setColor(QPalette::Button, colors[i]);
@@ -188,7 +188,7 @@ void KTThemeSelector::setupChooseColor()
     
     new TSeparator(this);
     new QLabel(tr("Style"), this);
-    new KStyleComboBox(this);
+    new TStyleComboBox(this);
     
     new TSeparator(this);
     m_useColors = new QCheckBox(tr("Use this colors"), this);
@@ -205,7 +205,7 @@ void KTThemeSelector::setupChooseColor()
 
 void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 {
-    QColor c = qobject_cast<KColorButton *>(button)->color();
+    QColor c = qobject_cast<TColorButton *>(button)->color();
     QPalette pal = button->palette();
     pal.setColor(QPalette::Button, c);
     button->setPalette(pal);
@@ -214,7 +214,7 @@ void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 {
-    QColor c = qobject_cast<KColorButton *>(button)->color();
+    QColor c = qobject_cast<TColorButton *>(button)->color();
     QPalette pal = button->palette();
     pal.setColor(QPalette::Button, c);
     button->setPalette(pal);
@@ -223,7 +223,7 @@ void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 {
-    QColor c = qobject_cast<KColorButton *>(button)->color();
+    QColor c = qobject_cast<TColorButton *>(button)->color();
     QPalette pal = button->palette();
     pal.setColor(QPalette::Button, c);
     button->setPalette(pal);
@@ -232,16 +232,16 @@ void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
 {
-    QColor c = qobject_cast<KColorButton *>(button)->color();
+    QColor c = qobject_cast<TColorButton *>(button)->color();
     QPalette pal = button->palette();
     pal.setColor(QPalette::Button, c);
     button->setPalette(pal);
     m_textEffectsSection.insert(button->objectName(), c.name());
 }
 
-KThemeDocument KTThemeSelector::document() const
+ThemeDocument KTThemeSelector::document() const
 {
-    KThemeDocument doc;
+    ThemeDocument doc;
     
     doc.addGeneralSection(m_generalSection);
     doc.addEffectsSection(m_effectsSection);

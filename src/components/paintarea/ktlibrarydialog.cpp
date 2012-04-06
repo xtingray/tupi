@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "ktlibrarydialog.h"
+#include "ktitempreview.h"
+#include "tformfactory.h"
 
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -41,11 +43,7 @@
 #include <QGraphicsItem>
 #include <QHBoxLayout>
 #include <QLineEdit>
-
-#include "ktitempreview.h"
-#include "kformfactory.h"
 #include <QMap>
-
 
 struct KTLibraryDialog::Private
 {
@@ -89,7 +87,7 @@ void KTLibraryDialog::addItem(QGraphicsItem *item)
     QLineEdit *name = new QLineEdit;
     connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
 
-    QLayout *grid = KFormFactory::makeGrid(QStringList() << tr("Name"), QWidgetList() << name);
+    QLayout *grid = TFormFactory::makeGrid(QStringList() << tr("Name"), QWidgetList() << name);
     layout->addLayout(grid);
 
     int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));

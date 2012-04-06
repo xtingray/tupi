@@ -47,7 +47,7 @@
  * @author David Cuadrado
 */
 
-KTGCTable::KTGCTable(QWidget *parent) : KTreeListWidget(parent), m_currentFolder(0)
+KTGCTable::KTGCTable(QWidget *parent) : TreeListWidget(parent), m_currentFolder(0)
 {
     setHeaderLabels(QStringList() << "" << "");
 

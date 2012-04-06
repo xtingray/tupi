@@ -36,8 +36,8 @@
 #ifndef KTVIEWCAMERA_H
 #define KTVIEWCAMERA_H
 
-#include "kcirclebuttonbar.h"
-#include "kvhbox.h"
+#include "tcirclebuttonbar.h"
+#include "tvhbox.h"
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
 #include "ktcamerastatus.h"

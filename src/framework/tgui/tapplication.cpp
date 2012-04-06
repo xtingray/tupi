@@ -77,7 +77,7 @@ void TApplication::applyTheme(const QString &file)
     m_themeManager.applyTheme(file);
 }
 
-void TApplication::applyTheme(const KThemeDocument &kd)
+void TApplication::applyTheme(const ThemeDocument &kd)
 {
     m_themeManager.applyTheme(kd);
 }

@@ -34,17 +34,16 @@
  ***************************************************************************/
 
 #include "exactnessconfigurator.h"
-#include <QBoxLayout>
+#include "tglobal.h"
+#include "timagebutton.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
+#include <QBoxLayout>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QHeaderView>
 #include <QPushButton>
-
-#include "tglobal.h"
-#include "kimagebutton.h"
-#include "tdebug.h"
-#include "tconfig.h"
 
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
@@ -100,15 +99,12 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 
     QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 
-    KImageButton *add = new KImageButton(QIcon(THEME_DIR + "icons/plus_sign.png"),22, 0, false);
+    TImageButton *add = new TImageButton(QIcon(THEME_DIR + "icons/plus_sign.png"),22, 0, false);
+    connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
     buttonLayout->addWidget(add);
 
-    connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
-
-    KImageButton *del = new KImageButton(QIcon(THEME_DIR + "icons/minus_sign.png"), 22, 0, false);
-
+    TImageButton *del = new TImageButton(QIcon(THEME_DIR + "icons/minus_sign.png"), 22, 0, false);
     connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
-
     buttonLayout->addWidget(del);
 
     mainLayout->addLayout(buttonLayout);

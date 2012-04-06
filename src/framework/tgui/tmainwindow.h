@@ -36,7 +36,7 @@
 #ifndef TMAINWINDOW_H
 #define TMAINWINDOW_H
 
-#include "kideality.h"
+#include "tideality.h"
 
 // Project begin: Aug 4 2006
 
@@ -45,8 +45,8 @@
 #include <QMap>
 #include <QKeySequence>
 
-class KButtonBar;
-class KToolView;
+class TButtonBar;
+class ToolView;
 class TMainWindowAbstractSettings;
 
 /**
@@ -54,7 +54,7 @@ class TMainWindowAbstractSettings;
  * @author David Cuadrado
 */
 
-class K_IDEAL_EXPORT TMainWindow : public QMainWindow
+class T_IDEAL_EXPORT TMainWindow : public QMainWindow
 {
     Q_OBJECT;
     public:
@@ -66,12 +66,12 @@ class K_IDEAL_EXPORT TMainWindow : public QMainWindow
         TMainWindow(QWidget *parent = 0);
         ~TMainWindow();
 
-        KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective, const QString &code = QString(), QKeySequence shortcut = QKeySequence(""));
+        ToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective, const QString &code = QString(), QKeySequence shortcut = QKeySequence(""));
 
-        void removeToolView(KToolView *view);
+        void removeToolView(ToolView *view);
 
         // FIXME: remove tool view
-        void moveToolView(KToolView *view, Qt::DockWidgetArea newPlace);
+        void moveToolView(ToolView *view, Qt::DockWidgetArea newPlace);
 
         void addToPerspective(QWidget *widget, int perspective = DefaultPerspective);
         void removeFromPerspective(QWidget *widget);
@@ -92,8 +92,8 @@ class K_IDEAL_EXPORT TMainWindow : public QMainWindow
         void restoreGUI();
         void saveGUI();
 
-        QHash<Qt::ToolBarArea, KButtonBar *> buttonBars() const;
-        QHash<KButtonBar *, QList<KToolView*> > toolViews() const;
+        QHash<Qt::ToolBarArea, TButtonBar *> buttonBars() const;
+        QHash<TButtonBar *, QList<ToolView*> > toolViews() const;
 
     private:
         Qt::DockWidgetArea toDockWidgetArea(Qt::ToolBarArea area);
@@ -118,11 +118,11 @@ class K_IDEAL_EXPORT TMainWindow : public QMainWindow
         virtual bool event(QEvent *e);
 
     private:
-        KToolView *m_forRelayout;
+        ToolView *m_forRelayout;
 
     private:
-        QHash<Qt::ToolBarArea, KButtonBar *> m_buttonBars;
-        QHash<KButtonBar *, QList<KToolView*> > m_toolViews;
+        QHash<Qt::ToolBarArea, TButtonBar *> m_buttonBars;
+        QHash<TButtonBar *, QList<ToolView*> > m_toolViews;
         QHash<QWidget *, int> m_managedWidgets;
         QHash<QAction *, int> m_managedActions;
 

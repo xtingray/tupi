@@ -43,7 +43,7 @@
 #include <QButtonGroup>
 #include <QTableWidget>
 
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "ktprojectrequest.h"
 #include "tapplicationproperties.h"
 

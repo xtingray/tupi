@@ -36,17 +36,17 @@
 #ifndef TMAINWINDOWABSTRACTSETTINGS_H
 #define TMAINWINDOWABSTRACTSETTINGS_H
 
-#include "kideality.h"
+#include "tideality.h"
 #include <QObject>
 
-class KToolView;
+class ToolView;
 class TMainWindow;
 
 /**
  * @author David Cuadrado
 */
 
-class K_IDEAL_EXPORT TMainWindowAbstractSettings : public QObject
+class T_IDEAL_EXPORT TMainWindowAbstractSettings : public QObject
 {
     public:
         TMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}

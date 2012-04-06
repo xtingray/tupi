@@ -60,7 +60,7 @@ struct PolyLine::Private
     QPointF right;
     QPointF mirror;
     
-    KNodeGroup *nodegroup;
+    TNodeGroup *nodegroup;
     QPainterPath path;
     
     QMap<QString, TAction *> actions;
@@ -205,7 +205,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     // k->scene = scene;
     
     if (!k->nodegroup) {
-        k->nodegroup = new KNodeGroup(k->item, scene, KNodeGroup::Polyline);
+        k->nodegroup = new TNodeGroup(k->item, scene, TNodeGroup::Polyline);
         connect(k->nodegroup, SIGNAL(nodeReleased()), this, SLOT(nodeChanged()));
     } else {
         k->nodegroup->createNodes(k->item);

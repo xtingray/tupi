@@ -38,11 +38,11 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tapplication.h"
-#include "kformfactory.h"
+#include "tformfactory.h"
 
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
+#include <QFile>
+#include <QTextStream>
+#include <QTextCodec>
 
 #include <QLabel>
 #include <QLineEdit>
@@ -127,7 +127,7 @@ KTPreferences::GeneralPage::GeneralPage()
     m_minutes->setMaximum(15);
     m_minutes->setValue(autoSave); 
 
-    QLayout *form = KFormFactory::makeGrid(QStringList() << tr("Tupi Home") << tr("Cache") << tr("Browser") 
+    QLayout *form = TFormFactory::makeGrid(QStringList() << tr("Tupi Home") << tr("Cache") << tr("Browser") 
                     << tr("Open last project") << tr("Auto save (minutes)"), QWidgetList() << m_home 
                     << m_repository << m_browser << m_openLastProject << m_minutes);
     
@@ -179,12 +179,12 @@ class KTPreferences::FontPage : public QWidget
         QFont currentFont() const;
         
     private:
-        KFontChooser *m_fontChooser;
+        TFontChooser *m_fontChooser;
 };
 
 KTPreferences::FontPage::FontPage()
 {
-    m_fontChooser = new KFontChooser(this);
+    m_fontChooser = new TFontChooser(this);
     //m_fontChooser->setCurrentFont(font());
     m_fontChooser->initFont();
 }

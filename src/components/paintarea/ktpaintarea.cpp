@@ -56,7 +56,7 @@
 #include "ktsvgitem.h"
 #include "ktpixmapitem.h"
 #include "node.h"
-#include "kcontrolnode.h"
+#include "tcontrolnode.h"
 #include "ktproject.h"
 #include "tosd.h"
 
@@ -161,7 +161,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
     if (k->currentTool.compare(tr("Line Selection")) == 0) {
         // If a node is the target... abort!
         if (event->buttons() == Qt::RightButton) {
-            if (qgraphicsitem_cast<KControlNode *>(scene()->itemAt(mapToScene(event->pos()))))
+            if (qgraphicsitem_cast<TControlNode *>(scene()->itemAt(mapToScene(event->pos()))))
                 return;
         }
     }

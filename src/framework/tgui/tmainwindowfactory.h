@@ -36,7 +36,7 @@
 #ifndef TMAINWINDOWFACTORY_H
 #define TMAINWINDOWFACTORY_H
 
-#include "kideality.h"
+#include "tideality.h"
 
 class TMainWindow;
 class QMainWindow;
@@ -46,7 +46,7 @@ class QMainWindow;
  * @author David Cuadrado
 */
 
-class K_IDEAL_EXPORT TMainWindowFactory
+class T_IDEAL_EXPORT TMainWindowFactory
 {
     public:
         TMainWindowFactory();

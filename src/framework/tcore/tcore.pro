@@ -12,31 +12,22 @@ include.path = /include/tupicore
 
 HEADERS += talgorithm.h \
            tapplicationproperties.h \
-           kaspellchecker.h \
            tconfig.h \
-           kcpuinfo.h \
+           tcpuinfo.h \
            tdebug.h \
-           kfortunegenerator.h \
            tglobal.h \
-           kmd5hash.h \
-           kspeller.h \
-           kspellhighlighter.h \
-           kspellinterface.h \
-           ktipdatabase.h \
-           kxmlparserbase.h
+           tmd5hash.h \
+           tipdatabase.h \
+           txmlparserbase.h
 
 SOURCES += talgorithm.cpp \
            tapplicationproperties.cpp \
-           kaspellchecker.cpp \
            tconfig.cpp \
-           kcpuinfo.cpp \
+           tcpuinfo.cpp \
            tdebug.cpp \
-           kfortunegenerator.cpp \
-           kmd5hash.cpp \
-           kspeller.cpp \
-           kspellhighlighter.cpp \
-           ktipdatabase.cpp \
-           kxmlparserbase.cpp
+           tmd5hash.cpp \
+           tipdatabase.cpp \
+           txmlparserbase.cpp
 
 CONFIG += release warn_on dll
 

@@ -42,7 +42,7 @@
 #include <QBrush>
 #include <QColor>
 
-class K_GUI_EXPORT TIcon : public QIcon
+class T_GUI_EXPORT TIcon : public QIcon
 {
     public:
 

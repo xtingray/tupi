@@ -43,7 +43,7 @@
  * @author David Cuadrado
 */
 
-class K_GUI_EXPORT TToolBox : public QToolBox
+class T_GUI_EXPORT TToolBox : public QToolBox
 {
     Q_OBJECT
 

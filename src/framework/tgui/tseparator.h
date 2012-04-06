@@ -45,7 +45,7 @@
  * @author Michael Roth \<mroth@wirlweb.de\>
  */
 
-class K_GUI_EXPORT TSeparator : public QFrame
+class T_GUI_EXPORT TSeparator : public QFrame
 {
     Q_OBJECT
 

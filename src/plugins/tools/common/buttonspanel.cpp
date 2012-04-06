@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "buttonspanel.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tdebug.h"
 
 #include <QHBoxLayout>
@@ -42,11 +42,11 @@
 
 ButtonsPanel::ButtonsPanel(QWidget *parent) : QWidget(parent)
 {
-    KImageButton *editButton = new KImageButton(QPixmap(THEME_DIR + "icons/tweening.png"), 22);
+    TImageButton *editButton = new TImageButton(QPixmap(THEME_DIR + "icons/tweening.png"), 22);
     editButton->setToolTip(tr("Edit Tween"));
     connect(editButton, SIGNAL(clicked()), this, SIGNAL(clickedEditTween()));
 
-    KImageButton *removeButton = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
+    TImageButton *removeButton = new TImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
     removeButton->setToolTip(tr("Remove Tween"));
     connect(removeButton, SIGNAL(clicked()), this, SIGNAL(clickedRemoveTween()));
 

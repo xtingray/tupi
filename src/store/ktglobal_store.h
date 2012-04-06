@@ -38,7 +38,7 @@
 
 #include <ktglobal.h>
 
-#define STORE_EXPORT K_CORE_EXPORT
+#define STORE_EXPORT T_CORE_EXPORT
 
 
 #endif // KTGLOBAL_STORE_H

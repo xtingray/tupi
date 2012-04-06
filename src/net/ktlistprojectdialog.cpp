@@ -34,8 +34,8 @@
  ***************************************************************************/
 
 #include "ktlistprojectdialog.h"
-#include "ktreelistwidget.h"
-#include "ktreewidgetsearchline.h"
+#include "treelistwidget.h"
+#include "treewidgetsearchline.h"
 #include "tdebug.h"
 
 #include <QToolButton>
@@ -82,7 +82,7 @@ KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QSt
     }
 
     QHBoxLayout *search = new QHBoxLayout;
-    KTreeWidgetSearchLine *searchLine = 0;
+    TreeWidgetSearchLine *searchLine = 0;
     QToolButton *button = new QToolButton;
     button->setIcon(QIcon(THEME_DIR + "icons/zoom.png"));
 
@@ -92,7 +92,7 @@ KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QSt
     if (works > 0 && contributions > 0) {
         QList<QTreeWidget *> trees;
         trees << k->works << k->contributions;
-        searchLine = new KTreeWidgetSearchLine(this, trees);
+        searchLine = new TreeWidgetSearchLine(this, trees);
         search->addWidget(searchLine);
         search->addWidget(button);
 
@@ -102,7 +102,7 @@ KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QSt
         layout->addWidget(contribLabel);
         layout->addWidget(k->contributions);
     } else if (works > 0) {
-               searchLine = new KTreeWidgetSearchLine(this, k->works);
+               searchLine = new TreeWidgetSearchLine(this, k->works);
                search->addWidget(searchLine);
                search->addWidget(button);
 
@@ -110,7 +110,7 @@ KTListProjectDialog::KTListProjectDialog(int works, int contributions, const QSt
                layout->addWidget(worksLabel);
                layout->addWidget(k->works);
     } else if (contributions > 0) {
-               searchLine = new KTreeWidgetSearchLine(this, k->contributions);
+               searchLine = new TreeWidgetSearchLine(this, k->contributions);
                search->addWidget(searchLine);
                search->addWidget(button);
 

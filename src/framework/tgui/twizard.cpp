@@ -35,11 +35,11 @@
 
 #include "twizard.h"
 
-#include "kvhbox.h"
+#include "tvhbox.h"
 #include "tseparator.h"
 #include "tdebug.h"
 
-#include "kimageeffect.h"
+#include "timageeffect.h"
 
 // Qt
 #include <QLabel>
@@ -160,9 +160,9 @@ void TWizard::pageCompleted()
         m_nextButton->setEnabled(current->isComplete());
 }
 
-TWizardPage::TWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)
+TWizardPage::TWizardPage(const QString &title, QWidget *parent) : TVHBox(parent)
 {
-    KVHBox *theTitle = new KVHBox(this, Qt::Vertical);
+    TVHBox *theTitle = new TVHBox(this, Qt::Vertical);
     new QLabel(title, theTitle);
     new TSeparator(theTitle);
     boxLayout()->setAlignment(theTitle, Qt::AlignTop);

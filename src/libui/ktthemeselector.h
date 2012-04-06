@@ -48,8 +48,8 @@
 #include <QGridLayout>
 #include <QButtonGroup>
 
-#include "kthemedocument.h"
-#include "kvhbox.h"
+#include "themedocument.h"
+#include "tvhbox.h"
 #include "tapplicationproperties.h"
 
 class QCheckBox;
@@ -58,7 +58,7 @@ class QCheckBox;
  * @author David Cuadrado
 */
 
-class KTThemeSelector : public KVHBox
+class KTThemeSelector : public TVHBox
 {
     Q_OBJECT
 
@@ -66,7 +66,7 @@ class KTThemeSelector : public KVHBox
         KTThemeSelector(QWidget *parent = 0);
         ~KTThemeSelector();
         
-        KThemeDocument document() const;
+        ThemeDocument document() const;
         QString lastFile() const;
         bool applyColors() const;
         void setPalette(const QPalette &) {};

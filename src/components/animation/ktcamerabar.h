@@ -36,7 +36,7 @@
 #ifndef KTCAMERABAR_H
 #define KTCAMERABAR_H
 
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tapplicationproperties.h"
 
 #include <QFrame>
@@ -57,11 +57,11 @@ class KTCameraBar : public QFrame
         void setPalette(const QPalette &);
 
     private:
-        KImageButton *m_rew;
-        KImageButton *m_play;
-        KImageButton *m_play_back;
-        KImageButton *m_stop;
-        KImageButton *m_ff;
+        TImageButton *m_rew;
+        TImageButton *m_play;
+        TImageButton *m_play_back;
+        TImageButton *m_stop;
+        TImageButton *m_ff;
 
     signals:
         void playBack();

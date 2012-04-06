@@ -35,7 +35,7 @@
 
 #include "configurator.h"
 #include "tglobal.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tdebug.h"
 #include "tconfig.h"
 
@@ -99,12 +99,12 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
 
     QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 
-    KImageButton *add = new KImageButton(QIcon(THEME_DIR + "icons/plus_sign.png"),22, 0, false);
+    TImageButton *add = new TImageButton(QIcon(THEME_DIR + "icons/plus_sign.png"),22, 0, false);
     buttonLayout->addWidget(add);
 
     connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
 
-    KImageButton *del = new KImageButton(QIcon(THEME_DIR + "icons/minus_sign.png"), 22, 0, false);
+    TImageButton *del = new TImageButton(QIcon(THEME_DIR + "icons/minus_sign.png"), 22, 0, false);
 
     connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
 

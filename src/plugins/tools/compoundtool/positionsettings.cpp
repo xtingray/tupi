@@ -34,9 +34,9 @@
  ***************************************************************************/
 
 #include "positionsettings.h"
-#include "kradiobuttongroup.h"
+#include "tradiobuttongroup.h"
 #include "tseparator.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tdebug.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
@@ -64,8 +64,8 @@ struct PositionSettings::Private
     const QGraphicsPathItem *path;
     QPointF offset;
 
-    KImageButton *applyButton;
-    KImageButton *closeButton;
+    TImageButton *applyButton;
+    TImageButton *closeButton;
 };
 
 PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Private)
@@ -126,11 +126,11 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
 
     k->layout->addLayout(totalLayout);
 
-    k->applyButton = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->applyButton = new TImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
     connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
     k->applyButton->setEnabled(false);
 
-    k->closeButton = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    k->closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
     connect(k->closeButton, SIGNAL(clicked()), this, SLOT(closeTweenProperties()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;

@@ -37,7 +37,7 @@
 #define KTCOLORPALETTE_H
 
 #include "ktmodulewidgetbase.h"
-#include "kdualcolorbutton.h"
+#include "tdualcolorbutton.h"
 #include "ticon.h"
 
 class KTColorPalette;
@@ -82,13 +82,13 @@ class KTColorPalette : public KTModuleWidgetBase
         // void setFG(const QBrush &brush);
         // void setBG(const QBrush &brush);
         void updateColor();
-        // void changeTypeColor(KDualColorButton::ColorSpace s);
+        // void changeTypeColor(TDualColorButton::ColorSpace s);
         void syncHsv(int h, int s, int v);
         void setHS(int h, int s);
         void setColorSpace(int type);
         void updateColorFromPalette(const QBrush& brush);
         void updateColorFromDisplay(const QBrush& brush);
-        void updateColorSpace(KDualColorButton::ColorSpace space);
+        void updateColorSpace(TDualColorButton::ColorSpace space);
         void updateGradientColor(const QBrush &brush);
         void switchColors();
         void resetColors();

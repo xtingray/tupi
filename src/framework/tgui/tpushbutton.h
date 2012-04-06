@@ -42,7 +42,7 @@
 /**
  * @author Gustav Gonzalez 
 */
-class K_GUI_EXPORT TPushButton : public QPushButton 
+class T_GUI_EXPORT TPushButton : public QPushButton 
 {
     Q_OBJECT
 

@@ -38,7 +38,7 @@
 // Tupi Framework
 #include "tdebug.h"
 #include "tglobal.h"
-#include "kffmpegmoviegenerator.h"
+#include "tffmpegmoviegenerator.h"
 // #include "kmoviegeneratorinterface.h"
 
 #include <QImage>
@@ -66,52 +66,52 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
            | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
-KMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Format format)
+TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Format format)
 {
     switch (format) {
             case KTExportInterface::WEBM:
                  {
-                   return KFFMpegMovieGenerator::WEBM;
+                   return TFFMpegMovieGenerator::WEBM;
                  }
                  break;
             case KTExportInterface::OGV:
                  {
-                   return KFFMpegMovieGenerator::OGV;
+                   return TFFMpegMovieGenerator::OGV;
                  }
                  break;
             case KTExportInterface::SWF:
                  {
-                   return KFFMpegMovieGenerator::SWF;
+                   return TFFMpegMovieGenerator::SWF;
                  }
                  break;
             case KTExportInterface::MPEG:
                  {
-                   return KFFMpegMovieGenerator::MPEG;
+                   return TFFMpegMovieGenerator::MPEG;
                  }
                  break;
             case KTExportInterface::AVI:
                  {
-                   return KFFMpegMovieGenerator::AVI;
+                   return TFFMpegMovieGenerator::AVI;
                  }
                  break;
             case KTExportInterface::RM:
                  {
-                   return KFFMpegMovieGenerator::RM;
+                   return TFFMpegMovieGenerator::RM;
                  }
                  break;
             case KTExportInterface::MOV:
                  {
-                   return KFFMpegMovieGenerator::MOV;
+                   return TFFMpegMovieGenerator::MOV;
                  }
                  break;
             case KTExportInterface::ASF:
                  {
-                   return KFFMpegMovieGenerator::ASF;
+                   return TFFMpegMovieGenerator::ASF;
                  }
                  break;
             case KTExportInterface::GIF:
                  {
-                   return KFFMpegMovieGenerator::GIF;
+                   return TFFMpegMovieGenerator::GIF;
                  }
                  break;
             case KTExportInterface::PNG:
@@ -120,11 +120,11 @@ KMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Fo
             case KTExportInterface::SMIL:
             case KTExportInterface::NONE:
                  {
-                   return KFFMpegMovieGenerator::NONE;
+                   return TFFMpegMovieGenerator::NONE;
                  }
     }
 
-    return KFFMpegMovieGenerator::NONE;
+    return TFFMpegMovieGenerator::NONE;
 }
 
 bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format fmt, const QSize &size, int fps)
@@ -133,13 +133,13 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
     foreach (KTScene *scene, scenes)
              duration += (qreal) scene->framesTotal() / (qreal) fps;
 
-    KFFMpegMovieGenerator *generator = 0;
-    KMovieGeneratorInterface::Format format = videoFormat(fmt);
+    TFFMpegMovieGenerator *generator = 0;
+    TMovieGeneratorInterface::Format format = videoFormat(fmt);
 
-    if (format == KFFMpegMovieGenerator::NONE)
+    if (format == TFFMpegMovieGenerator::NONE)
         return false;
 
-    generator = new KFFMpegMovieGenerator(format, size, fps, duration);
+    generator = new TFFMpegMovieGenerator(format, size, fps, duration);
 
     KTAnimationRenderer renderer(color);
     {

@@ -37,7 +37,7 @@
 #include "tapplication.h"
 #include "tdebug.h"
 #include "tglobal.h"
-#include "koptionaldialog.h"
+#include "toptionaldialog.h"
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
 #include "ktscene.h"

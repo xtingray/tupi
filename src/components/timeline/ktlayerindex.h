@@ -36,7 +36,7 @@
 #ifndef KTLAYERINDEX_H
 #define KTLAYERINDEX_H
 
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "ktprojectrequest.h"
 
 #include <QPushButton>

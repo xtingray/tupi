@@ -36,7 +36,7 @@
 #include "filltool.h"
 #include "tglobal.h"
 #include "tdebug.h"
-#include "kpathhelper.h"
+#include "tpathhelper.h"
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
@@ -167,7 +167,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                     
                     res = ClipHelper::subtract(res, subs);
                     
-                    QList<QPainterPath> subpaths = KPathHelper::toSubpaths(res);
+                    QList<QPainterPath> subpaths = TPathHelper::toSubpaths(res);
                     
                     if (subpaths.count() > 1) {
                         foreach (QPainterPath subpath, subpaths) {

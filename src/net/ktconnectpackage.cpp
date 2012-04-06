@@ -35,7 +35,7 @@
 
 #include "ktconnectpackage.h"
 #include "talgorithm.h"
-#include "kmd5hash.h"
+#include "tmd5hash.h"
 #include "tdebug.h"
 
 #include <QStringList>
@@ -61,7 +61,7 @@ KTConnectPackage::KTConnectPackage(const QString &server, const QString &usernam
     root.appendChild(createElement("username")).appendChild(createTextNode(username));
 
     if (server.compare("tupitube.com") != 0) {
-        root.appendChild(createElement("password")).appendChild(createTextNode(KMD5Hash::hash(passwd)));
+        root.appendChild(createElement("password")).appendChild(createTextNode(TMD5Hash::hash(passwd)));
     } else {
         QString salt = TAlgorithm::randomString(15);
 
@@ -70,7 +70,7 @@ KTConnectPackage::KTConnectPackage(const QString &server, const QString &usernam
         token.appendChild(createTextNode(salt));
         root.appendChild(token);
 
-        QStringList passwdList = KMD5Hash::passwords(passwd);
+        QStringList passwdList = TMD5Hash::passwords(passwd);
         for (int i = 0; i < passwdList.size(); ++i) { 
              root.appendChild(createElement("password")).appendChild(createTextNode(passwdList.at(i)));
         }

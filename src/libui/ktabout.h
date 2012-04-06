@@ -36,13 +36,13 @@
 #ifndef KTABOUT_H
 #define KTABOUT_H
 
+#include "tabdialog.h"
+#include "tanimwidget.h"
+#include "tapplicationproperties.h"
+
 #include <QTextBrowser>
 #include <QLabel>
 #include <QPixmap>
-
-#include "ktabdialog.h"
-#include "kanimwidget.h"
-#include "tapplicationproperties.h"
 
 /**
  * @brief Class that handles the about dialog box
@@ -62,7 +62,7 @@
  * Moreover, it provides an OK Button and a Cancel Button.
  */
 
-class KTAbout : public KTabDialog
+class KTAbout : public TabDialog
 {
     Q_OBJECT
 
@@ -71,7 +71,7 @@ class KTAbout : public KTabDialog
         ~KTAbout();
 
     private:
-        KAnimWidget *m_credits;
+        TAnimWidget *m_credits;
 };
 
 #endif

@@ -35,7 +35,7 @@
 
 #include "ktgradientselector.h"
 #include "tdebug.h"
-#include "kimageeffect.h"
+#include "timageeffect.h"
 
 #include <qdrawutil.h>
 #include <QMatrix>

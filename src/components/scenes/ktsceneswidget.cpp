@@ -40,8 +40,8 @@
 
 #include "tglobal.h"
 #include "tdebug.h"
-#include "kimagebutton.h"
-#include "koptionaldialog.h"
+#include "timagebutton.h"
+#include "toptionaldialog.h"
 #include "tconfig.h"
 
 #include <QToolTip>
@@ -97,7 +97,7 @@ void KTScenesWidget::setupTableScenes()
 {
     k->scenesTable = new KTScenesList(this);
 
-    KTreeWidgetSearchLine *searcher = new KTreeWidgetSearchLine(this, k->scenesTable);
+    TreeWidgetSearchLine *searcher = new TreeWidgetSearchLine(this, k->scenesTable);
     searcher->setClickMessage(tr("Filter here..."));
 
     addChild(searcher);

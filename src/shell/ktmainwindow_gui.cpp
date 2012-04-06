@@ -36,10 +36,10 @@
 #include "ktmainwindow.h"
 #include "ktapplication.h"
 
-#include "kcommandhistory.h"
-#include "ktoolview.h"
-#include "kviewbutton.h"
-#include "kaudioplayer.h"
+#include "tcommandhistory.h"
+#include "toolview.h"
+#include "tviewbutton.h"
+#include "taudioplayer.h"
 #include "tdebug.h"
 
 #include <QKeySequence>
@@ -146,7 +146,7 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
     addToPerspective(helpView->toggleViewAction(), All);
 
-    KViewButton *helpButton = helpView->button();
+    TViewButton *helpButton = helpView->button();
 
     connect(helpButton, SIGNAL(helpIsOpen()), this,
             SLOT(setHelpPerspective()));

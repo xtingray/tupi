@@ -36,7 +36,7 @@
 #ifndef KTSCENESLIST_H
 #define KTSCENESLIST_H
 
-#include "ktreelistwidget.h"
+#include "treelistwidget.h"
 #include "ktscenesdelegate.h"
 
 #include <QMouseEvent>
@@ -47,7 +47,7 @@
  * @author Jorge Cuadrado
 */
 
-class KTScenesList : public KTreeListWidget
+class KTScenesList : public TreeListWidget
 {
     Q_OBJECT
 

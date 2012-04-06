@@ -41,12 +41,12 @@
  * @brief Include this file if you need the class KTPreferences
  */
 
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
+#include <QLineEdit>
+#include <QLabel>
+#include <QRadioButton>
 
-#include "kfontchooser.h"
-#include "ktabdialog.h"
+#include "tfontchooser.h"
+#include "tabdialog.h"
 #include "tconfigurationdialog.h"
 
 #include "ktthemeselector.h"

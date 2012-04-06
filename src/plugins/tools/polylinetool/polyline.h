@@ -39,8 +39,8 @@
 #include "kttoolplugin.h"
 #include "ktpathitem.h"
 #include "infopanel.h"
-#include "kcontrolnode.h"
-#include "knodegroup.h"
+#include "tcontrolnode.h"
+#include "tnodegroup.h"
 
 /**
  * @author Jorge Cuadrado

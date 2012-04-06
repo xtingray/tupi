@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "tweenmanager.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tosd.h"
 #include "tdebug.h"
 
@@ -48,7 +48,7 @@ struct TweenManager::Private
 {
     QLineEdit *input;
     QListWidget *tweensList;
-    KImageButton *addButton;
+    TImageButton *addButton;
 
     QString target;
 };
@@ -61,7 +61,7 @@ TweenManager::TweenManager(QWidget *parent) : QWidget(parent), k(new Private)
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
     k->input = new QLineEdit;
-    k->addButton = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22);
+    k->addButton = new TImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22);
     k->addButton->setToolTip(tr("Create a new Tween"));
     connect(k->input, SIGNAL(returnPressed()), this, SLOT(addTween()));
     connect(k->addButton, SIGNAL(clicked()), this, SLOT(addTween()));

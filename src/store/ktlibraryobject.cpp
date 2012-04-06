@@ -36,7 +36,7 @@
 #include "ktlibraryobject.h"
 #include "ktitemfactory.h"
 #include "ktpixmapitem.h"
-#include "kaudioplayer.h"
+#include "taudioplayer.h"
 #include "tdebug.h"
 
 #include <QTemporaryFile>

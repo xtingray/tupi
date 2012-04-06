@@ -38,7 +38,7 @@
 
 #include "ktexportpluginobject.h"
 #include "ktexportinterface.h"
-#include "kmoviegeneratorinterface.h"
+#include "tmoviegeneratorinterface.h"
 
 /**
  * @author David Cuadrado
@@ -61,7 +61,7 @@ class FFMpegPlugin : public KTExportPluginObject
         const char *errorMsg;
 
     private:
-        KMovieGeneratorInterface::Format videoFormat(KTExportInterface::Format format);
+        TMovieGeneratorInterface::Format videoFormat(KTExportInterface::Format format);
 };
 
 #endif

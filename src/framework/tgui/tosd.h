@@ -49,7 +49,7 @@
  * @author David Cuadrado
 */
 
-class K_GUI_EXPORT TOsd : public QWidget
+class T_GUI_EXPORT TOsd : public QWidget
 {
     Q_OBJECT
 

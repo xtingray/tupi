@@ -21,7 +21,6 @@ Use: ./configure [options]
   --includedir=[path]:  Set include path [/usr/local/include]
   --sharedir=[path]:    Set data path [/usr/local/share]
   --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
-  --with-aspell=[path]: Set apell installation path [/usr]
   --with-debug:         Enable debug
   --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]
   --debian-build:       Option exclusive for Debian maintainer
@@ -60,13 +59,6 @@ _EOH_
        ffmpegInclude = conf.argumentValue("with-ffmpeg") + "/include"
        config.addLib("-L" + ffmpegLib)
        config.addIncludePath(ffmpegInclude)
-    end
-
-    if conf.hasArgument?("with-aspell")
-       aspellLib = conf.argumentValue("with-spell") + "/lib"
-       aspellInclude = conf.argumentValue("with-aspell") + "/include"
-       config.addLib("-L" + aspellLib)
-       config.addIncludePath(aspellInclude)
     end
 
     debug = 0

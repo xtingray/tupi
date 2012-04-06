@@ -14,144 +14,126 @@ include.path = /include/tupigui
 
 HEADERS += taction.h \
            tactionmanager.h \
-           kanimwidget.h \
+           tanimwidget.h \
            tapplication.h \
-           kbuttonbar.h \
-           kcellview.h \
-           kcirclebutton.h \
-           kcirclebuttonbar.h \
-           kclicklineedit.h \
-           kcollapsiblewidget.h \
-           kcolorbutton.h \
-           kcommandhistory.h \
+           tbuttonbar.h \
+           tcellview.h \
+           tcirclebutton.h \
+           tcirclebuttonbar.h \
+           tclicklineedit.h \
+           tcollapsiblewidget.h \
+           tcolorbutton.h \
+           tcommandhistory.h \
            tconfigurationdialog.h \
-           kcontrolnode.h \
-           kdatepicker.h \
-           kdatetable.h \
-           kdatewidget.h \
-           kdoublecombobox.h \
-           kdualcolorbutton.h \
-           keditspinbox.h \
-           kelabel.h \
-           kflashwidget.h \
-           kflatbutton.h \
-           kfontchooser.h \
-           kformfactory.h \
-           kformvalidator.h \
+           tcontrolnode.h \
+           tdoublecombobox.h \
+           tdualcolorbutton.h \
+           teditspinbox.h \
+           tflatbutton.h \
+           tfontchooser.h \
+           tformfactory.h \
+           tformvalidator.h \
            ticon.h \
-           kideality.h \
-           kimagebutton.h \
-           kimageeffect.h \
-           kindicatordrawer.h \
-           kitemselector.h \
+           tideality.h \
+           timagebutton.h \
+           timageeffect.h \
+           titemselector.h \
            tmainwindow.h \
            tmainwindowabstractsettings.h \
            tmainwindowfactory.h \
-           kmoviegenerator.h \
-           kmoviegeneratorinterface.h \
-           knodegroup.h \
-           koptionaldialog.h \
+           tmoviegenerator.h \
+           tmoviegeneratorinterface.h \
+           tnodegroup.h \
+           toptionaldialog.h \
            tosd.h \
-           kpathhelper.h \
+           tpathhelper.h \
            tpushbutton.h \
-           kradiobuttongroup.h \
-           krulerbase.h \
+           tradiobuttongroup.h \
+           trulerbase.h \
            tseparator.h \
-           ksqueezelabel.h \
-           kstackedmainwindow.h \
-           kstylecombobox.h \
-           ktabbedmainwindow.h \
-           ktabdialog.h \
+           tstackedmainwindow.h \
+           tstylecombobox.h \
+           tabbedmainwindow.h \
+           tabdialog.h \
            ttabwidget.h \
-           kterm.h \
-           ktermtab.h \
-           kthemedocument.h \
-           kthememanager.h \
-           ktipdialog.h \
+           themedocument.h \
+           thememanager.h \
+           tipdialog.h \
            ttoolbox.h \
-           ktoolview.h \
-           ktreelistwidget.h \
-           ktreewidgetsearchline.h \
-           kvhbox.h \
-           kviewbutton.h \
-           kwaitstyle.h \
-           kwidgetlistview.h \
+           toolview.h \
+           treelistwidget.h \
+           treewidgetsearchline.h \
+           tvhbox.h \
+           tviewbutton.h \
+           twaitstyle.h \
+           twidgetlistview.h \
            twizard.h \
-           kexportwizard.h \
-           kworkspacemainwindow.h \
-           kxyspinbox.h \
-           kcolorarrow.xpm \
-           kcolorreset.xpm
+           texportwizard.h \
+           tworkspacemainwindow.h \
+           txyspinbox.h \
+           tcolorarrow.xpm \
+           tcolorreset.xpm
 
 SOURCES += taction.cpp \
            tactionmanager.cpp \
-           kanimwidget.cpp \
+           tanimwidget.cpp \
            tapplication.cpp \
-           kbuttonbar.cpp \
-           kcellview.cpp \
-           kcirclebutton.cpp \
-           kcirclebuttonbar.cpp \
-           kclicklineedit.cpp \
-           kcolorbutton.cpp \
-           kcollapsiblewidget.cpp \
-           kcommandhistory.cpp \
+           tbuttonbar.cpp \
+           tcellview.cpp \
+           tcirclebutton.cpp \
+           tcirclebuttonbar.cpp \
+           tclicklineedit.cpp \
+           tcolorbutton.cpp \
+           tcollapsiblewidget.cpp \
+           tcommandhistory.cpp \
            tconfigurationdialog.cpp \
-           kcontrolnode.cpp \
-           kdatepicker.cpp \
-           kdatetable.cpp \
-           kdatewidget.cpp \
-           kdoublecombobox.cpp \
-           kdualcolorbutton.cpp \
-           keditspinbox.cpp \
-           kelabel.cpp \
-           kflashwidget.cpp \
-           kflatbutton.cpp \
-           kfontchooser.cpp \
-           kformfactory.cpp \
-           kformvalidator.cpp \
+           tcontrolnode.cpp \
+           tdoublecombobox.cpp \
+           tdualcolorbutton.cpp \
+           teditspinbox.cpp \
+           tflatbutton.cpp \
+           tfontchooser.cpp \
+           tformfactory.cpp \
+           tformvalidator.cpp \
            ticon.cpp \ 
-           kimagebutton.cpp \
-           kimageeffect.cpp \
-           kindicatordrawer.cpp \
-           kitemselector.cpp \
+           timagebutton.cpp \
+           timageeffect.cpp \
+           titemselector.cpp \
            tmainwindow.cpp \
            tmainwindowfactory.cpp \
-           kmoviegenerator.cpp \
-           knodegroup.cpp \
-           koptionaldialog.cpp \
+           tmoviegenerator.cpp \
+           tnodegroup.cpp \
+           toptionaldialog.cpp \
            tosd.cpp \
-           kpathhelper.cpp \
+           tpathhelper.cpp \
            tpushbutton.cpp \
-           kradiobuttongroup.cpp \
-           krulerbase.cpp \
+           tradiobuttongroup.cpp \
+           trulerbase.cpp \
            tseparator.cpp \
-           ksqueezelabel.cpp \
-           kstackedmainwindow.cpp \
-           kstylecombobox.cpp \
-           ktabbedmainwindow.cpp \
-           ktabdialog.cpp \
+           tstackedmainwindow.cpp \
+           tstylecombobox.cpp \
+           tabbedmainwindow.cpp \
+           tabdialog.cpp \
            ttabwidget.cpp \
-           kterm.cpp \
-           ktermtab.cpp \
-           kthemedocument.cpp \
-           kthememanager.cpp \
-           ktipdialog.cpp \
+           themedocument.cpp \
+           thememanager.cpp \
+           tipdialog.cpp \
            ttoolbox.cpp \
-           ktoolview.cpp \
-           ktreelistwidget.cpp \
-           ktreewidgetsearchline.cpp \
-           kvhbox.cpp \
-           kviewbutton.cpp \
-           kwaitstyle.cpp \
-           kwidgetlistview.cpp \
+           toolview.cpp \
+           treelistwidget.cpp \
+           treewidgetsearchline.cpp \
+           tvhbox.cpp \
+           tviewbutton.cpp \
+           twaitstyle.cpp \
+           twidgetlistview.cpp \
            twizard.cpp \
-           kexportwizard.cpp \
-           kworkspacemainwindow.cpp \
-           kxyspinbox.cpp
+           texportwizard.cpp \
+           tworkspacemainwindow.cpp \
+           txyspinbox.cpp
 
 contains(DEFINES, HAVE_FFMPEG){
-    HEADERS += kffmpegmoviegenerator.h
-    SOURCES += kffmpegmoviegenerator.cpp
+    HEADERS += tffmpegmoviegenerator.h
+    SOURCES += tffmpegmoviegenerator.cpp
 }
 
 CONFIG += release warn_on dll

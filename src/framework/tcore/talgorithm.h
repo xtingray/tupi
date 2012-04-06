@@ -46,7 +46,7 @@
  * @author David Cuadrado
 */
 
-class K_CORE_EXPORT TAlgorithm
+class T_CORE_EXPORT TAlgorithm
 {
     public:
         /**

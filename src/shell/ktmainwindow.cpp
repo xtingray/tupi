@@ -42,11 +42,11 @@
 #include "ktpaintareacommand.h"
 
 // Tupi Framework
-#include "ktipdialog.h"
+#include "tipdialog.h"
 #include "tdebug.h"
 #include "tosd.h"
-#include "kimageeffect.h"
-#include "kaudioplayer.h"
+#include "timageeffect.h"
+#include "taudioplayer.h"
 
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
@@ -103,7 +103,7 @@ class SleeperThread : public QThread
 */
 
 KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) : 
-              KTabbedMainWindow(), m_projectManager(0), drawingTab(0), animationTab(0), 
+              TabbedMainWindow(), m_projectManager(0), drawingTab(0), animationTab(0), 
               m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
@@ -111,7 +111,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     #endif
 
     // Loading audio player plugin
-    KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
+    TAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
     setObjectName("KTMainWindow_");
 
     // Defining the status bar
@@ -887,7 +887,7 @@ void KTMainWindow::showTipDialog()
     QStringList labels;
     labels << tr("Tip of the day") << tr("Show on start") << tr("Previous tip") << tr("Next tip") << tr("Close");
 
-    KTipDialog *tipDialog = new KTipDialog(labels, DATA_DIR + "tips.xml", this);
+    TipDialog *tipDialog = new TipDialog(labels, DATA_DIR + "tips.xml", this);
     tipDialog->show();
 
     QDesktopWidget desktop;

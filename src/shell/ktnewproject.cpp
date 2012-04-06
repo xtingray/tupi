@@ -36,7 +36,7 @@
 #include "ktnewproject.h"
 #include "ktnetprojectmanagerparams.h"
 
-#include "kformfactory.h"
+#include "tformfactory.h"
 #include "tconfig.h"
 #include "tapplication.h"
 #include "tosd.h"
@@ -62,7 +62,7 @@ struct KTNewProject::Private
     QPushButton *colorButton;
     QSpinBox *fps;
 
-    KXYSpinBox *size;
+    TXYSpinBox *size;
     bool useNetwork;
 
     QGroupBox *netOptions;
@@ -76,7 +76,7 @@ struct KTNewProject::Private
     QCheckBox *storePassword;
 };
 
-KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
+KTNewProject::KTNewProject(QWidget *parent) : TabDialog(parent), k(new Private)
 {
     setWindowIcon(QPixmap(THEME_DIR + "icons/new.png"));
 
@@ -148,7 +148,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k(new Private)
     subLayout->addLayout(fpsLayout);
     // subLayout->addSpacing(30);
 
-    k->size = new KXYSpinBox(tr("Dimension"), infoContainer);
+    k->size = new TXYSpinBox(tr("Dimension"), infoContainer);
     k->size->setMinimum(50);
     k->size->setMaximum(15000);
     k->size->setX(520);
@@ -227,7 +227,7 @@ void KTNewProject::setupNetOptions()
 
     k->netOptions = new QGroupBox(tr("Settings"));
     QVBoxLayout *layout = new QVBoxLayout(k->netOptions);
-    layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Username") << tr("Password") << tr("Server") << tr("Port"), 
+    layout->addLayout(TFormFactory::makeGrid(QStringList() << tr("Username") << tr("Password") << tr("Server") << tr("Port"), 
                          QWidgetList() << k->login << k->password << k->server << k->port));
 
     k->netLayout->addWidget(k->netOptions);
@@ -299,7 +299,7 @@ void KTNewProject::ok()
         }
     }
 
-    KTabDialog::ok();
+    TabDialog::ok();
 }
 
 void KTNewProject::enableNetOptions(bool isEnabled)

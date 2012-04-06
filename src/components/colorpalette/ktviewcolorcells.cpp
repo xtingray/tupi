@@ -36,7 +36,7 @@
 #include "ktviewcolorcells.h"
 #include "tdebug.h"
 #include "tglobal.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "tconfig.h"
 
 #include <QScrollArea>
@@ -320,10 +320,10 @@ void KTViewColorCells::addCurrentColor()
 
 void KTViewColorCells::removeCurrentColor()
 {
-     KCellView *palette = qobject_cast<KCellView *>(k->containerPalette->currentWidget());
+     TCellView *palette = qobject_cast<TCellView *>(k->containerPalette->currentWidget());
      if (palette) {
           if (k->defaultPalette != palette) {
-              //TODO: Add function removeItem in KCellView
+              //TODO: Add function removeItem in TCellView
           }
      }
 }
@@ -337,14 +337,14 @@ void KTViewColorCells::setupButtons()
 
     containerButtons->setLayout(bLayout);
 
-    KImageButton *addItem = new KImageButton(QPixmap(THEME_DIR  + "icons/plus_sign.png") , 22);
+    TImageButton *addItem = new TImageButton(QPixmap(THEME_DIR  + "icons/plus_sign.png") , 22);
     connect(addItem, SIGNAL(clicked()), SLOT(addCurrentColor()));
     addItem->setToolTip(tr("Add Color"));
     bLayout->addWidget(addItem);
     // SQA instruction - temporary code
     addItem->setEnabled(false);
 
-    KImageButton *removeColor = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
+    TImageButton *removeColor = new TImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
     connect( removeColor, SIGNAL(clicked()), SLOT(removeCurrentColor()));
     removeColor->setToolTip(tr("Remove Color"));
     bLayout->addWidget(removeColor);

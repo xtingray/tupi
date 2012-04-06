@@ -56,7 +56,7 @@ class QMenuBar;
  * @author David Cuadrado
 */
 
-class K_GUI_EXPORT TActionManager : public QObject
+class T_GUI_EXPORT TActionManager : public QObject
 {
     Q_OBJECT
 

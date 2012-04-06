@@ -37,7 +37,7 @@
 #define KTPENWIDGET_H
 
 #include "ktmodulewidgetbase.h"
-#include "keditspinbox.h"
+#include "teditspinbox.h"
 
 #include <QPen>
 #include <QListWidgetItem>

@@ -35,7 +35,7 @@
 
 #include "ktcolorvalue.h"
 #include "tdebug.h"
-#include "kdoublecombobox.h"
+#include "tdoublecombobox.h"
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -118,7 +118,7 @@ struct KTColorValue::Private
     KTItemColorValue *valueS;
     KTItemColorValue *valueV; 
 
-    KDoubleComboBox *valueA;
+    TDoubleComboBox *valueA;
     bool ok;
 };
 
@@ -166,7 +166,7 @@ void KTColorValue::setupForm()
     QHBoxLayout *boxLayout = new QHBoxLayout;
     boxLayout->setSpacing(1);
 
-    k->valueA = new KDoubleComboBox(0, 255, this);
+    k->valueA = new TDoubleComboBox(0, 255, this);
     k->valueA->setDecimals(0);
 
     QLabel * label = new QLabel("A");

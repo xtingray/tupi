@@ -47,7 +47,7 @@ class TActionManager;
  * @brief la clase TAction hereda de QAction, para facilitar la creaccion de acciones, y dando un parametro para identificar las acciones.
  * @author David Cuadrado
 */
-class K_GUI_EXPORT TAction : public QAction
+class T_GUI_EXPORT TAction : public QAction
 {
     Q_OBJECT
 

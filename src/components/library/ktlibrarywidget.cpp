@@ -36,7 +36,7 @@
 #include "ktlibrarywidget.h"
 #include "tglobal.h"
 #include "tapplication.h"
-#include "koptionaldialog.h"
+#include "toptionaldialog.h"
 #include "tconfig.h"
 #include "ktlibrary.h"
 #include "ktproject.h"
@@ -44,7 +44,7 @@
 #include "ktsymboleditor.h"
 #include "ktrequestbuilder.h"
 #include "tosd.h"
-#include "kaudioplayer.h"
+#include "taudioplayer.h"
 #include "tdebug.h"
 
 #include <QApplication>
@@ -159,21 +159,21 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
     connect(k->itemType, SIGNAL(currentIndexChanged(int)), this, SLOT(importGraphicObject()));
 
-    KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22, buttons);
+    TImageButton *addGC = new TImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22, buttons);
     addGC->setToolTip(tr("Add an object to library"));
     connect(addGC, SIGNAL(clicked()), this, SLOT(importGraphicObject()));
     comboLayout->addWidget(addGC);
 
     buttonLayout->addLayout(comboLayout);
 
-    KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR + "icons/create_folder.png"), 22, buttons);
+    TImageButton *addFolderGC = new TImageButton(QPixmap(THEME_DIR + "icons/create_folder.png"), 22, buttons);
     connect(addFolderGC, SIGNAL(clicked()), this, SLOT(addFolder()));
     addFolderGC->setToolTip(tr("Adds a folder to the object's list"));
     buttonLayout->addWidget(addFolderGC);
     // SQA: Temporary code
     // addFolderGC->setEnabled(false);
 
-    KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR + "icons/library_to_ws.png"), 22, buttons);
+    TImageButton *gctoDrawingArea = new TImageButton(QPixmap(THEME_DIR + "icons/library_to_ws.png"), 22, buttons);
     connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(insertObjectInWorkspace()));
     gctoDrawingArea->setToolTip(tr("Inserts the selected object into the drawing area"));
     buttonLayout->addWidget(gctoDrawingArea);
@@ -276,11 +276,11 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item)
                    break;
                 case KTLibraryObject::Sound:
                    {
-                     KAudioPlayer::instance()->setCurrentPlayer(k->currentPlayerId);
-                     KAudioPlayer::instance()->stop();
+                     TAudioPlayer::instance()->setCurrentPlayer(k->currentPlayerId);
+                     TAudioPlayer::instance()->stop();
 
-                     k->currentPlayerId = KAudioPlayer::instance()->load(object->dataPath());
-                     KAudioPlayer::instance()->play(0);
+                     k->currentPlayerId = TAudioPlayer::instance()->load(object->dataPath());
+                     TAudioPlayer::instance()->play(0);
                    }
                    break;
                 default:

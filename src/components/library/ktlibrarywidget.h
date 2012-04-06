@@ -38,7 +38,7 @@
 
 #include "ktmodulewidgetbase.h"
 #include "ktitempreview.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "ktgctable.h"
 
 #include <QTreeWidget>

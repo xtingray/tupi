@@ -41,7 +41,7 @@
 #include <QFont>
 #include <QTextEdit>
 
-class KFontChooser;
+class TFontChooser;
 class QCheckBox;
 
 /**
@@ -67,7 +67,7 @@ class TextConfigurator : public QWidget
 
     private:
         QTextEdit *m_text;
-        KFontChooser *m_fontChooser;
+        TFontChooser *m_fontChooser;
         QCheckBox *m_isHtml;
         QFont font;
 };

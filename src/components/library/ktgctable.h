@@ -37,7 +37,7 @@
 #define KTGCTABLE_H
 
 #include "kttreedelegate.h"
-#include "ktreelistwidget.h"
+#include "treelistwidget.h"
 #include "tapplicationproperties.h"
 
 #include <QKeyEvent>
@@ -46,7 +46,7 @@
  * @author David Cuadrado
 */
 
-class KTGCTable : public KTreeListWidget
+class KTGCTable : public TreeListWidget
 {
     Q_OBJECT
 

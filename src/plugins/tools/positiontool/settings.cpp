@@ -34,8 +34,8 @@
  ***************************************************************************/
 
 #include "settings.h"
-#include "kradiobuttongroup.h"
-#include "kimagebutton.h"
+#include "tradiobuttongroup.h"
+#include "timagebutton.h"
 #include "tdebug.h"
 #include "ktitemtweener.h"
 #include "stepsviewer.h"
@@ -56,15 +56,15 @@ struct Settings::Private
     QBoxLayout *layout; 
 
     QLineEdit *input;
-    KRadioButtonGroup *options;
+    TRadioButtonGroup *options;
     StepsViewer *stepViewer;
     QComboBox *comboInit;
     QLabel *totalLabel;
     bool selectionDone;
     Mode mode; 
 
-    KImageButton *apply;
-    KImageButton *remove;
+    TImageButton *apply;
+    TImageButton *remove;
 };
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
@@ -86,15 +86,15 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     nameLayout->addWidget(nameLabel);
     nameLayout->addWidget(k->input);
 
-    k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
+    k->options = new TRadioButtonGroup(tr("Options"), Qt::Vertical);
     k->options->addItem(tr("Select object"), 0);
     k->options->addItem(tr("Set Properties"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
-    k->apply = new KImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->apply = new TImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
-    k->remove = new KImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    k->remove = new TImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;

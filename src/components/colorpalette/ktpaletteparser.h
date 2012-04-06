@@ -36,21 +36,21 @@
 #ifndef KTPALETTEPARSER_H
 #define KTPALETTEPARSER_H
 
+#include "txmlparserbase.h"
+
 #include <QXmlDefaultHandler>
 #include <QBrush>
 #include <QLinearGradient>
 #include <QConicalGradient>
 #include <QRadialGradient>
 
-#include "kxmlparserbase.h"
-
 /**
  * @author David Cuadrado
 */
 
-//TODO KTPaletteParser: portar a KXmlParserBase
+//TODO KTPaletteParser: portar a TXmlParserBase
 
-class KTPaletteParser : public KXmlParserBase
+class KTPaletteParser : public TXmlParserBase
 {
      public:
          KTPaletteParser();

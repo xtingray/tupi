@@ -43,7 +43,7 @@
  * @author David Cuadrado
 */
 
-class K_GUI_EXPORT TTabWidget : public QTabWidget
+class T_GUI_EXPORT TTabWidget : public QTabWidget
 {
     Q_OBJECT
 

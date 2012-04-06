@@ -38,7 +38,7 @@
 
 #include "ktmodulewidgetbase.h"
 #include "ktsceneslist.h"
-#include "ktreewidgetsearchline.h"
+#include "treewidgetsearchline.h"
 
 #include <QGroupBox>
 #include <QPushButton>

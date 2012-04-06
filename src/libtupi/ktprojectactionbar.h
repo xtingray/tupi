@@ -42,7 +42,7 @@
 #include "ktglobal.h"
 #include "tapplicationproperties.h"
 
-class KImageButton;
+class TImageButton;
 class QBoxLayout;
 
 /**
@@ -94,7 +94,7 @@ class TUPI_EXPORT KTProjectActionBar : public QWidget
         void insertSeparator(int position);
         void insertBlankSpace(int position);
         
-        KImageButton *button(Action action);
+        TImageButton *button(Action action);
         
     public slots:
         void emitActionSelected(int action);

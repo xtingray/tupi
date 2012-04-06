@@ -68,7 +68,7 @@ struct KTItemFactory::Private
     KTItemFactory::Type type;
 };
 
-KTItemFactory::KTItemFactory() : KXmlParserBase(), k(new Private)
+KTItemFactory::KTItemFactory() : TXmlParserBase(), k(new Private)
 {
     k->item = 0;
     k->addToGroup = false;

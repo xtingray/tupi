@@ -45,7 +45,7 @@
 
 #include "ktabout.h"
 #include "tglobal.h"
-#include "kimageeffect.h"
+#include "timageeffect.h"
 
 #include "tdebug.h"
 
@@ -57,7 +57,7 @@
  * @author David Cuadrado
 */
 
-KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
+KTAbout::KTAbout(QWidget *parent) : TabDialog(Cancel, parent)
 {
     setWindowTitle(tr("About") + QString(" Tupi"));
     setFixedSize(525, 458);
@@ -117,9 +117,9 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     QImage credits = QImage(THEME_DIR + "/images/credits.png");
 
-    KImageEffect::fade(credits,0.25, palette().background().color());
+    TImageEffect::fade(credits,0.25, palette().background().color());
 
-    m_credits = new KAnimWidget(QPixmap::fromImage(credits), creditsText);
+    m_credits = new TAnimWidget(QPixmap::fromImage(credits), creditsText);
     addTab(m_credits, tr("Credits"));
 
     QPalette pal = m_credits->palette();

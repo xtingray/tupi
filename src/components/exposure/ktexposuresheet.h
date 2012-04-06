@@ -39,7 +39,7 @@
 #include "ktmodulewidgetbase.h"
 #include "ktexposuretable.h"
 #include "ktscenetabwidget.h"
-#include "kimagebutton.h"
+#include "timagebutton.h"
 #include "ktprojectactionbar.h"
 #include "ktproject.h"
 

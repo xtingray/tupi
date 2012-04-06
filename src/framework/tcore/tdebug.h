@@ -117,7 +117,7 @@ enum DebugOutput
 };
 
 #if !defined(K_NODEBUG)
-class K_CORE_EXPORT TDebug
+class T_CORE_EXPORT TDebug
 {
     public:
 

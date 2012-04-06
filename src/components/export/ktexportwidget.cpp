@@ -37,8 +37,8 @@
 #include "ktpluginmanager.h"
 #include "tglobal.h"
 #include "tdebug.h"
-#include "kitemselector.h"
-#include "kxyspinbox.h"
+#include "titemselector.h"
+#include "txyspinbox.h"
 
 // Qt
 #include <QApplication>
@@ -62,7 +62,7 @@
  * @author David Cuadrado
 */
 
-class SelectPlugin : public KExportWizardPage
+class SelectPlugin : public TExportWizardPage
 {
     Q_OBJECT
 
@@ -93,7 +93,7 @@ class SelectPlugin : public KExportWizardPage
         const char* getFormatExtension(const QString format);
 };
 
-SelectPlugin::SelectPlugin() : KExportWizardPage(tr("Select plugin"))
+SelectPlugin::SelectPlugin() : TExportWizardPage(tr("Select plugin"))
 {
     setTag("PLUGIN");
     QWidget *container = new QWidget;
@@ -273,7 +273,7 @@ const char* SelectPlugin::getFileExtension()
     return extension;
 }
 
-class SelectScenes : public KExportWizardPage
+class SelectScenes : public TExportWizardPage
 {
     Q_OBJECT
 
@@ -295,14 +295,14 @@ class SelectScenes : public KExportWizardPage
         void selectedScenes(const QList<int> &scenes);
 
     private:
-        KItemSelector *m_selector;
+        TItemSelector *m_selector;
 
 };
 
-SelectScenes::SelectScenes(const KTExportWidget *widget) : KExportWizardPage(tr("Select Scenes"))
+SelectScenes::SelectScenes(const KTExportWidget *widget) : TExportWizardPage(tr("Select Scenes"))
 {
     setTag("SCENE");
-    m_selector = new KItemSelector;
+    m_selector = new TItemSelector;
 
     connect(m_selector, SIGNAL(changed()), this, SLOT(updateState()));
     connect(widget, SIGNAL(updateScenes()), this, SLOT(updateScenesList()));
@@ -362,7 +362,7 @@ void SelectScenes::updateScenesList()
     // SQA: Pending code right over here
 }
 
-class ExportTo : public KExportWizardPage
+class ExportTo : public TExportWizardPage
 {
     Q_OBJECT
 
@@ -407,13 +407,13 @@ class ExportTo : public KExportWizardPage
         QLineEdit *m_filePath;
         QLineEdit *m_prefix;
         QSpinBox *m_fps;
-        KXYSpinBox *m_size;
+        TXYSpinBox *m_size;
         QString filename;
         QString path;
         QString extension;
 };
 
-ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *widget) : KExportWizardPage(title), m_currentExporter(0), 
+ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *widget) : TExportWizardPage(title), m_currentExporter(0), 
                    m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
     if (exportImages) 
@@ -480,7 +480,7 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
     configureLayout->addStretch();
 
     QSize dimension = m_project->dimension(); 
-    m_size = new KXYSpinBox(tr("Size"));
+    m_size = new TXYSpinBox(tr("Size"));
 
     int maxDimension = dimension.width();
     if (maxDimension < dimension.height())
@@ -717,7 +717,7 @@ QList<KTScene *> ExportTo::scenesToExport() const
     return scenes;
 }
 
-class VideoProperties : public KExportWizardPage
+class VideoProperties : public TExportWizardPage
 {
     Q_OBJECT
 
@@ -752,7 +752,7 @@ class VideoProperties : public KExportWizardPage
         bool isOk;
 };
 
-VideoProperties::VideoProperties(const KTExportWidget *widget) : KExportWizardPage(tr("Set Work Properties"))
+VideoProperties::VideoProperties(const KTExportWidget *widget) : TExportWizardPage(tr("Set Work Properties"))
 {
     setTag("PROPERTIES");
 
@@ -892,7 +892,7 @@ KTExportWidget::Format VideoProperties::workType()
     return KTExportWidget::Format(exportCombo->currentIndex());
 }
 
-KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent, bool isLocal) : KExportWizard(parent), m_project(project)
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent, bool isLocal) : TExportWizard(parent), m_project(project)
 {
     #ifdef K_DEBUG
            TINIT;

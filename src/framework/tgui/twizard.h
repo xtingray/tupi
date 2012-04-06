@@ -42,7 +42,7 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 
-#include "kvhbox.h"
+#include "tvhbox.h"
 #include "tglobal.h"
 
 class TWizardPage;
@@ -51,7 +51,7 @@ class TWizardPage;
  * @author David Cuadrado
 */
 
-class K_GUI_EXPORT TWizard : public QDialog
+class T_GUI_EXPORT TWizard : public QDialog
 {
     Q_OBJECT
 
@@ -82,7 +82,7 @@ class K_GUI_EXPORT TWizard : public QDialog
 #include <QGridLayout>
 #include <QLabel>
 
-class TWizardPage : public KVHBox
+class TWizardPage : public TVHBox
 {
     Q_OBJECT
 

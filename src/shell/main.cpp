@@ -39,15 +39,15 @@
 #include "ktwitter.h"
 #include "tapplicationproperties.h"
 #include "tdebug.h"
-#include "kcollapsiblewidget.h"
-#include "kaudioplayer.h"
+#include "tcollapsiblewidget.h"
+#include "taudioplayer.h"
 
 #ifdef Q_OS_UNIX
 #include "ktcrashhandler.h"
 #endif
 
 #ifdef ENABLE_TUPISTYLE
-#include "kwaitstyle.h"
+#include "twaitstyle.h"
 #endif
 
 #include <QFile>
