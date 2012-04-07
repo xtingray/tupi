@@ -3,8 +3,8 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
-HEADERS += ktpenwidget.h ktpenthicknesswidget.h
-SOURCES += ktpenwidget.cpp ktpenthicknesswidget.cpp
+HEADERS += tuppenwidget.h tuppenthicknesswidget.h
+SOURCES += tuppenwidget.cpp tuppenthicknesswidget.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib

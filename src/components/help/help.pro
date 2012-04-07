@@ -7,10 +7,10 @@ INSTALLS += help
 help.files += help 
 help.path = /data/ 
 
-HEADERS += kthelpwidget.h \
-           kthelpbrowser.h 
-SOURCES += kthelpwidget.cpp \
-           kthelpbrowser.cpp 
+HEADERS += tuphelpwidget.h \
+           tuphelpbrowser.h 
+SOURCES += tuphelpwidget.cpp \
+           tuphelpbrowser.cpp 
 
 CONFIG += static warn_on
 TEMPLATE = lib

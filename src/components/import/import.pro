@@ -3,8 +3,8 @@
 # Subdir relative project main directory: ./src/components/import
 # Target is a library:  
 
-HEADERS += ktpaletteimporter.h
-SOURCES += ktpaletteimporter.cpp
+HEADERS += tuppaletteimporter.h
+SOURCES += tuppaletteimporter.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib 

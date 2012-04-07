@@ -3,12 +3,12 @@
 # Subdir relative project main directory: ./src/components/scenes
 # Target is a library:  
 
-HEADERS += ktsceneslist.h \
-           ktscenesdelegate.h \
-           ktsceneswidget.h 
-SOURCES += ktsceneslist.cpp \
-           ktscenesdelegate.cpp \
-           ktsceneswidget.cpp 
+HEADERS += tupsceneslist.h \
+           tupscenesdelegate.h \
+           tupsceneswidget.h 
+SOURCES += tupsceneslist.cpp \
+           tupscenesdelegate.cpp \
+           tupsceneswidget.cpp 
 
 CONFIG += static warn_on
 TEMPLATE = lib

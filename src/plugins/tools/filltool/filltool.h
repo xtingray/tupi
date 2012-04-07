@@ -36,19 +36,19 @@
 #ifndef FILLTOOLPLUGIN_H
 #define FILLTOOLPLUGIN_H
 
-#include "kttoolplugin.h"
-#include "ktgraphicsscene.h"
+#include "tuptoolplugin.h"
+#include "tupgraphicsscene.h"
 
 #include <QObject>
 #include <QLabel>
 
-class KTPathItem;
+class TupPathItem;
 
 /**
  * @author David Cuadrado
 */
 
-class FillTool : public KTToolPlugin
+class FillTool : public TupToolPlugin
 {
     Q_OBJECT
     
@@ -58,25 +58,25 @@ class FillTool : public KTToolPlugin
         
         virtual QStringList keys() const;
 
-        void init(KTGraphicsScene *scene);
+        void init(TupGraphicsScene *scene);
         
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
-                    KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, 
+                    TupGraphicsScene *scene);
 
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
-                    KTGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, 
+                    TupGraphicsScene *scene);
 
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
-                    KTGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, 
+                    TupGraphicsScene *scene);
         
-        KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
+        TupPathItem *itemPressed(QGraphicsItem *item, const TupBrushManager *brush);
         
         virtual QMap<QString, TAction *> actions() const;
         
         int toolType() const;
         
         virtual QWidget *configurator();
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         virtual void aboutToChangeTool();
         
         QPainterPath mapPath(const QPainterPath &path, const QPointF &pos);
@@ -100,7 +100,7 @@ class FillTool : public KTToolPlugin
     /*       
     private:
         QMap<QString, TAction *> m_actions;
-        KTGraphicsScene *m_scene;
+        TupGraphicsScene *m_scene;
     */
 };
 

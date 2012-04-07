@@ -39,7 +39,7 @@
 #include <QWidget>
 #include <QGraphicsPathItem>
 
-#include "ktitemtweener.h"
+#include "tupitemtweener.h"
 
 /**
  * @author Gustav Gonzalez 
@@ -71,7 +71,7 @@ class TweenerPanel : public QWidget
         ~TweenerPanel();
 
         void setParameters(const QString &name, int framesTotal, int startFrame);
-        void setParameters(KTItemTweener *currentTween);
+        void setParameters(TupItemTweener *currentTween);
         void activateMode(TweenerPanel::EditMode mode);
         void notifySelection(bool flag);
         void updateSteps(const QGraphicsPathItem *path, QPointF offset);

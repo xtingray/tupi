@@ -41,7 +41,7 @@
 
 class QGraphicsPathItem;
 class QListWidgetItem;
-class KTItemTweener;
+class TupItemTweener;
 
 /**
  * @author Gustav Gonzalez 
@@ -63,7 +63,7 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
-        void setCurrentTween(KTItemTweener *currentTween);
+        void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         void closeSettingsPanel();

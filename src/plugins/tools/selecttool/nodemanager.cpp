@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "nodemanager.h"
-#include "ktgraphicobject.h"
+#include "tupgraphicobject.h"
 
 // Tupi Framework 
 #include "tdebug.h"
@@ -198,7 +198,7 @@ void NodeManager::rotate(double a)
     m.rotate(m_rotation-a);
     m.translate(-m_anchor.x(),-m_anchor.y());
     m_parent->setMatrix(m);
-    m_parent->setData(KTGraphicObject::Rotate, m_rotation - a);
+    m_parent->setData(TupGraphicObject::Rotate, m_rotation - a);
 
     /*
     QTransform transform;
@@ -206,7 +206,7 @@ void NodeManager::rotate(double a)
     transform.rotate(m_rotation-a);
     transform.translate(-m_anchor.x(), -m_anchor.y());
     m_parent->setTransform(transform);
-    m_parent->setData(KTGraphicObject::Rotate, m_rotation - a);
+    m_parent->setData(TupGraphicObject::Rotate, m_rotation - a);
     */
     
     syncNodesFromParent();

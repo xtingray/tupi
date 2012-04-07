@@ -37,7 +37,7 @@
 #include "tweenmanager.h"
 #include "buttonspanel.h"
 
-#include "ktitemtweener.h"
+#include "tupitemtweener.h"
 #include "tosd.h"
 #include "tdebug.h"
 
@@ -52,7 +52,7 @@ struct Configurator::Private
     TweenManager *tweenManager;
     ButtonsPanel *controlPanel;
 
-    KTItemTweener *currentTween;
+    TupItemTweener *currentTween;
 
     int framesTotal;
     int currentFrame;
@@ -128,7 +128,7 @@ void Configurator::activePropertiesPanel(bool enable)
         k->settingsPanel->hide();
 }
 
-void Configurator::setCurrentTween(KTItemTweener *currentTween)
+void Configurator::setCurrentTween(TupItemTweener *currentTween)
 {
     k->currentTween = currentTween;
 }

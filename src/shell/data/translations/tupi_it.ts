@@ -432,7 +432,7 @@
     </message>
 </context>
 <context>
-    <name>KExportWizard</name>
+    <name>TExportWizard</name>
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
@@ -519,7 +519,7 @@
     </message>
 </context>
 <context>
-    <name>KTAbout</name>
+    <name>TupAbout</name>
     <message>
         <source>About</source>
         <translation>Riguardo a</translation>
@@ -542,21 +542,21 @@
     </message>
 </context>
 <context>
-    <name>KTAnimationArea</name>
+    <name>TupAnimationArea</name>
     <message>
         <source>Rendering...</source>
         <translation type="unfinished">Rendering...</translation>
     </message>
 </context>
 <context>
-    <name>KTBackground</name>
+    <name>TupBackground</name>
     <message>
         <source>landscape</source>
         <translation type="unfinished">paesaggio</translation>
     </message>
 </context>
 <context>
-    <name>KTCameraBar</name>
+    <name>TupCameraBar</name>
     <message>
         <source>Rewind</source>
         <translation>Riavvolgi</translation>
@@ -579,7 +579,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraStatus</name>
+    <name>TupCameraStatus</name>
     <message>
         <source>Scene name</source>
         <translation>Nome della scena</translation>
@@ -610,14 +610,14 @@
     </message>
 </context>
 <context>
-    <name>KTCanvas</name>
+    <name>TupCanvas</name>
     <message>
         <source>Tupi: 2D Magic</source>
         <translation>Tupí: Magia 2D</translation>
     </message>
 </context>
 <context>
-    <name>KTChat</name>
+    <name>TupChat</name>
     <message>
         <source>Send</source>
         <translation>Invia</translation>
@@ -632,7 +632,7 @@
     </message>
 </context>
 <context>
-    <name>KTColorPalette</name>
+    <name>TupColorPalette</name>
     <message>
         <source>Color Palette</source>
         <translation>Tavolozza</translation>
@@ -655,14 +655,14 @@
     </message>
 </context>
 <context>
-    <name>KTColorValue</name>
+    <name>TupColorValue</name>
     <message>
         <source>Percent</source>
         <translation>Percentuale</translation>
     </message>
 </context>
 <context>
-    <name>KTCommandExecutor</name>
+    <name>TupCommandExecutor</name>
     <message>
         <source>Frame doesn&apos;t exists!</source>
         <translation>Il fotogramma non esiste!</translation>
@@ -681,7 +681,7 @@
     </message>
 </context>
 <context>
-    <name>KTConfigurationArea</name>
+    <name>TupConfigurationArea</name>
     <message>
         <source>Cursor here for expand</source>
         <translation>Il cursore qui per espandere</translation>
@@ -692,7 +692,7 @@
     </message>
 </context>
 <context>
-    <name>KTConnectDialog</name>
+    <name>TupConnectDialog</name>
     <message>
         <source>Connection Dialog</source>
         <translation>Finestra di connessione</translation>
@@ -727,14 +727,14 @@
     </message>
 </context>
 <context>
-    <name>KTDebugWidget</name>
+    <name>TupDebugWidget</name>
     <message>
         <source>Debug Console</source>
         <translation>Console di debug</translation>
     </message>
 </context>
 <context>
-    <name>KTExportWidget</name>
+    <name>TupExportWidget</name>
     <message>
         <source>Export to Video</source>
         <translation>Esporta come video</translation>
@@ -753,7 +753,7 @@
     </message>
 </context>
 <context>
-    <name>KTExposureSheet</name>
+    <name>TupExposureSheet</name>
     <message>
         <source>Exposure Sheet</source>
         <translation>Tavola delle esposizioni</translation>
@@ -812,7 +812,7 @@
     </message>
 </context>
 <context>
-    <name>KTGCTable</name>
+    <name>TupGCTable</name>
     <message>
         <source>New folder %1</source>
         <translation>Nuova cartella %1</translation>
@@ -839,7 +839,7 @@
     </message>
 </context>
 <context>
-    <name>KTGradientCreator</name>
+    <name>TupGradientCreator</name>
     <message>
         <source>Linear</source>
         <translation>Lineare</translation>
@@ -866,7 +866,7 @@
     </message>
 </context>
 <context>
-    <name>KTGraphicsScene</name>
+    <name>TupGraphicsScene</name>
     <message>
         <source>PolyLine</source>
         <translation>Polilinea</translation>
@@ -889,21 +889,21 @@
     </message>
 </context>
 <context>
-    <name>KTHelpBrowser</name>
+    <name>TupHelpBrowser</name>
     <message>
         <source>Help</source>
         <translation>Aiuto</translation>
     </message>
 </context>
 <context>
-    <name>KTHelpWidget</name>
+    <name>TupHelpWidget</name>
     <message>
         <source>Help</source>
         <translation>Aiuto</translation>
     </message>
 </context>
 <context>
-    <name>KTImageDialog</name>
+    <name>TupImageDialog</name>
     <message>
         <source>Image Properties</source>
         <translation>Proprietà dell&apos;immagine</translation>
@@ -938,14 +938,14 @@
     </message>
 </context>
 <context>
-    <name>KTItemPreview</name>
+    <name>TupItemPreview</name>
     <message>
         <source>Library is empty :(</source>
         <translation>La biblioteca è vuota :(</translation>
     </message>
 </context>
 <context>
-    <name>KTItemTweener</name>
+    <name>TupItemTweener</name>
     <message>
         <source>Position Tween</source>
         <translation>Intercalazione di posizione</translation>
@@ -976,21 +976,21 @@
     </message>
 </context>
 <context>
-    <name>KTLayer</name>
+    <name>TupLayer</name>
     <message>
         <source>Layer</source>
         <translation>Livello</translation>
     </message>
 </context>
 <context>
-    <name>KTLayerIndex</name>
+    <name>TupLayerIndex</name>
     <message>
         <source>Layers</source>
         <translation>Livelli</translation>
     </message>
 </context>
 <context>
-    <name>KTLibraryDialog</name>
+    <name>TupLibraryDialog</name>
     <message>
         <source>Library Object</source>
         <translation>Oggetto dalla biblioteca</translation>
@@ -1005,7 +1005,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryWidget</name>
+    <name>TupLibraryWidget</name>
     <message>
         <source>Library</source>
         <translation>Biblioteca</translation>
@@ -1156,7 +1156,7 @@
     </message>
 </context>
 <context>
-    <name>KTListProjectDialog</name>
+    <name>TupListProjectDialog</name>
     <message>
         <source>Projects List from Server</source>
         <translation>Lista dei progetti sul server</translation>
@@ -1191,7 +1191,7 @@
     </message>
 </context>
 <context>
-    <name>KTNetProjectManagerHandler</name>
+    <name>TupNetProjectManagerHandler</name>
     <message>
         <source>Communications</source>
         <translation>Comunicazioni</translation>
@@ -1240,14 +1240,14 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTNotice</name>
+    <name>TupNotice</name>
     <message>
         <source>Notices</source>
         <translation>Notifiche</translation>
     </message>
 </context>
 <context>
-    <name>KTPaintArea</name>
+    <name>TupPaintArea</name>
     <message>
         <source>Pencil</source>
         <translation>Matita</translation>
@@ -1346,7 +1346,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTPaintAreaBase</name>
+    <name>TupPaintAreaBase</name>
     <message>
         <source>OpenGL isn&apos;t supported</source>
         <translation>OpenGL non supportato</translation>
@@ -1369,7 +1369,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTPaintAreaConfig</name>
+    <name>TupPaintAreaConfig</name>
     <message>
         <source>Grid color</source>
         <translation>Colore della griglia</translation>
@@ -1392,7 +1392,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTPaintAreaStatus</name>
+    <name>TupPaintAreaStatus</name>
     <message>
         <source>Current Frame</source>
         <translation>Fotogramma corrente</translation>
@@ -1435,7 +1435,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTPenWidget</name>
+    <name>TupPenWidget</name>
     <message>
         <source>Pen Properties</source>
         <translation>Proprietà del pennino</translation>
@@ -1502,9 +1502,9 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTPreferences</name>
+    <name>TupPreferences</name>
     <message>
-        <source>Application KTPreferences</source>
+        <source>Application TupPreferences</source>
         <translation>Preferenze di Tupi</translation>
     </message>
     <message>
@@ -1525,7 +1525,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTPreferences::GeneralPage</name>
+    <name>TupPreferences::GeneralPage</name>
     <message>
         <source>Tupi Home</source>
         <translation>Cartella di installazione</translation>
@@ -1548,7 +1548,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTProjectActionBar</name>
+    <name>TupProjectActionBar</name>
     <message>
         <source>Insert a layer</source>
         <translation>Inserisci un livello</translation>
@@ -1647,7 +1647,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTProjectManager</name>
+    <name>TupProjectManager</name>
     <message>
         <source>Scene %1</source>
         <translation>Scena %1</translation>
@@ -1662,7 +1662,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTScene</name>
+    <name>TupScene</name>
     <message>
         <source>Sound layer %1</source>
         <translation>Livello sonoro %1</translation>
@@ -1677,14 +1677,14 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTSceneTabWidget</name>
+    <name>TupSceneTabWidget</name>
     <message>
         <source>Layers</source>
         <translation>Livelli</translation>
     </message>
 </context>
 <context>
-    <name>KTScenesWidget</name>
+    <name>TupScenesWidget</name>
     <message>
         <source>Scenes Manager</source>
         <translation>Gestore delle scene</translation>
@@ -1707,7 +1707,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTSymbolEditor</name>
+    <name>TupSymbolEditor</name>
     <message>
         <source>Symbol editor</source>
         <translation type="unfinished">Modifica dei simboli</translation>
@@ -1730,7 +1730,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTThemeSelector</name>
+    <name>TupThemeSelector</name>
     <message>
         <source>General</source>
         <translation type="unfinished">Generale</translation>
@@ -1841,7 +1841,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTTimeLine</name>
+    <name>TupTimeLine</name>
     <message>
         <source>Time Line</source>
         <translation>Linea temporale</translation>
@@ -1860,14 +1860,14 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTToolStatus</name>
+    <name>TupToolStatus</name>
     <message>
         <source>Current Tool</source>
         <translation>Strumento in uso</translation>
     </message>
 </context>
 <context>
-    <name>KTViewCamera</name>
+    <name>TupViewCamera</name>
     <message>
         <source>Scale</source>
         <translation type="unfinished">Scala</translation>
@@ -1878,7 +1878,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTViewColorCells</name>
+    <name>TupViewColorCells</name>
     <message>
         <source>Default Palette</source>
         <translation>Tavolozza predefinita</translation>
@@ -1905,7 +1905,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTViewDocument</name>
+    <name>TupViewDocument</name>
     <message>
         <source>Object Selection</source>
         <translation>Selezione di un oggetto</translation>
@@ -2176,7 +2176,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTabDialog</name>
+    <name>TupabDialog</name>
     <message>
         <source>Help</source>
         <translation>Aiuto</translation>
@@ -2195,7 +2195,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTermTab</name>
+    <name>TupermTab</name>
     <message>
         <source>New</source>
         <translation>Nuova</translation>
@@ -2210,7 +2210,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTreeWidgetSearchLine</name>
+    <name>TupreeWidgetSearchLine</name>
     <message>
         <source>Search</source>
         <translation>Cerca</translation>
@@ -2225,14 +2225,14 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTreeWidgetSearchLineWidget</name>
+    <name>TupreeWidgetSearchLineWidget</name>
     <message>
         <source>Clear</source>
         <translation>Pulisci</translation>
     </message>
 </context>
 <context>
-    <name>KTwitter</name>
+    <name>Tupwitter</name>
     <message>
         <source>Latest version</source>
         <translation>Ultima versione</translation>
@@ -2271,7 +2271,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTwitterWidget</name>
+    <name>TupwitterWidget</name>
     <message>
         <source>News!</source>
         <translation>Notizie!</translation>
@@ -3105,7 +3105,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTApplication</name>
+    <name>TupApplication</name>
     <message>
         <source>Initializing repository %1</source>
         <translation type="unfinished">Inizializza il deposito %1</translation>
@@ -3116,7 +3116,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTCrashWidget</name>
+    <name>TupCrashWidget</name>
     <message>
         <source>What&apos;s happening?</source>
         <translation>Che succede?</translation>
@@ -3131,7 +3131,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTMainWindow</name>
+    <name>TupMainWindow</name>
     <message>
         <source>Tupi: 2D Magic</source>
         <translation>Tupí: Magia 2D</translation>
@@ -3566,7 +3566,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTNewProject</name>
+    <name>TupNewProject</name>
     <message>
         <source>Create a new project</source>
         <translation>Crea un nuovo progetto</translation>
@@ -3701,7 +3701,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
-    <name>KTSplash</name>
+    <name>TupSplash</name>
     <message>
         <source>Version </source>
         <translation>Versione </translation>

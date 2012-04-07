@@ -349,7 +349,7 @@
     </message>
 </context>
 <context>
-    <name>KCommandHistory</name>
+    <name>TCommandHistory</name>
     <message>
         <source>Undo</source>
         <translation>Deshacer</translation>
@@ -360,7 +360,7 @@
     </message>
 </context>
 <context>
-    <name>KExportWizard</name>
+    <name>TExportWizard</name>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
@@ -371,7 +371,7 @@
     </message>
 </context>
 <context>
-    <name>KFontChooser</name>
+    <name>TFontChooser</name>
     <message>
         <source>Style</source>
         <translation>Estilo</translation>
@@ -382,14 +382,14 @@
     </message>
 </context>
 <context>
-    <name>KOptionalDialog</name>
+    <name>TOptionalDialog</name>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
 </context>
 <context>
-    <name>KTAbout</name>
+    <name>TupAbout</name>
     <message>
         <source>About</source>
         <translation>Acerca de</translation>
@@ -416,14 +416,14 @@
     </message>
 </context>
 <context>
-    <name>KTAnimationArea</name>
+    <name>TupAnimationArea</name>
     <message>
         <source>Rendering...</source>
         <translation>Renderizando...</translation>
     </message>
 </context>
 <context>
-    <name>KTApplication</name>
+    <name>TupApplication</name>
     <message>
         <source>Initializing repository %1</source>
         <translation type="unfinished">Inicializando repositorio %1</translation>
@@ -434,7 +434,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraBar</name>
+    <name>TupCameraBar</name>
     <message>
         <source>Rewind</source>
         <translation>Devolver</translation>
@@ -457,7 +457,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraStatus</name>
+    <name>TupCameraStatus</name>
     <message>
         <source>Scene name</source>
         <translation>Nombre de la escena</translation>
@@ -484,14 +484,14 @@
     </message>
 </context>
 <context>
-    <name>KTChat</name>
+    <name>TupChat</name>
     <message>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
 </context>
 <context>
-    <name>KTColorPalette</name>
+    <name>TupColorPalette</name>
     <message>
         <source>Color Palette</source>
         <translation>Paleta de Colores</translation>
@@ -522,14 +522,14 @@
     </message>
 </context>
 <context>
-    <name>KTColorValue</name>
+    <name>TupColorValue</name>
     <message>
         <source>percent</source>
         <translation>Porcentaje</translation>
     </message>
 </context>
 <context>
-    <name>KTCommandExecutor</name>
+    <name>TupCommandExecutor</name>
     <message>
         <source>Frame doesn&apos;t exists!</source>
         <translation>Frame no existe!</translation>
@@ -544,7 +544,7 @@
     </message>
 </context>
 <context>
-    <name>KTConfigurationArea</name>
+    <name>TupConfigurationArea</name>
     <message>
         <source>Cursor here for expand</source>
         <translation>Cursor aquí para expandir</translation>
@@ -555,7 +555,7 @@
     </message>
 </context>
 <context>
-    <name>KTConnectDialog</name>
+    <name>TupConnectDialog</name>
     <message>
         <source>Connection Dialog</source>
         <translation>Dialogo de Conexión</translation>
@@ -582,7 +582,7 @@
     </message>
 </context>
 <context>
-    <name>KTCrashWidget</name>
+    <name>TupCrashWidget</name>
     <message>
         <source>What&apos;s happening?</source>
         <translation type="unfinished">Qué sucede?</translation>
@@ -597,14 +597,14 @@
     </message>
 </context>
 <context>
-    <name>KTDebugWidget</name>
+    <name>TupDebugWidget</name>
     <message>
         <source>Debug Console</source>
         <translation>Consola de Depuración</translation>
     </message>
 </context>
 <context>
-    <name>KTExportWidget</name>
+    <name>TupExportWidget</name>
     <message>
         <source>Export</source>
         <translation>Exportar</translation>
@@ -619,7 +619,7 @@
     </message>
 </context>
 <context>
-    <name>KTExposureSheet</name>
+    <name>TupExposureSheet</name>
     <message>
         <source>Exposure Sheet</source>
         <translation>Tabla de Exposición</translation>
@@ -674,7 +674,7 @@
     </message>
 </context>
 <context>
-    <name>KTGCTable</name>
+    <name>TupGCTable</name>
     <message>
         <source>New folder %1</source>
         <translation>Nueva carpeta %1</translation>
@@ -689,7 +689,7 @@
     </message>
 </context>
 <context>
-    <name>KTGradientCreator</name>
+    <name>TupGradientCreator</name>
     <message>
         <source>Linear</source>
         <translation>Lineal</translation>
@@ -716,7 +716,7 @@
     </message>
 </context>
 <context>
-    <name>KTGraphicsScene</name>
+    <name>TupGraphicsScene</name>
     <message>
         <source>PolyLine</source>
         <translation>Polilínea</translation>
@@ -731,28 +731,28 @@
     </message>
 </context>
 <context>
-    <name>KTHelpBrowser</name>
+    <name>TupHelpBrowser</name>
     <message>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
 </context>
 <context>
-    <name>KTHelpWidget</name>
+    <name>TupHelpWidget</name>
     <message>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
 </context>
 <context>
-    <name>KTItemPreview</name>
+    <name>TupItemPreview</name>
     <message>
         <source>Library is empty :(</source>
         <translation>Biblioteca vacía :(</translation>
     </message>
 </context>
 <context>
-    <name>KTItemTweener</name>
+    <name>TupItemTweener</name>
     <message>
         <source>Position Tween</source>
         <translation>Tween de Posición</translation>
@@ -783,7 +783,7 @@
     </message>
 </context>
 <context>
-    <name>KTLayer</name>
+    <name>TupLayer</name>
     <message>
         <source>Layer</source>
         <translation>Capa</translation>
@@ -794,14 +794,14 @@
     </message>
 </context>
 <context>
-    <name>KTLayerIndex</name>
+    <name>TupLayerIndex</name>
     <message>
         <source>Layers</source>
         <translation>Capas</translation>
     </message>
 </context>
 <context>
-    <name>KTLayerManager</name>
+    <name>TupLayerManager</name>
     <message>
         <source>Layer</source>
         <translation>Capa</translation>
@@ -816,7 +816,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryDialog</name>
+    <name>TupLibraryDialog</name>
     <message>
         <source>Library Object</source>
         <translation>Objeto de Biblioteca</translation>
@@ -831,7 +831,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryWidget</name>
+    <name>TupLibraryWidget</name>
     <message>
         <source>Library</source>
         <translation>Biblioteca</translation>
@@ -974,7 +974,7 @@
     </message>
 </context>
 <context>
-    <name>KTListProjectDialog</name>
+    <name>TupListProjectDialog</name>
     <message>
         <source>Projects List from Server</source>
         <translation>Lista de proyectos en el servidor</translation>
@@ -997,7 +997,7 @@
     </message>
 </context>
 <context>
-    <name>KTMainWindow</name>
+    <name>TupMainWindow</name>
     <message>
         <source>Tupi: Magic 2D</source>
         <translation>Tupí: Magia 2D</translation>
@@ -1452,7 +1452,7 @@
     </message>
 </context>
 <context>
-    <name>KTNetProjectManagerHandler</name>
+    <name>TupNetProjectManagerHandler</name>
     <message>
         <source>Communications</source>
         <translation>Comunicaciones</translation>
@@ -1475,7 +1475,7 @@
     </message>
 </context>
 <context>
-    <name>KTNewProject</name>
+    <name>TupNewProject</name>
     <message>
         <source>Create a new project</source>
         <translation type="unfinished">Crear nuevo proyecto</translation>
@@ -1618,7 +1618,7 @@
     </message>
 </context>
 <context>
-    <name>KTNotice</name>
+    <name>TupNotice</name>
     <message>
         <source>Send</source>
         <translation>Enviar</translation>
@@ -1633,7 +1633,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintArea</name>
+    <name>TupPaintArea</name>
     <message>
         <source>Drawing area</source>
         <translation>Area de Ilustración</translation>
@@ -1760,7 +1760,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaBase</name>
+    <name>TupPaintAreaBase</name>
     <message>
         <source>OpenGL isn&apos;t supported</source>
         <translation>OpenGL no es soportado</translation>
@@ -1775,7 +1775,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaConfig</name>
+    <name>TupPaintAreaConfig</name>
     <message>
         <source>Grid color</source>
         <translation>Color de Malla</translation>
@@ -1798,7 +1798,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaStatus</name>
+    <name>TupPaintAreaStatus</name>
     <message>
         <source>Rotate</source>
         <translation>Rotar</translation>
@@ -1829,7 +1829,7 @@
     </message>
 </context>
 <context>
-    <name>KTPenWidget</name>
+    <name>TupPenWidget</name>
     <message>
         <source>Pen Properties</source>
         <translation>Propiedades de Pluma</translation>
@@ -1896,9 +1896,9 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences</name>
+    <name>TupPreferences</name>
     <message>
-        <source>Application KTPreferences</source>
+        <source>Application TupPreferences</source>
         <translation>Preferencias de Tupi</translation>
     </message>
     <message>
@@ -1919,7 +1919,7 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences::GeneralPage</name>
+    <name>TupPreferences::GeneralPage</name>
     <message>
         <source>Tupi Home</source>
         <translation>Directorio de Instalación</translation>
@@ -1942,14 +1942,14 @@
     </message>
 </context>
 <context>
-    <name>KTProject</name>
+    <name>TupProject</name>
     <message>
         <source>Scene %1</source>
         <translation>Escena %1</translation>
     </message>
 </context>
 <context>
-    <name>KTProjectActionBar</name>
+    <name>TupProjectActionBar</name>
     <message>
         <source>Insert frame</source>
         <translation>Insertar marco</translation>
@@ -2036,7 +2036,7 @@
     </message>
 </context>
 <context>
-    <name>KTProjectManager</name>
+    <name>TupProjectManager</name>
     <message>
         <source>Scene %1</source>
         <translation>Escena %1</translation>
@@ -2051,7 +2051,7 @@
     </message>
 </context>
 <context>
-    <name>KTSaveProject</name>
+    <name>TupSaveProject</name>
     <message>
         <source>Project saved in %1!</source>
         <translation>Proyecto guardado en %1!</translation>
@@ -2062,7 +2062,7 @@
     </message>
 </context>
 <context>
-    <name>KTScene</name>
+    <name>TupScene</name>
     <message>
         <source>Layer %1</source>
         <translation>Capa %1</translation>
@@ -2077,14 +2077,14 @@
     </message>
 </context>
 <context>
-    <name>KTSceneTabWidget</name>
+    <name>TupSceneTabWidget</name>
     <message>
         <source>Layers</source>
         <translation>Capas</translation>
     </message>
 </context>
 <context>
-    <name>KTScenesWidget</name>
+    <name>TupScenesWidget</name>
     <message>
         <source>Scenes Manager</source>
         <translation>Administrador de Escenas</translation>
@@ -2107,14 +2107,14 @@
     </message>
 </context>
 <context>
-    <name>KTSplash</name>
+    <name>TupSplash</name>
     <message>
         <source>Version </source>
         <translation type="unfinished">Versión </translation>
     </message>
 </context>
 <context>
-    <name>KTSymbolEditor</name>
+    <name>TupSymbolEditor</name>
     <message>
         <source>Symbol editor</source>
         <translation>Editor de objetos</translation>
@@ -2137,7 +2137,7 @@
     </message>
 </context>
 <context>
-    <name>KTThemeSelector</name>
+    <name>TupThemeSelector</name>
     <message>
         <source>General</source>
         <translation>General</translation>
@@ -2248,7 +2248,7 @@
     </message>
 </context>
 <context>
-    <name>KTTimeLine</name>
+    <name>TupTimeLine</name>
     <message>
         <source>Time Line</source>
         <translation>Línea de tiempo</translation>
@@ -2267,21 +2267,21 @@
     </message>
 </context>
 <context>
-    <name>KTToolStatus</name>
+    <name>TupToolStatus</name>
     <message>
         <source>Current Tool</source>
         <translation>Herramienta</translation>
     </message>
 </context>
 <context>
-    <name>KTViewCamera</name>
+    <name>TupViewCamera</name>
     <message>
         <source>Render Camera Preview</source>
         <translation>Vista previa de cámara</translation>
     </message>
 </context>
 <context>
-    <name>KTViewColorCells</name>
+    <name>TupViewColorCells</name>
     <message>
         <source>Default Palette</source>
         <translation>Paleta por omisión</translation>
@@ -2308,7 +2308,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewDocument</name>
+    <name>TupViewDocument</name>
     <message>
         <source>Show grid</source>
         <translation>Mostrar malla</translation>
@@ -2551,7 +2551,7 @@
     </message>
 </context>
 <context>
-    <name>KTabDialog</name>
+    <name>TupTabDialog</name>
     <message>
         <source>Help</source>
         <translation>Ayuda</translation>
@@ -2566,14 +2566,14 @@
     </message>
 </context>
 <context>
-    <name>KTermTab</name>
+    <name>TupTermTab</name>
     <message>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
 </context>
 <context>
-    <name>KTwitter</name>
+    <name>TupTwitter</name>
     <message>
         <source>Latest version</source>
         <translation>Última versión</translation>
@@ -2616,7 +2616,7 @@
     </message>
 </context>
 <context>
-    <name>KTwitterWidget</name>
+    <name>TupTwitterWidget</name>
     <message>
         <source>News!</source>
         <translation>Noticias!</translation>

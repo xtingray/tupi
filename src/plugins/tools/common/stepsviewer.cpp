@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "stepsviewer.h"
-#include "kttweenerstep.h"
+#include "tuptweenerstep.h"
 #include "spinboxdelegate.h"
 #include "tpushbutton.h"
 #include "tdebug.h"
@@ -208,14 +208,14 @@ void StepsViewer::updatePath(int column, int row)
     // Make the points calculation right here!
 }
 
-QVector<KTTweenerStep *> StepsViewer::steps()
+QVector<TupTweenerStep *> StepsViewer::steps()
 {
-    QVector<KTTweenerStep *> stepsVector;
+    QVector<TupTweenerStep *> stepsVector;
     // int count = 0;
 
     for (int i=0; i < k->dots->size(); i++) {
-         // KTTweenerStep *step = new KTTweenerStep(count);
-         KTTweenerStep *step = new KTTweenerStep(i);
+         // TupTweenerStep *step = new TupTweenerStep(count);
+         TupTweenerStep *step = new TupTweenerStep(i);
          step->setPosition(k->dots->at(i));
          stepsVector << step;
          // count++;

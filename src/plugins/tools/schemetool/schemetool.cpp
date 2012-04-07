@@ -36,16 +36,16 @@
 #include "schemetool.h"
 // #include "ink.xpm"
 
-#include "ktinputdeviceinformation.h"
-#include "ktbrushmanager.h"
-#include "ktgraphicalgorithm.h"
-#include "ktgraphicsscene.h"
-#include "ktrequestbuilder.h"
-#include "ktprojectrequest.h"
-#include "ktlibraryobject.h"
-#include "ktellipseitem.h"
-#include "ktlineitem.h"
-#include "kttextitem.h"
+#include "tupinputdeviceinformation.h"
+#include "tupbrushmanager.h"
+#include "tupgraphicalgorithm.h"
+#include "tupgraphicsscene.h"
+#include "tuprequestbuilder.h"
+#include "tupprojectrequest.h"
+#include "tuplibraryobject.h"
+#include "tupellipseitem.h"
+#include "tuplineitem.h"
+#include "tuptextitem.h"
 
 #include "taction.h"
 #include "talgorithm.h"
@@ -76,9 +76,9 @@ struct SchemeTool::Private
     QPainterPath pathLeft;
     Configurator *configurator;
     QMap<QString, TAction *> actions;
-    KTPathItem *item;
-    KTPathItem *itemRight;
-    KTPathItem *itemLeft;
+    TupPathItem *item;
+    TupPathItem *itemRight;
+    TupPathItem *itemLeft;
     int dotsCounter;
     qreal penWidth;
     qreal oldSlope;
@@ -103,7 +103,7 @@ SchemeTool::~SchemeTool()
 {
 }
 
-void SchemeTool::init(KTGraphicsScene *scene)
+void SchemeTool::init(TupGraphicsScene *scene)
 {
     k->spacing = k->configurator->spacingValue();
 
@@ -120,7 +120,7 @@ void SchemeTool::init(KTGraphicsScene *scene)
     tError() << "SchemeTool::init() - k->tolerance: " << k->tolerance;
     tError() << "SchemeTool::init() - k->widthVar: " << k->widthVar;
 
-    KTTextItem *textItem = new KTTextItem;
+    TupTextItem *textItem = new TupTextItem;
     textItem->setPos(QPointF(5, 0));
     textItem->setDefaultTextColor(QColor(0, 0, 0, 80));
     textItem->setFont(QFont("Times", 10, QFont::Bold));
@@ -144,7 +144,7 @@ QStringList SchemeTool::keys() const
     return QStringList() << tr("Scheme");
 }
 
-void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SchemeTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     k->oldSlope = 0;
     k->penWidth = brushManager->pen().widthF()/2;
@@ -166,26 +166,26 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     k->oldPosLeft = input->pos();
     k->previewPoint = input->pos();
 
-    k->item = new KTPathItem();
+    k->item = new TupPathItem();
     QPen pen(Qt::lightGray, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
     k->item->setPen(pen);
 
     scene->includeObject(k->item);
 
     QPointF inception = input->pos() - QPointF(0.5, 0.5);
-    KTEllipseItem *m_ellipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
+    TupEllipseItem *m_ellipse = new TupEllipseItem(QRectF(inception, QSize(1, 1)));
     QPen firstPointPen(QColor(255, 106, 255), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     m_ellipse->setPen(firstPointPen);
     scene->includeObject(m_ellipse);
 
     if (k->configurator->structureType() == Configurator::Organic) {
-        k->itemRight = new KTPathItem();
+        k->itemRight = new TupPathItem();
         QPen rightPen(Qt::red, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
         k->itemRight->setPen(rightPen);
 
         scene->includeObject(k->itemRight);
 
-        k->itemLeft = new KTPathItem();
+        k->itemLeft = new TupPathItem();
         QPen leftPen(Qt::blue, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
         k->itemLeft->setPen(leftPen);
 
@@ -196,7 +196,7 @@ void SchemeTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     k->arrowSize = -1;
 }
 
-void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -379,7 +379,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
                     perPen = QPen(Qt::black, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
                 }
 
-                KTLineItem *perpendicularLine = new KTLineItem();
+                TupLineItem *perpendicularLine = new TupLineItem();
                 perpendicularLine->setPen(perPen);
                 perpendicularLine->setLine(QLineF(x0, y0, x1, y1));
                 scene->includeObject(perpendicularLine);
@@ -540,11 +540,11 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
             }
 
             if (k->configurator->structureType() == Configurator::Organic) {
-                KTLineItem *rightAuxLine = new KTLineItem();
+                TupLineItem *rightAuxLine = new TupLineItem();
                 QPen redAuxPen(QColor(255, 93, 0), 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
                 rightAuxLine->setPen(redAuxPen);
 
-                KTLineItem *leftAuxLine = new KTLineItem();
+                TupLineItem *leftAuxLine = new TupLineItem();
                 QPen leftAuxPen(QColor(0, 195, 255), 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
                 leftAuxLine->setPen(leftAuxPen);
 
@@ -556,13 +556,13 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
 
             if (k->configurator->structureType() != Configurator::Basic) {
                 QPointF inception = left - QPointF(0.5, 0.5);
-                KTEllipseItem *blueEllipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
+                TupEllipseItem *blueEllipse = new TupEllipseItem(QRectF(inception, QSize(1, 1)));
                 QPen bluePen(Qt::blue, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
                 blueEllipse->setPen(bluePen);
                 scene->includeObject(blueEllipse);
 
                 inception = right - QPointF(0.5, 0.5);
-                KTEllipseItem *redEllipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
+                TupEllipseItem *redEllipse = new TupEllipseItem(QRectF(inception, QSize(1, 1)));
                 QPen redPen(Qt::red, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
                 redEllipse->setPen(redPen);
                 scene->includeObject(redEllipse);
@@ -585,7 +585,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
         }
 
         QPointF inception = currentPoint - QPointF(0.5, 0.5);
-        KTEllipseItem *m_ellipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
+        TupEllipseItem *m_ellipse = new TupEllipseItem(QRectF(inception, QSize(1, 1)));
         QPen pen(Qt::green, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_ellipse->setPen(pen);
         scene->includeObject(m_ellipse);
@@ -594,7 +594,7 @@ void SchemeTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
     k->previewPoint = currentPoint;
 }
 
-void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SchemeTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(scene);
 
@@ -606,7 +606,7 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
         k->pathLeft.addEllipse(input->pos().x() - (radius/2 + 1), input->pos().y() - (radius/2 + 1), radius + 2, radius + 2);
     } else {
         QPointF inception = k->connector - QPointF(0.5, 0.5);
-        KTEllipseItem *lastEllipse = new KTEllipseItem(QRectF(inception, QSize(1, 1)));
+        TupEllipseItem *lastEllipse = new TupEllipseItem(QRectF(inception, QSize(1, 1)));
         QPen greenPen(QColor(255, 106, 255), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         lastEllipse->setPen(greenPen);
         scene->includeObject(lastEllipse);
@@ -648,14 +648,14 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
 
             tError() << "SchemeTool::release() - Flag 3";
 
-            KTPathItem *blackRight = new KTPathItem();
+            TupPathItem *blackRight = new TupPathItem();
             blackRight->setPen(blackPen);
             blackRight->setPath(k->pathRight);
             scene->includeObject(blackRight);
 
             tError() << "SchemeTool::release() - Flag 4";
 
-            KTPathItem *blackLeft = new KTPathItem();
+            TupPathItem *blackLeft = new TupPathItem();
             blackLeft->setPen(blackPen);
             blackLeft->setPath(k->pathLeft);
             scene->includeObject(blackLeft);
@@ -664,29 +664,29 @@ void SchemeTool::release(const KTInputDeviceInformation *input, KTBrushManager *
 
             QDomDocument doc;
             doc.appendChild(blackRight->toXml(doc));
-            KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+            TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                          scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
-                                                         KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+                                                         TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
             emit requested(&request);
 
             doc.clear();
             doc.appendChild(blackLeft->toXml(doc));
-            request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+            request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                         scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
-                                        KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+                                        TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
             emit requested(&request);
 
         } else {
             QPointF distance((radius + 2)/2, (radius + 2)/2);
-            KTEllipseItem *blackEllipse = new KTEllipseItem(QRectF(k->connector - distance, QSize(radius + 2, radius + 2)));
+            TupEllipseItem *blackEllipse = new TupEllipseItem(QRectF(k->connector - distance, QSize(radius + 2, radius + 2)));
             blackEllipse->setPen(blackPen);
             scene->includeObject(blackEllipse);
 
             QDomDocument doc;
             doc.appendChild(blackEllipse->toXml(doc));
-            KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+            TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                          scene->currentFrame()->graphics().count(), currentPoint, scene->spaceMode(),
-                                                         KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+                                                         TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
             emit requested(&request);
         }
     }
@@ -708,7 +708,7 @@ QMap<QString, TAction *> SchemeTool::actions() const
 
 int SchemeTool::toolType() const
 {
-    return KTToolInterface::Brush;
+    return TupToolInterface::Brush;
 }
 
 QWidget *SchemeTool::configurator() 
@@ -761,7 +761,7 @@ void SchemeTool::smoothPath(QPainterPath &path, double smoothness, int from, int
     }
 
     if (smoothness > 0) {
-        path = KTGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
+        path = TupGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
     } else {
         path = QPainterPath();
         path.addPolygon(pol);
@@ -774,7 +774,7 @@ void SchemeTool::keyPressEvent(QKeyEvent *event)
         emit closeHugeCanvas();
     // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
     } else {
-        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        QPair<int, int> flags = TupToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)
             emit callForPlugin(flags.first, flags.second);
     }

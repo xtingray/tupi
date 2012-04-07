@@ -34,10 +34,10 @@
  ***************************************************************************/
 
 #include "tupifilemanager.h"
-#include "ktproject.h"
-#include "ktscene.h"
-#include "ktlibrary.h"
-#include "ktpackagehandler.h"
+#include "tupproject.h"
+#include "tupscene.h"
+#include "tuplibrary.h"
+#include "tuppackagehandler.h"
 #include "talgorithm.h"
 #include "tdebug.h"
 
@@ -51,7 +51,7 @@ TupiFileManager::~TupiFileManager()
 {
 }
 
-bool TupiFileManager::save(const QString &fileName, KTProject *project)
+bool TupiFileManager::save(const QString &fileName, TupProject *project)
 {
     #ifdef K_DEBUG
            tDebug() << "TupiFileManager::save() - Saving file " << fileName;
@@ -125,7 +125,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
     // Save scenes
     {
      int index = 0;
-     foreach (KTScene *scene, project->scenes().values()) {
+     foreach (TupScene *scene, project->scenes().values()) {
               QDomDocument doc;
               doc.appendChild(scene->toXml(doc));
 
@@ -164,7 +164,7 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
      }
     }
 
-    KTPackageHandler packageHandler;
+    TupPackageHandler packageHandler;
     bool ok = packageHandler.makePackage(projectDir.path(), fileName);
 
     if (ok) {
@@ -180,13 +180,13 @@ bool TupiFileManager::save(const QString &fileName, KTProject *project)
     return ok;
 }
 
-bool TupiFileManager::load(const QString &fileName, KTProject *project)
+bool TupiFileManager::load(const QString &fileName, TupProject *project)
 {
     #ifdef K_DEBUG
            T_FUNCINFO << fileName;
     #endif
 
-    KTPackageHandler packageHandler;
+    TupPackageHandler packageHandler;
 
     if (packageHandler.importPackage(fileName)) {
 
@@ -226,7 +226,7 @@ bool TupiFileManager::load(const QString &fileName, KTProject *project)
                              return false;
                          QDomElement root = document.documentElement();
 
-                         KTScene *scene = project->createScene(root.attribute("name"), index, true);
+                         TupScene *scene = project->createScene(root.attribute("name"), index, true);
                          scene->fromXml(xml);
 
                          index += 1;

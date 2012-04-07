@@ -41,7 +41,7 @@
 
 class QGraphicsPathItem;
 class QListWidgetItem;
-class KTItemTweener;
+class TupItemTweener;
 class TweenerPanel;
 
 /**
@@ -69,7 +69,7 @@ class Configurator : public QFrame
         void activateMode(TweenerPanel::EditMode mode);
 
         void cleanTweensForms();
-        void setCurrentTween(KTItemTweener *currentTween);
+        void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();

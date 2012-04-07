@@ -3,14 +3,14 @@
 # Subdir relative project main directory: ./src/components/library
 # Target is a library:  
 
-HEADERS += ktlibrarywidget.h \
-           ktgctable.h  \
-           ktsymboleditor.h \
-           kttreedelegate.h
-SOURCES += ktlibrarywidget.cpp \
-           ktgctable.cpp  \
-           ktsymboleditor.cpp \
-           kttreedelegate.cpp
+HEADERS += tuplibrarywidget.h \
+           tupgctable.h  \
+           tupsymboleditor.h \
+           tuptreedelegate.h
+SOURCES += tuplibrarywidget.cpp \
+           tupgctable.cpp  \
+           tupsymboleditor.cpp \
+           tuptreedelegate.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib

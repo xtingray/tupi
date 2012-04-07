@@ -35,8 +35,8 @@
 
 #include "target.h"
 #include "tdebug.h"
-#include "ktgraphicalgorithm.h"
-#include "ktgraphicobject.h"
+#include "tupgraphicalgorithm.h"
+#include "tupgraphicobject.h"
 
 #include <QCursor>
 #include <QGraphicsScene>

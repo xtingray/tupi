@@ -36,9 +36,9 @@
 #ifndef PENCILTOOL_H
 #define PENCILTOOL_H
 
-#include "kttoolplugin.h"
+#include "tuptoolplugin.h"
 #include "exactnessconfigurator.h"
-#include "ktpathitem.h"
+#include "tuppathitem.h"
 
 #include <QObject>
 #include <QSpinBox>
@@ -50,7 +50,7 @@ class QKeySequence;
  * @author David Cuadrado
 */
 
-class PencilTool : public KTToolPlugin
+class PencilTool : public TupToolPlugin
 {
     Q_OBJECT
     
@@ -58,11 +58,11 @@ class PencilTool : public KTToolPlugin
         PencilTool();
         virtual ~PencilTool();
         
-        virtual void init(KTGraphicsScene *scene);
+        virtual void init(TupGraphicsScene *scene);
         virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual QMap<QString, TAction *>actions() const;
         int toolType() const;
         virtual QWidget *configurator();

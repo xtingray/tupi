@@ -324,14 +324,14 @@
     </message>
 </context>
 <context>
-    <name>KActionManager</name>
+    <name>TActionManager</name>
     <message>
         <source>Cannot insert action with id: </source>
         <translation>Nelze vložit činnost s ID: </translation>
     </message>
 </context>
 <context>
-    <name>KButtonBar</name>
+    <name>TButtonBar</name>
     <message>
         <source>Left button bar</source>
         <translation>Levý tlačítkový pruh</translation>
@@ -366,7 +366,7 @@
     </message>
 </context>
 <context>
-    <name>KCommandHistory</name>
+    <name>TCommandHistory</name>
     <message>
         <source>Undo</source>
         <translation>Zpět</translation>
@@ -377,7 +377,7 @@
     </message>
 </context>
 <context>
-    <name>KConfig</name>
+    <name>TConfig</name>
     <message>
         <source>%1 doesn&apos;t exist. Creating...</source>
         <translation>%1 neexistuje. Vytváří se...</translation>
@@ -388,14 +388,14 @@
     </message>
 </context>
 <context>
-    <name>KDatePicker</name>
+    <name>TDatePicker</name>
     <message>
         <source>Week %1</source>
         <translation>Týden %1</translation>
     </message>
 </context>
 <context>
-    <name>KExportWizard</name>
+    <name>TExportWizard</name>
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
@@ -414,7 +414,7 @@
     </message>
 </context>
 <context>
-    <name>KFlashWidget</name>
+    <name>TFlashWidget</name>
     <message>
         <source>Flashing</source>
         <translation>Flash</translation>
@@ -425,7 +425,7 @@
     </message>
 </context>
 <context>
-    <name>KFontChooser</name>
+    <name>TFontChooser</name>
     <message>
         <source>Family</source>
         <translation>Písmová rodina</translation>
@@ -452,7 +452,7 @@
     </message>
 </context>
 <context>
-    <name>KOptionalDialog</name>
+    <name>TOptionalDialog</name>
     <message>
         <source>Don&apos;t show again</source>
         <translation>Neukazovat znovu</translation>
@@ -467,7 +467,7 @@
     </message>
 </context>
 <context>
-    <name>KRulerBase</name>
+    <name>TRulerBase</name>
     <message>
         <source>Change scale to 5...</source>
         <translation>Změnit měřítko na 5...</translation>
@@ -478,7 +478,7 @@
     </message>
 </context>
 <context>
-    <name>KTAbout</name>
+    <name>TupAbout</name>
     <message>
         <source>About</source>
         <translation>O programu</translation>
@@ -501,14 +501,14 @@
     </message>
 </context>
 <context>
-    <name>KTAnimationArea</name>
+    <name>TupAnimationArea</name>
     <message>
         <source>Rendering...</source>
         <translation>Dělá se...</translation>
     </message>
 </context>
 <context>
-    <name>KTApplication</name>
+    <name>TupApplication</name>
     <message>
         <source>Initializing repository %1</source>
         <translation>Zapíná se skladiště %1</translation>
@@ -519,14 +519,14 @@
     </message>
 </context>
 <context>
-    <name>KTBackground</name>
+    <name>TupBackground</name>
     <message>
         <source>landscape</source>
         <translation>Na šířku</translation>
     </message>
 </context>
 <context>
-    <name>KTCameraBar</name>
+    <name>TupCameraBar</name>
     <message>
         <source>Rewind</source>
         <translation>Přetočit zpět</translation>
@@ -549,7 +549,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraStatus</name>
+    <name>TupCameraStatus</name>
     <message>
         <source>Scene name</source>
         <translation>Název výjevu</translation>
@@ -576,21 +576,21 @@
     </message>
 </context>
 <context>
-    <name>KTCameraWidget</name>
+    <name>TupCameraWidget</name>
     <message>
         <source>Camera</source>
         <translation>Kamera</translation>
     </message>
 </context>
 <context>
-    <name>KTChat</name>
+    <name>TupChat</name>
     <message>
         <source>Send</source>
         <translation>Poslat</translation>
     </message>
 </context>
 <context>
-    <name>KTColorPalette</name>
+    <name>TupColorPalette</name>
     <message>
         <source>Color Palette</source>
         <translation>Paleta barev</translation>
@@ -617,14 +617,14 @@
     </message>
 </context>
 <context>
-    <name>KTColorValue</name>
+    <name>TupColorValue</name>
     <message>
         <source>percent</source>
         <translation>Procento</translation>
     </message>
 </context>
 <context>
-    <name>KTCommandExecutor</name>
+    <name>TupCommandExecutor</name>
     <message>
         <source>Frame doesn&apos;t exists!</source>
         <translation>Snímek neexistuje!</translation>
@@ -639,7 +639,7 @@
     </message>
 </context>
 <context>
-    <name>KTConfigurationArea</name>
+    <name>TupConfigurationArea</name>
     <message>
         <source>Cursor here for expand</source>
         <translation>Ukazovátko sem pro rozbalení</translation>
@@ -650,7 +650,7 @@
     </message>
 </context>
 <context>
-    <name>KTConnectDialog</name>
+    <name>TupConnectDialog</name>
     <message>
         <source>Connection Dialog</source>
         <translation>Připojení</translation>
@@ -677,7 +677,7 @@
     </message>
 </context>
 <context>
-    <name>KTCrashWidget</name>
+    <name>TupCrashWidget</name>
     <message>
         <source>What&apos;s happening?</source>
         <translation>Co se děje?</translation>
@@ -692,14 +692,14 @@
     </message>
 </context>
 <context>
-    <name>KTDebugWidget</name>
+    <name>TupDebugWidget</name>
     <message>
         <source>Debug Console</source>
         <translation>Ladicí konzole</translation>
     </message>
 </context>
 <context>
-    <name>KTExportWidget</name>
+    <name>TupExportWidget</name>
     <message>
         <source>Export</source>
         <translation>Vyvést</translation>
@@ -714,7 +714,7 @@
     </message>
 </context>
 <context>
-    <name>KTExposureSheet</name>
+    <name>TupExposureSheet</name>
     <message>
         <source>Exposure Sheet</source>
         <translation>List vystavení</translation>
@@ -761,7 +761,7 @@
     </message>
 </context>
 <context>
-    <name>KTGCTable</name>
+    <name>TupGCTable</name>
     <message>
         <source>New folder %1</source>
         <translation>Nová složka %1</translation>
@@ -788,7 +788,7 @@
     </message>
 </context>
 <context>
-    <name>KTGradientCreator</name>
+    <name>TupGradientCreator</name>
     <message>
         <source>Linear</source>
         <translation>Přímý</translation>
@@ -815,7 +815,7 @@
     </message>
 </context>
 <context>
-    <name>KTGraphicsScene</name>
+    <name>TupGraphicsScene</name>
     <message>
         <source>PolyLine</source>
         <translation>Vícečára</translation>
@@ -834,28 +834,28 @@
     </message>
 </context>
 <context>
-    <name>KTHelpBrowser</name>
+    <name>TupHelpBrowser</name>
     <message>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
 </context>
 <context>
-    <name>KTHelpWidget</name>
+    <name>TupHelpWidget</name>
     <message>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
 </context>
 <context>
-    <name>KTItemPreview</name>
+    <name>TupItemPreview</name>
     <message>
         <source>Library is empty :(</source>
         <translation>Knihovna je prázdná :-(</translation>
     </message>
 </context>
 <context>
-    <name>KTLayer</name>
+    <name>TupLayer</name>
     <message>
         <source>Layer</source>
         <translation>Vrstva</translation>
@@ -866,14 +866,14 @@
     </message>
 </context>
 <context>
-    <name>KTLayerIndex</name>
+    <name>TupLayerIndex</name>
     <message>
         <source>Layers</source>
         <translation>Vrstvy</translation>
     </message>
 </context>
 <context>
-    <name>KTLibraryDialog</name>
+    <name>TupLibraryDialog</name>
     <message>
         <source>Library Object</source>
         <translation>Knihovní předmět</translation>
@@ -888,7 +888,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryWidget</name>
+    <name>TupLibraryWidget</name>
     <message>
         <source>Library</source>
         <translation>Knihovna</translation>
@@ -1035,7 +1035,7 @@
     </message>
 </context>
 <context>
-    <name>KTListProjectDialog</name>
+    <name>TupListProjectDialog</name>
     <message>
         <source>Projects List from Server</source>
         <translation>Seznam projektů ze serveru</translation>
@@ -1058,7 +1058,7 @@
     </message>
 </context>
 <context>
-    <name>KTMainWindow</name>
+    <name>TupMainWindow</name>
     <message>
         <source>Tupi: Magic 2D</source>
         <translation>Tupi: Dvojrozměrné kouzlo</translation>
@@ -1513,7 +1513,7 @@
     </message>
 </context>
 <context>
-    <name>KTNetProjectManagerHandler</name>
+    <name>TupNetProjectManagerHandler</name>
     <message>
         <source>Communications</source>
         <translation>Dorozumívání se</translation>
@@ -1540,7 +1540,7 @@
     </message>
 </context>
 <context>
-    <name>KTNewProject</name>
+    <name>TupNewProject</name>
     <message>
         <source>Create a new project</source>
         <translation>Vytvořit nový projekt</translation>
@@ -1687,7 +1687,7 @@
     </message>
 </context>
 <context>
-    <name>KTNotice</name>
+    <name>TupNotice</name>
     <message>
         <source>Send</source>
         <translation>Poslat</translation>
@@ -1702,7 +1702,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintArea</name>
+    <name>TupPaintArea</name>
     <message>
         <source>Pencil</source>
         <translation>Tužka</translation>
@@ -1777,7 +1777,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaBase</name>
+    <name>TupPaintAreaBase</name>
     <message>
         <source>OpenGL isn&apos;t supported</source>
         <translation>OpenGL není podporováno</translation>
@@ -1800,7 +1800,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaConfig</name>
+    <name>TupPaintAreaConfig</name>
     <message>
         <source>Grid color</source>
         <translation>Barva mřížky</translation>
@@ -1823,7 +1823,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaStatus</name>
+    <name>TupPaintAreaStatus</name>
     <message>
         <source>Zoom</source>
         <translation>Zvětšení</translation>
@@ -1850,7 +1850,7 @@
     </message>
 </context>
 <context>
-    <name>KTPenWidget</name>
+    <name>TupPenWidget</name>
     <message>
         <source>Pen Properties</source>
         <translation>Vlastnosti pera</translation>
@@ -1917,9 +1917,9 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences</name>
+    <name>TupPreferences</name>
     <message>
-        <source>Application KTPreferences</source>
+        <source>Application TupPreferences</source>
         <translation>Nastavení Tupi</translation>
     </message>
     <message>
@@ -1940,7 +1940,7 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences::GeneralPage</name>
+    <name>TupPreferences::GeneralPage</name>
     <message>
         <source>Tupi Home</source>
         <translation>Instalační adresář s Tupi</translation>
@@ -1963,14 +1963,14 @@
     </message>
 </context>
 <context>
-    <name>KTProject</name>
+    <name>TupProject</name>
     <message>
         <source>Scene %1</source>
         <translation>Výjev %1</translation>
     </message>
 </context>
 <context>
-    <name>KTProjectActionBar</name>
+    <name>TupProjectActionBar</name>
     <message>
         <source>Insert a layer</source>
         <translation>Vložit vrstvu</translation>
@@ -2069,14 +2069,14 @@
     </message>
 </context>
 <context>
-    <name>KTSaveProject</name>
+    <name>TupSaveProject</name>
     <message>
         <source>Project saved in %1</source>
         <translation>Projekt uložen v %1</translation>
     </message>
 </context>
 <context>
-    <name>KTScene</name>
+    <name>TupScene</name>
     <message>
         <source>Layer %1</source>
         <translation>Vrstva %1</translation>
@@ -2087,14 +2087,14 @@
     </message>
 </context>
 <context>
-    <name>KTSceneTabWidget</name>
+    <name>TupSceneTabWidget</name>
     <message>
         <source>Layers</source>
         <translation>Vrstvy</translation>
     </message>
 </context>
 <context>
-    <name>KTScenesWidget</name>
+    <name>TupScenesWidget</name>
     <message>
         <source>Scenes Manager</source>
         <translation>Správce výjevů</translation>
@@ -2105,14 +2105,14 @@
     </message>
 </context>
 <context>
-    <name>KTSplash</name>
+    <name>TupSplash</name>
     <message>
         <source>Version </source>
         <translation>Verze </translation>
     </message>
 </context>
 <context>
-    <name>KTSymbolEditor</name>
+    <name>TupSymbolEditor</name>
     <message>
         <source>Symbol editor</source>
         <translation>Editor symbolů</translation>
@@ -2135,7 +2135,7 @@
     </message>
 </context>
 <context>
-    <name>KTThemeSelector</name>
+    <name>TupThemeSelector</name>
     <message>
         <source>General</source>
         <translation>Obecné</translation>
@@ -2246,28 +2246,28 @@
     </message>
 </context>
 <context>
-    <name>KTTimeLine</name>
+    <name>TupTimeLine</name>
     <message>
         <source>Time Line</source>
         <translation>Časová přímka</translation>
     </message>
 </context>
 <context>
-    <name>KTToolStatus</name>
+    <name>TupToolStatus</name>
     <message>
         <source>Current Tool</source>
         <translation>Nynější nástroj</translation>
     </message>
 </context>
 <context>
-    <name>KTViewCamera</name>
+    <name>TupViewCamera</name>
     <message>
         <source>Render Camera Preview</source>
         <translation>Udělat náhled kamery</translation>
     </message>
 </context>
 <context>
-    <name>KTViewColorCells</name>
+    <name>TupViewColorCells</name>
     <message>
         <source>Default Palette</source>
         <translation>Výchozí paleta</translation>
@@ -2294,7 +2294,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewDocument</name>
+    <name>TupViewDocument</name>
     <message>
         <source>Show grid</source>
         <translation>Ukázat mřížku</translation>
@@ -2465,7 +2465,7 @@
     </message>
 </context>
 <context>
-    <name>KTabDialog</name>
+    <name>TupabDialog</name>
     <message>
         <source>Help</source>
         <translation>Nápověda</translation>
@@ -2484,7 +2484,7 @@
     </message>
 </context>
 <context>
-    <name>KTermTab</name>
+    <name>TupermTab</name>
     <message>
         <source>New</source>
         <translation>Nový</translation>
@@ -2499,7 +2499,7 @@
     </message>
 </context>
 <context>
-    <name>KTreeWidgetSearchLine</name>
+    <name>TupreeWidgetSearchLine</name>
     <message>
         <source>Search</source>
         <translation>Hledat</translation>
@@ -2514,14 +2514,14 @@
     </message>
 </context>
 <context>
-    <name>KTreeWidgetSearchLineWidget</name>
+    <name>TupreeWidgetSearchLineWidget</name>
     <message>
         <source>Clear</source>
         <translation>Vyprázdnit</translation>
     </message>
 </context>
 <context>
-    <name>KTwitter</name>
+    <name>TupTwitter</name>
     <message>
         <source>Latest version</source>
         <translation>Poslední verze</translation>
@@ -2560,14 +2560,14 @@
     </message>
 </context>
 <context>
-    <name>KTwitterWidget</name>
+    <name>TupTwitterWidget</name>
     <message>
         <source>News!</source>
         <translation>Zprávy!</translation>
     </message>
 </context>
 <context>
-    <name>KViewButton</name>
+    <name>TViewButton</name>
     <message>
         <source>Menu</source>
         <translation>Nabídka</translation>
@@ -2586,7 +2586,7 @@
     </message>
 </context>
 <context>
-    <name>KWizard</name>
+    <name>TWizard</name>
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
@@ -2645,8 +2645,8 @@
         <translation>Zásadní</translation>
     </message>
     <message>
-        <source>Can&apos;t create a KMainWindow from KMainWindow</source>
-        <translation>Nelze vytvořit KMainWindow z KMainWindow</translation>
+        <source>Can&apos;t create a TMainWindow from TMainWindow</source>
+        <translation>Nelze vytvořit TMainWindow z TMainWindow</translation>
     </message>
     <message>
         <source>Not implemented yet.</source>

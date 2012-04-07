@@ -39,7 +39,7 @@
 #include <QTableWidget>
 
 class QGraphicsPathItem;
-class KTTweenerStep;
+class TupTweenerStep;
 
 /**
  * @author Jorge Cuadrado 
@@ -49,14 +49,14 @@ class StepsViewer : public QTableWidget
 {
     Q_OBJECT
 
-    // friend class KTExposureVerticalHeader;
+    // friend class TupExposureVerticalHeader;
 
     public:
         StepsViewer(QWidget *parent = 0);
         ~StepsViewer();
         void setPath(const QGraphicsPathItem *path);
         
-        QVector<KTTweenerStep *> steps();
+        QVector<TupTweenerStep *> steps();
         int totalSteps();
         void cleanRows();
         virtual QSize sizeHint() const;

@@ -36,15 +36,15 @@
 #include "inktool.h"
 #include "ink.xpm"
 
-#include "ktinputdeviceinformation.h"
-#include "ktbrushmanager.h"
-#include "ktgraphicalgorithm.h"
-#include "ktgraphicsscene.h"
-#include "ktrequestbuilder.h"
-#include "ktprojectrequest.h"
-#include "ktlibraryobject.h"
-#include "ktellipseitem.h"
-#include "ktlineitem.h"
+#include "tupinputdeviceinformation.h"
+#include "tupbrushmanager.h"
+#include "tupgraphicalgorithm.h"
+#include "tupgraphicsscene.h"
+#include "tuprequestbuilder.h"
+#include "tupprojectrequest.h"
+#include "tuplibraryobject.h"
+#include "tupellipseitem.h"
+#include "tuplineitem.h"
 
 #include "taction.h"
 #include "talgorithm.h"
@@ -71,7 +71,7 @@ InkTool::~InkTool()
 {
 }
 
-void InkTool::init(KTGraphicsScene *scene)
+void InkTool::init(TupGraphicsScene *scene)
 {
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
@@ -90,7 +90,7 @@ QStringList InkTool::keys() const
     return QStringList() << tr("Ink");
 }
 
-void InkTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void InkTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     oldSlope = 0;
     penWidth = brushManager->pen().widthF()/2;
@@ -111,32 +111,32 @@ void InkTool::press(const KTInputDeviceInformation *input, KTBrushManager *brush
     oldPosLeft = input->pos();
     previewPoint = input->pos();
 
-    m_item = new KTPathItem();
+    m_item = new TupPathItem();
     QPen pen(Qt::gray, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
     m_item->setPen(pen);
 
     scene->includeObject(m_item);
 
-    KTEllipseItem *m_ellipse = new KTEllipseItem(QRectF(input->pos(), QSize(1, 1)));
+    TupEllipseItem *m_ellipse = new TupEllipseItem(QRectF(input->pos(), QSize(1, 1)));
     QPen firstPointPen(Qt::green, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     m_ellipse->setPen(firstPointPen);
 
     scene->includeObject(m_ellipse);
 
-    itemRight = new KTPathItem();
+    itemRight = new TupPathItem();
     QPen rightPen(Qt::red, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
     itemRight->setPen(rightPen);
 
     scene->includeObject(itemRight);
 
-    itemLeft = new KTPathItem();
+    itemLeft = new TupPathItem();
     QPen leftPen(Qt::blue, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
     itemLeft->setPen(leftPen);
 
     scene->includeObject(itemLeft);
 }
 
-void InkTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -157,7 +157,7 @@ void InkTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
         else
             m = 10;
 
-        KTEllipseItem *m_ellipse = new KTEllipseItem(QRectF(input->pos(), QSize(1, 1)));
+        TupEllipseItem *m_ellipse = new TupEllipseItem(QRectF(input->pos(), QSize(1, 1)));
         QPen pen(Qt::green, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_ellipse->setPen(pen);
         m_ellipse->setBrush(brushManager->brush());
@@ -227,17 +227,17 @@ void InkTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
                 y1 = currentPoint.y() + penWidth;
             }
 
-            KTLineItem *perpendicularLine = new KTLineItem();
+            TupLineItem *perpendicularLine = new TupLineItem();
             QPen perPen(Qt::black, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
             perpendicularLine->setPen(perPen);
             perpendicularLine->setLine(QLineF(x0, y0, x1, y1));
             scene->includeObject(perpendicularLine);
 
-            KTLineItem *rightAuxLine = new KTLineItem();
+            TupLineItem *rightAuxLine = new TupLineItem();
             QPen redAuxPen(Qt::red, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
             rightAuxLine->setPen(redAuxPen);
 
-            KTLineItem *leftAuxLine = new KTLineItem();
+            TupLineItem *leftAuxLine = new TupLineItem();
             QPen leftAuxPen(Qt::blue, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
             leftAuxLine->setPen(leftAuxPen);
 
@@ -346,12 +346,12 @@ void InkTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
             rightAuxLine->setLine(QLineF(previewPoint.x(), previewPoint.y(), right.x(), right.y()));
             leftAuxLine->setLine(QLineF(previewPoint.x(), previewPoint.y(), left.x(), left.y()));
 
-            KTEllipseItem *blueEllipse = new KTEllipseItem(QRectF(left, QSize(1, 1)));
+            TupEllipseItem *blueEllipse = new TupEllipseItem(QRectF(left, QSize(1, 1)));
             QPen bluePen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
             blueEllipse->setPen(bluePen);
             scene->includeObject(blueEllipse);
 
-            KTEllipseItem *redEllipse = new KTEllipseItem(QRectF(right, QSize(1, 1)));
+            TupEllipseItem *redEllipse = new TupEllipseItem(QRectF(right, QSize(1, 1)));
             QPen redPen(Qt::red, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
             redEllipse->setPen(redPen);
             scene->includeObject(redEllipse);
@@ -376,7 +376,7 @@ void InkTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
     previewPoint = currentPoint;
 }
 
-void InkTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(scene);
 
@@ -422,7 +422,7 @@ void InkTool::smoothPath(QPainterPath &path, double smoothness, int from, int to
     }
 
     if (smoothness > 0) {
-        path = KTGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
+        path = TupGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
     } else {
         path = QPainterPath();
         path.addPolygon(pol);
@@ -447,7 +447,7 @@ QMap<QString, TAction *> InkTool::actions() const
 
 int InkTool::toolType() const
 {
-    return KTToolInterface::Brush;
+    return TupToolInterface::Brush;
 }
 
 QWidget *InkTool::configurator() 

@@ -41,7 +41,7 @@
 
 class QGraphicsPathItem;
 class QListWidgetItem;
-class KTItemTweener;
+class TupItemTweener;
 
 /**
  * @author Jorge Cuadrado
@@ -84,7 +84,7 @@ class Configurator : public QFrame
         void closeSettingsPanel();
         Settings::Mode mode();
         void resetUI();
-        void setCurrentTween(KTItemTweener *currentTween);
+        void setCurrentTween(TupItemTweener *currentTween);
 
     public slots:
         void closeTweenProperties();

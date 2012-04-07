@@ -36,8 +36,8 @@
 #include "settings.h"
 #include "tdebug.h"
 #include "tradiobuttongroup.h"
-#include "ktitemtweener.h"
-#include "kttweenerstep.h"
+#include "tupitemtweener.h"
+#include "tuptweenerstep.h"
 #include "timagebutton.h"
 #include "tseparator.h"
 #include "tosd.h"
@@ -292,7 +292,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->comboInit->setEnabled(false);
 }
 
-void Settings::setParameters(KTItemTweener *currentTween)
+void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
     activatePropertiesMode(Settings::Properties);
@@ -409,7 +409,7 @@ QString Settings::tweenToXml(int currentFrame)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Opacity);
+    root.setAttribute("type", TupItemTweener::Opacity);
     root.setAttribute("init", currentFrame);
   
     checkFramesRange();
@@ -476,7 +476,7 @@ QString Settings::tweenToXml(int currentFrame)
              }
          }
 
-         KTTweenerStep *step = new KTTweenerStep(i);
+         TupTweenerStep *step = new TupTweenerStep(i);
          step->setOpacity(reference);
          root.appendChild(step->toXml(doc));
     }

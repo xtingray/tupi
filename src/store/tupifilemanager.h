@@ -38,7 +38,7 @@
 
 #include <QObject>
 
-class KTProject;
+class TupProject;
 
 /**
  * @author David Cuadrado
@@ -52,9 +52,9 @@ class TupiFileManager : public QObject
         TupiFileManager();
         ~TupiFileManager();
 
-        //virtual bool save(const QString &filename, const KTProject *project);
-        virtual bool save(const QString &filename, KTProject *project);
-        virtual bool load(const QString &filename, KTProject *project);
+        //virtual bool save(const QString &filename, const TupProject *project);
+        virtual bool save(const QString &filename, TupProject *project);
+        virtual bool load(const QString &filename, TupProject *project);
 };
 
 #endif

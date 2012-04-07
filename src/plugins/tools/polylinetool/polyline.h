@@ -36,8 +36,8 @@
 #ifndef POLYLINE_H
 #define POLYLINE_H
 
-#include "kttoolplugin.h"
-#include "ktpathitem.h"
+#include "tuptoolplugin.h"
+#include "tuppathitem.h"
 #include "infopanel.h"
 #include "tcontrolnode.h"
 #include "tnodegroup.h"
@@ -46,7 +46,7 @@
  * @author Jorge Cuadrado
  */
 
-class PolyLine : public KTToolPlugin
+class PolyLine : public TupToolPlugin
 {    
     Q_OBJECT
     
@@ -54,11 +54,11 @@ class PolyLine : public KTToolPlugin
         PolyLine();
         virtual ~PolyLine();
         
-        virtual void init(KTGraphicsScene *scene);
+        virtual void init(TupGraphicsScene *scene);
         virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         
         virtual void keyPressEvent(QKeyEvent *event);
 
@@ -67,9 +67,9 @@ class PolyLine : public KTToolPlugin
         int toolType() const;
         
         virtual QWidget *configurator();
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         virtual void aboutToChangeTool();
-        void itemResponse(const KTItemResponse *response);
+        void itemResponse(const TupItemResponse *response);
         virtual void saveConfig();
         virtual QCursor cursor() const;
 

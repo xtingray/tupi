@@ -36,23 +36,23 @@
 #ifndef CONTOURSELECTION_H
 #define CONTOURSELECTION_H
 
-#include "ktpathitem.h"
+#include "tuppathitem.h"
 #include "tcontrolnode.h"
 #include "tnodegroup.h"
-#include "kttoolplugin.h"
+#include "tuptoolplugin.h"
 
 #include <QObject>
 #include <QSpinBox>
 
 class TControlNode;
-class KTItemResponse;
-class KTGraphicsScene;
+class TupItemResponse;
+class TupGraphicsScene;
 
 /**
  * @author Jorge Cuadrado
  */
 
-class ContourSelection : public KTToolPlugin
+class ContourSelection : public TupToolPlugin
 {
     Q_OBJECT
     
@@ -60,11 +60,11 @@ class ContourSelection : public KTToolPlugin
         ContourSelection();
         virtual ~ContourSelection();
         
-        virtual void init(KTGraphicsScene *scene);
+        virtual void init(TupGraphicsScene *scene);
         virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         
         virtual QMap<QString, TAction *>actions() const;
         
@@ -72,10 +72,10 @@ class ContourSelection : public KTToolPlugin
         
         virtual QWidget *configurator();
         
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         virtual void aboutToChangeTool();
         
-        virtual void itemResponse(const KTItemResponse *event);
+        virtual void itemResponse(const TupItemResponse *event);
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void saveConfig();
         virtual QCursor cursor() const;

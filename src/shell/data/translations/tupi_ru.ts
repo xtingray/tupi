@@ -234,7 +234,7 @@
     </message>
 </context>
 <context>
-    <name>KTAbout</name>
+    <name>TupAbout</name>
     <message>
         <source>About</source>
         <translation>О программе</translation>
@@ -261,14 +261,14 @@
     </message>
 </context>
 <context>
-    <name>KTAnimationArea</name>
+    <name>TupAnimationArea</name>
     <message>
         <source>Rendering...</source>
         <translation>Отрисовка...</translation>
     </message>
 </context>
 <context>
-    <name>KTApplication</name>
+    <name>TupApplication</name>
     <message>
         <source>Initializing repository %1</source>
         <translation>инициализация репозитория %1</translation>
@@ -279,14 +279,14 @@
     </message>
 </context>
 <context>
-    <name>KTBrushStatus</name>
+    <name>TupBrushStatus</name>
     <message>
         <source>Current Color</source>
         <translation>Текущий Цвет</translation>
     </message>
 </context>
 <context>
-    <name>KTCameraBar</name>
+    <name>TupCameraBar</name>
     <message>
         <source>Rewind</source>
         <translation>Назад</translation>
@@ -309,7 +309,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraStatus</name>
+    <name>TupCameraStatus</name>
     <message>
         <source>Scene name</source>
         <translation>Название сцены</translation>
@@ -336,21 +336,21 @@
     </message>
 </context>
 <context>
-    <name>KTCameraWidget</name>
+    <name>TupCameraWidget</name>
     <message>
         <source>Camera</source>
         <translation>Камера</translation>
     </message>
 </context>
 <context>
-    <name>KTChat</name>
+    <name>TupChat</name>
     <message>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
 </context>
 <context>
-    <name>KTColorPalette</name>
+    <name>TupColorPalette</name>
     <message>
         <source>Color Palette</source>
         <translation>Цветовая Палитра</translation>
@@ -377,14 +377,14 @@
     </message>
 </context>
 <context>
-    <name>KTColorValue</name>
+    <name>TupColorValue</name>
     <message>
         <source>percent</source>
         <translation>Процент</translation>
     </message>
 </context>
 <context>
-    <name>KTCommandExecutor</name>
+    <name>TupCommandExecutor</name>
     <message>
         <source>Frame doesn&apos;t exists!</source>
         <translation>Кадр не существует!</translation>
@@ -399,7 +399,7 @@
     </message>
 </context>
 <context>
-    <name>KTConfigurationArea</name>
+    <name>TupConfigurationArea</name>
     <message>
         <source>Cursor here for expand</source>
         <translation>Наведите курсор для получения списка</translation>
@@ -410,7 +410,7 @@
     </message>
 </context>
 <context>
-    <name>KTConnectDialog</name>
+    <name>TupConnectDialog</name>
     <message>
         <source>Connection Dialog</source>
         <translation>Диалог подключения</translation>
@@ -437,7 +437,7 @@
     </message>
 </context>
 <context>
-    <name>KTCrashWidget</name>
+    <name>TupCrashWidget</name>
     <message>
         <source>What&apos;s happening?</source>
         <translation>Что случилось?</translation>
@@ -452,7 +452,7 @@
     </message>
 </context>
 <context>
-    <name>KTExportWidget</name>
+    <name>TupExportWidget</name>
     <message>
         <source>Export</source>
         <translation>Экспорт</translation>
@@ -467,7 +467,7 @@
     </message>
 </context>
 <context>
-    <name>KTExposureSheet</name>
+    <name>TupExposureSheet</name>
     <message>
         <source>Exposure Sheet</source>
         <translation>Экспозиционный лист</translation>
@@ -514,14 +514,14 @@
     </message>
 </context>
 <context>
-    <name>KTGCTable</name>
+    <name>TupGCTable</name>
     <message>
         <source>New folder %1</source>
         <translation>Новая папка %1</translation>
     </message>
 </context>
 <context>
-    <name>KTGradientCreator</name>
+    <name>TupGradientCreator</name>
     <message>
         <source>Linear</source>
         <translation>Линейный</translation>
@@ -548,21 +548,21 @@
     </message>
 </context>
 <context>
-    <name>KTHelpBrowser</name>
+    <name>TupHelpBrowser</name>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
 </context>
 <context>
-    <name>KTHelpWidget</name>
+    <name>TupHelpWidget</name>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
 </context>
 <context>
-    <name>KTLayer</name>
+    <name>TupLayer</name>
     <message>
         <source>Layer</source>
         <translation>Слой</translation>
@@ -573,14 +573,14 @@
     </message>
 </context>
 <context>
-    <name>KTLayerIndex</name>
+    <name>TupLayerIndex</name>
     <message>
         <source>Layers</source>
         <translation>Слои</translation>
     </message>
 </context>
 <context>
-    <name>KTLibraryDialog</name>
+    <name>TupLibraryDialog</name>
     <message>
         <source>Library Object</source>
         <translation>Библиотека Объектов</translation>
@@ -595,7 +595,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryWidget</name>
+    <name>TupLibraryWidget</name>
     <message>
         <source>Library</source>
         <translation>Библиотека</translation>
@@ -694,7 +694,7 @@
     </message>
 </context>
 <context>
-    <name>KTListProjectDialog</name>
+    <name>TupListProjectDialog</name>
     <message>
         <source>Projects List from Server</source>
         <translation>Список проектов на сервере</translation>
@@ -717,7 +717,7 @@
     </message>
 </context>
 <context>
-    <name>KTMainWindow</name>
+    <name>TupMainWindow</name>
     <message>
         <source>Tupi: Magia 2D</source>
         <translation>Tupi: Magia 2D</translation>
@@ -1168,7 +1168,7 @@
     </message>
 </context>
 <context>
-    <name>KTNetProjectManagerHandler</name>
+    <name>TupNetProjectManagerHandler</name>
     <message>
         <source>Communications</source>
         <translation>Коммуникации</translation>
@@ -1195,7 +1195,7 @@
     </message>
 </context>
 <context>
-    <name>KTNewProject</name>
+    <name>TupNewProject</name>
     <message>
         <source>Create a new project</source>
         <translation>Создать новый проект</translation>
@@ -1338,7 +1338,7 @@
     </message>
 </context>
 <context>
-    <name>KTNotice</name>
+    <name>TupNotice</name>
     <message>
         <source>Send</source>
         <translation>Отправить</translation>
@@ -1353,7 +1353,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintArea</name>
+    <name>TupPaintArea</name>
     <message>
         <source>Object Selection</source>
         <translation>Выделение объекта</translation>
@@ -1424,7 +1424,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaBase</name>
+    <name>TupPaintAreaBase</name>
     <message>
         <source>OpenGL isn&apos;t supported</source>
         <translation>OpenGL не поддерживается</translation>
@@ -1447,7 +1447,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaConfig</name>
+    <name>TupPaintAreaConfig</name>
     <message>
         <source>Grid color</source>
         <translation>Цвет сетки</translation>
@@ -1470,7 +1470,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaStatus</name>
+    <name>TupPaintAreaStatus</name>
     <message>
         <source>Rotate</source>
         <translation>Вращать</translation>
@@ -1481,7 +1481,7 @@
     </message>
 </context>
 <context>
-    <name>KTPenWidget</name>
+    <name>TupPenWidget</name>
     <message>
         <source>Brush Properties</source>
         <translation>Свойства кисти</translation>
@@ -1536,9 +1536,9 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences</name>
+    <name>TupPreferences</name>
     <message>
-        <source>Application KTPreferences</source>
+        <source>Application TupPreferences</source>
         <translation>Настройки Tupi</translation>
     </message>
     <message>
@@ -1559,7 +1559,7 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences::GeneralPage</name>
+    <name>TupPreferences::GeneralPage</name>
     <message>
         <source>Tupi Home</source>
         <translation>Домашняя папка Tupi</translation>
@@ -1582,14 +1582,14 @@
     </message>
 </context>
 <context>
-    <name>KTProject</name>
+    <name>TupProject</name>
     <message>
         <source>Scene %1</source>
         <translation>Сцена %1</translation>
     </message>
 </context>
 <context>
-    <name>KTProjectActionBar</name>
+    <name>TupProjectActionBar</name>
     <message>
         <source>Insert a layer</source>
         <translation>Вставить слой</translation>
@@ -1688,14 +1688,14 @@
     </message>
 </context>
 <context>
-    <name>KTSaveProject</name>
+    <name>TupSaveProject</name>
     <message>
         <source>Project saved in %1!</source>
         <translation>Проект сохранен в %1!</translation>
     </message>
 </context>
 <context>
-    <name>KTScene</name>
+    <name>TupScene</name>
     <message>
         <source>Layer %1</source>
         <translation>Слой %1</translation>
@@ -1706,14 +1706,14 @@
     </message>
 </context>
 <context>
-    <name>KTSceneTabWidget</name>
+    <name>TupSceneTabWidget</name>
     <message>
         <source>Layers</source>
         <translation>Слои</translation>
     </message>
 </context>
 <context>
-    <name>KTScenesWidget</name>
+    <name>TupScenesWidget</name>
     <message>
         <source>Scenes Manager</source>
         <translation>Менеджер сцен</translation>
@@ -1724,14 +1724,14 @@
     </message>
 </context>
 <context>
-    <name>KTSplash</name>
+    <name>TupSplash</name>
     <message>
         <source>Version </source>
         <translation>Версия </translation>
     </message>
 </context>
 <context>
-    <name>KTSymbolEditor</name>
+    <name>TupSymbolEditor</name>
     <message>
         <source>Symbol editor</source>
         <translation>Редактор объектов</translation>
@@ -1754,7 +1754,7 @@
     </message>
 </context>
 <context>
-    <name>KTThemeSelector</name>
+    <name>TupThemeSelector</name>
     <message>
         <source>General</source>
         <translation>Главное</translation>
@@ -1865,21 +1865,21 @@
     </message>
 </context>
 <context>
-    <name>KTTimeLine</name>
+    <name>TupTimeLine</name>
     <message>
         <source>Time Line</source>
         <translation>Монтажная линейка</translation>
     </message>
 </context>
 <context>
-    <name>KTViewCamera</name>
+    <name>TupViewCamera</name>
     <message>
         <source>Render Camera Preview</source>
         <translation>Отрисовка предпросмотра камеры</translation>
     </message>
 </context>
 <context>
-    <name>KTViewColorCells</name>
+    <name>TupViewColorCells</name>
     <message>
         <source>Default Palette</source>
         <translation>Палитра по умолчанию</translation>
@@ -1906,7 +1906,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewDocument</name>
+    <name>TupViewDocument</name>
     <message>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
@@ -2061,7 +2061,7 @@
     </message>
 </context>
 <context>
-    <name>KTwitter</name>
+    <name>Tupwitter</name>
     <message>
         <source>Latest version</source>
         <translation>Последняя версия</translation>
@@ -2104,7 +2104,7 @@
     </message>
 </context>
 <context>
-    <name>KTwitterWidget</name>
+    <name>TupwitterWidget</name>
     <message>
         <source>News!</source>
         <translation>Новости!</translation>

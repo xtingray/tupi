@@ -12,57 +12,57 @@ headers.target = .
 headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
 headers.path = /include/tupinet/
 
-HEADERS += ktnetprojectmanagerparams.h \
-           ktnetprojectmanagerhandler.h \
-           ktnetsocket.h \
-           ktconnectpackage.h \
-           ktlistpackage.h \
-           ktopenpackage.h \
-           ktsavepackage.h \
-           ktnewprojectpackage.h \
+HEADERS += tupnetprojectmanagerparams.h \
+           tupnetprojectmanagerhandler.h \
+           tupnetsocket.h \
+           tupconnectpackage.h \
+           tuplistpackage.h \
+           tupopenpackage.h \
+           tupsavepackage.h \
+           tupnewprojectpackage.h \
            tupinetfilemanager.h \
-           ktchat.h \
-           ktconnectdialog.h \
-           ktprojectparser.h \
-           ktlistprojectspackage.h \
-           ktprojectlistparser.h \
-           ktlistprojectdialog.h \
-           ktnotificationparser.h \
-           ktackparser.h \
-           ktimportprojectpackage.h \
-           ktchatpackage.h \
-           ktnotice.h \
-           # ktnoticepackage.h \
-           ktcommunicationparser.h \
-           ktimageexportpackage.h \
-           ktvideoexportpackage.h \
-           ktstoryboardexportpackage.h
+           tupchat.h \
+           tupconnectdialog.h \
+           tupprojectparser.h \
+           tuplistprojectspackage.h \
+           tupprojectlistparser.h \
+           tuplistprojectdialog.h \
+           tupnotificationparser.h \
+           tupackparser.h \
+           tupimportprojectpackage.h \
+           tupchatpackage.h \
+           tupnotice.h \
+           # tupnoticepackage.h \
+           tupcommunicationparser.h \
+           tupimageexportpackage.h \
+           tupvideoexportpackage.h \
+           tupstoryboardexportpackage.h
 
-SOURCES += ktnetprojectmanagerparams.cpp \
-           ktnetprojectmanagerhandler.cpp \
-           ktnetsocket.cpp \
-           ktconnectpackage.cpp \
-           ktlistpackage.cpp \
-           ktopenpackage.cpp \
-           ktsavepackage.cpp \
-           ktnewprojectpackage.cpp \
+SOURCES += tupnetprojectmanagerparams.cpp \
+           tupnetprojectmanagerhandler.cpp \
+           tupnetsocket.cpp \
+           tupconnectpackage.cpp \
+           tuplistpackage.cpp \
+           tupopenpackage.cpp \
+           tupsavepackage.cpp \
+           tupnewprojectpackage.cpp \
            tupinetfilemanager.cpp \
-           ktchat.cpp \
-           ktconnectdialog.cpp \
-           ktprojectparser.cpp \
-           ktlistprojectspackage.cpp \
-           ktprojectlistparser.cpp \
-           ktlistprojectdialog.cpp \
-           ktnotificationparser.cpp \
-           ktackparser.cpp \
-           ktimportprojectpackage.cpp \
-           ktchatpackage.cpp \
-           ktnotice.cpp \
-           # ktnoticepackage.cpp \
-           ktcommunicationparser.cpp \
-           ktimageexportpackage.cpp \
-           ktvideoexportpackage.cpp \
-           ktstoryboardexportpackage.cpp
+           tupchat.cpp \
+           tupconnectdialog.cpp \
+           tupprojectparser.cpp \
+           tuplistprojectspackage.cpp \
+           tupprojectlistparser.cpp \
+           tuplistprojectdialog.cpp \
+           tupnotificationparser.cpp \
+           tupackparser.cpp \
+           tupimportprojectpackage.cpp \
+           tupchatpackage.cpp \
+           tupnotice.cpp \
+           # tupnoticepackage.cpp \
+           tupcommunicationparser.cpp \
+           tupimageexportpackage.cpp \
+           tupvideoexportpackage.cpp \
+           tupstoryboardexportpackage.cpp
 
 CONFIG += dll warn_on
 TEMPLATE = lib

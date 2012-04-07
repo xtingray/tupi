@@ -518,7 +518,7 @@
     </message>
 </context>
 <context>
-    <name>KExportWizard</name>
+    <name>TExportWizard</name>
     <message>
         <location filename="../src/framework/tgui/kexportwizard.cpp" line="49"/>
         <source>Cancel</source>
@@ -618,7 +618,7 @@
     </message>
 </context>
 <context>
-    <name>KTAbout</name>
+    <name>TupAbout</name>
     <message>
         <location filename="../src/libui/ktabout.cpp" line="61"/>
         <source>About</source>
@@ -651,7 +651,7 @@
     </message>
 </context>
 <context>
-    <name>KTAnimationArea</name>
+    <name>TupAnimationArea</name>
     <message>
         <location filename="../src/components/animation/ktanimationarea.cpp" line="338"/>
         <source>Rendering...</source>
@@ -659,7 +659,7 @@
     </message>
 </context>
 <context>
-    <name>KTApplication</name>
+    <name>TupApplication</name>
     <message>
         <location filename="../src/shell/ktapplication.cpp" line="98"/>
         <source>Initializing repository %1</source>
@@ -672,7 +672,7 @@
     </message>
 </context>
 <context>
-    <name>KTBrushStatus</name>
+    <name>TupBrushStatus</name>
     <message>
         <location filename="../src/components/paintarea/ktbrushstatus.cpp" line="54"/>
         <source>Current Brush</source>
@@ -680,7 +680,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraBar</name>
+    <name>TupCameraBar</name>
     <message>
         <location filename="../src/components/animation/ktcamerabar.cpp" line="60"/>
         <source>Rewind</source>
@@ -708,7 +708,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraStatus</name>
+    <name>TupCameraStatus</name>
     <message>
         <location filename="../src/components/animation/ktcamerastatus.cpp" line="73"/>
         <source>Scene name</source>
@@ -741,7 +741,7 @@
     </message>
 </context>
 <context>
-    <name>KTCameraWidget</name>
+    <name>TupCameraWidget</name>
     <message>
         <location filename="../src/components/animation/ktcamerawidget.cpp" line="49"/>
         <source>Camera</source>
@@ -749,7 +749,7 @@
     </message>
 </context>
 <context>
-    <name>KTChat</name>
+    <name>TupChat</name>
     <message>
         <location filename="../src/net/ktchat.cpp" line="80"/>
         <source>Send</source>
@@ -757,7 +757,7 @@
     </message>
 </context>
 <context>
-    <name>KTColorPalette</name>
+    <name>TupColorPalette</name>
     <message>
         <location filename="../src/components/colorpalette/ktcolorpalette.cpp" line="95"/>
         <source>Color Palette</source>
@@ -797,7 +797,7 @@
     </message>
 </context>
 <context>
-    <name>KTColorValue</name>
+    <name>TupColorValue</name>
     <message>
         <location filename="../src/components/colorpalette/ktcolorvalue.cpp" line="175"/>
         <source>percent</source>
@@ -805,7 +805,7 @@
     </message>
 </context>
 <context>
-    <name>KTCommandExecutor</name>
+    <name>TupCommandExecutor</name>
     <message>
         <location filename="../src/store/ktcommandexecutor_items.cpp" line="105"/>
         <source>Frame doesn&apos;t exists!</source>
@@ -823,7 +823,7 @@
     </message>
 </context>
 <context>
-    <name>KTConfigurationArea</name>
+    <name>TupConfigurationArea</name>
     <message>
         <location filename="../src/components/paintarea/ktconfigurationarea.cpp" line="277"/>
         <source>Cursor here for expand</source>
@@ -836,7 +836,7 @@
     </message>
 </context>
 <context>
-    <name>KTConnectDialog</name>
+    <name>TupConnectDialog</name>
     <message>
         <location filename="../src/net/ktconnectdialog.cpp" line="75"/>
         <source>Connection Dialog</source>
@@ -869,7 +869,7 @@
     </message>
 </context>
 <context>
-    <name>KTCrashWidget</name>
+    <name>TupCrashWidget</name>
     <message>
         <location filename="../src/shell/ktcrashwidget.cpp" line="129"/>
         <source>What&apos;s happening?</source>
@@ -888,7 +888,7 @@
     </message>
 </context>
 <context>
-    <name>KTDebugWidget</name>
+    <name>TupDebugWidget</name>
     <message>
         <location filename="../src/components/debug/ktdebugwidget.cpp" line="48"/>
         <source>Debug Console</source>
@@ -896,7 +896,7 @@
     </message>
 </context>
 <context>
-    <name>KTExportWidget</name>
+    <name>TupExportWidget</name>
     <message>
         <location filename="../src/components/export/ktexportwidget.cpp" line="699"/>
         <source>Export</source>
@@ -914,7 +914,7 @@
     </message>
 </context>
 <context>
-    <name>KTExposureSheet</name>
+    <name>TupExposureSheet</name>
     <message>
         <location filename="../src/components/exposure/ktexposuresheet.cpp" line="70"/>
         <source>Exposure Sheet</source>
@@ -975,7 +975,7 @@
     </message>
 </context>
 <context>
-    <name>KTGCTable</name>
+    <name>TupGCTable</name>
     <message>
         <location filename="../src/components/library/ktgctable.cpp" line="76"/>
         <source>New folder %1</source>
@@ -1008,7 +1008,7 @@
     </message>
 </context>
 <context>
-    <name>KTGradientCreator</name>
+    <name>TupGradientCreator</name>
     <message>
         <location filename="../src/libtupi/ktgradientcreator.cpp" line="73"/>
         <source>Linear</source>
@@ -1041,7 +1041,7 @@
     </message>
 </context>
 <context>
-    <name>KTGraphicsScene</name>
+    <name>TupGraphicsScene</name>
     <message>
         <location filename="../src/libbase/ktgraphicsscene.cpp" line="147"/>
         <location filename="../src/libbase/ktgraphicsscene.cpp" line="560"/>
@@ -1066,7 +1066,7 @@
     </message>
 </context>
 <context>
-    <name>KTHelpBrowser</name>
+    <name>TupHelpBrowser</name>
     <message>
         <location filename="../src/components/help/kthelpbrowser.cpp" line="49"/>
         <source>Help</source>
@@ -1074,7 +1074,7 @@
     </message>
 </context>
 <context>
-    <name>KTHelpWidget</name>
+    <name>TupHelpWidget</name>
     <message>
         <location filename="../src/components/help/kthelpwidget.cpp" line="54"/>
         <source>Help</source>
@@ -1082,7 +1082,7 @@
     </message>
 </context>
 <context>
-    <name>KTItemPreview</name>
+    <name>TupItemPreview</name>
     <message>
         <location filename="../src/libtupi/ktitempreview.cpp" line="65"/>
         <source>Library is empty :(</source>
@@ -1090,7 +1090,7 @@
     </message>
 </context>
 <context>
-    <name>KTLayer</name>
+    <name>TupLayer</name>
     <message>
         <location filename="../src/store/ktlayer.cpp" line="56"/>
         <source>Layer</source>
@@ -1103,7 +1103,7 @@
     </message>
 </context>
 <context>
-    <name>KTLayerIndex</name>
+    <name>TupLayerIndex</name>
     <message>
         <location filename="../src/components/timeline/ktlayerindex.cpp" line="178"/>
         <source>Layers</source>
@@ -1111,7 +1111,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryDialog</name>
+    <name>TupLibraryDialog</name>
     <message>
         <location filename="../src/components/paintarea/ktlibrarydialog.cpp" line="59"/>
         <source>Library Object</source>
@@ -1129,7 +1129,7 @@
     </message>
 </context>
 <context>
-    <name>KTLibraryWidget</name>
+    <name>TupLibraryWidget</name>
     <message>
         <location filename="../src/components/library/ktlibrarywidget.cpp" line="118"/>
         <source>Library</source>
@@ -1329,7 +1329,7 @@
     </message>
 </context>
 <context>
-    <name>KTListProjectDialog</name>
+    <name>TupListProjectDialog</name>
     <message>
         <location filename="../src/net/ktlistprojectdialog.cpp" line="58"/>
         <source>Projects List from Server</source>
@@ -1357,7 +1357,7 @@
     </message>
 </context>
 <context>
-    <name>KTMainWindow</name>
+    <name>TupMainWindow</name>
     <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="124"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="510"/>
@@ -1883,7 +1883,7 @@
     </message>
 </context>
 <context>
-    <name>KTNetProjectManagerHandler</name>
+    <name>TupNetProjectManagerHandler</name>
     <message>
         <location filename="../src/net/ktnetprojectmanagerhandler.cpp" line="108"/>
         <source>Communications</source>
@@ -1917,7 +1917,7 @@
     </message>
 </context>
 <context>
-    <name>KTNewProject</name>
+    <name>TupNewProject</name>
     <message>
         <location filename="../src/shell/ktnewproject.cpp" line="70"/>
         <source>Create a new project</source>
@@ -1995,7 +1995,7 @@
     </message>
 </context>
 <context>
-    <name>KTNotice</name>
+    <name>TupNotice</name>
     <message>
         <location filename="../src/net/ktnotice.cpp" line="79"/>
         <source>Send</source>
@@ -2013,7 +2013,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintArea</name>
+    <name>TupPaintArea</name>
     <message>
         <location filename="../src/components/paintarea/ktpaintarea.cpp" line="101"/>
         <source>Pencil</source>
@@ -2111,7 +2111,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaBase</name>
+    <name>TupPaintAreaBase</name>
     <message>
         <location filename="../src/libbase/ktpaintareabase.cpp" line="180"/>
         <source>OpenGL isn&apos;t supported</source>
@@ -2139,7 +2139,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaConfig</name>
+    <name>TupPaintAreaConfig</name>
     <message>
         <location filename="../src/libui/ktpaintareaconfig.cpp" line="70"/>
         <source>Grid color</source>
@@ -2167,7 +2167,7 @@
     </message>
 </context>
 <context>
-    <name>KTPaintAreaStatus</name>
+    <name>TupPaintAreaStatus</name>
     <message>
         <location filename="../src/components/paintarea/ktpaintareastatus.cpp" line="79"/>
         <source>Zoom</source>
@@ -2190,7 +2190,7 @@
     </message>
 </context>
 <context>
-    <name>KTPenWidget</name>
+    <name>TupPenWidget</name>
     <message>
         <location filename="../src/components/pen/ktpenwidget.cpp" line="61"/>
         <source>Pen Properties</source>
@@ -2274,10 +2274,10 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences</name>
+    <name>TupPreferences</name>
     <message>
         <location filename="../src/libui/ktpreferences.cpp" line="205"/>
-        <source>Application KTPreferences</source>
+        <source>Application TupPreferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2302,7 +2302,7 @@
     </message>
 </context>
 <context>
-    <name>KTPreferences::GeneralPage</name>
+    <name>TupPreferences::GeneralPage</name>
     <message>
         <location filename="../src/libui/ktpreferences.cpp" line="130"/>
         <source>Tupi Home</source>
@@ -2330,7 +2330,7 @@
     </message>
 </context>
 <context>
-    <name>KTProject</name>
+    <name>TupProject</name>
     <message>
         <location filename="../src/store/ktproject.cpp" line="213"/>
         <source>Scene %1</source>
@@ -2338,7 +2338,7 @@
     </message>
 </context>
 <context>
-    <name>KTProjectActionBar</name>
+    <name>TupProjectActionBar</name>
     <message>
         <location filename="../src/libtupi/ktprojectactionbar.cpp" line="110"/>
         <source>Insert a layer</source>
@@ -2465,7 +2465,7 @@
     </message>
 </context>
 <context>
-    <name>KTSaveProject</name>
+    <name>TupSaveProject</name>
     <message>
         <location filename="../src/store/tupifilemanager.cpp" line="132"/>
         <source>Project saved in %1!</source>
@@ -2473,7 +2473,7 @@
     </message>
 </context>
 <context>
-    <name>KTScene</name>
+    <name>TupScene</name>
     <message>
         <location filename="../src/store/ktscene.cpp" line="151"/>
         <source>Layer %1</source>
@@ -2486,7 +2486,7 @@
     </message>
 </context>
 <context>
-    <name>KTSceneTabWidget</name>
+    <name>TupSceneTabWidget</name>
     <message>
         <location filename="../src/components/exposure/ktscenetabwidget.cpp" line="80"/>
         <source>Layers</source>
@@ -2494,7 +2494,7 @@
     </message>
 </context>
 <context>
-    <name>KTScenesWidget</name>
+    <name>TupScenesWidget</name>
     <message>
         <location filename="../src/components/scenes/ktsceneswidget.cpp" line="66"/>
         <source>Scenes Manager</source>
@@ -2507,7 +2507,7 @@
     </message>
 </context>
 <context>
-    <name>KTSplash</name>
+    <name>TupSplash</name>
     <message>
         <location filename="../src/shell/ktsplash.cpp" line="57"/>
         <source>Version </source>
@@ -2515,7 +2515,7 @@
     </message>
 </context>
 <context>
-    <name>KTSymbolEditor</name>
+    <name>TupSymbolEditor</name>
     <message>
         <location filename="../src/components/library/ktsymboleditor.cpp" line="87"/>
         <source>Symbol editor</source>
@@ -2543,7 +2543,7 @@
     </message>
 </context>
 <context>
-    <name>KTThemeSelector</name>
+    <name>TupThemeSelector</name>
     <message>
         <location filename="../src/libui/ktthemeselector.cpp" line="79"/>
         <source>General</source>
@@ -2682,7 +2682,7 @@
     </message>
 </context>
 <context>
-    <name>KTTimeLine</name>
+    <name>TupTimeLine</name>
     <message>
         <location filename="../src/components/timeline/kttimeline.cpp" line="75"/>
         <source>Time Line</source>
@@ -2690,7 +2690,7 @@
     </message>
 </context>
 <context>
-    <name>KTToolStatus</name>
+    <name>TupToolStatus</name>
     <message>
         <location filename="../src/components/paintarea/kttoolstatus.cpp" line="52"/>
         <location filename="../src/components/paintarea/kttoolstatus.cpp" line="56"/>
@@ -2699,7 +2699,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewCamera</name>
+    <name>TupViewCamera</name>
     <message>
         <location filename="../src/components/animation/ktviewcamera.cpp" line="58"/>
         <location filename="../src/components/animation/ktviewcamera.cpp" line="65"/>
@@ -2708,7 +2708,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewColorCells</name>
+    <name>TupViewColorCells</name>
     <message>
         <location filename="../src/components/colorpalette/ktviewcolorcells.cpp" line="109"/>
         <source>Default Palette</source>
@@ -2741,7 +2741,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewDocument</name>
+    <name>TupViewDocument</name>
     <message>
         <location filename="../src/components/paintarea/ktviewdocument.cpp" line="231"/>
         <source>Show grid</source>
@@ -2950,7 +2950,7 @@
     </message>
 </context>
 <context>
-    <name>KTabDialog</name>
+    <name>TupabDialog</name>
     <message>
         <location filename="../src/framework/tgui/ktabdialog.cpp" line="93"/>
         <source>Help</source>
@@ -2973,7 +2973,7 @@
     </message>
 </context>
 <context>
-    <name>KTermTab</name>
+    <name>TupermTab</name>
     <message>
         <location filename="../src/framework/tgui/ktermtab.cpp" line="50"/>
         <source>New</source>
@@ -2991,7 +2991,7 @@
     </message>
 </context>
 <context>
-    <name>KTreeWidgetSearchLine</name>
+    <name>TupreeWidgetSearchLine</name>
     <message>
         <location filename="../src/framework/tgui/ktreewidgetsearchline.cpp" line="74"/>
         <location filename="../src/framework/tgui/ktreewidgetsearchline.cpp" line="89"/>
@@ -3010,7 +3010,7 @@
     </message>
 </context>
 <context>
-    <name>KTreeWidgetSearchLineWidget</name>
+    <name>TupreeWidgetSearchLineWidget</name>
     <message>
         <location filename="../src/framework/tgui/ktreewidgetsearchline.cpp" line="575"/>
         <source>Clear</source>
@@ -3018,7 +3018,7 @@
     </message>
 </context>
 <context>
-    <name>KTwitter</name>
+    <name>Tupwitter</name>
     <message>
         <location filename="../src/components/twitter/ktwitter.cpp" line="297"/>
         <source>Latest version</source>
@@ -3066,7 +3066,7 @@
     </message>
 </context>
 <context>
-    <name>KTwitterWidget</name>
+    <name>TupwitterWidget</name>
     <message>
         <location filename="../src/components/twitter/ktwitterwidget.cpp" line="52"/>
         <source>News!</source>

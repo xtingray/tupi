@@ -12,38 +12,38 @@ headers.path = /include/tupi
 
 target.path = /lib/
 
-HEADERS += ktgraphicalgorithm.h \
-           ktglobal.h \
-           ktpaintareaproperties.h \
-           ktgradientcreator.h \
-           ktgradientselector.h \
-           ktgradientviewer.h \
-           ktpackagehandler.h \
-           ktprojectactionbar.h \
-           ktbrushmanager.h \
-           ktinputdeviceinformation.h \
-           ktsvg2qt.h \
-           ktitempreview.h \
-           ktcompress.h  \
-           ktsocketbase.h \
-           ktxmlparserbase.h \
-           ktproxyitem.h \
-           ktinthash.h
-SOURCES += ktgraphicalgorithm.cpp \
-           ktpaintareaproperties.cpp \
-           ktgradientcreator.cpp \
-           ktgradientselector.cpp \
-           ktgradientviewer.cpp \
-           ktpackagehandler.cpp \
-           ktprojectactionbar.cpp \
-           ktbrushmanager.cpp \
-           ktinputdeviceinformation.cpp \
-           ktsvg2qt.cpp \
-           ktitempreview.cpp \
-           ktcompress.cpp  \
-           ktsocketbase.cpp \
-           ktxmlparserbase.cpp \
-           ktproxyitem.cpp
+HEADERS += tupgraphicalgorithm.h \
+           tupglobal.h \
+           tuppaintareaproperties.h \
+           tupgradientcreator.h \
+           tupgradientselector.h \
+           tupgradientviewer.h \
+           tuppackagehandler.h \
+           tupprojectactionbar.h \
+           tupbrushmanager.h \
+           tupinputdeviceinformation.h \
+           tupsvg2qt.h \
+           tupitempreview.h \
+           tupcompress.h  \
+           tupsocketbase.h \
+           tupxmlparserbase.h \
+           tupproxyitem.h \
+           tupinthash.h
+SOURCES += tupgraphicalgorithm.cpp \
+           tuppaintareaproperties.cpp \
+           tupgradientcreator.cpp \
+           tupgradientselector.cpp \
+           tupgradientviewer.cpp \
+           tuppackagehandler.cpp \
+           tupprojectactionbar.cpp \
+           tupbrushmanager.cpp \
+           tupinputdeviceinformation.cpp \
+           tupsvg2qt.cpp \
+           tupitempreview.cpp \
+           tupcompress.cpp  \
+           tupsocketbase.cpp \
+           tupxmlparserbase.cpp \
+           tupproxyitem.cpp
 
 CONFIG += dll warn_on
 TEMPLATE = lib

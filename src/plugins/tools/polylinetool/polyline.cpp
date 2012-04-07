@@ -34,18 +34,18 @@
  ***************************************************************************/
 
 #include "polyline.h"
-#include "ktscene.h"
-#include "ktlayer.h"
-#include "ktrequestbuilder.h"
-#include "ktlibraryobject.h"
+#include "tupscene.h"
+#include "tuplayer.h"
+#include "tuprequestbuilder.h"
+#include "tuplibraryobject.h"
 #include "tdebug.h"
 #include "tglobal.h"
 #include "taction.h"
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
-#include "ktprojectrequest.h"
-#include "ktbrushmanager.h"
-#include "ktprojectresponse.h"
+#include "tupinputdeviceinformation.h"
+#include "tupgraphicsscene.h"
+#include "tupprojectrequest.h"
+#include "tupbrushmanager.h"
+#include "tupprojectresponse.h"
 
 #include <QGraphicsView>
 #include <QGraphicsPathItem>
@@ -65,8 +65,8 @@ struct PolyLine::Private
     
     QMap<QString, TAction *> actions;
     
-    KTPathItem *item;
-    KTGraphicsScene *scene;
+    TupPathItem *item;
+    TupGraphicsScene *scene;
     
     QGraphicsLineItem *line1, *line2;
     InfoPanel *configurator;
@@ -94,7 +94,7 @@ PolyLine::~PolyLine()
 {
 }
 
-void PolyLine::init(KTGraphicsScene *scene)
+void PolyLine::init(TupGraphicsScene *scene)
 {
     k->scene = scene;
 
@@ -116,7 +116,7 @@ QStringList PolyLine::keys() const
     return QStringList() << tr("PolyLine");
 }
 
-void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void PolyLine::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
        T_FUNCINFO;
@@ -135,7 +135,7 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     if (!k->item) {
         k->path = QPainterPath();
         k->path.moveTo(input->pos());
-        k->item = new KTPathItem();
+        k->item = new TupPathItem();
         k->item->setPath(k->path);
         
         scene->includeObject(k->item);
@@ -161,7 +161,7 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         scene->includeObject(k->line2);
 }
 
-void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void PolyLine::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
@@ -193,7 +193,7 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     k->line2->setLine(QLineF(k->right, k->center));
 }
 
-void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void PolyLine::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
        T_FUNCINFO;
@@ -215,23 +215,23 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     if (k->begin) {
         doc.appendChild(k->item->toXml(doc));
 
-        KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
+        TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
                                                                        scene->currentLayerIndex(), 
                                                                        scene->currentFrameIndex(), 
                                                                        scene->currentFrame()->graphicItemsCount(), 
-                                                                       QPointF(), scene->spaceMode(), KTLibraryObject::Item, 
-                                                                       KTProjectRequest::Add, doc.toString());
+                                                                       QPointF(), scene->spaceMode(), TupLibraryObject::Item, 
+                                                                       TupProjectRequest::Add, doc.toString());
         emit requested(&request);
     } else if (!k->nodegroup->isSelected()) {
                int position = scene->currentFrame()->indexOf(k->item);
         
                if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
-                   doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
+                   doc.appendChild(qgraphicsitem_cast<TupPathItem *>(k->nodegroup->parentItem())->toXml(doc));
             
-                   KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
+                   TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
                                                                                 scene->currentFrameIndex(), position, 
-                                                                                QPointF(), scene->spaceMode(), KTLibraryObject::Item, 
-                                                                                KTProjectRequest::EditNodes, doc.toString());
+                                                                                QPointF(), scene->spaceMode(), TupLibraryObject::Item, 
+                                                                                TupProjectRequest::EditNodes, doc.toString());
                    k->nodegroup->restoreItem();
                    emit requested(&event);
                } else {
@@ -242,23 +242,23 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     }
 }
 
-void PolyLine::itemResponse(const KTItemResponse *response)
+void PolyLine::itemResponse(const TupItemResponse *response)
 {
     #ifdef K_DEBUG
        T_FUNCINFO;
     #endif
 
-    KTProject *project = k->scene->scene()->project();
+    TupProject *project = k->scene->scene()->project();
     QGraphicsItem *item = 0;
-    KTScene *scene = 0;
-    KTLayer *layer = 0;
-    KTFrame *frame = 0;
+    TupScene *scene = 0;
+    TupLayer *layer = 0;
+    TupFrame *frame = 0;
 
     if (project) {
 
         scene = project->scene(response->sceneIndex());
         if (scene) {
-            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+            if (project->spaceContext() == TupProject::FRAMES_EDITION) {
                 layer = scene->layer(response->layerIndex());
                 if (layer) {
                     frame = layer->frame(response->frameIndex());
@@ -266,9 +266,9 @@ void PolyLine::itemResponse(const KTItemResponse *response)
                         item = frame->item(response->itemIndex());
                 }
             } else {
-                KTBackground *bg = scene->background();
+                TupBackground *bg = scene->background();
                 if (bg) {
-                    KTFrame *frame = bg->frame();
+                    TupFrame *frame = bg->frame();
                     if (frame)
                         item = frame->item(response->itemIndex());
                 }
@@ -283,9 +283,9 @@ void PolyLine::itemResponse(const KTItemResponse *response)
         
     switch (response->action()) {
 
-        case KTProjectRequest::Add:
+        case TupProjectRequest::Add:
         {
-            if (KTPathItem *path = qgraphicsitem_cast<KTPathItem *>(item)) {
+            if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(item)) {
                 if (k->item != path) {
                     k->item = path;
                     if (k->nodegroup)
@@ -295,7 +295,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
         }
         break;
 
-        case KTProjectRequest::Remove:
+        case TupProjectRequest::Remove:
         {
             if (item == k->item) {
                 k->path = QPainterPath();
@@ -307,7 +307,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
         }
         break;
 
-        case KTProjectRequest::EditNodes:
+        case TupProjectRequest::EditNodes:
         {
             if (k->nodegroup && item) {
                 foreach (QGraphicsView * view, k->scene->views())
@@ -315,7 +315,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
                 
                 if (qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem()) != item) {
                     delete k->item;
-                    k->item = qgraphicsitem_cast<KTPathItem *>(item);
+                    k->item = qgraphicsitem_cast<TupPathItem *>(item);
                     k->nodegroup->setParentItem(k->item);
                 }
 
@@ -346,7 +346,7 @@ void PolyLine::keyPressEvent(QKeyEvent *event)
                // event->accept();
     // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
     } else {
-        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        QPair<int, int> flags = TupToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)
             emit callForPlugin(flags.first, flags.second);
     }
@@ -386,21 +386,21 @@ void PolyLine::nodeChanged()
         // SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
         if (!k->nodegroup->changedNodes().isEmpty()) {
             int position = -1;
-            KTProject *project = k->scene->scene()->project();
-            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+            TupProject *project = k->scene->scene()->project();
+            if (project->spaceContext() == TupProject::FRAMES_EDITION) {
                 position = k->scene->currentFrame()->indexOf(k->nodegroup->parentItem());
             } else {
-                KTBackground *bg = k->scene->scene()->background();
-                KTFrame *frame = bg->frame();
+                TupBackground *bg = k->scene->scene()->background();
+                TupFrame *frame = bg->frame();
                 position = frame->indexOf(k->nodegroup->parentItem());
             }
 
             if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
                     QDomDocument doc;
-                    doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
+                    doc.appendChild(qgraphicsitem_cast<TupPathItem *>(k->nodegroup->parentItem())->toXml(doc));
                 
-                    KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                                                 position, QPointF(), k->scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::EditNodes, 
+                    TupProjectRequest event = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
+                                                                                 position, QPointF(), k->scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::EditNodes, 
                                                                                  doc.toString());
                     foreach (QGraphicsView * view, k->scene->views())
                              view->setUpdatesEnabled(false);
@@ -440,7 +440,7 @@ QMap<QString, TAction *> PolyLine::actions() const
 
 int PolyLine::toolType() const
 {
-    return KTToolInterface::Brush;
+    return TupToolInterface::Brush;
 }
 
 QWidget *PolyLine::configurator() 
@@ -451,7 +451,7 @@ QWidget *PolyLine::configurator()
     return k->configurator;
 }
 
-void PolyLine::aboutToChangeScene(KTGraphicsScene *)
+void PolyLine::aboutToChangeScene(TupGraphicsScene *)
 {
     endItem();
 

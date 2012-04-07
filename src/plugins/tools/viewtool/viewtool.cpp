@@ -37,12 +37,12 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tconfig.h"
-#include "ktrectitem.h"
-#include "ktellipseitem.h"
-#include "ktlineitem.h"
-#include "ktscene.h"
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
+#include "tuprectitem.h"
+#include "tupellipseitem.h"
+#include "tuplineitem.h"
+#include "tupscene.h"
+#include "tupinputdeviceinformation.h"
+#include "tupgraphicsscene.h"
 
 #include <QKeySequence>
 #include <QDebug>
@@ -56,7 +56,7 @@ struct ViewTool::Private
     QGraphicsRectItem *rect;
     bool added;
     QPointF firstPoint;
-    KTGraphicsScene *scene;
+    TupGraphicsScene *scene;
     ZoomConfigurator *configurator;
     QCursor zoomCursor;
     QCursor handCursor;
@@ -75,7 +75,7 @@ ViewTool::~ViewTool()
 {
 }
 
-void ViewTool::init(KTGraphicsScene *scene)
+void ViewTool::init(TupGraphicsScene *scene)
 {
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
@@ -108,7 +108,7 @@ void ViewTool::setupActions()
     k->actions.insert(tr("Hand"), handAction);
 }
 
-void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void ViewTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
@@ -121,7 +121,7 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     k->firstPoint = input->pos();
 }
 
-void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void ViewTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
@@ -171,7 +171,7 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     }
 }
 
-void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -237,7 +237,7 @@ QMap<QString, TAction *> ViewTool::actions() const
 
 int ViewTool::toolType() const
 {
-    return KTToolInterface::View;
+    return TupToolInterface::View;
 }
 
 QWidget *ViewTool::configurator()
@@ -248,7 +248,7 @@ QWidget *ViewTool::configurator()
     return k->configurator;
 }
 
-void ViewTool::aboutToChangeScene(KTGraphicsScene *)
+void ViewTool::aboutToChangeScene(TupGraphicsScene *)
 {
 }
 
@@ -276,7 +276,7 @@ void ViewTool::keyPressEvent(QKeyEvent *event)
         emit closeHugeCanvas();
     // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
     } else {
-        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        QPair<int, int> flags = TupToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)
             emit callForPlugin(flags.first, flags.second);
     }

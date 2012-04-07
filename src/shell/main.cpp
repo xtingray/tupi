@@ -33,17 +33,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktapplication.h"
-#include "ktsplash.h"
-#include "ktmainwindow.h"
-#include "ktwitter.h"
+#include "tupapplication.h"
+#include "tupsplash.h"
+#include "tupmainwindow.h"
+#include "tuptwitter.h"
 #include "tapplicationproperties.h"
 #include "tdebug.h"
 #include "tcollapsiblewidget.h"
 #include "taudioplayer.h"
 
 #ifdef Q_OS_UNIX
-#include "ktcrashhandler.h"
+#include "tupcrashhandler.h"
 #endif
 
 #ifdef ENABLE_TUPISTYLE
@@ -101,7 +101,7 @@ void usage();
 
 int main(int argc, char ** argv)
 {
-    KTApplication application(argc, argv);
+    TupApplication application(argc, argv);
 
 #ifdef K_DEBUG
        TDebug::setOutputChannel();
@@ -109,7 +109,7 @@ int main(int argc, char ** argv)
 
 #ifdef Q_OS_UNIX
     // Initializing the crash handler, very useful to catch bugs
-    KTCrashHandler::init();
+    TupCrashHandler::init();
 #endif
 
     // Setting the current version for Tupi
@@ -170,7 +170,7 @@ int main(int argc, char ** argv)
     application.createCache(TCONFIG->value("Cache").toString());
 
     // Downloading maefloresta Twitter status
-    KTwitter *ktwitter = new KTwitter();
+    Tupwitter *ktwitter = new Tupwitter();
     ktwitter->start();
 
     // SQA: Tupi gui styles must be re-factored
@@ -216,7 +216,7 @@ int main(int argc, char ** argv)
     application.installTranslator(translator);
 
     // Time to show the Tupi initial splash
-    KTSplash *splash = new KTSplash;
+    TupSplash *splash = new TupSplash;
     splash->show();
     QDesktopWidget desktop;
     splash->move((int) (desktop.screenGeometry().width() - splash->width())/2,
@@ -228,7 +228,7 @@ int main(int argc, char ** argv)
     splash->setMessage(QObject::tr("Loading modules..."));
     SleeperThread::msleep(500);
 
-    KTMainWindow mainWindow(splash, argc);
+    TupMainWindow mainWindow(splash, argc);
 
     splash->setMessage(QObject::tr("Loaded!"));
     SleeperThread::msleep(500);

@@ -36,18 +36,18 @@
 #ifndef ERASERTOOLPLUGIN_H
 #define ERASERTOOLPLUGIN_H
 
-#include "kttoolplugin.h"
+#include "tuptoolplugin.h"
 
 #include <QObject>
 #include <QLabel>
 
-class KTPathItem;
+class TupPathItem;
 
 /**
  * @author David Cuadrado
 */
 
-class EraserTool : public KTToolPlugin
+class EraserTool : public TupToolPlugin
 {
     Q_OBJECT
     
@@ -57,11 +57,11 @@ class EraserTool : public KTToolPlugin
         
         virtual QStringList keys() const;
         
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         
-        void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos);
+        void itemPressed(QGraphicsItem *item, const TupBrushManager *brush, const QPointF &pos);
         
         virtual QMap<QString, TAction *> actions() const;
         
@@ -69,7 +69,7 @@ class EraserTool : public KTToolPlugin
         
         virtual QWidget *configurator();
         
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         virtual void aboutToChangeTool();
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);

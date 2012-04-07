@@ -36,15 +36,15 @@
 #ifndef TEXTTOOL_H
 #define TEXTTOOL_H
 
-#include "kttoolplugin.h"
-#include "kttextitem.h"
+#include "tuptoolplugin.h"
+#include "tuptextitem.h"
 #include "textconfigurator.h"
-#include "ktbrushmanager.h"
+#include "tupbrushmanager.h"
 
 /**
  * @author David Cuadrado
 */
-class TextTool : public KTToolPlugin
+class TextTool : public TupToolPlugin
 {
     Q_OBJECT
     
@@ -54,15 +54,15 @@ class TextTool : public KTToolPlugin
         
         virtual QStringList keys() const;
         
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void doubleClick(const TupInputDeviceInformation *input, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual bool itemPressed(QGraphicsItem *item);
         virtual QMap<QString, TAction *>actions() const;
         int toolType() const;
         virtual QWidget *configurator();
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         void aboutToChangeTool();
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);
@@ -75,7 +75,7 @@ class TextTool : public KTToolPlugin
         void setupActions();
         
     private:
-        KTTextItem *m_item;
+        TupTextItem *m_item;
         TextConfigurator *m_configurator;
         QPoint m_position;
         QMap<QString, TAction *> m_actions;

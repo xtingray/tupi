@@ -287,7 +287,7 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
 
 // Editing Tween
 
-void TweenerPanel::setParameters(KTItemTweener *currentTween)
+void TweenerPanel::setParameters(TupItemTweener *currentTween)
 {
     tFatal() << "TweenerPanel::setParameters() - Loading Tween: " << currentTween->name();
 
@@ -299,7 +299,7 @@ void TweenerPanel::setParameters(KTItemTweener *currentTween)
     activateMode(TweenerPanel::TweenList);
 
     for (int i=0; i < 6; i++) {
-         if (currentTween->contains(KTItemTweener::Type(i))) {
+         if (currentTween->contains(TupItemTweener::Type(i))) {
              tFatal() << "TweenerPanel::setParameters() - Tween contains: " << i;
              k->tweenerTable->checkTween(i, true);
              switch(i) {
@@ -468,7 +468,7 @@ QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)
 
    tweening.appendChild(settings);
 
-   foreach (KTTweenerStep *step, k->positionPanel->steps())
+   foreach (TupTweenerStep *step, k->positionPanel->steps())
             tweening.appendChild(step->toXml(doc));
 
    doc.appendChild(tweening);

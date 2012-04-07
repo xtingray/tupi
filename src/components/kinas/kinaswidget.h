@@ -36,9 +36,9 @@
 #ifndef KINASWIDGET_H
 #define KINASWIDGET_H
 
-#include "ktmodulewidgetbase.h"
-#include "ktseditor.h"
-#include "ktsfunctionview.h"
+#include "tupmodulewidgetbase.h"
+#include "tupseditor.h"
+#include "tupsfunctionview.h"
 
 #include <QSplitter>
 #include <QTabWidget>
@@ -47,7 +47,7 @@
  * @author David Cuadrado
 **/
 
-class KinasWidget : public KTModuleWidgetBase
+class KinasWidget : public TupModuleWidgetBase
 {
     Q_OBJECT
 
@@ -60,7 +60,7 @@ class KinasWidget : public KTModuleWidgetBase
 
     private:
         QSplitter *m_splitter;
-        KTSFunctionView *m_functionViewer;
+        TupSFunctionView *m_functionViewer;
         QTabWidget *m_editors;
 };
 

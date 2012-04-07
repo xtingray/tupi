@@ -40,7 +40,7 @@
 #include <QPainter>
 
 #include "smilexportplugin.h"
-#include "ktlayer.h"
+#include "tuplayer.h"
 
 SmilExportPlugin::SmilExportPlugin()
 {
@@ -55,12 +55,12 @@ QString SmilExportPlugin::key() const
     return "SMIL 2.0";
 }
 
-KTExportInterface::Formats SmilExportPlugin::availableFormats()
+TupExportInterface::Formats SmilExportPlugin::availableFormats()
 {
-    return KTExportInterface::SMIL;
+    return TupExportInterface::SMIL;
 }
 
-bool SmilExportPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool SmilExportPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format format, const QSize &size, int fps)
 {
     QFileInfo fileInfo(filePath);
 
@@ -83,7 +83,7 @@ bool SmilExportPlugin::exportToFormat(const QColor color, const QString &filePat
     return true;
 }
 
-bool SmilExportPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size)
+bool SmilExportPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size)
 {
     return false;
 }

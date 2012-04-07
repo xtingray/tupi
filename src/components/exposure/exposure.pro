@@ -3,14 +3,14 @@
 # Subdir relative project main directory: ./src/components/exposure
 # Target is a library:  
 
-HEADERS += ktexposuresheet.h \
-           ktexposureheader.h \
-           ktexposuretable.h \
-           ktscenetabwidget.h
-SOURCES += ktexposuresheet.cpp \
-           ktexposureheader.cpp \ 
-           ktexposuretable.cpp \
-           ktscenetabwidget.cpp
+HEADERS += tupexposuresheet.h \
+           tupexposureheader.h \
+           tupexposuretable.h \
+           tupscenetabwidget.h
+SOURCES += tupexposuresheet.cpp \
+           tupexposureheader.cpp \ 
+           tupexposuretable.cpp \
+           tupscenetabwidget.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib

@@ -41,7 +41,7 @@
 
 class QGraphicsPathItem;
 class QListWidgetItem;
-class KTItemTweener;
+class TupItemTweener;
 
 /**
  * @author Gustav Gonzalez 
@@ -64,7 +64,7 @@ class Configurator : public QFrame
 
         int totalSteps();
         void activatePropertiesMode(Settings::EditMode mode);
-        void setCurrentTween(KTItemTweener *currentTween);
+        void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();

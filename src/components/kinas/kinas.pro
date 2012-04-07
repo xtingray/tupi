@@ -3,11 +3,11 @@
 # Subdir relative project main directory: ./src/components/kinas
 # Target is a library:  
 
-HEADERS += ktseditor.h \
-           ktsfunctionview.h \
+HEADERS += tupseditor.h \
+           tupsfunctionview.h \
            kinaswidget.h 
-SOURCES += ktseditor.cpp \
-           ktsfunctionview.cpp \
+SOURCES += tupseditor.cpp \
+           tupsfunctionview.cpp \
            kinaswidget.cpp 
 
 CONFIG += static warn_on

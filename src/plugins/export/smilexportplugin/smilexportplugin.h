@@ -36,7 +36,7 @@
 #ifndef SMILEXPORTPLUGIN_H
 #define SMILEXPORTPLUGIN_H
 
-#include "ktexportpluginobject.h"
+#include "tupexportpluginobject.h"
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -46,7 +46,7 @@
  * @author David Cuadrado
 */
 
-class SmilExportPlugin : public KTExportPluginObject
+class SmilExportPlugin : public TupExportPluginObject
 {
     Q_OBJECT
 
@@ -54,15 +54,15 @@ class SmilExportPlugin : public KTExportPluginObject
         SmilExportPlugin();
         virtual ~SmilExportPlugin();
         virtual QString key() const;
-        KTExportInterface::Formats availableFormats();
+        TupExportInterface::Formats availableFormats();
 
-        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
-        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size);
+        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format format, const QSize &size, int fps);
+        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size);
         virtual const char* getExceptionMsg();
         const char *errorMsg;
 
     private:
-        QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
+        QStringList createImages(const QList<TupScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
         void initSmil();
         void createPar(const QString &filePath, double duration);
 

@@ -37,9 +37,9 @@
 #include "tradiobuttongroup.h"
 #include "timagebutton.h"
 #include "tdebug.h"
-#include "ktitemtweener.h"
+#include "tupitemtweener.h"
 #include "stepsviewer.h"
-#include "kttweenerstep.h"
+#include "tuptweenerstep.h"
 #include "tosd.h"
 
 #include <QLabel>
@@ -197,7 +197,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 // Editing new Tween
 
-void Settings::setParameters(KTItemTweener *currentTween)
+void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
 
@@ -271,13 +271,13 @@ QString Settings::tweenToXml(int currentFrame, QPointF point, QString &path)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Position);
+    root.setAttribute("type", TupItemTweener::Position);
     root.setAttribute("init", currentFrame);
     root.setAttribute("frames", k->stepViewer->totalSteps());
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     root.setAttribute("coords", path);
 
-    foreach (KTTweenerStep *step, k->stepViewer->steps())
+    foreach (TupTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
 
     doc.appendChild(root);

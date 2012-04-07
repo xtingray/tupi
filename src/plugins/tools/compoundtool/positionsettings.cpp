@@ -38,9 +38,9 @@
 #include "tseparator.h"
 #include "timagebutton.h"
 #include "tdebug.h"
-#include "ktitemtweener.h"
+#include "tupitemtweener.h"
 #include "stepsviewer.h"
-#include "kttweenerstep.h"
+#include "tuptweenerstep.h"
 #include "tosd.h"
 
 #include <QLabel>
@@ -168,7 +168,7 @@ void PositionSettings::setParameters(int framesTotal, int startFrame)
 
 // Editing new Tween
 
-void PositionSettings::setParameters(KTItemTweener *currentTween)
+void PositionSettings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
 
@@ -319,7 +319,7 @@ QString PositionSettings::pathString()
     return pathToCoords(k->path, k->offset);
 }
 
-QVector<KTTweenerStep *> PositionSettings::steps()
+QVector<TupTweenerStep *> PositionSettings::steps()
 {
     return k->stepViewer->steps();
 }

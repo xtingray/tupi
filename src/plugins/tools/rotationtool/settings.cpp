@@ -36,8 +36,8 @@
 #include "settings.h"
 #include "tdebug.h"
 #include "tradiobuttongroup.h"
-#include "ktitemtweener.h"
-#include "kttweenerstep.h"
+#include "tupitemtweener.h"
+#include "tuptweenerstep.h"
 #include "timagebutton.h"
 #include "tseparator.h"
 #include "tosd.h"
@@ -63,7 +63,7 @@ struct Settings::Private
     QComboBox *comboEnd;
 
     QComboBox *comboType;
-    KTItemTweener::RotationType rotationType;
+    TupItemTweener::RotationType rotationType;
 
     QComboBox *comboStart;
     QComboBox *comboFinish;
@@ -86,7 +86,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->selectionDone = false;
     k->propertiesDone = false;
-    k->rotationType = KTItemTweener::Continuos;
+    k->rotationType = TupItemTweener::Continuos;
     k->totalSteps = 0;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -397,7 +397,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 // Editing new Tween
 
-void Settings::setParameters(KTItemTweener *currentTween)
+void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
     activatePropertiesMode(Settings::Properties);
@@ -416,7 +416,7 @@ void Settings::setParameters(KTItemTweener *currentTween)
     k->comboSpeed->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));
     k->comboSpeed->setCurrentIndex(0);
 
-    if (currentTween->tweenRotationType() == KTItemTweener::Continuos) {
+    if (currentTween->tweenRotationType() == TupItemTweener::Continuos) {
         k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
     } else {
         k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));
@@ -527,7 +527,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Rotation);
+    root.setAttribute("type", TupItemTweener::Rotation);
     root.setAttribute("init", currentFrame);
     
     checkFramesRange();
@@ -538,22 +538,22 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     int speed = k->comboSpeed->currentText().toInt();
     root.setAttribute("rotateSpeed", speed);
 
-    if (k->rotationType == KTItemTweener::Continuos) {
+    if (k->rotationType == TupItemTweener::Continuos) {
         int direction = k->comboClock->currentIndex();
         root.setAttribute("rotateDirection", direction);
 
         int angle = 0;
         for (int i=0; i < k->totalSteps; i++) {
-             KTTweenerStep *step = new KTTweenerStep(i);
+             TupTweenerStep *step = new TupTweenerStep(i);
              step->setRotation(angle);
              root.appendChild(step->toXml(doc));
-             if (direction == KTItemTweener::Clockwise)
+             if (direction == TupItemTweener::Clockwise)
                  angle += speed;
              else
                  angle -= speed;
         }
 
-    } else if (k->rotationType == KTItemTweener::Partial) {
+    } else if (k->rotationType == TupItemTweener::Partial) {
                bool loop = k->rangeLoopBox->isChecked();
                if (loop)
                    root.setAttribute("rotateLoop", "1");
@@ -577,7 +577,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
                if (start < end) {
                    for (int i=0; i < k->totalSteps; i++) {
-                        KTTweenerStep *step = new KTTweenerStep(i);
+                        TupTweenerStep *step = new TupTweenerStep(i);
                         step->setRotation(angle);
                         root.appendChild(step->toXml(doc));
 
@@ -599,7 +599,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
                    }
                } else {
                    for (int i=0; i < k->totalSteps; i++) {
-                        KTTweenerStep *step = new KTTweenerStep(i);
+                        TupTweenerStep *step = new TupTweenerStep(i);
                         step->setRotation(angle);
                         root.appendChild(step->toXml(doc));
 
@@ -635,11 +635,11 @@ void Settings::activatePropertiesMode(Settings::EditMode mode)
 void Settings::refreshForm(int type)
 {
     if (type == 0) {
-        k->rotationType = KTItemTweener::Continuos;
+        k->rotationType = TupItemTweener::Continuos;
         activeClockForm(true);
         activeRangeForm(false);
     } else {
-        k->rotationType = KTItemTweener::Partial;
+        k->rotationType = TupItemTweener::Partial;
         activeClockForm(false);
         activeRangeForm(true);
     }

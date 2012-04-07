@@ -36,13 +36,13 @@
 #include "texttool.h"
 
 #include "tglobal.h"
-#include "ktscene.h"
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
-#include "ktprojectrequest.h"
-#include "ktprojectresponse.h"
-#include "ktlibraryobject.h"
-#include "ktrequestbuilder.h"
+#include "tupscene.h"
+#include "tupinputdeviceinformation.h"
+#include "tupgraphicsscene.h"
+#include "tupprojectrequest.h"
+#include "tupprojectresponse.h"
+#include "tuplibraryobject.h"
+#include "tuprequestbuilder.h"
 
 #include <QPointF>
 #include <QFontMetrics>
@@ -64,7 +64,7 @@ QStringList TextTool::keys() const
     return QStringList() << tr("Text");
 }
 
-void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void TextTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -76,12 +76,12 @@ void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
              return;
     }
 
-    m_item = new KTTextItem;
+    m_item = new TupTextItem;
     m_item->setPos(input->pos());
     m_item->setDefaultTextColor(brushManager->penColor());
 }
 
-void TextTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene)
+void TextTool::doubleClick(const TupInputDeviceInformation *input, TupGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(scene);
@@ -89,7 +89,7 @@ void TextTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScen
 
 bool TextTool::itemPressed(QGraphicsItem *item)
 {
-    if (KTTextItem *text = qgraphicsitem_cast<KTTextItem *>(item)) {
+    if (TupTextItem *text = qgraphicsitem_cast<TupTextItem *>(item)) {
         text->setEditable(true);
         text->setFocus();
         return true;
@@ -98,7 +98,7 @@ bool TextTool::itemPressed(QGraphicsItem *item)
     return false;
 }
 
-void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void TextTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(scene);
@@ -106,7 +106,7 @@ void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(brushManager);
 }
 
-void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void TextTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
@@ -128,9 +128,9 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
 
-    KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
+    TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
                              scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), QPointF(),
-                             scene->spaceMode(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
+                             scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, doc.toString()); // Adds to end
 
     emit requested(&event);
 }
@@ -154,7 +154,7 @@ void TextTool::aboutToChangeTool()
 {
 }
 
-void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
+void TextTool::aboutToChangeScene(TupGraphicsScene *scene)
 {
     Q_UNUSED(scene);
 }

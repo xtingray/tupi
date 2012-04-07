@@ -38,17 +38,17 @@
 #include "tdebug.h"
 #include "tglobal.h"
 #include "talgorithm.h"
-#include "ktgraphicalgorithm.h"
-#include "ktscene.h"
-#include "ktlayer.h"
-#include "ktsvgitem.h"
-#include "ktgraphicobject.h"
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
+#include "tupgraphicalgorithm.h"
+#include "tupscene.h"
+#include "tuplayer.h"
+#include "tupsvgitem.h"
+#include "tupgraphicobject.h"
+#include "tupinputdeviceinformation.h"
+#include "tupgraphicsscene.h"
 #include "nodemanager.h"
-#include "ktserializer.h"
-#include "ktrequestbuilder.h"
-#include "ktprojectresponse.h"
+#include "tupserializer.h"
+#include "tuprequestbuilder.h"
+#include "tupprojectresponse.h"
 
 #include <QPointF>
 #include <QKeySequence>
@@ -61,7 +61,7 @@ struct SelectTool::Private
 {
     QMap<QString, TAction *> actions;
     QList<NodeManager*> nodeManagers;
-    KTGraphicsScene *scene;
+    TupGraphicsScene *scene;
     bool selectionFlag;
     qreal scaleFactor;
     qreal realFactor;
@@ -77,7 +77,7 @@ SelectTool::~SelectTool()
     delete k;
 }
 
-void SelectTool::init(KTGraphicsScene *scene)
+void SelectTool::init(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
@@ -94,14 +94,14 @@ void SelectTool::init(KTGraphicsScene *scene)
                       // SQA: Temporary code for debug issues
                       /*
                       QDomDocument dom;
-                      dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+                      dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
                       QDomElement root = dom.documentElement();
                       tFatal() << "SelectTool::init() - XML: ";
                       tFatal() << dom.toString();
                       */
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
-                          if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                          if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
                               if (item->zValue() >= 10000 && item->toolTip().length()==0) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
@@ -121,7 +121,7 @@ QStringList SelectTool::keys() const
     return QStringList() << tr("Select");
 }
 
-void SelectTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SelectTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -145,7 +145,7 @@ void SelectTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
         selectedObjects << scene->mouseGrabberItem();
 
     foreach (QGraphicsItem *item, selectedObjects) {
-             if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
+             if (item && dynamic_cast<TupAbstractSerializable* > (item)) {
                  bool found = false;
                  foreach (NodeManager *nodeManager, k->nodeManagers) {
                           if (item == nodeManager->parentItem()) {
@@ -165,7 +165,7 @@ void SelectTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     k->scene = scene;
 }
 
-void SelectTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SelectTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
 
@@ -173,7 +173,7 @@ void SelectTool::move(const KTInputDeviceInformation *input, KTBrushManager *bru
         QTimer::singleShot(0, this, SLOT(syncNodes()));
 }
 
-void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
@@ -198,7 +198,7 @@ void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *
         }
         
         foreach (QGraphicsItem *item, selectedObjects) {
-                 if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
+                 if (item && dynamic_cast<TupAbstractSerializable* > (item)) {
                      NodeManager *manager = new NodeManager(item, scene);
                      manager->resizeNodes(k->realFactor);
                      k->nodeManagers << manager;
@@ -208,33 +208,33 @@ void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *
         foreach (NodeManager *manager, k->nodeManagers) {
                  if (manager->isModified()) {
                      QDomDocument doc;
-                     doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
+                     doc.appendChild(TupSerializer::properties(manager->parentItem(), doc));
 
                      QGraphicsItem *item = manager->parentItem();
-                     KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
+                     TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
 
                      int position = -1;
-                     KTLibraryObject::Type type;
+                     TupLibraryObject::Type type;
 
                      if (svg) {
 
-                         if (k->scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                         if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(svg);
-                         } else if (k->scene->spaceMode() == KTProject::BACKGROUND_EDITION) {
-                                    KTBackground *bg = k->scene->scene()->background();
+                         } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
+                                    TupBackground *bg = k->scene->scene()->background();
                                     position = bg->frame()->indexOf(svg); 
                          }
-                         type = KTLibraryObject::Svg;
+                         type = TupLibraryObject::Svg;
 
                      } else {
 
-                         if (k->scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                         if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(manager->parentItem());
-                         } else if (k->scene->spaceMode() == KTProject::BACKGROUND_EDITION) {
-                                    KTBackground *bg = k->scene->scene()->background();
+                         } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
+                                    TupBackground *bg = k->scene->scene()->background();
                                     position = bg->frame()->indexOf(manager->parentItem());
                          }
-                         type = KTLibraryObject::Item;
+                         type = TupLibraryObject::Item;
                      }
 
                      if (position != -1) {
@@ -244,12 +244,12 @@ void SelectTool::release(const KTInputDeviceInformation *input, KTBrushManager *
 
                          manager->restoreItem();
 
-                         KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+                         TupProjectRequest event = TupRequestBuilder::createItemRequest( 
                                     k->scene->currentSceneIndex(), 
                                     k->scene->currentLayerIndex(), 
                                     k->scene->currentFrameIndex(), position, QPointF(), 
                                     k->scene->spaceMode(), type,
-                                    KTProjectRequest::Transform, doc.toString());
+                                    TupProjectRequest::Transform, doc.toString());
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
@@ -280,7 +280,7 @@ QMap<QString, TAction *> SelectTool::actions() const
 
 int SelectTool::toolType() const
 {
-    return KTToolInterface::Selection;
+    return TupToolInterface::Selection;
 }
 
 QWidget *SelectTool::configurator() 
@@ -293,7 +293,7 @@ QWidget *SelectTool::configurator()
     return m_configurator;
 }
 
-void SelectTool::aboutToChangeScene(KTGraphicsScene *scene)
+void SelectTool::aboutToChangeScene(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
@@ -320,18 +320,18 @@ void SelectTool::aboutToChangeTool()
     }
 }
 
-void SelectTool::itemResponse(const KTItemResponse *event)
+void SelectTool::itemResponse(const TupItemResponse *event)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
     #endif
 
     QGraphicsItem *item = 0;
-    KTScene *scene = 0;
-    KTLayer *layer = 0;
-    KTFrame *frame = 0;
+    TupScene *scene = 0;
+    TupLayer *layer = 0;
+    TupFrame *frame = 0;
 
-    KTProject *project = k->scene->scene()->project();
+    TupProject *project = k->scene->scene()->project();
     
     if (project) {
 
@@ -339,14 +339,14 @@ void SelectTool::itemResponse(const KTItemResponse *event)
 
         if (scene) {
 
-            if (project->spaceContext() == KTProject::FRAMES_EDITION) {
+            if (project->spaceContext() == TupProject::FRAMES_EDITION) {
 
                 layer = scene->layer(event->layerIndex());
 
                 if (layer) {
                     frame = layer->frame(event->frameIndex());
                     if (frame) {
-                        if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
+                        if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
                             item = frame->svg(event->itemIndex());
                         } else if (frame->graphicItemsCount()>0) {
                                    item = frame->item(event->itemIndex());
@@ -355,12 +355,12 @@ void SelectTool::itemResponse(const KTItemResponse *event)
                         return;
                     }
                 }
-            } else if (project->spaceContext() == KTProject::BACKGROUND_EDITION) {
-                       KTBackground *bg = scene->background();
+            } else if (project->spaceContext() == TupProject::BACKGROUND_EDITION) {
+                       TupBackground *bg = scene->background();
                        if (bg) {
-                           KTFrame *frame = bg->frame();
+                           TupFrame *frame = bg->frame();
                            if (frame) {
-                               if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
+                               if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
                                    item = frame->svg(event->itemIndex());
                                } else if (frame->graphicItemsCount()>0) {
                                           item = frame->item(event->itemIndex());
@@ -378,7 +378,7 @@ void SelectTool::itemResponse(const KTItemResponse *event)
 
     switch (event->action()) {
 
-            case KTProjectRequest::Transform:
+            case TupProjectRequest::Transform:
             {
                  if (item) {
 
@@ -399,7 +399,7 @@ void SelectTool::itemResponse(const KTItemResponse *event)
                  }
             }
             break;
-            case KTProjectRequest::Remove:
+            case TupProjectRequest::Remove:
             {
                  // Do nothing
             }
@@ -445,7 +445,7 @@ void SelectTool::keyPressEvent(QKeyEvent *event)
                || (event->key() == Qt::Key_Right) || (event->key() == Qt::Key_Down)) {
 
                if (!k->selectionFlag) {
-                   QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+                   QPair<int, int> flags = TupToolPlugin::setKeyAction(event->key(), event->modifiers());
                    if (flags.first != -1 && flags.second != -1)
                        emit callForPlugin(flags.first, flags.second);
                } else {
@@ -480,7 +480,7 @@ void SelectTool::keyPressEvent(QKeyEvent *event)
                foreach (NodeManager *nodeManager, k->nodeManagers)
                         nodeManager->setProportion(true);
     } else {
-        QPair<int, int> flags = KTToolPlugin::setKeyAction(event->key(), event->modifiers());
+        QPair<int, int> flags = TupToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)
             emit callForPlugin(flags.first, flags.second);
     }
@@ -496,13 +496,13 @@ void SelectTool::verifyActiveSelection()
     }
 }
 
-void SelectTool::updateItems(KTGraphicsScene *scene)
+void SelectTool::updateItems(TupGraphicsScene *scene)
 {
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
                       if (!qgraphicsitem_cast<Node *>(item)) {
-                          if (scene->spaceMode() == KTProject::FRAMES_EDITION) {
+                          if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
                               if (item->zValue() >= 10000) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
@@ -548,18 +548,18 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
                       if (manager->isModified()) {
 
                           QDomDocument doc;
-                          doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
+                          doc.appendChild(TupSerializer::properties(manager->parentItem(), doc));
 
-                          KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(manager->parentItem());
+                          TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(manager->parentItem());
                           int position = -1;
-                          KTLibraryObject::Type type;
+                          TupLibraryObject::Type type;
 
                           if (svg) {
                               position  = k->scene->currentFrame()->indexOf(svg);
-                              type = KTLibraryObject::Svg;
+                              type = TupLibraryObject::Svg;
                           } else {
                               position  = k->scene->currentFrame()->indexOf(manager->parentItem());
-                              type = KTLibraryObject::Item;
+                              type = TupLibraryObject::Item;
                           }
 
                           foreach (QGraphicsView *view, k->scene->views())
@@ -567,12 +567,12 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
 
                           manager->restoreItem();
 
-                          KTProjectRequest event = KTRequestBuilder::createItemRequest(
+                          TupProjectRequest event = TupRequestBuilder::createItemRequest(
                                                    k->scene->currentSceneIndex(),
                                                    k->scene->currentLayerIndex(),
                                                    k->scene->currentFrameIndex(), position, QPointF(), 
                                                    k->scene->spaceMode(), type,
-                                                   KTProjectRequest::Transform, doc.toString());
+                                                   TupProjectRequest::Transform, doc.toString());
                           emit requested(&event);
                       }
              }

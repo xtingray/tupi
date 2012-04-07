@@ -36,9 +36,9 @@
 #include "configurator.h"
 #include "tweenmanager.h"
 #include "buttonspanel.h"
-#include "ktitemtweener.h"
+#include "tupitemtweener.h"
 #include "stepsviewer.h"
-#include "kttweenerstep.h"
+#include "tuptweenerstep.h"
 #include "tosd.h"
 #include "tradiobuttongroup.h"
 #include "timagebutton.h"
@@ -73,7 +73,7 @@ struct Configurator::Private
     int framesTotal;
     int currentFrame;
 
-    KTItemTweener *currentTween;
+    TupItemTweener *currentTween;
 };
 
 Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
@@ -357,7 +357,7 @@ void Configurator::updateTweenData(const QString &name)
     emit getTweenData(name);
 }
 
-void Configurator::setCurrentTween(KTItemTweener *currentTween)
+void Configurator::setCurrentTween(TupItemTweener *currentTween)
 {
     k->currentTween = currentTween;
 }

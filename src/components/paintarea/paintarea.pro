@@ -3,36 +3,36 @@
 # Subdir relative project main directory: ./src/components/paintarea
 # Target is a library:  paintarea
 
-HEADERS += ktpaintarea.h \
-           ktconfigurationarea.h \
-           ktviewdocument.h \
-           # ktdocumentruler.h \
-           ktpaintareastatus.h \
-           ktimagedevice.h \
-           ktpaintareacommand.h \
-           ktlibrarydialog.h \
-           ktcolorwidget.h \
-           ktbrushstatus.h \
-           kttoolstatus.h \
-           ktcanvas.h \
-           ktcanvasview.h \
-           ktimagedialog.h \
+HEADERS += tuppaintarea.h \
+           tupconfigurationarea.h \
+           tupviewdocument.h \
+           # tupdocumentruler.h \
+           tuppaintareastatus.h \
+           tupimagedevice.h \
+           tuppaintareacommand.h \
+           tuplibrarydialog.h \
+           tupcolorwidget.h \
+           tupbrushstatus.h \
+           tuptoolstatus.h \
+           tupcanvas.h \
+           tupcanvasview.h \
+           tupimagedialog.h \
            tupiruler.h
 
-SOURCES += ktpaintarea.cpp \
-           ktconfigurationarea.cpp \
-           ktviewdocument.cpp \
-           # ktdocumentruler.cpp \
-           ktpaintareastatus.cpp \
-           ktimagedevice.cpp \
-           ktpaintareacommand.cpp \
-           ktlibrarydialog.cpp \
-           ktcolorwidget.cpp \
-           ktbrushstatus.cpp \
-           kttoolstatus.cpp \
-           ktcanvas.cpp \
-           ktcanvasview.cpp \
-           ktimagedialog.cpp \
+SOURCES += tuppaintarea.cpp \
+           tupconfigurationarea.cpp \
+           tupviewdocument.cpp \
+           # tupdocumentruler.cpp \
+           tuppaintareastatus.cpp \
+           tupimagedevice.cpp \
+           tuppaintareacommand.cpp \
+           tuplibrarydialog.cpp \
+           tupcolorwidget.cpp \
+           tupbrushstatus.cpp \
+           tuptoolstatus.cpp \
+           tupcanvas.cpp \
+           tupcanvasview.cpp \
+           tupimagedialog.cpp \
            tupiruler.cpp
 
 CONFIG += static warn_on

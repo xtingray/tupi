@@ -3,16 +3,16 @@
 # Subdir relative project main directory: ./src/components/animation
 # Target is a library: animation 
 
-HEADERS += ktviewcamera.h \
-           ktcamerabar.h \
-           ktanimationarea.h \
-           # ktcamerawidget.h \
-           ktcamerastatus.h
-SOURCES += ktviewcamera.cpp \
-           ktcamerabar.cpp \
-           ktanimationarea.cpp \
-           # ktcamerawidget.cpp \
-           ktcamerastatus.cpp
+HEADERS += tupviewcamera.h \
+           tupcamerabar.h \
+           tupanimationarea.h \
+           # tupcamerawidget.h \
+           tupcamerastatus.h
+SOURCES += tupviewcamera.cpp \
+           tupcamerabar.cpp \
+           tupanimationarea.cpp \
+           # tupcamerawidget.cpp \
+           tupcamerastatus.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib

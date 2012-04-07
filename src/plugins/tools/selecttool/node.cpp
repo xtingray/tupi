@@ -44,8 +44,8 @@
 
 #include "tdebug.h"
 #include "nodemanager.h"
-#include "ktgraphicalgorithm.h"
-#include "ktgraphicobject.h"
+#include "tupgraphicalgorithm.h"
+#include "tupgraphicobject.h"
 
 #include <cmath> //atan
 
@@ -277,7 +277,7 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
                 QPointF p2 = k->parent->sceneBoundingRect().center();
                 k->manager->setAnchor(k->parent->boundingRect().center());
                 
-                double a = (180 * KTGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
+                double a = (180 * TupGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
                 k->manager->rotate(a-45);
             // }
         }

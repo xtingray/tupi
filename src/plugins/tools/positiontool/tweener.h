@@ -36,41 +36,41 @@
 #ifndef POSITIONTWEENER_H
 #define POSITIONTWEENER_H
 
-#include "kttoolplugin.h"
+#include "tuptoolplugin.h"
 #include "settings.h"
-#include "ktprojectresponse.h"
+#include "tupprojectresponse.h"
 
 /**
  * @author Jorge Cuadrado
  * 
 */
 
-class Tweener : public KTToolPlugin
+class Tweener : public TupToolPlugin
 {
     Q_OBJECT
 
     public:
         Tweener();
         virtual ~Tweener();
-        virtual void init(KTGraphicsScene *scene);
+        virtual void init(TupGraphicsScene *scene);
 
         virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void updateScene(KTGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void updateScene(TupGraphicsScene *scene);
         virtual QMap<QString, TAction *>actions() const;
         virtual QWidget *configurator();
         virtual void aboutToChangeTool();
         virtual void saveConfig();
 
         int toolType() const;
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         bool isComplete() const;
 
-        virtual void sceneResponse(const KTSceneResponse *event);
-        virtual void layerResponse(const KTLayerResponse *event);
-        virtual void frameResponse(const KTFrameResponse *event);
+        virtual void sceneResponse(const TupSceneResponse *event);
+        virtual void layerResponse(const TupLayerResponse *event);
+        virtual void frameResponse(const TupFrameResponse *event);
 
     private:
         int framesTotal();

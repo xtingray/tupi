@@ -39,7 +39,7 @@
 #include <QWidget>
 
 class QGraphicsPathItem;
-class KTItemTweener;
+class TupItemTweener;
 
 /**
  * @author Jorge Cuadrado
@@ -57,7 +57,7 @@ class Settings : public QWidget
         ~Settings();
 
         void setParameters(const QString &name, int framesTotal, int startFrame);
-        void setParameters(KTItemTweener *currentTween);
+        void setParameters(TupItemTweener *currentTween);
         void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
         int startFrame();

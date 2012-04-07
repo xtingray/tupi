@@ -39,8 +39,8 @@
 #include <QDomElement>
 
 #include "tupinetfilemanager.h"
-#include "ktproject.h"
-#include "ktnetprojectmanagerparams.h"
+#include "tupproject.h"
+#include "tupnetprojectmanagerparams.h"
 
 TupiNetFileManager::TupiNetFileManager() : TupiFileManager()
 {
@@ -54,7 +54,7 @@ TupiNetFileManager::~TupiNetFileManager()
 {
 }
 
-bool TupiNetFileManager::save(const QString &_filename, const KTProject *project)
+bool TupiNetFileManager::save(const QString &_filename, const TupProject *project)
 {
     QString filename = _filename;
     
@@ -101,14 +101,14 @@ bool TupiNetFileManager::save(const QString &_filename, const KTProject *project
     return true;
 }
 
-bool TupiNetFileManager::load(const QString &, KTProject *)
+bool TupiNetFileManager::load(const QString &, TupProject *)
 {
     return false;
 }
 
-KTNetProjectManagerParams *TupiNetFileManager::params(const QString &filename)
+TupNetProjectManagerParams *TupiNetFileManager::params(const QString &filename)
 {
-    KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
+    TupNetProjectManagerParams *params = new TupNetProjectManagerParams;
     
     QFile file(filename);
     

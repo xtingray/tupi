@@ -33,14 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTSAVENETPROJECT_H
-#define KTSAVENETPROJECT_H 
+#ifndef TUPSAVENETPROJECT_H
+#define TUPSAVENETPROJECT_H 
 
 #include "tupifilemanager.h"
 
 #include <QString>
 
-class KTNetProjectManagerParams;
+class TupNetProjectManagerParams;
 
 /**
  * @author David Cuadrado
@@ -54,10 +54,10 @@ class TupiNetFileManager : public TupiFileManager
         TupiNetFileManager(const QString &server, int port);
         ~TupiNetFileManager();
         
-        virtual bool save(const QString &filename, const KTProject *project);
-        virtual bool load(const QString &filename, KTProject *project);
+        virtual bool save(const QString &filename, const TupProject *project);
+        virtual bool load(const QString &filename, TupProject *project);
         
-        KTNetProjectManagerParams *params(const QString &filename);
+        TupNetProjectManagerParams *params(const QString &filename);
         
     private:
         QString m_server;

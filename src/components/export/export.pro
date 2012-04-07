@@ -3,8 +3,8 @@
 # Subdir relative project main directory: ./src/components/export
 # Target is a library:  
 
-HEADERS += ktexportwidget.h 
-SOURCES += ktexportwidget.cpp
+HEADERS += tupexportwidget.h 
+SOURCES += tupexportwidget.cpp
 
 CONFIG += static warn_on
 TEMPLATE = lib

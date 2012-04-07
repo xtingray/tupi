@@ -39,10 +39,10 @@
 #include <QWidget>
 
 #include "tweenerpanel.h"
-#include "kttweenerstep.h"
+#include "tuptweenerstep.h"
 
 class QGraphicsPathItem;
-class KTItemTweener;
+class TupItemTweener;
 class TweenerPanel;
 
 /**
@@ -59,7 +59,7 @@ class PositionSettings : public QWidget
         ~PositionSettings();
 
         void setParameters(int framesTotal, int startFrame);
-        void setParameters(KTItemTweener *currentTween);
+        void setParameters(TupItemTweener *currentTween);
         void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
         int startFrame();
@@ -68,7 +68,7 @@ class PositionSettings : public QWidget
         int totalSteps();
         int startComboSize();
         QString pathString();
-        QVector<KTTweenerStep *> steps();
+        QVector<TupTweenerStep *> steps();
 
     public slots:
         void resetTween();

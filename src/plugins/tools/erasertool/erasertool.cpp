@@ -36,16 +36,16 @@
 #include "erasertool.h"
 #include "tglobal.h"
 #include "tdebug.h"
-#include "ktrectitem.h"
-#include "ktellipseitem.h"
-#include "ktlineitem.h"
-#include "ktpathitem.h"
-#include "ktitemconverter.h"
-#include "ktscene.h"
-#include "ktinputdeviceinformation.h"
-#include "ktgraphicsscene.h"
-#include "ktprojectrequest.h"
-#include "ktbrushmanager.h"
+#include "tuprectitem.h"
+#include "tupellipseitem.h"
+#include "tuplineitem.h"
+#include "tuppathitem.h"
+#include "tupitemconverter.h"
+#include "tupscene.h"
+#include "tupinputdeviceinformation.h"
+#include "tupgraphicsscene.h"
+#include "tupprojectrequest.h"
+#include "tupbrushmanager.h"
 
 #include <QGraphicsView>
 #include <QKeySequence>
@@ -89,7 +89,7 @@ void EraserTool::setupActions()
     */
 }
 
-void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void EraserTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     if (input->buttons() == Qt::LeftButton) {
         QPointF pos = input->pos();
@@ -105,11 +105,11 @@ void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
     }
 }
 
-void EraserTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void EraserTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
 }
 
-void EraserTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void EraserTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
 }
 
@@ -128,7 +128,7 @@ QWidget  *EraserTool::configurator()
     return  0;
 }
 
-void EraserTool::aboutToChangeScene(KTGraphicsScene *scene)
+void EraserTool::aboutToChangeScene(TupGraphicsScene *scene)
 {
 }
 
@@ -136,7 +136,7 @@ void EraserTool::aboutToChangeTool()
 {
 }
 
-void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos)
+void EraserTool::itemPressed(QGraphicsItem *item, const TupBrushManager *brush, const QPointF &pos)
 {
     QList<QGraphicsItem *> collides = item->collidingItems();
     
@@ -144,12 +144,12 @@ void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, c
         QRect intersectRect(pos.x() - (brush->pen().width()/2), pos.y() - (brush->pen().width())/2, 
                     brush->pen().width(), brush->pen().width());
         
-        KTPathItem *path = qgraphicsitem_cast<KTPathItem*>(item);
+        TupPathItem *path = qgraphicsitem_cast<TupPathItem*>(item);
         
         if (!path) {
             /*
              QString conv = "<convert type=\"2\" />"; // to path type
-             KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Convert, 
+             TupProjectRequest *event = new TupProjectRequest(TupProjectRequest::Convert, 
              scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), 
              scene->currentFrame()->graphics().indexOf(item), conv);
              addProjectRequest(event);

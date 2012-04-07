@@ -36,10 +36,10 @@
 #ifndef AGEOMETRICTOOLPLUGIN_H
 #define AGEOMETRICTOOLPLUGIN_H
 
-#include "kttoolplugin.h"
-#include "ktrectitem.h"
-#include "ktellipseitem.h"
-#include "ktlineitem.h"
+#include "tuptoolplugin.h"
+#include "tuprectitem.h"
+#include "tupellipseitem.h"
+#include "tuplineitem.h"
 #include "infopanel.h"
 
 #include <QObject>
@@ -50,7 +50,7 @@
  * @author David Cuadrado
 */
 
-class GeometricTool : public KTToolPlugin
+class GeometricTool : public TupToolPlugin
 {
     Q_OBJECT
     
@@ -59,24 +59,24 @@ class GeometricTool : public KTToolPlugin
         ~GeometricTool();
         
         virtual QStringList keys() const;
-        virtual void init(KTGraphicsScene *scene);
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void init(TupGraphicsScene *scene);
+        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent *event);
-        virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene);
+        virtual void doubleClick(const TupInputDeviceInformation *input, TupGraphicsScene *scene);
 
-        virtual void sceneResponse(const KTSceneResponse *event);
-        virtual void layerResponse(const KTLayerResponse *event);
-        virtual void frameResponse(const KTFrameResponse *event);
+        virtual void sceneResponse(const TupSceneResponse *event);
+        virtual void layerResponse(const TupLayerResponse *event);
+        virtual void frameResponse(const TupFrameResponse *event);
 
         virtual QMap<QString, TAction *> actions() const;
         
         int toolType() const;
         
         virtual QWidget *configurator();
-        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeScene(TupGraphicsScene *scene);
         virtual void aboutToChangeTool();
         virtual void saveConfig();
         virtual QCursor cursor() const;
@@ -96,9 +96,9 @@ class GeometricTool : public KTToolPlugin
 
     /*
     private:
-        KTRectItem *m_rect;
-        KTEllipseItem *m_ellipse;
-        KTLineItem *m_line;
+        TupRectItem *m_rect;
+        TupEllipseItem *m_ellipse;
+        TupLineItem *m_line;
         InfoPanel *m_configurator;
         bool added;
         QPointF firstPoint;

@@ -36,8 +36,8 @@
 #include "settings.h"
 #include "tdebug.h"
 #include "tradiobuttongroup.h"
-#include "ktitemtweener.h"
-#include "kttweenerstep.h"
+#include "tupitemtweener.h"
+#include "tuptweenerstep.h"
 #include "timagebutton.h"
 #include "tseparator.h"
 #include "tosd.h"
@@ -64,7 +64,7 @@ struct Settings::Private
     QLabel *totalLabel;
     int totalSteps;
 
-    KTItemTweener::TransformAxes shearAxes;
+    TupItemTweener::TransformAxes shearAxes;
     QComboBox *comboAxes;
     QComboBox *comboFactor;
     QComboBox *comboIterations;
@@ -80,7 +80,7 @@ struct Settings::Private
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
-    k->shearAxes = KTItemTweener::XY;
+    k->shearAxes = TupItemTweener::XY;
     k->selectionDone = false;
     k->totalSteps = 0;
 
@@ -307,7 +307,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 // Editing new Tween
 
-void Settings::setParameters(KTItemTweener *currentTween)
+void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
     activatePropertiesMode(Settings::Properties);
@@ -429,13 +429,13 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Shear);
+    root.setAttribute("type", TupItemTweener::Shear);
     root.setAttribute("init", currentFrame);
    
     checkFramesRange();
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
-    k->shearAxes = KTItemTweener::TransformAxes(k->comboAxes->currentIndex());
+    k->shearAxes = TupItemTweener::TransformAxes(k->comboAxes->currentIndex());
     root.setAttribute("shearAxes", k->shearAxes);
     double factor = k->comboFactor->currentText().toDouble();
     root.setAttribute("shearFactor", factor);
@@ -465,10 +465,10 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     double shearX = 1.0;
     double shearY = 1.0;
 
-    if (k->shearAxes == KTItemTweener::XY) {
+    if (k->shearAxes == TupItemTweener::XY) {
         factorX = factor;
         factorY = factor;
-    } else if (k->shearAxes == KTItemTweener::X) {
+    } else if (k->shearAxes == TupItemTweener::X) {
                factorX = factor;
     } else {
         factorY = factor;
@@ -508,7 +508,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
              }
          }
 
-         KTTweenerStep *step = new KTTweenerStep(i);
+         TupTweenerStep *step = new TupTweenerStep(i);
          step->setShear(shearX, shearY);
          root.appendChild(step->toXml(doc));
     }

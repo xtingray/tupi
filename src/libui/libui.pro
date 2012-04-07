@@ -9,16 +9,16 @@ images-en.path = /data/en/images
 images.files += images/es/*.png 
 images.path = /data/es/images/ 
 
-HEADERS += ktthemeselector.h \
-           ktabout.h \
-           ktpreferences.h \
-           ktanimationspace.h \
-           ktpaintareaconfig.h 
-SOURCES += ktthemeselector.cpp \
-           ktabout.cpp \
-           ktpreferences.cpp \
-           ktanimationspace.cpp \
-           ktpaintareaconfig.cpp 
+HEADERS += tupthemeselector.h \
+           tupabout.h \
+           tuppreferences.h \
+           tupanimationspace.h \
+           tuppaintareaconfig.h 
+SOURCES += tupthemeselector.cpp \
+           tupabout.cpp \
+           tuppreferences.cpp \
+           tupanimationspace.cpp \
+           tuppaintareaconfig.cpp 
 
 CONFIG += static warn_on
 TEMPLATE = lib

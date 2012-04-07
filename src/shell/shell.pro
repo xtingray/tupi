@@ -55,27 +55,27 @@ TRANSLATIONS += data/translations/tupi_es.ts \
                 data/translations/tupi_ru.ts \
                 data/translations/tupi_cs.ts
 
-HEADERS += ktmainwindow.h \
-           ktstatusbar.h \
-           ktnewproject.h \
-           ktsplash.h \
-           ktcrashhandler.h \
-           ktcrashwidget.h \
-           ktapplication.h \
+HEADERS += tupmainwindow.h \
+           tupstatusbar.h \
+           tupnewproject.h \
+           tupsplash.h \
+           tupcrashhandler.h \
+           tupcrashwidget.h \
+           tupapplication.h \
            # configwizard.h \
-           ktlocalprojectmanagerhandler.h
+           tuplocalprojectmanagerhandler.h
 
 SOURCES += main.cpp \
-           ktmainwindow.cpp \
-           ktstatusbar.cpp \
-           ktnewproject.cpp \
-           ktsplash.cpp \
-           ktcrashhandler.cpp \
-           ktcrashwidget.cpp \
-           ktapplication.cpp \
+           tupmainwindow.cpp \
+           tupstatusbar.cpp \
+           tupnewproject.cpp \
+           tupsplash.cpp \
+           tupcrashhandler.cpp \
+           tupcrashwidget.cpp \
+           tupapplication.cpp \
            # configwizard.cpp \
-           ktmainwindow_gui.cpp \
-           ktlocalprojectmanagerhandler.cpp
+           tupmainwindow_gui.cpp \
+           tuplocalprojectmanagerhandler.cpp
 
 CONFIG += warn_on
 TEMPLATE = app

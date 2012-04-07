@@ -44,8 +44,8 @@
 #include <QImage>
 #include <QPainter>
 
-#include "ktlayer.h"
-#include "ktanimationrenderer.h"
+#include "tuplayer.h"
+#include "tupanimationrenderer.h"
 
 FFMpegPlugin::FFMpegPlugin()
 {
@@ -60,65 +60,65 @@ QString FFMpegPlugin::key() const
     return "Video Formats";
 }
 
-KTExportInterface::Formats FFMpegPlugin::availableFormats()
+TupExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-    return KTExportInterface::WEBM | KTExportInterface::OGV | KTExportInterface::MPEG | KTExportInterface::SWF | KTExportInterface::AVI 
-           | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
+    return TupExportInterface::WEBM | TupExportInterface::OGV | TupExportInterface::MPEG | TupExportInterface::SWF | TupExportInterface::AVI 
+           | TupExportInterface::RM | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
 }
 
-TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Format format)
+TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(TupExportInterface::Format format)
 {
     switch (format) {
-            case KTExportInterface::WEBM:
+            case TupExportInterface::WEBM:
                  {
                    return TFFMpegMovieGenerator::WEBM;
                  }
                  break;
-            case KTExportInterface::OGV:
+            case TupExportInterface::OGV:
                  {
                    return TFFMpegMovieGenerator::OGV;
                  }
                  break;
-            case KTExportInterface::SWF:
+            case TupExportInterface::SWF:
                  {
                    return TFFMpegMovieGenerator::SWF;
                  }
                  break;
-            case KTExportInterface::MPEG:
+            case TupExportInterface::MPEG:
                  {
                    return TFFMpegMovieGenerator::MPEG;
                  }
                  break;
-            case KTExportInterface::AVI:
+            case TupExportInterface::AVI:
                  {
                    return TFFMpegMovieGenerator::AVI;
                  }
                  break;
-            case KTExportInterface::RM:
+            case TupExportInterface::RM:
                  {
                    return TFFMpegMovieGenerator::RM;
                  }
                  break;
-            case KTExportInterface::MOV:
+            case TupExportInterface::MOV:
                  {
                    return TFFMpegMovieGenerator::MOV;
                  }
                  break;
-            case KTExportInterface::ASF:
+            case TupExportInterface::ASF:
                  {
                    return TFFMpegMovieGenerator::ASF;
                  }
                  break;
-            case KTExportInterface::GIF:
+            case TupExportInterface::GIF:
                  {
                    return TFFMpegMovieGenerator::GIF;
                  }
                  break;
-            case KTExportInterface::PNG:
-            case KTExportInterface::JPEG:
-            case KTExportInterface::XPM:
-            case KTExportInterface::SMIL:
-            case KTExportInterface::NONE:
+            case TupExportInterface::PNG:
+            case TupExportInterface::JPEG:
+            case TupExportInterface::XPM:
+            case TupExportInterface::SMIL:
+            case TupExportInterface::NONE:
                  {
                    return TFFMpegMovieGenerator::NONE;
                  }
@@ -127,10 +127,10 @@ TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(KTExportInterface::Fo
     return TFFMpegMovieGenerator::NONE;
 }
 
-bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format fmt, const QSize &size, int fps)
+bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format fmt, const QSize &size, int fps)
 {
     qreal duration = 0;
-    foreach (KTScene *scene, scenes)
+    foreach (TupScene *scene, scenes)
              duration += (qreal) scene->framesTotal() / (qreal) fps;
 
     TFFMpegMovieGenerator *generator = 0;
@@ -141,7 +141,7 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
 
     generator = new TFFMpegMovieGenerator(format, size, fps, duration);
 
-    KTAnimationRenderer renderer(color);
+    TupAnimationRenderer renderer(color);
     {
          if (!generator->movieHeaderOk()) {
              errorMsg = generator->getErrorMsg();
@@ -155,7 +155,7 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
          QPainter painter(generator);
          painter.setRenderHint(QPainter::Antialiasing, true);
 
-         foreach (KTScene *scene, scenes) {
+         foreach (TupScene *scene, scenes) {
                   renderer.setScene(scene, size);
 
                   while (renderer.nextPhotogram()) {
@@ -172,7 +172,7 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
     return true;
 }
 
-bool FFMpegPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size)
+bool FFMpegPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size)
 {
     return false;
 }

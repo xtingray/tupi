@@ -36,8 +36,8 @@
 #include "settings.h"
 #include "tdebug.h"
 #include "tradiobuttongroup.h"
-#include "ktitemtweener.h"
-#include "kttweenerstep.h"
+#include "tupitemtweener.h"
+#include "tuptweenerstep.h"
 #include "timagebutton.h"
 #include "tseparator.h"
 #include "tosd.h"
@@ -64,7 +64,7 @@ struct Settings::Private
     QLabel *totalLabel;
     int totalSteps;
 
-    KTItemTweener::TransformAxes scaleAxes;
+    TupItemTweener::TransformAxes scaleAxes;
     QComboBox *comboAxes;
     QComboBox *comboFactor;
     QComboBox *comboIterations;
@@ -80,7 +80,7 @@ struct Settings::Private
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
-    k->scaleAxes = KTItemTweener::XY;
+    k->scaleAxes = TupItemTweener::XY;
     k->selectionDone = false;
     k->totalSteps = 0;
 
@@ -302,7 +302,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
 // Editing new Tween
 
-void Settings::setParameters(KTItemTweener *currentTween)
+void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
     activatePropertiesMode(Settings::Properties);
@@ -424,13 +424,13 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
-    root.setAttribute("type", KTItemTweener::Scale);
+    root.setAttribute("type", TupItemTweener::Scale);
     root.setAttribute("init", currentFrame);
    
     checkFramesRange();
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
-    k->scaleAxes = KTItemTweener::TransformAxes(k->comboAxes->currentIndex());
+    k->scaleAxes = TupItemTweener::TransformAxes(k->comboAxes->currentIndex());
     root.setAttribute("scaleAxes", k->scaleAxes);
     double factor = k->comboFactor->currentText().toDouble();
     root.setAttribute("scaleFactor", factor);
@@ -460,10 +460,10 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     double scaleX = 1.0;
     double scaleY = 1.0;
 
-    if (k->scaleAxes == KTItemTweener::XY) {
+    if (k->scaleAxes == TupItemTweener::XY) {
         factorX = factor;
         factorY = factor;
-    } else if (k->scaleAxes == KTItemTweener::X) {
+    } else if (k->scaleAxes == TupItemTweener::X) {
                factorX = factor;
     } else {
         factorY = factor;
@@ -503,7 +503,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
              }
          }
 
-         KTTweenerStep *step = new KTTweenerStep(i);
+         TupTweenerStep *step = new TupTweenerStep(i);
          step->setScale(scaleX, scaleY);
          root.appendChild(step->toXml(doc));
     }

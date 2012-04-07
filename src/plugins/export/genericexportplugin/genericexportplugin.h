@@ -36,13 +36,13 @@
 #ifndef GENERICEXPORTPLUGIN_H
 #define GENERICEXPORTPLUGIN_H
 
-#include "ktexportpluginobject.h"
+#include "tupexportpluginobject.h"
 #include <QColor>
 
 /**
     @author David Cuadrado
 */
-class GenericExportPlugin : public KTExportPluginObject
+class GenericExportPlugin : public TupExportPluginObject
 {
     Q_OBJECT
 
@@ -50,10 +50,10 @@ class GenericExportPlugin : public KTExportPluginObject
         GenericExportPlugin();
         virtual ~GenericExportPlugin();
         virtual QString key() const;
-        KTExportInterface::Formats availableFormats();
+        TupExportInterface::Formats availableFormats();
 
-        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
-        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, KTScene *scene, const QSize &size);
+        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format format, const QSize &size, int fps);
+        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size);
         virtual const char* getExceptionMsg();
         const char *errorMsg;
 
