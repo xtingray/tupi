@@ -33,11 +33,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktcamerawidget.h"
+#include "tupcamerawidget.h"
 #include "tupviewcamera.h"
 #include "tupproject.h"
 
-#include "kformfactory.h"
+#include "tformfactory.h"
 
 #include <QSpinBox>
 #include <QVBoxLayout>
@@ -52,7 +52,7 @@ TupCameraWidget::TupCameraWidget(TupProject *project, QWidget *parent) : TupModu
     m_viewCamera = new TupViewCamera(project);
 
     m_fps = new QSpinBox;
-    boxLayout()->addLayout(KFormFactory::makeGrid(QStringList() << "FPS", QWidgetList() << m_fps));
+    boxLayout()->addLayout(TFormFactory::makeGrid(QStringList() << "FPS", QWidgetList() << m_fps));
     connect(m_fps, SIGNAL(valueChanged(int)), this, SLOT(setFPS(int)));
 
     m_fps->setValue(14);

@@ -94,9 +94,9 @@ void TupTwitterWidget::keyPressEvent(QKeyEvent * event) {
 void TupTwitterWidget::downLoadNews()
 {
     // Downloading maefloresta Twitter status
-    Tupwitter *ktwitter = new Tupwitter();
-    connect(ktwitter, SIGNAL(pageReady()), this, SLOT(reload()));
-    ktwitter->start();
+    Tupwitter *tuptwitter = new Tupwitter();
+    connect(tuptwitter, SIGNAL(pageReady()), this, SLOT(reload()));
+    tuptwitter->start();
 }
 
 void TupTwitterWidget::reload()

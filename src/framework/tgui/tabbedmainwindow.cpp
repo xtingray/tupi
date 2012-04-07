@@ -89,11 +89,11 @@ void TabWidgetPrivate::wheelMove(int delta)
     }
 }
 
-#include "ktabbedmainwindow.moc"
+#include "tabbedmainwindow.moc"
 
 #else
 
-#include <ttabwidget.h>
+#include "ttabwidget.h"
 #define TabWidgetPrivate TTabWidget
 
 #endif

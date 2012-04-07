@@ -367,4 +367,4 @@ QCursor ContourSelection::cursor() const
     return QCursor(Qt::ArrowCursor);
 }
 
-Q_EXPORT_PLUGIN2(kt_editNodes, ContourSelection)
+Q_EXPORT_PLUGIN2(tup_editNodes, ContourSelection)

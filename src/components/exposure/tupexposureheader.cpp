@@ -91,7 +91,7 @@ void TupExposureHeader::emitVisibilityChanged(int section)
 void TupExposureHeader::setVisibilityChanged(int layerIndex, bool visibility)
 {
     // Q_UNUSED(visibility);
-    // FIXME: in ktexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
+    // FIXME: in tupexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
     // m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
 
     m_layers[layerIndex].isVisible = visibility;
@@ -260,4 +260,4 @@ int TupExposureHeader::layersTotal()
     return m_layers.size();
 }
 
-//#include "ktexposuretable.moc"
+//#include "tupexposuretable.moc"

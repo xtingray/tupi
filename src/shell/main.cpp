@@ -170,8 +170,8 @@ int main(int argc, char ** argv)
     application.createCache(TCONFIG->value("Cache").toString());
 
     // Downloading maefloresta Twitter status
-    Tupwitter *ktwitter = new Tupwitter();
-    ktwitter->start();
+    Tupwitter *twitter = new Tupwitter();
+    twitter->start();
 
     // SQA: Tupi gui styles must be re-factored
     // Setting the gui style for the interface

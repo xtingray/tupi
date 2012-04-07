@@ -257,7 +257,7 @@ void TupThemeSelector::loadSchemes()
     
     if (themeDir.exists()) {
         m_allSchemes->clear();
-        QFileInfoList files = themeDir.entryInfoList(QStringList() <<"*.ktt");
+        QFileInfoList files = themeDir.entryInfoList(QStringList() <<"*.tupt");
         
         for (int i = 0; i < files.count(); i++) {
              QFileInfo iterator = files[i];
@@ -282,8 +282,8 @@ void TupThemeSelector::saveSchema()
     
     QString fileName = QInputDialog::getText (this,tr("Name"), tr("Please choose a theme name"));
     
-    if (!fileName.endsWith(".ktt"))
-        fileName += ".ktt";
+    if (!fileName.endsWith(".tupt"))
+        fileName += ".tupt";
     
     QFile file(themeDir.path() + "/" + fileName);
     

@@ -17,6 +17,8 @@ configure.tests/opengl/Makefile
 configure.tests/opengl/opengl
 configure.tests/zlib/Makefile
 configure.tests/zlib/zlib
+src/framework/tupconfig.pri
+tupiglobal.pri
 
 3rdparty/Makefile
 3rdparty/potrace/Makefile

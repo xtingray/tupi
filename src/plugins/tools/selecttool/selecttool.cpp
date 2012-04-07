@@ -615,4 +615,4 @@ void SelectTool::updateRealZoomFactor()
              k->realFactor = 0.2;
 }
 
-Q_EXPORT_PLUGIN2(kt_select, SelectTool);
+Q_EXPORT_PLUGIN2(tup_select, SelectTool);

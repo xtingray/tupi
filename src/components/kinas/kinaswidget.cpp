@@ -54,7 +54,7 @@ KinasWidget::KinasWidget(QWidget *parent) : TupModuleWidgetBase(parent)
 
     m_splitter->setSizes(QList<int>()<<160 << 400);
 
-    addEditor("Example.kts");
+    addEditor("Example.tups");
 }
 
 

@@ -86,7 +86,7 @@ void TextArea::setSource(const QUrl &name)
     }
 }
 
-#include "ktcrashwidget.moc"
+#include "tupcrashwidget.moc"
 
 TupCrashWidget::TupCrashWidget(int sig) : QDialog(0), m_sig(sig)
 {

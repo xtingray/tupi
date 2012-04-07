@@ -62,7 +62,6 @@ HEADERS += tupmainwindow.h \
            tupcrashhandler.h \
            tupcrashwidget.h \
            tupapplication.h \
-           # configwizard.h \
            tuplocalprojectmanagerhandler.h
 
 SOURCES += main.cpp \
@@ -73,7 +72,6 @@ SOURCES += main.cpp \
            tupcrashhandler.cpp \
            tupcrashwidget.cpp \
            tupapplication.cpp \
-           # configwizard.cpp \
            tupmainwindow_gui.cpp \
            tuplocalprojectmanagerhandler.cpp
 

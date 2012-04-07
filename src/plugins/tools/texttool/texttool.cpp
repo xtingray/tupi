@@ -178,4 +178,4 @@ void TextTool::keyPressEvent(QKeyEvent *event)
         emit closeHugeCanvas();
 }
 
-Q_EXPORT_PLUGIN2(kt_textool, TextTool);
+Q_EXPORT_PLUGIN2(tup_textool, TextTool);

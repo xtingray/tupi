@@ -476,4 +476,4 @@ void InkTool::keyPressEvent(QKeyEvent *event)
         emit closeHugeCanvas();
 }
 
-Q_EXPORT_PLUGIN2(kt_brush, InkTool);
+Q_EXPORT_PLUGIN2(tup_brush, InkTool);

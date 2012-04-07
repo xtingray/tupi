@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktnoticepackage.h"
+#include "tupnoticepackage.h"
 
 TupNoticePackage::TupNoticePackage(const QString &text): QDomDocument()
 {

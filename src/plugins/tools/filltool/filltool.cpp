@@ -319,4 +319,4 @@ QCursor FillTool::cursor() const
     return QCursor(Qt::ArrowCursor);
 }
 
-Q_EXPORT_PLUGIN2(kt_fill, FillTool)
+Q_EXPORT_PLUGIN2(tup_fill, FillTool)

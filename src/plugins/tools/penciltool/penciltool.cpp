@@ -259,4 +259,4 @@ QCursor PencilTool::cursor() const
     return k->cursor;
 }
 
-Q_EXPORT_PLUGIN2(kt_brush, PencilTool);
+Q_EXPORT_PLUGIN2(tup_brush, PencilTool);

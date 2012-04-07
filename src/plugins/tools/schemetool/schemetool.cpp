@@ -785,4 +785,4 @@ QCursor SchemeTool::cursor() const
     return k->cursor;
 }
 
-Q_EXPORT_PLUGIN2(kt_brush, SchemeTool);
+Q_EXPORT_PLUGIN2(tup_brush, SchemeTool);
