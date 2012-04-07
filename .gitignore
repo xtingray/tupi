@@ -5,6 +5,7 @@
 *.moc/
 *.0
 *.1
+*.dylib
 bin/
 src/framework/tgui/qrc_tgui_images.cpp
 
