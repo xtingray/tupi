@@ -6,6 +6,6 @@ INCLUDEPATH += $$ANIMATION_DIR
 LIBS += -L$$LIBUI_DIR -lui
 
 linux-g++ {
-PRE_TARGETDEPS += $$LIBUI_DIR/libui.a
+    PRE_TARGETDEPS += $$LIBUI_DIR/libui.so
 }
 

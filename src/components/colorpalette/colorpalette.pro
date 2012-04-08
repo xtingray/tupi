@@ -10,6 +10,9 @@ tpal.commands = test -d $(INSTALL_ROOT)/data/palettes/ || mkdir $(INSTALL_ROOT)/
                 cp palettes/*.tpal $(INSTALL_ROOT)/data/palettes/
 tpal.path = /data/palettes/
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tupcolorpicker.h \
            tupcolorpalette.h \
            tupviewcolorcells.h \
@@ -25,7 +28,7 @@ SOURCES += tupcolorpicker.cpp \
            tuppaletteparser.cpp \
            tupcolorvalue.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = colorpalette
 

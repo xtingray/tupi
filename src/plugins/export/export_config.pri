@@ -1,7 +1,7 @@
 
-STORE_DIR = ../../../../src/store
-LIBTUPI_DIR = ../../../../src/libtupi
-LIBBASE_DIR = ../../../../src/libbase
+STORE_DIR = ../../../store
+LIBTUPI_DIR = ../../../libtupi
+LIBBASE_DIR = ../../../libbase
 
 include($$STORE_DIR/store.pri)
 include($$LIBTUPI_DIR/libtupi.pri)

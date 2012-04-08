@@ -3,6 +3,9 @@
 # Subdir relative project main directory: ./src/components/paintarea
 # Target is a library:  paintarea
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tuppaintarea.h \
            tupconfigurationarea.h \
            tupviewdocument.h \
@@ -35,7 +38,7 @@ SOURCES += tuppaintarea.cpp \
            tupimagedialog.cpp \
            tupiruler.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = paintarea
 

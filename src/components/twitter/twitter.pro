@@ -3,12 +3,16 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tuptwitter.h \  
            tuptwitterwidget.h
+
 SOURCES += tuptwitter.cpp \
            tuptwitterwidget.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = twitter
 

@@ -40,9 +40,9 @@ FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/
 include($$QUAZIP_DIR/quazip.pri)
-LIBTUPI_DIR = ../../src/libtupi
+LIBTUPI_DIR = ../libtupi
 include($$LIBTUPI_DIR/libtupi.pri)
-STORE_DIR = ../../src/store
+STORE_DIR = ../store
 include($$STORE_DIR/store.pri)
 
 include(../../tupiglobal.pri)

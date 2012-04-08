@@ -3,12 +3,16 @@
 # Subdir relative project main directory: ./src/components/debug
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tupdebugwidget.h \
            tupdebugterm.h
+
 SOURCES += tupdebugwidget.cpp \
            tupdebugterm.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = debug
 

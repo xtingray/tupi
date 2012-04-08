@@ -3,6 +3,9 @@
 # Subdir relative project main directory: ./src/components/animation
 # Target is a library: animation 
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tupviewcamera.h \
            tupcamerabar.h \
            tupanimationarea.h \
@@ -14,7 +17,7 @@ SOURCES += tupviewcamera.cpp \
            # tupcamerawidget.cpp \
            tupcamerastatus.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = animation 
 

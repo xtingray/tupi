@@ -3,14 +3,18 @@
 # Subdir relative project main directory: ./src/components/scenes
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tupsceneslist.h \
            tupscenesdelegate.h \
            tupsceneswidget.h 
+
 SOURCES += tupsceneslist.cpp \
            tupscenesdelegate.cpp \
            tupsceneswidget.cpp 
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = scenes
 

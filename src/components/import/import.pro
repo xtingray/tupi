@@ -3,10 +3,13 @@
 # Subdir relative project main directory: ./src/components/import
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tuppaletteimporter.h
 SOURCES += tuppaletteimporter.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib 
 TARGET = import
 

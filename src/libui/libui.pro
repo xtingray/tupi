@@ -9,6 +9,9 @@ images-en.path = /data/en/images
 images.files += images/es/*.png 
 images.path = /data/es/images/ 
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tupthemeselector.h \
            tupabout.h \
            tuppreferences.h \
@@ -20,12 +23,12 @@ SOURCES += tupthemeselector.cpp \
            tupanimationspace.cpp \
            tuppaintareaconfig.cpp 
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = ui
 
-STORE_DIR = ../../src/store
-LIBTUPI_DIR = ../../src/libtupi
+STORE_DIR = ../store
+LIBTUPI_DIR = ../libtupi
 ANIMATION_DIR = ../components/animation
 
 INCLUDEPATH += $$ANIMATION_DIR

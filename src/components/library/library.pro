@@ -3,16 +3,20 @@
 # Subdir relative project main directory: ./src/components/library
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tuplibrarywidget.h \
            tupgctable.h  \
            tupsymboleditor.h \
            tuptreedelegate.h
+
 SOURCES += tuplibrarywidget.cpp \
            tupgctable.cpp  \
            tupsymboleditor.cpp \
            tuptreedelegate.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = library
 

@@ -1,26 +1,26 @@
 
 QT += xml opengl svg
 
-COLORPALETTE_DIR = ../../src/components/colorpalette
-ANIMATION_DIR = ../../src/components/animation
-PAINTAREA_DIR = ../../src/components/paintarea
-PEN_DIR = ../../src/components/pen
-KINAS_DIR = ../../src/components/kinas 
-HELP_DIR = ../../src/components/help 
-IMPORT_DIR = ../../src/components/import 
-EXPORT_DIR = ../../src/components/export 
-EXPOSURE_DIR = ../../src/components/exposure 
-TIMELINE_DIR = ../../src/components/timeline 
-DEBUG_DIR = ../../src/components/debug
-LIBRARY_DIR = ../../src/components/library
-SCENES_DIR = ../../src/components/scenes 
-TWITTER_DIR = ../../src/components/twitter
-LIBUI_DIR = ../../src/libui
-STORE_DIR = ../../src/store 
-LIBTUPI_DIR = ../../src/libtupi
+COLORPALETTE_DIR = ../components/colorpalette
+ANIMATION_DIR = ../components/animation
+PAINTAREA_DIR = ../components/paintarea
+PEN_DIR = ../components/pen
+KINAS_DIR = ../components/kinas 
+HELP_DIR = ../components/help 
+IMPORT_DIR = ../components/import 
+EXPORT_DIR = ../components/export 
+EXPOSURE_DIR = ../components/exposure 
+TIMELINE_DIR = ../components/timeline 
+DEBUG_DIR = ../components/debug
+LIBRARY_DIR = ../components/library
+SCENES_DIR = ../components/scenes 
+TWITTER_DIR = ../components/twitter
+LIBUI_DIR = ../libui
+STORE_DIR = ../store 
+LIBTUPI_DIR = ../libtupi
 QUAZIP_DIR = ../../3rdparty/quazip 
-LIBBASE_DIR = ../../src/libbase
-NET_DIR = ../../src/net
+LIBBASE_DIR = ../libbase
+NET_DIR = ../net
 
 include($$COLORPALETTE_DIR/colorpalette.pri)
 include($$PAINTAREA_DIR/paintarea.pri)

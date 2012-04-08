@@ -3,12 +3,16 @@
 # Subdir relative project main directory: ./src/components/timeline
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tuptimeline.h \
            tuplayermanager.h \
            tuptlruler.h \
            tupframestable.h \ 
            tuplayerindex.h \
            tuplayercontrols.h
+
 SOURCES += tuptimeline.cpp \
            tuplayermanager.cpp \
            tuptlruler.cpp \
@@ -16,7 +20,7 @@ SOURCES += tuptimeline.cpp \
            tuplayerindex.cpp \
            tuplayercontrols.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = timeline
 

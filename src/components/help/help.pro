@@ -7,12 +7,15 @@ INSTALLS += help
 help.files += help 
 help.path = /data/ 
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tuphelpwidget.h \
            tuphelpbrowser.h 
 SOURCES += tuphelpwidget.cpp \
            tuphelpbrowser.cpp 
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = help
 

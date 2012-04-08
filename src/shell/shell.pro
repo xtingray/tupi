@@ -79,22 +79,22 @@ CONFIG += warn_on
 TEMPLATE = app
 
 linux-g{
-    TARGETDEPS += ../../src/libtupi/libtupi.so \
-  ../../src/libui/libui.a \
-  ../../src/store/libtupistore.so \
-  ../../src/net/libtupinet.so \
-  ../../src/components/paintarea/libpaintarea.a \
-  ../../src/components/pen/libpen.a \
-  ../../src/components/kinas/libkinas.a \
-  ../../src/components/help/libhelp.a \
-  ../../src/components/import/libimport.a \
-  ../../src/components/export/libexport.a \
-  ../../src/components/exposure/libexposure.a \
-  ../../src/components/timeline/libtimeline.a \
-  ../../src/components/library/liblibrary.a \
-  ../../src/components/colorpalette/libcolorpalette.a \
-  ../../src/components/scenes/libscenes.a \
-  ../../src/components/twitter/libtwitter.a
+    TARGETDEPS += ../libtupi/libtupi.so \
+  ../libui/libui.so \
+  ../store/libtupistore.so \
+  ../net/libtupinet.so \
+  ../components/paintarea/libpaintarea.so \
+  ../components/pen/libpen.so \
+  ../components/kinas/libkinas.so \
+  ../components/help/libhelp.so \
+  ../components/import/libimport.so \
+  ../components/export/libexport.so \
+  ../components/exposure/libexposure.so \
+  ../components/timeline/libtimeline.so \
+  ../components/library/liblibrary.so \
+  ../components/colorpalette/libcolorpalette.so \
+  ../components/scenes/libscenes.so \
+  ../components/twitter/libtwitter.so
 }
 
 FRAMEWORK_DIR = ../framework

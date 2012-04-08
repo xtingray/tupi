@@ -110,11 +110,11 @@ CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = tupistore
 
-STORE_DIR = ../../src/store
+STORE_DIR = .
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-LIBTUPI_DIR = ../../src/libtupi
+LIBTUPI_DIR = ../libtupi
 include($$LIBTUPI_DIR/libtupi.pri)
 
 include(../../tupiglobal.pri)

@@ -3,10 +3,13 @@
 # Subdir relative project main directory: ./src/components/export
 # Target is a library:  
 
+INSTALLS += target
+target.path = /lib/
+
 HEADERS += tupexportwidget.h 
 SOURCES += tupexportwidget.cpp
 
-CONFIG += static warn_on
+CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = export
 
