@@ -4,19 +4,18 @@
 # Target is a library:  
 
 INSTALLS += headers 
-
-macx {
-INSTALLS += otool
-otool.path = /lib/
-otool.extra = ../../tools/update_dylib_path.rb $(TARGET)
-}
+headers.target = .
+headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
+headers.path = /include/tupistore/
 
 INSTALLS += target
 target.path = /lib/
 
-headers.target = .
-headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
-headers.path = /include/tupistore/
+macx {
+    INSTALLS += otool
+    otool.path = /lib/
+    otool.extra = ../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET)
+}
 
 HEADERS += tuplayer.h \
            tuppalettedocument.h \

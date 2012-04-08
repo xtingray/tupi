@@ -6,7 +6,7 @@ command  = "otool -L #{library}|awk '{print $1}'|"
 command += "grep -v '/usr/lib'|grep -v '/System'|"
 command += "grep \"/lib\"|grep -v '@executable'"
 
-libs = %x[#{command}]
+libs = %x["#{command}"]
 puts "---------------------------------------------"
 puts "Libs for: #{library}"
 libs.each do |line|
