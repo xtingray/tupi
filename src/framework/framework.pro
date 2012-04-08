@@ -5,6 +5,6 @@
 
 # SUBDIRS += tcore tgui tsound tplugins
 SUBDIRS += tcore tgui tsound
-CONFIG += release warn_on
+CONFIG += warn_on
 TEMPLATE = subdirs
 

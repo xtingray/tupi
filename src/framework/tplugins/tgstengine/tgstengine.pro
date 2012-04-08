@@ -6,7 +6,7 @@
 INSTALLS += target 
 target.path = /lib/tupi/plugins/ 
 
-CONFIG += release warn_on plugin 
+CONFIG += warn_on plugin 
 TEMPLATE = lib 
 TARGET = tgstengine
 

@@ -3,6 +3,6 @@
 # Subdir relative project main directory: .
 # Target is a subdirs project 
 
-CONFIG += release warn_on 
+CONFIG += warn_on 
 TEMPLATE = subdirs 
 SUBDIRS += 3rdparty src 

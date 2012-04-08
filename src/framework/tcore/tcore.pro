@@ -29,7 +29,7 @@ SOURCES += talgorithm.cpp \
            tipdatabase.cpp \
            txmlparserbase.cpp
 
-CONFIG += release warn_on dll
+CONFIG += warn_on dll
 
 TEMPLATE = lib
 TARGET = tupifwcore

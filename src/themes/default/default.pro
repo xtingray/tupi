@@ -6,7 +6,6 @@
 SUBDIRS += icons \
            cursors \
            images 
-CONFIG += release warn_on
-TEMPLATE = subdirs
 
-#QT += qt3support
+CONFIG += warn_on
+TEMPLATE = subdirs

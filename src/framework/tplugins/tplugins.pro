@@ -4,6 +4,6 @@
 # Target is a subdirs project 
 
 SUBDIRS += tgstengine 
-CONFIG += release warn_on 
+CONFIG += warn_on 
 TEMPLATE = subdirs 
 QMAKE_STRIP = echo

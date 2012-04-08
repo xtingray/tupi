@@ -8,5 +8,5 @@ SUBDIRS += export \
            import \
            tools 
 
-CONFIG += release warn_on 
+CONFIG += warn_on 
 TEMPLATE = subdirs 

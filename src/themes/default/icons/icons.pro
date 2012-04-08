@@ -7,9 +7,7 @@ icons.target = .
 icons.commands = cp *.png $(INSTALL_ROOT)/themes/default/icons
 icons.path = /themes/default/icons
 
-CONFIG += release \
-          warn_on \
-          staticlib 
+CONFIG += warn_on staticlib 
 
 TEMPLATE = lib
 

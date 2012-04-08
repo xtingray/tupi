@@ -9,7 +9,5 @@ images.target = .
 images.commands = cp *.png $(INSTALL_ROOT)/themes/default/images
 images.path = /themes/default/images
 
-CONFIG += release \
-warn_on \
-staticlib
+CONFIG += warn_on staticlib
 TEMPLATE = subdirs

@@ -17,7 +17,7 @@ SOURCES += curve.c \
            potracelib.c \
            trace.c 
 
-CONFIG += release warn_on staticlib 
+CONFIG += warn_on staticlib 
 TEMPLATE = lib 
 
 include(../../tupiglobal.pri)

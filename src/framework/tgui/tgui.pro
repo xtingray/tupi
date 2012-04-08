@@ -136,7 +136,7 @@ contains(DEFINES, HAVE_FFMPEG){
     SOURCES += tffmpegmoviegenerator.cpp
 }
 
-CONFIG += release warn_on dll
+CONFIG += warn_on dll
 TEMPLATE = lib
 TARGET = tupifwgui
 QT += xml opengl

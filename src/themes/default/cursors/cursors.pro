@@ -9,10 +9,9 @@ cursors.target = .
 cursors.commands = cp *.png $(INSTALL_ROOT)/themes/default/cursors
 cursors.path = /themes/default/cursors
 
-CONFIG += release \
-warn_on \
-staticlib
+CONFIG += warn_on staticlib
 TEMPLATE = lib
+
 macx{
     TEMPLATE = subdirs
 }

@@ -12,7 +12,7 @@ HEADERS += taudioengineiface.h \
            taudioplayer.h
 SOURCES += taudioplayer.cpp
 
-CONFIG += release warn_on dll
+CONFIG += warn_on dll
 TEMPLATE = lib 
 TARGET = tupifwsound
 

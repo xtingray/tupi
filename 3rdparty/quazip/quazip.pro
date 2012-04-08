@@ -19,7 +19,7 @@ SOURCES += ioapi.c \
            unzip.c \
            zip.c 
 
-CONFIG += release warn_on qt staticlib
+CONFIG += warn_on qt staticlib
 TEMPLATE = lib
 QT -= gui
 LIBS += -lz

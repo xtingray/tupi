@@ -14,5 +14,5 @@ SUBDIRS += themes \
            plugins \
            shell
 
-CONFIG += release warn_on
+CONFIG += warn_on
 TEMPLATE = subdirs

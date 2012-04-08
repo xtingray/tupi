@@ -12,5 +12,5 @@ contains(DEFINES, HAVE_FFMPEG) {
         SUBDIRS += ffmpegplugin
 }
 
-CONFIG += release warn_on 
+CONFIG += warn_on 
 TEMPLATE = subdirs 
