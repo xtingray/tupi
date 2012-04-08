@@ -10,12 +10,15 @@ HEADERS += tupviewcamera.h \
            tupcamerabar.h \
            tupanimationarea.h \
            # tupcamerawidget.h \
-           tupcamerastatus.h
+           tupcamerastatus.h \
+           tupanimationspace.h
+
 SOURCES += tupviewcamera.cpp \
            tupcamerabar.cpp \
            tupanimationarea.cpp \
            # tupcamerawidget.cpp \
-           tupcamerastatus.cpp
+           tupcamerastatus.cpp \
+           tupanimationspace.cpp
 
 CONFIG += dll warn_on
 TEMPLATE = lib

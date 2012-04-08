@@ -15,12 +15,10 @@ target.path = /lib/
 HEADERS += tupthemeselector.h \
            tupabout.h \
            tuppreferences.h \
-           tupanimationspace.h \
            tuppaintareaconfig.h 
 SOURCES += tupthemeselector.cpp \
            tupabout.cpp \
            tuppreferences.cpp \
-           tupanimationspace.cpp \
            tuppaintareaconfig.cpp 
 
 CONFIG += dll warn_on
@@ -29,9 +27,6 @@ TARGET = ui
 
 STORE_DIR = ../store
 LIBTUPI_DIR = ../libtupi
-ANIMATION_DIR = ../components/animation
-
-INCLUDEPATH += $$ANIMATION_DIR
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
