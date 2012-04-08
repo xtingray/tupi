@@ -1,12 +1,7 @@
 #!/usr/bin/ruby
 
 library = ARGV[0]
-
-command  = "otool -L #{library}|awk '{print $1}'|"
-command += "grep -v '/usr/lib'|grep -v '/System'|"
-command += "grep \"/lib\"|grep -v '@executable'"
-
-libs = %x["#{command}"]
+libs = %x[otool -L #{library}|awk '{print $1}'|grep -v '/usr/lib'|grep -v '/System'|grep \"/lib\"|grep -v '@executable']
 puts "---------------------------------------------"
 puts "Libs for: #{library}"
 libs.each do |line|
