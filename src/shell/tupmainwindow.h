@@ -45,7 +45,7 @@
 #include "tupexposuresheet.h"
 #include "kinaswidget.h"
 #include "tuppenwidget.h"
-#include "tupcamerawidget.h"
+// #include "tupcamerawidget.h"
 #include "tupcolorpalette.h"
 #include "tupsceneswidget.h"
 #include "tuplibrarywidget.h"

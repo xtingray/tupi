@@ -7,8 +7,11 @@ target.path = /plugins/
 INSTALLS += target
 #INSTALL_ROOT = /tmp/test
 
-HEADERS += ffmpegplugin.h
-SOURCES += ffmpegplugin.cpp
+HEADERS += tffmpegmoviegenerator.h \
+           ffmpegplugin.h
+
+SOURCES += tffmpegmoviegenerator.cpp \
+           ffmpegplugin.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 

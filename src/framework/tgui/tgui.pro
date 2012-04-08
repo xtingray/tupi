@@ -131,10 +131,10 @@ SOURCES += taction.cpp \
            tworkspacemainwindow.cpp \
            txyspinbox.cpp
 
-contains(DEFINES, HAVE_FFMPEG){
-    HEADERS += tffmpegmoviegenerator.h
-    SOURCES += tffmpegmoviegenerator.cpp
-}
+#contains(DEFINES, HAVE_FFMPEG){
+#    HEADERS += tffmpegmoviegenerator.h
+#    SOURCES += tffmpegmoviegenerator.cpp
+#}
 
 CONFIG += warn_on dll
 TEMPLATE = lib
