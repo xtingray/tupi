@@ -6,6 +6,8 @@
 *.0
 *.1
 *.dylib
+*.pro.user
+
 bin/
 src/framework/tgui/qrc_tgui_images.cpp
 
