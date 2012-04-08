@@ -76,10 +76,11 @@ class Config
 
         File.open("src/framework/tupconfig.pri", "w") { |f|
             f << "# Generated automatically at #{Time.now}! PLEASE DO NOT EDIT!"<< $endl
-
+            f << "contains(DEFINES, HAVE_FFMPEG){" << $endl
             f << "LIBS += -lavcodec -lavformat -lavutil" << $endl
+            f << "}" << $endl
+            f << $endl
             f << "QT += opengl core gui svg xml network" << $endl
-            f << "DEFINES += HAVE_FFMPEG" << $endl
             f << "unix {" << $endl
             f << "   OBJECTS_DIR = .obj" << $endl
             f << "   UI_DIR = .ui" << $endl
