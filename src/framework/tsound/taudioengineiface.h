@@ -73,7 +73,7 @@ class T_CORE_EXPORT TAudioEngineIface
         virtual void setVolume(int percent) = 0;
 };
 
-Q_DECLARE_INTERFACE(TAudioEngineIface, "org.klib.TAudioEngineIface/0.1");
+Q_DECLARE_INTERFACE(TAudioEngineIface, "org.tupi.TAudioEngineIface/0.1");
 
 #endif
 
