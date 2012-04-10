@@ -112,7 +112,7 @@ void TipDatabase::loadTips(const QString &filePath)
 
         if(!e.isNull()) {
             if (e.tagName() == "tip") {
-                int index = random() % 3;
+                int index = TAlgorithm::random() % 3;
                 Tip tip;
                 tip.text = "<html>\n";
                 tip.text += "<head>\n";

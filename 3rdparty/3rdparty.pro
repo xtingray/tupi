@@ -3,8 +3,7 @@
 # Subdir relative project main directory: ./3rdparty
 # Target is a subdirs project 
 
-SUBDIRS += quazip \
-           potrace 
+SUBDIRS += quazip
 
 CONFIG += warn_on
 

@@ -37,7 +37,7 @@
 #define TupTEXTITEM_H
 
 #include <QGraphicsTextItem>
-#include <tupabstractserializable.h>
+#include "tupabstractserializable.h"
 #include "tupglobal_store.h"
 
 /**

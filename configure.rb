@@ -63,7 +63,8 @@ _EOH_
 
     debug = 0
     if conf.hasArgument?("with-debug")
-        debug = 1
+       debug = 1
+       system("echo \"DEFINES += K_DEBUG\" >> 3rdparty/quazip/quazip.pro")
     end
 
     conf.createTests
@@ -109,7 +110,7 @@ _EOH_
     unix.addVariable("UI_DIR", ".ui")
     unix.addVariable("OBJECTS_DIR", ".obj")
 
-     # The file tupiglobal.pri contains all the global variables for the compilation process        
+    # The file tupiglobal.pri contains all the global variables for the compilation process        
     config.save("tupiglobal.pri")
     conf.createMakefiles
     

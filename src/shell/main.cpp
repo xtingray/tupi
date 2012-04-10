@@ -91,11 +91,6 @@ class SleeperThread : public QThread
 */
 
 /**
- * This method defines the console line options to run Tupi
- */
-void usage();
-
-/**
  * This method is the first one invoked when Tupi is launched
  */
 
@@ -259,29 +254,3 @@ int main(int argc, char ** argv)
     // It's time to play with Tupi!
     return application.exec();
 }
-
-/**
- * This method defines the console line options to run Tupi
- */
-
-void usage()
-{
-    // SQA: This code is deprecated
-#if defined(Q_OS_UNIX)
-    // Characters \033[1;33m and \033[1;34m are useful for colored messages
-    puts(QString("\033[1;33m"+QApplication::applicationName() + kAppProp->version()).toLocal8Bit());
-    puts(QString(QObject::tr("2D Animation Toolkit")+"\033[0;0m" ).toLocal8Bit());
-    puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0])+"\033[0;0m").toLocal8Bit());
-    puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLocal8Bit());
-    puts("-r, --reconfigure");
-    puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit());
-    puts("\033[0;0m");
-#else
-    puts(QString(QApplication::applicationName() + kApp->version()).toLocal8Bit());
-    puts(QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0]).toLocal8Bit());
-    puts(QObject::tr("Options: ").toLocal8Bit());
-    puts("-r, --reconfigure");
-    puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit());
-#endif
-}
-

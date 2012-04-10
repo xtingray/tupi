@@ -309,10 +309,14 @@ TDebug::TDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
     if (configReader.showArea && !m_area.isEmpty()) {
         QString init = "";
 
+#ifdef Q_OS_UNIX
         if (configReader.colorize)
             init = colors.colorize(m_area);
         else
             init = m_area;
+#else
+        init = m_area;
+#endif
 
         *streamer << init << ": ";
     }
