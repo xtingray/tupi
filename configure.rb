@@ -64,7 +64,9 @@ _EOH_
     debug = 0
     if conf.hasArgument?("with-debug")
        debug = 1
-       system("echo \"DEFINES += K_DEBUG\" >> 3rdparty/quazip/quazip.pro")
+       if File.readlines("3rdparty/quazip/quazip.pro").grep(/K_DEBUG/).size === 0
+          system("echo \"DEFINES += K_DEBUG\" >> 3rdparty/quazip/quazip.pro")
+       end
     end
 
     conf.createTests
