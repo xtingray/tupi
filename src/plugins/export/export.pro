@@ -5,8 +5,10 @@
 
 include(../../../tupiglobal.pri)
 
-SUBDIRS += genericexportplugin \
-           smilexportplugin 
+SUBDIRS += genericexportplugin 
+
+# SMIL plugin will be disabled temporary 
+# smilexportplugin 
 
 contains(DEFINES, HAVE_FFMPEG) {
         SUBDIRS += ffmpegplugin
