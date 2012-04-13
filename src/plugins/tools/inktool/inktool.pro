@@ -6,6 +6,14 @@
 INSTALLS += target 
 target.path = /plugins/
 
+macx {
+    CONFIG += plugin
+
+    INSTALLS += otool
+    otool.path = /lib/
+    otool.extra  += ../../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+}
+
 HEADERS += inktool.h \
            configurator.h
 SOURCES += inktool.cpp \

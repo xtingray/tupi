@@ -10,6 +10,14 @@ headers.target = .
 headers.commands = cp *.h $(INSTALL_ROOT)/include/plugincommon
 headers.path = /include/plugincommon
 
+macx {
+    CONFIG += plugin
+
+    INSTALLS += otool
+    otool.path = /lib/
+    otool.extra  += ../../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+}
+
 HEADERS += buttonspanel.h \
            tweenmanager.h \
            stepsviewer.h \

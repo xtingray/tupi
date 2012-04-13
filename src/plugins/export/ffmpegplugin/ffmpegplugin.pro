@@ -3,9 +3,17 @@
 # Subdir relative project main directory: ./src/plugins/export/ffmpegplugin
 # Target is a library:  
 
-target.path = /plugins/ 
 INSTALLS += target
+target.path = /plugins/
 #INSTALL_ROOT = /tmp/test
+
+macx {
+    CONFIG += plugin
+
+    INSTALLS += otool
+    otool.path = /lib/
+    otool.extra  += ../../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+}
 
 HEADERS += tffmpegmoviegenerator.h \
            ffmpegplugin.h
