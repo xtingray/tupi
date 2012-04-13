@@ -10,6 +10,14 @@ target.path = /lib/
 include.files += *.h 
 include.path = /include/tupicore 
 
+macx {
+    CONFIG += plugin
+
+    INSTALLS += otool
+    otool.path = /lib/
+    otool.extra  += ../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+}
+
 HEADERS += talgorithm.h \
            tapplicationproperties.h \
            tconfig.h \
