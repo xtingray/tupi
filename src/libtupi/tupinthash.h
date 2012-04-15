@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupINTHASH_H
-#define TupINTHASH_H
+#ifndef TUPINTHASH_H
+#define TUPINTHASH_H
 
 #include <QHash>
 
@@ -126,8 +126,10 @@ TupIntHash<T>::~TupIntHash()
 template<typename T>
 void TupIntHash<T>::removeObject(int pos)
 {
-    if (contains(pos))
+    if (contains(pos)) {
         k->dataHash.remove(pos);
+        k->counter--;
+    } 
 }
 
 template<typename T>
@@ -206,7 +208,6 @@ void TupIntHash<T>::remove(int pos)
     if (contains(pos)) {
         if (pos == count()-1) {
             k->dataHash.remove(pos);
-            k->counter--;
         } else {
             int total = count() - 1;
             for (int i=pos+1;i<=total;i++) {
@@ -215,6 +216,7 @@ void TupIntHash<T>::remove(int pos)
                  k->dataHash.insert(index, value);
             }
         }
+        k->counter--;
     } 
 }
 

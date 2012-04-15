@@ -260,9 +260,30 @@ bool TupProject::removeScene(int position)
     TupScene *toRemove = scene(position);
 
     if (toRemove) {
+
+        QString path = dataDir() + "/scene" + QString::number(position) + ".tps";
+
+        if (!QFile::remove(path)) {
+            #ifdef K_DEBUG
+                   tError() << "TupProject::removeScene() - Error removing file " << path;
+            #endif
+
+            return false;
+        } else {
+            int total = k->sceneCounter - 1;
+            if (position < total) {
+                for (int i=position + 1; i<=total; i++) {
+                     QString oldName = dataDir() + "/scene" + QString::number(i) + ".tps";  
+                     QString newName = dataDir() + "/scene" + QString::number(i-1) + ".tps";
+                     QFile::rename(oldName, newName); 
+                }
+            }
+        }
+
         k->scenes.removeObject(position);
         delete toRemove;
         toRemove = 0;
+
         k->sceneCounter--;
 
         return true;

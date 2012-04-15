@@ -14,5 +14,9 @@ contains(DEFINES, HAVE_FFMPEG) {
         SUBDIRS += ffmpegplugin
 }
 
+contains(DEFINES, HAVE_THEORA) {
+        SUBDIRS += theoraplugin
+}
+
 CONFIG += warn_on 
 TEMPLATE = subdirs 

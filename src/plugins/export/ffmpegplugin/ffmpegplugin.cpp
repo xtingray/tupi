@@ -39,13 +39,12 @@
 #include "tdebug.h"
 #include "tglobal.h"
 #include "tffmpegmoviegenerator.h"
-// #include "kmoviegeneratorinterface.h"
-
-#include <QImage>
-#include <QPainter>
 
 #include "tuplayer.h"
 #include "tupanimationrenderer.h"
+
+#include <QImage>
+#include <QPainter>
 
 FFMpegPlugin::FFMpegPlugin()
 {
