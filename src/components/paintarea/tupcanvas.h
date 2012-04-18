@@ -33,21 +33,18 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCANVAS_H
-#define TupCANVAS_H
+#ifndef TUPCANVAS_H
+#define TUPCANVAS_H
 
 #include "tupgraphicsscene.h"
 #include "tupcanvasview.h"
 
 #include <QFrame>
-// #include <QDialog>
 #include <QPointF>
 #include <QSize>
 #include <QCloseEvent>
 
 class TupGraphicsScene;
-
-// class TupCanvas : public QDialog
 
 class TupCanvas : public QFrame
 {
@@ -55,9 +52,9 @@ class TupCanvas : public QFrame
 
     public:
         TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
-                 const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
-                 const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
-                 int angle=0, const QColor &bg = QColor(Qt::white));
+                  const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
+                  const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
+                  int angle=0, const QColor &bg = QColor(Qt::white));
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
 

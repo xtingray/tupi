@@ -86,6 +86,7 @@ void SelectTool::init(TupGraphicsScene *scene)
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
     k->scene = scene;
+    k->scene->clearSelection();
 
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);

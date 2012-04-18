@@ -38,7 +38,6 @@
 #include "tglobal.h"
 #include "tconfig.h"
 #include "tdebug.h"
-// #include "tupcanvasview.h"
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -53,12 +52,9 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
-    // TupCanvasView *graphicsView = new TupCanvasView(this, screenSize, projectSize, bg);
     graphicsView = new TupCanvasView(this, screenSize, projectSize, bg);
     graphicsView->setRenderHint(QPainter::Antialiasing, true);
     graphicsView->setFixedSize(screenSize.width(), screenSize.height());
-    // graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    // graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     graphicsView->setScene(scene);
     graphicsView->centerOn(centerPoint);

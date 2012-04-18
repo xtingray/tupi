@@ -46,8 +46,8 @@ struct TupCanvasView::Private
     QTimer *timer;
 };
 
-TupCanvasView::TupCanvasView(QWidget *parent, const QSize &screenSize, 
-                           const QSize &projectSize, const QColor &bg) : QGraphicsView(parent), k(new Private)
+TupCanvasView::TupCanvasView(QWidget *parent, const QSize &screenSize, const QSize &projectSize, 
+                             const QColor &bg) : QGraphicsView(parent), k(new Private)
 {
     k->screenSize = screenSize;
     k->projectSize = projectSize;

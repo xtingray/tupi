@@ -1254,6 +1254,7 @@ void TupViewDocument::closeFullScreen()
     if (k->fullScreenOn) {
         k->fullScreen->close();
         k->fullScreenOn = false;
+        k->currentTool->init(k->paintArea->graphicsScene());
     }
 }
 
