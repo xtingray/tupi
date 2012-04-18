@@ -50,6 +50,7 @@
 
 TipDialog::TipDialog(QStringList &labels, const QString &file, QWidget *parent) : QDialog(parent)
 {
+    setModal(true);
     tags = labels;
     m_database = new TipDatabase(file, parent);
     setupGUI();

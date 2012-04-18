@@ -33,15 +33,15 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupGLOBAL_STORE_H
-#define TupGLOBAL_STORE_H
+#ifndef TUPGLOBAL_STORE_H
+#define TUPGLOBAL_STORE_H
 
 #include "tupglobal.h"
 
 #define STORE_EXPORT T_CORE_EXPORT
 
 
-#endif // TupGLOBAL_STORE_H
+#endif // TUPGLOBAL_STORE_H
 
 
 

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupIP_H
-#define TupIP_H
+#ifndef TUPIP_H
+#define TUPIP_H
 
 #include <QString>
 #include <QList>
