@@ -66,6 +66,13 @@ struct TupFrame::Private
     int repeat;
     int zLevelIndex;
     int layerIndex;
+
+    struct Storyboard 
+    {
+       QString title;
+       QString duration;
+       QString description;
+    } storydata;
 };
 
 TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
@@ -76,6 +83,10 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->isVisible = true;
     k->repeat = 1;
     k->zLevelIndex = (k->layerIndex)*10000;
+
+    k->storydata.title = ""; 
+    k->storydata.duration = "";
+    k->storydata.description = "";
 }
 
 TupFrame::TupFrame(TupBackground *bg) : QObject(bg), k(new Private)
@@ -106,6 +117,36 @@ void TupFrame::clear()
 void TupFrame::setFrameName(const QString &name)
 {
     k->name = name;
+}
+
+void TupFrame::setStoryTitle(const QString &title)
+{
+    k->storydata.title = title;
+}
+
+void TupFrame::setStoryDuration(const QString &duration)
+{
+    k->storydata.duration = duration;
+}
+
+void TupFrame::setStoryDescription(const QString &desc)
+{
+    k->storydata.description = desc;
+}
+
+QString TupFrame::storyTitle() const
+{
+    return k->storydata.title;
+}
+
+QString TupFrame::storyDuration() const
+{
+    return k->storydata.duration;
+}
+
+QString TupFrame::storyDescription() const
+{
+    return k->storydata.description;
 }
 
 void TupFrame::setLocked(bool isLocked)
@@ -246,6 +287,19 @@ void TupFrame::fromXml(const QString &xml)
                                      tError() << "TupFrame::fromXml() - ERROR: Object id is null!";
                               #endif
                           }
+               } else if (e.tagName() == "storyboard") {
+                          QDomNode n2 = e.firstChild();
+                          while (!n2.isNull()) {
+                                 QDomElement e2 = n2.toElement();
+                                 if (e2.tagName() == "title") {
+                                     k->storydata.title = e2.text();
+                                 } else if (e2.tagName() == "duration") {
+                                            k->storydata.duration = e2.text();
+                                 } else if (e2.tagName() == "description") {
+                                            k->storydata.description = e2.text();
+                                 }
+                                 n2 = n2.nextSibling();
+                          }
                }
            }
 		
@@ -258,6 +312,20 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("frame");
     root.setAttribute("name", k->name);
     doc.appendChild(root);
+
+    if (k->name.compare("landscape") != 0 && k->storydata.title.length() > 0) {
+        QDomElement storyboard = doc.createElement("storyboard");
+
+        QDomText titleDom = doc.createTextNode(k->storydata.title);
+        QDomText timeDom  = doc.createTextNode(k->storydata.duration);
+        QDomText descDom  = doc.createTextNode(k->storydata.description);
+
+        storyboard.appendChild(doc.createElement("title")).appendChild(titleDom);
+        storyboard.appendChild(doc.createElement("duration")).appendChild(timeDom);
+        storyboard.appendChild(doc.createElement("description")).appendChild(descDom);
+
+        root.appendChild(storyboard);
+    }
 
     foreach (TupGraphicObject *object, k->graphics.values())
              root.appendChild(object->toXml(doc));

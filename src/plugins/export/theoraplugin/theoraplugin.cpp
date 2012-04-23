@@ -33,65 +33,97 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupbackground.h"
-#include "tupserializer.h"
+#include "theoraplugin.h"
+
+// Tupi Framework
 #include "tdebug.h"
+#include "tglobal.h"
+#include "theoramoviegenerator.h"
 
-TupBackground::TupBackground(TupScene *parent)
-    : QObject(parent)
+#include "tuplayer.h"
+#include "tupanimationrenderer.h"
+
+#include <QImage>
+#include <QPainter>
+
+TheoraPlugin::TheoraPlugin()
 {
-    landscape = new TupFrame(this);
-    landscape->setFrameName("landscape");
 }
 
-TupBackground::~TupBackground()
+TheoraPlugin::~TheoraPlugin()
 {
 }
 
-void TupBackground::fromXml(const QString &xml)
+QString TheoraPlugin::key() const
 {
-    QDomDocument document;
+    return "Open Video Format";
+}
 
-    if (! document.setContent(xml))
-        return;
+TupExportInterface::Formats TheoraPlugin::availableFormats()
+{
+    return TupExportInterface::OGV;
+}
 
-    QDomElement root = document.documentElement();
+bool TheoraPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format fmt, const QSize &size, int fps)
+{
+    Q_UNUSED(fmt);
 
-    QDomNode n = root.firstChild();
-
-    QDomElement e = n.toElement();
-
-    if (!e.isNull()) {
-        if (e.tagName() == "frame") {
-
-            landscape = new TupFrame(this);
-            landscape->setFrameName("landscape");
-
-            if (landscape) {
-                QString newDoc;
-
-                {
-                  QTextStream ts(&newDoc);
-                  ts << n;
-                }
-
-                landscape->fromXml(newDoc);
-            }
-        }
+    int frames = 0;
+    qreal duration = 0;
+    foreach (TupScene *scene, scenes) {
+             duration += (qreal) scene->framesTotal() / (qreal) fps;
+             frames += scene->framesTotal();
     }
+
+    TheoraMovieGenerator *generator = 0;
+    generator = new TheoraMovieGenerator(size, fps, duration, frames);
+
+    TupAnimationRenderer renderer(color);
+    {
+         if (!generator->movieHeaderOk()) {
+             errorMsg = generator->getErrorMsg();
+             #ifdef K_DEBUG
+                    tError() << "FFMpegPlugin::exportToFormat() - [ Fatal Error ] - Can't create video -> " << filePath;
+             #endif
+             delete generator;
+             return false;
+         }
+
+         QPainter painter(generator);
+         painter.setRenderHint(QPainter::Antialiasing, true);
+
+         foreach (TupScene *scene, scenes) {
+                  renderer.setScene(scene, size);
+
+                  while (renderer.nextPhotogram()) {
+                         renderer.render(&painter);
+                         generator->nextFrame();
+                         generator->reset();
+                  }
+         }
+    }
+
+    generator->saveMovie(filePath);
+    delete generator;
+
+    return true;
 }
 
-QDomElement TupBackground::toXml(QDomDocument &doc) const
+bool TheoraPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size)
 {
-    QDomElement root = doc.createElement("background");
-    doc.appendChild(root);
+    Q_UNUSED(frameIndex);
+    Q_UNUSED(color);
+    Q_UNUSED(filePath);
+    Q_UNUSED(scene);
+    Q_UNUSED(size);
 
-    root.appendChild(landscape->toXml(doc));
-
-    return root;
+    return false;
 }
 
-TupFrame *TupBackground::frame()
-{
-    return landscape;
+const char* TheoraPlugin::getExceptionMsg() {
+    return errorMsg;
 }
+
+#ifdef HAVE_THEORA
+       Q_EXPORT_PLUGIN( TheoraPlugin );
+#endif

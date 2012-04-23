@@ -15,7 +15,7 @@ PRO_FILE=trans.pro
 
 if [ $# -gt 0 ]
 then
-	TS_FILE=$1
+     TS_FILE=$1
 fi
 
 echo "The .ts file will be generated in " $TS_FILE

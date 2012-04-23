@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSCENEMANAGER_H
-#define TupSCENEMANAGER_H
+#ifndef TUPSCENEMANAGER_H
+#define TUPSCENEMANAGER_H
 
 #include "tupabstractserializable.h"
 #include "tupproject.h"
@@ -86,6 +86,14 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
           * Sets scene name
           */
         void setSceneName(const QString &name);
+
+        void setStoryTitle(const QString &title);
+        void setStoryDuration(const QString &duration);
+        void setStoryDescription(const QString &desc);
+
+        QString storyTitle() const;
+        QString storyDuration() const;
+        QString storyDescription() const;
 
         /**
           * Locks the scene

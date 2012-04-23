@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustav Gonzalez / xtingray                                           *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,65 +33,34 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupbackground.h"
-#include "tupserializer.h"
-#include "tdebug.h"
+#ifndef THEORAMOVIEGENERATOR_H
+#define THEORAMOVIEGENERATOR_H
 
-TupBackground::TupBackground(TupScene *parent)
-    : QObject(parent)
+#include "tmoviegenerator.h"
+
+/**
+    @author Gustav Gonzalez 
+*/
+
+class TheoraMovieGenerator : public TMovieGenerator
 {
-    landscape = new TupFrame(this);
-    landscape->setFrameName("landscape");
-}
+    public:
+        TheoraMovieGenerator(const QSize &size, int fps = 24, double duration = 0, int frames = 0);
+        ~TheoraMovieGenerator();
+        virtual bool movieHeaderOk();
+        virtual const char* getErrorMsg();
 
-TupBackground::~TupBackground()
-{
-}
+    protected:
+        void __saveMovie(const QString &fileName);
+        virtual void handle(const QImage &image);
+        virtual bool begin();
+        virtual void end();
 
-void TupBackground::fromXml(const QString &xml)
-{
-    QDomDocument document;
+    private:
+        void writeTheoraFrame(unsigned long w, unsigned long h, unsigned char *yuv, int last);
+        unsigned char clamp(double d);
+        struct Private;
+        Private *const k;
+};
 
-    if (! document.setContent(xml))
-        return;
-
-    QDomElement root = document.documentElement();
-
-    QDomNode n = root.firstChild();
-
-    QDomElement e = n.toElement();
-
-    if (!e.isNull()) {
-        if (e.tagName() == "frame") {
-
-            landscape = new TupFrame(this);
-            landscape->setFrameName("landscape");
-
-            if (landscape) {
-                QString newDoc;
-
-                {
-                  QTextStream ts(&newDoc);
-                  ts << n;
-                }
-
-                landscape->fromXml(newDoc);
-            }
-        }
-    }
-}
-
-QDomElement TupBackground::toXml(QDomDocument &doc) const
-{
-    QDomElement root = doc.createElement("background");
-    doc.appendChild(root);
-
-    root.appendChild(landscape->toXml(doc));
-
-    return root;
-}
-
-TupFrame *TupBackground::frame()
-{
-    return landscape;
-}
+#endif

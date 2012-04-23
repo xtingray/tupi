@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupFRAME_H
-#define TupFRAME_H
+#ifndef TUPFRAME_H
+#define TUPFRAME_H
 
 #include "tupabstractserializable.h"
 #include "tupinthash.h"
@@ -65,35 +65,25 @@ typedef TupIntHash<TupSvgItem *> SvgObjects;
 class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
 {
     public:
-       /**
-        * Constructor por defecto
-        */
        TupFrame(TupLayer *parent);
        TupFrame(TupBackground *bg);
        
-       /**
-        * Destructor
-        */
        ~TupFrame();
        
-       /**
-        * Pone el nombre del frame
-        */
        void setFrameName(const QString &name);
-       
-       /**
-        * Bloquea el frame
-        */
+
+       void setStoryTitle(const QString &title);
+       void setStoryDuration(const QString &duration);
+       void setStoryDescription(const QString &desc);
+
+       QString storyTitle() const;
+       QString storyDuration() const;
+       QString storyDescription() const;
+
        void setLocked(bool isLocked);
        
-       /**
-        * Retorna el nombre del frame
-        */
        QString frameName() const;
        
-       /**
-        * Returna verdadero cuando el frame esta bloqueado
-        */
        bool isLocked() const;
        
        void setVisible(bool isVisible);

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPROJECTLOADER_H
-#define TupPROJECTLOADER_H
+#ifndef TUPPROJECTLOADER_H
+#define TUPPROJECTLOADER_H
 
 #include <QString>
 

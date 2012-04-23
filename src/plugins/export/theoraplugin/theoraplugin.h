@@ -33,65 +33,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupbackground.h"
-#include "tupserializer.h"
-#include "tdebug.h"
+#ifndef THEORAPLUGIN_H
+#define THEORAPLUGIN_H
 
-TupBackground::TupBackground(TupScene *parent)
-    : QObject(parent)
+#include "tupexportpluginobject.h"
+#include "tupexportinterface.h"
+#include "tmoviegeneratorinterface.h"
+
+/**
+ * @author Gustav Gonzalez
+*/
+
+class TheoraPlugin : public TupExportPluginObject
 {
-    landscape = new TupFrame(this);
-    landscape->setFrameName("landscape");
-}
+    Q_OBJECT
 
-TupBackground::~TupBackground()
-{
-}
+    public:
+        TheoraPlugin();
+        virtual ~TheoraPlugin();
+        virtual QString key() const;
+        TupExportInterface::Formats availableFormats();
 
-void TupBackground::fromXml(const QString &xml)
-{
-    QDomDocument document;
+        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format format, const QSize &size, int fps);
+        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size);
 
-    if (! document.setContent(xml))
-        return;
+        virtual const char* getExceptionMsg();
+        const char *errorMsg;
+};
 
-    QDomElement root = document.documentElement();
-
-    QDomNode n = root.firstChild();
-
-    QDomElement e = n.toElement();
-
-    if (!e.isNull()) {
-        if (e.tagName() == "frame") {
-
-            landscape = new TupFrame(this);
-            landscape->setFrameName("landscape");
-
-            if (landscape) {
-                QString newDoc;
-
-                {
-                  QTextStream ts(&newDoc);
-                  ts << n;
-                }
-
-                landscape->fromXml(newDoc);
-            }
-        }
-    }
-}
-
-QDomElement TupBackground::toXml(QDomDocument &doc) const
-{
-    QDomElement root = doc.createElement("background");
-    doc.appendChild(root);
-
-    root.appendChild(landscape->toXml(doc));
-
-    return root;
-}
-
-TupFrame *TupBackground::frame()
-{
-    return landscape;
-}
+#endif
