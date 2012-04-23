@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export TUPI_HOME="/usr/local/tupi"
-export TUPI_SHARE="/usr/local/tupi/share"
-export TUPI_LIB="/usr/local/tupi/lib"
-export TUPI_PLUGIN="/usr/local/tupi/lib/plugins"
-export TUPI_INCLUDE="/usr/local/tupi/include"
-export TUPI_BIN="/usr/local/tupi/bin"
+export TUPI_HOME="/home/xtingray/Tupi"
+export TUPI_SHARE="/home/xtingray/Tupi/Resources/share"
+export TUPI_LIB="/home/xtingray/Tupi/MacOS/lib"
+export TUPI_PLUGIN="/home/xtingray/Tupi/MacOS/lib/plugins"
+export TUPI_INCLUDE="/home/xtingray/Tupi/include"
+export TUPI_BIN="/home/xtingray/Tupi"
 
 export LD_LIBRARY_PATH="${TUPI_LIB}:${TUPI_PLUGIN}:$LD_LIBRARY_PATH"
 

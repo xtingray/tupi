@@ -46,11 +46,11 @@ module RQonf
                                elsif line.include? "\$\(INSTALL_ROOT\)\/themes" then
                                      newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/themes/, @options['sharedir']+"/themes")}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/applications" then
-                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/applications/, @options['debian-build'] + "/share/applications")}"
+                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/applications/, @options['prefix'] + "/share/applications")}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/pixmaps" then
-                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/pixmaps/, @options['debian-build'] + "/share/pixmaps")}"
+                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/pixmaps/, @options['prefix'] + "/share/pixmaps")}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/man1" then
-                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/man1/, @options['debian-build'] + "/share/man/man1")}"
+                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/man1/, @options['prefix'] + "/share/man/man1")}"
                                end
                             else
                                newmakefile += line
