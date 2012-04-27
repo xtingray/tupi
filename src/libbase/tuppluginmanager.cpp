@@ -80,7 +80,7 @@ void TupPluginManager::loadPlugins()
     k->tools.clear();
     k->formats.clear();
     
-    QDir pluginDirectory = QDir(PLUGINS_DIR);
+    QDir pluginDirectory = QDir(kAppProp->pluginDir());
 
     foreach (QString fileName, pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dylib", QDir::Files)) {
              QPluginLoader *loader = new QPluginLoader(pluginDirectory.absoluteFilePath(fileName));
