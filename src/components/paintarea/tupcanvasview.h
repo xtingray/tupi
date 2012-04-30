@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCANVASVIEW_H
-#define TupCANVASVIEW_H
+#ifndef TUPCANVASVIEW_H
+#define TUPCANVASVIEW_H
 
 #include <QGraphicsView>
 #include <QPainter>

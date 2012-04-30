@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLIBRARYDIALOG_H
-#define TupLIBRARYDIALOG_H
+#ifndef TUPLIBRARYDIALOG_H
+#define TUPLIBRARYDIALOG_H
 
 #include <QDialog>
 class QGraphicsItem;

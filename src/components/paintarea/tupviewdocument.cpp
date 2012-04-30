@@ -58,6 +58,7 @@
 #include "tupcanvas.h"
 #include "polyline.h"
 #include "tupimagedialog.h"
+#include "tupstoryboarddialog.h"
 #include "tupiruler.h"
 
 #include <QLayout>
@@ -385,6 +386,12 @@ void TupViewDocument::setupDrawActions()
                                          this, SLOT(postImage()), k->actionManager, "post_image");
         postImage->setStatusTip("Export the current frame to gallery");
     }
+
+    TAction *storyboard = new TAction(QPixmap(THEME_DIR + "icons/storyboard.png"),
+                                     "Storyboard Settings", QKeySequence(tr("Ctrl+Shift+S")),
+                                     this, SLOT(storyboardSettings()), k->actionManager, "storyboard");
+    storyboard->setStatusTip("Storyboard settings");
+    // storyboard->setDisabled(true);
 }
 
 void TupViewDocument::createTools()
@@ -993,6 +1000,7 @@ void TupViewDocument::createToolBar()
         k->barGrid->addAction(k->actionManager->find("post_image"));
 
     k->barGrid->addSeparator();
+    k->barGrid->addAction(k->actionManager->find("storyboard"));
 }
 
 void TupViewDocument::closeArea()
@@ -1298,4 +1306,18 @@ void TupViewDocument::postImage()
 void TupViewDocument::updateStatusBgColor(const QColor color)
 {
     k->status->setBgColor(color);
+}
+
+void TupViewDocument::storyboardSettings()
+{
+    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
+    storySettings->show();
+    QDesktopWidget desktop;
+    storySettings->move((int) (desktop.screenGeometry().width() - storySettings->width())/2 ,
+                        (int) (desktop.screenGeometry().height() - storySettings->height())/2);
+
+    if (storySettings->exec() != QDialog::Rejected) {
+        tError() << "TupViewDocument::storyboardSettings() - Processing data..."; 
+    }
 }

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTOOLSTATUS_H
-#define TupTOOLSTATUS_H
+#ifndef TUPTOOLSTATUS_H
+#define TUPTOOLSTATUS_H
 
 #include "tupcolorwidget.h"
 #include "tapplicationproperties.h"

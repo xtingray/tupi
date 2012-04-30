@@ -60,7 +60,8 @@ HEADERS += tuplayer.h \
            tuptweenerstep.h \
            tupsoundlayer.h \
            tupsvgitem.h \
-           tupbackground.h
+           tupbackground.h \
+           tupstoryboard.h
 
 SOURCES += tuplayer.cpp \
            tuppalettedocument.cpp \
@@ -105,7 +106,8 @@ SOURCES += tuplayer.cpp \
            tuptweenerstep.cpp \
            tupsoundlayer.cpp \
            tupsvgitem.cpp \
-           tupbackground.cpp
+           tupbackground.cpp \
+           tupstoryboard.cpp
 
 CONFIG += dll warn_on
 TEMPLATE = lib

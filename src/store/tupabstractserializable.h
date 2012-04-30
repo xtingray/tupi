@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupABSTRACTSERIALIZABLE_H
-#define TupABSTRACTSERIALIZABLE_H
+#ifndef TUPABSTRACTSERIALIZABLE_H
+#define TUPABSTRACTSERIALIZABLE_H
 
 #include "tupglobal_store.h"
 

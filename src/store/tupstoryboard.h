@@ -33,82 +33,43 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPPAINTAREA_H
-#define TUPPAINTAREA_H
+#ifndef TUPSTORYBOARD_H
+#define TUPSTORYBOARD_H
 
-#include "tuppaintareabase.h"
-#include "tupabstractprojectresponsehandler.h"
-#include "tupgraphicsscene.h"
+#include "tupabstractserializable.h"
+#include "tupglobal_store.h"
 
-class QGraphicsRectItem;
-class TupBrushManager;
-class TupInputDeviceInformation;
-class TupProject;
-class TupPaintAreaRotator;
+#include <QObject>
+#include <QDomDocument>
+#include <QDomElement>
 
-/**
- * This class provides an area to make different kind of traces
- * @author Jorge Cuadrado - David Cuadrado
-*/
-
-class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseHandler
+class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializable
 {
     Q_OBJECT
 
     public:
-        enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
+        TupStoryboard();
+        ~TupStoryboard();
 
-        TupPaintArea(TupProject *project, QWidget * parent = 0);
-        ~TupPaintArea();
+        void setStoryTitle(const QString &title);
+        void setStoryAuthor(const QString &author);
+        void setStorySummary(const QString &desc);
 
-        void setCurrentScene(int index);
-        void setCurrentTool(QString tool);
-        void updatePaintArea();
-        void paintBackground();
-        void updateSpaceContext();
-        virtual void keyPressEvent(QKeyEvent *event);
-        virtual void keyReleaseEvent(QKeyEvent *event);
-        void goOneFrameBack();
-        void goOneFrameForward();
-        void copyCurrentFrame();
-        void pasteDataOnCurrentFrame();
-        void quickCopy();
+        QString storyTitle() const;
+        QString storyAuthor() const;
+        QString storySummary() const;
 
-    public slots:
-        void setNextFramesOnionSkinCount(int n);
-        void setPreviousFramesOnionSkinCount(int n);
-        void setOnionFactor(double value);
+        void setSceneTitle(int index, const QString &title);
+        void setSceneDuration(int index, const QString &duration);
+        void setSceneDescription(int index, const QString &description);
 
-    signals:
-        void requestTriggered(const TupProjectRequest *event);
-        void itemAddedOnSelection(TupGraphicsScene *);
-        void frameChanged(int);
-        void closePolyLine();
-        void updateStatusBgColor(const QColor color);
-
-    public slots:
-        void deleteItems();
-        void groupItems();
-        void ungroupItems();
-        void copyItems();
-        void pasteItems();
-        void cutItems();
-
-        void addSelectedItemsToLibrary();
-        void requestMoveSelectedItems(QAction *action);
-        void goToFrame(int index);
-
-    protected:
-        void mousePressEvent(QMouseEvent *event);
-        void frameResponse(TupFrameResponse *event);
-        void layerResponse(TupLayerResponse *event);
-        void sceneResponse(TupSceneResponse *event);
-        void itemResponse(TupItemResponse *event);
-        void libraryResponse(TupLibraryResponse *request);
-        void projectResponse(TupProjectResponse *projectResponse);
-
-        bool canPaint() const;
-
+        QString sceneTitle(int index) const;
+        QString sceneDuration(int index) const;
+        QString sceneDescription(int index) const;
+        
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
     private:
         struct Private;
         Private *const k;

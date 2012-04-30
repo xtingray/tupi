@@ -34,8 +34,6 @@
  ***************************************************************************/
 
 #include "tupscene.h"
-#include "tdebug.h"
-
 #include "tupgraphicobject.h"
 #include "tupsvgitem.h"
 #include "tupsoundlayer.h"
@@ -44,6 +42,8 @@
 #include "tupprojectloader.h"
 #include "tupitemfactory.h"
 
+#include "tdebug.h"
+
 #include <QDir>
 #include <QGraphicsItem>
 #include <QGraphicsView>
@@ -51,37 +51,25 @@
 
 struct TupScene::Private
 {
+    TupStoryboard *storyboard;
     TupBackground *background;
     Layers layers;
     SoundLayers soundLayers;
     QString name;
     bool isLocked;
     int layerCount;
-    // int nameIndex;
     bool isVisible;
 
     QList<TupGraphicObject *> tweeningGraphicObjects;
     QList<TupSvgItem *> tweeningSvgObjects;
-
-    struct Storyboard
-    {
-       QString title;
-       QString duration;
-       QString description;
-    } storydata;
 };
 
 TupScene::TupScene(TupProject *parent) : QObject(parent), k(new Private)
 {
     k->isLocked = false;
     k->layerCount = 0;
-    // k->nameIndex = 0;
     k->isVisible = true;
     k->background = new TupBackground(this);
-
-    k->storydata.title = "";
-    k->storydata.duration = "";
-    k->storydata.description = "";
 }
 
 TupScene::~TupScene()
@@ -90,43 +78,12 @@ TupScene::~TupScene()
            TEND;
     #endif
 
-    //k->layers.clear(true);
     delete k;
 }
 
 void TupScene::setSceneName(const QString &name)
 {
     k->name = name;
-}
-
-void TupScene::setStoryTitle(const QString &title)
-{
-    k->storydata.title = title;
-}
-
-void TupScene::setStoryDuration(const QString &duration)
-{
-    k->storydata.duration = duration;
-}
-
-void TupScene::setStoryDescription(const QString &desc)
-{
-    k->storydata.description = desc;
-}
-
-QString TupScene::storyTitle() const
-{
-    return k->storydata.title;
-}
-
-QString TupScene::storyDuration() const
-{
-    return k->storydata.duration;
-}
-
-QString TupScene::storyDescription() const
-{
-    return k->storydata.description;
 }
 
 void TupScene::setLocked(bool isLocked)
@@ -330,13 +287,13 @@ void TupScene::fromXml(const QString &xml)
                    }
                } else if (e.tagName() == "background") {
 
-                   QString newDoc;
-                   {
-                     QTextStream ts(&newDoc);
-                     ts << n;
-                   }
+                          QString newDoc;
+                          {
+                            QTextStream ts(&newDoc);
+                            ts << n;
+                          }
 
-                   k->background->fromXml(newDoc); 
+                          k->background->fromXml(newDoc); 
 
                } else if (e.tagName() == "soundlayer") {
                           int pos = k->soundLayers.count();
@@ -352,18 +309,12 @@ void TupScene::fromXml(const QString &xml)
                               layer->fromXml(newDoc);
                           }
                } else if (e.tagName() == "storyboard") {
-                          QDomNode n2 = e.firstChild();
-                          while (!n2.isNull()) {
-                                 QDomElement e2 = n2.toElement();
-                                 if (e2.tagName() == "title") {
-                                     k->storydata.title = e2.text();
-                                 } else if (e2.tagName() == "duration") {
-                                            k->storydata.duration = e2.text();
-                                 } else if (e2.tagName() == "description") {
-                                            k->storydata.description = e2.text();
-                                 }
-                                 n2 = n2.nextSibling();
+                          QString newDoc;
+                          {
+                            QTextStream ts(&newDoc);
+                            ts << n;
                           }
+                          k->storyboard->fromXml(newDoc);
                }
            }
 
@@ -377,20 +328,7 @@ QDomElement TupScene::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("scene");
     root.setAttribute("name", k->name);
 
-    if (k->storydata.title.length() > 0) {
-        QDomElement storyboard = doc.createElement("storyboard");
-
-        QDomText titleDom = doc.createTextNode(k->storydata.title);
-        QDomText timeDom  = doc.createTextNode(k->storydata.duration);
-        QDomText descDom  = doc.createTextNode(k->storydata.description);
-
-        storyboard.appendChild(doc.createElement("title")).appendChild(titleDom);
-        storyboard.appendChild(doc.createElement("duration")).appendChild(timeDom);
-        storyboard.appendChild(doc.createElement("description")).appendChild(descDom);
-
-        root.appendChild(storyboard);
-    }
-
+    root.appendChild(k->storyboard->toXml(doc));
     root.appendChild(k->background->toXml(doc));
 
     foreach (TupLayer *layer, k->layers.values())
@@ -685,4 +623,14 @@ void TupScene::reset(QString &name)
     layer->createFrame(tr("Frame %1").arg(1), 0, false);
 
     k->layers.insert(0, layer);
+}
+
+void TupScene::setStoryboard(TupStoryboard *storyboard)
+{
+    k->storyboard = storyboard;
+}
+
+TupStoryboard * TupScene::storyboard()
+{
+    return k->storyboard;
 }

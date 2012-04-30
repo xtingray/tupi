@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupDOCUMENTRULER_H
-#define TupDOCUMENTRULER_H
+#ifndef TUPDOCUMENTRULER_H
+#define TUPDOCUMENTRULER_H
 
 #include "trulerbase.h"
 

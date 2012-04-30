@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,83 +33,40 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPPAINTAREA_H
-#define TUPPAINTAREA_H
+#ifndef TUPSTORYBOARDDIALOG_H
+#define TUPSTORYBOARDDIALOG_H
 
-#include "tuppaintareabase.h"
-#include "tupabstractprojectresponsehandler.h"
-#include "tupgraphicsscene.h"
+#include "tupscene.h"
+#include "tupexportinterface.h"
 
-class QGraphicsRectItem;
-class TupBrushManager;
-class TupInputDeviceInformation;
-class TupProject;
-class TupPaintAreaRotator;
+#include <QDialog>
+#include <QColor>
+#include <QSize>
+#include <QIcon>
+#include <QListWidgetItem>
 
-/**
- * This class provides an area to make different kind of traces
- * @author Jorge Cuadrado - David Cuadrado
-*/
-
-class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseHandler
+class TupStoryBoardDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
+        TupStoryBoardDialog(TupExportInterface *imagePlugin, const QColor &color, const QSize &size, TupScene *scene, QWidget *parent);
+        ~TupStoryBoardDialog();
 
-        TupPaintArea(TupProject *project, QWidget * parent = 0);
-        ~TupPaintArea();
-
-        void setCurrentScene(int index);
-        void setCurrentTool(QString tool);
-        void updatePaintArea();
-        void paintBackground();
-        void updateSpaceContext();
-        virtual void keyPressEvent(QKeyEvent *event);
-        virtual void keyReleaseEvent(QKeyEvent *event);
-        void goOneFrameBack();
-        void goOneFrameForward();
-        void copyCurrentFrame();
-        void pasteDataOnCurrentFrame();
-        void quickCopy();
-
-    public slots:
-        void setNextFramesOnionSkinCount(int n);
-        void setPreviousFramesOnionSkinCount(int n);
-        void setOnionFactor(double value);
-
-    signals:
-        void requestTriggered(const TupProjectRequest *event);
-        void itemAddedOnSelection(TupGraphicsScene *);
-        void frameChanged(int);
-        void closePolyLine();
-        void updateStatusBgColor(const QColor color);
-
-    public slots:
-        void deleteItems();
-        void groupItems();
-        void ungroupItems();
-        void copyItems();
-        void pasteItems();
-        void cutItems();
-
-        void addSelectedItemsToLibrary();
-        void requestMoveSelectedItems(QAction *action);
-        void goToFrame(int index);
-
-    protected:
-        void mousePressEvent(QMouseEvent *event);
-        void frameResponse(TupFrameResponse *event);
-        void layerResponse(TupLayerResponse *event);
-        void sceneResponse(TupSceneResponse *event);
-        void itemResponse(TupItemResponse *event);
-        void libraryResponse(TupLibraryResponse *request);
-        void projectResponse(TupProjectResponse *projectResponse);
-
-        bool canPaint() const;
+    private slots:
+        void updateForm(QListWidgetItem *current, QListWidgetItem *previous);
+        void saveStoryBoard();
+        void exportStoryBoard();
 
     private:
+        void setListComponent();
+        void setPreviewScreen();
+        void setStoryForm();
+        void setSceneForm();
+
+        void thumbnailGenerator();
+        void addScene(const QString &label, const QIcon &icon);
+ 
         struct Private;
         Private *const k;
 };

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPAINTAREACOMMAND_H
-#define TupPAINTAREACOMMAND_H
+#ifndef TUPAINTAREACOMMAND_H
+#define TUPPAINTAREACOMMAND_H
 
 #include <QUndoCommand>
 

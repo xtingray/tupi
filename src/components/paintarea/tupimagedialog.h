@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupIMAGEDIALOG_H
-#define TupIMAGEDIALOG_H
+#ifndef TUPIMAGEDIALOG_H
+#define TUPIMAGEDIALOG_H
 
 #include <QDialog>
 

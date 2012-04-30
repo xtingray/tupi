@@ -38,16 +38,16 @@
 
 #include "tupabstractserializable.h"
 #include "tupproject.h"
+#include "tupstoryboard.h"
 #include "tupbackground.h"
 #include "tupitemtweener.h"
+#include "tupinthash.h"
+#include "tupglobal_store.h"
 
 #include <QDomDocument>
 #include <QDomElement>
 #include <QGraphicsScene>
 #include <QMap>
-
-#include "tupinthash.h"
-#include "tupglobal_store.h"
 
 class QGraphicsItem;
 class QPainter;
@@ -86,14 +86,6 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
           * Sets scene name
           */
         void setSceneName(const QString &name);
-
-        void setStoryTitle(const QString &title);
-        void setStoryDuration(const QString &duration);
-        void setStoryDescription(const QString &desc);
-
-        QString storyTitle() const;
-        QString storyDuration() const;
-        QString storyDescription() const;
 
         /**
           * Locks the scene
@@ -159,7 +151,7 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
         bool tweenExists(const QString &name, TupItemTweener::Type type);
         void removeTween(const QString &name, TupItemTweener::Type type);
 
-        TupItemTweener *tween(const QString &name, TupItemTweener::Type type);
+        TupItemTweener * tween(const QString &name, TupItemTweener::Type type);
 
         QList<QString> getTweenNames(TupItemTweener::Type type);
         QList<QGraphicsItem *> getItemsFromTween(const QString &name, TupItemTweener::Type type);
@@ -180,6 +172,9 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
 
         void removeTweensFromFrame(int frame);
         void reset(QString &name);
+
+        void setStoryboard(TupStoryboard *storyboard);
+        TupStoryboard * storyboard();
 
     private:
         void removeTweensFromLayer(int layer);

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupVIEWAREA_H
-#define TupVIEWAREA_H
+#ifndef TUPVIEWAREA_H
+#define TUPVIEWAREA_H
 
 #include "tupdocumentruler.h"
 #include "tactionmanager.h"
@@ -120,6 +120,7 @@ class TupViewDocument : public QMainWindow
         void setOnionFactor(double value);
         void exportImage();
         void postImage();
+        void storyboardSettings();
 
     private slots:
         void showPos(const QPointF &p);	

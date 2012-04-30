@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupBRUSHSTATUS_H
-#define TupBRUSHSTATUS_H
+#ifndef TUPBRUSHSTATUS_H
+#define TUPBRUSHSTATUS_H
 
 #include "tupcolorwidget.h"
 

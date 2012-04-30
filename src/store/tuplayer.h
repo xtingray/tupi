@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLAYER_H
-#define TupLAYER_H
+#ifndef TUPLAYER_H
+#define TUPLAYER_H
 
 #include "tupabstractserializable.h"
 #include "tupframe.h"

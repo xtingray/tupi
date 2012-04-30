@@ -65,7 +65,7 @@ TupImageDialog::TupImageDialog(QWidget *parent) : QDialog(parent), k(new Private
     connect(k->titleEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTitleColor(const QString &)));
     titleLabel->setBuddy(k->titleEdit);
 
-    QLabel *topicLabel = new QLabel(tr("Title"));
+    QLabel *topicLabel = new QLabel(tr("Topics"));
     k->topicEdit = new QLineEdit(tr("#topic1 #topic2 #topic3"));
     connect(k->topicEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTopicColor(const QString &)));
     topicLabel->setBuddy(k->topicEdit);
@@ -102,7 +102,6 @@ TupImageDialog::TupImageDialog(QWidget *parent) : QDialog(parent), k(new Private
     layout->addLayout(middleLayout);
     layout->addWidget(descLabel);
     layout->addWidget(k->descText);
-    layout->addLayout(buttonLayout);
     setLayout(layout);
 }
 

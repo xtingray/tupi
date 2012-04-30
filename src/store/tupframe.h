@@ -72,14 +72,6 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        
        void setFrameName(const QString &name);
 
-       void setStoryTitle(const QString &title);
-       void setStoryDuration(const QString &duration);
-       void setStoryDescription(const QString &desc);
-
-       QString storyTitle() const;
-       QString storyDuration() const;
-       QString storyDescription() const;
-
        void setLocked(bool isLocked);
        
        QString frameName() const;

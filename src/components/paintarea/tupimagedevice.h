@@ -33,10 +33,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupIMAGEDEVICE_H
-#define TupIMAGEDEVICE_H
+#ifndef TUPIMAGEDEVICE_H
+#define TUPIMAGEDEVICE_H
 
-#include <qwidget.h>
+#include <QWidget>
 #include <QImage>
 
 /**

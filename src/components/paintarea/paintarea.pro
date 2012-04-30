@@ -28,6 +28,7 @@ HEADERS += tuppaintarea.h \
            tupcanvas.h \
            tupcanvasview.h \
            tupimagedialog.h \
+           tupstoryboarddialog.h \
            tupiruler.h
 
 SOURCES += tuppaintarea.cpp \
@@ -44,6 +45,7 @@ SOURCES += tuppaintarea.cpp \
            tupcanvas.cpp \
            tupcanvasview.cpp \
            tupimagedialog.cpp \
+           tupstoryboarddialog.cpp \
            tupiruler.cpp
 
 CONFIG += dll warn_on

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPAINTAREASTATUS_H
-#define TupPAINTAREASTATUS_H
+#ifndef TUPPAINTAREASTATUS_H
+#define TUPPAINTAREASTATUS_H
 
 #include <QBrush>
 #include <QSize>

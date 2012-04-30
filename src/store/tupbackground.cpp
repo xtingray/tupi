@@ -56,9 +56,7 @@ void TupBackground::fromXml(const QString &xml)
         return;
 
     QDomElement root = document.documentElement();
-
     QDomNode n = root.firstChild();
-
     QDomElement e = n.toElement();
 
     if (!e.isNull()) {

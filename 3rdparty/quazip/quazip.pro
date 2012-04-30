@@ -3,8 +3,12 @@
 # Subdir relative project main directory: ./3rdparty/quazip
 # Target is a library:  
 
-INSTALLS += target 
-target.path = /lib/ 
+INSTALLS += headers target
+target.path = /lib/
+
+headers.target = .
+headers.commands = cp *.h $(INSTALL_ROOT)/include/quazip
+headers.path = /include/quazip
 
 HEADERS += crypt.h \
            ioapi.h \
