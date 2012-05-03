@@ -14,6 +14,10 @@ macx {
     CONFIG += plugin warn_on
 }
 
+macx {
+    CONFIG += plugin warn_on
+}
+
 HEADERS += crypt.h \
            ioapi.h \
            quazip.h \
