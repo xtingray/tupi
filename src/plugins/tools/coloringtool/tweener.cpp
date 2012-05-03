@@ -257,9 +257,13 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(THEME_DIR + "icons/coloring_tween.png"), 
+
+    tWarning() << kAppProp->themeDir() + "/"  + "icons/coloring_tween.png";
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/coloring_tween.png"),
                                       tr("Coloring Tween"), this);
-    translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
+
+    tWarning() << kAppProp->themeDir() + "/"  + "cursors/tweener.png";
+    translater->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+C")));
 
     k->actions.insert(tr("Coloring Tween"), translater);

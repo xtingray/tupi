@@ -126,11 +126,11 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
 
     k->layout->addLayout(totalLayout);
 
-    k->applyButton = new TImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->applyButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/save.png"), 22);
     connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
     k->applyButton->setEnabled(false);
 
-    k->closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    k->closeButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"), 22);
     connect(k->closeButton, SIGNAL(clicked()), this, SLOT(closeTweenProperties()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -160,7 +160,7 @@ void PositionSettings::setParameters(int framesTotal, int startFrame)
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 
     k->comboInit->setEnabled(false);
-    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->closeButton->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
     k->closeButton->setToolTip(tr("Cancel Tween"));
 
     initStartCombo(framesTotal, startFrame);
@@ -256,7 +256,7 @@ void PositionSettings::closeTweenProperties()
 void PositionSettings::setEditMode()
 {
     k->mode = TweenerPanel::Edit;
-    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
+    k->closeButton->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }
 

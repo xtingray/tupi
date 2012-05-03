@@ -3,10 +3,10 @@
 # Subdir relative project main directory: ./src/plugins
 # Target is a subdirs project 
 
-SUBDIRS += export \
+SUBDIRS += tools \
+           export \
            filters \
-           import \
-           tools 
+           import
 
 CONFIG += warn_on 
 TEMPLATE = subdirs 

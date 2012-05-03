@@ -4,15 +4,7 @@
 # Target is a library:  
 
 INSTALLS += target 
-target.path = /plugins/ 
-
-macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
-}
+target.path = /plugins/
 
 HEADERS += contourselection.h
 SOURCES += contourselection.cpp

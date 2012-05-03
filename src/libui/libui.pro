@@ -13,11 +13,7 @@ INSTALLS += target
 target.path = /lib/
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += plugin warn_on
 }
 
 HEADERS += tupthemeselector.h \
@@ -29,7 +25,10 @@ SOURCES += tupthemeselector.cpp \
            tuppreferences.cpp \
            tuppaintareaconfig.cpp 
 
-CONFIG += dll warn_on
+*:!macx{
+    CONFIG += dll warn_on
+}
+
 TEMPLATE = lib
 TARGET = ui
 

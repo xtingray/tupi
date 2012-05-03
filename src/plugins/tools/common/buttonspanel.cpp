@@ -42,11 +42,11 @@
 
 ButtonsPanel::ButtonsPanel(QWidget *parent) : QWidget(parent)
 {
-    TImageButton *editButton = new TImageButton(QPixmap(THEME_DIR + "icons/tweening.png"), 22);
+    TImageButton *editButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/tweening.png"), 22);
     editButton->setToolTip(tr("Edit Tween"));
     connect(editButton, SIGNAL(clicked()), this, SIGNAL(clickedEditTween()));
 
-    TImageButton *removeButton = new TImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22);
+    TImageButton *removeButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/minus_sign.png"), 22);
     removeButton->setToolTip(tr("Remove Tween"));
     connect(removeButton, SIGNAL(clicked()), this, SIGNAL(clickedRemoveTween()));
 

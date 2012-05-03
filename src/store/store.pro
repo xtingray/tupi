@@ -12,11 +12,7 @@ INSTALLS += target
 target.path = /lib
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += plugin warn_on
 }
 
 HEADERS += tuplayer.h \
@@ -106,8 +102,10 @@ SOURCES += tuplayer.cpp \
            tupsoundlayer.cpp \
            tupsvgitem.cpp \
            tupbackground.cpp
+*:!macx{
+    CONFIG += dll warn_on
+}
 
-CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = tupistore
 

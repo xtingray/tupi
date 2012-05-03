@@ -11,11 +11,7 @@ include.files += *.h
 include.path = /include/tupicore 
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += plugin warn_on
 }
 
 HEADERS += talgorithm.h \
@@ -36,8 +32,9 @@ SOURCES += talgorithm.cpp \
            tmd5hash.cpp \
            tipdatabase.cpp \
            txmlparserbase.cpp
-
-CONFIG += warn_on dll
+*:!macx{
+    CONFIG += warn_on dll
+}
 
 TEMPLATE = lib
 TARGET = tupifwcore

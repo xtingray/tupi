@@ -7,11 +7,7 @@ INSTALLS += target
 target.path = /lib/
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += staticlib warn_on
 }
 
 HEADERS += tuptimeline.h \
@@ -27,8 +23,10 @@ SOURCES += tuptimeline.cpp \
            tupframestable.cpp \
            tuplayerindex.cpp \
            tuplayercontrols.cpp
+*:!macx{
+    CONFIG += dll warn_on
+}
 
-CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = timeline
 

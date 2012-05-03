@@ -99,12 +99,12 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
 
     QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 
-    TImageButton *add = new TImageButton(QIcon(THEME_DIR + "icons/plus_sign.png"),22, 0, false);
+    TImageButton *add = new TImageButton(QIcon(kAppProp->themeDir() + "/"  + "icons/plus_sign.png"),22, 0, false);
     buttonLayout->addWidget(add);
 
     connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
 
-    TImageButton *del = new TImageButton(QIcon(THEME_DIR + "icons/minus_sign.png"), 22, 0, false);
+    TImageButton *del = new TImageButton(QIcon(kAppProp->themeDir() + "/"  + "icons/minus_sign.png"), 22, 0, false);
 
     connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
 

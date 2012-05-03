@@ -13,11 +13,7 @@ headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
 headers.path = /include/tupinet/
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += plugin warn_on
 }
 
 HEADERS += tupnetprojectmanagerparams.h \
@@ -71,8 +67,10 @@ SOURCES += tupnetprojectmanagerparams.cpp \
            tupimageexportpackage.cpp \
            tupvideoexportpackage.cpp \
            tupstoryboardexportpackage.cpp
+*:!macx{
+    CONFIG += dll warn_on
+}
 
-CONFIG += dll warn_on
 TEMPLATE = lib
 TARGET = tupinet 
 
