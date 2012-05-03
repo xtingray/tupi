@@ -238,9 +238,9 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/rotation_tween.png"), 
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/rotation_tween.png"), 
                                       tr("Rotation Tween"), this);
-    translater->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/tweener.png"));
+    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+R")));
 
     k->actions.insert(tr("Rotation Tween"), translater);

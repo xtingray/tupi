@@ -268,7 +268,7 @@ void SelectTool::setupActions()
     k->scaleFactor = 1;
     k->realFactor = 1;
 
-    TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/selection.png"), tr("Object Selection"), this);
+    TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("O")));
 
     k->actions.insert(tr("Select"), select);

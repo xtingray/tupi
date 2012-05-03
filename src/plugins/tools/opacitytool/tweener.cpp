@@ -220,9 +220,9 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/opacity_tween.png"), 
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/opacity_tween.png"), 
                                       tr("Opacity Tween"), this);
-    translater->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/tweener.png"));
+    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+O")));
 
     k->actions.insert(tr("Opacity Tween"), translater);

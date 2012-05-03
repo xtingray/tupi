@@ -100,22 +100,22 @@ QStringList FillTool::keys() const
 
 void FillTool::setupActions()
 {
-    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/inside.png"), tr("Internal fill"), this);
+    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "icons/inside.png"), tr("Internal fill"), this);
     action1->setShortcut(QKeySequence(tr("I")));
-    k->insideCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/paint.png");
+    k->insideCursor = QCursor(kAppProp->themeDir() + "cursors/paint.png");
     action1->setCursor(k->insideCursor);
     k->actions.insert(tr("Internal fill"), action1);
     
     /*
-    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/fillcolor.png"), tr("Shape fill"), this);
+    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "icons/fillcolor.png"), tr("Shape fill"), this);
     action2->setShortcut(QKeySequence(tr("Ctrl+F")));
-    action2->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/paint.png"));
+    action2->setCursor(QCursor(kAppProp->themeDir() + "cursors/paint.png"));
     k->actions.insert(tr("Shape fill"), action2);
     */
     
-    TAction *action3 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/contour.png"), tr("Line fill"), this);
+    TAction *action3 = new TAction(QIcon(kAppProp->themeDir() + "icons/contour.png"), tr("Line fill"), this);
     action3->setShortcut(QKeySequence(tr("B")));
-    k->contourCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/contour_fill.png");
+    k->contourCursor = QCursor(kAppProp->themeDir() + "cursors/contour_fill.png");
     action3->setCursor(k->contourCursor);
     k->actions.insert(tr("Line fill"), action3);
 }

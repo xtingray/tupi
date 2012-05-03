@@ -161,9 +161,9 @@ void TextTool::aboutToChangeScene(TupGraphicsScene *scene)
 
 void TextTool::setupActions()
 {
-    TAction *text = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/text.png"), tr("Text"), this);
+    TAction *text = new TAction(QIcon(kAppProp->themeDir() + "icons/text.png"), tr("Text"), this);
     text->setShortcut(QKeySequence(tr("T")));
-    text->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/text.png"));
+    text->setCursor(QCursor(kAppProp->themeDir() + "cursors/text.png"));
 
     m_actions.insert(tr("Text"), text);
 }

@@ -93,16 +93,16 @@ QStringList ViewTool::keys() const
 
 void ViewTool::setupActions()
 {
-    TAction *zoomAction = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/zoom.png"), tr("Zoom"), this);
+    TAction *zoomAction = new TAction(QIcon(kAppProp->themeDir() + "icons/zoom.png"), tr("Zoom"), this);
     zoomAction->setShortcut(QKeySequence(tr("Z")));
-    k->zoomCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/zoom.png");
+    k->zoomCursor = QCursor(kAppProp->themeDir() + "cursors/zoom.png");
     zoomAction->setCursor(k->zoomCursor);
     
     k->actions.insert(tr("Zoom"), zoomAction);
     
-    TAction *handAction = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/hand.png"), tr("Hand"), this);
+    TAction *handAction = new TAction(QIcon(kAppProp->themeDir() + "icons/hand.png"), tr("Hand"), this);
     handAction->setShortcut(QKeySequence(tr("H")));
-    k->handCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/hand.png");
+    k->handCursor = QCursor(kAppProp->themeDir() + "cursors/hand.png");
     handAction->setCursor(k->handCursor);
 
     k->actions.insert(tr("Hand"), handAction);

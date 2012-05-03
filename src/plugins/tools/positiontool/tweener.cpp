@@ -350,9 +350,9 @@ bool Tweener::isComplete() const
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/position_tween.png"), 
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/position_tween.png"), 
                                       tr("Position Tween"), this);
-    translater->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/tweener.png"));
+    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+W")));
 
     k->actions.insert(tr("Position Tween"), translater);

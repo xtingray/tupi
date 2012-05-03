@@ -236,9 +236,9 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/scale_tween.png"), 
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/scale_tween.png"), 
                                       tr("Scale Tween"), this);
-    translater->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/tweener.png"));
+    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+S")));
 
     k->actions.insert(tr("Scale Tween"), translater);

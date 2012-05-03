@@ -318,7 +318,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-    TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/nodes.png"), tr("Line Selection"), this);
+    TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "icons/nodes.png"), tr("Line Selection"), this);
     select->setShortcut(QKeySequence(tr("N")));
 
     k->actions.insert(tr("Line Selection"), select);

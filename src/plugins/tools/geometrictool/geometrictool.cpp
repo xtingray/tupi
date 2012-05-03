@@ -116,23 +116,23 @@ void GeometricTool::init(TupGraphicsScene *scene)
 
 void GeometricTool::setupActions()
 {
-    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/square.png"), tr("Rectangle"), this);
+    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "icons/square.png"), tr("Rectangle"), this);
     action1->setShortcut(QKeySequence(tr("R")));
-    k->squareCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/square.png", 0, 0);
+    k->squareCursor = QCursor(kAppProp->themeDir() + "cursors/square.png", 0, 0);
     action1->setCursor(k->squareCursor);
     
     k->actions.insert(tr("Rectangle"), action1);
     
-    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/ellipse.png"), tr("Ellipse"), this);
+    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "icons/ellipse.png"), tr("Ellipse"), this);
     action2->setShortcut(QKeySequence(tr("C")));
-    k->circleCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/circle.png");
+    k->circleCursor = QCursor(kAppProp->themeDir() + "cursors/circle.png");
     action2->setCursor(k->circleCursor);
     
     k->actions.insert(tr("Ellipse"), action2);
     
-    TAction *action3 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/line.png"), tr("Line"), this);
+    TAction *action3 = new TAction(QIcon(kAppProp->themeDir() + "icons/line.png"), tr("Line"), this);
     action3->setShortcut(QKeySequence(tr("L")));
-    k->lineCursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/line.png", 0, 0);
+    k->lineCursor = QCursor(kAppProp->themeDir() + "cursors/line.png", 0, 0);
     action3->setCursor(k->lineCursor);
 
     k->actions.insert(tr("Line"), action3);
