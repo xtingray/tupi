@@ -1312,12 +1312,15 @@ void TupViewDocument::storyboardSettings()
 {
     int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
     TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
+    connect(storySettings, SIGNAL(saveStoryboard(TupStoryboard *)), this, SLOT(updateStoryboard(TupStoryboard *)));
     storySettings->show();
     QDesktopWidget desktop;
     storySettings->move((int) (desktop.screenGeometry().width() - storySettings->width())/2 ,
                         (int) (desktop.screenGeometry().height() - storySettings->height())/2);
+}
 
-    if (storySettings->exec() != QDialog::Rejected) {
-        tError() << "TupViewDocument::storyboardSettings() - Processing data..."; 
-    }
+void TupViewDocument::updateStoryboard(TupStoryboard *storyboard)
+{
+    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+    k->project->scene(sceneIndex)->setStoryboard(storyboard);    
 }

@@ -48,8 +48,11 @@ class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializabl
     Q_OBJECT
 
     public:
-        TupStoryboard();
+        TupStoryboard(const QString &author);
         ~TupStoryboard();
+
+        void init(int start, int size);
+        void remove(int size);
 
         void setStoryTitle(const QString &title);
         void setStoryAuthor(const QString &author);
@@ -69,6 +72,8 @@ class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializabl
         
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
+
+        int size();
         
     private:
         struct Private;

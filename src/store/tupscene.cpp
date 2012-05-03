@@ -69,6 +69,7 @@ TupScene::TupScene(TupProject *parent) : QObject(parent), k(new Private)
     k->isLocked = false;
     k->layerCount = 0;
     k->isVisible = true;
+    k->storyboard = new TupStoryboard(parent->author());
     k->background = new TupBackground(this);
 }
 
@@ -634,3 +635,4 @@ TupStoryboard * TupScene::storyboard()
 {
     return k->storyboard;
 }
+

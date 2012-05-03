@@ -37,6 +37,7 @@
 #define TUPSTORYBOARDDIALOG_H
 
 #include "tupscene.h"
+#include "tupstoryboard.h"
 #include "tupexportinterface.h"
 
 #include <QDialog>
@@ -57,6 +58,10 @@ class TupStoryBoardDialog : public QDialog
         void updateForm(QListWidgetItem *current, QListWidgetItem *previous);
         void saveStoryBoard();
         void exportStoryBoard();
+        void closeDialog();
+
+    signals:
+        void saveStoryboard(TupStoryboard *);
 
     private:
         void setListComponent();

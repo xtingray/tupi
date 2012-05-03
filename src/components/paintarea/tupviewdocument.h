@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPVIEWAREA_H
-#define TUPVIEWAREA_H
+#ifndef TUPVIEWDOCUMENT_H
+#define TUPVIEWDOCUMENT_H
 
 #include "tupdocumentruler.h"
 #include "tactionmanager.h"
@@ -43,6 +43,7 @@
 #include "tuptoolinterface.h"
 #include "tupconfigurationarea.h"
 #include "tupglobal.h"
+#include "tupstoryboard.h"
 
 #include <QMainWindow>
 
@@ -128,6 +129,7 @@ class TupViewDocument : public QMainWindow
         void updateZoomFactor( double f);
         void selectToolFromMenu(QAction *act);
         void callAutoSave();
+        void updateStoryboard(TupStoryboard *storyboard);
 
     public slots:
         void undo();

@@ -40,6 +40,8 @@
 #include "tconfig.h"
 #include "tseparator.h"
 #include "tupscene.h"
+#include "talgorithm.h"
+#include "tosd.h"
 #include "tdebug.h"
 
 #include <QDialog>
@@ -54,6 +56,8 @@
 #include <QTextEdit>
 #include <QDir>
 #include <QPushButton>
+#include <QPainter>
+#include <QFileDialog>
 
 struct TupStoryBoardDialog::Private
 {
@@ -61,7 +65,9 @@ struct TupStoryBoardDialog::Private
     QColor bgColor;
     QSize size;
     TupScene *scene;
-    TupStoryboard *story;
+    TupStoryboard *storyboard;
+    int currentIndex;
+    QString path;
 
     QBoxLayout *layout;
     QVBoxLayout *formLayout;
@@ -76,6 +82,7 @@ struct TupStoryBoardDialog::Private
     QLineEdit *authorEdit;
     QTextEdit *summaryEdit;
 
+    QLabel *sceneLabel;
     QLineEdit *sceneTitleEdit;
     QLineEdit *sceneDurationEdit;
     QTextEdit *sceneDescriptionEdit;
@@ -87,7 +94,7 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
     k->bgColor = color;
     k->size = size;
     k->scene = scene;
-    k->story = k->scene->storyboard();
+    k->storyboard = k->scene->storyboard();
 
     setModal(true);
     setWindowTitle(tr("Storyboard Settings"));
@@ -109,7 +116,7 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
 
     QPushButton *closeButton = new QPushButton(tr("&Close"));
     closeButton->setDefault(true);
-    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
     buttonBox->addButton(saveButton, QDialogButtonBox::ActionRole);
@@ -176,7 +183,7 @@ void TupStoryBoardDialog::setStoryForm()
     k->authorEdit = new QLineEdit("");
     authorLabel->setBuddy(k->authorEdit);
 
-    QLabel *summaryLabel = new QLabel(tr("Description"));
+    QLabel *summaryLabel = new QLabel(tr("Summary"));
     k->summaryEdit = new QTextEdit;
     k->summaryEdit->setAcceptRichText(false);
     k->summaryEdit->setFixedHeight(80);
@@ -209,9 +216,9 @@ void TupStoryBoardDialog::setSceneForm()
     QFont font = this->font();
     font.setPointSize(10);
     font.setBold(true);
-    QLabel *mainTitle = new QLabel(tr("Scene Information"));
-    mainTitle->setFont(font);
-    mainTitle->setAlignment(Qt::AlignHCenter);
+    k->sceneLabel = new QLabel(tr("Scene Information"));
+    k->sceneLabel->setFont(font);
+    k->sceneLabel->setAlignment(Qt::AlignHCenter);
 
     QLabel *titleLabel = new QLabel(tr("Title"));
     k->sceneTitleEdit = new QLineEdit("");
@@ -236,7 +243,7 @@ void TupStoryBoardDialog::setSceneForm()
     middleLayout->addWidget(durationLabel);
     middleLayout->addWidget(k->sceneDurationEdit);
 
-    sceneLayout->addWidget(mainTitle);
+    sceneLayout->addWidget(k->sceneLabel);
     sceneLayout->addLayout(topLayout);
     sceneLayout->addLayout(middleLayout);
     sceneLayout->addWidget(descLabel);
@@ -262,23 +269,50 @@ void TupStoryBoardDialog::addScene(const QString &label, const QIcon &icon)
 void TupStoryBoardDialog::thumbnailGenerator()
 {
     QPixmap pixmap = QPixmap(96, 70); 
-    pixmap.fill(Qt::lightGray);
+    pixmap.fill();
+
+    QPainter painter(&pixmap);
+    painter.setPen(Qt::black);
+    painter.setFont(QFont("Arial", 8, QFont::Bold));
+    QRectF rect(QPointF(0, 0), QSizeF(96, 70));
+    painter.drawText(rect, Qt::AlignCenter, tr("Storyboard"));
+    painter.setPen(QColor(230, 230, 230));
+    QRectF rectangle(0, 0, 95, 69);
+    painter.drawRect(rectangle);
+
     QIcon icon = QIcon(pixmap); 
     addScene(tr("Cover"), icon);
 
-    QString path = QDir::tempPath() + QDir::separator() + "frame";
-    for (int i=0; i < k->scene->framesTotal(); i++) {
-         QString fileName = path + QString::number(i);
-         tError() << "TupStoryBoardDialog::thumbnailGenerator() - Exporting frame -> " << fileName;
+    int framesTotal = k->scene->framesTotal();
+    if (k->storyboard->size() == 0)
+        k->storyboard->init(0, framesTotal);
+
+    // SQA: This code should be temporary
+    if (k->storyboard->size() < framesTotal)
+        k->storyboard->init(k->storyboard->size(), framesTotal);
+
+    // SQA: This code should be temporary
+    if (k->storyboard->size() > framesTotal)
+        k->storyboard->remove(k->storyboard->size() - framesTotal);
+
+    k->path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
+    QDir().mkpath(k->path);
+
+    for (int i=0; i < framesTotal; i++) {
+         QString fileName = k->path + "scene" + QString::number(i);
          bool isOk = k->imagePlugin->exportFrame(i, k->bgColor, fileName, k->scene, k->size);
          if (isOk) {
              QPixmap pixmap(fileName + ".png");
+             QPainter painter(&pixmap);
+             painter.setPen(Qt::darkGray);
+             QRectF rectangle(0, 0, 519, 379);
+             painter.drawRect(rectangle);
+
              pixmap.scaledToWidth(96, Qt::SmoothTransformation);
              pixmap.scaledToHeight(70, Qt::SmoothTransformation);
+
              QIcon icon(pixmap);
              QString label = "Scene " + QString::number(i);  
-             if (k->story->sceneTitle(i).length() > 0)
-                 label = k->story->sceneTitle(i);
              addScene(label, icon);
          }
     }
@@ -287,31 +321,61 @@ void TupStoryBoardDialog::thumbnailGenerator()
 void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *previous)
 {
     int previousIndex = k->list->row(previous);
-    int index = k->list->row(current);
-    tError() << "TupStoryBoardDialog::updateForm() -> Scene has changed! : " << index;
-    tError() << "TupStoryBoardDialog::updateForm() -> Previous index : " << previousIndex;
+    k->currentIndex = k->list->row(current);
     QPixmap pixmap;
 
-    if (index > 0) {
-        index = index - 1;
-        QString fileName = QDir::tempPath() + QDir::separator() + "frame";
-        fileName += QString::number(index) + ".png";
+    if (k->currentIndex > 0) {
+        int index = k->currentIndex - 1;
+        k->sceneLabel->setText(tr("Scene No %1 - Information").arg(QString::number(index)));
+        QString fileName = k->path + "scene" + QString::number(index) + ".png";
         pixmap = QPixmap(fileName);
-        tError() << "TupStoryBoardDialog::updateForm() - filename: " << fileName;
         pixmap.scaledToWidth(520, Qt::SmoothTransformation);
         pixmap.scaledToHeight(380, Qt::SmoothTransformation);
 
         if (previousIndex == 0) {
             k->storyPanel->hide();
             k->scenePanel->show();
+
+            k->storyboard->setStoryTitle(k->titleEdit->text());
+            k->storyboard->setStoryAuthor(k->authorEdit->text());
+            k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
+        } else {
+            previousIndex--;
+            k->storyboard->setSceneTitle(previousIndex, k->sceneTitleEdit->text());
+            k->storyboard->setSceneDuration(previousIndex, k->sceneDurationEdit->text());
+            k->storyboard->setSceneDescription(previousIndex, k->sceneDescriptionEdit->toPlainText());
         }
+
+        k->sceneTitleEdit->setText(k->storyboard->sceneTitle(index));
+        k->sceneDurationEdit->setText(k->storyboard->sceneDuration(index));
+        k->sceneDescriptionEdit->setPlainText(k->storyboard->sceneDescription(index));
+
     } else {
         if (previousIndex != 0) {
             pixmap = QPixmap(520, 380);
-            pixmap.fill(Qt::lightGray);
+            pixmap.fill();
+
+            QPainter painter(&pixmap);
+            painter.setPen(Qt::black);
+            painter.setFont(QFont("Arial", 30, QFont::Bold));
+            QRectF rect(QPointF(0, (k->size.height()-150)/2), QSizeF(520, 150));
+            painter.drawText(rect, Qt::AlignCenter, tr("Storyboard"));
+            painter.setPen(Qt::lightGray);
+            QRectF rectangle(5, 5, 510, 370);
+            painter.drawRect(rectangle);
 
             k->scenePanel->hide();
             k->storyPanel->show();
+
+            if (previousIndex > 0) {
+                k->storyboard->setSceneTitle(previousIndex - 1, k->sceneTitleEdit->text());
+                k->storyboard->setSceneDuration(previousIndex - 1, k->sceneDurationEdit->text());
+                k->storyboard->setSceneDescription(previousIndex - 1, k->sceneDescriptionEdit->toPlainText());
+            }
+
+            k->titleEdit->setText(k->storyboard->storyTitle());
+            k->authorEdit->setText(k->storyboard->storyAuthor());
+            k->summaryEdit->setPlainText(k->storyboard->storySummary());
         }
     }
 
@@ -320,10 +384,97 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
 
 void TupStoryBoardDialog::saveStoryBoard()
 {
-    tError() << "TupStoryBoardDialog::saveStoryBoard() - Save the story!";
+    if (k->currentIndex == 0) {
+        k->storyboard->setStoryTitle(k->titleEdit->text());
+        k->storyboard->setStoryAuthor(k->authorEdit->text());
+        k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
+    } else {
+        k->storyboard->setSceneTitle(k->currentIndex - 1, k->sceneTitleEdit->text());
+        k->storyboard->setSceneDuration(k->currentIndex - 1, k->sceneDurationEdit->text());
+        k->storyboard->setSceneDescription(k->currentIndex - 1, k->sceneDescriptionEdit->toPlainText());
+    }
+
+    emit saveStoryboard(k->storyboard);
 }
 
 void TupStoryBoardDialog::exportStoryBoard()
 {
-    tError() << "TupStoryBoardDialog::exportStoryBoard() - Export the story!";
+    QString dir = getenv("HOME");
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the storyboard directory..."), dir,
+                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (path.isEmpty())
+        return;
+
+    QDir directory(k->path);
+    QStringList files = directory.entryList();
+    for (int i = 0; i < files.size(); ++i) {
+         QString file = files.at(i).toLocal8Bit().constData();
+         if (file != "." && file != "..")
+             QFile::copy(k->path + file, path + QDir::separator() + file);
+    }
+
+    QFile::copy(kAppProp->shareDir() + "data/storyboard/tupi.css", path + QDir::separator() + "tupi.css");
+
+    QFile file(path + QDir::separator() + "index.html");
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    out << "<html>\n";
+    out << "<head>\n";
+    out << "<title>" << k->storyboard->storyTitle() << "</title>\n";
+    out << "<link rel=\"stylesheet\" type=\"text/css\" href=\"tupi.css\" media=\"screen\" />\n";
+    out << "</head>\n";
+    out << "<body>\n";
+    out << "<div id=\"header\">\n";
+    out << "<div id=\"title\">Storyboard</div>\n";
+    out << "<div id=\"item\"><div id=\"item-header\">Title:</div>\n";
+    out << "<div id=\"item-data\">" << k->storyboard->storyTitle() << "</div></div>\n";
+    out << "<div id=\"item\"><div id=\"item-header\">Author:</div>\n";
+    out << "<div id=\"item-data\">" << k->storyboard->storyAuthor() << "</div></div>\n";
+    out << "<div id=\"item\"><div id=\"item-header\">Summary:</div>\n";
+    out << "<div id=\"item-data\">" << k->storyboard->storySummary() << "</div></div>\n";
+    out << "<div id=\"item\"><div id=\"item-header\">Scenes Total:</div>\n";
+    out << "<div id=\"item-data\">" << QString::number(k->storyboard->size()) << "</div></div>\n";
+    out << "</div>\n";
+
+    for (int i=0; i < k->storyboard->size(); i++) {
+         out << "<div id=\"scene\">\n";
+         out << "<div id=\"title\">" << "Scene No. " << QString::number(i+1) << "</div>\n";
+         QString image = "<img src=\"scene" + QString::number(i) + ".png\" />\n";
+         out << image;
+         out << "<div id=\"paragraph\">\n";
+         out << "<div id=\"scene-item\">\n";
+         out << " <div id=\"scene-header\">Title:</div>\n";
+         out << " <div id=\"scene-data\">" << k->storyboard->sceneTitle(i) << "</div>\n";
+         out << "</div>\n";
+         out << "<div id=\"scene-item\">\n";
+         out << " <div id=\"scene-header\">Duration:</div>\n";
+         out << " <div id=\"scene-data\">" << k->storyboard->sceneDuration(i) << "</div>\n";
+         out << "</div>\n";
+         out << "<div id=\"scene-item\">\n";
+         out << " <div id=\"scene-header\">Description:</div>\n";
+         out << " <div id=\"scene-data\">" << k->storyboard->sceneDescription(i)  << "</div>\n";
+         out << "</div>\n";
+         out << "</div>\n";
+         out << "</div>\n";
+    }
+    out << "</body>\n";
+    out << "</html>";
+
+    file.close(); 
+
+    TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
+}
+
+void TupStoryBoardDialog::closeDialog()
+{
+    QDir dir(k->path);
+    QStringList files = dir.entryList();
+    for (int i = 0; i < files.size(); ++i) {
+         QString file = files.at(i).toLocal8Bit().constData();
+         if (file != "." && file != "..")
+             QFile::remove(k->path + file);
+    }
+    dir.rmdir(k->path); 
+
+    close();
 }

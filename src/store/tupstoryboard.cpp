@@ -46,19 +46,33 @@ struct TupStoryboard::Private
     QList<QString> description;
 };
 
-TupStoryboard::TupStoryboard() : k(new Private)
+TupStoryboard::TupStoryboard(const QString &author) : k(new Private)
 {
     k->title   = "";
-    k->author  = "";
+    k->author  = author;
     k->summary = "";
-
-    k->scene = QList<QString>();
-    k->duration = QList<QString>();
-    k->description = QList<QString>();
 }
 
 TupStoryboard::~TupStoryboard()
 {
+}
+
+void TupStoryboard::init(int start, int size)
+{
+    for (int i=start; i < size; i++) {
+         k->scene << "";
+         k->duration << "";
+         k->description << "";
+    }
+}
+
+void TupStoryboard::remove(int size)
+{
+    for (int i=0; i < size; i++) {
+         k->scene.removeLast();
+         k->duration.removeLast();
+         k->description.removeLast();
+    }
 }
 
 void TupStoryboard::setStoryTitle(const QString &title)
@@ -93,24 +107,39 @@ QString TupStoryboard::storySummary() const
 
 void TupStoryboard::setSceneTitle(int index, const QString &title)
 {
-    k->scene.replace(index, title);
+    if (index >= 0 && index < k->scene.count()) {
+        k->scene.replace(index, title);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupStoryboard::setSceneTitle() - Invalid index: " << index;
+        #endif
+    }
 }
 
 void TupStoryboard::setSceneDuration(int index, const QString &duration)
 {
-    k->duration.replace(index, duration);
+    if (index >= 0 && index < k->duration.count()) {
+        k->duration.replace(index, duration);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupStoryboard::setSceneDuration() - Invalid index: " << index;
+        #endif
+    }
 }
 
 void TupStoryboard::setSceneDescription(int index, const QString &description)
 {
-    k->description.replace(index, description);
+    if (index >= 0 && index < k->description.count()) {
+        k->description.replace(index, description);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupStoryboard::setSceneDuration() - Invalid index: " << index;
+        #endif
+    }
 }
 
 QString TupStoryboard::sceneTitle(int index) const
 {
-    tError() << "INDEX: " << index;
-    tError() << "COUNT: " << k->scene.count();
-
     if (index < k->scene.count())
         return k->scene.at(index);
 
@@ -197,4 +226,7 @@ QDomElement TupStoryboard::toXml(QDomDocument &doc) const
     return storyboard;
 }
 
-
+int TupStoryboard::size()
+{
+    return k->scene.count();
+}
