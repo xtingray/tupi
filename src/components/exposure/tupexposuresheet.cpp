@@ -69,7 +69,7 @@ TupExposureSheet::TupExposureSheet(QWidget *parent) : TupModuleWidgetBase(parent
     k->currentTable = 0;
     k->fromMenu = false;
     setWindowTitle(tr("Exposure Sheet"));
-    setWindowIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png"));
+    setWindowIcon(QPixmap(kAppProp->themeDir() + "icons/exposure_sheet.png"));
 
     k->actionBar = new TupProjectActionBar(QString("Exposure"), TupProjectActionBar::InsertLayer |
                         TupProjectActionBar::RemoveLayer |

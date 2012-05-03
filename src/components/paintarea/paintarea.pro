@@ -7,11 +7,7 @@ INSTALLS += target
 target.path = /lib/
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += staticlib warn_on
 }
 
 HEADERS += tuppaintarea.h \
@@ -48,7 +44,10 @@ SOURCES += tuppaintarea.cpp \
            tupstoryboarddialog.cpp \
            tupiruler.cpp
 
-CONFIG += dll warn_on
+*:!macx{
+    CONFIG += dll warn_on
+}
+
 TEMPLATE = lib
 TARGET = paintarea
 

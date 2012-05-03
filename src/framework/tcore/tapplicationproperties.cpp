@@ -198,6 +198,5 @@ TApplicationProperties *TApplicationProperties::instance()
 {
     if (s_instance == 0)
         s_instance = new TApplicationProperties;
-
     return s_instance;
 }

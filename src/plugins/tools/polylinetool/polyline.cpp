@@ -80,7 +80,7 @@ PolyLine::PolyLine(): k(new Private)
     k->nodegroup = 0;
     k->item = 0;
 
-    k->cursor = QCursor(THEME_DIR + "cursors/polyline.png");
+    k->cursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/polyline.png");
     
     k->line1 = new QGraphicsLineItem(0, 0, 0, 0);
     k->line1->setPen(QPen(QColor(55, 177, 50)));
@@ -426,7 +426,7 @@ void PolyLine::nodeChanged()
 
 void PolyLine::setupActions()
 {
-    TAction *pencil = new TAction(QIcon(THEME_DIR + "icons/polyline.png"), tr("PolyLine"), this);
+    TAction *pencil = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/polyline.png"), tr("PolyLine"), this);
     pencil->setShortcut(QKeySequence(tr("S")));
     pencil->setCursor(k->cursor);
     

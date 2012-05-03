@@ -184,11 +184,11 @@ void TweenerPanel::setButtonsPanel()
     QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->buttonsPanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-    k->applyButton = new TImageButton(QPixmap(THEME_DIR + "icons/save.png"), 22);
+    k->applyButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/save.png"), 22);
     k->applyButton->setDisabled(true);
     connect(k->applyButton, SIGNAL(clicked()), this, SLOT(applyTween()));
 
-    k->closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close.png"), 22);
+    k->closeButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"), 22);
     connect(k->closeButton, SIGNAL(clicked()), this, SLOT(closePanel()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -281,7 +281,7 @@ void TweenerPanel::setParameters(const QString &name, int framesTotal, int start
     activateMode(TweenerPanel::Selection);
 
     k->applyButton->setToolTip(tr("Save Tween"));
-    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close.png"));
+    k->closeButton->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
     k->closeButton->setToolTip(tr("Cancel Tween"));
 }
 
@@ -427,7 +427,7 @@ void TweenerPanel::setEditMode()
     k->mode = TweenerPanel::Edit;
 
     k->applyButton->setToolTip(tr("Update Tween"));
-    k->closeButton->setIcon(QPixmap(THEME_DIR + "icons/close_properties.png"));
+    k->closeButton->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
     k->closeButton->setToolTip(tr("Close Tween properties"));
 }
 

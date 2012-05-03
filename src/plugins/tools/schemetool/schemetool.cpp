@@ -94,7 +94,7 @@ SchemeTool::SchemeTool() : k(new Private)
 {
     k->configurator = 0;
     k->item = 0;
-    k->cursor = QCursor(THEME_DIR + "cursors/contour.png", 0, 15);
+    k->cursor = QCursor(kAppProp->themeDir() + "/"  + "cursors/contour.png", 0, 15);
 
     setupActions();
 }
@@ -694,7 +694,7 @@ void SchemeTool::release(const TupInputDeviceInformation *input, TupBrushManager
 
 void SchemeTool::setupActions()
 {
-    TAction *schemePen = new TAction(QPixmap(THEME_DIR + "icons/scheme.png"), tr("Scheme"), this);
+    TAction *schemePen = new TAction(QPixmap(kAppProp->themeDir() + "/"  + "icons/scheme.png"), tr("Scheme"), this);
     schemePen->setShortcut(QKeySequence(tr("M")));
     schemePen->setCursor(k->cursor);
 

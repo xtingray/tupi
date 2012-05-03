@@ -3,29 +3,45 @@
 # Subdir relative project main directory: ./src/shell
 # Target is an application:  ../../bin/tupi.bin
 
-INSTALLS += tupidata \
-            launcher \
-            target
 
-tupidata.target = data
-tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
-tupidata.path = /data/
-
-launcher.target = ../../launcher/tupi
-launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin
-launcher.path = /bin/
-
-target.path = /bin/
 
 macx {
-    CONFIG += console
+    CONFIG += console static
     ICON = ../../launcher/icons/tupi.icns
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7
     QMAKE_INFO_PLIST = ./Info.plist
     TARGET = ../../bin/Tupi
+
+    INSTALLS += icons
+
+    icons.target = ../../launcher/icons/tupi.png
+    icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
+    icons.path = /pixmaps/
+
+    INSTALLS += target \
+                tupidata \
+
+    target.path = /bin/
+
+    tupidata.target = data
+    tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
+    tupidata.path = /data/
 }
 
 unix:!mac {
+
+    INSTALLS += tupidata \
+                launcher \
+                target
+    target.path = /bin/
+
+    tupidata.target = data
+    tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
+    tupidata.path = /data/
+
+    launcher.target = ../../launcher/tupi
+    launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin
+    launcher.path = /bin/
+
     INSTALLS += desktop \
                 icons \
                 tupiman \

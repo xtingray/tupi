@@ -10,6 +10,10 @@ headers.target = .
 headers.commands = cp *.h $(INSTALL_ROOT)/include/quazip
 headers.path = /include/quazip
 
+macx {
+    CONFIG += plugin warn_on
+}
+
 HEADERS += crypt.h \
            ioapi.h \
            quazip.h \
@@ -26,7 +30,9 @@ SOURCES += ioapi.c \
            unzip.c \
            zip.c 
 
-CONFIG += warn_on dll
+*:!macx{
+    CONFIG += dll warn_on
+}
 TEMPLATE = lib
 QT -= gui
 

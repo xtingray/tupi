@@ -69,21 +69,21 @@ QStringList EraserTool::keys() const
 
 void EraserTool::setupActions()
 {
-    TAction *action1 = new TAction(QIcon(THEME_DIR + "icons/eraser.png"), tr("Eraser"), this);
+    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/eraser.png"), tr("Eraser"), this);
     action1->setShortcut(QKeySequence(tr("E")));
-    action1->setCursor(QCursor(THEME_DIR + "cursors/eraser.png"));
+    action1->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/eraser.png"));
     
     m_actions.insert(tr("Eraser"), action1);
    
     /* 
-     TAction *action2 = new TAction(QIcon(THEME_DIR + "icons/ellipse.png"), tr("Ellipse"), this);
+     TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "/"  + "icons/ellipse.png"), tr("Ellipse"), this);
      action2->setShortcut(QKeySequence(tr("Ctrl+E")));
-     action2->setCursor(QCursor(THEME_DIR + "cursors/circle.png"));
+     action2->setCursor(QCursor(kAppProp->themeDir() + "/"  + "cursors/circle.png"));
          
      m_actions.insert(tr("Ellipse"), action2);
          
          
-     TAction *action3 = new TAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
+     TAction *action3 = new TAction( QIcon(kAppProp->themeDir() + "/" +"/icons/line.png"), tr("Line"), this);
      action3->setShortcut( QKeySequence(tr("Ctrl+L")) );
      m_actions.insert(tr("Line"), action3);
     */

@@ -11,11 +11,7 @@ headers.commands = cp *.h $(INSTALL_ROOT)/include/tupibase
 headers.path = /include/tupibase
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += plugin warn_on
 }
 
 HEADERS += tupexportinterface.h \
@@ -39,8 +35,9 @@ SOURCES += tupexportpluginobject.cpp \
            tupgraphicsscene.cpp \
            tupguideline.cpp \
            tupanimationrenderer.cpp
-
-CONFIG += dll warn_on
+*:!macx{
+    CONFIG += dll warn_on
+}
 TEMPLATE = lib
 TARGET = tupibase
 

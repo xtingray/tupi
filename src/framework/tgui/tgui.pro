@@ -13,11 +13,7 @@ include.files += *.h
 include.path = /include/tupigui 
 
 macx {
-    CONFIG += plugin
-
-    INSTALLS += otool
-    otool.path = /lib/
-    otool.extra  += ../../../tools/update_dylib_path.rb $(INSTALL_ROOT)/lib/$(TARGET) '^/lib' '$(INSTALL_ROOT)/lib'
+    CONFIG += plugin warn_on
 }
 
 HEADERS += taction.h \
@@ -144,7 +140,10 @@ SOURCES += taction.cpp \
 #    SOURCES += tffmpegmoviegenerator.cpp
 #}
 
-CONFIG += warn_on dll
+*:!macx{
+    CONFIG += warn_on dll
+}
+
 TEMPLATE = lib
 TARGET = tupifwgui
 QT += xml opengl
