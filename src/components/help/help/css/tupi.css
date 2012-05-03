@@ -3,8 +3,6 @@ body {
 }
 
 .tupi_background1 {
-<<<<<<< HEAD
-<<<<<<< HEAD
      background-image:url('/usr/local/tupi/share/data/help/images/bg1.png');
 }
 
@@ -30,100 +28,22 @@ body {
 
 .tip_background00 {
      background-image:url('/usr/local/tupi/share/data/help/images/tip_bg01.png');
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg1.png');
-}
-
-.tupi_background2 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg2.png');
-}
-
-.tupi_background3 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg3.png');
-}
-
-.tupi_background4 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg4.png');
-}
-
-.tupi_background5 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg5.png');
-}
-
-.tupi_background6 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg6.png');
-}
-
-.tip_background00 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tip_bg01.png');
->>>>>>> Performing execution without environment variables for Mac OS X Lion
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg1.png');
-}
-
-.tupi_background2 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg2.png');
-}
-
-.tupi_background3 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg3.png');
-}
-
-.tupi_background4 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg4.png');
-}
-
-.tupi_background5 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg5.png');
-}
-
-.tupi_background6 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/bg6.png');
-}
-
-.tip_background00 {
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tip_bg01.png');
->>>>>>> db68347ab41ce3774cd55caccce84a7e00fc508c
      color:#000000;
 }
 
 .tip_background01 {
-<<<<<<< HEAD
-<<<<<<< HEAD
      background-image:url('/usr/local/tupi/share/data/help/images/tip_bg02.png');
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tip_bg02.png');
->>>>>>> Performing execution without environment variables for Mac OS X Lion
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tip_bg02.png');
->>>>>>> db68347ab41ce3774cd55caccce84a7e00fc508c
      color:#000000;
 }
 
 .tip_background02 {
-<<<<<<< HEAD
-<<<<<<< HEAD
      background-image:url('/usr/local/tupi/share/data/help/images/tip_bg03.png');
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tip_bg03.png');
->>>>>>> Performing execution without environment variables for Mac OS X Lion
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tip_bg03.png');
->>>>>>> db68347ab41ce3774cd55caccce84a7e00fc508c
      color:#000000;
 }
 
 .tupi {
      background-color:#ffffff;
-<<<<<<< HEAD
-<<<<<<< HEAD
      background-image:url('/usr/local/tupi/share/data/help/images/tupi.png');
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tupi.png');
->>>>>>> Performing execution without environment variables for Mac OS X Lion
-=======
-     background-image:url('/Users/cristian/Projects/tupi_bin//share/data/help/images/tupi.png');
->>>>>>> db68347ab41ce3774cd55caccce84a7e00fc508c
      background-repeat:no-repeat;
      background-position:left top;
      color:#000000;
@@ -390,3 +310,4 @@ a:hover {
      font-size:10px;
      font-weight:normal;
 }
+
