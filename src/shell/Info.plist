@@ -13,7 +13,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>tupi.bin</string>
+	<string>Tupi</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.maefloresta.tupi</string>
 	<key>NOTE</key>
