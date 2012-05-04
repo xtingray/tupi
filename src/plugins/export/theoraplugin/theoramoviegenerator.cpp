@@ -39,6 +39,7 @@
 
 #ifdef __cplusplus
 extern "C" {
+#include <stdint.h>
 #include <ogg/ogg.h>
 #include <theora/codec.h>
 #include <theora/theoraenc.h>
