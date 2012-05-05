@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupBUTTONITEM_H
-#define TupBUTTONITEM_H
+#ifndef TUPBUTTONITEM_H
+#define TUPBUTTONITEM_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"

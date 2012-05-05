@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLIBRARY_H
-#define TupLIBRARY_H
+#ifndef TUPLIBRARY_H
+#define TUPLIBRARY_H
 
 #include <QObject>
 

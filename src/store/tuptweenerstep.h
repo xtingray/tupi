@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTWEENERSTEP_H
-#define TupTWEENERSTEP_H
+#ifndef TUPTWEENERSTEP_H
+#define TUPTWEENERSTEP_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"

@@ -33,13 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupGRAPHICOBJECT_H
-#define TupGRAPHICOBJECT_H
+#ifndef TUPGRAPHICOBJECT_H
+#define TUPGRAPHICOBJECT_H
 
-#include <QObject>
 #include "tupabstractserializable.h"
 #include "tupframe.h"
 #include "tupglobal_store.h"
+
+#include <QObject>
 
 class QGraphicsItem;
 class TupItemTweener;

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCOMMANDEXECUTOR_H
-#define TupCOMMANDEXECUTOR_H
+#ifndef TUPCOMMANDEXECUTOR_H
+#define TUPCOMMANDEXECUTOR_H
 
 #include "tupscene.h"
 #include <QObject>

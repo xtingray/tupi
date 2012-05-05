@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupABSTRACTPROJECTRESPONSEHANDLER_H
-#define TupABSTRACTPROJECTRESPONSEHANDLER_H
+#ifndef TUPABSTRACTPROJECTRESPONSEHANDLER_H
+#define TUPABSTRACTPROJECTRESPONSEHANDLER_H
 
 #include "tupglobal_store.h"
 #include <QObject>

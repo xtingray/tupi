@@ -33,14 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLIBRARYOBJECT_H
-#define TupLIBRARYOBJECT_H
-
-#include <QVariant>
-#include <QGraphicsItem>
+#ifndef TUPLIBRARYOBJECT_H
+#define TUPLIBRARYOBJECT_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
+
+#include <QVariant>
+#include <QGraphicsItem>
 
 class TupLibraryObject;
 

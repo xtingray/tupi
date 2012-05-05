@@ -33,13 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPALETTEDOCUMENT_H
-#define TupPALETTEDOCUMENT_H
+#ifndef TUPPALETTEDOCUMENT_H
+#define TUPPALETTEDOCUMENT_H
+
+#include "tupglobal_store.h"
 
 #include <QDomDocument>
 #include <QBrush>
 #include <QList>
-#include "tupglobal_store.h"
 
 /**
  * Esta clase se utiliza para guardar las paletas

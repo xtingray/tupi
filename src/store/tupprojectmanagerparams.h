@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPROJECTMANAGERPARAMS_H
-#define TupPROJECTMANAGERPARAMS_H
+#ifndef TUPPROJECTMANAGERPARAMS_H
+#define TUPPROJECTMANAGERPARAMS_H
 
 #include <QString>
 #include <QSize>

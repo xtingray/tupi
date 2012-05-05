@@ -33,16 +33,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupITEMTWEENER_H
-#define TupITEMTWEENER_H
+#ifndef TUPITEMTWEENER_H
+#define TUPITEMTWEENER_H
+
+#include "tuptweenerstep.h"
+#include "tupglobal_store.h"
 
 #include <QObject>
 #include <QMatrix>
 #include <QPointF>
 #include <QColor>
-
-#include "tuptweenerstep.h"
-#include "tupglobal_store.h"
 
 class QGraphicsItem;
 class QGraphicsPathItem;

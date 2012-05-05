@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupFRAMEGROUP_H
-#define TupFRAMEGROUP_H
+#ifndef TUPFRAMEGROUP_H
+#define TUPFRAMEGROUP_H
 
 #include "tupframe.h"
 #include "tupglobal_store.h"

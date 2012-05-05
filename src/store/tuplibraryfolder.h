@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLIBRARYFOLDER_H
-#define TupLIBRARYFOLDER_H
+#ifndef TUPLIBRARYFOLDER_H
+#define TUPLIBRARYFOLDER_H
 
 #include "tupabstractserializable.h"
 #include "tuplibraryobject.h"

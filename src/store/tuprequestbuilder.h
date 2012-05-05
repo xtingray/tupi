@@ -33,17 +33,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupREQUESTBUILDER_H
-#define TupREQUESTBUILDER_H
+#ifndef TUPREQUESTBUILDER_H
+#define TUPREQUESTBUILDER_H
+
+#include "tuplibraryobject.h"
+#include "tupglobal_store.h"
+#include "tupproject.h"
 
 #include <QString>
 #include <QDomDocument>
 #include <QVariant>
-
-#include "tuplibraryobject.h"
-
-#include "tupglobal_store.h"
-#include "tupproject.h"
 
 class TupProjectRequest;
 class TupProjectResponse;

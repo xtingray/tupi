@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPAINTAREAEVENT_H
-#define TupPAINTAREAEVENT_H
+#ifndef TUPPAINTAREAEVENT_H
+#define TUPPAINTAREAEVENT_H
 
 #include "tupprojectrequest.h"
 #include "tupglobal_store.h"

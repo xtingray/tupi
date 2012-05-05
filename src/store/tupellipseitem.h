@@ -33,12 +33,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupELLIPSEITEM_H 
-#define TupELLIPSEITEM_H
+#ifndef TUPELLIPSEITEM_H 
+#define TUPELLIPSEITEM_H
 
 #include "tupabstractserializable.h"
-#include <QGraphicsEllipseItem>
 #include "tupglobal_store.h"
+
+#include <QGraphicsEllipseItem>
 
 /**
  * @author Jorge Cuadrado

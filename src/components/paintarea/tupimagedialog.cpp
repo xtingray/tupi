@@ -102,6 +102,8 @@ TupImageDialog::TupImageDialog(QWidget *parent) : QDialog(parent), k(new Private
     layout->addLayout(middleLayout);
     layout->addWidget(descLabel);
     layout->addWidget(k->descText);
+    layout->addLayout(buttonLayout);
+
     setLayout(layout);
 }
 

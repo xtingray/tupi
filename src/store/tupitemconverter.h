@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupITEMCONVERTER_H
-#define TupITEMCONVERTER_H
+#ifndef TUPITEMCONVERTER_H
+#define TUPITEMCONVERTER_H
 
 class TupPathItem;
 class TupEllipseItem;

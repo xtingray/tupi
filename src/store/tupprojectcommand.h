@@ -33,18 +33,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPROJECTCOMMAND_H
-#define TupPROJECTCOMMAND_H
+#ifndef TUPPROJECTCOMMAND_H
+#define TUPPROJECTCOMMAND_H
 
 #include "tupglobal_store.h"
 
 #include <QUndoCommand>
 #include <QVariant>
-
-// class TupProjectRequest;
-// class TupProjectRequest;
-// class TupProjectRequest;
-// class TupProjectRequest;
 
 class TupProject;
 class TupProjectRequest;

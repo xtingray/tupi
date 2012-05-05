@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLINEITEM_H 
-#define TupLINEITEM_H 
+#ifndef TUPLINEITEM_H 
+#define TUPLINEITEM_H 
 
 #include <QGraphicsLineItem>
 

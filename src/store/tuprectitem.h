@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupRECTITEM_H
-#define TupRECTITEM_H
+#ifndef TUPRECTITEM_H
+#define TUPRECTITEM_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"

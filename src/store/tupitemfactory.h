@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupITEMFACTORY_H
-#define TupITEMFACTORY_H
+#ifndef TUPITEMFACTORY_H
+#define TUPITEMFACTORY_H
 
 #include "txmlparserbase.h"
 #include "tupglobal_store.h"

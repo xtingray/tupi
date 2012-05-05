@@ -33,12 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTEXTITEM_H
-#define TupTEXTITEM_H
+#ifndef TUPTEXTITEM_H
+#define TUPTEXTITEM_H
 
-#include <QGraphicsTextItem>
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
+
+#include <QGraphicsTextItem>
+
 
 /**
  * @author David Cuadrado

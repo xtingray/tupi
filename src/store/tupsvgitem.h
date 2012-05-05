@@ -33,14 +33,15 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSVGITEM_H
-#define TupSVGITEM_H
+#ifndef TUPSVGITEM_H
+#define TUPSVGITEM_H
 
-#include <QGraphicsSvgItem>
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
 #include "tupitemtweener.h"
 #include "tupframe.h"
+
+#include <QGraphicsSvgItem>
 
 class TupFrame;
 

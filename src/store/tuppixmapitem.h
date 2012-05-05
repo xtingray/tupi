@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPIXMAPITEM_H
-#define TupPIXMAPITEM_H
+#ifndef TUPPIXMAPITEM_H
+#define TUPPIXMAPITEM_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
@@ -50,6 +50,7 @@ class STORE_EXPORT TupPixmapItem : public QGraphicsPixmapItem, public TupAbstrac
     public:
         TupPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
         ~TupPixmapItem();
+
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
 };

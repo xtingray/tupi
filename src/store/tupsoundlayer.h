@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSOUNDLAYER_H
-#define TupSOUNDLAYER_H
+#ifndef TUPSOUNDLAYER_H
+#define TUPSOUNDLAYER_H
 
 #include "tuplayer.h"
 

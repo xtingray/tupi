@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupGRAPHICLIBRARYITEM_H
-#define TupGRAPHICLIBRARYITEM_H
+#ifndef TUPGRAPHICLIBRARYITEM_H
+#define TUPGRAPHICLIBRARYITEM_H
 
 #include "tupproxyitem.h"
 #include "tupabstractserializable.h"

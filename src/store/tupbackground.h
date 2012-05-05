@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupBACKGROUND_H
-#define TupBACKGROUND_H
+#ifndef TUPBACKGROUND_H
+#define TUPBACKGROUND_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"

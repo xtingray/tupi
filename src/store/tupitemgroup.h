@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupITEMGROUP_H
-#define TupITEMGROUP_H
+#ifndef TUPITEMGROUP_H
+#define TUPITEMGROUP_H
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"

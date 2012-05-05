@@ -33,16 +33,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSERIALIZER_H
-#define TupSERIALIZER_H
+#ifndef TUPSERIALIZER_H
+#define TUPSERIALIZER_H
+
+#include "tuppathitem.h"
+#include "tupsvgitem.h"
 
 #include <QDomDocument>
 #include <QDomElement>
 #include <QXmlAttributes>
 #include <QBrush>
 #include <QPen>
-#include "tuppathitem.h"
-#include "tupsvgitem.h" 
 
 class QGraphicsItem;
 

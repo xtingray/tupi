@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPROJECTREQUEST_H
-#define TupPROJECTREQUEST_H
+#ifndef TUPPROJECTREQUEST_H
+#define TUPPROJECTREQUEST_H
 
 #include "tupglobal_store.h"
 
