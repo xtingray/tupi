@@ -7,7 +7,7 @@ body {
 }
 
 #header {
-    width: 540px;
+    width: 535px;
     text-align: center;
     background: #eeeeee;
     border: 1px solid #bbbbbb;
@@ -57,25 +57,9 @@ body {
     margin-bottom: 2px;
 }
 
-#scene {
-    width: 540px;
-    text-align: center;
-    border: 1px solid #bbbbbb;
-    color: black;
-    padding-top: 0px;
-    padding-bottom: 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 13px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 img {
     border: 1px solid #cccccc;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 #paragraph {
@@ -86,6 +70,22 @@ img {
     color: black;
     font-size: 13px;
     padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#scene {
+    width: 535px;
+    text-align: center;
+    border: 1px solid #bbbbbb;
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
 }

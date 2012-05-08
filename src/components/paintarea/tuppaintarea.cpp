@@ -151,6 +151,11 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
            T_FUNCINFO;
     #endif
 
+    // SQA: Temporal solution for cases when there's no current frame defined
+    if (!graphicsScene()->currentFrame()) {
+        return;
+    }
+
     if (graphicsScene()->currentFrame()->isLocked()) {
         #ifdef K_DEBUG
                tFatal() << "TupPaintArea::mousePressEvent() - Frame is locked!";

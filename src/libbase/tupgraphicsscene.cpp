@@ -962,6 +962,11 @@ void TupGraphicsScene::mouseMoved(QGraphicsSceneMouseEvent *event)
 
 void TupGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    // SQA: Temporal solution for cases when there's no current frame defined
+    if (!currentFrame()) {
+        return;
+    }
+
     QGraphicsScene::mouseReleaseEvent(event);
     mouseReleased(event);
 }

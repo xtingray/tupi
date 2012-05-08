@@ -1310,11 +1310,17 @@ void TupViewDocument::updateStatusBgColor(const QColor color)
 
 void TupViewDocument::storyboardSettings()
 {
+    QDesktopWidget desktop;
     int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
     connect(storySettings, SIGNAL(saveStoryboard(TupStoryboard *)), this, SLOT(updateStoryboard(TupStoryboard *)));
+
+    QApplication::restoreOverrideCursor();
+
     storySettings->show();
-    QDesktopWidget desktop;
     storySettings->move((int) (desktop.screenGeometry().width() - storySettings->width())/2 ,
                         (int) (desktop.screenGeometry().height() - storySettings->height())/2);
 }

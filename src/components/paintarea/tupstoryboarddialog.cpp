@@ -58,12 +58,14 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QFileDialog>
+#include <QDesktopWidget>
 
 struct TupStoryBoardDialog::Private
 {
     TupExportInterface *imagePlugin;
     QColor bgColor;
     QSize size;
+    QSize scaledSize;
     TupScene *scene;
     TupStoryboard *storyboard;
     int currentIndex;
@@ -95,6 +97,36 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
     k->size = size;
     k->scene = scene;
     k->storyboard = k->scene->storyboard();
+
+    QDesktopWidget desktop;
+    k->scaledSize = QSize();
+
+    if (size.width() > size.height()) {
+        if (k->size.width() + 500 > desktop.screenGeometry().width()) {
+            int w = desktop.screenGeometry().width() - 500;
+            int h = (k->size.height() * w) / k->size.width(); 
+            k->scaledSize.setWidth(w);                                     
+            k->scaledSize.setHeight(h);
+        } else {
+            k->scaledSize = k->size; 
+        }
+    } else {
+        if (k->size.height() + 400 > desktop.screenGeometry().height()) {
+            int h = desktop.screenGeometry().height() - 400;
+            int w = (k->size.width() * h) / k->size.height();
+            k->scaledSize.setWidth(w);
+            k->scaledSize.setHeight(h);
+        } else {
+            k->scaledSize = k->size;
+        }
+    }
+
+    if (k->scaledSize.height() + 400 > desktop.screenGeometry().height()) {
+        int h = desktop.screenGeometry().height() - 400;
+        int w = (k->size.width() * h) / k->size.height();
+        k->scaledSize.setWidth(w);
+        k->scaledSize.setHeight(h);
+    }
 
     setModal(true);
     setWindowTitle(tr("Storyboard Settings"));
@@ -141,7 +173,7 @@ void TupStoryBoardDialog::setListComponent()
     k->list->setViewMode(QListView::IconMode);
     k->list->setWrapping(false);
     k->list->setFlow(QListView::TopToBottom);
-    k->list->setIconSize(QSize(96, 84));
+    k->list->setIconSize(QSize(96, (k->scaledSize.height() * 96) / k->scaledSize.width()));
     k->list->setMovement(QListView::Static);
     k->list->setFixedWidth(130);
     k->list->setSpacing(12);
@@ -154,10 +186,11 @@ void TupStoryBoardDialog::setListComponent()
 
 void TupStoryBoardDialog::setPreviewScreen()
 {
-    QPixmap pixmap = QPixmap(520, 380);
+    QPixmap pixmap = QPixmap(k->scaledSize.width(), k->scaledSize.height());
     pixmap.fill();
 
     k->screenLabel = new QLabel;
+    k->screenLabel->setAlignment(Qt::AlignHCenter);
     k->screenLabel->setPixmap(pixmap);
     k->formLayout->addWidget(k->screenLabel);
 }
@@ -268,16 +301,17 @@ void TupStoryBoardDialog::addScene(const QString &label, const QIcon &icon)
 
 void TupStoryBoardDialog::thumbnailGenerator()
 {
-    QPixmap pixmap = QPixmap(96, 70); 
+    int height = (k->scaledSize.height() * 96) / k->scaledSize.width();
+    QPixmap pixmap = QPixmap(96, height); 
     pixmap.fill();
 
     QPainter painter(&pixmap);
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 8, QFont::Bold));
-    QRectF rect(QPointF(0, 0), QSizeF(96, 70));
+    QRectF rect(QPointF(0, 0), QSizeF(96, height));
     painter.drawText(rect, Qt::AlignCenter, tr("Storyboard"));
     painter.setPen(QColor(230, 230, 230));
-    QRectF rectangle(0, 0, 95, 69);
+    QRectF rectangle(0, 0, 95, height - 1);
     painter.drawRect(rectangle);
 
     QIcon icon = QIcon(pixmap); 
@@ -301,15 +335,18 @@ void TupStoryBoardDialog::thumbnailGenerator()
     for (int i=0; i < framesTotal; i++) {
          QString fileName = k->path + "scene" + QString::number(i);
          bool isOk = k->imagePlugin->exportFrame(i, k->bgColor, fileName, k->scene, k->size);
+         fileName += ".png";
+         QPixmap resized(fileName);
+         resized = resized.scaledToWidth(k->scaledSize.width(), Qt::SmoothTransformation);
+         resized.save(fileName);
+
          if (isOk) {
-             QPixmap pixmap(fileName + ".png");
+             QPixmap pixmap(fileName);
              QPainter painter(&pixmap);
              painter.setPen(Qt::darkGray);
-             QRectF rectangle(0, 0, 519, 379);
+             QRectF rectangle(0, 0, k->scaledSize.width()-1, k->scaledSize.height()-1);
              painter.drawRect(rectangle);
-
              pixmap.scaledToWidth(96, Qt::SmoothTransformation);
-             pixmap.scaledToHeight(70, Qt::SmoothTransformation);
 
              QIcon icon(pixmap);
              QString label = "Scene " + QString::number(i);  
@@ -329,8 +366,6 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
         k->sceneLabel->setText(tr("Scene No %1 - Information").arg(QString::number(index)));
         QString fileName = k->path + "scene" + QString::number(index) + ".png";
         pixmap = QPixmap(fileName);
-        pixmap.scaledToWidth(520, Qt::SmoothTransformation);
-        pixmap.scaledToHeight(380, Qt::SmoothTransformation);
 
         if (previousIndex == 0) {
             k->storyPanel->hide();
@@ -352,16 +387,16 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
 
     } else {
         if (previousIndex != 0) {
-            pixmap = QPixmap(520, 380);
+            pixmap = QPixmap(k->scaledSize.width(), k->scaledSize.height());
             pixmap.fill();
 
             QPainter painter(&pixmap);
             painter.setPen(Qt::black);
-            painter.setFont(QFont("Arial", 30, QFont::Bold));
-            QRectF rect(QPointF(0, (k->size.height()-150)/2), QSizeF(520, 150));
+            painter.setFont(QFont("Arial", k->scaledSize.width()*30/520, QFont::Bold));
+            QRectF rect(QPointF(0, (k->scaledSize.height()-150)/2), QSizeF(k->scaledSize.width(), 150));
             painter.drawText(rect, Qt::AlignCenter, tr("Storyboard"));
             painter.setPen(Qt::lightGray);
-            QRectF rectangle(5, 5, 510, 370);
+            QRectF rectangle(5, 5, k->scaledSize.width() - 10, k->scaledSize.height() - 10);
             painter.drawRect(rectangle);
 
             k->scenePanel->hide();
@@ -405,17 +440,40 @@ void TupStoryBoardDialog::exportStoryBoard()
     if (path.isEmpty())
         return;
 
-    QDir directory(k->path);
-    QStringList files = directory.entryList();
-    for (int i = 0; i < files.size(); ++i) {
-         QString file = files.at(i).toLocal8Bit().constData();
-         if (file != "." && file != "..")
-             QFile::copy(k->path + file, path + QDir::separator() + file);
+    if (k->scaledSize.width() <= 520) {
+        QDir directory(k->path);
+        QStringList files = directory.entryList();
+        for (int i = 0; i < files.size(); ++i) {
+             QString file = files.at(i).toLocal8Bit().constData();
+             if (file != "." && file != "..")
+                 QFile::copy(k->path + file, path + QDir::separator() + file);
+        }
+    } else {
+        QDir directory(k->path);
+        QStringList files = directory.entryList();
+        for (int i = 0; i < files.size(); ++i) {
+             QString file = files.at(i).toLocal8Bit().constData();
+             QPixmap pixmap(k->path + file); 
+
+             QString destination = path + QDir::separator() + file;
+
+             if (QFile::exists(destination))
+                 QFile::remove(destination); 
+
+             QPixmap resized;
+             resized = pixmap.scaledToWidth(520, Qt::SmoothTransformation);
+             resized.save(destination);
+        }
     }
 
     QFile::copy(kAppProp->shareDir() + "data/storyboard/tupi.css", path + QDir::separator() + "tupi.css");
 
-    QFile file(path + QDir::separator() + "index.html");
+    QString index = path + QDir::separator() + "index.html";
+
+    if (QFile::exists(index))
+        QFile::remove(index);  
+
+    QFile file(index);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
     out << "<html>\n";
@@ -438,7 +496,6 @@ void TupStoryBoardDialog::exportStoryBoard()
 
     for (int i=0; i < k->storyboard->size(); i++) {
          out << "<div id=\"scene\">\n";
-         out << "<div id=\"title\">" << "Scene No. " << QString::number(i+1) << "</div>\n";
          QString image = "<img src=\"scene" + QString::number(i) + ".png\" />\n";
          out << image;
          out << "<div id=\"paragraph\">\n";
