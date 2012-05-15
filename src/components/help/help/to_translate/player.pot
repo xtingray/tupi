@@ -1,0 +1,98 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+
+#: tupi_help/player.html+html.body.p:7
+msgid "Player Module"
+msgstr ""
+
+#: tupi_help/player.html+html.body.p.br:8
+msgid ""
+"Through this module you can take a look at your project as you build. With "
+"this resource, you can detect which parts of the timeline of your animation "
+"settings needed, add more frames, or perhaps change the speed at which "
+"images you want to flow, it all depends on you, remember you're the "
+"director!<br>"
+msgstr ""
+
+#: tupi_help/player.html+html.body.center.p:14
+msgid "<b>Fig #25.</b> Player Interface Module"
+msgstr ""
+
+#: tupi_help/player.html+html.body.p:16
+msgid ""
+"Tip:</b> Whenever you wish to check the <b>player module,</b> simply press "
+"the <b>Ctrl + 2."
+msgstr ""
+
+#: tupi_help/player.html+html.body.center.p:19
+msgid "<b>Fig #26.</b> Player Module Shortcut"
+msgstr ""
+
+#: tupi_help/player.html+html.body.p:21
+msgid "Okay, let's see what are the tools that are part of this module:"
+msgstr ""
+
+#: tupi_help/player.html+html.body.p.br:23
+msgid ""
+"<b>Control Panel</b><br> If you've ever used a DVD recorder or a stereo, you "
+"probably already know what the function of this component. That's right, "
+"thanks to this set of buttons you can play, stop and return your animation "
+"project as often as you want, which will surely be many, it is based on "
+"continuous observation and careful your work, you detect errors in your "
+"animation and make the respective adjustments, making the result is more "
+"fluid and that over time, your projects are more surprising."
+msgstr ""
+
+#: tupi_help/player.html+html.body.center.p:33
+msgid "<b>Fig #27.</b> Control Panel"
+msgstr ""
+
+#: tupi_help/player.html+html.body.p:35
+msgid ""
+"<b>Panel Properties</b><br> This panel, located on the bottom of the "
+"<i>playback module,</i> you will find the following resources:"
+msgstr ""
+
+#: tupi_help/player.html+html.body.ol.li:39
+msgid ""
+"<b>Information about the animation.</b> Specifically, the <i>name of the "
+"scene</i> and the <i>total</i> number <i>of frames</i> that form, in other "
+"words, the sum total of every frame was drawn."
+msgstr ""
+
+#: tupi_help/player.html+html.body.ol.li:43
+msgid ""
+"<b>FPS Control.</b> We can define the speed of the animation, using the "
+"parameter <i>frames per second (FPS: Frames Per Second,</i> in English).<br> "
+"<b>Tip:</b> The larger the value of this field, the faster will be the "
+"animation and the smaller, slower will look."
+msgstr ""
+
+#: tupi_help/player.html+html.body.ol.li:48
+msgid ""
+"<b>Repeat option.</b> This small selection box represents the ability to "
+"play our video indefinitely. That is, if we leave it enabled and press the "
+"<i>Play</i> button, the animation is repeated over and over until we decide "
+"to stop it."
+msgstr ""
+
+#: tupi_help/player.html+html.body.ol.li:52
+msgid ""
+"<b>Export option.</b> It allows us to make our animation project in a video "
+"file. For a better understanding of this feature, take a look at the section "
+"<a href=\"video_file.html\">\"Let's create a video file\"</a>."
+msgstr ""
+
+#: tupi_help/player.html+html.body.center.p:58
+msgid "<b>Fig #28.</b> Panel Properties"
+msgstr ""

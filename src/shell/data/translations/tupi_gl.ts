@@ -1838,7 +1838,7 @@
     </message>
     <message>
         <source>&amp;File</source>
-        <translation>&amp;Fcheiro</translation>
+        <translation>&amp;Ficheiro</translation>
     </message>
     <message>
         <source>Recents</source>

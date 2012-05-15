@@ -1,0 +1,9 @@
+Translate it with your favorite CAT tool
+
+Save it with the "same_name.po"
+
+Not generate the file ".mo" if your CAT tool automatically generates it, delete it
+
+Generate the screenshots in the folder .. / en / images in your language and prepare them as they are. If you have no knowledge of the use of design tools, send the window screenshots unprocessed, making it evident a note in the mail.
+
+Make a compressed package tar.gz (or similar) with all the files and send to: <mbouzada [at] gmail [dot] com>, to integrate it into the help

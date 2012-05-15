@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+
+#: tupi_help/translations.html+html.body.p:8
+msgid "Help with translations"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p.br:10
+msgid ""
+"Due to the constant flow of new information from our development team and "
+"the need to communicate to the community in different languages, we decided "
+"to make a particular call to all people with skills to translate text from "
+"one language to another.<br> Among the types of documents that constantly "
+"need translation are:"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.ul.li:19
+msgid "News and Announcements on our website"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.ul.li:22
+msgid "Tutorials, Manuals and Examples"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.ul.li:24
+msgid ""
+"Language Support files for the <b>Tupi</b> program (required so that it can "
+"be used in English, Spanish, Portuguese, Catalan, etc)"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:29
+msgid ""
+"For news and tutorials, just simply contact us if you want to translate a "
+"particular piece of text or if you want to help but you don’t know what to "
+"tackle, we can assign something to you, we always have something needing "
+"translation."
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p.br:35
+msgid ""
+"Language support, if you didn’t know, are the files that provide the ability "
+"of an application to print all its messages, menus etc. in a particular "
+"language. If you’re interested in making <b>Tupi</b> available in Chinese, "
+"Arabic, French or another language of your interest, then you’re in the "
+"right place to help.<br> In the case of language support files, you need to "
+"have some knowledge of the tools and processes we use to create and manage "
+"these files. Follow the instructions and you can become one of our most "
+"important translators:"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:46
+msgid ""
+"<b>Learn what <i>linguist</i> is and how it works.</b><br> <b>Tupi</b> is a "
+"software application developed with the <i>Qt</i> library, which is written "
+"in <i>C++</i>. The good news is you do not have to learn <i>Qt</i> or "
+"<i>C++</i> to help translate. It is, however, important to note that "
+"<i>Qt</i> is not just a library for development, but also includes several "
+"additional tools that facilitate application development. One is "
+"<i>linguist,</i> a simple program that is included in the installation of "
+"<i>Qt</i> that allows you to create support for new languages for "
+"<b>Tupi</b>."
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:61
+msgid "<b>Fig #68.</b> <i>linguist</i> application"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:65
+msgid ""
+"If you have <i>Qt</i> installed on your computer, you probably already have "
+"<i>linguist</i> installed. Look for the application on the main menu of your "
+"graphical environment, in the <i>Programming</i> section"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:73
+msgid "<b>Fig #69.</b> Opening <i>linguist</i>"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:77
+msgid ""
+"The raw material for this utility is a file with the <b>.ts</b> extension, "
+"from which you can translate all the messages that are part of <b>Tupi</b> "
+"into the language you want. The good news is that you do not have to start "
+"from scratch, because we already have one (<a href= "
+"\"http://www.maefloresta.com\">tupi_es.ts</a>) on our website. Download it and "
+"rename it according to the language you want translated, for example if you "
+"want to create support for <b>Tupi</b> Italian, then rename the file as "
+"tupi_it.ts and <i>open it from the linguist program like this:</i>"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:97
+msgid "<b>Fig #70.</b> Opening a translation file (.ts)"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:101
+msgid ""
+"Now, let’s look at the most important components of the program that we will "
+"use. The first is the list of contexts. This name sounds complex, but is "
+"nothing more than a list of groups of words. That is, each list item you see "
+"in the figure simply represents a group of words associated with that "
+"context."
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:111
+msgid "<b>Fig #71.</b> List of contexts"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:114
+msgid ""
+"The next component is the list of words or phrases associated with a "
+"context. These words and phrases appear in <b>Tupi</b> and are what we "
+"translate. Each context can have a variable number of words or phrases to be "
+"translated. Regardless, all texts need to be translated."
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:123
+msgid "<b>Fig #72.</b> List of words in a context"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:127
+msgid ""
+"So far, we have located the names of the groups (contexts) and the list of "
+"words for each context. Now, let’s cover the most important tool, the "
+"translations form:"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:135
+msgid "<b>Fig #73.</b> Translations form"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:138
+msgid ""
+"Now let’s see in detail what fields we have to consider on the translations "
+"form:"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:144
+msgid "<b>Fig #74.</b> Translation form in detail"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p.br:148
+msgid ""
+"The box highlighted in <b><font color= \"#A90000\">red</font></b> contains the "
+"word or phrase that we need to translate, in this particular case, the word "
+"<i>\"Pen\".</i> The <b><font color=\"#008400\">green</font></b> box contains "
+"the underlined space where we put the translation. In this particular case "
+"of translation into Spanish: <i>\"Pencil.\"</i><br> This is just one word, but "
+"for the whole process: Once you open the file for translation (e.g. "
+"<i>tupi_it.ts),</i> we select, one by one, all contexts <b><font "
+"color=\"#157E15\">(1).</font></b> For each selected context, we will have to "
+"click on each of the words or phrases listed in the second column of the "
+"interface <b><font color=\"#1D5D8A\">(2),</font></b> to translate it in the "
+"form located at the bottom <font color= \"#C81818\"><b>(3).</b></font> Once we "
+"have gone through all the settings and there are no more words to "
+"translate, you have finished the task.<br>"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:168
+msgid "<b>Fig #75.</b> Main components of the application <i>linguist</i>"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:172
+msgid ""
+"Finally, you should save and send the file by mail to our development team "
+"for inclusion in future versions of <b>Tupi</b>."
+msgstr ""
+
+#: tupi_help/translations.html+html.body.center.p:185
+msgid "<b>Fig #76.</b> Saving the translation project (.ts)"
+msgstr ""
+
+#: tupi_help/translations.html+html.body.p:189
+msgid ""
+"If you want to learn more about <i>linguist,</i> you can consult the "
+"official manual here:"
+msgstr ""

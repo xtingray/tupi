@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+  <meta http-equiv="content-type" content="text/html; charset=us-ascii">
+  <link rel="stylesheet" type="text/css" href="../css/tupi.css"><title></title></head><body class="tupi_background5">
+  <p class="title">Axuda coas traduci&#243;ns</p>
+
+  <p class="paragraph">Por mor da constante xeraci&#243;n de nova informaci&#243;n por parte do noso 
+equipo de desenvolvemento e &#225; necesidade de comunicarlla a toda a 
+comunidade e en diferentes idiomas, decidimos facer unha convocatoria 
+particular a todas aquelas persoas con habilidade para traducir textos 
+dun idioma para outro. 
+Dentro dos tipos de documentos que constantemente necesitamos traducir 
+atopanse: 
+</p>
+
+  <ul>
+    <li class="paragraph">Noticias e anuncios no noso sitio web. 
+</li>
+
+    <li class="paragraph">Tutoriais, manuais e exemplos. 
+</li>
+
+    <li class="paragraph">Ficheiros de compatibilidade de idioma para o <b>Tup&#237;</b> (necesarios para que o programa poida ser utilizado en ingl&#233;s, galego, espa&#241;ol, portugu&#233;s, catal&#225;n, etc). 
+</li>
+  </ul>
+
+  <p class="paragraph">Para as noticias e os tutoriais, abonda s&#243; co teu desexo de axudar e que
+ te po&#241;as en contacto con nos, para que nos digas que texto en 
+particular queres traducir o se desexas que che asignemos alg&#250;n: sempre 
+temos algo para traducir.</p>
+
+  <p class="paragraph">Por outro lado, En que consiste a compatibilidade de idioma? Expresado 
+en termos sinxelos,  tratase da capacidade dun aplicativo para mostrar 
+todas as s&#250;as mensaxes nun idioma en particular. Si est&#225;s interesado en 
+que o <b>Tup&#237;</b> te&#241;a compatibilidade co chin&#233;s, co &#225;rabe, co franc&#233;s 
+ou con calquera outro idioma que sexa de teu interese, ent&#243;n atopaste no
+ lugar axeitado para colaborar.<br>Para o caso dos ficheiros de compatibilidade de idioma, &#233; necesario que 
+te&#241;as alg&#250;ns co&#241;ecementos das ferramentas e os procedementos que 
+utilizamos para crear e administrar este tipo de ficheiros. Segue as 
+seguintes instruci&#243;ns, e poder&#225;s converterte nun dos nosos m&#225;is 
+importantes tradutores:</p>
+<p class="paragraph"><b>Nota:</b> Neste momento a traduci&#243;n da interface (a compatibilidade de idioma) est&#225; ser feita por <a href="mailto:mbouzada@gmail.com" class="external text" title="mailto:mbouzada@gmail.com" rel="nofollow">Miguel Anxo Bouzada</a> do <a href="http://trasno.net/" class="external text" title="http://trasno.net" rel="nofollow">Proxecto Trasno</a>, empregando <i>Qt 4 Linguist</i> e <i>Virtaal</i>.
+Se queres participar do traballo de traduci&#243;n, &#233; che resulta m&#225;is doado,
+podes contactar directamente comigo ou darte de alta na <a href="http://trasno.net/trasno%3Alista" class="external text" title="http://trasno.net/trasno%3Alista" rel="nofollow">lista de Proxecto Trasno</a>.</p>
+<p class="paragraph"><b>Aprende que &#233; <i>Linguist</i> e como funciona.</b><br>
+  Comecemos polo principio, <b>Tup&#237;</b> &#233; un aplicativo de software 
+desenvolvido coa biblioteca Qt, escrita en linguaxe C++. A boa noticia &#233;
+ que non tes que aprender nin Qt nin C++ para axudarnos a traducir. 
+Por&#233;n, &#233; importante que te&#241;as en conta que Qt non consiste s&#243; nunha 
+biblioteca de desenvolvemento, sen&#243;n que tam&#233;n incl&#250;e varias ferramentas
+ adicionais que facilitan o desenvolvemento de aplicativos. Unha delas &#233;
+ <i>Linguist</i>, un sinxelo programa que ven inclu&#237;do na instalaci&#243;n de Qt e que permitirache xerar a compatibilidade con novos idiomas para o <b>Tup&#237;</b>.</p>
+
+  <center>
+    <img src="../images/linguist01.png">
+<p class="paragraph"><b>Fig. 68</b> Aplicativo &#171;Linguist&#187;</p>
+</center>
+
+  <p class="paragraph">Se xa tes instalado Qt no teu computador, seguramente xa tes instalado <i>Linguist</i>. Busca o acceso ao aplicativo no men&#250; principal do teu entorno gr&#225;fico, na secci&#243;n de <b>Programaci&#243;n</b>: 
+</p>
+
+  <center>
+    <img src="./images/linguist02.png">
+<p class="paragraph"><b>Fig. 69</b> Iniciando o aplicativo &#171;Linguist&#187;<i></i></p>
+</center>
+
+  <p class="paragraph">A materia prima desta utilidade &#233; un ficheiro de extensi&#243;n &#171;.ts&#187;, a 
+partires do que poder&#225;s traducir todas as mensaxes que compo&#241;en o <b>Tup&#237;</b>
+ ao idioma que ti queiras. Unha boa noticia, &#233; que non tes que comezar 
+desde cero, pois xa contamos cun ficheiro (tupi_es.ts) no noso sitio 
+web. Desc&#225;rgao y renomeao conforme ao idioma ao que queiras traducilo. 
+Por exemplo, se queres crear a compatibilidade para &#171;italiano&#187;, ent&#243;n 
+renomeao a tupi_it.ts e &#225;breo co programa &#171;Linguist&#187; as&#237;: 
+<i></i></p>
+
+  <center>
+    <table>
+      <tbody><tr>
+        <td><img src="../images/linguist03.png"></td>
+
+        <td><img src="../images/linguist04.png"></td>
+      </tr>
+    </tbody></table>
+<p class="paragraph"><b>Fig. 70</b> Abrindo un ficheiro de traduci&#243;n (.ts)</p>
+</center><p class="paragraph">Imos botarlle unha ollada aos compo&#241;entes m&#225;is importantes do programa, 
+especificamente aos que imos empregar. O primeiro &#233; o listado de 
+contextos. O seu nome soa complexo, mais non &#233; outra cousa que unha 
+lista de grupos de palabras. &#201; dicir, cada elemento da lista que vemos 
+na figura, simplemente representa un grupo de palabras asociadas a ese 
+contexto. 
+</p>
+
+  <center>
+    <img src="../images/linguist05.png">
+
+    <p class="paragraph"><b>Fig. 71</b> Listado de contextos</p>
+  </center>
+
+  <p class="paragraph">O seguinte compo&#241;ente, &#233; a lista las palabras ou mensaxes asociadas a un contexto. Estas mensaxes son os que aparecen no <b>Tup&#237;</b>
+ e son os que debemos traducir. Cada contexto pode ter un n&#250;mero 
+vari&#225;bel de mensaxes que traducir. Independente delo, todos os textos 
+deben ser traducidos. 
+</p>
+
+  <center>
+    <img src="../images/linguist06.png">
+
+    <p class="paragraph"><b>Fig. 72</b> Listado de palabras dun
+    contexto</p>
+  </center>
+
+  <p class="paragraph">Ata o momento, xa temos localizados os nomes dos grupos (contextos) e o 
+listado de palabras por cada contexto. Agora, localicemos a parte m&#225;is 
+importante da ferramenta, o formulario de traduci&#243;ns:  
+</p>
+
+  <center>
+    <img src="../images/linguist07.png">
+<p class="paragraph"><b>Fig. 73</b> Formulario de traduci&#243;ns</p>
+</center>
+
+  <p class="paragraph">Agora vexamos en detalle cales dos campos debemos ter en conta, no formulario de traduci&#243;ns: 
+</p>
+
+  <center>
+    <img src="../images/linguist08.png">
+
+    <p class="paragraph"><b>Fig. 74</b> Formulario de traduci&#243;ns en detalle</p>
+  </center>
+<p class="paragraph">O cadro marcado en <font style="font-weight: bold;" color="#a90000"><b>vermello</b></font> conten o texto que debemos traducir; neste caso particular, a palabra &#171;Pencil&#187;. O cadro marcado en <font color="#008400"><b>verde</b></font> bconten o espazo onde debemos colocar a traduci&#243;n do texto. Neste caso particular de traduci&#243;n ao espa&#241;ol: &#171;L&#225;piz&#187;. 
+<i></i><br>Moi ben, xa vimos un exemplo puntual, agora fagamos unha descrici&#243;n 
+xeral de todo o proceso: Unha vez aberto o ficheiro de traduci&#243;n (ex: 
+tupi_it.ts), debemos seleccionar un a un, todos os contextos <b><font color="#157e15">(1)</font></b>. Por cada contexto seleccionado, teremos que premer sobre cada unha das palabras na lista da segunda columna da interface <b><font color="#1d5d8a">(2)</font></b>, a fin de traducilas desde o formulario situado na parte inferior (3). 
+Unha vez te&#241;amos recorrido todos os contextos e xa non queden m&#225;is 
+palabras para traducir, teremos finalizada a tarefa. 
+</p>
+<center>
+    <img src="../images/linguist09.png">
+
+    <p class="paragraph"><b>Fig. 75</b> Compo&#241;entes principais do aplicativo &#171;Linguist&#187;
+
+<i></i></p>
+  </center>
+
+  <p class="paragraph">Para rematar, teremos que gardar os cambios e enviar o noso ficheiro por
+ correo ao equipo de desenvolvemento para que o incl&#250;a nas futuras 
+versi&#243;ns do <b>Tup&#237;</b>.</p>
+
+  <center>
+    <table>
+      <tbody><tr>
+        <td><img src="../images/linguist10.png"></td>
+
+        <td><img src="../images/linguist11.png"></td>
+      </tr>
+    </tbody></table>
+<p class="paragraph"><b>Fig. 76</b> Gardando o proxecto de traduci&#243;n (.ts)</p>
+</center>
+
+  <p class="paragraph">Se queres aprender m&#225;is sobre o &#171;Linguist&#187;, podes consultar o manual oficial aqu&#237;:</p>
+
+  <center>
+    <a href="http://developer.qt.nokia.com/doc/qt-4.8/linguist-manual.html">
+    http://developer.qt.nokia.com/doc/qt-4.8/linguist-manual.html
+    </a>
+  </center>
+<br>
+</body></html>

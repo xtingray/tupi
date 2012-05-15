@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+
+#: tupi_help/preview_time.html+html.body.p:7
+msgid "Let's see how is it looking"
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.p:8
+msgid ""
+"Okay, we have half the frames of our project completed. It's time to learn "
+"to use the <i>Player Module.</i> Needless to say there is no general rule "
+"about how many frames you create before making a preview of your project, "
+"this is another skill that develops from practice, in other words you "
+"choose."
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.center.p:26
+msgid "<b>Fig #57.</b> Project preview from the Player module"
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.p:28
+msgid ""
+"Additionally, note that performing a preview of your animation does not "
+"affect your project at all, therefore, you can access this module as many "
+"times as you want, giving you the chance to find out how comfortable you "
+"feel about the end result and to fix the issues you consider awkward.<br> "
+"The preview interface is quite simple, so there is nothing to worry about. "
+"The <i>Control Panel</i> contains all the necessary buttons to play your "
+"animation, step by step or continuously."
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.center.p:37
+msgid "<b>Fig #58.</b> Control Panel of the Player module"
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.p:39
+msgid ""
+"If you look at the bottom of the panel, you will find information about the "
+"project: <i>Name of the scene,</i> the <i>total number of frames</i> and the "
+"<i>number of frames per second (FPS),</i> this last option is editable and "
+"allows you to adjust the speed of your animation. The FPS value is directly "
+"proportional to the speed of the animation, as bigger it is, as faster the "
+"animation will be."
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.p:46
+msgid ""
+"<b>Tip:</b> The <i>Loop</i> option is quite useful if your project has few "
+"frames and you want to check the quality of the movement of the shapes. You "
+"can enable it whenever you want."
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.center.p:50
+msgid "<b>Fig #59.</b> Option \"Loop\" of the Player module"
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.p:52
+msgid ""
+"Okay, now it's time to continue drawing new frames following the routemap of "
+"your script. Return to the previous section, and make all the pending "
+"graphics. Now, for most of you maybe the fact of drawing objects and "
+"characters over and over again seems to be an exhausting task, and we are "
+"totally agree with you. That's the reason we are working on a feature called "
+"<i>\"tweening\"</i>, used to save a lot of time when you are illustrating."
+msgstr ""
+
+#: tupi_help/preview_time.html+html.body.p:60
+msgid ""
+"Did you finish all the frames you need? Do you like what you are watching in "
+"the <i>Player Module?</i> Well, then it's time to <a "
+"href=\"video_file.html\">create your first video file</a>!"
+msgstr ""

@@ -1,0 +1,963 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+
+#: tupi_help/shortcuts.html+html.body.p:8
+msgid "Shortcuts"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.p:10
+msgid ""
+"<b>Note:</b> Because the application is still in beta, some of these key "
+"combinations are not yet implemented. There is also the possibility that "
+"some (not all) might change in the future."
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:19
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:19"
+msgid "Shortcut"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:20
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:20"
+msgid "Action"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:23
+msgid "Ctrl + N"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:24
+msgid "Start a new project"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:27
+msgid "Ctrl + O"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:28
+msgid "Open a project"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:31
+msgid "Ctrl + S"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:32
+msgid "Save a project"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:35
+msgid "Ctrl + Shift + S"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:36
+msgid "Save project as"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:39
+msgid "Ctrl + W"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:40
+msgid "Close project"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:43
+msgid "Ctrl + R"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:44
+msgid "Export project"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:47
+msgid "Ctrl + P"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:48
+msgid "Open the Preferences dialog"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:51
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:51"
+msgid "Ctrl + G"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:52
+msgid "Import Gimp colour palette"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:55
+msgid "Ctrl + 1"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:56
+msgid "Go to Animation Module"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:59
+msgid "Ctrl + 2"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:60
+msgid "Go to Playback Module"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:63
+msgid "Ctrl + 3"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:64
+msgid "Go to Help Module"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:67
+msgid "Ctrl + 4"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:68
+msgid "Go to News Module"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:71
+msgid "Alt + B"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:72
+msgid "Insert a picture"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:75
+msgid "Alt + S"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:76
+msgid "Insert an SVG file"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:79
+msgid "Alt + Shift + B"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:80
+msgid "Insert an array of images"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:83
+msgid "Alt + Shift + S"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:84
+msgid "Insert an array of SVG files"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:87
+msgid "Ctrl + T"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:88
+msgid "Tip of the day"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:91
+msgid "Ctrl + K"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:92
+msgid "About Tupi"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:95
+msgid "Ctrl + Q"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:96
+msgid "Close the application"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:105
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:105"
+msgid "Shortcut"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:106
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:106"
+msgid "Action"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:109
+msgid "Shift + P"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:110
+msgid "Open / Close Palette"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:113
+msgid "Shift + B"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:114
+msgid "Open / Close Brush Properties"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:117
+msgid "Shift + L"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:118
+msgid "Open / Close Object Library"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:121
+msgid "Shift + T"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:122
+msgid "Open / Close Timeline"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:125
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:125"
+msgid "Shift + C"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:126
+msgid "Open / Close Scene Manager"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:129
+msgid "Shift + E"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:130
+msgid "Open / Close Table of exposure"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:133
+msgid "Shift + H"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:134
+msgid "Open / Close Help Manual"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:137
+msgid "P"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:138
+msgid "Pencil"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:141
+msgid "E"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:142
+msgid "Draft"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:145
+msgid "R"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:146
+msgid "Rectangle"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:149
+msgid "c."
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:150
+msgid "Ellipse"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:153
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:153"
+msgid "T"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:154
+msgid "Line"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:157
+msgid "S"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:158
+msgid "Polyline"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:161
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:161"
+msgid "T"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:162
+msgid "Text"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:165
+msgid "Shift + W"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:166
+msgid "Tween Position"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:169
+msgid "Shift + R"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:170
+msgid "Rotation Tween"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:173
+msgid "Shift + S"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:174
+msgid "Tween Scale"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:177
+msgid "Shift + O"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:178
+msgid "Opacity Tween"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:181
+msgid "Shift + U"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:182
+msgid "Colour Tween"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:185
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:185"
+msgid "Shift + C"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:186
+msgid "Tween Compound"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:189
+msgid "No"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:190
+msgid "Node selection"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:193
+msgid "O"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:194
+msgid "Object selection"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:197
+msgid "1"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:198
+msgid "Internal colour fill"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:201
+msgid "B"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:202
+msgid "Contour colour fill"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:205
+msgid "Z"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:206
+msgid "Zoom:"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:209
+msgid "Left mouse button"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:210
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:210"
+msgid "Zoom Zoom"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:213
+msgid "Right mouse button"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:214
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:214"
+msgid "Zoom Zoom"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:217
+msgid "H"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:218
+msgid "Hand"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:221
+msgid "Ctrl + Z"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:222
+msgid "Undo"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:225
+msgid "Ctrl + Y"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:226
+msgid "Repeat"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:229
+msgid "Ctrl + C"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:230
+msgid "Copy object"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:233
+msgid "Ctrl + V"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:234
+msgid "Paste object"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:237
+msgid "Ctrl + X"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:238
+msgid "Cut object"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:241
+msgid "Del"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:242
+msgid "Delete object"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:245
+msgid "#"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:246
+msgid "Toggle grid"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:249
+msgid "F11"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:250
+msgid "Toggle Full-Screen mode"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:253
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:253"
+msgid "Ctrl + G"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:254
+msgid "Group selection"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:257
+msgid "Ctrl + Shift + G"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:258
+msgid "Ungroup selection"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:261
+msgid "Ctrl + plus (+)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:262
+msgid "Add a layer of onion skin behind"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:265
+msgid "Ctrl + minus (-)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:266
+msgid "Remove a layer of onion skin behind"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:269
+msgid "Shift + plus (+)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:270
+msgid "Add a layer of onion skin in front"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:273
+msgid "Shift + minus (-)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:274
+msgid "Remove a layer of onion skin in front"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:277
+msgid "Ctrl + A"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:278
+msgid "Select all"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:281
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:281"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:282
+msgid "Move object back one level"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:285
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:285"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:286
+msgid "Send object to back"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:289
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:289"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:290
+msgid "Move object forward one level"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:293
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:293"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:294
+msgid "Bring object to front"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:297
+msgid "Shift + Ctrl + Left Button"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:298
+msgid "Rotate workspace"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:301
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:301"
+msgid "Left Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:302
+msgid "Go to previous frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:305
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:305"
+msgid "Right Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:306
+msgid "Go to next frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:309
+msgid "Ctrl + Right Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:310
+msgid "Copy & paste current into next frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:319
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:319"
+msgid "Shortcut"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:320
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:320"
+msgid "Action"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:323
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:323"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:324
+msgid "Add new scene"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:327
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:327"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:328
+msgid "Remove scene"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:337
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:337"
+msgid "Shortcut"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:338
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:338"
+msgid "Action"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:341
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:341"
+msgid "F5"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:342
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:342"
+msgid "Add new layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:345
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:345"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:346
+msgid "Duplicate layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:349
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:349"
+msgid "F6"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:350
+msgid "Delete layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:353
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:353"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:354
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:354"
+msgid "Move layer forward"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:357
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:357"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:358
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:358"
+msgid "Move layer back"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:361
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:361"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:362
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:362"
+msgid "Block layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:365
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:365"
+msgid "Plus (+)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:366
+msgid "Add a new framework"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:369
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:369"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:370
+msgid "Duplicate frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:373
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:373"
+msgid "Minus (-)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:374
+msgid "Delete a frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:377
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:377"
+msgid "F8"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:378
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:378"
+msgid "Move one frame backward"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:381
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:381"
+msgid "F9"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:382
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:382"
+msgid "Move one frame forward"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:385
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:385"
+msgid "F10"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:386
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:386"
+msgid "Block frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:395
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:395"
+msgid "Shortcut"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:396
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:396"
+msgid "Action"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:399
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:399"
+msgid "F5"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:400
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:400"
+msgid "Add new layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:403
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:403"
+msgid "F6"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:404
+msgid "Delete a layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:407
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:407"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:408
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:408"
+msgid "Move layer forward"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:411
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:411"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:412
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:412"
+msgid "Move layer back"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:415
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:415"
+msgid "Not defined"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:416
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:416"
+msgid "Block layer"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:419
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:419"
+msgid "Plus (+)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:420
+msgid "Add new frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:423
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:423"
+msgid "Minus (-)"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:424
+msgid "Remove frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:427
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:427"
+msgid "F8"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:428
+msgid "Move backward within"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:431
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:431"
+msgid "F9"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:432
+msgid "Moving forward under"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:435
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:435"
+msgid "F10"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:436
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:436"
+msgid "Block frame"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:439
+msgid "F12"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:440
+msgid "Add layer of sound"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:449
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:449"
+msgid "Shortcut"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.th:450
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.th:450"
+msgid "Action"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:453
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:453"
+msgid "Spacebar"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:454
+msgid "Play"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:457
+msgid "Shift + Spacebar"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:458
+msgid "Reverse play"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:461
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:461"
+msgid "Spacebar"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:462
+msgid "Stop"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:465
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:465"
+msgid "Left Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:466
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:466"
+msgid "Move one frame backward"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:469
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:469"
+msgid "Right Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:470
+msgctxt "tupi_help/shortcuts.html html.body.center.table.tr.td:470"
+msgid "Move one frame forward"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:473
+msgid "Ctrl + L"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:474
+msgid "Toggle repeat option"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:477
+msgid "Up Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:478
+msgid "Increase FPS"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:481
+msgid "Down Arrow"
+msgstr ""
+
+#: tupi_help/shortcuts.html+html.body.center.table.tr.td:482
+msgid "Decrease FPS"
+msgstr ""

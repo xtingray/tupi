@@ -11,21 +11,21 @@
         <SubSection title="Player Module" file="player.html" />
         <SubSection title="Help Module" file="help.html" />
     </Section>
-    <Section title="Let's make an example" file="chapter2.html">
+    <Section title="Let's make an example!" file="chapter2.html">
         <SubSection title="First things, First!" file="first.html" />
         <SubSection title="Starting a project" file="new.html" />
         <SubSection title="Drawing time" file="drawing.html" />
         <SubSection title="Adding some new frames" file="adding_frames.html" />
         <SubSection title="Let's make a preview" file="preview_time.html" />
-        <SubSection title="Exporting a video file" file="video_file.html" />
-        <SubSection title="Stop Motion? is it possible?" file="stop_motion.html" />
+        <SubSection title="Exporting a video file!" file="video_file.html" />
+        <SubSection title="Stop Motion? is possible?" file="stop_motion.html" />
     </Section>
     <Section title="Additional Resources" file="chapter3.html">
         <SubSection title="Interesting Links" file="links.html" />
         <SubSection title="Shortcuts" file="shortcuts.html" />
     </Section>
     <Section title="Want to help us?" file="chapter4.html">
-        <SubSection title="How to collaborate" file="how_to_help.html" />
+        <SubSection title="How to collaborate!" file="how_to_help.html" />
         <SubSection title="Help with translations" file="translations.html" />
     </Section>
     <Section title="About Tupi" file="chapter5.html">

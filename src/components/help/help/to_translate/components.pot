@@ -1,0 +1,220 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+
+#: tupi_help/components.html+html.body.p:8
+msgid "Main Components"
+msgstr ""
+
+#: tupi_help/components.html+html.body.p:10
+msgid ""
+"Tupi</b> is a suite of tools for 2D animation created for children from "
+"8-100 years old. When you think of <b>Tupi,</b> think of it as a toolbox "
+"full of different components, each designed for a specific task. Let’s take "
+"a look at each of the parts that make up the work environment, this really "
+"is a must before you start using <b>Tupi."
+msgstr ""
+
+#: tupi_help/components.html+html.body.p:17
+msgid ""
+"<b>Note:</b> <i>Because we are still in a beta phase of development, it is "
+"likely that some options and/or features are different within the interface "
+"or appear in different places. Much of the information found in this manual "
+"is subject to correction in future versions.</i>"
+msgstr ""
+
+#: tupi_help/components.html+html.body.p:23
+msgid "The Following is a typical display of the running application:"
+msgstr ""
+
+#: tupi_help/components.html+html.body.center.p:29
+msgid "<b>Fig. 4</b> <b>Tupi</b> ’s GUI"
+msgstr ""
+
+#: tupi_help/components.html+html.body.p:32
+msgid "Now, let’s take a closer look at its components."
+msgstr ""
+
+#: tupi_help/components.html+html.body.center.p:39
+msgid "<b>Fig. 5</b> Diagram of the <b>Tupi</b> components"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:44
+msgid ""
+"<b>Top Menu Bar:</b> this is the conventional menu located along the top of "
+"the window like you find in most programs. It is separated into categories "
+"<i>(File, Edit, Insert, Window,</i> and <i>Help</i>). All the main options "
+"that affect the whole program are here. <center> <img "
+"src=\"./images/top_menu.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:54
+msgid "<b>Fig. 6</b> Top Menu Bar"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:58
+msgid ""
+"<b>Project File Management Panel:</b> is composed of buttons associated with "
+"the task of managing project files such as, create a new project, opening "
+"an existing project, saving, saving under a new name and closing an open "
+"project. <center> <img src=\"./images/basic_panel.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:67
+msgid "<b>Fig. 7)</b> Project File Management Panel"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:72
+msgid ""
+"<b>Workspace:</b> this is the main area of the application, the space where "
+"you design, build and visualize your animations. The <i>workspace</i> is "
+"comprised of four tabs, each of which contains one of the following modules: "
+"<center> <img src=\"./images/tabs.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:81
+msgid "<b>Fig. 8</b> Workspace Tabs"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:85
+msgid ""
+"<b>Animation Module:</b> this module is used to build the graphics of each "
+"frame which will appear in your animation. It is little more than a small "
+"vector graphics editor, very simple ... for now."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:90
+msgid ""
+"<b>Player Module:</b> This is an animation viewer that you can use at any "
+"time to give you an idea of how your animation is looking."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:94
+msgid ""
+"<b>Help Module:</b> This is the module that you are referring right now."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li.br:97
+msgid ""
+"<b>News Module:</b> is a window directly onto our <a "
+"href=\"http://www.twitter.com\">Twitter</a> account. |Here you can find the "
+"latest news on this project, including new releases, the functionality "
+"implemented in the development version, news, etc.<br> <br>"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:106
+msgid ""
+"<b>Left Sidebar:</b> In this component there are three buttons associated "
+"with different features of drawing in the workspace: <center> <img "
+"src=\"./images/left_bar.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:114
+msgid "<b>Fig. 9</b> Left Sidebar"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:118
+msgid ""
+"<b>Colour Palette:</b> This button displays a panel through which you can "
+"choose the colour or gradient you want to use when painting with any type of "
+"brush."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:123
+msgid ""
+"<b>Brush Properties:</b> This button displays a panel with the current "
+"properties of the brush, such as the size of it and some characteristics of "
+"the stroke."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li.br:128
+msgid ""
+"<b>Object library:</b> This button displays a panel with the object "
+"management interface of the library associated with the project. If you have "
+"an object or a particular image you want to store and reuse in different "
+"frames of your animation, you can use this component.<br> <br>"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:138
+msgid ""
+"<b>Right Sidebar:</b> similar to the left, but contains buttons associated "
+"with the animation process. <center> <img src=\"./images/right_bar.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:145
+msgid "<b>Fig. 10</b> Right Sidebar"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:149
+msgid ""
+"<b>Scene Manager:</b> This button displays a panel that allows the "
+"management of the scenes that make up an animation. If you don&rsqou;t yet "
+"know what a scene is, don’t worry, we’ll talk about it later."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li:155
+msgid ""
+"<b>Exposure Table:</b> This button opens a side panel displaying the table "
+"of exposures that make up each scene. Although it sounds complex, this table "
+"is really just a list of frames on which you illustrate your animation. "
+"Through this component, you can control the layers and frames of your "
+"project. Do you know what a layer? Here is a simple definition: imagine you "
+"take a bit of red paint and cover a sheet of paper with the colour and let "
+"it dry, then apply on the same sheet a coat of green, wait a while and then "
+"apply blue. Although in the end, your paper will look like the last colour "
+"you used, really you know that there are other colours below. Think of each "
+"of these colours, as layers, that is, levels of paint that you define "
+"yourself over a frame. Layers are very useful to achieve certain effects and "
+"techniques which you can discover and practice later."
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.ul.li.br:172
+msgid ""
+"<b>Help Manual:</b> This button displays the manual you’re referring to "
+"now.<br> <br>"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:178
+msgid ""
+"<b>Bottom Bar:</b> on this region will find a stopwatch button, this is the "
+"option to activate the <i>Timeline</i> panel. This tool, well used by "
+"animators from other programs, allows you to manage layers and frames, as "
+"well as visualize how the pieces of your animation will unfold in real time. "
+"<center> <img src=\"./images/bottom_bar.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:188
+msgid "<b>Fig # 11.</b> Bottom Bar"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.br:192
+msgid ""
+"<b>Properties Panel:</b> This zone is created temporarily each time you "
+"click on one of the buttons are in the sidebars or at the bottom. Although "
+"the initial image <b>(Fig. # 5),</b> the panel appears on the right side of "
+"the interface, depending on where is the button you choose, may appear on "
+"the left side or even in the bottom. If you go back to click on the button "
+"initially selected, then the properties panel is closed.<br> <br>"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:202
+msgid ""
+"<b>Status Bar:</b> located at the bottom of the program, this bar has only "
+"one purpose, that is to display the coordinates (x, y) of the mouse cursor "
+"as it moves over the <i>workspace</i> in the <a "
+"href=\"animation.html\"><i>Animation Module</i></a> . <center> <img "
+"src=\"./images/status_bar.png\">"
+msgstr ""
+
+#: tupi_help/components.html+html.body.ol.li.center.p:212
+msgid "<b>Fig # 12.</b> Status Bar"
+msgstr ""

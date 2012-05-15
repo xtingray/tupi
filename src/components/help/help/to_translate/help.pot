@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.9.0\n"
+
+#: tupi_help/help.html+html.body.p:8
+msgid "Help Module"
+msgstr ""
+
+#: tupi_help/help.html+html.body.p:10
+msgid ""
+"If you’re reading this paragraph, then you’ve found the <b>Help Module.</b> "
+"This is the third tab of the workspace and provides a small manual in which "
+"we hope to give you the information you need to start enjoying this program "
+"and creating your own animations."
+msgstr ""
+
+#: tupi_help/help.html+html.body.p:16
+msgid ""
+"On the right side of the workspace, you’ll see the table of contents. To go "
+"to a section or particular topic, just to click on the item that interests "
+"you."
+msgstr ""
+
+#: tupi_help/help.html+html.body.center.p:24
+msgid "<b>Fig # 29.</b> Help Module Interface"
+msgstr ""
+
+#: tupi_help/help.html+html.body.p:27
+msgid ""
+"Tip:</b> Whenever you wish to consult <b>the help module,</b> simply press "
+"<b>Ctrl + 3."
+msgstr ""
+
+#: tupi_help/help.html+html.body.center.p:33
+msgid "<b>Fig # 30.</b> Help Mode Direct Access"
+msgstr ""
+
+#: tupi_help/help.html+html.body.p:37
+msgid ""
+"Remember that if you have questions or concerns that are not covered in this "
+"manual, you can seek further help from the project website <a href= "
+"\"http://www.maefloresta.com\">http://www.maefloresta.com</a> where you can "
+"interact with other users and the <b>Tupi.</b> development team. Together as "
+"a community, with your contributions, ideas and suggestions, we can turn "
+"this project into a professional tool that allows free birth to millions of "
+"pieces of animated art. But one step at a time, it’s time to <a "
+"href=\"first.html\">make an example</a>."
+msgstr ""
