@@ -36,14 +36,11 @@
 #include "tupcanvasview.h"
 #include "tdebug.h"
 
-#include <QTimer>
-
 struct TupCanvasView::Private
 {
     QSize screenSize;
     QSize projectSize;
     QColor bg;
-    QTimer *timer;
 };
 
 TupCanvasView::TupCanvasView(QWidget *parent, const QSize &screenSize, const QSize &projectSize, 
@@ -53,10 +50,9 @@ TupCanvasView::TupCanvasView(QWidget *parent, const QSize &screenSize, const QSi
     k->projectSize = projectSize;
     k->bg = bg;
 
-    k->timer = new QTimer(this);
-    int saveTime = 1*15000;
-    connect(k->timer, SIGNAL(timeout()), this, SLOT(updateCanvas()));
-    k->timer->start(saveTime);
+    setRenderHint(QPainter::Antialiasing, true);
+    setRenderHint(QPainter::TextAntialiasing, true);
+    setBackgroundBrush(QBrush(k->bg, Qt::SolidPattern));
 }
 
 TupCanvasView::~TupCanvasView()
@@ -66,32 +62,4 @@ TupCanvasView::~TupCanvasView()
 void TupCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsView::drawBackground(painter, rect);
-    painter->save();
-    painter->setRenderHint(QPainter::Antialiasing, true);
-
-    painter->setPen(QPen(Qt::NoPen));
-
-    QRectF drawingRect = QRectF(rect.topLeft(), k->screenSize);
-    painter->fillRect(drawingRect, k->bg);
-
-    double w = (double) k->projectSize.width() / (double) 2;
-    double h = (double) k->projectSize.height() / (double) 2;
-
-    painter->setPen(QPen(QColor(200, 200, 200, 255), 0.2));
-    QPointF topLeft = rect.center() - QPointF(w, h); 
-    QRectF workspace = QRectF(topLeft, k->projectSize);
-
-    painter->drawRect(drawingRect);
-    painter->drawRect(workspace);
-    painter->restore();
-}
-
-void TupCanvasView::updateCanvas()
-{
-    this->scene()->update(); 
-}
-
-void TupCanvasView::stopUpdateTimer()
-{
-    k->timer->stop();
 }

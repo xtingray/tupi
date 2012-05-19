@@ -164,7 +164,12 @@ QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modif
 
     switch (key) {
             case Qt::Key_P:
-                 tool = TupToolPlugin::PencilTool;
+                 if (modifiers == Qt::ShiftModifier) {
+                     menu = TupToolPlugin::ColorMenu;
+                     tool = TupToolPlugin::ColorTool;
+                 } else {
+                     tool = TupToolPlugin::PencilTool;
+                 }
             break;
 
             case Qt::Key_M:
@@ -225,7 +230,10 @@ QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modif
 
             case Qt::Key_Z:
                  menu = TupToolPlugin::ZoomMenu;
-                 tool = TupToolPlugin::ViewTool;
+                 if (modifiers == Qt::ShiftModifier)
+                     tool = TupToolPlugin::ZoomOutTool;
+                 else
+                     tool = TupToolPlugin::ZoomInTool;
             break;
 
             case Qt::Key_H:

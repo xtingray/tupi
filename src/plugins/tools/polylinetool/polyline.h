@@ -59,6 +59,7 @@ class PolyLine : public TupToolPlugin
         virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
+        virtual void doubleClick(const TupInputDeviceInformation *input, TupGraphicsScene *scene);
         
         virtual void keyPressEvent(QKeyEvent *event);
 

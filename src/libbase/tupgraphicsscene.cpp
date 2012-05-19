@@ -925,17 +925,11 @@ void TupGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if (currentFrame()) {
                 //if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
                 //tFatal() << "TupGraphicsScene::mousePressEvent() - FLAG: " << currentFrame()->isLocked();
-                    if (event->buttons() == Qt::LeftButton) {
-                        k->tool->begin();
-                        k->isDrawing = true;
-                        k->tool->press(k->inputInformation, k->brushManager, this);
-                    } else {
-                        // if (k->tool->name().compare(tr("Zoom")) == 0 || k->tool->name().compare(tr("PolyLine")) == 0) {
-                        if (k->tool->name().compare(tr("PolyLine")) == 0) {
-                            k->tool->press(k->inputInformation, k->brushManager, this);
-                            return;
-                        }
-                    }
+                if (event->buttons() == Qt::LeftButton) {
+                    k->tool->begin();
+                    k->isDrawing = true;
+                    k->tool->press(k->inputInformation, k->brushManager, this);
+                } 
             } 
         }
     }
@@ -1001,8 +995,10 @@ void TupGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
         }
     } else {
         if (k->tool) { 
-           if (k->tool->name().compare(tr("Zoom")))
-               k->tool->release(k->inputInformation, k->brushManager, this);
+           if (k->tool->name().compare(tr("Zoom In")) == 0 || k->tool->name().compare(tr("Zoom Out")) == 0) {
+               if (event->button() != Qt::RightButton) 
+                   k->tool->release(k->inputInformation, k->brushManager, this);
+           }
         }
     }
 

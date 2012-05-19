@@ -46,7 +46,8 @@
 */
 class TUPI_EXPORT TupBrushManager : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         TupBrushManager(QObject * parent = 0);
         TupBrushManager(const QPen &pen, const QBrush &brush, QObject * parent = 0);

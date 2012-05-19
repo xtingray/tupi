@@ -100,6 +100,7 @@ class TupViewDocument : public QMainWindow
         void closeFullScreen();
         void loadPlugin(int menu, int index);
         void updateStatusBgColor(const QColor color);
+        void updatePenThickness(int size);
 
     private:
         struct Private;
@@ -140,13 +141,16 @@ class TupViewDocument : public QMainWindow
         bool handleProjectResponse(TupProjectResponse *event);
 
     signals:
-        void sendToStatus(const QString& msg);
+        void sendToStatus(const QString &msg);
         void requestTriggered(const TupProjectRequest *event);
         void localRequestTriggered(const TupProjectRequest *event);
         void autoSave();
         void modeHasChanged(int mode);
         void expandColorPanel();
         void requestExportImageToServer(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
+        void openColorDialog(const QColor &);
+        void updateColorFromFullScreen(const QColor &color);
+        void updatePenFromFullScreen(const QPen &pen);
 
     // protected:
     // void closeEvent(QCloseEvent *e);

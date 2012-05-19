@@ -165,6 +165,8 @@ class TupMainWindow : public TabbedMainWindow
 
     public slots:
           void openProject(const QString &path);
+          void updatePenColor(const QColor &color);
+          void updatePenThickness(const QPen &pen);
 
     private slots:
           void setWorkSpace();

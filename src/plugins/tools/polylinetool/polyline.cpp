@@ -486,4 +486,11 @@ QCursor PolyLine::cursor() const
     return k->cursor;
 }
 
+void PolyLine::doubleClick(const TupInputDeviceInformation *input, TupGraphicsScene *scene)
+{
+    Q_UNUSED(input);
+    Q_UNUSED(scene);
+    endItem();
+}
+
 Q_EXPORT_PLUGIN2(tup_polyline, PolyLine);

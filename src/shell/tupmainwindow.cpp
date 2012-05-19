@@ -291,6 +291,9 @@ void TupMainWindow::setWorkSpace()
         connectWidgetToLocalManager(drawingTab);
         connect(drawingTab, SIGNAL(modeHasChanged(int)), this, SLOT(expandExposureView(int))); 
         connect(drawingTab, SIGNAL(expandColorPanel()), this, SLOT(expandColorView()));
+
+        connect(drawingTab, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
+        connect(drawingTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
       
         drawingTab->setAntialiasing(true);
 
@@ -1213,6 +1216,18 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
     } else {
         // tFatal() << "TupMainWindow::createCommand() - Paint command is NULL!";
     }
+}
+
+void TupMainWindow::updatePenColor(const QColor &color)
+{
+    TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangeColorPen, color);
+    createCommand(event);
+}
+
+void TupMainWindow::updatePenThickness(const QPen &pen)
+{
+    TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePen, pen);
+    createCommand(event);
 }
 
 /**

@@ -452,7 +452,7 @@ void TupViewDocument::loadPlugins()
              }
     }
 
-    QVector<TAction*> brushTools(9);
+    QVector<TAction*> brushTools(10);
     QVector<TAction*> tweenTools(7);
 
     TAction *pencil = 0;
@@ -581,7 +581,7 @@ void TupViewDocument::loadPlugins()
                                case TupToolInterface::View:
                                  {
                                    k->viewToolMenu->addAction(action);
-                                   if (toolName.compare(tr("Zoom")) == 0)
+                                   if (toolName.compare(tr("Zoom In")) == 0)
                                        k->viewToolMenu->setDefaultAction(action);
 
                                  }
@@ -625,6 +625,10 @@ void TupViewDocument::loadPlugins()
 
 void TupViewDocument::loadPlugin(int menu, int index)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TAction *action = 0;
 
     switch (menu) {
@@ -637,6 +641,18 @@ void TupViewDocument::loadPlugin(int menu, int index)
                                 k->paintArea->goOneFrameForward();
                      } else if (index == TupToolPlugin::QuickCopy) {
                                 k->paintArea->quickCopy();
+                     }
+                 }
+            break;
+
+            case TupToolPlugin::ColorMenu:
+                 {
+                     if (index == TupToolPlugin::ColorTool) {
+                         if (k->fullScreenOn) {
+                             QColor currentColor = brushManager()->penColor();
+                             emit openColorDialog(currentColor);
+                         }
+                         return;
                      }
                  }
             break;
@@ -815,7 +831,7 @@ void TupViewDocument::selectTool()
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
-                     if (toolName.compare(tr("Zoom"))==0)
+                     if (toolName.compare(tr("Zoom In"))==0 || toolName.compare(tr("Zoom Out"))==0)
                          minWidth = 130;
                      break;
         }
@@ -1252,14 +1268,32 @@ void TupViewDocument::showFullScreen()
 
     k->fullScreen = new TupCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
                                  k->paintArea->centerPoint(), QSize(screenW, screenH), projectSize, scale,
-                                 k->viewAngle, k->project->bgColor()); 
+                                 k->viewAngle, k->project->bgColor(), brushManager()); 
+
     k->fullScreen->updateCursor(k->currentTool->cursor());
     k->fullScreen->showFullScreen();
+
+    connect(this, SIGNAL(openColorDialog(const QColor &)), k->fullScreen, SLOT(colorDialog(const QColor &)));
+    connect(k->fullScreen, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SIGNAL(updateColorFromFullScreen(const QColor &)));
+    connect(k->fullScreen, SIGNAL(updatePenThicknessFromFullScreen(int)), this, SLOT(updatePenThickness(int)));
+    connect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
+}
+
+void TupViewDocument::updatePenThickness(int size) 
+{
+    QPen pen = brushManager()->pen();
+    pen.setWidth(size);
+    emit updatePenFromFullScreen(pen);
 }
 
 void TupViewDocument::closeFullScreen()
 {
     if (k->fullScreenOn) {
+        disconnect(this, SIGNAL(openColorDialog(const QColor &)), k->fullScreen, SLOT(colorDialog(const QColor &)));
+        disconnect(k->fullScreen, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SIGNAL(updateColorFromFullScreen(const QColor &)));
+        disconnect(k->fullScreen, SIGNAL(updatePenThicknessFromFullScreen(int)), this, SLOT(updatePenThickness(int))); 
+        disconnect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
+
         k->fullScreen->close();
         k->fullScreenOn = false;
         k->currentTool->init(k->paintArea->graphicsScene());

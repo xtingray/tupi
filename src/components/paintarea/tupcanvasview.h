@@ -36,11 +36,13 @@
 #ifndef TUPCANVASVIEW_H
 #define TUPCANVASVIEW_H
 
+#include "tuppaintareabase.h"
+
 #include <QGraphicsView>
 #include <QPainter>
 #include <QRectF>
 
-class TupCanvasView : public QGraphicsView 
+class TupCanvasView : public QGraphicsView
 {
     Q_OBJECT
 
@@ -48,13 +50,9 @@ class TupCanvasView : public QGraphicsView
         TupCanvasView(QWidget *parent=0, const QSize &screenSize = QSize(0, 0), 
                      const QSize &projectSize = QSize(0, 0), const QColor &bg = QColor(Qt::white));
         ~TupCanvasView();
-        void stopUpdateTimer();
 
     protected:
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
-
-    private slots:
-        void updateCanvas();
 
     private:
         struct Private;

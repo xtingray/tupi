@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTOOLPLUGIN_H
-#define TupTOOLPLUGIN_H
+#ifndef TUPTOOLPLUGIN_H
+#define TUPTOOLPLUGIN_H
 
 #include "tuptoolinterface.h"
 #include "tupglobal.h"
@@ -58,11 +58,12 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
     
     public:
 
-        enum MenuIndex { InvalidMenu = -1, BrushesMenu = 0, SelectionMenu, FillMenu, ZoomMenu, TweenerMenu, Arrows };
+        enum MenuIndex { InvalidMenu = -1, BrushesMenu = 0, SelectionMenu, FillMenu, ZoomMenu, TweenerMenu, Arrows, ColorMenu };
         enum BrushTools { InvalidBrush = -1, PencilTool = 0, SchemeTool, InkTool, EraserTool, PolyLineTool, LineTool, RectangleTool, EllipseTool, TextTool, FrameBack, FrameForward, QuickCopy, Delete };
         enum SelectTools { InvalidSelection = -1, NodesTool = 0, ObjectsTool };
         enum FillTools { InvalidFill = -1, InsideTool = 0, ContourTool };
-        enum ViewTools { InvalidView = -1, ViewTool = 0, HandTool };
+        enum ViewTools { InvalidView = -1, ZoomInTool = 0, ZoomOutTool, HandTool };
+        enum ColorTools { InvalidColor = -1, ColorTool = 0 };
 
         explicit TupToolPlugin(QObject *parent = 0);
         ~TupToolPlugin();

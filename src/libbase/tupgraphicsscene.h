@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupGRAPHICSSCENE_H
-#define TupGRAPHICSSCENE_H
+#ifndef TUPGRAPHICSSCENE_H
+#define TUPGRAPHICSSCENE_H
 
 #include "tupglobal.h"
 #include "tupsvgitem.h"

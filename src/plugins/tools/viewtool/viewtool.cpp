@@ -58,7 +58,8 @@ struct ViewTool::Private
     QPointF firstPoint;
     TupGraphicsScene *scene;
     ZoomConfigurator *configurator;
-    QCursor zoomCursor;
+    QCursor zoomInCursor;
+    QCursor zoomOutCursor;
     QCursor handCursor;
 };
 
@@ -88,17 +89,24 @@ void ViewTool::init(TupGraphicsScene *scene)
 
 QStringList ViewTool::keys() const
 {
-    return QStringList() << tr("Zoom") << tr("Hand");
+    return QStringList() << tr("Zoom In") << tr("Zoom Out") << tr("Hand");
 }
 
 void ViewTool::setupActions()
 {
-    TAction *zoomAction = new TAction(QIcon(kAppProp->themeDir() + "icons/zoom.png"), tr("Zoom"), this);
-    zoomAction->setShortcut(QKeySequence(tr("Z")));
-    k->zoomCursor = QCursor(kAppProp->themeDir() + "cursors/zoom.png");
-    zoomAction->setCursor(k->zoomCursor);
+    TAction *zoomIn = new TAction(QIcon(kAppProp->themeDir() + "icons/zoom_in.png"), tr("Zoom In"), this);
+    zoomIn->setShortcut(QKeySequence(tr("Z")));
+    k->zoomInCursor = QCursor(kAppProp->themeDir() + "cursors/zoom.png");
+    zoomIn->setCursor(k->zoomInCursor);
     
-    k->actions.insert(tr("Zoom"), zoomAction);
+    k->actions.insert(tr("Zoom In"), zoomIn);
+
+    TAction *zoomOut = new TAction(QIcon(kAppProp->themeDir() + "icons/zoom_out.png"), tr("Zoom Out"), this);
+    zoomOut->setShortcut(QKeySequence(tr("Shift+Z")));
+    k->zoomOutCursor = QCursor(kAppProp->themeDir() + "cursors/zoom.png");
+    zoomOut->setCursor(k->zoomOutCursor);
+   
+    k->actions.insert(tr("Zoom Out"), zoomOut);
     
     TAction *handAction = new TAction(QIcon(kAppProp->themeDir() + "icons/hand.png"), tr("Hand"), this);
     handAction->setShortcut(QKeySequence(tr("H")));
@@ -114,6 +122,8 @@ void ViewTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
 
+    tError() << "ViewTool::press() - Just tracing 1!";
+
     k->added = false;
     k->rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
     k->rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
@@ -127,7 +137,7 @@ void ViewTool::move(const TupInputDeviceInformation *input, TupBrushManager *bru
     Q_UNUSED(brushManager);
 
     foreach (QGraphicsView * view, scene->views()) {
-             if (name() == tr("Zoom"))
+             if (name() == tr("Zoom In") || name() == tr("Zoom Out"))
                  view->setDragMode(QGraphicsView::NoDrag);
              else if (name() == tr("Hand"))
                       view->setDragMode(QGraphicsView::ScrollHandDrag);
@@ -135,7 +145,7 @@ void ViewTool::move(const TupInputDeviceInformation *input, TupBrushManager *bru
 
     if (name() == tr("Hand")) {
         k->scene = scene;
-    } else if (name() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier) {
+    } else if (name() == tr("Zoom In") && input->keyModifiers() == Qt::ControlModifier) {
 
                if (!k->added) {
                    scene->addItem(k->rect);
@@ -175,7 +185,7 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
 {
     Q_UNUSED(brushManager);
 
-    if (name() == tr("Zoom")) { 
+    if (name() == tr("Zoom In") || name() == tr("Zoom Out")) { 
         // Zoom Square mode
         if (input->button() == Qt::LeftButton && input->keyModifiers() == Qt::ControlModifier) {    
 
@@ -209,17 +219,34 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
 
         } else { // Normal Zoom
 
+            tError() << "ViewTool::release() - Just tracing 1!";
+
             foreach (QGraphicsView *view, scene->views()) {
+                     /*
                      if (input->button() == Qt::LeftButton) {
                          // SQA: the function centerOn is not doing what we really need :S
                          view->centerOn(input->pos());
                          view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
                      } else {
                          if (input->button() == Qt::RightButton) {
+                             tError() << "ViewTool::release() - Just tracing 2!";
                              view->centerOn(input->pos());
                              view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
                          }
                      } 
+                     */
+
+                     if (name() == tr("Zoom In")) {
+                         // SQA: the function centerOn is not doing what we really need :S
+                         view->centerOn(input->pos());
+                         view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
+                     } else {
+                         if (name() == tr("Zoom Out")) {
+                             tError() << "ViewTool::release() - Just tracing 2!";
+                             view->centerOn(input->pos());
+                             view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
+                         }
+                     }
             }
         }
 
@@ -286,9 +313,11 @@ QCursor ViewTool::cursor() const
 {
    if (name() == tr("Hand")) {
        return k->handCursor;
-   } else if (name() == tr("Zoom")) {
-              return k->zoomCursor;
-   }
+   } else if (name() == tr("Zoom In")) {
+              return k->zoomInCursor;
+   } else if (name() == tr("Zoom Out")) {
+              return k->zoomOutCursor;
+   } 
 
    return QCursor(Qt::ArrowCursor);
 }
