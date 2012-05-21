@@ -87,6 +87,9 @@ class TupCanvas : public QFrame
         void wakeUpZoomOut();
         void wakeUpHand();
 
+        void undo();
+        void redo();
+
    signals:
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);

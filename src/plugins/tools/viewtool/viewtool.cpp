@@ -122,8 +122,6 @@ void ViewTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
 
-    tError() << "ViewTool::press() - Just tracing 1!";
-
     k->added = false;
     k->rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
     k->rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
@@ -219,8 +217,6 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
 
         } else { // Normal Zoom
 
-            tError() << "ViewTool::release() - Just tracing 1!";
-
             foreach (QGraphicsView *view, scene->views()) {
                      /*
                      if (input->button() == Qt::LeftButton) {
@@ -229,7 +225,6 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
                          view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
                      } else {
                          if (input->button() == Qt::RightButton) {
-                             tError() << "ViewTool::release() - Just tracing 2!";
                              view->centerOn(input->pos());
                              view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
                          }
@@ -242,7 +237,6 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
                          view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
                      } else {
                          if (name() == tr("Zoom Out")) {
-                             tError() << "ViewTool::release() - Just tracing 2!";
                              view->centerOn(input->pos());
                              view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
                          }
