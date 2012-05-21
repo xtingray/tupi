@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,39 +11,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/tupi_short.html+html.body.p:8
+#: en/tupi_short.html+html.body.p:8
 msgid "About Tupi"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.p:9
+#: en/tupi_short.html+html.body.p:9
 msgid "<b>Tupi</b> is:"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.ul.li:11
+#: en/tupi_short.html+html.body.ul.li:11
 msgid ""
 "A design and authoring tool for digital artists interested in 2D Animation. "
 "It Offers an interface experience focused on kids from 8-100 years old"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.ul.li:14
+#: en/tupi_short.html+html.body.ul.li:14
 msgid "A software application developed in C++ using the Qt library"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.ul.li:16
+#: en/tupi_short.html+html.body.ul.li:16
 msgid ""
 "A free software project under constant redesign and evolution, released "
 "under the GPL terms (version 3)"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.ul.li:18
+#: en/tupi_short.html+html.body.ul.li:18
 msgid "A community of artists and developers around a software project"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.ul.li:20
+#: en/tupi_short.html+html.body.ul.li:20
 msgid "A space for creating and publishing free animated content"
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.p:23
+#: en/tupi_short.html+html.body.p:23
 msgid ""
 "The name of the project is inspired by the <a "
 "href=\"http://en.wikipedia.org/wiki/Tup%C3%AD_people\">Tupi people</a>, one of "
@@ -51,7 +51,7 @@ msgid ""
 "Guarani natives with which they share a strong relationship."
 msgstr ""
 
-#: tupi_help/tupi_short.html+html.body.p:29
+#: en/tupi_short.html+html.body.p:29
 msgid ""
 "For more information about <b>Tupi</b> please visit: <a "
 "href=\"http://www.maefloresta.com\"><b>http://www.maefloresta.com</b></a>"

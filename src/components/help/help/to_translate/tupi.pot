@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,110 +11,110 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/tupi.html+html.body.p:9
+#: en/tupi.html+html.body.p:9
 msgid "Who are we?"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.p:11
+#: en/tupi.html+html.body.p:11
 msgid ""
 "<b>Tupi</b> is a free 2D animation tool (a fork of the <b>KTooN</b> "
 "project)."
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.p:14
+#: en/tupi.html+html.body.p:14
 msgid "Development Team"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li:17
+#: en/tupi.html+html.body.ul.li.ul.li:17
 msgid ""
 "Gustav Gonzalez, Director of Development and Programmer <ul "
 "class=\"paragraph\">"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:19
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:19
 msgid "Tasks: <ul class=\"paragraph\">"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:21
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:21
 msgid "Design of the software architecture"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:22
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:22
 msgid "Schedule for the application components"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:23
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:23
 msgid "Bug fixing and source code optimization"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:24
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:24
 msgid "Review of patches and code contributions to the project"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:25
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:25
 msgid ""
 "Release of new versions and revisions of the software according to the "
 "development cycle"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:29
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:29
 msgid "CV <ul class=\"paragraph\">"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:31
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:31
 msgid "Free Software user since 1994"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:32
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:32
 msgid "Advocate of use of Free Software / Speaker"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:33
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:33
 msgid ""
 "Computer Scientist (graduated at 2001 - Universidad del Valle / Cali, "
 "Colombia)"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:34
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:34
 msgid "Unix server administrator for 10 years"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li.ul.li.ul.li:35
+#: en/tupi.html+html.body.ul.li.ul.li.ul.li:35
 msgid "Entrepreneur in business models based on free software"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.p:42
+#: en/tupi.html+html.body.p:42
 msgid "Partners"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.p:43
+#: en/tupi.html+html.body.p:43
 msgid ""
 "Since its inception and during its ongoing process of development, the "
 "<b>Tupi</b> project has had the valuable help of people from around the "
 "world. From the long list of contributors, these are some of them:"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li:50
+#: en/tupi.html+html.body.ul.li:50
 msgid "Alyne Castro - Brazil"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li:52
+#: en/tupi.html+html.body.ul.li:52
 msgid "Erika Helena [HienHen/H13N.H3N] - Mexico"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li:54
+#: en/tupi.html+html.body.ul.li:54
 msgid "Debora Badilla - Argentina"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li:56
+#: en/tupi.html+html.body.ul.li:56
 msgid "Garkusha Sergey - Russia"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.ul.li:58
+#: en/tupi.html+html.body.ul.li:58
 msgid "Timothée Gieten - France"
 msgstr ""
 
-#: tupi_help/tupi.html+html.body.p:61
+#: en/tupi.html+html.body.p:61
 msgid ""
 "For more information visit: <a href= "
 "\"http://www.maefloresta.com\"><b>http://www.maefloresta.com</b></a>"

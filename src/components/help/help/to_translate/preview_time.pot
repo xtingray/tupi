@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/preview_time.html+html.body.p:7
+#: en/preview_time.html+html.body.p:8
 msgid "Let's see how is it looking"
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.p:8
+#: en/preview_time.html+html.body.p:9
 msgid ""
 "Okay, we have half the frames of our project completed. It's time to learn "
 "to use the <i>Player Module.</i> Needless to say there is no general rule "
@@ -24,11 +24,11 @@ msgid ""
 "choose."
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.center.p:26
+#: en/preview_time.html+html.body.center.p:27
 msgid "<b>Fig #57.</b> Project preview from the Player module"
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.p:28
+#: en/preview_time.html+html.body.p:29
 msgid ""
 "Additionally, note that performing a preview of your animation does not "
 "affect your project at all, therefore, you can access this module as many "
@@ -39,11 +39,11 @@ msgid ""
 "animation, step by step or continuously."
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.center.p:37
+#: en/preview_time.html+html.body.center.p:38
 msgid "<b>Fig #58.</b> Control Panel of the Player module"
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.p:39
+#: en/preview_time.html+html.body.p:40
 msgid ""
 "If you look at the bottom of the panel, you will find information about the "
 "project: <i>Name of the scene,</i> the <i>total number of frames</i> and the "
@@ -53,18 +53,18 @@ msgid ""
 "animation will be."
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.p:46
+#: en/preview_time.html+html.body.p:47
 msgid ""
 "<b>Tip:</b> The <i>Loop</i> option is quite useful if your project has few "
 "frames and you want to check the quality of the movement of the shapes. You "
 "can enable it whenever you want."
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.center.p:50
+#: en/preview_time.html+html.body.center.p:51
 msgid "<b>Fig #59.</b> Option \"Loop\" of the Player module"
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.p:52
+#: en/preview_time.html+html.body.p:53
 msgid ""
 "Okay, now it's time to continue drawing new frames following the routemap of "
 "your script. Return to the previous section, and make all the pending "
@@ -74,7 +74,7 @@ msgid ""
 "<i>\"tweening\"</i>, used to save a lot of time when you are illustrating."
 msgstr ""
 
-#: tupi_help/preview_time.html+html.body.p:60
+#: en/preview_time.html+html.body.p:61
 msgid ""
 "Did you finish all the frames you need? Do you like what you are watching in "
 "the <i>Player Module?</i> Well, then it's time to <a "

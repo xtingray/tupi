@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/animation.html+html.body.p:8
+#: en/animation.html+html.body.p:8
 msgid "Animation Module"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p.br:10
+#: en/animation.html+html.body.p.br:10
 msgid ""
 "This is the module you will spend most of your time in when you are working "
 "with <b>Tupi</b>. You know why? This is where you will build each frame of "
@@ -26,32 +26,32 @@ msgid ""
 "it will appear as you move it."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:23
+#: en/animation.html+html.body.center.p:23
 msgid "<b>Fig # 13.</b> Animation Interface Module"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:27
+#: en/animation.html+html.body.p:27
 msgid ""
-"Tip:</b> Whenever you wish to see the <b>animation module,</b> simply press "
-"<b>Ctrl + 1."
+"<b>Tip:</b> Whenever you wish to see the <b>animation module,</b> simply "
+"press <b>Ctrl + 1</b>."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:33
+#: en/animation.html+html.body.center.p:33
 msgid "<b>Fig # 14.</b> Animation Module Shortcut"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:37
+#: en/animation.html+html.body.p:37
 msgid ""
 "In the previous section, we looked at the general components of the "
 "<b>Tupi</b> interface. Now let’s look in a little more detail at every "
 "resource available from this module."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:42
+#: en/animation.html+html.body.p:42
 msgid "1.</b> <b>Workspace area"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:44
+#: en/animation.html+html.body.p:44
 msgid ""
 "Think of the <i>workspace</i> as a blank canvas, the space available for the "
 "design of each of the frames that will be part of the animation. There are "
@@ -64,11 +64,11 @@ msgid ""
 "in the animation."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:59
+#: en/animation.html+html.body.center.p:59
 msgid "<b>Fig # 15.</b> Workspace area"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:62
+#: en/animation.html+html.body.p:61
 msgid ""
 "<b>2.</b> <b>Primary Editing Functions Panel</b><br> Located in the upper "
 "left of the <i>Workspace</i>, this panel offers all the usual basic editing "
@@ -78,15 +78,15 @@ msgid ""
 "activated or deactivated at will and <i>Onion Skin,</i> functionality that "
 "allows you to make the current frame semi-transparent in order to see "
 "drawings in previous and subsequent frames. We will delve more into the use "
-"of the latter in <a href= \"chapter2.html\">Chapter 2 -Let’s make an "
-"example!</a>"
+"of the latter in <a href=\"chapter2.html\">Chapter 2 -Let’s make an "
+"example</a>!"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:85
+#: en/animation.html+html.body.center.p:82
 msgid "<b>Fig # 16.</b> Primary Editing Functions Panel"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:89
+#: en/animation.html+html.body.p:86
 msgid ""
 "<b>3.</b> <b>Tools Panel</b><br> This panel is located on the left edge of "
 "the <i>workspace</i> and provides you with the necessary tools to draw and "
@@ -94,14 +94,14 @@ msgid ""
 "type in the following sub-menus:"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.ul.li:96
+#: en/animation.html+html.body.ul.li:93
 msgid ""
 "Drawing Menu: This menu contains all the drawing tools, including: "
 "<i>Pencil, Ink, Eraser, Rectangle, Ellipse, Line, Polyline,</i> and the "
 "<i>Text</i> tool."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.ul.li:100
+#: en/animation.html+html.body.ul.li:97
 msgid ""
 "Selection Menu: This menu includes the tool for <i>Node Selection,</i> which "
 "can alter the shape and trajectory of an object by editing of nodes, and "
@@ -109,14 +109,14 @@ msgid ""
 "object that is selected from the <i>Workspace</i>."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.ul.li:106
+#: en/animation.html+html.body.ul.li:103
 msgid ""
 "Fill Menu: This menu contains tools for <i>Contour Fill</i> and <i>Internal "
 "Fill</i> of selected objects from the colour that is defined in the "
 "<i>Colour Palette</i> at the time."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.ul.li:110
+#: en/animation.html+html.body.ul.li:107
 msgid ""
 "View Menu: This menu contains the <i>Magnifying Glass</i> tool to zoom in or "
 "out of the frame being worked on and the <i>Drag</i> tool (better known as "
@@ -124,19 +124,19 @@ msgid ""
 "it is zoomed."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.ul.li:116
+#: en/animation.html+html.body.ul.li:113
 msgid "Tweening Menu: TODO should this go in yet? is tweeining released"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:129
+#: en/animation.html+html.body.center.p:126
 msgid "<b>Fig # 17.</b> Tools Panel"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:132
+#: en/animation.html+html.body.p:129
 msgid "4.</b> <b>Left Sidebar"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p.br:134
+#: en/animation.html+html.body.p.br:131
 msgid ""
 "<b>Colour Palette</b><br> As its name implies, this is the panel where you "
 "choose the colour that you want to draw with, regardless of the shape or "
@@ -146,11 +146,11 @@ msgid ""
 "choose another one)."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:151
+#: en/animation.html+html.body.center.p:148
 msgid "<b>Fig # 18.</b> Colour Palette"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:154
+#: en/animation.html+html.body.p:151
 msgid ""
 "<b>Tip:</b> Note that in addition to using single colours, you can also use "
 "<i>gradients,</i> i.e. combinations of colours that blend gradually on the "
@@ -158,11 +158,11 @@ msgid ""
 "light green and ends in black:"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:163
+#: en/animation.html+html.body.center.p:160
 msgid "<b>Fig # 19.</b> Gradient Example"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:166
+#: en/animation.html+html.body.p:163
 msgid ""
 "<b>Pen Properties</b><br> The <i>Pen</i> in this context defines the "
 "qualities of the tool you’ll use to draw, you may want to think of it as the "
@@ -172,11 +172,11 @@ msgid ""
 "different types of dotted line, if you wish)."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:184
+#: en/animation.html+html.body.center.p:181
 msgid "<b>Fig # 20.</b> Pen Properties"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p.br:187
+#: en/animation.html+html.body.p.br:184
 msgid ""
 "<b>Object Library</b><br> The function of this component is to store a copy "
 "of the figures or images that are part of your project that you want to "
@@ -185,15 +185,15 @@ msgid ""
 "that you have drawn will appear again and again."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:203
+#: en/animation.html+html.body.center.p:200
 msgid "<b>Fig # 21.</b> Object Library"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:206
+#: en/animation.html+html.body.p:203
 msgid "5.</b> <b>Right Sidebar"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:208
+#: en/animation.html+html.body.p:204
 msgid ""
 "<b>Scene Manager</b><br> What is a scene? I’ll try to give a simple "
 "definition: think of a movie or a TV commercial, I’m sure you’ve noticed "
@@ -206,14 +206,14 @@ msgid ""
 "that before you start your animation project, you have very clear idea of "
 "what scenes you will develop and in what order you’re going to create them. "
 "Pay close attention to the advice in “<a href=\"first.html\">First things "
-"first!</a>”."
+"first</a>!”"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:234
+#: en/animation.html+html.body.center.p:229
 msgid "<b>Fig # 22.</b> Scene Manager"
 msgstr ""
 
-#: tupi_help/animation.html+html.body.p:237
+#: en/animation.html+html.body.p:231
 msgid ""
 "<b>Exposure Sheet</b><br> The <i>Exposure Sheet</i> is a vital resource to "
 "illustrate the sequence of the frames that are part of a scene. Through it, "
@@ -223,9 +223,9 @@ msgid ""
 "<i>onion skin</i> feature in the Tools Panel, will offer the necessary "
 "elements to make your animations look fluid. This will be much easier to "
 "understand, after you review the example in <a href=\"chapter2.html\">Chapter "
-"2</a> ."
+"2</a>."
 msgstr ""
 
-#: tupi_help/animation.html+html.body.center.p:258
+#: en/animation.html+html.body.center.p:251
 msgid "<b>Fig # 23.</b> Exposure Sheet"
 msgstr ""

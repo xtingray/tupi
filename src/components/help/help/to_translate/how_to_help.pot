@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,52 +11,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/how_to_help.html+html.body.p:8
+#: en/how_to_help.html+html.body.p:8
 msgid "How to help"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.p:10
+#: en/how_to_help.html+html.body.p:10
 msgid ""
 "If you want to help <b>Tupi</b> become the best free tool for creating 2D "
 "animation projects, there are many ways to do it, below we’ll tell you some "
 "of them:"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.p:14
+#: en/how_to_help.html+html.body.p:14
 msgid "As an animator"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:17
+#: en/how_to_help.html+html.body.ul.li:17
 msgid ""
 "Install <b>Tupi</b> on your computer and become an expert creating "
 "animations"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:20
+#: en/how_to_help.html+html.body.ul.li:20
 msgid "Tell your friends about <b>Tupi</b>"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:22
+#: en/how_to_help.html+html.body.ul.li:22
 msgid ""
 "Create manuals, videos or any content that supports other entertainers who "
 "want to learn"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:25
+#: en/how_to_help.html+html.body.ul.li:25
 msgid "Create and publish small animation projects in our gallery"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:28
+#: en/how_to_help.html+html.body.ul.li:28
 msgid "Report any faults you find in the program through our website"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:31
+#: en/how_to_help.html+html.body.ul.li:31
 msgid ""
 "Log on to our forums to have your questions answered or to help other "
 "animators"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:34
+#: en/how_to_help.html+html.body.ul.li:34
 msgid ""
 "Make a donation to the project. Even just $1 helps. Any contribution you "
 "make will allow us to hire more developers, acquire better equipment and pay "
@@ -64,66 +64,67 @@ msgid ""
 "shorter development cycles and improved versions of <b>Tupi</b>"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.p:41
+#: en/how_to_help.html+html.body.p:41
 msgid "As a developer"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:44
+#: en/how_to_help.html+html.body.ul.li:44
 msgid "Download the project source code and study it"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:46
+#: en/how_to_help.html+html.body.ul.li:46
 msgid ""
-"Using the tool <a href= \"http://www.stack.nl/~dimitri/doxygen/\">Doxygen</a>, "
-"help us to document the software components of <b>Tupi</b>"
+"Using the tool <a href=\"http://www.stack.nl/%"
+"7Edimitri/doxygen/\">Doxygen</a>, help us to document the software components "
+"of <b>Tupi</b>"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:50
+#: en/how_to_help.html+html.body.ul.li:49
 msgid ""
 "Develop and publish charts and visual aids that will enable other developers "
 "to understand the architecture of <b>Tupi</b> more easily and quickly"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:54
+#: en/how_to_help.html+html.body.ul.li:53
 msgid ""
 "See the bug reports and help us to correct problems reported by animators. "
 "Create patches with improvements and share them with our development team"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:58
+#: en/how_to_help.html+html.body.ul.li:57
 msgid ""
 "Check the schedule of activities and help to implement any new functionality "
 "that is pending"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.p:62
+#: en/how_to_help.html+html.body.p:61
 msgid "As a teacher"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:65
+#: en/how_to_help.html+html.body.ul.li:64
 msgid "Invite your students to learn and use <b>Tupi</b>"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:67
+#: en/how_to_help.html+html.body.ul.li:66
 msgid ""
 "Involve the creation of animations as part of the activities in your courses"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:70
+#: en/how_to_help.html+html.body.ul.li:69
 msgid ""
 "Participate and encourage your students to create small animations that "
 "serve as examples for other students"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.ul.li:73
+#: en/how_to_help.html+html.body.ul.li:72
 msgid ""
 "Develop tutorials and also invite your students to participate in their "
 "creation"
 msgstr ""
 
-#: tupi_help/how_to_help.html+html.body.p:77
+#: en/how_to_help.html+html.body.p:75
 msgid ""
 "Regardless of which role(s) you choose, all your contributions as a member "
 "of this community are part of the process of development and improvement of "
-"<b>Tupi.</b> Join the team!"
+"<b>Tupi</b>. Join the team!"
 msgstr ""

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/first.html+html.body.p:8
+#: en/first.html+html.body.p:8
 msgid "First things first!"
 msgstr ""
 
-#: tupi_help/first.html+html.body.p:10
+#: en/first.html+html.body.p:10
 msgid ""
 "We’re telling a story! You do have a story to tell don’t you? It’s the first "
 "step in creating an animation project. Usually novices begin to draw on the "
@@ -26,7 +26,7 @@ msgid ""
 "moment “What is my story?”"
 msgstr ""
 
-#: tupi_help/first.html+html.body.p:19
+#: en/first.html+html.body.p:19
 msgid ""
 "No matter how small your project, it is always worth investing a few minutes "
 "to think about the details of your animation. Questions like “Who are the "
@@ -35,7 +35,7 @@ msgid ""
 "the more care you should take with the answers to these questions."
 msgstr ""
 
-#: tupi_help/first.html+html.body.p:28
+#: en/first.html+html.body.p:28
 msgid ""
 "For professional animators, this planning results in what is known as a "
 "script, which is nothing more than a written text that tells a story which "
@@ -47,18 +47,18 @@ msgid ""
 "sheet music for a musician."
 msgstr ""
 
-#: tupi_help/first.html+html.body.p:39
+#: en/first.html+html.body.p:39
 msgid ""
 "For our example, we’ve deliberately chosen something simple, we are going to "
 "create a very simple animation of a butterfly moving through the scene "
 "following a trajectory similar to the one in the following image:"
 msgstr ""
 
-#: tupi_help/first.html+html.body.center.p:47
+#: en/first.html+html.body.center.p:47
 msgid "<b>Fig #31.</b> Trajectory of the butterfly (basic example)"
 msgstr ""
 
-#: tupi_help/first.html+html.body.p:51
+#: en/first.html+html.body.p:50
 msgid ""
 "The butterfly will appear from the left side of the screen and disappear off "
 "to the right in a matter of a few seconds. That is all. Probably you are "
@@ -68,5 +68,5 @@ msgid ""
 "us about it and show us the fruits of your labour. It is important though "
 "not to forget, as an artist, to plan your project before you start to "
 "draw.<br> <br> Good, we now have ready a mini script for our example, so <a "
-"href=\"new.html\">let’s get to work!</a>"
+"href=\"new.html\">let’s get to work</a>!"
 msgstr ""

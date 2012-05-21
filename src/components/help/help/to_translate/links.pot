@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,92 +11,92 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/links.html+html.body.p:8
+#: en/links.html+html.body.p:8
 msgid "Interesting Links"
 msgstr ""
 
-#: tupi_help/links.html+html.body.p:10
+#: en/links.html+html.body.p:10
 msgid ""
 "In this section you will find some interesting resources that can help "
 "enhance your training process as an animator, illustrator and artist. We "
 "hope you will find them very useful:"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:16
+#: en/links.html+html.body.ul.li:16
 msgid ""
 "Official Website of Tupi:<br> <a "
 "href=\"http://www.maefloresta.com\">http://www.maefloresta.com</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:19
+#: en/links.html+html.body.ul.li:19
 msgid ""
 "Video Gallery:<br> <a href=\"http://www.maefloresta.com/videos\">http://www.ma"
 "efloresta.com/videos</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:22
+#: en/links.html+html.body.ul.li:22
 msgid ""
 "Tupi on Twitter:<br> <a "
 "href=\"http://twitter.com/maefloresta\">http://twitter.com/maefloresta</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:25
+#: en/links.html+html.body.ul.li:25
 msgid ""
 "Tupi Identi.ca:<br> <a "
 "href=\"http://identi.ca/maefloresta\">http://identi.ca/maefloresta</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:30
+#: en/links.html+html.body.ul.li:30
 msgid "Other Free Software projects Graphics and Animation on GNU/Linux:"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:33
+#: en/links.html+html.body.ul.li:33
 msgid ""
 "Gimp: Editing & Image Manipulation<br> <a "
 "href=\"http://www.gimp.org/\">http://www.gimp.org/</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:36
+#: en/links.html+html.body.ul.li:36
 msgid ""
 "Inkscape: Vector Graphics Editor<br> <a "
 "href=\"http://www.inkscape.org/?lang=es\">http://www.inkscape.org/?lang=en</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:39
+#: en/links.html+html.body.ul.li:39
 msgid ""
 "Synfig: 2D Animation Tool<br> <a "
 "href=\"http://synfig.org/\">http://synfig.org/</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:42
+#: en/links.html+html.body.ul.li:42
 msgid ""
 "Blender: 3D Animation Environment<br> <a "
 "href=\"http://www.blender.org/\">http://www.blender.org/</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:47
+#: en/links.html+html.body.ul.li:47
 msgid "Sites with information about entertainment and other resources:"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:49
+#: en/links.html+html.body.ul.li:49
 msgid ""
 "Definition at Wikipedia:<br> <a href=\"http://es.wikipedia.org/wiki/Animaci%"
 "C3%B3n\">http://en.wikipedia.org/wiki/Animation</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:52
+#: en/links.html+html.body.ul.li:52
 msgid ""
 "Free Graphics Repository:<br> <a "
 "href=\"http://www.openclipart.org/\">http://www.openclipart.org/</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.ul.li:55
+#: en/links.html+html.body.ul.li:55
 msgid ""
 "Creative Commons search engine:<br> <a href=\"http://search.creativecommons.o"
 "rg/\">http://search.creativecommons.org/</a>"
 msgstr ""
 
-#: tupi_help/links.html+html.body.p:59
+#: en/links.html+html.body.p:59
 msgid ""
 "<b>Note:</b> If you know of any link that is related to the world of "
 "animation and you think it would be good to include it in this section, "

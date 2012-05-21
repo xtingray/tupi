@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/player.html+html.body.p:7
+#: en/player.html+html.body.p:8
 msgid "Player Module"
 msgstr ""
 
-#: tupi_help/player.html+html.body.p.br:8
+#: en/player.html+html.body.p.br:9
 msgid ""
 "Through this module you can take a look at your project as you build. With "
 "this resource, you can detect which parts of the timeline of your animation "
@@ -24,25 +24,25 @@ msgid ""
 "director!<br>"
 msgstr ""
 
-#: tupi_help/player.html+html.body.center.p:14
+#: en/player.html+html.body.center.p:15
 msgid "<b>Fig #25.</b> Player Interface Module"
 msgstr ""
 
-#: tupi_help/player.html+html.body.p:16
+#: en/player.html+html.body.p:17
 msgid ""
-"Tip:</b> Whenever you wish to check the <b>player module,</b> simply press "
-"the <b>Ctrl + 2."
+"<b>Tip:</b> Whenever you wish to check the <b>player module,</b> simply "
+"press the <b>Ctrl + 2</b>."
 msgstr ""
 
-#: tupi_help/player.html+html.body.center.p:19
+#: en/player.html+html.body.center.p:20
 msgid "<b>Fig #26.</b> Player Module Shortcut"
 msgstr ""
 
-#: tupi_help/player.html+html.body.p:21
+#: en/player.html+html.body.p:22
 msgid "Okay, let's see what are the tools that are part of this module:"
 msgstr ""
 
-#: tupi_help/player.html+html.body.p.br:23
+#: en/player.html+html.body.p.br:24
 msgid ""
 "<b>Control Panel</b><br> If you've ever used a DVD recorder or a stereo, you "
 "probably already know what the function of this component. That's right, "
@@ -53,24 +53,24 @@ msgid ""
 "fluid and that over time, your projects are more surprising."
 msgstr ""
 
-#: tupi_help/player.html+html.body.center.p:33
+#: en/player.html+html.body.center.p:34
 msgid "<b>Fig #27.</b> Control Panel"
 msgstr ""
 
-#: tupi_help/player.html+html.body.p:35
+#: en/player.html+html.body.p:36
 msgid ""
 "<b>Panel Properties</b><br> This panel, located on the bottom of the "
 "<i>playback module,</i> you will find the following resources:"
 msgstr ""
 
-#: tupi_help/player.html+html.body.ol.li:39
+#: en/player.html+html.body.ol.li:40
 msgid ""
 "<b>Information about the animation.</b> Specifically, the <i>name of the "
 "scene</i> and the <i>total</i> number <i>of frames</i> that form, in other "
 "words, the sum total of every frame was drawn."
 msgstr ""
 
-#: tupi_help/player.html+html.body.ol.li:43
+#: en/player.html+html.body.ol.li:44
 msgid ""
 "<b>FPS Control.</b> We can define the speed of the animation, using the "
 "parameter <i>frames per second (FPS: Frames Per Second,</i> in English).<br> "
@@ -78,7 +78,7 @@ msgid ""
 "animation and the smaller, slower will look."
 msgstr ""
 
-#: tupi_help/player.html+html.body.ol.li:48
+#: en/player.html+html.body.ol.li:49
 msgid ""
 "<b>Repeat option.</b> This small selection box represents the ability to "
 "play our video indefinitely. That is, if we leave it enabled and press the "
@@ -86,13 +86,13 @@ msgid ""
 "to stop it."
 msgstr ""
 
-#: tupi_help/player.html+html.body.ol.li:52
+#: en/player.html+html.body.ol.li:53
 msgid ""
 "<b>Export option.</b> It allows us to make our animation project in a video "
 "file. For a better understanding of this feature, take a look at the section "
-"<a href=\"video_file.html\">\"Let's create a video file\"</a>."
+"\"<a href=\"video_file.html\">Let's create a video file</a>\"."
 msgstr ""
 
-#: tupi_help/player.html+html.body.center.p:58
+#: en/player.html+html.body.center.p:59
 msgid "<b>Fig #28.</b> Panel Properties"
 msgstr ""

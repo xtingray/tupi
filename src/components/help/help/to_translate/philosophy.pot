@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-08 20:20+0200\n"
+"POT-Creation-Date: 2012-05-21 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.9.0\n"
 
-#: tupi_help/philosophy.html+html.body.p:7
+#: en/philosophy.html+html.body.p:7
 msgid "Our Vision and License"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:9
+#: en/philosophy.html+html.body.p:9
 msgid ""
 "As a free software project, our philosophy is based on sharing and spreading "
 "knowledge, providing open access to everyone interested in using, copying "
@@ -25,47 +25,60 @@ msgid ""
 "this project."
 msgstr ""
 
-#. TRANSLATORS: If there is no official translation into your language, you should not translate it, or, in any case replace this text with:
-#. 
+#. TRANSLATRORS: IMPORTANT NOTICE!
+#. If there is "no official" translation of the license to your language, we recommend that you include the following notice after the sentence to be translated:
+#.
+#. You can see the original content License: <a href="http://fsf.org/">http://fsf.org/</a> 
+#.
 #. This is an unofficial translation of the GNU General Public License into YOUR_LANGUAGE. It was not published by the Free Software Foundation, and does not legally state the distribution terms for software that uses the GNU GPL only the original English text of the GNU GPL does that. However, we hope that this translation will help YOUR_LANGUAGE speakers understand the GNU GPL better.
 #.
-#. Followed by a translation of the previous paragraph into your language.
-
-#: tupi_help/philosophy.html+html.body.p:17
+#. The above paragraph should be in their language and in English.
+#.
+#. FRENCH EXAMPLE:
+#.
+#. Ceci est le contenu de notre licence:
+#.
+#. Vous pouvez voir le contenu original de licence: <a href="http://fsf.org/">http://fsf.org/</a> 
+#.
+#. This is an unofficial translation of the GNU General Public License into French ... ... French speakers understand the GNU GPL better.
+#.
+#. Il s'agit d'une traduction officieuse de la Licence Publique Générale GNU en français ... ... francophones comprendre la GNU GPL mieux.
+#.
+#: en/philosophy.html+html.body.p:17
 msgid "This is the content of our license:"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:19
+#: en/philosophy.html+html.body.p:19
 msgid "GNU GENERAL PUBLIC LICENSE"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:21
+#: en/philosophy.html+html.body.p:21
 msgid "Version 3, 29 June 2007"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:23
+#: en/philosophy.html+html.body.p:23
 msgid ""
 "Copyright © 2007 Free Software Foundation, Inc. &lt;<a "
 "href=\"http://fsf.org/\">http://fsf.org/</a>&gt;"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:26
+#: en/philosophy.html+html.body.p:26
 msgid ""
 "Everyone is permitted to copy and distribute verbatim copies of this license "
 "document, but changing it is not allowed."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:29
+#: en/philosophy.html+html.body.p:29
 msgid "Preamble"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:31
+#: en/philosophy.html+html.body.p:31
 msgid ""
 "The GNU General Public License is a free, copyleft license for software and "
 "other kinds of works."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:34
+#: en/philosophy.html+html.body.p:34
 msgid ""
 "The licenses for most software and other practical works are designed to "
 "take away your freedom to share and change the works. By contrast, the GNU "
@@ -76,7 +89,7 @@ msgid ""
 "this way by its authors. You can apply it to your programs, too."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:44
+#: en/philosophy.html+html.body.p:44
 msgid ""
 "When we speak of free software, we are referring to freedom, not price. Our "
 "General Public Licenses are designed to make sure that you have the freedom "
@@ -86,7 +99,7 @@ msgid ""
 "know you can do these things."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:52
+#: en/philosophy.html+html.body.p:52
 msgid ""
 "To protect your rights, we need to prevent others from denying you these "
 "rights or asking you to surrender the rights. Therefore, you have certain "
@@ -94,7 +107,7 @@ msgid ""
 "it: responsibilities to respect the freedom of others."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:58
+#: en/philosophy.html+html.body.p:58
 msgid ""
 "For example, if you distribute copies of such a program, whether gratis or "
 "for a fee, you must pass on to the recipients the same freedoms that you "
@@ -102,14 +115,14 @@ msgid ""
 "code. And you must show them these terms so they know their rights."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:64
+#: en/philosophy.html+html.body.p:64
 msgid ""
 "Developers that use the GNU GPL protect your rights with two steps: (1) "
 "assert copyright on the software, and (2) offer you this License giving you "
 "legal permission to copy, distribute and/or modify it."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:69
+#: en/philosophy.html+html.body.p:69
 msgid ""
 "For the developers' and authors' protection, the GPL clearly explains that "
 "there is no warranty for this free software. For both users' and authors' "
@@ -118,7 +131,7 @@ msgid ""
 "versions."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:75
+#: en/philosophy.html+html.body.p:75
 msgid ""
 "Some devices are designed to deny users access to install or run modified "
 "versions of the software inside them, although the manufacturer can do so. "
@@ -132,7 +145,7 @@ msgid ""
 "freedom of users."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:87
+#: en/philosophy.html+html.body.p:87
 msgid ""
 "Finally, every program is threatened constantly by software patents. States "
 "should not allow patents to restrict development and use of software on "
@@ -142,38 +155,38 @@ msgid ""
 "cannot be used to render the program non-free."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:95
+#: en/philosophy.html+html.body.p:95
 msgid ""
 "The precise terms and conditions for copying, distribution and modification "
 "follow."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:98
+#: en/philosophy.html+html.body.p:98
 msgid "TERMS AND CONDITIONS"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:100
+#: en/philosophy.html+html.body.p:100
 msgid "0. Definitions."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:102
+#: en/philosophy.html+html.body.p:102
 msgid "“This License” refers to version 3 of the GNU General Public License."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:105
+#: en/philosophy.html+html.body.p:105
 msgid ""
 "“Copyright” also means copyright-like laws that apply to other kinds of "
 "works, such as semiconductor masks."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:108
+#: en/philosophy.html+html.body.p:108
 msgid ""
 "“The Program” refers to any copyrightable work licensed under this License. "
 "Each licensee is addressed as “you”. “Licensees” and “recipients” may be "
 "individuals or organizations."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:113
+#: en/philosophy.html+html.body.p:113
 msgid ""
 "To “modify” a work means to copy from or adapt all or part of the work in a "
 "fashion requiring copyright permission, other than the making of an exact "
@@ -181,13 +194,13 @@ msgid ""
 "or a work “based on” the earlier work."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:119
+#: en/philosophy.html+html.body.p:119
 msgid ""
 "A “covered work” means either the unmodified Program or a work based on the "
 "Program."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:122
+#: en/philosophy.html+html.body.p:122
 msgid ""
 "To “propagate” a work means to do anything with it that, without permission, "
 "would make you directly or secondarily liable for infringement under "
@@ -197,14 +210,14 @@ msgid ""
 "activities as well."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:130
+#: en/philosophy.html+html.body.p:130
 msgid ""
 "To “convey” a work means any kind of propagation that enables other parties "
 "to make or receive copies. Mere interaction with a user through a computer "
 "network, with no transfer of a copy, is not conveying."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:135
+#: en/philosophy.html+html.body.p:135
 msgid ""
 "An interactive user interface displays “Appropriate Legal Notices” to the "
 "extent that it includes a convenient and prominently visible feature that "
@@ -216,17 +229,17 @@ msgid ""
 "criterion."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:145
+#: en/philosophy.html+html.body.p:145
 msgid "1. Source Code."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:147
+#: en/philosophy.html+html.body.p:147
 msgid ""
 "The “source code” for a work means the preferred form of the work for making "
 "modifications to it. “Object code” means any non-source form of a work."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:151
+#: en/philosophy.html+html.body.p:151
 msgid ""
 "A “Standard Interface” means an interface that either is an official "
 "standard defined by a recognized standards body, or, in the case of "
@@ -234,7 +247,7 @@ msgid ""
 "widely used among developers working in that language."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:157
+#: en/philosophy.html+html.body.p:157
 msgid ""
 "The “System Libraries” of an executable work include anything, other than "
 "the work as a whole, that (a) is included in the normal form of packaging a "
@@ -248,7 +261,7 @@ msgid ""
 "it."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:170
+#: en/philosophy.html+html.body.p:170
 msgid ""
 "The “Corresponding Source” for a work in object code form means all the "
 "source code needed to generate, install, and (for an executable work) run "
@@ -263,22 +276,22 @@ msgid ""
 "between those subprograms and other parts of the work."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:184
+#: en/philosophy.html+html.body.p:184
 msgid ""
 "The Corresponding Source need not include anything that users can regenerate "
 "automatically from other parts of the Corresponding Source."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:188
+#: en/philosophy.html+html.body.p:188
 msgid ""
 "The Corresponding Source for a work in source code form is that same work."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:191
+#: en/philosophy.html+html.body.p:191
 msgid "2. Basic Permissions."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:193
+#: en/philosophy.html+html.body.p:193
 msgid ""
 "All rights granted under this License are granted for the term of copyright "
 "on the Program, and are irrevocable provided the stated conditions are met. "
@@ -289,7 +302,7 @@ msgid ""
 "as provided by copyright law."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:202
+#: en/philosophy.html+html.body.p:202
 msgid ""
 "You may make, run and propagate covered works that you do not convey, "
 "without conditions so long as your license otherwise remains in force. You "
@@ -303,18 +316,18 @@ msgid ""
 "relationship with you."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:214
+#: en/philosophy.html+html.body.p:214
 msgid ""
 "Conveying under any other circumstances is permitted solely under the "
 "conditions stated below. Sublicensing is not allowed; section 10 makes it "
 "unnecessary."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:218
+#: en/philosophy.html+html.body.p:218
 msgid "3. Protecting Users Legal Rights From Anti-Circumvention Law."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:220
+#: en/philosophy.html+html.body.p:220
 msgid ""
 "No covered work shall be deemed part of an effective technological measure "
 "under any applicable law fulfilling obligations under article 11 of the WIPO "
@@ -322,7 +335,7 @@ msgid ""
 "or restricting circumvention of such measures."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:226
+#: en/philosophy.html+html.body.p:226
 msgid ""
 "When you convey a covered work, you waive any legal power to forbid "
 "circumvention of technological measures to the extent such circumvention is "
@@ -332,11 +345,11 @@ msgid ""
 "parties' legal rights to forbid circumvention of technological measures."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:234
+#: en/philosophy.html+html.body.p:234
 msgid "4. Conveying Verbatim Copies."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:236
+#: en/philosophy.html+html.body.p:236
 msgid ""
 "You may convey verbatim copies of the Program's source code as you receive "
 "it, in any medium, provided that you conspicuously and appropriately publish "
@@ -347,37 +360,37 @@ msgid ""
 "Program."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:245
+#: en/philosophy.html+html.body.p:245
 msgid ""
 "You may charge any price or no price for each copy that you convey, and you "
 "may offer support or warranty protection for a fee."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:249
+#: en/philosophy.html+html.body.p:249
 msgid "5. Conveying Modified Source Versions."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:251
+#: en/philosophy.html+html.body.p:251
 msgid ""
 "You may convey a work based on the Program, or the modifications to produce "
 "it from the Program, in the form of source code under the terms of section "
 "4, provided that you also meet all of these conditions:"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:257
+#: en/philosophy.html+html.body.ul.li:257
 msgid ""
 "a) The work must carry prominent notices stating that you modified it, and "
 "giving a relevant date."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:260
+#: en/philosophy.html+html.body.ul.li:260
 msgid ""
 "b) The work must carry prominent notices stating that it is released under "
 "this License and any conditions added under section 7. This requirement "
 "modifies the requirement in section 4 to “keep intact all notices”."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:265
+#: en/philosophy.html+html.body.ul.li:265
 msgid ""
 "c) You must license the entire work, as a whole, under this License to "
 "anyone who comes into possession of a copy. This License will therefore "
@@ -387,7 +400,7 @@ msgid ""
 "does not invalidate such permission if you have separately received it."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:274
+#: en/philosophy.html+html.body.ul.li:274
 msgid ""
 "d) If the work has interactive user interfaces, each must display "
 "Appropriate Legal Notices; however, if the Program has interactive "
@@ -395,7 +408,7 @@ msgid ""
 "make them do so."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:280
+#: en/philosophy.html+html.body.p:280
 msgid ""
 "A compilation of a covered work with other separate and independent works, "
 "which are not by their nature extensions of the covered work, and which are "
@@ -407,18 +420,18 @@ msgid ""
 "License to apply to the other parts of the aggregate."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:291
+#: en/philosophy.html+html.body.p:291
 msgid "6. Conveying Non-Source Forms."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:293
+#: en/philosophy.html+html.body.p:293
 msgid ""
 "You may convey a covered work in object code form under the terms of "
 "sections 4 and 5, provided that you also convey the machine-readable "
 "Corresponding Source under the terms of this License, in one of these ways:"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:299
+#: en/philosophy.html+html.body.ul.li:299
 msgid ""
 "a) Convey the object code in, or embodied in, a physical product (including "
 "a physical distribution medium), accompanied by the Corresponding Source "
@@ -426,7 +439,7 @@ msgid ""
 "interchange."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:304
+#: en/philosophy.html+html.body.ul.li:304
 msgid ""
 "b) Convey the object code in, or embodied in, a physical product (including "
 "a physical distribution medium), accompanied by a written offer, valid for "
@@ -440,7 +453,7 @@ msgid ""
 "at no charge."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:317
+#: en/philosophy.html+html.body.ul.li:317
 msgid ""
 "c) Convey individual copies of the object code with a copy of the written "
 "offer to provide the Corresponding Source. This alternative is allowed only "
@@ -448,7 +461,7 @@ msgid ""
 "with such an offer, in accord with subsection 6b."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:323
+#: en/philosophy.html+html.body.ul.li:323
 msgid ""
 "d) Convey the object code by offering access from a designated place (gratis "
 "or for a charge), and offer equivalent access to the Corresponding Source "
@@ -463,7 +476,7 @@ msgid ""
 "needed to satisfy these requirements."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:337
+#: en/philosophy.html+html.body.ul.li:337
 msgid ""
 "e) Convey the object code using peer-to-peer transmission, provided you "
 "inform other peers where the object code and Corresponding Source of the "
@@ -471,14 +484,14 @@ msgid ""
 "6d."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:343
+#: en/philosophy.html+html.body.p:343
 msgid ""
 "A separable portion of the object code, whose source code is excluded from "
 "the Corresponding Source as a System Library, need not be included in "
 "conveying the object code work."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:347
+#: en/philosophy.html+html.body.p:347
 msgid ""
 "A “User Product” is either (1) a “consumer product”, which means any "
 "tangible personal property which is normally used for personal, family, or "
@@ -494,7 +507,7 @@ msgid ""
 "of the product."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:362
+#: en/philosophy.html+html.body.p:362
 msgid ""
 "“Installation Information” for a User Product means any methods, procedures, "
 "authorization keys, or other information required to install and execute "
@@ -504,7 +517,7 @@ msgid ""
 "prevented or interfered with solely because modification has been made."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:371
+#: en/philosophy.html+html.body.p:371
 msgid ""
 "If you convey an object code work under this section in, or with, or "
 "specifically for use in, a User Product, and the conveying occurs as part of "
@@ -517,7 +530,7 @@ msgid ""
 "Product (for example, the work has been installed in ROM)."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:383
+#: en/philosophy.html+html.body.p:383
 msgid ""
 "The requirement to provide Installation Information does not include a "
 "requirement to continue to provide support service, warranty, or updates for "
@@ -528,7 +541,7 @@ msgid ""
 "communication across the network."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:392
+#: en/philosophy.html+html.body.p:392
 msgid ""
 "Corresponding Source conveyed, and Installation Information provided, in "
 "accord with this section must be in a format that is publicly documented "
@@ -537,11 +550,11 @@ msgid ""
 "copying."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:398
+#: en/philosophy.html+html.body.p:398
 msgid "7. Additional Terms."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:400
+#: en/philosophy.html+html.body.p:400
 msgid ""
 "“Additional permissions” are terms that supplement the terms of this License "
 "by making exceptions from one or more of its conditions. Additional "
@@ -553,7 +566,7 @@ msgid ""
 "additional permissions."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:410
+#: en/philosophy.html+html.body.p:410
 msgid ""
 "When you convey a copy of a covered work, you may at your option remove any "
 "additional permissions from that copy, or from any part of it. (Additional "
@@ -563,46 +576,46 @@ msgid ""
 "copyright permission."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:418
+#: en/philosophy.html+html.body.p:418
 msgid ""
 "Notwithstanding any other provision of this License, for material you add to "
 "a covered work, you may (if authorized by the copyright holders of that "
 "material) supplement the terms of this License with terms:"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:424
+#: en/philosophy.html+html.body.ul.li:424
 msgid ""
 "a) Disclaiming warranty or limiting liability differently from the terms of "
 "sections 15 and 16 of this License; or"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:427
+#: en/philosophy.html+html.body.ul.li:427
 msgid ""
 "b) Requiring preservation of specified reasonable legal notices or author "
 "attributions in that material or in the Appropriate Legal Notices displayed "
 "by works containing it; or"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:432
+#: en/philosophy.html+html.body.ul.li:432
 msgid ""
 "c) Prohibiting misrepresentation of the origin of that material, or "
 "requiring that modified versions of such material be marked in reasonable "
 "ways as different from the original version; or"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:437
+#: en/philosophy.html+html.body.ul.li:437
 msgid ""
 "d) Limiting the use for publicity purposes of names of licensors or authors "
 "of the material; or"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:440
+#: en/philosophy.html+html.body.ul.li:440
 msgid ""
 "e) Declining to grant rights under trademark law for use of some trade "
 "names, trademarks, or service marks; or"
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.ul.li:443
+#: en/philosophy.html+html.body.ul.li:443
 msgid ""
 "f) Requiring indemnification of licensors and authors of that material by "
 "anyone who conveys the material (or modified versions of it) with "
@@ -611,7 +624,7 @@ msgid ""
 "authors."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:451
+#: en/philosophy.html+html.body.p:451
 msgid ""
 "All other non-permissive additional terms are considered “further "
 "restrictions” within the meaning of section 10. If the Program as you "
@@ -624,7 +637,7 @@ msgid ""
 "relicensing or conveying."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:462
+#: en/philosophy.html+html.body.p:462
 msgid ""
 "If you add terms to a covered work in accord with this section, you must "
 "place, in the relevant source files, a statement of the additional terms "
@@ -632,18 +645,18 @@ msgid ""
 "applicable terms."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:467
+#: en/philosophy.html+html.body.p:467
 msgid ""
 "Additional terms, permissive or non-permissive, may be stated in the form of "
 "a separately written license, or stated as exceptions; the above "
 "requirements apply either way."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:471
+#: en/philosophy.html+html.body.p:471
 msgid "8. Termination."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:473
+#: en/philosophy.html+html.body.p:473
 msgid ""
 "You may not propagate or modify a covered work except as expressly provided "
 "under this License. Any attempt otherwise to propagate or modify it is void, "
@@ -651,7 +664,7 @@ msgid ""
 "any patent licenses granted under the third paragraph of section 11)."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:479
+#: en/philosophy.html+html.body.p:479
 msgid ""
 "However, if you cease all violation of this License, then your license from "
 "a particular copyright holder is reinstated (a) provisionally, unless and "
@@ -660,7 +673,7 @@ msgid ""
 "violation by some reasonable means prior to 60 days after the cessation."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:486
+#: en/philosophy.html+html.body.p:486
 msgid ""
 "Moreover, your license from a particular copyright holder is reinstated "
 "permanently if the copyright holder notifies you of the violation by some "
@@ -669,7 +682,7 @@ msgid ""
 "cure the violation prior to 30 days after your receipt of the notice."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:493
+#: en/philosophy.html+html.body.p:493
 msgid ""
 "Termination of your rights under this section does not terminate the "
 "licenses of parties who have received copies or rights from you under this "
@@ -678,11 +691,11 @@ msgid ""
 "section 10."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:499
+#: en/philosophy.html+html.body.p:499
 msgid "9. Acceptance Not Required for Having Copies."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:501
+#: en/philosophy.html+html.body.p:501
 msgid ""
 "You are not required to accept this License in order to receive or run a "
 "copy of the Program. Ancillary propagation of a covered work occurring "
@@ -694,11 +707,11 @@ msgid ""
 "this License to do so."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:511
+#: en/philosophy.html+html.body.p:511
 msgid "10. Automatic Licensing of Downstream Recipients."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:513
+#: en/philosophy.html+html.body.p:513
 msgid ""
 "Each time you convey a covered work, the recipient automatically receives a "
 "license from the original licensors, to run, modify and propagate that work, "
@@ -706,7 +719,7 @@ msgid ""
 "by third parties with this License."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:519
+#: en/philosophy.html+html.body.p:519
 msgid ""
 "An “entity transaction” is a transaction transferring control of an "
 "organization, or substantially all assets of one, or subdividing an "
@@ -719,7 +732,7 @@ msgid ""
 "it with reasonable efforts."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:531
+#: en/philosophy.html+html.body.p:531
 msgid ""
 "You may not impose any further restrictions on the exercise of the rights "
 "granted or affirmed under this License. For example, you may not impose a "
@@ -730,18 +743,18 @@ msgid ""
 "portion of it."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:540
+#: en/philosophy.html+html.body.p:540
 msgid "11. Patents."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:542
+#: en/philosophy.html+html.body.p:542
 msgid ""
 "A “contributor” is a copyright holder who authorizes use under this License "
 "of the Program or a work on which the Program is based. The work thus "
 "licensed is called the contributor's “contributor version”."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:547
+#: en/philosophy.html+html.body.p:547
 msgid ""
 "A contributor's “essential patent claims” are all patent claims owned or "
 "controlled by the contributor, whether already acquired or hereafter "
@@ -753,7 +766,7 @@ msgid ""
 "the requirements of this License."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:558
+#: en/philosophy.html+html.body.p:558
 msgid ""
 "Each contributor grants you a non-exclusive, worldwide, royalty-free patent "
 "license under the contributor's essential patent claims, to make, use, sell, "
@@ -761,7 +774,7 @@ msgid ""
 "of its contributor version."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:564
+#: en/philosophy.html+html.body.p:564
 msgid ""
 "In the following three paragraphs, a “patent license” is any express "
 "agreement or commitment, however denominated, not to enforce a patent (such "
@@ -771,7 +784,7 @@ msgid ""
 "party."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:572
+#: en/philosophy.html+html.body.p:572
 msgid ""
 "If you convey a covered work, knowingly relying on a patent license, and the "
 "Corresponding Source of the work is not available for anyone to copy, free "
@@ -787,7 +800,7 @@ msgid ""
 "in that country that you have reason to believe are valid."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:588
+#: en/philosophy.html+html.body.p:588
 msgid ""
 "If, pursuant to or in connection with a single transaction or arrangement, "
 "you convey, or propagate by procuring conveyance of, a covered work, and "
@@ -797,7 +810,7 @@ msgid ""
 "all recipients of the covered work and works based on it."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:596
+#: en/philosophy.html+html.body.p:596
 msgid ""
 "A patent license is “discriminatory” if it does not include within the scope "
 "of its coverage, prohibits the exercise of, or is conditioned on the non-"
@@ -814,18 +827,18 @@ msgid ""
 "patent license was granted, prior to 28 March 2007."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:613
+#: en/philosophy.html+html.body.p:613
 msgid ""
 "Nothing in this License shall be construed as excluding or limiting any "
 "implied license or other defenses to infringement that may otherwise be "
 "available to you under applicable patent law."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:618
+#: en/philosophy.html+html.body.p:618
 msgid "12. No Surrender of Others Freedom."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:620
+#: en/philosophy.html+html.body.p:620
 msgid ""
 "If conditions are imposed on you (whether by court order, agreement or "
 "otherwise) that contradict the conditions of this License, they do not "
@@ -838,11 +851,11 @@ msgid ""
 "would be to refrain entirely from conveying the Program."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:632
+#: en/philosophy.html+html.body.p:632
 msgid "13. Use with the GNU Affero General Public License."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:634
+#: en/philosophy.html+html.body.p:634
 msgid ""
 "Notwithstanding any other provision of this License, you have permission to "
 "link or combine any covered work with a work licensed under version 3 of the "
@@ -853,11 +866,11 @@ msgid ""
 "through a network will apply to the combination as such."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:644
+#: en/philosophy.html+html.body.p:644
 msgid "14. Revised Versions of this License."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:646
+#: en/philosophy.html+html.body.p:646
 msgid ""
 "The Free Software Foundation may publish revised and/or new versions of the "
 "GNU General Public License from time to time. Such new versions will be "
@@ -865,7 +878,7 @@ msgid ""
 "address new problems or concerns."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:652
+#: en/philosophy.html+html.body.p:652
 msgid ""
 "Each version is given a distinguishing version number. If the Program "
 "specifies that a certain numbered version of the GNU General Public License "
@@ -876,7 +889,7 @@ msgid ""
 "version ever published by the Free Software Foundation."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:662
+#: en/philosophy.html+html.body.p:662
 msgid ""
 "If the Program specifies that a proxy can decide which future versions of "
 "the GNU General Public License can be used, that proxy's public statement of "
@@ -884,18 +897,18 @@ msgid ""
 "for the Program."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:667
+#: en/philosophy.html+html.body.p:667
 msgid ""
 "Later license versions may give you additional or different permissions. "
 "However, no additional obligations are imposed on any author or copyright "
 "holder as a result of your choosing to follow a later version."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:672
+#: en/philosophy.html+html.body.p:672
 msgid "15. Disclaimer of Warranty."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:674
+#: en/philosophy.html+html.body.p:674
 msgid ""
 "THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE "
 "LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR "
@@ -907,11 +920,11 @@ msgid ""
 "SERVICING, REPAIR OR CORRECTION."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:685
+#: en/philosophy.html+html.body.p:685
 msgid "16. Limitation of Liability."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:687
+#: en/philosophy.html+html.body.p:687
 msgid ""
 "IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL "
 "ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE "
@@ -924,11 +937,11 @@ msgid ""
 "SUCH DAMAGES."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:698
+#: en/philosophy.html+html.body.p:698
 msgid "17. Interpretation of Sections 15 and 16."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:700
+#: en/philosophy.html+html.body.p:700
 msgid ""
 "If the disclaimer of warranty and limitation of liability provided above "
 "cannot be given local legal effect according to their terms, reviewing "
@@ -938,6 +951,6 @@ msgid ""
 "return for a fee."
 msgstr ""
 
-#: tupi_help/philosophy.html+html.body.p:708
+#: en/philosophy.html+html.body.p:708
 msgid "END OF TERMS AND CONDITIONS"
 msgstr ""
