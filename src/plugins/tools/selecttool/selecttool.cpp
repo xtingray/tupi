@@ -231,6 +231,10 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
 
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(manager->parentItem());
+                             tError() << "SelectTool::release() - Vector position: " << position;
+                             tError() << "Frame Index: " << k->scene->currentFrameIndex();
+                             tError() << "Layer Index: " << k->scene->currentLayerIndex();
+                             tError() << "Scene Index: " << k->scene->currentSceneIndex();
                          } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
                                     TupBackground *bg = k->scene->scene()->background();
                                     position = bg->frame()->indexOf(manager->parentItem());
@@ -254,7 +258,7 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
-                                tFatal() << "SelectTool::release() - position is " << position; 
+                                tError() << "SelectTool::release() - position is " << position; 
                          #endif
                      }
                  }

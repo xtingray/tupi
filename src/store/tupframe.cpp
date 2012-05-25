@@ -592,8 +592,10 @@ int TupFrame::indexOf(TupSvgItem *object) const
 
 int TupFrame::indexOf(QGraphicsItem *item) const
 {
+    tError() << "TupFrame::indexOf() - Graphics Vector Size: " << k->graphics.count();
+
     foreach (TupGraphicObject *object, k->graphics.values()) {
-             if (object->item() == item)
+             if (object->item()->shape() == item->shape())
                  return k->graphics.objectIndex(object);
     }
 

@@ -452,7 +452,7 @@ void TupViewDocument::loadPlugins()
              }
     }
 
-    QVector<TAction*> brushTools(10);
+    QVector<TAction*> brushTools(9);
     QVector<TAction*> tweenTools(7);
 
     TAction *pencil = 0;
@@ -593,8 +593,9 @@ void TupViewDocument::loadPlugins()
              }
     } // end foreach
 
-    for (int i = 0; i < brushTools.size(); ++i)
+    for (int i = 0; i < brushTools.size(); ++i) {
          k->brushesMenu->addAction(brushTools.at(i));
+    }
 
     for (int i = 0; i < tweenTools.size(); ++i)
          k->motionMenu->addAction(tweenTools.at(i));
