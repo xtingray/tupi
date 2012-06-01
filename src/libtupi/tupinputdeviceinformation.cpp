@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "tupinputdeviceinformation.h"
+#include "tdebug.h"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 #include <QTabletEvent>
@@ -110,6 +112,8 @@ void TupInputDeviceInformation::updateFromMouseEvent(QMouseEvent *event)
 
 void TupInputDeviceInformation::updateFromTabletEvent(QTabletEvent *event)
 {
+    tError() << "updateFromTabletEvent() - Pressure: " << event->pressure();
+
     k->tabletInfo.pressure = event->pressure();
     k->tabletInfo.rotation = event->rotation();
     k->tabletInfo.tangentialPressure = event->tangentialPressure();
@@ -121,6 +125,7 @@ void TupInputDeviceInformation::updateFromTabletEvent(QTabletEvent *event)
 
 double TupInputDeviceInformation::pressure() const
 {
+    tError() << "TupInputDeviceInformation::pressure() - Testing pressure: " << k->tabletInfo.pressure;
     return k->tabletInfo.pressure;
 }
 

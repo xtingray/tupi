@@ -1122,3 +1122,12 @@ void TupPaintArea::goToFrame(int index)
                                                                     TupProjectRequest::Select, "1");
     emit requestTriggered(&request);
 }
+
+void TupPaintArea::tabletEvent(QTabletEvent *event)
+{
+    tError() << "TupPaintArea::tabletEvent() - Pressure: " << event->pressure();
+    tError() << "TupPaintArea::tabletEvent() - xTilt: " << event->xTilt();
+    tError() << "TupPaintArea::tabletEvent() - yTilt: " << event->yTilt();
+
+    TupPaintAreaBase::tabletEvent(event);
+}
