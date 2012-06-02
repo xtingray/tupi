@@ -120,7 +120,6 @@ void TupAnimationspace::dropEvent(QDropEvent *event)
         QPalette pal = palette();
         pal.setColor(QPalette::Dark, color);
  
-        tDebug() << "Co: " << color;
         setPalette(pal);
         event->acceptProposedAction();
     } else {

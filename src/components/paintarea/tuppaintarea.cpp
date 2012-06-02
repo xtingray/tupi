@@ -1123,6 +1123,7 @@ void TupPaintArea::goToFrame(int index)
     emit requestTriggered(&request);
 }
 
+/*
 void TupPaintArea::tabletEvent(QTabletEvent *event)
 {
     tError() << "TupPaintArea::tabletEvent() - Pressure: " << event->pressure();
@@ -1131,3 +1132,4 @@ void TupPaintArea::tabletEvent(QTabletEvent *event)
 
     TupPaintAreaBase::tabletEvent(event);
 }
+*/

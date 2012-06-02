@@ -1251,8 +1251,8 @@
         <translation type="unfinished">Abrir proyecto desde servidor...</translation>
     </message>
     <message>
-        <source>Import project to server...</source>
-        <translation type="unfinished">Importar proyecto a servidor...</translation>
+        <source>Export project to server...</source>
+        <translation type="unfinished">Exportar proyecto a servidor...</translation>
     </message>
     <message>
         <source>Save project</source>

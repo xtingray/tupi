@@ -342,7 +342,7 @@ void TupMainWindow::setWorkSpace()
         }
 
         animationTab = new TupAnimationspace(viewCamera);
-        animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/play.png"));
+        animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/play_small.png"));
         animationTab->setWindowTitle(tr("Player"));
         addWidget(animationTab);
 

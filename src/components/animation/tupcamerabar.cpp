@@ -54,8 +54,8 @@ TupCameraBar::TupCameraBar(QWidget *parent)
     QBoxLayout *m_mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
     m_mainLayout->addStretch(1);
 
-    m_mainLayout->setSpacing(0);
-    m_mainLayout->setMargin(0);
+    m_mainLayout->setSpacing(10);
+    m_mainLayout->setMargin(3);
 
     m_rew = new TImageButton(QPixmap(THEME_DIR + "icons/rw.png"), 33, this, true);
     m_rew->setToolTip(tr("Rewind"));
@@ -67,7 +67,7 @@ TupCameraBar::TupCameraBar(QWidget *parent)
     m_mainLayout->addWidget(m_play_back);
     connect(m_play_back, SIGNAL(clicked()), this, SIGNAL(playBack()));
 
-    m_play = new TImageButton(QPixmap(THEME_DIR + "icons/play.png"), 25, this, true);
+    m_play = new TImageButton(QPixmap(THEME_DIR + "icons/play.png"), 33, this, true);
     m_play->setToolTip(tr("Play"));
     m_mainLayout->addWidget(m_play);
     connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));

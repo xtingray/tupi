@@ -229,8 +229,7 @@ void TupMainWindow::setupMenu()
     m_fileMenu->addAction(m_actionManager->find("newproject"));
     m_fileMenu->addAction(m_actionManager->find("openproject"));
     m_fileMenu->addAction(m_actionManager->find("opennetproject"));
-    m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
-    // m_actionManager->enable("importprojectserver", false);
+    m_fileMenu->addAction(m_actionManager->find("exportprojectserver"));
 
     // Adding Option Open Recent	
     m_recentProjectsMenu = new QMenu(tr("Recents"), this);
@@ -326,7 +325,7 @@ void TupMainWindow::setupMenu()
 
     // Adding Option Player 
     QAction *animationPerspective = new QAction(tr("Player"), this);
-    animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/play.png"));
+    animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/play_small.png"));
     animationPerspective->setIconVisibleInMenu(true);
     animationPerspective->setShortcut(QKeySequence("Ctrl+2"));
     animationPerspective->setData(Player);
@@ -415,9 +414,9 @@ void TupMainWindow::setupFileActions()
                                        tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
-    TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Import project to server..."), tr(""), this, 
+    TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export project to server..."), tr(""), this, 
                                          SLOT(importProjectToServer()), m_actionManager);
-    m_actionManager->insert(importNetFile, "importprojectserver", "file");
+    m_actionManager->insert(importNetFile, "exportprojectserver", "file");
 
     TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
                                 QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
@@ -554,6 +553,7 @@ void TupMainWindow::setupToolBar()
 
     toolbar->addAction(m_actionManager->find("newproject"));
     toolbar->addAction(m_actionManager->find("openproject"));
+    toolbar->addAction(m_actionManager->find("opennetproject"));
     toolbar->addAction(m_actionManager->find("saveproject"));
     toolbar->addAction(m_actionManager->find("saveprojectas"));
     toolbar->addAction(m_actionManager->find("closeproject"));

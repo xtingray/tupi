@@ -40,7 +40,7 @@
 #include "tupabstractprojectresponsehandler.h"
 #include "tupgraphicsscene.h"
 
-#include <QTabletEvent>
+// #include <QTabletEvent>
 
 class QGraphicsRectItem;
 class TupBrushManager;
@@ -102,7 +102,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
 
     protected:
         void mousePressEvent(QMouseEvent *event);
-        void tabletEvent(QTabletEvent *event);
+        // void tabletEvent(QTabletEvent *event);
 
         void frameResponse(TupFrameResponse *event);
         void layerResponse(TupLayerResponse *event);
