@@ -452,7 +452,7 @@ void TupViewDocument::loadPlugins()
              }
     }
 
-    QVector<TAction*> brushTools(9);
+    QVector<TAction*> brushTools(8);
     QVector<TAction*> tweenTools(7);
 
     TAction *pencil = 0;
@@ -485,45 +485,47 @@ void TupViewDocument::loadPlugins()
                       switch (tool->toolType()) {
                               case TupToolInterface::Brush:
                                  {
+                                   // SQA: Experimental plugin (disabled)
+                                   /*
+                                   if (toolName.compare(tr("Scheme")) == 0) {
+                                       action->setDisabled(true);
+                                       brushTools[1] = action;
+                                   }
+                                   */
+
                                    if (toolName.compare(tr("Pencil")) == 0) {
                                        brushTools[0] = action;
                                        pencil = action;
                                        k->brushesMenu->setDefaultAction(action);
                                    }
 
-                                   if (toolName.compare(tr("Scheme")) == 0) {
-                                       // action->setDisabled(true);
-                                       brushTools[1] = action;
-                                   }
-
                                    if (toolName.compare(tr("Ink")) == 0) {
-                                       action->setDisabled(true);
-                                       brushTools[2] = action;
+                                       brushTools[1] = action;
                                    }
 
                                    if (toolName.compare(tr("Eraser")) == 0) {
                                        action->setDisabled(true);
-                                       brushTools[3] = action;
+                                       brushTools[2] = action;
                                    }
 
                                    if (toolName.compare(tr("PolyLine")) == 0) {
-                                       brushTools[4] = action;
+                                       brushTools[3] = action;
                                        TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(action->parent());
                                        connect(k->paintArea, SIGNAL(closePolyLine()), tool, SLOT(endItem()));
                                    }
 
                                    if (toolName.compare(tr("Line")) == 0)
-                                       brushTools[5] = action;
+                                       brushTools[4] = action;
 
                                    if (toolName.compare(tr("Rectangle")) == 0)
-                                       brushTools[6] = action;
+                                       brushTools[5] = action;
 
                                    if (toolName.compare(tr("Ellipse")) == 0)
-                                       brushTools[7] = action;
+                                       brushTools[6] = action;
 
                                    if (toolName.compare(tr("Text")) == 0) {
                                        action->setDisabled(true);
-                                       brushTools[8] = action;
+                                       brushTools[7] = action;
                                    }
                                  }
                                  break;

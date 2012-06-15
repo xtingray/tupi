@@ -36,16 +36,14 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include "tapplicationproperties.h"
-
-#include <QDoubleSpinBox>
 #include <QLabel>
-
-class QTableWidget;
-class QTableWidgetItem;
+#include <QComboBox>
+#include <QSpinBox>
+#include <QCheckBox>
+#include <QDoubleSpinBox>
 
 /**
- * @author Jorge Cuadrado
+ * @author Gustav Gonzalez 
 */
 
 class Configurator : public QWidget
@@ -53,21 +51,29 @@ class Configurator : public QWidget
     Q_OBJECT
 
     public:
+        enum Structure { Basic = 0, Axial, Organic };
+
         Configurator(QWidget *parent = 0);
         ~Configurator();
-        double exactness() const;
-        
-    protected:
-        void resizeEvent(QResizeEvent *e);
-        
-    private slots:
-        void addCurrentValue();
-        void removeCurrentValue();
-        void updateValueFromItem(QTableWidgetItem *item);
-        
+        int spacingValue();
+        qreal sizeToleranceValue();
+        // bool runSimulation();
+        double smoothness() const;
+        // Configurator::Structure structureType();
+
+    signals:
+        void updateSpacing(int value);
+        void updateSizeTolerance(int value);
+
+    // private slots:
+    //         void updateInterface(int state);
+
     private:
-        QDoubleSpinBox *m_exactness;
-        QTableWidget *m_table;
+        QComboBox *structureCombo;
+        QSpinBox *spacingBox;
+        QSpinBox *sizeBox;
+        // QCheckBox *checkBox;
+        QDoubleSpinBox *smoothBox;
 };
 
 #endif

@@ -35,15 +35,10 @@
 
 #include "configurator.h"
 #include "tglobal.h"
-#include "timagebutton.h"
 #include "tdebug.h"
-#include "tconfig.h"
 
 #include <QBoxLayout>
-#include <QTableWidget>
-#include <QTableWidgetItem>
-#include <QHeaderView>
-#include <QPushButton>
+#include <QTextEdit>
 
 Configurator::Configurator(QWidget *parent) :QWidget(parent)
 {
@@ -53,73 +48,92 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
+    /*
+    QTextEdit *textArea = new QTextEdit; 
+    textArea->setFixedHeight(170);
+    textArea->setHtml("<p>" + tr("This tool is just a <b>proof-of-concept</b> of the basic algorithm for the Tupi's free-tracing vectorial brushes") + "</p>"); 
+    mainLayout->addWidget(textArea);
+    */
+
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Smoothness"));
-    label->setAlignment(Qt::AlignHCenter); 
+    QLabel *label = new QLabel(tr("Parameters"));
+    label->setAlignment(Qt::AlignHCenter);
     layout->addWidget(label);
-    m_exactness = new QDoubleSpinBox();
-
-    //m_exactness->setValue(4.0);
-    m_exactness->setDecimals(2);
-    m_exactness->setSingleStep(0.1);
-    m_exactness->setMaximum(100);
-    layout->addWidget(m_exactness);
-
     mainLayout->addLayout(layout);
 
-    QLabel *previews = new QLabel(tr("My Values:"));
-    previews->setAlignment(Qt::AlignHCenter);
-    mainLayout->addWidget(previews);
+    /*
+    QBoxLayout *structureLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *structureLabel = new QLabel(tr("Structure"));
+    structureLabel->setAlignment(Qt::AlignHCenter);
+    structureLayout->addWidget(structureLabel);
 
-    m_table = new QTableWidget(3, 3);
-    connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(updateValueFromItem(QTableWidgetItem *)));
+    structureCombo = new QComboBox();
+    structureCombo->addItem(tr("Basic"));
+    structureCombo->addItem(tr("Axial"));
+    structureCombo->addItem(tr("Organic"));
+    structureCombo->setCurrentIndex(2);
+    structureLayout->addWidget(structureCombo);
 
-    m_table->setSelectionMode(QAbstractItemView::SingleSelection);
-    m_table->horizontalHeader()->hide();
-    m_table->verticalHeader()->hide();
+    mainLayout->addLayout(structureLayout);
+    */
 
-    for (int row = 0; row < m_table->rowCount(); row++) {
-         m_table->verticalHeader()->resizeSection(row, 15);
+    QBoxLayout *spaceLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *spaceLabel = new QLabel(tr("Dot Spacing"));
+    spaceLabel->setAlignment(Qt::AlignHCenter);
+    spaceLayout->addWidget(spaceLabel);
 
-         for (int col = 0; col < m_table->columnCount(); col++) {
-              QTableWidgetItem *newItem = new QTableWidgetItem;
-              m_table->setItem(row, col, newItem);
-         }
-    }
+    spacingBox = new QSpinBox();
+    spacingBox->setSingleStep(1);
+    spacingBox->setMinimum(1);
+    spacingBox->setMaximum(10);
+    spacingBox->setValue(2);
+    spaceLayout->addWidget(spacingBox);
 
-    m_table->setItemSelected(m_table->item(0,0), true); 
-    m_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    connect(spacingBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSpacing(int)));
 
-    m_table->setMaximumHeight(22*m_table->rowCount() + 3);
-    m_table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-    m_table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    mainLayout->addLayout(spaceLayout);
 
-    mainLayout->addWidget(m_table);
+    QBoxLayout *sizeLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *sizeLabel = new QLabel(tr("Size Tolerance"));
+    sizeLabel->setAlignment(Qt::AlignHCenter);
+    sizeLayout->addWidget(sizeLabel);
 
-    QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    sizeBox = new QSpinBox();
+    sizeBox->setSingleStep(10);
+    sizeBox->setMinimum(0);
+    sizeBox->setMaximum(200);
+    sizeBox->setValue(50);
+    sizeLayout->addWidget(sizeBox);
 
-    TImageButton *add = new TImageButton(QIcon(kAppProp->themeDir() + "/"  + "icons/plus_sign.png"),22, 0, false);
-    buttonLayout->addWidget(add);
+    connect(sizeBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSizeTolerance(int)));
 
-    connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
+    mainLayout->addLayout(sizeLayout);
 
-    TImageButton *del = new TImageButton(QIcon(kAppProp->themeDir() + "/"  + "icons/minus_sign.png"), 22, 0, false);
+    /*
+    QBoxLayout *checkLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    checkBox = new QCheckBox(tr("Run simulation"));
+    checkBox->setChecked(true);
+    checkLayout->addWidget(checkBox);
+    connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(updateInterface(int)));
+    mainLayout->addLayout(checkLayout);
+    */
 
-    connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
+    QBoxLayout *smoothLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *smoothLabel = new QLabel(tr("Smoothness"));
+    smoothLabel->setAlignment(Qt::AlignHCenter);
+    smoothLayout->addWidget(smoothLabel);
+    smoothBox = new QDoubleSpinBox();
 
-    buttonLayout->addWidget(del);
+    smoothBox->setValue(2.0);
+    smoothBox->setDecimals(2);
+    smoothBox->setSingleStep(0.1);
+    smoothBox->setMaximum(100);
+    smoothLayout->addWidget(smoothBox);
 
-    mainLayout->addLayout(buttonLayout);
+    mainLayout->addLayout(smoothLayout);
+    // smoothBox->setDisabled(true);
+
     mainLayout->addStretch(2);
-
-    TCONFIG->beginGroup("BrushTool");
-    double smoothness = TCONFIG->value("Smoothness", -1).toDouble();
-
-    if (smoothness > 0) 
-        m_exactness->setValue(smoothness);
-    else
-        m_exactness->setValue(4.0);
 }
 
 Configurator::~Configurator()
@@ -129,44 +143,42 @@ Configurator::~Configurator()
     #endif
 }
 
-double Configurator::exactness() const
+int Configurator::spacingValue()
 {
-    return m_exactness->value();
+    return spacingBox->value();
 }
 
-void Configurator::resizeEvent(QResizeEvent *)
+qreal Configurator::sizeToleranceValue()
 {
-    int cellWidth = m_table->viewport()->width() / m_table->columnCount();
-	
-    for (int colIndex = 0; colIndex < m_table->columnCount(); colIndex++)
-         m_table->horizontalHeader()->resizeSection(colIndex, cellWidth);
+    return sizeBox->value();
 }
 
-void Configurator::addCurrentValue()
+/*
+bool Configurator::runSimulation()
 {
-    double value = m_exactness->value();
+    return checkBox->isChecked();
+}
+*/
 
-    QList<QTableWidgetItem *> selectionList = m_table->selectedItems();
+/*
+void Configurator::updateInterface(int state)
+{ 
+    if (state == 2)
+        smoothBox->setDisabled(false);
+    else
+        smoothBox->setDisabled(true);
+}
+*/
 
-    if (!selectionList.isEmpty())
-        selectionList[0]->setText(QString::number(value));
+double Configurator::smoothness() const
+{
+    return smoothBox->value();
 }
 
-void Configurator::removeCurrentValue()
+/*
+Configurator::Structure Configurator::structureType()
 {
-    QList<QTableWidgetItem *> selectionList = m_table->selectedItems();
-
-    if (!selectionList.isEmpty())
-        selectionList[0]->setText("");
+    int index = structureCombo->currentIndex();
+    return Structure(index);
 }
-
-void Configurator::updateValueFromItem(QTableWidgetItem *item)
-{
-    if (item) {
-        bool ok = false;
-        double value = item->text().toDouble(&ok);
-
-        if (ok)
-            m_exactness->setValue(value);
-    }
-}
+*/

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INTupOOL_H
-#define INTupOOL_H
+#ifndef SCHEMETOOL_H
+#define SCHEMETOOL_H
 
 #include "tuptoolplugin.h"
 #include "configurator.h"
@@ -69,6 +69,7 @@ class InkTool : public TupToolPlugin
         virtual void aboutToChangeTool();
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual QCursor cursor() const;
 
     signals:
         void closeHugeCanvas();
@@ -77,17 +78,27 @@ class InkTool : public TupToolPlugin
     private:
         void setupActions();
         void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
-        
+
+    private slots:
+        void updateSpacingVar(int value);
+        void updateSizeToleranceVar(int value);
+
+    private:
+        struct Private;
+        Private *const k;
+
+    /*        
     private:
         QPointF m_firstPoint;
         QPointF m_oldPos;
         QPointF previewPoint;
         QPointF oldPosRight;
         QPointF oldPosLeft;
+        QPointF connector;
         QPainterPath m_path;
         QPainterPath pathRight; 
         QPainterPath pathLeft;
-        Configurator * m_configurator;
+        Configurator *m_configurator;
         QMap<QString, TAction *> m_actions;
         TupPathItem *m_item;
         TupPathItem *itemRight;
@@ -95,6 +106,12 @@ class InkTool : public TupToolPlugin
         int dotsCounter;
         qreal penWidth;
         qreal oldSlope;
+        int spacing;
+        qreal tolerance;
+        qreal widthVar; 
+        int arrowSize;
+        int firstArrow;
+    */
 };
 
 #endif
