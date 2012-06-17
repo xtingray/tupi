@@ -152,6 +152,7 @@ void InkTool::press(const TupInputDeviceInformation *input, TupBrushManager *bru
     k->path.moveTo(k->firstPoint);
 
     k->inkPath = QPainterPath();
+    k->inkPath.setFillRule(Qt::WindingFill);
     k->inkPath.moveTo(k->firstPoint);
 
     k->leftPoints.clear(); 
@@ -524,7 +525,7 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
 
         TupPathItem *line = new TupPathItem();
         line->setPen(blackPen);
-        line->setBrush(brushManager->brush());
+        line->setBrush(brushManager->penBrush());
         line->setPath(k->inkPath);
         scene->includeObject(line);
 
@@ -539,6 +540,7 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
         QPointF distance((radius + 2)/2, (radius + 2)/2);
         TupEllipseItem *blackEllipse = new TupEllipseItem(QRectF(k->connector - distance, QSize(radius + 2, radius + 2)));
         blackEllipse->setPen(blackPen);
+        blackEllipse->setBrush(brushManager->brush());
         scene->includeObject(blackEllipse);
 
         QDomDocument doc;
