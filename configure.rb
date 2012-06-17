@@ -92,9 +92,9 @@ _EOH_
     # config.addLib("-L#{RQonf::CONFIG["libdir"]}")
     # config.addIncludePath(RQonf::CONFIG["includepath"])
     
-    config.addDefine('VERSION=\\\\\"0.1\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Gemo\\\\\"')
-    config.addDefine('REVISION=\\\\\"git12\\\\\"')
+    config.addDefine('VERSION=\\\\\"0.2\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')
+    config.addDefine('REVISION=\\\\\"0\\\\\"')
 
     Info.info << "Debug support... "
 

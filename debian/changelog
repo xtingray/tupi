@@ -1,5 +1,5 @@
-tupi (0.1-0ubuntu12) oneiric; urgency=low
+tupi (0.2-0ubuntu0) precise; urgency=low
 
   * Proof of concept for the Tupi debian package
 
- -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sat, 31 Dec 2011 10:45:46 -0500
+ -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sun, 17 Jun 2012 02:12:46 -0500
