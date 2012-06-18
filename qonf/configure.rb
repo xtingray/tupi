@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'qonf/test'
-require 'qonf/config'
-require 'qonf/info'
-require 'qonf/qonfexception'
-require 'qonf/makefile'
+require './qonf/test'
+require './qonf/config'
+require './qonf/info'
+require './qonf/qonfexception'
+require './qonf/makefile'
 
 module RQonf
 

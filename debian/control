@@ -3,21 +3,21 @@ Section: graphics
 Priority: extra
 Maintainer: Gustav Gonzalez [xtingray] <info@maefloresta.com>
 Standards-Version: 3.9.1
-Build-Depends: debhelper (>= 7), autotools-dev, ruby, libaspell-dev, 
- libavformat-dev, libavcodec-dev, mesa-common-dev, qt4-dev-tools, 
- qt4-qmake, libqt4-dev, libqt4-opengl, libqt4-opengl-dev, libqt4-gui,
- imagemagick, zlib1g-dev
+Build-Depends: debhelper (>= 7), autotools-dev, ruby, libavformat-dev, 
+ libavcodec-dev, mesa-common-dev, qt4-dev-tools, qt4-qmake, libqt4-dev, 
+ libqt4-opengl, libqt4-opengl-dev, libqt4-gui, imagemagick, zlib1g-dev,
+ libogg-dev, libtheora-dev 
 Homepage: http://www.maefloresta.com
 
 Package: tupi
 Architecture: any
-Depends: ${misc:Depends}, libaspell15, libavcodec53 (>= 4:0.7.2~), 
+Depends: ${misc:Depends}, libavcodec53 (>= 4:0.7.2~), 
  libavformat53 (>= 4:0.7.2~), libavutil51 (>= 4:0.7.2~), 
  libc6 (>= 2.12.1-0~), libgcc1 (>= 1:4.5.1-7~), libgl1-mesa-glx, 
  libglu1-mesa, libqt4-network (>= 4:4.7.0~), libqt4-opengl (>= 4:4.7.0~), 
  libqt4-opengl-dev (>= 4:4.7.0~), libqt4-svg (>= 4:4.7.0~), 
  libqt4-xml (>= 4:4.7.0~), libqtcore4 (>= 4:4.7.0~), libqtgui4 (>= 4:4.7.0~), 
- libstdc++6 (>= 4.5.1-7~), zlib1g
+ libstdc++6 (>= 4.5.1-7~), zlib1g, libogg-dev, libtheora-dev
 Description: 2D animation design and authoring tool
  Tupi: 2D Magic is a design and authoring tool for digital artists 
  interested  in 2D Animation,  offering  an  interface  experience 
