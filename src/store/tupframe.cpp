@@ -592,20 +592,11 @@ int TupFrame::indexOf(TupSvgItem *object) const
 
 int TupFrame::indexOf(QGraphicsItem *item) const
 {
-    tError() << "TupFrame::indexOf(QGraphicsItem *item) - Just tracing!";
-
     if (item) {
-    foreach (TupGraphicObject *object, k->graphics.values()) {
-             tError() << "TupFrame::indexOf() - Object depth: " << item->zValue();
-             tError() << "TupFrame::indexOf() - Array depth: " << object->item()->zValue();
-             /*
-             if (object->item() == item)
-                 return k->graphics.objectIndex(object);
-             */
-
-             if (object->item()->zValue() == item->zValue())
-                 return k->graphics.objectIndex(object);
-    }
+        foreach (TupGraphicObject *object, k->graphics.values()) {
+                 if (object->item()->zValue() == item->zValue())
+                     return k->graphics.objectIndex(object);
+        }
     }
 
     return -1;

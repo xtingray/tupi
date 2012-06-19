@@ -645,6 +645,7 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else if (index == TupToolPlugin::QuickCopy) {
                                 k->paintArea->quickCopy();
                      }
+                     return;
                  }
             break;
 
