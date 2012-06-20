@@ -199,13 +199,13 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     controls->addWidget(undo);
     controls->addWidget(redo);
 
-    controls->addSpacing(10);
+    controls->addSpacing(5);
 
     controls->addWidget(toolbar, Qt::AlignHCenter);
     controls->addLayout(slider, Qt::AlignHCenter);
     controls->addWidget(k->penWidth, Qt::AlignHCenter);
 
-    controls->addSpacing(90);
+    controls->addSpacing(5);
 
     controls->addWidget(forward);
     controls->addWidget(backward);
