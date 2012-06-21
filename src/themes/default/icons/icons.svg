@@ -2053,9 +2053,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="45.254834"
-     inkscape:cx="5.7956014"
-     inkscape:cy="1045.2006"
+     inkscape:zoom="32"
+     inkscape:cx="74.801821"
+     inkscape:cy="1041.8909"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2880,9 +2880,9 @@
     <g
        id="g4827"
        transform="matrix(0,1,-1,0,42.824382,-29.031256)"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/color_palette.png"
-       inkscape:export-xdpi="623.58752"
-       inkscape:export-ydpi="623.58752">
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/color_palette_big.png"
+       inkscape:export-xdpi="994.16998"
+       inkscape:export-ydpi="994.16998">
       <path
          inkscape:export-ydpi="1017.6678"
          inkscape:export-xdpi="1017.6678"
@@ -7900,7 +7900,10 @@
     </g>
     <g
        transform="translate(62.863785,1.692046)"
-       id="g4720-9">
+       id="g4720-9"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/ff_big.png"
+       inkscape:export-xdpi="977.44684"
+       inkscape:export-ydpi="977.44684">
       <g
          inkscape:export-ydpi="1018.1176"
          inkscape:export-xdpi="1018.1176"
@@ -7972,9 +7975,9 @@
     <g
        transform="matrix(-1,0,0,1,80.636215,1.692046)"
        id="g4720-8-8"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/rw.png"
-       inkscape:export-xdpi="1018"
-       inkscape:export-ydpi="1018">
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/rw_big.png"
+       inkscape:export-xdpi="977.44684"
+       inkscape:export-ydpi="977.44684">
       <g
          inkscape:export-ydpi="1018.1176"
          inkscape:export-xdpi="1018.1176"

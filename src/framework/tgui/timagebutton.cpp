@@ -127,7 +127,7 @@ void TImageButton::leaveEvent(QEvent *)
         m_animator->aBeginning = false;
         m_animator->aSize = m_imageSize;
         m_animator->end();
-        setIconSize( QSize(m_imageSize,m_imageSize));
+        setIconSize(QSize(m_imageSize,m_imageSize));
 
     } else {
         setFlat(true);
