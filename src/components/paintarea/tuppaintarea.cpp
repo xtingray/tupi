@@ -786,6 +786,7 @@ void TupPaintArea::pasteItems()
              if (xml.startsWith("<svg")) {
                  type = TupLibraryObject::Svg;
                  total = currentScene->currentFrame()->svgItemsCount();
+                 tError() << "TupPaintArea::pasteItems() - Pasting a SVG file...";
              }
 
              /*

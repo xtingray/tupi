@@ -86,6 +86,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 TupFrame *frame = layer->frame(framePosition);
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
+                        tError() << "TupCommandExecutor::createItem() - Creating SVG item";
                         TupSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
                         if (svg)
                             response->setItemIndex(frame->indexOf(svg));
