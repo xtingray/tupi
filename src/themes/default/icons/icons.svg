@@ -2053,9 +2053,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="64"
-     inkscape:cx="65.814846"
-     inkscape:cy="1036.0393"
+     inkscape:zoom="45.254834"
+     inkscape:cx="5.7956014"
+     inkscape:cy="1045.2006"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2074,7 +2074,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2677,9 +2677,9 @@
     </g>
     <g
        id="g3961"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/undo.png"
-       inkscape:export-xdpi="1369.2891"
-       inkscape:export-ydpi="1369.2891"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/undo.png"
+       inkscape:export-xdpi="1375.1899"
+       inkscape:export-ydpi="1375.1899"
        transform="matrix(1.6613058,0,0,1.6613058,-0.70527058,-3.7273284)">
       <g
          inkscape:export-ydpi="1200"
@@ -2704,9 +2704,9 @@
     <g
        transform="matrix(-1.6613058,0,0,1.6613058,12.364468,-3.7273284)"
        id="g3961-5"
-       inkscape:export-xdpi="1369.2891"
-       inkscape:export-ydpi="1369.2891"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/redo.png">
+       inkscape:export-xdpi="791.24982"
+       inkscape:export-ydpi="791.24982"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/redo_big.png">
       <g
          inkscape:export-ydpi="1200"
          inkscape:export-xdpi="1200"
@@ -3511,52 +3511,52 @@
        id="path3266"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil.png"
-       inkscape:export-xdpi="634.53595"
-       inkscape:export-ydpi="634.53595" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil_big.png"
+       inkscape:export-xdpi="1054.48"
+       inkscape:export-ydpi="1054.48" />
     <path
        style="fill:url(#linearGradient4044);fill-opacity:1;stroke:none"
        d="m 46.337591,10.749699 0.740253,0.154679 0,0.574525 0.751301,-0.15468 0.06629,0.441942 0.464039,0.04419 -0.872835,1.104854 -0.751798,-0.106173 0.002,-0.38636 -0.51414,0.07493 -0.769007,-0.753545 z"
        id="path4036"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccc"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil.png"
-       inkscape:export-xdpi="634.53595"
-       inkscape:export-ydpi="634.53595" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil_big.png"
+       inkscape:export-xdpi="1054.48"
+       inkscape:export-ydpi="1054.48" />
     <path
        style="fill:none;stroke:#008700;stroke-width:0.10000000000000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 46.238154,10.705505 0.850738,0.198873 0,0.552428 0.707107,-0.132583 0.07734,0.508233 0.364602,0"
        id="path4046"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil.png"
-       inkscape:export-xdpi="634.53595"
-       inkscape:export-ydpi="634.53595" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil_big.png"
+       inkscape:export-xdpi="1054.48"
+       inkscape:export-ydpi="1054.48" />
     <path
        style="fill:#006000;fill-opacity:1;stroke:none"
        d="m 47.835938,9.9793685 c -0.03906,0.2239585 0.414062,0.5416675 0.632812,0.4375005 0.04427,-0.255208 0.08854,-0.5104168 0.132813,-0.7656252 -0.255208,0.1093749 -0.510417,0.2187498 -0.765625,0.3281247 z"
        id="path4050"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil.png"
-       inkscape:export-xdpi="634.53595"
-       inkscape:export-ydpi="634.53595" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/pencil_big.png"
+       inkscape:export-xdpi="1054.48"
+       inkscape:export-ydpi="1054.48" />
     <path
        style="fill:url(#linearGradient4062);stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
        d="m 54.414077,10.153077 -2.563263,1.347923 0.03315,0.309359 0.596621,0.342505 -0.972271,0.486136 0.596621,0.320407 0.187825,0.508233 0.441942,-1.115902 0.596621,0.552427 0.276214,-0.06629 z"
        id="path4054"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/selection.png"
-       inkscape:export-xdpi="630.75763"
-       inkscape:export-ydpi="630.75763" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/selection_big.png"
+       inkscape:export-xdpi="1152.0601"
+       inkscape:export-ydpi="1152.0601" />
     <path
        style="fill:#008700;fill-opacity:1;stroke:none"
        d="m 54.535611,9.9763013 -2.778221,1.4537367 0.03314,0.397748 0.509019,0.288372 -0.888785,0.590244 0.506337,0.407686 0.48424,0.429323 0.37251,-0.964325 0.479894,0.457012 0.433898,-0.04008 0.777095,-2.641386 -0.243068,0.06629 -0.674419,2.357035 -0.227212,-0.03693 -0.584855,-0.471296 -0.398235,0.976944 -0.215446,-0.375651 -0.381176,-0.165724 0.847712,-0.565467 -0.399759,-0.289942 -0.165729,-0.287263 2.40257,-1.321154 z"
        id="path4052"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccccccccccccccc"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/selection.png"
-       inkscape:export-xdpi="630.75763"
-       inkscape:export-ydpi="630.75763" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/selection_big.png"
+       inkscape:export-xdpi="1152.0601"
+       inkscape:export-ydpi="1152.0601" />
     <g
        id="g4124"
        transform="translate(-6.7175144,-0.1767767)">
@@ -3796,21 +3796,24 @@
        id="path4245"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccsccczccccccccccccc"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/hand.png"
-       inkscape:export-xdpi="587.39923"
-       inkscape:export-ydpi="587.39923" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/hand_big.png"
+       inkscape:export-xdpi="923.27002"
+       inkscape:export-ydpi="923.27002" />
     <path
        style="fill:#ffffff;fill-opacity:0.09134617;stroke:none"
        d="m 7.1482075,15.328155 c 0.067785,-0.06678 0.1902575,-0.157004 0.242418,-0.239412 0.1232048,-0.01453 0.8547067,0.09672 0.9380269,0.158173 0.08332,0.06145 -0.4815413,0.0731 -0.431995,0.168722 0.099093,0.191235 0.1367478,0.408977 0.1374087,0.485931 -0.059756,0.03375 -0.041386,0.05968 -0.1011421,0.09342 -0.013698,-0.342396 -0.4940196,-0.75723 -0.7847165,-0.666834 z"
        id="path4247"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccssccc"
-       inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/hand.png"
-       inkscape:export-xdpi="587.39923"
-       inkscape:export-ydpi="587.39923" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/hand_big.png"
+       inkscape:export-xdpi="923.27002"
+       inkscape:export-ydpi="923.27002" />
     <g
        id="g4322"
-       transform="matrix(0.47328262,0,0,0.47328262,5.960721,6.7236501)">
+       transform="matrix(0.47328262,0,0,0.47328262,5.960721,6.7236501)"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/nodes_big.png"
+       inkscape:export-xdpi="1100.9"
+       inkscape:export-ydpi="1100.9">
       <path
          inkscape:export-ydpi="812.59094"
          inkscape:export-xdpi="812.59094"
@@ -7787,23 +7790,23 @@
        sodipodi:end="6.2756908"
        sodipodi:open="true"
        transform="matrix(-0.57644731,1.1260375,-0.94671434,-0.48464724,83.703028,71.381514)"
-       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/zoom_in.png"
-       inkscape:export-xdpi="605.49915"
-       inkscape:export-ydpi="605.49915" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/zoom_in_big.png"
+       inkscape:export-xdpi="797.97998"
+       inkscape:export-ydpi="797.97998" />
     <path
        style="fill:#008700;fill-opacity:1;stroke:none"
        d="m 71.586049,65.408361 -0.572947,-0.101732 0.127908,0.915363 -0.722482,-0.179896 -0.07448,0.621787 0.904057,-0.08094 -0.183355,0.833553 0.745116,0.06261 -0.209976,-0.895046 0.712507,0.08576 0.05477,-0.643382 -0.808871,0.155183 z"
        id="path4153-6-8-8"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccccc"
-       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/zoom_in.png"
-       inkscape:export-xdpi="605.49915"
-       inkscape:export-ydpi="605.49915" />
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/zoom_in_big.png"
+       inkscape:export-xdpi="797.97998"
+       inkscape:export-ydpi="797.97998" />
     <g
        id="g4850"
-       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/zoom_out.png"
-       inkscape:export-xdpi="605.49915"
-       inkscape:export-ydpi="605.49915">
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/zoom_out_big.png"
+       inkscape:export-xdpi="797.97998"
+       inkscape:export-ydpi="797.97998">
       <path
          inkscape:export-ydpi="478.02069"
          inkscape:export-xdpi="478.02069"
