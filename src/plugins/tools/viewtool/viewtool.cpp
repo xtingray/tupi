@@ -78,6 +78,8 @@ ViewTool::~ViewTool()
 
 void ViewTool::init(TupGraphicsScene *scene)
 {
+    k->scene = scene;
+
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              foreach (QGraphicsItem *item, scene->items()) {
@@ -248,6 +250,17 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
             delete k->rect;
             k->rect = 0;
         }
+    }
+}
+
+void ViewTool::autoZoom() 
+{
+    foreach (QGraphicsView * view, k->scene->views()) {
+             if (name() == tr("Zoom In")) {
+                 view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
+             } else if (name() == tr("Zoom Out")) {
+                        view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
+             }
     }
 }
 

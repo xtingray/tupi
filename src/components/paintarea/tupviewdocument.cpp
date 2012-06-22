@@ -733,12 +733,20 @@ void TupViewDocument::loadPlugin(int menu, int index)
 
     if (action) {
         QString toolName = tr("%1").arg(action->text());
-        if (toolName.compare(k->currentTool->name()) != 0) {
+
+        if (index == TupToolPlugin::ZoomInTool || index == TupToolPlugin::ZoomOutTool) {
+            if (k->fullScreenOn) {
+                action->trigger();
+                k->fullScreen->updateCursor(action->cursor());
+                TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(action->parent());
+                tool->autoZoom();
+            }
+        } else if (toolName.compare(k->currentTool->name()) != 0) {
             if (k->fullScreenOn) {
                 action->trigger();
                 k->fullScreen->updateCursor(action->cursor());
             }
-        } 
+        }
     } else {
         #ifdef K_DEBUG
                tError() << "TupViewDocument::loadPlugin() - Error: Action pointer is NULL!";

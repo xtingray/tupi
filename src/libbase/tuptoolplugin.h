@@ -102,6 +102,8 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
 
         virtual void resizeNodes(qreal factor);
         virtual void updateZoomFactor(qreal factor);
+
+        virtual void autoZoom();
         
     signals:
         void requested(const TupProjectRequest *request);

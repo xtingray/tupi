@@ -157,6 +157,10 @@ void TupToolPlugin::updateZoomFactor(qreal factor)
     Q_UNUSED(factor);
 }
 
+void TupToolPlugin::autoZoom()
+{
+}
+
 QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
     TupToolPlugin::MenuIndex menu = TupToolPlugin::BrushesMenu;
