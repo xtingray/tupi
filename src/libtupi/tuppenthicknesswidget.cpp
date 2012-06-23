@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez                                                     *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,70 +33,94 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCANVAS_H
-#define TUPCANVAS_H
+#include "tuppenthicknesswidget.h"
+#include "tdebug.h"
 
-#include "tupgraphicsscene.h"
-#include "tupcanvasview.h"
-#include "tupbrushmanager.h"
-
-#include <QFrame>
-#include <QPointF>
-#include <QSize>
-#include <QCloseEvent>
-#include <QColor>
-#include <QPen>
-
-class TupGraphicsScene;
-
-class TupCanvas : public QFrame
+struct TupPenThicknessWidget::Private
 {
-    Q_OBJECT
-
-    public:
-        TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
-                  const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
-                  const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
-                  int angle=0, const QColor &bg = QColor(Qt::white), TupBrushManager *brushManager = 0);
-        ~TupCanvas();
-        void updateCursor(const QCursor &cursor);
-
-   protected:
-        void closeEvent(QCloseEvent *event);
-
-   private:
-        TupCanvasView *graphicsView;
-        struct Private;
-        Private *const k;
-
-   public slots:
-        void colorDialog(const QColor &current);
-
-   private slots:
-        void colorDialog();
-        void penDialog();
-        void oneFrameBack();
-        void oneFrameForward();
-        void updateThickness(int value);
-        void wakeUpPencil();
-        void wakeUpInk();
-        void wakeUpCircle();
-        void wakeUpSquare();
-        void wakeUpPolyline();
-        void wakeUpObjectSelection();
-        void wakeUpNodeSelection();
-        void wakeUpDeleteSelection();
-        void wakeUpZoomIn();
-        void wakeUpZoomOut();
-        void wakeUpHand();
-
-        void undo();
-        void redo();
-
-   signals:
-        void updateColorFromFullScreen(const QColor &color);
-        void updatePenThicknessFromFullScreen(int size);
-        void callAction(int menu, int index);
+    int thickness;
+    int brush;
+    QColor color;
+    QBrush currentBrush;
 };
 
-#endif
+TupPenThicknessWidget::TupPenThicknessWidget(QWidget *parent) : QWidget(parent), k(new Private)
+{
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+TupPenThicknessWidget::~TupPenThicknessWidget()
+{
+}
+
+void TupPenThicknessWidget::render(int thickness)
+{
+    k->thickness = thickness;
+    update();
+}
+
+void TupPenThicknessWidget::setColor(const QColor color)
+{
+    k->color = color;
+}
+
+void TupPenThicknessWidget::setBrush(int index)
+{
+    k->brush = index;
+    update();
+}
+
+void TupPenThicknessWidget::setBrush(const QBrush brush)
+{
+    k->currentBrush = brush;
+    k->brush = -1;
+}
+
+QSize TupPenThicknessWidget::minimumSizeHint() const
+{
+    return QSize(100, 106);
+}
+
+QSize TupPenThicknessWidget::sizeHint() const
+{
+    return QSize(100, 106);
+}
+
+void TupPenThicknessWidget::paintEvent(QPaintEvent *)
+{
+     QPainter painter(this);
+     painter.setRenderHint(QPainter::Antialiasing, true);
+     painter.fillRect(0, 0, width(), height(), QColor(255, 255, 255));
+
+     QPen border(QColor(0, 0, 0));
+     border.setWidth(0.5);
+     painter.setPen(border);
+     painter.drawRect(0, 0, width(), height());
+
+     painter.translate(width() / 2, height() / 2);
+
+     QBrush brush;
+     Qt::BrushStyle style = Qt::BrushStyle(k->brush);
+     
+     if (style != Qt::TexturePattern) {  
+         if (k->brush != -1) {
+             // tFatal() << "TupPenThicknessWidget::paintEvent() - Setting pre-def brush";
+             brush = QBrush(Qt::BrushStyle(k->brush));
+             brush.setColor(k->color);
+         } else {
+             if (k->currentBrush.gradient()) {
+                 // tFatal() << "TupPenThicknessWidget::paintEvent() - Setting gradient brush";
+                 brush = k->currentBrush;
+             } else {
+                 // tFatal() << "TupPenThicknessWidget::paintEvent() - Warning! NO gradient!";
+             }
+         }
+         QPen pen(Qt::NoPen);
+         painter.setPen(pen);
+         painter.setBrush(brush);
+         painter.drawEllipse(-(k->thickness/2), -(k->thickness/2), k->thickness, k->thickness);
+     } else {
+         QPixmap pixmap(THEME_DIR + "icons/brush_15.png");
+         painter.drawPixmap(-(pixmap.width()/2), -(pixmap.height()/2), pixmap);  
+     }
+}

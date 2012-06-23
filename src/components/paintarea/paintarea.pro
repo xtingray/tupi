@@ -25,6 +25,7 @@ HEADERS += tuppaintarea.h \
            tupcanvasview.h \
            tupimagedialog.h \
            tupstoryboarddialog.h \
+           tuppendialog.h \
            tupiruler.h
 
 SOURCES += tuppaintarea.cpp \
@@ -42,6 +43,7 @@ SOURCES += tuppaintarea.cpp \
            tupcanvasview.cpp \
            tupimagedialog.cpp \
            tupstoryboarddialog.cpp \
+           tuppendialog.cpp \
            tupiruler.cpp
 
 *:!macx{

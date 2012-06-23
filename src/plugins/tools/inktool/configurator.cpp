@@ -86,7 +86,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     spacingBox->setSingleStep(1);
     spacingBox->setMinimum(1);
     spacingBox->setMaximum(10);
-    spacingBox->setValue(2);
+    spacingBox->setValue(5);
     spaceLayout->addWidget(spacingBox);
 
     connect(spacingBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSpacing(int)));
@@ -124,7 +124,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     smoothLayout->addWidget(smoothLabel);
     smoothBox = new QDoubleSpinBox();
 
-    smoothBox->setValue(2.0);
+    smoothBox->setValue(4.0);
     smoothBox->setDecimals(2);
     smoothBox->setSingleStep(0.1);
     smoothBox->setMaximum(100);

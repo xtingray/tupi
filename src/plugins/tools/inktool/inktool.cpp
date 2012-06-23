@@ -509,7 +509,7 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
 
     scene->removeItem(k->item);
 
-    QPen blackPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     if (k->firstPoint != currentPoint) {
 
@@ -524,7 +524,7 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
         smoothPath(k->inkPath, k->configurator->smoothness());
 
         TupPathItem *line = new TupPathItem();
-        line->setPen(blackPen);
+        line->setPen(inkPen);
         line->setBrush(brushManager->penBrush());
         line->setPath(k->inkPath);
         scene->includeObject(line);
@@ -539,8 +539,8 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
     } else {
         QPointF distance((radius + 2)/2, (radius + 2)/2);
         TupEllipseItem *blackEllipse = new TupEllipseItem(QRectF(k->connector - distance, QSize(radius + 2, radius + 2)));
-        blackEllipse->setPen(blackPen);
-        blackEllipse->setBrush(brushManager->brush());
+        blackEllipse->setPen(inkPen);
+        blackEllipse->setBrush(brushManager->penBrush());
         scene->includeObject(blackEllipse);
 
         QDomDocument doc;

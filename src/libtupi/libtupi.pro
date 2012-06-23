@@ -32,7 +32,9 @@ HEADERS += tupgraphicalgorithm.h \
            tupsocketbase.h \
            tupxmlparserbase.h \
            tupproxyitem.h \
-           tupinthash.h
+           tupinthash.h \
+           tuppenthicknesswidget.h
+
 SOURCES += tupgraphicalgorithm.cpp \
            tuppaintareaproperties.cpp \
            tupgradientcreator.cpp \
@@ -47,7 +49,8 @@ SOURCES += tupgraphicalgorithm.cpp \
            tupcompress.cpp  \
            tupsocketbase.cpp \
            tupxmlparserbase.cpp \
-           tupproxyitem.cpp
+           tupproxyitem.cpp \
+           tuppenthicknesswidget.cpp
 
 *:!macx{
     CONFIG += dll warn_on

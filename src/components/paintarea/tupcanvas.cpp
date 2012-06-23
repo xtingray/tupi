@@ -37,9 +37,11 @@
 #include "tupapplication.h"
 #include "tapplicationproperties.h"
 #include "tuptoolplugin.h"
+#include "timagebutton.h"
 #include "tglobal.h"
 #include "tconfig.h"
 #include "tdebug.h"
+#include "tuppendialog.h"
 
 #include <QDialog>
 #include <QHBoxLayout>
@@ -54,11 +56,12 @@
 #include <QLabel>
 #include <QFont>
 #include <QPushButton>
+#include <QDesktopWidget>
 
 struct TupCanvas::Private
 {
     QColor currentColor;
-    QLabel *penWidth;
+    TupBrushManager *brushManager;
     QLabel *frame;
     QLabel *layer;
     QLabel *scene;
@@ -75,19 +78,24 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     k->currentColor = brushManager->penColor();
+    k->brushManager = brushManager;
 
     graphicsView = new TupCanvasView(this, screenSize, projectSize, bg);
-    // graphicsView->setFixedSize(screenSize.width(), screenSize.height());
 
     graphicsView->setScene(scene);
     graphicsView->centerOn(centerPoint);
     graphicsView->scale(scaleFactor, scaleFactor);
     graphicsView->rotate(angle);
 
-    QPushButton *pencil = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/pencil.png")), "");
+    TImageButton *pencil = new TImageButton(QPixmap(THEME_DIR + "icons/pencil_big.png"), 40, this, true);
     pencil->setToolTip(tr("Pencil"));
     connect(pencil, SIGNAL(clicked()), this, SLOT(wakeUpPencil()));
 
+    TImageButton *ink = new TImageButton(QPixmap(THEME_DIR + "icons/ink_big.png"), 40, this, true);
+    ink->setToolTip(tr("Ink"));
+    connect(ink, SIGNAL(clicked()), this, SLOT(wakeUpInk()));
+
+    /*
     QPushButton *circle = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/ellipse.png")), "");
     circle->setToolTip(tr("Ellipse"));
     connect(circle, SIGNAL(clicked()), this, SLOT(wakeUpCircle()));
@@ -99,42 +107,56 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     QPushButton *polyline = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/polyline.png")), "");
     polyline->setToolTip(tr("PolyLine"));
     connect(polyline, SIGNAL(clicked()), this, SLOT(wakeUpPolyline()));
+    */
 
-    QPushButton *objects = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/selection.png")), "");
+    TImageButton *objects = new TImageButton(QPixmap(THEME_DIR + "icons/selection_big.png"), 40, this, true);
     objects->setToolTip(tr("Object Selection"));
     connect(objects, SIGNAL(clicked()), this, SLOT(wakeUpObjectSelection()));
 
-    QPushButton *nodes = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/nodes.png")), "");
+    TImageButton *nodes = new TImageButton(QPixmap(THEME_DIR + "icons/nodes_big.png"), 40, this, true);
     nodes->setToolTip(tr("Line Selection"));
     connect(nodes, SIGNAL(clicked()), this, SLOT(wakeUpNodeSelection()));
 
-    QPushButton *zoomIn = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/zoom_in.png")), "");
+    TImageButton *trash = new TImageButton(QPixmap(THEME_DIR + "icons/delete_big.png"), 40, this, true);
+    trash->setToolTip(tr("Delete Selection"));
+    connect(trash, SIGNAL(clicked()), this, SLOT(wakeUpDeleteSelection()));
+
+    TImageButton *zoomIn = new TImageButton(QPixmap(THEME_DIR + "icons/zoom_in_big.png"), 40, this, true);
     zoomIn->setToolTip(tr("Zoom In"));
     connect(zoomIn, SIGNAL(clicked()), this, SLOT(wakeUpZoomIn()));
 
-    QPushButton *zoomOut = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/zoom_out.png")), "");
+    TImageButton *zoomOut = new TImageButton(QPixmap(THEME_DIR + "icons/zoom_out_big.png"), 40, this, true);
     zoomOut->setToolTip(tr("Zoom Out"));
     connect(zoomOut, SIGNAL(clicked()), this, SLOT(wakeUpZoomOut()));
 
-    QPushButton *hand = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/hand.png")), "");
+    TImageButton *hand = new TImageButton(QPixmap(THEME_DIR + "icons/hand_big.png"), 40, this, true);
     hand->setToolTip(tr("Hand"));
     connect(hand, SIGNAL(clicked()), this, SLOT(wakeUpHand()));
 
-    QPushButton *undo = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/undo.png")), "");
+    TImageButton *undo = new TImageButton(QPixmap(THEME_DIR + "icons/undo_big.png"), 40, this, true);
     undo->setToolTip(tr("Undo"));
     connect(undo, SIGNAL(clicked()), this, SLOT(undo()));
 
-    QPushButton *redo = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/redo.png")), "");
+    TImageButton *redo = new TImageButton(QPixmap(THEME_DIR + "icons/redo_big.png"), 40, this, true);
     redo->setToolTip(tr("Redo"));
     connect(redo, SIGNAL(clicked()), this, SLOT(redo()));
 
-    QAction *colors = new QAction(QIcon(QPixmap(THEME_DIR + "icons/color_palette.png")), tr("Colors"), this);
+    TImageButton *colors = new TImageButton(QPixmap(THEME_DIR + "icons/color_palette_big.png"), 40, this, true);
+    colors->setToolTip(tr("Color Palette"));
+    connect(colors, SIGNAL(clicked()), this, SLOT(colorDialog()));
+
+    TImageButton *pen = new TImageButton(QPixmap(THEME_DIR + "icons/pen_properties.png"), 40, this, true);
+    pen->setToolTip(tr("Pen Size"));
+    connect(pen, SIGNAL(clicked()), this, SLOT(penDialog()));
+
+    /*
+    QAction *colors = new QAction(QIcon(QPixmap(THEME_DIR + "icons/color_palette_big.png")), tr("Colors"), this);
     colors->setToolTip(tr("Color Palette"));
     connect(colors, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
     QToolBar *toolbar = new QToolBar(tr("Tools"));
     toolbar->setOrientation(Qt::Vertical);
-    toolbar->setIconSize(QSize(22, 22));
+    toolbar->setIconSize(QSize(30, 30));
     toolbar->setFixedHeight(30);
     toolbar->addAction(colors);
 
@@ -155,12 +177,13 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     k->penWidth->setFont(QFont("Arial", 10, QFont::Bold));
     k->penWidth->setAlignment(Qt::AlignHCenter);
     k->penWidth->setFixedHeight(20);
+    */
 
-    QPushButton *forward = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/ff.png")), "");
+    TImageButton *forward = new TImageButton(QPixmap(THEME_DIR + "icons/ff_big.png"), 40, this, true);
     forward->setToolTip(tr("One Frame Forward"));
     connect(forward, SIGNAL(clicked()), this, SLOT(oneFrameForward()));
 
-    QPushButton *backward = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/rw.png")), "");
+    TImageButton *backward = new TImageButton(QPixmap(THEME_DIR + "icons/rw_big.png"), 40, this, true);
     backward->setToolTip(tr("One Frame Backward"));
     connect(backward, SIGNAL(clicked()), this, SLOT(oneFrameBack()));
 
@@ -184,28 +207,30 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
 
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    controls->setContentsMargins(1, 1, 1, 1);
-    controls->setSpacing(2);
+    controls->setContentsMargins(3, 3, 3, 3);
+    controls->setSpacing(5);
 
     controls->addWidget(pencil);
-    controls->addWidget(circle);
-    controls->addWidget(square);
-    controls->addWidget(polyline);
+    controls->addWidget(ink);
     controls->addWidget(objects);
     controls->addWidget(nodes);
+    controls->addWidget(trash);
     controls->addWidget(zoomIn);
     controls->addWidget(zoomOut);
     controls->addWidget(hand);
+
     controls->addWidget(undo);
     controls->addWidget(redo);
+    controls->addWidget(colors);
+    controls->addWidget(pen);
 
     controls->addSpacing(5);
 
+    /*
     controls->addWidget(toolbar, Qt::AlignHCenter);
     controls->addLayout(slider, Qt::AlignHCenter);
     controls->addWidget(k->penWidth, Qt::AlignHCenter);
-
-    controls->addSpacing(5);
+    */
 
     controls->addWidget(forward);
     controls->addWidget(backward);
@@ -249,6 +274,19 @@ void TupCanvas::colorDialog()
     emit updateColorFromFullScreen(color);
 }
 
+void TupCanvas::penDialog()
+{
+    QDesktopWidget desktop;
+    TupPenDialog *dialog = new TupPenDialog(k->brushManager, this);
+    connect(dialog, SIGNAL(updatePen(int)), this, SLOT(updateThickness(int)));
+
+    QApplication::restoreOverrideCursor();
+
+    dialog->show();
+    dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                        (int) (desktop.screenGeometry().height() - dialog->height())/2);
+}
+
 void TupCanvas::oneFrameBack()
 {
     if (k->frameIndex > 0) {
@@ -267,13 +305,18 @@ void TupCanvas::oneFrameForward()
 
 void TupCanvas::updateThickness(int value)
 {
-    k->penWidth->setText(QString::number(value));
+    // k->penWidth->setText(QString::number(value));
     emit updatePenThicknessFromFullScreen(value);
 }
 
 void TupCanvas::wakeUpPencil()
 {
     emit callAction(TupToolPlugin::BrushesMenu, TupToolPlugin::PencilTool);
+}
+
+void TupCanvas::wakeUpInk()
+{
+    emit callAction(TupToolPlugin::BrushesMenu, TupToolPlugin::InkTool);
 }
 
 void TupCanvas::wakeUpCircle()
@@ -299,6 +342,11 @@ void TupCanvas::wakeUpObjectSelection()
 void TupCanvas::wakeUpNodeSelection()
 {
     emit callAction(TupToolPlugin::SelectionMenu, TupToolPlugin::NodesTool);
+}
+
+void TupCanvas::wakeUpDeleteSelection()
+{
+    emit callAction(TupToolPlugin::SelectionMenu, TupToolPlugin::Delete);
 }
 
 void TupCanvas::wakeUpZoomIn()
