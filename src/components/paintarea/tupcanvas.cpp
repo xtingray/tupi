@@ -162,11 +162,12 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     TImageButton *exposure = new TImageButton(QPixmap(THEME_DIR + "icons/exposure_sheet_big.png"), 40, this, true);
     exposure->setToolTip(tr("Exposure Sheet"));
     connect(exposure, SIGNAL(clicked()), this, SLOT(penDialog()));
+    exposure->setDisabled(true);
 
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     controls->setContentsMargins(3, 3, 3, 3);
-    controls->setSpacing(5);
+    controls->setSpacing(7);
 
     controls->addWidget(pencil);
     controls->addWidget(ink);
@@ -293,8 +294,8 @@ void TupCanvas::wakeUpLibrary()
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray data = f.readAll();
             f.close();
-            int projectWidth = k->size.width();
-            int projectHeight = k->size.height();
+            // int projectWidth = k->size.width();
+            // int projectHeight = k->size.height();
 
             TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
                                         TupLibraryObject::Svg, TupProject::FRAMES_EDITION, data, QString(),
