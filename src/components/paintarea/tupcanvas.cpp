@@ -64,9 +64,6 @@ struct TupCanvas::Private
 {
     QColor currentColor;
     TupBrushManager *brushManager;
-    // QLabel *frame;
-    // QLabel *layer;
-    // QLabel *scene;
     int frameIndex;
     int layerIndex;
     int sceneIndex;
@@ -162,7 +159,6 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     TImageButton *exposure = new TImageButton(QPixmap(THEME_DIR + "icons/exposure_sheet_big.png"), 40, this, true);
     exposure->setToolTip(tr("Exposure Sheet"));
     connect(exposure, SIGNAL(clicked()), this, SLOT(penDialog()));
-    exposure->setDisabled(true);
 
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
