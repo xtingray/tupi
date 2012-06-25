@@ -39,6 +39,8 @@
 #include "tupgraphicsscene.h"
 #include "tupcanvasview.h"
 #include "tupbrushmanager.h"
+#include "tupprojectrequest.h"
+#include "tuprequestbuilder.h"
 
 #include <QFrame>
 #include <QPointF>
@@ -80,9 +82,10 @@ class TupCanvas : public QFrame
         void updateThickness(int value);
         void wakeUpPencil();
         void wakeUpInk();
-        void wakeUpCircle();
-        void wakeUpSquare();
-        void wakeUpPolyline();
+        void wakeUpEllipse();
+        void wakeUpRectangle();
+        // void wakeUpPolyline();
+        void wakeUpLibrary();
         void wakeUpObjectSelection();
         void wakeUpNodeSelection();
         void wakeUpDeleteSelection();
@@ -94,6 +97,7 @@ class TupCanvas : public QFrame
         void redo();
 
    signals:
+        void requestTriggered(const TupProjectRequest *event);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);
         void callAction(int menu, int index);
