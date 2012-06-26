@@ -42,6 +42,7 @@
 #include "tconfig.h"
 #include "tdebug.h"
 #include "tuppendialog.h"
+#include "tupexposuredialog.h"
 
 #include <QDialog>
 #include <QHBoxLayout>
@@ -69,21 +70,23 @@ struct TupCanvas::Private
     int sceneIndex;
     QSize size;
     TupGraphicsScene *scene;
+    TupProject *project;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
-                   const QPointF centerPoint, const QSize &screenSize, const QSize &projectSize, double scaleFactor,
-                   int angle, const QColor &bg, TupBrushManager *brushManager) : QFrame(parent, flags), k(new Private)
+                   const QPointF centerPoint, const QSize &screenSize, TupProject *project, double scaleFactor,
+                   int angle, TupBrushManager *brushManager) : QFrame(parent, flags), k(new Private)
 {
     setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     k->scene = scene;
-    k->size = projectSize;
+    k->size = project->dimension();
     k->currentColor = brushManager->penColor();
     k->brushManager = brushManager;
+    k->project = project;
 
-    graphicsView = new TupCanvasView(this, screenSize, projectSize, bg);
+    graphicsView = new TupCanvasView(this, screenSize, k->size, project->bgColor());
 
     graphicsView->setScene(scene);
     graphicsView->centerOn(centerPoint);
@@ -158,7 +161,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
 
     TImageButton *exposure = new TImageButton(QPixmap(THEME_DIR + "icons/exposure_sheet_big.png"), 40, this, true);
     exposure->setToolTip(tr("Exposure Sheet"));
-    connect(exposure, SIGNAL(clicked()), this, SLOT(penDialog()));
+    connect(exposure, SIGNAL(clicked()), this, SLOT(exposureDialog()));
 
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -225,6 +228,19 @@ void TupCanvas::penDialog()
     QDesktopWidget desktop;
     TupPenDialog *dialog = new TupPenDialog(k->brushManager, this);
     connect(dialog, SIGNAL(updatePen(int)), this, SLOT(updateThickness(int)));
+
+    QApplication::restoreOverrideCursor();
+
+    dialog->show();
+    dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                        (int) (desktop.screenGeometry().height() - dialog->height())/2);
+}
+
+void TupCanvas::exposureDialog()
+{
+    QDesktopWidget desktop;
+    TupExposureDialog *dialog = new TupExposureDialog(k->project, this);
+    // connect(dialog, SIGNAL(updatePen(int)), this, SLOT(updateThickness(int)));
 
     QApplication::restoreOverrideCursor();
 

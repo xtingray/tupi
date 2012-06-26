@@ -33,35 +33,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tuppendialog.h"
+#include "tupexposuredialog.h"
 #include "tdebug.h"
 #include "tapplicationproperties.h"
 #include "tseparator.h"
-#include "tuppenthicknesswidget.h"
 #include "timagebutton.h"
+#include "tupscene.h"
+#include "tuplayer.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDialogButtonBox>
+#include <QPushButton>
+#include <QGroupBox>
 
-struct TupPenDialog::Private
+struct TupExposureDialog::Private
 {
     QVBoxLayout *innerLayout;
-    TupPenThicknessWidget *thickPreview;
-    TupBrushManager *brushManager;
     QLabel *sizeLabel;
-    int currentSize;
 };
 
-TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDialog(parent), k(new Private)
+TupExposureDialog::TupExposureDialog(TupProject *project, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    setWindowTitle(tr("Pen Size"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/brush.png")));
-
-    k->brushManager = brushManager;
-    k->currentSize = k->brushManager->penWidth();
+    setWindowTitle(tr("Exposure Sheet"));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png")));
 
     QBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(3, 3, 3, 3);
@@ -69,8 +66,7 @@ TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDi
 
     k->innerLayout = new QVBoxLayout;
 
-    setBrushCanvas();
-    setButtonsPanel();
+    setSheet(project);
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 40, this, true);
     closeButton->setToolTip(tr("Close"));
@@ -86,89 +82,55 @@ TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDi
     layout->addLayout(k->innerLayout);
 }
 
-TupPenDialog::~TupPenDialog()
+TupExposureDialog::~TupExposureDialog()
 {
 }
 
-QSize TupPenDialog::sizeHint() const
+/*
+QSize TupExposureDialog::sizeHint() const
 {
-    return QSize(500, 250);
+    return QSize(700, 250);
 }
+*/
 
-void TupPenDialog::setBrushCanvas()
+void TupExposureDialog::setSheet(TupProject *project)
 {
-    k->thickPreview = new TupPenThicknessWidget(this);
-    k->thickPreview->setColor(k->brushManager->penColor());
-    k->thickPreview->setBrush(k->brushManager->brush().style());
-    k->thickPreview->render(k->currentSize);
-    
-    k->innerLayout->addWidget(k->thickPreview);
+    QBoxLayout *mainLayout = new QHBoxLayout;
+    mainLayout->setContentsMargins(5, 5, 5, 5);
+    mainLayout->setSpacing(10);
+
+    QBoxLayout *sceneColumn = new QVBoxLayout;
+    for (int i=0; i<project->scenesTotal(); i++) {
+         QPushButton *scene = new QPushButton(tr("Scene") + " " + QString::number(i+1));
+         scene->setFixedSize(120, 80);
+         scene->setFont(QFont("Arial", 20, QFont::Bold));
+         scene->setCheckable(true);
+         connect(scene, SIGNAL(clicked()), this, SLOT(fivePointsLess()));
+         sceneColumn->addWidget(scene);
+    }
+
+    mainLayout->addLayout(sceneColumn);
+    TupScene *scene = project->scene(0);
+
+    QBoxLayout *sceneLayout = new QVBoxLayout;
+    for (int j=0; j< scene->layersTotal(); j++) {
+         QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(j+1));
+         QBoxLayout *layerLayout = new QHBoxLayout;
+         layerLayout->setSpacing(10);
+         TupLayer *layer = scene->layer(j);
+         for (int i=0; i<layer->framesTotal(); i++) {
+              QPushButton *frame = new QPushButton(tr("Frame") + " " + QString::number(i+1));
+              frame->setFixedSize(120, 80);
+              frame->setFont(QFont("Arial", 20, QFont::Bold));
+              frame->setCheckable(true);
+              connect(frame, SIGNAL(clicked()), this, SLOT(fivePointsLess()));
+              layerLayout->addWidget(frame);
+         }
+         layerGroup->setLayout(layerLayout);
+         sceneLayout->addWidget(layerGroup);
+    }
+
+    mainLayout->addLayout(sceneLayout);
+   
+    k->innerLayout->addLayout(mainLayout);
 }
-
-void TupPenDialog::setButtonsPanel()
-{
-    TImageButton *minus5 = new TImageButton(QPixmap(THEME_DIR + "icons/minus_sign_big.png"), 40, this, true);
-    minus5->setToolTip(tr("-5"));
-    connect(minus5, SIGNAL(clicked()), this, SLOT(fivePointsLess()));
-
-    TImageButton *minus = new TImageButton(QPixmap(THEME_DIR + "icons/minus_sign_medium.png"), 40, this, true);
-    minus->setToolTip(tr("-1"));
-    connect(minus, SIGNAL(clicked()), this, SLOT(onePointLess()));
-
-    k->sizeLabel = new QLabel(QString::number(k->currentSize));
-    k->sizeLabel->setFont(QFont("Arial", 24, QFont::Bold));
-    k->sizeLabel->setFixedWidth(40);
-
-    TImageButton *plus = new TImageButton(QPixmap(THEME_DIR + "icons/plus_sign_medium.png"), 40, this, true);
-    plus->setToolTip(tr("+1"));
-    connect(plus, SIGNAL(clicked()), this, SLOT(onePointMore()));
-
-    TImageButton *plus5 = new TImageButton(QPixmap(THEME_DIR + "icons/plus_sign_big.png"), 40, this, true);
-    plus5->setToolTip(tr("+5"));
-    connect(plus5, SIGNAL(clicked()), this, SLOT(fivePointsMore()));
-
-    QBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(minus5);
-    layout->addWidget(minus);
-    layout->addWidget(k->sizeLabel);
-    layout->addWidget(plus);
-    layout->addWidget(plus5);
-
-    k->innerLayout->addLayout(layout);
-}
-
-void TupPenDialog::fivePointsLess()
-{
-    modifySize(-5);
-}
-
-void TupPenDialog::onePointLess()
-{
-    modifySize(-1);
-}
-
-void TupPenDialog::onePointMore()
-{
-    modifySize(1);
-}
-
-void TupPenDialog::fivePointsMore()
-{
-    modifySize(5);
-}
-
-void TupPenDialog::modifySize(int value)
-{
-    k->currentSize += value;
-    if (k->currentSize > 100)
-        k->currentSize = 100;
-
-    if (k->currentSize < 1)
-        k->currentSize = 1;
-
-    k->thickPreview->render(k->currentSize);
-    k->sizeLabel->setText(QString::number(k->currentSize));
-
-    emit updatePen(k->currentSize);
-}
-

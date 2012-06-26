@@ -1279,8 +1279,8 @@ void TupViewDocument::showFullScreen()
         scale = (double) (screenH - 50) / (double) projectSize.height();
 
     k->fullScreen = new TupCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
-                                 k->paintArea->centerPoint(), QSize(screenW, screenH), projectSize, scale,
-                                 k->viewAngle, k->project->bgColor(), brushManager()); 
+                                 k->paintArea->centerPoint(), QSize(screenW, screenH), k->project, scale,
+                                 k->viewAngle, brushManager()); 
 
     k->fullScreen->updateCursor(k->currentTool->cursor());
     k->fullScreen->showFullScreen();

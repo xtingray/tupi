@@ -41,6 +41,7 @@
 #include "tupbrushmanager.h"
 #include "tupprojectrequest.h"
 #include "tuprequestbuilder.h"
+#include "tupproject.h"
 
 #include <QFrame>
 #include <QPointF>
@@ -58,8 +59,8 @@ class TupCanvas : public QFrame
     public:
         TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
                   const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
-                  const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
-                  int angle=0, const QColor &bg = QColor(Qt::white), TupBrushManager *brushManager = 0);
+                  TupProject *project = 0, double scaleFactor = 1, int angle=0, 
+                  TupBrushManager *brushManager = 0);
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
 
@@ -77,6 +78,8 @@ class TupCanvas : public QFrame
    private slots:
         void colorDialog();
         void penDialog();
+        void exposureDialog();
+
         void oneFrameBack();
         void oneFrameForward();
         void updateThickness(int value);

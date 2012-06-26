@@ -33,36 +33,27 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPPENDIALOG_H
-#define TUPPENDIALOG_H
+#ifndef TUPEXPOSUREDIALOG_H
+#define TUPEXPOSUREDIALOG_H
 
-#include "tupbrushmanager.h"
+#include "tupproject.h"
 #include <QDialog>
 
-class TupPenDialog : public QDialog
+class TupExposureDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupPenDialog(TupBrushManager *brushManager, QWidget *parent);
-        ~TupPenDialog();
+        TupExposureDialog(TupProject *project, QWidget *parent);
+        ~TupExposureDialog();
 
-        QSize sizeHint() const;
+        // QSize sizeHint() const;
 
     signals:
-        void updatePen(int);
-
-    private slots:
-        void fivePointsLess();
-        void onePointLess();
-        void onePointMore();
-        void fivePointsMore();
+        void goTo(int);
 
     private:
-        void setBrushCanvas();
-        void setButtonsPanel();
-        void modifySize(int value);
-
+        void setSheet(TupProject *project);
         struct Private;
         Private *const k;
 };
