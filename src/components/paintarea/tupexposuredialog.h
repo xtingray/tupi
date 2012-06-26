@@ -44,16 +44,20 @@ class TupExposureDialog : public QDialog
     Q_OBJECT
 
     public:
-        TupExposureDialog(TupProject *project, QWidget *parent);
+        TupExposureDialog(TupProject *project, int scene, int layer, int frame, QWidget *parent);
         ~TupExposureDialog();
 
         // QSize sizeHint() const;
 
     signals:
-        void goTo(int);
+        // void goTo(int);
+
+    private slots:
+        void goToScene(int column, int row);
+        void goToFrame(int column, int row);
 
     private:
-        void setSheet(TupProject *project);
+        void setSheet(int sceneIndex, int layerIndex, int frameIndex);
         struct Private;
         Private *const k;
 };

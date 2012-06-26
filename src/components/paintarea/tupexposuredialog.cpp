@@ -40,6 +40,7 @@
 #include "timagebutton.h"
 #include "tupscene.h"
 #include "tuplayer.h"
+#include "tpushbutton.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -51,14 +52,24 @@
 struct TupExposureDialog::Private
 {
     QVBoxLayout *innerLayout;
+    QBoxLayout *sceneLayout;
     QLabel *sizeLabel;
+    int currentScene;
+    QList<int> currentLayer;
+    QList<int> currentFrame;
+    QList<TPushButton *> sceneList;
+    QList<TPushButton *> frameList;
+    TupProject *project;
+    QList<QGroupBox *> sceneGroupList;
 };
 
-TupExposureDialog::TupExposureDialog(TupProject *project, QWidget *parent) : QDialog(parent), k(new Private)
+TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, int frame, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
     setWindowTitle(tr("Exposure Sheet"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png")));
+
+    k->project = project;
 
     QBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(3, 3, 3, 3);
@@ -66,7 +77,7 @@ TupExposureDialog::TupExposureDialog(TupProject *project, QWidget *parent) : QDi
 
     k->innerLayout = new QVBoxLayout;
 
-    setSheet(project);
+    setSheet(scene, layer, frame);
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 40, this, true);
     closeButton->setToolTip(tr("Close"));
@@ -93,44 +104,125 @@ QSize TupExposureDialog::sizeHint() const
 }
 */
 
-void TupExposureDialog::setSheet(TupProject *project)
+void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
 {
     QBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->setContentsMargins(5, 5, 5, 5);
     mainLayout->setSpacing(10);
 
     QBoxLayout *sceneColumn = new QVBoxLayout;
-    for (int i=0; i<project->scenesTotal(); i++) {
-         QPushButton *scene = new QPushButton(tr("Scene") + " " + QString::number(i+1));
-         scene->setFixedSize(120, 80);
-         scene->setFont(QFont("Arial", 20, QFont::Bold));
-         scene->setCheckable(true);
-         connect(scene, SIGNAL(clicked()), this, SLOT(fivePointsLess()));
-         sceneColumn->addWidget(scene);
+
+    for (int i=0; i < k->project->scenesTotal(); i++) {
+
+         // List of scene buttons
+         TPushButton *sceneButton = new TPushButton(this, tr("Scene") + " " + QString::number(i+1), 0, i);
+         sceneButton->setFixedSize(120, 80);
+         sceneButton->setFont(QFont("Arial", 20, QFont::Bold));
+         sceneButton->setCheckable(true);
+         connect(sceneButton, SIGNAL(clicked(int, int)), this, SLOT(goToScene(int, int)));
+         if (i == sceneIndex) {
+             sceneButton->setChecked(true);
+             sceneButton->setDisabled(true);
+             k->currentScene = i;
+         }
+         sceneColumn->addWidget(sceneButton);
+         k->sceneList << sceneButton;
+
+         // Exposure sheet interface for every Scene
+
+         TupScene *scene = k->project->scene(i);
+         QGroupBox *sceneGroup = new QGroupBox(tr("Scene") + " " + QString::number(i + 1));
+         k->sceneLayout = new QVBoxLayout;
+
+         for (int j=0; j< scene->layersTotal(); j++) {
+              QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(j+1));
+              QBoxLayout *layerLayout = new QHBoxLayout;
+              layerLayout->setSpacing(10);
+              TupLayer *layer = scene->layer(j);
+
+              for (int t=0; t < layer->framesTotal(); t++) {
+                   TPushButton *frameButton = new TPushButton(this, tr("Frame") + " " + QString::number(t+1), t, j);
+                   frameButton->setFixedSize(120, 80);
+                   frameButton->setFont(QFont("Arial", 20, QFont::Bold));
+                   frameButton->setCheckable(true);
+                   connect(frameButton, SIGNAL(clicked(int, int)), this, SLOT(goToFrame(int, int)));
+                   layerLayout->addWidget(frameButton);
+                   if (j == layerIndex && t == frameIndex) {
+                       frameButton->setChecked(true);
+                       frameButton->setDisabled(true);
+                       k->currentLayer << j;
+                       k->currentFrame << t;
+                   }
+                   k->frameList << frameButton;
+              }
+
+              layerGroup->setLayout(layerLayout);
+              k->sceneLayout->addWidget(layerGroup);
+              sceneGroup->setLayout(k->sceneLayout);
+         }
+
+         if (i != sceneIndex)
+             sceneGroup->hide();
+
+         k->sceneGroupList << sceneGroup;
     }
 
     mainLayout->addLayout(sceneColumn);
-    TupScene *scene = project->scene(0);
 
-    QBoxLayout *sceneLayout = new QVBoxLayout;
-    for (int j=0; j< scene->layersTotal(); j++) {
-         QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(j+1));
-         QBoxLayout *layerLayout = new QHBoxLayout;
-         layerLayout->setSpacing(10);
-         TupLayer *layer = scene->layer(j);
-         for (int i=0; i<layer->framesTotal(); i++) {
-              QPushButton *frame = new QPushButton(tr("Frame") + " " + QString::number(i+1));
-              frame->setFixedSize(120, 80);
-              frame->setFont(QFont("Arial", 20, QFont::Bold));
-              frame->setCheckable(true);
-              connect(frame, SIGNAL(clicked()), this, SLOT(fivePointsLess()));
-              layerLayout->addWidget(frame);
-         }
-         layerGroup->setLayout(layerLayout);
-         sceneLayout->addWidget(layerGroup);
+    for(int i=0; i < k->sceneGroupList.size(); i++)
+        mainLayout->addWidget(k->sceneGroupList.at(i));
+
+    k->innerLayout->addLayout(mainLayout);
+}
+
+void TupExposureDialog::goToScene(int column, int row)
+{
+    tError() << "TupExposureDialog::goToScene() - Coord: [ " << column << ", " << row << " ]";
+    k->sceneGroupList.at(k->currentScene)->hide();
+
+    for(int i=0; i<k->sceneList.size(); i++) {
+        if (i == row) {
+            k->sceneList.at(i)->setChecked(true);
+            k->sceneList.at(i)->setDisabled(true);
+            k->currentScene = i;
+        } else {
+            k->sceneList.at(i)->setChecked(false);
+            k->sceneList.at(i)->setDisabled(false);
+            // k->sceneList.at(i)->clearFocus();
+        }
+    } 
+
+    k->sceneGroupList.at(row)->show();
+    // k->sceneGroupList.at(row)->clearFocus();
+ 
+    goToFrame(k->currentFrame.at(row), k->currentLayer.at(row));
+
+    tError() << "TupExposureDialog::goToScene() - Current Scene: " << row;
+    tError() << "TupExposureDialog::goToScene() - Current Layer: " << k->currentLayer.at(row);
+    tError() << "TupExposureDialog::goToScene() - Current Frame: " << k->currentFrame.at(row);
+}
+
+void TupExposureDialog::goToFrame(int column, int row)
+{
+    tError() << "TupExposureDialog::goToFrame() - Coord: [ " << column << ", " << row << " ]";
+    TupScene *scene = k->project->scene(k->currentScene);
+    int oneRow = scene->framesTotal();
+    int index = column + oneRow*row;
+
+    for(int i=0; i<k->frameList.size(); i++) {
+        if (i == index) {
+            k->frameList.at(i)->setChecked(true);
+            k->frameList.at(i)->setDisabled(true);
+            k->currentLayer.replace(k->currentScene, row);
+            k->currentFrame.replace(k->currentScene, column);
+        } else {
+            k->frameList.at(i)->setChecked(false);
+            k->frameList.at(i)->setDisabled(false);
+            k->frameList.at(i)->clearFocus();
+        }
     }
 
-    mainLayout->addLayout(sceneLayout);
-   
-    k->innerLayout->addLayout(mainLayout);
+    for(int i=0; i<k->sceneList.size(); i++) {
+        k->sceneList.at(i)->clearFocus();
+    }
 }

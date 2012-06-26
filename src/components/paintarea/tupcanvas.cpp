@@ -239,7 +239,8 @@ void TupCanvas::penDialog()
 void TupCanvas::exposureDialog()
 {
     QDesktopWidget desktop;
-    TupExposureDialog *dialog = new TupExposureDialog(k->project, this);
+    TupExposureDialog *dialog = new TupExposureDialog(k->project, k->scene->currentSceneIndex(), 
+                                                      k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), this);
     // connect(dialog, SIGNAL(updatePen(int)), this, SLOT(updateThickness(int)));
 
     QApplication::restoreOverrideCursor();
