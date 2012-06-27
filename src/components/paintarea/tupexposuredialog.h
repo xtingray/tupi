@@ -49,6 +49,7 @@ class TupExposureDialog : public QDialog
 
     signals:
         void goToFrame(int frame, int layer, int scene);
+        void goToScene(int scene);
 
     private slots:
         void refreshUI(int frame, int layer);

@@ -240,8 +240,9 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
-    if (k->isLocal)
-        saveTimer();
+    // SQA: Temporarily disabled  
+    // if (k->isLocal)
+    //     saveTimer();
 }
 
 TupViewDocument::~TupViewDocument()
@@ -1291,6 +1292,7 @@ void TupViewDocument::showFullScreen()
     connect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
     connect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
     connect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
+    connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
 }
 
 void TupViewDocument::updatePenThickness(int size) 
@@ -1309,6 +1311,7 @@ void TupViewDocument::closeFullScreen()
         disconnect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
         disconnect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
         disconnect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
+        disconnect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
 
         k->fullScreen->close();
         k->fullScreenOn = false;
@@ -1319,6 +1322,11 @@ void TupViewDocument::closeFullScreen()
 void TupViewDocument::selectFrame(int frame, int layer, int scene)
 {
     k->paintArea->goToFrame(frame, layer, scene);
+}
+
+void TupViewDocument::selectScene(int scene)
+{
+    k->paintArea->goToScene(scene);
 }
 
 void TupViewDocument::exportImage()

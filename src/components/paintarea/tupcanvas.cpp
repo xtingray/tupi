@@ -242,6 +242,7 @@ void TupCanvas::exposureDialog()
     TupExposureDialog *dialog = new TupExposureDialog(k->project, k->scene->currentSceneIndex(), 
                                                       k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), this);
     connect(dialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
+    connect(dialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
 
     QApplication::restoreOverrideCursor();
 
@@ -254,7 +255,6 @@ void TupCanvas::oneFrameBack()
 {
     if (k->frameIndex > 0) {
         k->frameIndex--;
-        // k->frame->setText(tr("F: ") + QString::number(k->frameIndex));
         emit callAction(TupToolPlugin::Arrows, TupToolPlugin::FrameBack);
     }
 }
@@ -262,7 +262,6 @@ void TupCanvas::oneFrameBack()
 void TupCanvas::oneFrameForward()
 {
     k->frameIndex++;
-    // k->frame->setText(tr("F: ") + QString::number(k->frameIndex));
     emit callAction(TupToolPlugin::Arrows, TupToolPlugin::FrameForward);
 }
 

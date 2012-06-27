@@ -73,6 +73,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         void goOneFrameBack();
         void goOneFrameForward();
         void goToFrame(int frameIndex, int layerIndex, int sceneIndex);
+        void goToScene(int sceneIndex);
         void copyCurrentFrame();
         void pasteDataOnCurrentFrame();
         void quickCopy();

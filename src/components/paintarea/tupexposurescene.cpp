@@ -73,8 +73,6 @@ TupExposureScene::TupExposureScene(const QString &title, TupScene *scene, int cu
               if (j == currentLayer && t == currentFrame) {
                   frameButton->setChecked(true);
                   frameButton->setDisabled(true);
-                  k->currentLayer = j;
-                  k->currentFrame = t;
               }
               k->frameList << frameButton;
          }
@@ -92,7 +90,6 @@ TupExposureScene::~TupExposureScene()
 
 void TupExposureScene::goToFrame(int frame, int layer)
 {
-    tError() << "TupExposureScene::goToFrame() - Coord: [ " << frame << ", " << layer << " ]";
     int oneRow = k->scene->framesTotal();
     int index = frame + oneRow*layer;
 
@@ -122,3 +119,7 @@ int TupExposureScene::currentLayer()
     return k->currentLayer;
 }
 
+int TupExposureScene::framesTotal()
+{
+    k->scene->framesTotal();
+}

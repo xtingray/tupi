@@ -49,6 +49,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QDesktopWidget>
 
 struct TupExposureDialog::Private
 {
@@ -76,7 +77,6 @@ TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, 
     setSheet(scene, layer, frame);
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 40, this, true);
-    closeButton->setToolTip(tr("Close"));
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -143,8 +143,9 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
 
 void TupExposureDialog::goToScene(int column, int sceneIndex)
 {
-    tError() << "TupExposureDialog::goToScene() - Coord: [ " << column << ", " << sceneIndex << " ]";
-    k->sceneGroupList.at(k->currentScene)->hide();
+    TupExposureScene *oldScene = k->sceneGroupList.at(k->currentScene);
+    oldScene->hide();
+    int oldFramesTotal = oldScene->framesTotal(); 
 
     for(int i=0; i<k->sceneList.size(); i++) {
         if (i == sceneIndex) {
@@ -159,8 +160,16 @@ void TupExposureDialog::goToScene(int column, int sceneIndex)
 
     TupExposureScene *sceneTable = k->sceneGroupList.at(sceneIndex);
     sceneTable->show();
+    int newFramesTotal = sceneTable->framesTotal();
 
+    emit goToScene(k->currentScene);
     emit goToFrame(sceneTable->currentFrame(), sceneTable->currentLayer(), k->currentScene);
+
+    if (newFramesTotal != oldFramesTotal) {
+        QDesktopWidget desktop;
+        move((int) (desktop.screenGeometry().width() - width())/2 ,
+             (int) (desktop.screenGeometry().height() - height())/2);
+    }
 }
 
 void TupExposureDialog::refreshUI(int frame, int layer)
