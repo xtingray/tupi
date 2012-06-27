@@ -121,5 +121,10 @@ int TupExposureScene::currentLayer()
 
 int TupExposureScene::framesTotal()
 {
-    k->scene->framesTotal();
+    return k->scene->framesTotal();
+}
+
+int TupExposureScene::layersTotal()
+{
+    return k->scene->layersTotal();
 }

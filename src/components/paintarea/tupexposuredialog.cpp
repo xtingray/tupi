@@ -146,6 +146,7 @@ void TupExposureDialog::goToScene(int column, int sceneIndex)
     TupExposureScene *oldScene = k->sceneGroupList.at(k->currentScene);
     oldScene->hide();
     int oldFramesTotal = oldScene->framesTotal(); 
+    int oldLayersTotal = oldScene->layersTotal();
 
     for(int i=0; i<k->sceneList.size(); i++) {
         if (i == sceneIndex) {
@@ -161,11 +162,12 @@ void TupExposureDialog::goToScene(int column, int sceneIndex)
     TupExposureScene *sceneTable = k->sceneGroupList.at(sceneIndex);
     sceneTable->show();
     int newFramesTotal = sceneTable->framesTotal();
+    int newLayersTotal = sceneTable->layersTotal();
 
     emit goToScene(k->currentScene);
     emit goToFrame(sceneTable->currentFrame(), sceneTable->currentLayer(), k->currentScene);
 
-    if (newFramesTotal != oldFramesTotal) {
+    if (newFramesTotal != oldFramesTotal || newLayersTotal != oldLayersTotal) {
         QDesktopWidget desktop;
         move((int) (desktop.screenGeometry().width() - width())/2 ,
              (int) (desktop.screenGeometry().height() - height())/2);
