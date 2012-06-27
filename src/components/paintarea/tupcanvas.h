@@ -104,6 +104,7 @@ class TupCanvas : public QFrame
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);
         void callAction(int menu, int index);
+        void goToFrame(int frame, int layer, int scene);
 };
 
 #endif

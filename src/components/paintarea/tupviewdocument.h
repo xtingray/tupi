@@ -123,6 +123,7 @@ class TupViewDocument : public QMainWindow
         void exportImage();
         void postImage();
         void storyboardSettings();
+        void selectFrame(int frame, int layer, int scene);
 
     private slots:
         void showPos(const QPointF &p);	

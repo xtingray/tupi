@@ -72,6 +72,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         virtual void keyReleaseEvent(QKeyEvent *event);
         void goOneFrameBack();
         void goOneFrameForward();
+        void goToFrame(int frameIndex, int layerIndex, int sceneIndex);
         void copyCurrentFrame();
         void pasteDataOnCurrentFrame();
         void quickCopy();

@@ -27,6 +27,7 @@ HEADERS += tuppaintarea.h \
            tupstoryboarddialog.h \
            tuppendialog.h \
            tupexposuredialog.h \
+           tupexposurescene.h \
            tupiruler.h
 
 SOURCES += tuppaintarea.cpp \
@@ -46,6 +47,7 @@ SOURCES += tuppaintarea.cpp \
            tupstoryboarddialog.cpp \
            tuppendialog.cpp \
            tupexposuredialog.cpp \
+           tupexposurescene.cpp \
            tupiruler.cpp
 
 *:!macx{

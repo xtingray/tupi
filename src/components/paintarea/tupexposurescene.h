@@ -33,29 +33,29 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPEXPOSUREDIALOG_H
-#define TUPEXPOSUREDIALOG_H
+#ifndef TUPEXPOSURESCENE_H
+#define TUPEXPOSURESCENE_H 
 
-#include "tupproject.h"
-#include <QDialog>
+#include "tupscene.h" 
+#include <QGroupBox>
 
-class TupExposureDialog : public QDialog
+class TupExposureScene : public QGroupBox 
 {
     Q_OBJECT
 
     public:
-        TupExposureDialog(TupProject *project, int scene, int layer, int frame, QWidget *parent);
-        ~TupExposureDialog();
+        TupExposureScene(const QString &title, TupScene *scene, int currentLayer, int currentFrame);
+        ~TupExposureScene();
+        int currentFrame();
+        int currentLayer();
 
     signals:
-        void goToFrame(int frame, int layer, int scene);
+        void updateUI(int frame, int layer);
 
     private slots:
-        void refreshUI(int frame, int layer);
-        void goToScene(int column, int sceneIndex);
+        void goToFrame(int frame, int layer);
 
     private:
-        void setSheet(int sceneIndex, int layerIndex, int frameIndex);
         struct Private;
         Private *const k;
 };

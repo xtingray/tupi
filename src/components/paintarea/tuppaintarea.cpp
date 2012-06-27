@@ -1124,6 +1124,13 @@ void TupPaintArea::goToFrame(int index)
     emit requestTriggered(&request);
 }
 
+void TupPaintArea::goToFrame(int frameIndex, int layerIndex, int sceneIndex)
+{
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
+                                                                      TupProjectRequest::Select, "1");
+    emit requestTriggered(&request);
+}
+
 /*
 void TupPaintArea::tabletEvent(QTabletEvent *event)
 {
