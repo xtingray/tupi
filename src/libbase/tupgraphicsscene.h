@@ -115,6 +115,9 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
 
         int framesTotal();
 
+    private slots:
+        void updateToolTip(const QString &value);
+
     private:
         void addFrame(TupFrame *frame, double opacity = 1.0, Context mode = Current);
         void addGraphicObject(TupGraphicObject *object, double opacity = 1.0);

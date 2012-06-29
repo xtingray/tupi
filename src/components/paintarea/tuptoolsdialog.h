@@ -33,84 +33,39 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCANVAS_H
-#define TUPCANVAS_H
+#ifndef TUPTOOLSDIALOG_H
+#define TUPTOOLSDIALOG_H 
 
-#include "tupgraphicsscene.h"
-#include "tupcanvasview.h"
-#include "tupbrushmanager.h"
-#include "tupprojectrequest.h"
-#include "tuprequestbuilder.h"
-#include "tupproject.h"
+#include <QDialog>
+#include <QList>
 
-#include <QFrame>
-#include <QPointF>
-#include <QSize>
-#include <QCloseEvent>
-#include <QColor>
-#include <QPen>
-
-class TupGraphicsScene;
-
-class TupCanvas : public QFrame
+class TupToolsDialog : public QDialog 
 {
     Q_OBJECT
 
     public:
-        TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
-                  const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
-                  TupProject *project = 0, double scaleFactor = 1, int angle=0, 
-                  TupBrushManager *brushManager = 0);
-        ~TupCanvas();
-        void updateCursor(const QCursor &cursor);
+        TupToolsDialog(QList<QString> tools, QWidget *parent);
+        ~TupToolsDialog();
 
-   protected:
-        void closeEvent(QCloseEvent *event);
+    signals:
+        void callAction(int menu, int index);
+        void isClosed();
+        void openColorDialog();
+        void openPenDialog();
 
-   private:
-        TupCanvasView *graphicsView;
+    private slots:
+        void wakeUpPencil();
+        void wakeUpInk();
+        void wakeUpEllipse();
+        void wakeUpRectangle();
+        void wakeUpPolyline();
+        void wakeUpObjectSelection();
+        void wakeUpNodeSelection();
+
+    private:
+        void setToolsPanel(QList<QString> tools);
         struct Private;
         Private *const k;
-
-   public slots:
-        void colorDialog(const QColor &current);
-
-   private slots:
-        void sketchTools();
-        void selectionTools();
-
-        void colorDialog();
-        void penDialog();
-        void penProperties();
-        void exposureDialog();
-
-        void oneFrameBack();
-        void oneFrameForward();
-        // void updateThickness(int value);
-        void wakeUpLibrary();
-
-        void wakeUpDeleteSelection();
-        void wakeUpZoomIn();
-        void wakeUpZoomOut();
-        void wakeUpHand();
-
-        void undo();
-        void redo();
-
-        void updateSketchMenuState();
-        void updateSelectionMenuState();
-        void updateMenuStates();
-
-   signals:
-        void requestTriggered(const TupProjectRequest *event);
-        void updateColorFromFullScreen(const QColor &color);
-        void updatePenThicknessFromFullScreen(int size);
-        void callAction(int menu, int index);
-        void goToFrame(int frame, int layer, int scene);
-        void goToScene(int scene);
-        void closeSketchMenu();
-        void closeSelectionMenu();
-        void  closePenPropertiesMenu();
 };
 
 #endif

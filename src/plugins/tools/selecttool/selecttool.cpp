@@ -218,7 +218,6 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                      TupLibraryObject::Type type;
 
                      if (svg) {
-
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(svg);
                          } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
@@ -226,7 +225,6 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                                     position = bg->frame()->indexOf(svg); 
                          }
                          type = TupLibraryObject::Svg;
-
                      } else {
 
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {

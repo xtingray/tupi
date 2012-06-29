@@ -63,20 +63,21 @@ struct TupExposureDialog::Private
 TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, int frame, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    setWindowTitle(tr("Exposure Sheet"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png")));
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
+    // setWindowTitle(tr("Exposure Sheet"));
+    // setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png")));
 
     k->project = project;
 
     QBoxLayout *layout = new QHBoxLayout(this);
-    layout->setContentsMargins(3, 3, 3, 3);
+    layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(2);
 
     k->innerLayout = new QVBoxLayout;
 
     setSheet(scene, layer, frame);
 
-    TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 40, this, true);
+    TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 

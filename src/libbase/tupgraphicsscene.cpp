@@ -55,6 +55,7 @@
 
 #include "tdebug.h"
 #include "tupguideline.h"
+#include "tupwebhunter.h"
 
 #include <QGraphicsItem>
 #include <QSvgRenderer>
@@ -97,6 +98,7 @@ struct TupGraphicsScene::Private
 
     QList<TupLineGuide *> lines;
     TupProject::Mode spaceMode;   
+    TupSvgItem *svgItem;
 };
 
 TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -381,13 +383,13 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, double opacity
 
 void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 {
-    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-    */
 
     if (svgItem) {
+
+        k->svgItem = svgItem;
 
         k->onionSkin.opacityMap.insert(svgItem, opacity);
         svgItem->setSelected(false);
@@ -400,10 +402,14 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 
             if (frame) {
                 svgItem->setOpacity(opacity);
-                // k->objectCounter++;
-                // tDebug() << "TupGraphicsScene::addSvgObject() - Item added successful! [" 
-                //          << k->framePosition.layer << ", " << k->framePosition.frame << "]"; 
-                addItem(svgItem);
+
+                if (svgItem->symbolName().compare("dollar.svg")==0) {
+                    TupWebHunter *hunter = new TupWebHunter();
+                    hunter->start();
+                    connect(hunter, SIGNAL(dataReady(const QString &)), this, SLOT(updateToolTip(const QString &)));
+                }
+
+                addItem(k->svgItem);
             } else {
                 #ifdef K_DEBUG
                        tFatal() << "TupGraphicsScene::addSvgObject() - Error: Frame #" << k->framePosition.frame << " NO available!";
@@ -420,6 +426,11 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
         #endif
     } 
 } 
+
+void TupGraphicsScene::updateToolTip(const QString &value) 
+{
+    k->svgItem->setToolTip("1 USD == " + value + " COP");
+}
 
 void TupGraphicsScene::addTweeningObjects(int photogram)
 {
