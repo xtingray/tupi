@@ -75,6 +75,7 @@ struct TupCanvas::Private
     bool sketchMenuIsOpen;
     bool selectionMenuIsOpen;
     bool propertiesMenuIsOpen;
+    UserHand hand;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
@@ -83,6 +84,9 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
 {
     setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
+
+    k->hand = Right;
+    // k->hand = Left;
 
     k->scene = scene;
     k->size = project->dimension();
@@ -166,8 +170,14 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(2);
-    layout->addLayout(controls);
+
+    if (k->hand == Right)
+        layout->addLayout(controls);
+
     layout->addWidget(graphicsView);
+
+    if (k->hand == Left)
+        layout->addLayout(controls);
 
     setLayout(layout);
 }
@@ -219,7 +229,7 @@ void TupCanvas::sketchTools()
 
     if (!k->sketchMenuIsOpen) {
         QList<QString> toolsList;
-        toolsList << "PencilTool";
+        // toolsList << "PencilTool";
         toolsList << "PolyLineTool";
         toolsList << "EllipseTool";
         toolsList << "RectangleTool";
@@ -230,7 +240,11 @@ void TupCanvas::sketchTools()
         connect(this, SIGNAL(closeSketchMenu()), dialog, SLOT(close()));
 
         dialog->show();
-        dialog->move(72, 0);
+
+        if (k->hand == Right)
+            dialog->move(72, 0);
+        else
+            dialog->move(1074, 0);
 
         k->sketchMenuIsOpen = true;
     } else {
@@ -254,7 +268,7 @@ void TupCanvas::selectionTools()
 
     if (!k->selectionMenuIsOpen) {
         QList<QString> toolsList;
-        toolsList << "ObjectsTool";
+        // toolsList << "ObjectsTool";
         toolsList << "NodesTool";
 
         TupToolsDialog *dialog = new TupToolsDialog(toolsList, this);
@@ -263,7 +277,11 @@ void TupCanvas::selectionTools()
         connect(this, SIGNAL(closeSelectionMenu()), dialog, SLOT(close()));
 
         dialog->show();
-        dialog->move(72, 125);
+
+        if (k->hand == Right)
+            dialog->move(72, 125);
+        else
+            dialog->move(1214, 125);
 
         k->selectionMenuIsOpen = true;
     } else {
@@ -287,7 +305,7 @@ void TupCanvas::penProperties()
 
     if (!k->propertiesMenuIsOpen) {
         QList<QString> toolsList;
-        toolsList << "ColorTool";
+        // toolsList << "ColorTool";
         toolsList << "PenSize";
 
         TupToolsDialog *dialog = new TupToolsDialog(toolsList, this);
@@ -296,7 +314,11 @@ void TupCanvas::penProperties()
         connect(this, SIGNAL(closePenPropertiesMenu()), dialog, SLOT(close()));
 
         dialog->show();
-        dialog->move(72, 600);
+
+        if (k->hand == Right)
+            dialog->move(72, 600);
+        else
+            dialog->move(1214, 600);
 
         k->propertiesMenuIsOpen = true;
     } else {

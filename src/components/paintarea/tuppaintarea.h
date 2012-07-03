@@ -85,6 +85,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
 
     signals:
         void requestTriggered(const TupProjectRequest *event);
+        void localRequestTriggered(const TupProjectRequest *event);
         void itemAddedOnSelection(TupGraphicsScene *);
         void frameChanged(int);
         void closePolyLine();

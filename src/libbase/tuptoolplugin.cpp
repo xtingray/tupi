@@ -161,6 +161,10 @@ void TupToolPlugin::autoZoom()
 {
 }
 
+void TupToolPlugin::setProjectSize(const QSize size)
+{
+}
+
 QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
     TupToolPlugin::MenuIndex menu = TupToolPlugin::BrushesMenu;

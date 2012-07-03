@@ -42,6 +42,7 @@
 #include <QObject>
 #include <QLabel>
 #include <QGraphicsRectItem>
+#include <QSize>
 
 class TupGraphicsScene;
 
@@ -75,6 +76,7 @@ class ViewTool: public TupToolPlugin
         virtual QCursor cursor() const;
 
         virtual void autoZoom();
+        virtual void setProjectSize(const QSize size);
 
     signals:
         void closeHugeCanvas();

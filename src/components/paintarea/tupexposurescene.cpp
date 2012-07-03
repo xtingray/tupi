@@ -58,27 +58,32 @@ TupExposureScene::TupExposureScene(const QString &title, TupScene *scene, int cu
     QVBoxLayout *sceneLayout = new QVBoxLayout;
 
     for (int j=0; j< scene->layersTotal(); j++) {
-         QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(j+1));
-         QBoxLayout *layerLayout = new QHBoxLayout;
-         layerLayout->setSpacing(10);
-         TupLayer *layer = scene->layer(j);
 
-         for (int t=0; t < layer->framesTotal(); t++) {
-              TPushButton *frameButton = new TPushButton(this, tr("Frame") + " " + QString::number(t+1), t, j);
-              frameButton->setFixedSize(120, 80);
-              frameButton->setFont(QFont("Arial", 20, QFont::Bold));
-              frameButton->setCheckable(true);
-              connect(frameButton, SIGNAL(clicked(int, int)), this, SLOT(goToFrame(int, int)));
-              layerLayout->addWidget(frameButton);
-              if (j == currentLayer && t == currentFrame) {
-                  frameButton->setChecked(true);
-                  frameButton->setDisabled(true);
-              }
-              k->frameList << frameButton;
+         if (j < 4) { // SQA: Temporary condition
+             QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(j+1));
+             QBoxLayout *layerLayout = new QHBoxLayout;
+             layerLayout->setSpacing(10);
+             TupLayer *layer = scene->layer(j);
+
+             for (int t=0; t < layer->framesTotal(); t++) {
+                  if (t < 9) { // SQA: Temporary condition
+                      TPushButton *frameButton = new TPushButton(this, tr("Frame") + " " + QString::number(t+1), t, j);
+                      frameButton->setFixedSize(100, 70);
+                      frameButton->setFont(QFont("Arial", 14, QFont::Bold));
+                      frameButton->setCheckable(true);
+                      connect(frameButton, SIGNAL(clicked(int, int)), this, SLOT(goToFrame(int, int)));
+                      layerLayout->addWidget(frameButton);
+                      if (j == currentLayer && t == currentFrame) {
+                          frameButton->setChecked(true);
+                          frameButton->setDisabled(true);
+                      }
+                      k->frameList << frameButton;
+                  }
+             }
+
+             layerGroup->setLayout(layerLayout);
+             sceneLayout->addWidget(layerGroup);
          }
-
-         layerGroup->setLayout(layerLayout);
-         sceneLayout->addWidget(layerGroup);
     }
 
     setLayout(sceneLayout);

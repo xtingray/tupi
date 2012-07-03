@@ -316,9 +316,9 @@ void TupMainWindow::setWorkSpace()
         else
             proportion = (double) height / (double) pHeight;
 
-        if (proportion <= 0.3) {
-            drawingTab->setZoomView("15");
-        } else if (proportion > 0.3 && proportion <= 0.75) {
+        if (proportion <= 0.5) {
+            drawingTab->setZoomView("20");
+        } else if (proportion > 0.5 && proportion <= 0.75) {
                    drawingTab->setZoomView("25");
         } else if (proportion > 0.75 && proportion <= 1.5) {
                    drawingTab->setZoomView("50");

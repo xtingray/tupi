@@ -1121,20 +1121,23 @@ void TupPaintArea::goToFrame(int index)
                                                                     scene->currentLayerIndex(),
                                                                     index,
                                                                     TupProjectRequest::Select, "1");
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 }
 
 void TupPaintArea::goToFrame(int frameIndex, int layerIndex, int sceneIndex)
 {
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
                                                                       TupProjectRequest::Select, "1");
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 }
 
 void TupPaintArea::goToScene(int sceneIndex)
 {
     TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 }
 
 /*

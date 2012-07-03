@@ -151,8 +151,8 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     k->size = new TXYSpinBox(tr("Dimension"), infoContainer);
     k->size->setMinimum(50);
     k->size->setMaximum(15000);
-    k->size->setX(520);
-    k->size->setY(380);
+    k->size->setX(3000);
+    k->size->setY(2000);
 
     QWidget *panel = new QWidget;
     QVBoxLayout *sizeLayout = new QVBoxLayout(panel);

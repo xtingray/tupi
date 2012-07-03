@@ -68,6 +68,7 @@ class TupCanvas : public QFrame
         void closeEvent(QCloseEvent *event);
 
    private:
+        enum UserHand { Right = 0, Left };
         TupCanvasView *graphicsView;
         struct Private;
         Private *const k;

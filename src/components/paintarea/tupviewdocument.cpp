@@ -214,6 +214,7 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
     connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 
     connect(k->paintArea, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
+    connect(k->paintArea, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
 
     setupDrawActions();
 
@@ -836,6 +837,7 @@ void TupViewDocument::selectTool()
                          connect(k->paintArea, SIGNAL(itemAddedOnSelection(TupGraphicsScene *)), 
                                  tool, SLOT(updateItems(TupGraphicsScene *)));
                      } 
+
                      break;
 
                 case TupToolInterface::View:
@@ -846,6 +848,11 @@ void TupViewDocument::selectTool()
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
                      if (toolName.compare(tr("Zoom In"))==0 || toolName.compare(tr("Zoom Out"))==0)
                          minWidth = 130;
+
+                     if (toolName.compare(tr("Hand"))==0) {
+                         tool->setProjectSize(k->project->dimension());
+                     }
+                     
                      break;
         }
 

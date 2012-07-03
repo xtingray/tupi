@@ -41,6 +41,7 @@
 #include "tupprojectresponse.h"
 
 #include <QObject>
+#include <QSize>
 
 class TupGraphicsScene;
 class QGraphicsView;
@@ -104,6 +105,7 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
         virtual void updateZoomFactor(qreal factor);
 
         virtual void autoZoom();
+        virtual void setProjectSize(const QSize size);
         
     signals:
         void requested(const TupProjectRequest *request);
