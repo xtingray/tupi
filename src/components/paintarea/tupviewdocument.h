@@ -101,6 +101,7 @@ class TupViewDocument : public QMainWindow
         void loadPlugin(int menu, int index);
         void updateStatusBgColor(const QColor color);
         void updatePenThickness(int size);
+        void updateOnionOpacity(double opacity);
 
     private:
         struct Private;

@@ -84,6 +84,7 @@ class TupCanvas : public QFrame
         void penDialog();
         void penProperties();
         void opacityDialog();
+        void setOnionOpacity(double opacity);
         void exposureDialog();
 
         void oneFrameBack();
@@ -106,7 +107,7 @@ class TupCanvas : public QFrame
         void requestTriggered(const TupProjectRequest *event);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);
-        void updateOpacityFromFullScreen(double opacity);
+        void updateOnionOpacityFromFullScreen(double opacity);
         void callAction(int menu, int index);
         void goToFrame(int frame, int layer, int scene);
         void goToScene(int scene);

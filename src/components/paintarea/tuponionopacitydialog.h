@@ -33,19 +33,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPOPACITYDIALOG_H
-#define TUPOPACITYDIALOG_H
+#ifndef TUPONIONOPACITYDIALOG_H
+#define TUPONIONOPACITYDIALOG_H
 
 #include <QDialog>
 #include <QColor>
 
-class TupOpacityDialog : public QDialog
+class TupOnionOpacityDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupOpacityDialog(const QColor &color, double opacity, QWidget *parent);
-        ~TupOpacityDialog();
+        TupOnionOpacityDialog(const QColor &color, double opacity, QWidget *parent);
+        ~TupOnionOpacityDialog();
 
         QSize sizeHint() const;
 

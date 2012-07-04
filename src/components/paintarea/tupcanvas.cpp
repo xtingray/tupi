@@ -42,7 +42,7 @@
 #include "tconfig.h"
 #include "tdebug.h"
 #include "tuppendialog.h"
-#include "tupopacitydialog.h"
+#include "tuponionopacitydialog.h"
 #include "tupexposuredialog.h"
 #include "tuptoolsdialog.h"
 
@@ -352,14 +352,20 @@ void TupCanvas::opacityDialog()
     k->propertiesMenuIsOpen = false;
 
     QDesktopWidget desktop;
-    TupOpacityDialog *dialog = new TupOpacityDialog(k->brushManager->penColor(), k->scene->opacity(), this);
-    connect(dialog, SIGNAL(updateOpacity(double)), this, SIGNAL(updateOpacityFromFullScreen(double)));
+    TupOnionOpacityDialog *dialog = new TupOnionOpacityDialog(k->brushManager->penColor(), k->scene->opacity(), this);
+    connect(dialog, SIGNAL(updateOpacity(double)), this, SLOT(setOnionOpacity(double)));
 
     QApplication::restoreOverrideCursor();
 
     dialog->show();
     dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
                         (int) (desktop.screenGeometry().height() - dialog->height())/2);
+}
+
+void TupCanvas::setOnionOpacity(double opacity)
+{
+    k->scene->setOnionFactor(opacity);
+    emit updateOnionOpacityFromFullScreen(opacity); 
 }
 
 void TupCanvas::exposureDialog()

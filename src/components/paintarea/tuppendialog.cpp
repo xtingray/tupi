@@ -57,9 +57,9 @@ struct TupPenDialog::Private
 TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    // setWindowTitle(tr("Pen Size"));
-    // setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/brush.png")));
-    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
+    setWindowTitle(tr("Pen Size"));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/brush.png")));
+    // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
 
     k->brushManager = brushManager;
     k->currentSize = k->brushManager->penWidth();
@@ -74,7 +74,7 @@ TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDi
     setButtonsPanel();
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
-    closeButton->setToolTip(tr("Close"));
+    // closeButton->setToolTip(tr("Close"));
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
