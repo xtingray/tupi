@@ -133,6 +133,14 @@ void TupToolsDialog::setToolsPanel(QList<QString> tools)
 
             k->layout->addWidget(pen);
         }
+
+        if (tools.at(i).compare("Opacity") == 0) {
+            TImageButton *opacity = new TImageButton(QPixmap(THEME_DIR + "icons/onion_big.png"), 40, this, true);
+            opacity->setToolTip(tr("Opacity Value"));
+            connect(opacity, SIGNAL(clicked()), this, SIGNAL(openOpacityDialog()));
+
+            k->layout->addWidget(opacity);
+        }
     }
 }
 

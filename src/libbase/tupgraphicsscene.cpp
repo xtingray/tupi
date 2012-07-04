@@ -1223,6 +1223,11 @@ void TupGraphicsScene::setOnionFactor(double opacity)
         drawCurrentPhotogram();
 }
 
+double TupGraphicsScene::opacity()
+{
+    return k->opacity;
+}
+
 int TupGraphicsScene::framesTotal() 
 {
     TupLayer *layer = k->scene->layer(k->framePosition.layer);

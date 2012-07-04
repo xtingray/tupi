@@ -33,38 +33,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPTOOLSDIALOG_H
-#define TUPTOOLSDIALOG_H 
+#ifndef TUPOPACITYDIALOG_H
+#define TUPOPACITYDIALOG_H
 
 #include <QDialog>
-#include <QList>
+#include <QColor>
 
-class TupToolsDialog : public QDialog 
+class TupOpacityDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupToolsDialog(QList<QString> tools, QWidget *parent);
-        ~TupToolsDialog();
+        TupOpacityDialog(const QColor &color, double opacity, QWidget *parent);
+        ~TupOpacityDialog();
+
+        QSize sizeHint() const;
 
     signals:
-        void callAction(int menu, int index);
-        void isClosed();
-        void openColorDialog();
-        void openPenDialog();
-        void openOpacityDialog();
+        void updateOpacity(double);
 
     private slots:
-        void wakeUpPencil();
-        void wakeUpInk();
-        void wakeUpEllipse();
-        void wakeUpRectangle();
-        void wakeUpPolyline();
-        void wakeUpObjectSelection();
-        void wakeUpNodeSelection();
+        void fivePointsLess();
+        void onePointLess();
+        void onePointMore();
+        void fivePointsMore();
 
     private:
-        void setToolsPanel(QList<QString> tools);
+        void setOpacityCanvas();
+        void setButtonsPanel();
+        void modifySize(double value);
+
         struct Private;
         Private *const k;
 };

@@ -112,6 +112,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void setSpaceMode(TupProject::Mode mode);
 
         void setOnionFactor(double opacity);
+        double opacity();
 
         int framesTotal();
 

@@ -83,11 +83,11 @@ class TupCanvas : public QFrame
         void colorDialog();
         void penDialog();
         void penProperties();
+        void opacityDialog();
         void exposureDialog();
 
         void oneFrameBack();
         void oneFrameForward();
-        // void updateThickness(int value);
         void wakeUpLibrary();
 
         void wakeUpDeleteSelection();
@@ -106,6 +106,7 @@ class TupCanvas : public QFrame
         void requestTriggered(const TupProjectRequest *event);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);
+        void updateOpacityFromFullScreen(double opacity);
         void callAction(int menu, int index);
         void goToFrame(int frame, int layer, int scene);
         void goToScene(int scene);

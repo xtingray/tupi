@@ -14,7 +14,7 @@
    height="297mm"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.1 r9760"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
@@ -2114,16 +2114,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="32.000002"
-     inkscape:cx="19.408432"
-     inkscape:cy="1020.168"
+     inkscape:zoom="90.509674"
+     inkscape:cx="7.1349614"
+     inkscape:cy="999.35749"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="724"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true" />
@@ -6537,9 +6537,9 @@
        sodipodi:ry="0.78125"
        d="m 43.359375,47.877808 a 0.7890625,0.78125 0 1 1 -1.578125,0 0.7890625,0.78125 0 1 1 1.578125,0 z"
        transform="matrix(1.1053889,0,0,1.1064428,-40.952388,-0.14289909)"
-       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/onion.png"
-       inkscape:export-xdpi="1206.2112"
-       inkscape:export-ydpi="1206.2112" />
+       inkscape:export-filename="/home/user/tupi/src/themes/default/icons/onion_big.png"
+       inkscape:export-xdpi="1929.9399"
+       inkscape:export-ydpi="1929.9399" />
     <g
        id="g5639"
        transform="translate(-0.28726213,0.08838835)">

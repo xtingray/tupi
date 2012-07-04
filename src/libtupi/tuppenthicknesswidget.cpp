@@ -39,6 +39,7 @@
 struct TupPenThicknessWidget::Private
 {
     int thickness;
+    double opacity;
     int brush;
     QColor color;
     QBrush currentBrush;
@@ -47,6 +48,8 @@ struct TupPenThicknessWidget::Private
 TupPenThicknessWidget::TupPenThicknessWidget(QWidget *parent) : QWidget(parent), k(new Private)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    k->opacity = 1.0;
+    k->thickness = 100;
 }
 
 TupPenThicknessWidget::~TupPenThicknessWidget()
@@ -56,6 +59,14 @@ TupPenThicknessWidget::~TupPenThicknessWidget()
 void TupPenThicknessWidget::render(int thickness)
 {
     k->thickness = thickness;
+    // k->opacity = 1.0; 
+    update();
+}
+
+void TupPenThicknessWidget::render(double opacity)
+{
+    // k->thickness = 100;
+    k->opacity = opacity;
     update();
 }
 
@@ -118,6 +129,7 @@ void TupPenThicknessWidget::paintEvent(QPaintEvent *)
          QPen pen(Qt::NoPen);
          painter.setPen(pen);
          painter.setBrush(brush);
+         painter.setOpacity(k->opacity);
          painter.drawEllipse(-(k->thickness/2), -(k->thickness/2), k->thickness, k->thickness);
      } else {
          QPixmap pixmap(THEME_DIR + "icons/brush_15.png");

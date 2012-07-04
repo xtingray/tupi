@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPENTHICKNESSWIDGET_H
-#define TupPENTHICKNESSWIDGET_H
+#ifndef TUPPENTHICKNESSWIDGET_H
+#define TUPPENTHICKNESSWIDGET_H
 
 #include "tapplicationproperties.h"
 
@@ -45,7 +45,7 @@
 #include <QSize>
 
 /**
- * This class shows a preview of the pen thickness 
+ * This class shows a preview of the pen thickness/opacity
  * @author Gustav Gonzalez <info@maefloresta.com>
  **/
 
@@ -62,9 +62,11 @@ class TupPenThicknessWidget : public QWidget
         void setColor(const QColor color);
         void setBrush(int index);
         void setBrush(const QBrush brush);
+        void setOpacity(double opacity);
 
     public slots:
         void render(int thickness);
+        void render(double thickness);
         
     protected:
         void paintEvent(QPaintEvent *e);

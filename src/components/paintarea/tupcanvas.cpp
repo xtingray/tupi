@@ -42,6 +42,7 @@
 #include "tconfig.h"
 #include "tdebug.h"
 #include "tuppendialog.h"
+#include "tupopacitydialog.h"
 #include "tupexposuredialog.h"
 #include "tuptoolsdialog.h"
 
@@ -244,7 +245,7 @@ void TupCanvas::sketchTools()
         if (k->hand == Right)
             dialog->move(72, 0);
         else
-            dialog->move(1074, 0);
+            dialog->move(1072, 0);
 
         k->sketchMenuIsOpen = true;
     } else {
@@ -279,9 +280,9 @@ void TupCanvas::selectionTools()
         dialog->show();
 
         if (k->hand == Right)
-            dialog->move(72, 125);
+            dialog->move(72, 132);
         else
-            dialog->move(1214, 125);
+            dialog->move(1212, 132);
 
         k->selectionMenuIsOpen = true;
     } else {
@@ -305,20 +306,21 @@ void TupCanvas::penProperties()
 
     if (!k->propertiesMenuIsOpen) {
         QList<QString> toolsList;
-        // toolsList << "ColorTool";
         toolsList << "PenSize";
+        toolsList << "Opacity";
 
         TupToolsDialog *dialog = new TupToolsDialog(toolsList, this);
         connect(dialog, SIGNAL(openColorDialog()), this, SLOT(colorDialog()));
         connect(dialog, SIGNAL(openPenDialog()), this, SLOT(penDialog()));
+        connect(dialog, SIGNAL(openOpacityDialog()), this, SLOT(opacityDialog()));
         connect(this, SIGNAL(closePenPropertiesMenu()), dialog, SLOT(close()));
 
         dialog->show();
 
         if (k->hand == Right)
-            dialog->move(72, 600);
+            dialog->move(72, 610);
         else
-            dialog->move(1214, 600);
+            dialog->move(1232, 610);
 
         k->propertiesMenuIsOpen = true;
     } else {
@@ -336,6 +338,22 @@ void TupCanvas::penDialog()
     QDesktopWidget desktop;
     TupPenDialog *dialog = new TupPenDialog(k->brushManager, this);
     connect(dialog, SIGNAL(updatePen(int)), this, SIGNAL(updatePenThicknessFromFullScreen(int)));
+
+    QApplication::restoreOverrideCursor();
+
+    dialog->show();
+    dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                        (int) (desktop.screenGeometry().height() - dialog->height())/2);
+}
+
+void TupCanvas::opacityDialog()
+{
+    emit closePenPropertiesMenu();
+    k->propertiesMenuIsOpen = false;
+
+    QDesktopWidget desktop;
+    TupOpacityDialog *dialog = new TupOpacityDialog(k->brushManager->penColor(), k->scene->opacity(), this);
+    connect(dialog, SIGNAL(updateOpacity(double)), this, SIGNAL(updateOpacityFromFullScreen(double)));
 
     QApplication::restoreOverrideCursor();
 
