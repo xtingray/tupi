@@ -86,6 +86,8 @@ void TupWebHunter::closeRequest(QNetworkReply *reply)
 
 void TupWebHunter::slotError(QNetworkReply::NetworkError error)
 {
+    emit dataReady(tr("Information Temporarily Unavailable"));
+
     switch (error) {
             case QNetworkReply::HostNotFoundError:
                  { 

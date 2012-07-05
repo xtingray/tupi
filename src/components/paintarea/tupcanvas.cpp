@@ -320,7 +320,7 @@ void TupCanvas::penProperties()
         if (k->hand == Right)
             dialog->move(72, 610);
         else
-            dialog->move(1232, 610);
+            dialog->move(1182, 610);
 
         k->propertiesMenuIsOpen = true;
     } else {

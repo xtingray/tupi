@@ -56,6 +56,7 @@
 #include "tdebug.h"
 #include "tupguideline.h"
 #include "tupwebhunter.h"
+#include "tosd.h"
 
 #include <QGraphicsItem>
 #include <QSvgRenderer>
@@ -404,6 +405,7 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
                 svgItem->setOpacity(opacity);
 
                 if (svgItem->symbolName().compare("dollar.svg")==0) {
+                    svgItem->setToolTip("<p style='background:white;color:green;font-size:20px;margin:5px;'>Looking for dollar conversion...</p>");
                     TupWebHunter *hunter = new TupWebHunter();
                     hunter->start();
                     connect(hunter, SIGNAL(dataReady(const QString &)), this, SLOT(updateToolTip(const QString &)));
@@ -429,7 +431,12 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 
 void TupGraphicsScene::updateToolTip(const QString &value) 
 {
-    k->svgItem->setToolTip("1 USD == " + value + " COP");
+    if (value.startsWith("Information"))
+        k->svgItem->setToolTip("<p style='background:white;color:green;font-size:20px;margin:5px;'>" + value + "</p>");
+    else
+        k->svgItem->setToolTip("<p style='background:white;color:green;font-size:20px;margin:5px;'>1 USD == " + value + " COP</p>");
+
+    TOsd::self()->display(tr("Info"), "Dollar conversion updated!", TOsd::Info);
 }
 
 void TupGraphicsScene::addTweeningObjects(int photogram)

@@ -92,7 +92,7 @@ void SelectTool::init(TupGraphicsScene *scene)
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
 
-                      // SQA: Temporary code for debug issues
+                      // SQA: Temporary code for debugging issues
                       /*
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
@@ -103,7 +103,8 @@ void SelectTool::init(TupGraphicsScene *scene)
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
-                              if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                              // if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                              if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);
