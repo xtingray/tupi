@@ -405,7 +405,7 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
                 svgItem->setOpacity(opacity);
 
                 if (svgItem->symbolName().compare("dollar.svg")==0) {
-                    svgItem->setToolTip("<p style='background:white;color:green;font-size:20px;margin:5px;'>Looking for dollar conversion...</p>");
+                    svgItem->setToolTip("<p style='color:green;font-size:20px;margin:5px;'>Looking for dollar conversion...</p>");
                     TupWebHunter *hunter = new TupWebHunter();
                     hunter->start();
                     connect(hunter, SIGNAL(dataReady(const QString &)), this, SLOT(updateToolTip(const QString &)));
@@ -432,9 +432,9 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 void TupGraphicsScene::updateToolTip(const QString &value) 
 {
     if (value.startsWith("Information"))
-        k->svgItem->setToolTip("<p style='background:white;color:green;font-size:20px;margin:5px;'>" + value + "</p>");
+        k->svgItem->setToolTip("<p style='color:green;font-size:20px;margin:5px;'>" + value + "</p>");
     else
-        k->svgItem->setToolTip("<p style='background:white;color:green;font-size:20px;margin:5px;'>1 USD == " + value + " COP</p>");
+        k->svgItem->setToolTip("<p style='color:green;font-size:20px;margin:5px;'>1 USD == " + value + " COP</p>");
 
     TOsd::self()->display(tr("Info"), "Dollar conversion updated!", TOsd::Info);
 }

@@ -63,3 +63,14 @@ void TupCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsView::drawBackground(painter, rect);
 }
+
+bool TupCanvasView::event(QEvent *event)
+{
+     if (event->type() == QEvent::ToolTip) {
+         tError() << "Tracing 2!";
+         return true;
+     }
+
+     return QWidget::event(event);
+}
+

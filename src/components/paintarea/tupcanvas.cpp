@@ -570,4 +570,3 @@ void TupCanvas::updateMenuStates()
         return;
     }
 }
-

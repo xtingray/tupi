@@ -53,6 +53,7 @@ class TupCanvasView : public QGraphicsView
 
     protected:
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
+        virtual bool event(QEvent *event);
 
     private:
         struct Private;
