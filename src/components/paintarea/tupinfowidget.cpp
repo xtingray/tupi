@@ -73,7 +73,9 @@ TupInfoWidget::TupInfoWidget(QWidget *parent) : QWidget(parent), k(new Private)
     k->currencyList << "MXN";
     k->currencyList << "NZD";
     k->currencyList << "NIO";
+    k->currencyList << "NOK";
     k->currencyList << "PAB";
+    k->currencyList << "PEN";
     k->currencyList << "PKR";
     k->currencyList << "SEK";
     k->currencyList << "TWD";
@@ -82,13 +84,8 @@ TupInfoWidget::TupInfoWidget(QWidget *parent) : QWidget(parent), k(new Private)
 
     k->currentCurrency = k->currencyList.at(k->currencyList.indexOf("USD"));
 
-    k->table = new QTableWidget(k->currencyList.count() - 1, 2);
-
-    setWindowTitle(tr("Currency Information"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/info_message.png")));
-
     QBoxLayout *layout = new QHBoxLayout(this);
-    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setContentsMargins(5, 5, 5, 5);
     layout->setSpacing(2);
 
     k->innerLayout = new QVBoxLayout;
@@ -114,9 +111,26 @@ TupInfoWidget::~TupInfoWidget()
 
 void TupInfoWidget::setUIContext()
 {
+    k->table = new QTableWidget(k->currencyList.count() - 1, 2);
+    k->table->setSelectionMode(QAbstractItemView::SingleSelection);
+    k->table->horizontalHeader()->hide();
+    k->table->verticalHeader()->hide();
+
+    k->table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    k->table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    k->table->setMaximumWidth(250);
+    k->table->setMaximumHeight((k->currencyList.count() - 1)*30);
+    k->table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
+    k->table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
     QBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(1, 1, 1, 1);
     mainLayout->setSpacing(5);
+
+    QLabel *titleLabel = new QLabel(tr("Currency Converter"));
+    titleLabel->setFont(QFont("Arial", 12, QFont::Bold, false));
+    titleLabel->setAlignment(Qt::AlignHCenter);
 
     QLabel *currencyLabel = new QLabel(tr("Currency"));
     QComboBox *currency = new QComboBox();
@@ -136,27 +150,28 @@ void TupInfoWidget::setUIContext()
     QLabel *sourceLabel = new QLabel(tr("Source"));
     QLineEdit *source = new QLineEdit("http://www.webservicex.net");
 
-    k->table->setSelectionMode(QAbstractItemView::SingleSelection);
-    k->table->horizontalHeader()->hide();
-    k->table->verticalHeader()->hide();
-
-    k->table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    k->table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    k->table->setMaximumWidth(250);
-    k->table->setMaximumHeight((k->currencyList.count() - 1)*30);
-    k->table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-    k->table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-
     updateMoneyTable();
 
     QHBoxLayout *sourceLayout = new QHBoxLayout;
     sourceLayout->addWidget(sourceLabel);
     sourceLayout->addWidget(source);
 
+    QLabel *checkerLabel = new QLabel(tr("Update data every"));
+    QComboBox *minutesCombo = new QComboBox();
+
+    minutesCombo->addItem(tr("1") + " " + tr("minute"));
+    for (int i=5; i< 20; i+=5)
+         minutesCombo->addItem(tr("%1").arg(i) + " " + tr("minutes"));
+
+    QHBoxLayout *checkerLayout = new QHBoxLayout;
+    checkerLayout->addWidget(checkerLabel);
+    checkerLayout->addWidget(minutesCombo);
+
+    mainLayout->addWidget(titleLabel);
     mainLayout->addLayout(currencyLayout);
     mainLayout->addLayout(sourceLayout);
     mainLayout->addWidget(k->table);
+    mainLayout->addLayout(checkerLayout);
 
     k->innerLayout->addLayout(mainLayout);
 
