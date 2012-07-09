@@ -96,12 +96,16 @@ TupInfoWidget::TupInfoWidget(QWidget *parent) : QWidget(parent), k(new Private)
     TImageButton *fileButton = new TImageButton(QPixmap(THEME_DIR + "icons/open_big.png"), 60, this, true);
     connect(fileButton, SIGNAL(clicked()), this, SLOT(loadFile()));
 
+    TImageButton *linksButton = new TImageButton(QPixmap(THEME_DIR + "icons/links_big.png"), 60, this, true);
+    connect(linksButton, SIGNAL(clicked()), this, SLOT(showLinkPanel()));
+
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SIGNAL(closePanel()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
     buttonBox->addButton(fileButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(linksButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
 
     k->innerLayout->addWidget(new TSeparator());
