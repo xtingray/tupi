@@ -52,6 +52,7 @@ class TupInfoWidget : public QWidget
    private slots:
         void updateObjectInformation(const QString &data);
         void setCurrentCurrency(int index);
+        void loadFile();
 
    private:
         void setUIContext();

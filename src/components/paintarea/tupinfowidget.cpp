@@ -52,6 +52,7 @@
 #include <QDesktopWidget>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QFileDialog>
 
 struct TupInfoWidget::Private
 {
@@ -92,11 +93,15 @@ TupInfoWidget::TupInfoWidget(QWidget *parent) : QWidget(parent), k(new Private)
 
     setUIContext();
 
+    TImageButton *fileButton = new TImageButton(QPixmap(THEME_DIR + "icons/open_big.png"), 60, this, true);
+    connect(fileButton, SIGNAL(clicked()), this, SLOT(loadFile()));
+
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SIGNAL(closePanel()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
+    buttonBox->addButton(fileButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
 
     k->innerLayout->addWidget(new TSeparator());
@@ -208,6 +213,10 @@ void TupInfoWidget::updateObjectInformation(const QString &data)
          QTableWidgetItem *item = k->table->item(i, 0);
          QString label = item->text();
          if (label.compare(currency) == 0) {
+             double number = value.toDouble();
+             if (number <= 0) {
+                 value = "UNAVAILABLE";
+             }
              QTableWidgetItem *label = new QTableWidgetItem("  " + tr("%1").arg(value));
              k->table->setItem(i, 1, label);
          }
@@ -237,4 +246,15 @@ void TupInfoWidget::updateMoneyTable()
     }
 
     getDataFromNet();
+}
+
+void TupInfoWidget::loadFile()
+{
+    const char *home = getenv("HOME");
+
+    QString package = QFileDialog::getOpenFileName(this, tr("Link file to Object"), home,
+                      tr("All files (*.*)"));
+
+    if (package.isEmpty())
+        return;
 }

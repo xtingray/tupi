@@ -102,7 +102,10 @@ void TupWebHunter::closeRequest(QNetworkReply *reply)
 
 void TupWebHunter::slotError(QNetworkReply::NetworkError error)
 {
-    emit dataReady(tr("Information Temporarily Unavailable"));
+    if (k->type == Currency)
+        emit dataReady(k->currency + ":UNAVAILABLE");
+    else
+        emit dataReady(tr("Information Temporarily Unavailable"));
 
     switch (error) {
             case QNetworkReply::HostNotFoundError:

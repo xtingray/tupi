@@ -1331,6 +1331,7 @@ void TupViewDocument::closeFullScreen()
         k->fullScreen->close();
         k->fullScreenOn = false;
         k->currentTool->init(k->paintArea->graphicsScene());
+        k->fullScreen = 0;
     }
 }
 

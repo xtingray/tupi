@@ -94,7 +94,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
 
     k->hand = Right;
     // k->hand = Left;
-
+ 
     k->scene = scene;
     connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
 
