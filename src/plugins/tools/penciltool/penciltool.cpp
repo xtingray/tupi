@@ -140,7 +140,6 @@ void PencilTool::press(const TupInputDeviceInformation *input, TupBrushManager *
 void PencilTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
-
     QPointF lastPoint = input->pos();
 
     foreach (QGraphicsView * view, scene->views())

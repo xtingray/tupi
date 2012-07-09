@@ -45,6 +45,7 @@
 #include "tuponionopacitydialog.h"
 #include "tupexposuredialog.h"
 #include "tuptoolsdialog.h"
+#include "tupinfowidget.h"
 
 #include <QDialog>
 #include <QHBoxLayout>
@@ -77,6 +78,7 @@ struct TupCanvas::Private
     bool selectionMenuIsOpen;
     bool propertiesMenuIsOpen;
     UserHand hand;
+    TupInfoWidget *display;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
@@ -90,6 +92,8 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     // k->hand = Left;
 
     k->scene = scene;
+    connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
+
     k->size = project->dimension();
     k->currentColor = brushManager->penColor();
     k->brushManager = brushManager;
@@ -168,17 +172,32 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     controls->addWidget(penProperties);
     controls->addWidget(exposure);
 
+    QBoxLayout *infoLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    infoLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    infoLayout->setContentsMargins(0, 0, 0, 0);
+    infoLayout->setSpacing(5);
+
+    k->display = new TupInfoWidget(this);
+    connect(k->display, SIGNAL(closePanel()), this, SLOT(hideInfoWidget()));
+
+    infoLayout->addWidget(k->display);
+    k->display->hide();
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(2);
 
     if (k->hand == Right)
         layout->addLayout(controls);
+    else
+        layout->addLayout(infoLayout);
 
     layout->addWidget(graphicsView);
 
     if (k->hand == Left)
         layout->addLayout(controls);
+    else
+        layout->addLayout(infoLayout);
 
     setLayout(layout);
 }
@@ -569,4 +588,14 @@ void TupCanvas::updateMenuStates()
         k->propertiesMenuIsOpen = false;
         return;
     }
+}
+
+void TupCanvas::showInfoWidget()
+{
+    k->display->show();
+}
+
+void TupCanvas::hideInfoWidget()
+{
+    k->display->hide();
 }

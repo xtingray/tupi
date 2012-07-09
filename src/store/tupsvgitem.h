@@ -42,6 +42,7 @@
 #include "tupframe.h"
 
 #include <QGraphicsSvgItem>
+#include <QGraphicsSceneHoverEvent>
 
 class TupFrame;
 
@@ -70,6 +71,13 @@ class STORE_EXPORT TupSvgItem : public QGraphicsSvgItem, public TupAbstractSeria
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
+
+    protected:
+        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+    // signals:
+    //     void openInfoWidget();
 
     private:
         struct Private;

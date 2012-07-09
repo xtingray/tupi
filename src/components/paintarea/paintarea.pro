@@ -30,6 +30,7 @@ HEADERS += tuppaintarea.h \
            tupexposuredialog.h \
            tupexposurescene.h \
            tuptoolsdialog.h \
+           tupinfowidget.h \
            tupiruler.h
 
 SOURCES += tuppaintarea.cpp \
@@ -52,6 +53,7 @@ SOURCES += tuppaintarea.cpp \
            tupexposuredialog.cpp \
            tupexposurescene.cpp \
            tuptoolsdialog.cpp \
+           tupinfowidget.cpp \
            tupiruler.cpp
 
 *:!macx{

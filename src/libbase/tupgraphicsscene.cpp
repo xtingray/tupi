@@ -55,8 +55,6 @@
 
 #include "tdebug.h"
 #include "tupguideline.h"
-#include "tupwebhunter.h"
-#include "tosd.h"
 
 #include <QGraphicsItem>
 #include <QSvgRenderer>
@@ -64,6 +62,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
+#include <QDesktopWidget>
 
 /**
  * This class defines the data structure and methods for handling animation scenes.
@@ -99,7 +98,6 @@ struct TupGraphicsScene::Private
 
     QList<TupLineGuide *> lines;
     TupProject::Mode spaceMode;   
-    TupSvgItem *svgItem;
 };
 
 TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -390,8 +388,6 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 
     if (svgItem) {
 
-        k->svgItem = svgItem;
-
         k->onionSkin.opacityMap.insert(svgItem, opacity);
         svgItem->setSelected(false);
 
@@ -404,14 +400,10 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
             if (frame) {
                 svgItem->setOpacity(opacity);
 
-                if (svgItem->symbolName().compare("dollar.svg")==0) {
-                    svgItem->setToolTip("<p style='color:green;font-size:20px;margin:5px;'>Looking for dollar conversion...</p>");
-                    TupWebHunter *hunter = new TupWebHunter();
-                    hunter->start();
-                    connect(hunter, SIGNAL(dataReady(const QString &)), this, SLOT(updateToolTip(const QString &)));
-                }
+                if (svgItem->symbolName().compare("dollar.svg")==0)
+                    connect(svgItem, SIGNAL(enabledChanged()), this, SIGNAL(showInfoWidget()));
 
-                addItem(k->svgItem);
+                addItem(svgItem);
             } else {
                 #ifdef K_DEBUG
                        tFatal() << "TupGraphicsScene::addSvgObject() - Error: Frame #" << k->framePosition.frame << " NO available!";
@@ -422,22 +414,13 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
                        tFatal() << "TupGraphicsScene::addSvgObject() - Error: Layer #" << k->framePosition.layer << " NO available!";
                 #endif
         }
+
     } else {
         #ifdef K_DEBUG
                tFatal() << "TupGraphicsScene::addSvgObject() - Error: No SVG item!";
         #endif
     } 
 } 
-
-void TupGraphicsScene::updateToolTip(const QString &value) 
-{
-    if (value.startsWith("Information"))
-        k->svgItem->setToolTip("<p style='color:green;font-size:20px;margin:5px;'>" + value + "</p>");
-    else
-        k->svgItem->setToolTip("<p style='color:green;font-size:20px;margin:5px;'>1 USD == " + value + " COP</p>");
-
-    TOsd::self()->display(tr("Info"), "Dollar conversion updated!", TOsd::Info);
-}
 
 void TupGraphicsScene::addTweeningObjects(int photogram)
 {

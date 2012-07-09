@@ -103,8 +103,8 @@ void SelectTool::init(TupGraphicsScene *scene)
 
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
-                              // if (item->zValue() >= 10000 && item->toolTip().length()==0) {
-                              if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
+                              if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                              // if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);

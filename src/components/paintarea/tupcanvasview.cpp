@@ -62,15 +62,29 @@ TupCanvasView::~TupCanvasView()
 void TupCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsView::drawBackground(painter, rect);
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    painter->setPen(QPen(Qt::NoPen));
+
+    // QRectF drawingRect = QRectF(rect.topLeft(), k->screenSize);
+    // painter->fillRect(drawingRect, k->bg);
+
+    double w = (double) k->projectSize.width() / (double) 2;
+    double h = (double) k->projectSize.height() / (double) 2;
+
+    painter->setPen(QPen(QColor(230, 230, 230, 255), 6));
+    QPointF topLeft = rect.center() - QPointF(w, h);
+    QPointF bottomRight = rect.center() + QPointF(w, h);
+    QRectF workspace = QRectF(topLeft, k->projectSize);
+
+    painter->drawLine(topLeft - QPoint(0, 30), topLeft + QPoint(0, 30));  
+    painter->drawLine(topLeft - QPoint(30, 0), topLeft + QPoint(30, 0)); 
+
+    painter->drawLine(bottomRight - QPoint(0, 30), bottomRight + QPoint(0, 30));          
+    painter->drawLine(bottomRight - QPoint(30, 0), bottomRight + QPoint(30, 0));  
+
+    // painter->drawRect(drawingRect);
+    // painter->drawRect(workspace);
+    painter->restore();
 }
-
-bool TupCanvasView::event(QEvent *event)
-{
-     if (event->type() == QEvent::ToolTip) {
-         tError() << "Tracing 2!";
-         return true;
-     }
-
-     return QWidget::event(event);
-}
-

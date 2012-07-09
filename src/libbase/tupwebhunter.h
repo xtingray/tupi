@@ -45,13 +45,15 @@
 #include <QNetworkRequest>
 #include <QFile>
 #include <QByteArray>
+#include <QList>
 
 class TupWebHunter : public QObject
 {
     Q_OBJECT
 
     public:
-        TupWebHunter();
+        enum DataType { Currency = 0, Image };
+        TupWebHunter(DataType type, const QString &url, QList<QString> params);
         ~TupWebHunter();
         void start();
 
@@ -63,8 +65,9 @@ class TupWebHunter : public QObject
         void dataReady(const QString &);
 
     private:
-        static QString CURRENCY_HOST;
         static QString BROWSER_FINGERPRINT;
+        struct Private;
+        Private *const k;
 };
 
 #endif

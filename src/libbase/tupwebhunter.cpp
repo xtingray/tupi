@@ -43,22 +43,36 @@
 #include "tupwebhunter.h"
 #include "tdebug.h"
 
-QString TupWebHunter::CURRENCY_HOST = QString("http://www.webservicex.net//currencyconvertor.asmx/ConversionRate?FromCurrency=USD&ToCurrency=COP");
 QString TupWebHunter::BROWSER_FINGERPRINT = QString("Tupi_Browser 1.0");
 
-TupWebHunter::TupWebHunter()
+struct TupWebHunter::Private
 {
+    DataType type;
+    QString url;
+    QString currency;
+};
+
+TupWebHunter::TupWebHunter(DataType type, const QString &url, QList<QString> params) : k(new Private)
+{
+    k->type = type;
+    k->url = url;
+
+    if (k->type == Currency) {
+        QString money1 = params.at(0);
+        QString money2 = params.at(1); 
+        k->url.replace("1", money1); 
+        k->url.replace("2", money2);
+        k->currency = money2;
+    }
 }
 
 void TupWebHunter::start()
 {
-    QString url = CURRENCY_HOST;
-
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(closeRequest(QNetworkReply*)));
 
     QNetworkRequest request;
-    request.setUrl(QUrl(url));
+    request.setUrl(QUrl(k->url));
     request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
 
     QNetworkReply *reply = manager->get(request);
@@ -74,13 +88,15 @@ void TupWebHunter::closeRequest(QNetworkReply *reply)
     QByteArray array = reply->readAll();
     QString answer(array);
 
-    answer = answer.mid(answer.indexOf("\n"), answer.length()).trimmed();
+    if (k->type == Currency) {
+        answer = answer.mid(answer.indexOf("\n"), answer.length()).trimmed();
 
-    QDomDocument doc;
-    if (doc.setContent(answer)) {
-        QDomElement root = doc.documentElement();
-        if (!root.text().isNull())
-            emit dataReady(root.text());
+        QDomDocument doc;
+        if (doc.setContent(answer)) {
+            QDomElement root = doc.documentElement();
+            if (!root.text().isNull())
+                emit dataReady(k->currency + ":" + root.text());
+        }
     }
 }
 

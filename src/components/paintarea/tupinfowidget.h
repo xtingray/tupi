@@ -33,89 +33,34 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCANVAS_H
-#define TUPCANVAS_H
+#ifndef TUPINFOWIDGET_H
+#define TUPINFOWIDGET_H
 
-#include "tupgraphicsscene.h"
-#include "tupcanvasview.h"
-#include "tupbrushmanager.h"
-#include "tupprojectrequest.h"
-#include "tuprequestbuilder.h"
-#include "tupproject.h"
+#include <QWidget>
 
-#include <QFrame>
-#include <QPointF>
-#include <QSize>
-#include <QCloseEvent>
-#include <QColor>
-#include <QPen>
-
-class TupGraphicsScene;
-
-class TupCanvas : public QFrame
+class TupInfoWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
-                  const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
-                  TupProject *project = 0, double scaleFactor = 1, int angle=0, 
-                  TupBrushManager *brushManager = 0);
-        ~TupCanvas();
-        void updateCursor(const QCursor &cursor);
-
-   protected:
-        void closeEvent(QCloseEvent *event);
-
-   private:
-        enum UserHand { Right = 0, Left };
-        TupCanvasView *graphicsView;
-        struct Private;
-        Private *const k;
-
-   public slots:
-        void colorDialog(const QColor &current);
-
-   private slots:
-        void sketchTools();
-        void selectionTools();
-
-        void colorDialog();
-        void penDialog();
-        void penProperties();
-        void opacityDialog();
-        void setOnionOpacity(double opacity);
-        void exposureDialog();
-
-        void oneFrameBack();
-        void oneFrameForward();
-        void wakeUpLibrary();
-
-        void wakeUpDeleteSelection();
-        void wakeUpZoomIn();
-        void wakeUpZoomOut();
-        void wakeUpHand();
-
-        void undo();
-        void redo();
-
-        void updateSketchMenuState();
-        void updateSelectionMenuState();
-        void updateMenuStates();
-        void showInfoWidget();
-        void hideInfoWidget();
+        TupInfoWidget(QWidget *parent=0);
+        ~TupInfoWidget();
 
    signals:
-        void requestTriggered(const TupProjectRequest *event);
-        void updateColorFromFullScreen(const QColor &color);
-        void updatePenThicknessFromFullScreen(int size);
-        void updateOnionOpacityFromFullScreen(double opacity);
-        void callAction(int menu, int index);
-        void goToFrame(int frame, int layer, int scene);
-        void goToScene(int scene);
-        void closeSketchMenu();
-        void closeSelectionMenu();
-        void  closePenPropertiesMenu();
+        void closePanel();
+
+   private slots:
+        void updateObjectInformation(const QString &data);
+        void setCurrentCurrency(int index);
+
+   private:
+        void setUIContext();
+        void getDataFromNet();
+        void getCurrencyConversionFromNet(const QString &money1, const QString &money2);
+        void updateMoneyTable();
+
+        struct Private;
+        Private *const k;
 };
 
 #endif

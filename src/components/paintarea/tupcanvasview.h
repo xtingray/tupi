@@ -41,6 +41,7 @@
 #include <QGraphicsView>
 #include <QPainter>
 #include <QRectF>
+#include <QMouseEvent>
 
 class TupCanvasView : public QGraphicsView
 {
@@ -53,7 +54,6 @@ class TupCanvasView : public QGraphicsView
 
     protected:
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
-        virtual bool event(QEvent *event);
 
     private:
         struct Private;
