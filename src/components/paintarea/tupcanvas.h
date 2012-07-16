@@ -60,7 +60,7 @@ class TupCanvas : public QFrame
         TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
                   const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
                   TupProject *project = 0, double scaleFactor = 1, int angle=0, 
-                  TupBrushManager *brushManager = 0);
+                  TupBrushManager *brushManager = 0, bool isNetworked = false, const QStringList &usersOnLine = QStringList());
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
 

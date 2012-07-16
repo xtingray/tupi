@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPROJECTPARSER_H
-#define TupPROJECTPARSER_H
+#ifndef TUPROJECTPARSER_H
+#define TUPPROJECTPARSER_H
 
 /**
  * @author Jorge Cuadrado
@@ -52,7 +52,8 @@ class TupProjectParser : public TupXmlParserBase
         virtual void text(const QString &text);
        
         QByteArray data();
-        
+        QStringList partners() const;
+     
     private:
         struct Private;
         Private *const k;

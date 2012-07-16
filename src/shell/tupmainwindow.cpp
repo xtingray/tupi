@@ -227,7 +227,7 @@ void TupMainWindow::createNewLocalProject()
     setWorkSpace();
 }
 
-void TupMainWindow::createNewNetProject(const QString &title)
+void TupMainWindow::createNewNetProject(const QString &title, const QStringList &users)
 {
     isNetworked = true;
     projectName = title;
@@ -246,7 +246,7 @@ void TupMainWindow::createNewNetProject(const QString &title)
     m_exposureSheet->updateFramesState(m_projectManager->project());
     m_projectManager->setOpen(true);
 
-    setWorkSpace();
+    setWorkSpace(users);
 }
 
 /**
@@ -258,7 +258,7 @@ void TupMainWindow::createNewNetProject(const QString &title)
  * @endif
 */
 
-void TupMainWindow::setWorkSpace()
+void TupMainWindow::setWorkSpace(const QStringList &users)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -274,7 +274,7 @@ void TupMainWindow::setWorkSpace()
         // Setting undo/redo actions
         setUndoRedoActions();
 
-        drawingTab = new TupViewDocument(m_projectManager->project(), this, isNetworked ? false : true);
+        drawingTab = new TupViewDocument(m_projectManager->project(), this, isNetworked, users);
 
         TCONFIG->beginGroup("Network");
         QString server = TCONFIG->value("Server").toString();
@@ -664,7 +664,8 @@ void TupMainWindow::setupNetworkProject(TupProjectManagerParams *params)
     if (closeProject()) {
         netProjectManagerHandler =  new TupNetProjectManagerHandler;
         connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestProject()));
-        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
+        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString &, const QStringList &)), 
+                this, SLOT(createNewNetProject(const QString &, const QStringList &)));
         connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
         connect(netProjectManagerHandler, SIGNAL(savingSuccessful()), this, SLOT(netProjectSaved()));
         connect(netProjectManagerHandler, SIGNAL(postOperationDone()), this, SLOT(resetMousePointer()));

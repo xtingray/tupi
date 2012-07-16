@@ -63,7 +63,7 @@ class TupViewDocument : public QMainWindow
     Q_OBJECT
 
     public:
-        TupViewDocument(TupProject *project, QWidget *parent = 0, bool isLocal = true);
+        TupViewDocument(TupProject *project, QWidget *parent = 0, bool isNetworked = true, const QStringList &users = QStringList());
         ~TupViewDocument();
         void closeArea();
         QSize sizeHint() const;

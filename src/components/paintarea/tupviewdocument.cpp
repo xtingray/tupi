@@ -127,7 +127,8 @@ struct TupViewDocument::Private
     int autoSaveTime;
     TAction *fullScreenAction;
     bool fullScreenOn;
-    bool isLocal;
+    bool isNetworked;
+    QStringList usersOnLine;
 
     TupPaintArea *paintArea;
     TupCanvas *fullScreen;
@@ -147,7 +148,7 @@ struct TupViewDocument::Private
     TupExportInterface *imagePlugin;
 };
 
-TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLocal) : QMainWindow(parent), k(new Private)
+TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isNetworked, const QStringList &users) : QMainWindow(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -160,7 +161,8 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
     k->onionEnabled = true;
     k->fullScreenOn = false;
     k->viewAngle = 0;
-    k->isLocal = isLocal;
+    k->isNetworked = isNetworked;
+    k->usersOnLine = users;
 
     k->actionManager = new TActionManager(this);
 
@@ -242,7 +244,7 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
     // SQA: Temporarily disabled  
-    // if (k->isLocal)
+    // if (!k->isNetworked)
     //     saveTimer();
 }
 
@@ -382,7 +384,7 @@ void TupViewDocument::setupDrawActions()
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    if (!k->isLocal && server.compare("tupitube.com") == 0) {
+    if (k->isNetworked && server.compare("tupitube.com") == 0) {
         TAction *postImage = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"),
                                          "Export Current Frame To Gallery", QKeySequence(tr("@")),
                                          this, SLOT(postImage()), k->actionManager, "post_image");
@@ -1032,7 +1034,7 @@ void TupViewDocument::createToolBar()
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    if (!k->isLocal && server.compare("tupitube.com") == 0)
+    if (k->isNetworked && server.compare("tupitube.com") == 0)
         k->barGrid->addAction(k->actionManager->find("post_image"));
 
     k->barGrid->addSeparator();
@@ -1215,7 +1217,7 @@ int TupViewDocument::currentSceneIndex()
 
 void TupViewDocument::updateBgColor(const QColor color)
 {
-   if (k->isLocal) {
+   if (!k->isNetworked) {
        k->project->setBgColor(color);
        k->paintArea->setBgColor(color);
    } else {
@@ -1288,7 +1290,7 @@ void TupViewDocument::showFullScreen()
 
     k->fullScreen = new TupCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
                                  k->paintArea->centerPoint(), QSize(screenW, screenH), k->project, scale,
-                                 k->viewAngle, brushManager()); 
+                                 k->viewAngle, brushManager(), k->isNetworked, k->usersOnLine); 
 
     k->fullScreen->updateCursor(k->currentTool->cursor());
     k->fullScreen->showFullScreen();

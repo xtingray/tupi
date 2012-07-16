@@ -169,7 +169,7 @@ class TupMainWindow : public TabbedMainWindow
           void updatePenThickness(const QPen &pen);
 
     private slots:
-          void setWorkSpace();
+          void setWorkSpace(const QStringList &users = QStringList() = QStringList());
           void createNewLocalProject();
           void newProject();
           bool closeProject();
@@ -194,7 +194,7 @@ class TupMainWindow : public TabbedMainWindow
           void updateCurrentTab(int index);
 
           void requestProject();
-          void createNewNetProject(const QString &title);
+          void createNewNetProject(const QString &title, const QStringList &users);
           void netProjectSaved();
           void updatePlayer(bool remove);
 

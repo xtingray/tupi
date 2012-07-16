@@ -360,7 +360,7 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                            bool isOk = manager->load(file.fileName(), k->project);
                            if (isOk) {
                                k->projectIsOpen = true;
-                               emit openNewArea(k->project->projectName());
+                               emit openNewArea(k->project->projectName(), parser.partners());
                            } else {
                                #ifdef K_DEBUG
                                       tError() << "TupNetProjectManagerHandler::handlePackage() - Error: Net project can't be opened";

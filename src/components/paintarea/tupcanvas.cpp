@@ -79,11 +79,13 @@ struct TupCanvas::Private
     bool propertiesMenuIsOpen;
     UserHand hand;
     TupInfoWidget *display;
+    bool isNetworked;
+    QStringList usersOnLine;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
                    const QPointF centerPoint, const QSize &screenSize, TupProject *project, double scaleFactor,
-                   int angle, TupBrushManager *brushManager) : QFrame(parent, flags), k(new Private)
+                   int angle, TupBrushManager *brushManager, bool isNetworked, const QStringList &usersOnLine) : QFrame(parent, flags), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -97,7 +99,8 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
  
     k->scene = scene;
     connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
-
+  
+    k->isNetworked = isNetworked;
     k->size = project->dimension();
     k->currentColor = brushManager->penColor();
     k->brushManager = brushManager;
@@ -397,7 +400,8 @@ void TupCanvas::exposureDialog()
 
     QDesktopWidget desktop;
     TupExposureDialog *dialog = new TupExposureDialog(k->project, k->scene->currentSceneIndex(), 
-                                                      k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), this);
+                                                      k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
+                                                      k->isNetworked, k->usersOnLine, this);
     connect(dialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
     connect(dialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
 

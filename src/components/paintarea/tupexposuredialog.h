@@ -44,7 +44,7 @@ class TupExposureDialog : public QDialog
     Q_OBJECT
 
     public:
-        TupExposureDialog(TupProject *project, int scene, int layer, int frame, QWidget *parent);
+        TupExposureDialog(TupProject *project, int scene, int layer, int frame, bool isNetworked, const QStringList &usersOnLine, QWidget *parent);
         ~TupExposureDialog();
 
     signals:

@@ -49,6 +49,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QListWidget>
 #include <QDesktopWidget>
 
 struct TupExposureDialog::Private
@@ -58,9 +59,13 @@ struct TupExposureDialog::Private
     QList<TPushButton *> sceneList;
     TupProject *project;
     QList<TupExposureScene *> sceneGroupList;
+    bool isNetworked;
+    QListWidget *onlineList;
+    QStringList usersOnLine;
 };
 
-TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, int frame, QWidget *parent) : QDialog(parent), k(new Private)
+TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, int frame, 
+                                     bool isNetworked, const QStringList &usersOnLine, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
     // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
@@ -68,6 +73,8 @@ TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, 
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png")));
 
     k->project = project;
+    k->isNetworked = isNetworked;
+    k->usersOnLine = usersOnLine;
 
     QBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(10, 10, 10, 10);
@@ -119,7 +126,6 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
          k->sceneList << sceneButton;
 
          // Exposure sheet interface for every Scene
-
          TupExposureScene *sceneGroup;
 
          if (i != sceneIndex) {
@@ -132,6 +138,23 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
          connect(sceneGroup, SIGNAL(updateUI(int, int)), this, SLOT(refreshUI(int, int)));
 
          k->sceneGroupList << sceneGroup;
+    }
+
+    if (k->isNetworked) {
+        QGroupBox *users= new QGroupBox(tr("Work Team"));
+        QVBoxLayout *layout = new QVBoxLayout; 
+
+        k->onlineList = new QListWidget(this);
+        k->onlineList->setFixedWidth(120);
+        if (k->usersOnLine.size() > 0) {
+            for (int j=0; j < k->usersOnLine.size(); j++) {
+                 QListWidgetItem *item = new QListWidgetItem(k->usersOnLine.at(j), k->onlineList); 
+            }
+        }
+
+        layout->addWidget(k->onlineList);
+        users->setLayout(layout);
+        mainLayout->addWidget(users);
     }
 
     mainLayout->addLayout(sceneColumn);
