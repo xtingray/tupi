@@ -128,7 +128,7 @@ struct TupViewDocument::Private
     TAction *fullScreenAction;
     bool fullScreenOn;
     bool isNetworked;
-    QStringList usersOnLine;
+    QStringList onLineUsers;
 
     TupPaintArea *paintArea;
     TupCanvas *fullScreen;
@@ -162,7 +162,7 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isNe
     k->fullScreenOn = false;
     k->viewAngle = 0;
     k->isNetworked = isNetworked;
-    k->usersOnLine = users;
+    k->onLineUsers = users;
 
     k->actionManager = new TActionManager(this);
 
@@ -1290,7 +1290,7 @@ void TupViewDocument::showFullScreen()
 
     k->fullScreen = new TupCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
                                  k->paintArea->centerPoint(), QSize(screenW, screenH), k->project, scale,
-                                 k->viewAngle, brushManager(), k->isNetworked, k->usersOnLine); 
+                                 k->viewAngle, brushManager(), k->isNetworked, k->onLineUsers); 
 
     k->fullScreen->updateCursor(k->currentTool->cursor());
     k->fullScreen->showFullScreen();
@@ -1410,4 +1410,17 @@ void TupViewDocument::updateStoryboard(TupStoryboard *storyboard)
 {
     int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
     k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+}
+
+void TupViewDocument::updateUsersOnLine(const QString &login, int state)
+{
+    if (state == 1) {
+        k->onLineUsers << login; 
+    } else {
+        int index = k->onLineUsers.indexOf(login);
+        k->onLineUsers.removeAt(index); 
+    }
+
+    if (k->fullScreenOn)
+        k->fullScreen->updateOnLineUsers(k->onLineUsers);
 }

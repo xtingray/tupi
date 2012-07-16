@@ -61,11 +61,11 @@ struct TupExposureDialog::Private
     QList<TupExposureScene *> sceneGroupList;
     bool isNetworked;
     QListWidget *onlineList;
-    QStringList usersOnLine;
+    QStringList onLineUsers;
 };
 
 TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, int frame, 
-                                     bool isNetworked, const QStringList &usersOnLine, QWidget *parent) : QDialog(parent), k(new Private)
+                                     bool isNetworked, const QStringList &onLineUsers, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
     // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
@@ -74,7 +74,7 @@ TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, 
 
     k->project = project;
     k->isNetworked = isNetworked;
-    k->usersOnLine = usersOnLine;
+    k->onLineUsers = onLineUsers;
 
     QBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(10, 10, 10, 10);
@@ -86,7 +86,7 @@ TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, 
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
     closeButton->setDefault(true);
-    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
@@ -148,9 +148,9 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
         k->onlineList->setFixedWidth(100);
         QListWidgetItem *me = new QListWidgetItem(tr("me"), k->onlineList);
 
-        if (k->usersOnLine.size() > 0) {
-            for (int j=0; j < k->usersOnLine.size(); j++) {
-                 QListWidgetItem *item = new QListWidgetItem(k->usersOnLine.at(j), k->onlineList); 
+        if (k->onLineUsers.size() > 0) {
+            for (int j=0; j < k->onLineUsers.size(); j++) {
+                 QListWidgetItem *item = new QListWidgetItem(k->onLineUsers.at(j), k->onlineList); 
             }
         }
 
@@ -208,4 +208,15 @@ void TupExposureDialog::refreshUI(int frame, int layer)
     }
 
     emit goToFrame(frame, layer, k->currentScene);
+}
+
+void TupExposureDialog::updateUsersList(const QStringList &onLineUsers)
+{
+    
+}
+
+void TupExposureDialog::closeDialog()
+{
+    emit windowHasBeenClosed();
+    close();    
 }

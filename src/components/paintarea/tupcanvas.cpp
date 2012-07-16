@@ -77,15 +77,17 @@ struct TupCanvas::Private
     bool sketchMenuIsOpen;
     bool selectionMenuIsOpen;
     bool propertiesMenuIsOpen;
+    bool exposureDialogIsOpen;
     UserHand hand;
     TupInfoWidget *display;
     bool isNetworked;
-    QStringList usersOnLine;
+    QStringList onLineUsers;
+    TupExposureDialog *exposureDialog;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
                    const QPointF centerPoint, const QSize &screenSize, TupProject *project, double scaleFactor,
-                   int angle, TupBrushManager *brushManager, bool isNetworked, const QStringList &usersOnLine) : QFrame(parent, flags), k(new Private)
+                   int angle, TupBrushManager *brushManager, bool isNetworked, const QStringList &onLineUsers) : QFrame(parent, flags), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -101,7 +103,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
   
     k->isNetworked = isNetworked;
-    k->usersOnLine = usersOnLine;
+    k->onLineUsers = onLineUsers;
     k->size = project->dimension();
     k->currentColor = brushManager->penColor();
     k->brushManager = brushManager;
@@ -110,6 +112,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     k->sketchMenuIsOpen = false;
     k->selectionMenuIsOpen = false;
     k->propertiesMenuIsOpen = false;
+    k->exposureDialogIsOpen = false;
 
     graphicsView = new TupCanvasView(this, screenSize, k->size, project->bgColor());
 
@@ -398,19 +401,21 @@ void TupCanvas::setOnionOpacity(double opacity)
 void TupCanvas::exposureDialog()
 {
     updateMenuStates();
+    k->exposureDialogIsOpen = true;
 
     QDesktopWidget desktop;
-    TupExposureDialog *dialog = new TupExposureDialog(k->project, k->scene->currentSceneIndex(), 
+    k->exposureDialog = new TupExposureDialog(k->project, k->scene->currentSceneIndex(), 
                                                       k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                      k->isNetworked, k->usersOnLine, this);
-    connect(dialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
-    connect(dialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
+                                                      k->isNetworked, k->onLineUsers, this);
+    connect(k->exposureDialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
+    connect(k->exposureDialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
+    connect(k->exposureDialog, SIGNAL(windowHasBeenClosed()), this, SLOT(updateExposureDialogState()));
 
     QApplication::restoreOverrideCursor();
 
-    dialog->show();
-    dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
-                        (int) (desktop.screenGeometry().height() - dialog->height())/2);
+    k->exposureDialog->show();
+    k->exposureDialog->move((int) (desktop.screenGeometry().width() - k->exposureDialog->width())/2 ,
+                        (int) (desktop.screenGeometry().height() - k->exposureDialog->height())/2);
 }
 
 void TupCanvas::oneFrameBack()
@@ -607,4 +612,15 @@ void TupCanvas::showInfoWidget()
 void TupCanvas::hideInfoWidget()
 {
     k->display->hide();
+}
+
+void TupCanvas::updateOnLineUsers(const QStringList &onLineUsers)
+{
+    if (k->exposureDialogIsOpen)
+        k->exposureDialog->updateUsersList(onLineUsers);
+}
+
+void TupCanvas::updateExposureDialogState()
+{
+    k->exposureDialogIsOpen = false;
 }

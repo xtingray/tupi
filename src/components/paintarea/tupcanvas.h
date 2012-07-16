@@ -49,6 +49,7 @@
 #include <QCloseEvent>
 #include <QColor>
 #include <QPen>
+#include <QStringList>
 
 class TupGraphicsScene;
 
@@ -60,9 +61,10 @@ class TupCanvas : public QFrame
         TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
                   const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
                   TupProject *project = 0, double scaleFactor = 1, int angle=0, 
-                  TupBrushManager *brushManager = 0, bool isNetworked = false, const QStringList &usersOnLine = QStringList());
+                  TupBrushManager *brushManager = 0, bool isNetworked = false, const QStringList &onLineUsers = QStringList());
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
+        void updateOnLineUsers(const QStringList &onLineUsers);
 
    protected:
         void closeEvent(QCloseEvent *event);
@@ -104,6 +106,8 @@ class TupCanvas : public QFrame
         void updateMenuStates();
         void showInfoWidget();
         void hideInfoWidget();
+
+        void updateExposureDialogState();
 
    signals:
         void requestTriggered(const TupProjectRequest *event);

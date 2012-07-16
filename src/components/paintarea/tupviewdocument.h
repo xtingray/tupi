@@ -85,6 +85,7 @@ class TupViewDocument : public QMainWindow
         int currentSceneIndex();
         void setZoomView(const QString &percent);
         QSize workSpaceSize() const;
+        void updateUsersOnLine(const QString &login, int state);
 
     private slots:
         void setNextOnionSkin(int n);

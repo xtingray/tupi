@@ -44,16 +44,19 @@ class TupExposureDialog : public QDialog
     Q_OBJECT
 
     public:
-        TupExposureDialog(TupProject *project, int scene, int layer, int frame, bool isNetworked, const QStringList &usersOnLine, QWidget *parent);
+        TupExposureDialog(TupProject *project, int scene, int layer, int frame, bool isNetworked, const QStringList &onLineUsers, QWidget *parent);
         ~TupExposureDialog();
+        void updateUsersList(const QStringList &onLineUsers);
 
     signals:
         void goToFrame(int frame, int layer, int scene);
         void goToScene(int scene);
+        void windowHasBeenClosed();
 
     private slots:
         void refreshUI(int frame, int layer);
         void goToScene(int column, int sceneIndex);
+        void closeDialog();
 
     private:
         void setSheet(int sceneIndex, int layerIndex, int frameIndex);

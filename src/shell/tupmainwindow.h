@@ -214,6 +214,7 @@ class TupMainWindow : public TabbedMainWindow
           void postVideo(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
           void postStoryboard(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
           void resetMousePointer();
+          void updateUsersOnLine(const QString &login, int state);
 
     private:
           TupProjectManager *m_projectManager;

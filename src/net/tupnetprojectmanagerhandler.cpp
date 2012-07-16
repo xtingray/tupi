@@ -451,6 +451,8 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                    QString login = parser.login();
                    int state = parser.state();
 
+                   emit updateUsersList(login, state);
+
                    QString message = "<b>" + login + "</b>" + " has left the project"; 
                    if (state == 1)
                        message = "<b>" + login + "</b>" + " has joined the project";

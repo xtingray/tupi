@@ -666,6 +666,7 @@ void TupMainWindow::setupNetworkProject(TupProjectManagerParams *params)
         connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestProject()));
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString &, const QStringList &)), 
                 this, SLOT(createNewNetProject(const QString &, const QStringList &)));
+        connect(netProjectManagerHandler, SIGNAL(updateUsersList(const QString &, int)), this, SLOT(updateUsersOnLine(const QString &, int)));
         connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
         connect(netProjectManagerHandler, SIGNAL(savingSuccessful()), this, SLOT(netProjectSaved()));
         connect(netProjectManagerHandler, SIGNAL(postOperationDone()), this, SLOT(resetMousePointer()));
@@ -1424,4 +1425,9 @@ void TupMainWindow::updatePlayer(bool remove)
 void TupMainWindow::resetMousePointer()
 {
     QApplication::restoreOverrideCursor();
+}
+
+void TupMainWindow::updateUsersOnLine(const QString &login, int state)
+{
+    drawingTab->updateUsersOnLine(login, state);
 }

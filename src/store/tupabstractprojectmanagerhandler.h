@@ -74,6 +74,7 @@ class STORE_EXPORT TupAbstractProjectHandler : public QObject
         void openNewArea(const QString &name);
         void openNewArea(const QString &name, const QStringList &users);
         void authenticationSuccessful();
+        void updateUsersList(const QString &login, int state);
 };
 
 #endif
