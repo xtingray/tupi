@@ -145,7 +145,9 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
         QVBoxLayout *layout = new QVBoxLayout; 
 
         k->onlineList = new QListWidget(this);
-        k->onlineList->setFixedWidth(120);
+        k->onlineList->setFixedWidth(100);
+        QListWidgetItem *me = new QListWidgetItem(tr("me"), k->onlineList);
+
         if (k->usersOnLine.size() > 0) {
             for (int j=0; j < k->usersOnLine.size(); j++) {
                  QListWidgetItem *item = new QListWidgetItem(k->usersOnLine.at(j), k->onlineList); 

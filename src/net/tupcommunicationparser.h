@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCOMMUNICATIONPARSER_H
-#define TupCOMMUNICATIONPARSER_H
+#ifndef TUPCOMMUNICATIONPARSER_H
+#define TUPCOMMUNICATIONPARSER_H
 
 #include "tupxmlparserbase.h"
 
@@ -54,6 +54,7 @@ class TupCommunicationParser : public TupXmlParserBase
     public:
         QString message() const;
         QString login() const;
+        int state(); 
         
     private:
         struct Private;

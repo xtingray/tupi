@@ -101,6 +101,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
   
     k->isNetworked = isNetworked;
+    k->usersOnLine = usersOnLine;
     k->size = project->dimension();
     k->currentColor = brushManager->penColor();
     k->brushManager = brushManager;
