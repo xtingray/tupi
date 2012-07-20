@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCHAT_H
-#define TupCHAT_H
+#ifndef TUPCHAT_H
+#define TUPCHAT_H
 
 #include <QWidget>
 #include <QKeyEvent>

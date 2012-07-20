@@ -616,6 +616,7 @@ void TupCanvas::hideInfoWidget()
 
 void TupCanvas::updateOnLineUsers(const QStringList &onLineUsers)
 {
+    k->onLineUsers = onLineUsers;
     if (k->exposureDialogIsOpen)
         k->exposureDialog->updateUsersList(onLineUsers);
 }

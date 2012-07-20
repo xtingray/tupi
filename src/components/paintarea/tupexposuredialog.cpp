@@ -146,13 +146,9 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
 
         k->onlineList = new QListWidget(this);
         k->onlineList->setFixedWidth(100);
-        QListWidgetItem *me = new QListWidgetItem(tr("me"), k->onlineList);
 
-        if (k->onLineUsers.size() > 0) {
-            for (int j=0; j < k->onLineUsers.size(); j++) {
-                 QListWidgetItem *item = new QListWidgetItem(k->onLineUsers.at(j), k->onlineList); 
-            }
-        }
+        for (int j=0; j < k->onLineUsers.size(); j++)
+             QListWidgetItem *item = new QListWidgetItem(k->onLineUsers.at(j), k->onlineList); 
 
         layout->addWidget(k->onlineList);
         users->setLayout(layout);
@@ -212,7 +208,8 @@ void TupExposureDialog::refreshUI(int frame, int layer)
 
 void TupExposureDialog::updateUsersList(const QStringList &onLineUsers)
 {
-    
+    k->onlineList->clear();
+    k->onlineList->addItems(onLineUsers);    
 }
 
 void TupExposureDialog::closeDialog()
