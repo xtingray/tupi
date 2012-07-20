@@ -324,6 +324,34 @@ void TupLibraryWidget::insertObjectInWorkspace()
     emit requestTriggered(&request);
 }
 
+void TupLibraryWidget::insertObjectLocally()
+{
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    if (!k->libraryTree->currentItem()) {
+        #ifdef K_DEBUG
+               tFatal() << "TupLibraryWidget::insertObjectInWorkspace() - There's no current selection!";
+        #endif
+        return;
+    } else if (k->libraryTree->currentItem()->text(2).length() == 0) {
+               #ifdef K_DEBUG
+                      tFatal() << "TupLibraryWidget::insertObjectInWorkspace() - It's a directory!";
+               #endif
+               return;
+    }
+
+    QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
+
+    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::AddSymbolToProject, objectKey,
+                               TupLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(),
+                               0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+
+    emit localRequestTriggered(&request);
+}
+
+
 void TupLibraryWidget::removeCurrentGraphic()
 {
     if (!k->libraryTree->currentItem()) 
@@ -824,8 +852,10 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
-                                     insertObjectInWorkspace();
+                                 // if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
+                                 if (k->project->spaceContext() != TupProject::NONE)
+                                     insertObjectLocally();
+                                     // insertObjectInWorkspace();
                                }
                             break;
                             case TupLibraryObject::Svg:
@@ -835,6 +865,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                                  previewItem(item);
                                  // if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
                                  if (k->project->spaceContext() != TupProject::NONE)
+                                     // insertObjectLocally();
                                      insertObjectInWorkspace();
                                }
                             break;

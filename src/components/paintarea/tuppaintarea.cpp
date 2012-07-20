@@ -531,6 +531,10 @@ void TupPaintArea::projectResponse(TupProjectResponse *)
 
 void TupPaintArea::libraryResponse(TupLibraryResponse *request)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (graphicsScene()->isDrawing())
         return;
 

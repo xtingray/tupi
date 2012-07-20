@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLIBRARYWIDGET_H
-#define TupLIBRARYWIDGET_H
+#ifndef TUPLIBRARYWIDGET_H
+#define TUPLIBRARYWIDGET_H
 
 #include "tupmodulewidgetbase.h"
 #include "tupitempreview.h"
@@ -90,6 +90,7 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void requestCurrentGraphic();
 
     private:
+        void insertObjectLocally();
         struct Private;
         Private *const k;
 };
