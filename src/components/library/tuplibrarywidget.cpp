@@ -871,7 +871,8 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                         if ((*it)->text(2).length() > 0) {
                             if (key == (*it)->text(3)) {
                                 delete (*it);
-                                k->library->removeObject(key, true);
+                                // tError() << "*** Tracing deletion... flag 2"; 
+                                // k->library->removeObject(key, true);
                                 break;
                             } 
                         } else {

@@ -166,6 +166,10 @@ bool TupLibraryFolder::removeObject(const QString &id, bool absolute)
                  return folder->removeObject(id, absolute);
     }
 
+    #ifdef K_DEBUG
+           tError() << "TupLibraryFolder::removeObject() - [ Fatal Error ] - Object " << id << " wasn't found";
+    #endif
+
     return false;
 }
 
