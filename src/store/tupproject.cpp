@@ -453,6 +453,10 @@ Scenes TupProject::scenes() const
 
 bool TupProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!k->isOpen) {
         #ifdef K_DEBUG
                tError() << "TupProject::createSymbol() - Fatal error: project is NOT open!";
@@ -476,6 +480,10 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
 bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbolType, TupProject::Mode spaceMode, 
                              int sceneIndex, int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(name);
 
     TupFrame *frame = 0;
@@ -534,12 +542,20 @@ bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbol
 
 bool TupProject::removeSymbol(const QString &name)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     return k->library->removeObject(name, true);
 }
 
 bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &name, int sceneIndex, 
                                    int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupFrame *frame = 0;
     TupScene *scene = this->scene(sceneIndex);
 
