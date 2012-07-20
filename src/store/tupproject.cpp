@@ -704,8 +704,6 @@ bool TupProject::removeSymbolFromProject(const QString &name, TupLibraryObject::
              }
     }
 
-    tError() << "*** Tracing deletion... flag 1";
-
     k->library->removeObject(name, true);
 
     return true;
