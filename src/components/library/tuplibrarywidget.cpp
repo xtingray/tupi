@@ -346,8 +346,8 @@ void TupLibraryWidget::removeCurrentGraphic()
     } 
 
     TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::RemoveSymbolFromProject, 
-                                                                      objectKey, type, k->project->spaceContext(), 0);
-    
+                                                   objectKey, type, k->project->spaceContext(), 0, QString(),
+                                                   k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
     emit requestTriggered(&request);
 }
 
@@ -833,7 +833,8 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
+                                 // if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
+                                 if (k->project->spaceContext() != TupProject::NONE)
                                      insertObjectInWorkspace();
                                }
                             break;

@@ -675,6 +675,10 @@ bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &n
 
 bool TupProject::removeSymbolFromProject(const QString &name, TupLibraryObject::Type type)
 {
+    #ifdef K_DEBUG
+           tFatal() << "TupProject::removeSymbolFromProject() - Removing symbol " << name << " from project...";
+    #endif
+
     if (type == TupLibraryObject::Folder)
         return true;
 

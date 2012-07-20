@@ -51,13 +51,17 @@ struct TupProjectCommand::Private
 
 TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProjectRequest *request) : QUndoCommand(), k(new Private())
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->executor = executor;
     k->executed = false;
 
     TupRequestParser parser;
     if (!parser.parse(request->xml())) {
         #ifdef K_DEBUG
-               tFatal() << "==> TupProjectCommand::TupProjectCommand(): - Parser error!";
+               tFatal() << "TupProjectCommand::TupProjectCommand(): - Parser error!";
         #endif
     }
 
@@ -66,7 +70,7 @@ TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProj
 
     if (!k->response) {
         #ifdef K_DEBUG
-               tFatal() << "==> TupProjectCommand::TupProjectCommand() - Unparsed response!";
+               tFatal() << "TupProjectCommand::TupProjectCommand() - Unparsed response!";
         #endif
     }
 
@@ -75,6 +79,10 @@ TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProj
 
 TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, TupProjectResponse *response) : QUndoCommand(), k(new Private)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->executor = executor;
     k->response = response;
     k->executed = false;
