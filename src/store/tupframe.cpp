@@ -457,6 +457,10 @@ bool TupFrame::removeGraphicAt(int position)
 
 bool TupFrame::removeSvgAt(int position)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (position < 0)
         return false;
 
@@ -476,6 +480,10 @@ bool TupFrame::removeSvgAt(int position)
 
         return true;
     } 
+
+    #ifdef K_DEBUG
+           tError() << "TupFrame::removeSvgAt() - Error: Couldn't find SVG object (" << position << ")";
+    #endif
 
     return false;
 }
