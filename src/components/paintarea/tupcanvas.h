@@ -108,6 +108,7 @@ class TupCanvas : public QFrame
         void hideInfoWidget();
 
         void updateExposureDialogState();
+        void createScene();
 
    signals:
         void requestTriggered(const TupProjectRequest *event);

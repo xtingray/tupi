@@ -54,7 +54,7 @@
 
 struct TupExposureDialog::Private
 {
-    QVBoxLayout *innerLayout;
+    QVBoxLayout *layout;
     int currentScene;
     QList<TPushButton *> sceneList;
     TupProject *project;
@@ -76,12 +76,13 @@ TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, 
     k->isNetworked = isNetworked;
     k->onLineUsers = onLineUsers;
 
-    QBoxLayout *layout = new QHBoxLayout(this);
-    layout->setContentsMargins(10, 10, 10, 10);
-    layout->setSpacing(2);
+    // QBoxLayout *layout = new QHBoxLayout(this);
+    // layout->setContentsMargins(10, 10, 10, 10);
+    // layout->setSpacing(2);
 
-    k->innerLayout = new QVBoxLayout;
+    k->layout = new QVBoxLayout(this);
 
+    setButtonBar();
     setSheet(scene, layer, frame);
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
@@ -91,14 +92,34 @@ TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
 
-    k->innerLayout->addWidget(new TSeparator());
-    k->innerLayout->addWidget(buttonBox);
-
-    layout->addLayout(k->innerLayout);
+    k->layout->addWidget(new TSeparator());
+    k->layout->addWidget(buttonBox);
 }
 
 TupExposureDialog::~TupExposureDialog()
 {
+}
+
+void TupExposureDialog::setButtonBar()
+{
+    QBoxLayout *buttonsLayout = new QHBoxLayout;
+    // buttonsLayout->setContentsMargins(1, 1, 1, 1);
+    // buttonsLayout->setSpacing(2);
+
+    TImageButton *sceneButton = new TImageButton(QPixmap(THEME_DIR + "icons/add_scene_big.png"), 60, this, true);
+    connect(sceneButton, SIGNAL(clicked()), this, SLOT(createScene()));
+
+    TImageButton *layerButton = new TImageButton(QPixmap(THEME_DIR + "icons/add_layer_big.png"), 60, this, true);
+    connect(layerButton, SIGNAL(clicked()), this, SLOT(createLayer()));
+
+    TImageButton *frameButton = new TImageButton(QPixmap(THEME_DIR + "icons/add_frame_big.png"), 60, this, true);
+    connect(frameButton, SIGNAL(clicked()), this, SLOT(createFrame()));
+
+    buttonsLayout->addWidget(sceneButton);
+    buttonsLayout->addWidget(layerButton);
+    buttonsLayout->addWidget(frameButton);
+
+    k->layout->addLayout(buttonsLayout);
 }
 
 void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
@@ -160,7 +181,7 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
     for(int i=0; i < k->sceneGroupList.size(); i++)
         mainLayout->addWidget(k->sceneGroupList.at(i));
 
-    k->innerLayout->addLayout(mainLayout);
+    k->layout->addLayout(mainLayout);
 }
 
 void TupExposureDialog::goToScene(int column, int sceneIndex)
@@ -217,3 +238,9 @@ void TupExposureDialog::closeDialog()
     emit windowHasBeenClosed();
     close();    
 }
+
+void TupExposureDialog::createScene()
+{
+    emit callNewScene();
+}
+

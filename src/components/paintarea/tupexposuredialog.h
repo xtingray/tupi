@@ -51,14 +51,17 @@ class TupExposureDialog : public QDialog
     signals:
         void goToFrame(int frame, int layer, int scene);
         void goToScene(int scene);
+        void callNewScene();
         void windowHasBeenClosed();
 
     private slots:
         void refreshUI(int frame, int layer);
         void goToScene(int column, int sceneIndex);
         void closeDialog();
+        void createScene();
 
     private:
+        void setButtonBar();
         void setSheet(int sceneIndex, int layerIndex, int frameIndex);
         struct Private;
         Private *const k;

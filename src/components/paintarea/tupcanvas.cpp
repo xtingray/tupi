@@ -409,6 +409,7 @@ void TupCanvas::exposureDialog()
                                                       k->isNetworked, k->onLineUsers, this);
     connect(k->exposureDialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
     connect(k->exposureDialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
+    connect(k->exposureDialog, SIGNAL(callNewScene()), this, SLOT(createScene()));
     connect(k->exposureDialog, SIGNAL(windowHasBeenClosed()), this, SLOT(updateExposureDialogState()));
 
     QApplication::restoreOverrideCursor();
@@ -624,4 +625,21 @@ void TupCanvas::updateOnLineUsers(const QStringList &onLineUsers)
 void TupCanvas::updateExposureDialogState()
 {
     k->exposureDialogIsOpen = false;
+}
+
+void TupCanvas::createScene()
+{
+    int scene = k->project->scenesTotal();
+
+    TupProjectRequest request = TupRequestBuilder::createSceneRequest(scene, TupProjectRequest::Add, tr("Scene %1").arg(scene + 1));
+    emit requestTriggered(&request);
+
+    request = TupRequestBuilder::createLayerRequest(scene, 0, TupProjectRequest::Add, tr("Layer 1"));
+    emit requestTriggered(&request);
+
+    request = TupRequestBuilder::createFrameRequest(scene, 0, 0, TupProjectRequest::Add, tr("Frame 1"));
+    emit requestTriggered(&request);
+
+    request = TupRequestBuilder::createSceneRequest(scene, TupProjectRequest::Select);
+    emit requestTriggered(&request);
 }
