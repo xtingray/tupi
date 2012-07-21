@@ -588,15 +588,15 @@ void TupProjectCommand::libraryCommand()
             }
             break;
 
-            case TupProjectRequest::AddSymbolToProject:
+            case TupProjectRequest::InsertSymbolIntoFrame:
             {
-                 k->executor->addSymbolToProject(response);
+                 k->executor->insertSymbolIntoFrame(response);
             }
             break;
 
-            case TupProjectRequest::RemoveSymbolFromProject:
+            case TupProjectRequest::RemoveSymbolFromFrame:
             {
-                 k->executor->removeSymbolFromProject(response);
+                 k->executor->removeSymbolFromFrame(response);
             }
             break;
 

@@ -309,6 +309,10 @@ void TupFrame::updateIdFromFrame(const QString &oldId, const QString &newId)
 
 void TupFrame::addSvgItem(const QString &key, TupSvgItem *item)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO << key;
+    #endif
+
     int index = k->svg.count();
     insertSvgItem(index, item);
     k->svgIndexes[index] = key;

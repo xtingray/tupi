@@ -540,7 +540,7 @@ void TupPaintArea::libraryResponse(TupLibraryResponse *request)
 
     switch (request->action()) {
 
-            case TupProjectRequest::AddSymbolToProject:
+            case TupProjectRequest::InsertSymbolIntoFrame:
                  {
                      TupGraphicsScene *guiScene = graphicsScene();
                      if (!guiScene->scene())
@@ -559,7 +559,7 @@ void TupPaintArea::libraryResponse(TupLibraryResponse *request)
                  }
                  break;
             case TupProjectRequest::Remove:
-            case TupProjectRequest::RemoveSymbolFromProject:
+            case TupProjectRequest::RemoveSymbolFromFrame:
                  {
                      TupGraphicsScene *guiScene = graphicsScene();
                      if (!guiScene->scene())

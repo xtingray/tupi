@@ -115,8 +115,8 @@ class STORE_EXPORT TupProject : public QObject, public TupAbstractSerializable
                           int sceneIndex, int layerIndex, int frameIndex);
         bool removeSymbol(const QString &name);
 
-        bool addSymbolToProject(TupProject::Mode spaceMode, const QString &name, int scene, int layer, int frame);
-        bool removeSymbolFromProject(const QString &name, TupLibraryObject::Type type);
+        bool insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString &name, int scene, int layer, int frame);
+        bool removeSymbolFromFrame(const QString &name, TupLibraryObject::Type type);
 
         bool updateSymbolId(TupLibraryObject::Type type, const QString &oldId, const QString &newId);
 

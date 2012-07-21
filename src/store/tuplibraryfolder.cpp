@@ -185,7 +185,7 @@ bool TupLibraryFolder::removeFolder(const QString &id)
         foreach (QString oid, objects.keys()) {
                  if (folder->removeObject(oid, true)) {
                      TupLibraryObject::Type extension = static_cast<TupLibraryObject::Type>(objects[oid]->type());
-                     if (!k->project->removeSymbolFromProject(oid, extension))
+                     if (!k->project->removeSymbolFromFrame(oid, extension))
                          return false;
                  }
         }

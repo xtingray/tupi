@@ -90,7 +90,7 @@ void TupProjectLoader::createLayer(int scenePosition, int layerPosition, const Q
 
 void TupProjectLoader::createSoundLayer(int scenePosition, int layerPosition, const QString &name, TupProject *project)
 {
-    TupLibraryResponse response(TupProjectRequest::Library, TupProjectRequest::AddSymbolToProject);
+    TupLibraryResponse response(TupProjectRequest::Library, TupProjectRequest::InsertSymbolIntoFrame);
     
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);

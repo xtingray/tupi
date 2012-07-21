@@ -77,9 +77,9 @@ int TupProjectResponse::action() const
                         return TupProjectRequest::Remove;
                      }
                 break;
-                case TupProjectRequest::AddSymbolToProject:
+                case TupProjectRequest::InsertSymbolIntoFrame:
                      {
-                        return TupProjectRequest::RemoveSymbolFromProject;
+                        return TupProjectRequest::RemoveSymbolFromFrame;
                      }
                 break;
                 case TupProjectRequest::EditNodes:

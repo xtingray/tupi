@@ -317,7 +317,7 @@ void TupLibraryWidget::insertObjectInWorkspace()
 
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
-    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::AddSymbolToProject, objectKey,
+    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::InsertSymbolIntoFrame, objectKey,
                                TupLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
                                0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
@@ -344,7 +344,7 @@ void TupLibraryWidget::insertObjectLocally()
 
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
-    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::AddSymbolToProject, objectKey,
+    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::InsertSymbolIntoFrame, objectKey,
                                TupLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(),
                                0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
@@ -373,7 +373,7 @@ void TupLibraryWidget::removeCurrentGraphic()
             type = TupLibraryObject::Item;
     } 
 
-    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::RemoveSymbolFromProject, 
+    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::RemoveSymbolFromFrame, 
                                                    objectKey, type, k->project->spaceContext(), 0, QString(),
                                                    k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
     emit requestTriggered(&request);
@@ -884,15 +884,15 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
               }
             break;
 
-            case TupProjectRequest::AddSymbolToProject:
+            case TupProjectRequest::InsertSymbolIntoFrame:
               {
                  #ifdef K_DEBUG
-                        tDebug() << "*** TupLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
+                        tDebug() << "*** TupLibraryWidget::libraryResponse -> InsertSymbolIntoFrame : No action taken";
                  #endif
               }
             break;
 
-            case TupProjectRequest::RemoveSymbolFromProject:
+            case TupProjectRequest::RemoveSymbolFromFrame:
               {
                  QString key = response->arg().toString();
 

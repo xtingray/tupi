@@ -384,7 +384,7 @@ void TupTimeLine::libraryResponse(TupLibraryResponse *response)
 
     /*
 
-    if (response->action() == TupProjectRequest::AddSymbolToProject) {
+    if (response->action() == TupProjectRequest::InsertSymbolIntoFrame) {
         switch (response->symbolType()) {
                 case TupLibraryObject::Sound:
                 {
