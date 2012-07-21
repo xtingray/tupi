@@ -66,6 +66,10 @@ TupLibraryFolder::~TupLibraryFolder()
 TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, const QString &name, const QByteArray &data, 
                                                const QString &folder, bool loaded)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (data.isEmpty()) {
         #ifdef K_DEBUG
                tError() << "TupLibraryFolder::createSymbol() - [ Fatal Error ] - Data is empty!";

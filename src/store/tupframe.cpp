@@ -479,7 +479,7 @@ bool TupFrame::removeSvgAt(int position)
         //this->scene()->removeTweenObject(item);
 
         #ifdef K_DEBUG
-               tError() << "TupFrame::removeSvgAt() - SVG object has been removed (" << position << ")";
+               tFatal() << "TupFrame::removeSvgAt() - SVG object has been removed (" << position << ")";
         #endif
 
         return true;
