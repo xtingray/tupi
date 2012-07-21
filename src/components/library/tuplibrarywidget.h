@@ -90,7 +90,6 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void requestCurrentGraphic();
 
     private:
-        void insertObjectLocally();
         struct Private;
         Private *const k;
 };
