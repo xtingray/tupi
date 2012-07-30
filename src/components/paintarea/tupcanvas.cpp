@@ -410,6 +410,8 @@ void TupCanvas::exposureDialog()
     connect(k->exposureDialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
     connect(k->exposureDialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
     connect(k->exposureDialog, SIGNAL(callNewScene()), this, SLOT(createScene()));
+    connect(k->exposureDialog, SIGNAL(callNewLayer(int, int)), this, SLOT(createLayer(int, int)));
+    connect(k->exposureDialog, SIGNAL(callNewFrame(int, int, int, int)), this, SLOT(createFrame(int, int, int, int)));
     connect(k->exposureDialog, SIGNAL(windowHasBeenClosed()), this, SLOT(updateExposureDialogState()));
 
     QApplication::restoreOverrideCursor();
@@ -629,17 +631,48 @@ void TupCanvas::updateExposureDialogState()
 
 void TupCanvas::createScene()
 {
-    int scene = k->project->scenesTotal();
+    int sceneIndex = k->project->scenesTotal();
 
-    TupProjectRequest request = TupRequestBuilder::createSceneRequest(scene, TupProjectRequest::Add, tr("Scene %1").arg(scene + 1));
+    TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Add, tr("Scene %1").arg(sceneIndex + 1));
     emit requestTriggered(&request);
 
-    request = TupRequestBuilder::createLayerRequest(scene, 0, TupProjectRequest::Add, tr("Layer 1"));
+    request = TupRequestBuilder::createLayerRequest(sceneIndex, 0, TupProjectRequest::Add, tr("Layer 1"));
     emit requestTriggered(&request);
 
-    request = TupRequestBuilder::createFrameRequest(scene, 0, 0, TupProjectRequest::Add, tr("Frame 1"));
+    request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Add, tr("Frame 1"));
     emit requestTriggered(&request);
 
-    request = TupRequestBuilder::createSceneRequest(scene, TupProjectRequest::Select);
+    request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
+    emit requestTriggered(&request);
+
+    // request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Select, "1");
+    // emit requestTriggered(&request);
+}
+
+void TupCanvas::createLayer(int sceneIndex, int layerIndex)
+{
+    TupProjectRequest request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::Add, tr("Layer %1").arg(layerIndex + 1));
+    emit requestTriggered(&request);
+
+    tError() << "TupCanvas::createLayer() - Creating layer at [ " << sceneIndex << ", " << layerIndex << " ]";
+
+    int oneRow = k->scene->framesTotal();
+    for(int i=0; i<oneRow; i++) {
+        request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+        emit requestTriggered(&request);
+    }
+
+    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Select);
+    emit requestTriggered(&request);
+}
+
+void TupCanvas::createFrame(int sceneIndex, int layerIndex, int layersTotal, int frameIndex)
+{
+    for(int i=0; i<layersTotal; i++) {
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, i, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
+        emit requestTriggered(&request);
+    }
+
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Select);
     emit requestTriggered(&request);
 }

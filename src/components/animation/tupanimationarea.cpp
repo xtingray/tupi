@@ -124,6 +124,10 @@ TupAnimationArea::~TupAnimationArea()
 
 void TupAnimationArea::resetPhotograms(int sceneIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (sceneIndex > -1) {
         if (k->renderControl.at(sceneIndex)) {
             k->renderControl.replace(sceneIndex, false);
@@ -137,6 +141,10 @@ void TupAnimationArea::resetPhotograms(int sceneIndex)
 
 void TupAnimationArea::initPhotogramsArray()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     k->renderControl.clear();
     k->animationList.clear();
     for (int i=0; i < k->project->scenesTotal(); i++) {
@@ -253,6 +261,10 @@ void TupAnimationArea::stop()
 
 void TupAnimationArea::nextFrame()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!k->renderControl.at(k->currentSceneIndex))
         render();
 
@@ -262,6 +274,10 @@ void TupAnimationArea::nextFrame()
 
 void TupAnimationArea::previousFrame()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!k->renderControl.at(k->currentSceneIndex))
         render();
 
@@ -271,6 +287,10 @@ void TupAnimationArea::previousFrame()
 
 void TupAnimationArea::advance()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->cyclicAnimation && k->currentFramePosition >= k->photograms.count())
         k->currentFramePosition = 0;
 
@@ -372,6 +392,10 @@ void TupAnimationArea::libraryResponse(TupLibraryResponse *)
 
 void TupAnimationArea::render()
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupScene *scene = k->project->scene(k->currentSceneIndex);
 
     if (!scene) {
@@ -492,6 +516,10 @@ int TupAnimationArea::currentSceneIndex()
 
 TupScene *TupAnimationArea::currentScene() const
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (k->currentSceneIndex > -1) {
         return k->project->scene(k->currentSceneIndex);
     } else {
@@ -571,6 +599,10 @@ void TupAnimationArea::updateFirstFrame()
 
 void TupAnimationArea::addPhotogramsArray(int sceneIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (sceneIndex > -1) {
         k->renderControl.insert(sceneIndex, false);
         QList<QImage> photograms;

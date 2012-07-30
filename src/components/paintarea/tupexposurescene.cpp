@@ -46,7 +46,12 @@ struct TupExposureScene::Private
     TupScene *scene;
     int currentLayer;
     int currentFrame;
+    int layerCounter;
+    int frameCounter;
+
+    QList<QHBoxLayout *> layerList;
     QList<TPushButton *> frameList;
+    QVBoxLayout *sceneLayout;
 };
 
 TupExposureScene::TupExposureScene(const QString &title, TupScene *scene, int currentLayer, int currentFrame) : QGroupBox(title), k(new Private)
@@ -55,13 +60,15 @@ TupExposureScene::TupExposureScene(const QString &title, TupScene *scene, int cu
     k->currentLayer = currentLayer;
     k->currentFrame = currentFrame;
 
-    QVBoxLayout *sceneLayout = new QVBoxLayout;
+    k->sceneLayout = new QVBoxLayout;
+    k->layerCounter = scene->layersTotal();
+    k->frameCounter = k->scene->framesTotal();
 
     for (int j=0; j< scene->layersTotal(); j++) {
 
          if (j < 4) { // SQA: Temporary condition
              QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(j+1));
-             QBoxLayout *layerLayout = new QHBoxLayout;
+             QHBoxLayout *layerLayout = new QHBoxLayout;
              layerLayout->setSpacing(10);
              TupLayer *layer = scene->layer(j);
 
@@ -82,21 +89,105 @@ TupExposureScene::TupExposureScene(const QString &title, TupScene *scene, int cu
              }
 
              layerGroup->setLayout(layerLayout);
-             sceneLayout->addWidget(layerGroup);
+             k->layerList << layerLayout;
+             k->sceneLayout->addWidget(layerGroup);
          }
     }
 
-    setLayout(sceneLayout);
+    setLayout(k->sceneLayout);
 }
 
 TupExposureScene::~TupExposureScene()
 {
 }
 
+void TupExposureScene::addNewLayer()
+{
+    for(int i=0; i<k->frameList.size(); i++) {
+        k->frameList.at(i)->setChecked(false);
+        k->frameList.at(i)->setDisabled(false);
+        k->frameList.at(i)->clearFocus();
+    }
+
+    k->currentLayer = k->layerCounter;
+    k->layerCounter++;
+
+    QGroupBox *layerGroup = new QGroupBox(tr("Layer") + " " + QString::number(k->layerCounter));
+    QHBoxLayout *layerLayout = new QHBoxLayout;
+    layerLayout->setSpacing(10);
+
+    int oneRow = k->frameCounter;
+    // k->scene->framesTotal();
+    for(int i=0; i<oneRow; i++) {
+        // TPushButton *frameButton = new TPushButton(this, tr("Frame") + " " + QString::number(i + 1), i, k->layerCounter - 1);
+        TPushButton *frameButton = new TPushButton(this, tr("Frame") + " " + QString::number(i + 1), i, k->currentLayer);
+        frameButton->setFixedSize(100, 70);
+        frameButton->setFont(QFont("Arial", 14, QFont::Bold));
+        frameButton->setCheckable(true);
+        if (i == 0) {
+            frameButton->setChecked(true);
+            frameButton->setDisabled(true);
+        }
+        connect(frameButton, SIGNAL(clicked(int, int)), this, SLOT(goToFrame(int, int)));
+
+        layerLayout->addWidget(frameButton);
+        k->frameList << frameButton; 
+    }
+
+    layerGroup->setLayout(layerLayout);
+    k->layerList << layerLayout;
+
+    k->sceneLayout->addWidget(layerGroup);
+}
+
+void TupExposureScene::addNewFrame()
+{
+    tError() << "TupExposureScene::addNewFrame() - frameList size: " << k->frameList.size();
+    tError() << "TupExposureScene::addNewFrame() - current layer: " << k->currentLayer;
+
+    for(int j=0; j<k->frameList.size(); j++) {
+        k->frameList.at(j)->setChecked(false);
+        k->frameList.at(j)->setDisabled(false);
+        k->frameList.at(j)->clearFocus();
+    }
+
+    // int frameIndex = k->layerList.at(0)->count();
+    int frameIndex = k->frameCounter;
+    k->frameCounter++;
+
+    for(int i=0; i<k->layerList.size(); i++) {
+        TPushButton *frameButton = new TPushButton(this, tr("Frame") + " " + QString::number(frameIndex + 1), frameIndex, i);
+        frameButton->setFixedSize(100, 70);
+        frameButton->setFont(QFont("Arial", 14, QFont::Bold));
+        frameButton->setCheckable(true);
+        if (i == k->currentLayer) {
+            frameButton->setChecked(true);
+            frameButton->setDisabled(true);
+        }
+        connect(frameButton, SIGNAL(clicked(int, int)), this, SLOT(goToFrame(int, int)));
+
+        k->layerList.at(i)->addWidget(frameButton);
+
+        // Find out the index for this ->  k->frameList << frameButton;
+        // k->frameList.insert(k->frameCounter*i + 1, frameButton);
+        int position = frameIndex;
+        if (i > 0)
+            position = k->frameCounter*i + frameIndex;
+
+        k->frameList.insert(position, frameButton);
+ 
+        tError() << "TupExposureScene::addNewFrame() -> inserting frame at position: " << position;
+    }
+}
+
 void TupExposureScene::goToFrame(int frame, int layer)
 {
-    int oneRow = k->scene->framesTotal();
-    int index = frame + oneRow*layer;
+    tError() << "TupExposureScene::goToFrame(int, int) - frame: " << frame << " - layer: " << layer;
+
+    // int oneRow = k->scene->framesTotal();
+    int index = frame + k->frameCounter*layer;
+
+    tError() << "TupExposureScene::goToFrame(int, int) - index: " << index;
 
     for(int i=0; i<k->frameList.size(); i++) {
         if (i == index) {
@@ -131,5 +222,6 @@ int TupExposureScene::framesTotal()
 
 int TupExposureScene::layersTotal()
 {
-    return k->scene->layersTotal();
+    // return k->scene->layersTotal();
+    return k->layerCounter;
 }

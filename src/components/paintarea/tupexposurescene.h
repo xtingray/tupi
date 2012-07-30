@@ -37,6 +37,7 @@
 #define TUPEXPOSURESCENE_H 
 
 #include "tupscene.h" 
+
 #include <QGroupBox>
 
 class TupExposureScene : public QGroupBox 
@@ -46,6 +47,9 @@ class TupExposureScene : public QGroupBox
     public:
         TupExposureScene(const QString &title, TupScene *scene, int currentLayer, int currentFrame);
         ~TupExposureScene();
+        void addNewLayer();
+        void addNewFrame();
+
         int currentFrame();
         int currentLayer();
         int framesTotal(); 

@@ -56,29 +56,27 @@ struct TupExposureDialog::Private
 {
     QVBoxLayout *layout;
     int currentScene;
+    int currentLayer;
     QList<TPushButton *> sceneList;
     TupProject *project;
     QList<TupExposureScene *> sceneGroupList;
     bool isNetworked;
     QListWidget *onlineList;
     QStringList onLineUsers;
+    QBoxLayout *sceneColumn;
+    QHBoxLayout *mainLayout;
 };
 
 TupExposureDialog::TupExposureDialog(TupProject *project, int scene, int layer, int frame, 
                                      bool isNetworked, const QStringList &onLineUsers, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
     setWindowTitle(tr("Exposure Sheet"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png")));
 
     k->project = project;
     k->isNetworked = isNetworked;
     k->onLineUsers = onLineUsers;
-
-    // QBoxLayout *layout = new QHBoxLayout(this);
-    // layout->setContentsMargins(10, 10, 10, 10);
-    // layout->setSpacing(2);
 
     k->layout = new QVBoxLayout(this);
 
@@ -103,8 +101,6 @@ TupExposureDialog::~TupExposureDialog()
 void TupExposureDialog::setButtonBar()
 {
     QBoxLayout *buttonsLayout = new QHBoxLayout;
-    // buttonsLayout->setContentsMargins(1, 1, 1, 1);
-    // buttonsLayout->setSpacing(2);
 
     TImageButton *sceneButton = new TImageButton(QPixmap(THEME_DIR + "icons/add_scene_big.png"), 60, this, true);
     connect(sceneButton, SIGNAL(clicked()), this, SLOT(createScene()));
@@ -124,11 +120,11 @@ void TupExposureDialog::setButtonBar()
 
 void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
 {
-    QBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->setContentsMargins(5, 5, 5, 5);
-    mainLayout->setSpacing(10);
+    k->mainLayout = new QHBoxLayout;
+    k->mainLayout->setContentsMargins(5, 5, 5, 5);
+    k->mainLayout->setSpacing(10);
 
-    QBoxLayout *sceneColumn = new QVBoxLayout;
+    k->sceneColumn = new QVBoxLayout;
 
     for (int i=0; i < k->project->scenesTotal(); i++) {
 
@@ -143,7 +139,7 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
              sceneButton->setDisabled(true);
              k->currentScene = i;
          }
-         sceneColumn->addWidget(sceneButton);
+         k->sceneColumn->addWidget(sceneButton);
          k->sceneList << sceneButton;
 
          // Exposure sheet interface for every Scene
@@ -154,6 +150,7 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
              sceneGroup->hide();
          } else {
              sceneGroup = new TupExposureScene(tr("Scene") + " " + QString::number(i + 1), k->project->scene(i), layerIndex, frameIndex);
+             k->currentLayer = layerIndex;
          }
 
          connect(sceneGroup, SIGNAL(updateUI(int, int)), this, SLOT(refreshUI(int, int)));
@@ -169,24 +166,30 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
         k->onlineList->setFixedWidth(100);
 
         for (int j=0; j < k->onLineUsers.size(); j++)
-             QListWidgetItem *item = new QListWidgetItem(k->onLineUsers.at(j), k->onlineList); 
+             new QListWidgetItem(k->onLineUsers.at(j), k->onlineList);
 
         layout->addWidget(k->onlineList);
         users->setLayout(layout);
-        mainLayout->addWidget(users);
+        k->mainLayout->addWidget(users);
     }
 
-    mainLayout->addLayout(sceneColumn);
+    k->mainLayout->addLayout(k->sceneColumn);
 
     for(int i=0; i < k->sceneGroupList.size(); i++)
-        mainLayout->addWidget(k->sceneGroupList.at(i));
+        k->mainLayout->addWidget(k->sceneGroupList.at(i));
 
-    k->layout->addLayout(mainLayout);
+    k->layout->addLayout(k->mainLayout);
 }
 
 void TupExposureDialog::goToScene(int column, int sceneIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
     Q_UNUSED(column);
+
+    tError() << "TupExposureDialog::goToScene() - sceneIndex: " << sceneIndex;
+
     TupExposureScene *oldScene = k->sceneGroupList.at(k->currentScene);
     oldScene->hide();
     int oldFramesTotal = oldScene->framesTotal(); 
@@ -211,6 +214,8 @@ void TupExposureDialog::goToScene(int column, int sceneIndex)
     emit goToScene(k->currentScene);
     emit goToFrame(sceneTable->currentFrame(), sceneTable->currentLayer(), k->currentScene);
 
+    k->currentLayer = sceneTable->currentLayer();
+
     if (newFramesTotal != oldFramesTotal || newLayersTotal != oldLayersTotal) {
         QDesktopWidget desktop;
         move((int) (desktop.screenGeometry().width() - width())/2 ,
@@ -220,9 +225,17 @@ void TupExposureDialog::goToScene(int column, int sceneIndex)
 
 void TupExposureDialog::refreshUI(int frame, int layer)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     for(int i=0; i<k->sceneList.size(); i++) {
         k->sceneList.at(i)->clearFocus();
     }
+
+    k->currentLayer = layer;
+
+    tError() << "TupExposureDialog::refreshUI() - Going to frame -> " << frame;
 
     emit goToFrame(frame, layer, k->currentScene);
 }
@@ -241,6 +254,81 @@ void TupExposureDialog::closeDialog()
 
 void TupExposureDialog::createScene()
 {
+    int scene = k->project->scenesTotal();
+
+    if (scene > 5) // Temporary condition
+        return;
+
+    scene++;
+
     emit callNewScene();
+
+    int oldIndex = k->currentScene;
+
+    for(int i=0; i<k->sceneList.size(); i++) {
+        k->sceneList.at(i)->setChecked(false);
+        k->sceneList.at(i)->setDisabled(false);
+    }
+
+    TPushButton *sceneButton = new TPushButton(this, tr("Scene") + " " + QString::number(scene), 0, scene-1);
+    sceneButton->setFixedSize(100, 70);
+    sceneButton->setFont(QFont("Arial", 14, QFont::Bold));
+    sceneButton->setCheckable(true);
+    sceneButton->setChecked(true);
+    sceneButton->setDisabled(true);
+    connect(sceneButton, SIGNAL(clicked(int, int)), this, SLOT(goToScene(int, int)));
+
+    k->currentScene = scene-1;
+    k->sceneColumn->addWidget(sceneButton);
+    k->sceneList << sceneButton;
+
+    tError() << "TupExposureDialog::createScene() - Scenes Total: " << scene;
+    tError() << "TupExposureDialog::createScene() - Last index: " << oldIndex;
+
+    TupExposureScene *sceneGroup = new TupExposureScene(tr("Scene") + " " + QString::number(scene), k->project->scene(scene-1), 0, 0);
+    connect(sceneGroup, SIGNAL(updateUI(int, int)), this, SLOT(refreshUI(int, int)));
+    k->sceneGroupList << sceneGroup;
+    k->mainLayout->addWidget(sceneGroup);
+
+    TupExposureScene *oldScene = k->sceneGroupList.at(oldIndex);
+    oldScene->hide();
+
+    TupExposureScene *sceneTable = k->sceneGroupList.at(scene-1);
+    sceneTable->show();
+
+    QDesktopWidget desktop;
+    move((int) (desktop.screenGeometry().width() - width())/2,
+         (int) (desktop.screenGeometry().height() - (height() + sceneButton->height()))/2);
 }
 
+void TupExposureDialog::createLayer()
+{
+    TupExposureScene *sceneTable = k->sceneGroupList.at(k->currentScene);
+
+    int layersTotal = sceneTable->layersTotal();
+    if (layersTotal > 2) // Temporary condition
+        return;
+
+    sceneTable->addNewLayer();
+
+    emit callNewLayer(k->currentScene, layersTotal);
+
+    QDesktopWidget desktop;
+    move((int) (desktop.screenGeometry().width() - width())/2,
+         (int) (desktop.screenGeometry().height() - (height() + 100))/2);
+}
+
+void TupExposureDialog::createFrame()
+{
+    TupExposureScene *sceneTable = k->sceneGroupList.at(k->currentScene);
+    sceneTable->addNewFrame();
+
+    int layersTotal = sceneTable->layersTotal();
+    int framesTotal = sceneTable->framesTotal();
+    // emit callNewFrame(k->currentScene, k->currentLayer, 0);
+    emit callNewFrame(k->currentScene, k->currentLayer, layersTotal, framesTotal);
+
+    QDesktopWidget desktop;
+    move((int) (desktop.screenGeometry().width() - (width() + 50))/2,
+         (int) (desktop.screenGeometry().height() - (height() + 100))/2);
+}

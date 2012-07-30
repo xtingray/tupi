@@ -109,6 +109,8 @@ class TupCanvas : public QFrame
 
         void updateExposureDialogState();
         void createScene();
+        void createLayer(int sceneIndex, int layerIndex);
+        void createFrame(int sceneIndex, int layerIndex, int layersTotal, int frameIndex);
 
    signals:
         void requestTriggered(const TupProjectRequest *event);
@@ -120,7 +122,7 @@ class TupCanvas : public QFrame
         void goToScene(int scene);
         void closeSketchMenu();
         void closeSelectionMenu();
-        void  closePenPropertiesMenu();
+        void closePenPropertiesMenu();
 };
 
 #endif

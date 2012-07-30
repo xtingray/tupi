@@ -52,6 +52,8 @@ class TupExposureDialog : public QDialog
         void goToFrame(int frame, int layer, int scene);
         void goToScene(int scene);
         void callNewScene();
+        void callNewLayer(int sceneIndex, int layerIndex);
+        void callNewFrame(int sceneIndex, int layerIndex, int layersTotal, int frameIndex);
         void windowHasBeenClosed();
 
     private slots:
@@ -59,6 +61,8 @@ class TupExposureDialog : public QDialog
         void goToScene(int column, int sceneIndex);
         void closeDialog();
         void createScene();
+        void createLayer();
+        void createFrame();
 
     private:
         void setButtonBar();
