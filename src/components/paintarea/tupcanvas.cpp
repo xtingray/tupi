@@ -643,7 +643,8 @@ void TupCanvas::createScene()
     emit requestTriggered(&request);
 
     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 
     // request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Select, "1");
     // emit requestTriggered(&request);
@@ -663,7 +664,8 @@ void TupCanvas::createLayer(int sceneIndex, int layerIndex)
     }
 
     request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Select);
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 }
 
 void TupCanvas::createFrame(int sceneIndex, int layerIndex, int layersTotal, int frameIndex)
@@ -674,5 +676,6 @@ void TupCanvas::createFrame(int sceneIndex, int layerIndex, int layersTotal, int
     }
 
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Select);
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 }

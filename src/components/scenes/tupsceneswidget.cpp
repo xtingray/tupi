@@ -167,7 +167,8 @@ void TupScenesWidget::emitRequestInsertScene()
     emit requestTriggered(&event);
 
     event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);
-    emit requestTriggered(&event);
+    // emit requestTriggered(&event);
+    emit localRequestTriggered(&event);
 }
 
 void TupScenesWidget::emitRequestRemoveScene()

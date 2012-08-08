@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSCENESWIDGET_H
-#define TupSCENESWIDGET_H
+#ifndef TUPSCENESWIDGET_H
+#define TUPSCENESWIDGET_H
 
 #include "tupmodulewidgetbase.h"
 #include "tupsceneslist.h"

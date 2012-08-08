@@ -114,6 +114,7 @@ class TupCanvas : public QFrame
 
    signals:
         void requestTriggered(const TupProjectRequest *event);
+        void localRequestTriggered(const TupProjectRequest *event);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);
         void updateOnionOpacityFromFullScreen(double opacity);
