@@ -189,8 +189,12 @@ void TupScenesWidget::emitRequestRemoveScene()
 
         if (k->scenesTable->scenesCount() == index)
             index--;
-        event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);
-        emit requestTriggered(&event);
+
+        if (index >= 0) {
+            event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);
+            // emit requestTriggered(&event);
+            emit localRequestTriggered(&event);
+        }
     }
 }
 
