@@ -139,7 +139,8 @@ void TupScenesWidget::selectScene(int index)
     #endif
 
     TupProjectRequest event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);
-    emit requestTriggered(&event);
+    // emit requestTriggered(&event);
+    emit localRequestTriggered(&event);
 }
 
 void TupScenesWidget::emitRequestInsertScene()
