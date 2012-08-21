@@ -39,6 +39,7 @@
 #include "tuptoolplugin.h"
 #include "exactnessconfigurator.h"
 #include "tuppathitem.h"
+#include "tupprojectresponse.h"
 
 #include <QObject>
 #include <QSpinBox>
@@ -70,10 +71,12 @@ class PencilTool : public TupToolPlugin
         virtual void saveConfig();
         virtual void keyPressEvent(QKeyEvent *event);
         virtual QCursor cursor() const;
+        virtual void sceneResponse(const TupSceneResponse *event);
 
     private:
         void setupActions();
         void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
+        void reset(TupGraphicsScene *scene);
 
     signals:
         void closeHugeCanvas();

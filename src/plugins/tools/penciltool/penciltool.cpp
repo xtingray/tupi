@@ -68,6 +68,7 @@ struct PencilTool::Private
     QMap<QString, TAction *> actions;
     TupPathItem *item;
     QCursor cursor;
+    TupGraphicsScene *scene;
 };
 
 PencilTool::PencilTool() : k(new Private)
@@ -98,6 +99,8 @@ void PencilTool::init(TupGraphicsScene *scene)
            T_FUNCINFOX("tools");
     #endif
 
+    k->scene = scene;
+
     /*
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
@@ -109,8 +112,18 @@ void PencilTool::init(TupGraphicsScene *scene)
                  }
              }
     }
+
+    foreach (QGraphicsItem *item, scene->items()) {
+             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+             item->setFlag(QGraphicsItem::ItemIsMovable, false);
+    }
     */
 
+    reset(k->scene);
+}
+
+void PencilTool::reset(TupGraphicsScene *scene)
+{
     foreach (QGraphicsItem *item, scene->items()) {
              item->setFlag(QGraphicsItem::ItemIsSelectable, false);
              item->setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -256,6 +269,12 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
 QCursor PencilTool::cursor() const
 {
     return k->cursor;
+}
+
+void PencilTool::sceneResponse(const TupSceneResponse *event)
+{
+    if (event->action() == TupProjectRequest::Select)
+        reset(k->scene);
 }
 
 Q_EXPORT_PLUGIN2(tup_brush, PencilTool);
