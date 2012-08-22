@@ -776,6 +776,19 @@ void TupLibraryWidget::importSound()
     }
 }
 
+void TupLibraryWidget::sceneResponse(TupSceneResponse *response)
+{
+    switch (response->action()) {
+            case TupProjectRequest::Select:
+            {
+                 k->currentFrame.frame = 0;
+                 k->currentFrame.layer = 0;
+                 k->currentFrame.scene = response->sceneIndex();
+            }
+            break;
+    }
+}
+
 void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
 {
     RETURN_IF_NOT_LIBRARY;
