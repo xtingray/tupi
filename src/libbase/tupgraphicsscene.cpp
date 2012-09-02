@@ -916,10 +916,16 @@ void TupGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
         if (k->tool) {      
 
+            /* SQA: Check if this conditional must be enabled again 
             if ((k->tool->toolType() == TupToolPlugin::Brush || k->tool->toolType() == TupToolPlugin::Tweener) 
                  && event->isAccepted()) {
                 return;
             } 
+            */
+
+            if ((k->tool->toolType() == TupToolPlugin::Brush) && event->isAccepted()) {
+                return;
+            }
 
             // If there's no frame... the tool is disabled 
 
