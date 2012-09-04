@@ -3133,8 +3133,8 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
 <context>
     <name>TupMainWindow</name>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Magia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Magia 2D Libre</translation>
     </message>
     <message>
         <source>Setting up the project manager</source>
@@ -3213,8 +3213,8 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
         <translation>Progetto di Tupi (*.tup)</translation>
     </message>
     <message>
-        <source>Tupi: Magia 2D</source>
-        <translation>Tupi: Magia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupi: Magia 2D Libre</translation>
     </message>
     <message>
         <source>Error</source>

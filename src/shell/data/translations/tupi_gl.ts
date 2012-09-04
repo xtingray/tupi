@@ -1981,8 +1981,8 @@
         <translation>Desfacer</translation>
     </message>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Maxia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Maxia 2D Livre</translation>
     </message>
     <message>
         <source>Information</source>
@@ -2014,8 +2014,8 @@
         <translation>Abrir un proxecto de Tupí</translation>
     </message>
     <message>
-        <source>Tupi: Magia 2D</source>
-        <translation>Tupí: Maxia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Maxia 2D Livre</translation>
     </message>
     <message>
         <source>Error</source>

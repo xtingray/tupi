@@ -999,8 +999,8 @@
 <context>
     <name>TupMainWindow</name>
     <message>
-        <source>Tupi: Magic 2D</source>
-        <translation>Tupí: Magia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Magia 2D Libre</translation>
     </message>
     <message>
         <source>by</source>
@@ -1395,8 +1395,8 @@
         <translation type="unfinished">Abrir proyecto Tupi</translation>
     </message>
     <message>
-        <source>Tupi: Magia 2D</source>
-        <translation type="unfinished"></translation>
+        <source>Tupi: Magia 2D Libre</source>
+        <translation type="unfinished">>Tupi: Magia 2D Libre</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2710,8 +2710,8 @@
         <translation type="unfinished">Cargado!</translation>
     </message>
     <message>
-        <source>Magic 2D</source>
-        <translation>Magia 2D</translation>
+        <source>Open 2D Magic</source>
+        <translation>Magia 2D Libre</translation>
     </message>
     <message>
         <source>Usage: %1 [option]</source>

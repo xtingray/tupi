@@ -1060,7 +1060,7 @@
 <context>
     <name>TupMainWindow</name>
     <message>
-        <source>Tupi: Magic 2D</source>
+        <source>Tupi: Open 2D Magic</source>
         <translation>Tupi: Dvojrozměrné kouzlo</translation>
     </message>
     <message>
@@ -1156,7 +1156,7 @@
         <translation>Balíček s projektem Tupi (*.tup);Síťový projekt Tupi (*.ntup)</translation>
     </message>
     <message>
-        <source>Tupi: Magia 2D</source>
+        <source>Tupi: Open 2D Magia</source>
         <translation>Tupi: Dvojrozměrné kouzlo</translation>
     </message>
     <message>

@@ -679,8 +679,8 @@
 <context>
     <name>TupMainWindow</name>
     <message>
-        <source>Tupi: Magic 2D</source>
-        <translation>Tupi: Magia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupi: Magia 2D Livre</translation>
     </message>
     <message>
         <source>Setting up the project manager</source>
@@ -983,7 +983,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tupi: Magia 2D</source>
+        <source>Tupi: Magia 2D Livre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2016,8 +2016,8 @@
         <translation type="unfinished">Carregat!</translation>
     </message>
     <message>
-        <source>Magic 2D</source>
-        <translation>Magia 2D</translation>
+        <source>Open 2D Magic</source>
+        <translation>Magia 2D Livre</translation>
     </message>
     <message>
         <source>Usage: %1 [option]</source>

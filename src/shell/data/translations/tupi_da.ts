@@ -1648,8 +1648,8 @@
         <location filename="../src/shell/ktmainwindow.cpp" line="693"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="1062"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="1097"/>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupi: 2D Magic</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupi: Open 2D Magic</translation>
     </message>
     <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="131"/>
@@ -1758,8 +1758,8 @@
     </message>
     <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="779"/>
-        <source>Tupi: Magia 2D</source>
-        <translation>Tupi: 2D Magi</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupi: Open 2D Magic</translation>
     </message>
     <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="783"/>
