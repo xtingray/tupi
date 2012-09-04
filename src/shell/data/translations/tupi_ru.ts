@@ -1119,7 +1119,7 @@
         <translation>Ctrl+Y</translation>
     </message>
     <message>
-        <source>Tupi: 2D Magic</source>
+        <source>Tupi: Open 2D Magic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

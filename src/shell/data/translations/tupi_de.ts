@@ -897,7 +897,7 @@
     <name>TupCanvas</name>
     <message>
         <location filename="src/components/paintarea/ktcanvas.cpp" line="53"/>
-        <source>Tupi: 2D Magic</source>
+        <source>Tupi: Open 2D Magic</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

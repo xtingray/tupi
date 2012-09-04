@@ -94,7 +94,7 @@ _EOH_
     
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')
-    config.addDefine('REVISION=\\\\\"0\\\\\"')
+    config.addDefine('REVISION=\\\\\"1\\\\\"')
 
     Info.info << "Debug support... "
 

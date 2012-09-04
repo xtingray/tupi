@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Tupi: Open 2D Magic
-Name[es]=Tupí: Magia 2D Libre
-Name[pt]=Tupí: Magia 2D Livre
-Name[ru]=Tupi: Open 2D Magic
+Name=Tupi: 2D Magic
+Name[es]=Tupí: Magia 2D
+Name[pt]=Tupí: Magia 2D
+Name[ru]=Tupi: 2D Magic
 Exec=/usr/local/tupi/bin/tupi
 Icon=tupi.png
 Type=Application

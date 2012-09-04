@@ -1176,8 +1176,8 @@
         <translation>Balíček s projektem Tupi (*.tup)</translation>
     </message>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupi: 2D Magic</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupi: Open 2D Magic</translation>
     </message>
     <message>
         <source>Open Tupi project</source>

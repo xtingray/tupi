@@ -1375,8 +1375,8 @@
         <translation type="unfinished">Ctrl+Y</translation>
     </message>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation type="unfinished">Tupí: Magia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Magia 2D Libre</translation>
     </message>
     <message>
         <source>[net mode]</source>

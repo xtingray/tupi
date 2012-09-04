@@ -612,8 +612,8 @@
 <context>
     <name>TupCanvas</name>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Magia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Magia 2D Libre</translation>
     </message>
 </context>
 <context>

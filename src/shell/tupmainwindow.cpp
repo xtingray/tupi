@@ -119,7 +119,7 @@ TupMainWindow::TupMainWindow(TupSplash *splash, int parameters) :
     setStatusBar(m_statusBar);
 
     // Naming the main frame...
-    setWindowTitle(tr("Tupi: 2D Magic"));
+    setWindowTitle(tr("Tupi: Open 2D Magic"));
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
