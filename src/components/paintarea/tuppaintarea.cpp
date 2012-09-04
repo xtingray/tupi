@@ -531,12 +531,16 @@ void TupPaintArea::projectResponse(TupProjectResponse *)
 
 void TupPaintArea::libraryResponse(TupLibraryResponse *request)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (graphicsScene()->isDrawing())
         return;
 
     switch (request->action()) {
 
-            case TupProjectRequest::AddSymbolToProject:
+            case TupProjectRequest::InsertSymbolIntoFrame:
                  {
                      TupGraphicsScene *guiScene = graphicsScene();
                      if (!guiScene->scene())
@@ -555,7 +559,7 @@ void TupPaintArea::libraryResponse(TupLibraryResponse *request)
                  }
                  break;
             case TupProjectRequest::Remove:
-            case TupProjectRequest::RemoveSymbolFromProject:
+            case TupProjectRequest::RemoveSymbolFromFrame:
                  {
                      TupGraphicsScene *guiScene = graphicsScene();
                      if (!guiScene->scene())
@@ -786,6 +790,7 @@ void TupPaintArea::pasteItems()
              if (xml.startsWith("<svg")) {
                  type = TupLibraryObject::Svg;
                  total = currentScene->currentFrame()->svgItemsCount();
+                 tError() << "TupPaintArea::pasteItems() - Pasting a SVG file...";
              }
 
              /*
@@ -1120,7 +1125,23 @@ void TupPaintArea::goToFrame(int index)
                                                                     scene->currentLayerIndex(),
                                                                     index,
                                                                     TupProjectRequest::Select, "1");
-    emit requestTriggered(&request);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
+}
+
+void TupPaintArea::goToFrame(int frameIndex, int layerIndex, int sceneIndex)
+{
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
+                                                                      TupProjectRequest::Select, "1");
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
+}
+
+void TupPaintArea::goToScene(int sceneIndex)
+{
+    TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
+    // emit requestTriggered(&request);
+    emit localRequestTriggered(&request);
 }
 
 /*

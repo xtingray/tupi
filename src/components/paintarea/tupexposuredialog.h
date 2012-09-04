@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,43 +33,40 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPENTHICKNESSWIDGET_H
-#define TupPENTHICKNESSWIDGET_H
+#ifndef TUPEXPOSUREDIALOG_H
+#define TUPEXPOSUREDIALOG_H
 
-#include "tapplicationproperties.h"
+#include "tupproject.h"
+#include <QDialog>
 
-#include <QWidget>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QPen>
-#include <QSize>
-
-/**
- * This class shows a preview of the pen thickness 
- * @author Gustav Gonzalez <info@maefloresta.com>
- **/
-
-class TupPenThicknessWidget : public QWidget
+class TupExposureDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupPenThicknessWidget(QWidget *parent = 0);
-        ~TupPenThicknessWidget();
+        TupExposureDialog(TupProject *project, int scene, int layer, int frame, bool isNetworked, const QStringList &onLineUsers, QWidget *parent);
+        ~TupExposureDialog();
+        void updateUsersList(const QStringList &onLineUsers);
 
-        QSize minimumSizeHint() const;
-        QSize sizeHint() const;
-        void setColor(const QColor color);
-        void setBrush(int index);
-        void setBrush(const QBrush brush);
+    signals:
+        void goToFrame(int frame, int layer, int scene);
+        void goToScene(int scene);
+        void callNewScene();
+        void callNewLayer(int sceneIndex, int layerIndex);
+        void callNewFrame(int sceneIndex, int layerIndex, int layersTotal, int frameIndex);
+        void windowHasBeenClosed();
 
-    public slots:
-        void render(int thickness);
-        
-    protected:
-        void paintEvent(QPaintEvent *e);
-   
+    private slots:
+        void refreshUI(int frame, int layer);
+        void goToScene(int column, int sceneIndex);
+        void closeDialog();
+        void createScene();
+        void createLayer();
+        void createFrame();
+
     private:
+        void setButtonBar();
+        void setSheet(int sceneIndex, int layerIndex, int frameIndex);
         struct Private;
         Private *const k;
 };

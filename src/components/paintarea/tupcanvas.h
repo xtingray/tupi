@@ -39,6 +39,9 @@
 #include "tupgraphicsscene.h"
 #include "tupcanvasview.h"
 #include "tupbrushmanager.h"
+#include "tupprojectrequest.h"
+#include "tuprequestbuilder.h"
+#include "tupproject.h"
 
 #include <QFrame>
 #include <QPointF>
@@ -46,6 +49,7 @@
 #include <QCloseEvent>
 #include <QColor>
 #include <QPen>
+#include <QStringList>
 
 class TupGraphicsScene;
 
@@ -56,15 +60,17 @@ class TupCanvas : public QFrame
     public:
         TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
                   const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
-                  const QSize &projectSize = QSize(0, 0), double scaleFactor = 1, 
-                  int angle=0, const QColor &bg = QColor(Qt::white), TupBrushManager *brushManager = 0);
+                  TupProject *project = 0, double scaleFactor = 1, int angle=0, 
+                  TupBrushManager *brushManager = 0, bool isNetworked = false, const QStringList &onLineUsers = QStringList());
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
+        void updateOnLineUsers(const QStringList &onLineUsers);
 
    protected:
         void closeEvent(QCloseEvent *event);
 
    private:
+        enum UserHand { Right = 0, Left };
         TupCanvasView *graphicsView;
         struct Private;
         Private *const k;
@@ -73,16 +79,21 @@ class TupCanvas : public QFrame
         void colorDialog(const QColor &current);
 
    private slots:
+        void sketchTools();
+        void selectionTools();
+
         void colorDialog();
+        void penDialog();
+        void penProperties();
+        void opacityDialog();
+        void setOnionOpacity(double opacity);
+        void exposureDialog();
+
         void oneFrameBack();
         void oneFrameForward();
-        void updateThickness(int value);
-        void wakeUpPencil();
-        void wakeUpCircle();
-        void wakeUpSquare();
-        void wakeUpPolyline();
-        void wakeUpObjectSelection();
-        void wakeUpNodeSelection();
+        void wakeUpLibrary();
+
+        void wakeUpDeleteSelection();
         void wakeUpZoomIn();
         void wakeUpZoomOut();
         void wakeUpHand();
@@ -90,10 +101,29 @@ class TupCanvas : public QFrame
         void undo();
         void redo();
 
+        void updateSketchMenuState();
+        void updateSelectionMenuState();
+        void updateMenuStates();
+        void showInfoWidget();
+        void hideInfoWidget();
+
+        void updateExposureDialogState();
+        void createScene();
+        void createLayer(int sceneIndex, int layerIndex);
+        void createFrame(int sceneIndex, int layerIndex, int layersTotal, int frameIndex);
+
    signals:
+        void requestTriggered(const TupProjectRequest *event);
+        void localRequestTriggered(const TupProjectRequest *event);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenThicknessFromFullScreen(int size);
+        void updateOnionOpacityFromFullScreen(double opacity);
         void callAction(int menu, int index);
+        void goToFrame(int frame, int layer, int scene);
+        void goToScene(int scene);
+        void closeSketchMenu();
+        void closeSelectionMenu();
+        void closePenPropertiesMenu();
 };
 
 #endif

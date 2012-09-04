@@ -360,7 +360,7 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                            bool isOk = manager->load(file.fileName(), k->project);
                            if (isOk) {
                                k->projectIsOpen = true;
-                               emit openNewArea(k->project->projectName());
+                               emit openNewArea(k->project->projectName(), parser.partners());
                            } else {
                                #ifdef K_DEBUG
                                       tError() << "TupNetProjectManagerHandler::handlePackage() - Error: Net project can't be opened";
@@ -448,7 +448,15 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
     } else if (root == "communication_notice") {
                TupCommunicationParser parser;
                if (parser.parse(package)) {
-                   QString message = parser.message();
+                   QString login = parser.login();
+                   int state = parser.state();
+
+                   emit updateUsersList(login, state);
+
+                   QString message = "<b>" + login + "</b>" + " has left the project"; 
+                   if (state == 1)
+                       message = "<b>" + login + "</b>" + " has joined the project";
+
                    TOsd::self()->display(tr("Notice"), message);
                    k->notices->addMessage(message);
                } 

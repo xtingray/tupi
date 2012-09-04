@@ -10,8 +10,11 @@ macx {
     CONFIG += staticlib warn_on
 }
 
-HEADERS += tuppenwidget.h tuppenthicknesswidget.h
-SOURCES += tuppenwidget.cpp tuppenthicknesswidget.cpp
+HEADERS += tuppenwidget.h 
+           # tuppenthicknesswidget.h
+SOURCES += tuppenwidget.cpp 
+           # tuppenthicknesswidget.cpp
+
 *:!macx{
     CONFIG += dll warn_on
 }

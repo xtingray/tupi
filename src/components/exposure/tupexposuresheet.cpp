@@ -793,7 +793,7 @@ void TupExposureSheet::libraryResponse(TupLibraryResponse *e)
 {
     switch (e->action()) {
             case TupProjectRequest::Add:
-            case TupProjectRequest::AddSymbolToProject:
+            case TupProjectRequest::InsertSymbolIntoFrame:
                  {
                      if (e->spaceMode() == TupProject::FRAMES_EDITION && !e->frameIsEmpty() 
                          && k->currentTable->frameState(e->layerIndex(), e->frameIndex()) == TupExposureTable::Empty)

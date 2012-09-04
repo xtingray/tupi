@@ -141,7 +141,7 @@ TupLayer *TupScene::createLayer(QString name, int position, bool loaded)
 
     if (position < 0 || position > k->layers.count()) {
         #ifdef K_DEBUG
-               tDebug() << "TupScene::createLayer() - Invalid index";
+               tError() << "TupScene::createLayer() - Invalid index -> " << position;
         #endif
         return 0;
     }

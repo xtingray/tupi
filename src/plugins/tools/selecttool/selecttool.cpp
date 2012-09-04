@@ -88,11 +88,40 @@ void SelectTool::init(TupGraphicsScene *scene)
     k->scene = scene;
     k->scene->clearSelection();
 
+    reset(scene);
+
+    /*
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
+                      if (!qgraphicsitem_cast<Node *>(item)) {
+                          if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
+                              if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                              // if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
+                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                              } else {
+                                  item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                  item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                              }
+                          } else {
+                              item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                          }
+                      }
+             }
+    }
+    */
+}
 
-                      // SQA: Temporary code for debug issues
+void SelectTool::reset(TupGraphicsScene *scene)
+{
+    #ifdef K_DEBUG
+           T_FUNCINFOX("tools");
+    #endif
+
+    foreach (QGraphicsView *view, scene->views()) {
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+             foreach (QGraphicsItem *item, scene->items()) {
+                      // SQA: Temporary code for debugging issues
                       /*
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
@@ -104,6 +133,7 @@ void SelectTool::init(TupGraphicsScene *scene)
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
                               if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                              // if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -218,7 +248,6 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                      TupLibraryObject::Type type;
 
                      if (svg) {
-
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(svg);
                          } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
@@ -226,7 +255,6 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                                     position = bg->frame()->indexOf(svg); 
                          }
                          type = TupLibraryObject::Svg;
-
                      } else {
 
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
@@ -618,6 +646,12 @@ void SelectTool::updateRealZoomFactor()
              k->realFactor = 0.3;
     else if (k->scaleFactor > 4)
              k->realFactor = 0.2;
+}
+
+void SelectTool::sceneResponse(const TupSceneResponse *event)
+{
+    if (event->action() == TupProjectRequest::Select)
+        reset(k->scene);
 }
 
 Q_EXPORT_PLUGIN2(tup_select, SelectTool);

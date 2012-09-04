@@ -25,6 +25,12 @@ HEADERS += tuppaintarea.h \
            tupcanvasview.h \
            tupimagedialog.h \
            tupstoryboarddialog.h \
+           tuppendialog.h \
+           tuponionopacitydialog.h \
+           tupexposuredialog.h \
+           tupexposurescene.h \
+           tuptoolsdialog.h \
+           tupinfowidget.h \
            tupiruler.h
 
 SOURCES += tuppaintarea.cpp \
@@ -42,6 +48,12 @@ SOURCES += tuppaintarea.cpp \
            tupcanvasview.cpp \
            tupimagedialog.cpp \
            tupstoryboarddialog.cpp \
+           tuppendialog.cpp \
+           tuponionopacitydialog.cpp \
+           tupexposuredialog.cpp \
+           tupexposurescene.cpp \
+           tuptoolsdialog.cpp \
+           tupinfowidget.cpp \
            tupiruler.cpp
 
 *:!macx{

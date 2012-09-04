@@ -61,6 +61,7 @@ struct ViewTool::Private
     QCursor zoomInCursor;
     QCursor zoomOutCursor;
     QCursor handCursor;
+    QSize projectSize;
 };
 
 ViewTool::ViewTool() : k(new Private)
@@ -78,6 +79,8 @@ ViewTool::~ViewTool()
 
 void ViewTool::init(TupGraphicsScene *scene)
 {
+    k->scene = scene;
+
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              foreach (QGraphicsItem *item, scene->items()) {
@@ -137,12 +140,12 @@ void ViewTool::move(const TupInputDeviceInformation *input, TupBrushManager *bru
     foreach (QGraphicsView * view, scene->views()) {
              if (name() == tr("Zoom In") || name() == tr("Zoom Out"))
                  view->setDragMode(QGraphicsView::NoDrag);
-             else if (name() == tr("Hand"))
-                      view->setDragMode(QGraphicsView::ScrollHandDrag);
+             // else if (name() == tr("Hand"))
+             //          view->setDragMode(QGraphicsView::ScrollHandDrag);
     }
 
     if (name() == tr("Hand")) {
-        k->scene = scene;
+        k->scene = scene; // <- SQA: Trace this variable
     } else if (name() == tr("Zoom In") && input->keyModifiers() == Qt::ControlModifier) {
 
                if (!k->added) {
@@ -183,72 +186,99 @@ void ViewTool::release(const TupInputDeviceInformation *input, TupBrushManager *
 {
     Q_UNUSED(brushManager);
 
-    if (name() == tr("Zoom In") || name() == tr("Zoom Out")) { 
-        // Zoom Square mode
-        if (input->button() == Qt::LeftButton && input->keyModifiers() == Qt::ControlModifier) {    
+    if (name() == tr("Hand")) {
+        qreal initX = k->firstPoint.x();
+        qreal initY = k->firstPoint.y();
+        qreal x = input->pos().x();
+        qreal y = input->pos().y();
 
-            foreach (QGraphicsView *view, scene->views()) {
-                     QRectF rect;
-                     if (k->rect) {
-                         rect = k->rect->rect();
-                     } else {
-                         int xMouse = input->pos().x();
-                         int yMouse = input->pos().y();
-                         int xInit = k->firstPoint.x();
-                         int yInit = k->firstPoint.y();
+        qreal deltaX = initX - x;
+        qreal deltaY = initY - y; 
 
-                         QRectF rect = k->rect->rect();
+        /*
+        if (fabs(deltaX) > 50)
+            deltaX = 50;
 
-                         if (xMouse >= xInit) {
-                             if (yMouse >= yInit)
-                                 rect.setBottomRight(input->pos());
-                             else
-                                 rect.setTopRight(input->pos());
-                         } else {
-                             if (yMouse >= yInit)
-                                 rect.setBottomLeft(input->pos());
-                             else
-                                 rect.setTopLeft(input->pos());
-                         }
-                     }
+        if (fabs(deltaY) > 50)
+            deltaY = 50;
+        */
 
-                     view->fitInView(rect, Qt::KeepAspectRatio);
-            }
+        qreal centerX = initX + deltaX;
+        qreal centerY = initY + deltaY;
 
-        } else { // Normal Zoom
-
-            foreach (QGraphicsView *view, scene->views()) {
-                     /*
-                     if (input->button() == Qt::LeftButton) {
-                         // SQA: the function centerOn is not doing what we really need :S
-                         view->centerOn(input->pos());
-                         view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
-                     } else {
-                         if (input->button() == Qt::RightButton) {
-                             view->centerOn(input->pos());
-                             view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
-                         }
-                     } 
-                     */
-
-                     if (name() == tr("Zoom In")) {
-                         // SQA: the function centerOn is not doing what we really need :S
-                         view->centerOn(input->pos());
-                         view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
-                     } else {
-                         if (name() == tr("Zoom Out")) {
-                             view->centerOn(input->pos());
-                             view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
-                         }
-                     }
-            }
+        foreach (QGraphicsView *view, scene->views()) {
+                 view->centerOn(QPointF(centerX, centerY));
+                 view->setSceneRect(centerX - (k->projectSize.width()/2), centerY - (k->projectSize.height()/2), 
+                                    k->projectSize.width(), k->projectSize.height());
         }
 
-        if (k->rect) {
-            delete k->rect;
-            k->rect = 0;
-        }
+    } else if (name() == tr("Zoom In") || name() == tr("Zoom Out")) { 
+               // Zoom Square mode
+               if (input->button() == Qt::LeftButton && input->keyModifiers() == Qt::ControlModifier) {    
+
+                   foreach (QGraphicsView *view, scene->views()) {
+                            QRectF rect;
+                            if (k->rect) {
+                                rect = k->rect->rect();
+                            } else {
+                                int xMouse = input->pos().x();
+                                int yMouse = input->pos().y();
+                                int xInit = k->firstPoint.x();
+                                int yInit = k->firstPoint.y();
+
+                                QRectF rect = k->rect->rect();
+
+                                if (xMouse >= xInit) {
+                                    if (yMouse >= yInit)
+                                        rect.setBottomRight(input->pos());
+                                    else
+                                        rect.setTopRight(input->pos());
+                                } else {
+                                    if (yMouse >= yInit)
+                                        rect.setBottomLeft(input->pos());
+                                    else
+                                        rect.setTopLeft(input->pos());
+                                }
+                            }
+
+                            view->fitInView(rect, Qt::KeepAspectRatio);
+                   }
+
+               } else { // Normal Zoom
+
+                    foreach (QGraphicsView *view, scene->views()) {
+                             if (name() == tr("Zoom In")) {
+                                 // SQA: the function centerOn is not doing what we really need :S
+                                 view->centerOn(input->pos());
+                                 view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
+                             } else if (name() == tr("Zoom Out")) {
+                                        view->centerOn(input->pos());
+                                        view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
+                             }
+                    }
+               } 
+
+               if (k->rect) {
+                   delete k->rect;
+                   k->rect = 0;
+               }
     }
+}
+
+void ViewTool::autoZoom() 
+{
+    foreach (QGraphicsView * view, k->scene->views()) {
+             if (name() == tr("Zoom In")) {
+                 view->scale(1 + k->configurator->getFactor(), 1 + k->configurator->getFactor());
+             } else if (name() == tr("Zoom Out")) {
+                        view->scale(1 - k->configurator->getFactor(), 1 - k->configurator->getFactor());
+             }
+    }
+}
+
+void ViewTool::setProjectSize(const QSize size)
+{
+    k->projectSize = size;
 }
 
 QMap<QString, TAction *> ViewTool::actions() const

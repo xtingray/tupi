@@ -76,7 +76,6 @@ struct Tweener::Private
     QList<QGraphicsItem *> objects;
 
     TupItemTweener *currentTween;
-
     TNodeGroup *group;
 
     bool pathAdded;

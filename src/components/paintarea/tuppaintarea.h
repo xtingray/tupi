@@ -72,6 +72,8 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         virtual void keyReleaseEvent(QKeyEvent *event);
         void goOneFrameBack();
         void goOneFrameForward();
+        void goToFrame(int frameIndex, int layerIndex, int sceneIndex);
+        void goToScene(int sceneIndex);
         void copyCurrentFrame();
         void pasteDataOnCurrentFrame();
         void quickCopy();
@@ -83,6 +85,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
 
     signals:
         void requestTriggered(const TupProjectRequest *event);
+        void localRequestTriggered(const TupProjectRequest *event);
         void itemAddedOnSelection(TupGraphicsScene *);
         void frameChanged(int);
         void closePolyLine();

@@ -32,6 +32,7 @@ SOURCES += talgorithm.cpp \
            tmd5hash.cpp \
            tipdatabase.cpp \
            txmlparserbase.cpp
+
 *:!macx{
     CONFIG += warn_on dll
 }

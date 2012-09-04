@@ -25,7 +25,9 @@ HEADERS += tupexportinterface.h \
            tuppaintarearotator.h \
            tupgraphicsscene.h \
            tupguideline.h \
-           tupanimationrenderer.h
+           tupanimationrenderer.h \
+           tupwebhunter.h
+
 SOURCES += tupexportpluginobject.cpp \
            tupmodulewidgetbase.cpp \
            tuppluginmanager.cpp \
@@ -34,7 +36,9 @@ SOURCES += tupexportpluginobject.cpp \
            tuppaintarearotator.cpp \
            tupgraphicsscene.cpp \
            tupguideline.cpp \
-           tupanimationrenderer.cpp
+           tupanimationrenderer.cpp \
+           tupwebhunter.cpp
+
 *:!macx{
     CONFIG += dll warn_on
 }

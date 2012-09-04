@@ -127,7 +127,8 @@ struct TupViewDocument::Private
     int autoSaveTime;
     TAction *fullScreenAction;
     bool fullScreenOn;
-    bool isLocal;
+    bool isNetworked;
+    QStringList onLineUsers;
 
     TupPaintArea *paintArea;
     TupCanvas *fullScreen;
@@ -147,7 +148,7 @@ struct TupViewDocument::Private
     TupExportInterface *imagePlugin;
 };
 
-TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLocal) : QMainWindow(parent), k(new Private)
+TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isNetworked, const QStringList &users) : QMainWindow(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -160,7 +161,8 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
     k->onionEnabled = true;
     k->fullScreenOn = false;
     k->viewAngle = 0;
-    k->isLocal = isLocal;
+    k->isNetworked = isNetworked;
+    k->onLineUsers = users;
 
     k->actionManager = new TActionManager(this);
 
@@ -214,6 +216,7 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
     connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 
     connect(k->paintArea, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
+    connect(k->paintArea, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
 
     setupDrawActions();
 
@@ -240,8 +243,9 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isLo
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
-    if (k->isLocal)
-        saveTimer();
+    // SQA: Temporarily disabled  
+    // if (!k->isNetworked)
+    //     saveTimer();
 }
 
 TupViewDocument::~TupViewDocument()
@@ -380,7 +384,7 @@ void TupViewDocument::setupDrawActions()
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    if (!k->isLocal && server.compare("tupitube.com") == 0) {
+    if (k->isNetworked && server.compare("tupitube.com") == 0) {
         TAction *postImage = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"),
                                          "Export Current Frame To Gallery", QKeySequence(tr("@")),
                                          this, SLOT(postImage()), k->actionManager, "post_image");
@@ -645,6 +649,7 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else if (index == TupToolPlugin::QuickCopy) {
                                 k->paintArea->quickCopy();
                      }
+                     return;
                  }
             break;
 
@@ -732,12 +737,20 @@ void TupViewDocument::loadPlugin(int menu, int index)
 
     if (action) {
         QString toolName = tr("%1").arg(action->text());
-        if (toolName.compare(k->currentTool->name()) != 0) {
+
+        if (index == TupToolPlugin::ZoomInTool || index == TupToolPlugin::ZoomOutTool) {
+            if (k->fullScreenOn) {
+                action->trigger();
+                k->fullScreen->updateCursor(action->cursor());
+                TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(action->parent());
+                tool->autoZoom();
+            }
+        } else if (toolName.compare(k->currentTool->name()) != 0) {
             if (k->fullScreenOn) {
                 action->trigger();
                 k->fullScreen->updateCursor(action->cursor());
             }
-        } 
+        }
     } else {
         #ifdef K_DEBUG
                tError() << "TupViewDocument::loadPlugin() - Error: Action pointer is NULL!";
@@ -826,6 +839,7 @@ void TupViewDocument::selectTool()
                          connect(k->paintArea, SIGNAL(itemAddedOnSelection(TupGraphicsScene *)), 
                                  tool, SLOT(updateItems(TupGraphicsScene *)));
                      } 
+
                      break;
 
                 case TupToolInterface::View:
@@ -836,6 +850,11 @@ void TupViewDocument::selectTool()
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
                      if (toolName.compare(tr("Zoom In"))==0 || toolName.compare(tr("Zoom Out"))==0)
                          minWidth = 130;
+
+                     if (toolName.compare(tr("Hand"))==0) {
+                         tool->setProjectSize(k->project->dimension());
+                     }
+                     
                      break;
         }
 
@@ -1015,7 +1034,7 @@ void TupViewDocument::createToolBar()
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    if (!k->isLocal && server.compare("tupitube.com") == 0)
+    if (k->isNetworked && server.compare("tupitube.com") == 0)
         k->barGrid->addAction(k->actionManager->find("post_image"));
 
     k->barGrid->addSeparator();
@@ -1198,7 +1217,7 @@ int TupViewDocument::currentSceneIndex()
 
 void TupViewDocument::updateBgColor(const QColor color)
 {
-   if (k->isLocal) {
+   if (!k->isNetworked) {
        k->project->setBgColor(color);
        k->paintArea->setBgColor(color);
    } else {
@@ -1270,8 +1289,8 @@ void TupViewDocument::showFullScreen()
         scale = (double) (screenH - 50) / (double) projectSize.height();
 
     k->fullScreen = new TupCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
-                                 k->paintArea->centerPoint(), QSize(screenW, screenH), projectSize, scale,
-                                 k->viewAngle, k->project->bgColor(), brushManager()); 
+                                 k->paintArea->centerPoint(), QSize(screenW, screenH), k->project, scale,
+                                 k->viewAngle, brushManager(), k->isNetworked, k->onLineUsers); 
 
     k->fullScreen->updateCursor(k->currentTool->cursor());
     k->fullScreen->showFullScreen();
@@ -1279,7 +1298,13 @@ void TupViewDocument::showFullScreen()
     connect(this, SIGNAL(openColorDialog(const QColor &)), k->fullScreen, SLOT(colorDialog(const QColor &)));
     connect(k->fullScreen, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SIGNAL(updateColorFromFullScreen(const QColor &)));
     connect(k->fullScreen, SIGNAL(updatePenThicknessFromFullScreen(int)), this, SLOT(updatePenThickness(int)));
+    connect(k->fullScreen, SIGNAL(updateOnionOpacityFromFullScreen(double)), this, SLOT(updateOnionOpacity(double)));
     connect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
+    connect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
+    connect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
+
+    connect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
+    connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
 }
 
 void TupViewDocument::updatePenThickness(int size) 
@@ -1289,18 +1314,41 @@ void TupViewDocument::updatePenThickness(int size)
     emit updatePenFromFullScreen(pen);
 }
 
+void TupViewDocument::updateOnionOpacity(double opacity)
+{
+    k->paintArea->setOnionFactor(opacity);
+    k->onionFactorSpin->setValue(opacity);
+}
+
 void TupViewDocument::closeFullScreen()
 {
     if (k->fullScreenOn) {
         disconnect(this, SIGNAL(openColorDialog(const QColor &)), k->fullScreen, SLOT(colorDialog(const QColor &)));
         disconnect(k->fullScreen, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SIGNAL(updateColorFromFullScreen(const QColor &)));
         disconnect(k->fullScreen, SIGNAL(updatePenThicknessFromFullScreen(int)), this, SLOT(updatePenThickness(int))); 
+        disconnect(k->fullScreen, SIGNAL(updateOnionOpacityFromFullScreen(double)), this, SLOT(updateOnionOpacity(double)));
         disconnect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
+        disconnect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
+        disconnect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
+
+        disconnect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
+        disconnect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
 
         k->fullScreen->close();
         k->fullScreenOn = false;
         k->currentTool->init(k->paintArea->graphicsScene());
+        k->fullScreen = 0;
     }
+}
+
+void TupViewDocument::selectFrame(int frame, int layer, int scene)
+{
+    k->paintArea->goToFrame(frame, layer, scene);
+}
+
+void TupViewDocument::selectScene(int scene)
+{
+    k->paintArea->goToScene(scene);
 }
 
 void TupViewDocument::exportImage()
@@ -1366,4 +1414,17 @@ void TupViewDocument::updateStoryboard(TupStoryboard *storyboard)
 {
     int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
     k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+}
+
+void TupViewDocument::updateUsersOnLine(const QString &login, int state)
+{
+    if (state == 1) {
+        k->onLineUsers << login; 
+    } else {
+        int index = k->onLineUsers.indexOf(login);
+        k->onLineUsers.removeAt(index); 
+    }
+
+    if (k->fullScreenOn)
+        k->fullScreen->updateOnLineUsers(k->onLineUsers);
 }

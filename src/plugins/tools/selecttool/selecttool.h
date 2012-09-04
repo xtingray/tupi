@@ -41,6 +41,7 @@
 #include "tupproject.h"
 #include "tupgraphicsscene.h"
 #include "infopanel.h"
+#include "tupprojectresponse.h"
 
 #include <QObject>
 
@@ -65,7 +66,8 @@ class SelectTool : public TupToolPlugin
         virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void keyPressEvent(QKeyEvent *event);
-        
+        virtual void sceneResponse(const TupSceneResponse *event);
+
         virtual QMap<QString, TAction *>actions() const;
         
         int toolType() const;
@@ -90,6 +92,7 @@ class SelectTool : public TupToolPlugin
         void setupActions();
         void verifyActiveSelection();
         void updateRealZoomFactor();
+        void reset(TupGraphicsScene *scene);
         
     private:
         struct Private;

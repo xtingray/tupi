@@ -453,6 +453,10 @@ Scenes TupProject::scenes() const
 
 bool TupProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (!k->isOpen) {
         #ifdef K_DEBUG
                tError() << "TupProject::createSymbol() - Fatal error: project is NOT open!";
@@ -476,6 +480,10 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
 bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbolType, TupProject::Mode spaceMode, 
                              int sceneIndex, int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     Q_UNUSED(name);
 
     TupFrame *frame = 0;
@@ -534,12 +542,20 @@ bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbol
 
 bool TupProject::removeSymbol(const QString &name)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     return k->library->removeObject(name, true);
 }
 
-bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &name, int sceneIndex, 
+bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString &name, int sceneIndex, 
                                    int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupFrame *frame = 0;
     TupScene *scene = this->scene(sceneIndex);
 
@@ -561,7 +577,7 @@ bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &n
                 return false;
         } else {
             #ifdef K_DEBUG
-                   tError() << "TupProject::addSymbolToProject() - spaceMode invalid!";
+                   tError() << "TupProject::insertSymbolIntoFrame() - spaceMode invalid!";
             #endif
             
             return false;
@@ -593,7 +609,7 @@ bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &n
                         case TupLibraryObject::Text:
                         {
                              // SQA: Just out of curiosity, check if this case really happens!
-                             // tFatal() << "TupProject::addSymbolToProject() - Just tracing text!";
+                             // tFatal() << "TupProject::insertSymbolIntoFrame() - Just tracing text!";
                              TupGraphicLibraryItem *libraryItem = new TupGraphicLibraryItem(object);
 
                              int zLevel = frame->getTopZLevel();
@@ -645,7 +661,7 @@ bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &n
                         break;
                         default:
                              #ifdef K_DEBUG
-                                    tFatal() << "TupProject::addSymbolToProject() -> Unknown Object Type"; 
+                                    tFatal() << "TupProject::insertSymbolIntoFrame() -> Unknown Object Type"; 
                              #endif
                         break;
                 }
@@ -654,27 +670,31 @@ bool TupProject::addSymbolToProject(TupProject::Mode spaceMode, const QString &n
 
             } else {
                 #ifdef K_DEBUG 
-                       tError() << "TupProject::addSymbolToProject() - Object NOT found at library! " << name;
+                       tError() << "TupProject::insertSymbolIntoFrame() - Object NOT found at library! " << name;
                 #endif
                 return false;
             }
         } else {
                 #ifdef K_DEBUG
-                       tError() << "TupProject::addSymbolToProject() - Invalid frame!";
+                       tError() << "TupProject::insertSymbolIntoFrame() - Invalid frame!";
                 #endif
         }
 
     } else {
         #ifdef K_DEBUG
-               tError() << "TupProject::addSymbolToProject() - Invalid scene!";
+               tError() << "TupProject::insertSymbolIntoFrame() - Invalid scene!";
         #endif
     }
 
     return false;
 }
 
-bool TupProject::removeSymbolFromProject(const QString &name, TupLibraryObject::Type type)
+bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Type type)
 {
+    #ifdef K_DEBUG
+           tFatal() << "TupProject::removeSymbolFromFrame() - Removing symbol " << name << " from project...";
+    #endif
+
     if (type == TupLibraryObject::Folder)
         return true;
 
@@ -699,6 +719,8 @@ bool TupProject::removeSymbolFromProject(const QString &name, TupLibraryObject::
                  }
              }
     }
+
+    k->library->removeObject(name, true);
 
     return true;
 }

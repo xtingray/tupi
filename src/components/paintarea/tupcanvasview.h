@@ -41,6 +41,7 @@
 #include <QGraphicsView>
 #include <QPainter>
 #include <QRectF>
+#include <QMouseEvent>
 
 class TupCanvasView : public QGraphicsView
 {

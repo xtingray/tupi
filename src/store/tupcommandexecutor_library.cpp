@@ -42,9 +42,14 @@
 #include "tupprojectresponse.h"
 #include "tdebug.h"
 
+// This method adds an object into the library
+
 bool TupCommandExecutor::createSymbol(TupLibraryResponse *response)
 {
-    tFatal() << "TupCommandExecutor::createSymbol() - Creating object: " << response->arg().toString();
+    #ifdef K_DEBUG
+           tFatal() << "TupCommandExecutor::createSymbol() - Creating object: " << response->arg().toString();
+    #endif
+
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), 
                                 response->data(), response->parent())) {
         emit responsed(response);
@@ -55,8 +60,14 @@ bool TupCommandExecutor::createSymbol(TupLibraryResponse *response)
     return false;
 }
 
+// This method removes an object from the library
+
 bool TupCommandExecutor::removeSymbol(TupLibraryResponse *response)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if ((response->sceneIndex() > -1) && (response->layerIndex() > -1) && (response->frameIndex() > -1)) {
 
         if (m_project->removeSymbol(response->arg().toString(), response->symbolType(), response->spaceMode(), 
@@ -74,12 +85,17 @@ bool TupCommandExecutor::removeSymbol(TupLibraryResponse *response)
     return false;
 }
 
-bool TupCommandExecutor::addSymbolToProject(TupLibraryResponse *response)
+// This method inserts an object into one frame 
+
+bool TupCommandExecutor::insertSymbolIntoFrame(TupLibraryResponse *response)
 {
-    tFatal() << "TupCommandExecutor::addSymbolToProject() - Adding symbol to project: " << response->arg().toString();
+    #ifdef K_DEBUG
+           tFatal() << "TupCommandExecutor::insertSymbolIntoFrame() - Adding symbol to project: " << response->arg().toString();
+    #endif
+
 
     if (m_project->scenesTotal() > 0) {
-        if (m_project->addSymbolToProject(response->spaceMode(), response->arg().toString(), 
+        if (m_project->insertSymbolIntoFrame(response->spaceMode(), response->arg().toString(), 
             response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
             TupScene *scene = m_project->scene(response->sceneIndex()); 
             if (scene) {
@@ -95,17 +111,23 @@ bool TupCommandExecutor::addSymbolToProject(TupLibraryResponse *response)
         } 
     } else {
         #ifdef K_DEBUG
-               tError() << "TupCommandExecutor::addSymbolToProject() - No scenes available!";
+               tError() << "TupCommandExecutor::insertSymbolIntoFrame() - No scenes available!";
         #endif
     } 
 
     return false;
 }
 
-bool TupCommandExecutor::removeSymbolFromProject(TupLibraryResponse *response)
+// This method removes an object from one frame
+
+bool TupCommandExecutor::removeSymbolFromFrame(TupLibraryResponse *response)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (m_project->scenesTotal() > 0) {
-        if (m_project->removeSymbolFromProject(response->arg().toString(), response->symbolType())) {
+        if (m_project->removeSymbolFromFrame(response->arg().toString(), response->symbolType())) {
             TupScene *scene = m_project->scene(response->sceneIndex());
             if (scene) {
                 TupLayer *layer = scene->layer(response->layerIndex());
@@ -117,7 +139,15 @@ bool TupCommandExecutor::removeSymbolFromProject(TupLibraryResponse *response)
             }
             emit responsed(response);
             return true;
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "TupCommandExecutor::removeSymbolFromFrame() - Error: Symbol can't be removed from project!";
+            #endif
         }
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupCommandExecutor::removeSymbolFromFrame() - No scenes available!";
+        #endif
     }
 
     return false;

@@ -54,11 +54,13 @@ struct TupSvgItem::Private
 TupSvgItem::TupSvgItem(QGraphicsItem * parent)
     : QGraphicsSvgItem(parent), k(new Private)
 {
+    setAcceptHoverEvents(true);
 }
 
 TupSvgItem::TupSvgItem(QString &file, TupFrame *frame)
     : QGraphicsSvgItem(file), k(new Private)
 {
+    setAcceptHoverEvents(true);
     k->path = file;
     k->frame = frame;
     k->hasTween = false;
@@ -66,6 +68,7 @@ TupSvgItem::TupSvgItem(QString &file, TupFrame *frame)
 
 TupSvgItem::~TupSvgItem()
 {
+    setAcceptHoverEvents(false);
 }
 
 void TupSvgItem::setSymbolName(const QString &symbolName)
@@ -158,3 +161,37 @@ QPointF TupSvgItem::lastTweenPos()
     return k->lastTweenPos;
 }
 
+void TupSvgItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    /*
+    QRectF rect = sceneBoundingRect();
+    int x = event->pos().x();
+    int y = event->pos().y();
+    
+    int xmin = 0; 
+    int xmax = rect.width();
+    int ymin = 0;
+    int ymax = rect.height();
+
+    if (rect.width() >= 100) {
+        xmin = (rect.width() - 100)/2;
+        xmax = xmin + 100;
+        ymin = (rect.height() - 100)/2;
+        ymax = ymin + 100;
+    }
+
+    if (x >= xmin && x <= xmax) {
+        if (y >= ymin && y <= ymax) {
+            emit enabledChanged();
+        }
+    }
+    */
+
+    emit enabledChanged();
+    QGraphicsSvgItem::hoverEnterEvent(event);
+}
+
+void TupSvgItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGraphicsSvgItem::hoverLeaveEvent(event);
+}

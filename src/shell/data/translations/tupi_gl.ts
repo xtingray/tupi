@@ -1141,8 +1141,8 @@
 <context>
     <name>TupCanvas</name>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Maxia 2D</translation>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Maxia 2D Livre</translation>
     </message>
 </context>
 <context>

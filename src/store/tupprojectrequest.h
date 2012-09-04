@@ -118,8 +118,8 @@ class STORE_EXPORT TupProjectRequest
             Transform = 10,
             Convert = 11,
             EditNodes = 12,
-            AddSymbolToProject = 13,
-            RemoveSymbolFromProject = 14,
+            InsertSymbolIntoFrame = 13,
+            RemoveSymbolFromFrame = 14,
 
             SetTween = 15,
             UpdateTween = 16,

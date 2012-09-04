@@ -62,6 +62,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
+#include <QDesktopWidget>
 
 /**
  * This class defines the data structure and methods for handling animation scenes.
@@ -381,11 +382,9 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, double opacity
 
 void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 {
-    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-    */
 
     if (svgItem) {
 
@@ -400,9 +399,10 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
 
             if (frame) {
                 svgItem->setOpacity(opacity);
-                // k->objectCounter++;
-                // tDebug() << "TupGraphicsScene::addSvgObject() - Item added successful! [" 
-                //          << k->framePosition.layer << ", " << k->framePosition.frame << "]"; 
+
+                if (svgItem->symbolName().compare("dollar.svg")==0)
+                    connect(svgItem, SIGNAL(enabledChanged()), this, SIGNAL(showInfoWidget()));
+
                 addItem(svgItem);
             } else {
                 #ifdef K_DEBUG
@@ -414,6 +414,7 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity)
                        tFatal() << "TupGraphicsScene::addSvgObject() - Error: Layer #" << k->framePosition.layer << " NO available!";
                 #endif
         }
+
     } else {
         #ifdef K_DEBUG
                tFatal() << "TupGraphicsScene::addSvgObject() - Error: No SVG item!";
@@ -915,10 +916,16 @@ void TupGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
         if (k->tool) {      
 
+            /* SQA: Check if this conditional must be enabled again 
             if ((k->tool->toolType() == TupToolPlugin::Brush || k->tool->toolType() == TupToolPlugin::Tweener) 
                  && event->isAccepted()) {
                 return;
             } 
+            */
+
+            if ((k->tool->toolType() == TupToolPlugin::Brush) && event->isAccepted()) {
+                return;
+            }
 
             // If there's no frame... the tool is disabled 
 
@@ -1210,6 +1217,11 @@ void TupGraphicsScene::setOnionFactor(double opacity)
     k->opacity = opacity;
     if (k->spaceMode == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
+}
+
+double TupGraphicsScene::opacity()
+{
+    return k->opacity;
 }
 
 int TupGraphicsScene::framesTotal() 

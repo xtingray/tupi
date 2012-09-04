@@ -157,6 +157,14 @@ void TupToolPlugin::updateZoomFactor(qreal factor)
     Q_UNUSED(factor);
 }
 
+void TupToolPlugin::autoZoom()
+{
+}
+
+void TupToolPlugin::setProjectSize(const QSize size)
+{
+}
+
 QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)
 {
     TupToolPlugin::MenuIndex menu = TupToolPlugin::BrushesMenu;
@@ -172,15 +180,11 @@ QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modif
                  }
             break;
 
-            case Qt::Key_M:
-                 tool = TupToolPlugin::SchemeTool;
-            break;
-
-            /* SQA: Temporarily disabled
             case Qt::Key_K:
                  tool = TupToolPlugin::InkTool;
             break;
 
+            /*
             case Qt::Key_E:
                  tool = TupToolPlugin::EraserTool;
             break;

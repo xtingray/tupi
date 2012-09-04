@@ -105,8 +105,8 @@ class TupCommandExecutor : public QObject
         
         bool createSymbol(TupLibraryResponse *response);
         bool removeSymbol(TupLibraryResponse *response);
-        bool addSymbolToProject(TupLibraryResponse *response);
-        bool removeSymbolFromProject(TupLibraryResponse *response);
+        bool insertSymbolIntoFrame(TupLibraryResponse *response);
+        bool removeSymbolFromFrame(TupLibraryResponse *response);
         
         bool setTween(TupItemResponse *response);
         bool expandFrame(TupFrameResponse *response);

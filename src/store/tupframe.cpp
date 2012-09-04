@@ -309,6 +309,10 @@ void TupFrame::updateIdFromFrame(const QString &oldId, const QString &newId)
 
 void TupFrame::addSvgItem(const QString &key, TupSvgItem *item)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO << key;
+    #endif
+
     int index = k->svg.count();
     insertSvgItem(index, item);
     k->svgIndexes[index] = key;
@@ -457,6 +461,10 @@ bool TupFrame::removeGraphicAt(int position)
 
 bool TupFrame::removeSvgAt(int position)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (position < 0)
         return false;
 
@@ -474,8 +482,16 @@ bool TupFrame::removeSvgAt(int position)
         // SQA: Pending to check
         //this->scene()->removeTweenObject(item);
 
+        #ifdef K_DEBUG
+               tFatal() << "TupFrame::removeSvgAt() - SVG object has been removed (" << position << ")";
+        #endif
+
         return true;
     } 
+
+    #ifdef K_DEBUG
+           tError() << "TupFrame::removeSvgAt() - Error: Couldn't find SVG object (" << position << ")";
+    #endif
 
     return false;
 }
@@ -592,9 +608,11 @@ int TupFrame::indexOf(TupSvgItem *object) const
 
 int TupFrame::indexOf(QGraphicsItem *item) const
 {
-    foreach (TupGraphicObject *object, k->graphics.values()) {
-             if (object->item() == item)
-                 return k->graphics.objectIndex(object);
+    if (item) {
+        foreach (TupGraphicObject *object, k->graphics.values()) {
+                 if (object->item()->zValue() == item->zValue())
+                     return k->graphics.objectIndex(object);
+        }
     }
 
     return -1;

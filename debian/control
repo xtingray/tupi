@@ -11,8 +11,10 @@ Homepage: http://www.maefloresta.com
 
 Package: tupi
 Architecture: any
-Depends: ${misc:Depends}, libavcodec53 (>= 4:0.7.2~), 
- libavformat53 (>= 4:0.7.2~), libavutil51 (>= 4:0.7.2~), 
+Depends: ${misc:Depends}, 
+ libavcodec53 (>= 4:0.7.2~) | libavcodec-extra-53 (>= 4:0.7.2~), 
+ libavformat53 (>= 4:0.7.2~) | libavformat-extra-53 (>= 4:0.7.2~), 
+ libavutil51 (>= 4:0.7.2~) | libavutil-extra-51 (>= 4:0.7.2~), 
  libc6 (>= 2.12.1-0~), libgcc1 (>= 1:4.5.1-7~), libgl1-mesa-glx, 
  libglu1-mesa, libqt4-network (>= 4:4.7.0~), libqt4-opengl (>= 4:4.7.0~), 
  libqt4-opengl-dev (>= 4:4.7.0~), libqt4-svg (>= 4:4.7.0~), 

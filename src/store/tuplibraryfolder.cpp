@@ -66,6 +66,10 @@ TupLibraryFolder::~TupLibraryFolder()
 TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, const QString &name, const QByteArray &data, 
                                                const QString &folder, bool loaded)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     if (data.isEmpty()) {
         #ifdef K_DEBUG
                tError() << "TupLibraryFolder::createSymbol() - [ Fatal Error ] - Data is empty!";
@@ -166,6 +170,10 @@ bool TupLibraryFolder::removeObject(const QString &id, bool absolute)
                  return folder->removeObject(id, absolute);
     }
 
+    #ifdef K_DEBUG
+           tError() << "TupLibraryFolder::removeObject() - [ Fatal Error ] - Object " << id << " wasn't found";
+    #endif
+
     return false;
 }
 
@@ -177,7 +185,7 @@ bool TupLibraryFolder::removeFolder(const QString &id)
         foreach (QString oid, objects.keys()) {
                  if (folder->removeObject(oid, true)) {
                      TupLibraryObject::Type extension = static_cast<TupLibraryObject::Type>(objects[oid]->type());
-                     if (!k->project->removeSymbolFromProject(oid, extension))
+                     if (!k->project->removeSymbolFromFrame(oid, extension))
                          return false;
                  }
         }

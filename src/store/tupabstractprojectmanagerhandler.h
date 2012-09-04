@@ -38,6 +38,7 @@
 
 #include "tupglobal_store.h"
 #include <QObject>
+#include <QStringList>
 
 class TupProjectResponse;
 class TupProjectRequest;
@@ -71,7 +72,9 @@ class STORE_EXPORT TupAbstractProjectHandler : public QObject
         void sendCommand(const TupProjectRequest *request, bool addToStack);
         void sendLocalCommand(const TupProjectRequest *request);
         void openNewArea(const QString &name);
+        void openNewArea(const QString &name, const QStringList &users);
         void authenticationSuccessful();
+        void updateUsersList(const QString &login, int state);
 };
 
 #endif

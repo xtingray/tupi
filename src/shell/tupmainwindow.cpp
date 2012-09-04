@@ -119,7 +119,7 @@ TupMainWindow::TupMainWindow(TupSplash *splash, int parameters) :
     setStatusBar(m_statusBar);
 
     // Naming the main frame...
-    setWindowTitle(tr("Tupi: 2D Magic"));
+    setWindowTitle(tr("Tupi: Open 2D Magic"));
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
@@ -227,7 +227,7 @@ void TupMainWindow::createNewLocalProject()
     setWorkSpace();
 }
 
-void TupMainWindow::createNewNetProject(const QString &title)
+void TupMainWindow::createNewNetProject(const QString &title, const QStringList &users)
 {
     isNetworked = true;
     projectName = title;
@@ -246,7 +246,7 @@ void TupMainWindow::createNewNetProject(const QString &title)
     m_exposureSheet->updateFramesState(m_projectManager->project());
     m_projectManager->setOpen(true);
 
-    setWorkSpace();
+    setWorkSpace(users);
 }
 
 /**
@@ -258,7 +258,7 @@ void TupMainWindow::createNewNetProject(const QString &title)
  * @endif
 */
 
-void TupMainWindow::setWorkSpace()
+void TupMainWindow::setWorkSpace(const QStringList &users)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -274,7 +274,7 @@ void TupMainWindow::setWorkSpace()
         // Setting undo/redo actions
         setUndoRedoActions();
 
-        drawingTab = new TupViewDocument(m_projectManager->project(), this, isNetworked ? false : true);
+        drawingTab = new TupViewDocument(m_projectManager->project(), this, isNetworked, users);
 
         TCONFIG->beginGroup("Network");
         QString server = TCONFIG->value("Server").toString();
@@ -316,9 +316,9 @@ void TupMainWindow::setWorkSpace()
         else
             proportion = (double) height / (double) pHeight;
 
-        if (proportion <= 0.3) {
-            drawingTab->setZoomView("15");
-        } else if (proportion > 0.3 && proportion <= 0.75) {
+        if (proportion <= 0.5) {
+            drawingTab->setZoomView("20");
+        } else if (proportion > 0.5 && proportion <= 0.75) {
                    drawingTab->setZoomView("25");
         } else if (proportion > 0.75 && proportion <= 1.5) {
                    drawingTab->setZoomView("50");
@@ -664,7 +664,9 @@ void TupMainWindow::setupNetworkProject(TupProjectManagerParams *params)
     if (closeProject()) {
         netProjectManagerHandler =  new TupNetProjectManagerHandler;
         connect(netProjectManagerHandler, SIGNAL(authenticationSuccessful()), this, SLOT(requestProject()));
-        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(createNewNetProject(const QString&)));
+        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString &, const QStringList &)), 
+                this, SLOT(createNewNetProject(const QString &, const QStringList &)));
+        connect(netProjectManagerHandler, SIGNAL(updateUsersList(const QString &, int)), this, SLOT(updateUsersOnLine(const QString &, int)));
         connect(netProjectManagerHandler, SIGNAL(connectionHasBeenLost()), this, SLOT(unexpectedClose()));
         connect(netProjectManagerHandler, SIGNAL(savingSuccessful()), this, SLOT(netProjectSaved()));
         connect(netProjectManagerHandler, SIGNAL(postOperationDone()), this, SLOT(resetMousePointer()));
@@ -1423,4 +1425,9 @@ void TupMainWindow::updatePlayer(bool remove)
 void TupMainWindow::resetMousePointer()
 {
     QApplication::restoreOverrideCursor();
+}
+
+void TupMainWindow::updateUsersOnLine(const QString &login, int state)
+{
+    drawingTab->updateUsersOnLine(login, state);
 }

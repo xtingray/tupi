@@ -122,6 +122,10 @@ bool TupCommandExecutor::removeScene(TupSceneResponse *response)
 
             return true;
         } 
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupCommandExecutor::removeScene() - Scene doesn't exist (" << position << ")";
+        #endif
     }
     
     return false;

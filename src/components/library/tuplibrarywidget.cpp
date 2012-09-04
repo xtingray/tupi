@@ -317,9 +317,9 @@ void TupLibraryWidget::insertObjectInWorkspace()
 
     QString objectKey = k->libraryTree->currentItem()->text(1) + "." + k->libraryTree->currentItem()->text(2).toLower();
 
-    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::AddSymbolToProject, objectKey,
-                               TupLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
-                               0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::InsertSymbolIntoFrame, objectKey,
+                                TupLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
+                                0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
     emit requestTriggered(&request);
 }
@@ -345,9 +345,9 @@ void TupLibraryWidget::removeCurrentGraphic()
             type = TupLibraryObject::Item;
     } 
 
-    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::RemoveSymbolFromProject, 
-                                                                      objectKey, type, k->project->spaceContext(), 0);
-    
+    TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::RemoveSymbolFromFrame, 
+                                                   objectKey, type, k->project->spaceContext(), 0, QString(),
+                                                   k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
     emit requestTriggered(&request);
 }
 
@@ -481,8 +481,8 @@ void TupLibraryWidget::importSvg()
         tFatal() << "TupLibraryWidget::importSvg() - calling createLibraryRequest()...";
 
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
-                                                     TupLibraryObject::Svg, k->project->spaceContext(), data, QString(), 
-                                                     k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+                                                       TupLibraryObject::Svg, k->project->spaceContext(), data, QString(), 
+                                                       k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
     } else {
         TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(svgPath), TOsd::Error);
@@ -776,6 +776,19 @@ void TupLibraryWidget::importSound()
     }
 }
 
+void TupLibraryWidget::sceneResponse(TupSceneResponse *response)
+{
+    switch (response->action()) {
+            case TupProjectRequest::Select:
+            {
+                 k->currentFrame.frame = 0;
+                 k->currentFrame.layer = 0;
+                 k->currentFrame.scene = response->sceneIndex();
+            }
+            break;
+    }
+}
+
 void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
 {
     RETURN_IF_NOT_LIBRARY;
@@ -852,15 +865,15 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
               }
             break;
 
-            case TupProjectRequest::AddSymbolToProject:
+            case TupProjectRequest::InsertSymbolIntoFrame:
               {
                  #ifdef K_DEBUG
-                        tDebug() << "*** TupLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
+                        tDebug() << "*** TupLibraryWidget::libraryResponse -> InsertSymbolIntoFrame : No action taken";
                  #endif
               }
             break;
 
-            case TupProjectRequest::RemoveSymbolFromProject:
+            case TupProjectRequest::RemoveSymbolFromFrame:
               {
                  QString key = response->arg().toString();
 
@@ -870,7 +883,8 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                         if ((*it)->text(2).length() > 0) {
                             if (key == (*it)->text(3)) {
                                 delete (*it);
-                                k->library->removeObject(key, true);
+                                // tError() << "*** Tracing deletion... flag 2"; 
+                                // k->library->removeObject(key, true);
                                 break;
                             } 
                         } else {
