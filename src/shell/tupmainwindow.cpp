@@ -231,7 +231,7 @@ void TupMainWindow::createNewNetProject(const QString &title, const QStringList 
 {
     isNetworked = true;
     projectName = title;
-    setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " " + tr("[ by %1 | net mode ]").arg(netUser));
+    setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " " + tr("[ by %1 | net mode ]").arg(netUser));
 
     if (m_viewChat) {
         removeToolView(m_viewChat);
@@ -606,7 +606,7 @@ void TupMainWindow::resetUI()
 
     setUpdatesEnabled(true);
 
-    setWindowTitle(tr("Tupi: 2D Magic"));
+    setWindowTitle(tr("Tupi: Open 2D Magic"));
 
     if (isNetworked) { 
         m_viewChat->expandDock(false);
@@ -695,7 +695,7 @@ void TupMainWindow::setupLocalProject(TupProjectManagerParams *params)
         m_projectManager->setParams(params);
         projectName = params->projectName();
         author = params->author();
-        setWindowTitle(tr("Tupi: 2D Magic") +  " - " + projectName + " [ " + tr("by") + " " + author + " ]");
+        setWindowTitle(tr("Tupi: Open 2D Magic") +  " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
 }
 
@@ -1064,7 +1064,7 @@ void TupMainWindow::saveAs()
     if (isNetworked) {
         isNetworked = false;
         m_projectManager->setHandler(new TupLocalProjectManagerHandler, false);
-        setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
+        setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
 
     save();
@@ -1099,7 +1099,7 @@ void TupMainWindow::saveProject()
             int indexDot = name.lastIndexOf(".");
             name = name.left(indexDot);
 
-            setWindowTitle(tr("Tupi: 2D Magic") +  " - " + name + " [ " + tr("by") +  " " +  author + " ]");
+            setWindowTitle(tr("Tupi: Open 2D Magic") +  " - " + name + " [ " + tr("by") +  " " +  author + " ]");
         } else {
             TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
         }
