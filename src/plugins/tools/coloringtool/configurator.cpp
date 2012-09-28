@@ -57,8 +57,8 @@ struct Configurator::Private
     int framesTotal;
     int currentFrame;
 
-    Settings::Mode mode;
-    GuiState state;
+    TupToolPlugin::Mode mode;
+    Configurator::GuiState state;
 };
 
 Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
@@ -66,8 +66,8 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->framesTotal = 1;
     k->currentFrame = 0;
 
-    k->mode = Settings::View;
-    k->state = Manager;
+    k->mode = TupToolPlugin::View;
+    k->state = Configurator::Manager;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -140,7 +140,7 @@ void Configurator::setTweenManagerPanel()
     connect(k->tweenManager, SIGNAL(getTweenData(const QString &)), this, SLOT(updateTweenData(const QString &)));
 
     k->settingsLayout->addWidget(k->tweenManager);
-    k->state = Manager;
+    k->state = Configurator::Manager;
 }
 
 void Configurator::activeTweenManagerPanel(bool enable)
@@ -200,8 +200,8 @@ void Configurator::addTween(const QString &name)
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Add;
-    k->state = Properties;
+    k->mode = TupToolPlugin::Add;
+    k->state = Configurator::Properties;
 
     k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
     activePropertiesPanel(true);
@@ -213,8 +213,8 @@ void Configurator::editTween()
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Edit;
-    k->state = Properties;
+    k->mode = TupToolPlugin::Edit;
+    k->state = Configurator::Properties;
 
     k->settingsPanel->notifySelection(true);
     k->settingsPanel->setParameters(k->currentTween);
@@ -262,9 +262,9 @@ void Configurator::setInitialColor(QColor color)
 
 void Configurator::closeTweenProperties()
 {
-    if (k->mode == Settings::Add) {
+    if (k->mode == TupToolPlugin::Add) {
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == Settings::Edit) {
+    } else if (k->mode == TupToolPlugin::Edit) {
         closeSettingsPanel();
     }
 
@@ -275,22 +275,22 @@ void Configurator::closeTweenProperties()
 
 void Configurator::closeSettingsPanel()
 {
-    if (k->state == Properties) {
+    if (k->state == Configurator::Properties) {
         activeTweenManagerPanel(true);
         activePropertiesPanel(false);
-        k->mode = Settings::View;
-        k->state = Manager;
+        k->mode = TupToolPlugin::View;
+        k->state = Configurator::Manager;
     }
 }
 
-Settings::Mode Configurator::mode()
+TupToolPlugin::Mode Configurator::mode()
 {
     return k->mode;
 }
 
 void Configurator::applyItem()
 {
-     k->mode = Settings::Edit;
+     k->mode = TupToolPlugin::Edit;
      emit clickedApplyTween();
 }
 

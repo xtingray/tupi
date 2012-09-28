@@ -36,6 +36,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "tuptoolplugin.h"
 #include <QWidget>
 
 class QGraphicsPathItem;
@@ -50,8 +51,8 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-        enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Path, None };
+        // enum Mode { Add = 1, Edit, View };
+        // enum EditMode { Selection = 0, Path, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
@@ -67,7 +68,7 @@ class Settings : public QWidget
         int totalSteps();
         // void activatePathMode();
         // void activateSelectionMode();
-        void activateMode(Settings::EditMode mode);
+        void activateMode(TupToolPlugin::EditMode mode);
         void cleanData();
         void notifySelection(bool flag);
         int startComboSize();

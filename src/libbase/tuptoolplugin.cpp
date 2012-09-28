@@ -277,6 +277,13 @@ QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modif
     return flags;
 }
 
+TupToolPlugin::Mode TupToolPlugin::currentMode()
+{
+    return TupToolPlugin::View;
+}
 
-
+TupToolPlugin::EditMode TupToolPlugin::currentEditMode()
+{
+    return TupToolPlugin::None;
+}
 

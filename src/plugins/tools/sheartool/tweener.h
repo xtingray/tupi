@@ -89,7 +89,7 @@ class Tweener : public TupToolPlugin
     private slots:
         void setSelect();
         void setPropertiesMode();
-        void updateMode(Settings::Mode mode);
+        void updateMode(TupToolPlugin::Mode mode);
         void applyReset();
         void applyTween();
         void removeTween(const QString &name);

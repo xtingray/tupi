@@ -72,6 +72,9 @@ class Tweener : public TupToolPlugin
         virtual void layerResponse(const TupLayerResponse *event);
         virtual void frameResponse(const TupFrameResponse *event);
 
+        virtual TupToolPlugin::Mode currentMode();
+        virtual TupToolPlugin::EditMode currentEditMode();
+
     private:
         int framesTotal();
         void setupActions();
@@ -92,7 +95,7 @@ class Tweener : public TupToolPlugin
         void setCreatePath();
         void setSelect();
         void setEditEnv();
-        void updateMode(Settings::Mode mode);
+        void updateMode(TupToolPlugin::Mode mode);
         void updateStartPoint(int index);
         void setCurrentTween(const QString &name);
 

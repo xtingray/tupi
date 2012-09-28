@@ -36,6 +36,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "tuptoolplugin.h"
 #include <QWidget>
 
 class TupItemTweener;
@@ -49,8 +50,8 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-        enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Properties, None };
+        // enum Mode { Add = 1, Edit, View };
+        // enum EditMode { Selection = 0, Properties, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
@@ -65,7 +66,7 @@ class Settings : public QWidget
         void notifySelection(bool flag);
         int startComboSize();
         QString currentTweenName() const;
-        void activatePropertiesMode(Settings::EditMode mode);
+        void activatePropertiesMode(TupToolPlugin::EditMode mode);
         // void activateSelectionMode();
         QString tweenToXml(int currentFrame, QPointF point);
 

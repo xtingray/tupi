@@ -37,6 +37,7 @@
 #define CONFIGURATOR_H
 
 #include <QFrame>
+#include "tuptoolplugin.h"
 #include "settings.h"
 
 class QGraphicsPathItem;
@@ -76,13 +77,13 @@ class Configurator : public QFrame
         QString tweenToXml(int currentFrame, QPointF point, QString &path);
         int totalSteps();
         // void activateSelectionMode();
-        void activateMode(Settings::EditMode mode);
+        void activateMode(TupToolPlugin::EditMode mode);
         void cleanData();
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();
         void closeSettingsPanel();
-        Settings::Mode mode();
+        TupToolPlugin::Mode mode();
         void resetUI();
         void setCurrentTween(TupItemTweener *currentTween);
 
@@ -101,7 +102,7 @@ class Configurator : public QFrame
         void clickedCreatePath();
         void clickedSelect();
         void clickedRemoveTween(const QString &);
-        void setMode(Settings::Mode mode);
+        void setMode(TupToolPlugin::Mode mode);
         void clickedResetInterface();
         void clickedApplyTween();
         void startingPointChanged(int);

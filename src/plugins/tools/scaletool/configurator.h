@@ -63,13 +63,13 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
-        void activatePropertiesMode(Settings::EditMode mode);
+        void activatePropertiesMode(TupToolPlugin::EditMode mode);
         void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
         int startComboSize();
         void closeSettingsPanel();
-        Settings::Mode mode();
+        TupToolPlugin::Mode mode();
         void resetUI();
         QString tweenToXml(int currentFrame, QPointF point);
         
@@ -87,7 +87,7 @@ class Configurator : public QFrame
         void clickedSelect();
         void clickedDefineProperties();
         void clickedRemoveTween(const QString &name);
-        void setMode(Settings::Mode mode);
+        void setMode(TupToolPlugin::Mode mode);
         void clickedApplyTween();
         void clickedResetInterface();
         void getTweenData(const QString &name);

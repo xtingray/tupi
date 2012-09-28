@@ -61,7 +61,7 @@ struct Settings::Private
     QComboBox *comboInit;
     QLabel *totalLabel;
     bool selectionDone;
-    Mode mode; 
+    TupToolPlugin::Mode mode; 
 
     TImageButton *apply;
     TImageButton *remove;
@@ -113,7 +113,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateMode(Settings::Selection);
+    activateMode(TupToolPlugin::Selection);
 }
 
 Settings::~Settings()
@@ -180,10 +180,10 @@ void Settings::activeInnerForm(bool enable)
 
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
-    k->mode = Add;
+    k->mode = TupToolPlugin::Add;
     k->input->setText(name);
 
-    activateMode(Settings::Selection);
+    activateMode(TupToolPlugin::Selection);
     k->stepViewer->cleanRows();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 
@@ -202,7 +202,7 @@ void Settings::setParameters(TupItemTweener *currentTween)
     setEditMode();
 
     notifySelection(true);
-    activateMode(Settings::Path);
+    activateMode(TupToolPlugin::Path);
 
     k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);
@@ -302,7 +302,7 @@ void Settings::activateSelectionMode()
 }
 */
 
-void Settings::activateMode(Settings::EditMode mode)
+void Settings::activateMode(TupToolPlugin::EditMode mode)
 {
     k->options->setCurrentIndex(mode);
 }
@@ -341,7 +341,7 @@ void Settings::applyTween()
 
 void Settings::setEditMode()
 {
-    k->mode = Edit;
+    k->mode = TupToolPlugin::Edit;
     k->apply->setToolTip(tr("Update Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
     k->remove->setToolTip(tr("Close Tween properties"));

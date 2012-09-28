@@ -36,6 +36,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "tuptoolplugin.h"
+
 #include <QWidget>
 #include <QPushButton>
 
@@ -50,8 +52,8 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-        enum Mode { Add = 1, Edit, View };
-        enum EditMode { Selection = 0, Properties, None };
+        // enum Mode { Add = 1, Edit, View };
+        // enum EditMode { Selection = 0, Properties, None };
 
         Settings(QWidget *parent = 0);
         ~Settings();
@@ -64,7 +66,7 @@ class Settings : public QWidget
         int totalSteps();
 
         QString currentTweenName() const;
-        void activatePropertiesMode(Settings::EditMode mode);
+        void activatePropertiesMode(TupToolPlugin::EditMode mode);
         void notifySelection(bool flag);
         void setInitialColor(QColor color);
         QString tweenToXml(int currentFrame);

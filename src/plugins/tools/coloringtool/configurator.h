@@ -69,7 +69,7 @@ class Configurator : public QFrame
         void setInitialColor(QColor color);
 
         void closeSettingsPanel();
-        Settings::Mode mode();
+        TupToolPlugin::Mode mode();
         void resetUI();
         QString tweenToXml(int currentFrame);
         
@@ -87,7 +87,7 @@ class Configurator : public QFrame
         void clickedSelect();
         void clickedDefineProperties();
         void clickedRemoveTween(const QString &name);
-        void setMode(Settings::Mode mode);
+        void setMode(TupToolPlugin::Mode mode);
         void clickedApplyTween();
         void clickedResetInterface();
         void getTweenData(const QString &name);

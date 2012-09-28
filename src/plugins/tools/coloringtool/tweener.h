@@ -88,7 +88,7 @@ class Tweener : public TupToolPlugin
         void setCurrentTween(const QString &name);
         void setSelect();
         void setPropertiesMode(); 
-        void updateMode(Settings::Mode mode);
+        void updateMode(TupToolPlugin::Mode mode);
         void updateStartPoint(int index);
         void applyReset();
         void applyTween();

@@ -67,7 +67,7 @@ struct Configurator::Private
     TImageButton *removeButton;
     TImageButton *editButton;
 
-    Settings::Mode mode; 
+    TupToolPlugin::Mode mode; 
     GuiState state;
 
     int framesTotal;
@@ -81,7 +81,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->framesTotal = 1;
     k->currentFrame = 0;
 
-    k->mode = Settings::View;
+    k->mode = TupToolPlugin::View;
     k->selectionDone = false;
     k->state = Manager;
 
@@ -230,7 +230,7 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activateMode(Settings::EditMode mode)
+void Configurator::activateMode(TupToolPlugin::EditMode mode)
 {
     k->settingsPanel->activateMode(mode);
 }
@@ -242,7 +242,7 @@ void Configurator::cleanData()
 
 void Configurator::addTween(const QString &name)
 {
-    k->mode = Settings::Add;
+    k->mode = TupToolPlugin::Add;
 
     k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
 
@@ -258,7 +258,7 @@ void Configurator::editTween()
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Edit;
+    k->mode = TupToolPlugin::Edit;
     k->state = Properties;
 
     k->settingsPanel->notifySelection(true);
@@ -275,7 +275,7 @@ void Configurator::closeTweenProperties()
            T_FUNCINFO;
     #endif
 
-    if (k->mode == Settings::Add)
+    if (k->mode == TupToolPlugin::Add)
         k->tweenManager->removeItemFromList();
 
     emit clickedResetInterface();
@@ -325,19 +325,19 @@ void Configurator::closeSettingsPanel()
     if (k->state == Properties) {
         activeTweenManagerPanel(true);
         activePropertiesPanel(false);
-        k->mode = Settings::View;
+        k->mode = TupToolPlugin::View;
         k->state = Manager;
     }
 }
 
-Settings::Mode Configurator::mode()
+TupToolPlugin::Mode Configurator::mode()
 {
     return k->mode;
 }
 
 void Configurator::applyItem()
 {
-     k->mode = Settings::Edit;
+     k->mode = TupToolPlugin::Edit;
      emit clickedApplyTween();
 }
 

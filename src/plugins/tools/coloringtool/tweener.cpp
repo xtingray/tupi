@@ -74,8 +74,8 @@ struct Tweener::Private
     TupItemTweener *currentTween;
     int startPoint;
 
-    Settings::Mode mode;
-    Settings::EditMode editMode;
+    TupToolPlugin::Mode mode;
+    TupToolPlugin::EditMode editMode;
 };
 
 Tweener::Tweener() : TupToolPlugin(), k(new Private)
@@ -98,8 +98,8 @@ void Tweener::init(TupGraphicsScene *scene)
     k->scene = scene;
     k->objects.clear();
 
-    k->mode = Settings::View;
-    k->editMode = Settings::None;
+    k->mode = TupToolPlugin::View;
+    k->editMode = TupToolPlugin::None;
 
     k->configurator->resetUI();
 
@@ -164,7 +164,7 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
     Q_UNUSED(brushManager);
 
     if (scene->currentFrameIndex() == k->startPoint) {
-        if (k->editMode == Settings::Selection) {
+        if (k->editMode == TupToolPlugin::Selection) {
             if (scene->selectedItems().size() > 0) {
                 k->objects = scene->selectedItems();
 
@@ -225,7 +225,7 @@ int Tweener::toolType() const
 QWidget *Tweener::configurator()
 {
     if (!k->configurator) {
-        k->mode = Settings::View;
+        k->mode = TupToolPlugin::View;
 
         k->configurator = new Configurator;
 
@@ -234,7 +234,7 @@ QWidget *Tweener::configurator()
         connect(k->configurator, SIGNAL(clickedSelect()), this, SLOT(setSelect()));
         connect(k->configurator, SIGNAL(clickedDefineProperties()), this, SLOT(setPropertiesMode()));
         connect(k->configurator, SIGNAL(clickedResetInterface()), this, SLOT(applyReset()));
-        connect(k->configurator, SIGNAL(setMode(Settings::Mode)), this, SLOT(updateMode(Settings::Mode))); 
+        connect(k->configurator, SIGNAL(setMode(TupToolPlugin::Mode)), this, SLOT(updateMode(TupToolPlugin::Mode))); 
         connect(k->configurator, SIGNAL(getTweenData(const QString &)), this, SLOT(setCurrentTween(const QString &)));
         connect(k->configurator, SIGNAL(clickedRemoveTween(const QString &)), this, SLOT(removeTween(const QString &)));
     } 
@@ -325,7 +325,7 @@ void Tweener::disableSelection()
 
 void Tweener::setSelect()
 {
-    if (k->mode == Settings::Edit) {
+    if (k->mode == TupToolPlugin::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                             k->scene->currentLayerIndex(),
@@ -334,7 +334,7 @@ void Tweener::setSelect()
         }
     }
 
-    k->editMode = Settings::Selection;
+    k->editMode = TupToolPlugin::Selection;
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
@@ -370,7 +370,7 @@ void Tweener::setSelect()
 
 void Tweener::setPropertiesMode()
 {
-    k->editMode = Settings::Properties;
+    k->editMode = TupToolPlugin::Properties;
     disableSelection();
 
     if (k->objects.isEmpty()) {
@@ -385,8 +385,8 @@ void Tweener::applyReset()
     disableSelection();
     clearSelection();
 
-    k->mode = Settings::View;
-    k->editMode = Settings::None;
+    k->mode = TupToolPlugin::View;
+    k->editMode = TupToolPlugin::None;
 
     k->startPoint = k->scene->currentFrameIndex();
 }
@@ -542,11 +542,11 @@ void Tweener::removeTween(const QString &name)
     applyReset();
 }
 
-void Tweener::updateMode(Settings::Mode mode)
+void Tweener::updateMode(TupToolPlugin::Mode mode)
 {
     k->mode = mode;
 
-    if (k->mode == Settings::Edit) {
+    if (k->mode == TupToolPlugin::Edit) {
         k->startPoint = k->currentTween->startFrame();
         if (k->startPoint != k->scene->currentFrameIndex()) {
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),

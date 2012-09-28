@@ -66,6 +66,9 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
         enum ViewTools { InvalidView = -1, ZoomInTool = 0, ZoomOutTool, HandTool };
         enum ColorTools { InvalidColor = -1, ColorTool = 0 };
 
+        enum Mode { Add = 1, Edit, View };
+        enum EditMode { None, Selection = 0, Path, Properties };
+
         explicit TupToolPlugin(QObject *parent = 0);
         ~TupToolPlugin();
         
@@ -106,6 +109,9 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
 
         virtual void autoZoom();
         virtual void setProjectSize(const QSize size);
+
+        virtual TupToolPlugin::Mode currentMode();
+        virtual TupToolPlugin::EditMode currentEditMode();
         
     signals:
         void requested(const TupProjectRequest *request);

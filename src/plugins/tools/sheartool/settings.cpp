@@ -55,7 +55,7 @@ struct Settings::Private
     QWidget *clockPanel;
 
     QBoxLayout *layout;
-    Mode mode;
+    TupToolPlugin::Mode mode;
     QLineEdit *input;
     TRadioButtonGroup *options;
     QComboBox *comboInit;
@@ -126,7 +126,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activatePropertiesMode(Settings::Selection);
+    activatePropertiesMode(TupToolPlugin::Selection);
 }
 
 Settings::~Settings()
@@ -292,10 +292,10 @@ void Settings::activeInnerForm(bool enable)
 
 void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
 {
-    k->mode = Add;
+    k->mode = TupToolPlugin::Add;
     k->input->setText(name);
 
-    activatePropertiesMode(Settings::Selection);
+    activatePropertiesMode(TupToolPlugin::Selection);
     k->apply->setToolTip(tr("Save Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
@@ -310,7 +310,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
-    activatePropertiesMode(Settings::Properties);
+    activatePropertiesMode(TupToolPlugin::Properties);
 
     k->input->setText(currentTween->name());
 
@@ -364,7 +364,7 @@ int Settings::totalSteps()
 
 void Settings::setEditMode()
 {
-    k->mode = Edit;
+    k->mode = TupToolPlugin::Edit;
     k->apply->setToolTip(tr("Update Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
     k->remove->setToolTip(tr("Close Tween properties"));
@@ -518,7 +518,7 @@ QString Settings::tweenToXml(int currentFrame, QPointF point)
     return doc.toString();
 }
 
-void Settings::activatePropertiesMode(Settings::EditMode mode)
+void Settings::activatePropertiesMode(TupToolPlugin::EditMode mode)
 {
     k->options->setCurrentIndex(mode);
 }

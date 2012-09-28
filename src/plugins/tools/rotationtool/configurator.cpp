@@ -57,7 +57,7 @@ struct Configurator::Private
     int framesTotal;
     int currentFrame;
 
-    Settings::Mode mode;
+    TupToolPlugin::Mode mode;
     GuiState state;
 };
 
@@ -66,7 +66,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->framesTotal = 1;
     k->currentFrame = 0;
 
-    k->mode = Settings::View;
+    k->mode = TupToolPlugin::View;
     k->state = Manager;
 
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -201,7 +201,7 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activatePropertiesMode(Settings::EditMode mode)
+void Configurator::activatePropertiesMode(TupToolPlugin::EditMode mode)
 {
     k->settingsPanel->activatePropertiesMode(mode);
 }
@@ -210,7 +210,7 @@ void Configurator::addTween(const QString &name)
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Add;
+    k->mode = TupToolPlugin::Add;
     k->state = Properties;
 
     k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
@@ -223,7 +223,7 @@ void Configurator::editTween()
 {
     activeTweenManagerPanel(false);
 
-    k->mode = Settings::Edit;
+    k->mode = TupToolPlugin::Edit;
     k->state = Properties;
 
     k->settingsPanel->notifySelection(true);
@@ -267,9 +267,9 @@ void Configurator::notifySelection(bool flag)
 
 void Configurator::closeTweenProperties()
 {
-    if (k->mode == Settings::Add) {
+    if (k->mode == TupToolPlugin::Add) {
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == Settings::Edit) {
+    } else if (k->mode == TupToolPlugin::Edit) {
         closeSettingsPanel();
     }
 
@@ -283,19 +283,19 @@ void Configurator::closeSettingsPanel()
     if (k->state == Properties) {
         activeTweenManagerPanel(true);
         activePropertiesPanel(false);
-        k->mode = Settings::View;
+        k->mode = TupToolPlugin::View;
         k->state = Manager;
     }
 }
 
-Settings::Mode Configurator::mode()
+TupToolPlugin::Mode Configurator::mode()
 {
     return k->mode;
 }
 
 void Configurator::applyItem()
 {
-     k->mode = Settings::Edit;
+     k->mode = TupToolPlugin::Edit;
      emit clickedApplyTween();
 }
 
