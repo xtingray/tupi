@@ -407,7 +407,10 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                            closeConnection();
                        }
                    } else {
-                       TOsd::self()->display(tr("Information"), tr("No available projects from server"), TOsd::Warning);
+                       TOsd::self()->display(tr("Information"), tr("User has no available projects in the server"), TOsd::Warning);
+                       #ifdef K_DEBUG
+                              tError() << "TupNetProjectManagerHandler::handlePackage() - Info: User has no available projects in the server";
+                       #endif
                        closeConnection();
                    }
                }

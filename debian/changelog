@@ -1,4 +1,4 @@
-tupi (0.2-git01) precise; urgency=low
+tupi (0.2-1-ubuntu1) precise; urgency=low
 
   * Proof of concept for the Tupi debian package
 
