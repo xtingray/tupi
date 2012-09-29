@@ -12,7 +12,7 @@
 		</libs>
 	</provide>
 	<solution>
-		<linux package="aspell" url="http://zlib.net/" comment="" >
+		<linux package="zlib" url="http://zlib.net/" comment="" >
 			<distribution name="gentoo" package="zlib" url="http://zlib.net/" comment="Try: emerge zlib" />
 			<distribution name="ubuntu" package="zlib1g-dev" url="http://zlib.net/" comment="Try: apt-get install zlib1g-dev" />
 		</linux>

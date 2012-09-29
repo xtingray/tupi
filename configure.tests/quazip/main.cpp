@@ -33,40 +33,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifdef __cplusplus
-extern "C" {
-    #include "libavformat/avformat.h"
-    #include "libavcodec/avcodec.h"
-}
-#endif
-
-#include <iostream>
+#include "quazip.h"
+#include "quazipfile.h"
+#include <QFile>
 
 int main()
 {
-    av_register_all();
+    QString zipName("test.zip");
+    char c;
+    QFile file("quazip.pro"); 
 
-    #if defined(K_LUCID)
-        AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
-    #else
-       AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
-    #endif
+    QuaZip zip(zipName);	
+    if (!zip.open(QuaZip::mdCreate)) 
+        return false;
 
-    AVFormatContext *oc = avformat_alloc_context();
-    oc->oformat = fmt;
+    QuaZipFile outFile(&zip);
+    if (!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(file.fileName())))
+        return false;
 
-    AVCodecContext *c;
-    AVStream *st;
+    if (!file.open(QIODevice::ReadOnly))
+        return false;
 
-    st = av_new_stream(oc, 0);
+    while (file.getChar(&c) && outFile.putChar(c)) {};
 
-    c = st->codec;
-    c->time_base.den = 24;
-    c->time_base.num = 1;
-    c->gop_size = 12;
-    c->pix_fmt = PIX_FMT_YUV420P;
+    outFile.close();
+    file.close();
+    zip.close();
 
-    av_free(oc);
+    if (zip.getZipError() != 0) {
+        return false;
+    }
 
     return 0;
 }

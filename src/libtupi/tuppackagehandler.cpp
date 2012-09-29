@@ -140,8 +140,8 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
 
              outFile.close();
 
-             if (outFile.getZipError()!=UNZ_OK)
-                 return false;
+             // if (outFile.getZipError()!=UNZ_OK)
+             //     return false;
 
              inFile.close();
     }

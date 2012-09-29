@@ -64,9 +64,9 @@ _EOH_
     debug = 0
     if conf.hasArgument?("with-debug")
        debug = 1
-       if File.readlines("3rdparty/quazip/quazip.pro").grep(/K_DEBUG/).size === 0
-          system("echo \"DEFINES += K_DEBUG\" >> 3rdparty/quazip/quazip.pro")
-       end
+       # if File.readlines("3rdparty/quazip/quazip.pro").grep(/K_DEBUG/).size === 0
+       #    system("echo \"DEFINES += K_DEBUG\" >> 3rdparty/quazip/quazip.pro")
+       # end
     end
 
     conf.createTests
@@ -87,7 +87,8 @@ _EOH_
     config.addLib("-ltupifwgui")
     config.addLib("-ltupifwcore")
     config.addLib("-ltupifwsound")
-    config.addLib("-lz")
+    # config.addLib("-lz")
+    # config.addLib("-lquazip")
     
     # config.addLib("-L#{RQonf::CONFIG["libdir"]}")
     # config.addIncludePath(RQonf::CONFIG["includepath"])
