@@ -5,4 +5,4 @@
 
 CONFIG += warn_on 
 TEMPLATE = subdirs 
-SUBDIRS += 3rdparty src 
+SUBDIRS += src
