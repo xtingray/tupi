@@ -191,10 +191,10 @@ module RQonf
       launcher_includedir = @options['includedir']
       launcher_bindir = @options['bindir']
 
-      if @options['debian-build'].nil? then
-        @options['debian-build'] = "/usr"
+      if @options['package-build'].nil? then
+        @options['package-build'] = "/usr"
       else
-        @options['debian-build'] = @options['prefix']
+        @options['package-build'] = @options['prefix']
         launcher_prefix = "/usr"
         launcher_sharedir = "/usr/share/tupi"
         launcher_libdir = "/usr/lib"

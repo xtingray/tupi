@@ -23,7 +23,7 @@ Use: ./configure [options]
   --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
   --with-debug:         Enable debug
   --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]
-  --debian-build:       Option exclusive for Debian maintainer
+  --package-build:       Option exclusive for package maintainers
 _EOH_
         exit 0
     end
@@ -64,9 +64,6 @@ _EOH_
     debug = 0
     if conf.hasArgument?("with-debug")
        debug = 1
-       # if File.readlines("3rdparty/quazip/quazip.pro").grep(/K_DEBUG/).size === 0
-       #    system("echo \"DEFINES += K_DEBUG\" >> 3rdparty/quazip/quazip.pro")
-       # end
     end
 
     conf.createTests
@@ -87,11 +84,6 @@ _EOH_
     config.addLib("-ltupifwgui")
     config.addLib("-ltupifwcore")
     config.addLib("-ltupifwsound")
-    # config.addLib("-lz")
-    # config.addLib("-lquazip")
-    
-    # config.addLib("-L#{RQonf::CONFIG["libdir"]}")
-    # config.addIncludePath(RQonf::CONFIG["includepath"])
     
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')
