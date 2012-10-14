@@ -11,6 +11,9 @@
             <lib path="-lavcodec" />
             <lib path="-lavformat" />
         </libs>
+        <includes>
+            <include path="/usr/include/ffmpeg/" />
+        </includes>
     </provide>
     <solution>
         <linux package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" >

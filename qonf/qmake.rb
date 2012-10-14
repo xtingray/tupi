@@ -21,6 +21,7 @@ class QMake
 
         paths.each { |path|
             begin
+                Info.info << $endl << "   Testing for #{path}... "
                 valid = true
                 version = []
                 sites = []
