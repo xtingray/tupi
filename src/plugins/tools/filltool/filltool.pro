@@ -21,7 +21,7 @@ SOURCES += filltool.cpp  \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = filltool
+TARGET = tupifilltool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

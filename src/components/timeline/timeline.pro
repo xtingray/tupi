@@ -28,7 +28,7 @@ SOURCES += tuptimeline.cpp \
 }
 
 TEMPLATE = lib
-TARGET = timeline
+TARGET = tupitimeline
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

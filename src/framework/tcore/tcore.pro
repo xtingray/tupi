@@ -3,12 +3,11 @@
 # Subdir relative project main directory: ./src/framework/tcore
 # Target is a library: tupifwcore  
 
-INSTALLS += include \
-            target 
+INSTALLS += target 
 
-target.path = /lib/ 
-include.files += *.h 
-include.path = /include/tupicore 
+target.path = /lib
+#include.files += *.h 
+#include.path = /include/tupicore 
 
 macx {
     CONFIG += plugin warn_on

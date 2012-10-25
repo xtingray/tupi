@@ -13,7 +13,7 @@ SOURCES += penciltool.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 
-TARGET = penciltool
+TARGET = tupipenciltool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

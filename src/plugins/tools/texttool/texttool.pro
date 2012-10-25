@@ -13,6 +13,7 @@ SOURCES += texttool.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
+TARGET = tupitexttool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

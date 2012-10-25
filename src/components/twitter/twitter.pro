@@ -20,7 +20,7 @@ SOURCES += tuptwitter.cpp \
 }
 
 TEMPLATE = lib
-TARGET = twitter
+TARGET = tupitwitter
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

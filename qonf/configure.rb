@@ -176,7 +176,7 @@ module RQonf
         @options['bindir'] = @options['prefix'] + "/bin"
       end
       if @options['libdir'].nil? then
-        @options['libdir'] = @options['prefix'] + "/lib"
+        @options['libdir'] = @options['prefix'] + "/lib/tupi"
       end
       if @options['includedir'].nil? then
         @options['includedir'] = @options['prefix'] + "/include"
@@ -197,7 +197,7 @@ module RQonf
         @options['package-build'] = @options['prefix']
         launcher_prefix = "/usr"
         launcher_sharedir = "/usr/share/tupi"
-        launcher_libdir = "/usr/lib"
+        launcher_libdir = "/usr/lib/tupi"
         launcher_includedir = "/usr/include"
         launcher_bindir = "/usr/bin"
       end

@@ -13,7 +13,7 @@ SOURCES += viewtool.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = viewtool
+TARGET = tupiviewtool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

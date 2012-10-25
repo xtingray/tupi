@@ -2,8 +2,8 @@
 
 export TUPI_HOME="/usr/local/tupi"
 export TUPI_SHARE="/usr/local/tupi/share"
-export TUPI_LIB="/usr/local/tupi/lib"
-export TUPI_PLUGIN="/usr/local/tupi/lib/plugins"
+export TUPI_LIB="/usr/local/tupi/lib/tupi"
+export TUPI_PLUGIN="/usr/local/tupi/lib/tupi/plugins"
 export TUPI_INCLUDE="/usr/local/tupi/include"
 export TUPI_BIN="/usr/local/tupi/bin"
 

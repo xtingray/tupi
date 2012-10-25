@@ -7,10 +7,10 @@
     error("Run ./configure first!")
 }
 
-INSTALLS += include target 
-target.path = /lib/ 
-include.files += *.h 
-include.path = /include/tupigui 
+INSTALLS += target 
+target.path = /lib
+#include.files += *.h 
+#include.path = /include/tupigui 
 
 macx {
     CONFIG += plugin warn_on

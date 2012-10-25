@@ -21,7 +21,7 @@ SOURCES += tupseditor.cpp \
 }
 
 TEMPLATE = lib
-TARGET = kinas
+TARGET = tupikinas
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

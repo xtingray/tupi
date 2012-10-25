@@ -11,7 +11,7 @@ SOURCES += erasertool.cpp
 
 CONFIG += plugin warn_on 
 TEMPLATE = lib 
-TARGET = erasertool
+TARGET = tupierasertool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

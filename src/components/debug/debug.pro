@@ -20,7 +20,7 @@ SOURCES += tupdebugwidget.cpp \
 }
 
 TEMPLATE = lib
-TARGET = debug
+TARGET = tupidebug
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

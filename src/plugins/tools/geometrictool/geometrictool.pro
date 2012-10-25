@@ -13,7 +13,7 @@ SOURCES += geometrictool.cpp \
 
 CONFIG += plugin
 TEMPLATE = lib 
-TARGET = geometrictool
+TARGET = tupigeometrictool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

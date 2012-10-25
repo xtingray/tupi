@@ -17,7 +17,7 @@ SOURCES += selecttool.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = selecttool
+TARGET = tupiselecttool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

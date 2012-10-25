@@ -19,7 +19,7 @@ SOURCES += tuppenwidget.cpp
     CONFIG += dll warn_on
 }
 TEMPLATE = lib
-TARGET = pen
+TARGET = tupipen
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

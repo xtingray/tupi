@@ -3,10 +3,10 @@
 # Subdir relative project main directory: ./src/framework/tsound
 # Target is a library: tupifwsound  
 
-INSTALLS += target headers
-target.path = /lib/ 
-headers.path = /include/tupisound
-headers.files += *.h
+INSTALLS += target
+target.path = /lib
+#headers.path = /include/tupisound
+#headers.files += *.h
 
 macx {
     CONFIG += plugin warn_on

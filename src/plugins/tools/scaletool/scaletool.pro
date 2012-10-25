@@ -16,7 +16,7 @@ SOURCES += tweener.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = scaletool
+TARGET = tupiscaletool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

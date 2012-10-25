@@ -1,7 +1,7 @@
 INCLUDEPATH += $$KINAS_DIR
-LIBS += -L$$KINAS_DIR -lkinas
+LIBS += -L$$KINAS_DIR -ltupikinas
 
 linux-g++ {
-    PRE_TARGETDEPS += $$KINAS_DIR/libkinas.so
+    PRE_TARGETDEPS += $$KINAS_DIR/libtupikinas.so
 }
 

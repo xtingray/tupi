@@ -13,7 +13,7 @@ SOURCES += schemetool.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 
-TARGET = schemetool
+TARGET = tupischemetool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

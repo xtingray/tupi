@@ -61,7 +61,7 @@ SOURCES += tuppaintarea.cpp \
 }
 
 TEMPLATE = lib
-TARGET = paintarea
+TARGET = tupipaintarea
 
 PLUGIN_DIR = ../../plugins/export/genericexportplugin
 INCLUDEPATH += $$PLUGIN_DIR

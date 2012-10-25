@@ -16,7 +16,7 @@ SOURCES += tweener.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = rotationtool
+TARGET = tupirotationtool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

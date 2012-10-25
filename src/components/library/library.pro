@@ -24,7 +24,7 @@ SOURCES += tuplibrarywidget.cpp \
 }
 
 TEMPLATE = lib
-TARGET = library
+TARGET = tupilibrary
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

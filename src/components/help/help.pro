@@ -23,7 +23,7 @@ SOURCES += tuphelpwidget.cpp \
 }
 
 TEMPLATE = lib
-TARGET = help
+TARGET = tupihelp
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -3,10 +3,10 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
-INSTALLS += headers 
-headers.target = .
-headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
-headers.path = /include/tupistore/
+#INSTALLS += headers 
+#headers.target = .
+#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
+#headers.path = /include/tupistore/
 
 INSTALLS += target
 target.path = /lib

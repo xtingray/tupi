@@ -1,6 +1,6 @@
 INCLUDEPATH += $$HELP_DIR
-LIBS += -L$$HELP_DIR -lhelp
+LIBS += -L$$HELP_DIR -ltupihelp
 
 linux-g++ {
-    PRE_TARGETDEPS += $$HELP_DIR/libhelp.so
+    PRE_TARGETDEPS += $$HELP_DIR/libtupihelp.so
 }

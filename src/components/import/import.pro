@@ -18,7 +18,7 @@ SOURCES += tuppaletteimporter.cpp
 }
 
 TEMPLATE = lib 
-TARGET = import
+TARGET = tupimport
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -27,7 +27,7 @@ SOURCES += tupviewcamera.cpp \
 }
 
 TEMPLATE = lib
-TARGET = animation 
+TARGET = tupianimation 
 
 EXPORT_DIR = ../export
 include($$EXPORT_DIR/export.pri)

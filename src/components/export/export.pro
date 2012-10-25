@@ -18,7 +18,7 @@ SOURCES += tupexportwidget.cpp
 }
 
 TEMPLATE = lib
-TARGET = export
+TARGET = tupiexport
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -11,7 +11,7 @@ SOURCES += inktool.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 
-TARGET = inktool
+TARGET = tupiinktool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

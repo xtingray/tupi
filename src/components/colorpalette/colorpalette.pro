@@ -36,7 +36,7 @@ SOURCES += tupcolorpicker.cpp \
     CONFIG += dll warn_on
 }
 TEMPLATE = lib
-TARGET = colorpalette
+TARGET = tupicolorpalette
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -11,7 +11,7 @@ SOURCES += genericexportplugin.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 
-TARGET = genericexportplugin
+TARGET = tupigenericexportplugin
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

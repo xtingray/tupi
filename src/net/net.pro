@@ -3,14 +3,13 @@
 # Subdir relative project main directory: ./src/net
 # Target is a library: net
 
-INSTALLS += headers \
-            target
+INSTALLS += target
 
-target.path = /lib/
+target.path = /lib
 
-headers.target = .
-headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
-headers.path = /include/tupinet/
+#headers.target = .
+#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
+#headers.path = /include/tupinet/
 
 macx {
     CONFIG += plugin warn_on

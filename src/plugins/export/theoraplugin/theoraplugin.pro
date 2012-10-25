@@ -9,7 +9,7 @@ SOURCES += theoramoviegenerator.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 
-TARGET = theoraplugin
+TARGET = tupitheoraplugin
 
 LIBS += -ltheora -ltheoraenc -ltheoradec -logg
 

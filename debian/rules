@@ -12,7 +12,7 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
-	./configure --prefix=`pwd`/debian/tupi/usr --sharedir=`pwd`/debian/tupi/usr/share/tupi --debian-build
+	./configure --prefix=`pwd`/debian/tupi/usr --sharedir=`pwd`/debian/tupi/usr/share/tupi --package-build
 	$(MAKE)	
 
 	touch build-stamp
@@ -70,9 +70,9 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 #	dh_perl
-#	dh_makeshlibs
+	dh_makeshlibs
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):/usr/lib/tupi dh_shlibdeps
 	dh_installdeb
-	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

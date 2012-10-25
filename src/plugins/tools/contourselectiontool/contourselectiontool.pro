@@ -11,7 +11,7 @@ SOURCES += contourselection.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = contourselectiontool
+TARGET = tupicontourselectiontool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

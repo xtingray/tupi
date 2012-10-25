@@ -3,12 +3,12 @@
 # Subdir relative project main directory: ./src/libbase
 # Target is a library: tupibase
 
-INSTALLS += headers target 
-target.path = /lib/ 
+INSTALLS += target 
+target.path = /lib
 
-headers.target = .
-headers.commands = cp *.h $(INSTALL_ROOT)/include/tupibase
-headers.path = /include/tupibase
+#headers.target = .
+#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupibase
+#headers.path = /include/tupibase
 
 macx {
     CONFIG += plugin warn_on

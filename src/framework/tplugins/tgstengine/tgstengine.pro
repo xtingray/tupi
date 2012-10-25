@@ -4,7 +4,7 @@
 # Target is a library:  
 
 INSTALLS += target 
-target.path = /lib/tupi/plugins/ 
+target.path = /lib/plugins/ 
 
 CONFIG += warn_on plugin 
 TEMPLATE = lib 

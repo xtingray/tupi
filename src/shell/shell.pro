@@ -91,21 +91,21 @@ TEMPLATE = app
 
 linux-g{
     TARGETDEPS += ../libtupi/libtupi.so \
-  ../libui/libui.so \
+  ../libui/libtupiui.so \
   ../store/libtupistore.so \
   ../net/libtupinet.so \
-  ../components/paintarea/libpaintarea.so \
-  ../components/pen/libpen.so \
-  ../components/kinas/libkinas.so \
-  ../components/help/libhelp.so \
-  ../components/import/libimport.so \
-  ../components/export/libexport.so \
-  ../components/exposure/libexposure.so \
-  ../components/timeline/libtimeline.so \
-  ../components/library/liblibrary.so \
-  ../components/colorpalette/libcolorpalette.so \
-  ../components/scenes/libscenes.so \
-  ../components/twitter/libtwitter.so
+  ../components/paintarea/libtupipaintarea.so \
+  ../components/pen/libtupipen.so \
+  ../components/kinas/libtupikinas.so \
+  ../components/help/libtupihelp.so \
+  ../components/import/libtupimport.so \
+  ../components/export/libtupiexport.so \
+  ../components/exposure/libtupiexposure.so \
+  ../components/timeline/libtupitimeline.so \
+  ../components/library/libtupilibrary.so \
+  ../components/colorpalette/libtupicolorpalette.so \
+  ../components/scenes/libtupiscenes.so \
+  ../components/twitter/libtupitwitter.so
 }
 
 FRAMEWORK_DIR = ../framework

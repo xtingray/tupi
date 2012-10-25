@@ -10,7 +10,7 @@ images.files += images/es/*.png
 images.path = /data/es/images/ 
 
 INSTALLS += target
-target.path = /lib/
+target.path = /lib
 
 macx {
     CONFIG += plugin warn_on
@@ -30,7 +30,7 @@ SOURCES += tupthemeselector.cpp \
 }
 
 TEMPLATE = lib
-TARGET = ui
+TARGET = tupigui
 
 STORE_DIR = ../store
 LIBTUPI_DIR = ../libtupi

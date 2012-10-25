@@ -20,6 +20,7 @@ configure.tests/opengl/opengl
 configure.tests/zlib/Makefile
 configure.tests/zlib/zlib
 configure.tests/theora/theora
+configure.tests/quazip/quazip
 
 src/framework/tupconfig.pri
 tupiglobal.pri

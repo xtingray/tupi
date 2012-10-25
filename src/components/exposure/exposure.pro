@@ -24,7 +24,7 @@ SOURCES += tupexposuresheet.cpp \
 }
 
 TEMPLATE = lib
-TARGET = exposure
+TARGET = tupiexposure
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

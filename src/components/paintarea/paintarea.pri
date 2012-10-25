@@ -1,7 +1,7 @@
 INCLUDEPATH += $$PAINTAREA_DIR 
-LIBS += -L$$PAINTAREA_DIR -lpaintarea 
+LIBS += -L$$PAINTAREA_DIR -ltupipaintarea 
 
 linux-g++ {
-PRE_TARGETDEPS += $$PAINTAREA_DIR/libpaintarea.so
+PRE_TARGETDEPS += $$PAINTAREA_DIR/libtupipaintarea.so
 }
 

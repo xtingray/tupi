@@ -22,7 +22,7 @@ SOURCES += tupsceneslist.cpp \
 }
 
 TEMPLATE = lib
-TARGET = scenes
+TARGET = tupiscenes
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

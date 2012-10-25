@@ -14,7 +14,7 @@ SOURCES += polyline.cpp \
 
 CONFIG += plugin warn_on
 TEMPLATE = lib
-TARGET = polylinetool
+TARGET = tupipolylinetool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

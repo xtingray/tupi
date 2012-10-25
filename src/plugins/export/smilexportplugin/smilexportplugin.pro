@@ -19,7 +19,7 @@ SOURCES += smilexportplugin.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 
-TARGET = smilexportplugin
+TARGET = tupismilexportplugin
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
