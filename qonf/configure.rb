@@ -197,7 +197,11 @@ module RQonf
         @options['package-build'] = @options['prefix']
         launcher_prefix = "/usr"
         launcher_sharedir = "/usr/share/tupi"
-        launcher_libdir = "/usr/lib/tupi"
+        if RUBY_PLATFORM == "x86_64-linux"
+           launcher_libdir = "/usr/lib64/tupi"
+        else
+           launcher_libdir = "/usr/lib/tupi"
+        end
         launcher_includedir = "/usr/include"
         launcher_bindir = "/usr/bin"
       end
@@ -225,10 +229,10 @@ module RQonf
       if RUBY_PLATFORM.downcase.include?("linux")
         newfile = "[Desktop Entry]\n"
         # newfile += "Encoding=UTF-8\n"
-        newfile += "Name=Tupi: 2D Magic\n"
-        newfile += "Name[es]=Tupí: Magia 2D\n"
-        newfile += "Name[pt]=Tupí: Magia 2D\n"
-        newfile += "Name[ru]=Tupi: 2D Magic\n"
+        newfile += "Name=Tupi: Open 2D Magic\n"
+        newfile += "Name[es]=Tupí: Magia 2D Libre\n"
+        newfile += "Name[pt]=Tupí: Magia 2D Libre\n"
+        newfile += "Name[ru]=Tupi: Open 2D Magic\n"
         newfile += "Exec=" + launcher_bindir + "/tupi\n"
         newfile += "Icon=tupi.png\n"
         newfile += "Type=Application\n"
