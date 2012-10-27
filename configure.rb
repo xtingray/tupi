@@ -15,11 +15,10 @@ begin
 Use: ./configure [options]
   options:
   --help:               Show this message
-  --prefix=[path]:      Sets installation path [/usr/local]
-  --bindir=[path]:      Set binaries path [/usr/local/bin]
-  --libdir=[path]:      Set library path [/usr/local/lib]
-  --includedir=[path]:  Set include path [/usr/local/include]
-  --sharedir=[path]:    Set data path [/usr/local/share]
+  --prefix=[path]:      Sets installation path [/usr]
+  --bindir=[path]:      Set binaries path [/usr/bin]
+  --libdir=[path]:      Set library path [/usr/lib/tupi | /usr/lib64/tupi]
+  --sharedir=[path]:    Set data path [/usr/share]
   --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
   --with-debug:         Enable debug
   --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]

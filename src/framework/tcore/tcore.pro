@@ -5,7 +5,7 @@
 
 INSTALLS += target 
 
-target.path = /lib
+target.path = /lib/
 #include.files += *.h 
 #include.path = /include/tupicore 
 

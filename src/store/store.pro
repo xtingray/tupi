@@ -9,7 +9,7 @@
 #headers.path = /include/tupistore/
 
 INSTALLS += target
-target.path = /lib
+target.path = /lib/
 
 macx {
     CONFIG += plugin warn_on

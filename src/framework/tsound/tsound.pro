@@ -4,7 +4,7 @@
 # Target is a library: tupifwsound  
 
 INSTALLS += target
-target.path = /lib
+target.path = /lib/
 #headers.path = /include/tupisound
 #headers.files += *.h
 

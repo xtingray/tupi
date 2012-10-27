@@ -10,7 +10,7 @@ images.files += images/es/*.png
 images.path = /data/es/images/ 
 
 INSTALLS += target
-target.path = /lib
+target.path = /lib/
 
 macx {
     CONFIG += plugin warn_on

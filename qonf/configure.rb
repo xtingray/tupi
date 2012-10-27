@@ -170,16 +170,17 @@ module RQonf
     private
     def setPath()
       if @options['prefix'].nil? then
-        @options['prefix'] = "/usr/local/tupi"
+        @options['prefix'] = "/usr"
       end
       if @options['bindir'].nil? then
         @options['bindir'] = @options['prefix'] + "/bin"
       end
       if @options['libdir'].nil? then
-        @options['libdir'] = @options['prefix'] + "/lib/tupi"
-      end
-      if @options['includedir'].nil? then
-        @options['includedir'] = @options['prefix'] + "/include"
+        if RUBY_PLATFORM == "x86_64-linux"
+           @options['libdir'] = @options['prefix'] + "/lib64/tupi"
+        else
+           @options['libdir'] = @options['prefix'] + "/lib/tupi"
+        end
       end
       if @options['sharedir'].nil? then
         @options['sharedir'] = @options['prefix'] + "/share"
@@ -188,7 +189,6 @@ module RQonf
       launcher_prefix = @options['prefix']
       launcher_sharedir = @options['sharedir']
       launcher_libdir = @options['libdir']
-      launcher_includedir = @options['includedir']
       launcher_bindir = @options['bindir']
 
       if @options['package-build'].nil? then
@@ -211,7 +211,6 @@ module RQonf
       newfile += "export TUPI_SHARE=\"" + launcher_sharedir + "\"\n"
       newfile += "export TUPI_LIB=\"" + launcher_libdir + "\"\n"
       newfile += "export TUPI_PLUGIN=\"" + launcher_libdir + "/plugins\"\n"
-      newfile += "export TUPI_INCLUDE=\"" + launcher_includedir + "\"\n"
       newfile += "export TUPI_BIN=\"" + launcher_bindir + "\"\n\n"
 
       if RUBY_PLATFORM.downcase.include?("darwin")

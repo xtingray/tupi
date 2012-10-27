@@ -5,7 +5,7 @@
 
 INSTALLS += target
 
-target.path = /lib
+target.path = /lib/
 
 #headers.target = .
 #headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet

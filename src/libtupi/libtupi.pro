@@ -9,7 +9,7 @@ INSTALLS += target
 #headers.commands = cp *.h $(INSTALL_ROOT)/include/tupi
 #headers.path = /include/tupi
 
-target.path = /lib
+target.path = /lib/
 
 macx {
     CONFIG += plugin warn_on
