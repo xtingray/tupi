@@ -172,18 +172,23 @@ module RQonf
       if @options['prefix'].nil? then
         @options['prefix'] = "/usr"
       end
+
       if @options['bindir'].nil? then
-        @options['bindir'] = @options['prefix'] + "/bin"
+         @options['bindir'] = @options['prefix'] + "/bin"
       end
+
       if @options['libdir'].nil? then
         if RUBY_PLATFORM == "x86_64-linux"
            @options['libdir'] = @options['prefix'] + "/lib64/tupi"
         else
            @options['libdir'] = @options['prefix'] + "/lib/tupi"
         end
+      elsif !@options['libdir'].end_with? "tupi" then
+            @options['libdir'] = @options['libdir'] + "/tupi"   
       end
+
       if @options['sharedir'].nil? then
-        @options['sharedir'] = @options['prefix'] + "/share"
+        @options['sharedir'] = @options['prefix'] + "/share/tupi"
       end
 
       launcher_prefix = @options['prefix']
@@ -202,7 +207,6 @@ module RQonf
         else
            launcher_libdir = "/usr/lib/tupi"
         end
-        launcher_includedir = "/usr/include"
         launcher_bindir = "/usr/bin"
       end
 

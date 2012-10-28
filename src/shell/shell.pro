@@ -27,7 +27,6 @@ unix:!mac {
     INSTALLS += tupidata \
                 launcher \
                 target
-    target.path = /bin/
 
     tupidata.target = data
     tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
@@ -58,6 +57,7 @@ unix:!mac {
     copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
     copyright.path = /tupi/
 
+    target.path = /bin/
     TARGET = ../../bin/tupi.bin
 }
 
