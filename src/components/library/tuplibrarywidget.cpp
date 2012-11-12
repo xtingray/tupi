@@ -44,7 +44,7 @@
 #include "tupsymboleditor.h"
 #include "tuprequestbuilder.h"
 #include "tosd.h"
-#include "taudioplayer.h"
+// #include "taudioplayer.h"
 #include "tdebug.h"
 
 #include <QApplication>
@@ -276,11 +276,13 @@ void TupLibraryWidget::previewItem(QTreeWidgetItem *item)
                    break;
                 case TupLibraryObject::Sound:
                    {
+                     /*
                      TAudioPlayer::instance()->setCurrentPlayer(k->currentPlayerId);
                      TAudioPlayer::instance()->stop();
 
                      k->currentPlayerId = TAudioPlayer::instance()->load(object->dataPath());
                      TAudioPlayer::instance()->play(0);
+                     */
                    }
                    break;
                 default:

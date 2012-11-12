@@ -46,7 +46,7 @@
 #include "tdebug.h"
 #include "tosd.h"
 #include "timageeffect.h"
-#include "taudioplayer.h"
+// #include "taudioplayer.h"
 
 #include "tupapplication.h"
 #include "tuppluginmanager.h"
@@ -111,7 +111,7 @@ TupMainWindow::TupMainWindow(TupSplash *splash, int parameters) :
     #endif
 
     // Loading audio player plugin
-    TAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
+    // TAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
     setObjectName("TupMainWindow_");
 
     // Defining the status bar

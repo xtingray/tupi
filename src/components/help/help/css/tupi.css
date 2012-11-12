@@ -3,47 +3,47 @@ body {
 }
 
 .tupi_background1 {
-     background-image:url('/usr/share/tupi/data/help/images/bg1.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/bg1.png');
 }
 
 .tupi_background2 {
-     background-image:url('/usr/share/tupi/data/help/images/bg2.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/bg2.png');
 }
 
 .tupi_background3 {
-     background-image:url('/usr/share/tupi/data/help/images/bg3.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/bg3.png');
 }
 
 .tupi_background4 {
-     background-image:url('/usr/share/tupi/data/help/images/bg4.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/bg4.png');
 }
 
 .tupi_background5 {
-     background-image:url('/usr/share/tupi/data/help/images/bg5.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/bg5.png');
 }
 
 .tupi_background6 {
-     background-image:url('/usr/share/tupi/data/help/images/bg6.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/bg6.png');
 }
 
 .tip_background00 {
-     background-image:url('/usr/share/tupi/data/help/images/tip_bg01.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/tip_bg01.png');
      color:#000000;
 }
 
 .tip_background01 {
-     background-image:url('/usr/share/tupi/data/help/images/tip_bg02.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/tip_bg02.png');
      color:#000000;
 }
 
 .tip_background02 {
-     background-image:url('/usr/share/tupi/data/help/images/tip_bg03.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/tip_bg03.png');
      color:#000000;
 }
 
 .tupi {
      background-color:#ffffff;
-     background-image:url('/usr/share/tupi/data/help/images/tupi.png');
+     background-image:url('/usr/local/tupi/share/tupi/data/help/images/tupi.png');
      background-repeat:no-repeat;
      background-position:left top;
      color:#000000;

@@ -40,7 +40,7 @@
 #include "tapplicationproperties.h"
 #include "tdebug.h"
 #include "tcollapsiblewidget.h"
-#include "taudioplayer.h"
+// #include "taudioplayer.h"
 
 #ifdef Q_OS_UNIX
 #include "tupcrashhandler.h"

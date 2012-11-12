@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "tupsoundlayer.h"
-#include "taudioplayer.h"
+// #include "taudioplayer.h"
 #include "tuplibrary.h"
 #include "tupproject.h"
 #include "tuplibraryobject.h"
@@ -65,7 +65,7 @@ void TupSoundLayer::fromSymbol(const QString &symbolName)
         if (object->type() == TupLibraryObject::Sound) {
             k->symbolName = symbolName;
             k->filePath = object->dataPath();
-            k->playerId = TAudioPlayer::instance()->load(k->filePath);
+            // k->playerId = TAudioPlayer::instance()->load(k->filePath);
         }
     }
 }
@@ -77,14 +77,14 @@ QString TupSoundLayer::filePath() const
 
 void TupSoundLayer::play()
 {
-    TAudioPlayer::instance()->setCurrentPlayer(k->playerId);
-    TAudioPlayer::instance()->play();
+    // TAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+    // TAudioPlayer::instance()->play();
 }
 
 void TupSoundLayer::stop()
 {
-    TAudioPlayer::instance()->setCurrentPlayer(k->playerId);
-    TAudioPlayer::instance()->stop();
+    // TAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+    // TAudioPlayer::instance()->stop();
 }
 
 void TupSoundLayer::fromXml(const QString &xml)

@@ -82,7 +82,7 @@ _EOH_
 
     config.addLib("-ltupifwgui")
     config.addLib("-ltupifwcore")
-    config.addLib("-ltupifwsound")
+    # config.addLib("-ltupifwsound")
     
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')

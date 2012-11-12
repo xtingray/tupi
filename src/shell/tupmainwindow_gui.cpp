@@ -39,7 +39,7 @@
 #include "tcommandhistory.h"
 #include "toolview.h"
 #include "tviewbutton.h"
-#include "taudioplayer.h"
+// #include "taudioplayer.h"
 #include "tdebug.h"
 
 #include <QKeySequence>
