@@ -8,5 +8,5 @@ SUBDIRS += tools \
            filters \
            import
 
-CONFIG += warn_on 
+CONFIG += ordered warn_on 
 TEMPLATE = subdirs 

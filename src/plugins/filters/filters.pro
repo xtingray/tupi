@@ -3,5 +3,5 @@
 # Subdir relative project main directory: ./src/plugins/filters
 # Target is a subdirs project 
 
-CONFIG += warn_on 
+CONFIG += ordered warn_on 
 TEMPLATE = subdirs 
