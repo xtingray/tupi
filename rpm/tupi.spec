@@ -1,12 +1,15 @@
 # This is the spec file for Tupi
 
+%define release_number 1
+
 Name: tupi
 Version: 0.2
-Release: 1%{?dist}
-Summary: Open 2D Magic
+Release: %{release_number}%{?dist}
+Summary: 2D vector-based animation environment 
 License: GPLv3+
 URL: http://www.maefloresta.com
-Source: http://www.maefloresta.com/portal/files/tupi-0.2.tar.gz
+Source: http://www.maefloresta.com/portal/files/%{name}-%{version}-%{release_number}.tar.gz
+ExcludeArch: ppc ppc64
 
 BuildRequires: ruby, zlib-devel, quazip-devel
 BuildRequires: qconf, qt4-devel
@@ -21,21 +24,21 @@ BuildRequires: libtheora-devel, libogg-devel
 
 %build
 %configure
-make
-#make %{?_smp_mflags} <- Compilation fails with this option
+make %{?_smp_mflags}
 
 %install
 make install DESTDIR=%{buildroot}
 find %{buildroot} -name \*.la | xargs rm -f
+desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 %files
 %doc README COPYING
-%{_bindir}/tupi
-%{_bindir}/tupi.bin
+%{_bindir}/%{name}
+%{_bindir}/%{name}.bin
 %{_datadir}/applications
-%{_datadir}/pixmaps/tupi.png
-%{_datadir}/tupi
-%{_libdir}/tupi
+%{_datadir}/pixmaps/%{name}.png
+%{_datadir}/%{name}
+%{_libdir}/%{name}
 %{_datadir}/man/man1/*.1*
 
 %changelog
