@@ -33,7 +33,7 @@ unix:!mac {
     tupidata.path = /data/
 
     launcher.target = ../../launcher/tupi
-    launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin
+    launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin; chmod 755 $(INSTALL_ROOT)/bin/tupi
     launcher.path = /bin/
 
     INSTALLS += desktop \
