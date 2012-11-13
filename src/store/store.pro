@@ -3,13 +3,19 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
-#INSTALLS += headers 
-#headers.target = .
-#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
-#headers.path = /include/tupistore/
+!include(../../tupiglobal.pri) {
+    error("Please configure first")
+}
 
 INSTALLS += target
 target.path = /lib/
+
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers
+    headers.target = .
+    headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
+    headers.path = /include/tupistore/
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -118,7 +124,3 @@ FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 LIBTUPI_DIR = ../libtupi
 include($$LIBTUPI_DIR/libtupi.pri)
-
-include(../../tupiglobal.pri)
-
-

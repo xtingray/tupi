@@ -3,6 +3,10 @@
 # Subdir relative project main directory: ./src/libui
 # Target is a library: ui
 
+!include(../../tupiglobal.pri) {
+    error("Please configure first")
+}
+
 INSTALLS += images images-en 
 images-en.files += images/en/*.png 
 images-en.path = /data/en/images 
@@ -11,6 +15,13 @@ images.path = /data/es/images/
 
 INSTALLS += target
 target.path = /lib/
+
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers
+    headers.target = .
+    headers.commands = cp *.h $(INSTALL_ROOT)/include/tupigui
+    headers.path = /include/tupigui
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -39,5 +50,3 @@ FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 include($$STORE_DIR/store.pri)
 include($$LIBTUPI_DIR/libtupi.pri)
-
-include(../../tupiglobal.pri)

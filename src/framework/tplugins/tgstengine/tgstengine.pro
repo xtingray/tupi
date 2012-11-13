@@ -3,6 +3,10 @@
 # Subdir relative project main directory: ./src/framework/tplugins/tgstengine
 # Target is a library:  
 
+!include(../../tupconfig.pri){
+    error("Please configure first")
+}
+
 INSTALLS += target 
 target.path = /lib/plugins/ 
 
@@ -20,8 +24,4 @@ contains(DEFINES, HAVE_GST10){
 
 linux-g{
     TARGETDEPS += ../../tcore/libtupifwcore.so
-}
-
-!include(../../tupconfig.pri){
-    error("Please configure first")
 }

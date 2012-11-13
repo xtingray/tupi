@@ -3,11 +3,18 @@
 # Subdir relative project main directory: ./src/framework/tcore
 # Target is a library: tupifwcore  
 
-INSTALLS += target 
+!include(../tupconfig.pri) {
+    error("Run ./configure first")
+}
 
+INSTALLS += target
 target.path = /lib/
-#include.files += *.h 
-#include.path = /include/tupicore 
+
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers 
+    headers.files += *.h
+    headers.path = /include/tupicore
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -38,8 +45,3 @@ SOURCES += talgorithm.cpp \
 
 TEMPLATE = lib
 TARGET = tupifwcore
-
-!include(../tupconfig.pri){
-    error("Run ./configure first")
-}
-

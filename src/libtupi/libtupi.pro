@@ -3,13 +3,19 @@
 # Subdir relative project main directory: ./src/libtupi
 # Target is a library: tupi 
 
+!include(../../tupiglobal.pri) {
+    error("Please configure first")
+}
+
 INSTALLS += target 
-
-#headers.target = .
-#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupi
-#headers.path = /include/tupi
-
 target.path = /lib/
+
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers
+    headers.target = .
+    headers.commands = cp *.h $(INSTALL_ROOT)/include/tupi
+    headers.path = /include/tupi
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -63,5 +69,3 @@ include($$FRAMEWORK_DIR/framework.pri)
 
 # QUAZIP_DIR = "../../3rdparty/quazip/"
 # include($$QUAZIP_DIR/quazip.pri)
-
-include(../../tupiglobal.pri)

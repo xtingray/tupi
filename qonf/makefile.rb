@@ -35,6 +35,8 @@ module RQonf
                             if line.include? "INSTALL_ROOT" then
                                if line.include? "\$\(INSTALL_ROOT\)\/lib" then
                                   newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/lib/, "\$\(DESTDIR\)" + @options['libdir'])}"
+                               elsif line.include? "\$\(INSTALL_ROOT\)\/include" then
+                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/include/, @options['includedir'])}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/plugins" then
                                      newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/plugins/, "\$\(DESTDIR\)" + @options['libdir'] + "/plugins")}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/data" then

@@ -22,7 +22,8 @@ Use: ./configure [options]
   --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
   --with-debug:         Enable debug
   --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]
-  --package-build:       Option exclusive for package maintainers
+  --package-build:      Option exclusive for package maintainers
+  --install-headers:    Include header files as part of installation
 _EOH_
         exit 0
     end
@@ -87,6 +88,10 @@ _EOH_
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')
     config.addDefine('REVISION=\\\\\"1\\\\\"')
+
+    if conf.hasArgument?("install-headers")
+       config.addDefine("ADD_HEADERS");
+    end
 
     Info.info << "Debug support... "
 

@@ -3,12 +3,18 @@
 # Subdir relative project main directory: ./src/libbase
 # Target is a library: tupibase
 
+!include(../../tupiglobal.pri) {
+    error("Please configure first")
+}
+
 INSTALLS += target 
 target.path = /lib
 
-#headers.target = .
-#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupibase
-#headers.path = /include/tupibase
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers 
+    headers.commands = cp *.h $(INSTALL_ROOT)/include/tupibase
+    headers.path = /include/tupibase
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -53,5 +59,3 @@ LIBTUPI_DIR = ../libtupi
 include($$LIBTUPI_DIR/libtupi.pri)
 STORE_DIR = ../store
 include($$STORE_DIR/store.pri)
-
-include(../../tupiglobal.pri)

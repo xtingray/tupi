@@ -3,13 +3,19 @@
 # Subdir relative project main directory: ./src/net
 # Target is a library: net
 
-INSTALLS += target
+!include(../../tupiglobal.pri) {
+    error("Please configure first")
+}
 
+INSTALLS += target
 target.path = /lib/
 
-#headers.target = .
-#headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
-#headers.path = /include/tupinet/
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers
+    headers.target = .
+    headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
+    headers.path = /include/tupinet/
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -77,6 +83,4 @@ include(net_config.pri)
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-
-include(../../tupiglobal.pri)
 

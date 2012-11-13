@@ -187,6 +187,10 @@ module RQonf
             @options['libdir'] = @options['libdir'] + "/tupi"   
       end
 
+      if @options['includedir'].nil? then
+         @options['includedir'] = @options['prefix'] + "/include"
+      end
+
       if @options['sharedir'].nil? then
         @options['sharedir'] = @options['prefix'] + "/share/tupi"
       end

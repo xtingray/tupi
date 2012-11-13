@@ -79,6 +79,9 @@ class Config
             f << "contains(DEFINES, HAVE_FFMPEG){" << $endl
             f << "LIBS += -lavcodec -lavformat -lavutil" << $endl
             f << "}" << $endl
+            if @defines.include? 'ADD_HEADERS'
+               f << "DEFINES += ADD_HEADERS" << $endl
+            end
             f << $endl
             f << "QT += opengl core gui svg xml network" << $endl
             f << "unix {" << $endl
@@ -88,7 +91,7 @@ class Config
             f << "}" << $endl
 
             if not @options.empty?
-                f << "CONFIG += " << @options.uniq.join(" ") << $endl
+               f << "CONFIG += " << @options.uniq.join(" ") << $endl
             end
         }
 

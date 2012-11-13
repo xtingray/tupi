@@ -3,14 +3,18 @@
 # Subdir relative project main directory: ./src/framework/tgui
 # Target is a library: tupifwgui 
 
-!include(../tupconfig.pri){
+!include(../tupconfig.pri) {
     error("Run ./configure first!")
 }
 
-INSTALLS += target 
+INSTALLS += target
 target.path = /lib/
-#include.files += *.h 
-#include.path = /include/tupigui 
+
+contains(DEFINES, ADD_HEADERS) {
+    INSTALLS += headers 
+    headers.files += *.h
+    headers.path = /include/tupigui
+}
 
 macx {
     CONFIG += plugin warn_on

@@ -3,10 +3,18 @@
 # Subdir relative project main directory: ./src/framework/tsound
 # Target is a library: tupifwsound  
 
+!include(../tupconfig.pri) {
+    error("Run ./configure first")
+}
+
 INSTALLS += target
 target.path = /lib/
-#headers.path = /include/tupisound
-#headers.files += *.h
+
+contains("DEFINES", "ADD_HEADERS") {
+    INSTALLS += headers 
+    headers.files += *.h
+    headers.path = /include/tupisound
+}
 
 macx {
     CONFIG += plugin warn_on
@@ -28,5 +36,3 @@ LIBS += -L../tcore -ltupifwcore
 linux-g{
     TARGETDEPS += ../tcore/libtupifwcore.so
 }
-
-include(../tupconfig.pri)
