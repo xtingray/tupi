@@ -1,6 +1,9 @@
-This is the README file for the Tupi project.
-Tupi is a design and authoring tool for 2D Animation inspired by 
-animators for animators. Developed in C++ using the Qt library.
+Tupi is a desktop application focused on 2D vector-based content
+like images (PNG), storyboards (HTML) and animations (OGG, AVI, 
+MPEG, etc).
+Its interface has been designed looking for provide a high level 
+of usability for artists and non artists, using as main development
+resource the Qt framework. 
 
   Copyright (C) 2010 Gustav Gonzalez / xtingray
 
