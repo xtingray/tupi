@@ -4,8 +4,8 @@ Tupi is a desktop application focused on 2D vector-based content
 like images (PNG), storyboards (HTML) and animations (OGG, AVI, 
 MPEG, etc).
 Its interface has been designed looking for provide a high level 
-of usability for artists and non artists, using as main development
-resource the Qt framework. 
+experience of usability for artists and non artists, using as main 
+development resource the Qt framework. 
 
   Copyright (C) 2010 Gustav Gonzalez / xtingray
 
@@ -16,25 +16,27 @@ resource the Qt framework.
 See the files ./INSTALL* for building and installation instructions.
 
 Primary distribution point: 
- http://www.maefloresta.com/portal/download_counter
+   http://www.maefloresta.com/portal/downloads
 
-Home page: http://www.maefloresta.com/
+Home page: 
+   http://www.maefloresta.com/
 
-Forums: http://www.maefloresta.com/portal/forum 
+Forums: 
+   http://www.maefloresta.com/portal/forum 
 
-Bug reports: http://www.maefloresta.com/portal/bugs.php
+Bug reports: 
+   http://www.maefloresta.com/portal/bugs.php
+Tips:
  Please include enough information for the maintainers to reproduce the
  problem.  Generally speaking, that means:
-- the contents of any input files or procedure necessary to reproduce 
+- The content of any input file or procedure necessary to reproduce 
   the bug (crucial!).
-- a description of the problem and any samples of the erroneous output.
-- the version/revision number of the program(s) involved. 
-- hardware, operating system, and compiler versions (uname -a).
-- anything else that you think would be helpful.
+- A description of the problem and any samples of the erroneous output.
+- The version/revision number of the program(s) involved. 
+- Hardware, operating system, and compiler versions (uname -a).
+- Anything else that you think would be helpful.
 
-Patches are most welcome; if possible, please make them with diff -c and
+Patches are very welcome; if possible, please make them with diff -c and
 include ChangeLog entries.
 
 Tupi is free software. See the file COPYING for copying conditions.
-
-
