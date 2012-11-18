@@ -44,7 +44,7 @@ Linux distro
 2. Get the source code and compile it
 
 - Get the Tupi source code from our Download section
-  (http://www.maefloresta.com/portal/download_counter). Then, 
+  (http://www.maefloresta.com/portal/downloads). Then, 
   run these commands:
    % tar xvfz tupi-0.1-gitXX.tar.gz    [Press enter]
    % cd tupi-0.1-gitXX    [Press enter]
