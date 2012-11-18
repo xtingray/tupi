@@ -30,7 +30,7 @@ installed the next list of dependencies in your computer:
 For Ubuntu users (version 10.10) with some experience using the console, 
 these are the commands they should run to install Tupi dependencies:
 
-- Open a terminal (from Aplications -> Accesories) and type:
+Open a terminal (from Aplications -> Accesories) and type:
     sudo apt-get install build-essential    [Press enter]
     sudo apt-get install ruby    [Press enter]
     sudo apt-get install libaspell-dev    [Press enter]
@@ -46,11 +46,11 @@ Linux distro
 Get the Tupi source code from our Download section
 (http://www.maefloresta.com/portal/download_counter). Then, 
 run these commands:
-   tar xvfz tupi-0.1-gitXX.tar.gz    [Press enter]
-   cd tupi-0.1-gitXX    [Press enter]
-   ./configure --prefix=/usr/local/tupi    [Press enter]
-   make    [Press enter]
-   sudo make install    [Press enter]
+    tar xvfz tupi-0.1-gitXX.tar.gz    [Press enter]
+    cd tupi-0.1-gitXX    [Press enter]
+    ./configure --prefix=/usr/local/tupi    [Press enter]
+    make    [Press enter]
+    sudo make install    [Press enter]
 
 Note: Only for advanced users, the configure script provides many options 
 useful to set specific installation paths. Try "./configure --help" to get 
