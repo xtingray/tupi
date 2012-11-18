@@ -31,12 +31,12 @@
  these are the commands they should run to install Tupi dependencies:
 
  - Open a terminal (from Aplications -> Accesories) and type:
-	% sudo apt-get install build-essential    [Press enter]
-	% sudo apt-get install ruby    [Press enter]
-	% sudo apt-get install libaspell-dev    [Press enter]
-	% sudo apt-get install libavcodec-dev libavformat-dev    [Press enter]
-	% sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools    [Press enter]
-	% sudo apt-get install zlib1g-dev    [Press enter]
+    % sudo apt-get install build-essential    [Press enter]
+    % sudo apt-get install ruby    [Press enter]
+    % sudo apt-get install libaspell-dev    [Press enter]
+    % sudo apt-get install libavcodec-dev libavformat-dev    [Press enter]
+    % sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools    [Press enter]
+    % sudo apt-get install zlib1g-dev    [Press enter]
 
  Note: If you are not using Ubuntu, check for the equivalent packages for your
  Linux distro
@@ -46,11 +46,11 @@
  Get the Tupi source code from our Download section
  (http://www.maefloresta.com/portal/download_counter). Then, 
  run these commands:
-	% tar xvfz tupi-0.1-gitXX.tar.gz    [Press enter]
-	% cd tupi-0.1-gitXX    [Press enter]
-	% ./configure --prefix=/usr/local/tupi    [Press enter]
-	% make    [Press enter]
-	% sudo make install    [Press enter]
+    % tar xvfz tupi-0.1-gitXX.tar.gz    [Press enter]
+    % cd tupi-0.1-gitXX    [Press enter]
+    % ./configure --prefix=/usr/local/tupi    [Press enter]
+    % make    [Press enter]
+    % sudo make install    [Press enter]
 
  Note: Only for advanced users, the configure script provides many options 
  useful to set specific installation paths. Try "./configure --help" to get 
@@ -59,7 +59,7 @@
  ## Animation time!
 
  Execute:
-	% /usr/local/tupi/bin/tupi &    [Press enter]
+    % /usr/local/tupi/bin/tupi &    [Press enter]
 
  Or look for the launcher from Applications -> Graphics -> Tupi
 
