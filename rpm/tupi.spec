@@ -1,14 +1,12 @@
 # This is the spec file for Tupi
 
-%define release_number 1
-
 Name: tupi
 Version: 0.2
-Release: %{release_number}%{?dist}
+Release: 1%{?dist}
 Summary: 2D vector-based animation environment 
 License: GPLv3+
 URL: http://www.maefloresta.com
-Source: http://www.maefloresta.com/portal/files/%{name}-%{version}-%{release_number}.tar.gz
+Source: http://www.maefloresta.com/portal/files/%{name}-%{version}.tar.gz
 
 BuildRequires: ruby, zlib-devel, quazip-devel
 BuildRequires: qconf, desktop-file-utils, qt4-devel
@@ -44,5 +42,4 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 %changelog
 * Fri Oct 26 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-1
-- Making of RPM
-
+- Several lines of the spec file were adjusted according to the Fedora standard 
