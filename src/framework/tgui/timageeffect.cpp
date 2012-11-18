@@ -40,7 +40,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QVector>
 
 #include "timageeffect.h"
-#include "tcpuinfo.h"
+// #include "tcpuinfo.h"
 
 //======================================================================
 //

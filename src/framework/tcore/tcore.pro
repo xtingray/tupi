@@ -23,7 +23,7 @@ macx {
 HEADERS += talgorithm.h \
            tapplicationproperties.h \
            tconfig.h \
-           tcpuinfo.h \
+           # tcpuinfo.h \
            tdebug.h \
            tglobal.h \
            tmd5hash.h \
@@ -33,7 +33,7 @@ HEADERS += talgorithm.h \
 SOURCES += talgorithm.cpp \
            tapplicationproperties.cpp \
            tconfig.cpp \
-           tcpuinfo.cpp \
+           # tcpuinfo.cpp \
            tdebug.cpp \
            tmd5hash.cpp \
            tipdatabase.cpp \

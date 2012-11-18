@@ -9,10 +9,9 @@ Summary: 2D vector-based animation environment
 License: GPLv3+
 URL: http://www.maefloresta.com
 Source: http://www.maefloresta.com/portal/files/%{name}-%{version}-%{release_number}.tar.gz
-ExcludeArch: ppc ppc64
 
 BuildRequires: ruby, zlib-devel, quazip-devel
-BuildRequires: qconf, qt4-devel
+BuildRequires: qconf, desktop-file-utils, qt4-devel
 BuildRequires: libtheora-devel, libogg-devel
 # BuildRequires: ffmpeg, ffmpeg-libs, ffmpeg-devel
 
@@ -28,7 +27,9 @@ make %{?_smp_mflags}
 
 %install
 make install DESTDIR=%{buildroot}
+%find_lang %{name} --with-qt
 find %{buildroot} -name \*.la | xargs rm -f
+
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 %files
