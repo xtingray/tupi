@@ -45,7 +45,6 @@
 
 #include "tupabout.h"
 #include "tglobal.h"
-#include "timageeffect.h"
 
 #include "tdebug.h"
 
@@ -117,7 +116,8 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 
     QImage credits = QImage(THEME_DIR + "/images/credits.png");
 
-    TImageEffect::fade(credits,0.25, palette().background().color());
+    // SQA: Replace the method fade with a native Qt function 
+    // TImageEffect::fade(credits,0.25, palette().background().color());
 
     m_credits = new TAnimWidget(QPixmap::fromImage(credits), creditsText);
     addTab(m_credits, tr("Credits"));

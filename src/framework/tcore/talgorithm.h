@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KALGORITHM_H
-#define KALGORITHM_H
+#ifndef TALGORITHM_H
+#define TALGORITHM_H
 
 #include <QString>
 #include <QColor>
@@ -75,6 +75,8 @@ class T_CORE_EXPORT TAlgorithm
          * @return 
          */
         static QColor randomColor(bool withAlpha = false);
+
+        static QStringList header(const QString &input);
 };
 
 #endif

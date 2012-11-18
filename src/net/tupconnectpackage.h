@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCONNECTPACKAGE_H
-#define TupCONNECTPACKAGE_H
+#ifndef TUPCONNECTPACKAGE_H
+#define TUPCONNECTPACKAGE_H
 
 #include <QDomDocument>
 

@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tupsplash.h"
-#include "timageeffect.h"
 #include "tdebug.h"
 #include "tglobal.h"
 

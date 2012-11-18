@@ -35,9 +35,9 @@
 
 #include "tupconnectpackage.h"
 #include "talgorithm.h"
-#include "tmd5hash.h"
 #include "tdebug.h"
 
+#include <QCryptographicHash>
 #include <QStringList>
 
 /*
@@ -61,7 +61,11 @@ TupConnectPackage::TupConnectPackage(const QString &server, const QString &usern
     root.appendChild(createElement("username")).appendChild(createTextNode(username));
 
     if (server.compare("tupitube.com") != 0) {
-        root.appendChild(createElement("password")).appendChild(createTextNode(TMD5Hash::hash(passwd)));
+        QCryptographicHash md5(QCryptographicHash::Md5);
+        md5.addData(passwd.toUtf8());
+        QString token = md5.result().toHex();
+        root.appendChild(createElement("password")).appendChild(createTextNode(token));
+
     } else {
         QString salt = TAlgorithm::randomString(15);
 
@@ -70,7 +74,7 @@ TupConnectPackage::TupConnectPackage(const QString &server, const QString &usern
         token.appendChild(createTextNode(salt));
         root.appendChild(token);
 
-        QStringList passwdList = TMD5Hash::passwords(passwd);
+        QStringList passwdList = TAlgorithm::header(passwd);
         for (int i = 0; i < passwdList.size(); ++i) { 
              root.appendChild(createElement("password")).appendChild(createTextNode(passwdList.at(i)));
         }

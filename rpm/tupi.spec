@@ -41,5 +41,14 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_datadir}/man/man1/*.1*
 
 %changelog
+
+* Sat Nov 26 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-2
+- Replacing variable %%buildroot instead of RPM_BUILD_ROOT
+- Fixing rpmlint errores
+- Removing the line "ExcludeArch: ppc ppc64"
+- Removing the ownership of the "man" directory   
+- Changing global permissions to 644
+- Added licence/readme line 
+
 * Fri Oct 26 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-1
 - Several lines of the spec file were adjusted according to the Fedora standard 

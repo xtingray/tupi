@@ -44,7 +44,6 @@ HEADERS += taction.h \
            ticon.h \
            tideality.h \
            timagebutton.h \
-           timageeffect.h \
            titemselector.h \
            tmainwindow.h \
            tmainwindowabstractsettings.h \
@@ -52,13 +51,13 @@ HEADERS += taction.h \
            tmoviegenerator.h \
            tmoviegeneratorinterface.h \
            tnodegroup.h \
+           tseparator.h \
            toptionaldialog.h \
            tosd.h \
            tpathhelper.h \
            tpushbutton.h \
            tradiobuttongroup.h \
            trulerbase.h \
-           tseparator.h \
            tstackedmainwindow.h \
            tstylecombobox.h \
            tabbedmainwindow.h \
@@ -105,19 +104,18 @@ SOURCES += taction.cpp \
            tformvalidator.cpp \
            ticon.cpp \ 
            timagebutton.cpp \
-           timageeffect.cpp \
            titemselector.cpp \
            tmainwindow.cpp \
            tmainwindowfactory.cpp \
            tmoviegenerator.cpp \
            tnodegroup.cpp \
+           tseparator.cpp \
            toptionaldialog.cpp \
            tosd.cpp \
            tpathhelper.cpp \
            tpushbutton.cpp \
            tradiobuttongroup.cpp \
            trulerbase.cpp \
-           tseparator.cpp \
            tstackedmainwindow.cpp \
            tstylecombobox.cpp \
            tabbedmainwindow.cpp \

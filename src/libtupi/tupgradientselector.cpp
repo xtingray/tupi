@@ -35,7 +35,6 @@
 
 #include "tupgradientselector.h"
 #include "tdebug.h"
-#include "timageeffect.h"
 
 #include <qdrawutil.h>
 #include <QMatrix>

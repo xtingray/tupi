@@ -50,7 +50,6 @@
 #include "tupgraphicsscene.h"
 #include "tupprojectrequest.h"
 #include "tupbrushmanager.h"
-#include "cliphelper.h"
 
 #include <QKeySequence>
 #include <QDebug>
@@ -135,9 +134,10 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                 return;
             }
             
-            QList<QGraphicsItem *> colls = clickedItem->collidingItems();
+            // QList<QGraphicsItem *> colls = clickedItem->collidingItems();
             QPainterPath res = mapPath(item);
-            
+
+            /*
             if (!colls.isEmpty()) {
                 bool doSubs = false;
                 foreach (QGraphicsItem *xit, colls) {
@@ -179,6 +179,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     }
                 }
             }
+            */
             
             TupPathItem *intersection = new TupPathItem();
             intersection->setPath(res);

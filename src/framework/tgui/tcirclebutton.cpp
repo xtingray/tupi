@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tcirclebutton.h"
-#include "timageeffect.h"
 
 #include <QPainter>
 #include <QRegion>

@@ -23,19 +23,15 @@ macx {
 HEADERS += talgorithm.h \
            tapplicationproperties.h \
            tconfig.h \
-           # tcpuinfo.h \
            tdebug.h \
            tglobal.h \
-           tmd5hash.h \
            tipdatabase.h \
            txmlparserbase.h
 
 SOURCES += talgorithm.cpp \
            tapplicationproperties.cpp \
            tconfig.cpp \
-           # tcpuinfo.cpp \
            tdebug.cpp \
-           tmd5hash.cpp \
            tipdatabase.cpp \
            txmlparserbase.cpp
 

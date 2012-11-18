@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "twaitstyle.h"
-#include "timageeffect.h"
 
 #include <QLayout>
 #include <QPainter>
@@ -54,7 +53,11 @@ QPixmap cached(const QString &img, const QColor &color)
 
     QPixmap pm;
     QImage original(img);
-    pm = QPixmap::fromImage(TImageEffect::fade(original, 0.7, color), Qt::OrderedDither | Qt::OrderedAlphaDither);
+
+    // SQA: Replace the method fade with a native Qt function 
+    // pm = QPixmap::fromImage(TImageEffect::fade(original, 0.7, color), Qt::OrderedDither | Qt::OrderedAlphaDither);
+
+    pm = QPixmap::fromImage(original, Qt::OrderedDither | Qt::OrderedAlphaDither);
     if (pm.isNull())
         return QPixmap();
 

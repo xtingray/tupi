@@ -37,7 +37,6 @@
 #include "tvhbox.h"
 #include "tseparator.h"
 #include "tdebug.h"
-#include "timageeffect.h"
 
 // Qt
 #include <QLabel>

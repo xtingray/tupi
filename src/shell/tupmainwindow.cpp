@@ -45,7 +45,6 @@
 #include "tipdialog.h"
 #include "tdebug.h"
 #include "tosd.h"
-#include "timageeffect.h"
 // #include "taudioplayer.h"
 
 #include "tupapplication.h"
