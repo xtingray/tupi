@@ -28,9 +28,15 @@ make install DESTDIR=%{buildroot}
 %find_lang %{name} --with-qt
 find %{buildroot} -name \*.la | xargs rm -f
 
+%post
+/usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
+
+%postun
+/usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
+
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
-%files
+%files -f %{name}.lang
 %doc README COPYING
 %{_bindir}/%{name}
 %{_bindir}/%{name}.bin
@@ -42,7 +48,11 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 %changelog
 
-* Sat Nov 26 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-2
+* Mon Nov 19 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-3
+- Extended line %files
+- Added lines %post and %postrun to update mime database
+
+* Sat Nov 17 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-2
 - Replacing variable %%buildroot instead of RPM_BUILD_ROOT
 - Fixing rpmlint errores
 - Removing the line "ExcludeArch: ppc ppc64"

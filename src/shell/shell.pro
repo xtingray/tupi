@@ -26,6 +26,7 @@ unix:!mac {
 
     INSTALLS += tupidata \
                 launcher \
+                mimetype \
                 target
 
     tupidata.target = data
@@ -35,6 +36,10 @@ unix:!mac {
     launcher.target = ../../launcher/tupi
     launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin; chmod 755 $(INSTALL_ROOT)/bin/tupi
     launcher.path = /bin/
+
+    mimetype.target = ../../launcher/tupi.xml
+    mimetype.commands = cp ../../launcher/tupi.xml $(INSTALL_ROOT)/share/mime/packages
+    mimetype.path = /packages/ 
 
     INSTALLS += desktop \
                 icons \

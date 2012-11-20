@@ -278,7 +278,7 @@ module RQonf
         newfile += "Exec=" + launcher_bindir + "/tupi\n"
         newfile += "Icon=tupi\n"
         newfile += "Type=Application\n"
-        newfile += "MimeType=application/tup;application/ntup;\n"
+        newfile += "MimeType=application/tup\n"
         newfile += "Categories=Graphics;2DGraphics;RasterGraphics;\n"
         newfile += "Comment=2D Animation Toolkit\n"
         newfile += "Comment[es]=Herramienta para Animación 2D\n"
