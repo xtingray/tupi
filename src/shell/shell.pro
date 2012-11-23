@@ -26,8 +26,12 @@ unix:!mac {
 
     INSTALLS += tupidata \
                 launcher \
-                mimetype \
-                target
+                mime \
+                target \
+                desktop \
+                icons \
+                tupiman \
+                copyright
 
     tupidata.target = data
     tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
@@ -37,14 +41,9 @@ unix:!mac {
     launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin; chmod 755 $(INSTALL_ROOT)/bin/tupi
     launcher.path = /bin/
 
-    mimetype.target = ../../launcher/tupi.xml
-    mimetype.commands = cp ../../launcher/tupi.xml $(INSTALL_ROOT)/share/mime/packages
-    mimetype.path = /packages/ 
-
-    INSTALLS += desktop \
-                icons \
-                tupiman \
-                copyright
+    mime.target = ../../launcher/tupi.xml
+    mime.commands = cp ../../launcher/tupi.xml $(INSTALL_ROOT)/share/mime/packages
+    mime.path = /share/mime/packages/
 
     desktop.target = ../../launcher/tupi.desktop
     desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
