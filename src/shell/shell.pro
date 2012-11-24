@@ -53,8 +53,8 @@ unix:!mac {
     icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
     icons.path = /pixmaps/
 
-    tupiman.target = ../components/help/help/man/tupi.1.gz
-    tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
+    tupiman.target = ../components/help/man/tupi.1.gz
+    tupiman.commands = cp ../components/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
     tupiman.path = /man1/
 
     copyright.target = ../components/help/help/man/copyright
