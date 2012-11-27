@@ -2,7 +2,7 @@
 
 Name: tupi
 Version: 0.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: 2D vector-based animation environment 
 License: GPLv3+
 URL: http://www.maefloresta.com
@@ -27,6 +27,7 @@ make %{?_smp_mflags}
 make install DESTDIR=%{buildroot}
 %find_lang %{name} --with-qt
 find %{buildroot} -name \*.la | xargs rm -f
+find ./ -type d \( -name ".obj" -o -name ".moc" \) -print0 | xargs -0 /bin/rm -rf
 
 %post
 /usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
@@ -104,6 +105,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/%{name}.png
 
 %changelog
+
+* Mon Nov 26 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-4
+- Added line with "find" command to remove .moc directories
 
 * Mon Nov 19 2012 Gustav Gonzalez <xtingray@maefloresta.com> - 0.2-3
 - Extended line "files"
