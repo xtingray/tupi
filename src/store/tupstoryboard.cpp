@@ -66,12 +66,23 @@ void TupStoryboard::init(int start, int size)
     }
 }
 
-void TupStoryboard::remove(int size)
+void TupStoryboard::reset()
 {
-    for (int i=0; i < size; i++) {
-         k->scene.removeLast();
-         k->duration.removeLast();
-         k->description.removeLast();
+    k->title = "";
+    k->author = "";
+    k->summary = "";
+
+    k->scene.clear();
+    k->duration.clear();
+    k->description.clear();
+}
+
+void TupStoryboard::removeScene(int index)
+{
+    if (index >= 0 && index < k->scene.size()) {
+         k->scene.removeAt(index);
+         k->duration.removeAt(index);
+         k->description.removeAt(index);
     }
 }
 

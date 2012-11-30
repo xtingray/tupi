@@ -321,6 +321,7 @@ void TupStoryBoardDialog::thumbnailGenerator()
     if (k->storyboard->size() == 0)
         k->storyboard->init(0, framesTotal);
 
+    /*
     // SQA: This code should be temporary
     if (k->storyboard->size() < framesTotal)
         k->storyboard->init(k->storyboard->size(), framesTotal);
@@ -328,6 +329,7 @@ void TupStoryBoardDialog::thumbnailGenerator()
     // SQA: This code should be temporary
     if (k->storyboard->size() > framesTotal)
         k->storyboard->remove(k->storyboard->size() - framesTotal);
+    */
 
     k->path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
     QDir().mkpath(k->path);
