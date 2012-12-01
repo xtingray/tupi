@@ -60,6 +60,8 @@ bool TupCommandExecutor::createFrame(TupFrameResponse *response)
     
     if (!scene) 
         return false;
+
+    scene->insertStoryBoardScene(position);
     
     TupLayer *layer = scene->layer(layerPosition);
     
@@ -108,6 +110,7 @@ bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
     TupScene *scene = m_project->scene(scenePos);
     
     if (scene) {
+        scene->removeStoryBoardScene(position);
         TupLayer *layer = scene->layer(layerPos);
         if (layer) {
             TupFrame *frame = layer->frame(position);
@@ -140,6 +143,7 @@ bool TupCommandExecutor::resetFrame(TupFrameResponse *response)
     TupScene *scene = m_project->scene(scenePos);
    
     if (scene) {
+        scene->resetStoryBoardScene(position);
         TupLayer *layer = scene->layer(layerPos);
         if (layer) {
             TupFrame *frame = layer->frame(position);
@@ -172,7 +176,8 @@ bool TupCommandExecutor::moveFrame(TupFrameResponse *response)
 
     if (!scene)
         return false;
-    
+   
+    scene->moveStoryBoardScene(position, newPosition); 
     TupLayer *layer = scene->layer(layerPos);
     
     if (layer) {
@@ -200,7 +205,8 @@ bool TupCommandExecutor::exchangeFrame(TupFrameResponse *response)
    
     if (!scene)
         return false;
-   
+  
+    scene->moveStoryBoardScene(position, newPosition);
     TupLayer *layer = scene->layer(layerPos);
    
     if (layer) {

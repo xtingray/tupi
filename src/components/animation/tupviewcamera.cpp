@@ -306,10 +306,11 @@ void TupViewCamera::postDialog()
 
     if (exportWidget->isComplete() != QDialog::Rejected) {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        if (exportWidget->workType() == TupExportWidget::Video)
-            emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
-        else
-            emit requestForExportStoryboardToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), exportWidget->videoScenes());
+        emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes());
+        // if (exportWidget->workType() == TupExportWidget::Video)
+        //     emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
+        // else
+        //     emit requestForExportStoryboardToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), exportWidget->videoScenes());
     }
 }
 

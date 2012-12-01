@@ -732,7 +732,7 @@ class VideoProperties : public TExportWizardPage
         QString description() const;
         QList<int> scenesList() const;
         bool successful();
-        TupExportWidget::Format workType();
+        // TupExportWidget::Format workType();
 
     signals:
         void isDone();
@@ -744,7 +744,7 @@ class VideoProperties : public TExportWizardPage
         void setScenesIndexes(const QList<int> &indexes);
 
     private:
-        QComboBox *exportCombo;
+        // QComboBox *exportCombo;
         QLineEdit *titleEdit;
         QLineEdit *topicsEdit;
         QTextEdit *descText;
@@ -752,7 +752,7 @@ class VideoProperties : public TExportWizardPage
         bool isOk;
 };
 
-VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardPage(tr("Set Work Properties"))
+VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardPage(tr("Set Animation Properties"))
 {
     setTag("PROPERTIES");
 
@@ -763,10 +763,10 @@ VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardP
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
 
-    QLabel *exportLabel = new QLabel(tr("Export as"));
-    exportCombo = new QComboBox();
-    exportCombo->addItem(QIcon(THEME_DIR + "icons/export.png"), tr("Video File"));
-    exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
+    // QLabel *exportLabel = new QLabel(tr("Export as"));
+    // exportCombo = new QComboBox();
+    // exportCombo->addItem(QIcon(THEME_DIR + "icons/export.png"), tr("Video File"));
+    // exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
 
     QLabel *titleLabel = new QLabel(tr("Title"));
     titleEdit = new QLineEdit(tr("My Video"));
@@ -787,8 +787,8 @@ VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardP
 
     QHBoxLayout *exportLayout = new QHBoxLayout;
     exportLayout->setAlignment(Qt::AlignHCenter);
-    exportLayout->addWidget(exportLabel);
-    exportLayout->addWidget(exportCombo);
+    // exportLayout->addWidget(exportLabel);
+    // exportLayout->addWidget(exportCombo);
 
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(titleLabel);
@@ -887,10 +887,12 @@ void VideoProperties::setScenesIndexes(const QList<int> &indexes)
     scenes = indexes;
 }
 
+/*
 TupExportWidget::Format VideoProperties::workType()
 {
     return TupExportWidget::Format(exportCombo->currentIndex());
 }
+*/
 
 TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, bool isLocal) : TExportWizard(parent), m_project(project)
 {
@@ -925,7 +927,7 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
         loadPlugins();
         m_pluginSelectionPage->selectFirstItem();
     } else {
-        setWindowTitle(tr("Post Work in Gallery"));
+        setWindowTitle(tr("Post Animation in Gallery"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
 
         m_scenesSelectionPage = new SelectScenes(this);
@@ -1020,9 +1022,11 @@ bool TupExportWidget::isComplete()
     return videoProperties->isComplete();
 }
 
+/*
 TupExportWidget::Format TupExportWidget::workType()
 {
     return videoProperties->workType();
 }
+*/
 
 #include "tupexportwidget.moc"

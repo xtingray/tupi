@@ -77,6 +77,40 @@ void TupStoryboard::reset()
     k->description.clear();
 }
 
+void TupStoryboard::insertScene(int index)
+{
+    if (index >= 0 && index < k->scene.size()) {
+        k->scene.insert(index, "");
+        k->duration.insert(index, "");
+        k->description.insert(index, "");
+    }
+}
+
+void TupStoryboard::appendScene()
+{
+    k->scene.append("");
+    k->duration.append("");
+    k->description.append("");
+}
+
+void TupStoryboard::moveScene(int oldIndex, int newIndex)
+{
+    if (oldIndex >= 0 && oldIndex < k->scene.size() && newIndex >= 0 && newIndex < k->scene.size()) {
+        k->scene.swap(oldIndex, newIndex);
+        k->duration.swap(oldIndex, newIndex);
+        k->description.swap(oldIndex, newIndex);
+    }
+}
+
+void TupStoryboard::resetScene(int index)
+{
+    if (index >= 0 && index < k->scene.size()) {
+        k->scene.replace(index, "");
+        k->duration.replace(index, "");
+        k->description.replace(index, "");
+    }
+}
+
 void TupStoryboard::removeScene(int index)
 {
     if (index >= 0 && index < k->scene.size()) {

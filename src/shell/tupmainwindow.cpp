@@ -334,8 +334,8 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         if (isNetworked) {
             connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QString &, int, const QList<int>)), 
                     this, SLOT(postVideo(const QString &, const QString &, const QString &, int, const QList<int>)));
-            connect(viewCamera, SIGNAL(requestForExportStoryboardToServer(const QString &, const QString &, const QString &, const QList<int>)),
-                    this, SLOT(postStoryboard(const QString &, const QString &, const QString &, const QList<int>)));
+            // connect(viewCamera, SIGNAL(requestForExportStoryboardToServer(const QString &, const QString &, const QString &, const QList<int>)),
+            //        this, SLOT(postStoryboard(const QString &, const QString &, const QString &, const QList<int>)));
         } else {
             connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
         }

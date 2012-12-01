@@ -325,7 +325,6 @@ void TupStoryBoardDialog::thumbnailGenerator()
     // SQA: This code should be temporary
     if (k->storyboard->size() < framesTotal)
         k->storyboard->init(k->storyboard->size(), framesTotal);
-
     // SQA: This code should be temporary
     if (k->storyboard->size() > framesTotal)
         k->storyboard->remove(k->storyboard->size() - framesTotal);

@@ -628,11 +628,40 @@ void TupScene::reset(QString &name)
 
 void TupScene::setStoryboard(TupStoryboard *storyboard)
 {
+    #ifdef K_DEBUG
+           tFatal() << "TupScene::setStoryboard() - Updating storyboard...";
+    #endif
+
     k->storyboard = storyboard;
 }
 
 TupStoryboard * TupScene::storyboard()
 {
     return k->storyboard;
+}
+
+void TupScene::insertStoryBoardScene(int index)
+{
+    k->storyboard->insertScene(index);
+}
+
+void TupScene::appendStoryBoardScene()
+{
+    k->storyboard->appendScene();
+}
+
+void TupScene::moveStoryBoardScene(int oldIndex, int newIndex)
+{
+    k->storyboard->moveScene(oldIndex, newIndex);
+}
+
+void TupScene::resetStoryBoardScene(int index)
+{
+    k->storyboard->resetScene(index);
+}
+
+void TupScene::removeStoryBoardScene(int index)
+{
+    k->storyboard->removeScene(index);
 }
 
