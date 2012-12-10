@@ -538,8 +538,10 @@ void TupNetProjectManagerHandler::sendVideoRequest(const QString &title, const Q
     sendPackage(package);
 }
 
-void TupNetProjectManagerHandler::sendStoryboardRequest(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes)
+void TupNetProjectManagerHandler::sendStoryboardRequest(TupStoryboard *storyboard)
 {
-    TupStoryboardExportPackage package(title, topics, description, sceneIndexes);
+    QDomDocument doc;
+    QDomElement story = storyboard->toXml(doc);
+    TupStoryboardExportPackage package(story);
     sendPackage(package);
 }

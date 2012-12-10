@@ -280,6 +280,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         if (isNetworked && server.compare("tupitube.com") == 0) {
             connect(drawingTab, SIGNAL(requestExportImageToServer(int, int, const QString &, const QString &, const QString &)),                         
                     netProjectManagerHandler, SLOT(sendExportImageRequestToServer(int, int, const QString &, const QString &, const QString &)));
+            connect(drawingTab, SIGNAL(postStoryboard(TupStoryboard *)), this, SLOT(postStoryboard(TupStoryboard *)));
         }
 
         drawingTab->setWindowTitle(tr("Animation"));
@@ -334,8 +335,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         if (isNetworked) {
             connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QString &, int, const QList<int>)), 
                     this, SLOT(postVideo(const QString &, const QString &, const QString &, int, const QList<int>)));
-            // connect(viewCamera, SIGNAL(requestForExportStoryboardToServer(const QString &, const QString &, const QString &, const QList<int>)),
-            //        this, SLOT(postStoryboard(const QString &, const QString &, const QString &, const QList<int>)));
         } else {
             connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
         }
@@ -614,6 +613,8 @@ void TupMainWindow::resetUI()
 
     disconnect(m_projectManager, SIGNAL(modified(bool)), this, SLOT(updatePlayer(bool)));
     m_projectManager->closeProject();
+
+    resetMousePointer();
 }
 
 /**
@@ -1404,9 +1405,9 @@ void TupMainWindow::postVideo(const QString &title, const QString &topics, const
     netProjectManagerHandler->sendVideoRequest(title, topics, description, fps, sceneIndexes);
 }
 
-void TupMainWindow::postStoryboard(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes)
+void TupMainWindow::postStoryboard(TupStoryboard *storyboard)
 {
-    netProjectManagerHandler->sendStoryboardRequest(title, topics, description, sceneIndexes);
+    netProjectManagerHandler->sendStoryboardRequest(storyboard);
 }
 
 void TupMainWindow::updatePlayer(bool remove)

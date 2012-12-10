@@ -155,6 +155,7 @@ class TupViewDocument : public QMainWindow
         void openColorDialog(const QColor &);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenFromFullScreen(const QPen &pen);
+        void postStoryboard(TupStoryboard *storyboard);
 
     // protected:
     // void closeEvent(QCloseEvent *e);

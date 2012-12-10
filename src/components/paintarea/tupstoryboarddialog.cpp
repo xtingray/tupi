@@ -62,6 +62,7 @@
 
 struct TupStoryBoardDialog::Private
 {
+    bool isNetworked;
     TupExportInterface *imagePlugin;
     QColor bgColor;
     QSize size;
@@ -90,8 +91,9 @@ struct TupStoryBoardDialog::Private
     QTextEdit *sceneDescriptionEdit;
 };
 
-TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const QColor &color, const QSize &size, TupScene *scene, QWidget *parent) : QDialog(parent), k(new Private)
+TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *imagePlugin, const QColor &color, const QSize &size, TupScene *scene, QWidget *parent) : QDialog(parent), k(new Private)
 {
+    k->isNetworked = isNetworked;
     k->imagePlugin = imagePlugin;
     k->bgColor = color;
     k->size = size;
@@ -140,10 +142,10 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
     setStoryForm();
     setSceneForm();
 
-    QPushButton *saveButton = new QPushButton(tr("&Save"));
+    QPushButton *saveButton = new QPushButton(tr("&Update changes"));
     connect(saveButton, SIGNAL(clicked()), this, SLOT(saveStoryBoard()));
 
-    QPushButton *exportButton = new QPushButton(tr("&Export"));
+    QPushButton *exportButton = new QPushButton(tr("&Export as HTML"));
     connect(exportButton, SIGNAL(clicked()), this, SLOT(exportStoryBoard()));
 
     QPushButton *closeButton = new QPushButton(tr("&Close"));
@@ -153,6 +155,15 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
     buttonBox->addButton(saveButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(exportButton, QDialogButtonBox::ActionRole);
+
+    if (k->isNetworked) {
+        QPushButton *postButton = new QPushButton(tr("&Post"));
+        connect(postButton, SIGNAL(clicked()), this, SLOT(postStoryBoard()));
+        buttonBox->addButton(postButton, QDialogButtonBox::ActionRole);
+
+        saveButton->setDisabled(true);
+    }
+
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
 
     k->formLayout->addWidget(new TSeparator());
@@ -436,7 +447,7 @@ void TupStoryBoardDialog::saveStoryBoard()
 void TupStoryBoardDialog::exportStoryBoard()
 {
     QString dir = getenv("HOME");
-    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the storyboard directory..."), dir,
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
                                                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (path.isEmpty())
         return;
@@ -521,6 +532,12 @@ void TupStoryBoardDialog::exportStoryBoard()
     file.close(); 
 
     TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
+}
+
+void TupStoryBoardDialog::postStoryBoard()
+{
+    tError() << "TupStoryBoardDialog::postStoryBoard() - Posting in Tupitube!";
+    emit postStoryboard(k->storyboard);
 }
 
 void TupStoryBoardDialog::closeDialog()

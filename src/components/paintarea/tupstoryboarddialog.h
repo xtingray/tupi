@@ -51,17 +51,20 @@ class TupStoryBoardDialog : public QDialog
     Q_OBJECT
 
     public:
-        TupStoryBoardDialog(TupExportInterface *imagePlugin, const QColor &color, const QSize &size, TupScene *scene, QWidget *parent);
+        TupStoryBoardDialog(bool isNetworked, TupExportInterface *imagePlugin, const QColor &color, 
+                            const QSize &size, TupScene *scene, QWidget *parent);
         ~TupStoryBoardDialog();
 
     private slots:
         void updateForm(QListWidgetItem *current, QListWidgetItem *previous);
         void saveStoryBoard();
         void exportStoryBoard();
+        void postStoryBoard();
         void closeDialog();
 
     signals:
         void saveStoryboard(TupStoryboard *);
+        void postStoryboard(TupStoryboard *);
 
     private:
         void setListComponent();

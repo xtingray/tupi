@@ -1400,8 +1400,11 @@ void TupViewDocument::storyboardSettings()
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
+    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->isNetworked, k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
     connect(storySettings, SIGNAL(saveStoryboard(TupStoryboard *)), this, SLOT(updateStoryboard(TupStoryboard *)));
+
+    if (k->isNetworked)
+        connect(storySettings, SIGNAL(postStoryboard(TupStoryboard *)), this, SIGNAL(postStoryboard(TupStoryboard *)));
 
     QApplication::restoreOverrideCursor();
 
@@ -1412,8 +1415,12 @@ void TupViewDocument::storyboardSettings()
 
 void TupViewDocument::updateStoryboard(TupStoryboard *storyboard)
 {
-    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
-    k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+    if (k->isNetworked) {
+        // SQA: Call a (net) saving procedure here 
+    } else {
+        int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+        k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+    }
 }
 
 void TupViewDocument::updateUsersOnLine(const QString &login, int state)

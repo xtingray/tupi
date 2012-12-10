@@ -212,7 +212,7 @@ class TupMainWindow : public TabbedMainWindow
           void expandExposureView(int index);
           void expandColorView();
           void postVideo(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
-          void postStoryboard(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
+          void postStoryboard(TupStoryboard *storyboard);
           void resetMousePointer();
           void updateUsersOnLine(const QString &login, int state);
 

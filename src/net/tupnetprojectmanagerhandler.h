@@ -37,6 +37,7 @@
 #define TUPNETPROJECTMANAGER_H
 
 #include "tupabstractprojectmanagerhandler.h"
+#include "tupstoryboard.h"
 
 #include <QDomDocument>
 #include <QTabWidget>
@@ -75,7 +76,7 @@ class TupNetProjectManagerHandler : public TupAbstractProjectHandler
         void closeConnection();
 
         void sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
-        void sendStoryboardRequest(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
+        void sendStoryboardRequest(TupStoryboard *storyboard);
 
     signals:
         void savingSuccessful();

@@ -927,7 +927,7 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
         loadPlugins();
         m_pluginSelectionPage->selectFirstItem();
     } else {
-        setWindowTitle(tr("Post Animation in Gallery"));
+        setWindowTitle(tr("Post Animation in Tupitube"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
 
         m_scenesSelectionPage = new SelectScenes(this);
