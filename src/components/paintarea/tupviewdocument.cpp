@@ -313,7 +313,7 @@ void TupViewDocument::setZoomView(const QString &percent)
 void TupViewDocument::showPos(const QPointF &p)
 {
     QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y());
-    emit sendToStatus(message) ;
+    emit sendToStatus(message);
 }
 
 void TupViewDocument::setupDrawActions()
@@ -1400,11 +1400,12 @@ void TupViewDocument::storyboardSettings()
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->isNetworked, k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
-    connect(storySettings, SIGNAL(saveStoryboard(TupStoryboard *)), this, SLOT(updateStoryboard(TupStoryboard *)));
+    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->isNetworked, k->imagePlugin, k->project->bgColor(), k->project->dimension(), 
+                                                                 k->project->scene(sceneIndex), currentSceneIndex(), this);
+    connect(storySettings, SIGNAL(updateStoryboard(TupStoryboard *, int)), this, SLOT(sendStoryboard(TupStoryboard *, int)));
 
     if (k->isNetworked)
-        connect(storySettings, SIGNAL(postStoryboard(TupStoryboard *)), this, SIGNAL(postStoryboard(TupStoryboard *)));
+        connect(storySettings, SIGNAL(postStoryboard(int)), this, SIGNAL(postStoryboard(int)));
 
     QApplication::restoreOverrideCursor();
 
@@ -1413,12 +1414,13 @@ void TupViewDocument::storyboardSettings()
                         (int) (desktop.screenGeometry().height() - storySettings->height())/2);
 }
 
-void TupViewDocument::updateStoryboard(TupStoryboard *storyboard)
+void TupViewDocument::sendStoryboard(TupStoryboard *storyboard, int sceneIndex)
 {
     if (k->isNetworked) {
-        // SQA: Call a (net) saving procedure here 
+        tError() << "TupViewDocument::sendStoryboard() - Sending storyboard!";
+        emit updateStoryboard(storyboard, sceneIndex);
     } else {
-        int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+        // int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
         k->project->scene(sceneIndex)->setStoryboard(storyboard);    
     }
 }

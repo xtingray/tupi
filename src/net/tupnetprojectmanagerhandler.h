@@ -75,25 +75,26 @@ class TupNetProjectManagerHandler : public TupAbstractProjectHandler
         QTabWidget *communicationWidget();
         void closeConnection();
 
-        void sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
-        void sendStoryboardRequest(TupStoryboard *storyboard);
-
     signals:
         void savingSuccessful();
         void postOperationDone();
         void connectionHasBeenLost();
+
+    public slots:
+        void sendExportImageRequest(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
+        void updateStoryboardRequest(TupStoryboard *storyboard, int sceneIndex);
+        void postStoryboardRequest(int sceneIndex);
+        void sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
+
+    private slots:
+        void sendChatMessage(const QString &message);
+        void connectionLost();
 
     private:
         void loadProjectFromServer(const QString &projectID, const QString &owner);
         void emitRequest(TupProjectRequest *request, bool toStack);
         void setProject(TupProject *project);
 
-    private slots:
-        void sendChatMessage(const QString &message);
-        void connectionLost();
-        void sendExportImageRequestToServer(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
-
-    private:
         struct Private;
         Private *const k;
 };

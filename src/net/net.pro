@@ -45,6 +45,7 @@ HEADERS += tupnetprojectmanagerparams.h \
            tupcommunicationparser.h \
            tupimageexportpackage.h \
            tupvideoexportpackage.h \
+           tupstoryboardupdatepackage.h \
            tupstoryboardexportpackage.h
 
 SOURCES += tupnetprojectmanagerparams.cpp \
@@ -71,7 +72,9 @@ SOURCES += tupnetprojectmanagerparams.cpp \
            tupcommunicationparser.cpp \
            tupimageexportpackage.cpp \
            tupvideoexportpackage.cpp \
+           tupstoryboardupdatepackage.cpp \
            tupstoryboardexportpackage.cpp
+
 *:!macx{
     CONFIG += dll warn_on
 }

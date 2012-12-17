@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPSTORYBOARDEXPORTTPACKAGE_H
+#ifndef TUPSTORYBOARDEXPORTPACKAGE_H
 #define TUPSTORYBOARDEXPORTPACKAGE_H
 
 /**
@@ -41,13 +41,11 @@
 */
 
 #include <QDomDocument>
-#include <QDomElement>
-#include <QList>
 
 class TupStoryboardExportPackage : public QDomDocument
 {
     public:
-        TupStoryboardExportPackage(const QDomElement storyboard);
+        TupStoryboardExportPackage(int sceneIndex);
         ~TupStoryboardExportPackage();
 };
 

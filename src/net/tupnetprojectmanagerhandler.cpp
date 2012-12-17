@@ -47,6 +47,7 @@
 #include "tupconnectpackage.h"
 #include "tupimageexportpackage.h"
 #include "tupvideoexportpackage.h"
+#include "tupstoryboardupdatepackage.h"
 #include "tupstoryboardexportpackage.h"
 #include "tupinetfilemanager.h"
 #include "tupopenpackage.h"
@@ -469,6 +470,8 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                    QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();
                    TOsd::self()->display(tr("Information"), message);
                }
+    } else if (root == "storyboard_update") {
+               // SQA: storyboard package must be parsed and the related scene must be updated  
     } else {
       #ifdef K_DEBUG
              tError("net") << "TupNetProjectManagerHandler::handlePackage() - Error: Unknown package: " << root;
@@ -525,7 +528,7 @@ void TupNetProjectManagerHandler::closeConnection()
         k->socket->close();
 }
 
-void TupNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, int sceneIndex, 
+void TupNetProjectManagerHandler::sendExportImageRequest(int frameIndex, int sceneIndex, 
                                                                 const QString &title, const QString &topics, const QString &description)
 {
     TupImageExportPackage package(frameIndex, sceneIndex, title, topics, description);
@@ -538,10 +541,20 @@ void TupNetProjectManagerHandler::sendVideoRequest(const QString &title, const Q
     sendPackage(package);
 }
 
-void TupNetProjectManagerHandler::sendStoryboardRequest(TupStoryboard *storyboard)
+void TupNetProjectManagerHandler::updateStoryboardRequest(TupStoryboard *storyboard, int sceneIndex)
 {
+    tError() << "TupNetProjectManagerHandler::updateStoryboardRequest() - Updating storyboard...";
+
     QDomDocument doc;
     QDomElement story = storyboard->toXml(doc);
-    TupStoryboardExportPackage package(story);
+    TupStoryboardUpdatePackage package(story, sceneIndex);
+    sendPackage(package);
+}
+
+void TupNetProjectManagerHandler::postStoryboardRequest(int sceneIndex)
+{
+    tError() << "TupNetProjectManagerHandler::postStoryboardRequest() - Posting...";
+
+    TupStoryboardExportPackage package(sceneIndex);
     sendPackage(package);
 }

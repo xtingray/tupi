@@ -33,37 +33,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupstoryboardexportpackage.h"
+#ifndef TUPSTORYBOARDUPDATEPACKAGE_H
+#define TUPSTORYBOARDUPDATEPACKAGE_H
 
-// <project_storyboard version="0">
-//   <storyboard>
-//     <title>Storyboard title</title>
-//     <author>Artist name</author>
-//     <summary>Storyboard Summary</summary>
-//     <scene>
-//       <title>Scene title</title>
-//       <duration>Scene time</duration>
-//       <description>Scene description</description>
-//     </scene>
-//     <scene>
-//       <title>Scene title</title>
-//       <duration>Scene time</duration>
-//       <description>Scene description</description>
-//     </scene>
-//     ... 
-//   </storyboard>
-// </project_storyboard>
+/**
+ * @author Gustav Gonzalez
+*/
 
-TupStoryboardExportPackage::TupStoryboardExportPackage(int sceneIndex): QDomDocument()
+#include <QDomDocument>
+#include <QDomElement>
+
+class TupStoryboardUpdatePackage : public QDomDocument
 {
-    QDomElement root = createElement("project_storyboard");
-    root.setAttribute("version", "0");
-    appendChild(root);
+    public:
+        TupStoryboardUpdatePackage(const QDomElement storyboard, int sceneIndex);
+        ~TupStoryboardUpdatePackage();
+};
 
-    QDomText sceneDom = createTextNode(QString::number(sceneIndex));
-    root.appendChild(createElement("sceneIndex")).appendChild(sceneDom);
-}
-
-TupStoryboardExportPackage::~TupStoryboardExportPackage()
-{
-}
+#endif

@@ -134,7 +134,7 @@ class TupViewDocument : public QMainWindow
         void updateZoomFactor( double f);
         void selectToolFromMenu(QAction *act);
         void callAutoSave();
-        void updateStoryboard(TupStoryboard *storyboard);
+        void sendStoryboard(TupStoryboard *storyboard, int sceneIndex);
 
     public slots:
         void undo();
@@ -155,7 +155,8 @@ class TupViewDocument : public QMainWindow
         void openColorDialog(const QColor &);
         void updateColorFromFullScreen(const QColor &color);
         void updatePenFromFullScreen(const QPen &pen);
-        void postStoryboard(TupStoryboard *storyboard);
+        void updateStoryboard(TupStoryboard *storyboard, int sceneIndex);
+        void postStoryboard(int sceneIndex);
 
     // protected:
     // void closeEvent(QCloseEvent *e);

@@ -60,11 +60,13 @@ class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializabl
         void removeScene(int index);
 
         void setStoryTitle(const QString &title);
+        void setStoryTopics(const QString &topics);
         void setStoryAuthor(const QString &author);
         void setStorySummary(const QString &desc);
 
         QString storyTitle() const;
         QString storyAuthor() const;
+        QString storyTopics() const;
         QString storySummary() const;
 
         void setSceneTitle(int index, const QString &title);

@@ -33,12 +33,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupstoryboardexportpackage.h"
+#include "tupstoryboardupdatepackage.h"
 
-// <project_storyboard version="0">
+// <project_storyboard_update version="0">
 //   <storyboard>
 //     <title>Storyboard title</title>
 //     <author>Artist name</author>
+//     <topics>#topic1 #topic2 #topicN</topics>
 //     <summary>Storyboard Summary</summary>
 //     <scene>
 //       <title>Scene title</title>
@@ -54,16 +55,17 @@
 //   </storyboard>
 // </project_storyboard>
 
-TupStoryboardExportPackage::TupStoryboardExportPackage(int sceneIndex): QDomDocument()
+TupStoryboardUpdatePackage::TupStoryboardUpdatePackage(const QDomElement storyboard, int sceneIndex): QDomDocument()
 {
-    QDomElement root = createElement("project_storyboard");
+    QDomElement root = createElement("project_storyboard_update");
     root.setAttribute("version", "0");
     appendChild(root);
 
     QDomText sceneDom = createTextNode(QString::number(sceneIndex));
     root.appendChild(createElement("sceneIndex")).appendChild(sceneDom);
+    root.appendChild(storyboard);
 }
 
-TupStoryboardExportPackage::~TupStoryboardExportPackage()
+TupStoryboardUpdatePackage::~TupStoryboardUpdatePackage()
 {
 }

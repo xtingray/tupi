@@ -67,7 +67,9 @@ struct TupStoryBoardDialog::Private
     QColor bgColor;
     QSize size;
     QSize scaledSize;
+    int sceneIndex;
     TupScene *scene;
+
     TupStoryboard *storyboard;
     int currentIndex;
     QString path;
@@ -82,6 +84,7 @@ struct TupStoryBoardDialog::Private
     QLabel *screenLabel;
 
     QLineEdit *titleEdit;
+    QLineEdit *topicsEdit;
     QLineEdit *authorEdit;
     QTextEdit *summaryEdit;
 
@@ -91,13 +94,15 @@ struct TupStoryBoardDialog::Private
     QTextEdit *sceneDescriptionEdit;
 };
 
-TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *imagePlugin, const QColor &color, const QSize &size, TupScene *scene, QWidget *parent) : QDialog(parent), k(new Private)
+TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *imagePlugin, const QColor &color, 
+                                         const QSize &size, TupScene *scene, int sceneIndex, QWidget *parent) : QDialog(parent), k(new Private)
 {
     k->isNetworked = isNetworked;
     k->imagePlugin = imagePlugin;
     k->bgColor = color;
     k->size = size;
     k->scene = scene;
+    k->sceneIndex = sceneIndex;
     k->storyboard = k->scene->storyboard();
 
     QDesktopWidget desktop;
@@ -142,9 +147,6 @@ TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *i
     setStoryForm();
     setSceneForm();
 
-    QPushButton *saveButton = new QPushButton(tr("&Update changes"));
-    connect(saveButton, SIGNAL(clicked()), this, SLOT(saveStoryBoard()));
-
     QPushButton *exportButton = new QPushButton(tr("&Export as HTML"));
     connect(exportButton, SIGNAL(clicked()), this, SLOT(exportStoryBoard()));
 
@@ -153,15 +155,12 @@ TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *i
     connect(closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
-    buttonBox->addButton(saveButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(exportButton, QDialogButtonBox::ActionRole);
 
     if (k->isNetworked) {
         QPushButton *postButton = new QPushButton(tr("&Post"));
-        connect(postButton, SIGNAL(clicked()), this, SLOT(postStoryBoard()));
+        connect(postButton, SIGNAL(clicked()), this, SLOT(postStoryboardAtServer()));
         buttonBox->addButton(postButton, QDialogButtonBox::ActionRole);
-
-        saveButton->setDisabled(true);
     }
 
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
@@ -243,6 +242,19 @@ void TupStoryBoardDialog::setStoryForm()
 
     sceneLayout->addWidget(mainTitle);
     sceneLayout->addLayout(topLayout);
+
+    if (k->isNetworked) {
+        QLabel *topicsLabel = new QLabel(tr("Topics"));
+        k->topicsEdit = new QLineEdit("");
+        topicsLabel->setBuddy(k->topicsEdit);
+
+        QHBoxLayout *topicsLayout = new QHBoxLayout;
+        topicsLayout->addWidget(topicsLabel);
+        topicsLayout->addWidget(k->topicsEdit);
+
+        sceneLayout->addLayout(topicsLayout);
+    }
+
     sceneLayout->addLayout(middleLayout);
     sceneLayout->addWidget(summaryLabel);
     sceneLayout->addWidget(k->summaryEdit);
@@ -332,15 +344,6 @@ void TupStoryBoardDialog::thumbnailGenerator()
     if (k->storyboard->size() == 0)
         k->storyboard->init(0, framesTotal);
 
-    /*
-    // SQA: This code should be temporary
-    if (k->storyboard->size() < framesTotal)
-        k->storyboard->init(k->storyboard->size(), framesTotal);
-    // SQA: This code should be temporary
-    if (k->storyboard->size() > framesTotal)
-        k->storyboard->remove(k->storyboard->size() - framesTotal);
-    */
-
     k->path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
     QDir().mkpath(k->path);
 
@@ -384,6 +387,12 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
             k->scenePanel->show();
 
             k->storyboard->setStoryTitle(k->titleEdit->text());
+
+            if (k->isNetworked)
+                k->storyboard->setStoryTopics(k->topicsEdit->text());
+            else
+                k->storyboard->setStoryTopics(""); 
+
             k->storyboard->setStoryAuthor(k->authorEdit->text());
             k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
         } else {
@@ -421,6 +430,10 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
             }
 
             k->titleEdit->setText(k->storyboard->storyTitle());
+
+            if (k->isNetworked)
+                k->topicsEdit->setText(k->storyboard->storyTopics());
+
             k->authorEdit->setText(k->storyboard->storyAuthor());
             k->summaryEdit->setPlainText(k->storyboard->storySummary());
         }
@@ -429,23 +442,10 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
     k->screenLabel->setPixmap(pixmap);
 }
 
-void TupStoryBoardDialog::saveStoryBoard()
-{
-    if (k->currentIndex == 0) {
-        k->storyboard->setStoryTitle(k->titleEdit->text());
-        k->storyboard->setStoryAuthor(k->authorEdit->text());
-        k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
-    } else {
-        k->storyboard->setSceneTitle(k->currentIndex - 1, k->sceneTitleEdit->text());
-        k->storyboard->setSceneDuration(k->currentIndex - 1, k->sceneDurationEdit->text());
-        k->storyboard->setSceneDescription(k->currentIndex - 1, k->sceneDescriptionEdit->toPlainText());
-    }
-
-    emit saveStoryboard(k->storyboard);
-}
-
 void TupStoryBoardDialog::exportStoryBoard()
 {
+    saveLastComponent();
+
     QString dir = getenv("HOME");
     QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
                                                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -457,8 +457,12 @@ void TupStoryBoardDialog::exportStoryBoard()
         QStringList files = directory.entryList();
         for (int i = 0; i < files.size(); ++i) {
              QString file = files.at(i).toLocal8Bit().constData();
-             if (file != "." && file != "..")
-                 QFile::copy(k->path + file, path + QDir::separator() + file);
+             if (file != "." && file != "..") {
+                 QString target = path + QDir::separator() + file;
+                 if (QFile::exists(target))
+                     QFile::remove(target);       
+                 QFile::copy(k->path + file, target);
+             }
         }
     } else {
         QDir directory(k->path);
@@ -534,14 +538,36 @@ void TupStoryBoardDialog::exportStoryBoard()
     TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
 }
 
-void TupStoryBoardDialog::postStoryBoard()
+void TupStoryBoardDialog::postStoryboardAtServer()
 {
-    tError() << "TupStoryBoardDialog::postStoryBoard() - Posting in Tupitube!";
-    emit postStoryboard(k->storyboard);
+    #ifdef K_DEBUG
+           tWarning() << "TupStoryBoardDialog::postStoryBoardAtServer() - Posting in Tupitube!";
+    #endif
+
+    // SQA: This "save call" line should be enhanced
+    emit updateStoryboard(k->storyboard, k->sceneIndex);
+
+    emit postStoryboard(k->sceneIndex);
+}
+
+void TupStoryBoardDialog::saveLastComponent()
+{
+    if (k->currentIndex == 0) {
+        k->storyboard->setStoryTitle(k->titleEdit->text());
+        k->storyboard->setStoryAuthor(k->authorEdit->text());
+        k->storyboard->setStoryTopics(k->topicsEdit->text());
+        k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
+    } else {
+        k->storyboard->setSceneTitle(k->currentIndex - 1, k->sceneTitleEdit->text());
+        k->storyboard->setSceneDuration(k->currentIndex - 1, k->sceneDurationEdit->text());
+        k->storyboard->setSceneDescription(k->currentIndex - 1, k->sceneDescriptionEdit->toPlainText());
+    }
 }
 
 void TupStoryBoardDialog::closeDialog()
 {
+    saveLastComponent();
+
     QDir dir(k->path);
     QStringList files = dir.entryList();
     for (int i = 0; i < files.size(); ++i) {
@@ -550,6 +576,9 @@ void TupStoryBoardDialog::closeDialog()
              QFile::remove(k->path + file);
     }
     dir.rmdir(k->path); 
+
+    if (k->isNetworked)
+        emit updateStoryboard(k->storyboard, k->sceneIndex);
 
     close();
 }

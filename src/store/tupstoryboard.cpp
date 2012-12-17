@@ -40,7 +40,9 @@ struct TupStoryboard::Private
 {
     QString title;
     QString author;
+    QString topics;
     QString summary;
+
     QList<QString> scene;
     QList<QString> duration;
     QList<QString> description;
@@ -50,6 +52,7 @@ TupStoryboard::TupStoryboard(const QString &author) : k(new Private)
 {
     k->title   = "";
     k->author  = author;
+    k->topics  = "";
     k->summary = "";
 }
 
@@ -68,8 +71,9 @@ void TupStoryboard::init(int start, int size)
 
 void TupStoryboard::reset()
 {
-    k->title = "";
-    k->author = "";
+    k->title   = "";
+    k->author  = "";
+    k->topics  = "";
     k->summary = "";
 
     k->scene.clear();
@@ -125,6 +129,11 @@ void TupStoryboard::setStoryTitle(const QString &title)
     k->title = title;
 }
 
+void TupStoryboard::setStoryTopics(const QString &topics)
+{
+    k->topics = topics;
+}
+
 void TupStoryboard::setStoryAuthor(const QString &author)
 {
     k->author = author;
@@ -143,6 +152,11 @@ QString TupStoryboard::storyTitle() const
 QString TupStoryboard::storyAuthor() const
 {
     return k->author;
+}
+
+QString TupStoryboard::storyTopics() const
+{
+    return k->topics;
 }
 
 QString TupStoryboard::storySummary() const
@@ -224,6 +238,8 @@ void TupStoryboard::fromXml(const QString &xml)
                    k->title = e.text();
                } else if (e.tagName() == "author") {
                           k->author = e.text();
+               } else if (e.tagName() == "topics") {
+                          k->topics = e.text();
                } else if (e.tagName() == "summary") {
                           k->summary = e.text();
                } else if (e.tagName() == "scene") {
@@ -251,10 +267,12 @@ QDomElement TupStoryboard::toXml(QDomDocument &doc) const
 
     QDomText titleDom   = doc.createTextNode(k->title);
     QDomText authorDom  = doc.createTextNode(k->author);
+    QDomText topicsDom  = doc.createTextNode(k->topics);
     QDomText summaryDom = doc.createTextNode(k->summary);
 
     storyboard.appendChild(doc.createElement("title")).appendChild(titleDom);
     storyboard.appendChild(doc.createElement("author")).appendChild(authorDom);
+    storyboard.appendChild(doc.createElement("topics")).appendChild(topicsDom);
     storyboard.appendChild(doc.createElement("summary")).appendChild(summaryDom);
 
     for (int i=0; i<k->scene.size(); i++) {
