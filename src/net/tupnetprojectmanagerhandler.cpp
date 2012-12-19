@@ -49,6 +49,7 @@
 #include "tupvideoexportpackage.h"
 #include "tupstoryboardupdatepackage.h"
 #include "tupstoryboardexportpackage.h"
+#include "tupstoryboardparser.h"
 #include "tupinetfilemanager.h"
 #include "tupopenpackage.h"
 #include "tupchatpackage.h"
@@ -337,6 +338,25 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                } else { // TODO: show error 
                    #ifdef K_DEBUG
                           tError() << "TupNetProjectManagerHandler::handlePackage() - Error parsing net request";
+                   #endif
+               }
+    } else if (root == "project_storyboard_update") {
+               tError() << "TupNetProjectManagerHandler::handlePackage() - Updating the storyboard...";
+               TupStoryboardParser parser(package);
+
+               if (parser.checksum()) {
+                   if ((parser.sceneIndex() >= 0) && (parser.storyboardXml().length() > 0)) {
+                        TupStoryboard *storyboard = new TupStoryboard(k->username);
+                        storyboard->fromXml(parser.storyboardXml());
+                        k->project->scene(parser.sceneIndex())->setStoryboard(storyboard);
+                   } else {
+                       #ifdef K_DEBUG
+                              tError() << "ProjectManager::handlePackage() - [ Fatal Error ] - Can't parse project_storyboard package";
+                       #endif
+                   }
+               } else {
+                   #ifdef K_DEBUG
+                          tError() << "ProjectManager::handlePackage() - [ Fatal Error ] - Can't parse project_storyboard package";
                    #endif
                }
     } else if (root == "server_ack") {

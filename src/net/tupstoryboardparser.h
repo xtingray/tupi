@@ -8,7 +8,7 @@
  *   2010:                                                                 *
  *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,47 +33,30 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPAPPLICATION_H
-#define TUPAPPLICATION_H
+#ifndef TUPSTORYBOARDPARSER_H
+#define TUPSTORYBOARDPARSER_H
 
-#include "tapplication.h"
+#include <QString>
+#include <QDomDocument>
 
 /**
- * Support Class for main.cpp
- * This class contains some of the basic methods required when Tupi is launched
- * @author David Cuadrado
-*/
+   @author Gustav Gonzalez 
+**/
 
-class TupApplication : public TApplication
+class TupStoryboardParser
 {
-    Q_OBJECT
+   public:
+      TupStoryboardParser(const QString &package);
+      ~TupStoryboardParser();
+      bool checksum();
+      int sceneIndex();
+      QString storyboardXml() const;
+      QDomDocument request() const;
 
-    public:
-        TupApplication(int &argc, char **argv);
-        ~TupApplication();
-
-    public slots:
-        /**
-         * @if english
-         * Open a settings wizard the first time Tupi is launched
-         * @endif
-         * @if spanish
-         * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion
-         * @endif
-         * @return true/false if the application has the settings file created
-         */
-         virtual bool firstRun();
-
-        /**
-         * @if english
-         * Create a cache directory with the path defined at cacheDir variable
-         * @endif
-         * @if spanish
-         * Crea el cache en la ruta especificada por la variable cacheDir
-         * @endif
-         * @param cacheDir the path for the repository dir
-         */
-         void createCache(const QString &cacheDir);
+   private:
+      struct Private;
+      Private *const k;
 };
 
 #endif
+

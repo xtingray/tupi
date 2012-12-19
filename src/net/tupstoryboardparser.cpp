@@ -33,47 +33,67 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPAPPLICATION_H
-#define TUPAPPLICATION_H
+#include "tupstoryboardparser.h"
+#include <QTextStream>
 
-#include "tapplication.h"
-
-/**
- * Support Class for main.cpp
- * This class contains some of the basic methods required when Tupi is launched
- * @author David Cuadrado
-*/
-
-class TupApplication : public TApplication
+struct TupStoryboardParser::Private
 {
-    Q_OBJECT
-
-    public:
-        TupApplication(int &argc, char **argv);
-        ~TupApplication();
-
-    public slots:
-        /**
-         * @if english
-         * Open a settings wizard the first time Tupi is launched
-         * @endif
-         * @if spanish
-         * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion
-         * @endif
-         * @return true/false if the application has the settings file created
-         */
-         virtual bool firstRun();
-
-        /**
-         * @if english
-         * Create a cache directory with the path defined at cacheDir variable
-         * @endif
-         * @if spanish
-         * Crea el cache en la ruta especificada por la variable cacheDir
-         * @endif
-         * @param cacheDir the path for the repository dir
-         */
-         void createCache(const QString &cacheDir);
+    QDomDocument request;
+    int sceneIndex;
+    int checksum;
+    QString storyboard;
 };
 
-#endif
+TupStoryboardParser::TupStoryboardParser(const QString &package) : k(new Private())
+{
+    k->sceneIndex = -1;
+    k->checksum = 0;
+    k->storyboard = "";
+
+    if (k->request.setContent(package)) {
+        QDomElement root = k->request.documentElement();
+        QDomNode n = root.firstChild();
+        while (!n.isNull()) {
+               QDomElement e = n.toElement();
+               if (e.tagName() == "sceneIndex") {
+                   k->sceneIndex = e.text().toInt();
+                   k->checksum++;
+               } else if (e.tagName() == "storyboard") {
+                          QString input = "";
+                          QTextStream text(&input);
+                          text << n;
+                          k->storyboard = input;
+                          k->checksum++;
+               }
+               n = n.nextSibling();
+        }
+    }
+}
+
+TupStoryboardParser::~TupStoryboardParser()
+{
+    delete k;
+}
+
+bool TupStoryboardParser::checksum()
+{
+    if (k->checksum == 2)
+        return true;
+
+    return false;
+}
+
+int TupStoryboardParser::sceneIndex()
+{
+    return k->sceneIndex;
+}
+
+QString TupStoryboardParser::storyboardXml() const
+{
+    return k->storyboard;
+}
+
+QDomDocument TupStoryboardParser::request() const
+{
+    return k->request;
+}
