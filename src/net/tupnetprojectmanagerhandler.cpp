@@ -335,7 +335,7 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                        emitRequest(&request, k->doAction && k->ownPackage);
                    }
 
-               } else { // TODO: show error 
+               } else { // SQA: show error 
                    #ifdef K_DEBUG
                           tError() << "TupNetProjectManagerHandler::handlePackage() - Error parsing net request";
                    #endif
@@ -346,9 +346,9 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
 
                if (parser.checksum()) {
                    if ((parser.sceneIndex() >= 0) && (parser.storyboardXml().length() > 0)) {
-                        TupStoryboard *storyboard = new TupStoryboard(k->username);
-                        storyboard->fromXml(parser.storyboardXml());
-                        k->project->scene(parser.sceneIndex())->setStoryboard(storyboard);
+                       TupStoryboard *storyboard = new TupStoryboard(k->username);
+                       storyboard->fromXml(parser.storyboardXml());
+                       k->project->scene(parser.sceneIndex())->setStoryboard(storyboard);
                    } else {
                        #ifdef K_DEBUG
                               tError() << "ProjectManager::handlePackage() - [ Fatal Error ] - Can't parse project_storyboard package";

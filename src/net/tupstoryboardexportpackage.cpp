@@ -36,22 +36,7 @@
 #include "tupstoryboardexportpackage.h"
 
 // <project_storyboard version="0">
-//   <storyboard>
-//     <title>Storyboard title</title>
-//     <author>Artist name</author>
-//     <summary>Storyboard Summary</summary>
-//     <scene>
-//       <title>Scene title</title>
-//       <duration>Scene time</duration>
-//       <description>Scene description</description>
-//     </scene>
-//     <scene>
-//       <title>Scene title</title>
-//       <duration>Scene time</duration>
-//       <description>Scene description</description>
-//     </scene>
-//     ... 
-//   </storyboard>
+//   <scene> number </scene>
 // </project_storyboard>
 
 TupStoryboardExportPackage::TupStoryboardExportPackage(int sceneIndex): QDomDocument()
