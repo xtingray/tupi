@@ -673,8 +673,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else {
                          #ifdef K_DEBUG
                                 tError() << "TupViewDocument::loadPlugin() - Error: Invalid Brush Index / No plugin loaded";
-                                return;
                          #endif
+                         return;
                      }
                  }
             break;
@@ -690,8 +690,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                          } else {
                              #ifdef K_DEBUG
                                     tError() << "TupViewDocument::loadPlugin() - Error: Invalid Selection Index / No plugin loaded";
-                                    return;
                              #endif
+                             return;
                          }
                      }
                  }
@@ -705,8 +705,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else {
                          #ifdef K_DEBUG
                                 tError() << "TupViewDocument::loadPlugin() - Error: Invalid Fill Index / No plugin loaded";
-                                return;
                          #endif
+                         return;
                      }
                  }
             break;
@@ -719,8 +719,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else {
                          #ifdef K_DEBUG
                                 tError() << "TupViewDocument::loadPlugin() - Error: Invalid Zoom Index (" << index << ") / No plugin loaded";
-                                return;
                          #endif
+                         return;
                      }
                  }
             break;
@@ -729,8 +729,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                  {
                      #ifdef K_DEBUG
                             tError() << "TupViewDocument::loadPlugin() - Error: Invalid Menu Index / No plugin loaded";
-                            return;
                      #endif
+                     return;
                  }
             break;
     }
@@ -754,8 +754,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
     } else {
         #ifdef K_DEBUG
                tError() << "TupViewDocument::loadPlugin() - Error: Action pointer is NULL!";
-               return;
         #endif
+        return;
     }
 }
 
@@ -1417,10 +1417,11 @@ void TupViewDocument::storyboardSettings()
 void TupViewDocument::sendStoryboard(TupStoryboard *storyboard, int sceneIndex)
 {
     if (k->isNetworked) {
-        tError() << "TupViewDocument::sendStoryboard() - Sending storyboard!";
+        #ifdef K_DEBUG
+               tWarning() << "TupViewDocument::sendStoryboard() - Sending storyboard...";
+        #endif
         emit updateStoryboard(storyboard, sceneIndex);
     } else {
-        // int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
         k->project->scene(sceneIndex)->setStoryboard(storyboard);    
     }
 }

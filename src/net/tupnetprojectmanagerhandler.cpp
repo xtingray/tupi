@@ -549,21 +549,31 @@ void TupNetProjectManagerHandler::closeConnection()
 }
 
 void TupNetProjectManagerHandler::sendExportImageRequest(int frameIndex, int sceneIndex, 
-                                                                const QString &title, const QString &topics, const QString &description)
+                                                         const QString &title, const QString &topics, const QString &description)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupImageExportPackage package(frameIndex, sceneIndex, title, topics, description);
     sendPackage(package);
 }
 
 void TupNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupVideoExportPackage package(title, topics, description, fps, sceneIndexes);
     sendPackage(package);
 }
 
 void TupNetProjectManagerHandler::updateStoryboardRequest(TupStoryboard *storyboard, int sceneIndex)
 {
-    tError() << "TupNetProjectManagerHandler::updateStoryboardRequest() - Updating storyboard...";
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
 
     QDomDocument doc;
     QDomElement story = storyboard->toXml(doc);
@@ -573,7 +583,9 @@ void TupNetProjectManagerHandler::updateStoryboardRequest(TupStoryboard *storybo
 
 void TupNetProjectManagerHandler::postStoryboardRequest(int sceneIndex)
 {
-    tError() << "TupNetProjectManagerHandler::postStoryboardRequest() - Posting...";
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
 
     TupStoryboardExportPackage package(sceneIndex);
     sendPackage(package);

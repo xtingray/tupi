@@ -303,13 +303,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         int pWidth = m_projectManager->project()->dimension().width();
         int pHeight = m_projectManager->project()->dimension().height();
 
-        /*
-        tError() << "W: " << width;
-        tError() << "H: " << height;
-        tError() << "Pw: " << pWidth;
-        tError() << "Ph: " << pHeight;
-        */
-
         double proportion = 1;
 
         if (pWidth > pHeight)
