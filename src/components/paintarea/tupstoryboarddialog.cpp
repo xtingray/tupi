@@ -544,6 +544,8 @@ void TupStoryBoardDialog::postStoryboardAtServer()
            tWarning() << "TupStoryBoardDialog::postStoryBoardAtServer() - Posting in Tupitube!";
     #endif
 
+    saveLastComponent();
+
     // SQA: This "save call" line should be enhanced
     emit updateStoryboard(k->storyboard, k->sceneIndex);
 
