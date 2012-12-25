@@ -155,7 +155,7 @@ void TupFrame::fromXml(const QString &xml)
     }
 
     QDomElement root = document.documentElement();
-    setFrameName(root.attribute("name", frameName()));
+    setFrameName(root.attribute("name", ""));
 
     QDomNode n = root.firstChild();
 
