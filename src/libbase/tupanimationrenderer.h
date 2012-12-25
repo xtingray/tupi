@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupANIMATIONRENDERER_H
-#define TupANIMATIONRENDERER_H
+#ifndef TUPANIMATIONRENDERER_H
+#define TUPANIMATIONRENDERER_H
 
 #include <QColor>
 #include <QSize>
