@@ -68,6 +68,10 @@ struct TupFrame::Private
     int layerIndex;
 };
 
+TupFrame::TupFrame() : k(new Private)
+{
+}
+
 TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
 {
     k->layerIndex = parent->layerIndex();

@@ -65,6 +65,7 @@ typedef TupIntHash<TupSvgItem *> SvgObjects;
 class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
 {
     public:
+       TupFrame();
        TupFrame(TupLayer *parent);
        TupFrame(TupBackground *bg);
        
