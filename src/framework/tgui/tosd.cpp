@@ -155,15 +155,14 @@ void TOsd::display(const QString &title, const QString &message, Level level, in
     resize(geometry.size());
 
     // create and set transparency mask
+    /*
     QPainter maskPainter(&mask);
     maskPainter.setRenderHint(QPainter::Antialiasing);
     mask.fill(Qt::white);
-
     maskPainter.drawRoundedRect(0, 0, width + 9, height + 7, 1, 1, Qt::AbsoluteSize);
-
     setMask(mask);
-
     maskPainter.end();
+    */
    
     drawPixmap(background, foreground);
 

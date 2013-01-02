@@ -164,9 +164,10 @@ int main(int argc, char ** argv)
     // Setting the repository directory (where the projects are saved)
     application.createCache(TCONFIG->value("Cache").toString());
 
+    // SQA: Temporarily disabled until starting the port to Qt5
     // Downloading maefloresta Twitter status
-    Tupwitter *twitter = new Tupwitter();
-    twitter->start();
+    // Tupwitter *twitter = new Tupwitter();
+    // twitter->start();
 
     // SQA: Tupi gui styles must be re-factored
     // Setting the gui style for the interface
