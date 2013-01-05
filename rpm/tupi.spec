@@ -46,8 +46,20 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_datadir}/man/man1/*.1*
 %{_datadir}/mime/packages/tupi.xml
 %{_datadir}/pixmaps/%{name}.png
-%{_datadir}/%{name}/
-%exclude %{_datadir}/%{name}/data/translations
+%{_datadir}/%{name}/data/help/
+%{_datadir}/%{name}/data/palettes/
+%{_datadir}/%{name}/data/storyboard/
+%{_datadir}/%{name}/data/cs/
+%{_datadir}/%{name}/data/da/
+%{_datadir}/%{name}/data/de/
+%{_datadir}/%{name}/data/en/
+%{_datadir}/%{name}/data/es/
+%{_datadir}/%{name}/data/gl/
+%{_datadir}/%{name}/data/pt/
+%{_datadir}/%{name}/data/ru/
+%{_datadir}/%{name}/data/translations/*.ts
+
+%{_datadir}/%{name}/themes/
 
 %changelog
 
