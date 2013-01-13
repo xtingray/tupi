@@ -1,10 +1,14 @@
-TARGET = quazip 
+TARGET = quazip
 DEPENDPATH += .
-INCLUDEPATH += /usr/include/quazip
 
 macx {
+    INCLUDEPATH += /usr/local/include/quazip
     CONFIG -= app_bundle
     CONFIG += warn_on static console
+}
+
+unix:!macx {
+  INCLUDEPATH += /usr/include/quazip
 }
 
 # Input
