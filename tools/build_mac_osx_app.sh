@@ -42,7 +42,7 @@ TUPI_GIT_REPOSITORY=$1
 TUPI_INSTALL=$2
 INSTALL_NAME=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
 
-declare -a LIBS=('libui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
+declare -a LIBS=('libtupigui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
 'libquazip.dylib' 'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' \
 'libtupifwcore.dylib' 'libtupifwsound.dylib');
 
@@ -52,11 +52,16 @@ make uninstall
 make install
 
 cd $TUPI_INSTALL
-cp -r lib/plugins Tupi.app/Contents/MacOS
-cp -r share Tupi.app/Contents/MacOS
+cp -r lib/tupi/plugins Tupi.app/Contents/MacOS
+
+mkdir Tupi.app/Contents/MacOS/share
+cp -r share/pixmaps Tupi.app/Contents/MacOS/share/
+cp -r share/tupi/data Tupi.app/Contents/MacOS/share/
+cp -r share/tupi/themes Tupi.app/Contents/MacOS/share/
+
 cd Tupi.app/Contents/MacOS/plugins
 
-find . -name "*.dylib" -exec $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/plugins/{} \/opt\/local\/lib\/ @executable_path/../Frameworks/ \;
+find . -name "*.dylib" -exec $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/plugins/{} \/usr\/local\/lib\/ @executable_path/../Frameworks/ \;
 
 for lib in ${LIBS[@]}; do
     find . -name "*.dylib" -exec $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/plugins/{} $lib @executable_path/../Frameworks/$lib \;
@@ -69,7 +74,7 @@ for lib in ${LIBS[@]}; do
     $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/Tupi $lib @executable_path/../Frameworks/$lib  \;
 done
 
-cp -r /opt/local/lib/Resources/qt_menu.nib $TUPI_INSTALL/Tupi.app/Contents/Resources
+cp -r /usr/local/Cellar/qt/4.8.3/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib $TUPI_INSTALL/Tupi.app/Contents/Resources
 
 cd $TUPI_INSTALL
 
@@ -77,10 +82,10 @@ cd $TUPI_INSTALL
 mkdir Tupi.app/Contents/Frameworks/
 
 for lib in ${LIBS[@]}; do
-    cp lib/$lib Tupi.app/Contents/Frameworks/
+    cp lib/tupi/$lib Tupi.app/Contents/Frameworks/
 done
 for lib in ${LIBS[@]}; do
-    $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/Frameworks/$lib  \/opt\/local\/lib\/ @executable_path/../Frameworks/
+    $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/Frameworks/$lib  \/usr\/local\/lib\/ @executable_path/../Frameworks/
     for sublib in ${LIBS[@]}; do
         $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/Frameworks/$lib $sublib @executable_path/../Frameworks/$sublib
     done
