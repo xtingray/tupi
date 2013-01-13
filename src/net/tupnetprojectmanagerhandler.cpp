@@ -506,6 +506,7 @@ bool TupNetProjectManagerHandler::isValid() const
 
 void TupNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
 {
+    tError() << "TupNetProjectManagerHandler::sendPackage() - xml: " << doc.toString();
     k->socket->send(doc);
 }
 

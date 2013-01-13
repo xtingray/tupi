@@ -46,6 +46,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QLocale>
 
 struct TupImageDialog::Private
 {
@@ -60,8 +61,12 @@ TupImageDialog::TupImageDialog(QWidget *parent) : QDialog(parent), k(new Private
     setWindowTitle(tr("Image Properties"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
+    QLocale utf(QLocale::AnyLanguage, QLocale::AnyCountry);
+
     QLabel *titleLabel = new QLabel(tr("Title"));
     k->titleEdit = new QLineEdit(tr("My Picture"));
+    k->titleEdit->setLocale(utf);
+
     connect(k->titleEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTitleColor(const QString &)));
     titleLabel->setBuddy(k->titleEdit);
 
@@ -152,16 +157,18 @@ void TupImageDialog::resetTopicColor(const QString &)
 
 QString TupImageDialog::imageTitle() const
 {
-     return k->titleEdit->text();
+     QString title = QString::fromUtf8(k->titleEdit->text().toUtf8());
+     tError() << "TupImageDialog::imageTitle() - text: " << title;
+     return title;
 }
 
 QString TupImageDialog::imageTopics() const
 {
-     return k->topicEdit->text();
+     return k->topicEdit->text().toUtf8();
 }
 
 QString TupImageDialog::imageDescription() const
 {
-     return k->descText->toPlainText();
+     return k->descText->toPlainText().toUtf8();
 }
 

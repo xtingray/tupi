@@ -71,13 +71,17 @@ void TupSocketBase::clearQueue()
     k->queue.clear();
 }
 
-void TupSocketBase::send(const QString &str)
+void TupSocketBase::send(const QString &message)
 {
+    tError() << "TupSocketBase::send() - message: " << message;
+
     if (state() == QAbstractSocket::ConnectedState) {
         QTextStream stream(this);
-        stream << str.toLocal8Bit().toBase64() << "%%" << endl;
+        stream.setCodec("UTF-8");
+        // stream << message.toLocal8Bit().toBase64() << "%%" << endl;
+        stream << message.toUtf8().toBase64() << "%%" << endl;
     } else {
-        k->queue.enqueue(str);
+        k->queue.enqueue(message);
     }
 }
 
@@ -88,17 +92,18 @@ void TupSocketBase::send(const QDomDocument &doc)
 
 void TupSocketBase::readFromServer()
 {
-    QString readed;
+    QString readed = "";
 
     while (this->canReadLine()) {
-           readed += this->readLine();
+           readed += QString::fromUtf8(this->readLine());
            if (readed.endsWith("%%\n"))
                break;
     }
     
     if (!readed.isEmpty()) {
         readed.remove(readed.lastIndexOf("%%"), 2);
-        readed = QString::fromLocal8Bit(QByteArray::fromBase64(readed.toLocal8Bit()));
+        // readed = QString::fromUtf8(QByteArray::fromBase64(readed.toLocal8Bit()));
+        readed = QString::fromUtf8(QByteArray::fromBase64(readed.toUtf8()));
         
         this->readed(readed);
     }

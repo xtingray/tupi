@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupimageexportpackage.h"
+#include "tdebug.h"
 
 // <project_image version="0">
 //     <image scene="0" frame="0" />
@@ -53,9 +54,11 @@ TupImageExportPackage::TupImageExportPackage(int frameIndex, int sceneIndex, con
     image.setAttribute("scene", sceneIndex);
     image.setAttribute("frame", frameIndex);
 
-    QDomText titleDom = createTextNode(title);
-    QDomText topicDom = createTextNode(topics);
-    QDomText descDom = createTextNode(description);
+    tError() << "TupImageExportPackage::TupImageExportPackage() - Test: " << title;
+
+    QDomText titleDom = createTextNode(Qt::escape(title));
+    QDomText topicDom = createTextNode(Qt::escape(topics));
+    QDomText descDom = createTextNode(Qt::escape(description));
 
     image.appendChild(createElement("title")).appendChild(titleDom);
     image.appendChild(createElement("topics")).appendChild(topicDom);
