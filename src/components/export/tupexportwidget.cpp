@@ -55,6 +55,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QtDebug>
+#include <QLocale>
 
 /**
  * This class handles the whole process to export a project into a movie format.
@@ -756,6 +757,7 @@ VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardP
 {
     setTag("PROPERTIES");
 
+    QLocale utf(QLocale::AnyLanguage, QLocale::AnyCountry);
     isOk = false;
 
     connect(widget, SIGNAL(saveVideoToServer()), this, SLOT(postIt()));
@@ -763,32 +765,28 @@ VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardP
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
 
-    // QLabel *exportLabel = new QLabel(tr("Export as"));
-    // exportCombo = new QComboBox();
-    // exportCombo->addItem(QIcon(THEME_DIR + "icons/export.png"), tr("Video File"));
-    // exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
-
     QLabel *titleLabel = new QLabel(tr("Title"));
     titleEdit = new QLineEdit(tr("My Video"));
+    titleEdit->setLocale(utf);
     connect(titleEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTitleColor(const QString &)));
     titleLabel->setBuddy(titleEdit);
 
     QLabel *topicsLabel = new QLabel(tr("Topics"));
     topicsEdit = new QLineEdit(tr("#topic1 #topic2 #topic3"));
+    topicsEdit->setLocale(utf);
     connect(topicsEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTopicsColor(const QString &)));
     topicsLabel->setBuddy(topicsEdit);
 
     QLabel *descLabel = new QLabel(tr("Description"));
 
     descText = new QTextEdit;
+    descText->setLocale(utf);
     descText->setAcceptRichText(false);
     descText->setFixedHeight(80);
     descText->setText(tr("Just a little taste of my style :)"));
 
     QHBoxLayout *exportLayout = new QHBoxLayout;
     exportLayout->setAlignment(Qt::AlignHCenter);
-    // exportLayout->addWidget(exportLabel);
-    // exportLayout->addWidget(exportCombo);
 
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(titleLabel);
@@ -822,17 +820,20 @@ void VideoProperties::reset()
 
 QString VideoProperties::title() const
 {
-     return titleEdit->text();
+     QString title = QString::fromUtf8(titleEdit->text().toUtf8());
+     return title;
 }
 
 QString VideoProperties::topics() const
 {
-     return topicsEdit->text();
+     QString topics = QString::fromUtf8(topicsEdit->text().toUtf8());
+     return topics;
 }
 
 QString VideoProperties::description() const
 {
-     return descText->toPlainText();
+     QString description = QString::fromUtf8(descText->toPlainText().toUtf8());
+     return description;
 }
 
 QList<int> VideoProperties::scenesList() const

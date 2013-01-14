@@ -75,6 +75,15 @@ class TupStoryBoardDialog : public QDialog
         void addScene(const QString &label, const QIcon &icon);
 
         void saveLastComponent();
+
+        QString getStoryTitle() const;
+        QString getStoryAuthor() const;
+        QString getStoryTopics() const;
+        QString getStorySummary() const;
+
+        QString getSceneTitle() const;
+        QString getSceneDuration() const;
+        QString getSceneDescription() const;
  
         struct Private;
         Private *const k;

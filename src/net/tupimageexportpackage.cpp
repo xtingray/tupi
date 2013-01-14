@@ -54,8 +54,6 @@ TupImageExportPackage::TupImageExportPackage(int frameIndex, int sceneIndex, con
     image.setAttribute("scene", sceneIndex);
     image.setAttribute("frame", frameIndex);
 
-    tError() << "TupImageExportPackage::TupImageExportPackage() - Test: " << title;
-
     QDomText titleDom = createTextNode(Qt::escape(title));
     QDomText topicDom = createTextNode(Qt::escape(topics));
     QDomText descDom = createTextNode(Qt::escape(description));

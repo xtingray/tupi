@@ -72,12 +72,14 @@ TupImageDialog::TupImageDialog(QWidget *parent) : QDialog(parent), k(new Private
 
     QLabel *topicLabel = new QLabel(tr("Topics"));
     k->topicEdit = new QLineEdit(tr("#topic1 #topic2 #topic3"));
+    k->topicEdit->setLocale(utf);
     connect(k->topicEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTopicColor(const QString &)));
     topicLabel->setBuddy(k->topicEdit);
 
     QLabel *descLabel = new QLabel(tr("Description"));
 
     k->descText = new QTextEdit;
+    k->descText->setLocale(utf);
     k->descText->setAcceptRichText(false);
     k->descText->setFixedHeight(80);
     k->descText->setText(tr("Just a little taste of my style :)"));
@@ -157,18 +159,16 @@ void TupImageDialog::resetTopicColor(const QString &)
 
 QString TupImageDialog::imageTitle() const
 {
-     QString title = QString::fromUtf8(k->titleEdit->text().toUtf8());
-     tError() << "TupImageDialog::imageTitle() - text: " << title;
-     return title;
+     return QString::fromUtf8(k->titleEdit->text().toUtf8());
 }
 
 QString TupImageDialog::imageTopics() const
 {
-     return k->topicEdit->text().toUtf8();
+     return QString::fromUtf8(k->topicEdit->text().toUtf8());
 }
 
 QString TupImageDialog::imageDescription() const
 {
-     return k->descText->toPlainText().toUtf8();
+     return QString::fromUtf8(k->descText->toPlainText().toUtf8());
 }
 
