@@ -83,6 +83,7 @@ class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializabl
         int size();
         
     private:
+        QString cleanString(QString input) const;
         struct Private;
         Private *const k;
 };

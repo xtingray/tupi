@@ -235,13 +235,13 @@ void TupStoryboard::fromXml(const QString &xml)
            QDomElement e = n.toElement();
            if (!e.isNull()) {
                if (e.tagName() == "title") {
-                   k->title = e.text();
+                   k->title = cleanString(e.text());
                } else if (e.tagName() == "author") {
-                          k->author = e.text();
+                          k->author = cleanString(e.text());
                } else if (e.tagName() == "topics") {
-                          k->topics = e.text();
+                          k->topics = cleanString(e.text());
                } else if (e.tagName() == "summary") {
-                          k->summary = e.text();
+                          k->summary = cleanString(e.text());
                } else if (e.tagName() == "scene") {
                           QDomNode n2 = e.firstChild();
                           while (!n2.isNull()) {
@@ -293,3 +293,12 @@ int TupStoryboard::size()
 {
     return k->scene.count();
 }
+
+QString TupStoryboard::cleanString(QString input) const
+{
+    input.replace(",", "\,");
+    input.replace("'", "\"");
+
+    return input;
+}
+
