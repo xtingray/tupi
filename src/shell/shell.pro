@@ -57,8 +57,8 @@ unix:!mac {
     tupiman.commands = cp ../components/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
     tupiman.path = /man1/
 
-    copyright.target = ../components/help/help/man/copyright
-    copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
+    copyright.target = ../components/help/man/copyright
+    copyright.commands = cp ../components/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
     copyright.path = /tupi/
 
     target.path = /bin/

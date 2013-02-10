@@ -72,14 +72,20 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
         dir.mkdir(dir.path());
 
     m_baseName = fileInfo.baseName();
-    const char *extension = "PNG";
-
+    const char *extension = "";
+    QImage::Format imageFormat;
     switch (format) {
             case TupExportInterface::JPEG:
                  extension = "JPEG";
+                 imageFormat = QImage::Format_RGB32;
+                 break;
+            case TupExportInterface::PNG:
+                 extension = "PNG";
+                 imageFormat = QImage::Format_ARGB32;
                  break;
             case TupExportInterface::XPM:
                  extension = "XPM";
+                 imageFormat = QImage::Format_RGB32;
                  break;
             default:
                  break;
@@ -92,7 +98,7 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
 
              int photogram = 0;
              while (renderer.nextPhotogram()) {
-                    QImage image(size, QImage::Format_RGB32);
+                    QImage image(size, imageFormat);
                     {
                      QPainter painter(&image);
                      painter.setRenderHint(QPainter::Antialiasing, true);
@@ -123,21 +129,27 @@ bool GenericExportPlugin::exportFrame(int frameIndex, const QColor color, const 
 {
     QString path = filePath;
     const char *extension;
+    QImage::Format imageFormat;
+    QColor bgColor = color;
 
     if (filePath.endsWith(".PNG", Qt::CaseInsensitive)) {
         extension = "PNG";
+        imageFormat = QImage::Format_ARGB32;
+        bgColor.setAlpha(0);
     } else if (filePath.endsWith(".JPG", Qt::CaseInsensitive) || filePath.endsWith("JPEG", Qt::CaseInsensitive)) {
                extension = "JPG";
+               imageFormat = QImage::Format_RGB32;
     } else {
         extension = "PNG"; 
-        path += ".png";  
+        path += ".png";
+        imageFormat = QImage::Format_ARGB32;
     }
 
-    TupAnimationRenderer renderer(color);
+    TupAnimationRenderer renderer(bgColor);
     renderer.setScene(scene, size);
 
     renderer.renderPhotogram(frameIndex);
-    QImage image(size, QImage::Format_RGB32);
+    QImage image(size, imageFormat);
 
     {
         QPainter painter(&image);

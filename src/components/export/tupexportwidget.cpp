@@ -54,6 +54,7 @@
 #include <QToolButton>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCheckBox>
 #include <QtDebug>
 #include <QLocale>
 
@@ -383,6 +384,7 @@ class ExportTo : public TExportWizardPage
         void chooseFile();
         void chooseDirectory();
         void updateNameField();
+        void enableTransparency(bool flag);
 
     private:
         //QString fileToExport() const;
@@ -412,6 +414,8 @@ class ExportTo : public TExportWizardPage
         QString filename;
         QString path;
         QString extension;
+        QCheckBox *bgTransparency;
+        bool transparency;
 };
 
 ExportTo::ExportTo(const TupProject *project, bool exportImages, QString title, const TupExportWidget *widget) : TExportWizardPage(title), m_currentExporter(0), 
@@ -421,6 +425,8 @@ ExportTo::ExportTo(const TupProject *project, bool exportImages, QString title, 
         setTag("IMAGES");
     else 
         setTag("EXPORT");
+
+    bgTransparency = new QCheckBox(tr("Enable transparency"));
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
@@ -506,6 +512,9 @@ ExportTo::ExportTo(const TupProject *project, bool exportImages, QString title, 
         configLayout->addWidget(new QLabel(tr("FPS")));
         configLayout->addWidget(m_fps);
         configureLayout->addWidget(groupBox);
+    } else {
+        connect(bgTransparency, SIGNAL(toggled(bool)), this, SLOT(enableTransparency(bool)));
+        configureLayout->addWidget(bgTransparency);
     }
 
     configureLayout->addStretch();
@@ -557,6 +566,14 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
             filename += QDir::separator();
         filename += m_project->projectName();
         filename += extension;
+    } else {
+        if (extension.compare(".jpg") == 0) {
+            if (bgTransparency->isEnabled())
+                bgTransparency->setEnabled(false);
+        } else {
+            if (!bgTransparency->isEnabled())
+                bgTransparency->setEnabled(true);
+        }
     } 
 
     m_filePath->setText(filename);
@@ -567,6 +584,11 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 void ExportTo::updateNameField()
 {
    m_filePath->setText(filename);
+}
+
+void ExportTo::enableTransparency(bool flag)
+{
+   transparency = flag; 
 }
 
 void ExportTo::chooseFile()
@@ -690,7 +712,11 @@ void ExportTo::exportIt()
             if (height%2 != 0)
                 height++;
 
-            done = m_currentExporter->exportToFormat(m_project->bgColor(), filename, scenes, m_currentFormat, 
+            QColor color = m_project->bgColor();
+            if (transparency)
+                color.setAlpha(0);
+
+            done = m_currentExporter->exportToFormat(color, filename, scenes, m_currentFormat, 
                                                      QSize(width, height), m_fps->value());
         }
     } else {
@@ -927,6 +953,7 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
 
         loadPlugins();
         m_pluginSelectionPage->selectFirstItem();
+
     } else {
         setWindowTitle(tr("Post Animation in Tupitube"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));

@@ -78,6 +78,11 @@ class STORE_EXPORT TupLayer : public QObject, public TupAbstractSerializable
          * Pone la lista de frames, esta funcion reemplaza los frames anteriores
          */
         void setFrames(const Frames &frames);
+
+        /**
+         * Actualiza el frame ubicado en la posicion index 
+         */
+        void setFrame(int index, TupFrame *frame);
         
         /**
          * Pone el nombre del layer
