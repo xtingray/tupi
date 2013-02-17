@@ -83,6 +83,9 @@ void DefaultSettings::save(TMainWindow *w)
              settings.beginGroup(bar->windowTitle());
              settings.setValue("autohide", bar->autohide());
              settings.endGroup();
+             settings.beginGroup(bar->windowTitle());
+             settings.setValue("visible", bar->isVisible());
+             settings.endGroup();
 
              foreach (ToolView *view, toolViews[bar]) {
                       settings.beginGroup(view->objectName());
@@ -154,6 +157,10 @@ void DefaultSettings::restore(TMainWindow *w)
 
              settings.beginGroup(bar->windowTitle());
              bar->setAutoHide(settings.value("autohide", false).toBool());
+             settings.endGroup();
+
+             settings.beginGroup(bar->windowTitle());
+             bar->setShouldBeVisible(settings.value("visible", true).toBool());
              settings.endGroup();
     }
 	
@@ -568,7 +575,7 @@ void TMainWindow::setCurrentPerspective(int workspace)
                       if (bar->isEmpty() && bar->isVisible()) {
                           bar->hide();
                       } else {
-                          if (!bar->isVisible())
+                          if (!bar->isVisible() && bar->shouldBeVisible())
                               bar->show();
                       }
 

@@ -68,6 +68,7 @@ class T_IDEAL_EXPORT TButtonBar : public QToolBar
 
         bool isExclusive() const;
         bool autohide() const;
+        bool shouldBeVisible() const;
         void showSeparator(bool e);
 
         int count() const;
@@ -79,6 +80,7 @@ class T_IDEAL_EXPORT TButtonBar : public QToolBar
         void setAutoHide(bool autohide);
         void setShowOnlyIcons();
         void setShowOnlyTexts();
+        void setShouldBeVisible(bool shouldBeVisible);
 
     private:
         QMenu *createMenu();
@@ -86,6 +88,7 @@ class T_IDEAL_EXPORT TButtonBar : public QToolBar
     private slots:
         void hideOthers(QAbstractButton *source);
         void doNotHide();
+        void onlySetShouldBeVisible(bool shouldBeVisible);
 
     protected:
         virtual void mousePressEvent(QMouseEvent *event);
@@ -99,6 +102,7 @@ class T_IDEAL_EXPORT TButtonBar : public QToolBar
         QTimer m_hider;
         bool m_autoHide;
         bool m_blockHider;
+        bool m_shouldBeVisible;
 };
 
 #endif
