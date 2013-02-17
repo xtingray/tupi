@@ -47,7 +47,7 @@
 
 #include <QtDebug>
 
-TButtonBar::TButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent), m_autoHide(false), m_blockHider(false)
+TButtonBar::TButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent), m_autoHide(false), m_blockHider(false), m_shouldBeVisible(true)
 {
     setMovable(false);
     setIconSize(QSize(16,16));
@@ -85,6 +85,7 @@ TButtonBar::TButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 
     connect(&m_hider, SIGNAL(timeout()), this, SLOT(hide()));
     connect(&m_buttons, SIGNAL(buttonClicked(QAbstractButton *)), this, SLOT(hideOthers(QAbstractButton *)));
+    connect(toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(onlySetShouldBeVisible(bool)));
 }
 
 TButtonBar::~TButtonBar()
@@ -180,6 +181,23 @@ bool TButtonBar::autohide() const
 {
     return m_autoHide;
 }
+
+void TButtonBar::onlySetShouldBeVisible(bool shouldBeVisible)
+{
+    m_shouldBeVisible = shouldBeVisible;
+}
+
+void TButtonBar::setShouldBeVisible(bool shouldBeVisible)
+{
+    m_shouldBeVisible = shouldBeVisible;
+    setVisible(shouldBeVisible);
+}
+
+bool TButtonBar::shouldBeVisible() const
+{
+    return m_shouldBeVisible;
+}
+
 
 void TButtonBar::setShowOnlyIcons()
 {
