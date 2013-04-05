@@ -120,8 +120,8 @@ _EOH_
     config.addLib("-ltupifwcore")
     # config.addLib("-ltupifwsound")
     
-    config.addDefine('VERSION=\\\\\"0.2\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')
+    config.addDefine('VERSION=\\\\\"0.2.1\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Ajuba\\\\\"')
     config.addDefine('REVISION=\\\\\"1\\\\\"')
 
     if conf.hasArgument?("install-headers")
