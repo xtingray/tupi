@@ -19,7 +19,7 @@ Depends: ${misc:Depends},
  libqt4-opengl (>= 4:4.7.0~), libqt4-svg (>= 4:4.7.0~), 
  libqt4-xml (>= 4:4.7.0~), libqtcore4 (>= 4:4.7.0~), 
  libqtgui4 (>= 4:4.7.0~), libstdc++6 (>= 4.5.1-7~), zlib1g, 
- libogg0, libtheora0, libquazip0
+ libogg0, libtheora0, libquazip0, libquazip0-dev
 Description: 2D vectorial/animation tool
  Tupi: Open 2D Magic  is a design  and  authoring tool for digital 
  artists  interested  in  2D  Animation,  offering  an   interface 
