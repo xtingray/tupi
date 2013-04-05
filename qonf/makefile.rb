@@ -85,6 +85,8 @@ module RQonf
                                      newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/pixmaps/, "\$\(DESTDIR\)" + @options['prefix'] + "/share/pixmaps")}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/man1" then
                                      newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/man1/, "\$\(DESTDIR\)" + @options['prefix'] + "/share/man/man1")}"
+                               elsif line.include? "\$\(INSTALL_ROOT\)\/share\/mime\/packages" then
+                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/share\/mime\/packages/, "\$\(DESTDIR\)" + @options['prefix'] + "/share/mime/packages")}"
                                end
                             else
                                if line.include? "DESTDIR" then

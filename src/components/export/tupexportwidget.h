@@ -60,7 +60,7 @@ class TupExportWidget : public TExportWizard
     Q_OBJECT
 
     public:
-        enum Format { Video = 0, Storyboard };
+        // enum Format { Video = 0, Storyboard };
         TupExportWidget(const TupProject *project, QWidget *parent = 0, bool isLocal = true);
         ~TupExportWidget();
         QString videoTitle() const;
@@ -68,7 +68,7 @@ class TupExportWidget : public TExportWizard
         QString videoDescription() const;
         QList<int> videoScenes() const;
         bool isComplete();
-        TupExportWidget::Format workType();
+        // TupExportWidget::Format workType();
 
     private slots:
         void setExporter(const QString &plugin);

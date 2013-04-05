@@ -47,7 +47,9 @@
 #include "tupconnectpackage.h"
 #include "tupimageexportpackage.h"
 #include "tupvideoexportpackage.h"
+#include "tupstoryboardupdatepackage.h"
 #include "tupstoryboardexportpackage.h"
+#include "tupstoryboardparser.h"
 #include "tupinetfilemanager.h"
 #include "tupopenpackage.h"
 #include "tupchatpackage.h"
@@ -333,9 +335,28 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                        emitRequest(&request, k->doAction && k->ownPackage);
                    }
 
-               } else { // TODO: show error 
+               } else { // SQA: show error 
                    #ifdef K_DEBUG
                           tError() << "TupNetProjectManagerHandler::handlePackage() - Error parsing net request";
+                   #endif
+               }
+    } else if (root == "project_storyboard_update") {
+               tError() << "TupNetProjectManagerHandler::handlePackage() - Updating the storyboard...";
+               TupStoryboardParser parser(package);
+
+               if (parser.checksum()) {
+                   if ((parser.sceneIndex() >= 0) && (parser.storyboardXml().length() > 0)) {
+                       TupStoryboard *storyboard = new TupStoryboard(k->username);
+                       storyboard->fromXml(parser.storyboardXml());
+                       k->project->scene(parser.sceneIndex())->setStoryboard(storyboard);
+                   } else {
+                       #ifdef K_DEBUG
+                              tError() << "ProjectManager::handlePackage() - [ Fatal Error ] - Can't parse project_storyboard package";
+                       #endif
+                   }
+               } else {
+                   #ifdef K_DEBUG
+                          tError() << "ProjectManager::handlePackage() - [ Fatal Error ] - Can't parse project_storyboard package";
                    #endif
                }
     } else if (root == "server_ack") {
@@ -469,6 +490,8 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                    QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();
                    TOsd::self()->display(tr("Information"), message);
                }
+    } else if (root == "storyboard_update") {
+               // SQA: storyboard package must be parsed and the related scene must be updated  
     } else {
       #ifdef K_DEBUG
              tError("net") << "TupNetProjectManagerHandler::handlePackage() - Error: Unknown package: " << root;
@@ -483,6 +506,7 @@ bool TupNetProjectManagerHandler::isValid() const
 
 void TupNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
 {
+    tError() << "TupNetProjectManagerHandler::sendPackage() - xml: " << doc.toString();
     k->socket->send(doc);
 }
 
@@ -525,21 +549,45 @@ void TupNetProjectManagerHandler::closeConnection()
         k->socket->close();
 }
 
-void TupNetProjectManagerHandler::sendExportImageRequestToServer(int frameIndex, int sceneIndex, 
-                                                                const QString &title, const QString &topics, const QString &description)
+void TupNetProjectManagerHandler::sendExportImageRequest(int frameIndex, int sceneIndex, 
+                                                         const QString &title, const QString &topics, const QString &description)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupImageExportPackage package(frameIndex, sceneIndex, title, topics, description);
     sendPackage(package);
 }
 
 void TupNetProjectManagerHandler::sendVideoRequest(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes)
 {
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     TupVideoExportPackage package(title, topics, description, fps, sceneIndexes);
     sendPackage(package);
 }
 
-void TupNetProjectManagerHandler::sendStoryboardRequest(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes)
+void TupNetProjectManagerHandler::updateStoryboardRequest(TupStoryboard *storyboard, int sceneIndex)
 {
-    TupStoryboardExportPackage package(title, topics, description, sceneIndexes);
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    QDomDocument doc;
+    QDomElement story = storyboard->toXml(doc);
+    TupStoryboardUpdatePackage package(story, sceneIndex);
+    sendPackage(package);
+}
+
+void TupNetProjectManagerHandler::postStoryboardRequest(int sceneIndex)
+{
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
+    TupStoryboardExportPackage package(sceneIndex);
     sendPackage(package);
 }

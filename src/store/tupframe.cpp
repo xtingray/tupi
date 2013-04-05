@@ -68,6 +68,10 @@ struct TupFrame::Private
     int layerIndex;
 };
 
+TupFrame::TupFrame() : k(new Private)
+{
+}
+
 TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
 {
     k->layerIndex = parent->layerIndex();
@@ -151,7 +155,7 @@ void TupFrame::fromXml(const QString &xml)
     }
 
     QDomElement root = document.documentElement();
-    setFrameName(root.attribute("name", frameName()));
+    setFrameName(root.attribute("name", ""));
 
     QDomNode n = root.firstChild();
 

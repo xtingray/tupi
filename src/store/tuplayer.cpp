@@ -81,6 +81,11 @@ void TupLayer::setFrames(const Frames &frames)
     k->framesCount = frames.count();
 }
 
+void TupLayer::setFrame(int index, TupFrame *frame)
+{
+    k->frames.insert(index, frame);
+}
+
 void TupLayer::setLayerName(const QString &name)
 {
     k->name = name;

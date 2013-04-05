@@ -52,14 +52,21 @@ class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializabl
         ~TupStoryboard();
 
         void init(int start, int size);
-        void remove(int size);
+        void reset();
+        void insertScene(int index);
+        void appendScene();
+        void moveScene(int oldIndex, int newIndex);
+        void resetScene(int index);
+        void removeScene(int index);
 
         void setStoryTitle(const QString &title);
+        void setStoryTopics(const QString &topics);
         void setStoryAuthor(const QString &author);
         void setStorySummary(const QString &desc);
 
         QString storyTitle() const;
         QString storyAuthor() const;
+        QString storyTopics() const;
         QString storySummary() const;
 
         void setSceneTitle(int index, const QString &title);
@@ -76,6 +83,7 @@ class STORE_EXPORT TupStoryboard : public QObject, public TupAbstractSerializabl
         int size();
         
     private:
+        QString cleanString(QString input) const;
         struct Private;
         Private *const k;
 };

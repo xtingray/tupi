@@ -136,7 +136,7 @@ module RQonf
       Info.info << "Creating makefiles..." << $endl
 
       if RUBY_PLATFORM.downcase.include?("darwin")
-        qmakeLine = "'CONFIG += console warn_on' 'LIBS += -lavcodec -lavutil -lavformat -framework CoreFoundation'"
+        qmakeLine = "'CONFIG += console warn_on' 'INCLUDEPATH += /usr/local/include/quazip LIBS += -L/usr/local/lib -lavcodec -lavutil -lavformat -framework CoreFoundation'"
         @qmake.run(qmakeLine, true)
       else
         @qmake.run("", true)
@@ -219,7 +219,7 @@ module RQonf
            @options['libdir'] = @options['prefix'] + "/lib/tupi"
         end
       elsif !@options['libdir'].end_with? "tupi" then
-            @options['libdir'] = @options['libdir'] + "/tupi"   
+            @options['libdir'] = @options['libdir'] + "/tupi"
       end
 
       if @options['includedir'].nil? then
@@ -278,7 +278,7 @@ module RQonf
         newfile += "Exec=" + launcher_bindir + "/tupi\n"
         newfile += "Icon=tupi\n"
         newfile += "Type=Application\n"
-        newfile += "MimeType=application/tup;application/ntup;\n"
+        newfile += "MimeType=application/tup;\n"
         newfile += "Categories=Graphics;2DGraphics;RasterGraphics;\n"
         newfile += "Comment=2D Animation Toolkit\n"
         newfile += "Comment[es]=Herramienta para Animación 2D\n"

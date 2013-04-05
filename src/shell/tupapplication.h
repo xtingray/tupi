@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupAPPLICATION_H
-#define TupAPPLICATION_H
+#ifndef TUPAPPLICATION_H
+#define TUPAPPLICATION_H
 
 #include "tapplication.h"
 

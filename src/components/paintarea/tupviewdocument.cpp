@@ -313,7 +313,7 @@ void TupViewDocument::setZoomView(const QString &percent)
 void TupViewDocument::showPos(const QPointF &p)
 {
     QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y());
-    emit sendToStatus(message) ;
+    emit sendToStatus(message);
 }
 
 void TupViewDocument::setupDrawActions()
@@ -673,8 +673,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else {
                          #ifdef K_DEBUG
                                 tError() << "TupViewDocument::loadPlugin() - Error: Invalid Brush Index / No plugin loaded";
-                                return;
                          #endif
+                         return;
                      }
                  }
             break;
@@ -690,8 +690,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                          } else {
                              #ifdef K_DEBUG
                                     tError() << "TupViewDocument::loadPlugin() - Error: Invalid Selection Index / No plugin loaded";
-                                    return;
                              #endif
+                             return;
                          }
                      }
                  }
@@ -705,8 +705,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else {
                          #ifdef K_DEBUG
                                 tError() << "TupViewDocument::loadPlugin() - Error: Invalid Fill Index / No plugin loaded";
-                                return;
                          #endif
+                         return;
                      }
                  }
             break;
@@ -719,8 +719,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                      } else {
                          #ifdef K_DEBUG
                                 tError() << "TupViewDocument::loadPlugin() - Error: Invalid Zoom Index (" << index << ") / No plugin loaded";
-                                return;
                          #endif
+                         return;
                      }
                  }
             break;
@@ -729,8 +729,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
                  {
                      #ifdef K_DEBUG
                             tError() << "TupViewDocument::loadPlugin() - Error: Invalid Menu Index / No plugin loaded";
-                            return;
                      #endif
+                     return;
                  }
             break;
     }
@@ -754,8 +754,8 @@ void TupViewDocument::loadPlugin(int menu, int index)
     } else {
         #ifdef K_DEBUG
                tError() << "TupViewDocument::loadPlugin() - Error: Action pointer is NULL!";
-               return;
         #endif
+        return;
     }
 }
 
@@ -1400,8 +1400,12 @@ void TupViewDocument::storyboardSettings()
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->imagePlugin, k->project->bgColor(), k->project->dimension(), k->project->scene(sceneIndex), this);
-    connect(storySettings, SIGNAL(saveStoryboard(TupStoryboard *)), this, SLOT(updateStoryboard(TupStoryboard *)));
+    TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->isNetworked, k->imagePlugin, k->project->bgColor(), k->project->dimension(), 
+                                                                 k->project->scene(sceneIndex), currentSceneIndex(), this);
+    connect(storySettings, SIGNAL(updateStoryboard(TupStoryboard *, int)), this, SLOT(sendStoryboard(TupStoryboard *, int)));
+
+    if (k->isNetworked)
+        connect(storySettings, SIGNAL(postStoryboard(int)), this, SIGNAL(postStoryboard(int)));
 
     QApplication::restoreOverrideCursor();
 
@@ -1410,10 +1414,16 @@ void TupViewDocument::storyboardSettings()
                         (int) (desktop.screenGeometry().height() - storySettings->height())/2);
 }
 
-void TupViewDocument::updateStoryboard(TupStoryboard *storyboard)
+void TupViewDocument::sendStoryboard(TupStoryboard *storyboard, int sceneIndex)
 {
-    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
-    k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+    if (k->isNetworked) {
+        #ifdef K_DEBUG
+               tWarning() << "TupViewDocument::sendStoryboard() - Sending storyboard...";
+        #endif
+        emit updateStoryboard(storyboard, sceneIndex);
+    } else {
+        k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+    }
 }
 
 void TupViewDocument::updateUsersOnLine(const QString &login, int state)

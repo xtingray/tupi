@@ -211,8 +211,7 @@ class TupMainWindow : public TabbedMainWindow
           void callSave();
           void expandExposureView(int index);
           void expandColorView();
-          void postVideo(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
-          void postStoryboard(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
+          // void postVideo(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
           void resetMousePointer();
           void updateUsersOnLine(const QString &login, int state);
 
@@ -223,8 +222,8 @@ class TupMainWindow : public TabbedMainWindow
           bool lastSave;
 
     private:
-          TupViewDocument *drawingTab;
-          TupAnimationspace *animationTab;
+          TupViewDocument *animationTab;
+          TupAnimationspace *playerTab;
           TupHelpBrowser *helpTab;
           TupTwitterWidget *newsTab;
           TupStatusBar *m_statusBar;
@@ -242,7 +241,7 @@ class TupMainWindow : public TabbedMainWindow
 
     // Network variables
     private:
-          TupNetProjectManagerHandler *netProjectManagerHandler;
+          TupNetProjectManagerHandler *netProjectManager;
           bool isNetworked;
           ToolView *m_viewChat;
 

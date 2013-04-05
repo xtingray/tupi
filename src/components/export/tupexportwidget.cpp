@@ -54,7 +54,9 @@
 #include <QToolButton>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCheckBox>
 #include <QtDebug>
+#include <QLocale>
 
 /**
  * This class handles the whole process to export a project into a movie format.
@@ -382,6 +384,7 @@ class ExportTo : public TExportWizardPage
         void chooseFile();
         void chooseDirectory();
         void updateNameField();
+        void enableTransparency(bool flag);
 
     private:
         //QString fileToExport() const;
@@ -411,6 +414,8 @@ class ExportTo : public TExportWizardPage
         QString filename;
         QString path;
         QString extension;
+        QCheckBox *bgTransparency;
+        bool transparency;
 };
 
 ExportTo::ExportTo(const TupProject *project, bool exportImages, QString title, const TupExportWidget *widget) : TExportWizardPage(title), m_currentExporter(0), 
@@ -420,6 +425,8 @@ ExportTo::ExportTo(const TupProject *project, bool exportImages, QString title, 
         setTag("IMAGES");
     else 
         setTag("EXPORT");
+
+    bgTransparency = new QCheckBox(tr("Enable transparency"));
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
@@ -505,6 +512,9 @@ ExportTo::ExportTo(const TupProject *project, bool exportImages, QString title, 
         configLayout->addWidget(new QLabel(tr("FPS")));
         configLayout->addWidget(m_fps);
         configureLayout->addWidget(groupBox);
+    } else {
+        connect(bgTransparency, SIGNAL(toggled(bool)), this, SLOT(enableTransparency(bool)));
+        configureLayout->addWidget(bgTransparency);
     }
 
     configureLayout->addStretch();
@@ -556,6 +566,14 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
             filename += QDir::separator();
         filename += m_project->projectName();
         filename += extension;
+    } else {
+        if (extension.compare(".jpg") == 0) {
+            if (bgTransparency->isEnabled())
+                bgTransparency->setEnabled(false);
+        } else {
+            if (!bgTransparency->isEnabled())
+                bgTransparency->setEnabled(true);
+        }
     } 
 
     m_filePath->setText(filename);
@@ -566,6 +584,11 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 void ExportTo::updateNameField()
 {
    m_filePath->setText(filename);
+}
+
+void ExportTo::enableTransparency(bool flag)
+{
+   transparency = flag; 
 }
 
 void ExportTo::chooseFile()
@@ -689,7 +712,11 @@ void ExportTo::exportIt()
             if (height%2 != 0)
                 height++;
 
-            done = m_currentExporter->exportToFormat(m_project->bgColor(), filename, scenes, m_currentFormat, 
+            QColor color = m_project->bgColor();
+            if (transparency)
+                color.setAlpha(0);
+
+            done = m_currentExporter->exportToFormat(color, filename, scenes, m_currentFormat, 
                                                      QSize(width, height), m_fps->value());
         }
     } else {
@@ -732,7 +759,7 @@ class VideoProperties : public TExportWizardPage
         QString description() const;
         QList<int> scenesList() const;
         bool successful();
-        TupExportWidget::Format workType();
+        // TupExportWidget::Format workType();
 
     signals:
         void isDone();
@@ -744,7 +771,7 @@ class VideoProperties : public TExportWizardPage
         void setScenesIndexes(const QList<int> &indexes);
 
     private:
-        QComboBox *exportCombo;
+        // QComboBox *exportCombo;
         QLineEdit *titleEdit;
         QLineEdit *topicsEdit;
         QTextEdit *descText;
@@ -752,10 +779,11 @@ class VideoProperties : public TExportWizardPage
         bool isOk;
 };
 
-VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardPage(tr("Set Work Properties"))
+VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardPage(tr("Set Animation Properties"))
 {
     setTag("PROPERTIES");
 
+    QLocale utf(QLocale::AnyLanguage, QLocale::AnyCountry);
     isOk = false;
 
     connect(widget, SIGNAL(saveVideoToServer()), this, SLOT(postIt()));
@@ -763,32 +791,28 @@ VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardP
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
 
-    QLabel *exportLabel = new QLabel(tr("Export as"));
-    exportCombo = new QComboBox();
-    exportCombo->addItem(QIcon(THEME_DIR + "icons/export.png"), tr("Video File"));
-    exportCombo->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Storyboard"));
-
     QLabel *titleLabel = new QLabel(tr("Title"));
     titleEdit = new QLineEdit(tr("My Video"));
+    titleEdit->setLocale(utf);
     connect(titleEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTitleColor(const QString &)));
     titleLabel->setBuddy(titleEdit);
 
     QLabel *topicsLabel = new QLabel(tr("Topics"));
     topicsEdit = new QLineEdit(tr("#topic1 #topic2 #topic3"));
+    topicsEdit->setLocale(utf);
     connect(topicsEdit, SIGNAL(textChanged(const QString &)), this, SLOT(resetTopicsColor(const QString &)));
     topicsLabel->setBuddy(topicsEdit);
 
     QLabel *descLabel = new QLabel(tr("Description"));
 
     descText = new QTextEdit;
+    descText->setLocale(utf);
     descText->setAcceptRichText(false);
     descText->setFixedHeight(80);
     descText->setText(tr("Just a little taste of my style :)"));
 
     QHBoxLayout *exportLayout = new QHBoxLayout;
     exportLayout->setAlignment(Qt::AlignHCenter);
-    exportLayout->addWidget(exportLabel);
-    exportLayout->addWidget(exportCombo);
 
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(titleLabel);
@@ -822,17 +846,20 @@ void VideoProperties::reset()
 
 QString VideoProperties::title() const
 {
-     return titleEdit->text();
+     QString title = QString::fromUtf8(titleEdit->text().toUtf8());
+     return title;
 }
 
 QString VideoProperties::topics() const
 {
-     return topicsEdit->text();
+     QString topics = QString::fromUtf8(topicsEdit->text().toUtf8());
+     return topics;
 }
 
 QString VideoProperties::description() const
 {
-     return descText->toPlainText();
+     QString description = QString::fromUtf8(descText->toPlainText().toUtf8());
+     return description;
 }
 
 QList<int> VideoProperties::scenesList() const
@@ -887,10 +914,12 @@ void VideoProperties::setScenesIndexes(const QList<int> &indexes)
     scenes = indexes;
 }
 
+/*
 TupExportWidget::Format VideoProperties::workType()
 {
     return TupExportWidget::Format(exportCombo->currentIndex());
 }
+*/
 
 TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, bool isLocal) : TExportWizard(parent), m_project(project)
 {
@@ -924,8 +953,9 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
 
         loadPlugins();
         m_pluginSelectionPage->selectFirstItem();
+
     } else {
-        setWindowTitle(tr("Post Work in Gallery"));
+        setWindowTitle(tr("Post Animation in Tupitube"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
 
         m_scenesSelectionPage = new SelectScenes(this);
@@ -1020,9 +1050,11 @@ bool TupExportWidget::isComplete()
     return videoProperties->isComplete();
 }
 
+/*
 TupExportWidget::Format TupExportWidget::workType()
 {
     return videoProperties->workType();
 }
+*/
 
 #include "tupexportwidget.moc"

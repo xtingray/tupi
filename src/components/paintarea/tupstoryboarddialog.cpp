@@ -59,14 +59,18 @@
 #include <QPainter>
 #include <QFileDialog>
 #include <QDesktopWidget>
+#include <QLocale>
 
 struct TupStoryBoardDialog::Private
 {
+    bool isNetworked;
     TupExportInterface *imagePlugin;
     QColor bgColor;
     QSize size;
     QSize scaledSize;
+    int sceneIndex;
     TupScene *scene;
+
     TupStoryboard *storyboard;
     int currentIndex;
     QString path;
@@ -81,6 +85,7 @@ struct TupStoryBoardDialog::Private
     QLabel *screenLabel;
 
     QLineEdit *titleEdit;
+    QLineEdit *topicsEdit;
     QLineEdit *authorEdit;
     QTextEdit *summaryEdit;
 
@@ -88,15 +93,21 @@ struct TupStoryBoardDialog::Private
     QLineEdit *sceneTitleEdit;
     QLineEdit *sceneDurationEdit;
     QTextEdit *sceneDescriptionEdit;
+
+    QLocale utf;
 };
 
-TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const QColor &color, const QSize &size, TupScene *scene, QWidget *parent) : QDialog(parent), k(new Private)
+TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *imagePlugin, const QColor &color, 
+                                         const QSize &size, TupScene *scene, int sceneIndex, QWidget *parent) : QDialog(parent), k(new Private)
 {
+    k->isNetworked = isNetworked;
     k->imagePlugin = imagePlugin;
     k->bgColor = color;
     k->size = size;
     k->scene = scene;
+    k->sceneIndex = sceneIndex;
     k->storyboard = k->scene->storyboard();
+    k->utf = QLocale(QLocale::AnyLanguage, QLocale::AnyCountry);
 
     QDesktopWidget desktop;
     k->scaledSize = QSize();
@@ -140,10 +151,7 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
     setStoryForm();
     setSceneForm();
 
-    QPushButton *saveButton = new QPushButton(tr("&Save"));
-    connect(saveButton, SIGNAL(clicked()), this, SLOT(saveStoryBoard()));
-
-    QPushButton *exportButton = new QPushButton(tr("&Export"));
+    QPushButton *exportButton = new QPushButton(tr("&Export as HTML"));
     connect(exportButton, SIGNAL(clicked()), this, SLOT(exportStoryBoard()));
 
     QPushButton *closeButton = new QPushButton(tr("&Close"));
@@ -151,8 +159,14 @@ TupStoryBoardDialog::TupStoryBoardDialog(TupExportInterface *imagePlugin, const 
     connect(closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
-    buttonBox->addButton(saveButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(exportButton, QDialogButtonBox::ActionRole);
+
+    if (k->isNetworked) {
+        QPushButton *postButton = new QPushButton(tr("&Post"));
+        connect(postButton, SIGNAL(clicked()), this, SLOT(postStoryboardAtServer()));
+        buttonBox->addButton(postButton, QDialogButtonBox::ActionRole);
+    }
+
     buttonBox->addButton(closeButton, QDialogButtonBox::ActionRole);
 
     k->formLayout->addWidget(new TSeparator());
@@ -210,14 +224,18 @@ void TupStoryBoardDialog::setStoryForm()
 
     QLabel *titleLabel = new QLabel(tr("Title"));
     k->titleEdit = new QLineEdit("");
+    k->titleEdit->setLocale(k->utf);
+
     titleLabel->setBuddy(k->titleEdit);
 
     QLabel *authorLabel = new QLabel(tr("Author"));
     k->authorEdit = new QLineEdit("");
+    k->authorEdit->setLocale(k->utf);
     authorLabel->setBuddy(k->authorEdit);
 
     QLabel *summaryLabel = new QLabel(tr("Summary"));
     k->summaryEdit = new QTextEdit;
+    k->summaryEdit->setLocale(k->utf);
     k->summaryEdit->setAcceptRichText(false);
     k->summaryEdit->setFixedHeight(80);
     k->summaryEdit->setText("");
@@ -232,6 +250,20 @@ void TupStoryBoardDialog::setStoryForm()
 
     sceneLayout->addWidget(mainTitle);
     sceneLayout->addLayout(topLayout);
+
+    if (k->isNetworked) {
+        QLabel *topicsLabel = new QLabel(tr("Topics"));
+        k->topicsEdit = new QLineEdit("");
+        k->topicsEdit->setLocale(k->utf);
+        topicsLabel->setBuddy(k->topicsEdit);
+
+        QHBoxLayout *topicsLayout = new QHBoxLayout;
+        topicsLayout->addWidget(topicsLabel);
+        topicsLayout->addWidget(k->topicsEdit);
+
+        sceneLayout->addLayout(topicsLayout);
+    }
+
     sceneLayout->addLayout(middleLayout);
     sceneLayout->addWidget(summaryLabel);
     sceneLayout->addWidget(k->summaryEdit);
@@ -255,15 +287,18 @@ void TupStoryBoardDialog::setSceneForm()
 
     QLabel *titleLabel = new QLabel(tr("Title"));
     k->sceneTitleEdit = new QLineEdit("");
+    k->sceneTitleEdit->setLocale(k->utf);
     titleLabel->setBuddy(k->sceneTitleEdit);
 
     QLabel *durationLabel = new QLabel(tr("Duration"));
     k->sceneDurationEdit = new QLineEdit("");
+    k->sceneDurationEdit->setLocale(k->utf);
     durationLabel->setBuddy(k->sceneDurationEdit);
 
     QLabel *descLabel = new QLabel(tr("Description"));
 
     k->sceneDescriptionEdit = new QTextEdit;
+    k->sceneDescriptionEdit->setLocale(k->utf);
     k->sceneDescriptionEdit->setAcceptRichText(false);
     k->sceneDescriptionEdit->setFixedHeight(80);
     k->sceneDescriptionEdit->setText("");
@@ -321,14 +356,6 @@ void TupStoryBoardDialog::thumbnailGenerator()
     if (k->storyboard->size() == 0)
         k->storyboard->init(0, framesTotal);
 
-    // SQA: This code should be temporary
-    if (k->storyboard->size() < framesTotal)
-        k->storyboard->init(k->storyboard->size(), framesTotal);
-
-    // SQA: This code should be temporary
-    if (k->storyboard->size() > framesTotal)
-        k->storyboard->remove(k->storyboard->size() - framesTotal);
-
     k->path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
     QDir().mkpath(k->path);
 
@@ -371,14 +398,20 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
             k->storyPanel->hide();
             k->scenePanel->show();
 
-            k->storyboard->setStoryTitle(k->titleEdit->text());
-            k->storyboard->setStoryAuthor(k->authorEdit->text());
-            k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
+            k->storyboard->setStoryTitle(getStoryTitle());
+
+            if (k->isNetworked)
+                k->storyboard->setStoryTopics(getStoryTopics());
+            else
+                k->storyboard->setStoryTopics(""); 
+
+            k->storyboard->setStoryAuthor(getStoryAuthor());
+            k->storyboard->setStorySummary(getStorySummary());
         } else {
             previousIndex--;
-            k->storyboard->setSceneTitle(previousIndex, k->sceneTitleEdit->text());
-            k->storyboard->setSceneDuration(previousIndex, k->sceneDurationEdit->text());
-            k->storyboard->setSceneDescription(previousIndex, k->sceneDescriptionEdit->toPlainText());
+            k->storyboard->setSceneTitle(previousIndex, getSceneTitle());
+            k->storyboard->setSceneDuration(previousIndex, getSceneDuration());
+            k->storyboard->setSceneDescription(previousIndex, getSceneDescription());
         }
 
         k->sceneTitleEdit->setText(k->storyboard->sceneTitle(index));
@@ -403,12 +436,16 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
             k->storyPanel->show();
 
             if (previousIndex > 0) {
-                k->storyboard->setSceneTitle(previousIndex - 1, k->sceneTitleEdit->text());
-                k->storyboard->setSceneDuration(previousIndex - 1, k->sceneDurationEdit->text());
-                k->storyboard->setSceneDescription(previousIndex - 1, k->sceneDescriptionEdit->toPlainText());
+                k->storyboard->setSceneTitle(previousIndex - 1, getSceneTitle());
+                k->storyboard->setSceneDuration(previousIndex - 1, getSceneDuration());
+                k->storyboard->setSceneDescription(previousIndex - 1, getSceneDescription());
             }
 
             k->titleEdit->setText(k->storyboard->storyTitle());
+
+            if (k->isNetworked)
+                k->topicsEdit->setText(k->storyboard->storyTopics());
+
             k->authorEdit->setText(k->storyboard->storyAuthor());
             k->summaryEdit->setPlainText(k->storyboard->storySummary());
         }
@@ -417,25 +454,12 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
     k->screenLabel->setPixmap(pixmap);
 }
 
-void TupStoryBoardDialog::saveStoryBoard()
-{
-    if (k->currentIndex == 0) {
-        k->storyboard->setStoryTitle(k->titleEdit->text());
-        k->storyboard->setStoryAuthor(k->authorEdit->text());
-        k->storyboard->setStorySummary(k->summaryEdit->toPlainText());
-    } else {
-        k->storyboard->setSceneTitle(k->currentIndex - 1, k->sceneTitleEdit->text());
-        k->storyboard->setSceneDuration(k->currentIndex - 1, k->sceneDurationEdit->text());
-        k->storyboard->setSceneDescription(k->currentIndex - 1, k->sceneDescriptionEdit->toPlainText());
-    }
-
-    emit saveStoryboard(k->storyboard);
-}
-
 void TupStoryBoardDialog::exportStoryBoard()
 {
+    saveLastComponent();
+
     QString dir = getenv("HOME");
-    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the storyboard directory..."), dir,
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
                                                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (path.isEmpty())
         return;
@@ -445,8 +469,12 @@ void TupStoryBoardDialog::exportStoryBoard()
         QStringList files = directory.entryList();
         for (int i = 0; i < files.size(); ++i) {
              QString file = files.at(i).toLocal8Bit().constData();
-             if (file != "." && file != "..")
-                 QFile::copy(k->path + file, path + QDir::separator() + file);
+             if (file != "." && file != "..") {
+                 QString target = path + QDir::separator() + file;
+                 if (QFile::exists(target))
+                     QFile::remove(target);       
+                 QFile::copy(k->path + file, target);
+             }
         }
     } else {
         QDir directory(k->path);
@@ -522,8 +550,38 @@ void TupStoryBoardDialog::exportStoryBoard()
     TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
 }
 
+void TupStoryBoardDialog::postStoryboardAtServer()
+{
+    #ifdef K_DEBUG
+           tWarning() << "TupStoryBoardDialog::postStoryBoardAtServer() - Posting in Tupitube!";
+    #endif
+
+    saveLastComponent();
+
+    // SQA: This "save call" line should be enhanced
+    emit updateStoryboard(k->storyboard, k->sceneIndex);
+
+    emit postStoryboard(k->sceneIndex);
+}
+
+void TupStoryBoardDialog::saveLastComponent()
+{
+    if (k->currentIndex == 0) {
+        k->storyboard->setStoryTitle(getStoryTitle());
+        k->storyboard->setStoryAuthor(getStoryAuthor());
+        k->storyboard->setStoryTopics(getStoryTopics());
+        k->storyboard->setStorySummary(getStorySummary());
+    } else {
+        k->storyboard->setSceneTitle(k->currentIndex - 1, getSceneTitle());
+        k->storyboard->setSceneDuration(k->currentIndex - 1, getSceneDuration());
+        k->storyboard->setSceneDescription(k->currentIndex - 1, getSceneDescription());
+    }
+}
+
 void TupStoryBoardDialog::closeDialog()
 {
+    saveLastComponent();
+
     QDir dir(k->path);
     QStringList files = dir.entryList();
     for (int i = 0; i < files.size(); ++i) {
@@ -533,5 +591,43 @@ void TupStoryBoardDialog::closeDialog()
     }
     dir.rmdir(k->path); 
 
+    if (k->isNetworked)
+        emit updateStoryboard(k->storyboard, k->sceneIndex);
+
     close();
+}
+
+QString TupStoryBoardDialog::getStoryTitle() const
+{
+    return QString::fromUtf8(k->titleEdit->text().toUtf8());
+}
+
+QString TupStoryBoardDialog::getStoryAuthor() const
+{
+    return QString::fromUtf8(k->authorEdit->text().toUtf8());
+}
+
+QString TupStoryBoardDialog::getStoryTopics() const
+{
+    return QString::fromUtf8(k->topicsEdit->text().toUtf8());
+}
+
+QString TupStoryBoardDialog::getStorySummary() const
+{
+    return QString::fromUtf8(k->summaryEdit->toPlainText().toUtf8());
+}
+
+QString TupStoryBoardDialog::getSceneTitle() const
+{
+    return QString::fromUtf8(k->sceneTitleEdit->text().toUtf8());
+}
+
+QString TupStoryBoardDialog::getSceneDuration() const
+{
+    return QString::fromUtf8(k->sceneDurationEdit->text().toUtf8());
+}
+
+QString TupStoryBoardDialog::getSceneDescription() const
+{
+    return QString::fromUtf8(k->sceneDescriptionEdit->toPlainText().toUtf8());
 }

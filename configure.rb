@@ -55,7 +55,7 @@ Use: ./configure [options]
   --libdir=[path]:      Set library path [/usr/lib/tupi | /usr/lib64/tupi]
   --sharedir=[path]:    Set data path [/usr/share]
   --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
-  --with-debug:         Enable debug
+  --without-debug:      Disable debug
   --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]
   --package-build:      Option exclusive for package maintainers
   --install-headers:    Include header files as part of installation
@@ -96,9 +96,9 @@ _EOH_
        config.addIncludePath(ffmpegInclude)
     end
 
-    debug = 0
-    if conf.hasArgument?("with-debug")
-       debug = 1
+    debug = 1
+    if conf.hasArgument?("without-debug")
+       debug = 0
     end
 
     conf.createTests
@@ -120,8 +120,8 @@ _EOH_
     config.addLib("-ltupifwcore")
     # config.addLib("-ltupifwsound")
     
-    config.addDefine('VERSION=\\\\\"0.2\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Obi\\\\\"')
+    config.addDefine('VERSION=\\\\\"0.2.1\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Ajuba\\\\\"')
     config.addDefine('REVISION=\\\\\"1\\\\\"')
 
     if conf.hasArgument?("install-headers")

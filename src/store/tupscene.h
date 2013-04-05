@@ -176,6 +176,12 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
         void setStoryboard(TupStoryboard *storyboard);
         TupStoryboard * storyboard();
 
+        void insertStoryBoardScene(int index);
+        void appendStoryBoardScene();
+        void moveStoryBoardScene(int oldIndex, int newIndex);
+        void resetStoryBoardScene(int index);
+        void removeStoryBoardScene(int index);
+
     private:
         void removeTweensFromLayer(int layer);
 

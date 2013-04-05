@@ -35,15 +35,9 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 ###########################################################################
 
-if [ ! "$0" == "translate.sh" ] 
-  then
-     echo "Use: sh translate.sh [output.ts]"
-     exit 0
-fi
-
 TUPI_DIR="`dirname $0`/.."
 TS_FILE=/tmp/tupi_untranslated.ts
-PRO_FILE=trans.pro
+PRO_FILE="lang.pro"
 
 if [ $# -gt 0 ]
 then
@@ -51,8 +45,6 @@ then
 fi
 
 echo "The .ts file will be generated in " $TS_FILE
-echo "TUPI_DIR: " $TUPI_DIR
-echo "PRO_FILE: " $TRPRO
 
 echo "PREFIX =" > $PRO_FILE
 echo "ROOT =" >> $PRO_FILE
@@ -80,5 +72,5 @@ fi
 
 cd $TUPI_DIR
 
-echo "File generated!"
+echo "Done. File generated!"
 

@@ -33,20 +33,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSTORYBOARDEXPORTTPACKAGE_H
-#define TupSTORYBOARDEXPORTPACKAGE_H
+#ifndef TUPSTORYBOARDEXPORTPACKAGE_H
+#define TUPSTORYBOARDEXPORTPACKAGE_H
 
 /**
  * @author Gustav Gonzalez
 */
 
 #include <QDomDocument>
-#include <QList>
 
 class TupStoryboardExportPackage : public QDomDocument
 {
     public:
-        TupStoryboardExportPackage(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes);
+        TupStoryboardExportPackage(int sceneIndex);
         ~TupStoryboardExportPackage();
 };
 

@@ -119,14 +119,16 @@ void TupSplash::drawContents(QPainter * painter)
     painter->setPen(QColor(0, 0, 0));
 
     // Draw version number
-    QRect rect(209, 38, 70, 20);
+    // QRect rect(209, 38, 70, 20);
+    QRect rect(206, 36, 80, 20);
 
     QFont forig = painter->font();
     painter->setFont(QFont("helvetica", 10, QFont::Normal, false));
     painter->drawText(rect, Qt::AlignRight, version);
 
     // Draw project name's code 
-    QRect code(209, 51, 48, 20);
+    // QRect code(209, 51, 48, 20);
+    QRect code(218, 51, 48, 20);
     painter->setFont(QFont("helvetica", 12, QFont::Bold, false));
     painter->drawText(code, Qt::AlignRight, kAppProp->codeName());
 

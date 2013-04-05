@@ -36,37 +36,17 @@
 #include "tupstoryboardexportpackage.h"
 
 // <project_storyboard version="0">
-//     <storyboard scenes="0, 1, 2, N" />
-//         <title>Storyboard Title</title>
-//         <topics>Storyboard Topics</topics>
-//         <description>Storyboard Description</description>          
-//     </storyboard>
+//   <scene> number </scene>
 // </project_storyboard>
 
-TupStoryboardExportPackage::TupStoryboardExportPackage(const QString &title, const QString &topics, const QString &description, const QList<int> sceneIndexes): QDomDocument()
+TupStoryboardExportPackage::TupStoryboardExportPackage(int sceneIndex): QDomDocument()
 {
     QDomElement root = createElement("project_storyboard");
     root.setAttribute("version", "0");
     appendChild(root);
-    
-    QString indexes = "";
-    for (int i=0; i < sceneIndexes.size(); i++)
-         indexes += QString::number(sceneIndexes.at(i)) + ","; 
 
-    indexes.remove(indexes.length() - 1, 1);
-
-    QDomElement story = createElement("storyboard");
-    story.setAttribute("scenes", indexes);
-
-    QDomText titleDom = createTextNode(title);
-    QDomText topicDom = createTextNode(topics);
-    QDomText descDom = createTextNode(description);
-
-    story.appendChild(createElement("title")).appendChild(titleDom);
-    story.appendChild(createElement("topics")).appendChild(topicDom);
-    story.appendChild(createElement("description")).appendChild(descDom);
-    
-    root.appendChild(story);
+    QDomText sceneDom = createTextNode(QString::number(sceneIndex));
+    root.appendChild(createElement("sceneIndex")).appendChild(sceneDom);
 }
 
 TupStoryboardExportPackage::~TupStoryboardExportPackage()

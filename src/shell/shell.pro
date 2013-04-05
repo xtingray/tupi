@@ -26,7 +26,12 @@ unix:!mac {
 
     INSTALLS += tupidata \
                 launcher \
-                target
+                mime \
+                target \
+                desktop \
+                icons \
+                tupiman \
+                copyright
 
     tupidata.target = data
     tupidata.commands = cp -r data/* $(INSTALL_ROOT)/data
@@ -36,10 +41,9 @@ unix:!mac {
     launcher.commands = cp ../../launcher/tupi $(INSTALL_ROOT)/bin; chmod 755 $(INSTALL_ROOT)/bin/tupi
     launcher.path = /bin/
 
-    INSTALLS += desktop \
-                icons \
-                tupiman \
-                copyright
+    mime.target = ../../launcher/tupi.xml
+    mime.commands = cp ../../launcher/tupi.xml $(INSTALL_ROOT)/share/mime/packages
+    mime.path = /share/mime/packages/
 
     desktop.target = ../../launcher/tupi.desktop
     desktop.commands = cp ../../launcher/tupi.desktop $(INSTALL_ROOT)/applications
@@ -49,22 +53,22 @@ unix:!mac {
     icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
     icons.path = /pixmaps/
 
-    tupiman.target = ../components/help/help/man/tupi.1.gz
-    tupiman.commands = cp ../components/help/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
+    tupiman.target = ../components/help/man/tupi.1.gz
+    tupiman.commands = cp ../components/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
     tupiman.path = /man1/
 
-    copyright.target = ../components/help/help/man/copyright
-    copyright.commands = cp ../components/help/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
+    copyright.target = ../components/help/man/copyright
+    copyright.commands = cp ../components/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
     copyright.path = /tupi/
 
     target.path = /bin/
     TARGET = ../../bin/tupi.bin
 }
 
-TRANSLATIONS += data/translations/tupi_es.ts \
-                data/translations/tupi_ca.ts \
-                data/translations/tupi_ru.ts \
-                data/translations/tupi_cs.ts
+# TRANSLATIONS += data/translations/tupi_es.ts \
+#                 data/translations/tupi_ca.ts \
+#                 data/translations/tupi_ru.ts \
+#                 data/translations/tupi_cs.ts
 
 HEADERS += tupmainwindow.h \
            tupstatusbar.h \
