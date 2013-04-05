@@ -44,7 +44,7 @@ INSTALL_NAME=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
 
 declare -a LIBS=('libtupigui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
 'libquazip.dylib' 'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' \
-'libtupifwcore.dylib' 'libtupifwsound.dylib');
+'libtupifwcore.dylib');
 
 cd $TUPI_GIT_REPOSITORY
 

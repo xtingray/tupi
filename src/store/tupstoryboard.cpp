@@ -296,7 +296,7 @@ int TupStoryboard::size()
 
 QString TupStoryboard::cleanString(QString input) const
 {
-    input.replace(",", "\,");
+    input.replace(",", "\\,");
     input.replace("'", "\"");
 
     return input;
