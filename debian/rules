@@ -71,7 +71,8 @@ binary-arch: build install
 	dh_fixperms
 #	dh_perl
 	dh_makeshlibs
-	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):/usr/lib/tupi dh_shlibdeps
+#LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):/usr/lib/tupi dh_shlibdeps
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):/usr/lib/tupi:/usr/lib64/tupi dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol
 	dh_md5sums

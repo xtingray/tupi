@@ -2,7 +2,7 @@ Source: tupi
 Section: graphics
 Priority: extra
 Maintainer: Gustav Gonzalez [xtingray] <info@maefloresta.com>
-Standards-Version: 3.9.1
+Standards-Version: 3.9.3
 Build-Depends: debhelper (>= 7), autotools-dev, ruby, libavformat-dev, 
  libavcodec-dev, qt4-dev-tools, qt4-qmake, libqt4-dev, libqt4-opengl, 
  libqt4-opengl-dev, libqt4-gui, imagemagick, zlib1g-dev, libogg-dev, 
