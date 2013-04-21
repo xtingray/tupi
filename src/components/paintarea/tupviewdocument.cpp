@@ -384,7 +384,7 @@ void TupViewDocument::setupDrawActions()
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    if (k->isNetworked && server.compare("tupitube.com") == 0) {
+    if (k->isNetworked && server.compare("tupitu.be") == 0) {
         TAction *postImage = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"),
                                          "Export Current Frame To Gallery", QKeySequence(tr("@")),
                                          this, SLOT(postImage()), k->actionManager, "post_image");
@@ -1034,7 +1034,7 @@ void TupViewDocument::createToolBar()
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
-    if (k->isNetworked && server.compare("tupitube.com") == 0)
+    if (k->isNetworked && server.compare("tupitu.be") == 0)
         k->barGrid->addAction(k->actionManager->find("post_image"));
 
     k->barGrid->addSeparator();

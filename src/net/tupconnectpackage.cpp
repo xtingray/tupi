@@ -60,7 +60,7 @@ TupConnectPackage::TupConnectPackage(const QString &server, const QString &usern
 
     root.appendChild(createElement("username")).appendChild(createTextNode(username));
 
-    if (server.compare("tupitube.com") != 0) {
+    if (server.compare("tupitu.be") != 0) {
         QCryptographicHash md5(QCryptographicHash::Md5);
         md5.addData(passwd.toUtf8());
         QString token = md5.result().toHex();

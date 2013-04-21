@@ -569,7 +569,10 @@ void TupStoryBoardDialog::saveLastComponent()
     if (k->currentIndex == 0) {
         k->storyboard->setStoryTitle(getStoryTitle());
         k->storyboard->setStoryAuthor(getStoryAuthor());
-        k->storyboard->setStoryTopics(getStoryTopics());
+        if (k->isNetworked)
+            k->storyboard->setStoryTopics(getStoryTopics());
+        else
+            k->storyboard->setStoryTopics("");
         k->storyboard->setStorySummary(getStorySummary());
     } else {
         k->storyboard->setSceneTitle(k->currentIndex - 1, getSceneTitle());

@@ -277,7 +277,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         TCONFIG->beginGroup("Network");
         QString server = TCONFIG->value("Server").toString();
-        if (isNetworked && server.compare("tupitube.com") == 0) {
+        if (isNetworked && server.compare("tupitu.be") == 0) {
             connect(animationTab, SIGNAL(requestExportImageToServer(int, int, const QString &, const QString &, const QString &)),                         
                     netProjectManager, SLOT(sendExportImageRequest(int, int, const QString &, const QString &, const QString &)));
             connect(animationTab, SIGNAL(updateStoryboard(TupStoryboard *, int)), netProjectManager, SLOT(updateStoryboardRequest(TupStoryboard *, int)));
