@@ -372,8 +372,7 @@ void TupLibraryWidget::importBitmap()
     QFile f(image);
     QFileInfo fileInfo(f);
 
-    QString symName = fileInfo.fileName();
-
+    QString symName = fileInfo.fileName().toLower();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -456,7 +455,7 @@ void TupLibraryWidget::importSvg()
     QFile f(svgPath);
     QFileInfo fileInfo(f);
 
-    QString symName = fileInfo.fileName();
+    QString symName = fileInfo.fileName().toLower();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -578,7 +577,7 @@ void TupLibraryWidget::importBitmapArray()
                      if (extension.compare("JPG")==0 || extension.compare("PNG")==0 || extension.compare("GIF")==0 ||
                          extension.compare("XPM")==0) {
                          QString path = photograms.at(i).absoluteFilePath(); 
-                         QString symName = photograms.at(i).fileName();
+                         QString symName = photograms.at(i).fileName().toLower();
                          QFile f(path);
                          QFileInfo fileInfo(f);
 
@@ -710,7 +709,7 @@ void TupLibraryWidget::importSvgArray()
                      QString extension = photograms.at(i).suffix().toUpper();
                      if (extension.compare("SVG")==0) {
                          QString path = photograms.at(i).absoluteFilePath(); 
-                         QString symName = photograms.at(i).fileName();
+                         QString symName = photograms.at(i).fileName().toLower();
                          QFile f(path);
 
                          if (f.open(QIODevice::ReadOnly)) {
