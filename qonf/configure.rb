@@ -67,6 +67,8 @@ module RQonf
       @qmake = QMake.new
       @properties = {}
 
+      @ffmpeg = true
+
       setPath()
       Makefile::setArgs(@options)
     end
@@ -106,6 +108,10 @@ module RQonf
 
     def setTestDir(dir)
       @testsDir = dir
+    end
+
+    def disableFFmpeg()
+      @ffmpeg = false
     end
 
     def verifyQtVersion(minqtversion, qtdir)
@@ -197,7 +203,14 @@ module RQonf
             findTest(file)
           end
         elsif file =~ /.qonf$/
-          @tests << Test.new(file, @qmake)
+          if file.include? "ffmpeg"
+             if @ffmpeg
+                Info.warn << "Adding ffmpeg support: " << @ffmpeg << $endl
+                @tests << Test.new(file, @qmake)
+             end
+          else
+             @tests << Test.new(file, @qmake)
+          end
         end
       }
     end

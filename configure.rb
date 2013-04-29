@@ -55,6 +55,7 @@ Use: ./configure [options]
   --libdir=[path]:      Set library path [/usr/lib/tupi | /usr/lib64/tupi]
   --sharedir=[path]:    Set data path [/usr/share]
   --with-ffmpeg=[path]: Set ffmpeg installation path [/usr]
+  --without-ffmpeg:     Disable ffmpeg support
   --without-debug:      Disable debug
   --with-qtdir=[path]:  Set Qt directory [i.e. /usr/local/qt]
   --package-build:      Option exclusive for package maintainers
@@ -99,6 +100,11 @@ _EOH_
     debug = 1
     if conf.hasArgument?("without-debug")
        debug = 0
+    end
+
+    if conf.hasArgument?("without-ffmpeg")
+       Info.warn << "Disabling ffmpeg support: " << $endl
+       conf.disableFFmpeg()
     end
 
     conf.createTests
