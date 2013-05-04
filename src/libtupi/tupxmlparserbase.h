@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupXMLPARSERBASE_H
-#define TupXMLPARSERBASE_H
+#ifndef TUPXMLPARSERBASE_H
+#define TUPXMLPARSERBASE_H
 
 #include <QXmlDefaultHandler>
 

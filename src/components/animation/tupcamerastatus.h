@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCAMERASTATUS_H
-#define TupCAMERASTATUS_H
+#ifndef TUPCAMERASTATUS_H
+#define TUPCAMERASTATUS_H
 
 #include "tupviewcamera.h"
 

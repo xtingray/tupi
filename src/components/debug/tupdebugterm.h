@@ -33,10 +33,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupDEBUGTERM_H
-#define TupDEBUGTERM_H
+#ifndef TUPDEBUGTERM_H
+#define TUPDEBUGTERM_H
 
-#include <qwidget.h>
+#include <QWidget>
 #include <QTextEdit>
 
 /**

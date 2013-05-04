@@ -64,6 +64,11 @@ _EOH_
         exit 0
     end
 
+    if conf.hasArgument?("with-ffmpeg") and conf.hasArgument?("without-ffmpeg")  
+       Info.error << " ERROR: Options --with-ffmpeg and --without-ffmpeg are mutually exclusive\n"
+       exit 0
+    end
+
     distro = ""
     if FileTest.exists?("/etc/lsb-release")
        conf.load_properties("/etc/lsb-release")
@@ -91,10 +96,16 @@ _EOH_
     end
 
     if conf.hasArgument?("with-ffmpeg")
-       ffmpegLib = conf.argumentValue("with-ffmpeg") + "/lib"
-       ffmpegInclude = conf.argumentValue("with-ffmpeg") + "/include"
-       config.addLib("-L" + ffmpegLib)
-       config.addIncludePath(ffmpegInclude)
+       ffmpegDir = conf.argumentValue("with-ffmpeg")
+       if File.directory? ffmpegDir 
+          ffmpegLib = conf.argumentValue("with-ffmpeg") + "/lib"
+          ffmpegInclude = conf.argumentValue("with-ffmpeg") + "/include"
+          config.addLib("-L" + ffmpegLib)
+          config.addIncludePath(ffmpegInclude)
+       else
+          Info.error << " ERROR: ffmpeg directory does not exist!\n"
+          exit 0
+       end
     end
 
     debug = 1

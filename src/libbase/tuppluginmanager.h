@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPLUGINMANAGER_H
-#define TupPLUGINMANAGER_H
+#ifndef TUPPLUGINMANAGER_H
+#define TUPPLUGINMANAGER_H
 
 #include "tupglobal.h"
 #include <QObject>

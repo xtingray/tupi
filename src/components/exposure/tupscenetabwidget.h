@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSCENETABWIDGET_H
-#define TupSCENETABWIDGET_H
+#ifndef TUPSCENETABWIDGET_H
+#define TUPSCENETABWIDGET_H
 
 #include "tglobal.h"
 #include "tupexposuretable.h"

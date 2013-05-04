@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupGCTABLE_H
-#define TupGCTABLE_H
+#ifndef TUPGCTABLE_H
+#define TUPGCTABLE_H
 
 #include "tuptreedelegate.h"
 #include "treelistwidget.h"

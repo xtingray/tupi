@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupGLOBAL_H
-#define TupGLOBAL_H
+#ifndef TUPGLOBAL_H
+#define TUPGLOBAL_H
 
 #include "tglobal.h"
 

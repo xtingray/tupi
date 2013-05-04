@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupFRAMESTABLE_H
-#define TupFRAMESTABLE_H
+#ifndef TUPFRAMESTABLE_H
+#define TUPFRAMESTABLE_H
 
 #include <QTableWidget>
 #include <QTableWidgetItem>

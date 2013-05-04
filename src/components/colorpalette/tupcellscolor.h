@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCELLSCOLOR_H
-#define TupCELLSCOLOR_H
+#ifndef TUPCELLSCOLOR_H
+#define TUPCELLSCOLOR_H
 
 #include "tcellview.h"
 

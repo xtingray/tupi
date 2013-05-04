@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCHATPACKAGE_H
-#define TupCHATPACKAGE_H
+#ifndef TUPCHATPACKAGE_H
+#define TUPCHATPACKAGE_H
 
 #include <QDomDocument>
 

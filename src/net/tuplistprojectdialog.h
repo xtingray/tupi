@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLISTPROJECTDIALOG_H
-#define TupLISTPROJECTDIALOG_H
+#ifndef TUPLISTPROJECTDIALOG_H
+#define TUPLISTPROJECTDIALOG_H
 
 #include "tapplicationproperties.h"
 

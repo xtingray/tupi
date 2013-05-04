@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSCENESLIST_H
-#define TupSCENESLIST_H
+#ifndef TUPSCENESLIST_H
+#define TUPSCENESLIST_H
 
 #include "treelistwidget.h"
 #include "tupscenesdelegate.h"

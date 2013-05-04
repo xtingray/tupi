@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPENWIDGET_H
-#define TupPENWIDGET_H
+#ifndef TUPPENWIDGET_H
+#define TUPPENWIDGET_H
 
 #include "tupmodulewidgetbase.h"
 #include "teditspinbox.h"

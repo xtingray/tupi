@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPAINTAREAROTATOR_H
-#define TupPAINTAREAROTATOR_H
+#ifndef TUPPAINTAREAROTATOR_H
+#define TUPPAINTAREAROTATOR_H
 
 #include "tupglobal.h"
 #include <QObject>

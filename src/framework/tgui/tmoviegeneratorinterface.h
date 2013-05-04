@@ -51,10 +51,9 @@ class TMovieGeneratorInterface
                SWF  = 1 << 2,
                MPEG = 1 << 3,
                AVI  = 1 << 4,
-               RM   = 1 << 5,
-               ASF  = 1 << 6,
-               MOV  = 1 << 7,
-               GIF  = 1 << 8
+               ASF  = 1 << 5,
+               MOV  = 1 << 6,
+               GIF  = 1 << 7
              };
 
         Q_DECLARE_FLAGS(Formats, Format);

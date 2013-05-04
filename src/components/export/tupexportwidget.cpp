@@ -184,11 +184,6 @@ void SelectPlugin::setFormats(TupExportInterface::Formats formats)
         format->setData(3124, TupExportInterface::AVI);
     }
 
-    if (formats & TupExportInterface::RM) {
-        QListWidgetItem *format = new QListWidgetItem(tr("RealMedia Video"), m_formatList);
-        format->setData(3124, TupExportInterface::RM);
-    }
-
     if (formats & TupExportInterface::ASF) {
         QListWidgetItem *format = new QListWidgetItem(tr("ASF Video"), m_formatList);
         format->setData(3124, TupExportInterface::ASF);
@@ -198,11 +193,14 @@ void SelectPlugin::setFormats(TupExportInterface::Formats formats)
         QListWidgetItem *format = new QListWidgetItem(tr("QuickTime Video"), m_formatList);
         format->setData(3124, TupExportInterface::MOV);
     }
-	
+
+    // SQA: The ffmpeg procedure to export animated GIF files must be implemented
+    /*
     if (formats & TupExportInterface::GIF) {
         QListWidgetItem *format = new QListWidgetItem(tr("Gif Image"), m_formatList);
         format->setData(3124, TupExportInterface::GIF);
     }
+    */
 
     if (formats & TupExportInterface::PNG) {
         QListWidgetItem *format = new QListWidgetItem(tr("PNG Image Array"), m_formatList);
@@ -978,12 +976,19 @@ TupExportWidget::~TupExportWidget()
 
 void TupExportWidget::loadPlugins()
 {
+    QList<TupExportInterface *> pluginList;
     foreach (QObject *plugin, TupPluginManager::instance()->formats()) {
              if (plugin) {
                  TupExportInterface *exporter = qobject_cast<TupExportInterface *>(plugin);
                  if (exporter) {
-                     m_pluginSelectionPage->addPlugin(exporter->key());
-                     m_plugins.insert(exporter->key(), exporter);
+                     int index = -1;
+                     if (exporter->key().compare(tr("Video Formats")) == 0)
+                         index = 0;
+                     if (exporter->key().compare(tr("Open Video Format")) == 0)
+                         index = 1;
+                     if (exporter->key().compare(tr("Image Arrays")) == 0)
+                         index = 2;
+                     pluginList.insert(index, exporter);
                  } else {
                      #ifdef K_DEBUG
                             tError() << "TupExportWidget::loadPlugins() - [ Fatal Error ] - Can't load export plugin";
@@ -992,27 +997,11 @@ void TupExportWidget::loadPlugins()
              }
     }
 
-    /*
-    QDir pluginDirectory = QDir(PLUGINS_DIR);
-
-    foreach (QString fileName, pluginDirectory.entryList(QDir::Files)) {
-             QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));
-             TupExportPluginObject *plugin = qobject_cast<TupExportPluginObject*>(loader.instance());
-
-             if (plugin) {
-                 TupExportInterface *exporter = qobject_cast<TupExportInterface *>(plugin);
-
-                 if (exporter) {
-                     m_pluginSelectionPage->addPlugin(exporter->key());
-                     m_plugins.insert(exporter->key(), exporter);
-                 } else {
-                     #ifdef K_DEBUG
-                            tError() << "TupExportWidget::loadPlugins() - [ Fatal Error ] - Can't load plugin -> " << fileName;
-                     #endif
-                 }
-             }
+    for (int i=0; i<pluginList.size(); i++) {
+         TupExportInterface *exporter = pluginList.at(i);
+         m_pluginSelectionPage->addPlugin(exporter->key());
+         m_plugins.insert(exporter->key(), exporter);
     }
-    */
 }
 
 void TupExportWidget::setExporter(const QString &plugin)

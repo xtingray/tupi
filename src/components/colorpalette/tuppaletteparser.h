@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPALETTEPARSER_H
-#define TupPALETTEPARSER_H
+#ifndef TUPPALETTEPARSER_H
+#define TUPPALETTEPARSER_H
 
 #include "txmlparserbase.h"
 

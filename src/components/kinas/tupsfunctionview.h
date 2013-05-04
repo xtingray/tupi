@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSFUNCTIONVIEW_H
-#define TupSFUNCTIONVIEW_H
+#ifndef TUPSFUNCTIONVIEW_H
+#define TUPSFUNCTIONVIEW_H
 
 #include <QTreeWidget>
 

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupEXPOSURETABLE_H
-#define TupEXPOSURETABLE_H
+#ifndef TUPEXPOSURETABLE_H
+#define TUPEXPOSURETABLE_H
 
 #include <QTableWidget>
 

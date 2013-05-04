@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCAMERABAR_H
-#define TupCAMERABAR_H
+#ifndef TUPCAMERABAR_H
+#define TUPCAMERABAR_H
 
 #include "timagebutton.h"
 #include "tapplicationproperties.h"

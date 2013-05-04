@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupEXPORTINTERFACE_H
-#define TupEXPORTINTERFACE_H
+#ifndef TUPEXPORTINTERFACE_H
+#define TUPEXPORTINTERFACE_H
 
 #include "tupscene.h"
 #include "qplugin.h" // Q_EXPORT_PLUGIN
@@ -58,14 +58,13 @@ class TUPI_EXPORT TupExportInterface
                SWF  = 1 << 2,
                MPEG = 1 << 3,
                AVI  = 1 << 4,
-               RM   = 1 << 5,
-               ASF  = 1 << 6,
-               MOV  = 1 << 7,
-               GIF  = 1 << 8,
-               PNG  = 1 << 9,
-               JPEG = 1 << 10,
-               XPM  = 1 << 11,
-               SMIL = 1 << 12
+               ASF  = 1 << 5,
+               MOV  = 1 << 6,
+               GIF  = 1 << 7,
+               PNG  = 1 << 8,
+               JPEG = 1 << 9,
+               XPM  = 1 << 10,
+               SMIL = 1 << 11
              };
 
         Q_DECLARE_FLAGS(Formats, Format);

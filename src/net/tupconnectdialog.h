@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCONNECTDIALOG_H
-#define TupCONNECTDIALOG_H
+#ifndef TUPCONNECTDIALOG_H
+#define TUPCONNECTDIALOG_H
 
 #include <QDialog>
 

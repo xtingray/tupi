@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSCENESDELEGATE_H
-#define TupSCENESDELEGATE_H
+#ifndef TUPSCENESDELEGATE_H
+#define TUPSCENESDELEGATE_H
 
 #include <QItemDelegate>
 #include <QRegExp>

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTIMELINE_H
-#define TupTIMELINE_H
+#ifndef TUPTIMELINE_H
+#define TUPTIMELINE_H
 
 #include "tupmodulewidgetbase.h"
 #include "ttabwidget.h"

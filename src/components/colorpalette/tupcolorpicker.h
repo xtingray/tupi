@@ -35,8 +35,8 @@
 
 #include <QFrame>
 
-#ifndef TupCOLORPICKER_H
-#define TupCOLORPICKER_H
+#ifndef TUPCOLORPICKER_H
+#define TUPCOLORPICKER_H
 
 class TupColorPicker : public QFrame
 {

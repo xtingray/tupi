@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupIMPORTPROJECTPACKAGE_H
-#define TupIMPORTPROJECTPACKAGE_H 
+#ifndef TUPIMPORTPROJECTPACKAGE_H
+#define TUPIMPORTPROJECTPACKAGE_H 
 
 #include <QDomDocument>
 

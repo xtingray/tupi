@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTREEDELEGATE_H
-#define TupTREEDELEGATE_H
+#ifndef TUPTREEDELEGATE_H
+#define TUPTREEDELEGATE_H
 
 #include <QItemDelegate>
 #include <QRegExp>

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupIMAGEEXPORTPACKAGE_H
-#define TupIMAGEEXPORTPACKAGE_H
+#ifndef TUPIMAGEEXPORTPACKAGE_H
+#define TUPIMAGEEXPORTPACKAGE_H
 
 /**
  * @author Gustav Gonzalez

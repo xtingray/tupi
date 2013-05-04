@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupHELPBROWSER_H
-#define TupHELPBROWSER_H
+#ifndef TUPHELPBROWSER_H
+#define TUPHELPBROWSER_H
 
 #include "tapplicationproperties.h"
 

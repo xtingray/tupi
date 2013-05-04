@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLISTPACKAGE_H
-#define TupLISTPACKAGE_H
+#ifndef TUPLISTPACKAGE_H
+#define TUPLISTPACKAGE_H
 
 #include <QDomDocument>
 

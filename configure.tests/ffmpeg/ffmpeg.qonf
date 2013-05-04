@@ -8,8 +8,8 @@
             <define value="HAVE_FFMPEG" />
         </defines>
         <libs>
-            <lib path="-lavcodec" />
             <lib path="-lavformat" />
+            <lib path="-lavcodec" />
         </libs>
         <includes>
             <include path="/usr/include/ffmpeg/" />

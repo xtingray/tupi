@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPALETTEIMPORTER_H
-#define TupPALETTEIMPORTER_H
+#ifndef TUPPALETTEIMPORTER_H
+#define TUPPALETTEIMPORTER_H
 
 #include "tuppalettedocument.h"
 

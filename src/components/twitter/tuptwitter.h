@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupWITTER_H
-#define TupWITTER_H
+#ifndef TUPWITTER_H
+#define TUPWITTER_H
 
 #include "tapplicationproperties.h"
 

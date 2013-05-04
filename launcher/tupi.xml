@@ -6,6 +6,5 @@
                 <match type="string" value="\x89TUP" offset="0"/>
          </magic>
          <glob pattern="*.tup"/>
-         <desktop:can-edit-with>tupi.desktop</desktop:can-edit-with>
   </mime-type>
 </mime-info>

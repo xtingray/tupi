@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupVALUECOLOR_H
-#define TupVALUECOLOR_H
+#ifndef TUPVALUECOLOR_H
+#define TUPVALUECOLOR_H
 
 #include <QFrame>
 

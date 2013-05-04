@@ -61,8 +61,8 @@ QString FFMpegPlugin::key() const
 
 TupExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-    return TupExportInterface::WEBM | TupExportInterface::OGV | TupExportInterface::MPEG | TupExportInterface::SWF | TupExportInterface::AVI 
-           | TupExportInterface::RM | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
+    return TupExportInterface::WEBM | TupExportInterface::OGV | TupExportInterface::MPEG | TupExportInterface::SWF 
+           | TupExportInterface::AVI | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
 }
 
 TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(TupExportInterface::Format format)
@@ -91,11 +91,6 @@ TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(TupExportInterface::F
             case TupExportInterface::AVI:
                  {
                    return TFFMpegMovieGenerator::AVI;
-                 }
-                 break;
-            case TupExportInterface::RM:
-                 {
-                   return TFFMpegMovieGenerator::RM;
                  }
                  break;
             case TupExportInterface::MOV:
@@ -173,6 +168,12 @@ bool FFMpegPlugin::exportToFormat(const QColor color, const QString &filePath, c
 
 bool FFMpegPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size)
 {
+    Q_UNUSED(frameIndex);
+    Q_UNUSED(color);
+    Q_UNUSED(filePath);
+    Q_UNUSED(scene);
+    Q_UNUSED(size);
+
     return false;
 }
 

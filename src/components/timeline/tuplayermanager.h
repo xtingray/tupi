@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLAYERMANAGER_H
-#define TupLAYERMANAGER_H
+#ifndef TUPLAYERMANAGER_H
+#define TUPLAYERMANAGER_H
 
 #include "tuplayerindex.h"
 #include "tuplayercontrols.h"

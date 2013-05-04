@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupOPENPACKAGE_H
-#define TupOPENPACKAGE_H
+#ifndef TUPOPENPACKAGE_H
+#define TUPOPENPACKAGE_H
 
 /**
  * @author Jorge Cuadrado 

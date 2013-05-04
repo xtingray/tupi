@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPAINTAREABASE_H
-#define TupPAINTAREABASE_H
+#ifndef TUPPAINTAREABASE_H
+#define TUPPAINTAREABASE_H
 
 #include "tuptoolplugin.h"
 #include "tupglobal.h"

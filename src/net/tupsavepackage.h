@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSAVEPACKAGE_H
-#define TupSAVEPACKAGE_H
+#ifndef TUPSAVEPACKAGE_H
+#define TUPSAVEPACKAGE_H
 
 /**
  * @author Gustav Gonzalez  

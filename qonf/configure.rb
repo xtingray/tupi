@@ -273,7 +273,11 @@ module RQonf
         newfile += "export DYLD_FALLBACK_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$DYLD_FALLBACK_LIBRARY_PATH\"\n\n"
         newfile += "open ${TUPI_BIN}/Tupi.app $*"
       else
-        newfile += "export LD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
+        if @options['with-ffmpeg'].nil? then 
+           newfile += "export LD_LIBRARY_PATH=\"\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n"
+        else
+           newfile += "export LD_LIBRARY_PATH=\"" + @options['with-ffmpeg'] + "/lib:\$\{TUPI_LIB\}:\$\{TUPI_PLUGIN\}:$LD_LIBRARY_PATH\"\n\n" 
+        end
         newfile += "exec ${TUPI_BIN}/tupi.bin $*"
       end
 

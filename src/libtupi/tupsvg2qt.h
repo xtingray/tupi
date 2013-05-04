@@ -32,8 +32,8 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-#ifndef TupSVG2QT_H
-#define TupSVG2QT_H
+#ifndef TUPSVG2QT_H
+#define TUPSVG2QT_H
 
 #include <QString>
 #include <QPainterPath>

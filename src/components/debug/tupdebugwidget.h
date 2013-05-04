@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupDEBUGWIDGET_H
-#define TupDEBUGWIDGET_H
+#ifndef TUPDEBUGWIDGET_H
+#define TUPDEBUGWIDGET_H
 
 #include <tupmodulewidgetbase.h>
 

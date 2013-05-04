@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupNETPROJECTMANAGERPARAMS_H
-#define TupNETPROJECTMANAGERPARAMS_H
+#ifndef TUPNETPROJECTMANAGERPARAMS_H
+#define TUPNETPROJECTMANAGERPARAMS_H
 
 #include "tupprojectmanagerparams.h"
 

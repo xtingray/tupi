@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupCOLORPALETTE_H
-#define TupCOLORPALETTE_H
+#ifndef TUPCOLORPALETTE_H
+#define TUPCOLORPALETTE_H
 
 #include "tupmodulewidgetbase.h"
 #include "tdualcolorbutton.h"

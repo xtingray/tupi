@@ -49,7 +49,7 @@ int main()
     #if defined(K_LUCID)
         AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
     #else
-       AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
+        AVOutputFormat *fmt = av_guess_format("mpeg", NULL, NULL);
     #endif
 
     AVFormatContext *oc = avformat_alloc_context();
@@ -58,7 +58,8 @@ int main()
     AVCodecContext *c;
     AVStream *st;
 
-    st = av_new_stream(oc, 0);
+    // st = av_new_stream(oc, 0);
+    st = avformat_new_stream(oc, 0);
 
     c = st->codec;
     c->time_base.den = 24;

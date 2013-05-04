@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupEXPOSURESHEET_H
-#define TupEXPOSURESHEET_H
+#ifndef TUPEXPOSURESHEET_H
+#define TUPEXPOSURESHEET_H
 
 #include "tupmodulewidgetbase.h"
 #include "tupexposuretable.h"

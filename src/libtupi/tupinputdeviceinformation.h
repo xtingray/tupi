@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupINPUTDEVICEINFORMATION_H
-#define TupINPUTDEVICEINFORMATION_H
+#ifndef TUPINPUTDEVICEINFORMATION_H
+#define TUPINPUTDEVICEINFORMATION_H
 
 #include "tupglobal.h"
 

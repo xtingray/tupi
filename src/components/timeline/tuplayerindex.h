@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLAYERINDEX_H
-#define TupLAYERINDEX_H
+#ifndef TUPLAYERINDEX_H
+#define TUPLAYERINDEX_H
 
 #include "timagebutton.h"
 #include "tupprojectrequest.h"

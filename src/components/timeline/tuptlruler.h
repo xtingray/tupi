@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupTLRULER_H
-#define TupTLRULER_H
+#ifndef TUPTLRULER_H
+#define TUPTLRULER_H
 
 #include <QHeaderView>
 

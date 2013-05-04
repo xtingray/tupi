@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupVIDEOEXPORTTPACKAGE_H
-#define TupVIDEOEXPORTPACKAGE_H
+#ifndef TUPVIDEOEXPORTTPACKAGE_H
+#define TUPVIDEOEXPORTPACKAGE_H
 
 /**
  * @author Gustav Gonzalez

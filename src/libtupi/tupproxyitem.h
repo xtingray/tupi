@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupPROXYITEM_H
-#define TupPROXYITEM_H
+#ifndef TUPPROXYITEM_H
+#define TUPPROXYITEM_H
 
 #include <QGraphicsItem>
 

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupEXPORTWIDGET_H
-#define TupEXPORTWIDGET_H
+#ifndef TUPEXPORTWIDGET_H
+#define TUPEXPORTWIDGET_H
 
 #include "tupmodulewidgetbase.h"
 #include "tupproject.h"

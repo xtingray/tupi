@@ -89,17 +89,14 @@ class Test
                       ffmpegLib = conf.argumentValue("with-ffmpeg") + "/lib"
                       extraLib += "-L#{ffmpegLib}"
                       extraInclude = conf.argumentValue("with-ffmpeg") + "/include"
+                      qmakeLine = "'LIBS += #{extraLib}'";
+                      qmakeLine += " 'INCLUDEPATH += #{extraInclude}'";
                    end
-                end
-
-                qmakeLine = ""
-                 
-                if extraLib.length > 0 
-                   qmakeLine = "'LIBS += #{extraLib} #{parser.libs.join(" ")}'";
-                end
-
-                if extraInclude.length > 0    
-                   qmakeLine += " 'INCLUDEPATH += #{extraInclude} #{parser.includes.join(" ")}'";
+                else
+                   qmakeLine = ""
+                   if extraLib.length > 0 
+                      qmakeLine = "'LIBS += #{extraLib} #{parser.libs.join(" ")}'";
+                   end
                 end
 
                 if isLucid

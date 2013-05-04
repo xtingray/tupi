@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLAYERCONTROLS_H
-#define TupLAYERCONTROLS_H
+#ifndef TUPLAYERCONTROLS_H
+#define TUPLAYERCONTROLS_H
 
 #include <QPushButton>
 #include <QToolTip>

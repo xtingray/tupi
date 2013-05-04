@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupHELPWIDGET_H
-#define TupHELPWIDGET_H
+#ifndef TUPHELPWIDGET_H
+#define TUPHELPWIDGET_H
 
 #include <QWidget>
 #include <QMap>

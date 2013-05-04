@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupNOTICEPACKAGE_H
-#define TupNOTICEPACKAGE_H
+#ifndef TUPNOTICEPACKAGE_H
+#define TUPNOTICEPACKAGE_H
 
 #include <QDomDocument>
 

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLINEGUIDE_H
-#define TupLINEGUIDE_H
+#ifndef TUPLINEGUIDE_H
+#define TUPLINEGUIDE_H
 
 #include "tupglobal.h"
 #include <QGraphicsItem>

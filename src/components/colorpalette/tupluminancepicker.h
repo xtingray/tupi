@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupLUMINACEPICKER_H
-#define TupLUMINACEPICKER_H
+#ifndef TUPLUMINACEPICKER_H
+#define TUPLUMINACEPICKER_H
 
 #include <QPaintEvent>
 #include <QPixmap>

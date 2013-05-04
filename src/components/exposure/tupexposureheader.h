@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupEXPOSUREHEADER_H
-#define TupEXPOSUREHEADER_H
+#ifndef TUPEXPOSUREHEADER_H
+#define TUPEXPOSUREHEADER_H
 
 #include <QHeaderView>
 #include <QPainter>

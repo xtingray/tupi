@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSPLASH_H
-#define TupSPLASH_H
+#ifndef TUPSPLASH_H
+#define TUPSPLASH_H
 
 /**
  * @author Fernando Roldan - David Cuadrado

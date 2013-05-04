@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupVIEWCOLORCELLS_H
-#define TupVIEWCOLORCELLS_H
+#ifndef TUPVIEWCOLORCELLS_H
+#define TUPVIEWCOLORCELLS_H
 
 #include <QFrame>
 #include <QComboBox>

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSYMBOLEDITOR_H
-#define TupSYMBOLEDITOR_H
+#ifndef TUPSYMBOLEDITOR_H
+#define TUPSYMBOLEDITOR_H
 
 #include <QMainWindow>
 

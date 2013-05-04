@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupNOTICE_H
-#define TupNOTICE_H
+#ifndef TUPNOTICE_H
+#define TUPNOTICE_H
 
 #include <QDialog>
 

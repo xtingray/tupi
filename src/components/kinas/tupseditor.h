@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TupSEDITOR_H
-#define TupSEDITOR_H
+#ifndef TUPSEDITOR_H
+#define TUPSEDITOR_H
 
 #include <QTextEdit>
 #include <QMimeData>
