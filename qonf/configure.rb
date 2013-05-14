@@ -285,7 +285,6 @@ module RQonf
         f << newfile
       }
 
-      if RUBY_PLATFORM.downcase.include?("linux")
         newfile = "[Desktop Entry]\n"
         # newfile += "Encoding=UTF-8\n"
         newfile += "Name=Tupi: Open 2D Magic\n"
@@ -306,7 +305,6 @@ module RQonf
         File.open("launcher/tupi.desktop", "w") { |f|
           f << newfile
         }
-      end
 
       newmakefile = ""
       File.open("src/components/help/help/css/tupi.ini", "r") { |f|
