@@ -35,11 +35,11 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 ###########################################################################
 
-require './qonf/test'
-require './qonf/config'
-require './qonf/info'
-require './qonf/qonfexception'
-require './qonf/makefile'
+require_relative 'test'
+require_relative 'config'
+require_relative 'info'
+require_relative 'qonfexception'
+require_relative 'makefile'
 
 module RQonf
 

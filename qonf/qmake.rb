@@ -33,8 +33,8 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 ###########################################################################
 
-require 'qonf/info'
-require 'qonf/extensions'
+require_relative 'info'
+require_relative 'extensions'
 
 module RQonf
 
