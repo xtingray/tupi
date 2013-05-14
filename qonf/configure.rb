@@ -35,11 +35,11 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 ###########################################################################
 
-require './qonf/test'
-require './qonf/config'
-require './qonf/info'
-require './qonf/qonfexception'
-require './qonf/makefile'
+require_relative 'test'
+require_relative 'config'
+require_relative 'info'
+require_relative 'qonfexception'
+require_relative 'makefile'
 
 module RQonf
 
@@ -285,7 +285,6 @@ module RQonf
         f << newfile
       }
 
-      if RUBY_PLATFORM.downcase.include?("linux")
         newfile = "[Desktop Entry]\n"
         # newfile += "Encoding=UTF-8\n"
         newfile += "Name=Tupi: Open 2D Magic\n"
@@ -306,7 +305,6 @@ module RQonf
         File.open("launcher/tupi.desktop", "w") { |f|
           f << newfile
         }
-      end
 
       newmakefile = ""
       File.open("src/components/help/help/css/tupi.ini", "r") { |f|
