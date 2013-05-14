@@ -33,12 +33,12 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 ###########################################################################
 
-require 'qonf/qmake'
-require 'qonf/detectos'
+require_relative 'qmake'
+require_relative 'detectos'
 require 'rexml/parsers/sax2parser'
 require 'rexml/sax2listener'
 
-require 'qonf/info'
+require_relative 'info'
 
 module RQonf
 
