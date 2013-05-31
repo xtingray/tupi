@@ -120,7 +120,7 @@ void TupSplash::drawContents(QPainter * painter)
 
     // Draw version number
     // QRect rect(209, 38, 70, 20);
-    QRect rect(206, 36, 80, 20);
+    QRect rect(200, 36, 80, 20);
 
     QFont forig = painter->font();
     painter->setFont(QFont("helvetica", 10, QFont::Normal, false));
