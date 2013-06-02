@@ -109,7 +109,9 @@ int main()
         fprintf(stderr,"Could not set encoder flags for --soft-target\n");
 
     if (buf_delay < 0) {
-        if ((keyframe_frequency*7>>1) > 5*video_fps_numerator/video_fps_denominator)
+        int var1 = keyframe_frequency*7>>1;
+        int var2 = 5*video_fps_numerator/video_fps_denominator;
+        if (var1 > var2)
             arg = keyframe_frequency*7>>1;
         else
             arg = 5*video_fps_numerator/video_fps_denominator;

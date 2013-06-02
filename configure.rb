@@ -38,6 +38,7 @@
 # TODO: This script must detect if every command line given is valid 
 #       Currently, it just try to check if some of them are included or not
 
+require 'fileutils'
 require_relative 'qonf/configure'
 require_relative 'qonf/info'
 require_relative 'qonf/defaults'
@@ -105,6 +106,20 @@ _EOH_
        else
           Info.error << " ERROR: ffmpeg directory does not exist!\n"
           exit 0
+       end
+    else
+       file = "/usr/include/libavcodec/version.h"
+       if FileTest.exists?(file)
+          major = `egrep LIBAVCODEC_VERSION_MAJOR #{file} | head -n 1`
+          minor = `egrep LIBAVCODEC_VERSION_MINOR #{file} | head -n 1`
+          majorVersion = major.split
+          minorVersion = minor.split
+          destination = "src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.cpp"
+          if majorVersion[2] >= "54" and minorVersion[2] >= "92"
+             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
+          else
+             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
+          end
        end
     end
 
