@@ -177,9 +177,6 @@ void TFFMpegMovieGenerator::Private::chooseFileExtension(int format)
             case AVI:
                  movieFile += ".avi";
                  break;
-            case RM:
-                 movieFile += ".rm";
-                 break;
             case MOV:
                  movieFile += ".mov";
                  break;
