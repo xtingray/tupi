@@ -187,6 +187,17 @@ _EOH_
     # The file tupiglobal.pri contains all the global variables for the compilation process        
     config.save("tupiglobal.pri")
     conf.createMakefiles
+
+    binaries = `find configure.tests -mindepth 1 -type d`
+    array = binaries.split
+    for item in array
+        name = item.split("\/")
+        file = item + "\/" + name[1]
+        if FileTest.exists?(file)
+           File.delete(file)
+        end
+    end
+    exec('find configure.tests -iname main.o -exec rm -f {} \;')
     
 rescue => err
     Info.error << "Configure failed. error was: #{err.message}\n"
