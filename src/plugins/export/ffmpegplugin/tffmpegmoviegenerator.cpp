@@ -45,23 +45,19 @@
 
 #ifdef __cplusplus
 extern "C" {
-#include "libavformat/avformat.h"
-#include "libavcodec/avcodec.h"
 #include "libavutil/mathematics.h"
+#include "libavformat/avformat.h"
 }
 #endif
 
 struct TFFMpegMovieGenerator::Private
 {
-    AVFrame *picture;
-    AVFrame *tmpPicture;
+    AVFrame *frame;
 
     QString movieFile;
     int fps;
     double video_pts;
-    uint8_t *videOutbuf;
     int frameCount;
-    int videOutbufSize;
     double streamDuration;
     bool exception;
     const char *errorMsg;
@@ -71,21 +67,29 @@ struct TFFMpegMovieGenerator::Private
     AVOutputFormat *fmt;
 
     void chooseFileExtension(int format);
-    bool openVideo(AVFormatContext *oc, AVStream *st);
+    bool openVideo(AVCodec *codec, AVStream *st);
     void RGBtoYUV420P(const uint8_t *bufferRGB, uint8_t *bufferYUV, uint iRGBIncrement, bool bSwapRGB, int width, int height);
-    bool writeVideoFrame(const QImage &image);
+    bool writeVideoFrame(const QString &movieFile, const QImage &image);
     void closeVideo(AVStream *st);
 };
 
-static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps, const char *errorMsg)
+static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCodecID codec_id, const QString &movieFile, int width, int height, int fps, const char *errorMsg)
 {
     AVCodecContext *c;
     AVStream *st;
 
-    int w = width;
-    int h = height;
+    /* find the encoder */
+    *codec = avcodec_find_encoder(codec_id);
+    if (!(*codec)) {
+        errorMsg = "ffmpeg error: Could not find encoder. This is not a problem directly related to Tupi. \
+                    Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               tError() << "TFFMpegMovieGenerator::addVideoStream() - " << errorMsg;
+        #endif
+        return 0;
+    }
 
-    st = av_new_stream(oc, 0);
+    st = avformat_new_stream(oc, *codec);
     if (!st) {
         errorMsg = "ffmpeg error: Could not alloc stream. This is not a problem directly related to Tupi. \
                     Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
@@ -94,26 +98,29 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
         #endif
         return 0;
     }
-
+    st->id = oc->nb_streams-1;
     c = st->codec;
-    c->codec_id = CodecID(codec_id);
-    c->codec_type = AVMEDIA_TYPE_VIDEO;   
+
+    // c->codec_type = AVMEDIA_TYPE_VIDEO;
+    c->codec_id = codec_id;
 
     /* put sample parameters */
-    // c->bit_rate = 800000;
     c->bit_rate = 6000000;
 
     /* resolution must be a multiple of two */
-    c->width = w;  
-    c->height = h; 
+    c->width = width;  
+    c->height = height; 
 
     c->time_base.den = fps;
     c->time_base.num = 1;
-    // c->gop_size = 12; /* emit one intra frame every twelve frames at most */
-    c->gop_size = 2;
-    c->pix_fmt = PIX_FMT_YUV420P;
+    c->gop_size = 12;
 
-    // c->gop_size = 12; /* emit one intra frame every twelve frames at most */
+    if (movieFile.endsWith("gif", Qt::CaseInsensitive)) {
+        c->pix_fmt = AV_PIX_FMT_RGB24;
+    } else {
+        c->pix_fmt = AV_PIX_FMT_YUV420P;
+    }
+
     if (c->codec_id == CODEC_ID_MPEG2VIDEO) {
 	/* just for testing, we also add B frames */
 	c->max_b_frames = 2;
@@ -130,30 +137,6 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
         c->flags |= CODEC_FLAG_GLOBAL_HEADER;
 	
     return st;
-}
-
-static AVFrame *allocPicture(enum PixelFormat pix_fmt, int width, int height)
-{
-    AVFrame *picture;
-    uint8_t *picture_buf;
-    int size;
- 
-    picture = avcodec_alloc_frame();
-
-    if (!picture) 
-        return 0;
-	
-    size = avpicture_get_size(pix_fmt, width, height);
-    picture_buf = (uint8_t *)malloc(size);
-
-    if (!picture_buf) {
-	av_free(picture);
-	return 0;
-    }
-
-    avpicture_fill((AVPicture *)picture, picture_buf, pix_fmt, width, height);
-
-    return picture;
 }
 
 void TFFMpegMovieGenerator::Private::chooseFileExtension(int format)
@@ -177,9 +160,6 @@ void TFFMpegMovieGenerator::Private::chooseFileExtension(int format)
             case AVI:
                  movieFile += ".avi";
                  break;
-            case RM:
-                 movieFile += ".rm";
-                 break;
             case MOV:
                  movieFile += ".mov";
                  break;
@@ -192,66 +172,37 @@ void TFFMpegMovieGenerator::Private::chooseFileExtension(int format)
     }
 }
 
-bool TFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st)
+bool TFFMpegMovieGenerator::Private::openVideo(AVCodec *codec, AVStream *st)
 {
-    AVCodec *codec;
-    AVCodecContext *c;
+    int ret;
+    AVCodecContext *c = st->codec;
 
-    c = st->codec;
-
-    /* find the video encoder */
-    codec = avcodec_find_encoder(c->codec_id);
-
-    if (!codec) {
-        errorMsg = "ffmpeg error: Video codec not found. This is not a problem directly related to Tupi. \
-                    Please, check your ffmpeg installation and codec support. It's very possible your system is missing codecs. More info: http://ffmpeg.org/";
-        #ifdef K_DEBUG
-               tError() << "TFFMpegMovieGenerator::openVideo() - " << errorMsg;
-        #endif
-
-        return false;
-    }
+    #ifdef K_DEBUG
+           tWarning() << "TFFMpegMovieGenerator::openVideo() - CODEC NAME: " << avcodec_get_name(c->codec_id);
+    #endif
 
     /* open the codec */
-    if (avcodec_open(c, codec) < 0) {
-        errorMsg = "ffmpeg error: Could not open video codec. This is not a problem directly related to Tupi. \
-                    Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+    ret = avcodec_open2(c, codec, NULL);
+    if (ret < 0) {
+        errorMsg = "The video codec required is not installed in your system. \
+                    Please, check your ffmpeg installation and codec support. \
+                    More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
                tError() << "TFFMpegMovieGenerator::openVideo() - " << errorMsg;
         #endif
+
         return false;
     }
 
-    videOutbuf = 0;
-    if (!(oc->oformat->flags & AVFMT_RAWPICTURE)) {
-        videOutbufSize = 200000;
-        videOutbuf = (uint8_t *) av_malloc(videOutbufSize);
-    }
-
-    /* allocate the encoded raw m_picture */
-    picture = allocPicture(c->pix_fmt, c->width, c->height);
-
-    if (!picture) {
-        errorMsg = "ffmpeg error: Could not allocate m_picture. This is not a problem directly related to Tupi. \
-                    Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+    /* allocate and init a re-usable frame */
+    frame = avcodec_alloc_frame();
+    if (!frame) {
+        errorMsg = "There is no available memory to export your project as a video";
         #ifdef K_DEBUG
                tError() << "TFFMpegMovieGenerator::openVideo() - " << errorMsg;
-        #endif 
+        #endif
+
         return false;
-    }
-
-    tmpPicture = 0;
-
-    if (c->pix_fmt != PIX_FMT_YUV420P) {
-        tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
-        if (!tmpPicture) {
-            errorMsg = "ffmpeg error: Could not allocate temporary picture. This is not a problem directly related to Tupi. \
-                        Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
-            #ifdef K_DEBUG
-                   tError() << "TFFMpegMovieGenerator::openVideo() - " << errorMsg;
-            #endif
-            return false;
-        }
     }
 	
     return true;
@@ -300,99 +251,77 @@ void TFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint
     }
 }
 
-bool TFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
+bool TFFMpegMovieGenerator::Private::writeVideoFrame(const QString &movieFile, const QImage &image)
 {
     #ifdef K_DEBUG
            tWarning() << "TFFMpegMovieGenerator::writeVideoFrame() - Generating frame #" << frameCount;
     #endif
 
+    int ret;
     AVCodecContext *c = video_st->codec;
-    AVFrame *picturePtr = 0;
-    double nbFrames = ((int)(streamDuration * fps));
 
-    if (frameCount < nbFrames) {
-        int w = c->width;
-        int h = c->height;
+    /* encode the image */
+    AVPacket pkt;
+    int got_output;
 
+    av_init_packet(&pkt);
+    pkt.data = NULL;    // packet data will be allocated by the encoder
+    pkt.size = 0;
+
+    int w = c->width;
+    int h = c->height;
+
+    if (movieFile.endsWith("gif", Qt::CaseInsensitive)) {
+        c->pix_fmt = AV_PIX_FMT_RGB24;
+        avpicture_fill((AVPicture *)frame, image.bits(), AV_PIX_FMT_RGB24, w, h);
+    } else {
         int size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
         uint8_t *pic_dat = (uint8_t *) av_malloc(size);
         RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
-
-        picturePtr = avcodec_alloc_frame();
-        picturePtr->quality = 1;
-
-        avpicture_fill((AVPicture *)picturePtr, pic_dat,
-                   PIX_FMT_YUV420P, w, h);
+        avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_YUV420P, w, h);
     }
 
-    int out_size = -1, ret = -1;
+    ret = avcodec_encode_video2(c, &pkt, frame, &got_output);
+    if (ret < 0) {
+        errorMsg = "[1] Error while encoding the video of your project";
+        #ifdef K_DEBUG
+               tError() << "TFFMpegMovieGenerator::writeVideoFrame() - " << errorMsg;
+        #endif
 
-    if (oc->oformat->flags & AVFMT_RAWPICTURE) { // Exporting images array
-        AVPacket pkt;
-        av_init_packet(&pkt);
+        return false;
+    }
 
-        // pkt.flags |= PKT_FLAG_KEY;
-	pkt.flags |= AV_PKT_FLAG_KEY;
+    /* If size is zero, it means the image was buffered. */
+    if (got_output) {
+        if (c->coded_frame->key_frame)
+            pkt.flags |= AV_PKT_FLAG_KEY;
+
         pkt.stream_index = video_st->index;
-        pkt.data= (uint8_t *)picturePtr;
-        pkt.size= sizeof(AVPicture);
-        
-        //ret = av_write_frame(oc, &pkt);
+
+        /* Write the compressed frame to the media file. */
         ret = av_interleaved_write_frame(oc, &pkt);
+    } else {
+        ret = 0;
+    }
 
-    } else { // Exporting movies
-        out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
+    if (ret != 0) {
+        errorMsg = "[2] Error while encoding the video of your project";
+        #ifdef K_DEBUG
+               tError() << "TFFMpegMovieGenerator::writeVideoFrame() - " << errorMsg;
+        #endif
 
-        if (out_size > 0) {
-            AVPacket pkt;
-            av_init_packet(&pkt);
+        return false;
+    }
 
-            if (c->coded_frame->pts != (int64_t) AV_NOPTS_VALUE) 
-                pkt.pts = av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
+    frameCount++;
 
-            if (c->coded_frame->key_frame)
-		pkt.flags |= AV_PKT_FLAG_KEY;
-                // pkt.flags |= PKT_FLAG_KEY;
-            pkt.stream_index = video_st->index;
-            pkt.data = videOutbuf;
-            pkt.size = out_size;
-
-            /* write the compressed frame in the media file */
-            ret = av_interleaved_write_frame(oc, &pkt);
-            //ret = av_write_frame(oc, &pkt);
-        } else {
-            ret = 0;
-        }
-   }
-
-   if (ret != 0) {
-       errorMsg = "ffmpeg error: Could not write video frame. This is not a problem directly related to Tupi. \
-                   Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
-
-       #ifdef K_DEBUG
-              tError() << "TFFMpegMovieGenerator::writeVideoFrame() - " << errorMsg;
-       #endif
-       return false;
-   }
-
-   frameCount++;
-
-   return true;
+    return true;
 }
 
 void TFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 {
-    AVCodecContext *c;
-    c = st->codec;
-    avcodec_close(c);
-    av_free(picture->data[0]);
-    av_free(picture);
-
-    if (tmpPicture) {
-        av_free(tmpPicture->data[0]);
-        av_free(tmpPicture);
-    }
-    av_free(videOutbuf);
+    avcodec_close(st->codec);
+    av_free(frame);
 }
 
 TFFMpegMovieGenerator::TFFMpegMovieGenerator(TMovieGeneratorInterface::Format format, int width, int height, int fps, double duration)
@@ -424,32 +353,18 @@ TFFMpegMovieGenerator::~TFFMpegMovieGenerator()
 
 bool TFFMpegMovieGenerator::begin()
 {
+    int ret;
+    AVCodec *video_codec;
+
     av_register_all();
+    avformat_alloc_output_context2(&k->oc, NULL, NULL, k->movieFile.toLocal8Bit().data());
 
-    #ifdef K_LUCID
-        k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
-    #else
-        k->fmt = av_guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
-    #endif
-
-    if (!k->fmt) {
-        #ifdef K_LUCID
-            k->fmt = guess_format("mpeg", NULL, NULL);
-        #else
-            k->fmt = av_guess_format("mpeg", NULL, NULL);
-        #endif
-    }
-
-    if (! k->fmt) {
-        k->errorMsg = "ffmpeg error: Cannot find a valid format for " + k->movieFile.toLocal8Bit() + ". This is not a problem directly related to Tupi. \
-                       Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+    if (!k->oc) {
+        avformat_alloc_output_context2(&k->oc, NULL, "mpeg", k->movieFile.toLocal8Bit().data());
         #ifdef K_DEBUG
-               tError() << "TFFMpegMovieGenerator::begin() - " << k->errorMsg;
+               tError() << "TFFMpegMovieGenerator::begin() - Could not deduce output format from file extension: using MPEG.";
         #endif
-        return false;
     }
-
-    k->oc = avformat_alloc_context();
 
     if (!k->oc) {
         k->errorMsg = "ffmpeg error: Error while doing export. This is not a problem directly related to Tupi. \
@@ -459,12 +374,14 @@ bool TFFMpegMovieGenerator::begin()
         #endif
         return false;
     }
+
+    k->fmt = k->oc->oformat;
+    k->video_st = NULL;
+    k->video_st = addVideoStream(k->oc, &video_codec, k->fmt->video_codec, k->movieFile, width(), height(), k->fps, k->errorMsg);
 	
-    k->oc->oformat = k->fmt;
-    snprintf(k->oc->filename, sizeof(k->oc->filename), "%s", k->movieFile.toLocal8Bit().data());
-    k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), k->fps, k->errorMsg);
-	
-    if (!k->video_st) {
+    if (k->video_st) {
+        k->openVideo(video_codec, k->video_st);
+    } else {
         k->errorMsg = "ffmpeg error: Can't add video stream. This is not a problem directly related to Tupi. \
                        Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
@@ -473,28 +390,12 @@ bool TFFMpegMovieGenerator::begin()
         return false;
     }
 
-    if (av_set_parameters(k->oc, 0) < 0) {
-        k->errorMsg = "ffmpeg error: Invalid output format parameters. This is not a problem directly related to Tupi. \
-                       Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
-        #ifdef K_DEBUG
-               tError() << "TFFMpegMovieGenerator::begin() - " << k->errorMsg;
-        #endif
-        return false;
-    }
-
-    dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
-
-    if (!k->openVideo(k->oc, k->video_st)) {
-        #ifdef K_DEBUG
-               tError() << "TFFMpegMovieGenerator::begin() - [ Fatal Error ] - Can't open video";
-        #endif
-        return false;
-    }
+    av_dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
-        if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
-            k->errorMsg = "ffmpeg error: Could not open " + k->movieFile.toLocal8Bit() + ". This is not a problem directly related to Tupi. \
-                           Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        ret = avio_open(&k->oc->pb, k->movieFile.toLocal8Bit().data(), AVIO_FLAG_WRITE);
+        if (ret < 0) {
+            k->errorMsg = "ffmpeg error: could not open video file";
             #ifdef K_DEBUG
                    tError() << "TFFMpegMovieGenerator::begin() - " << k->errorMsg;
             #endif
@@ -502,9 +403,15 @@ bool TFFMpegMovieGenerator::begin()
         }
     }
 
-    av_write_header(k->oc);
+    ret = avformat_write_header(k->oc, NULL);
+    if (ret < 0) {
+        fprintf(stderr, "Error occurred when opening output file\n");
+        return false;
+    }
 
-    k->video_pts = 0.0;
+    if (k->frame)
+        k->frame->pts = 0;
+
     k->frameCount = 0;
 
     return true;
@@ -527,30 +434,35 @@ void TFFMpegMovieGenerator::handle(const QImage& image)
     else 
         k->video_pts = 0.0;
 
-    if (!k->video_st || k->video_pts >= k->streamDuration)
-        return;
+    if (!k->video_st || k->video_pts >= k->streamDuration) {
+        #ifdef K_DEBUG
+               tWarning() << "TFFMpegMovieGenerator::handle() - The total of frames has been processed (" << k->streamDuration << " seg)";
+        #endif
 
-    k->writeVideoFrame(image);
+        return;
+    }
+
+    #ifdef K_DEBUG
+           tWarning() << "Duration: " << k->streamDuration;
+           tWarning() << "Video PTS: " << k->video_pts;
+    #endif
+
+    k->writeVideoFrame(k->movieFile, image);
+    k->frame->pts += av_rescale_q(1, k->video_st->codec->time_base, k->video_st->time_base);
 }
 
 void TFFMpegMovieGenerator::end()
 {
-    k->closeVideo(k->video_st);
     av_write_trailer(k->oc);
 
-    int streams_total = k->oc->nb_streams;
-    for (int i = 0; i < streams_total; i++) {
-         av_freep(&k->oc->streams[i]->codec);  
-         av_freep(&k->oc->streams[i]);
-    }
+    if (k->video_st)
+        k->closeVideo(k->video_st);
 
-    if (!(k->fmt->flags & AVFMT_NOFILE)) {
-        url_fclose(k->oc->pb);
-    }
+    if (!(k->fmt->flags & AVFMT_NOFILE))
+        avio_close(k->oc->pb);
 
-    av_free(k->oc);
+    avformat_free_context(k->oc);
 }
-
 
 void TFFMpegMovieGenerator::__saveMovie(const QString &fileName)
 {

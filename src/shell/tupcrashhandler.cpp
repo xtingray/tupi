@@ -307,9 +307,20 @@ void crashTrapper(int sig)
         ::dup2(fileno(stdout), fileno(stderr));
 
 #ifdef K_DEBUG
+
+#ifdef UBUNTU
         if (QFile::exists("/usr/bin/sudo") && QFile::exists("/usr/bin/gdb")) {
+#else
+        if (QFile::exists("/usr/bin/gdb")) {
+#endif
+
             QString gdb;
+
+#ifdef UBUNTU
             gdb = "/usr/bin/sudo /usr/bin/gdb -n -nw -batch -ex where " + BIN_DIR + "tupi.bin --pid=";
+#else
+            gdb = "/usr/bin/gdb -n -nw -batch -ex where " + BIN_DIR + "tupi.bin --pid=";
+#endif
             gdb += QString::number(::getppid());
             bt = runCommand(gdb);
 
@@ -317,6 +328,7 @@ void crashTrapper(int sig)
             bt.remove(QRegExp("\\(no debugging symbols found\\)"));
             bt = bt.simplified();
         } 
+
 #endif
         execInfo = runCommand("file " + BIN_DIR + "tupi.bin");
 

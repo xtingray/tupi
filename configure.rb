@@ -70,15 +70,21 @@ _EOH_
        exit 0
     end
 
+    config = RQonf::Config.new
+
     distro = ""
     if FileTest.exists?("/etc/lsb-release")
        conf.load_properties("/etc/lsb-release")
        if conf.hasProperty?("DISTRIB_CODENAME")
           distro = conf.propertyValue("DISTRIB_CODENAME")
        end
+       if conf.hasProperty?("DISTRIB_ID")
+          distroName = conf.propertyValue("DISTRIB_ID") 
+          if distroName == "Ubuntu"
+             config.addDefine("UBUNTU")
+          end
+       end
     end
-
-    config = RQonf::Config.new
 
     if conf.hasArgument?("with-qtdir")
        qtdir = conf.argumentValue("with-qtdir")
@@ -96,30 +102,32 @@ _EOH_
        end
     end
 
+    avcodecFile = "/usr/include/libavcodec/version.h"
+
     if conf.hasArgument?("with-ffmpeg")
        ffmpegDir = conf.argumentValue("with-ffmpeg")
        if File.directory? ffmpegDir 
           ffmpegLib = conf.argumentValue("with-ffmpeg") + "/lib"
           ffmpegInclude = conf.argumentValue("with-ffmpeg") + "/include"
+          avcodecFile = ffmpegInclude + "/libavcodec/version.h"
           config.addLib("-L" + ffmpegLib)
           config.addIncludePath(ffmpegInclude)
        else
           Info.error << " ERROR: ffmpeg directory does not exist!\n"
           exit 0
        end
-    else
-       file = "/usr/include/libavcodec/version.h"
-       if FileTest.exists?(file)
-          major = `egrep LIBAVCODEC_VERSION_MAJOR #{file} | head -n 1`
-          minor = `egrep LIBAVCODEC_VERSION_MINOR #{file} | head -n 1`
-          majorVersion = major.split
-          minorVersion = minor.split
-          destination = "src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.cpp"
-          if majorVersion[2] >= "54" and minorVersion[2] >= "92"
-             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
-          else
-             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
-          end
+    end
+
+    if FileTest.exists?(avcodecFile)
+       major = `egrep LIBAVCODEC_VERSION_MAJOR #{avcodecFile} | head -n 1`
+       minor = `egrep LIBAVCODEC_VERSION_MINOR #{avcodecFile} | head -n 1`
+       majorVersion = major.split
+       minorVersion = minor.split
+       destination = "src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.cpp"
+       if majorVersion[2] >= "54" and minorVersion[2] >= "92"
+          FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
+       else
+          FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
        end
     end
 
