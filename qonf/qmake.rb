@@ -88,6 +88,8 @@ class QMake
                         if i == 0
                            if version[i] < minver[i]
                               return false 
+                           elsif version[i] > minver[i]
+                              return true
                            end
                         end
 

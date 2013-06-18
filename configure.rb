@@ -124,7 +124,7 @@ _EOH_
        majorVersion = major.split
        minorVersion = minor.split
        destination = "src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.cpp"
-       if majorVersion[2] >= "54" and minorVersion[2] >= "92"
+       if majorVersion[2] >= "54" and minorVersion[2] >= "59"
           FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
        else
           FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
