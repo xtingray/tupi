@@ -124,10 +124,25 @@ _EOH_
        majorVersion = major.split
        minorVersion = minor.split
        destination = "src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.cpp"
-       if majorVersion[2] >= "54" and minorVersion[2] >= "59"
-          FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
-       else
-          FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
+
+       if FileTest.exists?("/etc/debian_version")
+          if FileTest.exists?("/etc/lsb-release") # Ubuntu
+             if majorVersion[2] >= "54" and minorVersion[2] >= "35"
+                FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
+             else
+                FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
+             end
+          else # Debian
+             if majorVersion[2] >= "54" and minorVersion[2] == "35"
+                FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.debian.cpp", destination)
+             end
+          end
+       else # Other distros
+          if majorVersion[2] >= "54" and minorVersion[2] >= "35"
+             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
+          else
+             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
+          end
        end
     end
 
