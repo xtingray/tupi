@@ -4175,7 +4175,7 @@ Please, contact the animation server admin to get access.</source>
     </message>
     <message>
         <location filename="src/plugins/tools/rotationtool/settings.cpp" line="192"/>
-        <source>Continous</source>
+        <source>Continuous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

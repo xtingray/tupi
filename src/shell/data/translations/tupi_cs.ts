@@ -1063,7 +1063,7 @@
     </message>
     <message>
         <location filename="../home/pavel/Stažené/tupi_0.2-git01/src/plugins/tools/rotationtool/settings.cpp" line="192"/>
-        <source>Continous</source>
+        <source>Continuous</source>
         <translation>Nepřetržitý</translation>
     </message>
     <message>

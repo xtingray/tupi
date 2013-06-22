@@ -947,10 +947,6 @@
         <translation type="unfinished">Desfés</translation>
     </message>
     <message>
-        <source>Tupi: Open 2D Magic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[net mode]</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1757,11 +1757,6 @@
         <translation>Tupi Projekt Pakke (*.tup)</translation>
     </message>
     <message>
-        <location filename="../src/shell/ktmainwindow.cpp" line="779"/>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupi: Open 2D Magic</translation>
-    </message>
-    <message>
         <location filename="../src/shell/ktmainwindow.cpp" line="783"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="1042"/>
         <location filename="../src/shell/ktmainwindow.cpp" line="1048"/>
@@ -4400,7 +4395,7 @@ Kontakt venligst animation serverens admin, for at få adgang.</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/rotationtool/settings.cpp" line="192"/>
-        <source>Continous</source>
+        <source>Continuous</source>
         <translation>Fortløbende</translation>
     </message>
     <message>

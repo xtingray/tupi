@@ -189,7 +189,7 @@ void Settings::setInnerForm()
     totalLayout->addWidget(k->totalLabel);
 
     k->comboType = new QComboBox();
-    k->comboType->addItem(tr("Continous"));
+    k->comboType->addItem(tr("Continuous"));
     k->comboType->addItem(tr("Partial"));
 
     connect(k->comboType, SIGNAL(currentIndexChanged(int)), this, SLOT(refreshForm(int)));

@@ -724,7 +724,7 @@
         <translation>Debe definir a ruta para esta interpolación!</translation>
     </message>
     <message>
-        <source>Continous</source>
+        <source>Continuous</source>
         <translation>Continuo</translation>
     </message>
     <message>
@@ -2012,10 +2012,6 @@
     <message>
         <source>Open Tupi project</source>
         <translation>Abrir un proxecto de Tupí</translation>
-    </message>
-    <message>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupí: Maxia 2D Livre</translation>
     </message>
     <message>
         <source>Error</source>

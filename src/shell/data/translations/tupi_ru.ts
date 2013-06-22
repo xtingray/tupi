@@ -1055,7 +1055,7 @@
     </message>
     <message>
         <location filename="tupi/src/plugins/tools/rotationtool/settings.cpp" line="192"/>
-        <source>Continous</source>
+        <source>Continuous</source>
         <translation>Непрерывно</translation>
     </message>
     <message>

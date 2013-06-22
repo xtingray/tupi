@@ -649,7 +649,7 @@
         <translation>Tipo</translation>
     </message>
     <message>
-        <source>Continous</source>
+        <source>Continuous</source>
         <translation>Continuo</translation>
     </message>
     <message>
