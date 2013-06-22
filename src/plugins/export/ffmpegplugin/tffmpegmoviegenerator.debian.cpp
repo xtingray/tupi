@@ -177,10 +177,6 @@ bool TFFMpegMovieGenerator::Private::openVideo(AVCodec *codec, AVStream *st)
     int ret;
     AVCodecContext *c = st->codec;
 
-    #ifdef K_DEBUG
-           // tWarning() << "TFFMpegMovieGenerator::openVideo() - CODEC NAME: " << avcodec_get_name(c->codec_id);
-    #endif
-
     /* open the codec */
     ret = avcodec_open2(c, codec, NULL);
     if (ret < 0) {
@@ -360,18 +356,19 @@ bool TFFMpegMovieGenerator::begin()
 
     k->fmt = av_guess_format(NULL, k->movieFile.toLocal8Bit().data(), NULL);
     if (!k->fmt) {
-        printf("Could not deduce output format from file extension: using MPEG.\n");
         k->fmt = av_guess_format("mpeg", NULL, NULL);
     }
+
     if (!k->fmt) {
-        fprintf(stderr, "Could not find suitable output format\n");
-        return 1;
+        k->errorMsg = "ffmpeg error: Error while doing export. This is not a problem directly related to Tupi. \
+                       Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        return false;
     }
 
     k->oc = avformat_alloc_context();
     if (!k->oc) {
         fprintf(stderr, "Memory error\n");
-        return 1;
+        return false;
     }
     k->oc->oformat = k->fmt;
 
@@ -388,13 +385,6 @@ bool TFFMpegMovieGenerator::begin()
     if (k->fmt->video_codec != CODEC_ID_NONE) {
         k->video_st = addVideoStream(k->oc, &video_codec, k->fmt->video_codec, k->movieFile, width(), height(), k->fps, k->errorMsg);
     }
-
-    /*
-    if (av_set_parameters(k->oc, NULL) < 0) {
-        fprintf(stderr, "Invalid output format parameters\n");
-        return 1;
-    }
-    */
 
     av_dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1); 
 	
@@ -421,14 +411,6 @@ bool TFFMpegMovieGenerator::begin()
     }
 
     avformat_write_header(k->oc, NULL);
-
-    /*
-    ret = avformat_write_header(k->oc, NULL);
-    if (ret < 0) {
-        fprintf(stderr, "Error occurred when opening output file\n");
-        return false;
-    }
-    */
 
     if (k->frame)
         k->frame->pts = 0;
