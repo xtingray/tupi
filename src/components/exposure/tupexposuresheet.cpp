@@ -120,6 +120,21 @@ void TupExposureSheet::createMenu()
     insertMenu->addAction(insertTen);
     connect(insertTen, SIGNAL(triggered()), this, SLOT(insertTenFrames()));
 
+    QAction *insertTwenty = new QAction(QIcon(THEME_DIR + "icons/add_frame.png"), tr("20 frames"), this);
+    insertTwenty->setIconVisibleInMenu(true);
+    insertMenu->addAction(insertTwenty);
+    connect(insertTwenty, SIGNAL(triggered()), this, SLOT(insertTwentyFrames()));
+
+    QAction *insertFifty = new QAction(QIcon(THEME_DIR + "icons/add_frame.png"), tr("50 frames"), this);
+    insertFifty->setIconVisibleInMenu(true);
+    insertMenu->addAction(insertFifty);
+    connect(insertFifty, SIGNAL(triggered()), this, SLOT(insertFiftyFrames()));
+
+    QAction *insertHundred = new QAction(QIcon(THEME_DIR + "icons/add_frame.png"), tr("100 frames"), this);
+    insertHundred->setIconVisibleInMenu(true);
+    insertMenu->addAction(insertHundred);
+    connect(insertHundred, SIGNAL(triggered()), this, SLOT(insertHundredFrames()));
+
     k->menu->addMenu(insertMenu);
 
     QAction *removeOne = new QAction(QIcon(THEME_DIR + "icons/remove_frame.png"), tr("Remove frame"), this);
@@ -824,6 +839,21 @@ void TupExposureSheet::insertFiveFrames()
 void TupExposureSheet::insertTenFrames()
 {
     insertFrames(10);
+}
+
+void TupExposureSheet::insertTwentyFrames()
+{
+    insertFrames(20);
+}
+
+void TupExposureSheet::insertFiftyFrames()
+{
+    insertFrames(50);
+}
+
+void TupExposureSheet::insertHundredFrames()
+{
+    insertFrames(100);
 }
 
 void TupExposureSheet::insertFrames(int n)

@@ -97,6 +97,12 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         void ungroupItems();
         void copyItems();
         void pasteItems();
+        void pasteNextFive();
+        void pasteNextTen();
+        void pasteNextTwenty();
+        void pasteNextFifty();
+        void pasteNextHundred();
+
         void cutItems();
 
         void addSelectedItemsToLibrary();
@@ -117,6 +123,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         bool canPaint() const;
 
     private:
+        void multipasteObject(int pasteTotal);
         struct Private;
         Private *const k;
 };

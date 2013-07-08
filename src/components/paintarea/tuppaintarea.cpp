@@ -196,6 +196,22 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
             QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()), QKeySequence(tr("Ctrl+X")));
             QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()), QKeySequence(tr("Ctrl+C")));
             QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()), QKeySequence(tr("Ctrl+V")));
+
+            QMenu *pasteMenu = new QMenu(tr("Paste in..."));
+            QAction *pasteFive = pasteMenu->addAction(tr("next 5 frames"), this, SLOT(pasteNextFive()));
+            QAction *pasteTen = pasteMenu->addAction(tr("next 10 frames"), this, SLOT(pasteNextTen()));
+            QAction *pasteTwenty = pasteMenu->addAction(tr("next 20 frames"), this, SLOT(pasteNextTwenty()));
+            QAction *pasteFifty = pasteMenu->addAction(tr("next 50 frames"), this, SLOT(pasteNextFifty()));
+            QAction *pasteHundred = pasteMenu->addAction(tr("next 100 frames"), this, SLOT(pasteNextHundred()));
+
+            pasteMenu->addAction(pasteFive);
+            pasteMenu->addAction(pasteTen);
+            pasteMenu->addAction(pasteTwenty);
+            pasteMenu->addAction(pasteFifty);
+            pasteMenu->addAction(pasteHundred);
+
+            menu->addMenu(pasteMenu);
+
             QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()), QKeySequence(Qt::Key_Delete));
 
             menu->addSeparator();
@@ -240,8 +256,10 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
                 }
             }
 
-            if (k->copiesXml.isEmpty())
+            if (k->copiesXml.isEmpty()) {
                 paste->setEnabled(false);
+                pasteMenu->setEnabled(false);    
+            }
 
             if (QMenu *toolMenu = graphicsScene()->currentTool()->menu()) {
                 menu->addSeparator();
@@ -819,6 +837,85 @@ void TupPaintArea::pasteItems()
      }
 
      k->menuOn = false;
+}
+
+void TupPaintArea::multipasteObject(int pasteTotal)
+{
+    #ifdef K_DEBUG
+           T_FUNCINFOX("paintarea");
+    #endif
+
+    TupGraphicsScene* currentScene = graphicsScene();
+
+    if (!k->menuOn) {
+        k->position = viewPosition();
+    }
+   
+    foreach (QString xml, k->copiesXml) {
+             TupLibraryObject::Type type = TupLibraryObject::Item;
+             int total = currentScene->currentFrame()->graphicItemsCount();
+
+             if (xml.startsWith("<svg")) {
+                 type = TupLibraryObject::Svg;
+                 total = currentScene->currentFrame()->svgItemsCount();
+                 tError() << "TupPaintArea::pasteItems() - Pasting a SVG file...";
+             }
+
+             TupScene *scene = k->project->scene(currentScene->currentSceneIndex());
+             if (scene) {
+                 int framesTotal = scene->framesTotal();
+                 int currentFrame = currentScene->currentFrameIndex();
+                 int newFrameIndex = currentFrame + pasteTotal;
+                 int distance = framesTotal - (newFrameIndex + 1);
+                 
+                 if (distance < 0) {
+                     for (int i=framesTotal; i<=newFrameIndex; i++) {
+                          TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentSceneIndex,
+                                                                                            currentScene->currentLayerIndex(),
+                                                                                            i,
+                                                                                            TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                          emit requestTriggered(&request);
+                     }
+                 }
+
+                 int limit = currentFrame + pasteTotal;
+                 for (int i=currentFrame+1; i<=limit; i++) {
+                      TupProjectRequest event = TupRequestBuilder::createItemRequest(k->currentSceneIndex,
+                                                                                     currentScene->currentLayerIndex(),
+                                                                                     i,
+                                                                                     total, QPoint(), k->spaceMode, type,
+                                                                                     TupProjectRequest::Add, xml);
+                      emit requestTriggered(&event);
+                 }
+             }
+     }
+
+     k->menuOn = false;
+}
+
+void TupPaintArea::pasteNextFive()
+{
+     multipasteObject(5);
+}
+
+void TupPaintArea::pasteNextTen()
+{
+     multipasteObject(10);
+}
+
+void TupPaintArea::pasteNextTwenty()
+{
+     multipasteObject(20);
+}
+
+void TupPaintArea::pasteNextFifty()
+{
+     multipasteObject(50);
+}
+
+void TupPaintArea::pasteNextHundred()
+{
+     multipasteObject(100);
 }
 
 void TupPaintArea::cutItems()

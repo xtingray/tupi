@@ -96,6 +96,9 @@ class TupExposureSheet : public TupModuleWidgetBase
         void insertOneFrame();
         void insertFiveFrames();
         void insertTenFrames();
+        void insertTwentyFrames();
+        void insertFiftyFrames();
+        void insertHundredFrames();
         void removeOne();
         void clearFrame();
         void lockFrame();
