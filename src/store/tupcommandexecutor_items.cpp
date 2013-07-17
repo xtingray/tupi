@@ -307,24 +307,40 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
                     }
                 }
             }
-        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-            TupBackground *bg = scene->background();
+        } else {
 
+            TupBackground *bg = scene->background();
             if (bg) {
-                TupFrame *frame = bg->staticFrame();
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::moveItem() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
                 if (frame) {
                     if (frame->moveItem(position, newPositon)) {
                         emit responsed(response);
                         return true;
                     }
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::moveItem() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::moveItem() - Invalid background data structure!";
+                #endif
+                return false;
             }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::moveItem() - mode invalid!";
-            #endif
-
-            return false;
         }
     }
 
@@ -361,26 +377,43 @@ bool TupCommandExecutor::groupItems(TupItemResponse *response)
                     return true;
                 }
             }
-        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-                   TupBackground *bg = scene->background();
-
-                   if (bg) {
-                       TupFrame *frame = bg->staticFrame();
-                       if (frame) {
-                           QString::const_iterator itr = strList.constBegin();
-                           QList<qreal> positions = TupSvg2Qt::parseNumbersList(++itr);
-                           response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
-
-                           emit responsed(response);
-                           return true;
-                       }
-                   }
         } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::groupItems() - mode invalid!";
-            #endif
 
-            return false;
+            TupBackground *bg = scene->background();
+            if (bg) {
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::groupItems() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
+                if (frame) {
+                    QString::const_iterator itr = strList.constBegin();
+                    QList<qreal> positions = TupSvg2Qt::parseNumbersList(++itr);
+                    response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
+
+                    emit responsed(response);
+                    return true;
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::groupItems() - Invalid background frame!";
+                    #endif
+                    return false;
+                }
+
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::groupItems() - Invalid background data structure!";
+                #endif
+                return false;
+            }
         }
     }
     
@@ -428,12 +461,23 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+        } else {
 
             TupBackground *bg = scene->background();
-
             if (bg) {
-                TupFrame *frame = bg->staticFrame();
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::ungroupItems() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
                 if (frame) {
                     QString strItems = "";
                     QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
@@ -451,14 +495,19 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                     emit responsed(response);
 
                     return true;
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::ungroupItems() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
-            }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::ungroupItems() - mode invalid!";
-            #endif
 
-            return false;
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::ungroupItems() - Invalid background data structure!";
+                #endif
+                return false;
+            }
         }
     }
 
@@ -565,12 +614,23 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+        } else {
 
             TupBackground *bg = scene->background();
-
             if (bg) {
-                TupFrame *frame = bg->staticFrame();
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::convertItem() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
@@ -590,15 +650,24 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
 
                             return true;
                         }
+                    } else {
+                        #ifdef K_DEBUG
+                               tError() << "TupCommandExecutor::convertItem() - Invalid item index!";
+                        #endif
+                        return false;
                     }
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::convertItem() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::convertItem() - Invalid background data structure!";
+                #endif
+                return false;
             }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::convertItem() - mode invalid!";
-            #endif
-
-            return false;
         }
     }
 
@@ -652,12 +721,23 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+        } else {
 
             TupBackground *bg = scene->background();
-
             if (bg) {
-                TupFrame *frame = bg->staticFrame();
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::transformItem() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
                 if (frame) {
                     QGraphicsItem *item;
                     if (type == TupLibraryObject::Svg)
@@ -678,15 +758,25 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                         emit responsed(response);
 
                         return true;
+                    } else {
+                        #ifdef K_DEBUG
+                               tError() << "TupCommandExecutor::transformItem() - Invalid item index!";
+                        #endif
+                        return false;
                     }
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::transformItem() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
-            }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::transformItem() - mode invalid!";
-            #endif
 
-            return false;
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::transformItem() - Invalid background data structure!";
+                #endif
+                return false;
+            }
         }
     }
     
@@ -752,12 +842,23 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) { 
+        } else {
 
             TupBackground *bg = scene->background();
-
             if (bg) {
-                TupFrame *frame = bg->staticFrame();
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::setPathItem() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
@@ -783,21 +884,30 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
 
                            return true;
                        }
+                    } else {
+                        #ifdef K_DEBUG
+                               tError() << "TupCommandExecutor::setPathItem() - Invalid item index!";
+                        #endif
+                        return false;
                     }
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::setPathItem() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
-            }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::setPathItem() - mode invalid!";
-            #endif
 
-            return false;
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::setPathItem() - Invalid background data structure!";
+                #endif
+                return false;
+            }
         }
     }
 
     return false;
 }
-
 
 bool TupCommandExecutor::setTween(TupItemResponse *response)
 {
