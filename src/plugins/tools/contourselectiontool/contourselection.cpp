@@ -226,7 +226,7 @@ void ContourSelection::itemResponse(const TupItemResponse *response)
             } else {
                 TupBackground *bg = scene->background();
                 if (bg) {
-                    TupFrame *frame = bg->frame();
+                    TupFrame *frame = bg->staticFrame();
                     if (frame)
                         item = frame->item(response->itemIndex());
                 }

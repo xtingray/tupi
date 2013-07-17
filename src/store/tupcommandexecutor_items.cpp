@@ -117,11 +117,23 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 return false;
             }
 
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
+        } else { 
 
             TupBackground *bg = scene->background();
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::createItem() - Invalid mode!";
+                    #endif
+
+                    return false;
+                }
+
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
                         TupSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
@@ -138,18 +150,23 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                     }
 
                     emit responsed(response);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::createItem() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::createItem() - Invalid background data structure!";
+                #endif
+                return false;
             }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::createItem() - mode invalid!";
-            #endif
-
-            return false;
         }
+
     } else {
         #ifdef K_DEBUG
-               tError() << "TupCommandExecutor::createItem() - Error: " << tr("Scene doesn't exists!");
+               tError() << "TupCommandExecutor::createItem() - Error: Invalid scene index!";
         #endif
         return false;
     }
@@ -209,14 +226,23 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
-
+        } else {
             TupBackground *bg = scene->background();
-
             if (bg) {
-                TupFrame *frame = bg->frame();
-                if (frame) {
+                TupFrame *frame = 0;
+                if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                    frame = bg->staticFrame();
+                } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           frame = bg->dynamicFrame(framePosition);
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::removeItem() - Invalid mode!";
+                    #endif
 
+                    return false;
+                }
+
+                if (frame) {
                     if (type == TupLibraryObject::Svg) 
                         frame->removeSvgAt(response->itemIndex());
                     else
@@ -224,19 +250,23 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
 
                     emit responsed(response);
                     return true;
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "TupCommandExecutor::removeItem() - Invalid background frame!";
+                    #endif
+                    return false;
                 }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupCommandExecutor::removeItem() - Invalid background data structure!";
+                #endif
+                return false;
             }
-        } else {
-            #ifdef K_DEBUG
-                   tError() << "TupCommandExecutor::removeItem() - mode invalid!";
-            #endif
-
-            return false;
         }
 
     } else {
         #ifdef K_DEBUG
-               tError() << "TupCommandExecutor::removeItem() - Error: " << tr("Scene doesn't exist!");
+               tError() << "TupCommandExecutor::removeItem() - Error: Invalid scene index!";
         #endif
         return false;
     }
@@ -277,11 +307,11 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
                     }
                 }
             }
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
+        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
             TupBackground *bg = scene->background();
 
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 if (frame) {
                     if (frame->moveItem(position, newPositon)) {
                         emit responsed(response);
@@ -331,11 +361,11 @@ bool TupCommandExecutor::groupItems(TupItemResponse *response)
                     return true;
                 }
             }
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
+        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                    TupBackground *bg = scene->background();
 
                    if (bg) {
-                       TupFrame *frame = bg->frame();
+                       TupFrame *frame = bg->staticFrame();
                        if (frame) {
                            QString::const_iterator itr = strList.constBegin();
                            QList<qreal> positions = TupSvg2Qt::parseNumbersList(++itr);
@@ -398,12 +428,12 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
+        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
 
             TupBackground *bg = scene->background();
 
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 if (frame) {
                     QString strItems = "";
                     QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
@@ -535,12 +565,12 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
+        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
 
             TupBackground *bg = scene->background();
 
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
@@ -622,12 +652,12 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::BACKGROUND_EDITION) {
+        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
 
             TupBackground *bg = scene->background();
 
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 if (frame) {
                     QGraphicsItem *item;
                     if (type == TupLibraryObject::Svg)
@@ -722,12 +752,12 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                 }
             }
 
-        } else if (mode == TupProject::BACKGROUND_EDITION) { 
+        } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) { 
 
             TupBackground *bg = scene->background();
 
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {

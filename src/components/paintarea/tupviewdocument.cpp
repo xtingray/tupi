@@ -1022,7 +1022,8 @@ void TupViewDocument::createToolBar()
 
     k->spaceMode = new QComboBox();
     k->spaceMode->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Frames Mode"));
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/background_mode.png"), tr("Background Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/static_background_mode.png"), tr("Static BG Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/dynamic_background_mode.png"), tr("Dynamic BG Mode"));
 
     connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
     setSpaceContext();
@@ -1163,11 +1164,12 @@ void TupViewDocument::setSpaceContext()
 
     if (index == 0)
         k->project->updateSpaceContext(TupProject::FRAMES_EDITION);
-    else
-        k->project->updateSpaceContext(TupProject::BACKGROUND_EDITION);
+    else if (index == 1)
+             k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
+    else if (index == 2)
+             k->project->updateSpaceContext(TupProject::DYNAMIC_BACKGROUND_EDITION);
 
     k->paintArea->updateSpaceContext();
-
     k->paintArea->updatePaintArea();
 
    if (k->currentTool) {
@@ -1185,8 +1187,10 @@ TupProject::Mode TupViewDocument::spaceContext()
 {
    if (k->spaceMode->currentIndex() == 0)
        return TupProject::FRAMES_EDITION;
-   else 
-       return TupProject::BACKGROUND_EDITION;
+   else if (k->spaceMode->currentIndex() == 1)
+            return TupProject::STATIC_BACKGROUND_EDITION;
+   else if (k->spaceMode->currentIndex() == 2)
+            return TupProject::DYNAMIC_BACKGROUND_EDITION;
 }
 
 TupProject *TupViewDocument::project()

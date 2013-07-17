@@ -74,7 +74,8 @@ class STORE_EXPORT TupProject : public QObject, public TupAbstractSerializable
         {
             NONE = 0,
             FRAMES_EDITION,
-            BACKGROUND_EDITION 
+            STATIC_BACKGROUND_EDITION,
+            DYNAMIC_BACKGROUND_EDITION 
         };
 
         TupProject(QObject *parent = 0);

@@ -268,7 +268,7 @@ void PolyLine::itemResponse(const TupItemResponse *response)
             } else {
                 TupBackground *bg = scene->background();
                 if (bg) {
-                    TupFrame *frame = bg->frame();
+                    TupFrame *frame = bg->staticFrame();
                     if (frame)
                         item = frame->item(response->itemIndex());
                 }
@@ -391,7 +391,7 @@ void PolyLine::nodeChanged()
                 position = k->scene->currentFrame()->indexOf(k->nodegroup->parentItem());
             } else {
                 TupBackground *bg = k->scene->scene()->background();
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 position = frame->indexOf(k->nodegroup->parentItem());
             }
 

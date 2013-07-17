@@ -176,7 +176,7 @@ void TupGraphicsScene::drawCurrentPhotogram()
 
     if (k->spaceMode == TupProject::FRAMES_EDITION) {
         drawPhotogram(k->framePosition.frame);
-    } else if (k->spaceMode == TupProject::BACKGROUND_EDITION) {
+    } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
                cleanWorkSpace();
                drawBackground();
     }
@@ -312,9 +312,17 @@ void TupGraphicsScene::drawBackground()
 
     TupBackground *bg = k->scene->background();
     if (bg) {
-        TupFrame *frame = bg->frame();
-        if (frame)
-            addFrame(frame, 1.0);
+        if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION || k->spaceMode == TupProject::FRAMES_EDITION) {
+            TupFrame *frame = bg->dynamicFrame(k->framePosition.frame);
+            if (frame)
+                addFrame(frame, 1.0);
+        } 
+
+        if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION || k->spaceMode == TupProject::FRAMES_EDITION) {
+            TupFrame *frame = bg->staticFrame();
+            if (frame)
+                addFrame(frame, 1.0);
+        }
     }
 }
 
@@ -833,7 +841,7 @@ void TupGraphicsScene::setCurrentScene(TupScene *scene)
 
     if (k->spaceMode == TupProject::FRAMES_EDITION) {
         drawCurrentPhotogram();
-    } else if (k->spaceMode == TupProject::BACKGROUND_EDITION) {
+    } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
                drawBackground();
     }
 }
@@ -1185,11 +1193,22 @@ void TupGraphicsScene::includeObject(QGraphicsItem *object)
         }
     } else {
         TupBackground *bg = k->scene->background();
-        TupFrame *frame = bg->frame();
-        if (frame) {
-            int zLevel = frame->getTopZLevel();
-            object->setZValue(zLevel);
-            addItem(object);
+        if (bg) {
+            if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
+                TupFrame *frame = bg->staticFrame();
+                if (frame) {
+                    int zLevel = frame->getTopZLevel();
+                    object->setZValue(zLevel);
+                    addItem(object);
+                }
+            } else if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                       TupFrame *frame = bg->dynamicFrame(k->framePosition.frame);
+                       if (frame) {
+                           int zLevel = frame->getTopZLevel();
+                           object->setZValue(zLevel);
+                           addItem(object);
+                       }
+            }
         }
     }
 }

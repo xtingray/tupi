@@ -510,12 +510,12 @@ bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbol
                     }
                 }
             }
-        } else if (spaceMode == TupProject::BACKGROUND_EDITION) {
+        } else if (spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
 
             TupBackground *bg = scene->background();
 
             if (bg) {
-                TupFrame *frame = bg->frame();
+                TupFrame *frame = bg->staticFrame();
                 if (frame) {
                     if (symbolType == TupLibraryObject::Svg) {
                         QList<int> indexes = frame->svgIndexes();
@@ -568,11 +568,11 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
                 frame = layer->frame(frameIndex);
             else
                 return false;
-        } else if (spaceMode == TupProject::BACKGROUND_EDITION) { 
+        } else if (spaceMode == TupProject::STATIC_BACKGROUND_EDITION) { 
             TupBackground *bg = scene->background();
 
             if (bg)
-                frame = bg->frame();
+                frame = bg->staticFrame();
             else
                 return false;
         } else {
@@ -710,7 +710,7 @@ bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Ty
 
              TupBackground *bg = scene->background();
              if (bg) {
-                 TupFrame *frame = bg->frame();
+                 TupFrame *frame = bg->staticFrame();
                  if (frame) {
                      if (type != TupLibraryObject::Svg)
                          frame->removeItemFromFrame(name);
@@ -740,7 +740,7 @@ bool TupProject::updateSymbolId(TupLibraryObject::Type type, const QString &oldI
 
              TupBackground *bg = scene->background();
              if (bg) {
-                 TupFrame *frame = bg->frame();
+                 TupFrame *frame = bg->staticFrame();
                  if (frame) {
                      if (type != TupLibraryObject::Svg)
                          frame->updateIdFromFrame(oldId, newId);

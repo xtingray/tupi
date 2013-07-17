@@ -209,7 +209,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     position = scene->currentFrame()->indexOf(shape);
                 } else {
                     TupBackground *bg = scene->scene()->background();
-                    TupFrame *frame = bg->frame();
+                    TupFrame *frame = bg->staticFrame();
                     position = frame->indexOf(shape);
                 }
                 

@@ -642,7 +642,7 @@ void TupPaintArea::deleteItems()
                          } else {
                              TupBackground *bg = currentScene->scene()->background();
                              if (bg) {
-                                 TupFrame *frame = bg->frame();
+                                 TupFrame *frame = bg->staticFrame();
                                  if (frame)
                                      itemIndex = frame->indexOf(svg);;
                              }
@@ -654,7 +654,7 @@ void TupPaintArea::deleteItems()
                          } else {
                              TupBackground *bg = currentScene->scene()->background();
                              if (bg) {
-                                 TupFrame *frame = bg->frame();
+                                 TupFrame *frame = bg->staticFrame();
                                  if (frame)
                                      itemIndex = frame->indexOf(item);
                              }

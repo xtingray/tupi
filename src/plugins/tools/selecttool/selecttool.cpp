@@ -250,9 +250,12 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                      if (svg) {
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(svg);
-                         } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
+                         } else if (k->scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
                                     TupBackground *bg = k->scene->scene()->background();
-                                    position = bg->frame()->indexOf(svg); 
+                                    position = bg->staticFrame()->indexOf(svg); 
+                         } else if (k->scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                    TupBackground *bg = k->scene->scene()->background();
+                                    position = bg->staticFrame()->indexOf(svg);
                          }
                          type = TupLibraryObject::Svg;
                      } else {
@@ -263,9 +266,12 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                              tError() << "Frame Index: " << k->scene->currentFrameIndex();
                              tError() << "Layer Index: " << k->scene->currentLayerIndex();
                              tError() << "Scene Index: " << k->scene->currentSceneIndex();
-                         } else if (k->scene->spaceMode() == TupProject::BACKGROUND_EDITION) {
+                         } else if (k->scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
                                     TupBackground *bg = k->scene->scene()->background();
-                                    position = bg->frame()->indexOf(manager->parentItem());
+                                    position = bg->staticFrame()->indexOf(manager->parentItem());
+                         } else if (k->scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                    TupBackground *bg = k->scene->scene()->background();
+                                    position = bg->staticFrame()->indexOf(manager->parentItem());
                          }
                          type = TupLibraryObject::Item;
                      }
@@ -388,10 +394,22 @@ void SelectTool::itemResponse(const TupItemResponse *event)
                         return;
                     }
                 }
-            } else if (project->spaceContext() == TupProject::BACKGROUND_EDITION) {
+            } else if (project->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
                        TupBackground *bg = scene->background();
                        if (bg) {
-                           TupFrame *frame = bg->frame();
+                           TupFrame *frame = bg->staticFrame();
+                           if (frame) {
+                               if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
+                                   item = frame->svg(event->itemIndex());
+                               } else if (frame->graphicItemsCount()>0) {
+                                          item = frame->item(event->itemIndex());
+                               }
+                           }
+                       }
+            } else if (project->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                       TupBackground *bg = scene->background();
+                       if (bg) {
+                           TupFrame *frame = bg->staticFrame();
                            if (frame) {
                                if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
                                    item = frame->svg(event->itemIndex());

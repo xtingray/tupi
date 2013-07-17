@@ -37,11 +37,16 @@
 #include "tupserializer.h"
 #include "tdebug.h"
 
-TupBackground::TupBackground(TupScene *parent)
-    : QObject(parent)
+TupBackground::TupBackground(TupScene *parent) : QObject(parent)
 {
-    landscape = new TupFrame(this);
-    landscape->setFrameName("landscape");
+    displacement = None;
+    delta = 0;
+
+    dynamicBg = new TupFrame(this);
+    dynamicBg->setFrameName("landscape_dynamic");
+
+    staticBg = new TupFrame(this);
+    staticBg->setFrameName("landscape_static");
 }
 
 TupBackground::~TupBackground()
@@ -57,25 +62,52 @@ void TupBackground::fromXml(const QString &xml)
 
     QDomElement root = document.documentElement();
     QDomNode n = root.firstChild();
-    QDomElement e = n.toElement();
 
-    if (!e.isNull()) {
-        if (e.tagName() == "frame") {
+    while (!n.isNull()) {
 
-            landscape = new TupFrame(this);
-            landscape->setFrameName("landscape");
+           QDomElement e = n.toElement();
 
-            if (landscape) {
-                QString newDoc;
+           if (e.tagName() == "frame") {
 
-                {
-                  QTextStream ts(&newDoc);
-                  ts << n;
-                }
+               QString type = e.attribute("name", "none");
 
-                landscape->fromXml(newDoc);
-            }
-        }
+               if (type == "landscape_static") {
+                   staticBg = new TupFrame(this);
+                   staticBg->setFrameName("landscape_static");
+
+                   if (staticBg) {
+                       QString newDoc;
+
+                       {
+                           QTextStream ts(&newDoc);
+                           ts << n;
+                       }
+
+                       staticBg->fromXml(newDoc);
+                   }
+
+               } else if (type == "landscape_dynamic") {
+                          dynamicBg = new TupFrame(this);
+                          dynamicBg->setFrameName("landscape_dynamic");
+
+                          if (dynamicBg) {
+                              QString newDoc;
+
+                              {
+                                  QTextStream ts(&newDoc);
+                                  ts << n;
+                              }
+
+                              dynamicBg->fromXml(newDoc);
+                          }
+               } else {
+                   #ifdef K_DEBUG
+                          tError() << "TupBackground::fromXml() - Error: The background input is invalid";
+                   #endif
+               }
+           }
+
+           n = n.nextSibling();
     }
 }
 
@@ -84,12 +116,25 @@ QDomElement TupBackground::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("background");
     doc.appendChild(root);
 
-    root.appendChild(landscape->toXml(doc));
+    root.appendChild(dynamicBg->toXml(doc));
+    root.appendChild(staticBg->toXml(doc));
 
     return root;
 }
 
-TupFrame *TupBackground::frame()
+TupFrame *TupBackground::staticFrame()
 {
-    return landscape;
+    return staticBg;
 }
+
+TupFrame* TupBackground::dynamicFrame(int frameIndex)
+{
+    return dynamicBg;
+}
+
+void TupBackground::setProperties(Direction directionFlag, int deltaFlag)
+{
+    displacement = directionFlag;
+    delta = deltaFlag;
+}
+

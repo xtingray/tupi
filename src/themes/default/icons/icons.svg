@@ -2276,9 +2276,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="32"
-     inkscape:cx="-4.9319593"
-     inkscape:cy="1003.681"
+     inkscape:zoom="11.313709"
+     inkscape:cx="57.880695"
+     inkscape:cy="1018.6057"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -7716,12 +7716,6 @@
        inkscape:export-xdpi="947.27002"
        inkscape:export-ydpi="947.27002" />
     <path
-       sodipodi:nodetypes="ccccc"
-       style="fill:none;stroke:none"
-       d="m 62.296828,34.012853 2.719787,0.07111 0.02298,-2.909443 -2.755339,0.08888 z"
-       id="path6081-0-6-9"
-       inkscape:connector-curvature="0" />
-    <path
        style="fill:#008700;fill-opacity:1;stroke:none"
        d="m 42.083283,30.552944 0.310329,0.218135 c -0.31046,-0.08356 -0.555583,-0.0056 -0.714705,0.116998 l 0.407103,0.126313 -1.282571,0.561019 0.586636,-1.065874 0.104819,0.297585 c 0.161773,-0.155562 0.418337,-0.272495 0.588389,-0.254176 z"
        id="path7032-2"
@@ -9603,5 +9597,23 @@
            inkscape:export-ydpi="1366.3" />
       </g>
     </g>
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 58.812643,33.805772 -0.01429,-2.185811 3.126143,-0.04152 0.01429,0.231235 -2.924817,0.03883 0,1.723573 2.752292,-0.01942 -0.07655,-1.614198 0.251762,0.03883 0.04285,1.815524 z"
+       id="path4304-2-4-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/dynamic_background_mode.png"
+       inkscape:export-xdpi="14124.43"
+       inkscape:export-ydpi="14124.43" />
+    <path
+       style="fill:#008700;fill-opacity:1;stroke:none"
+       d="m 59.39673,32.582644 -0.0023,0.212876 1.108292,4.26e-4 -0.122774,0.351816 1.008298,-0.439055 -1.003269,-0.472257 0.134308,0.355394 z"
+       id="path7032-6-3-6-0-9-9-97-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/dynamic_background_mode.png"
+       inkscape:export-xdpi="14124.43"
+       inkscape:export-ydpi="14124.43" />
   </g>
 </svg>
