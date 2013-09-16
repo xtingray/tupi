@@ -113,11 +113,15 @@ struct TupViewDocument::Private
 
     QToolBar *barGrid;
     QToolBar *toolbar;
+    QToolBar *propertiesBar;
 
     QDoubleSpinBox *zoomFactorSpin;
     QDoubleSpinBox *onionFactorSpin;
     QSpinBox *prevOnionSkinSpin;
     QSpinBox *nextOnionSkinSpin;
+
+    QComboBox *dirCombo;
+    QSpinBox *shiftSpin;
 
     bool onionEnabled;
     int prevOnionValue;
@@ -959,6 +963,8 @@ void TupViewDocument::createToolBar()
     k->barGrid = new QToolBar(tr("Paint area actions"), this);
     k->barGrid->setIconSize(QSize(16, 16));
 
+    k->propertiesBar = new QToolBar(tr("Dynamic Background Properties"), this);
+
     addToolBar(k->barGrid);
 
     k->barGrid->addAction(kApp->findGlobalAction("undo"));
@@ -1040,6 +1046,53 @@ void TupViewDocument::createToolBar()
 
     k->barGrid->addSeparator();
     k->barGrid->addAction(k->actionManager->find("storyboard"));
+
+    addToolBarBreak();
+
+    QLabel *dirLabel = new QLabel(tr("Direction") + ": ");
+
+    k->dirCombo = new QComboBox;
+    k->dirCombo->addItem(tr("Left to Right"));
+    k->dirCombo->addItem(tr("Right to Left"));
+    k->dirCombo->addItem(tr("Top to Bottom"));
+    k->dirCombo->addItem(tr("Bottom to Top"));
+    connect(k->dirCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setBackgroundDirection(int)));
+
+    QLabel *shiftLabel = new QLabel(tr("Shift Length") + ": ");
+
+    k->shiftSpin = new QSpinBox(this);
+    k->shiftSpin->setSingleStep(1);
+    k->shiftSpin->setRange(1, 1000);
+    // k->shiftSpin->setValue(5);
+    connect(k->shiftSpin, SIGNAL(valueChanged(int)), this, SLOT(updateBackgroundShiftProperty(int)));
+
+    QPushButton *renderButton = new QPushButton(tr("&Render"));
+    connect(renderButton, SIGNAL(clicked()), this, SLOT(renderDynamicBackground()));
+
+    QWidget *empty1 = new QWidget();
+    empty1->setFixedWidth(5);
+    QWidget *empty2 = new QWidget();
+    empty2->setFixedWidth(5);
+    QWidget *empty3 = new QWidget();
+    empty3->setFixedWidth(5);
+    QWidget *empty4 = new QWidget();
+    empty4->setFixedWidth(5);
+
+    k->propertiesBar->addWidget(dirLabel);
+    k->propertiesBar->addWidget(k->dirCombo);
+    k->propertiesBar->addWidget(empty1);
+    k->propertiesBar->addSeparator();
+    k->propertiesBar->addWidget(empty2);
+    k->propertiesBar->addWidget(shiftLabel);
+    k->propertiesBar->addWidget(k->shiftSpin);
+    k->propertiesBar->addWidget(empty3);
+    k->propertiesBar->addSeparator();
+    k->propertiesBar->addWidget(empty4);
+    k->propertiesBar->addWidget(renderButton);
+
+    k->propertiesBar->setVisible(false);
+
+    addToolBar(k->propertiesBar);
 }
 
 void TupViewDocument::closeArea()
@@ -1162,12 +1215,29 @@ void TupViewDocument::setSpaceContext()
 {
     int index = k->spaceMode->currentIndex();
 
-    if (index == 0)
+    if (index == 0) {
         k->project->updateSpaceContext(TupProject::FRAMES_EDITION);
-    else if (index == 1)
+        k->propertiesBar->setVisible(false);
+    } else if (index == 1) {
              k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
-    else if (index == 2)
+             k->propertiesBar->setVisible(false);
+    } else if (index == 2) {
              k->project->updateSpaceContext(TupProject::DYNAMIC_BACKGROUND_EDITION);
+
+             int sceneIndex = k->paintArea->currentSceneIndex();
+             TupScene *scene = k->project->scene(sceneIndex);
+             if (scene) {
+                 TupBackground *bg = scene->background();
+                 if (bg) {
+                     int direction = bg->dyanmicDirection();
+                     k->dirCombo->setCurrentIndex(direction);
+                     int shift = bg->dyanmicShift();
+                     k->shiftSpin->setValue(shift);
+                 }
+             }
+
+             k->propertiesBar->setVisible(true);
+    }
 
     k->paintArea->updateSpaceContext();
     k->paintArea->updatePaintArea();
@@ -1191,6 +1261,8 @@ TupProject::Mode TupViewDocument::spaceContext()
             return TupProject::STATIC_BACKGROUND_EDITION;
    else if (k->spaceMode->currentIndex() == 2)
             return TupProject::DYNAMIC_BACKGROUND_EDITION;
+
+   return TupProject::NONE;
 }
 
 TupProject *TupViewDocument::project()
@@ -1352,6 +1424,7 @@ void TupViewDocument::selectFrame(int frame, int layer, int scene)
 
 void TupViewDocument::selectScene(int scene)
 {
+    tError() << "TupViewDocument::selectScene() - Tracing Scene selection! -> " << scene;
     k->paintArea->goToScene(scene);
 }
 
@@ -1441,4 +1514,33 @@ void TupViewDocument::updateUsersOnLine(const QString &login, int state)
 
     if (k->fullScreenOn)
         k->fullScreen->updateOnLineUsers(k->onLineUsers);
+}
+
+void TupViewDocument::setBackgroundDirection(int direction)
+{
+   int sceneIndex = k->paintArea->currentSceneIndex();
+   TupScene *scene = k->project->scene(sceneIndex);
+   if (scene) {
+       TupBackground *bg = scene->background();
+       if (bg) {
+           bg->setDyanmicDirection(direction);
+       }
+   }
+}
+
+void TupViewDocument::updateBackgroundShiftProperty(int shift)
+{
+   int sceneIndex = k->paintArea->currentSceneIndex();
+   TupScene *scene = k->project->scene(sceneIndex);
+   if (scene) {
+       TupBackground *bg = scene->background();
+       if (bg) {
+           bg->setDyanmicShift(shift);
+       }
+   }
+}
+
+void TupViewDocument::renderDynamicBackground()
+{
+   tError() << "TupViewDocument::renderDynamicBackground() - Tracing..."; 
 }

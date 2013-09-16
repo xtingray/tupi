@@ -52,6 +52,7 @@ struct TExportWizard::Private
     QHBoxLayout *buttonLayout;
     QVBoxLayout *mainLayout;
     QString format;
+    int formatCode;
 };
 
 TExportWizard::TExportWizard(QWidget *parent) : QDialog(parent), k(new Private)
@@ -103,7 +104,7 @@ TExportWizardPage *TExportWizard::addPage(TExportWizardPage *newPage)
     if (tag.compare("PLUGIN") == 0)
         connect(newPage, SIGNAL(formatSelected(int, const QString &)), this, SLOT(setFormat(int, const QString &)));
 
-    if (tag.compare("EXPORT") == 0 || tag.compare("IMAGES") == 0 || tag.compare("PROPERTIES") == 0) 
+    if (tag.compare("ANIMATION") == 0 || tag.compare("IMAGES_ARRAY") == 0 || tag.compare("ANIMATED_IMAGE") == 0 || tag.compare("PROPERTIES") == 0) 
         connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
 
     return newPage;
@@ -132,38 +133,45 @@ void TExportWizard::back()
     if (current)
         current->aboutToBackPage();
 
-    if (tag.compare("IMAGES") == 0)
-        k->history->setCurrentIndex(k->history->currentIndex()-2);
-    else
-        k->history->setCurrentIndex(k->history->currentIndex()-1);
-    
+    if (tag.compare("ANIMATED_IMAGE") == 0) {
+        k->history->setCurrentIndex(k->history->currentIndex()-3);
+    } else if (tag.compare("IMAGES_ARRAY") == 0) {
+               k->history->setCurrentIndex(k->history->currentIndex()-2);
+    } else if (tag.compare("ANIMATION") == 0 || tag.compare("SCENE") == 0) {
+               k->history->setCurrentIndex(k->history->currentIndex()-1);
+    }
+
     if (tag.compare("SCENE") == 0 || tag.compare("PROPERTIES") == 0)
         k->backButton->setEnabled(false);
 
     k->nextButton->setEnabled(true);
 
-    if (tag.compare("EXPORT") == 0 || tag.compare("IMAGES") == 0 || tag.compare("PROPERTIES") == 0) 
+    if (tag.compare("ANIMATION") == 0 || tag.compare("IMAGES_ARRAY") == 0 || tag.compare("ANIMATED_IMAGE") == 0 || tag.compare("PROPERTIES") == 0) 
         k->nextButton->setText(tr("Next"));
 }
 
 void TExportWizard::next()
 {
     TExportWizardPage *current = qobject_cast<TExportWizardPage *>(k->history->currentWidget());
-    QString tag = current->getTag();
 
     if (current)
         current->aboutToNextPage();
+
+    QString tag = current->getTag();
 
     if (tag.compare("PLUGIN") == 0) {
         k->backButton->setEnabled(true);
         k->history->setCurrentIndex(k->history->currentIndex()+1);
     }
 
-    if (tag.compare("EXPORT") == 0)
-        emit saveFile();
+    if (tag.compare("ANIMATION") == 0)
+        emit exportAnimation();
 
-    if (tag.compare("IMAGES") == 0)
-        emit exportArray();
+    if (tag.compare("ANIMATED_IMAGE") == 0)
+        emit exportAnimatedImage();
+
+    if (tag.compare("IMAGES_ARRAY") == 0)
+        emit exportImagesArray();
 
     if (tag.compare("PROPERTIES") == 0)
         emit saveVideoToServer();
@@ -173,10 +181,13 @@ void TExportWizard::next()
         k->backButton->setEnabled(true);
         emit setFileName();
 
-        if (k->format.compare(".jpg") == 0 || k->format.compare(".png") == 0)
-            k->history->setCurrentIndex(k->history->currentIndex()+2);
-        else
-            k->history->setCurrentIndex(k->history->currentIndex()+1);
+        if (k->formatCode == 4096) { // ANIMATED PNG
+            k->history->setCurrentIndex(k->history->currentIndex()+3);
+        } else if (k->format.compare(".jpg") == 0 || k->format.compare(".png") == 0) { // IMAGES ARRAY
+                   k->history->setCurrentIndex(k->history->currentIndex()+2);
+        } else {
+            k->history->setCurrentIndex(k->history->currentIndex()+1); // ANIMATION 
+        }
     } 
 
     pageCompleted();
@@ -187,10 +198,10 @@ void TExportWizard::pageCompleted()
     TExportWizardPage *current = qobject_cast<TExportWizardPage *>(k->history->currentWidget());
     QString tag = current->getTag();
 
-    if (tag.compare("SCENE") == 0 || tag.compare("PLUGIN")== 0) {
+    if (tag.compare("SCENE") == 0 || tag.compare("PLUGIN") == 0) {
         k->nextButton->setEnabled(current->isComplete());
     } else {
-        if (tag.compare("IMAGES") == 0 || tag.compare("EXPORT"))
+        if (tag.compare("IMAGES_ARRAY") == 0 || tag.compare("ANIMATION") == 0 || tag.compare("ANIMATED_IMAGE") == 0)
             k->nextButton->setText(tr("Export"));
         if (tag.compare("PROPERTIES") == 0)
             k->nextButton->setText(tr("Post"));
@@ -214,6 +225,7 @@ void TExportWizard::closeDialog()
 
 void TExportWizard::setFormat(int code, const QString &extension)
 {
+    k->formatCode = code;
     k->format = extension;
 }
 

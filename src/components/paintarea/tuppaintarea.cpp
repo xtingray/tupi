@@ -307,7 +307,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
                     guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
                     if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                        guiScene->drawPhotogram(event->frameIndex());
+                        guiScene->drawPhotogram(event->frameIndex(), true);
                     } else {
                         guiScene->cleanWorkSpace();
                         guiScene->drawBackground();
@@ -1251,3 +1251,14 @@ void TupPaintArea::tabletEvent(QTabletEvent *event)
     TupPaintAreaBase::tabletEvent(event);
 }
 */
+
+int TupPaintArea::currentSceneIndex()
+{
+    return graphicsScene()->currentSceneIndex();
+}
+
+int TupPaintArea::currentLayerIndex()
+{
+    return graphicsScene()->currentLayerIndex();
+}
+

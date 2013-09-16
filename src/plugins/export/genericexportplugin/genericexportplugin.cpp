@@ -60,7 +60,7 @@ TupExportInterface::Formats GenericExportPlugin::availableFormats()
     return TupExportInterface::PNG | TupExportInterface::JPEG | TupExportInterface::XPM;
 }
 
-bool GenericExportPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, 
+bool GenericExportPlugin::exportToFormat(const QColor bgColor, const QString &filePath, const QList<TupScene *> &scenes, 
                                          TupExportInterface::Format format, const QSize &size, int fps)
 {
     Q_UNUSED(fps);
@@ -88,9 +88,12 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
                  imageFormat = QImage::Format_RGB32;
                  break;
             default:
+                 imageFormat = QImage::Format_RGB32;
                  break;
     }
 
+    QColor color = bgColor;
+    color.setAlpha(255);
     TupAnimationRenderer renderer(color);
 
     foreach (TupScene *scene, scenes) {
@@ -116,7 +119,7 @@ bool GenericExportPlugin::exportToFormat(const QColor color, const QString &file
 
                     index += QString("%1").arg(photogram);
 
-                    image.save(fileInfo.absolutePath() + QDir::separator() + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension);
+                    image.save(fileInfo.absolutePath() + QDir::separator() + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension, 100);
 
                     photogram++;
              }
@@ -131,11 +134,11 @@ bool GenericExportPlugin::exportFrame(int frameIndex, const QColor color, const 
     const char *extension;
     QImage::Format imageFormat;
     QColor bgColor = color;
+    bgColor.setAlpha(255);
 
     if (filePath.endsWith(".PNG", Qt::CaseInsensitive)) {
         extension = "PNG";
         imageFormat = QImage::Format_ARGB32;
-        bgColor.setAlpha(0);
     } else if (filePath.endsWith(".JPG", Qt::CaseInsensitive) || filePath.endsWith("JPEG", Qt::CaseInsensitive)) {
                extension = "JPG";
                imageFormat = QImage::Format_RGB32;
@@ -150,14 +153,13 @@ bool GenericExportPlugin::exportFrame(int frameIndex, const QColor color, const 
 
     renderer.renderPhotogram(frameIndex);
     QImage image(size, imageFormat);
-
     {
         QPainter painter(&image);
         painter.setRenderHint(QPainter::Antialiasing, true);
         renderer.render(&painter);
     }
 
-    return image.save(path, extension);
+    return image.save(path, extension, 100);
 }
 
 const char* GenericExportPlugin::getExceptionMsg() {

@@ -33,59 +33,98 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPEXPORTWIDGET_H
-#define TUPEXPORTWIDGET_H
+#include "apngplugin.h"
 
-#include "tupmodulewidgetbase.h"
-#include "tupproject.h"
-#include "tupexportpluginobject.h"
-#include "texportwizard.h"
+// Tupi Framework
+#include "tdebug.h"
+#include "tglobal.h"
 
-#include <QListWidget>
-#include <QHash>
+#include "tuplayer.h"
+#include "tupanimationrenderer.h"
 
-class QButtonGroup;
-class QLineEdit;
-class SelectPlugin;
-class SelectScenes;
-class ExportTo;
-class VideoProperties;
+#include <QImage>
+#include <QPainter>
 
-/**
- * @author David Cuadrado
-*/
-
-class TupExportWidget : public TExportWizard
+APNGPlugin::APNGPlugin()
 {
-    Q_OBJECT
+}
 
-    public:
-        enum OutputFormat { Animation = 0, ImagesArray, AnimatedImage };
-        TupExportWidget(const TupProject *project, QWidget *parent = 0, bool isLocal = true);
-        ~TupExportWidget();
-        QString videoTitle() const;
-        QString videoTopics() const;
-        QString videoDescription() const;
-        QList<int> videoScenes() const;
-        bool isComplete();
-        // TupExportWidget::Format workType();
+APNGPlugin::~APNGPlugin()
+{
+}
 
-    private slots:
-        void setExporter(const QString &plugin);
-	
-    private:
-        void loadPlugins();
-		
-    private:
-        SelectPlugin *m_pluginSelectionPage;
-        SelectScenes *m_scenesSelectionPage;
-        ExportTo *m_exportAnimation;
-        ExportTo *m_exportImagesArray;
-        ExportTo *m_exportAnimatedImage;
-        VideoProperties *videoProperties;
-        const TupProject *m_project;
-        QHash<QString, TupExportInterface *> m_plugins;
-        const QString tag;
-};
+QString APNGPlugin::key() const
+{
+    return "Animated Image";
+}
 
+TupExportInterface::Formats APNGPlugin::availableFormats()
+{
+    return TupExportInterface::APNG;
+}
+
+bool APNGPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format fmt, const QSize &size, int fps)
+{
+    Q_UNUSED(fmt);
+
+    /*
+    int frames = 0;
+    qreal duration = 0;
+    foreach (TupScene *scene, scenes) {
+             duration += (qreal) scene->framesTotal() / (qreal) fps;
+             frames += scene->framesTotal();
+    }
+
+    TheoraMovieGenerator *generator = 0;
+    generator = new TheoraMovieGenerator(size, fps, duration, frames);
+
+    TupAnimationRenderer renderer(color);
+    {
+         if (!generator->movieHeaderOk()) {
+             errorMsg = generator->getErrorMsg();
+             #ifdef K_DEBUG
+                    tError() << "FFMpegPlugin::exportToFormat() - [ Fatal Error ] - Can't create video -> " << filePath;
+             #endif
+             delete generator;
+             return false;
+         }
+
+         QPainter painter(generator);
+         painter.setRenderHint(QPainter::Antialiasing, true);
+
+         foreach (TupScene *scene, scenes) {
+                  renderer.setScene(scene, size);
+
+                  while (renderer.nextPhotogram()) {
+                         renderer.render(&painter);
+                         generator->nextFrame();
+                         generator->reset();
+                  }
+         }
+    }
+
+    generator->saveMovie(filePath);
+    delete generator;
+    */
+
+    return true;
+}
+
+bool APNGPlugin::exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size)
+{
+    Q_UNUSED(frameIndex);
+    Q_UNUSED(color);
+    Q_UNUSED(filePath);
+    Q_UNUSED(scene);
+    Q_UNUSED(size);
+
+    return false;
+}
+
+const char* APNGPlugin::getExceptionMsg() {
+    return errorMsg;
+}
+
+#ifdef HAVE_THEORA
+       Q_EXPORT_PLUGIN( APNGPlugin );
 #endif

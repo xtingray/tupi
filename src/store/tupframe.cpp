@@ -59,6 +59,11 @@ struct TupFrame::Private
     QString name;
     bool isLocked;
     bool isVisible;
+
+    bool isDynamic;
+    QString direction;
+    QString shift;
+
     GraphicObjects graphics;
     QHash<int, QString> objectIndexes;
     SvgObjects svg;
@@ -78,6 +83,11 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->name = "Frame";
     k->isLocked = false;
     k->isVisible = true;
+
+    k->isDynamic = false;
+    k->direction = "-1";
+    k->shift = "0";
+
     k->repeat = 1;
     k->zLevelIndex = (k->layerIndex)*10000;
 }
@@ -90,6 +100,10 @@ TupFrame::TupFrame(TupBackground *bg) : QObject(bg), k(new Private)
     k->isVisible = true;
     k->repeat = 1;
     k->zLevelIndex = 0;
+
+    k->isDynamic = false;
+    k->direction = "-1";
+    k->shift = "0";
 }
 
 TupFrame::~TupFrame()
@@ -110,6 +124,31 @@ void TupFrame::clear()
 void TupFrame::setFrameName(const QString &name)
 {
     k->name = name;
+}
+
+void TupFrame::setDynamicFlag(bool flag)
+{
+    k->isDynamic = flag;
+}
+
+void TupFrame::setDynamicDirection(const QString &direction)
+{
+    k->direction = direction;
+}
+
+void TupFrame::setDynamicShift(const QString &shift)
+{
+    k->shift = shift;
+}
+
+int TupFrame::dynamicDirection() const
+{
+    return k->direction.toInt();
+}
+
+int TupFrame::dynamicShift() const
+{
+    return k->shift.toInt();
 }
 
 void TupFrame::setLocked(bool isLocked)
@@ -156,6 +195,11 @@ void TupFrame::fromXml(const QString &xml)
 
     QDomElement root = document.documentElement();
     setFrameName(root.attribute("name", ""));
+
+    if (k->isDynamic) {
+        setDynamicDirection(root.attribute("direction", "0"));
+        setDynamicShift(root.attribute("shift", "0"));
+    }
 
     QDomNode n = root.firstChild();
 
@@ -261,6 +305,12 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("frame");
     root.setAttribute("name", k->name);
+
+    if (k->isDynamic) {
+        root.setAttribute("direction", k->direction);
+        root.setAttribute("shift", k->shift);
+    }
+
     doc.appendChild(root);
 
     foreach (TupGraphicObject *object, k->graphics.values())

@@ -75,9 +75,10 @@ class T_GUI_EXPORT TExportWizard : public QDialog
     signals:
         void cancelled();
         void updateScenes();
-        void saveFile();
+        void exportAnimation();
+        void exportAnimatedImage();
         void saveVideoToServer();
-        void exportArray();
+        void exportImagesArray();
         void setFileName();
         void isDone();
 

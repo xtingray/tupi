@@ -18,5 +18,8 @@ contains(DEFINES, HAVE_THEORA) {
         SUBDIRS += theoraplugin
 }
 
+# Experimental code
+SUBDIRS += apngplugin
+
 CONFIG += ordered warn_on 
 TEMPLATE = subdirs 

@@ -77,6 +77,8 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         void copyCurrentFrame();
         void pasteDataOnCurrentFrame();
         void quickCopy();
+        int currentSceneIndex();
+        int currentLayerIndex();
 
     public slots:
         void setNextFramesOnionSkinCount(int n);

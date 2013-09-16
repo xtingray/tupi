@@ -36,6 +36,8 @@
 #ifndef TUPBACKGROUND_H
 #define TUPBACKGROUND_H
 
+#include <QImage>
+
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
 #include "tupscene.h"
@@ -49,21 +51,17 @@ class STORE_EXPORT TupBackground : public QObject, public TupAbstractSerializabl
     Q_OBJECT
 
     public:
-        enum Direction {
-             None = 0,
-             LeftToRight,
-             RightToLeft,
-             TopToBottom,
-             BottomToTop 
-        };
-
         TupBackground(TupScene *parent);
         ~TupBackground();
 
     public:
         TupFrame* staticFrame();
-        TupFrame* dynamicFrame(int frameIndex); 
-        void setProperties(Direction directionFlag, int deltaFlag);
+        TupFrame* dynamicFrame(); 
+        QImage* dynamicView(int frameIndex);
+        void setDyanmicDirection(int direction);
+        void setDyanmicShift(int shift);
+        int dyanmicDirection();
+        int dyanmicShift();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
@@ -71,8 +69,6 @@ class STORE_EXPORT TupBackground : public QObject, public TupAbstractSerializabl
     private:
         TupFrame *staticBg;
         TupFrame *dynamicBg;
-        Direction displacement;        
-        int delta;
 };
 
 #endif

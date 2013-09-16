@@ -90,7 +90,7 @@ void TupAnimationRenderer::setScene(TupScene *scene, QSize dimension)
     k->scene->setCurrentScene(scene);
     k->scene->setSceneRect(QRectF(QPointF(0,0), dimension));
 
-    k->scene->drawPhotogram(0); // ### SQA: Why whithout this doesn't work?
+    k->scene->drawPhotogram(0, false); // ### SQA: Why whithout this doesn't work?
     k->currentPhotogram = -1;
 
     k->totalPhotograms = k->calculateTotalPhotograms(scene);
@@ -106,14 +106,14 @@ bool TupAnimationRenderer::nextPhotogram()
     if (k->currentPhotogram == k->totalPhotograms)
         return false;
 
-    k->scene->drawPhotogram(k->currentPhotogram);
+    k->scene->drawPhotogram(k->currentPhotogram, false);
 
     return true;
 }
 
 void TupAnimationRenderer::renderPhotogram(int index) 
 {
-    k->scene->drawPhotogram(index);
+    k->scene->drawPhotogram(index, false);
 }
 
 void TupAnimationRenderer::render(QPainter *painter)

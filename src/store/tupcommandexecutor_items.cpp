@@ -125,7 +125,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::createItem() - Invalid mode!";
@@ -233,7 +233,7 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::removeItem() - Invalid mode!";
@@ -315,7 +315,7 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::moveItem() - Invalid mode!";
@@ -385,7 +385,7 @@ bool TupCommandExecutor::groupItems(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::groupItems() - Invalid mode!";
@@ -469,7 +469,7 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::ungroupItems() - Invalid mode!";
@@ -622,7 +622,7 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::convertItem() - Invalid mode!";
@@ -729,7 +729,7 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::transformItem() - Invalid mode!";
@@ -850,7 +850,7 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                 if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                     frame = bg->staticFrame();
                 } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                           frame = bg->dynamicFrame(framePosition);
+                           frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::setPathItem() - Invalid mode!";

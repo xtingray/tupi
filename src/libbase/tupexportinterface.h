@@ -64,7 +64,8 @@ class TUPI_EXPORT TupExportInterface
                PNG  = 1 << 8,
                JPEG = 1 << 9,
                XPM  = 1 << 10,
-               SMIL = 1 << 11
+               SMIL = 1 << 11,
+               APNG = 1 << 12
              };
 
         Q_DECLARE_FLAGS(Formats, Format);

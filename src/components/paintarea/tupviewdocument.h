@@ -103,12 +103,13 @@ class TupViewDocument : public QMainWindow
         void updateStatusBgColor(const QColor color);
         void updatePenThickness(int size);
         void updateOnionOpacity(double opacity);
+        void setBackgroundDirection(int direction);
+        void updateBackgroundShiftProperty(int shift);
+        void renderDynamicBackground();
 
     private:
         struct Private;
         Private *const k;
-
-    private:
         void setupDrawActions();
         void createToolBar();
         void createMenu();

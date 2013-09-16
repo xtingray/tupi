@@ -175,14 +175,14 @@ void TupGraphicsScene::drawCurrentPhotogram()
         k->framePosition.frame = frames - 1;
 
     if (k->spaceMode == TupProject::FRAMES_EDITION) {
-        drawPhotogram(k->framePosition.frame);
+        drawPhotogram(k->framePosition.frame, true);
     } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
                cleanWorkSpace();
                drawBackground();
     }
 }
 
-void TupGraphicsScene::drawPhotogram(int photogram)
+void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
 {
     /*
     #ifdef K_DEBUG
@@ -199,7 +199,7 @@ void TupGraphicsScene::drawPhotogram(int photogram)
 
     bool valid = false;
 
-    // Drawing frames from another layers
+    // Drawing frames from every layer
 
     for (int i=0; i < k->scene->layersTotal(); i++) {
 
@@ -221,28 +221,30 @@ void TupGraphicsScene::drawPhotogram(int photogram)
                          drawBackground();
 
                          // Painting previews frames
-                         if (k->onionSkin.previous > 0 && photogram > 0) {
+                         if (drawContext) {
+                             if (k->onionSkin.previous > 0 && photogram > 0) {
 
-                             double opacity = k->opacity;
-                             double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.previous);
+                                 double opacity = k->opacity;
+                                 double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.previous);
 
-                             int limit = photogram - k->onionSkin.previous;
-                             if (limit < 0) 
-                                 limit = 0;
+                                 int limit = photogram - k->onionSkin.previous;
+                                 if (limit < 0) 
+                                     limit = 0;
 
-                             QString frameBehind = ""; 
-                             for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
-                                  TupFrame *frame = layer->frame(frameIndex);
-                                  QString previousFrame = frame->frameName();
-                                  if (frame && previousFrame.compare(currentFrame) != 0 
-                                            && frameBehind.compare(previousFrame) != 0) {
-                                      addFrame(frame, opacity, Preview);
-                                  } 
+                                 QString frameBehind = ""; 
+                                 for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
+                                      TupFrame *frame = layer->frame(frameIndex);
+                                      QString previousFrame = frame->frameName();
+                                      if (frame && previousFrame.compare(currentFrame) != 0 
+                                                && frameBehind.compare(previousFrame) != 0) {
+                                          addFrame(frame, opacity, Preview);
+                                      } 
 
-                                  frameBehind = previousFrame;
-                                  opacity -= opacityFactor;
+                                      frameBehind = previousFrame;
+                                      opacity -= opacityFactor;
+                                 }
+
                              }
-
                          }
 
                          // valid = true;
@@ -250,26 +252,27 @@ void TupGraphicsScene::drawPhotogram(int photogram)
                          addFrame(mainFrame, TupGraphicsScene::Current);
 
                          // Painting next frames
-                         if (k->onionSkin.next > 0 && layer->framesTotal() > photogram + 1) {
+                         if (drawContext) {
+                             if (k->onionSkin.next > 0 && layer->framesTotal() > photogram + 1) {
+                                 double opacity = k->opacity;
+                                 double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
 
-                             double opacity = k->opacity;
-                             double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
+                                 int limit = photogram + k->onionSkin.next;
+                                 if (limit >= layer->frames().count()) 
+                                     limit = layer->frames().count() - 1;
 
-                             int limit = photogram + k->onionSkin.next;
-                             if (limit >= layer->frames().count()) 
-                                 limit = layer->frames().count() - 1;
-
-                             QString frameLater = "";
-                             for (int frameIndex = photogram+1; frameIndex <= limit; frameIndex++) {
-                                  TupFrame * frame = layer->frame(frameIndex);
-                                  QString nextFrame = frame->frameName();
-                                  if (frame && nextFrame.compare(currentFrame) != 0 
-                                            && frameLater.compare(nextFrame) != 0) {
-                                      addFrame(frame, opacity, Next);
-                                  }
+                                 QString frameLater = "";
+                                 for (int frameIndex = photogram+1; frameIndex <= limit; frameIndex++) {
+                                      TupFrame * frame = layer->frame(frameIndex);
+                                      QString nextFrame = frame->frameName();
+                                      if (frame && nextFrame.compare(currentFrame) != 0 
+                                                && frameLater.compare(nextFrame) != 0) {
+                                          addFrame(frame, opacity, Next);
+                                      }
                       
-                                  frameLater = nextFrame;
-                                  opacity -= opacityFactor;
+                                      frameLater = nextFrame;
+                                      opacity -= opacityFactor;
+                                 }
                              }
                          }
 
@@ -312,11 +315,15 @@ void TupGraphicsScene::drawBackground()
 
     TupBackground *bg = k->scene->background();
     if (bg) {
-        if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION || k->spaceMode == TupProject::FRAMES_EDITION) {
-            TupFrame *frame = bg->dynamicFrame(k->framePosition.frame);
+        if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+            TupFrame *frame = bg->dynamicFrame();
             if (frame)
                 addFrame(frame, 1.0);
-        } 
+        } else if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                   /* SQA: Call the background function to get the dynamic frame calculated for that specific frame
+                      QImage *image = bg->dynamicView(int frameIndex);
+                    */
+        }
 
         if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION || k->spaceMode == TupProject::FRAMES_EDITION) {
             TupFrame *frame = bg->staticFrame();
@@ -1202,7 +1209,7 @@ void TupGraphicsScene::includeObject(QGraphicsItem *object)
                     addItem(object);
                 }
             } else if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                       TupFrame *frame = bg->dynamicFrame(k->framePosition.frame);
+                       TupFrame *frame = bg->dynamicFrame();
                        if (frame) {
                            int zLevel = frame->getTopZLevel();
                            object->setZValue(zLevel);

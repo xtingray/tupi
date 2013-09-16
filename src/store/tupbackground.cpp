@@ -39,11 +39,11 @@
 
 TupBackground::TupBackground(TupScene *parent) : QObject(parent)
 {
-    displacement = None;
-    delta = 0;
-
     dynamicBg = new TupFrame(this);
     dynamicBg->setFrameName("landscape_dynamic");
+    dynamicBg->setDynamicFlag(true);
+    dynamicBg->setDynamicDirection("0");
+    dynamicBg->setDynamicShift("5");
 
     staticBg = new TupFrame(this);
     staticBg->setFrameName("landscape_static");
@@ -89,6 +89,7 @@ void TupBackground::fromXml(const QString &xml)
                } else if (type == "landscape_dynamic") {
                           dynamicBg = new TupFrame(this);
                           dynamicBg->setFrameName("landscape_dynamic");
+                          dynamicBg->setDynamicFlag(true);
 
                           if (dynamicBg) {
                               QString newDoc;
@@ -127,14 +128,34 @@ TupFrame *TupBackground::staticFrame()
     return staticBg;
 }
 
-TupFrame* TupBackground::dynamicFrame(int frameIndex)
+TupFrame* TupBackground::dynamicFrame()
 {
     return dynamicBg;
 }
 
-void TupBackground::setProperties(Direction directionFlag, int deltaFlag)
+QImage* TupBackground::dynamicView(int frameIndex)
 {
-    displacement = directionFlag;
-    delta = deltaFlag;
+    QImage *view = new QImage(); 
+    return view;
+}
+
+void TupBackground::setDyanmicDirection(int direction)
+{
+    dynamicBg->setDynamicDirection(QString::number(direction));
+}
+
+void TupBackground::setDyanmicShift(int shift)
+{
+    dynamicBg->setDynamicShift(QString::number(shift));
+}
+
+int TupBackground::dyanmicDirection()
+{
+    return dynamicBg->dynamicDirection();
+}
+
+int TupBackground::dyanmicShift()
+{
+    return dynamicBg->dynamicShift();
 }
 
