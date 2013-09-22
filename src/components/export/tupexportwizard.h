@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TEXPORTWIZARD_H
-#define TEXPORTWIZARD_H
+#ifndef TUPEXPORTWIZARD_H
+#define TUPEXPORTWIZARD_H
 
 #include "tvhbox.h"
 #include "tglobal.h"
@@ -46,22 +46,22 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 
-class TExportWizardPage;
+class TupExportWizardPage;
 
 /**
  * @author David Cuadrado
 */
 
-class T_GUI_EXPORT TExportWizard : public QDialog
+class TupExportWizard : public QDialog
 {
     Q_OBJECT
 
     public:
-        TExportWizard(QWidget *parent = 0);
-        ~TExportWizard();
-        TExportWizardPage *addPage(TExportWizardPage *page);
+        TupExportWizard(QWidget *parent = 0);
+        ~TupExportWizard();
+        TupExportWizardPage *addPage(TupExportWizardPage *page);
         void showPage(int index);
-        void showPage(TExportWizardPage *page);
+        void showPage(TupExportWizardPage *page);
 
     private slots:
         void cancel();
@@ -94,13 +94,13 @@ class T_GUI_EXPORT TExportWizard : public QDialog
 #include <QGridLayout>
 #include <QLabel>
 
-class TExportWizardPage : public TVHBox
+class TupExportWizardPage : public TVHBox
 {
     Q_OBJECT
 
     public:
-        TExportWizardPage(const QString &title, QWidget *parent = 0);
-        virtual ~TExportWizardPage();
+        TupExportWizardPage(const QString &title, QWidget *parent = 0);
+        virtual ~TupExportWizardPage();
         virtual bool isComplete() const = 0;
         virtual void reset() = 0;
 

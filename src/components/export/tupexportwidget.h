@@ -39,7 +39,7 @@
 #include "tupmodulewidgetbase.h"
 #include "tupproject.h"
 #include "tupexportpluginobject.h"
-#include "texportwizard.h"
+#include "tupexportwizard.h"
 
 #include <QListWidget>
 #include <QHash>
@@ -55,7 +55,7 @@ class VideoProperties;
  * @author David Cuadrado
 */
 
-class TupExportWidget : public TExportWizard
+class TupExportWidget : public TupExportWizard
 {
     Q_OBJECT
 

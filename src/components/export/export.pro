@@ -10,8 +10,11 @@ macx {
     CONFIG += staticlib warn_on
 }
 
-HEADERS += tupexportwidget.h 
-SOURCES += tupexportwidget.cpp
+HEADERS += tupexportwizard.h \
+           tupexportwidget.h 
+
+SOURCES += tupexportwizard.cpp \
+           tupexportwidget.cpp
 
 *:!macx{
     CONFIG += dll warn_on

@@ -64,7 +64,7 @@
  * @author David Cuadrado
 */
 
-class SelectPlugin : public TExportWizardPage
+class SelectPlugin : public TupExportWizardPage
 {
     Q_OBJECT
 
@@ -87,7 +87,9 @@ class SelectPlugin : public TExportWizardPage
 
     signals:
         void selectedPlugin(const QString &plugin);
-        void formatSelected(int format, const QString &extension);
+        void animationFormatSelected(int format, const QString &extension);
+        void animatedImageFormatSelected(int format, const QString &extension);
+        void imagesArrayFormatSelected(int format, const QString &extension);
 
     private:
         QListWidget *m_exporterList;
@@ -95,7 +97,7 @@ class SelectPlugin : public TExportWizardPage
         const char* getFormatExtension(const QString format);
 };
 
-SelectPlugin::SelectPlugin() : TExportWizardPage(tr("Select plugin"))
+SelectPlugin::SelectPlugin() : TupExportWizardPage(tr("Select plugin"))
 {
     setTag("PLUGIN");
     QWidget *container = new QWidget;
@@ -271,7 +273,21 @@ void SelectPlugin::selectedFormatItem(QListWidgetItem *item)
 {
     if (item) {
         extension = getFormatExtension(item->text());
-        emit formatSelected(item->data(3124).toInt(), extension);
+        QList<QListWidgetItem *> family = m_exporterList->selectedItems();
+        QListWidgetItem *familyItem = (QListWidgetItem *) family.at(0); 
+
+        QString familyLabel = familyItem->text(); 
+
+        if (familyLabel.compare(tr("Animated Image")) == 0) {
+            emit animatedImageFormatSelected(item->data(3124).toInt(), extension);
+        } else if (familyLabel.compare(tr("Image Arrays")) == 0) {
+                   emit imagesArrayFormatSelected(item->data(3124).toInt(), extension);
+        } else { 
+            emit animationFormatSelected(item->data(3124).toInt(), extension);
+        }
+
+        // emit formatSelected(item->data(3124).toInt(), extension);
+
         emit completed();
     }
 }
@@ -281,7 +297,7 @@ const char* SelectPlugin::getFileExtension()
     return extension;
 }
 
-class SelectScenes : public TExportWizardPage
+class SelectScenes : public TupExportWizardPage
 {
     Q_OBJECT
 
@@ -307,7 +323,7 @@ class SelectScenes : public TExportWizardPage
 
 };
 
-SelectScenes::SelectScenes(const TupExportWidget *widget) : TExportWizardPage(tr("Select Scenes"))
+SelectScenes::SelectScenes(const TupExportWidget *widget) : TupExportWizardPage(tr("Select Scenes"))
 {
     setTag("SCENE");
     m_selector = new TItemSelector;
@@ -370,7 +386,7 @@ void SelectScenes::updateScenesList()
     // SQA: Pending code right over here
 }
 
-class ExportTo : public TExportWizardPage
+class ExportTo : public TupExportWizardPage
 {
     Q_OBJECT
 
@@ -404,13 +420,14 @@ class ExportTo : public TExportWizardPage
     signals:
         void saveFile();
         void exportArray();
-        void setFileName();
+        // void setFileName();
         void isDone();
 
     private:
         QList<int> m_indexes;
         TupExportInterface *m_currentExporter;
         TupExportInterface::Format m_currentFormat;
+        TupExportWidget::OutputFormat output;
 
         const TupProject *m_project;
         QLineEdit *m_filePath;
@@ -424,9 +441,10 @@ class ExportTo : public TExportWizardPage
         bool transparency;
 };
 
-ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat output, QString title, const TupExportWidget *widget) : TExportWizardPage(title), m_currentExporter(0), 
+ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outputFormat, QString title, const TupExportWidget *widget) : TupExportWizardPage(title), m_currentExporter(0), 
                    m_currentFormat(TupExportInterface::NONE), m_project(project)
 {
+    output = outputFormat;
 
     if (output == TupExportWidget::Animation) {
         setTag("ANIMATION");
@@ -451,7 +469,8 @@ ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outp
 
     if (output == TupExportWidget::ImagesArray) {
         filePathLayout->addWidget(new QLabel(tr("Directory: ")));
-    } else if (output == TupExportWidget::Animation) {
+    // } else if (output == TupExportWidget::Animation || output == TupExportWidget::AnimatedImage) {
+    } else {
         filePathLayout->addWidget(new QLabel(tr("File: ")));
     }
 
@@ -461,28 +480,31 @@ ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outp
 
     connect(m_filePath, SIGNAL(textChanged (const QString &)), this, SLOT(updateState(const QString &)));
 
-    if (output == TupExportWidget::Animation)
+    if (output == TupExportWidget::Animation) {
         connect(widget, SIGNAL(exportAnimation()), this, SLOT(exportIt()));
+        connect(widget, SIGNAL(setAnimationFileName()), this, SLOT(updateNameField()));
+    }
 
-    if (output == TupExportWidget::AnimatedImage)
+    if (output == TupExportWidget::AnimatedImage) {
         connect(widget, SIGNAL(exportAnimatedImage()), this, SLOT(exportIt()));
+        connect(widget, SIGNAL(setAnimatedImageFileName()), this, SLOT(updateNameField()));
+    }
 
     if (output == TupExportWidget::ImagesArray) {
         connect(m_prefix, SIGNAL(textChanged(const QString &)), this, SLOT(updateState(const QString &)));
         connect(widget, SIGNAL(exportImagesArray()), this, SLOT(exportIt()));
+        connect(widget, SIGNAL(setImagesArrayFileName()), this, SLOT(updateNameField()));
     } 
-
-    connect(widget, SIGNAL(setFileName()), this, SLOT(updateNameField()));
 
     filePathLayout->addWidget(m_filePath);
 
     QToolButton *button = new QToolButton;
     button->setIcon(QIcon(THEME_DIR + "icons/open.png"));
 
-    if (output != TupExportWidget::ImagesArray) {
-        connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
-    } else {
+    if (output == TupExportWidget::ImagesArray) {
         connect(button, SIGNAL(clicked()), this, SLOT(chooseDirectory()));
+    } else {
+        connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
     }
 
     filePathLayout->addWidget(button);
@@ -524,13 +546,13 @@ ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outp
 
     configureLayout->addWidget(m_size);
 
-    if (output != TupExportWidget::ImagesArray) {
+    if (output == TupExportWidget::ImagesArray) {
+        connect(bgTransparency, SIGNAL(toggled(bool)), this, SLOT(enableTransparency(bool)));
+        configureLayout->addWidget(bgTransparency);
+    } else {
         configLayout->addWidget(new QLabel(tr("FPS")));
         configLayout->addWidget(m_fps);
         configureLayout->addWidget(groupBox);
-    } else {
-        connect(bgTransparency, SIGNAL(toggled(bool)), this, SLOT(enableTransparency(bool)));
-        configureLayout->addWidget(bgTransparency);
     }
 
     configureLayout->addStretch();
@@ -547,6 +569,8 @@ ExportTo::~ExportTo()
 
 bool ExportTo::isComplete() const
 {
+    tError() << "ExportTo::isComplete() - Path: " << m_filePath->text();
+
     return !m_filePath->text().isEmpty();
 }
 
@@ -575,24 +599,29 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
     extension = value;
     filename = path;
 
+    tError() << "ExportTo::setCurrentFormat() - Format index: " << currentFormat;
+    tError() << "ExportTo::setCurrentFormat() - Format interface: " << m_currentFormat;
+    tError() << "ExportTo::setCurrentFormat() - Path: " << path;
+
 #if defined(Q_OS_UNIX)
 
-    if (m_currentFormat == TupExportInterface::APNG) {
+    if (m_currentFormat == TupExportInterface::APNG || (m_currentFormat != TupExportInterface::PNG && m_currentFormat != TupExportInterface::JPEG)) { // Animated Image or Animation
+
         if (!filename.endsWith(QDir::separator()))
             filename += QDir::separator();
 
         filename += m_project->projectName();
         filename += extension;
-    }
 
-    if ((extension.compare(".jpg") != 0) && (extension.compare(".png") != 0)) {
-        if (!filename.endsWith(QDir::separator()))
-            filename += QDir::separator();
+        tError() << "ExportTo::setCurrentFormat() - Setting filename for Video/Animated Image: " << filename; 
 
-        filename += m_project->projectName();
-        filename += extension;
-    } else {
-        if (extension.compare(".jpg") == 0) {
+    } else { // Images Array
+
+        tError() << "ExportTo::setCurrentFormat() - Setting UI for Images Array";
+
+        filename = getenv("HOME");
+
+        if (extension.compare(".jpg") == 0) { 
             if (bgTransparency->isEnabled())
                 bgTransparency->setEnabled(false);
         } else {
@@ -601,6 +630,7 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
         }
     } 
 
+    tError() << "ExportTo::setCurrentFormat() - filename: " << filename;
     m_filePath->setText(filename);
 
 #endif
@@ -608,7 +638,14 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 
 void ExportTo::updateNameField()
 {
-   m_filePath->setText(filename);
+   tError() << "ExportTo::updateNameField() - Calling!!!";
+
+   if (filename.length() > 0) {
+       tError() << "ExportTo::updateNameField() - path: " << filename;
+       m_filePath->setText(filename);
+   } else {
+       tError() << "ExportTo::updateNameField() - empty path: " << filename;
+   }
 }
 
 void ExportTo::enableTransparency(bool flag)
@@ -627,6 +664,7 @@ void ExportTo::chooseFile()
         if (!filename.toLower().endsWith(extension)) 
             filename += extension;
 
+        tError() << "ExportTo::chooseFile() - Setting filename: " << filename;
         m_filePath->setText(filename);
     }
 }
@@ -638,12 +676,16 @@ void ExportTo::chooseDirectory()
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
 
-    if (filename.length() > 0)
+    if (filename.length() > 0) {
+        tError() << "ExportTo::chooseDirectory() - Setting directory: " << filename;
         m_filePath->setText(filename);
+    }
 }
 
 void ExportTo::updateState(const QString &name)
 {
+    tError() << "ExportTo::updateState() - name: " << name;
+
     if (name.length() > 0) 
         emit completed();
     else
@@ -677,6 +719,12 @@ void ExportTo::exportIt()
     } else { // Animation or Animated Image
 
         filename = m_filePath->text();
+        tError() << "ExportTo::exportIt() - filename: " << filename; 
+
+        if (filename.length() == 0) {
+        TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" doesn't exist! Please, choose another path."), TOsd::Error);
+        return;
+        }
 
         int indexPath = filename.lastIndexOf(QDir::separator());
         int indexFile = filename.length() - indexPath;
@@ -772,7 +820,7 @@ QList<TupScene *> ExportTo::scenesToExport() const
     return scenes;
 }
 
-class VideoProperties : public TExportWizardPage
+class VideoProperties : public TupExportWizardPage
 {
     Q_OBJECT
 
@@ -807,7 +855,7 @@ class VideoProperties : public TExportWizardPage
         bool isOk;
 };
 
-VideoProperties::VideoProperties(const TupExportWidget *widget) : TExportWizardPage(tr("Set Animation Properties"))
+VideoProperties::VideoProperties(const TupExportWidget *widget) : TupExportWizardPage(tr("Set Animation Properties"))
 {
     setTag("PROPERTIES");
 
@@ -949,7 +997,7 @@ TupExportWidget::Format VideoProperties::workType()
 }
 */
 
-TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, bool isLocal) : TExportWizard(parent), m_project(project)
+TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, bool isLocal) : TupExportWizard(parent), m_project(project)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -976,9 +1024,9 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
         addPage(m_exportAnimatedImage);
 
         connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
-        connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportAnimation, SLOT(setCurrentFormat(int, const QString &)));
-        connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportImagesArray, SLOT(setCurrentFormat(int, const QString &)));
-        connect(m_pluginSelectionPage, SIGNAL(formatSelected(int, const QString &)), m_exportAnimatedImage, SLOT(setCurrentFormat(int, const QString &)));
+        connect(m_pluginSelectionPage, SIGNAL(animationFormatSelected(int, const QString &)), m_exportAnimation, SLOT(setCurrentFormat(int, const QString &)));
+        connect(m_pluginSelectionPage, SIGNAL(imagesArrayFormatSelected(int, const QString &)), m_exportImagesArray, SLOT(setCurrentFormat(int, const QString &)));
+        connect(m_pluginSelectionPage, SIGNAL(animatedImageFormatSelected(int, const QString &)), m_exportAnimatedImage, SLOT(setCurrentFormat(int, const QString &)));
 
         connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportAnimation, SLOT(setScenesIndexes(const QList<int> &)));
         connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportImagesArray, SLOT(setScenesIndexes(const QList<int> &)));
@@ -1025,6 +1073,7 @@ void TupExportWidget::loadPlugins()
                          index = 2;
                      if (exporter->key().compare(tr("Animated Image")) == 0)
                          index = 3;
+
                      pluginList.insert(index, exporter);
                  } else {
                      #ifdef K_DEBUG
@@ -1046,8 +1095,19 @@ void TupExportWidget::setExporter(const QString &plugin)
     if (m_plugins.contains(plugin)) {
         TupExportInterface* currentExporter = m_plugins[plugin];
         m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
-        m_exportAnimation->setCurrentExporter(currentExporter);
+
+        if (currentExporter) {
+            tError() << "TupExportWidget::setExporter() - Setting plugin: " << plugin;
+            m_exportAnimation->setCurrentExporter(currentExporter);
+        } else {
+            tError() << "TupExportWidget::setExporter() - Blow me!";
+        }
+
         m_exportImagesArray->setCurrentExporter(currentExporter);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupExportWidget::setExporter() - [ Fatal Error ] - Can't load export plugin";
+        #endif
     }
 }
 

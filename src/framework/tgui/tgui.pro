@@ -75,7 +75,7 @@ HEADERS += taction.h \
            twaitstyle.h \
            twidgetlistview.h \
            twizard.h \
-           texportwizard.h \
+           # texportwizard.h \
            tworkspacemainwindow.h \
            txyspinbox.h \
            tcolorarrow.xpm \
@@ -133,7 +133,7 @@ SOURCES += taction.cpp \
            twaitstyle.cpp \
            twidgetlistview.cpp \
            twizard.cpp \
-           texportwizard.cpp \
+           # texportwizard.cpp \
            tworkspacemainwindow.cpp \
            txyspinbox.cpp
 
@@ -145,7 +145,7 @@ TEMPLATE = lib
 TARGET = tupifwgui
 QT += xml opengl
 
-INCLUDEPATH += ../tcore ../
+INCLUDEPATH += ../tcore ../ ../../libbase
 
 RESOURCES += tgui_images.qrc
 

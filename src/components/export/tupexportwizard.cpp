@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "texportwizard.h"
+#include "tupexportwizard.h"
 #include "tvhbox.h"
 #include "tseparator.h"
 #include "tdebug.h"
@@ -43,7 +43,7 @@
 #include <QBitmap>
 #include <QDebug>
 
-struct TExportWizard::Private
+struct TupExportWizard::Private
 {
     QStackedWidget *history;
     QPushButton *cancelButton;
@@ -55,7 +55,7 @@ struct TExportWizard::Private
     int formatCode;
 };
 
-TExportWizard::TExportWizard(QWidget *parent) : QDialog(parent), k(new Private)
+TupExportWizard::TupExportWizard(QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
 
@@ -81,11 +81,11 @@ TExportWizard::TExportWizard(QWidget *parent) : QDialog(parent), k(new Private)
     setLayout(k->mainLayout);
 }
 
-TExportWizard::~TExportWizard()
+TupExportWizard::~TupExportWizard()
 {
 }
 
-TExportWizardPage *TExportWizard::addPage(TExportWizardPage *newPage)
+TupExportWizardPage *TupExportWizard::addPage(TupExportWizardPage *newPage)
 {
     QString tag = newPage->getTag();
     newPage->setParent(k->history);
@@ -117,24 +117,24 @@ TExportWizardPage *TExportWizard::addPage(TExportWizardPage *newPage)
     return newPage;
 }
 
-void TExportWizard::showPage(TExportWizardPage *page)
+void TupExportWizard::showPage(TupExportWizardPage *page)
 {
     k->history->setCurrentWidget(page);
 }
 
-void TExportWizard::showPage(int index)
+void TupExportWizard::showPage(int index)
 {
     k->history->setCurrentIndex(index);
 }
 
-void TExportWizard::cancel()
+void TupExportWizard::cancel()
 {       
     close();
 }
 
-void TExportWizard::back()
+void TupExportWizard::back()
 {
-    TExportWizardPage *current = qobject_cast<TExportWizardPage *>(k->history->currentWidget());
+    TupExportWizardPage *current = qobject_cast<TupExportWizardPage *>(k->history->currentWidget());
     QString tag = current->getTag();
 
     if (current)
@@ -157,9 +157,9 @@ void TExportWizard::back()
         k->nextButton->setText(tr("Next"));
 }
 
-void TExportWizard::next()
+void TupExportWizard::next()
 {
-    TExportWizardPage *current = qobject_cast<TExportWizardPage *>(k->history->currentWidget());
+    TupExportWizardPage *current = qobject_cast<TupExportWizardPage *>(k->history->currentWidget());
 
     if (current)
         current->aboutToNextPage();
@@ -187,18 +187,18 @@ void TExportWizard::next()
         k->nextButton->setText(tr("Export")); 
         k->backButton->setEnabled(true);
 
-        tError() << "TExportWizard::next() - formatCode: " << k->formatCode;
+        tError() << "TupExportWizard::next() - formatCode: " << k->formatCode;
 
         if (k->formatCode == 4096) { // ANIMATED PNG
-            tError() << "TExportWizard::next() - Calling signal for Animated PNG! - setAnimatedImageFileName()";
+            tError() << "TupExportWizard::next() - Calling signal for Animated PNG! - setAnimatedImageFileName()";
             emit setAnimatedImageFileName();
             k->history->setCurrentIndex(k->history->currentIndex()+3);
         } else if (k->format.compare(".jpg") == 0 || k->format.compare(".png") == 0) { // IMAGES ARRAY
-                   tError() << "TExportWizard::next() - Calling signal for Images Array! - setImagesArrayFileName()";
+                   tError() << "TupExportWizard::next() - Calling signal for Images Array! - setImagesArrayFileName()";
                    emit setImagesArrayFileName();
                    k->history->setCurrentIndex(k->history->currentIndex()+2);
         } else {
-            tError() << "TExportWizard::next() - Calling signal for Animation! - setAnimationFileName()";
+            tError() << "TupExportWizard::next() - Calling signal for Animation! - setAnimationFileName()";
             emit setAnimationFileName();
             k->history->setCurrentIndex(k->history->currentIndex()+1); // ANIMATION 
         }
@@ -207,9 +207,9 @@ void TExportWizard::next()
     pageCompleted();
 }
 
-void TExportWizard::pageCompleted()
+void TupExportWizard::pageCompleted()
 {
-    TExportWizardPage *current = qobject_cast<TExportWizardPage *>(k->history->currentWidget());
+    TupExportWizardPage *current = qobject_cast<TupExportWizardPage *>(k->history->currentWidget());
     QString tag = current->getTag();
 
     if (tag.compare("SCENE") == 0 || tag.compare("PLUGIN") == 0) {
@@ -226,27 +226,27 @@ void TExportWizard::pageCompleted()
         emit updateScenes();
 }
 
-void TExportWizard::disableButton() 
+void TupExportWizard::disableButton() 
 {
     if (k->nextButton->isEnabled())
         k->nextButton->setEnabled(false);
 }
 
-void TExportWizard::closeDialog()
+void TupExportWizard::closeDialog()
 {
     close();
 }
 
-void TExportWizard::setFormat(int code, const QString &extension)
+void TupExportWizard::setFormat(int code, const QString &extension)
 {
-    tError() << "TExportWizard::setFormat() - Setting code: " << code;
-    tError() << "TExportWizard::setFormat() - Setting extension: " << extension;
+    tError() << "TupExportWizard::setFormat() - Setting code: " << code;
+    tError() << "TupExportWizard::setFormat() - Setting extension: " << extension;
 
     k->formatCode = code;
     k->format = extension;
 }
 
-struct TExportWizardPage::Private
+struct TupExportWizardPage::Private
 {
     QFrame *container;
     QGridLayout *layout;
@@ -254,7 +254,7 @@ struct TExportWizardPage::Private
     QString tag;
 };
 
-TExportWizardPage::TExportWizardPage(const QString &title, QWidget *parent) : TVHBox(parent), k(new Private)
+TupExportWizardPage::TupExportWizardPage(const QString &title, QWidget *parent) : TVHBox(parent), k(new Private)
 {
     TVHBox *boxTitle = new TVHBox(this, Qt::Vertical);
     new QLabel(title, boxTitle);
@@ -273,25 +273,25 @@ TExportWizardPage::TExportWizardPage(const QString &title, QWidget *parent) : TV
     hide();
 }
 
-void TExportWizardPage::setPixmap(const QPixmap &px)
+void TupExportWizardPage::setPixmap(const QPixmap &px)
 {
     k->image->setPixmap(px);
     k->image->show();
 }
 
-void TExportWizardPage::setWidget(QWidget *w)
+void TupExportWizardPage::setWidget(QWidget *w)
 {
     k->layout->addWidget(w, 0, 1);
 }
 
-void TExportWizardPage::setTag(const QString &label)
+void TupExportWizardPage::setTag(const QString &label)
 {
     k->tag = label;
 }
 
-const QString TExportWizardPage::getTag()
+const QString TupExportWizardPage::getTag()
 {
     return k->tag;
 }
 
-TExportWizardPage::~TExportWizardPage() {};
+TupExportWizardPage::~TupExportWizardPage() {};
