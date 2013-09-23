@@ -187,18 +187,13 @@ void TupExportWizard::next()
         k->nextButton->setText(tr("Export")); 
         k->backButton->setEnabled(true);
 
-        tError() << "TupExportWizard::next() - formatCode: " << k->formatCode;
-
         if (k->formatCode == 4096) { // ANIMATED PNG
-            tError() << "TupExportWizard::next() - Calling signal for Animated PNG! - setAnimatedImageFileName()";
             emit setAnimatedImageFileName();
             k->history->setCurrentIndex(k->history->currentIndex()+3);
         } else if (k->format.compare(".jpg") == 0 || k->format.compare(".png") == 0) { // IMAGES ARRAY
-                   tError() << "TupExportWizard::next() - Calling signal for Images Array! - setImagesArrayFileName()";
                    emit setImagesArrayFileName();
                    k->history->setCurrentIndex(k->history->currentIndex()+2);
         } else {
-            tError() << "TupExportWizard::next() - Calling signal for Animation! - setAnimationFileName()";
             emit setAnimationFileName();
             k->history->setCurrentIndex(k->history->currentIndex()+1); // ANIMATION 
         }
@@ -239,9 +234,6 @@ void TupExportWizard::closeDialog()
 
 void TupExportWizard::setFormat(int code, const QString &extension)
 {
-    tError() << "TupExportWizard::setFormat() - Setting code: " << code;
-    tError() << "TupExportWizard::setFormat() - Setting extension: " << extension;
-
     k->formatCode = code;
     k->format = extension;
 }

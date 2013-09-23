@@ -217,6 +217,7 @@ void SelectPlugin::setFormats(TupExportInterface::Formats formats)
     if (formats & TupExportInterface::APNG) {
         QListWidgetItem *format = new QListWidgetItem(tr("Animated PNG (APNG)"), m_formatList);
         format->setData(3124, TupExportInterface::APNG);
+        format->setFlags(Qt::NoItemFlags);
     }
 
     if (formats & TupExportInterface::SMIL) {
@@ -612,7 +613,9 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 
         filename = getenv("HOME");
 
-        // if (extension.compare(".jpg") == 0) { 
+        // SQA: This code has been disabled temporary
+        bgTransparency->setEnabled(false);
+        /*
         if (m_currentFormat == TupExportInterface::JPEG) {
             if (bgTransparency->isEnabled())
                 bgTransparency->setEnabled(false);
@@ -620,6 +623,7 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
             if (!bgTransparency->isEnabled())
                 bgTransparency->setEnabled(true);
         }
+        */
     } 
 
     m_filePath->setText(filename);
