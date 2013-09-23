@@ -75,7 +75,6 @@ HEADERS += taction.h \
            twaitstyle.h \
            twidgetlistview.h \
            twizard.h \
-           # texportwizard.h \
            tworkspacemainwindow.h \
            txyspinbox.h \
            tcolorarrow.xpm \
@@ -133,7 +132,6 @@ SOURCES += taction.cpp \
            twaitstyle.cpp \
            twidgetlistview.cpp \
            twizard.cpp \
-           # texportwizard.cpp \
            tworkspacemainwindow.cpp \
            txyspinbox.cpp
 

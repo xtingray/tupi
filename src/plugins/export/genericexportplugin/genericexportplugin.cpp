@@ -92,9 +92,9 @@ bool GenericExportPlugin::exportToFormat(const QColor bgColor, const QString &fi
                  break;
     }
 
-    QColor color = bgColor;
-    color.setAlpha(255);
-    TupAnimationRenderer renderer(color);
+    // QColor color = bgColor;
+    // color.setAlpha(255);
+    TupAnimationRenderer renderer(bgColor);
 
     foreach (TupScene *scene, scenes) {
              renderer.setScene(scene, size);

@@ -445,6 +445,7 @@ ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outp
                    m_currentFormat(TupExportInterface::NONE), m_project(project)
 {
     output = outputFormat;
+    transparency = false;
 
     if (output == TupExportWidget::Animation) {
         setTag("ANIMATION");
@@ -454,7 +455,7 @@ ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outp
         setTag("ANIMATED_IMAGE");
     }
 
-    bgTransparency = new QCheckBox(tr("Enable transparency"));
+    bgTransparency = new QCheckBox(tr("Enable background transparency"));
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
@@ -569,8 +570,6 @@ ExportTo::~ExportTo()
 
 bool ExportTo::isComplete() const
 {
-    tError() << "ExportTo::isComplete() - Path: " << m_filePath->text();
-
     return !m_filePath->text().isEmpty();
 }
 
@@ -599,10 +598,6 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
     extension = value;
     filename = path;
 
-    tError() << "ExportTo::setCurrentFormat() - Format index: " << currentFormat;
-    tError() << "ExportTo::setCurrentFormat() - Format interface: " << m_currentFormat;
-    tError() << "ExportTo::setCurrentFormat() - Path: " << path;
-
 #if defined(Q_OS_UNIX)
 
     if (m_currentFormat == TupExportInterface::APNG || (m_currentFormat != TupExportInterface::PNG && m_currentFormat != TupExportInterface::JPEG)) { // Animated Image or Animation
@@ -613,15 +608,12 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
         filename += m_project->projectName();
         filename += extension;
 
-        tError() << "ExportTo::setCurrentFormat() - Setting filename for Video/Animated Image: " << filename; 
-
     } else { // Images Array
-
-        tError() << "ExportTo::setCurrentFormat() - Setting UI for Images Array";
 
         filename = getenv("HOME");
 
-        if (extension.compare(".jpg") == 0) { 
+        // if (extension.compare(".jpg") == 0) { 
+        if (m_currentFormat == TupExportInterface::JPEG) {
             if (bgTransparency->isEnabled())
                 bgTransparency->setEnabled(false);
         } else {
@@ -630,7 +622,6 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
         }
     } 
 
-    tError() << "ExportTo::setCurrentFormat() - filename: " << filename;
     m_filePath->setText(filename);
 
 #endif
@@ -638,14 +629,9 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 
 void ExportTo::updateNameField()
 {
-   tError() << "ExportTo::updateNameField() - Calling!!!";
-
    if (filename.length() > 0) {
-       tError() << "ExportTo::updateNameField() - path: " << filename;
        m_filePath->setText(filename);
-   } else {
-       tError() << "ExportTo::updateNameField() - empty path: " << filename;
-   }
+   } 
 }
 
 void ExportTo::enableTransparency(bool flag)
@@ -664,7 +650,6 @@ void ExportTo::chooseFile()
         if (!filename.toLower().endsWith(extension)) 
             filename += extension;
 
-        tError() << "ExportTo::chooseFile() - Setting filename: " << filename;
         m_filePath->setText(filename);
     }
 }
@@ -676,16 +661,13 @@ void ExportTo::chooseDirectory()
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
 
-    if (filename.length() > 0) {
-        tError() << "ExportTo::chooseDirectory() - Setting directory: " << filename;
+    if (filename.length() > 0)
         m_filePath->setText(filename);
-    }
+    
 }
 
 void ExportTo::updateState(const QString &name)
 {
-    tError() << "ExportTo::updateState() - name: " << name;
-
     if (name.length() > 0) 
         emit completed();
     else
@@ -719,11 +701,10 @@ void ExportTo::exportIt()
     } else { // Animation or Animated Image
 
         filename = m_filePath->text();
-        tError() << "ExportTo::exportIt() - filename: " << filename; 
 
         if (filename.length() == 0) {
-        TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" doesn't exist! Please, choose another path."), TOsd::Error);
-        return;
+            TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" doesn't exist! Please, choose another path."), TOsd::Error);
+            return;
         }
 
         int indexPath = filename.lastIndexOf(QDir::separator());
@@ -789,8 +770,12 @@ void ExportTo::exportIt()
                 height++;
 
             QColor color = m_project->bgColor();
-            if (transparency)
-                color.setAlpha(0);
+            if (m_currentFormat == TupExportInterface::PNG) {
+                if (transparency)
+                    color.setAlpha(0);
+                else
+                    color.setAlpha(255);
+            }
 
             done = m_currentExporter->exportToFormat(color, filename, scenes, m_currentFormat, 
                                                      QSize(width, height), m_fps->value());
@@ -1096,12 +1081,8 @@ void TupExportWidget::setExporter(const QString &plugin)
         TupExportInterface* currentExporter = m_plugins[plugin];
         m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
 
-        if (currentExporter) {
-            tError() << "TupExportWidget::setExporter() - Setting plugin: " << plugin;
+        if (currentExporter)
             m_exportAnimation->setCurrentExporter(currentExporter);
-        } else {
-            tError() << "TupExportWidget::setExporter() - Blow me!";
-        }
 
         m_exportImagesArray->setCurrentExporter(currentExporter);
     } else {
