@@ -249,7 +249,8 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
 
                          // valid = true;
                          // k->layerCounter = i;
-                         addFrame(mainFrame, TupGraphicsScene::Current);
+                         // addFrame(mainFrame, Current);
+                         addFrame(mainFrame);
 
                          // Painting next frames
                          if (drawContext) {

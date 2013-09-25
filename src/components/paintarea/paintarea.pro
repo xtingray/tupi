@@ -31,7 +31,8 @@ HEADERS += tuppaintarea.h \
            tupexposurescene.h \
            tuptoolsdialog.h \
            tupinfowidget.h \
-           tupiruler.h
+           tupiruler.h \
+           tupbackgroundscene.h
 
 SOURCES += tuppaintarea.cpp \
            tupconfigurationarea.cpp \
@@ -54,7 +55,8 @@ SOURCES += tuppaintarea.cpp \
            tupexposurescene.cpp \
            tuptoolsdialog.cpp \
            tupinfowidget.cpp \
-           tupiruler.cpp
+           tupiruler.cpp \
+           tupbackgroundscene.cpp
 
 *:!macx{
     CONFIG += dll warn_on
