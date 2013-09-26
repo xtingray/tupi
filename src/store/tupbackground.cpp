@@ -35,10 +35,13 @@
 
 #include "tupbackground.h"
 #include "tupserializer.h"
+#include "tupbackgroundscene.h"
 #include "tdebug.h"
 
-TupBackground::TupBackground(TupScene *parent) : QObject(parent)
+TupBackground::TupBackground(TupScene *parent, const QSize size, const QColor color) : QObject(parent)
 {
+    dimension = size;
+    bgColor = color;
     dynamicBg = new TupFrame(this);
     dynamicBg->setFrameName("landscape_dynamic");
     dynamicBg->setDynamicFlag(true);
@@ -51,6 +54,11 @@ TupBackground::TupBackground(TupScene *parent) : QObject(parent)
 
 TupBackground::~TupBackground()
 {
+}
+
+void TupBackground::setBgColor(const QColor color)
+{
+    bgColor = color;
 }
 
 void TupBackground::fromXml(const QString &xml)
@@ -100,6 +108,9 @@ void TupBackground::fromXml(const QString &xml)
                               }
 
                               dynamicBg->fromXml(newDoc);
+                              if (!dynamicBg->isEmpty()) {
+                                  renderDynamicView();
+                              }
                           }
                } else {
                    #ifdef K_DEBUG
@@ -133,10 +144,60 @@ TupFrame* TupBackground::dynamicFrame()
     return dynamicBg;
 }
 
-QImage* TupBackground::dynamicView(int frameIndex)
+void TupBackground::renderDynamicView()
 {
-    QImage *view = new QImage(); 
+    TupBackgroundScene bgScene(dimension, bgColor, dynamicBg);
+    QImage image(dimension, QImage::Format_ARGB32);
+    {
+        QPainter painter(&image);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        bgScene.renderView(&painter);
+    }
+
+    int width = dimension.width();
+    int height = dimension.height();
+    int posX = 0;
+    int posY = 0;
+
+    TupBackground::Direction direction = dynamicBg->dynamicDirection();
+    switch (direction) {
+            case TupBackground::Left2Right:
+            case TupBackground::Right2Left:
+            {
+                 posX = width;
+                 width *= 2;
+            }
+            break;
+            case TupBackground::Top2Bottom:
+            case TupBackground::Bottom2Top:
+            {
+                 posY = height;
+                 height *= 2;
+            }
+            break;
+    }
+
+    QImage background(width, height, QImage::Format_ARGB32);
+    QPainter canvas(&background);
+    canvas.drawImage(0, 0, image);
+    canvas.drawImage(posX, posY, image);
+    setDynamicRaster(background);
+}
+
+QImage TupBackground::dynamicView(int frameIndex)
+{
+    QImage view = QImage(); 
     return view;
+}
+
+void TupBackground::setDynamicRaster(QImage bg)
+{
+    raster = bg;
+}
+
+QImage TupBackground::dynamicRaster()
+{
+    return raster;
 }
 
 void TupBackground::setDyanmicDirection(int direction)
@@ -149,7 +210,7 @@ void TupBackground::setDyanmicShift(int shift)
     dynamicBg->setDynamicShift(QString::number(shift));
 }
 
-int TupBackground::dyanmicDirection()
+TupBackground::Direction TupBackground::dyanmicDirection()
 {
     return dynamicBg->dynamicDirection();
 }

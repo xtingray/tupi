@@ -141,9 +141,9 @@ void TupFrame::setDynamicShift(const QString &shift)
     k->shift = shift;
 }
 
-int TupFrame::dynamicDirection() const
+TupBackground::Direction TupFrame::dynamicDirection() const
 {
-    return k->direction.toInt();
+    return TupBackground::Direction(k->direction.toInt());
 }
 
 int TupFrame::dynamicShift() const

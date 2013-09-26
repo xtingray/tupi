@@ -1542,5 +1542,13 @@ void TupViewDocument::updateBackgroundShiftProperty(int shift)
 
 void TupViewDocument::renderDynamicBackground()
 {
-   tError() << "TupViewDocument::renderDynamicBackground() - Tracing..."; 
+   int sceneIndex = k->paintArea->currentSceneIndex();
+   TupScene *scene = k->project->scene(sceneIndex); 
+
+   if (scene) {
+       TupBackground *bg = scene->background();
+       if (bg) {
+           bg->renderDynamicView();
+       }
+   }
 }

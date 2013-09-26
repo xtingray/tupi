@@ -51,24 +51,31 @@ class STORE_EXPORT TupBackground : public QObject, public TupAbstractSerializabl
     Q_OBJECT
 
     public:
-        TupBackground(TupScene *parent);
+        enum Direction { Left2Right = 0, Right2Left = 1, Top2Bottom, Bottom2Top };
+        TupBackground(TupScene *parent, const QSize dimension, const QColor bgColor);
         ~TupBackground();
 
-    public:
+        void setBgColor(const QColor color);
         TupFrame* staticFrame();
         TupFrame* dynamicFrame(); 
-        QImage* dynamicView(int frameIndex);
+        void renderDynamicView();
+        QImage dynamicView(int frameIndex);
         void setDyanmicDirection(int direction);
         void setDyanmicShift(int shift);
-        int dyanmicDirection();
+        Direction dyanmicDirection();
         int dyanmicShift();
+        void setDynamicRaster(QImage bg);
+        QImage dynamicRaster();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
 
     private:
+        QSize dimension;
+        QColor bgColor;
         TupFrame *staticBg;
         TupFrame *dynamicBg;
+        QImage raster;
 };
 
 #endif

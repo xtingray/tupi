@@ -75,7 +75,7 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
         /**
           * Default Constructor
           */
-        TupScene(TupProject *parent);
+        TupScene(TupProject *parent, const QSize dimension, const QColor bgColor);
 
         /**
           * Destructor
@@ -86,6 +86,11 @@ class STORE_EXPORT TupScene : public QObject, public TupAbstractSerializable
           * Sets scene name
           */
         void setSceneName(const QString &name);
+
+        /**
+          * Sets background color 
+          */
+        void setBgColor(const QColor bgColor);
 
         /**
           * Locks the scene

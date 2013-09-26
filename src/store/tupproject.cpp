@@ -146,6 +146,8 @@ void TupProject::setAuthor(const QString &author)
 void TupProject::setBgColor(const QColor color)
 {
     k->bgColor = color;
+    foreach (TupScene *scene, k->scenes.values())
+             scene->setBgColor(color);
 }
 
 /**
@@ -232,7 +234,7 @@ TupScene *TupProject::createScene(QString name, int position, bool loaded)
     if (position < 0 || position > k->scenes.count())
         return 0;
 
-    TupScene *scene = new TupScene(this);
+    TupScene *scene = new TupScene(this, k->dimension, k->bgColor);
 
     k->scenes.insert(position, scene);
     k->sceneCounter++;

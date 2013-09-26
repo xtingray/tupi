@@ -76,7 +76,7 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void setDynamicFlag(bool flag);
        void setDynamicDirection(const QString &direction);
        void setDynamicShift(const QString &shift);
-       int dynamicDirection() const;
+       TupBackground::Direction dynamicDirection() const;
        int dynamicShift() const;
 
        void setLocked(bool isLocked);
