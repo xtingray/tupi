@@ -258,8 +258,8 @@ bool TupViewCamera::handleProjectResponse(TupProjectResponse *response)
             {
                  #ifdef K_DEBUG
                         tError() << "TupViewCamera::handleProjectResponse() - Unknown project action: " << sceneResponse->action();
-                        return false;
                  #endif
+                 return false;
             }
             break;
         }
