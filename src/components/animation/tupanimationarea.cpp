@@ -564,6 +564,8 @@ void TupAnimationArea::updateFirstFrame()
            T_FUNCINFO;
     #endif
 
+    tError() << "TupAnimationArea::updateFirstFrame() - Current Scene Index: " << k->currentSceneIndex;
+
     if (k->currentSceneIndex > -1 && k->currentSceneIndex < k->animationList.count()) {
         TupScene *scene = k->project->scene(k->currentSceneIndex);
         if (scene) { 

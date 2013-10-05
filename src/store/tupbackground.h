@@ -37,6 +37,7 @@
 #define TUPBACKGROUND_H
 
 #include <QImage>
+#include <QPixmap>
 
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
@@ -59,13 +60,15 @@ class STORE_EXPORT TupBackground : public QObject, public TupAbstractSerializabl
         TupFrame* staticFrame();
         TupFrame* dynamicFrame(); 
         void renderDynamicView();
-        QImage dynamicView(int frameIndex);
+        QPixmap dynamicView(int frameIndex);
         void setDyanmicDirection(int direction);
         void setDyanmicShift(int shift);
         Direction dyanmicDirection();
         int dyanmicShift();
         void setDynamicRaster(QImage bg);
         QImage dynamicRaster();
+        bool dynamicBgIsEmpty();
+        bool staticBgIsEmpty();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

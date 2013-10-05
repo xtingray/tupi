@@ -145,6 +145,7 @@ struct TupViewDocument::Private
     TupToolPlugin *currentTool;
     TupPaintAreaStatus *status;
     QComboBox *spaceMode;
+    bool dynamicFlag;
 
     TupProject *project;
     QTimer *timer;
@@ -167,6 +168,7 @@ TupViewDocument::TupViewDocument(TupProject *project, QWidget *parent, bool isNe
     k->viewAngle = 0;
     k->isNetworked = isNetworked;
     k->onLineUsers = users;
+    k->dynamicFlag = false;
 
     k->actionManager = new TActionManager(this);
 
@@ -938,7 +940,7 @@ void TupViewDocument::applyFilter()
 
     if (action) {
         /*
-        SQA issue: Code to check
+        SQA issue: Pending to check this code  
         AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
         QString filter = action->text();
         
@@ -1066,17 +1068,10 @@ void TupViewDocument::createToolBar()
     // k->shiftSpin->setValue(5);
     connect(k->shiftSpin, SIGNAL(valueChanged(int)), this, SLOT(updateBackgroundShiftProperty(int)));
 
-    QPushButton *renderButton = new QPushButton(tr("&Render"));
-    connect(renderButton, SIGNAL(clicked()), this, SLOT(renderDynamicBackground()));
-
     QWidget *empty1 = new QWidget();
     empty1->setFixedWidth(5);
     QWidget *empty2 = new QWidget();
     empty2->setFixedWidth(5);
-    QWidget *empty3 = new QWidget();
-    empty3->setFixedWidth(5);
-    QWidget *empty4 = new QWidget();
-    empty4->setFixedWidth(5);
 
     k->propertiesBar->addWidget(dirLabel);
     k->propertiesBar->addWidget(k->dirCombo);
@@ -1085,10 +1080,6 @@ void TupViewDocument::createToolBar()
     k->propertiesBar->addWidget(empty2);
     k->propertiesBar->addWidget(shiftLabel);
     k->propertiesBar->addWidget(k->shiftSpin);
-    k->propertiesBar->addWidget(empty3);
-    k->propertiesBar->addSeparator();
-    k->propertiesBar->addWidget(empty4);
-    k->propertiesBar->addWidget(renderButton);
 
     k->propertiesBar->setVisible(false);
 
@@ -1216,27 +1207,35 @@ void TupViewDocument::setSpaceContext()
     int index = k->spaceMode->currentIndex();
 
     if (index == 0) {
+        if (k->dynamicFlag) {
+            k->dynamicFlag = false;
+            renderDynamicBackground();
+        }
         k->project->updateSpaceContext(TupProject::FRAMES_EDITION);
         k->propertiesBar->setVisible(false);
     } else if (index == 1) {
-             k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
-             k->propertiesBar->setVisible(false);
+               if (k->dynamicFlag) {
+                   k->dynamicFlag = false;
+                   renderDynamicBackground();
+               }
+               k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
+               k->propertiesBar->setVisible(false);
     } else if (index == 2) {
-             k->project->updateSpaceContext(TupProject::DYNAMIC_BACKGROUND_EDITION);
+               k->dynamicFlag = true;
+               k->project->updateSpaceContext(TupProject::DYNAMIC_BACKGROUND_EDITION);
 
-             int sceneIndex = k->paintArea->currentSceneIndex();
-             TupScene *scene = k->project->scene(sceneIndex);
-             if (scene) {
-                 TupBackground *bg = scene->background();
-                 if (bg) {
-                     int direction = bg->dyanmicDirection();
-                     k->dirCombo->setCurrentIndex(direction);
-                     int shift = bg->dyanmicShift();
-                     k->shiftSpin->setValue(shift);
-                 }
-             }
-
-             k->propertiesBar->setVisible(true);
+               int sceneIndex = k->paintArea->currentSceneIndex();
+               TupScene *scene = k->project->scene(sceneIndex);
+               if (scene) {
+                   TupBackground *bg = scene->background();
+                   if (bg) {
+                       int direction = bg->dyanmicDirection();
+                       k->dirCombo->setCurrentIndex(direction);
+                       int shift = bg->dyanmicShift();
+                       k->shiftSpin->setValue(shift);
+                   }
+               }
+               k->propertiesBar->setVisible(true);
     }
 
     k->paintArea->updateSpaceContext();
@@ -1288,7 +1287,10 @@ int TupViewDocument::currentFramesTotal()
 
 int TupViewDocument::currentSceneIndex()
 {
-    return k->paintArea->graphicsScene()->currentSceneIndex();
+    if (k->paintArea)
+        return k->paintArea->graphicsScene()->currentSceneIndex();
+   
+    return -1; 
 }
 
 void TupViewDocument::updateBgColor(const QColor color)
@@ -1524,6 +1526,7 @@ void TupViewDocument::setBackgroundDirection(int direction)
        TupBackground *bg = scene->background();
        if (bg) {
            bg->setDyanmicDirection(direction);
+           emit projectHasChanged();
        }
    }
 }
@@ -1536,6 +1539,7 @@ void TupViewDocument::updateBackgroundShiftProperty(int shift)
        TupBackground *bg = scene->background();
        if (bg) {
            bg->setDyanmicShift(shift);
+           emit projectHasChanged();
        }
    }
 }

@@ -158,6 +158,7 @@ class TupViewDocument : public QMainWindow
         void updatePenFromFullScreen(const QPen &pen);
         void updateStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void postStoryboard(int sceneIndex);
+        void projectHasChanged();
 
     // protected:
     // void closeEvent(QCloseEvent *e);

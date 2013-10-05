@@ -577,6 +577,13 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
                 frame = bg->staticFrame();
             else
                 return false;
+        } else if (spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+            TupBackground *bg = scene->background();
+
+            if (bg)
+                frame = bg->dynamicFrame();
+            else
+                return false;
         } else {
             #ifdef K_DEBUG
                    tError() << "TupProject::insertSymbolIntoFrame() - spaceMode invalid!";
@@ -719,6 +726,15 @@ bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Ty
                      else
                          frame->removeSvgItemFromFrame(name);
                  }
+
+                 frame = bg->dynamicFrame();
+                 if (frame) {
+                     if (type != TupLibraryObject::Svg)
+                         frame->removeItemFromFrame(name);
+                     else
+                         frame->removeSvgItemFromFrame(name);
+                 }
+
              }
     }
 
@@ -743,6 +759,14 @@ bool TupProject::updateSymbolId(TupLibraryObject::Type type, const QString &oldI
              TupBackground *bg = scene->background();
              if (bg) {
                  TupFrame *frame = bg->staticFrame();
+                 if (frame) {
+                     if (type != TupLibraryObject::Svg)
+                         frame->updateIdFromFrame(oldId, newId);
+                     else
+                         frame->updateSvgIdFromFrame(oldId, newId);
+                 }
+
+                 frame = bg->dynamicFrame();
                  if (frame) {
                      if (type != TupLibraryObject::Svg)
                          frame->updateIdFromFrame(oldId, newId);

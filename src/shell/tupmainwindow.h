@@ -196,7 +196,8 @@ class TupMainWindow : public TabbedMainWindow
           void requestProject();
           void createNewNetProject(const QString &title, const QStringList &users);
           void netProjectSaved();
-          void updatePlayer(bool remove);
+          void updatePlayer();
+          void updatePlayer(bool removeAction);
 
     private slots:
           void messageToStatus(const QString &);

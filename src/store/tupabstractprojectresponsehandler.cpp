@@ -82,7 +82,9 @@ bool TupAbstractProjectResponseHandler::handleResponse(TupProjectResponse *respo
             break;
             default:
             {
-                 qWarning("Unknown project response!");
+                 #ifdef K_DEBUG
+                        tError() << "TupAbstractProjectResponseHandler::handleResponse() - Unknown project response: " << response->part();
+                 #endif
                  return false;
             }
             break;

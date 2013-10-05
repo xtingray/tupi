@@ -295,7 +295,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         connect(animationTab, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
         connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
-      
+
         animationTab->setAntialiasing(true);
 
         int width = animationTab->workSpaceSize().width();
@@ -385,9 +385,10 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         if (TupMainWindow::requestType == OpenLocalProject || TupMainWindow::requestType == OpenNetProject)
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
 
-        connect(m_projectManager, SIGNAL(modified(bool)), this, SLOT(updatePlayer(bool)));
-
         m_exposureSheet->setScene(0);
+
+        connect(m_projectManager, SIGNAL(projectHasChanged(bool)), this, SLOT(updatePlayer(bool)));
+        connect(animationTab, SIGNAL(projectHasChanged()), this, SLOT(updatePlayer()));
     }
 }
 
@@ -490,6 +491,9 @@ void TupMainWindow::resetUI()
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+
+    disconnect(animationTab, SIGNAL(projectHasChanged()), this, SLOT(updatePlayer()));
+    disconnect(m_projectManager, SIGNAL(projectHasChanged(bool)), this, SLOT(updatePlayer(bool)));
 
     setCurrentTab(0);
 
@@ -605,7 +609,6 @@ void TupMainWindow::resetUI()
         // netProjectManager->closeProject();
     }
 
-    disconnect(m_projectManager, SIGNAL(modified(bool)), this, SLOT(updatePlayer(bool)));
     m_projectManager->closeProject();
 
     resetMousePointer();
@@ -1401,16 +1404,22 @@ void TupMainWindow::postVideo(const QString &title, const QString &topics, const
 }
 */
 
-void TupMainWindow::updatePlayer(bool remove)
+void TupMainWindow::updatePlayer(bool removeAction)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
 
-    if (!remove) {
+    if (!removeAction)
+        updatePlayer();
+}
+
+void TupMainWindow::updatePlayer()
+{
+    if (animationTab) {
         int sceneIndex = animationTab->currentSceneIndex();
         viewCamera->updateScenes(sceneIndex);
-    } 
+    }
 }
 
 void TupMainWindow::resetMousePointer()

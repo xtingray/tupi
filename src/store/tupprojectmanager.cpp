@@ -215,9 +215,6 @@ bool TupProjectManager::saveProject(const QString &fileName)
     bool result = k->handler->saveProject(fileName, k->project);
     k->isModified = !result;
 
-    // if (k->isModified)
-    //     emit modified(false);
-
     return result;
 }
 
@@ -406,11 +403,11 @@ void TupProjectManager::emitResponse(TupProjectResponse *response)
         k->isModified = true;
         if (TupSceneResponse *sceneResponse = static_cast<TupSceneResponse *>(response)) {
             if (response->action() == TupProjectRequest::Remove)
-                emit modified(true);
+                emit projectHasChanged(true);
             else
-                emit modified(false);
+                emit projectHasChanged(false);
         } else {
-            emit modified(false);
+            emit projectHasChanged(false);
         }
     }
 

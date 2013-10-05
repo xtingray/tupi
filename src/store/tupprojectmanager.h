@@ -99,7 +99,7 @@ class STORE_EXPORT TupProjectManager : public QObject
     signals:
         void responsed(TupProjectResponse *reponse);
         void requestOpenProject(const QString& filename);
-        void modified(bool remove); 
+        void projectHasChanged(bool removeAction); 
         //void updateAnimationModule(TupProject *project, int sceneIndex, int layerIndex, int frameIndex);
 
     private:

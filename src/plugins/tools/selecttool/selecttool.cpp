@@ -208,6 +208,8 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
 {
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
+
+    tError() << "SelectTool::release() - Releasing action...";
     
     if (k->scene->selectedItems().count() > 0) {
 
@@ -255,23 +257,19 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                                     position = bg->staticFrame()->indexOf(svg); 
                          } else if (k->scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                                     TupBackground *bg = k->scene->scene()->background();
-                                    position = bg->staticFrame()->indexOf(svg);
+                                    position = bg->dynamicFrame()->indexOf(svg);
                          }
                          type = TupLibraryObject::Svg;
                      } else {
 
                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
                              position = k->scene->currentFrame()->indexOf(manager->parentItem());
-                             tError() << "SelectTool::release() - Vector position: " << position;
-                             tError() << "Frame Index: " << k->scene->currentFrameIndex();
-                             tError() << "Layer Index: " << k->scene->currentLayerIndex();
-                             tError() << "Scene Index: " << k->scene->currentSceneIndex();
                          } else if (k->scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
                                     TupBackground *bg = k->scene->scene()->background();
                                     position = bg->staticFrame()->indexOf(manager->parentItem());
                          } else if (k->scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                                     TupBackground *bg = k->scene->scene()->background();
-                                    position = bg->staticFrame()->indexOf(manager->parentItem());
+                                    position = bg->dynamicFrame()->indexOf(manager->parentItem());
                          }
                          type = TupLibraryObject::Item;
                      }
@@ -292,7 +290,7 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
-                                tError() << "SelectTool::release() - position is " << position; 
+                                tError() << "SelectTool::release() - Fatal Error: Invalid position !!! (-1)"; 
                          #endif
                      }
                  }
@@ -409,7 +407,7 @@ void SelectTool::itemResponse(const TupItemResponse *event)
             } else if (project->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                        TupBackground *bg = scene->background();
                        if (bg) {
-                           TupFrame *frame = bg->staticFrame();
+                           TupFrame *frame = bg->dynamicFrame();
                            if (frame) {
                                if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
                                    item = frame->svg(event->itemIndex());

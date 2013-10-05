@@ -254,12 +254,14 @@ bool TupViewCamera::handleProjectResponse(TupProjectResponse *response)
                  k->status->setCurrentScene(index);
             }
             break;
-            /*
             default:
             {
+                 #ifdef K_DEBUG
+                        tError() << "TupViewCamera::handleProjectResponse() - Unknown project action: " << sceneResponse->action();
+                        return false;
+                 #endif
             }
             break;
-            */
         }
     }
 

@@ -77,6 +77,7 @@ TupAnimationRenderer::TupAnimationRenderer(const QColor color) : k(new Private)
 {
     k->bgColor = color;
     k->scene = new TupGraphicsScene;
+
     int alpha = color.alpha();
     if (alpha == 0)
         k->scene->setBackgroundBrush(Qt::NoBrush);

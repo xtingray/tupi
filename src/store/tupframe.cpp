@@ -555,6 +555,9 @@ QGraphicsItem *TupFrame::createItem(int position, QPointF coords, const QString 
     TupItemFactory itemFactory;
     itemFactory.setLibrary(project()->library());
     QGraphicsItem *graphicItem = itemFactory.create(xml);
+
+    tError() << "TupFrame::createItem() - Pos(" << coords.x() << ", " << coords.y() << ")";
+
     graphicItem->setPos(coords);
 
     if (graphicItem) {

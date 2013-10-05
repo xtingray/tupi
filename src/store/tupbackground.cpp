@@ -38,6 +38,8 @@
 #include "tupbackgroundscene.h"
 #include "tdebug.h"
 
+#include <cmath>
+
 TupBackground::TupBackground(TupScene *parent, const QSize size, const QColor color) : QObject(parent)
 {
     dimension = size;
@@ -123,6 +125,16 @@ void TupBackground::fromXml(const QString &xml)
     }
 }
 
+bool TupBackground::dynamicBgIsEmpty()
+{
+    return dynamicBg->isEmpty(); 
+}
+
+bool TupBackground::staticBgIsEmpty()
+{
+    return staticBg->isEmpty();
+}
+
 QDomElement TupBackground::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("background");
@@ -156,38 +168,84 @@ void TupBackground::renderDynamicView()
 
     int width = dimension.width();
     int height = dimension.height();
+
+    QImage background(width*2, height*2, QImage::Format_ARGB32);
+    QPainter canvas(&background);
+    canvas.drawImage(0, 0, image);
+    canvas.drawImage(width, 0, image);
+    canvas.drawImage(0, height, image);
+    setDynamicRaster(background);
+}
+
+QPixmap TupBackground::dynamicView(int frameIndex)
+{
     int posX = 0;
     int posY = 0;
+    int shift = dyanmicShift();
 
     TupBackground::Direction direction = dynamicBg->dynamicDirection();
     switch (direction) {
             case TupBackground::Left2Right:
+            {
+                // tError() << "TupBackground::dynamicView() - Left to right";
+                int delta = dimension.width() / shift;
+
+                if (delta > frameIndex) {
+                    posX = frameIndex*shift;
+                } else {
+                    int mod = fmod(frameIndex, delta);
+                    posX = mod * shift;
+                }
+            }
+            break;
             case TupBackground::Right2Left:
             {
-                 posX = width;
-                 width *= 2;
+                // tError() << "TupBackground::dynamicView() - Right to Left";
+                int delta = dimension.width() / shift;
+
+                if (delta > frameIndex) {
+                    posX = dimension.width() - frameIndex*shift;
+                } else {
+                    int mod = fmod(frameIndex, delta);
+                    posX = dimension.width() - (mod * shift);
+                }
             }
             break;
             case TupBackground::Top2Bottom:
+            {
+                // tError() << "TupBackground::dynamicView() - Top to Bottom";
+                int delta = dimension.height() / shift;
+
+                if (delta > frameIndex) {
+                    posY = frameIndex*shift;
+                } else {
+                    int mod = fmod(frameIndex, delta);
+                    posY = mod * shift;
+                }
+            }
+            break;
             case TupBackground::Bottom2Top:
             {
-                 posY = height;
-                 height *= 2;
+                // tError() << "TupBackground::dynamicView() - Bottom to top";
+                int delta = dimension.height() / shift;
+
+                if (delta > frameIndex) {
+                    posY = dimension.height() - frameIndex*shift;
+                } else {
+                    int mod = fmod(frameIndex, delta);
+                    posY = dimension.height() - (mod * shift);
+                }
             }
             break;
     }
 
-    QImage background(width, height, QImage::Format_ARGB32);
-    QPainter canvas(&background);
-    canvas.drawImage(0, 0, image);
-    canvas.drawImage(posX, posY, image);
-    setDynamicRaster(background);
-}
+    // tError() << "TupBackground::dynamicView() - Pos X: " << posX;
+    // tError() << "TupBackground::dynamicView() - Pos Y: " << posY;  
 
-QImage TupBackground::dynamicView(int frameIndex)
-{
-    QImage view = QImage(); 
-    return view;
+    QImage view = raster.copy(posX, posY, dimension.width(), dimension.height()); 
+    QPixmap pixmap = QPixmap::fromImage(view); 
+
+    return pixmap;
 }
 
 void TupBackground::setDynamicRaster(QImage bg)
