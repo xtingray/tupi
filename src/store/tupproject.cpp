@@ -786,6 +786,7 @@ TupLibrary *TupProject::library()
 
 void TupProject::emitResponse(TupProjectResponse *response)
 {
+    tError() << "TupProject::emitResponse() - Response: " << response->part();
     emit responsed(response);
 }
 

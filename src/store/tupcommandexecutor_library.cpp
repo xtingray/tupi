@@ -56,7 +56,7 @@ bool TupCommandExecutor::createSymbol(TupLibraryResponse *response)
 
         return true;
     } 
-    
+
     return false;
 }
 
@@ -92,7 +92,6 @@ bool TupCommandExecutor::insertSymbolIntoFrame(TupLibraryResponse *response)
     #ifdef K_DEBUG
            tFatal() << "TupCommandExecutor::insertSymbolIntoFrame() - Adding symbol to project: " << response->arg().toString();
     #endif
-
 
     if (m_project->scenesTotal() > 0) {
         if (m_project->insertSymbolIntoFrame(response->spaceMode(), response->arg().toString(), 

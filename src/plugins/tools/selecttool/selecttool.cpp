@@ -89,27 +89,6 @@ void SelectTool::init(TupGraphicsScene *scene)
     k->scene->clearSelection();
 
     reset(scene);
-
-    /*
-    foreach (QGraphicsView *view, scene->views()) {
-             view->setDragMode(QGraphicsView::RubberBandDrag);
-             foreach (QGraphicsItem *item, scene->items()) {
-                      if (!qgraphicsitem_cast<Node *>(item)) {
-                          if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
-                              if (item->zValue() >= 10000 && item->toolTip().length()==0) {
-                              // if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
-                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                              } else {
-                                  item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                                  item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                              }
-                          } else {
-                              item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                          }
-                      }
-             }
-    }
-    */
 }
 
 void SelectTool::reset(TupGraphicsScene *scene)
@@ -133,14 +112,22 @@ void SelectTool::reset(TupGraphicsScene *scene)
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
                               if (item->zValue() >= 10000 && item->toolTip().length()==0) {
-                              // if (item->zValue() >= 10000 && !item->toolTip().contains("Tween")) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                                   item->setFlag(QGraphicsItem::ItemIsMovable, false);
                               }
                           } else {
-                              item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                              if (scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                               } else {
+                                   if (item->zValue() >= 10000) {
+                                       item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                                   } else {
+                                       item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                       item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                                   }
+                               }
                           }
                       }
              }

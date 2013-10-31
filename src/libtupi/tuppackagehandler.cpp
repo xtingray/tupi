@@ -277,7 +277,7 @@ bool TupPackageHandler::createPath(const QString &filePath)
     QFileInfo info(filePath);
     QDir path = info.dir();
     QString target = path.path();
-    
+
     if (!path.exists()) 
         return path.mkpath(target);
     else 

@@ -44,14 +44,13 @@ TupBackground::TupBackground(TupScene *parent, const QSize size, const QColor co
 {
     dimension = size;
     bgColor = color;
-    dynamicBg = new TupFrame(this);
-    dynamicBg->setFrameName("landscape_dynamic");
+    noRender = true;
+    dynamicBg = new TupFrame(this, "landscape_dynamic");
     dynamicBg->setDynamicFlag(true);
     dynamicBg->setDynamicDirection("0");
     dynamicBg->setDynamicShift("5");
 
-    staticBg = new TupFrame(this);
-    staticBg->setFrameName("landscape_static");
+    staticBg = new TupFrame(this, "landscape_static");
 }
 
 TupBackground::~TupBackground()
@@ -82,8 +81,8 @@ void TupBackground::fromXml(const QString &xml)
                QString type = e.attribute("name", "none");
 
                if (type == "landscape_static") {
-                   staticBg = new TupFrame(this);
-                   staticBg->setFrameName("landscape_static");
+                   staticBg = new TupFrame(this, "landscape_static");
+                   // staticBg->setFrameName("landscape_static");
 
                    if (staticBg) {
                        QString newDoc;
@@ -97,8 +96,8 @@ void TupBackground::fromXml(const QString &xml)
                    }
 
                } else if (type == "landscape_dynamic") {
-                          dynamicBg = new TupFrame(this);
-                          dynamicBg->setFrameName("landscape_dynamic");
+                          dynamicBg = new TupFrame(this, "landscape_dynamic");
+                          // dynamicBg->setFrameName("landscape_dynamic");
                           dynamicBg->setDynamicFlag(true);
 
                           if (dynamicBg) {
@@ -158,6 +157,10 @@ TupFrame* TupBackground::dynamicFrame()
 
 void TupBackground::renderDynamicView()
 {
+    #ifdef K_DEBUG
+       T_FUNCINFO;
+    #endif
+
     TupBackgroundScene bgScene(dimension, bgColor, dynamicBg);
     QImage image(dimension, QImage::Format_ARGB32);
     {
@@ -175,6 +178,8 @@ void TupBackground::renderDynamicView()
     canvas.drawImage(width, 0, image);
     canvas.drawImage(0, height, image);
     setDynamicRaster(background);
+
+    noRender = false;
 }
 
 QPixmap TupBackground::dynamicView(int frameIndex)
@@ -246,6 +251,11 @@ QPixmap TupBackground::dynamicView(int frameIndex)
     QPixmap pixmap = QPixmap::fromImage(view); 
 
     return pixmap;
+}
+
+bool TupBackground::rasterRenderIsPending()
+{
+    return noRender;
 }
 
 void TupBackground::setDynamicRaster(QImage bg)

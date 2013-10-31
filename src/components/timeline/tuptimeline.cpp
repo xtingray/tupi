@@ -195,11 +195,10 @@ void TupTimeLine::setLibrary(const TupLibrary *library)
 
 void TupTimeLine::sceneResponse(TupSceneResponse *response)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-
-    /*
 
     switch (response->action()) {
             case TupProjectRequest::Add:
@@ -236,17 +235,15 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
                  tFatal() << "TupTimeLine::sceneResponse : Unknown action :/";
             break;
     }
-
     */
 }
 
 void TupTimeLine::layerResponse(TupLayerResponse *response)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-
-    /*
 
     switch (response->action()) {
             case TupProjectRequest::Add:
@@ -314,11 +311,10 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
 
 void TupTimeLine::frameResponse(TupFrameResponse *response)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-
-    /*
 
     switch (response->action()) {
             case TupProjectRequest::Add:
@@ -378,11 +374,10 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
 
 void TupTimeLine::libraryResponse(TupLibraryResponse *response)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-
-    /*
 
     if (response->action() == TupProjectRequest::InsertSymbolIntoFrame) {
         switch (response->symbolType()) {
@@ -437,9 +432,11 @@ void TupTimeLine::requestCommand(int action)
 
 bool TupTimeLine::requestFrameAction(int action, int framePos, int layerPos, int scenePos, const QVariant &arg)
 {
+    /*
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+    */
 
     if (scenePos < 0)
         scenePos = k->container->currentIndex();
@@ -631,9 +628,12 @@ bool TupTimeLine::requestSceneAction(int action, int scenePos, const QVariant &a
 
 void TupTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 {
+    /*
     #ifdef K_DEBUG
         T_FUNCINFO << name;
     #endif
+    */
+
     int scenePos = k->container->currentIndex();
     
     TupProjectRequest event = TupRequestBuilder::createLayerRequest(scenePos, layer, TupProjectRequest::Rename, name);
@@ -643,7 +643,7 @@ void TupTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 
 void TupTimeLine::emitSelectionSignal()
 {
-    tFatal() << "TupTimeLine::emitSelectionSignal() - Just tracing!";
+    // tFatal() << "TupTimeLine::emitSelectionSignal() - Just tracing!";
 
     int scenePos = k->container->currentIndex();
     int layerPos = layerManager(scenePos)->getLayerIndex()->currentRow();
@@ -664,7 +664,7 @@ void TupTimeLine::selectFrame(int indexLayer, int indexFrame)
 {
     int scenePos = k->container->currentIndex();
 
-    tFatal() << "TupTimeLine::selectFrame() - Just tracing!";
+    // tFatal() << "TupTimeLine::selectFrame() - Just tracing!";
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(scenePos, indexLayer,
                                                  indexFrame, TupProjectRequest::Select, "1");
     emit requestTriggered(&request);
@@ -674,7 +674,7 @@ void TupTimeLine::selectFrame(int indexLayer, int indexFrame)
 void TupTimeLine::emitRequestChangeScene(int sceneIndex)
 {
     if (k->container->count() > 1) {
-        tFatal() << "TupTimeLine::emitRequestChangeScene - Just tracing!";
+        // tFatal() << "TupTimeLine::emitRequestChangeScene - Just tracing!";
         TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
         emit localRequestTriggered(&request);
     }
@@ -682,7 +682,7 @@ void TupTimeLine::emitRequestChangeScene(int sceneIndex)
 
 void TupTimeLine::emitRequestChangeFrame(int sceneIndex, int layerIndex, int frameIndex)
 {
-    tFatal() << "TupTimeLine::emitRequestChangeFrame - Just tracing!";
+    // tFatal() << "TupTimeLine::emitRequestChangeFrame - Just tracing!";
     TupProjectRequest event = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
                              TupProjectRequest::Select, "1");
     emit requestTriggered(&event);

@@ -536,7 +536,7 @@ void TupPaintArea::projectResponse(TupProjectResponse *)
 void TupPaintArea::libraryResponse(TupLibraryResponse *request)
 {
     #ifdef K_DEBUG
-           tDebug() << "TupPaintArea::libraryResponse() - Tracing...";
+           tDebug() << "TupPaintArea::libraryResponse() - Request Action: " << request->action();
     #endif
 
     TupGraphicsScene *guiScene = graphicsScene();
@@ -1249,4 +1249,3 @@ int TupPaintArea::currentLayerIndex()
 {
     return graphicsScene()->currentLayerIndex();
 }
-

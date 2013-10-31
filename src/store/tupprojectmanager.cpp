@@ -374,7 +374,7 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
 
         if (addToStack)
             k->undoStack->push(command);
-        else 
+        else  
             command->redo();
     } else {
         #ifdef K_DEBUG

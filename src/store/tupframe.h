@@ -67,7 +67,7 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
     public:
        TupFrame();
        TupFrame(TupLayer *parent);
-       TupFrame(TupBackground *bg);
+       TupFrame(TupBackground *bg, const QString &label);
        
        ~TupFrame();
        

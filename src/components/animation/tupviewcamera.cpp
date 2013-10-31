@@ -112,7 +112,9 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
         k->animationArea = new TupAnimationArea(k->project, dimension, true);
     }
 
-    scale += " ]";
+    scale += " | Size: ";
+    scale += QString::number(pWidth) + "x" + QString::number(pHeight); 
+    scale += " px ]";
 
     QLabel *icon = new QLabel();
     icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
@@ -257,9 +259,8 @@ bool TupViewCamera::handleProjectResponse(TupProjectResponse *response)
             default:
             {
                  #ifdef K_DEBUG
-                        tError() << "TupViewCamera::handleProjectResponse() - Unknown project action: " << sceneResponse->action();
+                        tFatal() << "TupViewCamera::handleProjectResponse() - Unknown/Unhandled project action: " << sceneResponse->action();
                  #endif
-                 return false;
             }
             break;
         }

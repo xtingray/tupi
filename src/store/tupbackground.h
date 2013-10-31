@@ -69,6 +69,7 @@ class STORE_EXPORT TupBackground : public QObject, public TupAbstractSerializabl
         QImage dynamicRaster();
         bool dynamicBgIsEmpty();
         bool staticBgIsEmpty();
+        bool rasterRenderIsPending();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
@@ -79,6 +80,7 @@ class STORE_EXPORT TupBackground : public QObject, public TupAbstractSerializabl
         TupFrame *staticBg;
         TupFrame *dynamicBg;
         QImage raster;
+        bool noRender;
 };
 
 #endif

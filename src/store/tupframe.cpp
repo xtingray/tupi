@@ -89,21 +89,29 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->shift = "0";
 
     k->repeat = 1;
-    k->zLevelIndex = (k->layerIndex)*10000;
+    k->zLevelIndex = (k->layerIndex + 1)*10000; // Layers levels starts from 2
+
+    tError() << "TupFrame::TupFrame() - Layer Index: " << k->layerIndex; 
 }
 
-TupFrame::TupFrame(TupBackground *bg) : QObject(bg), k(new Private)
+TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new Private)
 {
     k->layerIndex = 0;
-    k->name = "Frame";
+    k->name = label;
     k->isLocked = false;
     k->isVisible = true;
     k->repeat = 1;
-    k->zLevelIndex = 0;
 
     k->isDynamic = false;
     k->direction = "-1";
     k->shift = "0";
+
+    if (k->name.compare("landscape_dynamic") == 0)
+        k->zLevelIndex = 0;
+    else
+        k->zLevelIndex = 10000;
+
+    tError() << "TupFrame::TupFrame() - Background Constructor - Layer Index: " << k->layerIndex;
 }
 
 TupFrame::~TupFrame()
@@ -717,7 +725,7 @@ int TupFrame::svgItemsCount()
 
 int TupFrame::getTopZLevel()
 {
-    // return k->graphics.count();
+    tError() << "TupFrame::getTopZLevel() - Tracing Z level: " << k->zLevelIndex; 
     return k->zLevelIndex;
 }
 

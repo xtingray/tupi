@@ -969,25 +969,38 @@ void TupViewDocument::createToolBar()
 
     addToolBar(k->barGrid);
 
+    k->spaceMode = new QComboBox();
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Frames Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/static_background_mode.png"), tr("Static BG Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/dynamic_background_mode.png"), tr("Dynamic BG Mode"));
+
+    connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
+    setSpaceContext();
+    k->barGrid->addWidget(k->spaceMode);
+
+    // k->barGrid->addSeparator();
+
     k->barGrid->addAction(kApp->findGlobalAction("undo"));
     k->barGrid->addAction(kApp->findGlobalAction("redo"));
 
-    k->barGrid->addSeparator();
+    // k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("copy"));
     k->barGrid->addAction(k->actionManager->find("paste"));
     k->barGrid->addAction(k->actionManager->find("cut"));
     k->barGrid->addAction(k->actionManager->find("delete"));
-    k->barGrid->addSeparator();
+
+    // k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("show_grid"));
     k->barGrid->addAction(k->actionManager->find("full_screen"));
-    k->barGrid->addSeparator();
+
+    // k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("group"));
     k->barGrid->addAction(k->actionManager->find("ungroup"));
 
-    k->barGrid->addSeparator();
+    // k->barGrid->addSeparator();
 
     TCONFIG->beginGroup("OnionParameters");
     int preview = TCONFIG->value("PreviousFrames", -1).toInt();
@@ -1026,17 +1039,8 @@ void TupViewDocument::createToolBar()
     connect(k->onionFactorSpin, SIGNAL(valueChanged(double)), this, SLOT(setOnionFactor(double)));
 
     k->barGrid->addWidget(k->onionFactorSpin);
-    k->barGrid->addSeparator();
 
-    k->spaceMode = new QComboBox();
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Frames Mode"));
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/static_background_mode.png"), tr("Static BG Mode"));
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/dynamic_background_mode.png"), tr("Dynamic BG Mode"));
-
-    connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
-    setSpaceContext();
-    k->barGrid->addWidget(k->spaceMode);
-    k->barGrid->addSeparator();
+    // k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("export_image"));
 
@@ -1046,7 +1050,7 @@ void TupViewDocument::createToolBar()
     if (k->isNetworked && server.compare("tupitu.be") == 0)
         k->barGrid->addAction(k->actionManager->find("post_image"));
 
-    k->barGrid->addSeparator();
+    // k->barGrid->addSeparator();
     k->barGrid->addAction(k->actionManager->find("storyboard"));
 
     addToolBarBreak();
@@ -1426,7 +1430,6 @@ void TupViewDocument::selectFrame(int frame, int layer, int scene)
 
 void TupViewDocument::selectScene(int scene)
 {
-    tError() << "TupViewDocument::selectScene() - Tracing Scene selection! -> " << scene;
     k->paintArea->goToScene(scene);
 }
 

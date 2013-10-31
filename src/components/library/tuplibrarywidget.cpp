@@ -869,7 +869,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
             case TupProjectRequest::InsertSymbolIntoFrame:
               {
                  #ifdef K_DEBUG
-                        tDebug() << "*** TupLibraryWidget::libraryResponse -> InsertSymbolIntoFrame : No action taken";
+                        tFatal() << "*** TupLibraryWidget::libraryResponse() -> InsertSymbolIntoFrame : No action taken";
                  #endif
               }
             break;
@@ -884,7 +884,6 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                         if ((*it)->text(2).length() > 0) {
                             if (key == (*it)->text(3)) {
                                 delete (*it);
-                                // tError() << "*** Tracing deletion... flag 2"; 
                                 // k->library->removeObject(key, true);
                                 break;
                             } 
@@ -906,7 +905,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
             case TupProjectRequest::Remove:
               {
                  #ifdef K_DEBUG
-                        tDebug() << "*** TupLibraryWidget::libraryResponse -> Remove : No action taken";
+                        tFatal() << "*** TupLibraryWidget::libraryResponse() -> Remove : No action taken";
                  #endif
               }
             break;
@@ -914,8 +913,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
             default:
               {
                  #ifdef K_DEBUG
-                        tDebug() << "*** Project Code: " << response->action();
-                        qWarning("ktlibrarywidget.cpp IMPLEMENT ME");
+                        tFatal() << "*** TupLibraryWidget::libraryResponse() - Unknown/Unhandled project action: " << response->action();
                  #endif
               }
             break;
