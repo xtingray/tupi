@@ -312,8 +312,6 @@ void TupGraphicsScene::drawBackground(int photogram)
     #endif
     */
 
-    tError() << "TupGraphicsScene::drawBackground() - Space mode: " << k->spaceMode;
-
     Q_CHECK_PTR(k->scene);
 
     if (!k->scene)
@@ -323,31 +321,25 @@ void TupGraphicsScene::drawBackground(int photogram)
     if (bg) {
         if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
             if (!bg->dynamicBgIsEmpty()) {
-                tError() << "TupGraphicsScene::drawBackground() - Dynamic Background Mode...";
                 TupFrame *frame = bg->dynamicFrame();
                 if (frame)
                     addFrame(frame, 1.0);
             } else {
                 #ifdef K_DEBUG
-                       tFatal() << "TupGraphicsScene::drawBackground() - Dynamic background frame is empty";
+                       tWarning() << "TupGraphicsScene::drawBackground() - Dynamic background frame is empty";
                 #endif
             }
         } else if (k->spaceMode == TupProject::FRAMES_EDITION) {
                    if (!bg->dynamicBgIsEmpty()) {
-                       tError() << "TupGraphicsScene::drawBackground() - Frames edition mode... painting dynamic bg...";
-                       tError() << "TupGraphicsScene::drawBackground() - Frame index: " << photogram;
-
-                       if (bg->rasterRenderIsPending()) {
-                           tError() << "TupGraphicsScene::drawBackground() - Painting the raster image for the background!!!";
+                       if (bg->rasterRenderIsPending()) 
                            bg->renderDynamicView();
-                       }
 
                        QPixmap pixmap = bg->dynamicView(photogram);
                        QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
                        addItem(item);
                    } else {
                        #ifdef K_DEBUG
-                              tFatal() << "TupGraphicsScene::drawBackground() - Dynamic background frame is empty";
+                              tWarning() << "TupGraphicsScene::drawBackground() - Dynamic background frame is empty";
                        #endif
                    }
         }
@@ -365,13 +357,12 @@ void TupGraphicsScene::drawBackground(int photogram)
             }
 
             if (!bg->staticBgIsEmpty()) {
-                tError() << "TupGraphicsScene::drawBackground() - Static Background Mode...";
                 TupFrame *frame = bg->staticFrame();
                 if (frame)
                     addFrame(frame, 1.0);
             } else {
                 #ifdef K_DEBUG
-                       tFatal() << "TupGraphicsScene::drawBackground() - Static background frame is empty";
+                       tWarning() << "TupGraphicsScene::drawBackground() - Static background frame is empty";
                 #endif
             }
         }
@@ -1155,7 +1146,6 @@ void TupGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
         if (k->tool) {
             k->tool->release(k->inputInformation, k->brushManager, this);
             k->tool->end();
-            tError() << "TupGraphicsScene::mouseReleased() - Tracing plugin!";
         }
     } else {
         if (k->tool) { 
@@ -1380,7 +1370,6 @@ void TupGraphicsScene::includeObject(QGraphicsItem *object)
                        TupFrame *frame = bg->dynamicFrame();
                        if (frame) {
                            int zLevel = frame->getTopZLevel();
-			   tError() << "TupGraphicsScene::includeObject() - DYNAMIC_BACKGROUND zlevel: " << zLevel;
                            object->setZValue(zLevel);
                            addItem(object);
                        }

@@ -192,7 +192,6 @@ QPixmap TupBackground::dynamicView(int frameIndex)
     switch (direction) {
             case TupBackground::Left2Right:
             {
-                // tError() << "TupBackground::dynamicView() - Left to right";
                 int delta = dimension.width() / shift;
 
                 if (delta > frameIndex) {
@@ -205,7 +204,6 @@ QPixmap TupBackground::dynamicView(int frameIndex)
             break;
             case TupBackground::Right2Left:
             {
-                // tError() << "TupBackground::dynamicView() - Right to Left";
                 int delta = dimension.width() / shift;
 
                 if (delta > frameIndex) {
@@ -218,7 +216,6 @@ QPixmap TupBackground::dynamicView(int frameIndex)
             break;
             case TupBackground::Top2Bottom:
             {
-                // tError() << "TupBackground::dynamicView() - Top to Bottom";
                 int delta = dimension.height() / shift;
 
                 if (delta > frameIndex) {
@@ -231,7 +228,6 @@ QPixmap TupBackground::dynamicView(int frameIndex)
             break;
             case TupBackground::Bottom2Top:
             {
-                // tError() << "TupBackground::dynamicView() - Bottom to top";
                 int delta = dimension.height() / shift;
 
                 if (delta > frameIndex) {
@@ -243,9 +239,6 @@ QPixmap TupBackground::dynamicView(int frameIndex)
             }
             break;
     }
-
-    // tError() << "TupBackground::dynamicView() - Pos X: " << posX;
-    // tError() << "TupBackground::dynamicView() - Pos Y: " << posY;  
 
     QImage view = raster.copy(posX, posY, dimension.width(), dimension.height()); 
     QPixmap pixmap = QPixmap::fromImage(view); 

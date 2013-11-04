@@ -90,8 +90,6 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
 
     k->repeat = 1;
     k->zLevelIndex = (k->layerIndex + 1)*10000; // Layers levels starts from 2
-
-    tError() << "TupFrame::TupFrame() - Layer Index: " << k->layerIndex; 
 }
 
 TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new Private)
@@ -110,8 +108,6 @@ TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new
         k->zLevelIndex = 0;
     else
         k->zLevelIndex = 10000;
-
-    tError() << "TupFrame::TupFrame() - Background Constructor - Layer Index: " << k->layerIndex;
 }
 
 TupFrame::~TupFrame()
@@ -564,8 +560,6 @@ QGraphicsItem *TupFrame::createItem(int position, QPointF coords, const QString 
     itemFactory.setLibrary(project()->library());
     QGraphicsItem *graphicItem = itemFactory.create(xml);
 
-    tError() << "TupFrame::createItem() - Pos(" << coords.x() << ", " << coords.y() << ")";
-
     graphicItem->setPos(coords);
 
     if (graphicItem) {
@@ -725,7 +719,6 @@ int TupFrame::svgItemsCount()
 
 int TupFrame::getTopZLevel()
 {
-    tError() << "TupFrame::getTopZLevel() - Tracing Z level: " << k->zLevelIndex; 
     return k->zLevelIndex;
 }
 

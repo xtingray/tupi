@@ -196,8 +196,6 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    tError() << "SelectTool::release() - Releasing action...";
-    
     if (k->scene->selectedItems().count() > 0) {
 
         k->selectionFlag = true;
