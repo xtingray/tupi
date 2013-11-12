@@ -11,12 +11,12 @@ macx {
 }
 
 HEADERS += tuplibrarywidget.h \
-           tupgctable.h  \
+           tupitemmanager.h  \
            tupsymboleditor.h \
            tuptreedelegate.h
 
 SOURCES += tuplibrarywidget.cpp \
-           tupgctable.cpp  \
+           tupitemmanager.cpp  \
            tupsymboleditor.cpp \
            tuptreedelegate.cpp
 *:!macx{

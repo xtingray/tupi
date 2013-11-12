@@ -39,7 +39,7 @@
 #include "tupmodulewidgetbase.h"
 #include "tupitempreview.h"
 #include "timagebutton.h"
-#include "tupgctable.h"
+#include "tupitemmanager.h"
 
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -76,6 +76,7 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void previewItem(QTreeWidgetItem *);
         void insertObjectInWorkspace();
         void removeCurrentGraphic();
+        void cloneObject(QTreeWidgetItem* item);
         void renameObject(QTreeWidgetItem* item);
         void importGraphicObject();
         void refreshItem(QTreeWidgetItem *item);

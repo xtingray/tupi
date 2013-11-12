@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPGCTABLE_H
-#define TUPGCTABLE_H
+#ifndef TUPITEMMANAGER_H
+#define TUPITEMMANAGER_H
 
 #include "tuptreedelegate.h"
 #include "treelistwidget.h"
@@ -46,13 +46,13 @@
  * @author David Cuadrado
 */
 
-class TupGCTable : public TreeListWidget
+class TupItemManager : public TreeListWidget
 {
     Q_OBJECT
 
     public:
-        TupGCTable(QWidget *parent = 0);
-        ~TupGCTable();
+        TupItemManager(QWidget *parent = 0);
+        ~TupItemManager();
         QTreeWidgetItem *currentFolder();
         void setCurrentFolder(QTreeWidgetItem *cf);
         void removeCurrentFolder();
@@ -74,6 +74,7 @@ class TupGCTable : public TreeListWidget
         void itemSelected(QTreeWidgetItem *item);
         void itemRemoved();
         void itemRenamed(QTreeWidgetItem *item);
+        void itemCloned(QTreeWidgetItem *item);
         void itemMoved(QString node, QString target);
         void itemCreated(QTreeWidgetItem *item);
         void inkscapeEditCall(QTreeWidgetItem *item);
@@ -85,7 +86,8 @@ class TupGCTable : public TreeListWidget
         void createFolder(const QString &name = QString());
 
     private slots:
-        void callRename();
+        void renameItem();
+        void cloneItem();
         void callInkscapeToEdit();
         void callGimpToEdit();
         void callKritaToEdit();

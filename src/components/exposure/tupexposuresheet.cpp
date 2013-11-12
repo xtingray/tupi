@@ -168,6 +168,7 @@ void TupExposureSheet::createMenu()
     expandMenu->addAction(tr("10 frames"), this, SLOT(expandCurrentFrameTen()));
     expandMenu->setDisabled(true);
     k->menu->addMenu(expandMenu);
+    //connect(expandMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
 
     QMenu *timeLineMenu = new QMenu(tr("Copy TL forward"));
     timeLineMenu->addAction(QIcon(THEME_DIR + "icons/copy.png"), tr("1 time"), this, SLOT(copyTimeLineOnce()));
@@ -178,7 +179,6 @@ void TupExposureSheet::createMenu()
     k->menu->addMenu(timeLineMenu);
 
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
-    //connect(expandMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
 }
 
 void TupExposureSheet::addScene(int index, const QString &name)

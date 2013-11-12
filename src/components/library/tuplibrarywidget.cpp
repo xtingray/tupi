@@ -87,7 +87,7 @@ struct TupLibraryWidget::Private
     TupLibrary *library;
     TupProject *project;
     TupItemPreview *display;
-    TupGCTable *libraryTree;
+    TupItemManager *libraryTree;
     int childCount;
     QDir libraryDir;
     QComboBox *itemType;
@@ -126,13 +126,16 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
 
     k->libraryDir = QDir(CONFIG_DIR + "libraries");
     k->display = new TupItemPreview(this);
-    k->libraryTree = new TupGCTable(this);
+    k->libraryTree = new TupItemManager(this);
 
     connect(k->libraryTree, SIGNAL(itemSelected(QTreeWidgetItem *)), this,
                                    SLOT(previewItem(QTreeWidgetItem *)));
 
     connect(k->libraryTree, SIGNAL(itemRemoved()), this,
                                    SLOT(removeCurrentGraphic()));
+
+    connect(k->libraryTree, SIGNAL(itemCloned(QTreeWidgetItem*)), this,
+                                   SLOT(cloneObject(QTreeWidgetItem*)));
 
     connect(k->libraryTree, SIGNAL(itemRenamed(QTreeWidgetItem*)), this, 
                                    SLOT(renameObject(QTreeWidgetItem*)));
@@ -373,6 +376,59 @@ void TupLibraryWidget::removeCurrentGraphic()
                                                    objectKey, type, k->project->spaceContext(), 0, QString(),
                                                    k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
     emit requestTriggered(&request);
+}
+
+void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
+{
+    if (item) {
+        QString id = item->text(3);
+        TupLibraryObject *object = k->library->findObject(id);
+
+        if (object) {
+            QString symbolName = object->symbolName();
+            QString path = object->dataPath();
+
+            tError() << "TupLibraryWidget::cloneObject() - symbolName: " << symbolName;
+            tError() << "TupLibraryWidget::cloneObject() - path: " << path;
+
+            QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
+            item->setText(1, "pop");
+            item->setText(2, "SVG");
+            item->setText(3, "pop.svg");
+            item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+
+            switch (object->type()) {
+                    case TupLibraryObject::Item:
+                         {
+                             item->setIcon(0, QIcon(THEME_DIR + "icons/drawing_object.png"));
+                             k->libraryTree->setCurrentItem(item);
+                             previewItem(item);
+                         }
+                         break;
+                    case TupLibraryObject::Image:
+                         {
+                             item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
+                             k->libraryTree->setCurrentItem(item);
+                             previewItem(item);
+                         }
+                         break;
+                    case TupLibraryObject::Svg:
+                         {
+                             item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
+                             k->libraryTree->setCurrentItem(item);
+                             previewItem(item);
+                         }
+                         break;
+                    case TupLibraryObject::Sound:
+                         {
+                             item->setIcon(0, QIcon(THEME_DIR + "icons/sound_object.png"));
+                         }
+                         break;
+            }
+        } else {
+              // Error    
+        }
+    }
 }
 
 void TupLibraryWidget::renameObject(QTreeWidgetItem* item)

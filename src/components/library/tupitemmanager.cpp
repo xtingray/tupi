@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupgctable.h"
+#include "tupitemmanager.h"
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tapplication.h"
@@ -47,7 +47,7 @@
  * @author David Cuadrado
 */
 
-TupGCTable::TupGCTable(QWidget *parent) : TreeListWidget(parent), m_currentFolder(0)
+TupItemManager::TupItemManager(QWidget *parent) : TreeListWidget(parent), m_currentFolder(0)
 {
     currentSelection = "";
     setHeaderLabels(QStringList() << "" << "");
@@ -64,11 +64,11 @@ TupGCTable::TupGCTable(QWidget *parent) : TreeListWidget(parent), m_currentFolde
     foldersTotal = 1;
 }
 
-TupGCTable::~TupGCTable()
+TupItemManager::~TupItemManager()
 {
 }
 
-void TupGCTable::createFolder(const QString &name)
+void TupItemManager::createFolder(const QString &name)
 {
     if (name.isNull())
         folderName = tr("New folder %1").arg(foldersTotal);
@@ -95,7 +95,7 @@ void TupGCTable::createFolder(const QString &name)
     } 
 }
 
-QTreeWidgetItem *TupGCTable::getFolder(const QString &folderName)
+QTreeWidgetItem *TupItemManager::getFolder(const QString &folderName)
 {
     QList<QTreeWidgetItem *> nodes = findItems(folderName, Qt::MatchExactly, 1);
     for (int i = 0; i < nodes.size(); ++i) {
@@ -107,23 +107,23 @@ QTreeWidgetItem *TupGCTable::getFolder(const QString &folderName)
     return 0;
 }
 
-QString TupGCTable::oldFolder()
+QString TupItemManager::oldFolder()
 {
     return folderName;
 }
 
-QTreeWidgetItem *TupGCTable::currentFolder()
+QTreeWidgetItem *TupItemManager::currentFolder()
 {
     return m_currentFolder;
 }
 
-void TupGCTable::setCurrentFolder(QTreeWidgetItem *cf)
+void TupItemManager::setCurrentFolder(QTreeWidgetItem *cf)
 {
     if (cf)
         m_currentFolder = cf;
 }
 
-void TupGCTable::removeCurrentFolder()
+void TupItemManager::removeCurrentFolder()
 {
     if (m_currentFolder) {
         int index = indexOfTopLevelItem(m_currentFolder) - 1;
@@ -135,48 +135,55 @@ void TupGCTable::removeCurrentFolder()
     }
 }
 
-void TupGCTable::callRename() 
+void TupItemManager::renameItem() 
 {
     QTreeWidgetItem *item = currentItem();
     if (item)
         emit itemRenamed(item);
 }
 
-void TupGCTable::callInkscapeToEdit()
+void TupItemManager::cloneItem()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit itemCloned(item);
+}
+
+void TupItemManager::callInkscapeToEdit()
 {
     QTreeWidgetItem *item = currentItem();
     if (item)
         emit inkscapeEditCall(item);
 }
 
-void TupGCTable::callGimpToEdit()
+void TupItemManager::callGimpToEdit()
 {
     QTreeWidgetItem *item = currentItem();
     if (item)
         emit gimpEditCall(item);
 }
 
-void TupGCTable::callKritaToEdit()
+void TupItemManager::callKritaToEdit()
 {
     QTreeWidgetItem *item = currentItem();
     if (item)
         emit kritaEditCall(item);
 }
 
-void TupGCTable::callMyPaintToEdit()
+void TupItemManager::callMyPaintToEdit()
 {
     QTreeWidgetItem *item = currentItem();
     if (item)
         emit myPaintEditCall(item);
 }
 
-void TupGCTable::mouseDoubleClickEvent(QMouseEvent *event)
+void TupItemManager::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::LeftButton)
-        callRename();
+        renameItem();
 }
 
-bool TupGCTable::isFolder(QTreeWidgetItem *item) 
+bool TupItemManager::isFolder(QTreeWidgetItem *item) 
 {
     if (item->text(2).length() == 0)
         return true;
@@ -184,12 +191,12 @@ bool TupGCTable::isFolder(QTreeWidgetItem *item)
     return false;
 }
 
-int  TupGCTable::indexOf(QTreeWidgetItem *item)
+int  TupItemManager::indexOf(QTreeWidgetItem *item)
 {
     return indexOfTopLevelItem(item) + 1;
 }
 
-void TupGCTable::mousePressEvent(QMouseEvent *event)
+void TupItemManager::mousePressEvent(QMouseEvent *event)
 {
     parentNode = "";
 
@@ -200,13 +207,6 @@ void TupGCTable::mousePressEvent(QMouseEvent *event)
         emit itemSelected(item);
 
         if (event->buttons() == Qt::RightButton) {
-
-            QAction *rename = new QAction(tr("Rename"), this);
-            connect(rename, SIGNAL(triggered()), this, SLOT(callRename()));
-
-            QAction *remove = new QAction(tr("Delete"), this);
-            // remove->setShortcut(QKeySequence(Qt::Key_Delete));
-            connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
 
             QMenu *menu = new QMenu(tr("Options"));
 
@@ -252,6 +252,16 @@ void TupGCTable::mousePressEvent(QMouseEvent *event)
                 menu->addAction(myPaintEdit);
             }
 
+            QAction *rename = new QAction(tr("Rename"), this);
+            connect(rename, SIGNAL(triggered()), this, SLOT(renameItem()));
+
+            QAction *clone = new QAction(tr("Clone"), this);
+            connect(clone, SIGNAL(triggered()), this, SLOT(cloneItem()));
+
+            QAction *remove = new QAction(tr("Delete"), this);
+            connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
+
+            menu->addAction(clone);
             menu->addAction(rename);
             menu->addAction(remove);
 
@@ -292,7 +302,7 @@ void TupGCTable::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void TupGCTable::dropEvent(QDropEvent *event)
+void TupItemManager::dropEvent(QDropEvent *event)
 {
      bool eventAccept = false;
 
@@ -419,7 +429,7 @@ void TupGCTable::dropEvent(QDropEvent *event)
      }
 }
 
-void TupGCTable::dragEnterEvent(QDragEnterEvent *event)
+void TupItemManager::dragEnterEvent(QDragEnterEvent *event)
 {
      if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
          if (event->source() == this) {
@@ -433,7 +443,7 @@ void TupGCTable::dragEnterEvent(QDragEnterEvent *event)
      }
 }
 
-void TupGCTable::dragMoveEvent(QDragMoveEvent *event)
+void TupItemManager::dragMoveEvent(QDragMoveEvent *event)
 {
      if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
          if (event->source() == this) {
@@ -447,7 +457,7 @@ void TupGCTable::dragMoveEvent(QDragMoveEvent *event)
      }
 }
 
-void TupGCTable::keyPressEvent(QKeyEvent * event)
+void TupItemManager::keyPressEvent(QKeyEvent * event)
 {
     if (event->key() == Qt::Key_Up) {
         QTreeWidgetItem *current = currentItem();
@@ -489,7 +499,7 @@ void TupGCTable::keyPressEvent(QKeyEvent * event)
     }
 }
 
-void TupGCTable::cleanUI()
+void TupItemManager::cleanUI()
 {
     clear();
     foldersTotal = 1;
