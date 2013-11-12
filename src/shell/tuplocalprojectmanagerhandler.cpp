@@ -36,7 +36,7 @@
 #include "tuplocalprojectmanagerhandler.h"
 #include "tupprojectrequest.h"
 #include "tupprojectcommand.h"
-#include "tupifilemanager.h"
+#include "tupfilemanager.h"
 #include "tdebug.h"
 
 #include <QDomDocument>
@@ -147,7 +147,7 @@ bool TupLocalProjectManagerHandler::saveProject(const QString &fileName, TupProj
     if (!fileName.endsWith(".tup"))
         file += ".tup";
 
-    TupiFileManager *manager = new TupiFileManager;
+    TupFileManager *manager = new TupFileManager;
     result = manager->save(file, project);
     delete manager;
 
@@ -158,7 +158,7 @@ bool TupLocalProjectManagerHandler::loadProject(const QString &fileName, TupProj
 {
     bool result = false;
 
-    TupiFileManager *manager = new TupiFileManager;
+    TupFileManager *manager = new TupFileManager;
     result = manager->load(fileName, project);
     delete manager;
 

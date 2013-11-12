@@ -79,6 +79,7 @@ class STORE_EXPORT TupLibraryObject : public QObject, public TupAbstractSerializ
         
         bool loadRawData(const QByteArray &data);
         bool loadDataFromPath(const QString &dataDir);
+        bool loadData(const QString &path);
         
         void saveData(const QString &dataDir);
         

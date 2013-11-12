@@ -138,6 +138,26 @@ bool TupLibraryFolder::addObject(const QString &folderName, TupLibraryObject *ob
     return false;
 }
 
+bool TupLibraryFolder::reloadObject(const QString &id)
+{
+    foreach (QString oid, k->objects.keys()) {
+             if (oid.compare(id) == 0) {
+                 QString path = k->objects[id]->dataPath();
+                 tError() << "TupLibraryFolder::reloadObject() - Updating from path: " << path;
+                 if (QFile::exists(path)) {  
+                     k->objects[id]->loadData(path);
+                     return true;
+                 }
+             }
+    }
+
+    #ifdef K_DEBUG
+           tError() << "TupLibraryFolder::reloadObject() - [ Fatal Error ] - Object " << id << " wasn't found";
+    #endif
+
+    return false;
+}
+
 bool TupLibraryFolder::addFolder(TupLibraryFolder *folder)
 {
     if (!k->folders.contains(folder->id())) {

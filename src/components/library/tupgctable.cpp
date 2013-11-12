@@ -49,6 +49,7 @@
 
 TupGCTable::TupGCTable(QWidget *parent) : TreeListWidget(parent), m_currentFolder(0)
 {
+    currentSelection = "";
     setHeaderLabels(QStringList() << "" << "");
 
     header()->setResizeMode(QHeaderView::ResizeToContents);
@@ -141,6 +142,34 @@ void TupGCTable::callRename()
         emit itemRenamed(item);
 }
 
+void TupGCTable::callInkscapeToEdit()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit inkscapeEditCall(item);
+}
+
+void TupGCTable::callGimpToEdit()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit gimpEditCall(item);
+}
+
+void TupGCTable::callKritaToEdit()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit kritaEditCall(item);
+}
+
+void TupGCTable::callMyPaintToEdit()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit myPaintEditCall(item);
+}
+
 void TupGCTable::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::LeftButton)
@@ -179,23 +208,52 @@ void TupGCTable::mousePressEvent(QMouseEvent *event)
             // remove->setShortcut(QKeySequence(Qt::Key_Delete));
             connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
 
-            QAction *edit;
+            QMenu *menu = new QMenu(tr("Options"));
 
             if (item->text(2).compare("SVG")==0) {
-                edit = new QAction(tr("Edit with Inkscape"), this);
-                connect(edit, SIGNAL(triggered()), this, SLOT(callInkscape()));
+                QAction *edit = new QAction(tr("Edit with Inkscape"), this);
+                connect(edit, SIGNAL(triggered()), this, SLOT(callInkscapeToEdit()));
+#ifdef Q_OS_UNIX
+                if (!QFile::exists("/usr/bin/inkscape"))
+                    edit->setDisabled(true);
+#else
+                edit->setDisabled(true);
+#endif
+                menu->addAction(edit);
             } else if (item->text(2).compare("OBJ")!=0) {
-                edit = new QAction(tr("Edit with Gimp"), this);
-                connect(edit, SIGNAL(triggered()), this, SLOT(callGimp()));
+                QAction *gimpEdit = new QAction(tr("Edit with Gimp"), this);
+                connect(gimpEdit, SIGNAL(triggered()), this, SLOT(callGimpToEdit()));
+#ifdef Q_OS_UNIX
+                if (!QFile::exists("/usr/bin/gimp"))
+                    gimpEdit->setDisabled(true);
+#else
+                gimpEdit->setDisabled(true);
+#endif
+                menu->addAction(gimpEdit);
+
+                QAction *kritaEdit = new QAction(tr("Edit with Krita"), this);
+                connect(kritaEdit, SIGNAL(triggered()), this, SLOT(callKritaToEdit()));
+#ifdef Q_OS_UNIX
+                if (!QFile::exists("/usr/bin/krita"))
+                    kritaEdit->setDisabled(true);
+#else
+                kritaEdit->setDisabled(true);
+#endif
+                menu->addAction(kritaEdit);
+
+                QAction *myPaintEdit = new QAction(tr("Edit with MyPaint"), this);
+                connect(myPaintEdit, SIGNAL(triggered()), this, SLOT(callMyPaintToEdit()));
+#ifdef Q_OS_UNIX
+                if (!QFile::exists("/usr/bin/mypaint"))
+                    myPaintEdit->setDisabled(true);
+#else
+                myPaintEdit->setDisabled(true);
+#endif
+                menu->addAction(myPaintEdit);
             }
 
-            QMenu *menu = new QMenu(tr("Options"));
             menu->addAction(rename);
             menu->addAction(remove);
-            if (item->text(2).compare("OBJ")!=0) {
-                edit->setDisabled(true);
-                menu->addAction(edit);
-            }
 
             menu->exec(event->globalPos());
 
@@ -429,16 +487,6 @@ void TupGCTable::keyPressEvent(QKeyEvent * event)
         }
         return;
     }
-}
-
-void TupGCTable::callInkscape()
-{
-    // execute /usr/bin/inkscape
-}
-
-void TupGCTable::callGimp()
-{
-    // execute /usr/bin/gimp   
 }
 
 void TupGCTable::cleanUI()

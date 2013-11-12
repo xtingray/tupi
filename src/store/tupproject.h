@@ -120,6 +120,7 @@ class STORE_EXPORT TupProject : public QObject, public TupAbstractSerializable
         bool removeSymbolFromFrame(const QString &name, TupLibraryObject::Type type);
 
         bool updateSymbolId(TupLibraryObject::Type type, const QString &oldId, const QString &newId);
+        void reloadLibraryItem(TupLibraryObject::Type type, const QString &id, TupLibraryObject *object);
 
         void clear();
         void loadLibrary(const QString &filename);

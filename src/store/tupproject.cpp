@@ -779,6 +779,41 @@ bool TupProject::updateSymbolId(TupLibraryObject::Type type, const QString &oldI
     return true;
 }
 
+void TupProject::reloadLibraryItem(TupLibraryObject::Type type, const QString &id, TupLibraryObject *object)
+{
+    foreach (TupScene *scene, k->scenes.values()) {
+
+             foreach (TupLayer *layer, scene->layers().values()) {
+                      foreach (TupFrame *frame, layer->frames().values()) {
+                               if (type != TupLibraryObject::Svg)
+                                   frame->reloadGraphicItem(id, object->dataPath());
+                               else
+                                   frame->reloadSVGItem(id, object);
+                      }
+             }
+
+             TupBackground *bg = scene->background();
+             if (bg) {
+                 TupFrame *frame = bg->staticFrame();
+                 if (frame) {
+                     if (type != TupLibraryObject::Svg)
+                         frame->reloadGraphicItem(id, object->dataPath());
+                     else
+                         frame->reloadSVGItem(id, object);
+                 }
+
+                 frame = bg->dynamicFrame();
+                 if (frame) {
+                     if (type != TupLibraryObject::Svg)
+                         frame->reloadGraphicItem(id, object->dataPath());
+                     else
+                         frame->reloadSVGItem(id, object);
+                 }
+             }
+
+    }
+}
+
 TupLibrary *TupProject::library()
 {
     return k->library;
@@ -786,7 +821,6 @@ TupLibrary *TupProject::library()
 
 void TupProject::emitResponse(TupProjectResponse *response)
 {
-    tError() << "TupProject::emitResponse() - Response: " << response->part();
     emit responsed(response);
 }
 

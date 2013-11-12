@@ -50,7 +50,7 @@
 #include "tupstoryboardupdatepackage.h"
 #include "tupstoryboardexportpackage.h"
 #include "tupstoryboardparser.h"
-#include "tupinetfilemanager.h"
+#include "tupnetfilemanager.h"
 #include "tupopenpackage.h"
 #include "tupchatpackage.h"
 #include "tupnotificationparser.h"
@@ -377,7 +377,7 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                        file.flush();
             
                        if (k->project) {
-                           TupiFileManager *manager = new TupiFileManager;
+                           TupFileManager *manager = new TupFileManager;
                            bool isOk = manager->load(file.fileName(), k->project);
                            if (isOk) {
                                k->projectIsOpen = true;

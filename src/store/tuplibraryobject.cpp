@@ -299,16 +299,7 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             case TupLibraryObject::Image:
             {
                  k->dataPath = dataDir + QDir::separator() + "images" + QDir::separator() + k->dataPath;
-            
-                 QFile file(k->dataPath);
-            
-                 if (file.open(QIODevice::ReadOnly)) {
-                     loadRawData(file.readAll());
-                 } else {
-                     #ifdef K_DEBUG
-                            tError() << "TupLibraryObject::loadDataFromPath() - [ Fatal Error ] - Can't access image file -> " << k->dataPath;
-                     #endif
-                 }
+                 loadData(k->dataPath); 
             }
             break;
             case TupLibraryObject::Sound:
@@ -318,17 +309,10 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
             case TupLibraryObject::Svg:
             {
+                 tError() << "TupLibraryObject::loadDataFromPath() - Datadir: " << dataDir;
+
                  k->dataPath = dataDir + QDir::separator() + "svg" + QDir::separator() + k->dataPath;
-
-                 QFile file(k->dataPath);
-
-                 if (file.open(QIODevice::ReadOnly)) {
-                     loadRawData(file.readAll());
-                 } else {
-                     #ifdef K_DEBUG
-                            tError() << "TupLibraryObject::loadDataFromPath() - [ Fatal Error ] - Can't access SVG file -> " << k->dataPath;
-                     #endif
-                 }
+                 loadData(k->dataPath);
             }
             break;
             default: 
@@ -336,6 +320,35 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
     }
     
+    return true;
+}
+
+bool TupLibraryObject::loadData(const QString &path)
+{
+    switch (k->type) {
+            case TupLibraryObject::Image:
+            case TupLibraryObject::Svg:
+            {
+                 QFile file(path);
+
+                 if (file.open(QIODevice::ReadOnly)) {
+                     loadRawData(file.readAll());
+                 } else {
+                     #ifdef K_DEBUG
+                            tError() << "TupLibraryObject::loadDataFromPath() - [ Fatal Error ] - Can't access image file -> " << path;
+                     #endif
+                 }
+            }
+            break;
+            case TupLibraryObject::Sound:
+            {
+            }
+            break;
+            default:
+                 return false;
+            break;
+    }
+
     return true;
 }
 

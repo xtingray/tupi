@@ -71,19 +71,25 @@ class TupGCTable : public TreeListWidget
         };
 
     signals:
-        void itemSelected(QTreeWidgetItem *);
+        void itemSelected(QTreeWidgetItem *item);
         void itemRemoved();
-        void itemRenamed(QTreeWidgetItem *);
+        void itemRenamed(QTreeWidgetItem *item);
         void itemMoved(QString node, QString target);
-        void itemCreated(QTreeWidgetItem *);
+        void itemCreated(QTreeWidgetItem *item);
+        void inkscapeEditCall(QTreeWidgetItem *item);
+        void gimpEditCall(QTreeWidgetItem *item);
+        void kritaEditCall(QTreeWidgetItem *item);
+        void myPaintEditCall(QTreeWidgetItem *item);
 
     public slots:
         void createFolder(const QString &name = QString());
 
     private slots:
         void callRename();
-        void callInkscape();
-        void callGimp();
+        void callInkscapeToEdit();
+        void callGimpToEdit();
+        void callKritaToEdit();
+        void callMyPaintToEdit();
 
     protected:
         void dropEvent(QDropEvent *event);
@@ -96,6 +102,7 @@ class TupGCTable : public TreeListWidget
         int foldersTotal;
         QString folderName; 
         QString parentNode;
+        QString currentSelection;
         QList<QTreeWidgetItem *> nodeChildren;
         typedef QList<QTreeWidgetItem *> Lists;
         // QHash<int, Lists> deepChildren;

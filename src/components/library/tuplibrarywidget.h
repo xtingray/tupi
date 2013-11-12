@@ -58,6 +58,8 @@ class TupLibraryWidget : public TupModuleWidgetBase
     Q_OBJECT
 
     public:
+        enum ThirdParty { Inkscape = 0, Gimp, Krita, MyPaint };
+
         TupLibraryWidget(QWidget *parent = 0);
         ~TupLibraryWidget();
         void resetGUI();
@@ -79,6 +81,13 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void refreshItem(QTreeWidgetItem *item);
         void updateLibrary(QString node, QString target);
         void activeRefresh(QTreeWidgetItem *item);
+        void openInkscapeToEdit(QTreeWidgetItem *item);
+        void openGimpToEdit(QTreeWidgetItem *item);
+        void openKritaToEdit(QTreeWidgetItem *item);
+        void openMyPaintToEdit(QTreeWidgetItem *item);
+        void updateItemFromCloseAction();
+        void updateItemFromSaveAction();
+
 
     public slots:
         void importBitmap();
@@ -91,6 +100,8 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void requestCurrentGraphic();
 
     private:
+        void callExternalEditor(QTreeWidgetItem *item, ThirdParty software);
+        void updateItem(const QString &name, const QString &extension, TupLibraryObject *object);
         struct Private;
         Private *const k;
 };

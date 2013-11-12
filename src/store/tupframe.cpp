@@ -40,6 +40,7 @@
 #include "tupserializer.h"
 #include "tupgraphicobject.h"
 #include "tupgraphiclibraryitem.h"
+#include "tuppixmapitem.h"
 #include "tuplibrary.h"
 #include "tupitemgroup.h"
 #include "tupitemtweener.h"
@@ -560,6 +561,10 @@ QGraphicsItem *TupFrame::createItem(int position, QPointF coords, const QString 
     itemFactory.setLibrary(project()->library());
     QGraphicsItem *graphicItem = itemFactory.create(xml);
 
+    tError() << "TupFrame::createItem() - Pos: " << coords.x() << "," << coords.y();
+    tError() << "TupFrame::createItem() - xml: ";
+    tError() << xml;
+
     graphicItem->setPos(coords);
 
     if (graphicItem) {
@@ -739,3 +744,48 @@ bool TupFrame::isEmpty()
 
     return true;
 }
+
+void TupFrame::reloadGraphicItem(const QString &id, const QString &path)
+{
+    foreach (int i, k->objectIndexes.keys()) {
+             if (k->objectIndexes[i].compare(id) == 0) {
+                 TupGraphicObject *old = k->graphics.value(i);
+                 QGraphicsItem *oldItem = old->item();
+
+                 QPixmap pixmap(path);
+                 TupPixmapItem *image = new TupPixmapItem;
+                 image->setPixmap(pixmap);
+
+                 TupGraphicLibraryItem *item = new TupGraphicLibraryItem;
+                 item->setSymbolName(id);
+                 item->setItem(image);
+                 item->setTransform(oldItem->transform());
+                 item->setPos(oldItem->pos());
+                 item->setEnabled(true);
+                 item->setFlags(oldItem->flags());
+
+                 TupGraphicObject *object = new TupGraphicObject(item, this);
+                 k->graphics.insert(i, object);
+             }
+    }
+}
+
+void TupFrame::reloadSVGItem(const QString &id, TupLibraryObject *object)
+{
+    foreach (int i, k->svgIndexes.keys()) {
+             if (k->svgIndexes[i].compare(id) == 0) {
+                 TupSvgItem *old = k->svg.value(i);
+
+                 QString path = object->dataPath();
+                 TupSvgItem *item = new TupSvgItem(path, this);
+                 item->setSymbolName(object->symbolName());
+                 item->setTransform(old->transform());
+                 item->setPos(old->pos());
+                 item->setEnabled(true);
+                 item->setFlags(old->flags());
+
+                 k->svg.insert(i, item);
+             }
+    }
+}
+

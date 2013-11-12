@@ -75,6 +75,8 @@ class STORE_EXPORT TupLibraryFolder : public QObject, public TupAbstractSerializ
         bool addObject(TupLibraryObject *object); 
         bool addObject(const QString &folderName, TupLibraryObject *object);
 
+        bool reloadObject(const QString &id);
+
         bool addFolder(TupLibraryFolder *folder);
 
         bool removeObject(const QString &id, bool absolute);

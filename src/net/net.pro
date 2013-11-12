@@ -29,7 +29,7 @@ HEADERS += tupnetprojectmanagerparams.h \
            tupopenpackage.h \
            tupsavepackage.h \
            tupnewprojectpackage.h \
-           tupinetfilemanager.h \
+           tupnetfilemanager.h \
            tupchat.h \
            tupconnectdialog.h \
            tupprojectparser.h \
@@ -57,7 +57,7 @@ SOURCES += tupnetprojectmanagerparams.cpp \
            tupopenpackage.cpp \
            tupsavepackage.cpp \
            tupnewprojectpackage.cpp \
-           tupinetfilemanager.cpp \
+           tupnetfilemanager.cpp \
            tupchat.cpp \
            tupconnectdialog.cpp \
            tupprojectparser.cpp \

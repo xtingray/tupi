@@ -143,6 +143,9 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        QList<int> svgIndexes();
 
        bool isEmpty();
+
+       void reloadGraphicItem(const QString &id, const QString &path);
+       void reloadSVGItem(const QString &id, TupLibraryObject *object);
        
     public:
        virtual void fromXml(const QString &xml);

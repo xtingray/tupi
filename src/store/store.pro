@@ -55,7 +55,7 @@ HEADERS += tuplayer.h \
            tuprequestparser.h \
            tupprojectresponse.h \
            tupabstractprojectresponsehandler.h \
-           tupifilemanager.h \
+           tupfilemanager.h \
            tupprojectloader.h \
            tupgraphiclibraryitem.h \
            tupitemtweener.h \
@@ -102,7 +102,7 @@ SOURCES += tuplayer.cpp \
            tupprojectresponse.cpp \
            tupabstractprojectresponsehandler.cpp \
            tupitemfactory.cpp \
-           tupifilemanager.cpp \
+           tupfilemanager.cpp \
            tupprojectloader.cpp \
            tupgraphiclibraryitem.cpp \
            tupitemtweener.cpp \

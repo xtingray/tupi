@@ -61,6 +61,8 @@
 #include <QSvgRenderer>
 #include <QComboBox>
 #include <QTreeWidgetItemIterator>
+#include <QProcess>
+#include <QFileSystemWatcher>
 
 #include <cstdlib>
 #include <ctime>
@@ -94,6 +96,10 @@ struct TupLibraryWidget::Private
     bool renaming;
     bool mkdir;
     bool isNetworked;
+    QTreeWidgetItem *lastItemEdited;
+    QTreeWidgetItem *currentItemDisplayed;
+    QStringList fileList; 
+    QFileSystemWatcher *watcher;
 
     struct Frame
     {
@@ -108,6 +114,8 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     #ifdef K_DEBUG
            TINIT;
     #endif
+
+    k->watcher = new QFileSystemWatcher(this);
 
     k->childCount = 0;
     k->renaming = false;
@@ -137,6 +145,18 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
 
     connect(k->libraryTree, SIGNAL(itemCreated(QTreeWidgetItem*)), this,
                                    SLOT(activeRefresh(QTreeWidgetItem*)));
+
+    connect(k->libraryTree, SIGNAL(inkscapeEditCall(QTreeWidgetItem*)), this,
+                                   SLOT(openInkscapeToEdit(QTreeWidgetItem*)));
+
+    connect(k->libraryTree, SIGNAL(gimpEditCall(QTreeWidgetItem*)), this,
+                                   SLOT(openGimpToEdit(QTreeWidgetItem*)));
+
+    connect(k->libraryTree, SIGNAL(kritaEditCall(QTreeWidgetItem*)), this,
+                                   SLOT(openKritaToEdit(QTreeWidgetItem*)));
+
+    connect(k->libraryTree, SIGNAL(myPaintEditCall(QTreeWidgetItem*)), this,
+                                   SLOT(openMyPaintToEdit(QTreeWidgetItem*)));
 
     QGroupBox *buttons = new QGroupBox(this);
     QHBoxLayout *buttonLayout = new QHBoxLayout(buttons);
@@ -233,6 +253,8 @@ void TupLibraryWidget::previewItem(QTreeWidgetItem *item)
     RETURN_IF_NOT_LIBRARY;
 
     if (item) {
+
+        k->currentItemDisplayed = item;
 
         if (item->text(2).length() == 0) {
             QGraphicsTextItem *msg = new QGraphicsTextItem(tr("Directory"));
@@ -1046,8 +1068,8 @@ void TupLibraryWidget::refreshItem(QTreeWidgetItem *item)
                              } else {
                                  QString first = newId.mid(0, index);
                                  QString last = newId.mid(index+1, newId.length() - index);
-                                 bool *ok = false;
-                                 int newIndex = last.toInt(ok);          
+                                 bool ok = false;
+                                 int newIndex = last.toInt(&ok);          
                                  newIndex++;
                                  newId = first + "-" + QString::number(newIndex);
                                  item->setText(1, newId);       
@@ -1087,3 +1109,145 @@ void TupLibraryWidget::updateLibrary(QString node, QString target)
     else
         k->library->moveObjectToRoot(node);
 }
+
+void TupLibraryWidget::openInkscapeToEdit(QTreeWidgetItem *item)
+{
+    callExternalEditor(item, TupLibraryWidget::Inkscape);
+}
+
+void TupLibraryWidget::openGimpToEdit(QTreeWidgetItem *item)
+{
+    callExternalEditor(item, TupLibraryWidget::Gimp);
+}
+
+void TupLibraryWidget::openKritaToEdit(QTreeWidgetItem *item)
+{
+    callExternalEditor(item, TupLibraryWidget::Krita);
+}
+
+void TupLibraryWidget::openMyPaintToEdit(QTreeWidgetItem *item)
+{
+    callExternalEditor(item, TupLibraryWidget::MyPaint);
+}
+
+void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, ThirdParty software)
+{
+    if (item) {
+        k->lastItemEdited = item;
+        QString itemID = item->text(1) + "." + item->text(2).toLower();
+        TupLibraryObject *object = k->library->findObject(itemID);
+
+        if (object) {
+            QString path = object->dataPath();
+
+            if (path.length() > 0) {
+                QString program = "";
+                switch(software) {
+                       case Inkscape:  
+                            program = "/usr/bin/inkscape";
+                       break;
+                       case Gimp:
+                            program = "/usr/bin/gimp";
+                       break;
+                       case Krita: 
+                            program = "/usr/bin/krita";
+                       break;
+                       case MyPaint:
+                            program = "/usr/bin/mypaint";
+                       break;
+                }
+
+                QStringList arguments;
+                arguments << path;
+    
+                QProcess *editor = new QProcess(this);
+                connect(editor, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(updateItemFromCloseAction()));
+                editor->start(program, arguments);
+
+                if (!k->fileList.contains(path)) {
+                    if (k->fileList.count() == 0)
+                        connect(k->watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateItemFromSaveAction()));
+                    k->fileList << path;
+                    tError() << "TupLibraryWidget::callExternalEditor() - Watching: " << path;
+                    k->watcher->addPath(path);
+                } else {
+                    TOsd::self()->display(tr("Error"), tr("%1 is already open!").arg(path), TOsd::Warning);
+                }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::callExternalEditor() - Error: The current library item -" << itemID << "- has no path related to!";
+                #endif
+            }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "TupLibraryWidget::callExternalEditor() - Error: No object related to the current library item -" << itemID << "- was found!";
+            #endif
+        }
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupLibraryWidget::callExternalEditor() - Error: Current library item is invalid!";
+        #endif
+    }
+}
+
+void TupLibraryWidget::updateItemFromCloseAction()
+{
+    QString name = k->lastItemEdited->text(1).toLower();
+    QString extension = k->lastItemEdited->text(2).toLower();
+
+    TupLibraryObject *object = k->library->findObject(name + "." + extension);
+
+    if (object) {
+        updateItem(name, extension, object);
+
+        QString path = object->dataPath();
+        if (k->fileList.contains(path)) {
+            k->fileList.removeAll(path);
+            k->watcher->removePath(path);
+            if (k->fileList.count() == 0)
+                disconnect(k->watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateItemFromSaveAction()));
+        }
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupLibraryWidget::updateLibraryItem() - Error: The library item modified was not found!";
+        #endif
+    }
+}
+
+void TupLibraryWidget::updateItemFromSaveAction()
+{
+    QString name = k->lastItemEdited->text(1).toLower();
+    QString extension = k->lastItemEdited->text(2).toLower();
+
+    TupLibraryObject *object = k->library->findObject(name + "." + extension);
+
+    if (object) {
+        updateItem(name, extension, object);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupLibraryWidget::updateLibraryItem() - Error: The library item modified was not found!";
+        #endif
+    }
+}
+
+void TupLibraryWidget::updateItem(const QString &name, const QString &extension, TupLibraryObject *object)
+{
+    QString onEdition = name + "." + extension;
+    QString onDisplay = k->currentItemDisplayed->text(1) + "." + k->currentItemDisplayed->text(2).toLower();
+
+    TupLibraryObject::Type type = TupLibraryObject::Svg;
+    if (extension.compare("svg") != 0)
+        type = TupLibraryObject::Image;
+
+    k->library->reloadObject(onEdition);
+    k->project->reloadLibraryItem(type, onEdition, object);
+
+    if (onDisplay.compare(onEdition) == 0)
+        previewItem(k->lastItemEdited);
+
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame,
+                                                                          TupProjectRequest::Select);
+    emit requestTriggered(&request);
+}
+
+
