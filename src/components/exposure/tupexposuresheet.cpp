@@ -167,8 +167,16 @@ void TupExposureSheet::createMenu()
     expandMenu->addAction(tr("5 frames"), this, SLOT(expandCurrentFrameFive()));
     expandMenu->addAction(tr("10 frames"), this, SLOT(expandCurrentFrameTen()));
     expandMenu->setDisabled(true);
-    
     k->menu->addMenu(expandMenu);
+
+    QMenu *timeLineMenu = new QMenu(tr("Copy TL forward"));
+    timeLineMenu->addAction(QIcon(THEME_DIR + "icons/copy.png"), tr("1 time"), this, SLOT(copyTimeLineOnce()));
+    timeLineMenu->addAction(QIcon(THEME_DIR + "icons/copy.png"), tr("2 times"), this, SLOT(copyTimeLineTwoTimes()));
+    timeLineMenu->addAction(QIcon(THEME_DIR + "icons/copy.png"), tr("3 times"), this, SLOT(copyTimeLineThreeTimes()));
+    timeLineMenu->addAction(QIcon(THEME_DIR + "icons/copy.png"), tr("4 times"), this, SLOT(copyTimeLineFourTimes()));
+    timeLineMenu->addAction(QIcon(THEME_DIR + "icons/copy.png"), tr("5 times"), this, SLOT(copyTimeLineFiveTimes()));
+    k->menu->addMenu(timeLineMenu);
+
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
     //connect(expandMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
 }
@@ -922,5 +930,62 @@ void TupExposureSheet::updateFramesState(TupProject *project)
               }
          }
     }
+}
+
+
+void TupExposureSheet::copyTimeLineOnce()
+{
+    copyTimeLine(1);
+}
+
+void TupExposureSheet::copyTimeLineTwoTimes()
+{
+    copyTimeLine(2);
+}
+
+void TupExposureSheet::copyTimeLineThreeTimes()
+{
+    copyTimeLine(3);
+}
+
+void TupExposureSheet::copyTimeLineFourTimes()
+{
+    copyTimeLine(4);
+}
+
+void TupExposureSheet::copyTimeLineFiveTimes()
+{
+    copyTimeLine(5);
+}
+
+void TupExposureSheet::copyTimeLine(int times) 
+{
+    int currentScene = k->scenesContainer->currentIndex();
+    int currentLayer = k->currentTable->currentLayer();
+    int currentFrame = k->currentTable->currentFrame();
+    int framesTotal = k->currentTable->usedFrames(k->currentTable->currentLayer());
+
+    for (int i=0; i < times; i++) {
+         for (int j=0; j < framesTotal; j++) {
+              TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene,
+                                                                                currentLayer,
+                                                                                j,
+                                                                                TupProjectRequest::Copy);
+              emit localRequestTriggered(&request);
+              int frameIndex = k->currentTable->usedFrames(currentLayer);
+              insertFrame(currentLayer, frameIndex);
+
+              request = TupRequestBuilder::createFrameRequest(currentScene,
+                                                              currentLayer, frameIndex,
+                                                              TupProjectRequest::Paste);
+              emit localRequestTriggered(&request);
+         }
+    }
+
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene,                                   
+                                                                      currentLayer,                                 
+                                                                      currentFrame,      
+                                                                      TupProjectRequest::Select, "1");
+    emit requestTriggered(&request);
 }
 

@@ -70,6 +70,7 @@ class TupExposureSheet : public TupModuleWidgetBase
         void createMenu();
         void emitRequestExpandCurrentFrame(int n);
         void insertFrames(int n);
+        void copyTimeLine(int times);
 
     protected:
         virtual void sceneResponse(TupSceneResponse *event);
@@ -102,6 +103,11 @@ class TupExposureSheet : public TupModuleWidgetBase
         void removeOne();
         void clearFrame();
         void lockFrame();
+        void copyTimeLineOnce();
+        void copyTimeLineTwoTimes();
+        void copyTimeLineThreeTimes();
+        void copyTimeLineFourTimes();
+        void copyTimeLineFiveTimes();
 		
         void insertFrame(int indexLayer, int indexFrame);
         void renameFrame(int indexLayer, int indexFrame, const QString & name);
