@@ -63,6 +63,7 @@
 #include <QTreeWidgetItemIterator>
 #include <QProcess>
 #include <QFileSystemWatcher>
+#include <QChar>
 
 #include <cstdlib>
 #include <ctime>
@@ -385,16 +386,63 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
         TupLibraryObject *object = k->library->findObject(id);
 
         if (object) {
-            QString symbolName = object->symbolName();
+            QString smallId = object->smallId();
+            QString extension = object->extension();
+            int type = object->type();
             QString path = object->dataPath();
+            int limit = path.lastIndexOf(QDir::separator());
+            QString newPath = path.left(limit + 1); 
 
-            tError() << "TupLibraryWidget::cloneObject() - symbolName: " << symbolName;
+            QString symbolName = "";
+
+            if (itemNameEndsWithDigit(smallId)) {
+                tError() << "cloneObject() - the item has numbers already!";
+                int index = getItemNameIndex(smallId);
+                while (true) {
+                       symbolName = nameForClonedItem(smallId, extension, index);
+                       QString tester = newPath + symbolName;
+                       tError() << "cloneObject() - tester: " << tester;
+                       if (!QFile::exists(tester)) {
+                           newPath = tester;
+                           break;
+                       }
+                }
+            } else {
+                tError() << "cloneObject() - the item has NO numbers yet!";
+                symbolName = nameForClonedItem(smallId, extension, newPath);
+                newPath += symbolName;
+            }
+
+            bool isOk = QFile::copy(path, newPath);
             tError() << "TupLibraryWidget::cloneObject() - path: " << path;
+            tError() << "TupLibraryWidget::cloneObject() - newPath: " << newPath;
+
+            if (!isOk) {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::cloneObject() - Error: Object file couldn't be cloned!";
+                #endif
+                return;
+            }
+
+            TupLibraryObject *newObject = new TupLibraryObject();
+            newObject->setSymbolName(symbolName);
+            newObject->setType(type);
+            newObject->setDataPath(newPath);
+            isOk = newObject->loadData(newPath);
+
+            if (!isOk) {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::cloneObject() - Error: Object file couldn't be loaded!";
+                #endif
+                return;
+            } 
+
+            k->library->addObject(newObject);
 
             QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
-            item->setText(1, "pop");
-            item->setText(2, "SVG");
-            item->setText(3, "pop.svg");
+            item->setText(1, symbolName.section('.', 0, 0));
+            item->setText(2, extension);
+            item->setText(3, symbolName);
             item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
             switch (object->type()) {
@@ -425,6 +473,7 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
                          }
                          break;
             }
+
         } else {
               // Error    
         }
@@ -1306,4 +1355,70 @@ void TupLibraryWidget::updateItem(const QString &name, const QString &extension,
     emit requestTriggered(&request);
 }
 
+bool TupLibraryWidget::itemNameEndsWithDigit(QString &name)
+{
+    QByteArray array = name.toLocal8Bit();
 
+    QChar letter(array.at(array.size() - 1));
+    if (letter.isDigit())
+        return true;
+
+    return false;
+}
+
+int TupLibraryWidget::getItemNameIndex(QString &name) const
+{
+    QByteArray array = name.toLocal8Bit();
+    int index = 0;
+    for (int i = array.size()-1; i >= 0; i--) {
+         QChar letter(array.at(i));
+         if (!letter.isDigit()) {
+             index = i + 1;
+             break;
+         }
+    }
+
+    tError() << "TupLibraryWidget::getItemNameIndex() - index: " << index;
+
+    return index;
+}
+
+QString TupLibraryWidget::nameForClonedItem(QString &name, QString &extension, int index) const
+{
+    QString base = name.left(index); 
+    tError() << "TupLibraryWidget::nameForClonedItem() - base: " << base;
+    int counter = name.right(index).toInt();
+    counter++;
+    QString number = QString::number(counter);
+    if (counter < 10)
+        number = "0" + number; 
+
+    return base + number + "." + extension.toLower();
+}
+
+QString TupLibraryWidget::nameForClonedItem(QString &smallId, QString &extension, QString &path) const
+{
+    QString symbolName = "";
+    int index = 0;
+
+    while(true) {
+          QString number = QString::number(index);
+          if (index < 10)
+              number = "0" + number;
+
+          QString base = smallId + number;
+          symbolName = base + "." + extension.toLower();
+          QString tester = path + symbolName;
+
+          tError() << "TupLibraryWidget::nameForClonedItem() - Testing path: " << tester;
+
+          if (!QFile::exists(tester))
+              break;
+
+          index++;
+    }
+
+    tError() << "TupLibraryWidget::nameForClonedItem() - symbolName: " <<  symbolName;
+
+    return symbolName;
+}

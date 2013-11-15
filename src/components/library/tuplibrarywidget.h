@@ -103,6 +103,11 @@ class TupLibraryWidget : public TupModuleWidgetBase
     private:
         void callExternalEditor(QTreeWidgetItem *item, ThirdParty software);
         void updateItem(const QString &name, const QString &extension, TupLibraryObject *object);
+        bool itemNameEndsWithDigit(QString &name);
+        int getItemNameIndex(QString &name) const;
+        QString nameForClonedItem(QString &name, QString &extension, int index) const;
+        QString nameForClonedItem(QString &smallId, QString &extension, QString &path) const;
+
         struct Private;
         Private *const k;
 };

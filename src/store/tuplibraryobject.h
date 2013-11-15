@@ -76,6 +76,9 @@ class STORE_EXPORT TupLibraryObject : public QObject, public TupAbstractSerializ
         
         void setSymbolName(const QString &name);
         QString symbolName() const;
+
+        QString smallId() const;
+        QString extension() const;
         
         bool loadRawData(const QByteArray &data);
         bool loadDataFromPath(const QString &dataDir);

@@ -48,6 +48,7 @@ struct TupLibraryObject::Private
     QVariant data;
     QString dataPath;
     QString symbolName;
+    QString smallId;
     QString extension;
     QByteArray rawData; 
 };
@@ -99,12 +100,23 @@ void TupLibraryObject::setSymbolName(const QString &name)
 {
     k->symbolName = name;
     k->symbolName.replace(QDir::separator(), "-");
+    k->smallId = k->symbolName.section('.', 0, 0);
     k->extension = k->symbolName.section('.', 1, 1).toUpper();
 }
 
 QString TupLibraryObject::symbolName() const
 {
     return k->symbolName;
+}
+
+QString TupLibraryObject::smallId() const
+{
+    return k->smallId;
+}
+
+QString TupLibraryObject::extension() const
+{
+    return k->extension;
 }
 
 void TupLibraryObject::fromXml(const QString &xml)
