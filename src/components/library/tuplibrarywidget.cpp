@@ -406,38 +406,11 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
             }
 
             QString baseName = symbolName.section('.', 0, 0);
-            QList<QTreeWidgetItem *> list = k->libraryTree->findItems(baseName, Qt::MatchExactly, 1);
-            if (list.size() > 1) {
-                int total = 0;
-                for (int i=0; i<list.size(); i++) {
-                     QTreeWidgetItem *node = list.at(i);
-                     if (node->text(2).compare(extension) == 0)
-                         total++;
-                }
-
-                if (total > 1) {
-                    int index = baseName.lastIndexOf("-");
-                    if (index < 0) {
-                        baseName += "-1";
-                        item->setText(1, baseName);
-                    } else {
-                        QString first = baseName.mid(0, index);
-                        QString last = baseName.mid(index+1, baseName.length() - index);
-                        bool ok = false;
-                        int newIndex = last.toInt(&ok);
-                        if (ok) {
-                            newIndex++;
-                            baseName = first + "-" + QString::number(newIndex);
-                            item->setText(1, baseName);
-                        } else {
-                            // Add a number at the end of the ending substring
-                        }
-                    }
-                    symbolName = baseName + "." + extension;
-                }
-            }
+            baseName = verifyNameAvailability(baseName, extension);
+            symbolName = baseName + "." + extension;
 
             bool isOk = QFile::copy(path, newPath);
+
             tError() << "TupLibraryWidget::cloneObject() - path: " << path;
             tError() << "TupLibraryWidget::cloneObject() - newPath: " << newPath;
 
@@ -1456,3 +1429,38 @@ QString TupLibraryWidget::nameForClonedItem(QString &smallId, QString &extension
 
     return symbolName;
 }
+
+QString TupLibraryWidget::verifyNameAvailability(QString &name, QString &extension) {
+
+    QList<QTreeWidgetItem *> list = k->libraryTree->findItems(name, Qt::MatchExactly, 1);
+    if (list.size() > 1) {
+        int total = 0;
+        for (int i=0; i<list.size(); i++) {
+             QTreeWidgetItem *node = list.at(i);
+             if (node->text(2).compare(extension) == 0)
+                 total++;
+        }
+
+        if (total > 1) {
+            int index = name.lastIndexOf("-");
+            if (index < 0) {
+                name += "-1";
+            } else {
+                QString first = name.mid(0, index);
+                QString last = name.mid(index+1, name.length() - index);
+                bool ok = false;
+                int newIndex = last.toInt(&ok);
+                if (ok) {
+                    newIndex++;
+                    name = first + "-" + QString::number(newIndex);
+                } else {
+                    // Check if ends with digit or letter 
+                    name += "1";          
+                }
+            }
+        }
+    }
+
+    return name;
+}
+
