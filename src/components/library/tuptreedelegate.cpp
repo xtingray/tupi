@@ -38,8 +38,7 @@
 
 #include <QtGui>
 
-TupTreeDelegate::TupTreeDelegate(QObject *parent)
-    : QItemDelegate(parent)
+TupTreeDelegate::TupTreeDelegate(QObject *parent) : QItemDelegate(parent)
 {
 }
 

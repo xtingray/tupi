@@ -396,21 +396,45 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
             QString symbolName = "";
 
             if (itemNameEndsWithDigit(smallId)) {
-                tError() << "cloneObject() - the item has numbers already!";
                 int index = getItemNameIndex(smallId);
-                while (true) {
-                       symbolName = nameForClonedItem(smallId, extension, index);
-                       QString tester = newPath + symbolName;
-                       tError() << "cloneObject() - tester: " << tester;
-                       if (!QFile::exists(tester)) {
-                           newPath = tester;
-                           break;
-                       }
-                }
+                symbolName = nameForClonedItem(smallId, extension, index, newPath);
+                newPath += symbolName;
             } else {
                 tError() << "cloneObject() - the item has NO numbers yet!";
                 symbolName = nameForClonedItem(smallId, extension, newPath);
                 newPath += symbolName;
+            }
+
+            QString baseName = symbolName.section('.', 0, 0);
+            QList<QTreeWidgetItem *> list = k->libraryTree->findItems(baseName, Qt::MatchExactly, 1);
+            if (list.size() > 1) {
+                int total = 0;
+                for (int i=0; i<list.size(); i++) {
+                     QTreeWidgetItem *node = list.at(i);
+                     if (node->text(2).compare(extension) == 0)
+                         total++;
+                }
+
+                if (total > 1) {
+                    int index = baseName.lastIndexOf("-");
+                    if (index < 0) {
+                        baseName += "-1";
+                        item->setText(1, baseName);
+                    } else {
+                        QString first = baseName.mid(0, index);
+                        QString last = baseName.mid(index+1, baseName.length() - index);
+                        bool ok = false;
+                        int newIndex = last.toInt(&ok);
+                        if (ok) {
+                            newIndex++;
+                            baseName = first + "-" + QString::number(newIndex);
+                            item->setText(1, baseName);
+                        } else {
+                            // Add a number at the end of the ending substring
+                        }
+                    }
+                    symbolName = baseName + "." + extension;
+                }
             }
 
             bool isOk = QFile::copy(path, newPath);
@@ -440,7 +464,7 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
             k->library->addObject(newObject);
 
             QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
-            item->setText(1, symbolName.section('.', 0, 0));
+            item->setText(1, baseName);
             item->setText(2, extension);
             item->setText(3, symbolName);
             item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -1383,17 +1407,27 @@ int TupLibraryWidget::getItemNameIndex(QString &name) const
     return index;
 }
 
-QString TupLibraryWidget::nameForClonedItem(QString &name, QString &extension, int index) const
+QString TupLibraryWidget::nameForClonedItem(QString &name, QString &extension, int index, QString &path) const
 {
+    QString symbolName = "";
+
     QString base = name.left(index); 
     tError() << "TupLibraryWidget::nameForClonedItem() - base: " << base;
     int counter = name.right(index).toInt();
-    counter++;
-    QString number = QString::number(counter);
-    if (counter < 10)
-        number = "0" + number; 
 
-    return base + number + "." + extension.toLower();
+    while (true) {
+           counter++;
+           QString number = QString::number(counter);
+           if (counter < 10)
+               number = "0" + number; 
+           symbolName = base + number + "." + extension.toLower();
+           QString tester = path + symbolName;
+           tError() << "nameForClonedItem() - tester: " << tester;
+           if (!QFile::exists(tester))
+               break;
+    }
+
+    return symbolName;
 }
 
 QString TupLibraryWidget::nameForClonedItem(QString &smallId, QString &extension, QString &path) const
