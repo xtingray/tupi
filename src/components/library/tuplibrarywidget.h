@@ -107,7 +107,7 @@ class TupLibraryWidget : public TupModuleWidgetBase
         int getItemNameIndex(QString &name) const;
         QString nameForClonedItem(QString &name, QString &extension, int index, QString &path) const;
         QString nameForClonedItem(QString &smallId, QString &extension, QString &path) const;
-        QString verifyNameAvailability(QString &name, QString &extension);
+        QString verifyNameAvailability(QString &name, QString &extension, bool isCloningAction);
 
         struct Private;
         Private *const k;

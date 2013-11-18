@@ -44,6 +44,7 @@
 #include "tupsymboleditor.h"
 #include "tuprequestbuilder.h"
 #include "tosd.h"
+#include "talgorithm.h"
 // #include "taudioplayer.h"
 #include "tdebug.h"
 
@@ -400,19 +401,15 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
                 symbolName = nameForClonedItem(smallId, extension, index, newPath);
                 newPath += symbolName;
             } else {
-                tError() << "cloneObject() - the item has NO numbers yet!";
                 symbolName = nameForClonedItem(smallId, extension, newPath);
                 newPath += symbolName;
             }
 
             QString baseName = symbolName.section('.', 0, 0);
-            baseName = verifyNameAvailability(baseName, extension);
-            symbolName = baseName + "." + extension;
+            baseName = verifyNameAvailability(baseName, extension, true);
+            symbolName = baseName + "." + extension.toLower();
 
             bool isOk = QFile::copy(path, newPath);
-
-            tError() << "TupLibraryWidget::cloneObject() - path: " << path;
-            tError() << "TupLibraryWidget::cloneObject() - newPath: " << newPath;
 
             if (!isOk) {
                 #ifdef K_DEBUG
@@ -1080,9 +1077,7 @@ void TupLibraryWidget::importGraphicObject()
 
 void TupLibraryWidget::refreshItem(QTreeWidgetItem *item)
 {
-
     if (k->mkdir) {
-
         k->mkdir = false;
 
         QString base = item->text(1);
@@ -1148,47 +1143,22 @@ void TupLibraryWidget::refreshItem(QTreeWidgetItem *item)
             if (k->oldId.length() == 0)
                 return;
 
-            // SQA: Make the renaming action for real here!
-
             QString newId = item->text(1);
             QString extension = item->text(2);
+
             if (k->oldId.compare(newId) != 0) {
-                QList<QTreeWidgetItem *> list = k->libraryTree->findItems(newId, Qt::MatchExactly, 1);
-                if (list.size() > 1) {
-                    int total = 0;
-                    for (int i=0; i<list.size(); i++) {
-                         QTreeWidgetItem *node = list.at(i);
-                         if (node->text(2).compare(extension) == 0) {
-                             total++;
-                         }
-                    }
+                newId = verifyNameAvailability(newId, extension, false);
+                QString oldId = k->oldId + "." + extension.toLower();
+                item->setText(1, newId);
 
-                    if (total > 1) {
-                             int index = newId.lastIndexOf("-");
-                             if (index < 0) {
-                                 item->setText(1, newId + "-1");
-                             } else {
-                                 QString first = newId.mid(0, index);
-                                 QString last = newId.mid(index+1, newId.length() - index);
-                                 bool ok = false;
-                                 int newIndex = last.toInt(&ok);          
-                                 newIndex++;
-                                 newId = first + "-" + QString::number(newIndex);
-                                 item->setText(1, newId);       
-                             }
-
-                    } 
-                }
-
-                k->oldId = k->oldId + "." + extension.toLower();
                 newId = newId + "." + extension.toLower();
+                item->setText(3, newId);
 
                 QTreeWidgetItem *parent = item->parent();
-
                 if (parent) 
-                    k->library->renameObject(parent->text(1), k->oldId, newId);
+                    k->library->renameObject(parent->text(1), oldId, newId);
                 else
-                    k->library->renameObject("", k->oldId, newId);
+                    k->library->renameObject("", oldId, newId);
 
                 TupLibraryObject::Type type = TupLibraryObject::Image;
                 if (extension.compare("SVG")==0)
@@ -1196,7 +1166,7 @@ void TupLibraryWidget::refreshItem(QTreeWidgetItem *item)
                 if (extension.compare("OBJ")==0)
                     type = TupLibraryObject::Item;
 
-                k->project->updateSymbolId(type, k->oldId, newId);
+                k->project->updateSymbolId(type, oldId, newId);
             }
         }
 
@@ -1270,7 +1240,6 @@ void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, ThirdParty soft
                     if (k->fileList.count() == 0)
                         connect(k->watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateItemFromSaveAction()));
                     k->fileList << path;
-                    tError() << "TupLibraryWidget::callExternalEditor() - Watching: " << path;
                     k->watcher->addPath(path);
                 } else {
                     TOsd::self()->display(tr("Error"), tr("%1 is already open!").arg(path), TOsd::Warning);
@@ -1375,8 +1344,6 @@ int TupLibraryWidget::getItemNameIndex(QString &name) const
          }
     }
 
-    tError() << "TupLibraryWidget::getItemNameIndex() - index: " << index;
-
     return index;
 }
 
@@ -1385,7 +1352,6 @@ QString TupLibraryWidget::nameForClonedItem(QString &name, QString &extension, i
     QString symbolName = "";
 
     QString base = name.left(index); 
-    tError() << "TupLibraryWidget::nameForClonedItem() - base: " << base;
     int counter = name.right(index).toInt();
 
     while (true) {
@@ -1395,7 +1361,6 @@ QString TupLibraryWidget::nameForClonedItem(QString &name, QString &extension, i
                number = "0" + number; 
            symbolName = base + number + "." + extension.toLower();
            QString tester = path + symbolName;
-           tError() << "nameForClonedItem() - tester: " << tester;
            if (!QFile::exists(tester))
                break;
     }
@@ -1417,23 +1382,23 @@ QString TupLibraryWidget::nameForClonedItem(QString &smallId, QString &extension
           symbolName = base + "." + extension.toLower();
           QString tester = path + symbolName;
 
-          tError() << "TupLibraryWidget::nameForClonedItem() - Testing path: " << tester;
-
           if (!QFile::exists(tester))
               break;
 
           index++;
     }
 
-    tError() << "TupLibraryWidget::nameForClonedItem() - symbolName: " <<  symbolName;
-
     return symbolName;
 }
 
-QString TupLibraryWidget::verifyNameAvailability(QString &name, QString &extension) {
+QString TupLibraryWidget::verifyNameAvailability(QString &name, QString &extension, bool isCloningAction) {
+
+    int limit = 1;
+    if (isCloningAction)
+        limit = 0; 
 
     QList<QTreeWidgetItem *> list = k->libraryTree->findItems(name, Qt::MatchExactly, 1);
-    if (list.size() > 1) {
+    if (list.size() > limit) {
         int total = 0;
         for (int i=0; i<list.size(); i++) {
              QTreeWidgetItem *node = list.at(i);
@@ -1441,21 +1406,46 @@ QString TupLibraryWidget::verifyNameAvailability(QString &name, QString &extensi
                  total++;
         }
 
-        if (total > 1) {
-            int index = name.lastIndexOf("-");
-            if (index < 0) {
-                name += "-1";
-            } else {
-                QString first = name.mid(0, index);
-                QString last = name.mid(index+1, name.length() - index);
-                bool ok = false;
-                int newIndex = last.toInt(&ok);
+        if (total > limit) {
+            bool ok = false;
+            if (itemNameEndsWithDigit(name)) {
+                int index = getItemNameIndex(name);
+                QString base = name.left(index);
+                int counter = name.right(name.length() - index).toInt(&ok);
                 if (ok) {
-                    newIndex++;
-                    name = first + "-" + QString::number(newIndex);
+                    while (true) {
+                           counter++;
+                           QString number = QString::number(counter);
+                           if (counter < 10)
+                               number = "0" + number;
+                           name = base + number;
+                           QList<QTreeWidgetItem *> others = k->libraryTree->findItems(name, Qt::MatchExactly, 1);
+                           if (others.size() == 0)
+                               break;
+                    }
                 } else {
-                    // Check if ends with digit or letter 
-                    name += "1";          
+                    name = TAlgorithm::randomString(8);
+                    #ifdef K_DEBUG
+                           tError() << "TupLibraryWidget::verifyNameAvailability() - Fatal error while processing item name!";
+                    #endif
+                }
+            } else {
+                int index = name.lastIndexOf("-");
+                if (index < 0) {
+                    name += "-1";
+                } else {
+                    QString first = name.mid(0, index);
+                    QString last = name.mid(index+1, name.length() - index);
+                    int newIndex = last.toInt(&ok);
+                    if (ok) {
+                        newIndex++;
+                        name = first + "-" + QString::number(newIndex);
+                    } else {
+                        name = TAlgorithm::randomString(8);
+                        #ifdef K_DEBUG
+                               tError() << "TupLibraryWidget::verifyNameAvailability() - Fatal error while processing item name!";
+                        #endif
+                    }
                 }
             }
         }
@@ -1463,4 +1453,3 @@ QString TupLibraryWidget::verifyNameAvailability(QString &name, QString &extensi
 
     return name;
 }
-
