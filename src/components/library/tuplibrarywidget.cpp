@@ -485,25 +485,44 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
         QString path = object->dataPath();
         if (path.length() > 0) {
             tError() << "TupLibraryWidget::exportObject() - Exporting object: " << path;
-            // SQA: String must be related to the file extension
-            QString target = QFileDialog::getOpenFileName (this, tr("Import an image..."), QDir::homePath(),
-                                                      tr("Images") + " (*.png *.xpm *.jpg *.jpeg *.gif)");
+            QString fileExtension = object->extension();
+            QString filter = tr("Images") + " ";
+            if (fileExtension.compare("PNG"))
+                filter += "(*.png)"; 
+            if (fileExtension.compare("JPG") || fileExtension.compare("JPEG"))
+                filter += "(*.jpg *.jpeg)";
+            if (fileExtension.compare("GIF"))
+                filter += "(*.gif)";
+            if (fileExtension.compare("XPM"))
+                filter += "(*.xpm)";
+            if (fileExtension.compare("SVG"))
+                filter += "(*.svg)";
+
+            QString target = QFileDialog::getSaveFileName(this, tr("Import an image..."), QDir::homePath(), filter);
             if (target.isEmpty())
                 return;
+
+            tError() << "TupLibraryWidget::exportObject() - Copying object: " << path << " to " << target;
 
             bool isOk = QFile::copy(path, target);
 
             if (!isOk) {
                 #ifdef K_DEBUG
-                       tError() << "TupLibraryWidget::exportObject() - Error: Object file couldn't be exported!";
+                       tError() << "TupLibraryWidget::exportObject() - Error: Object file couldn't be exported! [ " << key << " ]";
                 #endif
                 return;
             }
         } else {
-            // print error
+            #ifdef K_DEBUG
+                   tError() << "TupLibraryWidget::exportObject() - Error: Object path is null! [ " << key << " ]";
+            #endif
+            return;
         }
     } else {
-        // print error
+        #ifdef K_DEBUG
+               tError() << "TupLibraryWidget::exportObject() - Error: Object doesn't exist! [ " << key << " ]";
+        #endif
+        return;
     }
 }
 
