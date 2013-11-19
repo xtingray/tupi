@@ -33,85 +33,82 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPITEMMANAGER_H
-#define TUPITEMMANAGER_H
+#include "tupnewitemdialog.h"
+#include "tupitempreview.h"
+#include "tformfactory.h"
 
-#include "tuptreedelegate.h"
-#include "treelistwidget.h"
-#include "tapplicationproperties.h"
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
+#include <QToolBox>
+#include <QGraphicsItem>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QMap>
 
-#include <QKeyEvent>
-
-/**
- * @author David Cuadrado
-*/
-
-class TupItemManager : public TreeListWidget
+struct TupNewItemDialog::Private
 {
-    Q_OBJECT
-
-    public:
-        TupItemManager(QWidget *parent = 0);
-        ~TupItemManager();
-        QTreeWidgetItem *currentFolder();
-        void setCurrentFolder(QTreeWidgetItem *cf);
-        void removeCurrentFolder();
-        void mousePressEvent(QMouseEvent *event);
-        void mouseDoubleClickEvent(QMouseEvent *event);
-        bool isFolder(QTreeWidgetItem *item);
-        int indexOf(QTreeWidgetItem *item);
-        QString oldFolder();
-        QTreeWidgetItem *getFolder(const QString &folderName);
-        void cleanUI();
-
-        enum ObjectType 
-        {
-            Item = 0,
-            Folder
-        };
-
-    signals:
-        void itemSelected(QTreeWidgetItem *item);
-        void itemRemoved();
-        void itemRenamed(QTreeWidgetItem *item);
-        void itemCloned(QTreeWidgetItem *item);
-        void itemExported(QTreeWidgetItem *item);
-        void itemMoved(QString node, QString target);
-        void itemCreated(QTreeWidgetItem *item);
-        void inkscapeEditCall(QTreeWidgetItem *item);
-        void gimpEditCall(QTreeWidgetItem *item);
-        void kritaEditCall(QTreeWidgetItem *item);
-        void myPaintEditCall(QTreeWidgetItem *item);
-
-    public slots:
-        void createFolder(const QString &name = QString());
-
-    private slots:
-        void renameItem();
-        void cloneItem();
-        void exportItem();
-        void callInkscapeToEdit();
-        void callGimpToEdit();
-        void callKritaToEdit();
-        void callMyPaintToEdit();
-        void createNewRaster();
-        void createNewSVG();
-
-    protected:
-        void dropEvent(QDropEvent *event);
-        void dragEnterEvent(QDragEnterEvent *event);
-        void dragMoveEvent(QDragMoveEvent *event);
-        void keyPressEvent(QKeyEvent *event);
-
-    private:
-        QTreeWidgetItem *m_currentFolder;
-        int foldersTotal;
-        QString folderName; 
-        QString parentNode;
-        QString currentSelection;
-        QList<QTreeWidgetItem *> nodeChildren;
-        typedef QList<QTreeWidgetItem *> Lists;
-        // QHash<int, Lists> deepChildren;
+    QToolBox *toolBox;
+    QMap<QGraphicsItem *, QLineEdit *> symbolNames;
+    QMap<int, QLineEdit *> tabs;
 };
 
-#endif
+TupNewItemDialog::TupNewItemDialog() : QDialog(), k(new Private)
+{
+    setWindowTitle(tr("Library Object"));
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+
+    k->toolBox = new QToolBox;
+    layout->addWidget(k->toolBox);
+
+    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok 
+                                | QDialogButtonBox::Cancel, Qt::Horizontal);
+    connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
+    connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
+
+    layout->addWidget(buttons, 0, Qt::AlignCenter);
+}
+
+TupNewItemDialog::~TupNewItemDialog()
+{
+    delete k;
+}
+
+void TupNewItemDialog::addItem(QGraphicsItem *item)
+{
+    TupItemPreview *preview = new TupItemPreview;    
+    preview->render(item);
+
+    QWidget *container = new QWidget;
+
+    QVBoxLayout *layout = new QVBoxLayout(container);
+    layout->addWidget(preview);
+
+    QLineEdit *name = new QLineEdit;
+    connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
+
+    QLayout *grid = TFormFactory::makeGrid(QStringList() << tr("Name"), QWidgetList() << name);
+    layout->addLayout(grid);
+
+    int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
+    k->symbolNames.insert(item, name);
+    k->tabs.insert(index, name);
+}
+
+QString TupNewItemDialog::symbolName(QGraphicsItem *item) const
+{
+    return k->symbolNames[item]->text();
+}
+
+void TupNewItemDialog::checkNames()
+{
+    for (int i = 0; i < k->toolBox->count(); i++) {
+         if (k->tabs[i]->text().isEmpty()) {
+             k->toolBox->setCurrentIndex (i);
+             k->tabs[i]->setFocus();
+             return;
+         }
+    }
+
+    accept();
+}

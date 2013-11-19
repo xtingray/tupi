@@ -139,6 +139,9 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     connect(k->libraryTree, SIGNAL(itemCloned(QTreeWidgetItem*)), this,
                                    SLOT(cloneObject(QTreeWidgetItem*)));
 
+    connect(k->libraryTree, SIGNAL(itemExported(QTreeWidgetItem*)), this,
+                                   SLOT(exportObject(QTreeWidgetItem*)));
+
     connect(k->libraryTree, SIGNAL(itemRenamed(QTreeWidgetItem*)), this, 
                                    SLOT(renameObject(QTreeWidgetItem*)));
 
@@ -474,7 +477,37 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
     }
 }
 
-void TupLibraryWidget::renameObject(QTreeWidgetItem* item)
+void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
+{
+    QString key = item->text(3);
+    TupLibraryObject *object = k->library->findObject(key);
+    if (object) {
+        QString path = object->dataPath();
+        if (path.length() > 0) {
+            tError() << "TupLibraryWidget::exportObject() - Exporting object: " << path;
+            // SQA: String must be related to the file extension
+            QString target = QFileDialog::getOpenFileName (this, tr("Import an image..."), QDir::homePath(),
+                                                      tr("Images") + " (*.png *.xpm *.jpg *.jpeg *.gif)");
+            if (target.isEmpty())
+                return;
+
+            bool isOk = QFile::copy(path, target);
+
+            if (!isOk) {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::exportObject() - Error: Object file couldn't be exported!";
+                #endif
+                return;
+            }
+        } else {
+            // print error
+        }
+    } else {
+        // print error
+    }
+}
+
+void TupLibraryWidget::renameObject(QTreeWidgetItem *item)
 {
     if (item) {
         k->renaming = true;

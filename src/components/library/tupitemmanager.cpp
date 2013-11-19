@@ -37,6 +37,7 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tapplication.h"
+#include "tupnewitemdialog.h"
 
 #include <QHeaderView>
 #include <QMenu>
@@ -149,6 +150,13 @@ void TupItemManager::cloneItem()
         emit itemCloned(item);
 }
 
+void TupItemManager::exportItem()
+{
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        emit itemExported(item);
+}
+
 void TupItemManager::callInkscapeToEdit()
 {
     QTreeWidgetItem *item = currentItem();
@@ -252,18 +260,33 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
                 menu->addAction(myPaintEdit);
             }
 
-            QAction *rename = new QAction(tr("Rename"), this);
-            connect(rename, SIGNAL(triggered()), this, SLOT(renameItem()));
-
             QAction *clone = new QAction(tr("Clone"), this);
             connect(clone, SIGNAL(triggered()), this, SLOT(cloneItem()));
+
+            QAction *exportObject = new QAction(tr("Export"), this);
+            connect(exportObject, SIGNAL(triggered()), this, SLOT(exportItem()));
+
+            QAction *rename = new QAction(tr("Rename"), this);
+            connect(rename, SIGNAL(triggered()), this, SLOT(renameItem()));
 
             QAction *remove = new QAction(tr("Delete"), this);
             connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
 
+            QAction *raster = new QAction(tr("Create new raster item"), this);
+            connect(raster, SIGNAL(triggered()), this, SLOT(createNewRaster()));
+            menu->addAction(raster);
+
+            QAction *svg = new QAction(tr("Create new svg item"), this);
+            connect(svg, SIGNAL(triggered()), this, SLOT(createNewSVG()));
+            menu->addAction(svg);
+
             menu->addAction(clone);
+            menu->addAction(exportObject);
             menu->addAction(rename);
             menu->addAction(remove);
+            // SQA: Add menu separator here
+            menu->addAction(raster);
+            menu->addAction(svg);
 
             menu->exec(event->globalPos());
 
@@ -299,6 +322,16 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
             if (drag->start(Qt::MoveAction) == Qt::MoveAction)
                 delete takeTopLevelItem(indexOfTopLevelItem(item));
         }
+    } else {
+            QMenu *menu = new QMenu(tr("Options"));
+            QAction *raster = new QAction(tr("Create new raster item"), this);
+            connect(raster, SIGNAL(triggered()), this, SLOT(createNewRaster()));
+            menu->addAction(raster);
+            QAction *svg = new QAction(tr("Create new svg item"), this);
+            connect(svg, SIGNAL(triggered()), this, SLOT(createNewSVG()));
+            menu->addAction(svg);
+
+            menu->exec(event->globalPos());
     }
 }
 
@@ -503,4 +536,17 @@ void TupItemManager::cleanUI()
 {
     clear();
     foldersTotal = 1;
+}
+
+void TupItemManager::createNewRaster()
+{
+    tError() << "TupItemManager::createNewRaster() - Opening raster dialog...";
+    TupNewItemDialog dialog;
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+}
+
+void TupItemManager::createNewSVG()
+{
+    tError() << "TupItemManager::createNewRaster() - Opening SVG dialog...";
 }

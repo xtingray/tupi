@@ -73,11 +73,12 @@ class TupLibraryWidget : public TupModuleWidgetBase
 
     private slots:
         void addFolder();
-        void previewItem(QTreeWidgetItem *);
+        void previewItem(QTreeWidgetItem *item);
         void insertObjectInWorkspace();
         void removeCurrentGraphic();
-        void cloneObject(QTreeWidgetItem* item);
-        void renameObject(QTreeWidgetItem* item);
+        void cloneObject(QTreeWidgetItem *item);
+        void exportObject(QTreeWidgetItem *item);
+        void renameObject(QTreeWidgetItem *item);
         void importGraphicObject();
         void refreshItem(QTreeWidgetItem *item);
         void updateLibrary(QString node, QString target);

@@ -74,14 +74,14 @@ TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, co
         #ifdef K_DEBUG
                tError() << "TupLibraryFolder::createSymbol() - [ Fatal Error ] - Data is empty!";
         #endif
-        return false;
+        return 0;
     }
 
     if (data.isNull()) {
         #ifdef K_DEBUG
                tError() << "TupLibraryFolder::createSymbol() - [ Fatal Error ] - Data is null!";
         #endif
-        return false;
+        return 0;
     }
 
     TupLibraryObject *object = new TupLibraryObject(this);
