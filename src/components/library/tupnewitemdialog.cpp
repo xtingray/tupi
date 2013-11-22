@@ -34,39 +34,95 @@
  ***************************************************************************/
 
 #include "tupnewitemdialog.h"
-#include "tupitempreview.h"
-#include "tformfactory.h"
+#include "talgorithm.h"
+#include "tapplicationproperties.h"
+#include "tdebug.h"
 
-#include <QVBoxLayout>
-#include <QDialogButtonBox>
-#include <QToolBox>
-#include <QGraphicsItem>
-#include <QHBoxLayout>
+#include <QFormLayout>
 #include <QLineEdit>
-#include <QMap>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QDialogButtonBox>
+#include <QFile>
 
 struct TupNewItemDialog::Private
 {
-    QToolBox *toolBox;
-    QMap<QGraphicsItem *, QLineEdit *> symbolNames;
-    QMap<int, QLineEdit *> tabs;
+    QLineEdit *itemName;
+    QComboBox *extension;
+    QSpinBox *width;
+    QSpinBox *height;
+    QComboBox *editor;
+    QString name;
+    ThirdParty software;
+    QString fileExtension;
+    QSize size;
 };
 
-TupNewItemDialog::TupNewItemDialog() : QDialog(), k(new Private)
+TupNewItemDialog::TupNewItemDialog(QString &name, DialogType type, QSize size) : QDialog(), k(new Private)
 {
-    setWindowTitle(tr("Library Object"));
+    k->name = name;
+    k->extension = new QComboBox();
+    k->editor = new QComboBox();
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    if (type == Raster) {
+        setWindowTitle(tr("Create new raster item"));
+        setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/bitmap.png")));
+        k->extension->addItem("PNG");
+        k->extension->addItem("JPG");
+        k->extension->addItem("GIF");
+        k->fileExtension = "PNG"; 
+        k->software = Gimp;
+#ifdef Q_OS_UNIX
+        if (QFile::exists("/usr/bin/gimp"))
+            k->editor->addItem("Gimp");
+        if (QFile::exists("/usr/bin/krita"))
+            k->editor->addItem("Krita");
+        if (QFile::exists("/usr/bin/mypaint"))
+            k->editor->addItem("MyPaint");
+#endif
+    } else {
+        setWindowTitle(tr("Create new vector item"));
+        setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/svg.png")));
+        k->extension->addItem("SVG");
+        k->editor->addItem("Inkscape");
+        k->fileExtension = "SVG";
+        k->software = Inkscape;
+    }
 
-    k->toolBox = new QToolBox;
-    layout->addWidget(k->toolBox);
+    connect(k->extension, SIGNAL(currentIndexChanged(int)), this, SLOT(updateExtension(int)));
+    connect(k->editor, SIGNAL(currentIndexChanged(int)), this, SLOT(updateEditor(int)));
 
-    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok 
+    QFormLayout *formLayout = new QFormLayout;
+
+    k->itemName = new QLineEdit;
+    k->itemName->setText(name);
+
+    k->width = new QSpinBox;
+    k->width->setMaximum(size.width());
+    k->width->setMinimumWidth(60);
+    k->width->setValue(50);
+
+    k->height = new QSpinBox;
+    k->height->setMaximum(size.height());
+    k->height->setMinimumWidth(60);
+    k->height->setValue(50);
+
+    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok
                                 | QDialogButtonBox::Cancel, Qt::Horizontal);
-    connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
+    connect(buttons, SIGNAL(accepted ()), this, SLOT(checkValues()));
     connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
 
-    layout->addWidget(buttons, 0, Qt::AlignCenter);
+    QHBoxLayout *buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addWidget(buttons);
+
+    formLayout->addRow(tr("&Name:"), k->itemName);
+    formLayout->addRow(tr("&Extension:"), k->extension);
+    formLayout->addRow(tr("&Width:"), k->width);
+    formLayout->addRow(tr("&Height:"), k->height);
+    formLayout->addRow(tr("&Open it with:"), k->editor);
+    formLayout->addRow(buttonsLayout);
+
+    setLayout(formLayout);
 }
 
 TupNewItemDialog::~TupNewItemDialog()
@@ -74,41 +130,69 @@ TupNewItemDialog::~TupNewItemDialog()
     delete k;
 }
 
-void TupNewItemDialog::addItem(QGraphicsItem *item)
+void TupNewItemDialog::checkValues()
 {
-    TupItemPreview *preview = new TupItemPreview;    
-    preview->render(item);
-
-    QWidget *container = new QWidget;
-
-    QVBoxLayout *layout = new QVBoxLayout(container);
-    layout->addWidget(preview);
-
-    QLineEdit *name = new QLineEdit;
-    connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
-
-    QLayout *grid = TFormFactory::makeGrid(QStringList() << tr("Name"), QWidgetList() << name);
-    layout->addLayout(grid);
-
-    int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
-    k->symbolNames.insert(item, name);
-    k->tabs.insert(index, name);
-}
-
-QString TupNewItemDialog::symbolName(QGraphicsItem *item) const
-{
-    return k->symbolNames[item]->text();
-}
-
-void TupNewItemDialog::checkNames()
-{
-    for (int i = 0; i < k->toolBox->count(); i++) {
-         if (k->tabs[i]->text().isEmpty()) {
-             k->toolBox->setCurrentIndex (i);
-             k->tabs[i]->setFocus();
-             return;
-         }
+    QString name = k->itemName->text();
+    if (name.length() == 0) {
+        name = TAlgorithm::randomString(8);
+        k->itemName->setText(name);
+        return;
     }
 
+    bool alert = false;
+
+    if (k->width->value() == 0) {
+        k->width->setValue(100);
+        alert = true;
+    }
+
+    if (k->height->value() == 0) {
+        k->height->setValue(100);
+        alert = true;
+    }
+
+    if (alert)
+        return;
+
+    name.replace(" ", "_");
+    name.replace(".", "_");
+    k->name = name;
+    k->size.setWidth(k->width->value());
+    k->size.setHeight(k->height->value());
+
     accept();
+}
+
+void TupNewItemDialog::updateExtension(int index)
+{
+    k->fileExtension = k->extension->itemText(index);
+}
+
+void TupNewItemDialog::updateEditor(int index)
+{
+    QString software = k->editor->itemText(index);
+    if (k->fileExtension.compare("SVG") == 0)
+        k->software = Inkscape;
+    else
+        k->software = TupNewItemDialog::ThirdParty(index);
+}
+
+QString TupNewItemDialog::itemName() const
+{
+    return k->name;
+}
+
+QSize TupNewItemDialog::itemSize() const
+{
+    return k->size;
+}
+
+QString TupNewItemDialog::itemExtension() const
+{
+    return k->fileExtension;
+}
+
+TupNewItemDialog::ThirdParty TupNewItemDialog::software() const
+{
+    return k->software;
 }

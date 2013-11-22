@@ -40,7 +40,6 @@
 #include "tconfig.h"
 #include "tuplibrary.h"
 #include "tupproject.h"
-#include "tuplibraryobject.h"
 #include "tupsymboleditor.h"
 #include "tuprequestbuilder.h"
 #include "tosd.h"
@@ -60,11 +59,13 @@
 #include <QBuffer>
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
+#include <QSvgGenerator>
 #include <QComboBox>
 #include <QTreeWidgetItemIterator>
 #include <QProcess>
 #include <QFileSystemWatcher>
 #include <QChar>
+#include <QPainter>
 
 #include <cstdlib>
 #include <ctime>
@@ -100,7 +101,6 @@ struct TupLibraryWidget::Private
     bool isNetworked;
     QTreeWidgetItem *lastItemEdited;
     QTreeWidgetItem *currentItemDisplayed;
-    QStringList fileList; 
     QFileSystemWatcher *watcher;
 
     struct Frame
@@ -118,6 +118,7 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     #endif
 
     k->watcher = new QFileSystemWatcher(this);
+    connect(k->watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateItemFromSaveAction()));
 
     k->childCount = 0;
     k->renaming = false;
@@ -165,6 +166,12 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
 
     connect(k->libraryTree, SIGNAL(myPaintEditCall(QTreeWidgetItem*)), this,
                                    SLOT(openMyPaintToEdit(QTreeWidgetItem*)));
+
+    connect(k->libraryTree, SIGNAL(newRasterCall()), this,
+                                   SLOT(createRasterObject()));
+
+    connect(k->libraryTree, SIGNAL(newVectorCall()), this,
+                                   SLOT(createVectorObject()));
 
     QGroupBox *buttons = new QGroupBox(this);
     QHBoxLayout *buttonLayout = new QHBoxLayout(buttons);
@@ -484,33 +491,40 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
     if (object) {
         QString path = object->dataPath();
         if (path.length() > 0) {
-            tError() << "TupLibraryWidget::exportObject() - Exporting object: " << path;
             QString fileExtension = object->extension();
             QString filter = tr("Images") + " ";
-            if (fileExtension.compare("PNG"))
+
+            if (fileExtension.compare("PNG") == 0)
                 filter += "(*.png)"; 
-            if (fileExtension.compare("JPG") || fileExtension.compare("JPEG"))
+            if ((fileExtension.compare("JPG") == 0) || (fileExtension.compare("JPEG") == 0))
                 filter += "(*.jpg *.jpeg)";
-            if (fileExtension.compare("GIF"))
+            if (fileExtension.compare("GIF") == 0)
                 filter += "(*.gif)";
-            if (fileExtension.compare("XPM"))
+            if (fileExtension.compare("XPM") == 0)
                 filter += "(*.xpm)";
-            if (fileExtension.compare("SVG"))
+            if (fileExtension.compare("SVG") == 0)
                 filter += "(*.svg)";
 
-            QString target = QFileDialog::getSaveFileName(this, tr("Import an image..."), QDir::homePath(), filter);
+            QString target = QFileDialog::getSaveFileName(this, tr("Export object..."), QDir::homePath(), filter);
             if (target.isEmpty())
                 return;
 
-            tError() << "TupLibraryWidget::exportObject() - Copying object: " << path << " to " << target;
+            if (QFile::exists(target)) {
+                if (!QFile::remove(target)) {
+                    #ifdef K_DEBUG
+                           tError() << "TupLibraryWidget::exportObject() - Error: destination path already exists! [ " << key << " ]";
+                    #endif
+                    return;
+                }
+            }
 
-            bool isOk = QFile::copy(path, target);
-
-            if (!isOk) {
+            if (!QFile::copy(path, target)) {
                 #ifdef K_DEBUG
                        tError() << "TupLibraryWidget::exportObject() - Error: Object file couldn't be exported! [ " << key << " ]";
                 #endif
                 return;
+            } else {
+                TOsd::self()->display(tr("Info"), tr("Item exported successfully!"), TOsd::Info);
             }
         } else {
             #ifdef K_DEBUG
@@ -532,6 +546,196 @@ void TupLibraryWidget::renameObject(QTreeWidgetItem *item)
         k->renaming = true;
         k->oldId = item->text(1);
         k->libraryTree->editItem(item, 1);
+    }
+}
+
+void TupLibraryWidget::createRasterObject()
+{
+    QString name = "object00";
+    QString extension = "PNG";
+    name = verifyNameAvailability(name, extension, true);
+
+    QSize size = k->project->dimension();
+    int w = QString::number(size.width()).length();
+    int h = QString::number(size.height()).length();
+
+    int width = 1;
+    int height = 1; 
+    for(int i=0; i<w; i++)
+        width *= 10;
+    for(int i=0; i<h; i++)
+        height *= 10;
+
+    size = QSize(width, height);
+
+    TupNewItemDialog dialog(name, TupNewItemDialog::Raster, size);
+    if (dialog.exec() == QDialog::Accepted) {
+        QString name = dialog.itemName();
+        QSize size = dialog.itemSize();
+        QString extension = dialog.itemExtension();
+        TupNewItemDialog::ThirdParty editor = dialog.software();
+
+        QString imagesDir = k->project->dataDir() + "/images/";
+        if (!QFile::exists(imagesDir)) {
+            QDir dir;
+            if (!dir.mkpath(imagesDir)) {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::createRasterObject() - Fatal Error: Couldn't create directory " << imagesDir;
+                #endif
+                TOsd::self()->display(tr("Error"), tr("Couldn't create images directory!"), TOsd::Error);
+                return;
+            }
+        }
+             
+        QString path = imagesDir + name + "." + extension.toLower();
+        QString symbolName = name; 
+        if (QFile::exists(path)) {
+            symbolName = nameForClonedItem(name, extension, imagesDir);
+            path = imagesDir + symbolName + "." + extension.toLower();
+        }
+
+        symbolName += "." + extension.toLower();
+
+        QImage::Format format = QImage::Format_RGB32;
+        bool isPNG = extension.compare("PNG")==0;
+        if (isPNG)
+            format = QImage::Format_ARGB32;
+
+        QImage *image = new QImage(size, format); 
+        if (!isPNG) { 
+            QPainter painter(image);
+            painter.fillRect(0, 0, size.width(), size.height(), QBrush(Qt::white));
+        }
+        bool isOk = image->save(path);
+
+        if (isOk) {
+            TupLibraryObject *newObject = new TupLibraryObject();
+            newObject->setSymbolName(symbolName);
+            newObject->setType(TupLibraryObject::Image);
+            newObject->setDataPath(path);
+            isOk = newObject->loadData(path);
+
+            if (isOk) {
+                k->library->addObject(newObject);
+
+                QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
+                item->setText(1, name);
+                item->setText(2, extension);
+                item->setText(3, symbolName);
+                item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+                item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
+                k->libraryTree->setCurrentItem(item);
+                previewItem(item);
+
+                k->lastItemEdited = item;
+                executeSoftware(editor, path);
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::createRasterObject() - Error: Object file couldn't be loaded from -> " << path;
+                #endif
+                return;
+            }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "TupLibraryWidget::createRasterObject() - Error: Object file couldn't be saved at -> " << path;
+            #endif
+            return;
+        }
+    }
+}
+
+void TupLibraryWidget::createVectorObject()
+{
+    QString name = "object00";
+    QString extension = "SVG";
+    name = verifyNameAvailability(name, extension, true);
+
+    QSize size = k->project->dimension();
+    int w = QString::number(size.width()).length();
+    int h = QString::number(size.height()).length();
+
+    int width = 1;
+    int height = 1;
+    for(int i=0; i<w; i++) 
+        width *= 10;
+    for(int i=0; i<h; i++) 
+        height *= 10;
+
+    size = QSize(width, height);
+
+    TupNewItemDialog dialog(name, TupNewItemDialog::Vector, size);
+    if (dialog.exec() == QDialog::Accepted) {
+        QString name = dialog.itemName();
+        QSize size = dialog.itemSize();
+        QString extension = dialog.itemExtension();
+        TupNewItemDialog::ThirdParty editor = dialog.software();
+
+        QString vectorDir = k->project->dataDir() + "/svg/";
+        if (!QFile::exists(vectorDir)) {
+            QDir dir;
+            if (!dir.mkpath(vectorDir)) {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::createVectorObject() - Fatal Error: Couldn't create directory " << vectorDir;
+                #endif
+                TOsd::self()->display(tr("Error"), tr("Couldn't create vector directory!"), TOsd::Error);
+                return;
+            }
+        }
+
+        QString path = vectorDir + name + "." + extension.toLower();
+        QString symbolName = name;
+        if (QFile::exists(path)) {
+            symbolName = nameForClonedItem(name, extension, vectorDir);
+            path = vectorDir + symbolName + "." + extension.toLower();
+        }
+
+        symbolName += "." + extension.toLower();
+
+        QSvgGenerator generator;
+        generator.setFileName(path);
+        generator.setSize(size);
+        generator.setViewBox(QRect(0, 0, size.width(), size.height()));
+        generator.setTitle(name);
+        generator.setDescription(tr("Tupi library item"));
+        QPainter painter;
+        painter.begin(&generator);
+        bool isOk = painter.end();
+
+        if (isOk) {
+            TupLibraryObject *newObject = new TupLibraryObject();
+            newObject->setSymbolName(symbolName);
+            newObject->setType(TupLibraryObject::Svg);
+            newObject->setDataPath(path);
+            isOk = newObject->loadData(path);
+
+            if (isOk) {
+                k->library->addObject(newObject);
+
+                QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
+                item->setText(1, name);
+                item->setText(2, extension);
+                item->setText(3, symbolName);
+                item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+                item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
+
+                k->libraryTree->setCurrentItem(item);
+                previewItem(item);
+
+                k->lastItemEdited = item;
+                executeSoftware(editor, path);
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::createVectorObject() - Error: Object file couldn't be loaded from -> " << path;
+                #endif
+                return;
+            }
+        } else {
+                #ifdef K_DEBUG
+                       tError() << "TupLibraryWidget::createVectorObject() - Error: Object file couldn't be saved at -> " << path;
+                #endif
+                return;
+        }
+
     }
 }
 
@@ -1236,25 +1440,25 @@ void TupLibraryWidget::updateLibrary(QString node, QString target)
 
 void TupLibraryWidget::openInkscapeToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupLibraryWidget::Inkscape);
+    callExternalEditor(item, TupNewItemDialog::Inkscape);
 }
 
 void TupLibraryWidget::openGimpToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupLibraryWidget::Gimp);
+    callExternalEditor(item, TupNewItemDialog::Gimp);
 }
 
 void TupLibraryWidget::openKritaToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupLibraryWidget::Krita);
+    callExternalEditor(item, TupNewItemDialog::Krita);
 }
 
 void TupLibraryWidget::openMyPaintToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupLibraryWidget::MyPaint);
+    callExternalEditor(item, TupNewItemDialog::MyPaint);
 }
 
-void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, ThirdParty software)
+void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, TupNewItemDialog::ThirdParty software)
 {
     if (item) {
         k->lastItemEdited = item;
@@ -1263,44 +1467,7 @@ void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, ThirdParty soft
 
         if (object) {
             QString path = object->dataPath();
-
-            if (path.length() > 0) {
-                QString program = "";
-                switch(software) {
-                       case Inkscape:  
-                            program = "/usr/bin/inkscape";
-                       break;
-                       case Gimp:
-                            program = "/usr/bin/gimp";
-                       break;
-                       case Krita: 
-                            program = "/usr/bin/krita";
-                       break;
-                       case MyPaint:
-                            program = "/usr/bin/mypaint";
-                       break;
-                }
-
-                QStringList arguments;
-                arguments << path;
-    
-                QProcess *editor = new QProcess(this);
-                connect(editor, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(updateItemFromCloseAction()));
-                editor->start(program, arguments);
-
-                if (!k->fileList.contains(path)) {
-                    if (k->fileList.count() == 0)
-                        connect(k->watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateItemFromSaveAction()));
-                    k->fileList << path;
-                    k->watcher->addPath(path);
-                } else {
-                    TOsd::self()->display(tr("Error"), tr("%1 is already open!").arg(path), TOsd::Warning);
-                }
-            } else {
-                #ifdef K_DEBUG
-                       tError() << "TupLibraryWidget::callExternalEditor() - Error: The current library item -" << itemID << "- has no path related to!";
-                #endif
-            }
+            executeSoftware(software, path);
         } else {
             #ifdef K_DEBUG
                    tError() << "TupLibraryWidget::callExternalEditor() - Error: No object related to the current library item -" << itemID << "- was found!";
@@ -1313,44 +1480,61 @@ void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, ThirdParty soft
     }
 }
 
-void TupLibraryWidget::updateItemFromCloseAction()
+void TupLibraryWidget::executeSoftware(TupNewItemDialog::ThirdParty software, QString &path)
 {
-    QString name = k->lastItemEdited->text(1).toLower();
-    QString extension = k->lastItemEdited->text(2).toLower();
-
-    TupLibraryObject *object = k->library->findObject(name + "." + extension);
-
-    if (object) {
-        updateItem(name, extension, object);
-
-        QString path = object->dataPath();
-        if (k->fileList.contains(path)) {
-            k->fileList.removeAll(path);
-            k->watcher->removePath(path);
-            if (k->fileList.count() == 0)
-                disconnect(k->watcher, SIGNAL(fileChanged(QString)), this, SLOT(updateItemFromSaveAction()));
+    if (path.length() > 0 && QFile::exists(path)) {
+        QString program = "";
+        switch(software) {
+               case TupNewItemDialog::Inkscape:
+                    program = "/usr/bin/inkscape";
+               break;
+               case TupNewItemDialog::Gimp:
+                    program = "/usr/bin/gimp";
+               break;
+               case TupNewItemDialog::Krita:
+                    program = "/usr/bin/krita";
+               break;
+               case TupNewItemDialog::MyPaint:
+                    program = "/usr/bin/mypaint";
+               break;
         }
+
+        QStringList arguments;
+        arguments << path;
+
+        QProcess *editor = new QProcess(this);
+        editor->start(program, arguments);
+
+        // SQA: Check the path list and if it doesn't exist yet, then add it to 
+        k->watcher->addPath(path);
     } else {
         #ifdef K_DEBUG
-               tError() << "TupLibraryWidget::updateLibraryItem() - Error: The library item modified was not found!";
+               tError() << "TupLibraryWidget::executeSoftware() - Error: Item path either doesn't exist or is empty";
         #endif
     }
 }
 
 void TupLibraryWidget::updateItemFromSaveAction()
 {
-    QString name = k->lastItemEdited->text(1).toLower();
-    QString extension = k->lastItemEdited->text(2).toLower();
+    tError() << "updateItemFromSaveAction() - updating images!";
 
-    TupLibraryObject *object = k->library->findObject(name + "." + extension);
-
-    if (object) {
-        updateItem(name, extension, object);
-    } else {
-        #ifdef K_DEBUG
-               tError() << "TupLibraryWidget::updateLibraryItem() - Error: The library item modified was not found!";
-        #endif
+    LibraryObjects collection = k->library->objects();
+    QMapIterator<QString, TupLibraryObject *> i(collection);
+    while (i.hasNext()) {
+           i.next();
+           TupLibraryObject *object = i.value();
+           if (object) {
+               updateItem(object->smallId(), object->extension().toLower(), object);
+           } else {
+               #ifdef K_DEBUG
+                      tError() << "TupLibraryWidget::updateItemFromSaveAction() - Error: The library item modified was not found!";
+               #endif
+           }
     }
+
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame,
+                                                                      TupProjectRequest::Select);
+    emit requestTriggered(&request);
 }
 
 void TupLibraryWidget::updateItem(const QString &name, const QString &extension, TupLibraryObject *object)
@@ -1367,10 +1551,6 @@ void TupLibraryWidget::updateItem(const QString &name, const QString &extension,
 
     if (onDisplay.compare(onEdition) == 0)
         previewItem(k->lastItemEdited);
-
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame,
-                                                                          TupProjectRequest::Select);
-    emit requestTriggered(&request);
 }
 
 bool TupLibraryWidget::itemNameEndsWithDigit(QString &name)

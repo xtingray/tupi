@@ -40,6 +40,8 @@
 #include "tupitempreview.h"
 #include "timagebutton.h"
 #include "tupitemmanager.h"
+#include "tupnewitemdialog.h"
+#include "tuplibraryobject.h"
 
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -48,6 +50,7 @@
 #include <QMouseEvent>
 
 class TupLibrary;
+typedef QMap<QString, TupLibraryObject *> LibraryObjects;
 
 /**
  * @author David Cuadrado
@@ -58,8 +61,6 @@ class TupLibraryWidget : public TupModuleWidgetBase
     Q_OBJECT
 
     public:
-        enum ThirdParty { Inkscape = 0, Gimp, Krita, MyPaint };
-
         TupLibraryWidget(QWidget *parent = 0);
         ~TupLibraryWidget();
         void resetGUI();
@@ -78,6 +79,8 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void removeCurrentGraphic();
         void cloneObject(QTreeWidgetItem *item);
         void exportObject(QTreeWidgetItem *item);
+        void createRasterObject();
+        void createVectorObject();
         void renameObject(QTreeWidgetItem *item);
         void importGraphicObject();
         void refreshItem(QTreeWidgetItem *item);
@@ -87,9 +90,7 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void openGimpToEdit(QTreeWidgetItem *item);
         void openKritaToEdit(QTreeWidgetItem *item);
         void openMyPaintToEdit(QTreeWidgetItem *item);
-        void updateItemFromCloseAction();
         void updateItemFromSaveAction();
-
 
     public slots:
         void importBitmap();
@@ -102,7 +103,8 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void requestCurrentGraphic();
 
     private:
-        void callExternalEditor(QTreeWidgetItem *item, ThirdParty software);
+        void callExternalEditor(QTreeWidgetItem *item, TupNewItemDialog::ThirdParty software);
+        void executeSoftware(TupNewItemDialog::ThirdParty software, QString &path);
         void updateItem(const QString &name, const QString &extension, TupLibraryObject *object);
         bool itemNameEndsWithDigit(QString &name);
         int getItemNameIndex(QString &name) const;

@@ -143,7 +143,6 @@ bool TupLibraryFolder::reloadObject(const QString &id)
     foreach (QString oid, k->objects.keys()) {
              if (oid.compare(id) == 0) {
                  QString path = k->objects[id]->dataPath();
-                 tError() << "TupLibraryFolder::reloadObject() - Updating from path: " << path;
                  if (QFile::exists(path)) {  
                      k->objects[id]->loadData(path);
                      return true;

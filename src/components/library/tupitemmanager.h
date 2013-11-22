@@ -82,6 +82,8 @@ class TupItemManager : public TreeListWidget
         void gimpEditCall(QTreeWidgetItem *item);
         void kritaEditCall(QTreeWidgetItem *item);
         void myPaintEditCall(QTreeWidgetItem *item);
+        void newRasterCall();
+        void newVectorCall();
 
     public slots:
         void createFolder(const QString &name = QString());

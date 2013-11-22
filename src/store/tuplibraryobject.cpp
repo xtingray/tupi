@@ -233,14 +233,14 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
 {
     if (data.isEmpty()) {
         #ifdef K_DEBUG
-               tError() << "TupLibraryObject::loadData() - [ Fatal Error ] - Data is empty!";
+               tError() << "TupLibraryObject::loadRawData() - [ Fatal Error ] - Data is empty!";
         #endif
         return false;
     }
 
     if (data.isNull()) {
         #ifdef K_DEBUG
-               tError() << "TupLibraryObject::loadData() - [ Fatal Error ] - Data is null!";
+               tError() << "TupLibraryObject::loadRawData() - [ Fatal Error ] - Data is null!";
         #endif
         return false;
     }
@@ -321,8 +321,6 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
             case TupLibraryObject::Svg:
             {
-                 tError() << "TupLibraryObject::loadDataFromPath() - Datadir: " << dataDir;
-
                  k->dataPath = dataDir + QDir::separator() + "svg" + QDir::separator() + k->dataPath;
                  loadData(k->dataPath);
             }
@@ -344,10 +342,11 @@ bool TupLibraryObject::loadData(const QString &path)
                  QFile file(path);
 
                  if (file.open(QIODevice::ReadOnly)) {
+                     tError() << "TupLibraryObject::loadData() - Loading data from path: " << path;
                      loadRawData(file.readAll());
                  } else {
                      #ifdef K_DEBUG
-                            tError() << "TupLibraryObject::loadDataFromPath() - [ Fatal Error ] - Can't access image file -> " << path;
+                            tError() << "TupLibraryObject::loadData() - [ Fatal Error ] - Can't access image file -> " << path;
                      #endif
                  }
             }

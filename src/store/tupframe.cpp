@@ -505,17 +505,24 @@ bool TupFrame::removeGraphicAt(int position)
     if (position < 0)
         return false;
 
-    // TupGraphicObject *object = k->graphics.takeObject(position);
     TupGraphicObject *object = k->graphics.value(position);
-    k->objectIndexes.remove(position);
+    if (object) {
+        k->objectIndexes.remove(position);
 
-    if (object->hasTween())
-        this->scene()->removeTweenObject(object);
+        if (object->hasTween())
+            this->scene()->removeTweenObject(object);
 
-    k->objectIndexes.remove(position);
-    k->graphics.remove(position);
+        k->objectIndexes.remove(position);
+        k->graphics.remove(position);
 
-    return true;
+        return true;
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupFrame::removeGraphicAt() - Error: Object at position " << position << " is NULL!";
+        #endif
+    }
+
+    return false;
 }
 
 bool TupFrame::removeSvgAt(int position)

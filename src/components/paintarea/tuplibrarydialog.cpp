@@ -36,6 +36,7 @@
 #include "tuplibrarydialog.h"
 #include "tupitempreview.h"
 #include "tformfactory.h"
+#include "tapplicationproperties.h"
 
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -55,6 +56,7 @@ struct TupLibraryDialog::Private
 TupLibraryDialog::TupLibraryDialog() : QDialog(), k(new Private)
 {
     setWindowTitle(tr("Library Object"));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/polyline.png")));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
 

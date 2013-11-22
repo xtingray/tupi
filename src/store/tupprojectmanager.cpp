@@ -52,6 +52,7 @@
 
 #include <QUndoStack>
 #include <QDir>
+#include <QFileInfo>
 
 // This class handles the current animation project 
 
@@ -180,7 +181,11 @@ void TupProjectManager::setupNewProject()
     }
 
     if (!k->isNetworked) {
-        k->project->setDataDir(CACHE_DIR + k->params->projectName());
+       
+        QString projectPath = CACHE_DIR + k->params->projectName(); 
+        cleanProjectPath(projectPath);
+
+        k->project->setDataDir(projectPath);
 
         TupProjectRequest request = TupRequestBuilder::createSceneRequest(0, TupProjectRequest::Add, tr("Scene %1").arg(1));
         handleProjectRequest(&request);
@@ -367,6 +372,7 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
+           tWarning() << request->xml();
     #endif
 
     if (request->isValid()) {
@@ -425,4 +431,29 @@ void TupProjectManager::emitResponse(TupProjectResponse *response)
 void TupProjectManager::setOpen(bool isOpen)
 {
     k->project->setOpen(isOpen);
+}
+
+bool TupProjectManager::cleanProjectPath(QString &projectPath)
+{
+    bool result = true;
+    QDir dir(projectPath);
+
+    if (dir.exists(projectPath)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                QString path = info.absoluteFilePath();
+                result = cleanProjectPath(path);
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
+
+            if (!result) {
+                return result;
+            }
+        }
+        result = dir.rmdir(projectPath);
+    }
+
+    return result;
 }

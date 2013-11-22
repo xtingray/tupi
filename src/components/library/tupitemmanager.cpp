@@ -37,7 +37,6 @@
 #include "tglobal.h"
 #include "tdebug.h"
 #include "tapplication.h"
-#include "tupnewitemdialog.h"
 
 #include <QHeaderView>
 #include <QMenu>
@@ -185,6 +184,16 @@ void TupItemManager::callMyPaintToEdit()
         emit myPaintEditCall(item);
 }
 
+void TupItemManager::createNewRaster()
+{
+     emit newRasterCall();
+}
+
+void TupItemManager::createNewSVG()
+{
+     emit newVectorCall();
+}
+
 void TupItemManager::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::LeftButton)
@@ -272,22 +281,27 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
             QAction *remove = new QAction(tr("Delete"), this);
             connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
 
-            QAction *raster = new QAction(tr("Create new raster item"), this);
-            connect(raster, SIGNAL(triggered()), this, SLOT(createNewRaster()));
-            menu->addAction(raster);
-
-            QAction *svg = new QAction(tr("Create new svg item"), this);
-            connect(svg, SIGNAL(triggered()), this, SLOT(createNewSVG()));
-            menu->addAction(svg);
-
             menu->addAction(clone);
             menu->addAction(exportObject);
             menu->addAction(rename);
             menu->addAction(remove);
-            // SQA: Add menu separator here
-            menu->addAction(raster);
-            menu->addAction(svg);
+            menu->addSeparator();
 
+#ifdef Q_OS_UNIX
+            if (QFile::exists("/usr/bin/gimp") || QFile::exists("/usr/bin/krita") || QFile::exists("/usr/bin/mypaint")) {
+                QAction *raster = new QAction(tr("Create new raster item"), this);
+                connect(raster, SIGNAL(triggered()), this, SLOT(createNewRaster()));
+                menu->addAction(raster);
+            }
+#endif
+
+#ifdef Q_OS_UNIX
+            if (QFile::exists("/usr/bin/inkscape")) {
+                QAction *svg = new QAction(tr("Create new svg item"), this);
+                connect(svg, SIGNAL(triggered()), this, SLOT(createNewSVG()));
+                menu->addAction(svg);
+            }
+#endif
             menu->exec(event->globalPos());
 
         } else if (event->buttons() == Qt::LeftButton) {
@@ -324,13 +338,22 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
         }
     } else {
             QMenu *menu = new QMenu(tr("Options"));
-            QAction *raster = new QAction(tr("Create new raster item"), this);
-            connect(raster, SIGNAL(triggered()), this, SLOT(createNewRaster()));
-            menu->addAction(raster);
-            QAction *svg = new QAction(tr("Create new svg item"), this);
-            connect(svg, SIGNAL(triggered()), this, SLOT(createNewSVG()));
-            menu->addAction(svg);
 
+#ifdef Q_OS_UNIX
+            if (QFile::exists("/usr/bin/gimp") || QFile::exists("/usr/bin/krita") || QFile::exists("/usr/bin/mypaint")) {
+                QAction *raster = new QAction(tr("Create new raster item"), this);
+                connect(raster, SIGNAL(triggered()), this, SLOT(createNewRaster()));
+                menu->addAction(raster);
+            }
+#endif
+
+#ifdef Q_OS_UNIX
+            if (QFile::exists("/usr/bin/inkscape")) {
+                QAction *svg = new QAction(tr("Create new svg item"), this);
+                connect(svg, SIGNAL(triggered()), this, SLOT(createNewSVG()));
+                menu->addAction(svg);
+            }
+#endif
             menu->exec(event->globalPos());
     }
 }
@@ -536,17 +559,4 @@ void TupItemManager::cleanUI()
 {
     clear();
     foldersTotal = 1;
-}
-
-void TupItemManager::createNewRaster()
-{
-    tError() << "TupItemManager::createNewRaster() - Opening raster dialog...";
-    TupNewItemDialog dialog;
-    if (dialog.exec() != QDialog::Accepted)
-        return;
-}
-
-void TupItemManager::createNewSVG()
-{
-    tError() << "TupItemManager::createNewRaster() - Opening SVG dialog...";
 }

@@ -103,6 +103,7 @@ class STORE_EXPORT TupProjectManager : public QObject
         //void updateAnimationModule(TupProject *project, int sceneIndex, int layerIndex, int frameIndex);
 
     private:
+        bool cleanProjectPath(QString &projectPath);
         class Private;
         Private *const k;
 };

@@ -37,7 +37,6 @@
 #define TUPNEWITEMDIALOG_H
 
 #include <QDialog>
-class QGraphicsItem;
 
 /**
  * @author Gustav Gonzalez
@@ -48,16 +47,21 @@ class TupNewItemDialog : public QDialog
     Q_OBJECT
 
     public:
-        enum DialogType { Raster = 0, Vectorial };
+        enum DialogType { Raster = 0, Vector };
+        enum ThirdParty { Gimp = 0, Krita, MyPaint, Inkscape };
 
-        TupNewItemDialog();
+        TupNewItemDialog(QString &name, DialogType type, QSize size);
         ~TupNewItemDialog();
 
-        void addItem(QGraphicsItem *item);
-        QString symbolName(QGraphicsItem *item) const;
+        QString itemName() const;
+        QSize itemSize() const;
+        QString itemExtension() const;
+        ThirdParty software() const;
 
     private slots:
-        void checkNames();
+        void checkValues();
+        void updateExtension(int index);
+        void updateEditor(int index);
 
     private:
         struct Private;
