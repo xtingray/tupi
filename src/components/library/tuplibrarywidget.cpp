@@ -572,6 +572,7 @@ void TupLibraryWidget::createRasterObject()
     if (dialog.exec() == QDialog::Accepted) {
         QString name = dialog.itemName();
         QSize size = dialog.itemSize();
+        QColor background = dialog.background();
         QString extension = dialog.itemExtension();
         TupNewItemDialog::ThirdParty editor = dialog.software();
 
@@ -597,15 +598,12 @@ void TupLibraryWidget::createRasterObject()
         symbolName += "." + extension.toLower();
 
         QImage::Format format = QImage::Format_RGB32;
-        bool isPNG = extension.compare("PNG")==0;
-        if (isPNG)
+        if (extension.compare("PNG")==0)
             format = QImage::Format_ARGB32;
 
         QImage *image = new QImage(size, format); 
-        if (!isPNG) { 
-            QPainter painter(image);
-            painter.fillRect(0, 0, size.width(), size.height(), QBrush(Qt::white));
-        }
+        image->fill(background);
+
         bool isOk = image->save(path);
 
         if (isOk) {

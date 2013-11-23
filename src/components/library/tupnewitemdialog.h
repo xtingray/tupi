@@ -56,11 +56,13 @@ class TupNewItemDialog : public QDialog
         QString itemName() const;
         QSize itemSize() const;
         QString itemExtension() const;
+        QColor background() const;
         ThirdParty software() const;
 
     private slots:
         void checkValues();
         void updateExtension(int index);
+        void updateBackground(int index);
         void updateEditor(int index);
 
     private:

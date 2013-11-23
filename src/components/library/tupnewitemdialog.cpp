@@ -51,16 +51,24 @@ struct TupNewItemDialog::Private
     QComboBox *extension;
     QSpinBox *width;
     QSpinBox *height;
+    QComboBox *background;
     QComboBox *editor;
     QString name;
     ThirdParty software;
     QString fileExtension;
     QSize size;
+    QColor colors[3];
+    QColor bg;
 };
 
 TupNewItemDialog::TupNewItemDialog(QString &name, DialogType type, QSize size) : QDialog(), k(new Private)
 {
     k->name = name;
+
+    k->colors[0] = Qt::transparent;
+    k->colors[1] = Qt::white;
+    k->colors[2] = Qt::black;
+
     k->extension = new QComboBox();
     k->editor = new QComboBox();
 
@@ -69,8 +77,14 @@ TupNewItemDialog::TupNewItemDialog(QString &name, DialogType type, QSize size) :
         setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/bitmap.png")));
         k->extension->addItem("PNG");
         k->extension->addItem("JPG");
-        k->extension->addItem("GIF");
         k->fileExtension = "PNG"; 
+
+        k->background = new QComboBox();
+        k->background->addItem(tr("Transparent"));
+        k->background->addItem(tr("White"));
+        k->background->addItem(tr("Black"));
+        k->bg = Qt::transparent;
+
         k->software = Gimp;
 #ifdef Q_OS_UNIX
         if (QFile::exists("/usr/bin/gimp"))
@@ -119,6 +133,12 @@ TupNewItemDialog::TupNewItemDialog(QString &name, DialogType type, QSize size) :
     formLayout->addRow(tr("&Extension:"), k->extension);
     formLayout->addRow(tr("&Width:"), k->width);
     formLayout->addRow(tr("&Height:"), k->height);
+
+    if (type == Raster) {
+        formLayout->addRow(tr("&Background:"), k->background);
+        connect(k->background, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBackground(int)));
+    }
+
     formLayout->addRow(tr("&Open it with:"), k->editor);
     formLayout->addRow(buttonsLayout);
 
@@ -166,6 +186,19 @@ void TupNewItemDialog::checkValues()
 void TupNewItemDialog::updateExtension(int index)
 {
     k->fileExtension = k->extension->itemText(index);
+
+    if (index == 1) {
+        if (k->background->itemText(0).compare(tr("Transparent")) == 0)
+            k->background->removeItem(0);
+    } else {
+        if (k->background->count() == 2)
+            k->background->insertItem(0, tr("Transparent"));
+    }
+}
+
+void TupNewItemDialog::updateBackground(int index)
+{
+    k->bg = k->colors[index];
 }
 
 void TupNewItemDialog::updateEditor(int index)
@@ -190,6 +223,11 @@ QSize TupNewItemDialog::itemSize() const
 QString TupNewItemDialog::itemExtension() const
 {
     return k->fileExtension;
+}
+
+QColor TupNewItemDialog::background() const
+{
+    return k->bg;
 }
 
 TupNewItemDialog::ThirdParty TupNewItemDialog::software() const
