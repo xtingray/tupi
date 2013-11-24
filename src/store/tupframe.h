@@ -65,6 +65,8 @@ typedef TupIntHash<TupSvgItem *> SvgObjects;
 class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
 {
     public:
+       enum FrameType { DynamicBg = 0, StaticBg, Regular };
+
        TupFrame();
        TupFrame(TupLayer *parent);
        TupFrame(TupBackground *bg, const QString &label);
@@ -73,7 +75,6 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        
        void setFrameName(const QString &name);
 
-       void setDynamicFlag(bool flag);
        void setDynamicDirection(const QString &direction);
        void setDynamicShift(const QString &shift);
        TupBackground::Direction dynamicDirection() const;

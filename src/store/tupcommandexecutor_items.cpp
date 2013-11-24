@@ -202,6 +202,7 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                     if (type == TupLibraryObject::Svg) {
                         frame->removeSvgAt(response->itemIndex());
 
+                        response->setFrameState(frame->isEmpty());
                         emit responsed(response);
                         return true;
                     } else {

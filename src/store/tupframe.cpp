@@ -58,10 +58,10 @@
 struct TupFrame::Private
 {
     QString name;
+    FrameType type;
     bool isLocked;
     bool isVisible;
 
-    bool isDynamic;
     QString direction;
     QString shift;
 
@@ -82,10 +82,11 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
 {
     k->layerIndex = parent->layerIndex();
     k->name = "Frame";
+    k->type = Regular;
+
     k->isLocked = false;
     k->isVisible = true;
 
-    k->isDynamic = false;
     k->direction = "-1";
     k->shift = "0";
 
@@ -101,14 +102,16 @@ TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new
     k->isVisible = true;
     k->repeat = 1;
 
-    k->isDynamic = false;
     k->direction = "-1";
     k->shift = "0";
 
-    if (k->name.compare("landscape_dynamic") == 0)
+    if (k->name.compare("landscape_dynamic") == 0) {
         k->zLevelIndex = 0;
-    else
+        k->type = DynamicBg;
+    } else {
         k->zLevelIndex = 10000;
+        k->type = StaticBg;
+    }
 }
 
 TupFrame::~TupFrame()
@@ -129,11 +132,6 @@ void TupFrame::clear()
 void TupFrame::setFrameName(const QString &name)
 {
     k->name = name;
-}
-
-void TupFrame::setDynamicFlag(bool flag)
-{
-    k->isDynamic = flag;
 }
 
 void TupFrame::setDynamicDirection(const QString &direction)
@@ -201,7 +199,7 @@ void TupFrame::fromXml(const QString &xml)
     QDomElement root = document.documentElement();
     setFrameName(root.attribute("name", ""));
 
-    if (k->isDynamic) {
+    if (k->type == DynamicBg) {
         setDynamicDirection(root.attribute("direction", "0"));
         setDynamicShift(root.attribute("shift", "0"));
     }
@@ -311,7 +309,7 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("frame");
     root.setAttribute("name", k->name);
 
-    if (k->isDynamic) {
+    if (k->type == DynamicBg) {
         root.setAttribute("direction", k->direction);
         root.setAttribute("shift", k->shift);
     }

@@ -46,7 +46,7 @@ TupBackground::TupBackground(TupScene *parent, const QSize size, const QColor co
     bgColor = color;
     noRender = true;
     dynamicBg = new TupFrame(this, "landscape_dynamic");
-    dynamicBg->setDynamicFlag(true);
+    // dynamicBg->setDynamicFlag(true);
     dynamicBg->setDynamicDirection("0");
     dynamicBg->setDynamicShift("5");
 
@@ -98,7 +98,7 @@ void TupBackground::fromXml(const QString &xml)
                } else if (type == "landscape_dynamic") {
                           dynamicBg = new TupFrame(this, "landscape_dynamic");
                           // dynamicBg->setFrameName("landscape_dynamic");
-                          dynamicBg->setDynamicFlag(true);
+                          // dynamicBg->setDynamicFlag(true);
 
                           if (dynamicBg) {
                               QString newDoc;
