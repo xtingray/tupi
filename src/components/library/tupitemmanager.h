@@ -76,6 +76,7 @@ class TupItemManager : public TreeListWidget
         void itemRenamed(QTreeWidgetItem *item);
         void itemCloned(QTreeWidgetItem *item);
         void itemExported(QTreeWidgetItem *item);
+        void itemRequired();
         void itemMoved(QString node, QString target);
         void itemCreated(QTreeWidgetItem *item);
         void inkscapeEditCall(QTreeWidgetItem *item);

@@ -152,6 +152,9 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     connect(k->libraryTree, SIGNAL(itemMoved(QString, QString)), this,
                                    SLOT(updateLibrary(QString, QString)));
 
+    connect(k->libraryTree, SIGNAL(itemRequired()), this,
+                                   SLOT(insertObjectInWorkspace()));
+
     connect(k->libraryTree, SIGNAL(itemCreated(QTreeWidgetItem*)), this,
                                    SLOT(activeRefresh(QTreeWidgetItem*)));
 
@@ -1514,8 +1517,6 @@ void TupLibraryWidget::executeSoftware(TupNewItemDialog::ThirdParty software, QS
 
 void TupLibraryWidget::updateItemFromSaveAction()
 {
-    tError() << "updateItemFromSaveAction() - updating images!";
-
     LibraryObjects collection = k->library->objects();
     QMapIterator<QString, TupLibraryObject *> i(collection);
     while (i.hasNext()) {

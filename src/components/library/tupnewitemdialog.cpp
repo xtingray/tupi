@@ -187,7 +187,7 @@ void TupNewItemDialog::updateExtension(int index)
 {
     k->fileExtension = k->extension->itemText(index);
 
-    if (index == 1) {
+    if (index == 1 || (index == 0 && k->software == MyPaint)) {
         if (k->background->itemText(0).compare(tr("Transparent")) == 0)
             k->background->removeItem(0);
     } else {
@@ -198,16 +198,28 @@ void TupNewItemDialog::updateExtension(int index)
 
 void TupNewItemDialog::updateBackground(int index)
 {
-    k->bg = k->colors[index];
+    if (k->software == MyPaint)
+        k->bg = k->colors[index+1];
+    else    
+        k->bg = k->colors[index];
 }
 
 void TupNewItemDialog::updateEditor(int index)
 {
     QString software = k->editor->itemText(index);
-    if (k->fileExtension.compare("SVG") == 0)
+    if (k->fileExtension.compare("SVG") == 0) {
         k->software = Inkscape;
-    else
+    } else {
         k->software = TupNewItemDialog::ThirdParty(index);
+        if (index == 2) {
+            if (k->background->itemText(0).compare(tr("Transparent")) == 0)
+                k->background->removeItem(0);
+        } else {
+            if (k->background->count() == 2)
+                k->background->insertItem(0, tr("Transparent"));
+        }
+    }
+
 }
 
 QString TupNewItemDialog::itemName() const

@@ -770,6 +770,7 @@ void TupFrame::reloadGraphicItem(const QString &id, const QString &path)
                  item->setPos(oldItem->pos());
                  item->setEnabled(true);
                  item->setFlags(oldItem->flags());
+                 item->setZValue(oldItem->zValue()); 
 
                  TupGraphicObject *object = new TupGraphicObject(item, this);
                  k->graphics.insert(i, object);
@@ -781,15 +782,16 @@ void TupFrame::reloadSVGItem(const QString &id, TupLibraryObject *object)
 {
     foreach (int i, k->svgIndexes.keys()) {
              if (k->svgIndexes[i].compare(id) == 0) {
-                 TupSvgItem *old = k->svg.value(i);
+                 TupSvgItem *oldItem = k->svg.value(i);
 
                  QString path = object->dataPath();
                  TupSvgItem *item = new TupSvgItem(path, this);
                  item->setSymbolName(object->symbolName());
-                 item->setTransform(old->transform());
-                 item->setPos(old->pos());
+                 item->setTransform(oldItem->transform());
+                 item->setPos(oldItem->pos());
                  item->setEnabled(true);
-                 item->setFlags(old->flags());
+                 item->setFlags(oldItem->flags());
+                 item->setZValue(oldItem->zValue());
 
                  k->svg.insert(i, item);
              }

@@ -342,7 +342,6 @@ bool TupLibraryObject::loadData(const QString &path)
                  QFile file(path);
 
                  if (file.open(QIODevice::ReadOnly)) {
-                     tError() << "TupLibraryObject::loadData() - Loading data from path: " << path;
                      loadRawData(file.readAll());
                  } else {
                      #ifdef K_DEBUG

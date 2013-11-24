@@ -196,8 +196,11 @@ void TupItemManager::createNewSVG()
 
 void TupItemManager::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (event->buttons() == Qt::LeftButton)
-        renameItem();
+    if (event->buttons() == Qt::LeftButton) {
+        QTreeWidgetItem *item = currentItem();
+        if (item)
+            emit itemRequired();
+    }
 }
 
 bool TupItemManager::isFolder(QTreeWidgetItem *item) 
