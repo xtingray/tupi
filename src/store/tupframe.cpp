@@ -297,7 +297,7 @@ void TupFrame::fromXml(const QString &xml)
                               }
                           } else {
                               #ifdef K_DEBUG
-                                     tError() << "TupFrame::fromXml() - ERROR: Object id is null!";
+                                     tError() << "TupFrame::fromXml() - Fatal Error: Object id is null!";
                               #endif
                           }
                } 
@@ -511,6 +511,8 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                          if (zLevel < zLimit) 
                              k->graphics.at(i)->setItemZValue(zLevel + 1);
                     }
+
+                    return true;
                 } else {
                     if (zMin == k->graphics.at(currentIndex)->itemZValue())
                         return true;
@@ -533,6 +535,8 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                          if (zLevel < zLimit)
                              k->svg.at(i)->setZValue(zLevel + 1);
                     }
+
+                    return true;
                 }
              }
            break;
@@ -549,7 +553,7 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                          int zLevel = k->svg.at(i)->zValue();
                          k->svg.at(i)->setZValue(zLevel - 1);
                     }
-                    for (int i=1; i < k->graphics.size(); ++i) {
+                    for (int i=0; i < k->graphics.size(); ++i) {
                          int zLevel = k->graphics.at(i)->itemZValue();
                          if (zLevel > zLimit)
                              k->graphics.at(i)->setItemZValue(zLevel - 1);
@@ -558,6 +562,8 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                     object->setZValue(zMax);
                     k->svg.append(object);
                     k->svgIndexes.append(id);
+
+                    return true;
                 } else {
                     TupGraphicObject *object = k->graphics.takeAt(currentIndex);
                     QString id = k->objectIndexes.takeAt(currentIndex);
@@ -576,39 +582,102 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                     object->setItemZValue(zMax);
                     k->graphics.append(object);
                     k->objectIndexes.append(id);
+
+                    return true;
                 }
              }
            break;
            case MoveOneLevelBack :
+             {
+                tError() << "TupFrame::moveItem() - Moving item to back one level!";
+                int zMin = (k->layerIndex + 1)*10000;
+
+                if (type == TupLibraryObject::Svg) {
+                    if (zMin == k->svg.at(currentIndex)->zValue())
+                        return true;
+
+                    TupSvgItem *object = k->svg.at(currentIndex);
+                    int zLimit = object->zValue();
+                    tError() << "TupFrame::moveItem() - Target zValue: " << zLimit;
+
+                    if (k->svg.size() > 1) { 
+                        object = k->svg.at(currentIndex - 1);
+                        int downzValue = object->zValue();
+                        if (downzValue == (zLimit - 1)) {
+                            k->svg.at(currentIndex)->setZValue(downzValue);
+                            k->svg.at(currentIndex - 1)->setZValue(zLimit);
+                            k->svg.swap(currentIndex, currentIndex -1);
+                            k->svgIndexes.swap(currentIndex, currentIndex -1);
+                            return true;
+                        } else {
+                            for (int i=0; i < k->graphics.size(); ++i) {
+                                 int zLevel = k->graphics.at(i)->itemZValue();
+                                 if (zLevel == (zLimit - 1)) {
+                                     k->svg.at(currentIndex)->setZValue(zLevel);
+                                     k->graphics.at(i)->setItemZValue(zLimit); 
+                                     return true;
+                                 }
+                            }
+                        } 
+                    } else {
+                        if (!k->graphics.isEmpty()) {
+                            for (int i=0; i < k->graphics.size(); ++i) {
+                                 int zLevel = k->graphics.at(i)->itemZValue();
+                                 tError() << "TupFrame::moveItem() - graphic zValue: " << zLevel;
+                                 if (zLevel == (zLimit - 1)) {
+                                     k->svg.at(currentIndex)->setZValue(zLevel);
+                                     k->graphics.at(i)->setItemZValue(zLimit);
+                                     return true;
+                                 }
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+                } else {
+                    if (zMin == k->graphics.at(currentIndex)->itemZValue())
+                        return true;
+
+                    TupGraphicObject *object = k->graphics.at(currentIndex);
+                    int zLimit = object->itemZValue();
+                    tError() << "TupFrame::moveItem() - Target zValue: " << zLimit;
+
+                    if (k->graphics.size() > 1) {
+                        object = k->graphics.at(currentIndex - 1);
+                        int downzValue = object->itemZValue();
+                        if (downzValue == (zLimit - 1)) {
+                            k->graphics.at(currentIndex)->setItemZValue(downzValue);
+                            k->graphics.at(currentIndex - 1)->setItemZValue(zLimit);
+                            k->graphics.swap(currentIndex, currentIndex -1);
+                            k->objectIndexes.swap(currentIndex, currentIndex -1);
+                            return true;
+                        } else {
+                            for (int i=0; i < k->svg.size(); ++i) {
+                                 int zLevel = k->svg.at(i)->zValue();
+                                 if (zLevel == (zLimit - 1)) {
+                                     k->graphics.at(currentIndex)->setItemZValue(zLevel);
+                                     k->svg.at(i)->setZValue(zLimit);
+                                     return true;
+                                 }
+                            }
+                        }
+                    } else {
+                    }
+                }
+             }
            break;
            case MoveOneLevelToFront :
+             {
+                if (type == TupLibraryObject::Svg) {
+
+                } else {
+
+                }
+             }
            break;
     }
 
-    /*
-    if (currentPosition == newPosition || currentPosition < 0 
-        || currentPosition >= k->graphics.count() || newPosition < 0 
-        || newPosition >= k->graphics.count())
-        return false;
-
-    if (currentPosition < newPosition) {
-        for (int i = currentPosition; i < newPosition; i++) {
-             double tmp = k->graphics.value(i)->item()->zValue();
-             k->graphics.value(i)->item()->setZValue(k->graphics.value(i+1)->item()->zValue());
-             k->graphics.value(i+1)->item()->setZValue(tmp);
-             k->graphics.copyObject(i, i+1);
-        }
-    } else {
-             for (int i = currentPosition; i > newPosition; i--) {
-                  double tmp = k->graphics.value(i)->item()->zValue();
-                  k->graphics.value(i)->item()->setZValue(k->graphics.value(i-1)->item()->zValue());
-                  k->graphics.value(i-1)->item()->setZValue(tmp);
-                  k->graphics.copyObject(i, i-1);
-             }
-    }
-    */
-
-    return true;
+    return false;
 }
 
 bool TupFrame::removeGraphicAt(int position)
