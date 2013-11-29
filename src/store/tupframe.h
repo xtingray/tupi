@@ -37,7 +37,6 @@
 #define TUPFRAME_H
 
 #include "tupabstractserializable.h"
-#include "tupinthash.h"
 #include "tupsvgitem.h"
 #include "tupbackground.h"
 #include "tupglobal_store.h"
@@ -45,6 +44,7 @@
 #include <QGraphicsScene>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QList>
 
 class TupFrame;
 class TupLayer;
@@ -54,8 +54,8 @@ class TupSvgItem;
 class TupProject;
 class TupScene;
 
-typedef TupIntHash<TupGraphicObject *> GraphicObjects;
-typedef TupIntHash<TupSvgItem *> SvgObjects;
+typedef QList<TupGraphicObject *> GraphicObjects;
+typedef QList<TupSvgItem *> SvgObjects;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -66,6 +66,7 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
 {
     public:
        enum FrameType { DynamicBg = 0, StaticBg, Regular };
+       enum MoveItemType { MoveBack, MoveToFront, MoveOneLevelBack, MoveOneLevelToFront };
 
        TupFrame();
        TupFrame(TupLayer *parent);
@@ -89,9 +90,8 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void setVisible(bool isVisible);
        bool isVisible() const;
        
-       void addItem(QGraphicsItem *item);
        void addItem(const QString &key, QGraphicsItem *item);
-       void removeItemFromFrame(const QString &key);
+       void removeImageItemFromFrame(const QString &key);
        void updateIdFromFrame(const QString &oldId, const QString &newId);
 
        void addSvgItem(const QString &key, TupSvgItem *item);
@@ -102,12 +102,12 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void insertSvgItem(int position, TupSvgItem *item);
        
        void replaceItem(int position, QGraphicsItem *item);
-       bool moveItem(int currentPosition, int newPosition);
+       bool moveItem(TupLibraryObject::Type type, int currentPosition, int action);
        
        bool removeGraphicAt(int position);
        bool removeSvgAt(int position);
 
-       QGraphicsItem *createItem(int position, QPointF coords, const QString &xml, bool loaded = false);
+       QGraphicsItem *createItem(QPointF coords, const QString &xml, bool loaded = false);
        TupSvgItem *createSvgItem(int position, QPointF coords, const QString &xml, bool loaded = false);
 
        void setGraphics(GraphicObjects objects);       
@@ -140,8 +140,6 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        int svgItemsCount();
 
        int getTopZLevel();
-       QList<int> itemIndexes();
-       QList<int> svgIndexes();
 
        bool isEmpty();
 

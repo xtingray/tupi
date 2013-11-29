@@ -58,8 +58,6 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
     Q_OBJECT
 
     public:
-        enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
-
         TupPaintArea(TupProject *project, QWidget * parent = 0);
         ~TupPaintArea();
 
@@ -108,7 +106,7 @@ class TupPaintArea : public TupPaintAreaBase, public TupAbstractProjectResponseH
         void cutItems();
 
         void addSelectedItemsToLibrary();
-        void requestMoveSelectedItems(QAction *action);
+        void requestItemMovement(QAction *action);
         void goToFrame(int index);
 
     protected:

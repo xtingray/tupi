@@ -73,7 +73,10 @@ class STORE_EXPORT TupGraphicObject : public QObject, public TupAbstractSerializ
 
         void setLastTweenPos(QPointF point);
         QPointF lastTweenPos();
-        
+
+        void setItemZValue(int value);
+        int itemZValue();
+
     public:
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc)  const;

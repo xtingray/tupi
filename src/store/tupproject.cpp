@@ -479,6 +479,8 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
     return true;
 }
 
+// SQA: Parameter name is really used here?
+
 bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbolType, TupProject::Mode spaceMode, 
                              int sceneIndex, int layerIndex, int frameIndex)
 {
@@ -492,49 +494,101 @@ bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type symbol
     TupScene *scene = this->scene(sceneIndex);
 
     if (scene) {
-
         if (spaceMode == TupProject::FRAMES_EDITION) {
-
             TupLayer *layer = scene->layer(layerIndex);
             if (layer) {
                 frame = layer->frame(frameIndex);
                 if (frame) {
                     if (symbolType == TupLibraryObject::Svg) {
-                        QList<int> indexes = frame->svgIndexes();
-                        int lastIndex = indexes.at(indexes.size()-1);
-                        if (frame->removeSvgAt(lastIndex))
+                        int lastIndex = frame->svgItemsCount()-1;
+                        if (frame->removeSvgAt(lastIndex)) {
                             return true;
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupProject::removeSymbol() - Fatal Error: can't remove SVG object at index [ " << lastIndex << " ]";
+                                   tError() << "TupProject::removeSymbol() - Context Mode: Frames Edition";
+                            #endif
+                            return false;
+                        }
                     } else {
-                        QList<int> indexes = frame->itemIndexes();
-                        int lastIndex = indexes.at(indexes.size()-1);
-                        if (frame->removeGraphicAt(lastIndex))
+                        int lastIndex = frame->graphicItemsCount()-1;
+                        if (frame->removeGraphicAt(lastIndex)) {
                             return true;
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupProject::removeSymbol() - Fatal Error: can't remove ITEM at index [ " << lastIndex << " ]";
+                                   tError() << "TupProject::removeSymbol() - Context Mode: Frames Edition";
+                            #endif
+                            return false;
+                        }
                     }
                 }
             }
         } else if (spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
+                   TupBackground *bg = scene->background();
 
-            TupBackground *bg = scene->background();
+                   if (bg) {
+                       TupFrame *frame = bg->staticFrame();
+                       if (frame) {
+                           if (symbolType == TupLibraryObject::Svg) {
+                               int lastIndex = frame->svgItemsCount()-1;
+                               if (frame->removeSvgAt(lastIndex)) {
+                                   return true;
+                               } else {
+                                   #ifdef K_DEBUG
+                                          tError() << "TupProject::removeSymbol() - Fatal Error: can't remove SVG object at index [ " << lastIndex << " ]";
+                                          tError() << "TupProject::removeSymbol() - Context Mode: Static Bg Edition";
+                                   #endif
+                                   return false;
+                               }
+                           } else {
+                               int lastIndex = frame->graphicItemsCount()-1;
+                               if (frame->removeGraphicAt(lastIndex)) {
+                                   return true;
+                               } else {
+                                   #ifdef K_DEBUG
+                                          tError() << "TupProject::removeSymbol() - Fatal Error: can't remove ITEM at index [ " << lastIndex << " ]";
+                                          tError() << "TupProject::removeSymbol() - Context Mode: Static Bg Edition";
+                                   #endif
+                                   return false;
+                               }
+                           }
+                       }
+                   }
+        } else if (spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                   TupBackground *bg = scene->background();
 
-            if (bg) {
-                TupFrame *frame = bg->staticFrame();
-                if (frame) {
-                    if (symbolType == TupLibraryObject::Svg) {
-                        QList<int> indexes = frame->svgIndexes();
-                        int lastIndex = indexes.at(indexes.size()-1);
-                        if (frame->removeSvgAt(lastIndex))
-                            return true;
-                    } else {
-                        QList<int> indexes = frame->itemIndexes();
-                        int lastIndex = indexes.at(indexes.size()-1);
-                        if (frame->removeGraphicAt(lastIndex))
-                            return true;
-                    }
-                }
-            }
+                   if (bg) {
+                       TupFrame *frame = bg->dynamicFrame();
+                       if (frame) {
+                           if (symbolType == TupLibraryObject::Svg) {
+                               int lastIndex = frame->svgItemsCount()-1;
+                               if (frame->removeSvgAt(lastIndex)) {
+                                   return true;
+                               } else {
+                                   #ifdef K_DEBUG
+                                          tError() << "TupProject::removeSymbol() - Fatal Error: can't remove SVG at index [ " << lastIndex << " ]";
+                                          tError() << "TupProject::removeSymbol() - Context Mode: Dynamic Bg Edition";
+                                   #endif
+                                   return false;
+                               }
+                           } else {
+                               int lastIndex = frame->graphicItemsCount()-1;
+                               if (frame->removeGraphicAt(lastIndex)) {
+                                   return true;
+                               } else {
+                                   #ifdef K_DEBUG
+                                          tError() << "TupProject::removeSymbol() - Fatal Error: can't remove ITEM at index [ " << lastIndex << " ]";
+                                          tError() << "TupProject::removeSymbol() - Context Mode: Dynamic Bg Edition";
+                                   #endif
+                                   return false;
+                               }
+                           }
+                       }
+                   }
         } else {
             #ifdef K_DEBUG
-                   tError() << "TupProject::removeSymbol() - spaceMode invalid!";
+                   tError() << "TupProject::removeSymbol() - Fatal Error: invalid spaceMode!";
             #endif
         }
     }
@@ -586,7 +640,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
                 return false;
         } else {
             #ifdef K_DEBUG
-                   tError() << "TupProject::insertSymbolIntoFrame() - spaceMode invalid!";
+                   tError() << "TupProject::insertSymbolIntoFrame() - Fatal Error: invalid spaceMode!";
             #endif
             
             return false;
@@ -711,7 +765,7 @@ bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Ty
              foreach (TupLayer *layer, scene->layers().values()) {
                       foreach (TupFrame *frame, layer->frames().values()) {
                                if (type != TupLibraryObject::Svg)
-                                   frame->removeItemFromFrame(name);
+                                   frame->removeImageItemFromFrame(name);
                                else
                                    frame->removeSvgItemFromFrame(name);
                       }
@@ -721,18 +775,18 @@ bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Ty
              if (bg) {
                  TupFrame *frame = bg->staticFrame();
                  if (frame) {
-                     if (type != TupLibraryObject::Svg)
-                         frame->removeItemFromFrame(name);
-                     else
+                     if (type == TupLibraryObject::Svg)
                          frame->removeSvgItemFromFrame(name);
+                     else
+                         frame->removeImageItemFromFrame(name);
                  }
 
                  frame = bg->dynamicFrame();
                  if (frame) {
-                     if (type != TupLibraryObject::Svg)
-                         frame->removeItemFromFrame(name);
-                     else
+                     if (type == TupLibraryObject::Svg)
                          frame->removeSvgItemFromFrame(name);
+                     else
+                         frame->removeImageItemFromFrame(name);
                  }
 
              }

@@ -120,14 +120,14 @@ void SelectTool::reset(TupGraphicsScene *scene)
                           } else {
                               if (scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                               } else {
-                                   if (item->zValue() >= 10000) {
-                                       item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                                   } else {
-                                       item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                                       item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                                   }
-                               }
+                              } else {
+                                  if (item->zValue() >= 10000) {
+                                      item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                                  } else {
+                                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                                  }
+                              }
                           }
                       }
              }
@@ -586,14 +586,40 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
 
                           TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(manager->parentItem());
                           int position = -1;
-                          TupLibraryObject::Type type;
-
-                          if (svg) {
-                              position  = k->scene->currentFrame()->indexOf(svg);
+                          TupLibraryObject::Type type = TupLibraryObject::Item;;
+                          if (svg)
                               type = TupLibraryObject::Svg;
+
+                          if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
+                              if (svg) 
+                                  position = k->scene->currentFrame()->indexOf(svg);
+                              else 
+                                  position = k->scene->currentFrame()->indexOf(manager->parentItem());
                           } else {
-                              position  = k->scene->currentFrame()->indexOf(manager->parentItem());
-                              type = TupLibraryObject::Item;
+                              TupBackground *bg = k->scene->scene()->background();
+                              if (bg) {
+                                  if (k->scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
+                                      if (svg)
+                                          position = bg->staticFrame()->indexOf(svg);
+                                      else
+                                          position = bg->staticFrame()->indexOf(manager->parentItem());
+                                  } else if (k->scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                             if (svg)
+                                                 position = bg->dynamicFrame()->indexOf(svg);
+                                             else
+                                                 position = bg->dynamicFrame()->indexOf(manager->parentItem());
+                                  } else {
+                                      #ifdef K_DEBUG
+                                             tError() << "SelectTool::applyFlip() - Fatal Error: invalid spaceMode!";
+                                      #endif
+                                      return;
+                                  }
+                              } else {
+                                  #ifdef K_DEBUG
+                                         tError() << "SelectTool::applyFlip() - Fatal Error: Scene background object is NULL!";
+                                  #endif
+                                  return;
+                              }
                           }
 
                           foreach (QGraphicsView *view, k->scene->views())

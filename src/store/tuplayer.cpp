@@ -232,8 +232,8 @@ TupFrame *TupLayer::frame(int position) const
 {
     if (position < 0 || position >= k->frames.count()) {
         #ifdef K_DEBUG
-               T_FUNCINFO << " FATAL ERROR: index out of bound (TupLayer) : " << position;
-               T_FUNCINFO << " FATAL ERROR: index limit : " << k->frames.count()-1;
+               tError() << "TupLayer::frame() - FATAL ERROR: frame index out of bound : " << position;
+               tError() << "TupLayer::frame() - FATAL ERROR: index limit : " << k->frames.count()-1;
         #endif
         return 0;
     }

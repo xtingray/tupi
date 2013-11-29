@@ -215,16 +215,15 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
             QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()), QKeySequence(Qt::Key_Delete));
 
             menu->addSeparator();
-            QMenu *order = new QMenu(tr("Order"));
+            QMenu *order = new QMenu(tr("Send"));
 
-            connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestMoveSelectedItems(QAction*)));
-            order->addAction(tr("Send to back"))->setData(MoveBack);
-            order->addAction(tr("Bring to front"))->setData(MoveFront);
-            order->addAction(tr("Send backwards"))->setData(MoveBackwards);
-            order->addAction(tr("Brind forwards"))->setData(MoveForwards);
+            connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestItemMovement(QAction*)));
+            order->addAction(tr("To back"))->setData(TupFrame::MoveBack);
+            order->addAction(tr("To front"))->setData(TupFrame::MoveToFront);
+            order->addAction(tr("One level to back"))->setData(TupFrame::MoveOneLevelBack);
+            order->addAction(tr("One level to front"))->setData(TupFrame::MoveOneLevelToFront);
 
             menu->addMenu(order);
-            order->setDisabled(true);
             menu->addSeparator();
 
             // Code commented temporary while SQA is done
@@ -610,7 +609,6 @@ void TupPaintArea::deleteItems()
         TupGraphicsScene* currentScene = graphicsScene();
 
         if (currentScene) {
-
             int counter = 0;
             int total = selected.count();
             k->deleteMode = true;
@@ -627,25 +625,83 @@ void TupPaintArea::deleteItems()
                          type = TupLibraryObject::Svg;
                          if (k->spaceMode == TupProject::FRAMES_EDITION) {
                              itemIndex = currentScene->currentFrame()->indexOf(svg);
+                         } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
+                                    TupBackground *bg = currentScene->scene()->background();
+                                    if (bg) {
+                                        TupFrame *frame = bg->staticFrame();
+                                        if (frame) {
+                                            itemIndex = frame->indexOf(svg);
+                                        } else {
+                                            #ifdef K_DEBUG
+                                                   tError() << "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
+                                            #endif
+                                        }
+                                    } else {
+                                        #ifdef K_DEBUG
+                                               tError() << "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
+                                        #endif
+                                    }
+                         } else if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                    TupBackground *bg = currentScene->scene()->background();
+                                    if (bg) {
+                                        TupFrame *frame = bg->dynamicFrame();
+                                        if (frame) {
+                                            itemIndex = frame->indexOf(svg);
+                                        } else {
+                                            #ifdef K_DEBUG
+                                                   tError() << "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
+                                            #endif
+                                        }
+                                    } else {
+                                        #ifdef K_DEBUG
+                                               tError() << "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
+                                        #endif
+                                    }
                          } else {
-                             TupBackground *bg = currentScene->scene()->background();
-                             if (bg) {
-                                 TupFrame *frame = bg->staticFrame();
-                                 if (frame)
-                                     itemIndex = frame->indexOf(svg);;
-                             }
+                             #ifdef K_DEBUG
+                                    tError() << "TupPaintArea::deleteItems() - Fatal Error: invalid spaceMode!";
+                             #endif
                          }
                      } else {
                          type = TupLibraryObject::Item;
                          if (k->spaceMode == TupProject::FRAMES_EDITION) {
                              itemIndex = currentScene->currentFrame()->indexOf(item);
+                         } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
+                                    TupBackground *bg = currentScene->scene()->background();
+                                    if (bg) {
+                                        TupFrame *frame = bg->staticFrame();
+                                        if (frame) {
+                                            itemIndex = frame->indexOf(item);
+                                        } else {
+                                            #ifdef K_DEBUG
+                                                   tError() << "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
+                                            #endif
+                                        }
+                                    } else {
+                                        #ifdef K_DEBUG
+                                               tError() << "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
+                                        #endif
+                                    }
+                         } else if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                    TupBackground *bg = currentScene->scene()->background();
+                                    if (bg) {
+                                        TupFrame *frame = bg->dynamicFrame();
+                                        if (frame) {
+                                            itemIndex = frame->indexOf(item);
+                                        } else {
+                                            #ifdef K_DEBUG
+                                                   tError() << "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
+                                            #endif
+                                        }
+                                    } else {
+                                        #ifdef K_DEBUG
+                                               tError() << "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
+                                        #endif
+                                    }
                          } else {
-                             TupBackground *bg = currentScene->scene()->background();
-                             if (bg) {
-                                 TupFrame *frame = bg->staticFrame();
-                                 if (frame)
-                                     itemIndex = frame->indexOf(item);
-                             }
+                             #ifdef K_DEBUG
+                                    tError() << "TupPaintArea::deleteItems() - Fatal Error: invalid spaceMode!";
+                             #endif
                          }
                      }
 
@@ -658,7 +714,7 @@ void TupPaintArea::deleteItems()
                          emit requestTriggered(&event);
                      } else {
                          #ifdef K_DEBUG
-                                tFatal() << "TupPaintArea::deleteItems() - Error: Invalid item index";
+                                tFatal() << "TupPaintArea::deleteItems() - Fatal Error: Invalid item index";
                          #endif
                      }
 
@@ -969,7 +1025,7 @@ void TupPaintArea::addSelectedItemsToLibrary()
     }
 }
 
-void TupPaintArea::requestMoveSelectedItems(QAction *action)
+void TupPaintArea::requestItemMovement(QAction *action)
 {
     #ifdef K_DEBUG
            T_FUNCINFOX("paintarea");
@@ -988,35 +1044,34 @@ void TupPaintArea::requestMoveSelectedItems(QAction *action)
 
     TupFrame *currentFrame = currentScene->currentFrame();
 
-    QList<int> positions;
     foreach (QGraphicsItem *item, selected) {
-             int newPos = 0;
-             int  value = currentFrame->indexOf(item);
-             bool ok;
-             int moveType = action->data().toInt(&ok);
+             TupLibraryObject::Type type = TupLibraryObject::Item; 
+             int index = -1;
+             if (TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item)) {
+                 type = TupLibraryObject::Svg;
+                 index = currentFrame->indexOf(svg);
+             } else {
+                 index = currentFrame->indexOf(item);
+             }
 
-             if (ok) {
-                 switch (moveType) {
-                         case TupPaintArea::MoveBack:
-                              newPos = 0;
-                              break;
-                         case TupPaintArea::MoveFront:
-                              newPos = currentScene->currentFrame()->graphics().count() - 1;
-                              break;
-                         case TupPaintArea::MoveBackwards:
-                              newPos = value - 1;
-                              break;
-                         case TupPaintArea::MoveForwards:
-                              newPos = value + 1;
-                              break;
-                         default: 
-                              return;
+             if (index >= 0) {
+                 bool ok;
+                 int moveType = action->data().toInt(&ok);
+
+                 if (ok) {
+                     TupProjectRequest event = TupRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
+                                               currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), index, QPointF(), 
+                                               k->spaceMode, type, TupProjectRequest::Move, moveType);
+                     emit requestTriggered(&event);
+                 } else {
+                     #ifdef K_DEBUG
+                            tError() << "TupPaintArea::requestItemMovement() - Fatal error: Invalid action [ " << moveType << " ]";
+                     #endif
                  }
-
-                 TupProjectRequest event = TupRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
-                                          currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), value, QPointF(), 
-                                          k->spaceMode, TupLibraryObject::Item,  TupProjectRequest::Move, newPos);
-                 emit requestTriggered(&event);
+             } else {
+                 #ifdef K_DEBUG
+                        tError() << "TupPaintArea::requestItemMovement() - Fatal error: Invalid object index [ " << index << " ]";
+                 #endif
              }
     }
 }

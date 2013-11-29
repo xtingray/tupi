@@ -53,8 +53,7 @@ struct TupGraphicObject::Private
     QPointF lastTweenPos;
 };
 
-TupGraphicObject::TupGraphicObject(QGraphicsItem *item, TupFrame *parent)
-	: QObject(parent), k(new Private)
+TupGraphicObject::TupGraphicObject(QGraphicsItem *item, TupFrame *parent) : QObject(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -189,4 +188,14 @@ void TupGraphicObject::setLastTweenPos(QPointF point)
 QPointF TupGraphicObject::lastTweenPos()
 {   
     return k->lastTweenPos;
+}
+
+void TupGraphicObject::setItemZValue(int value)
+{
+    k->item->setZValue(value);
+}
+
+int TupGraphicObject::itemZValue()
+{
+    return k->item->zValue();
 }

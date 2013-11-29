@@ -371,7 +371,6 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
-           tWarning() << request->xml();
     #endif
 
     if (request->isValid()) {

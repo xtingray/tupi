@@ -379,7 +379,7 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
 
     if (frame) {
         // k->objectCounter = 0;
-
+        /*
         QList<int> indexes = frame->itemIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              TupGraphicObject *object = frame->graphic(indexes.at(i));
@@ -390,7 +390,19 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
                  addGraphicObject(object, opacity);
              }
         }
+        */
 
+        for (int i=0; i < frame->graphicItemsCount(); ++i) {
+             TupGraphicObject *object = frame->graphic(i);
+             if (mode != TupGraphicsScene::Current) {
+                 if (!object->hasTween())
+                     addGraphicObject(object, opacity);
+             } else {
+                 addGraphicObject(object, opacity);
+             }
+        }
+
+        /*
         indexes = frame->svgIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              TupSvgItem *object = frame->svg(indexes.at(i));
@@ -398,6 +410,18 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
                  addSvgObject(object, opacity);
              } else {
                  TupItemTweener *tween = object->tween(); 
+                 if (k->framePosition.frame == tween->startFrame())
+                     addSvgObject(object, opacity);
+             }
+        }
+        */
+
+        for (int i = 0; i < frame->svgItemsCount(); i++) {
+             TupSvgItem *object = frame->svg(i);
+             if (!object->hasTween()) {
+                 addSvgObject(object, opacity);
+             } else {
+                 TupItemTweener *tween = object->tween();
                  if (k->framePosition.frame == tween->startFrame())
                      addSvgObject(object, opacity);
              }

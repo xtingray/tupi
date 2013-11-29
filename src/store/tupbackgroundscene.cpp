@@ -86,15 +86,29 @@ void TupBackgroundScene::cleanWorkSpace()
 void TupBackgroundScene::addFrame(TupFrame *frame)
 {
     if (frame) {
+        /*
         QList<int> indexes = frame->itemIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              TupGraphicObject *object = frame->graphic(indexes.at(i));
              addGraphicObject(object);
         }
+        */
 
+        for (int i = 0; i < frame->graphicItemsCount(); i++) {
+             TupGraphicObject *object = frame->graphic(i);
+             addGraphicObject(object);
+        }
+
+        /*
         indexes = frame->svgIndexes();
         for (int i = 0; i < indexes.size(); ++i) {
              TupSvgItem *object = frame->svg(indexes.at(i));
+             addSvgObject(object);
+        }
+        */
+
+        for (int i = 0; i < frame->svgItemsCount(); i++) {
+             TupSvgItem *object = frame->svg(i);
              addSvgObject(object);
         }
     }
