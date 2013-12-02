@@ -280,7 +280,7 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                          }
                      }
 
-                     if (position > 0) {
+                     if (position >= 0) {
                          // Restore matrix
                          // node->restoreItem();
 
@@ -294,7 +294,7 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                          emit requested(&event);
                      } else {
                          #ifdef K_DEBUG
-                                tError() << "SelectTool::release() - Fatal Error: Invalid position !!! [ " << position << " ]"; 
+                                tError() << "SelectTool::release() - Fatal Error: Invalid item position !!! [ " << position << " ]"; 
                          #endif
                      }
                  }

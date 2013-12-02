@@ -190,8 +190,8 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     k->itemType->setMaximumWidth(120);
     
     k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap.png"), tr("Image"));
-    k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap_array.png"), tr("Image Array"));
     k->itemType->addItem(QIcon(THEME_DIR + "icons/svg.png"), tr("Svg File"));
+    k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap_array.png"), tr("Image Array"));
     k->itemType->addItem(QIcon(THEME_DIR + "icons/svg_array.png"), tr("Svg Array"));
     comboLayout->addWidget(k->itemType);
 
