@@ -50,17 +50,23 @@ class InfoPanel : public QWidget
 
     public:
         enum Flip { Vertical = 1, Horizontal, Crossed };
+        enum Order { ToBack = 0, ToFront, ToBackOneLevel, ToFrontOneLevel };
 
         InfoPanel(QWidget *parent = 0);
         ~InfoPanel();
 
      signals:
         void callFlip(InfoPanel::Flip flip);
+        void callOrderAction(InfoPanel::Order action);
 
      private slots:
         void vFlip();
         void hFlip();
         void cFlip();
+        void sendToBack();
+        void sendToBackOneLevel();
+        void sendToFront();
+        void sendToFrontOneLevel();
 };
 
 #endif

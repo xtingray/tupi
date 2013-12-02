@@ -297,7 +297,7 @@ void TupFrame::fromXml(const QString &xml)
                               }
                           } else {
                               #ifdef K_DEBUG
-                                     tError() << "TupFrame::fromXml() - Fatal Error: Object id is null!";
+                                     tError() << "TupFrame::fromXml() - Fatal Error: Object id is NULL!";
                               #endif
                           }
                } 
@@ -478,15 +478,10 @@ void TupFrame::replaceItem(int position, QGraphicsItem *item)
 
 bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int action)
 {
-    tWarning() << "TupFrame::moveItem() - Object type: " << type;
-    tWarning() << "TupFrame::moveItem() - Object index: " << currentIndex;
-    tWarning() << "TupFrame::moveItem() - Action: " << action;
-
     MoveItemType move = MoveItemType(action); 
     switch(move) {
            case MoveBack :
              {
-                tError() << "TupFrame::moveItem() - Moving item to back! (last)";
                 int zMin = (k->layerIndex + 1)*10000;
 
                 if (type == TupLibraryObject::Svg) {
@@ -542,7 +537,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
            break;
            case MoveToFront :
              {
-                tError() << "TupFrame::moveItem() - Moving item to front! (first)";
                 int zMax = k->zLevelIndex - 1;
                 if (type == TupLibraryObject::Svg) {
                     if (k->svg.at(currentIndex)->zValue() == zMax)
@@ -595,7 +589,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
            break;
            case MoveOneLevelBack :
              {
-                tError() << "TupFrame::moveItem() - Moving item to back one level!";
                 int zMin = (k->layerIndex + 1)*10000;
 
                 if (type == TupLibraryObject::Svg) {
@@ -604,9 +597,8 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
 
                     TupSvgItem *object = k->svg.at(currentIndex);
                     int zLimit = object->zValue();
-                    tError() << "TupFrame::moveItem() - Target zValue: " << zLimit;
 
-                    if (k->svg.size() > 1) { 
+                    if ((k->svg.size() > 1) && (currentIndex > 0)) { 
                         object = k->svg.at(currentIndex - 1);
                         int downzValue = object->zValue();
                         if (downzValue == (zLimit - 1)) {
@@ -629,7 +621,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                         if (!k->graphics.isEmpty()) {
                             for (int i=0; i < k->graphics.size(); ++i) {
                                  int zLevel = k->graphics.at(i)->itemZValue();
-                                 tError() << "TupFrame::moveItem() - graphic zValue: " << zLevel;
                                  if (zLevel == (zLimit - 1)) {
                                      k->svg.at(currentIndex)->setZValue(zLevel);
                                      k->graphics.at(i)->setItemZValue(zLimit);
@@ -637,6 +628,9 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                                  }
                             }
                         } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong [ case MoveOneLevelBack/Svg ]";
+                            #endif
                             return false;
                         }
                     }
@@ -646,16 +640,15 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
 
                     TupGraphicObject *object = k->graphics.at(currentIndex);
                     int zLimit = object->itemZValue();
-                    tError() << "TupFrame::moveItem() - Target zValue: " << zLimit;
 
-                    if (k->graphics.size() > 1) {
+                    if ((k->graphics.size() > 1) && (currentIndex > 0)) {
                         object = k->graphics.at(currentIndex - 1);
                         int downzValue = object->itemZValue();
                         if (downzValue == (zLimit - 1)) {
                             k->graphics.at(currentIndex)->setItemZValue(downzValue);
                             k->graphics.at(currentIndex - 1)->setItemZValue(zLimit);
-                            k->graphics.swap(currentIndex, currentIndex -1);
-                            k->objectIndexes.swap(currentIndex, currentIndex -1);
+                            k->graphics.swap(currentIndex, currentIndex - 1);
+                            k->objectIndexes.swap(currentIndex, currentIndex - 1);
                             return true;
                         } else {
                             for (int i=0; i < k->svg.size(); ++i) {
@@ -678,6 +671,9 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                                  }
                             }
                         } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong [ case MoveOneLevelBack/Items ]";
+                            #endif
                             return false;
                         }
                     }
@@ -689,13 +685,99 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                 int zMax = k->zLevelIndex - 1;
 
                 if (type == TupLibraryObject::Svg) {
+                    if (k->svg.at(currentIndex)->zValue() == zMax)
+                        return true;
 
+                    TupSvgItem *object = k->svg.at(currentIndex);
+                    int zLimit = object->zValue();
+
+                    if (currentIndex < (k->svg.size() - 1)) {
+                        object = k->svg.at(currentIndex + 1);
+                        int upZValue = object->zValue();
+                        if (upZValue == (zLimit + 1)) {
+                            k->svg.at(currentIndex)->setZValue(upZValue);
+                            k->svg.at(currentIndex + 1)->setZValue(zLimit);
+                            k->svg.swap(currentIndex, currentIndex + 1);
+                            k->svgIndexes.swap(currentIndex, currentIndex + 1);
+                            return true;
+                        } else {
+                            for (int i=0; i < k->graphics.size(); ++i) {
+                                 int zLevel = k->graphics.at(i)->itemZValue();
+                                 if (zLevel == (zLimit + 1)) {
+                                     k->svg.at(currentIndex)->setZValue(zLevel);
+                                     k->graphics.at(i)->setItemZValue(zLimit);
+                                     return true;
+                                 }
+                            }
+                        }
+                    } else {
+                        if (!k->graphics.isEmpty()) {
+                            for (int i=0; i < k->graphics.size(); ++i) {
+                                 int zLevel = k->graphics.at(i)->itemZValue();
+                                 if (zLevel == (zLimit + 1)) {
+                                     k->svg.at(currentIndex)->setZValue(zLevel);
+                                     k->graphics.at(i)->setItemZValue(zLimit);
+                                     return true;
+                                 }
+                            }
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong [ case MoveOneLevelToFront/Svg ]";
+                            #endif
+                            return false;
+                        }
+                    }
                 } else {
+                    if (k->graphics.at(currentIndex)->itemZValue() == zMax)
+                        return true;
 
+                    TupGraphicObject *object = k->graphics.at(currentIndex);
+                    int zLimit = object->itemZValue();
+
+                    if (currentIndex < (k->graphics.size() - 1)) {
+                        object = k->graphics.at(currentIndex + 1);
+                        int upZValue = object->itemZValue();
+                        if (upZValue == (zLimit + 1)) {
+                            k->graphics.at(currentIndex)->setItemZValue(upZValue);
+                            k->graphics.at(currentIndex + 1)->setItemZValue(zLimit);
+                            k->graphics.swap(currentIndex, currentIndex + 1);
+                            k->objectIndexes.swap(currentIndex, currentIndex + 1);
+                            return true;
+                        } else {
+                            for (int i=0; i < k->svg.size(); ++i) {
+                                 int zLevel = k->svg.at(i)->zValue();
+                                 if (zLevel == (zLimit + 1)) {
+                                     k->graphics.at(currentIndex)->setItemZValue(zLevel);
+                                     k->svg.at(i)->setZValue(zLimit);
+                                     return true;
+                                 }
+                            }
+                        }
+                    } else {
+                        if (!k->svg.isEmpty()) {
+                            for (int i=0; i < k->svg.size(); ++i) {
+                                 int zLevel = k->svg.at(i)->zValue();
+                                 if (zLevel == (zLimit + 1)) {
+                                     k->graphics.at(currentIndex)->setItemZValue(zLevel);
+                                     k->svg.at(i)->setZValue(zLimit);
+                                     return true;
+                                 }
+                            }
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong [ case MoveOneLevelToFront/Items ]";
+                            #endif
+                            return false;
+                        }
+                    }
                 }
              }
            break;
     }
+
+    #ifdef K_DEBUG
+           tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong!";
+    #endif
 
     return false;
 }

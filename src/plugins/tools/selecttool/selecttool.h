@@ -88,21 +88,22 @@ class SelectTool : public TupToolPlugin
         void closeHugeCanvas();
         void callForPlugin(int menu, int index);
 
+    private slots:
+        void syncNodes();
+        void updateItems(TupGraphicsScene *scene);
+        void applyFlip(InfoPanel::Flip flip);
+        void applyOrderAction(InfoPanel::Order order);
+
     private:
         void setupActions();
         void verifyActiveSelection();
         void updateRealZoomFactor();
         void reset(TupGraphicsScene *scene);
-        
-    private:
+
         struct Private;
         Private *const k;
-        InfoPanel *m_configurator;
-        
-    private slots:
-        void syncNodes();
-        void updateItems(TupGraphicsScene *);
-        void applyFlip(InfoPanel::Flip flip);
+        InfoPanel *panel;
+
 };
 
 #endif

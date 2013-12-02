@@ -36,6 +36,7 @@
 #include "infopanel.h"
 #include <QBoxLayout>
 #include <QTextEdit>
+#include <QDir>
 
 #include "timagebutton.h"
 #include "tseparator.h"
@@ -56,11 +57,11 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(0);
 
-    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/horizontal_flip.png"), 22);
+    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/horizontal_flip.png"), 22);
     horizontalFlip->setToolTip(tr("Horizontal Flip"));
-    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/vertical_flip.png"), 22);
+    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/vertical_flip.png"), 22);
     verticalFlip->setToolTip(tr("Vertical Flip"));
-    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/crossed_flip.png"), 22);
+    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/crossed_flip.png"), 22);
     crossedFlip->setToolTip(tr("Crossed Flip"));
     connect(horizontalFlip, SIGNAL(clicked()), this, SLOT(hFlip()));
     connect(verticalFlip, SIGNAL(clicked()), this, SLOT(vFlip()));
@@ -71,6 +72,42 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     buttonsLayout->addWidget(crossedFlip);
 
     mainLayout->addLayout(buttonsLayout);
+
+    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
+
+    QBoxLayout *orderLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *order = new QLabel(tr("Order"));
+    order->setAlignment(Qt::AlignHCenter);
+    orderLayout->addWidget(order);
+    mainLayout->addLayout(orderLayout);
+
+    QBoxLayout *orderButtonsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    orderButtonsLayout->setMargin(0);
+    orderButtonsLayout->setSpacing(0);
+
+    TImageButton *toBack = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_back.png"), 22);
+    toBack->setToolTip(tr("Send object to back"));
+
+    TImageButton *toBackOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_back_one.png"), 22);
+    toBackOneLevel->setToolTip(tr("Send object to back one level"));
+
+    TImageButton *toFront = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_front.png"), 22);
+    toFront->setToolTip(tr("Send object to front"));
+
+    TImageButton *toFrontOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_front_one.png"), 22);
+    toFrontOneLevel->setToolTip(tr("Send object to front one level"));
+
+    connect(toBack, SIGNAL(clicked()), this, SLOT(sendToBack()));
+    connect(toBackOneLevel, SIGNAL(clicked()), this, SLOT(sendToBackOneLevel()));
+    connect(toFront, SIGNAL(clicked()), this, SLOT(sendToFront()));
+    connect(toFrontOneLevel, SIGNAL(clicked()), this, SLOT(sendToFrontOneLevel()));
+
+    orderButtonsLayout->addWidget(toBack);
+    orderButtonsLayout->addWidget(toBackOneLevel);
+    orderButtonsLayout->addWidget(toFront);
+    orderButtonsLayout->addWidget(toFrontOneLevel);
+
+    mainLayout->addLayout(orderButtonsLayout);
 
     mainLayout->addWidget(new TSeparator(Qt::Horizontal));
 
@@ -117,5 +154,25 @@ void InfoPanel::vFlip()
 void InfoPanel::cFlip()
 {
     emit callFlip(InfoPanel::Crossed);
+}
+
+void InfoPanel::sendToBack()
+{
+    emit callOrderAction(InfoPanel::ToBack);
+}
+
+void InfoPanel::sendToBackOneLevel()
+{
+    emit callOrderAction(InfoPanel::ToBackOneLevel);
+}
+
+void InfoPanel::sendToFront()
+{
+    emit callOrderAction(InfoPanel::ToFront);
+}
+
+void InfoPanel::sendToFrontOneLevel()
+{
+    emit callOrderAction(InfoPanel::ToFrontOneLevel);
 }
 
