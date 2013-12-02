@@ -1172,12 +1172,14 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    if (event->key() == Qt::Key_Left) {
+    // if (event->key() == Qt::Key_Left) {
+    if (event->key() == Qt::Key_PageUp) {
         goOneFrameBack();
         return;
     }
 
-    if (event->key() == Qt::Key_Right) {
+    // if (event->key() == Qt::Key_Right) {
+    if (event->key() == Qt::Key_PageDown) {
         if (event->modifiers() == Qt::ControlModifier)
             quickCopy();
         else 
