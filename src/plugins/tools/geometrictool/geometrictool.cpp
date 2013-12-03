@@ -34,8 +34,6 @@
  ***************************************************************************/
 
 #include "geometrictool.h"
-#include "tglobal.h"
-#include "tdebug.h"
 #include "tuprectitem.h"
 #include "tupellipseitem.h"
 #include "tuplineitem.h"
@@ -48,6 +46,9 @@
 #include "tuprequestbuilder.h"
 #include "tupprojectrequest.h"
 #include "tupbrushmanager.h"
+
+#include "tglobal.h"
+#include "tdebug.h"
 
 #include <cmath>
 #include <QKeySequence>
@@ -104,7 +105,6 @@ void GeometricTool::init(TupGraphicsScene *scene)
 
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
-             Q_CHECK_PTR(view->scene());
              if (QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene())) {
                  foreach (QGraphicsItem *item, scene->items()) {
                           item->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -305,29 +305,51 @@ void GeometricTool::release(const TupInputDeviceInformation *input, TupBrushMana
     Q_UNUSED(brushManager);
 
     QDomDocument doc;
-    QPointF position;
+    QPointF point;
 
     if (name() == tr("Rectangle")) {
         doc.appendChild(dynamic_cast<TupAbstractSerializable *>(k->rect)->toXml(doc));
-        position = k->rect->pos();
+        point = k->rect->pos();
     } else if (name() == tr("Ellipse")) {
                doc.appendChild(dynamic_cast<TupAbstractSerializable *>(k->ellipse)->toXml(doc));
                QRectF rect = k->ellipse->rect();
-               position = rect.topLeft();
+               point = rect.topLeft();
     } else if (name() == tr("Line")) {
                return;
-
-               // doc.appendChild(dynamic_cast<TupAbstractSerializable *>(k->line)->toXml(doc));
-               // position = k->line->pos();
-               doc.appendChild(dynamic_cast<TupAbstractSerializable *>(k->path)->toXml(doc));
-               position = k->path->boundingRect().topLeft(); 
     }
-    
-    TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
-                             scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), position,
-                             scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, doc.toString()); // Adds to end
-    
-    emit requested(&event);
+
+    int position = -1;
+    if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
+        position = scene->currentFrame()->graphics().count();
+    } else {
+        TupBackground *bg = scene->scene()->background();
+        if (bg) {
+            if (scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
+                position = bg->staticFrame()->graphics().count();
+            } else if (scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                       position = bg->dynamicFrame()->graphics().count();
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "GeometricTool::release() - Fatal Error: Invalid spaceMode!";
+                #endif
+            }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "GeometricTool::release() - Fatal Error: Scene background variable is NULL!";
+            #endif
+        }
+    }
+
+    if (position >= 0) {
+        TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
+                                  scene->currentFrameIndex(), position, point,
+                                  scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+        emit requested(&event);
+    } else {
+        #ifdef K_DEBUG
+               tError() << "GeometricTool::release() - Fatal Error: Object index is invalid! [ " << position << " ]";
+        #endif
+    }
 }
 
 QMap<QString, TAction *> GeometricTool::actions() const
@@ -355,10 +377,6 @@ QWidget *GeometricTool::configurator()
 
 void GeometricTool::aboutToChangeScene(TupGraphicsScene *scene)
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     Q_UNUSED(scene);
 
     endItem();
@@ -366,10 +384,6 @@ void GeometricTool::aboutToChangeScene(TupGraphicsScene *scene)
 
 void GeometricTool::aboutToChangeTool() 
 {
-    #ifdef K_DEBUG
-           T_FUNCINFO;
-    #endif
-
     endItem();
 }
 
@@ -418,18 +432,43 @@ void GeometricTool::endItem()
 
     if (k->path) {
         QDomDocument doc;
-        QPointF position;
-
         doc.appendChild(dynamic_cast<TupAbstractSerializable *>(k->path)->toXml(doc));
-        position = QPointF(0, 0);
+        QPointF point = QPointF(0, 0);
 
-        TupProjectRequest event = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                 k->scene->currentFrameIndex(), k->scene->currentFrame()->graphics().count(), position,
-                                 k->scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+        int position = -1;
+        if (k->scene->spaceMode() == TupProject::FRAMES_EDITION) {
+            position = k->scene->currentFrame()->graphics().count();
+        } else {
+            TupBackground *bg = k->scene->scene()->background();
+            if (bg) {
+                if (k->scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
+                    position = bg->staticFrame()->graphics().count();
+                } else if (k->scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           position = bg->dynamicFrame()->graphics().count();
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "GeometricTool::release() - Fatal Error: Invalid spaceMode!";
+                    #endif
+                }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "GeometricTool::release() - Fatal Error: Scene background variable is NULL!";
+                #endif
+            }
+        }
 
-        emit requested(&event);
+        if (position >= 0) {
+            TupProjectRequest event = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
+                                      k->scene->currentFrameIndex(), position, point,
+                                      k->scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
 
-        k->path = 0;
+            emit requested(&event);
+            k->path = 0;
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "GeometricTool::release() - Fatal Error: Invalid item index [ " << position << " ]";
+            #endif
+        }
     }
 }
 

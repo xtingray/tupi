@@ -44,7 +44,7 @@
 
 struct TupLibraryObject::Private
 {
-    int type;
+    TupLibraryObject::Type type;
     QVariant data;
     QString dataPath;
     QString symbolName;
@@ -86,12 +86,12 @@ QString TupLibraryObject::dataPath() const
     return k->dataPath;
 }
 
-void TupLibraryObject::setType(int type)
+void TupLibraryObject::setType(TupLibraryObject::Type type)
 {
     k->type = type;
 }
 
-int TupLibraryObject::type() const
+TupLibraryObject::Type TupLibraryObject::type() const
 {
     return k->type;
 }
@@ -125,7 +125,7 @@ void TupLibraryObject::fromXml(const QString &xml)
     
     if (! document.setContent(xml)) {
         #ifdef K_DEBUG  
-               tError() << "TupLibraryObject::fromXml - [ Fatal Error ] - Invalid XML structure!";
+               tError() << "TupLibraryObject::fromXml() - Fatal Error: Invalid XML structure!";
         #endif
         return;
     }
@@ -134,11 +134,22 @@ void TupLibraryObject::fromXml(const QString &xml)
 
     if (objectTag.tagName() == "object") {
         setSymbolName(objectTag.attribute("id"));
-        
-        if (k->symbolName.isEmpty()) 
+        if (k->symbolName.isEmpty()) {
+            #ifdef K_DEBUG
+                   tError() << "TupLibraryObject::fromXml - Fatal Error: Symbol name is empty!";
+            #endif
             return;
-        
-        k->type = objectTag.attribute("type").toInt();
+        }
+       
+        bool isOk = false; 
+        int index = objectTag.attribute("type").toInt(&isOk);
+        if (isOk) {
+            k->type = TupLibraryObject::Type(index);
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "TupLibraryObject::fromXml - Fatal Error: Invalid object type!";
+            #endif
+        }
 
         switch (k->type) {
                 case TupLibraryObject::Item:

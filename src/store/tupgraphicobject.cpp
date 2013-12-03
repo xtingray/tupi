@@ -55,9 +55,11 @@ struct TupGraphicObject::Private
 
 TupGraphicObject::TupGraphicObject(QGraphicsItem *item, TupFrame *parent) : QObject(parent), k(new Private)
 {
+    /*
     #ifdef K_DEBUG
            TINIT;
     #endif
+    */
 
     k->item = item;
     k->tween = 0;
@@ -69,9 +71,11 @@ TupGraphicObject::TupGraphicObject(QGraphicsItem *item, TupFrame *parent) : QObj
 
 TupGraphicObject::~TupGraphicObject()
 {
+    /*
     #ifdef K_DEBUG
            TEND;
     #endif
+    */
 
     if (k->item)
         delete k->item;

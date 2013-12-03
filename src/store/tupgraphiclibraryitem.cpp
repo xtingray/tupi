@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tupgraphiclibraryitem.h"
-#include "tuplibraryobject.h"
 #include "tupserializer.h"
 
 #include <QGraphicsTextItem>
@@ -46,6 +45,7 @@ struct TupGraphicLibraryItem::Private
     QString symbolName;
     QString svgContent;
     QList<QGraphicsItem *> items;
+    TupLibraryObject::Type itemType;
 };
 
 TupGraphicLibraryItem::TupGraphicLibraryItem() : TupProxyItem(), k(new Private)
@@ -55,12 +55,18 @@ TupGraphicLibraryItem::TupGraphicLibraryItem() : TupProxyItem(), k(new Private)
 TupGraphicLibraryItem::TupGraphicLibraryItem(TupLibraryObject *object) : TupProxyItem(), k(new Private)
 {
     setObject(object);
+    k->itemType = object->type();
 }
 
 TupGraphicLibraryItem::~TupGraphicLibraryItem()
 {
     qDeleteAll(k->items);
     delete k;
+}
+
+TupLibraryObject::Type TupGraphicLibraryItem::type()
+{
+    return k->itemType;
 }
 
 QDomElement TupGraphicLibraryItem::toXml(QDomDocument &doc) const

@@ -36,9 +36,8 @@
 #ifndef TUPPAINTAREASTATUS_H
 #define TUPPAINTAREASTATUS_H
 
+#include "tupdocumentview.h"
 #include <QStatusBar>
-
-class TupViewDocument;
 
 /**
  * @author David Cuadrado
@@ -49,7 +48,7 @@ class TupPaintAreaStatus : public QStatusBar
     Q_OBJECT
 
     public:
-        TupPaintAreaStatus(TupViewDocument *parent);
+        TupPaintAreaStatus(TupDocumentView *parent);
         ~TupPaintAreaStatus();
         void updateTool(const QString &label, const QPixmap &pixmap);
         void setZoomFactor(const QString &text);

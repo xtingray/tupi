@@ -65,8 +65,8 @@ class STORE_EXPORT TupLibraryObject : public QObject, public TupAbstractSerializ
         TupLibraryObject(QObject *parent = 0);
         ~TupLibraryObject();
         
-        void setType(int type);
-        int type() const;
+        void setType(TupLibraryObject::Type type);
+        TupLibraryObject::Type type() const;
         
         void setData(const QVariant &data);
         QVariant data() const;

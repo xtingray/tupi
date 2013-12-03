@@ -413,13 +413,13 @@ bool TupPaintAreaBase::canPaint() const
 
         if (frame) {
             #ifdef K_DEBUG
-                   tFatal() << "TupPaintAreaBase::canPaint() : Error! The problem is the frame";
+                   tWarning() << "TupPaintAreaBase::canPaint() - Warning: Current frame is NULL!";
             #endif
             return !frame->isLocked();
         }
     } else {
         #ifdef K_DEBUG
-               tFatal() << "TupPaintAreaBase::canPaint() : Error! There's no scene";
+               tWarning() << "TupPaintAreaBase::canPaint() - Warning: Scene is NULL!";
         #endif
     }
 

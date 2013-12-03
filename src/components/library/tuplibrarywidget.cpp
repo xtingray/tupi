@@ -402,7 +402,7 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
         if (object) {
             QString smallId = object->smallId();
             QString extension = object->extension();
-            int type = object->type();
+            TupLibraryObject::Type type = object->type();
             QString path = object->dataPath();
             int limit = path.lastIndexOf(QDir::separator());
             QString newPath = path.left(limit + 1); 
@@ -856,8 +856,6 @@ void TupLibraryWidget::importSvg()
                tag = name + "-" + QString::number(i) + extension;
                object = k->library->findObject(tag);
         }
-
-        tFatal() << "TupLibraryWidget::importSvg() - calling createLibraryRequest()...";
 
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
                                                        TupLibraryObject::Svg, k->project->spaceContext(), data, QString(), 

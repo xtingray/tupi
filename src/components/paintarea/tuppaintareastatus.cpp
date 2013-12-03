@@ -36,7 +36,6 @@
 #include "tuppaintareastatus.h"
 #include "tseparator.h"
 #include "tdebug.h"
-#include "tupviewdocument.h"
 #include "tupglobal.h"
 #include "tupbrushmanager.h"
 #include "tupcolorwidget.h"
@@ -55,7 +54,7 @@
 
 struct TupPaintAreaStatus::Private
 {
-    TupViewDocument *viewDocument;
+    TupDocumentView *documentView;
 
     QLineEdit *frameField; 
     QComboBox *zoom;
@@ -68,10 +67,10 @@ struct TupPaintAreaStatus::Private
     int currentFrame;
 };
 
-TupPaintAreaStatus::TupPaintAreaStatus(TupViewDocument *parent) : QStatusBar(parent), k( new Private)
+TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(parent), k( new Private)
 {
     setSizeGripEnabled(false);
-    k->viewDocument = parent;
+    k->documentView = parent;
     k->scaleFactor = 100;
     k->currentFrame = 1;
 
@@ -177,7 +176,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupViewDocument *parent) : QStatusBar(par
     k->bgStatus = new TupBrushStatus(tr("Background Color"), QPixmap(THEME_DIR + "icons/background_color.png"), true);
     k->bgStatus->setTooltip(tr("Click here to change background color"));
     addPermanentWidget(k->bgStatus);
-    k->bgStatus->setColor(k->viewDocument->project()->bgColor());
+    k->bgStatus->setColor(k->documentView->project()->bgColor());
 
     connect(k->bgStatus, SIGNAL(colorUpdated(const QColor)), this, SIGNAL(colorUpdated(const QColor)));
 
@@ -190,7 +189,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupViewDocument *parent) : QStatusBar(par
     //connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool)));
     //connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint(bool)));
 
-    k->brushStatus->setForeground(k->viewDocument->brushManager()->pen());
+    k->brushStatus->setForeground(k->documentView->brushManager()->pen());
 
     k->toolStatus = new TupToolStatus;
     addPermanentWidget(k->toolStatus);
@@ -203,7 +202,7 @@ TupPaintAreaStatus::~TupPaintAreaStatus()
 
 void TupPaintAreaStatus::selectAntialiasingHint()
 {
-    k->viewDocument->setAntialiasing(k->antialiasHint->isChecked()); 
+    k->documentView->setAntialiasing(k->antialiasHint->isChecked()); 
 }
 
 void TupPaintAreaStatus::selectRenderer(int id)
@@ -214,9 +213,9 @@ void TupPaintAreaStatus::selectRenderer(int id)
     Tupi::RenderType type = Tupi::RenderType(k->renderer->itemData(id ).toInt());
 
     if (type == Tupi::OpenGL)
-        k->viewDocument->setOpenGL(true);
+        k->documentView->setOpenGL(true);
     else
-        k->viewDocument->setOpenGL(false);
+        k->documentView->setOpenGL(false);
    */
 }
 
@@ -232,7 +231,7 @@ void TupPaintAreaStatus::applyRotation(const QString & text)
     if (angle < 0)
         angle += 360;
 
-    k->viewDocument->setRotationAngle(angle);
+    k->documentView->setRotationAngle(angle);
 }
 
 void TupPaintAreaStatus::applyZoom(const QString &text)
@@ -240,7 +239,7 @@ void TupPaintAreaStatus::applyZoom(const QString &text)
     int input = text.toInt();
     qreal factor = (qreal)input / (qreal)k->scaleFactor;
 
-    k->viewDocument->setZoom(factor);
+    k->documentView->setZoom(factor);
     k->scaleFactor = input;
 }
 
@@ -311,7 +310,7 @@ void TupPaintAreaStatus::updateFramePointer()
         }
 
         if (k->currentFrame != index) {
-            if (index <= k->viewDocument->currentFramesTotal()) {
+            if (index <= k->documentView->currentFramesTotal()) {
                 k->currentFrame = index;
                 index--;
                 if (index >= 0)

@@ -72,10 +72,10 @@ class STORE_EXPORT TupProject : public QObject, public TupAbstractSerializable
 
         enum Mode 
         {
-            NONE = 0,
-            FRAMES_EDITION,
+            FRAMES_EDITION = 0,
             STATIC_BACKGROUND_EDITION,
-            DYNAMIC_BACKGROUND_EDITION 
+            DYNAMIC_BACKGROUND_EDITION,
+            NONE
         };
 
         TupProject(QObject *parent = 0);

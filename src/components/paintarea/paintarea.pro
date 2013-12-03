@@ -12,7 +12,7 @@ macx {
 
 HEADERS += tuppaintarea.h \
            tupconfigurationarea.h \
-           tupviewdocument.h \
+           tupdocumentview.h \
            # tupdocumentruler.h \
            tuppaintareastatus.h \
            tupimagedevice.h \
@@ -35,7 +35,7 @@ HEADERS += tuppaintarea.h \
 
 SOURCES += tuppaintarea.cpp \
            tupconfigurationarea.cpp \
-           tupviewdocument.cpp \
+           tupdocumentview.cpp \
            # tupdocumentruler.cpp \
            tuppaintareastatus.cpp \
            tupimagedevice.cpp \

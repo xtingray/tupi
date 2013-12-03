@@ -88,6 +88,7 @@ struct TupPaintArea::Private
     QPointF position;
     bool menuOn;
     QString frameCopy;
+    bool canvasEnabled;
 };
 
 TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintAreaBase(parent, project->dimension()), k(new Private)
@@ -95,6 +96,8 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+
+    k->canvasEnabled = false;
 
     k->project = project;
     setBgColor(project->bgColor());
@@ -125,7 +128,6 @@ void TupPaintArea::setCurrentScene(int index)
     #endif
 
     if (k->project->scenesTotal() > 0) {
-
         TupScene *scene = k->project->scene(index);
         if (scene) {
             k->currentSceneIndex = index;
@@ -151,10 +153,13 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
            T_FUNCINFO;
     #endif
 
-    // SQA: Temporal solution for cases when there's no current frame defined
-    if (!graphicsScene()->currentFrame()) {
+    if (!k->canvasEnabled)
         return;
-    }
+
+    // SQA: Temporal solution for cases when there's no current frame defined
+    // if (!graphicsScene()->currentFrame()) {
+    //     return;
+    // }
 
     if (graphicsScene()->currentFrame()->isLocked()) {
         #ifdef K_DEBUG
@@ -172,9 +177,7 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
     }
 
     if (k->currentTool.compare(tr("Object Selection")) == 0) {
-
         if (event->buttons() == Qt::RightButton) {
-
             // If a node is the target... abort!
             if (qgraphicsitem_cast<Node *>(scene()->itemAt(mapToScene(event->pos()))))
                 return;
@@ -1109,6 +1112,7 @@ void TupPaintArea::setCurrentTool(QString tool)
     #endif
 
     k->currentTool = tool;
+    k->canvasEnabled = true;
 }
 
 void TupPaintArea::updateSpaceContext()

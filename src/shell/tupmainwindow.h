@@ -37,7 +37,7 @@
 #define TUPMAINWINDOW_H
 
 #include "tactionmanager.h"
-#include "tupviewdocument.h"
+#include "tupdocumentview.h"
 #include "tupanimationspace.h"
 #include "tuppreferences.h"
 
@@ -45,7 +45,6 @@
 #include "tupexposuresheet.h"
 #include "kinaswidget.h"
 #include "tuppenwidget.h"
-// #include "tupcamerawidget.h"
 #include "tupcolorpalette.h"
 #include "tupsceneswidget.h"
 #include "tuplibrarywidget.h"
@@ -57,7 +56,6 @@
 #include "tuptwitterwidget.h"
 #include "tupexportwidget.h"
 
-#include "tupviewdocument.h"
 #include "tabbedmainwindow.h"
 #include "tupstatusbar.h"
 #include "tosd.h"
@@ -210,7 +208,7 @@ class TupMainWindow : public TabbedMainWindow
           void openRecentProject();
           void createCommand(const TupPaintAreaEvent *event);
           void callSave();
-          void expandExposureView(int index);
+          void expandExposureView(TupProject::Mode contextMode);
           void expandColorView();
           // void postVideo(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> sceneIndexes);
           void resetMousePointer();
@@ -223,7 +221,7 @@ class TupMainWindow : public TabbedMainWindow
           bool lastSave;
 
     private:
-          TupViewDocument *animationTab;
+          TupDocumentView *animationTab;
           TupAnimationspace *playerTab;
           TupHelpBrowser *helpTab;
           TupTwitterWidget *newsTab;

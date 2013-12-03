@@ -36,20 +36,16 @@
 #include "filltool.h"
 #include "tglobal.h"
 #include "tdebug.h"
-#include "tpathhelper.h"
-#include "tuprectitem.h"
-#include "tupellipseitem.h"
-#include "tuplineitem.h"
-#include "tuppathitem.h"
+#include "tupsvgitem.h"
 #include "tupserializer.h"
 #include "tupitemconverter.h"
 #include "tuprequestbuilder.h"
-#include "tuplibraryobject.h"
 #include "tupscene.h"
 #include "tupinputdeviceinformation.h"
 #include "tupgraphicsscene.h"
 #include "tupprojectrequest.h"
 #include "tupbrushmanager.h"
+#include "tupgraphiclibraryitem.h"
 
 #include <QKeySequence>
 #include <QDebug>
@@ -78,7 +74,7 @@ void FillTool::init(TupGraphicsScene *scene)
 {
     foreach (QGraphicsItem *item, scene->items()) {
              if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
-                 if (item->zValue() >= 10000 && item->toolTip().length()==0) {
+                 if (item->zValue() >= 20000 && item->toolTip().length()==0) {
                      item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
                  } else {
                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -105,138 +101,93 @@ void FillTool::setupActions()
     action1->setCursor(k->insideCursor);
     k->actions.insert(tr("Internal fill"), action1);
     
-    /*
-    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "icons/fillcolor.png"), tr("Shape fill"), this);
-    action2->setShortcut(QKeySequence(tr("Ctrl+F")));
-    action2->setCursor(QCursor(kAppProp->themeDir() + "cursors/paint.png"));
-    k->actions.insert(tr("Shape fill"), action2);
-    */
-    
-    TAction *action3 = new TAction(QIcon(kAppProp->themeDir() + "icons/contour.png"), tr("Line fill"), this);
-    action3->setShortcut(QKeySequence(tr("B")));
+    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "icons/contour.png"), tr("Line fill"), this);
+    action2->setShortcut(QKeySequence(tr("B")));
     k->contourCursor = QCursor(kAppProp->themeDir() + "cursors/contour_fill.png");
-    action3->setCursor(k->contourCursor);
-    k->actions.insert(tr("Line fill"), action3);
+    action2->setCursor(k->contourCursor);
+    k->actions.insert(tr("Line fill"), action2);
 }
 
 void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     if (input->buttons() == Qt::LeftButton) {
-        QGraphicsItem *clickedItem = scene->itemAt(input->pos());
-        
-        if (name() == tr("Shape fill")) {
-            TupPathItem *item = TupItemConverter::convertToPath(clickedItem);
-            
-            if (!item) { 
-                #ifdef K_DEBUG
-                       tFatal() << "FillTool::press() - No item found";
-                #endif
-                return;
-            }
-            
-            // QList<QGraphicsItem *> colls = clickedItem->collidingItems();
-            QPainterPath res = mapPath(item);
+        QGraphicsItem *item = scene->itemAt(input->pos());
 
-            /*
-            if (!colls.isEmpty()) {
-                bool doSubs = false;
-                foreach (QGraphicsItem *xit, colls) {
-                         TupPathItem *path = TupItemConverter::convertToPath(xit);
-                         if (path) {
-                             QPointF localPoint = xit->mapFromScene(input->pos());
-                             if (path->shape().contains(localPoint) && 
-                                        path->scenePos() != item->scenePos()) {
-                                 res = ClipHelper::intersect(res, mapPath(path));
-                             } else {
-                                 doSubs = true;
-                             }
-                         }
-                }
-                
-                if (doSubs) {
-                    QPainterPath subs;
-                    
-                    foreach (QGraphicsItem *xit, colls) {
-                             TupPathItem *path = TupItemConverter::convertToPath(xit);
-                             if (path) {
-                                 QPointF localPoint = xit->mapFromScene(input->pos());
-                                 if (!path->shape().contains(localPoint))
-                                     subs = ClipHelper::unite(subs, mapPath(path));
-                             }
-                    }
-                    
-                    res = ClipHelper::subtract(res, subs);
-                    
-                    QList<QPainterPath> subpaths = TPathHelper::toSubpaths(res);
-                    
-                    if (subpaths.count() > 1) {
-                        foreach (QPainterPath subpath, subpaths) {
-                                 if (subpath.contains(input->pos())) {
-                                     res = subpath;
-                                     break;
-                                 }
-                        }
-                    }
-                }
-            }
-            */
-            
-            TupPathItem *intersection = new TupPathItem();
-            intersection->setPath(res);
-            
-            intersection->setZValue(clickedItem->zValue()+1);
-            
-            intersection->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-            intersection->setBrush(brushManager->pen().brush());
-            
-            QDomDocument doc;
-            doc.appendChild(intersection->toXml(doc));
-
-            TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
-                            scene->currentLayerIndex(), scene->currentFrameIndex(), 
-                            scene->currentFrame()->graphics().count(), QPointF(),
-                            scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
-                            doc.toString()); // Adds to end
-            emit requested(&event);
-
+        if (!item) {
+            #ifdef K_DEBUG
+                   tWarning() << "FillTool::press() - No item found";
+            #endif
+            return;
         } else {
+            if (TupGraphicLibraryItem *libraryItem = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
+                if (libraryItem->type() == TupLibraryObject::Image) {
+                    #ifdef K_DEBUG
+                           tWarning() << "FillTool::press() - Warning: is a RASTER object!"; 
+                    #endif
+                    return;
+                }
+            } else {
+                TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
+                if (svg) {
+                    #ifdef K_DEBUG
+                           tWarning() << "FillTool::press() - Warning: is a SVG object!";                         
+                    #endif
+                    return;
+                }
 
-            if (QAbstractGraphicsShapeItem *shape = 
-                            qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem)) {
-                int position = -1;
+                if (item->zValue() < 20000 && scene->spaceMode() == TupProject::FRAMES_EDITION) {
+                    #ifdef K_DEBUG
+                           tWarning() << "FillTool::press() - Warning: Object belongs to the background frames";
+                    #endif
+                    return;
+                }
+            }
+        }
+        
+        if (QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(item)) {
+            int position = -1;
 
-                if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
-                    position = scene->currentFrame()->indexOf(shape);
-                } else {
-                    TupBackground *bg = scene->scene()->background();
+            if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
+                position = scene->currentFrame()->indexOf(shape);
+            } else {
+                TupBackground *bg = scene->scene()->background();
+                if (scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
                     TupFrame *frame = bg->staticFrame();
                     position = frame->indexOf(shape);
-                }
-                
-                if (position >= 0) {
-                    if (name() == tr("Internal fill")) {
-                        shape->setBrush(brushManager->pen().brush());
-                    } else if (name() == tr("Line fill")) {
-                               QPen pen = shape->pen();
-                               pen.setBrush(brushManager->pen().brush());
-                               shape->setPen(pen);
-                    }
-                    
-                    QDomDocument doc;
-                    doc.appendChild(TupSerializer::properties(shape, doc));
-                    
-                    TupProjectRequest event = TupRequestBuilder::createItemRequest( 
-                                scene->currentSceneIndex(), scene->currentLayerIndex(),
-                                scene->currentFrameIndex(), position, QPointF(), 
-                                scene->spaceMode(), TupLibraryObject::Item, 
-                                TupProjectRequest::Transform, doc.toString());
-
-                    emit requested(&event);
+                } else if (scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                           TupFrame *frame = bg->dynamicFrame();
+                           position = frame->indexOf(shape);
                 } else {
                     #ifdef K_DEBUG
-                           tFatal() << "FillTool::press() - Invalid object index";
+                           tError() << "FillTool::press() - Fatal Error: Invalid spaceMode!";
                     #endif
+                    return;
                 }
+            }
+                
+            if (position >= 0) {
+                if (name() == tr("Internal fill")) {
+                    shape->setBrush(brushManager->pen().brush());
+                } else if (name() == tr("Line fill")) {
+                           QPen pen = shape->pen();
+                           pen.setBrush(brushManager->pen().brush());
+                           shape->setPen(pen);
+                }
+                    
+                QDomDocument doc;
+                doc.appendChild(TupSerializer::properties(shape, doc));
+                    
+                TupProjectRequest event = TupRequestBuilder::createItemRequest( 
+                          scene->currentSceneIndex(), scene->currentLayerIndex(),
+                          scene->currentFrameIndex(), position, QPointF(), 
+                          scene->spaceMode(), TupLibraryObject::Item, 
+                          TupProjectRequest::Transform, doc.toString());
+
+                emit requested(&event);
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "FillTool::press() - Fatal Error: Invalid object index [ " << position << " ]";
+                #endif
             }
         }
     }

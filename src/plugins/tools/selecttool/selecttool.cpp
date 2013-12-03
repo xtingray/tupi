@@ -121,13 +121,18 @@ void SelectTool::reset(TupGraphicsScene *scene)
                           } else {
                               if (scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                              } else if (scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
+                                         if (item->zValue() >= 10000) {
+                                             item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                                         } else {
+                                             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                             item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                                         }
                               } else {
-                                  if (item->zValue() >= 10000) {
-                                      item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                                  } else {
-                                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                                  }
+                                  #ifdef K_DEBUG
+                                         tError() << "SelectTool::reset() - Fatal Error: Invalid spaceMode!";
+                                  #endif
+                                  return;
                               }
                           }
                       }
@@ -592,6 +597,7 @@ void SelectTool::verifyActiveSelection()
     }
 }
 
+// SQA: Check if reset() and updateItems can be defined as the same method 
 void SelectTool::updateItems(TupGraphicsScene *scene)
 {
     foreach (QGraphicsView *view, scene->views()) {
@@ -608,13 +614,17 @@ void SelectTool::updateItems(TupGraphicsScene *scene)
                           } else {
                               if (scene->spaceMode() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                              } else if (scene->spaceMode() == TupProject::STATIC_BACKGROUND_EDITION) {
+                                         if (item->zValue() >= 10000) {
+                                             item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                                         } else {
+                                             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                                             item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                                         }
                               } else {
-                                  if (item->zValue() >= 10000) {
-                                      item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                                  } else {
-                                      item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                                      item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                                  }
+                                  #ifdef K_DEBUG
+                                         tError() << "SelectTool::updateItems() - Fatal Error: Invalid spaceMode!";
+                                  #endif
                               }
                           }
                       }

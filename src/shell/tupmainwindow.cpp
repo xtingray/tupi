@@ -273,7 +273,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         // Setting undo/redo actions
         setUndoRedoActions();
 
-        animationTab = new TupViewDocument(m_projectManager->project(), this, isNetworked, users);
+        animationTab = new TupDocumentView(m_projectManager->project(), this, isNetworked, users);
 
         TCONFIG->beginGroup("Network");
         QString server = TCONFIG->value("Server").toString();
@@ -290,7 +290,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connectToDisplays(animationTab);
         connectWidgetToManager(animationTab);
         connectWidgetToLocalManager(animationTab);
-        connect(animationTab, SIGNAL(modeHasChanged(int)), this, SLOT(expandExposureView(int))); 
+        connect(animationTab, SIGNAL(modeHasChanged(TupProject::Mode)), this, SLOT(expandExposureView(TupProject::Mode))); 
         connect(animationTab, SIGNAL(expandColorPanel()), this, SLOT(expandColorView()));
 
         connect(animationTab, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
@@ -1318,10 +1318,8 @@ void TupMainWindow::callSave()
         saveProject();
 }
 
-void TupMainWindow::expandExposureView(int index) 
+void TupMainWindow::expandExposureView(TupProject::Mode contextMode) 
 {
-    contextMode = TupProject::Mode(index);
-
     if (contextMode == TupProject::FRAMES_EDITION) {
         exposureView->expandDock(true);
         exposureView->enableButton(true);

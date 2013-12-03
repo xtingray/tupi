@@ -37,10 +37,12 @@
 #define TUPGRAPHICLIBRARYITEM_H
 
 #include "tupproxyitem.h"
+#include "tuplibraryobject.h"
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
 
-class TupLibraryObject;
+
+// class TupLibraryObject;
 
 /**
  * @author David Cuadrado
@@ -52,6 +54,8 @@ class STORE_EXPORT TupGraphicLibraryItem : public TupProxyItem, public TupAbstra
         TupGraphicLibraryItem();
         TupGraphicLibraryItem(TupLibraryObject *object);
         ~TupGraphicLibraryItem();
+
+        TupLibraryObject::Type type();
         
         QDomElement toXml(QDomDocument &doc) const;
         void fromXml(const QString &xml);

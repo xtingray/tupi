@@ -88,7 +88,7 @@ void ContourSelection::init(TupGraphicsScene *scene)
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       if (!qgraphicsitem_cast<TControlNode *>(item)) {
                           if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
-                              if (item->zValue() >= 10000 && qgraphicsitem_cast<TupPathItem *>(item)) {
+                              if (item->zValue() >= 20000 && qgraphicsitem_cast<TupPathItem *>(item)) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);
