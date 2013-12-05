@@ -49,11 +49,15 @@ class TupCanvasView : public QGraphicsView
 
     public:
         TupCanvasView(QWidget *parent=0, const QSize &screenSize = QSize(0, 0), 
-                     const QSize &projectSize = QSize(0, 0), const QColor &bg = QColor(Qt::white));
+                      const QSize &projectSize = QSize(0, 0), const QColor &bg = QColor(Qt::white));
         ~TupCanvasView();
 
     protected:
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
+        virtual void mousePressEvent(QMouseEvent *event);
+
+    signals:
+        void rightClick();
 
     private:
         struct Private;

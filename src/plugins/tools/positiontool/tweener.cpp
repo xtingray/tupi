@@ -78,7 +78,7 @@ struct Tweener::Private
     TupItemTweener *currentTween;
     TNodeGroup *group;
 
-    bool pathAdded;
+    bool isPathInScene;
     int startPoint;
 
     TupToolPlugin::Mode mode;
@@ -121,7 +121,7 @@ void Tweener::init(TupGraphicsScene *scene)
     k->scene = scene;
     k->objects.clear();
 
-    k->pathAdded = false;
+    k->isPathInScene = false;
     k->pathOffset = QPointF(0, 0); 
     k->firstNode = QPointF(0, 0);
     k->itemObjectReference = QPointF(0, 0);
@@ -257,7 +257,7 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
                     k->firstNode = newPos;
                     k->path->setPath(path);
                     scene->addItem(k->path);
-                    k->pathAdded = true;
+                    k->isPathInScene = true;
 
                     k->pathOffset = QPointF(0, 0);
                 } else {
@@ -331,7 +331,7 @@ void Tweener::aboutToChangeTool()
     if (k->editMode == TupToolPlugin::Path) {
         if (k->path) {
             k->scene->removeItem(k->path);
-            k->pathAdded = false;
+            k->isPathInScene = false;
             delete k->group;
             k->group = 0;
         }
@@ -366,9 +366,9 @@ void Tweener::setCreatePath()
 
         k->pathOffset = QPointF(0, 0);
 
-        if (!k->pathAdded) {
+        if (!k->isPathInScene) {
             k->scene->addItem(k->path);
-            k->pathAdded = true;
+            k->isPathInScene = true;
         } 
 
         if (k->group) {
@@ -400,7 +400,7 @@ void Tweener::setSelect()
 
     if (k->path) {
         k->scene->removeItem(k->path);
-        k->pathAdded = false;
+        k->isPathInScene = false;
         delete k->group;
         k->group = 0;
     }
@@ -498,7 +498,7 @@ void Tweener::applyReset()
     if (k->path) {
         if (k->startPoint == k->scene->currentFrameIndex())
             k->scene->removeItem(k->path);
-        k->pathAdded = false;
+        k->isPathInScene = false;
         k->path = 0;
     }
 
@@ -599,10 +599,10 @@ void Tweener::applyTween()
                      dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
 
                      TupProjectRequest request = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), 
-                                                                                    k->scene->currentLayerIndex(), 
-                                                                                    k->startPoint, -1, 
-                                                                                    QPointF(), k->scene->spaceMode(), type, 
-                                                                                    TupProjectRequest::Add, dom.toString());
+                                                                                      k->scene->currentLayerIndex(), 
+                                                                                      k->startPoint, 0, QPointF(), 
+                                                                                      k->scene->spaceMode(), type, 
+                                                                                      TupProjectRequest::Add, dom.toString());
                      emit requested(&request);
 
                      request = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), 

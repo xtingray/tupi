@@ -124,6 +124,7 @@ class TupCanvas : public QFrame
         void closeSketchMenu();
         void closeSelectionMenu();
         void closePenPropertiesMenu();
+        void rightClick();
 };
 
 #endif

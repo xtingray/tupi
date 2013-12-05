@@ -462,7 +462,7 @@ void Tweener::applyTween()
 
                      TupProjectRequest request = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
                                                                                     k->scene->currentLayerIndex(),
-                                                                                    k->startPoint, -1,
+                                                                                    k->startPoint, 0,
                                                                                     QPointF(), k->scene->spaceMode(),
                                                                                     type, TupProjectRequest::Add,
                                                                                     dom.toString());

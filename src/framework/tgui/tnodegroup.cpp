@@ -81,14 +81,10 @@ TNodeGroup::~TNodeGroup()
 
 void TNodeGroup::clear()
 {
-    /* SQA: Pending for revision 
-    foreach (TControlNode *node, k->nodes) {
-             node->clear();
-    }
-    */
-
+    // SQA: Check if exists a better way to clean nodes 
     qDeleteAll(k->nodes);
-    k->nodes.clear();
+
+    k->parentItem->update();
 }
 
 void TNodeGroup::syncNodes(const QPainterPath &path)
@@ -265,7 +261,9 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
             index++;
         }
     } else {
-        tDebug("selection") << "Item not item path";
+        #ifdef K_DEBUG
+               tError() << "TNodeGroup::createNodes() - Fatal Error: Item is NULL!";
+        #endif
     }
 }
 

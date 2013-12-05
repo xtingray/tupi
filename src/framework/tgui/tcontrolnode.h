@@ -79,7 +79,6 @@ class TControlNode : public QGraphicsItem
         TControlNode *centralNode();
         
         void hasChanged(bool notChange);
-        void clear();
         
     protected:
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);

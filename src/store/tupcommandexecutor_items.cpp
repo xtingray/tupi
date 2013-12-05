@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tupcommandexecutor.h"
-
 #include "tupserializer.h"
 #include "tupscene.h"
 
@@ -69,7 +68,6 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
-    // int position = response->itemIndex();
     TupLibraryObject::Type type = response->itemType(); 
     QPointF point = response->position();
     TupProject::Mode mode = response->spaceMode();
@@ -78,26 +76,22 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
     TupScene *scene = m_project->scene(scenePosition);
   
     if (scene) {
-
         if (mode == TupProject::FRAMES_EDITION) {
-
             TupLayer *layer = scene->layer(layerPosition);
             if (layer) {
                 TupFrame *frame = layer->frame(framePosition);
                 if (frame) {
+                    // SQA: Check if svg objects are really created in this method 
                     if (type == TupLibraryObject::Svg) {
-                        tError() << "TupCommandExecutor::createItem() - Creating SVG item";
-                        TupSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
+                        TupSvgItem *svg = frame->createSvgItem(point, xml);
                         if (svg)
-                            response->setItemIndex(frame->indexOf(svg));
+                            response->setItemIndex(frame->svgItemsCount()-1);
                         else
                             return false;
                     } else {
-                        // QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
                         QGraphicsItem *item = frame->createItem(point, xml);
-
                         if (item)
-                            response->setItemIndex(frame->indexOf(item));
+                            response->setItemIndex(frame->graphicItemsCount()-1);
                         else
                             return false;
                     }
@@ -107,19 +101,18 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
                 } else {
                     #ifdef K_DEBUG
-                           tError() << "TupCommandExecutor::createItem() - Error: " << tr("Frame doesn't exists!");
+                           tError() << "TupCommandExecutor::createItem() - Error: " << tr("Frame doesn't exist!");
                     #endif
                     return false;
                 }
             } else {
                 #ifdef K_DEBUG
-                       tError() << "TupCommandExecutor::createItem() - Error: " << tr("Layer doesn't exists!");
+                       tError() << "TupCommandExecutor::createItem() - Error: " << tr("Layer doesn't exist!");
                 #endif
                 return false;
             }
 
         } else { 
-
             TupBackground *bg = scene->background();
             if (bg) {
                 TupFrame *frame = 0;
@@ -137,13 +130,12 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
-                        TupSvgItem *svg = frame->createSvgItem(frame->svgItemsCount(), point, xml);
+                        TupSvgItem *svg = frame->createSvgItem(point, xml);
                         if (svg)
                             response->setItemIndex(frame->indexOf(svg));
                         else
                             return false;
                     } else {
-                        // QGraphicsItem *item = frame->createItem(frame->graphicItemsCount(), point, xml);
                         QGraphicsItem *item = frame->createItem(point, xml);
                         if (item)
                             response->setItemIndex(frame->indexOf(item));
@@ -191,13 +183,10 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
     TupScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
-
         if (mode == TupProject::FRAMES_EDITION) {
-
             TupLayer *layer = scene->layer(layerPosition);
 
             if (layer) {
-
                 TupFrame *frame = layer->frame(framePosition);
 
                 if (frame) {
@@ -241,7 +230,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::removeItem() - Invalid mode!";
                     #endif
-
                     return false;
                 }
 
@@ -312,7 +300,6 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
                 }
             }
         } else {
-
             TupBackground *bg = scene->background();
             if (bg) {
                 TupFrame *frame = 0;
@@ -381,7 +368,6 @@ bool TupCommandExecutor::groupItems(TupItemResponse *response)
                 }
             }
         } else {
-
             TupBackground *bg = scene->background();
             if (bg) {
                 TupFrame *frame = 0;
@@ -393,7 +379,6 @@ bool TupCommandExecutor::groupItems(TupItemResponse *response)
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::groupItems() - Invalid mode!";
                     #endif
-
                     return false;
                 }
 
@@ -438,9 +423,7 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
     TupScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-
         if (mode == TupProject::FRAMES_EDITION) {
-
             TupLayer *layer = scene->layer(layerPosition);
             if (layer) {
                 TupFrame *frame = layer->frame(framePosition);
@@ -465,7 +448,6 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
             }
 
         } else {
-
             TupBackground *bg = scene->background();
             if (bg) {
                 TupFrame *frame = 0;
@@ -477,7 +459,6 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::ungroupItems() - Invalid mode!";
                     #endif
-
                     return false;
                 }
 
@@ -496,7 +477,6 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                     strItems+= ")";
                     response->setArg(strItems);
                     emit responsed(response);
-
                     return true;
                 } else {
                     #ifdef K_DEBUG
@@ -616,9 +596,7 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
                     }
                 }
             }
-
         } else {
-
             TupBackground *bg = scene->background();
             if (bg) {
                 TupFrame *frame = 0;
@@ -633,7 +611,6 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
 
                     return false;
                 }
-
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
@@ -785,7 +762,8 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
 {
     /*
     #ifdef K_DEBUG
-        T_FUNCINFOX("items");
+           T_FUNCINFOX("items");
+           SHOW_VAR(xml);
     #endif
     */
     
@@ -795,19 +773,10 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
-
-    /*
-    #ifdef K_DEBUG
-        SHOW_VAR(xml);
-    #endif
-    */
-
     TupScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-
         if (mode == TupProject::FRAMES_EDITION) {
-
             TupLayer *layer = scene->layer(layerPosition);
             if (layer) {
                 TupFrame *frame = layer->frame(framePosition);
@@ -817,8 +786,8 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                         if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
                             QDomDocument orig;
                         
-                            if (TupPathItem *ktpath = qgraphicsitem_cast<TupPathItem *>(item))
-                                orig.appendChild(ktpath->toXml(orig));
+                            if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(item))
+                                orig.appendChild(path->toXml(orig));
 
                             QString current = orig.toString();
                             /*
@@ -834,14 +803,13 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                             emit responsed(response);
                             response->setArg(current);
 
-                           return true;
+                            return true;
                        }
                     }
                 }
             }
 
         } else {
-
             TupBackground *bg = scene->background();
             if (bg) {
                 TupFrame *frame = 0;
@@ -853,7 +821,6 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                     #ifdef K_DEBUG
                            tError() << "TupCommandExecutor::setPathItem() - Invalid mode!";
                     #endif
-
                     return false;
                 }
 
@@ -867,12 +834,6 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                                 orig.appendChild(ktpath->toXml(orig));
 
                             QString current = orig.toString();
-                            /*
-                            #ifdef K_DEBUG
-                                   SHOW_VAR(current);
-                            #endif
-                            */
-
                             QDomDocument doc;
                             doc.setContent(xml);
                             TupItemFactory factory;
@@ -880,8 +841,8 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                             emit responsed(response);
                             response->setArg(current);
 
-                           return true;
-                       }
+                            return true;
+                        }
                     } else {
                         #ifdef K_DEBUG
                                tError() << "TupCommandExecutor::setPathItem() - Invalid item index!";
@@ -927,15 +888,12 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
     TupScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
-
         TupLayer *layer = scene->layer(layerPosition);
 
         if (layer) {
-
             TupFrame *frame = layer->frame(framePosition);
 
             if (frame) {
-
                 TupItemTweener *tween = new TupItemTweener();
                 tween->fromXml(xml);
 

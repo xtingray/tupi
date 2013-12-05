@@ -532,8 +532,8 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
         QDomDocument doc;
         doc.appendChild(line->toXml(doc));
         TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
-                                                       scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
-                                                       TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+                                                                         0, QPointF(), scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
+                                                                         doc.toString());
         emit requested(&request);
 
     } else {
@@ -546,8 +546,8 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
         QDomDocument doc;
         doc.appendChild(blackEllipse->toXml(doc));
         TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
-                                                       scene->currentFrame()->graphics().count(), currentPoint, scene->spaceMode(),
-                                                       TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+                                                                         0, currentPoint, scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
+                                                                         doc.toString());
         emit requested(&request);
     }
 }

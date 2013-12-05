@@ -513,7 +513,8 @@ void TupDocumentView::loadPlugins()
                                    if (toolName.compare(tr("PolyLine")) == 0) {
                                        brushTools[3] = action;
                                        TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(action->parent());
-                                       connect(k->paintArea, SIGNAL(closePolyLine()), tool, SLOT(endItem()));
+                                       connect(k->paintArea, SIGNAL(closePolyLine()), tool, SLOT(initEnv()));
+                                       connect(this, SIGNAL(closePolyLine()), tool, SLOT(initEnv()));
                                    }
 
                                    if (toolName.compare(tr("Line")) == 0)
@@ -1341,6 +1342,7 @@ void TupDocumentView::showFullScreen()
     connect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
     connect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
     connect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
+    connect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
 
     connect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
     connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
@@ -1515,4 +1517,10 @@ void TupDocumentView::renderDynamicBackground()
            bg->renderDynamicView();
        }
    }
+}
+
+void TupDocumentView::fullScreenRightClick()
+{
+   if (k->currentTool->name().compare(tr("PolyLine")) == 0)
+       emit closePolyLine();
 }

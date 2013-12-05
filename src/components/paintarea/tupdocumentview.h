@@ -106,6 +106,7 @@ class TupDocumentView : public QMainWindow
         void setBackgroundDirection(int direction);
         void updateBackgroundShiftProperty(int shift);
         void renderDynamicBackground();
+        void fullScreenRightClick();
 
     private:
         struct Private;
@@ -159,6 +160,7 @@ class TupDocumentView : public QMainWindow
         void updateStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void postStoryboard(int sceneIndex);
         void projectHasChanged();
+        void closePolyLine();
 
     // protected:
     // void closeEvent(QCloseEvent *e);

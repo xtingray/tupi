@@ -88,3 +88,13 @@ void TupCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
     // painter->drawRect(workspace);
     painter->restore();
 }
+
+void TupCanvasView::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton) {
+        emit rightClick();
+        return;
+    }
+
+    QGraphicsView::mousePressEvent(event);
+}

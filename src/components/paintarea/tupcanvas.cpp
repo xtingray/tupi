@@ -79,7 +79,7 @@ struct TupCanvas::Private
     bool propertiesMenuIsOpen;
     bool exposureDialogIsOpen;
     UserHand hand;
-    TupInfoWidget *display;
+    // TupInfoWidget *display;
     bool isNetworked;
     QStringList onLineUsers;
     TupExposureDialog *exposureDialog;
@@ -100,7 +100,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     // k->hand = Left;
  
     k->scene = scene;
-    connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
+    // connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
   
     k->isNetworked = isNetworked;
     k->onLineUsers = onLineUsers;
@@ -115,6 +115,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     k->exposureDialogIsOpen = false;
 
     graphicsView = new TupCanvasView(this, screenSize, k->size, project->bgColor());
+    connect(graphicsView, SIGNAL(rightClick()), this, SIGNAL(rightClick()));
 
     graphicsView->setScene(scene);
     graphicsView->centerOn(centerPoint);
@@ -187,11 +188,11 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     infoLayout->setContentsMargins(0, 0, 0, 0);
     infoLayout->setSpacing(5);
 
-    k->display = new TupInfoWidget(this);
-    connect(k->display, SIGNAL(closePanel()), this, SLOT(hideInfoWidget()));
-
-    infoLayout->addWidget(k->display);
-    k->display->hide();
+    // SQA: Experimental code
+    // k->display = new TupInfoWidget(this);
+    // connect(k->display, SIGNAL(closePanel()), this, SLOT(hideInfoWidget()));
+    // infoLayout->addWidget(k->display);
+    // k->display->hide();
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -608,12 +609,12 @@ void TupCanvas::updateMenuStates()
 
 void TupCanvas::showInfoWidget()
 {
-    k->display->show();
+    // k->display->show();
 }
 
 void TupCanvas::hideInfoWidget()
 {
-    k->display->hide();
+    // k->display->hide();
 }
 
 void TupCanvas::updateOnLineUsers(const QStringList &onLineUsers)

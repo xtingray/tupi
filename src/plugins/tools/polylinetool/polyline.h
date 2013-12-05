@@ -62,16 +62,17 @@ class PolyLine : public TupToolPlugin
         virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
         virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
-        virtual void doubleClick(const TupInputDeviceInformation *input, TupGraphicsScene *scene);
         
         virtual void keyPressEvent(QKeyEvent *event);
 
         virtual QWidget *configurator();
         void aboutToChangeScene(TupGraphicsScene *scene);
         virtual void aboutToChangeTool();
-        void itemResponse(const TupItemResponse *response);
         virtual void saveConfig();
         virtual QCursor cursor() const;
+
+    protected:
+        virtual void itemResponse(const TupItemResponse *response);
 
     signals:
         void closeHugeCanvas();
@@ -79,7 +80,7 @@ class PolyLine : public TupToolPlugin
 
     private slots:
         void nodeChanged();
-        void endItem();
+        void initEnv();
         
     private:
         void setupActions();

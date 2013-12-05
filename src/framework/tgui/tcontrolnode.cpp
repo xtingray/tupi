@@ -97,53 +97,24 @@ void TControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(w);
     
-    // FIXME: Check Antialiasing management for this painter
+    // SQA: Check Antialiasing management for this painter
     // bool antialiasing = painter->renderHints() & QPainter::Antialiasing;
     // painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 
     QColor c;
 
-    /*
-    if (option->state & QStyle::State_Sunken || option->state & QStyle::State_Selected) {
-
-        // painter->save();
-        // painter->setPen(QPen(Qt::gray));
-        // painter->restore();
-        
-        if (qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
-            c = QColor("gray");
-            c.setAlpha(100);
-        } else {
-            c = QColor("green");
-            c.setAlpha(200);
-        }
-
-    } else {
-
-        if (qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
-           c = QColor("white");
-        } else {
-           c = QColor("navy");
-        }
-        c.setAlpha(150);
-    }
-    */
-
     if (k->centralNode) {
         c = QColor("white");
-        // c.setAlpha();
     } else {
         c = QColor(55, 155, 55);
-        // c.setAlpha(200);
     }
 
     painter->setBrush(c);
     paintLinesToChildNodes(painter);
-
     painter->drawRoundRect(boundingRect());
 }
 
-void TControlNode::paintLinesToChildNodes(QPainter * painter)
+void TControlNode::paintLinesToChildNodes(QPainter *painter)
 {
     QMatrix inverted = sceneMatrix().inverted();
     painter->save();
@@ -373,8 +344,3 @@ void TControlNode::hasChanged(bool unchanged)
 {
     k->unchanged = unchanged;
 }
-
-void TControlNode::clear()
-{
-}
-

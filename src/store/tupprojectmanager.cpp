@@ -319,7 +319,6 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
-           tWarning() << "Local Package: ";
     #endif
 
     TupRequestParser parser;

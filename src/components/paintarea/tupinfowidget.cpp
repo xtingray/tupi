@@ -202,9 +202,12 @@ void TupInfoWidget::getCurrencyConversionFromNet(const QString &money1, const QS
     params << money2;
     QString url = "http://www.webservicex.net//currencyconvertor.asmx/ConversionRate?FromCurrency=1&ToCurrency=2";
 
+    // SQA: Experimental code
+    /*
     TupWebHunter *hunter = new TupWebHunter(TupWebHunter::Currency, url, params);
     hunter->start();
     connect(hunter, SIGNAL(dataReady(const QString &)), this, SLOT(updateObjectInformation(const QString &)));
+    */
 }
 
 void TupInfoWidget::updateObjectInformation(const QString &data)

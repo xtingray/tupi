@@ -90,16 +90,16 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void setVisible(bool isVisible);
        bool isVisible() const;
        
-       void addItem(const QString &key, QGraphicsItem *item);
-       void removeImageItemFromFrame(const QString &key);
+       void addItem(const QString &id, QGraphicsItem *item);
+       void removeImageItemFromFrame(const QString &id);
        void updateIdFromFrame(const QString &oldId, const QString &newId);
 
-       void addSvgItem(const QString &key, TupSvgItem *item);
-       void removeSvgItemFromFrame(const QString &key);
+       void addSvgItem(const QString &id, TupSvgItem *item);
+       // void addSvgItem(int position, TupSvgItem *item);
+       void removeSvgItemFromFrame(const QString &id);
        void updateSvgIdFromFrame(const QString &oldId, const QString &newId);
 
-       void insertItem(int position, QGraphicsItem *item);
-       void insertSvgItem(int position, TupSvgItem *item);
+       // void insertItem(int position, QGraphicsItem *item);
        
        void replaceItem(int position, QGraphicsItem *item);
        bool moveItem(TupLibraryObject::Type type, int currentPosition, int action);
@@ -108,7 +108,7 @@ class STORE_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        bool removeSvgAt(int position);
 
        QGraphicsItem *createItem(QPointF coords, const QString &xml, bool loaded = false);
-       TupSvgItem *createSvgItem(int position, QPointF coords, const QString &xml, bool loaded = false);
+       TupSvgItem *createSvgItem(QPointF coords, const QString &xml, bool loaded = false);
 
        void setGraphics(GraphicObjects objects);       
        void setSvgObjects(SvgObjects objects);

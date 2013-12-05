@@ -271,7 +271,6 @@ void TupFrame::fromXml(const QString &xml)
 
                               while (!n2.isNull()) {
                                      QDomElement e2 = n2.toElement();
-                                      tError() << "TupFrame::fromXml() - loading svg object...";
 
                                      if (e2.tagName() == "properties") {
                                          svg = new TupSvgItem(path, this);
@@ -332,21 +331,21 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
     return root;
 }
 
-void TupFrame::addItem(const QString &key, QGraphicsItem *item)
+void TupFrame::addItem(const QString &id, QGraphicsItem *item)
 {
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
     TupGraphicObject *object = new TupGraphicObject(item, this);
-    object->setObjectName(key);
+    object->setObjectName(id);
 
     k->graphics.append(object);
-    k->objectIndexes.append(key);
+    k->objectIndexes.append(id);
 }
 
-void TupFrame::removeImageItemFromFrame(const QString &key)
+void TupFrame::removeImageItemFromFrame(const QString &id)
 {
     for (int i=0; i<k->objectIndexes.size(); i++) {
-             if (k->objectIndexes[i].compare(key) == 0)
+             if (k->objectIndexes[i].compare(id) == 0)
                  removeGraphicAt(i);
     }
 }
@@ -369,23 +368,23 @@ void TupFrame::updateIdFromFrame(const QString &oldId, const QString &newId)
     }
 }
 
-void TupFrame::addSvgItem(const QString &key, TupSvgItem *item)
+void TupFrame::addSvgItem(const QString &id, TupSvgItem *item)
 {
     #ifdef K_DEBUG
-           T_FUNCINFO << key;
+           T_FUNCINFO << id;
     #endif
 
-    k->svgIndexes.append(key);
+    k->svgIndexes.append(id);
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
 
     k->svg.append(item);
 }
 
-void TupFrame::removeSvgItemFromFrame(const QString &key)
+void TupFrame::removeSvgItemFromFrame(const QString &id)
 {
     for (int i = 0; i < k->svgIndexes.size(); ++i) {
-         if (k->svgIndexes.at(i).compare(key) == 0)
+         if (k->svgIndexes.at(i).compare(id) == 0)
              removeSvgAt(i); 
     }
 }
@@ -403,6 +402,7 @@ void TupFrame::updateSvgIdFromFrame(const QString &oldId, const QString &newId)
 }
 
 // SQA: This method is really required?
+/*
 void TupFrame::insertItem(int position, QGraphicsItem *item)
 {
     QGraphicsItem *oldItem = k->graphics.at(position)->item();
@@ -412,16 +412,19 @@ void TupFrame::insertItem(int position, QGraphicsItem *item)
     TupGraphicObject *object = new TupGraphicObject(item, this);
     k->graphics[position] = object;
 }
+*/
 
-void TupFrame::insertSvgItem(int position, TupSvgItem *item)
+/*
+void TupFrame::addSvgItem(int position, TupSvgItem *item)
 {
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
 
     k->svg[position] = item;
 }
+*/
 
-// SQA: This method requires tests + refactoing
+// SQA: This method requires tests + refactoring
 QGraphicsItemGroup *TupFrame::createItemGroupAt(int position, QList<qreal> group)
 {
     #ifdef K_DEBUG
@@ -444,9 +447,8 @@ QGraphicsItemGroup *TupFrame::createItemGroupAt(int position, QList<qreal> group
              count++;
     }
 
-    QGraphicsItem *block = qgraphicsitem_cast<QGraphicsItem *>(itemGroup);
-
-    insertItem(position, block);
+    // QGraphicsItem *block = qgraphicsitem_cast<QGraphicsItem *>(itemGroup);
+    // insertItem(position, block);
 
     return itemGroup;
 }
@@ -730,7 +732,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                                      return true;
                                  }
                             }
-                            tError() << "TupFrame::moveItem() - SVG - Flag 1 - tracing error! - zLimit: " << zLimit;
                         }
                     } else {
                         if (!k->graphics.isEmpty()) {
@@ -742,7 +743,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                                      return true;
                                  }
                             }
-                            tError() << "TupFrame::moveItem() - SVG - Flag 2 - tracing error! - zLimit: " << zLimit;
                         } else {
                             #ifdef K_DEBUG
                                    tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong [ case MoveOneLevelToFront/Svg ]";
@@ -775,7 +775,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                                      return true;
                                  }
                             }
-                            tError() << "TupFrame::moveItem() - RASTER - Flag 1 - tracing error! - zLimit: " << zLimit;
                         }
                     } else {
                         if (!k->svg.isEmpty()) {
@@ -787,7 +786,6 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
                                      return true;
                                  }
                             }
-                            tError() << "TupFrame::moveItem() - RASTER - Flag 2 - tracing error! - zLimit: " << zLimit;
                         } else {
                             #ifdef K_DEBUG
                                    tError() << "TupFrame::moveItem() - Fatal Error: Something went wrong [ case MoveOneLevelToFront/Items ]";
@@ -913,7 +911,6 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
         if (loaded)
             TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), k->graphics.size() - 1, 
                                          coords, TupLibraryObject::Item, xml, project());
-
         return graphicItem;
     }
 
@@ -926,23 +923,25 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
     return 0;
 }
 
-TupSvgItem *TupFrame::createSvgItem(int position, QPointF coords, const QString &xml, bool loaded)
+// SQA: Check if this method really is being used
+TupSvgItem *TupFrame::createSvgItem(QPointF coords, const QString &xml, bool loaded)
 {
     QDomDocument document;
     if (!document.setContent(xml))
         return 0;
 
     QDomElement root = document.documentElement();
+    QString id = root.attribute("id");
     QString path = root.attribute("itemPath");
 
     TupSvgItem *item = new TupSvgItem(path, this);
     item->moveBy(coords.x(), coords.y()); 
 
-    insertSvgItem(position, item);
+    addSvgItem(id, item);
 
     if (loaded)
         TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), 
-                                    position, coords, TupLibraryObject::Svg, xml, project());
+                                     k->svg.size() - 1, coords, TupLibraryObject::Svg, xml, project());
 
     return item;
 }

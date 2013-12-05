@@ -665,15 +665,15 @@ void SchemeTool::release(const TupInputDeviceInformation *input, TupBrushManager
             QDomDocument doc;
             doc.appendChild(blackRight->toXml(doc));
             TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
-                                                         scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
-                                                         TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+                                                                             0, QPointF(), scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
+                                                                             doc.toString());
             emit requested(&request);
 
             doc.clear();
             doc.appendChild(blackLeft->toXml(doc));
             request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
-                                        scene->currentFrame()->graphics().count(), QPointF(), scene->spaceMode(),
-                                        TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+                                                           0, QPointF(), scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
+                                                           doc.toString());
             emit requested(&request);
 
         } else {
@@ -685,8 +685,8 @@ void SchemeTool::release(const TupInputDeviceInformation *input, TupBrushManager
             QDomDocument doc;
             doc.appendChild(blackEllipse->toXml(doc));
             TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
-                                                         scene->currentFrame()->graphics().count(), currentPoint, scene->spaceMode(),
-                                                         TupLibraryObject::Item, TupProjectRequest::Add, doc.toString());
+                                                                             0, currentPoint, scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
+                                                                             doc.toString());
             emit requested(&request);
         }
     }

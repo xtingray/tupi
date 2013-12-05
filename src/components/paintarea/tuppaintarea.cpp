@@ -176,6 +176,13 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
         }
     }
 
+    if (k->currentTool.compare(tr("PolyLine")) == 0) {
+        if (event->buttons() == Qt::RightButton) {
+            emit closePolyLine();
+            return;
+        }
+    }
+
     if (k->currentTool.compare(tr("Object Selection")) == 0) {
         if (event->buttons() == Qt::RightButton) {
             // If a node is the target... abort!

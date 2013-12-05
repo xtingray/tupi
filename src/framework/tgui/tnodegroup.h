@@ -69,6 +69,7 @@ class TNodeGroup : public QObject
         void clearChangesNodes();
         void restoreItem();
         void show();
+
         void saveParentProperties();
         
         int removeSelectedNodes();

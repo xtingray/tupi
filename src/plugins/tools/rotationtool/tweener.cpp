@@ -259,7 +259,6 @@ void Tweener::updateScene(TupGraphicsScene *scene)
     k->mode = k->configurator->mode();
 
     if (k->mode == TupToolPlugin::Edit) {
-
        int framesNumber = framesTotal();
 
        if (k->configurator->startComboSize() < framesNumber)
@@ -269,7 +268,6 @@ void Tweener::updateScene(TupGraphicsScene *scene)
            k->scene->addItem(k->target);
 
     } else if (k->mode == TupToolPlugin::Add) {
-
                int total = framesTotal();
 
                if (k->editMode == TupToolPlugin::Properties) {
@@ -354,8 +352,8 @@ void Tweener::setSelect()
     if (k->mode == TupToolPlugin::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                            k->scene->currentLayerIndex(),
-                                                                            k->startPoint, TupProjectRequest::Select, "1");
+                                                                              k->scene->currentLayerIndex(),
+                                                                              k->startPoint, TupProjectRequest::Select, "1");
             emit requested(&request);
         }
     }
@@ -503,7 +501,7 @@ void Tweener::applyTween()
 
                      TupProjectRequest request = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
                                                                                     k->scene->currentLayerIndex(),
-                                                                                    k->startPoint, -1,
+                                                                                    k->startPoint, 0,
                                                                                     QPointF(), k->scene->spaceMode(), type, 
                                                                                     TupProjectRequest::Add, dom.toString());
                      emit requested(&request);
