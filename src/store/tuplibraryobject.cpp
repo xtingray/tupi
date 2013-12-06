@@ -149,6 +149,7 @@ void TupLibraryObject::fromXml(const QString &xml)
             #ifdef K_DEBUG
                    tError() << "TupLibraryObject::fromXml - Fatal Error: Invalid object type!";
             #endif
+            return;
         }
 
         switch (k->type) {
@@ -162,8 +163,22 @@ void TupLibraryObject::fromXml(const QString &xml)
                                  QTextStream ts(&data);
                                  ts << objectData;
                              }
-                             loadRawData(data.toLocal8Bit());
-                         } 
+
+                             QByteArray array = data.toLocal8Bit();
+                             if (!array.isEmpty() && !array.isNull()) {
+                                 loadRawData(array);
+                             } else {
+                                 #ifdef K_DEBUG
+                                        tError() << "TupLibraryObject::fromXml() - Object data is empty! [ " << k->symbolName << " ]";
+                                 #endif
+                                 return;
+                             }
+                         } else {
+                             #ifdef K_DEBUG
+                                        tError() << "TupLibraryObject::fromXml() - Object data from xml is NULL! [ " << k->symbolName << " ]";
+                             #endif
+                             return;
+                         }
                      }
                 break;
                 case TupLibraryObject::Image:
@@ -178,6 +193,7 @@ void TupLibraryObject::fromXml(const QString &xml)
                          #ifdef K_DEBUG
                                 tError() << "TupLibraryObject::fromXml() - Unknown object type: " << k->type;
                          #endif
+                         return;
                      }
                 break;
         }
@@ -235,6 +251,10 @@ QDomElement TupLibraryObject::toXml(QDomDocument &doc) const
                  object.setAttribute("path", finfo.fileName());
             }
             break;
+            default:
+            {
+            }
+            break;
     }
     
     return object;
@@ -242,22 +262,7 @@ QDomElement TupLibraryObject::toXml(QDomDocument &doc) const
 
 bool TupLibraryObject::loadRawData(const QByteArray &data)
 {
-    if (data.isEmpty()) {
-        #ifdef K_DEBUG
-               tError() << "TupLibraryObject::loadRawData() - [ Fatal Error ] - Data is empty!";
-        #endif
-        return false;
-    }
-
-    if (data.isNull()) {
-        #ifdef K_DEBUG
-               tError() << "TupLibraryObject::loadRawData() - [ Fatal Error ] - Data is null!";
-        #endif
-        return false;
-    }
-
     k->rawData = data;
-    bool ok = true;
 
     switch (k->type) {
             case TupLibraryObject::Item:
@@ -281,6 +286,7 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
                      #ifdef K_DEBUG
                             tError() << "TupLibraryObject::loadRawData() - [ Fatal Error ] - Can't load image -> " << k->symbolName;
                      #endif
+                     return false;
                  }
 
                  TupPixmapItem *item = new TupPixmapItem;
@@ -308,12 +314,12 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
             break;
             default:
             {
-                 ok = false;
+                 return false;
             }
             break;
     }
     
-    return ok;
+    return true;
 }
 
 bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
@@ -351,13 +357,32 @@ bool TupLibraryObject::loadData(const QString &path)
             case TupLibraryObject::Svg:
             {
                  QFile file(path);
-
-                 if (file.open(QIODevice::ReadOnly)) {
-                     loadRawData(file.readAll());
+                 if (file.exists()) {
+                     if (file.open(QIODevice::ReadOnly)) {
+                         QByteArray array = file.readAll(); 
+                         #ifdef K_DEBUG
+                                tWarning() << "TupLibraryObject::loadData() - Object path: " << path;
+                                tWarning() << "TupLibraryObject::loadData() - Object size: " << array.size();
+                         #endif
+                         if (!array.isEmpty() && !array.isNull()) {
+                             loadRawData(array);
+                         } else {
+                             #ifdef K_DEBUG
+                                    tWarning() << "TupLibraryObject::loadData() - Warning: Image file is empty -> " << path;
+                             #endif
+                             return false;
+                         }
+                     } else {
+                         #ifdef K_DEBUG
+                                tError() << "TupLibraryObject::loadData() - Fatal Error: Can't access image file -> " << path;
+                         #endif
+                         return false;
+                     }
                  } else {
                      #ifdef K_DEBUG
-                            tError() << "TupLibraryObject::loadData() - [ Fatal Error ] - Can't access image file -> " << path;
+                            tError() << "TupLibraryObject::loadData() - Fatal Error: Image file doesn't exist -> " << path;
                      #endif
+                     return false;
                  }
             }
             break;

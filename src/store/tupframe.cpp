@@ -276,10 +276,8 @@ void TupFrame::fromXml(const QString &xml)
                                          svg = new TupSvgItem(path, this);
                                          svg->setSymbolName(symbol);
                                          TupSerializer::loadProperties(svg, e2);
-                                         svg->setZValue(k->zLevelIndex);
-                                         k->zLevelIndex++;
-                                         k->svgIndexes.append(symbol);
-                                         k->svg.append(svg);
+
+                                         addSvgItem(symbol, svg);
                                      } else if (e2.tagName() == "tweening") {
                                          TupItemTweener *tweener = new TupItemTweener();
                                          QString newDoc;
@@ -333,6 +331,8 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
 
 void TupFrame::addItem(const QString &id, QGraphicsItem *item)
 {
+    tError() << "TupFrame::addItem() - Adding item: " << id;
+
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
     TupGraphicObject *object = new TupGraphicObject(item, this);
@@ -430,6 +430,7 @@ QGraphicsItemGroup *TupFrame::createItemGroupAt(int position, QList<qreal> group
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
+    Q_UNUSED(position);
 
     qSort(group.begin(), group.end());
 
@@ -906,7 +907,8 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
             id = itemFactory.itemID(xml);
 
         addItem(id, graphicItem);
-        k->objectIndexes.append(id);
+        // tError() << "TupFrame::createItem() - Adding value at k->objectIndexes: " << id;
+        // k->objectIndexes.append(id);
 
         if (loaded)
             TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), k->graphics.size() - 1, 
@@ -1099,7 +1101,14 @@ bool TupFrame::isEmpty()
 
 void TupFrame::reloadGraphicItem(const QString &id, const QString &path)
 {
+    tError() << "";
+    tError() << "TupFrame::reloadGraphicItem() - Just tracing...";
+    tError() << "TupFrame::reloadGraphicItem() - id: " << id;
+    tError() << "TupFrame::reloadGraphicItem() - path: " << path;
+    tError() << "TupFrame::reloadGraphicItem() - k->objectIndexes.size(): " << k->objectIndexes.size();
+
     for (int i = 0; i < k->objectIndexes.size(); ++i) {
+         tError() << "TupFrame::reloadGraphicItem() - k->objectIndexes.at[" << i << "]: " << k->objectIndexes.at(i);
          if (k->objectIndexes.at(i).compare(id) == 0) {
              TupGraphicObject *old = k->graphics.at(i);
              QGraphicsItem *oldItem = old->item();
@@ -1125,22 +1134,26 @@ void TupFrame::reloadGraphicItem(const QString &id, const QString &path)
 
 void TupFrame::reloadSVGItem(const QString &id, TupLibraryObject *object)
 {
+    tError() << "";
+    tError() << "TupFrame::reloadSVGItem() - Just tracing...";
+    tError() << "TupFrame::reloadSVGItem() - id: " << id;
+    tError() << "TupFrame::reloadSVGItem() - k->svgIndexes.size(): " << k->svgIndexes.size();
+
     for (int i = 0; i < k->svgIndexes.size(); ++i) {
+         tError() << "TupFrame::reloadSVGItem() - k->svgIndexes.at[" << i << "]: " << k->svgIndexes.at(i);
          if (k->svgIndexes.at(i).compare(id) == 0) {
-                 TupSvgItem *oldItem = k->svg.value(i);
+             TupSvgItem *oldItem = k->svg.value(i);
 
-                 QString path = object->dataPath();
-                 TupSvgItem *item = new TupSvgItem(path, this);
-                 item->setSymbolName(object->symbolName());
-                 item->setTransform(oldItem->transform());
-                 item->setPos(oldItem->pos());
-                 item->setEnabled(true);
-                 item->setFlags(oldItem->flags());
-                 item->setZValue(oldItem->zValue());
+             QString path = object->dataPath();
+             TupSvgItem *item = new TupSvgItem(path, this);
+             item->setSymbolName(object->symbolName());
+             item->setTransform(oldItem->transform());
+             item->setPos(oldItem->pos());
+             item->setEnabled(true);
+             item->setFlags(oldItem->flags());
+             item->setZValue(oldItem->zValue());
 
-                 k->svg.insert(i, item);
-
-
+             k->svg[i] = item;
          }
     }
 }

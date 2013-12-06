@@ -64,7 +64,7 @@ TupLibraryFolder::~TupLibraryFolder()
 }
 
 TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, const QString &name, const QByteArray &data, 
-                                               const QString &folder, bool loaded)
+                                                 const QString &folder, bool loaded)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -144,8 +144,7 @@ bool TupLibraryFolder::reloadObject(const QString &id)
              if (oid.compare(id) == 0) {
                  QString path = k->objects[id]->dataPath();
                  if (QFile::exists(path)) {  
-                     k->objects[id]->loadData(path);
-                     return true;
+                     return k->objects[id]->loadData(path);
                  }
              }
     }

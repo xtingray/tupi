@@ -263,7 +263,7 @@ bool TupProject::removeScene(int position)
 
     if (toRemove) {
 
-        QString path = dataDir() + "/scene" + QString::number(position) + ".tps";
+        QString path = dataDir() + QDir::separator() + "scene" + QString::number(position) + ".tps";
 
         if (!QFile::remove(path)) {
             #ifdef K_DEBUG
@@ -275,8 +275,8 @@ bool TupProject::removeScene(int position)
             int total = k->sceneCounter - 1;
             if (position < total) {
                 for (int i=position + 1; i<=total; i++) {
-                     QString oldName = dataDir() + "/scene" + QString::number(i) + ".tps";  
-                     QString newName = dataDir() + "/scene" + QString::number(i-1) + ".tps";
+                     QString oldName = dataDir() + QDir::separator() + "scene" + QString::number(i) + ".tps";  
+                     QString newName = dataDir() + QDir::separator() + "scene" + QString::number(i-1) + ".tps";
                      QFile::rename(oldName, newName); 
                 }
             }
@@ -835,13 +835,12 @@ bool TupProject::updateSymbolId(TupLibraryObject::Type type, const QString &oldI
 void TupProject::reloadLibraryItem(TupLibraryObject::Type type, const QString &id, TupLibraryObject *object)
 {
     foreach (TupScene *scene, k->scenes.values()) {
-
              foreach (TupLayer *layer, scene->layers().values()) {
                       foreach (TupFrame *frame, layer->frames().values()) {
-                               if (type != TupLibraryObject::Svg)
-                                   frame->reloadGraphicItem(id, object->dataPath());
-                               else
+                               if (type == TupLibraryObject::Svg)
                                    frame->reloadSVGItem(id, object);
+                               else
+                                   frame->reloadGraphicItem(id, object->dataPath());
                       }
              }
 
@@ -849,18 +848,18 @@ void TupProject::reloadLibraryItem(TupLibraryObject::Type type, const QString &i
              if (bg) {
                  TupFrame *frame = bg->staticFrame();
                  if (frame) {
-                     if (type != TupLibraryObject::Svg)
-                         frame->reloadGraphicItem(id, object->dataPath());
-                     else
+                     if (type == TupLibraryObject::Svg)
                          frame->reloadSVGItem(id, object);
+                     else
+                         frame->reloadGraphicItem(id, object->dataPath());
                  }
 
                  frame = bg->dynamicFrame();
                  if (frame) {
-                     if (type != TupLibraryObject::Svg)
-                         frame->reloadGraphicItem(id, object->dataPath());
-                     else
+                     if (type == TupLibraryObject::Svg)
                          frame->reloadSVGItem(id, object);
+                     else
+                         frame->reloadGraphicItem(id, object->dataPath());
                  }
              }
 

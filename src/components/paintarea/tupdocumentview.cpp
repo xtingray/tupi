@@ -1073,6 +1073,7 @@ void TupDocumentView::redo()
 
 void TupDocumentView::setCursor(const QCursor &cursor)
 {
+    Q_UNUSED(cursor);
  /*
     k->paintArea->setCursor(c);
  */
