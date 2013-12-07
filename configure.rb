@@ -176,8 +176,8 @@ _EOH_
     # config.addLib("-ltupifwsound")
     
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Ajuba\\\\\"')
-    config.addDefine('REVISION=\\\\\"git02\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Aram\\\\\"')
+    config.addDefine('REVISION=\\\\\"git03\\\\\"')
 
     if conf.hasArgument?("install-headers")
        config.addDefine("ADD_HEADERS");

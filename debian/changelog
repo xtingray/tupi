@@ -1,5 +1,5 @@
-tupi (0.2-git02-ubuntu1) quantal; urgency=low
+tupi (0.2-git03-ubuntu1) quantal; urgency=low
 
   * Proof of concept for the Tupi debian package
 
- -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sun, 17 Jun 2012 02:12:46 -0500
+ -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sat, 07 Dec 2013 00:00:00 -0500
