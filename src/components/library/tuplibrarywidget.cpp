@@ -1221,7 +1221,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
+                                 if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE && !k->library->loadingProject())
                                      insertObjectInWorkspace();
                                }
                             break;
@@ -1230,7 +1230,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
-                                 if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE)
+                                 if (!k->isNetworked && k->project->spaceContext() != TupProject::NONE && !k->library->loadingProject())
                                      insertObjectInWorkspace();
                                }
                             break;

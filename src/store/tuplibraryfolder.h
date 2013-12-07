@@ -52,9 +52,6 @@ class TupLibraryObject;
 typedef QMap<QString, TupLibraryFolder *> Folders;
 typedef QMap<QString, TupLibraryObject *> LibraryObjects;
 
-//typedef QHash<QString, TupLibraryObject *> LibraryObjects;
-//typedef QMap<QString, TupLibraryFolder *> Folders;
-
 /**
  * @author David Cuadrado
 **/
@@ -104,6 +101,8 @@ class STORE_EXPORT TupLibraryFolder : public QObject, public TupAbstractSerializ
         bool folderExists(const QString &id) const;
 
         void updatePaths(const QString &newPath);
+
+        bool loadingProject();
         
     public:
         virtual void fromXml(const QString &xml);

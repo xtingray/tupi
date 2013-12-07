@@ -48,14 +48,15 @@ struct TupLibraryFolder::Private
     QString id;
     Folders folders;
     LibraryObjects objects;
-    
     TupProject *project;
+    bool loadingProject;
 };
 
 TupLibraryFolder::TupLibraryFolder(const QString &id, TupProject *project, QObject *parent) : QObject(parent), k(new Private)
 {
     k->id = id;
     k->project = project;
+    k->loadingProject = false;
 }
 
 TupLibraryFolder::~TupLibraryFolder()
@@ -364,6 +365,8 @@ LibraryObjects TupLibraryFolder::objects() const
 
 void TupLibraryFolder::fromXml(const QString &xml)
 {
+    k->loadingProject = true;
+
     QDomDocument document;
 
     if (! document.setContent(xml))
@@ -386,8 +389,8 @@ void TupLibraryFolder::fromXml(const QString &xml)
                        TupLibraryFolder *folder = new TupLibraryFolder(e.attribute("id"), k->project, this);
                        addFolder(folder);
 
-                       TupProjectLoader::createSymbol(TupLibraryObject::Folder,
-                                                     e.attribute("id"), QString(), "FOLDER",  k->project);
+                       TupProjectLoader::createSymbol(TupLibraryObject::Folder, e.attribute("id"), QString(), 
+                                                      "FOLDER",  k->project);
 
                        // Loading the objects inside this folder
                        loadObjects(e.attribute("id"), folderDocument.toString(0));
@@ -397,6 +400,8 @@ void TupLibraryFolder::fromXml(const QString &xml)
 
            domNode = domNode.nextSibling();
     }
+
+    k->loadingProject = false;
 }
 
 void TupLibraryFolder::loadObjects(const QString &folder, const QString &xml)
@@ -436,6 +441,8 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
                  object->loadDataFromPath(k->project->dataDir());
             }
             break;
+            default:
+            break;
     }
 
     if (folder.compare("library") == 0)
@@ -452,7 +459,7 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
     }
 
     TupProjectLoader::createSymbol(TupLibraryObject::Type(object->type()),
-                                  object->symbolName(), folder, data.toLocal8Bit(), k->project);
+                                   object->symbolName(), folder, data.toLocal8Bit(), k->project);
 }
 
 QDomElement TupLibraryFolder::toXml(QDomDocument &doc) const
@@ -498,4 +505,9 @@ void TupLibraryFolder::updatePaths(const QString &newPath)
 
     foreach (TupLibraryFolder *folder, k->folders)
              folder->updatePaths(newPath);    
+}
+
+bool TupLibraryFolder::loadingProject()
+{
+    return k->loadingProject;
 }
