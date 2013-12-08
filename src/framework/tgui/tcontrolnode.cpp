@@ -119,7 +119,6 @@ void TControlNode::paintLinesToChildNodes(QPainter *painter)
     QMatrix inverted = sceneMatrix().inverted();
     painter->save();
     
-    // painter->setPen(QPen(QColor(0x8080FF)));
     painter->setPen(QPen(QColor(Qt::gray)));
     painter->setRenderHint(QPainter::Antialiasing, true);
 

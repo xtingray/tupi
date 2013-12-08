@@ -75,7 +75,7 @@ TNodeGroup::~TNodeGroup()
            TEND;
     #endif
 
-    clear();
+    // clear();
     delete k;
 }
 

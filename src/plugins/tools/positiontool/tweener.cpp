@@ -247,9 +247,11 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
                     k->path = new QGraphicsPathItem;
                     k->path->setZValue(maxZValue());
 
-                    QColor color = Qt::lightGray;
+                    // QColor color = Qt::lightGray;
+                    // color.setAlpha(200);
+                    QColor color(55, 155, 55);
                     color.setAlpha(200);
-                    QPen pen(QBrush(color), 1, Qt::DotLine);
+                    QPen pen(QBrush(color), 2, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
                     k->path->setPen(pen);
 
                     QPainterPath path;
@@ -350,12 +352,11 @@ bool Tweener::isComplete() const
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/position_tween.png"), 
-                                      tr("Position Tween"), this);
-    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
-    translater->setShortcut(QKeySequence(tr("Shift+W")));
+    TAction *action = new TAction(QPixmap(kAppProp->themeDir() + "icons/position_tween.png"), tr("Position Tween"), this);
+    action->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
+    action->setShortcut(QKeySequence(tr("Shift+W")));
 
-    k->actions.insert(tr("Position Tween"), translater);
+    k->actions.insert(tr("Position Tween"), action);
 }
 
 /* This method initializes the "Create path" mode */
