@@ -217,7 +217,7 @@ class TUPI_EXPORT SpinControl: public QGroupBox
                     m_radius->show();
                     m_angle->hide();
                     m_title->show();
-                    m_title->setText(tr("radius"));
+                    m_title->setText(tr("Radius"));
                     break;
                 }
                 case  QGradient::ConicalGradient:
@@ -226,7 +226,7 @@ class TUPI_EXPORT SpinControl: public QGroupBox
                     m_radius->hide();
                     m_angle->show();
                     m_title->show();
-                    m_title->setText(tr("angle"));
+                    m_title->setText(tr("Angle"));
                     break;
                 }
                 default: break;

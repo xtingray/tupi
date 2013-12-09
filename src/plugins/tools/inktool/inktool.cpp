@@ -164,7 +164,8 @@ void InkTool::press(const TupInputDeviceInformation *input, TupBrushManager *bru
     k->previewPoint = input->pos();
 
     k->item = new TupPathItem();
-    QPen pen(Qt::lightGray, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+    QColor color(55, 155, 55, 200);
+    QPen pen(QBrush(color), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     k->item->setPen(pen);
 
     scene->includeObject(k->item);

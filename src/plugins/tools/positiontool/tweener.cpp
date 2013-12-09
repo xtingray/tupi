@@ -247,8 +247,7 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
                     k->path = new QGraphicsPathItem;
                     k->path->setZValue(maxZValue());
 
-                    QColor color(55, 155, 55);
-                    color.setAlpha(200);
+                    QColor color(55, 155, 55, 200);
                     QPen pen(QBrush(color), 2, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
                     k->path->setPen(pen);
 

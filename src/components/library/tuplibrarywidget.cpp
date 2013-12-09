@@ -833,7 +833,7 @@ void TupLibraryWidget::importBitmap()
 void TupLibraryWidget::importSvg()
 {
     QString svgPath = QFileDialog::getOpenFileName (this, tr("Import a SVG file..."), QDir::homePath(),
-                                                    tr("Vectorial") + " (*.svg)");
+                                                    tr("Vector") + " (*.svg)");
     if (svgPath.isEmpty())
         return;
 

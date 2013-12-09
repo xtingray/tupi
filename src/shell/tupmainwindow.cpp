@@ -778,7 +778,7 @@ void TupMainWindow::openProject(const QString &path)
             if (author.length() <= 0)
                 author = "Anonymous";
 
-            setWindowTitle(tr("Tupi: Magia 2D") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
+            setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
             setWorkSpace();
         } else {
                  setUpdatesEnabled(true);

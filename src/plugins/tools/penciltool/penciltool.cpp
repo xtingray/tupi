@@ -189,7 +189,7 @@ void PencilTool::release(const TupInputDeviceInformation *input, TupBrushManager
     doc.appendChild(k->item->toXml(doc));
 
     TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), 
-                                                                     0, QPointF(), scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
+                                                                     0, QPoint(), scene->spaceMode(), TupLibraryObject::Item, TupProjectRequest::Add, 
                                                                      doc.toString());
 
     emit requested(&request);

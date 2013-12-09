@@ -110,7 +110,7 @@ QList<QPainterPath> TPathHelper::toRect(const QList<QPainterPath> &l, const QRec
 
 QPainterPath TPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 {
-    // ###: Not work for curves
+    // SQA: It doesn't work for curves
     QPainterPath path;
     
     foreach (QString polTmp, polygonsStr) {
@@ -135,7 +135,9 @@ QPainterPath TPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 
 QPainterPath TPathHelper::buildPath(const QString &svgpath)
 {
-    tWarning() << QObject::tr("Not implemented yet.");
+    #ifdef K_DEBUG
+           tWarning() << "TPathHelper::buildPath() - Warning: method pending for implementation";
+    #endif
     
     return QPainterPath();
 }

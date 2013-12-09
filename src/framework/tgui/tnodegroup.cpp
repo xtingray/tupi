@@ -137,7 +137,7 @@ void TNodeGroup::moveElementTo(int index, const QPointF& pos)
 
     QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
     path.setElementPositionAt(index, pos.x(), pos.y());
-    QPainterPath::Element e = path.elementAt(0);
+    // QPainterPath::Element e = path.elementAt(0);
     qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(path);
     
     if (k->changedNodes.contains(index)) {

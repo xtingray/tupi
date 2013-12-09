@@ -106,8 +106,8 @@ TRulerBase::TRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(pa
 
     k->menu = new QMenu(this);
 
-    QAction *to5 = k->menu->addAction( tr("Change scale to 5..."));
-    QAction *to10 = k->menu->addAction( tr("Change scale to 10..."));
+    QAction *to5 = k->menu->addAction(tr("Change scale to 5..."));
+    QAction *to10 = k->menu->addAction(tr("Change scale to 10..."));
 
     connect(to5, SIGNAL(triggered()), this, SLOT(changeScaleTo5pts()));
     connect(to10, SIGNAL(triggered()), this, SLOT(changeScaleTo10pts()));

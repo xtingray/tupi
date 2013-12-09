@@ -547,7 +547,7 @@ void TupMainWindow::setupInsertActions()
 
 void TupMainWindow::setupToolBar()
 {
-    QToolBar * toolbar = new QToolBar(tr("Bar Actions"), this);
+    QToolBar * toolbar = new QToolBar(tr("Actions Bar"), this);
     toolbar->setIconSize(QSize(22,22));
     addToolBar(Qt::TopToolBarArea, toolbar);
 

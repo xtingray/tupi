@@ -487,7 +487,7 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
     } else if (root == "communication_wall") {
                TupCommunicationParser parser;
                if (parser.parse(package)) {
-                   QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();
+                   QString message = QObject::tr("Wall from") + ": "+ parser.login() + "\n" + parser.message();
                    TOsd::self()->display(tr("Information"), message);
                }
     } else if (root == "storyboard_update") {

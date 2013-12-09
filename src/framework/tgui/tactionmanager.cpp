@@ -45,7 +45,7 @@
  */
 TActionManager::TActionManager(QObject *parent) : QObject(parent)
 {
-    setObjectName("TActionManager"+parent->objectName());
+    setObjectName("TActionManager" + parent->objectName());
 }
 
 /**
@@ -68,7 +68,9 @@ bool TActionManager::insert(QAction *action, const QString &_id, const QString &
 
     QAction *a = (m_actionContainer[container])[id];
     if (a == action) {
-        tWarning() << tr("Cannot insert action with id: ") << id;
+        #ifdef K_DEBUG
+               tError() << "TActionManager::insert() - Fatal Error: Cannot insert action with id: " << id;
+        #endif
         return false;
     }
 
@@ -137,8 +139,11 @@ QAction *TActionManager::find(const QString &_id, const QString &container) cons
         }
     }
 
-    if (action == 0)
-        tError() << "TActionManager::find(): Returning NULL action: " << id << " in " << container;
+    if (action == 0) {
+        #ifdef K_DEBUG
+               tError() << "TActionManager::find() - Fatal Error: Returning NULL action: " << id << " in " << container;
+        #endif
+    }
 
     return action;
 }

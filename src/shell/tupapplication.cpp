@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tupapplication.h"
-// Tupi Framework
 #include "tapplicationproperties.h"
 #include "tdebug.h"
 
@@ -98,12 +97,12 @@ void TupApplication::createCache(const QString &cacheDir)
     QDir cache(cacheDir);
     if (!cache.exists()) {
         #ifdef K_DEBUG
-               tDebug() << tr("Initializing repository %1").arg(cacheDir);
+               tWarning() << "Initializing repository: " << cacheDir;
         #endif
 
        if (!cache.mkdir(cacheDir)) {
            #ifdef K_DEBUG
-                  tError() << tr("Can not create the projects repository");
+                  tError() << "TupApplication::createCache() - Fatal Error: Can't create project repository";
            #endif
        }
     }

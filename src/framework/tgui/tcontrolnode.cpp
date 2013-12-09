@@ -95,6 +95,7 @@ TControlNode::~TControlNode()
 
 void TControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w)
 {
+    Q_UNUSED(option);
     Q_UNUSED(w);
     
     // SQA: Check Antialiasing management for this painter

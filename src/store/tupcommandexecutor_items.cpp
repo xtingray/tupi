@@ -70,6 +70,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
     int framePosition = response->frameIndex();
     TupLibraryObject::Type type = response->itemType(); 
     QPointF point = response->position();
+
     TupProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
 

@@ -93,7 +93,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
            TINIT;
     #endif
 
-    setWindowTitle(tr("Tupi: 2D Magic"));
+    setWindowTitle(tr("Tupi: Open 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     k->hand = Right;
@@ -131,7 +131,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     connect(images, SIGNAL(clicked()), this, SLOT(wakeUpLibrary()));
 
     TImageButton *selectionTools = new TImageButton(QPixmap(THEME_DIR + "icons/selection_big.png"), 60, this, true);
-    selectionTools->setToolTip(tr("SelectionTools"));
+    selectionTools->setToolTip(tr("Selection Tools"));
     connect(selectionTools, SIGNAL(clicked()), this, SLOT(selectionTools()));
 
     TImageButton *undo = new TImageButton(QPixmap(THEME_DIR + "icons/undo_big.png"), 60, this, true);
@@ -447,7 +447,7 @@ void TupCanvas::wakeUpLibrary()
     updateMenuStates();
 
     QString graphicPath = QFileDialog::getOpenFileName (this, tr("Import a SVG file..."), QDir::homePath(),
-                                                    tr("Vectorial") + " (*.svg *.png *.jpg *.jpeg *.gif)");
+                                                    tr("Vector") + " (*.svg *.png *.jpg *.jpeg *.gif)");
     if (graphicPath.isEmpty())
         return;
 

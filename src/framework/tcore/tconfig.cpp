@@ -74,16 +74,20 @@ TConfig::TConfig() : QObject(), k(new Private)
 
     if (!k->configDirectory.exists()) {
         k->firstTime = true;
-        tDebug() << "*** TConfig::TConfig() - Config file doesn't exist. Creating path: " << k->configDirectory.path();
+        #ifdef K_DEBUG
+               tWarning() << "*** TConfig::TConfig() - Config file doesn't exist. Creating path: " << k->configDirectory.path();
+        #endif
 
-        if (!k->configDirectory.mkdir(k->configDirectory.path()))
-            tError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
+        if (!k->configDirectory.mkdir(k->configDirectory.path())) {
+            #ifdef K_DEBUG
+                   tError() << "TConfig::TConfig() - Fatal Error: Can't create path -> " << k->configDirectory.path();
+            #endif
+        }
     } else {
         k->firstTime = false;
     }
 
     k->path = k->configDirectory.path() + "/" + QCoreApplication::applicationName().toLower() + ".cfg";
-
     init();
 }
 
@@ -117,8 +121,12 @@ void TConfig::init()
 
         k->isOk = k->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
 
-        if (!k->isOk)
-            tDebug() << QObject::tr("TConfig::init(): Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
+        if (!k->isOk) {
+            #ifdef K_DEBUG 
+                   tError() << "TConfig::init() - Fatal Error: Configuration file is corrupted - Line: " << errorLine << " - Column: " << errorColumn;
+                   tError() << "TConfig::init() - Message: " << errorMsg;
+            #endif
+        }
 
         config.close();
    }
