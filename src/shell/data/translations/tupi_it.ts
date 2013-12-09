@@ -58,6 +58,30 @@
         <source>Compound Tween</source>
         <translation>Intercalazione composta</translation>
     </message>
+    <message>
+        <source>This tool is just a &lt;b&gt;proof-of-concept&lt;/b&gt; of the basic algorithm for the Tupi&apos;s free-tracing vectorial brushes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Structure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Basic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Organic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourSelection</name>
@@ -166,6 +190,10 @@
         <source>ERROR!</source>
         <translation>ERRORE!</translation>
     </message>
+    <message>
+        <source>Enable background transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FillTool</name>
@@ -184,10 +212,6 @@
     <message>
         <source>B</source>
         <translation>B</translation>
-    </message>
-    <message>
-        <source>Shape fill</source>
-        <translation type="unfinished">Applica forma</translation>
     </message>
 </context>
 <context>
@@ -307,6 +331,26 @@
         <source>X key or Right mouse button</source>
         <translation>Tasto X o pulsante destro del mouse</translation>
     </message>
+    <message>
+        <source>Order</source>
+        <translation type="unfinished">Ordina</translation>
+    </message>
+    <message>
+        <source>Send object to back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send object to back one level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send object to front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send object to front one level</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>InkTool</name>
@@ -422,10 +466,6 @@
         <translation>Errore generale</translation>
     </message>
     <message>
-        <source>TConfig::init(): Configuration file is corrupted %1:%2: %3</source>
-        <translation>TConfig::init(): il file di configurazione è corrotto %1:%2: %3</translation>
-    </message>
-    <message>
         <source>Information</source>
         <translation>Informazioni</translation>
     </message>
@@ -440,22 +480,6 @@
     <message>
         <source>Critical</source>
         <translation>Critico</translation>
-    </message>
-    <message>
-        <source>I can&apos;t analize the theme file: %1</source>
-        <translation type="unfinished">Impossibile analizzare il file del tema: %1</translation>
-    </message>
-    <message>
-        <source>I can&apos;t analize the theme document</source>
-        <translation type="unfinished">Impossibile analizzare il documento del tema</translation>
-    </message>
-    <message>
-        <source>Can&apos;t create a TMainWindow from TMainWindow</source>
-        <translation>Impossibile creare TMainWindow da TMainWindow</translation>
-    </message>
-    <message>
-        <source>Not implemented yet.</source>
-        <translation>Non ancora implementato.</translation>
     </message>
     <message>
         <source>add</source>
@@ -498,8 +522,19 @@
         <translation>converti</translation>
     </message>
     <message>
-        <source>Wall From</source>
-        <translation type="unfinished">Wall From</translation>
+        <source>Wall from</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SchemeTool</name>
+    <message>
+        <source>Scheme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>M</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -556,6 +591,18 @@
         <source>SMIL</source>
         <translation>SMIL</translation>
     </message>
+    <message>
+        <source>Animated PNG (APNG)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image Arrays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectScenes</name>
@@ -583,15 +630,15 @@
     <name>Settings</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nome</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opzioni</translation>
     </message>
     <message>
         <source>Select object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleziona oggetto</translation>
     </message>
     <message>
         <source>Set Properties</source>
@@ -599,19 +646,19 @@
     </message>
     <message>
         <source>Starting at frame</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inizia al fotogramma</translation>
     </message>
     <message>
         <source>Frames Total</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Totale dei fotogrammi</translation>
     </message>
     <message>
         <source>Save Tween</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Salva intercalazione</translation>
     </message>
     <message>
         <source>Cancel Tween</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rimuovi intercalazione</translation>
     </message>
     <message>
         <source>Info</source>
@@ -619,7 +666,7 @@
     </message>
     <message>
         <source>Select objects for Tweening first!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleziona prima gli oggetti per l&apos;intercalazione!</translation>
     </message>
     <message>
         <source>You must select at least one object!</source>
@@ -627,15 +674,15 @@
     </message>
     <message>
         <source>You must define a path for this Tween!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Devi definire un percorso per questa intercalazione!</translation>
     </message>
     <message>
         <source>Update Tween</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aggiorna intercalazione</translation>
     </message>
     <message>
         <source>Close Tween properties</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chiudi le proprietà delle intercalazioni</translation>
     </message>
     <message>
         <source>Ending at frame</source>
@@ -683,7 +730,7 @@
     </message>
     <message>
         <source>Loop</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ripeti</translation>
     </message>
     <message>
         <source>Loop with Reverse</source>
@@ -731,7 +778,7 @@
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bianco</translation>
     </message>
     <message>
         <source>Initial Color</source>
@@ -745,12 +792,12 @@
 <context>
     <name>SpinControl</name>
     <message>
-        <source>radius</source>
-        <translation>raggio</translation>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>angle</source>
-        <translation>angolo</translation>
+        <source>Angle</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -762,13 +809,6 @@
     <message>
         <source>Frames</source>
         <translation>Fotogrammi</translation>
-    </message>
-</context>
-<context>
-    <name>TActionManager</name>
-    <message>
-        <source>Cannot insert action with id: </source>
-        <translation>Impossibile inserire l&apos;azione con id: </translation>
     </message>
 </context>
 <context>
@@ -815,36 +855,6 @@
     <message>
         <source>Redo</source>
         <translation>Ripeti</translation>
-    </message>
-</context>
-<context>
-    <name>TConfig</name>
-    <message>
-        <source>I can&apos;t create %1</source>
-        <translation>Non posso creare %1</translation>
-    </message>
-</context>
-<context>
-    <name>TExportWizard</name>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>Indietro</translation>
-    </message>
-    <message>
-        <source>Next</source>
-        <translation>Avanti</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation>Esporta</translation>
-    </message>
-    <message>
-        <source>Post</source>
-        <translation>Pubblica</translation>
     </message>
 </context>
 <context>
@@ -1084,20 +1094,12 @@
 <context>
     <name>TupCanvas</name>
     <message>
-        <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Magia 2D</translation>
-    </message>
-    <message>
         <source>Sketch Tools</source>
         <translation type="unfinished">Strumenti di disegno</translation>
     </message>
     <message>
         <source>Images</source>
         <translation>Immagini</translation>
-    </message>
-    <message>
-        <source>SelectionTools</source>
-        <translation type="unfinished">Strumenti di selezione</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -1129,15 +1131,11 @@
     </message>
     <message>
         <source>Exposure Sheet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tavola delle esposizioni</translation>
     </message>
     <message>
         <source>Import a SVG file...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Vectorial</source>
-        <translation>Vettoriale</translation>
+        <translation type="unfinished">Importa un file SVG...</translation>
     </message>
     <message>
         <source>Information</source>
@@ -1170,6 +1168,50 @@
     <message>
         <source>Frame %1</source>
         <translation>Fotogramma %1</translation>
+    </message>
+    <message>
+        <source>Tupi: Open 2D Magic</source>
+        <translation type="unfinished">Tupí: Magia 2D Open</translation>
+    </message>
+    <message>
+        <source>Selection Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pencil</source>
+        <translation type="unfinished">Matita</translation>
+    </message>
+    <message>
+        <source>Ink</source>
+        <translation type="unfinished">Inchiostra</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished">Ellisse</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished">Rettangolo</translation>
+    </message>
+    <message>
+        <source>Object Selection</source>
+        <translation type="unfinished">Selezione di un oggetto</translation>
+    </message>
+    <message>
+        <source>Line Selection</source>
+        <translation type="unfinished">Selezione di una linea</translation>
+    </message>
+    <message>
+        <source>Color Palette</source>
+        <translation type="unfinished">Tavolozza</translation>
+    </message>
+    <message>
+        <source>Pen Size</source>
+        <translation type="unfinished">Dimensione del pennino</translation>
     </message>
 </context>
 <context>
@@ -1220,20 +1262,12 @@
 <context>
     <name>TupCommandExecutor</name>
     <message>
-        <source>Frame doesn&apos;t exists!</source>
-        <translation>Il fotogramma non esiste!</translation>
+        <source>Frame doesn&apos;t exist!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Layer doesn&apos;t exists!</source>
-        <translation>Il livello non esiste!</translation>
-    </message>
-    <message>
-        <source>Scene doesn&apos;t exists!</source>
-        <translation>La scena non esiste!</translation>
-    </message>
-    <message>
-        <source>Scene doesn&apos;t exist!</source>
-        <translation>La scena non esiste!</translation>
+        <source>Layer doesn&apos;t exist!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1283,10 +1317,336 @@
     </message>
 </context>
 <context>
+    <name>TupCrashWidget</name>
+    <message>
+        <source>What&apos;s happening?</source>
+        <translation>Che succede?</translation>
+    </message>
+    <message>
+        <source>Executable information</source>
+        <translation>Informazioni sull&apos;eseguibile</translation>
+    </message>
+    <message>
+        <source>Backtrace</source>
+        <translation>Backtrace</translation>
+    </message>
+</context>
+<context>
     <name>TupDebugWidget</name>
     <message>
         <source>Debug Console</source>
         <translation>Console di debug</translation>
+    </message>
+</context>
+<context>
+    <name>TupDocumentView</name>
+    <message>
+        <source>Object Selection</source>
+        <translation type="unfinished">Selezione di un oggetto</translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation type="unfinished">Mostra la griglia</translation>
+    </message>
+    <message>
+        <source>#</source>
+        <translation type="unfinished">#</translation>
+    </message>
+    <message>
+        <source>Show a grid over the canvas</source>
+        <translation type="unfinished">Mostra una griglia sul foglio</translation>
+    </message>
+    <message>
+        <source>Full screen</source>
+        <translation type="unfinished">A tutto schermo</translation>
+    </message>
+    <message>
+        <source>F11</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a full screen view of canvas</source>
+        <translation type="unfinished">Apre una veduta a tutto schermo del foglio</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished">Copia</translation>
+    </message>
+    <message>
+        <source>Ctrl+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copies the selection and puts it onto the clipboard</source>
+        <translation type="unfinished">Copia la selezione negli appunti</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished">Incolla</translation>
+    </message>
+    <message>
+        <source>Ctrl+V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pastes the clipboard into the current document</source>
+        <translation type="unfinished">Incolla il contenuto degli appunti sul foglio</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Taglia</translation>
+    </message>
+    <message>
+        <source>Ctrl+X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cuts the selected items</source>
+        <translation type="unfinished">Taglia gli oggetti selezionati</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Elimina</translation>
+    </message>
+    <message>
+        <source>Deletes the selected object</source>
+        <translation type="unfinished">Elimina l&apos;oggetto selezionato</translation>
+    </message>
+    <message>
+        <source>&amp;Group</source>
+        <translation type="unfinished">Ra&amp;ggruppa</translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group the selected objects into a single one</source>
+        <translation type="unfinished">Raggruppa gli oggetti selezionati in uno solo</translation>
+    </message>
+    <message>
+        <source>&amp;Ungroup</source>
+        <translation type="unfinished">Sciogli il gr&amp;uppo</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroups the selected object</source>
+        <translation type="unfinished">Scioglie il gruppo di oggetti selezionato</translation>
+    </message>
+    <message>
+        <source>Onion Skin</source>
+        <translation type="unfinished">Effetto carta da lucido</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable/Disable onion skin</source>
+        <translation type="unfinished">Abilita/Disabilita l&apos;effetto carta da lucido</translation>
+    </message>
+    <message>
+        <source>Onion Skin Factor</source>
+        <translation type="unfinished">Trasparenza della carta da lucido</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set onion skin factor default value</source>
+        <translation type="unfinished">Imposta la trasparenza della carta da lucido al valore predefinito</translation>
+    </message>
+    <message>
+        <source>@</source>
+        <translation type="unfinished">@</translation>
+    </message>
+    <message>
+        <source>Draw tools</source>
+        <translation type="unfinished">Strumenti di disegno</translation>
+    </message>
+    <message>
+        <source>Brushes</source>
+        <translation type="unfinished">Pennini</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation type="unfinished">Selezione</translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="unfinished">Riempimento</translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">Vista</translation>
+    </message>
+    <message>
+        <source>Tweening</source>
+        <translation type="unfinished">Intercalazione</translation>
+    </message>
+    <message>
+        <source>Image Arrays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pencil</source>
+        <translation type="unfinished">Matita</translation>
+    </message>
+    <message>
+        <source>Ink</source>
+        <translation type="unfinished">Inchiostra</translation>
+    </message>
+    <message>
+        <source>Eraser</source>
+        <translation type="unfinished">Gomma</translation>
+    </message>
+    <message>
+        <source>PolyLine</source>
+        <translation type="unfinished">Polilinea</translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished">Linea</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished">Rettangolo</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished">Ellisse</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Testo</translation>
+    </message>
+    <message>
+        <source>Position Tween</source>
+        <translation type="unfinished">Intercalazione di posizione</translation>
+    </message>
+    <message>
+        <source>Rotation Tween</source>
+        <translation type="unfinished">Intercalazione di rotazione</translation>
+    </message>
+    <message>
+        <source>Scale Tween</source>
+        <translation type="unfinished">Intercalazione di scala</translation>
+    </message>
+    <message>
+        <source>Shear Tween</source>
+        <translation type="unfinished">Intercalazione di rottura</translation>
+    </message>
+    <message>
+        <source>Opacity Tween</source>
+        <translation type="unfinished">Intercalazione di opacità</translation>
+    </message>
+    <message>
+        <source>Coloring Tween</source>
+        <translation type="unfinished">Intercalazione di colore</translation>
+    </message>
+    <message>
+        <source>Compound Tween</source>
+        <translation type="unfinished">Intercalazione composta</translation>
+    </message>
+    <message>
+        <source>Internal fill</source>
+        <translation type="unfinished">Applica riempimento</translation>
+    </message>
+    <message>
+        <source>Zoom In</source>
+        <translation type="unfinished">Ingrandisci</translation>
+    </message>
+    <message>
+        <source>%1</source>
+        <translation type="unfinished">%1</translation>
+    </message>
+    <message>
+        <source>Zoom Out</source>
+        <translation type="unfinished">Riduci</translation>
+    </message>
+    <message>
+        <source>Hand</source>
+        <translation type="unfinished">Mano</translation>
+    </message>
+    <message>
+        <source>Paint area actions</source>
+        <translation type="unfinished">Azioni dell&apos;area di disegno</translation>
+    </message>
+    <message>
+        <source>Dynamic Background Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frames Mode</source>
+        <translation type="unfinished">Modalità fotogrammi</translation>
+    </message>
+    <message>
+        <source>Static BG Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dynamic BG Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous Frames</source>
+        <translation type="unfinished">Fotogrammi precedenti</translation>
+    </message>
+    <message>
+        <source>Next Frames</source>
+        <translation type="unfinished">Fotogrammi successivi</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left to Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right to Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top to Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom to Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Frame As</source>
+        <translation type="unfinished">Esporta i fotogrammi come</translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished">Immagini</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frame has been exported successfully</source>
+        <translation type="unfinished">Il fotogramma è stato esportato con successo</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Errore</translation>
+    </message>
+    <message>
+        <source>Can&apos;t export frame as image</source>
+        <translation type="unfinished">Impossibile esportare il fotogramma come immagine</translation>
     </message>
 </context>
 <context>
@@ -1304,8 +1664,51 @@
         <translation>Esporta come serie di immagini</translation>
     </message>
     <message>
-        <source>Post Work in Gallery</source>
-        <translation>Pubblica lavoro in galleria</translation>
+        <source>Export to Animated Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post Animation in Tupitube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Video Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Video Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image Arrays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TupExportWizard</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished">Indietro</translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation type="unfinished">Avanti</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished">Esporta</translation>
+    </message>
+    <message>
+        <source>Post</source>
+        <translation type="unfinished">Pubblica</translation>
     </message>
 </context>
 <context>
@@ -1392,32 +1795,41 @@
         <source>Frame %1</source>
         <translation>Fotogramma %1</translation>
     </message>
-</context>
-<context>
-    <name>TupGCTable</name>
     <message>
-        <source>New folder %1</source>
-        <translation>Nuova cartella %1</translation>
+        <source>20 frames</source>
+        <translation type="unfinished">10 fotogrammi {20 ?}</translation>
     </message>
     <message>
-        <source>Rename</source>
-        <translation>Rinomina</translation>
+        <source>50 frames</source>
+        <translation type="unfinished">10 fotogrammi {50 ?}</translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation>Elimina</translation>
+        <source>100 frames</source>
+        <translation type="unfinished">10 fotogrammi {100 ?}</translation>
     </message>
     <message>
-        <source>Edit with Inkscape</source>
-        <translation>Modifica con Inkscape</translation>
+        <source>Copy TL forward</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit with Gimp</source>
-        <translation>Modifica con Gimp</translation>
+        <source>1 time</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Options</source>
-        <translation>Opzioni</translation>
+        <source>2 times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3 times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4 times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5 times</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1920,7 @@
     </message>
     <message>
         <source>#topic1 #topic2 #topic3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">#argomento1 #argomento2 #argomento3</translation>
     </message>
     <message>
         <source>Description</source>
@@ -1532,7 +1944,7 @@
     </message>
     <message>
         <source>Set some topic tags for the picture here!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aggiungi etichette all&apos;immagine!</translation>
     </message>
 </context>
 <context>
@@ -1576,6 +1988,57 @@
     <message>
         <source>All files (*.*)</source>
         <translation>Tutti i file (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>TupItemManager</name>
+    <message>
+        <source>New folder %1</source>
+        <translation type="unfinished">Nuova cartella %1</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished">Opzioni</translation>
+    </message>
+    <message>
+        <source>Edit with Inkscape</source>
+        <translation type="unfinished">Modifica con Inkscape</translation>
+    </message>
+    <message>
+        <source>Edit with Gimp</source>
+        <translation type="unfinished">Modifica con Gimp</translation>
+    </message>
+    <message>
+        <source>Edit with Krita</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit with MyPaint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished">Esporta</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Rinomina</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Elimina</translation>
+    </message>
+    <message>
+        <source>Create new raster item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new svg item</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1720,10 +2183,6 @@
         <translation>Importa un file SVG...</translation>
     </message>
     <message>
-        <source>Vectorial</source>
-        <translation>Vettoriale</translation>
-    </message>
-    <message>
         <source>Choose the images directory...</source>
         <translation type="unfinished">Scegli la cartella per le immagini...</translation>
     </message>
@@ -1795,6 +2254,34 @@
         <source>Sound file</source>
         <translation>File sonoro</translation>
     </message>
+    <message>
+        <source>Export object...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item exported successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t create images directory!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t create vector directory!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tupi library item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vector</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TupListProjectDialog</name>
@@ -1829,6 +2316,437 @@
     <message>
         <source>Author</source>
         <translation>Autore</translation>
+    </message>
+</context>
+<context>
+    <name>TupMainWindow</name>
+    <message>
+        <source>Tupi: Open 2D Magic</source>
+        <translation>Tupí: Magia 2D Open</translation>
+    </message>
+    <message>
+        <source>Setting up the project manager</source>
+        <translation>Inizializzazione del gestore dei progetti</translation>
+    </message>
+    <message>
+        <source>Loading action manager...</source>
+        <translation>Caricamento del gestore delle azioni...</translation>
+    </message>
+    <message>
+        <source>Creating menu bar...</source>
+        <translation>Creazione della barra del menù...</translation>
+    </message>
+    <message>
+        <source>Creating GUI...</source>
+        <translation>Creazione della GUI...</translation>
+    </message>
+    <message>
+        <source>[ by %1 | net mode ]</source>
+        <translation type="unfinished">[ di %1 | modalità di rete ]</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informazioni</translation>
+    </message>
+    <message>
+        <source>Opening a new document...</source>
+        <translation>Apertura di un nuovo progetto...</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation>Animazione</translation>
+    </message>
+    <message>
+        <source>Player</source>
+        <translation>Riproduttore</translation>
+    </message>
+    <message>
+        <source>Project &lt;b&gt;%1&lt;/b&gt; opened!</source>
+        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; aperto!</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>Domanda</translation>
+    </message>
+    <message>
+        <source>The document has been modified.</source>
+        <translation>Il progetto è stato modificato.</translation>
+    </message>
+    <message>
+        <source>Do you want to save the project?</source>
+        <translation>Vuoi salvare il progetto?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Salva</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation>Scarta</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>by</source>
+        <translation>di</translation>
+    </message>
+    <message>
+        <source>Open Tupi project</source>
+        <translation>Apri progetto di Tupi</translation>
+    </message>
+    <message>
+        <source>Tupi Project Package (*.tup)</source>
+        <translation>Progetto di Tupi (*.tup)</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Cannot open project!</source>
+        <translation>Impossibile aprire il progetto!</translation>
+    </message>
+    <message>
+        <source>Preferences Dialog Opened</source>
+        <translation>Finestra delle preferenze aperta</translation>
+    </message>
+    <message>
+        <source>Tip of the day</source>
+        <translation>Suggerimento del giorno</translation>
+    </message>
+    <message>
+        <source>Show on start</source>
+        <translation>Mostra all&apos;avvio</translation>
+    </message>
+    <message>
+        <source>Previous tip</source>
+        <translation>Precedente</translation>
+    </message>
+    <message>
+        <source>Next tip</source>
+        <translation>Successivo</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Chiudi</translation>
+    </message>
+    <message>
+        <source>Import gimp palettes</source>
+        <translation>Importa tavolozza di Gimp</translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.gpl)</source>
+        <translation>Tavolozza di Gimp (*.gpl)</translation>
+    </message>
+    <message>
+        <source>Importing palettes</source>
+        <translation>Importazione delle tavolozze</translation>
+    </message>
+    <message>
+        <source>Save Project As</source>
+        <translation>Salva progetto con nome</translation>
+    </message>
+    <message>
+        <source>Directory &quot;</source>
+        <translation>Cartella &quot;</translation>
+    </message>
+    <message>
+        <source>You have no permission to create this file. Please, choose another path.</source>
+        <translation>Non hai i permessi per creare il file . Per favore, scegli un altro percorso.</translation>
+    </message>
+    <message>
+        <source>Project &lt;b&gt;%1&lt;/b&gt; saved</source>
+        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; salvato</translation>
+    </message>
+    <message>
+        <source>Cannot save the project!</source>
+        <translation>Impossibile salvare il progetto!</translation>
+    </message>
+    <message>
+        <source>New camera</source>
+        <translation type="unfinished">Nuovo punto di vista</translation>
+    </message>
+    <message>
+        <source>Import project package</source>
+        <translation>Importa il pacchetto del progetto</translation>
+    </message>
+    <message>
+        <source>Can&apos;t import project. File is empty!</source>
+        <translation>Impossibile importare il progetto. Il file è vuoto!</translation>
+    </message>
+    <message>
+        <source>Can&apos;t save the project. File doesn&apos;t exist!</source>
+        <translation>Impossibile salvare il progetto. Il file non esiste!</translation>
+    </message>
+    <message>
+        <source>Fatal Error</source>
+        <translation>Errore fatale</translation>
+    </message>
+    <message>
+        <source>The connection to the server has been lost.</source>
+        <translation>La connessione con il server è caduta.</translation>
+    </message>
+    <message>
+        <source>Please, try to connect again in a while</source>
+        <translation>Ritenta la connessione in seguito</translation>
+    </message>
+    <message>
+        <source>Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap</source>
+        <translation type="unfinished">Immagine</translation>
+    </message>
+    <message>
+        <source>Alt+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap Array</source>
+        <translation type="unfinished">Serie di Immagini</translation>
+    </message>
+    <message>
+        <source>Alt+Shift+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG File</source>
+        <translation>File SVG</translation>
+    </message>
+    <message>
+        <source>Alt+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG Array</source>
+        <translation>Serie di file SVG</translation>
+    </message>
+    <message>
+        <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+H</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;File</translation>
+    </message>
+    <message>
+        <source>Recents</source>
+        <translation>Recenti</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Modifica</translation>
+    </message>
+    <message>
+        <source>&amp;Import</source>
+        <translation>&amp;Importa</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Finestra</translation>
+    </message>
+    <message>
+        <source>Modules</source>
+        <translation>Moduli</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation>Aiuto</translation>
+    </message>
+    <message>
+        <source>News</source>
+        <translation>Notizie</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Aiuto</translation>
+    </message>
+    <message>
+        <source>New project</source>
+        <translation>Nuovo progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open new project</source>
+        <translation>Apri un nuovo progetto</translation>
+    </message>
+    <message>
+        <source>Open project</source>
+        <translation>Apri progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load existent project</source>
+        <translation>Carica progetto esistente</translation>
+    </message>
+    <message>
+        <source>Open project from server...</source>
+        <translation>Apri progetto dal server...</translation>
+    </message>
+    <message>
+        <source>Export project to server...</source>
+        <translation>Esporta progetto sul server...</translation>
+    </message>
+    <message>
+        <source>Save project</source>
+        <translation>Salva il progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current project in current location</source>
+        <translation type="unfinished">Salva il progetto corrente nel percorso attuale</translation>
+    </message>
+    <message>
+        <source>Save project &amp;As...</source>
+        <translation>Salva il progetto &amp;con nome...</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open dialog box to save current project in any location</source>
+        <translation>Apri la finestra per salvare il progetto in un percorso qualsiasi</translation>
+    </message>
+    <message>
+        <source>Cl&amp;ose project</source>
+        <translation>C&amp;hiudi il progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+W</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close active project</source>
+        <translation>Chiudi il progetto attivo</translation>
+    </message>
+    <message>
+        <source>&amp;Import GIMP palettes</source>
+        <translation>&amp;Importa tavolozze di Gimp</translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import palettes</source>
+        <translation>Importa tavolozze</translation>
+    </message>
+    <message>
+        <source>&amp;Export Project</source>
+        <translation>&amp;Esporta il progetto</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export project to several video formats</source>
+        <translation>Esporta il progetto in vari formati video</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>&amp;Esci</translation>
+    </message>
+    <message>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close application</source>
+        <translation>Chiudi l&apos;applicazione</translation>
+    </message>
+    <message>
+        <source>Launch configuration wizard...</source>
+        <translation>Avvia l&apos;assistente di configurazione...</translation>
+    </message>
+    <message>
+        <source>Launch first configuration wizard</source>
+        <translation>Avvia l&apos;assistente di configurazione iniziale</translation>
+    </message>
+    <message>
+        <source>Pr&amp;eferences...</source>
+        <translation>Pr&amp;eferenze...</translation>
+    </message>
+    <message>
+        <source>Ctrl+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opens the preferences dialog box</source>
+        <translation type="unfinished">Apre la finestra delle preferenze</translation>
+    </message>
+    <message>
+        <source>About Tupi</source>
+        <translation>Informazioni su Tupi</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation>Ripeti</translation>
+    </message>
+    <message>
+        <source>Ctrl+Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Actions Bar</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1869,7 +2787,7 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
     <message>
         <source>User has no available projects in the server</source>
-        <translation>L'utente non ha progetti disponibili sul server</translation>
+        <translation>L&apos;utente non ha progetti disponibili sul server</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -1878,6 +2796,188 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Notice</source>
         <translation>Notifica</translation>
+    </message>
+</context>
+<context>
+    <name>TupNewItemDialog</name>
+    <message>
+        <source>Create new raster item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>White</source>
+        <translation type="unfinished">Bianco</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new vector item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Extension:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Background:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open it with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TupNewProject</name>
+    <message>
+        <source>Create a new project</source>
+        <translation>Crea un nuovo progetto</translation>
+    </message>
+    <message>
+        <source>Project Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>my_project</source>
+        <translation>mio_progetto</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation>Autore</translation>
+    </message>
+    <message>
+        <source>Your name</source>
+        <translation>Il mio nome</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrizione</translation>
+    </message>
+    <message>
+        <source>Just for fun!</source>
+        <translation>Per divertimento!</translation>
+    </message>
+    <message>
+        <source>Presets</source>
+        <translation>Formato</translation>
+    </message>
+    <message>
+        <source>Free format</source>
+        <translation>Dimensioni libere</translation>
+    </message>
+    <message>
+        <source>480p (PAL DV/DVD) - 25</source>
+        <translation>480p (PAL DV/DVD) - 25</translation>
+    </message>
+    <message>
+        <source>576p (PAL DV/DVD) - 25</source>
+        <translation>576p (PAL DV/DVD) - 25</translation>
+    </message>
+    <message>
+        <source>720p (HD) - 25</source>
+        <translation>720p (HD) - 25</translation>
+    </message>
+    <message>
+        <source>1280p (Full HD) - 25</source>
+        <translation>1280p (Full HD) - 25</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation>Opzioni</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>Sfondo</translation>
+    </message>
+    <message>
+        <source>Click here to change background color</source>
+        <translation>Clicca qui per cambiare il colore di sfondo</translation>
+    </message>
+    <message>
+        <source>FPS</source>
+        <translation>FPS</translation>
+    </message>
+    <message>
+        <source>Dimension</source>
+        <translation>Dimensioni</translation>
+    </message>
+    <message>
+        <source>Tupitube project</source>
+        <translation>Progetto Tupitube</translation>
+    </message>
+    <message>
+        <source>Project info</source>
+        <translation>Proprietà</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Rete</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Impostazioni di rete</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Utente</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <source>Server</source>
+        <translation>Server</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Porta</translation>
+    </message>
+    <message>
+        <source>Store password</source>
+        <translation>Ricorda la password</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Please, set a name for the project</source>
+        <translation>Assegna un nome al progetto</translation>
+    </message>
+    <message>
+        <source>Please, fill in your username</source>
+        <translation>Inserisci il nome utente</translation>
+    </message>
+    <message>
+        <source>Please, fill in your password</source>
+        <translation>Inserisci la password</translation>
+    </message>
+    <message>
+        <source>Please, fill in the server name or IP</source>
+        <translation>Inserisci il nome o l&apos;indirizzo IP del server</translation>
+    </message>
+    <message>
+        <source>White</source>
+        <translation>Bianco</translation>
     </message>
 </context>
 <context>
@@ -1957,26 +3057,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
         <translation>Elimina</translation>
     </message>
     <message>
-        <source>Order</source>
-        <translation>Ordina</translation>
-    </message>
-    <message>
-        <source>Send to back</source>
-        <translation>Porta sul fondo</translation>
-    </message>
-    <message>
-        <source>Bring to front</source>
-        <translation>Porta in primo piano</translation>
-    </message>
-    <message>
-        <source>Send backwards</source>
-        <translation>Abbassa</translation>
-    </message>
-    <message>
-        <source>Brind forwards</source>
-        <translation>Alza</translation>
-    </message>
-    <message>
         <source>Add to library...</source>
         <translation>Aggiungi alla biblioteca...</translation>
     </message>
@@ -2007,6 +3087,50 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Frame %1</source>
         <translation>Fotogramma %1</translation>
+    </message>
+    <message>
+        <source>Paste in...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>next 5 frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>next 10 frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>next 20 frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>next 50 frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>next 100 frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished">Invia</translation>
+    </message>
+    <message>
+        <source>To back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One level to back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One level to front</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2394,18 +3518,17 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     </message>
 </context>
 <context>
+    <name>TupSplash</name>
+    <message>
+        <source>Version </source>
+        <translation>Versione</translation>
+    </message>
+</context>
+<context>
     <name>TupStoryBoardDialog</name>
     <message>
         <source>Storyboard Settings</source>
         <translation type="unfinished">Impostazioni dello storyboard</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation>&amp;Salva</translation>
-    </message>
-    <message>
-        <source>&amp;Export</source>
-        <translation>&amp;Esporta</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -2452,16 +3575,28 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
         <translation type="unfinished">Scena n. %1 - Informazioni</translation>
     </message>
     <message>
-        <source>Choose the storyboard directory...</source>
-        <translation type="unfinished">Scegli la cartella per lo storyboard...</translation>
-    </message>
-    <message>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
         <source>Storyboard exported successfully!</source>
         <translation type="unfinished">Storyboard esportato con successo!</translation>
+    </message>
+    <message>
+        <source>&amp;Export as HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Topics</source>
+        <translation type="unfinished">Argomenti</translation>
+    </message>
+    <message>
+        <source>Choose a directory...</source>
+        <translation type="unfinished">Scegli una cartella...</translation>
     </message>
 </context>
 <context>
@@ -2710,285 +3845,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Remove Color</source>
         <translation>Rimuovi colore</translation>
-    </message>
-</context>
-<context>
-    <name>TupViewDocument</name>
-    <message>
-        <source>Object Selection</source>
-        <translation>Selezione di un oggetto</translation>
-    </message>
-    <message>
-        <source>Show grid</source>
-        <translation>Mostra la griglia</translation>
-    </message>
-    <message>
-        <source>#</source>
-        <translation>#</translation>
-    </message>
-    <message>
-        <source>Show a grid over the canvas</source>
-        <translation>Mostra una griglia sul foglio</translation>
-    </message>
-    <message>
-        <source>Full screen</source>
-        <translation>A tutto schermo</translation>
-    </message>
-    <message>
-        <source>F11</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open a full screen view of canvas</source>
-        <translation>Apre una veduta a tutto schermo del foglio</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation>Copia</translation>
-    </message>
-    <message>
-        <source>Ctrl+C</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copies the selection and puts it onto the clipboard</source>
-        <translation>Copia la selezione negli appunti</translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation>Incolla</translation>
-    </message>
-    <message>
-        <source>Ctrl+V</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pastes the clipboard into the current document</source>
-        <translation>Incolla il contenuto degli appunti sul foglio</translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation>Taglia</translation>
-    </message>
-    <message>
-        <source>Ctrl+X</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cuts the selected items</source>
-        <translation>Taglia gli oggetti selezionati</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Elimina</translation>
-    </message>
-    <message>
-        <source>Deletes the selected object</source>
-        <translation>Elimina l&apos;oggetto selezionato</translation>
-    </message>
-    <message>
-        <source>&amp;Group</source>
-        <translation>Ra&amp;ggruppa</translation>
-    </message>
-    <message>
-        <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group the selected objects into a single one</source>
-        <translation>Raggruppa gli oggetti selezionati in uno solo</translation>
-    </message>
-    <message>
-        <source>&amp;Ungroup</source>
-        <translation>Sciogli il gr&amp;uppo</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+G</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroups the selected object</source>
-        <translation>Scioglie il gruppo di oggetti selezionato</translation>
-    </message>
-    <message>
-        <source>Onion Skin</source>
-        <translation>Effetto carta da lucido</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable/Disable onion skin</source>
-        <translation>Abilita/Disabilita l&apos;effetto carta da lucido</translation>
-    </message>
-    <message>
-        <source>Onion Skin Factor</source>
-        <translation>Trasparenza della carta da lucido</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set onion skin factor default value</source>
-        <translation>Imposta la trasparenza della carta da lucido al valore predefinito</translation>
-    </message>
-    <message>
-        <source>@</source>
-        <translation>@</translation>
-    </message>
-    <message>
-        <source>Draw tools</source>
-        <translation>Strumenti di disegno</translation>
-    </message>
-    <message>
-        <source>Brushes</source>
-        <translation>Pennini</translation>
-    </message>
-    <message>
-        <source>Selection</source>
-        <translation>Selezione</translation>
-    </message>
-    <message>
-        <source>Fill</source>
-        <translation>Riempimento</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation>Vista</translation>
-    </message>
-    <message>
-        <source>Tweening</source>
-        <translation>Intercalazione</translation>
-    </message>
-    <message>
-        <source>Image Arrays</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pencil</source>
-        <translation>Matita</translation>
-    </message>
-    <message>
-        <source>Ink</source>
-        <translation>Inchiostra</translation>
-    </message>
-    <message>
-        <source>Eraser</source>
-        <translation>Gomma</translation>
-    </message>
-    <message>
-        <source>PolyLine</source>
-        <translation>Polilinea</translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation>Linea</translation>
-    </message>
-    <message>
-        <source>Rectangle</source>
-        <translation>Rettangolo</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>Ellisse</translation>
-    </message>
-    <message>
-        <source>Text</source>
-        <translation>Testo</translation>
-    </message>
-    <message>
-        <source>Position Tween</source>
-        <translation>Intercalazione di posizione</translation>
-    </message>
-    <message>
-        <source>Rotation Tween</source>
-        <translation>Intercalazione di rotazione</translation>
-    </message>
-    <message>
-        <source>Scale Tween</source>
-        <translation>Intercalazione di scala</translation>
-    </message>
-    <message>
-        <source>Shear Tween</source>
-        <translation>Intercalazione di rottura</translation>
-    </message>
-    <message>
-        <source>Opacity Tween</source>
-        <translation>Intercalazione di opacità</translation>
-    </message>
-    <message>
-        <source>Coloring Tween</source>
-        <translation>Intercalazione di colore</translation>
-    </message>
-    <message>
-        <source>Compound Tween</source>
-        <translation>Intercalazione composta</translation>
-    </message>
-    <message>
-        <source>Internal fill</source>
-        <translation>Applica riempimento</translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation>Ingrandisci</translation>
-    </message>
-    <message>
-        <source>%1</source>
-        <translation>%1</translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation>Riduci</translation>
-    </message>
-    <message>
-        <source>Hand</source>
-        <translation type="unfinished">Mano</translation>
-    </message>
-    <message>
-        <source>Paint area actions</source>
-        <translation>Azioni dell&apos;area di disegno</translation>
-    </message>
-    <message>
-        <source>Previous Frames</source>
-        <translation>Fotogrammi precedenti</translation>
-    </message>
-    <message>
-        <source>Next Frames</source>
-        <translation>Fotogrammi successivi</translation>
-    </message>
-    <message>
-        <source>Frames Mode</source>
-        <translation>Modalità fotogrammi</translation>
-    </message>
-    <message>
-        <source>Background Mode</source>
-        <translation>Modalità fondale</translation>
-    </message>
-    <message>
-        <source>Export Frame As</source>
-        <translation>Esporta i fotogrammi come</translation>
-    </message>
-    <message>
-        <source>Images</source>
-        <translation>Immagini</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation type="unfinished">Informazioni</translation>
-    </message>
-    <message>
-        <source>Frame has been exported successfully</source>
-        <translation>Il fotogramma è stato esportato con successo</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Can&apos;t export frame as image</source>
-        <translation>Impossibile esportare il fotogramma come immagine</translation>
     </message>
 </context>
 <context>
@@ -3252,22 +4108,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
 <context>
     <name>VideoProperties</name>
     <message>
-        <source>Set Work Properties</source>
-        <translation>Imposta le proprietà del lavoro</translation>
-    </message>
-    <message>
-        <source>Export as</source>
-        <translation>Esporta come</translation>
-    </message>
-    <message>
-        <source>Video File</source>
-        <translation>File Video</translation>
-    </message>
-    <message>
-        <source>Storyboard</source>
-        <translation>Storyboard</translation>
-    </message>
-    <message>
         <source>Title</source>
         <translation>Titolo</translation>
     </message>
@@ -3298,6 +4138,10 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Set some topic tags for the picture here!</source>
         <translation>Aggiungi etichette all&apos;immagine!</translation>
+    </message>
+    <message>
+        <source>Set Animation Properties</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3344,609 +4188,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Press Ctrl key + Mouse left button</source>
         <translation>Premi Ctrl + tasto sinistro del mouse</translation>
-    </message>
-</context>
-<context>
-    <name>TupApplication</name>
-    <message>
-        <source>Initializing repository %1</source>
-        <translation type="unfinished">Inizializza il deposito %1</translation>
-    </message>
-    <message>
-        <source>Can not create the projects repository</source>
-        <translation type="unfinished">Non è possibile creare il deposito dei progetti</translation>
-    </message>
-</context>
-<context>
-    <name>TupCrashWidget</name>
-    <message>
-        <source>What&apos;s happening?</source>
-        <translation>Che succede?</translation>
-    </message>
-    <message>
-        <source>Executable information</source>
-        <translation>Informazioni sull&apos;eseguibile</translation>
-    </message>
-    <message>
-        <source>Backtrace</source>
-        <translation>Backtrace</translation>
-    </message>
-</context>
-<context>
-    <name>TupMainWindow</name>
-    <message>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupí: Magia 2D Open</translation>
-    </message>
-    <message>
-        <source>Setting up the project manager</source>
-        <translation>Inizializzazione del gestore dei progetti</translation>
-    </message>
-    <message>
-        <source>Loading action manager...</source>
-        <translation>Caricamento del gestore delle azioni...</translation>
-    </message>
-    <message>
-        <source>Creating menu bar...</source>
-        <translation>Creazione della barra del menù...</translation>
-    </message>
-    <message>
-        <source>Creating GUI...</source>
-        <translation>Creazione della GUI...</translation>
-    </message>
-    <message>
-        <source>[ by %1 | net mode ]</source>
-        <translation type="unfinished">[ di %1 | modalità di rete ]</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informazioni</translation>
-    </message>
-    <message>
-        <source>Opening a new document...</source>
-        <translation>Apertura di un nuovo progetto...</translation>
-    </message>
-    <message>
-        <source>Animation</source>
-        <translation>Animazione</translation>
-    </message>
-    <message>
-        <source>Player</source>
-        <translation>Riproduttore</translation>
-    </message>
-    <message>
-        <source>Project &lt;b&gt;%1&lt;/b&gt; opened!</source>
-        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; aperto!</translation>
-    </message>
-    <message>
-        <source>Question</source>
-        <translation>Domanda</translation>
-    </message>
-    <message>
-        <source>The document has been modified.</source>
-        <translation>Il progetto è stato modificato.</translation>
-    </message>
-    <message>
-        <source>Do you want to save the project?</source>
-        <translation>Vuoi salvare il progetto?</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Salva</translation>
-    </message>
-    <message>
-        <source>Discard</source>
-        <translation>Scarta</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>by</source>
-        <translation>di</translation>
-    </message>
-    <message>
-        <source>Open Tupi project</source>
-        <translation>Apri progetto di Tupi</translation>
-    </message>
-    <message>
-        <source>Tupi Project Package (*.tup)</source>
-        <translation>Progetto di Tupi (*.tup)</translation>
-    </message>
-    <message>
-        <source>Tupi: Magia 2D</source>
-        <translation>Tupi: Magia 2D</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Cannot open project!</source>
-        <translation>Impossibile aprire il progetto!</translation>
-    </message>
-    <message>
-        <source>Preferences Dialog Opened</source>
-        <translation>Finestra delle preferenze aperta</translation>
-    </message>
-    <message>
-        <source>Tip of the day</source>
-        <translation>Suggerimento del giorno</translation>
-    </message>
-    <message>
-        <source>Show on start</source>
-        <translation>Mostra all&apos;avvio</translation>
-    </message>
-    <message>
-        <source>Previous tip</source>
-        <translation>Precedente</translation>
-    </message>
-    <message>
-        <source>Next tip</source>
-        <translation>Successivo</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Chiudi</translation>
-    </message>
-    <message>
-        <source>Import gimp palettes</source>
-        <translation>Importa tavolozza di Gimp</translation>
-    </message>
-    <message>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation>Tavolozza di Gimp (*.gpl)</translation>
-    </message>
-    <message>
-        <source>Importing palettes</source>
-        <translation>Importazione delle tavolozze</translation>
-    </message>
-    <message>
-        <source>Save Project As</source>
-        <translation>Salva progetto con nome</translation>
-    </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation>Cartella &quot;</translation>
-    </message>
-    <message>
-        <source>You have no permission to create this file. Please, choose another path.</source>
-        <translation>Non hai i permessi per creare il file . Per favore, scegli un altro percorso.</translation>
-    </message>
-    <message>
-        <source>Project &lt;b&gt;%1&lt;/b&gt; saved</source>
-        <translation>Progetto &lt;b&gt;%1&lt;/b&gt; salvato</translation>
-    </message>
-    <message>
-        <source>Cannot save the project!</source>
-        <translation>Impossibile salvare il progetto!</translation>
-    </message>
-    <message>
-        <source>New camera</source>
-        <translation type="unfinished">Nuovo punto di vista</translation>
-    </message>
-    <message>
-        <source>Import project package</source>
-        <translation>Importa il pacchetto del progetto</translation>
-    </message>
-    <message>
-        <source>Can&apos;t import project. File is empty!</source>
-        <translation>Impossibile importare il progetto. Il file è vuoto!</translation>
-    </message>
-    <message>
-        <source>Can&apos;t save the project. File doesn&apos;t exist!</source>
-        <translation>Impossibile salvare il progetto. Il file non esiste!</translation>
-    </message>
-    <message>
-        <source>Fatal Error</source>
-        <translation>Errore fatale</translation>
-    </message>
-    <message>
-        <source>The connection to the server has been lost.</source>
-        <translation>La connessione con il server è caduta.</translation>
-    </message>
-    <message>
-        <source>Please, try to connect again in a while</source>
-        <translation>Ritenta la connessione in seguito</translation>
-    </message>
-    <message>
-        <source>Shift+P</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+B</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bitmap</source>
-        <translation type="unfinished">Immagine</translation>
-    </message>
-    <message>
-        <source>Alt+B</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bitmap Array</source>
-        <translation type="unfinished">Serie di Immagini</translation>
-    </message>
-    <message>
-        <source>Alt+Shift+B</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SVG File</source>
-        <translation>File SVG</translation>
-    </message>
-    <message>
-        <source>Alt+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SVG Array</source>
-        <translation>Serie di file SVG</translation>
-    </message>
-    <message>
-        <source>Alt+Shift+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+C</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+T</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift+D</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;File</translation>
-    </message>
-    <message>
-        <source>Recents</source>
-        <translation>Recenti</translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation>&amp;Modifica</translation>
-    </message>
-    <message>
-        <source>&amp;Import</source>
-        <translation>&amp;Importa</translation>
-    </message>
-    <message>
-        <source>&amp;Window</source>
-        <translation>&amp;Finestra</translation>
-    </message>
-    <message>
-        <source>Modules</source>
-        <translation>Moduli</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Aiuto</translation>
-    </message>
-    <message>
-        <source>News</source>
-        <translation>Notizie</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Aiuto</translation>
-    </message>
-    <message>
-        <source>New project</source>
-        <translation>Nuovo progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+N</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open new project</source>
-        <translation>Apri un nuovo progetto</translation>
-    </message>
-    <message>
-        <source>Open project</source>
-        <translation>Apri progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load existent project</source>
-        <translation>Carica progetto esistente</translation>
-    </message>
-    <message>
-        <source>Open project from server...</source>
-        <translation>Apri progetto dal server...</translation>
-    </message>
-    <message>
-        <source>Export project to server...</source>
-        <translation>Esporta progetto sul server...</translation>
-    </message>
-    <message>
-        <source>Save project</source>
-        <translation>Salva il progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save current project in current location</source>
-        <translation type="unfinished">Salva il progetto corrente nel percorso attuale</translation>
-    </message>
-    <message>
-        <source>Save project &amp;As...</source>
-        <translation>Salva il progetto &amp;con nome...</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open dialog box to save current project in any location</source>
-        <translation>Apri la finestra per salvare il progetto in un percorso qualsiasi</translation>
-    </message>
-    <message>
-        <source>Cl&amp;ose project</source>
-        <translation>C&amp;hiudi il progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Close active project</source>
-        <translation>Chiudi il progetto attivo</translation>
-    </message>
-    <message>
-        <source>&amp;Import GIMP palettes</source>
-        <translation>&amp;Importa tavolozze di Gimp</translation>
-    </message>
-    <message>
-        <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import palettes</source>
-        <translation>Importa tavolozze</translation>
-    </message>
-    <message>
-        <source>&amp;Export Project</source>
-        <translation>&amp;Esporta il progetto</translation>
-    </message>
-    <message>
-        <source>Ctrl+R</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export project to several video formats</source>
-        <translation>Esporta il progetto in vari formati video</translation>
-    </message>
-    <message>
-        <source>E&amp;xit</source>
-        <translation>&amp;Esci</translation>
-    </message>
-    <message>
-        <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Close application</source>
-        <translation>Chiudi l&apos;applicazione</translation>
-    </message>
-    <message>
-        <source>Launch configuration wizard...</source>
-        <translation>Avvia l&apos;assistente di configurazione...</translation>
-    </message>
-    <message>
-        <source>Launch first configuration wizard</source>
-        <translation>Avvia l&apos;assistente di configurazione iniziale</translation>
-    </message>
-    <message>
-        <source>Pr&amp;eferences...</source>
-        <translation>Pr&amp;eferenze...</translation>
-    </message>
-    <message>
-        <source>Ctrl+P</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Opens the preferences dialog box</source>
-        <translation type="unfinished">Apre la finestra delle preferenze</translation>
-    </message>
-    <message>
-        <source>About Tupi</source>
-        <translation>Informazioni su Tupi</translation>
-    </message>
-    <message>
-        <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bar Actions</source>
-        <translation type="unfinished">Azioni della barra</translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation>Ripeti</translation>
-    </message>
-    <message>
-        <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TupNewProject</name>
-    <message>
-        <source>Create a new project</source>
-        <translation>Crea un nuovo progetto</translation>
-    </message>
-    <message>
-        <source>Project Name</source>
-        <translation>Nome</translation>
-    </message>
-    <message>
-        <source>my_project</source>
-        <translation>mio_progetto</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation>Autore</translation>
-    </message>
-    <message>
-        <source>Your name</source>
-        <translation>Il mio nome</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Descrizione</translation>
-    </message>
-    <message>
-        <source>Just for fun!</source>
-        <translation>Per divertimento!</translation>
-    </message>
-    <message>
-        <source>Presets</source>
-        <translation>Formato</translation>
-    </message>
-    <message>
-        <source>Free format</source>
-        <translation>Dimensioni libere</translation>
-    </message>
-    <message>
-        <source>480p (PAL DV/DVD) - 25</source>
-        <translation>480p (PAL DV/DVD) - 25</translation>
-    </message>
-    <message>
-        <source>576p (PAL DV/DVD) - 25</source>
-        <translation>576p (PAL DV/DVD) - 25</translation>
-    </message>
-    <message>
-        <source>720p (HD) - 25</source>
-        <translation>720p (HD) - 25</translation>
-    </message>
-    <message>
-        <source>1280p (Full HD) - 25</source>
-        <translation>1280p (Full HD) - 25</translation>
-    </message>
-    <message>
-        <source>Options</source>
-        <translation>Opzioni</translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation>Sfondo</translation>
-    </message>
-    <message>
-        <source>Click here to change background color</source>
-        <translation>Clicca qui per cambiare il colore di sfondo</translation>
-    </message>
-    <message>
-        <source>FPS</source>
-        <translation>FPS</translation>
-    </message>
-    <message>
-        <source>Dimension</source>
-        <translation>Dimensioni</translation>
-    </message>
-    <message>
-        <source>Tupitube project</source>
-        <translation>Progetto Tupitube</translation>
-    </message>
-    <message>
-        <source>Project info</source>
-        <translation>Proprietà</translation>
-    </message>
-    <message>
-        <source>Network</source>
-        <translation>Rete</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Impostazioni di rete</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Utente</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Server</source>
-        <translation>Server</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Porta</translation>
-    </message>
-    <message>
-        <source>Store password</source>
-        <translation>Ricorda la password</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Please, set a name for the project</source>
-        <translation>Assegna un nome al progetto</translation>
-    </message>
-    <message>
-        <source>Please, fill in your username</source>
-        <translation>Inserisci il nome utente</translation>
-    </message>
-    <message>
-        <source>Please, fill in your password</source>
-        <translation>Inserisci la password</translation>
-    </message>
-    <message>
-        <source>Please, fill in the server name or IP</source>
-        <translation>Inserisci il nome o l&apos;indirizzo IP del server</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation>Bianco</translation>
-    </message>
-</context>
-<context>
-    <name>TupSplash</name>
-    <message>
-        <source>Version </source>
-        <translation>Versione</translation>
     </message>
 </context>
 </TS>
