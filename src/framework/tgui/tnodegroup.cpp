@@ -48,9 +48,10 @@ struct TNodeGroup::Private
     QHash<int, QPointF> changedNodes;
     QGraphicsScene *scene;
     GroupType type;
+    int level;
 };
 
-TNodeGroup::TNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type): k(new Private)
+TNodeGroup::TNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type, int level): k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -59,6 +60,7 @@ TNodeGroup::TNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType t
     k->parentItem = parent;
     k->scene = scene;
     k->type = type;
+    k->level = level;
     
     if (QGraphicsPathItem *pathItem = qgraphicsitem_cast<QGraphicsPathItem *>(parent))
         createNodes(pathItem);
@@ -204,7 +206,6 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
     #endif
 
     if (pathItem) {
-
         qDeleteAll(k->nodes);
         k->nodes.clear();
         
@@ -212,9 +213,13 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
         saveParentProperties();
         int index = 0;
 
+        /*
         int level = k->scene->items().count();
         if (k->type != PositionTween && k->type != CompoundTween)
             level += pathItem->zValue();
+        */
+
+        // k->level = k->scene->items().count();
         
         while (index < path.elementCount()) {
                QPainterPath::Element e = path.elementAt(index);
@@ -223,14 +228,14 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
                    if (index - 2 < 0) 
                        continue;
                    if (path.elementAt(index-2).type == QPainterPath::CurveToElement) {
-                       TControlNode *node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene, level);
+                       TControlNode *node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene, k->level);
                        QPainterPath::Element e1 = path.elementAt(index-1);
-                       node->setLeft(new TControlNode(index-1, this, e1, pathItem, k->scene));
+                       node->setLeft(new TControlNode(index-1, this, e1, pathItem, k->scene, k->level));
                     
                        if (index+1 < path.elementCount()) {
                            QPainterPath::Element e2 = path.elementAt(index+1);
                            if (e2.type == QPainterPath::CurveToElement) {
-                               node->setRight(new TControlNode(index+1, this, e2, pathItem, k->scene));
+                               node->setRight(new TControlNode(index+1, this, e2, pathItem, k->scene, k->level));
                                k->nodes << node->right();
                                index++;
                            }
@@ -243,18 +248,18 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
                           if (index+1 < path.elementCount()) {
                     
                               if (path.elementAt(index+1).type == QPainterPath::CurveToElement) {
-                                  node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                                  node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene, k->level);
                                   node->setRight(new TControlNode(index+1, this, path.elementAt(index+1), pathItem, k->scene));
                         
                                   index++;
                                   k->nodes << node;
                                   k->nodes << node->right();
                               } else {
-                                  node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                                  node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene, k->level);
                                   k->nodes << node;
                               }
                } else {
-                    node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                    node = new TControlNode(index, this, path.elementAt(index), pathItem, k->scene, k->level);
                     k->nodes << node;
                }
             }
@@ -302,4 +307,9 @@ bool TNodeGroup::isSelected()
     }
 
     return false;
+}
+
+int TNodeGroup::size()
+{
+    return k->nodes.count();
 }

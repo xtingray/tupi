@@ -66,6 +66,7 @@ struct SelectTool::Private
     bool selectionFlag;
     qreal scaleFactor;
     qreal realFactor;
+    int baseZValue;
 };
 
 SelectTool::SelectTool(): k(new Private), panel(0)
@@ -83,11 +84,12 @@ void SelectTool::init(TupGraphicsScene *scene)
     #ifdef K_DEBUG
            T_FUNCINFOX("tools");
     #endif
-
+ 
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
     k->scene = scene;
     k->scene->clearSelection();
+    k->baseZValue = 20000 + (scene->scene()->layersTotal() * 10000);
 
     reset(scene);
 }
@@ -178,7 +180,7 @@ void SelectTool::press(const TupInputDeviceInformation *input, TupBrushManager *
                  }
             
                  if (!found) {
-                     NodeManager *node = new NodeManager(item, scene);
+                     NodeManager *node = new NodeManager(item, scene, k->baseZValue);
                      node->resizeNodes(k->realFactor);
                      k->nodeManagers << node;
                  }
@@ -219,7 +221,7 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
         
         foreach (QGraphicsItem *item, k->selectedObjects) {
                  if (item && dynamic_cast<TupAbstractSerializable* > (item)) {
-                     NodeManager *node = new NodeManager(item, scene);
+                     NodeManager *node = new NodeManager(item, scene, k->baseZValue);
                      node->resizeNodes(k->realFactor);
                      k->nodeManagers << node;
                  }
@@ -491,7 +493,7 @@ void SelectTool::itemResponse(const TupItemResponse *event)
 
                  foreach (QGraphicsItem *item, k->selectedObjects) {
                           if (item && dynamic_cast<TupAbstractSerializable* > (item)) {
-                              NodeManager *node = new NodeManager(item, k->scene);
+                              NodeManager *node = new NodeManager(item, k->scene, k->baseZValue);
                               node->resizeNodes(k->realFactor);
                               k->nodeManagers << node;
                           }
@@ -519,7 +521,7 @@ void SelectTool::syncNodes()
              if (node) {
                  node->show();
                  if (node->parentItem()) {
-                     node->parentItem()->setSelected(true);
+                     // node->parentItem()->setSelected(true);
                      node->syncNodesFromParent();
                  }
              }
@@ -637,10 +639,8 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
     k->selectedObjects = k->scene->selectedItems();
 
     foreach (QGraphicsItem *item, k->selectedObjects) {
-
              QRectF rect = item->sceneBoundingRect();
-             QPointF point =  rect.topLeft();
-
+             QPointF point = rect.topLeft();
              QMatrix m;
              m.translate(point.x(), point.y());
 

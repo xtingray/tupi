@@ -281,7 +281,7 @@ void SelectPlugin::selectedFormatItem(QListWidgetItem *item)
 
         if (familyLabel.compare(tr("Animated Image")) == 0) {
             emit animatedImageFormatSelected(item->data(3124).toInt(), extension);
-        } else if (familyLabel.compare(tr("Image Arrays")) == 0) {
+        } else if (familyLabel.compare(tr("Image Array")) == 0) {
                    emit imagesArrayFormatSelected(item->data(3124).toInt(), extension);
         } else { 
             emit animationFormatSelected(item->data(3124).toInt(), extension);
@@ -1058,7 +1058,7 @@ void TupExportWidget::loadPlugins()
                          index = 0;
                      if (exporter->key().compare(tr("Open Video Format")) == 0)
                          index = 1;
-                     if (exporter->key().compare(tr("Image Arrays")) == 0)
+                     if (exporter->key().compare(tr("Image Array")) == 0)
                          index = 2;
                      if (exporter->key().compare(tr("Animated Image")) == 0)
                          index = 3;

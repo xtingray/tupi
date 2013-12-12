@@ -285,6 +285,14 @@
     </message>
 </context>
 <context>
+    <name>GenericExportPlugin</name>
+    <message>
+        <location filename="../src/plugins/export/genericexportplugin/genericexportplugin.cpp" line="55"/>
+        <source>Image Array</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GeometricTool</name>
     <message>
         <location filename="../src/plugins/tools/geometrictool/geometrictool.cpp" line="92"/>
@@ -776,7 +784,7 @@
     </message>
     <message>
         <location filename="../src/components/export/tupexportwidget.cpp" line="284"/>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation type="unfinished">Массив изображений</translation>
     </message>
     <message>
@@ -1866,10 +1874,10 @@
     <name>TupDocumentView</name>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="302"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="575"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="824"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="862"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1110"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="583"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="832"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="870"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1118"/>
         <source>Object Selection</source>
         <translation type="unfinished">Выделение объекта</translation>
     </message>
@@ -2005,7 +2013,7 @@
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="372"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1004"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1012"/>
         <source>Onion Skin Factor</source>
         <translation type="unfinished">Значение просвета</translation>
     </message>
@@ -2057,210 +2065,210 @@
         <translation type="unfinished">Анимация</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="449"/>
-        <source>Image Arrays</source>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="450"/>
+        <source>Image Array</source>
         <translation type="unfinished">Массив изображений</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="498"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="788"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="506"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="796"/>
         <source>Pencil</source>
         <translation type="unfinished">Карандаш</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="504"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="512"/>
         <source>Ink</source>
         <translation type="unfinished">Перо</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="508"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="516"/>
         <source>Eraser</source>
         <translation type="unfinished">Ластик</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="513"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="792"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1525"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="521"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="800"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1533"/>
         <source>PolyLine</source>
         <translation type="unfinished">Полилиния</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="520"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="528"/>
         <source>Line</source>
         <translation type="unfinished">Линия</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="523"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="793"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="531"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="801"/>
         <source>Rectangle</source>
         <translation type="unfinished">Прямоугольник</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="526"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="794"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="534"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="802"/>
         <source>Ellipse</source>
         <translation type="unfinished">Эллипс</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="529"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="790"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="537"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="798"/>
         <source>Text</source>
         <translation type="unfinished">Текст</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="537"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="545"/>
         <source>Position Tween</source>
         <translation type="unfinished">Анимация положения</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="542"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="550"/>
         <source>Rotation Tween</source>
         <translation type="unfinished">Анимация вращения</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="546"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="554"/>
         <source>Scale Tween</source>
         <translation type="unfinished">Анимация масштабирования</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="551"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="559"/>
         <source>Shear Tween</source>
         <translation type="unfinished">Анимация сдвига</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="556"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="564"/>
         <source>Opacity Tween</source>
         <translation type="unfinished">Анимация прозрачности</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="561"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="569"/>
         <source>Coloring Tween</source>
         <translation type="unfinished">Анимация цвета</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="566"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="574"/>
         <source>Compound Tween</source>
         <translation type="unfinished">Комбинированная анимация</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="582"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="590"/>
         <source>Internal fill</source>
         <translation type="unfinished">Внутренняя заливка</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="589"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="836"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="597"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="844"/>
         <source>Zoom In</source>
         <translation type="unfinished">Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="731"/>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="763"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="739"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="771"/>
         <source>%1</source>
         <translation type="unfinished">%1</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="836"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="844"/>
         <source>Zoom Out</source>
         <translation type="unfinished">Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="839"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="847"/>
         <source>Hand</source>
         <translation type="unfinished">Рука</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="941"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="949"/>
         <source>Paint area actions</source>
         <translation type="unfinished">Действия в области рисования</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="944"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="952"/>
         <source>Dynamic Background Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="949"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="957"/>
         <source>Frames Mode</source>
         <translation type="unfinished">Режим кадров</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="950"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="958"/>
         <source>Static BG Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="951"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="959"/>
         <source>Dynamic BG Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="976"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="984"/>
         <source>Previous Frames</source>
         <translation type="unfinished">Предыдущие кадры</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="988"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="996"/>
         <source>Next Frames</source>
         <translation type="unfinished">Следующие кадры</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1021"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1029"/>
         <source>Direction</source>
         <translation type="unfinished">Направление</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1024"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1032"/>
         <source>Left to Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1025"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1033"/>
         <source>Right to Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1026"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1034"/>
         <source>Top to Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1027"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1035"/>
         <source>Bottom to Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1030"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1038"/>
         <source>Shift Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1401"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1409"/>
         <source>Export Frame As</source>
         <translation type="unfinished">Экспортировать кадр как</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1402"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1410"/>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Изображения</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1407"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1415"/>
         <source>Information</source>
         <translation type="unfinished">Информация</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1407"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1415"/>
         <source>Frame has been exported successfully</source>
         <translation type="unfinished">кадр полностью экспортирован</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1409"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1417"/>
         <source>Error</source>
         <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1409"/>
+        <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1417"/>
         <source>Can&apos;t export frame as image</source>
         <translation type="unfinished">Невозможно экспортировать кадр как изображение</translation>
     </message>
@@ -2304,7 +2312,7 @@
     </message>
     <message>
         <location filename="../src/components/export/tupexportwidget.cpp" line="1061"/>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation type="unfinished">Массив изображений</translation>
     </message>
     <message>

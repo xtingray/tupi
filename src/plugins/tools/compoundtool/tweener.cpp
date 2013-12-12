@@ -89,6 +89,8 @@ struct Tweener::Private
     QPointF itemObjectReference;
     QPointF pathOffset;
     QPointF firstNode;
+
+    int baseZValue;
 };
 
 Tweener::Tweener() : TupToolPlugin(), k(new Private)
@@ -115,6 +117,7 @@ void Tweener::init(TupGraphicsScene *scene)
     k->pathAdded = false;
     delete k->group;
     k->group = 0;
+    k->baseZValue = 20000 + (scene->scene()->layersTotal() * 10000);
 
     k->scene = scene;
     k->objects.clear();
@@ -390,7 +393,7 @@ void Tweener::setCreatePath()
         if (k->group) {
             k->group->createNodes(k->path);
         } else {
-            k->group = new TNodeGroup(k->path, k->scene, TNodeGroup::CompoundTween);
+            k->group = new TNodeGroup(k->path, k->scene, TNodeGroup::CompoundTween, k->baseZValue);
             connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->createNodes(k->path);
         }

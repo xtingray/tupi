@@ -442,16 +442,24 @@ void TupDocumentView::createTools()
 
 void TupDocumentView::loadPlugins()
 {
+    bool imagePluginLoaded = false; 
     foreach (QObject *plugin, TupPluginManager::instance()->formats()) {
              if (plugin) {
                  TupExportInterface *exporter = qobject_cast<TupExportInterface *>(plugin);
                  if (exporter) {
-                     if (exporter->key().compare(tr("Image Arrays")) == 0) {
+                     if (exporter->key().compare(tr("Image Array")) == 0) {
                          k->imagePlugin = exporter;
+                         imagePluginLoaded = true;
                          break;
                      }
                  }
              }
+    }
+
+    if (!imagePluginLoaded) {
+        #ifdef K_DEBUG
+               tError() << "TupDocumentView::loadPlugins() - Fatal Error: Couldn't found the \"Image Array\" plugin!";
+        #endif
     }
 
     QVector<TAction*> brushTools(8);
@@ -473,7 +481,7 @@ void TupDocumentView::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         tDebug("plugins") << "TupDocumentView::loadPlugins() - Tool Loaded: " << *it;
+                         tWarning() << "TupDocumentView::loadPlugins() - Tool Loaded: " << *it;
                   #endif
 
                   TAction *action = tool->actions()[*it];

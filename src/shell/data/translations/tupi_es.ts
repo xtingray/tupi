@@ -215,6 +215,13 @@
     </message>
 </context>
 <context>
+    <name>GenericExportPlugin</name>
+    <message>
+        <source>Image Array</source>
+        <translation>Arreglo de Imágenes</translation>
+    </message>
+</context>
+<context>
     <name>GeometricTool</name>
     <message>
         <source>Rectangle</source>
@@ -600,7 +607,7 @@
         <translation>Imagen Animada</translation>
     </message>
     <message>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation>Arreglo de Imágenes</translation>
     </message>
 </context>
@@ -1489,7 +1496,7 @@
         <translation>Tweening</translation>
     </message>
     <message>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation>Arreglo de Imágenes</translation>
     </message>
     <message>
@@ -1680,7 +1687,7 @@
         <translation>Formato de Vídeo Abierto</translation>
     </message>
     <message>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation>Arreglo de Imágenes</translation>
     </message>
     <message>

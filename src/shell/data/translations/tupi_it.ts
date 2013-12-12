@@ -215,6 +215,13 @@
     </message>
 </context>
 <context>
+    <name>GenericExportPlugin</name>
+    <message>
+        <source>Image Array</source>
+        <translation type="unfinished">Serie di immagini</translation>
+    </message>
+</context>
+<context>
     <name>GeometricTool</name>
     <message>
         <source>Rectangle</source>
@@ -600,8 +607,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Image Arrays</source>
-        <translation type="unfinished"></translation>
+        <source>Image Array</source>
+        <translation type="unfinished">Serie di immagini</translation>
     </message>
 </context>
 <context>
@@ -1489,8 +1496,8 @@
         <translation type="unfinished">Intercalazione</translation>
     </message>
     <message>
-        <source>Image Arrays</source>
-        <translation type="unfinished"></translation>
+        <source>Image Array</source>
+        <translation type="unfinished">Serie di immagini</translation>
     </message>
     <message>
         <source>Pencil</source>
@@ -1680,8 +1687,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Image Arrays</source>
-        <translation type="unfinished"></translation>
+        <source>Image Array</source>
+        <translation type="unfinished">Serie di immagini</translation>
     </message>
     <message>
         <source>Animated Image</source>

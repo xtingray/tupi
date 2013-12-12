@@ -108,7 +108,6 @@ void TupTweenerStep::setColor(const QColor &color)
 
 bool TupTweenerStep::has(Type type) const
 {
-    bool test = k->flags & type;
     return k->flags & type;
 }
 

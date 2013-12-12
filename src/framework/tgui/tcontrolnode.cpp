@@ -50,7 +50,6 @@
 struct TControlNode::Private
 {
     int index;
-    int level;
     QGraphicsItem *graphicParent;
     TControlNode *centralNode;
     TControlNode *leftNode;
@@ -72,20 +71,21 @@ TControlNode::TControlNode(int index, TNodeGroup *nodeGroup, const QPointF & pos
     k->unchanged = true;
     k->nodeGroup = nodeGroup;
     k->scene = scene;
-    k->level = level;
     
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, true);
     setFlag(ItemIsMovable, true);
     setFlag(ItemSendsGeometryChanges, true);
-    
     setPos(pos);
 
-    if (k->level > 0)
-        setZValue(k->level + 1);
+    /*
+    if (level > 0)
+        setZValue(level + 1);
     else
         setZValue(graphicParent->zValue() + 1);
+    */
 
+    setZValue(level);
     setGraphicParent(graphicParent);
 }
 
@@ -138,7 +138,7 @@ void TControlNode::paintLinesToChildNodes(QPainter *painter)
 
 QRectF TControlNode::boundingRect() const
 {
-    QSizeF size(8 , 8);
+    QSizeF size(8, 8);
     QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
 
     if (k->rightNode) {
@@ -157,10 +157,8 @@ QRectF TControlNode::boundingRect() const
 QVariant TControlNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemPositionChange) {
-
         if (!k->unchanged) {
             if (qgraphicsitem_cast<QGraphicsPathItem*>(k->graphicParent)) {
-
                 QPointF diff = value.toPointF() - pos();
                 if (k->leftNode)
                     k->leftNode->moveBy(diff.x(), diff.y());
@@ -177,7 +175,6 @@ QVariant TControlNode::itemChange(GraphicsItemChange change, const QVariant &val
            k->unchanged = false;
         }
     } else if (change == QGraphicsItem::ItemSelectedChange) {
-
                if (value.toBool()) {
                    k->graphicParent->setSelected(true);
                    showChildNodes(true);
@@ -254,9 +251,8 @@ void TControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     foreach (QGraphicsItem *item, scene()->selectedItems()) {
              if (qgraphicsitem_cast<TControlNode*>(item)) {
                  if (!k->centralNode) { 
-                     if (item != this) {
+                     if (item != this)
                          item->moveBy(event->pos().x(), event->pos().y());
-                     } 
                  }
              } 
     }

@@ -52,11 +52,10 @@ class Node : public QObject, public QGraphicsItem
     Q_OBJECT
     
     public:
-        
         enum TypeNode { TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center };
         enum ActionNode { NoAction = 0, Scale, Rotate };
         
-        Node(TypeNode node, ActionNode action, const QPointF & pos = QPoint(0,0) , NodeManager *manager = 0, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        Node(TypeNode node, ActionNode action, const QPointF &pos=QPoint(0,0), NodeManager *manager=0, QGraphicsItem *parent=0, QGraphicsScene *scene=0, int zValue=0);
         ~Node();
         
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);

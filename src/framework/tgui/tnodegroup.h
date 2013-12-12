@@ -53,7 +53,7 @@ class TNodeGroup : public QObject
     public:
         enum GroupType { Polyline, LineSelection, PositionTween, CompoundTween };
 
-        TNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type);
+        TNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type, int level);
         ~TNodeGroup();
 
         void clear();
@@ -83,6 +83,7 @@ class TNodeGroup : public QObject
         
         void expandAllNodes();
         bool isSelected();
+        int size();
         
     private:
         struct Private;

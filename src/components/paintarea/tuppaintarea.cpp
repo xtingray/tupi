@@ -156,11 +156,6 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
     if (!k->canvasEnabled)
         return;
 
-    // SQA: Temporal solution for cases when there's no current frame defined
-    // if (!graphicsScene()->currentFrame()) {
-    //     return;
-    // }
-
     if (graphicsScene()->currentFrame()->isLocked()) {
         #ifdef K_DEBUG
                tFatal() << "TupPaintArea::mousePressEvent() - Frame is locked!";
@@ -192,7 +187,7 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
             if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
                 if (item->opacity() == 1) {
                     item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                    item->setSelected(true);
+                    // item->setSelected(true);
                 } else {
                     return;
                 }
@@ -1144,16 +1139,6 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
     #ifdef K_DEBUG
            T_FUNCINFO;
     #endif
-
-    /* SQA: This code has been deprecated 
-    if (k->currentTool.compare(tr("Object Selection")) == 0 
-        || k->currentTool.compare(tr("Line Selection")) == 0
-        || k->currentTool.compare(tr("Rectangle")) == 0
-        || k->currentTool.compare(tr("Ellipse")) == 0) {
-        TupPaintAreaBase::keyPressEvent(event);
-        return;
-    }
-    */
 
     #ifdef K_DEBUG
            tWarning() << "TupPaintArea::keyPressEvent() - Current tool: " << k->currentTool;

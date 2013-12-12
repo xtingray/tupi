@@ -199,7 +199,7 @@ void PolyLine::release(const TupInputDeviceInformation *input, TupBrushManager *
     Q_UNUSED(brushManager);
 
     if (!k->nodegroup) {
-        k->nodegroup = new TNodeGroup(k->item, scene, TNodeGroup::Polyline);
+        k->nodegroup = new TNodeGroup(k->item, scene, TNodeGroup::Polyline, k->item->zValue()+1);
         connect(k->nodegroup, SIGNAL(nodeReleased()), this, SLOT(nodeChanged()));
     } else {
         k->nodegroup->createNodes(k->item);

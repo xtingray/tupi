@@ -215,6 +215,13 @@
     </message>
 </context>
 <context>
+    <name>GenericExportPlugin</name>
+    <message>
+        <source>Image Array</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GeometricTool</name>
     <message>
         <source>Rectangle</source>
@@ -600,7 +607,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation type="unfinished">Contedores de imaxes</translation>
     </message>
 </context>
@@ -1489,7 +1496,7 @@
         <translation type="unfinished">Interpolación</translation>
     </message>
     <message>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation type="unfinished">Contedores de imaxes</translation>
     </message>
     <message>
@@ -1680,7 +1687,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Image Arrays</source>
+        <source>Image Array</source>
         <translation type="unfinished">Contedores de imaxes</translation>
     </message>
     <message>
@@ -1708,7 +1715,7 @@
     </message>
     <message>
         <source>Post</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Envío</translation>
     </message>
 </context>
 <context>

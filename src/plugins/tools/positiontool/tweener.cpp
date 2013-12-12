@@ -88,6 +88,8 @@ struct Tweener::Private
     QPointF itemObjectReference;
     QPointF pathOffset;
     QPointF firstNode;
+
+    int baseZValue;
 };
 
 Tweener::Tweener() : TupToolPlugin(), k(new Private)
@@ -120,6 +122,7 @@ void Tweener::init(TupGraphicsScene *scene)
     k->group = 0;
     k->scene = scene;
     k->objects.clear();
+    k->baseZValue = 20000 + (scene->scene()->layersTotal() * 10000);
 
     k->isPathInScene = false;
     k->pathOffset = QPointF(0, 0); 
@@ -233,7 +236,6 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
         } else {
 
             if (scene->selectedItems().size() > 0) {
-
                 k->objects = scene->selectedItems();
                 k->configurator->notifySelection(true);
 
@@ -245,7 +247,8 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
 
                 if (!k->path) {
                     k->path = new QGraphicsPathItem;
-                    k->path->setZValue(maxZValue());
+                    k->path->setZValue(k->baseZValue);
+                    // k->path->setZValue(maxZValue());
 
                     QColor color(55, 155, 55, 200);
                     QPen pen(QBrush(color), 2, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
@@ -372,7 +375,7 @@ void Tweener::setCreatePath()
         if (k->group) {
             k->group->createNodes(k->path);
         } else {
-            k->group = new TNodeGroup(k->path, k->scene, TNodeGroup::PositionTween);
+            k->group = new TNodeGroup(k->path, k->scene, TNodeGroup::PositionTween, k->baseZValue);
             connect(k->group, SIGNAL(nodeReleased()), SLOT(updatePath()));
             k->group->createNodes(k->path);
         }
@@ -750,6 +753,7 @@ void Tweener::updateMode(TupToolPlugin::Mode mode)
         setEditEnv();
 }
 
+/*
 int Tweener::maxZValue()
 {
     int max = -1;
@@ -763,6 +767,7 @@ int Tweener::maxZValue()
 
     return max + 1;
 }
+*/
 
 void Tweener::removeTweenFromProject(const QString &name)
 {
@@ -812,7 +817,8 @@ void Tweener::setEditEnv()
     k->itemObjectReference = rect.center();
 
     k->path = k->currentTween->graphicsPath();
-    k->path->setZValue(maxZValue());
+    k->path->setZValue(k->baseZValue);
+    // k->path->setZValue(maxZValue());
 
     QPainterPath::Element e  = k->path->path().elementAt(0);
     k->firstNode = QPointF(e.x, e.y);

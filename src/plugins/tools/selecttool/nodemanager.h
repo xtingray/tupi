@@ -36,10 +36,11 @@
 #ifndef NODEMANAGER_H
 #define NODEMANAGER_H
 
+#include "node.h"
+
 #include <QHash>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
-#include "node.h"
 
 /**
  * @author Jorge Cuadrado
@@ -51,13 +52,12 @@ class NodeManager : public QObject
     Q_OBJECT
 
     public:
-        NodeManager(QGraphicsItem * parent, QGraphicsScene *scene);
+        NodeManager(QGraphicsItem *parent, QGraphicsScene *scene, int zValue);
         ~NodeManager();
-        void syncNodes(const QRectF &sbr);
+        void syncNodes(const QRectF &rect);
         void syncNodesFromParent();
         QGraphicsItem *parentItem() const;
         bool isModified() const;
-        //  void setModify(bool modify);
         
         void beginToEdit();
         void restoreItem();
@@ -89,14 +89,10 @@ class NodeManager : public QObject
 
     private:
         QHash<Node::TypeNode, Node *> m_nodes;
-        QGraphicsItem * m_parent;
-        
+        QGraphicsItem *m_parent;
         QGraphicsScene *m_scene;
         
-        // bool m_modify;
-        
         QMatrix m_origMatrix;
-        // QTransform m_origTransform;
         QPointF m_origPos;
         QPointF m_anchor;
         

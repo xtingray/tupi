@@ -79,7 +79,7 @@ class Tweener : public TupToolPlugin
         int framesTotal();
         void setupActions();
         QString pathToCoords();
-        int maxZValue();
+        // int maxZValue();
         void clearSelection();
         void disableSelection();
         void removeTweenFromProject(const QString &name);

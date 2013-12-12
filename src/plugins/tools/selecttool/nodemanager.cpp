@@ -35,8 +35,6 @@
 
 #include "nodemanager.h"
 #include "tupgraphicobject.h"
-
-// Tupi Framework 
 #include "tdebug.h"
 
 /**
@@ -45,15 +43,15 @@
  * @author Jorge Cuadrado
 */
 
-NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_parent(parent), m_scene(scene), 
-                                      m_anchor(0,0), m_press(false), m_rotation(0)
+NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene, int zValue): 
+                         m_parent(parent), m_scene(scene), m_anchor(0,0), m_press(false), m_rotation(0)
 {
     QRectF rect = parent->sceneBoundingRect();
-    Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene);
-    Node *topRight = new Node(Node::TopRight, Node::Scale, rect.topRight(), this, parent, scene);
-    Node *bottomLeft = new Node(Node::BottomLeft,Node::Scale, rect.bottomLeft(),this, parent, scene);
-    Node *bottomRight = new Node(Node::BottomRight,Node::Scale, rect.bottomRight(),this, parent, scene);
-    Node *center = new Node(Node::Center, Node::Scale, rect.center(), this,parent, scene);
+    Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene, zValue);
+    Node *topRight = new Node(Node::TopRight, Node::Scale, rect.topRight(), this, parent, scene, zValue);
+    Node *bottomLeft = new Node(Node::BottomLeft,Node::Scale, rect.bottomLeft(),this, parent, scene, zValue);
+    Node *bottomRight = new Node(Node::BottomRight,Node::Scale, rect.bottomRight(),this, parent, scene, zValue);
+    Node *center = new Node(Node::Center, Node::Scale, rect.center(), this,parent, scene, zValue);
 
     m_nodes.insert(Node::TopLeft, topLeft);
     m_nodes.insert(Node::TopRight, topRight);
@@ -84,45 +82,43 @@ void NodeManager::clear()
     m_nodes.clear();
 }
 
-void NodeManager::syncNodes(const QRectF &sbr)
+void NodeManager::syncNodes(const QRectF &rect)
 {
     if (m_nodes.isEmpty())
         return;
     
     QHash<Node::TypeNode, Node *>::iterator it = m_nodes.begin();
     while (it != m_nodes.end()) {
-
            if ((*it)) {
                switch (it.key()) {
                        case Node::TopLeft:
                        {
-                            if ((*it)->scenePos() != sbr.topLeft())
-                                (*it)->setPos(sbr.topLeft());
+                            if ((*it)->scenePos() != rect.topLeft())
+                                (*it)->setPos(rect.topLeft());
                             break;
                        }
                        case Node::TopRight:
                        {
-                            if ((*it)->scenePos() != sbr.topRight())
-                                (*it)->setPos(sbr.topRight());
+                            if ((*it)->scenePos() != rect.topRight())
+                                (*it)->setPos(rect.topRight());
                             break;
                        }
                        case Node::BottomRight:
                        {
-                            if ((*it)->scenePos() != sbr.bottomRight())
-                                (*it)->setPos(sbr.bottomRight());
+                            if ((*it)->scenePos() != rect.bottomRight())
+                                (*it)->setPos(rect.bottomRight());
                             break;
                        }
                        case Node::BottomLeft:
                        {
-                            if ((*it)->scenePos() != sbr.bottomLeft())
-                                (*it)->setPos(sbr.bottomLeft() );
+                            if ((*it)->scenePos() != rect.bottomLeft())
+                                (*it)->setPos(rect.bottomLeft() );
                             break;
                        }
                        case Node::Center:
                        {
-                            if ((*it)->scenePos() != sbr.center())
-                                (*it)->setPos(sbr.center());
-                            // m_modify = true;
+                            if ((*it)->scenePos() != rect.center())
+                                (*it)->setPos(rect.center());
                             break;
                        }
                }
@@ -145,20 +141,17 @@ QGraphicsItem *NodeManager::parentItem() const
 bool NodeManager::isModified() const
 {
     return !((m_parent->matrix() == m_origMatrix) && (m_parent->pos() == m_origPos));
-    // return !((m_parent->transform() == m_origTransform) && (m_parent->pos() == m_origPos));
 }
 
 void NodeManager::beginToEdit()
 {
     m_origMatrix = m_parent->matrix();
-    // m_origTransform = m_parent->transform();
     m_origPos = m_parent->pos();
 }
 
 void NodeManager::restoreItem()
 {
     m_parent->setMatrix(m_origMatrix);
-    // m_parent->setTransform(m_origTransform);
     m_parent->setPos(m_origPos);
 }
 
@@ -180,14 +173,6 @@ void NodeManager::scale(float sx, float sy)
     m.translate(-m_anchor.x(),-m_anchor.y());
     m_parent->setMatrix(m, true);
 
-    /*
-    QTransform transform;
-    transform.translate(m_anchor.x(), m_anchor.y());
-    transform.scale(sx, sy);
-    transform.translate(-m_anchor.x(), -m_anchor.y());
-    m_parent->setTransform(transform);
-    */
-    
     syncNodesFromParent();
 }
 
@@ -200,18 +185,8 @@ void NodeManager::rotate(double a)
     m_parent->setMatrix(m);
     m_parent->setData(TupGraphicObject::Rotate, m_rotation - a);
 
-    /*
-    QTransform transform;
-    transform.translate(m_anchor.x(), m_anchor.y());
-    transform.rotate(m_rotation-a);
-    transform.translate(-m_anchor.x(), -m_anchor.y());
-    m_parent->setTransform(transform);
-    m_parent->setData(TupGraphicObject::Rotate, m_rotation - a);
-    */
-    
     syncNodesFromParent();
     m_rotation = a;
-    
 }
 
 void NodeManager::show()

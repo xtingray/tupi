@@ -34,6 +34,12 @@
  ***************************************************************************/
 
 #include "node.h"
+#include "tdebug.h"
+#include "nodemanager.h"
+#include "tupgraphicalgorithm.h"
+#include "tupgraphicobject.h"
+
+#include <cmath> //atan
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -41,15 +47,6 @@
 #include <QStyleOptionButton>
 #include <QApplication>
 #include <QCursor>
-
-#include "tdebug.h"
-#include "nodemanager.h"
-#include "tupgraphicalgorithm.h"
-#include "tupgraphicobject.h"
-
-#include <cmath> //atan
-
-#define DEBUG 0
 
 /**
  * This class defines the data structure for a node, and all the methods required to manipulate it.
@@ -59,39 +56,32 @@
 
 struct Node::Private
 {
-    Private(TypeNode node, ActionNode action, NodeManager *manager, QGraphicsItem * parent) : typeNode(node),
-                        action(action), notChange(false), parent(parent), manager(manager)
-    {
-    }
-    
     TypeNode typeNode;
     ActionNode action;
     bool notChange;
     ActionNode generalState; 
-    QGraphicsItem * parent;
+    QGraphicsItem *parent;
     NodeManager *manager;
     QSizeF size;
 };
 
-Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem *parent,
-        QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private(node, action, manager, parent))
+Node::Node(TypeNode node, ActionNode action, const QPointF &pos, NodeManager *manager, QGraphicsItem *parent, QGraphicsScene *scene, int zValue) : 
+           QGraphicsItem(0, scene), k(new Private)
 {
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsFocusable, true);
-
-    k->size = QSizeF(10, 10);
-
-    k->generalState = Scale;
-    
     setPos(pos);
 
-    int itemsCount = parent->scene()->items().count();
-    if (itemsCount > 0)
-        setZValue(parent->zValue() + itemsCount + 1);
-    else
-        setZValue(parent->zValue() + 1);
+    k->typeNode = node;
+    k->action = action;
+    k->manager = manager;
+    k->parent = parent;
+    k->size = QSizeF(10, 10);
+    k->generalState = Scale;
+
+    setZValue(zValue);
 }
 
 Node::~Node()
@@ -103,9 +93,6 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 {
     Q_UNUSED(w);
     Q_UNUSED(option);
-    
-    //bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
-    //painter->setRenderHint(QPainter::Antialiasing, false);
     
     QColor color;
    
@@ -130,11 +117,12 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setBrush(color);
     painter->drawRoundRect(square);
 
-    //DEBUG
-    #if DEBUG
+    /* SQA: Code for debugging purposes
+    #ifdef K_DEBUG
         painter->setFont(QFont(painter->font().family(), 5));
         painter->drawText(square, QString::number(k->typeNode));
     #endif
+    */
 
     if (k->typeNode == Center) {
         painter->save();
@@ -151,27 +139,26 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         painter->drawLine(point3, point4);
         painter->restore();
     }
-    
-    //painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
 QRectF Node::boundingRect() const
 {
-    // k->size = QSizeF(10, 10);
     QRectF rect(QPointF(-k->size.width()/2, -k->size.height()/2), k->size);
-
     return rect;
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    /*
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+    */
+
     if (change == ItemSelectedChange) {
-        T_FUNCINFO;
         setVisible(true);
-        
         if (value.toBool())
             k->parent->setSelected(true);
-
         k->manager->show();
     }
 
@@ -180,31 +167,26 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    T_FUNCINFO;
-    // update();
-    k->manager->setPress(true);
-    
-    QGraphicsItem::mousePressEvent(event);
-   
-    /* 
-    #if K_DEBUG
-        QRectF r = k->parent->sceneMatrix().inverted().mapRect(k->parent->sceneBoundingRect());
-        scene()->addRect(r, QPen(Qt::magenta), QBrush(QColor(100, 100, 200, 50)));
-        scene()->update(r);
+    #ifdef K_DEBUG
+           T_FUNCINFO;
     #endif
-    */
+
+    k->manager->setPress(true);
+    QGraphicsItem::mousePressEvent(event);
 }
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    T_FUNCINFO;
-    // update();
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
+
     QGraphicsItem::mouseReleaseEvent(event);
     k->parent->setSelected(true);
     k->manager->setPress(false);
 }
 
-void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF newPos(event->scenePos());
 
@@ -216,7 +198,7 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             QRectF parentRect  = k->parent->sceneBoundingRect();
             QRectF parentSquare  = k->parent->boundingRect();
             
-            //Debug
+            // SQA: Lines for debugging purposes
             /*
             scene()->addRect(rect, QPen(Qt::red));
             scene()->addRect(parentRect, QPen(Qt::green));
@@ -271,15 +253,12 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
                 }
             }
         } else if (k->action == Rotate) {
-            // if (k->typeNode != Center) {
-                // k->manager->setVisible(false);
-                QPointF p1 = newPos;
-                QPointF p2 = k->parent->sceneBoundingRect().center();
-                k->manager->setAnchor(k->parent->boundingRect().center());
+                   QPointF p1 = newPos;
+                   QPointF p2 = k->parent->sceneBoundingRect().center();
+                   k->manager->setAnchor(k->parent->boundingRect().center());
                 
-                double a = (180 * TupGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
-                k->manager->rotate(a-45);
-            // }
+                   double a = (180 * TupGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
+                   k->manager->rotate(a-45);
         }
     }
 
@@ -289,20 +268,14 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     }
 }
 
-void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * e)
+void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    T_FUNCINFO;
-    // update();
+    #ifdef K_DEBUG
+           T_FUNCINFO;
+    #endif
 
-    //if (!m_parent->isSelected())
-    //k->parent->setSelected(true);
-    //k->parent->setFocus(Qt::MouseFocusReason);
-
-    tFatal() << "Node::mouseDoubleClickEvent() - Changing mode!";
     k->manager->toggleAction();
-
-    //e->setAccepted(false);
-    QGraphicsItem::mouseDoubleClickEvent(e);
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
 int Node::typeNode() const

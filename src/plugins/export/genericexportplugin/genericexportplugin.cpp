@@ -52,7 +52,7 @@ GenericExportPlugin::~GenericExportPlugin()
 
 QString GenericExportPlugin::key() const
 {
-    return "Image Arrays";
+    return tr("Image Array");
 }
 
 TupExportInterface::Formats GenericExportPlugin::availableFormats()
