@@ -84,7 +84,7 @@ class Settings : public QWidget
         void clickedSelect();
         void clickedResetTween();
         void clickedApplyTween();
-        void startingPointChanged(int);
+        void startingFrameChanged(int);
         
     private:
         void setInnerForm();

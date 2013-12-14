@@ -127,7 +127,7 @@ void Configurator::setPropertiesPanel()
 {
     k->settingsPanel = new Settings(this);
 
-    connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->settingsPanel, SIGNAL(startingFrameChanged(int)), this, SIGNAL(startingFrameChanged(int)));
 
     connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->settingsPanel, SIGNAL(clickedCreatePath()), this, SIGNAL(clickedCreatePath()));
@@ -265,7 +265,6 @@ void Configurator::editTween()
     k->settingsPanel->setParameters(k->currentTween);
     activePropertiesPanel(true);
 
-    // emit editModeOn();
     emit setMode(k->mode);
 }
 

@@ -66,7 +66,6 @@ class Tweener : public TupToolPlugin
 
         int toolType() const;
         void aboutToChangeScene(TupGraphicsScene *scene);
-        bool isComplete() const;
 
         virtual void sceneResponse(const TupSceneResponse *event);
         virtual void layerResponse(const TupLayerResponse *event);
@@ -79,10 +78,10 @@ class Tweener : public TupToolPlugin
         int framesTotal();
         void setupActions();
         QString pathToCoords();
-        // int maxZValue();
         void clearSelection();
         void disableSelection();
         void removeTweenFromProject(const QString &name);
+        void resetGUI();
 
     private:
         struct Private;
@@ -96,7 +95,7 @@ class Tweener : public TupToolPlugin
         void setSelect();
         void setEditEnv();
         void updateMode(TupToolPlugin::Mode mode);
-        void updateStartPoint(int index);
+        void updateStartFrame(int index);
         void setCurrentTween(const QString &name);
 
     public slots:

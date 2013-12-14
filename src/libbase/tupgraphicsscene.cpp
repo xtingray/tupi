@@ -149,9 +149,9 @@ void TupGraphicsScene::setCurrentFrame(int layer, int frame)
            T_FUNCINFO;
     #endif
 
-    if ((frame != k->framePosition.frame && k->framePosition.frame >= 0) || 
-        (layer != k->framePosition.layer && k->framePosition.layer >= 0)) { 
-        if (k->tool->name().compare(tr("PolyLine")) == 0)
+    if ((frame != k->framePosition.frame && k->framePosition.frame >= 0) ||
+        (layer != k->framePosition.layer && k->framePosition.layer >= 0)) {
+        if (k->tool->name().compare(tr("PolyLine")) == 0 || k->tool->toolType() == TupToolInterface::Tweener)
             k->tool->aboutToChangeScene(this);
     }
 
@@ -422,7 +422,7 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
                  addSvgObject(object, opacity);
              } else {
                  TupItemTweener *tween = object->tween();
-                 if (k->framePosition.frame == tween->startFrame())
+                 if (k->framePosition.frame == tween->initFrame())
                      addSvgObject(object, opacity);
              }
         }

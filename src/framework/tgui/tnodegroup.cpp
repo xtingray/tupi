@@ -192,7 +192,7 @@ int TNodeGroup::removeSelectedNodes()
              if (node->isSelected()) {
                  count++;
                  k->nodes.removeAll(node);
-                 // FIXME: recreate the path
+                 // SQA: recreate the path
              }
     }
     

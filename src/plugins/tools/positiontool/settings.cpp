@@ -135,7 +135,7 @@ void Settings::setInnerForm()
     //k->comboInit->setMaximumWidth(50);
     //k->comboInit->setEditable(false);
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingFrameChanged(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -207,7 +207,7 @@ void Settings::setParameters(TupItemTweener *currentTween)
     k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);
 
-    initStartCombo(currentTween->frames(), currentTween->startFrame());
+    initStartCombo(currentTween->frames(), currentTween->initFrame());
 
     k->stepViewer->setPath(currentTween->graphicsPath());
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));

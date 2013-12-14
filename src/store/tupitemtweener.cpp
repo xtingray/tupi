@@ -54,6 +54,9 @@ struct TupItemTweener::Private
     QString name;
     TupItemTweener::Type type;
     int initFrame;
+    int initLayer;
+    int initScene;
+
     int frames;
     QPointF originPoint;
 
@@ -187,7 +190,8 @@ void TupItemTweener::setPosAt(int index, const QPointF &pos)
 void TupItemTweener::setRotationAt(int index, double angle)
 {
     VERIFY_STEP(index);
-    tFatal() << "TupItemTweener::setRotationAt() - Index: " << index << " - Angle: " << angle;
+
+    // tError() << "TupItemTweener::setRotationAt() - Index: " << index << " - Angle: " << angle;
     k->step(index)->setRotation(angle);
 }
 
@@ -225,9 +229,19 @@ int TupItemTweener::frames() const
     return k->frames;
 }
 
-int TupItemTweener::startFrame()
+int TupItemTweener::initFrame()
 {
     return k->initFrame;
+}
+
+int TupItemTweener::initLayer()
+{
+    return k->initLayer;
+}
+
+int TupItemTweener::initScene()
+{
+    return k->initScene;
 }
 
 QPointF TupItemTweener::transformOriginPoint()
@@ -237,8 +251,10 @@ QPointF TupItemTweener::transformOriginPoint()
 
 void TupItemTweener::fromXml(const QString &xml)
 {
-    tFatal() << "TupItemTweener::fromXml() - Following the white rabbit!";
-    tFatal() << xml;
+    #ifdef K_DEBUG
+           tWarning() << "TupItemTweener::fromXml() - Tween content: ";
+           tWarning() << xml;
+    #endif
     
     QDomDocument doc;
 
@@ -248,7 +264,10 @@ void TupItemTweener::fromXml(const QString &xml)
         k->name = root.attribute("name");
         k->type = TupItemTweener::Type(root.attribute("type").toInt());
 
-        k->initFrame = root.attribute("init").toInt();
+        k->initFrame = root.attribute("initFrame").toInt();
+        k->initLayer = root.attribute("initLayer").toInt();
+        k->initScene = root.attribute("initScene").toInt();
+
         k->frames = root.attribute("frames").toInt();
 
         QString origin = root.attribute("origin"); // [x,y]
@@ -267,7 +286,8 @@ void TupItemTweener::fromXml(const QString &xml)
 
                    if (!e.isNull()) {
                        if (e.tagName() == "position") {
-                           tFatal() << "TupItemTweener::fromXml() - Processing position settings";
+                           // tError() << "TupItemTweener::fromXml() - Processing position settings";
+
                            k->tweenList.append(TupItemTweener::Position);
                            k->compPositionInitFrame = e.attribute("init").toInt();
                            k->compPositionFrames = e.attribute("frames").toInt();
@@ -275,7 +295,8 @@ void TupItemTweener::fromXml(const QString &xml)
                            k->path = e.attribute("coords");
                        }
                        if (e.tagName() == "rotation") {
-                           tFatal() << "TupItemTweener::fromXml() - Processing rotation settings";
+                           // tError() << "TupItemTweener::fromXml() - Processing rotation settings";
+
                            k->tweenList.append(TupItemTweener::Rotation);
                            k->compRotationInitFrame = e.attribute("init").toInt();
                            k->compRotationFrames = e.attribute("frames").toInt();
@@ -294,25 +315,29 @@ void TupItemTweener::fromXml(const QString &xml)
                        }
 
                        if (e.tagName() == "scale") {
-                           tFatal() << "TupItemTweener::fromXml() - Processing scale settings";
+                           // tError() << "TupItemTweener::fromXml() - Processing scale settings";
+
                            k->tweenList.append(TupItemTweener::Scale);
                            k->compScaleInitFrame = e.attribute("init").toInt();
                            k->compScaleFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "shear") {
-                           tFatal() << "TupItemTweener::fromXml() - Processing shear settings";
+                           // tError() << "TupItemTweener::fromXml() - Processing shear settings";
+
                            k->tweenList.append(TupItemTweener::Shear);
                            k->compShearInitFrame = e.attribute("init").toInt();
                            k->compShearFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "opacity") {
-                           tFatal() << "TupItemTweener::fromXml() - Processing opacity settings";
+                           // tError() << "TupItemTweener::fromXml() - Processing opacity settings";
+
                            k->tweenList.append(TupItemTweener::Opacity);
                            k->compOpacityInitFrame = e.attribute("init").toInt();
                            k->compOpacityFrames = e.attribute("frames").toInt();
                        }
                        if (e.tagName() == "coloring") {
-                           tFatal() << "TupItemTweener::fromXml() - Processing coloring settings";
+                           // tError() << "TupItemTweener::fromXml() - Processing coloring settings";
+
                            k->tweenList.append(TupItemTweener::Coloring);
                            k->compColoringInitFrame = e.attribute("init").toInt();
                            k->compColoringFrames = e.attribute("frames").toInt();
@@ -415,21 +440,24 @@ void TupItemTweener::fromXml(const QString &xml)
 
 QDomElement TupItemTweener::toXml(QDomDocument &doc) const
 {
-    tFatal() << "TupItemTweener::toXml() - Saving the whole tween! - Type: " << k->type;
+    #ifdef K_DEBUG
+           tWarning() << "TupItemTweener::toXml() - Saving tween: " << k->name;
+           tWarning() << "TupItemTweener::toXml() - Type: " << k->type;
+    #endif
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
     root.setAttribute("type", k->type);
-    root.setAttribute("init", k->initFrame);
+    root.setAttribute("initFrame", k->initFrame);
+    root.setAttribute("initLayer", k->initLayer);
+    root.setAttribute("initScene", k->initScene);
     root.setAttribute("frames", k->frames);
     root.setAttribute("origin", QString::number(k->originPoint.x()) + "," + QString::number(k->originPoint.y()));
 
     if (k->type == TupItemTweener::Compound) {
-
         QDomElement settings = doc.createElement("settings");
 
         for (int i=0; i < k->tweenList.size(); i++) {
-
              if (k->tweenList.at(i) == TupItemTweener::Position) {
                  QDomElement position = doc.createElement("position");
                  position.setAttribute("init", k->compPositionInitFrame);
@@ -683,7 +711,7 @@ int TupItemTweener::tweenColorReverseLoop()
 
 bool TupItemTweener::contains(TupItemTweener::Type type)
 {
-    tFatal() << "TupItemTweener::contains() - Type List Size: " << k->tweenList.size();
+    // tError() << "TupItemTweener::contains() - Type List Size: " << k->tweenList.size();
 
     for (int i=0; i < k->tweenList.size(); i++) {
          tFatal() << "TupItemTweener::contains() - type: " << k->tweenList.at(i);

@@ -105,7 +105,7 @@ class Configurator : public QFrame
         void setMode(TupToolPlugin::Mode mode);
         void clickedResetInterface();
         void clickedApplyTween();
-        void startingPointChanged(int);
+        void startingFrameChanged(int);
         // void editModeOn();
         void getTweenData(const QString &);
         

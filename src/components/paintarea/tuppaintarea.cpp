@@ -377,7 +377,6 @@ void TupPaintArea::layerResponse(TupLayerResponse *event)
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == TupProjectRequest::Remove) {
-
             TupScene *scene = k->project->scene(k->currentSceneIndex);
 
             if (scene->layersTotal() > 1) {

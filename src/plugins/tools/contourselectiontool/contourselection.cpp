@@ -58,11 +58,11 @@
 #include <QList>
 #include <QDebug>
 #include <QTimer>
+#include <QDir>
 
 struct ContourSelection::Private
 {
     QMap<QString, TAction *> actions;
-    // QList<TNodeGroup*> nodeGroups; 
     TNodeGroup *nodeGroup;
     TupGraphicsScene *scene;
     int baseZValue;
@@ -84,11 +84,7 @@ void ContourSelection::init(TupGraphicsScene *scene)
     k->baseZValue = 20000 + (scene->scene()->layersTotal() * 10000);
     k->nodeGroup = 0;
 
-    // qDeleteAll(k->nodeGroups);
-    // k->nodeGroups.clear();
-
     foreach (QGraphicsView * view, scene->views()) {
-             // view->setDragMode (QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       if (!qgraphicsitem_cast<TControlNode *>(item)) {
                           if (scene->spaceMode() == TupProject::FRAMES_EDITION) {
@@ -132,92 +128,44 @@ void ContourSelection::release(const TupInputDeviceInformation *input, TupBrushM
 
     if (scene->selectedItems().count() > 0) {
         QList<QGraphicsItem *> currentSelection = scene->selectedItems();
+        QGraphicsItem *item = currentSelection.at(0);
 
         if (k->nodeGroup) {
             int index1 = scene->currentFrame()->indexOf(k->nodeGroup->parentItem());
-            int index2 = scene->currentFrame()->indexOf(currentSelection.at(0));
-
-            tError() << "ContourSelection::release() - index1: " << index1;
-            tError() << "ContourSelection::release() - index2: " << index2;
-
+            int index2 = scene->currentFrame()->indexOf(item);
             if (index1 == index2 || index2 < 0) {
-                tError() << "ContourSelection::release() - It is the same item!";
                 return;
             } else {
                 k->nodeGroup->clear();
             }
         }
 
-        /*
-        QList<TNodeGroup *>::iterator it = k->nodeGroups.begin();
-        QList<TNodeGroup *>::iterator itEnd = k->nodeGroups.end();
-        while (it != itEnd) {
-               int parentIndex = scene->selectedItems().indexOf((*it)->parentItem());
-               if (parentIndex != -1)
-                   currentSelection.removeAt(parentIndex);
-               else
-                   delete k->nodeGroups.takeAt(k->nodeGroups.indexOf((*it)));
-               ++it;
-        }
-        */
+        k->nodeGroup = new TNodeGroup(item, scene, TNodeGroup::LineSelection, k->baseZValue);
 
-        foreach (QGraphicsItem *item, currentSelection) {
-                 if (item) {
-                     k->nodeGroup = new TNodeGroup(item, scene, TNodeGroup::LineSelection, k->baseZValue);
-                     // SQA: Critical! TControlNode cast doesn't work / qgraphicsitem_cast issue / app crash!  
-                     /*
-                     if (!qgraphicsitem_cast<TControlNode *>(item)) {
-                         if (!qgraphicsitem_cast<TupPathItem*>(item)) {
-                             TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
-                                                      scene->currentLayerIndex(), scene->currentFrameIndex(), 
-                                                      scene->currentFrame()->indexOf(item), QPointF(), scene->spaceMode(),
-                                                      TupLibraryObject::Item, TupProjectRequest::Convert, 2);
-                             emit requested(&event);
-                         } else {
-                             k->nodeGroup = new TNodeGroup(item, scene, TNodeGroup::LineSelection, k->baseZValue);
-                         }
-                     }
-                     */
+        if (!k->nodeGroup->changedNodes().isEmpty()) {
+            int position = scene->currentFrame()->indexOf(k->nodeGroup->parentItem());
+            if (position >= 0 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodeGroup->parentItem())) {
+                QDomDocument doc;
+                doc.appendChild(qgraphicsitem_cast<TupPathItem *>(k->nodeGroup->parentItem())->toXml(doc));
+                    
+                TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
+                                            scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
+                                            QPointF(), scene->spaceMode(), TupLibraryObject::Item, 
+                                            TupProjectRequest::EditNodes, doc.toString());
+                emit requested(&event);
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "ContourSelection::release() - Fatal Error: Invalid position [ " << position << " ]";
+                #endif
+                return;
             }
+            k->nodeGroup->clearChangesNodes();
         }
-
-        //foreach (TNodeGroup *group, k->nodeGroups) {
-                 if (!k->nodeGroup->changedNodes().isEmpty()) {
-                     tError() << "release() : Tracing a node change!";
-                     int position = scene->currentFrame()->indexOf(k->nodeGroup->parentItem());
-                     if (position >= 0 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodeGroup->parentItem())) {
-                         QDomDocument doc;
-                         doc.appendChild(qgraphicsitem_cast<TupPathItem *>(k->nodeGroup->parentItem())->toXml(doc));
-                    
-                         TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
-                                                  scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
-                                                  QPointF(), scene->spaceMode(), TupLibraryObject::Item, 
-                                                  TupProjectRequest::EditNodes, doc.toString());
-                    
-                         foreach (QGraphicsView * view, scene->views())
-                                  view->setUpdatesEnabled(false);
-                    
-                         k->nodeGroup->restoreItem();
-                         emit requested(&event);
-                     } else {
-                         #ifdef K_DEBUG
-                                tError() << "ContourSelection::release() - Fatal Error: Invalid position [ " << position << " ]";
-                         #endif
-                         return;
-                     }
-                     k->nodeGroup->clearChangesNodes();
-                 }
-        // }
-
     } else {
-        tError() << "No items... cleaning nodes!";
-        // foreach (TNodeGroup *group, k->nodeGroups)
         if (k->nodeGroup) {
             k->nodeGroup->clear();
             k->nodeGroup = 0;
         }
-        // k->nodeGroups.clear();
-        // qDeleteAll(k->nodeGroups);
     } 
 }
 
@@ -240,76 +188,103 @@ void ContourSelection::itemResponse(const TupItemResponse *response)
                 layer = scene->layer(response->layerIndex());
                 if (layer) {
                     frame = layer->frame(response->frameIndex());
-                    if (frame)
+                    if (frame) {
                         item = frame->item(response->itemIndex());
+                    } else {
+                        #ifdef K_DEBUG
+                               tError() << "ContourSelection::itemResponse() - Fatal Error: Frame variable is NULL!";
+                        #endif
+                    }
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "ContourSelection::itemResponse() - Fatal Error: Layer variable is NULL!";
+                    #endif
                 }
             } else {
-                // SQA: Add the Dynamic BG part
                 TupBackground *bg = scene->background();
                 if (bg) {
-                    TupFrame *frame = bg->staticFrame();
-                    if (frame)
-                        item = frame->item(response->itemIndex());
+                    if (project->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
+                        TupFrame *frame = bg->staticFrame();
+                        if (frame) {
+                            item = frame->item(response->itemIndex());
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "ContourSelection::itemResponse() - Fatal Error: Static frame variable is NULL!";
+                                   #endif
+                        }
+                    } else if (project->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) { 
+                               TupFrame *frame = bg->dynamicFrame();
+                               if (frame) {
+                                   item = frame->item(response->itemIndex());
+                               } else {
+                                   #ifdef K_DEBUG
+                                          tError() << "ContourSelection::itemResponse() - Fatal Error: Dynamic frame variable is NULL!";
+                                   #endif
+                               }
+                    } else {
+                        #ifdef K_DEBUG
+                               tError() << "ContourSelection::itemResponse() - Fatal Error: Invalid spaceMode!";
+                        #endif
+                    }
+                } else {
+                    #ifdef K_DEBUG
+                           tError() << "ContourSelection::itemResponse() - Fatal Error: Scene background is NULL!";
+                    #endif
                 }
             }
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "ContourSelection::itemResponse() - Fatal Error: Scene variable is NULL";
+            #endif
         }
     } else {
         #ifdef K_DEBUG
-               tFatal() << "ContourSelection::itemResponse() - Project not exist";
+               tError() << "ContourSelection::itemResponse() - Fatal Error: Project variable is NULL";
         #endif
     }
     
     switch (response->action()) {
             case TupProjectRequest::Convert:
             {
-                 if (item && scene) {
-                     // TNodeGroup *node 
-                      k->nodeGroup = new TNodeGroup(item, k->scene, TNodeGroup::LineSelection, k->baseZValue);
-                     // k->nodeGroups << node;
-                 }
-            }
-            break;
-
-            case TupProjectRequest::EditNodes:
-            {
                  if (item) {
-                     // SQA: Check if this lines are required
-                     // foreach (QGraphicsView * view, k->scene->views())
-                     //          view->setUpdatesEnabled(true);
-
-                     // foreach (TNodeGroup* group, k->nodeGroups) {
-                              if (qgraphicsitem_cast<QGraphicsPathItem *>(k->nodeGroup->parentItem()) == item) {
-                                  k->nodeGroup->show();
-                                  k->nodeGroup->syncNodesFromParent();
-                                  k->nodeGroup->saveParentProperties();
-                                  break;
-                              }
-                     // }
+                      k->nodeGroup = new TNodeGroup(item, k->scene, TNodeGroup::LineSelection, k->baseZValue);
                  } else {
                      #ifdef K_DEBUG
-                            tFatal() << "ContourSelection::itemResponse() - No item found";
+                            tError() << "ContourSelection::itemResponse() - Fatal Error: No item was found";
                      #endif
                  }
             }
             break;
-
+            case TupProjectRequest::EditNodes:
+            {
+                 if (item) {
+                     if (qgraphicsitem_cast<QGraphicsPathItem *>(k->nodeGroup->parentItem()) == item) {
+                         k->nodeGroup->show();
+                         k->nodeGroup->syncNodesFromParent();
+                         k->nodeGroup->saveParentProperties();
+                         break;
+                     }
+                 } else {
+                     #ifdef K_DEBUG
+                            tError() << "ContourSelection::itemResponse() - Fatal Error: No item was found";
+                     #endif
+                 }
+            }
+            break;
             case TupProjectRequest::Remove:
             {
                  return;
             }
             break;
-
             default:
             {
-                // foreach (TNodeGroup* node, k->nodeGroups) {
-                         if (k->nodeGroup) {
-                             k->nodeGroup->show();
-                             if (k->nodeGroup->parentItem()) {
-                                 k->nodeGroup->parentItem()->setSelected(true);
-                                 k->nodeGroup->syncNodesFromParent();
-                             }
-                         }
-                // }
+                 if (k->nodeGroup) {
+                     k->nodeGroup->show();
+                     if (k->nodeGroup->parentItem()) {
+                         k->nodeGroup->parentItem()->setSelected(true);
+                         k->nodeGroup->syncNodesFromParent();
+                     }
+                 }
             }
             break;
     }
@@ -317,18 +292,6 @@ void ContourSelection::itemResponse(const TupItemResponse *response)
 
 void ContourSelection::keyPressEvent(QKeyEvent *event)
 {
-    /* SQA: This code seems to have to effect :S
-    if (event->key() == Qt::Key_Delete) {
-        bool deleted = false;
-    
-        // foreach (TNodeGroup *nodegroup, k->nodeGroups)
-        deleted = deleted || (k->nodeGroup->removeSelectedNodes() > 0);
-
-        if (deleted)
-            event->accept();
-    }
-    */
-
     if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
     } else {
@@ -340,7 +303,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-    TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "icons/nodes.png"), tr("Line Selection"), this);
+    TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "nodes.png"), tr("Line Selection"), this);
     select->setShortcut(QKeySequence(tr("N")));
 
     k->actions.insert(tr("Line Selection"), select);
@@ -368,11 +331,7 @@ void ContourSelection::aboutToChangeScene(TupGraphicsScene *scene)
 
 void ContourSelection::aboutToChangeTool()
 {
-    // qDeleteAll(k->nodeGroups);
-    // k->nodeGroups.clear();
-
     foreach (QGraphicsView *view, k->scene->views()) {
-             view->setDragMode (QGraphicsView::NoDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                       item->setFlag(QGraphicsItem::ItemIsMovable, false);

@@ -89,7 +89,9 @@ class STORE_EXPORT TupItemTweener : public QObject, public TupAbstractSerializab
         void setFrames(int frames);
 
         int frames() const;
-        int startFrame();
+        int initFrame();
+        int initLayer();
+        int initScene();
         QPointF transformOriginPoint();
         
         void setStep(int step);
