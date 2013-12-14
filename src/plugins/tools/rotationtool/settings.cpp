@@ -47,6 +47,7 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QDir>
 
 struct Settings::Private
 {
@@ -109,11 +110,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->options->addItem(tr("Set Properties"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
-    k->apply = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/save.png"), 22);
+    k->apply = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "save.png"), 22);
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
-    k->remove = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"), 22);
-    // k->remove->setToolTip(tr("Cancel Tween"));
+    k->remove = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "close.png"), 22);
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -379,7 +379,7 @@ void Settings::activeRangeForm(bool enable)
 
 // Adding new Tween
 
-void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
+void Settings::setParameters(const QString &name, int framesTotal, int initFrame)
 {
     k->mode = TupToolPlugin::Add;
     k->input->setText(name);
@@ -387,10 +387,10 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     activatePropertiesMode(TupToolPlugin::Selection);
 
     k->apply->setToolTip(tr("Save Tween"));
-    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
+    k->remove->setIcon(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
 
-    k->comboInit->setCurrentIndex(startFrame);
+    k->comboInit->setCurrentIndex(initFrame);
     k->comboInit->setEditable(false);
     k->comboInit->setEnabled(false);
 }
@@ -406,8 +406,8 @@ void Settings::setParameters(TupItemTweener *currentTween)
 
     k->comboInit->setEnabled(true);
     k->comboInit->setEditable(true);
-    k->comboInit->setCurrentIndex(currentTween->startFrame());
-    k->comboEnd->setItemText(0, QString::number(currentTween->startFrame() + currentTween->frames()));
+    k->comboInit->setCurrentIndex(currentTween->initFrame());
+    k->comboEnd->setItemText(0, QString::number(currentTween->initFrame() + currentTween->frames()));
     k->comboEnd->setCurrentIndex(0);
 
     checkFramesRange();
@@ -464,7 +464,7 @@ void Settings::setEditMode()
 {
     k->mode = TupToolPlugin::Edit;
     k->apply->setToolTip(tr("Update Tween"));
-    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
+    k->remove->setIcon(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "close_properties.png"));
     k->remove->setToolTip(tr("Close Tween properties"));
 }
 
@@ -503,21 +503,21 @@ void Settings::emitOptionChanged(int option)
 {
     switch (option) {
             case 0:
-             {
-                     activeInnerForm(false);
-                     emit clickedSelect();
-             }
+            {
+                activeInnerForm(false);
+                emit clickedSelect();
+            }
             break;
             case 1:
-             {
-                     if (k->selectionDone) {
-                         activeInnerForm(true);
-                         emit clickedDefineAngle();
-                     } else {
-                         k->options->setCurrentIndex(0);
-                         TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
-                     }
-             }
+            {
+                if (k->selectionDone) {
+                    activeInnerForm(true);
+                    emit clickedDefineAngle();
+                } else {
+                    k->options->setCurrentIndex(0);
+                    TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
+                }
+            }
     }
 }
 

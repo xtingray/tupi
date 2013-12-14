@@ -42,6 +42,7 @@
 #include <QMatrix>
 #include <QGraphicsView>
 #include <QDomDocument>
+#include <QDir>
 
 #include "tglobal.h"
 #include "tdebug.h"
@@ -236,9 +237,9 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/shear_tween.png"), 
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "shear_tween.png"), 
                                       tr("Shear Tween"), this);
-    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png"));
+    translater->setCursor(QCursor(kAppProp->themeDir() + "cursors" + QDir::separator() + "tweener.png"));
     translater->setShortcut(QKeySequence(tr("Shift+H")));
 
     k->actions.insert(tr("Shear Tween"), translater);
@@ -257,7 +258,6 @@ void Tweener::updateScene(TupGraphicsScene *scene)
     k->mode = k->configurator->mode();
 
     if (k->mode == TupToolPlugin::Edit) {
-
        int framesNumber = framesTotal();
 
        if (k->configurator->startComboSize() < framesNumber)
@@ -267,7 +267,6 @@ void Tweener::updateScene(TupGraphicsScene *scene)
            k->scene->addItem(k->target);
 
     } else if (k->mode == TupToolPlugin::Add) {
-
                int total = framesTotal();
 
                if (k->editMode == TupToolPlugin::Properties) {
@@ -352,8 +351,8 @@ void Tweener::setSelect()
     if (k->mode == TupToolPlugin::Edit) {
         if (k->startPoint != k->scene->currentFrameIndex()) {
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                            k->scene->currentLayerIndex(),
-                                                                            k->startPoint, TupProjectRequest::Select, "1");
+                                                                              k->scene->currentLayerIndex(),
+                                                                              k->startPoint, TupProjectRequest::Select, "1");
             emit requested(&request);
         }
     }
@@ -422,8 +421,8 @@ void Tweener::applyTween()
 
     if (k->startPoint != k->scene->currentFrameIndex()) {
         TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                       k->scene->currentLayerIndex(),
-                                                                       k->startPoint, TupProjectRequest::Select, "1");
+                                                                          k->scene->currentLayerIndex(),
+                                                                          k->startPoint, TupProjectRequest::Select, "1");
         emit requested(&request);
     }
 
@@ -445,13 +444,13 @@ void Tweener::applyTween()
                  }
 
                  TupProjectRequest request = TupRequestBuilder::createItemRequest(
-                                            k->scene->currentSceneIndex(),
-                                            k->scene->currentLayerIndex(),
-                                            k->startPoint,
-                                            objectIndex,
-                                            QPointF(), k->scene->spaceMode(), type,
-                                            TupProjectRequest::SetTween,
-                                            k->configurator->tweenToXml(k->startPoint, origin));
+                                               k->scene->currentSceneIndex(),
+                                               k->scene->currentLayerIndex(),
+                                               k->startPoint,
+                                               objectIndex,
+                                               QPointF(), k->scene->spaceMode(), type,
+                                               TupProjectRequest::SetTween,
+                                               k->configurator->tweenToXml(k->startPoint, origin));
                  emit requested(&request);
         }
 
@@ -472,18 +471,15 @@ void Tweener::applyTween()
                                                                         k->scene->currentLayerIndex(),
                                                                         k->startPoint, TupProjectRequest::Select, "1");
         emit requested(&request);
-
     } else {
-
         removeTweenFromProject(name);
         QList<QGraphicsItem *> newList;
 
         foreach (QGraphicsItem *item, k->objects) {
-
                  TupLibraryObject::Type type = TupLibraryObject::Item;
                  TupScene *scene = k->scene->scene();
                  TupLayer *layer = scene->layer(k->scene->currentLayerIndex());
-                 TupFrame *frame = layer->frame(k->currentTween->startFrame());
+                 TupFrame *frame = layer->frame(k->currentTween->initFrame());
                  int objectIndex = frame->indexOf(item);
 
                  QPointF origin = item->mapFromParent(k->origin);
@@ -496,7 +492,7 @@ void Tweener::applyTween()
                          origin = k->origin;
                  }
 
-                 if (k->startPoint != k->currentTween->startFrame()) {
+                 if (k->startPoint != k->currentTween->initFrame()) {
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
 
@@ -510,7 +506,7 @@ void Tweener::applyTween()
 
                      request = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
                                                                    k->scene->currentLayerIndex(),
-                                                                   k->currentTween->startFrame(),
+                                                                   k->currentTween->initFrame(),
                                                                    objectIndex, QPointF(), 
                                                                    k->scene->spaceMode(), type,
                                                                    TupProjectRequest::Remove);
@@ -549,7 +545,7 @@ void Tweener::applyTween()
                  }
 
                  request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(),
-                                                                k->startPoint, TupProjectRequest::Select, "1");
+                                                                 k->startPoint, TupProjectRequest::Select, "1");
                  emit requested(&request);
         }
 
@@ -607,11 +603,11 @@ void Tweener::updateMode(TupToolPlugin::Mode mode)
     k->mode = mode;
 
     if (k->mode == TupToolPlugin::Edit) {
-        k->startPoint = k->currentTween->startFrame();
+        k->startPoint = k->currentTween->initFrame();
         if (k->startPoint != k->scene->currentFrameIndex()) {
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
-                                                                            k->scene->currentLayerIndex(),
-                                                                            k->startPoint, TupProjectRequest::Select, "1");
+                                                                              k->scene->currentLayerIndex(),
+                                                                              k->startPoint, TupProjectRequest::Select, "1");
             emit requested(&request);
         }
     }
@@ -624,7 +620,6 @@ int Tweener::maxZValue()
              foreach (QGraphicsItem *item, view->scene()->items()) {
                       if (item->zValue() > max)
                           max = item->zValue();
-
              }
     }
 

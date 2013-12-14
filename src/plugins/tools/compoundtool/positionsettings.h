@@ -58,11 +58,11 @@ class PositionSettings : public QWidget
         PositionSettings(QWidget *parent = 0);
         ~PositionSettings();
 
-        void setParameters(int framesTotal, int startFrame);
+        void setParameters(int framesTotal, int initFrame);
         void setParameters(TupItemTweener *currentTween);
         void initStartCombo(int totalFrames, int currentIndex);
         void setStartFrame(int currentIndex);
-        int startFrame();
+        int initFrame();
 
         void updateSteps(const QGraphicsPathItem *path, QPointF offset);
         int totalSteps();

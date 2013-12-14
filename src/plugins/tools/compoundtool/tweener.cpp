@@ -545,7 +545,7 @@ void Tweener::applyTween()
                  TupLibraryObject::Type type = TupLibraryObject::Item;
                  TupScene *scene = k->scene->scene();
                  TupLayer *layer = scene->layer(k->scene->currentLayerIndex());
-                 TupFrame *frame = layer->frame(k->currentTween->startFrame());
+                 TupFrame *frame = layer->frame(k->currentTween->initFrame());
                  int objectIndex = frame->indexOf(item);
 
                  QRectF rect = item->sceneBoundingRect();
@@ -560,7 +560,7 @@ void Tweener::applyTween()
                          point = item->pos();
                  }
 
-                 if (k->startPoint != k->currentTween->startFrame()) {
+                 if (k->startPoint != k->currentTween->initFrame()) {
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
 
@@ -578,7 +578,7 @@ void Tweener::applyTween()
 
                      request = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), 
                                                                    k->scene->currentLayerIndex(),
-                                                                   k->currentTween->startFrame(),
+                                                                   k->currentTween->initFrame(),
                                                                    objectIndex, QPointF(), 
                                                                    k->scene->spaceMode(), type,
                                                                    TupProjectRequest::Remove);
@@ -783,7 +783,7 @@ void Tweener::setEditEnv()
 {
     tFatal() << "void Tweener::setEditEnv() - Just tracing!!!";
 
-    k->startPoint = k->currentTween->startFrame();
+    k->startPoint = k->currentTween->initFrame();
     if (k->startPoint != k->scene->currentFrameIndex()) {
         TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                        k->scene->currentLayerIndex(),

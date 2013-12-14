@@ -290,7 +290,7 @@ void Settings::activeInnerForm(bool enable)
 
 // Adding new Tween
 
-void Settings::setParameters(const QString &name, int framesTotal, int startFrame)
+void Settings::setParameters(const QString &name, int framesTotal, int initFrame)
 {
     k->mode = TupToolPlugin::Add;
     k->input->setText(name);
@@ -300,7 +300,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
 
-    k->comboInit->setCurrentIndex(startFrame);
+    k->comboInit->setCurrentIndex(initFrame);
     k->comboInit->setEditable(false);
     k->comboInit->setEnabled(false);
 }
@@ -316,8 +316,8 @@ void Settings::setParameters(TupItemTweener *currentTween)
 
     k->comboInit->setEnabled(true);
     k->comboInit->setEditable(true);
-    k->comboInit->setCurrentIndex(currentTween->startFrame());
-    k->comboEnd->setItemText(0, QString::number(currentTween->startFrame() + currentTween->frames()));
+    k->comboInit->setCurrentIndex(currentTween->initFrame());
+    k->comboEnd->setItemText(0, QString::number(currentTween->initFrame() + currentTween->frames()));
     k->comboEnd->setCurrentIndex(0);
 
     checkFramesRange();
