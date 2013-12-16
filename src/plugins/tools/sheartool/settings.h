@@ -68,7 +68,7 @@ class Settings : public QWidget
         QString currentTweenName() const;
         void activatePropertiesMode(TupToolPlugin::EditMode mode);
         // void activateSelectionMode();
-        QString tweenToXml(int currentFrame, QPointF point);
+        QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point);
 
     private slots:
         void applyTween();
@@ -84,7 +84,7 @@ class Settings : public QWidget
         void clickedDefineProperties();
         void clickedApplyTween();
         void clickedResetTween();
-        void startingPointChanged(int index);
+        void initFrameChanged(int index);
         
     private:
         void setInnerForm();

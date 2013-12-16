@@ -36,9 +36,10 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include <QFrame>
 #include "tuptoolplugin.h"
 #include "settings.h"
+
+#include <QFrame>
 
 class QGraphicsPathItem;
 class QListWidgetItem;
@@ -74,7 +75,7 @@ class Configurator : public QFrame
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path);
-        QString tweenToXml(int currentFrame, QPointF point, QString &path);
+        QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point, QString &path);
         int totalSteps();
         // void activateSelectionMode();
         void activateMode(TupToolPlugin::EditMode mode);

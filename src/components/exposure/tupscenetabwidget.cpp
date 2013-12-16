@@ -101,8 +101,8 @@ void TupSceneTabWidget::removeScene(int index)
     k->tabber->removeTab(index);
     blockSignals(false);
 
-    tError() << "TupSceneTabWidget::removeScene() - Removing scene at index: " << index;
-    tError() << "TupSceneTabWidget::removeScene() - Scenes count: " << k->tables.count();
+    // tError() << "TupSceneTabWidget::removeScene() - Removing scene at index: " << index;
+    // tError() << "TupSceneTabWidget::removeScene() - Scenes count: " << k->tables.count();
 }
 
 void TupSceneTabWidget::renameScene(int index, const QString &name)
@@ -114,7 +114,7 @@ TupExposureTable* TupSceneTabWidget::getCurrentTable()
 {
     int index = currentIndex();
 
-    tError() << "TupSceneTabWidget::getCurrentTable() - Getting table at index: " << index;
+    // tError() << "TupSceneTabWidget::getCurrentTable() - Getting table at index: " << index;
 
     return getTable(index);
 }

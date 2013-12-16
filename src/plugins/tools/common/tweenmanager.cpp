@@ -43,6 +43,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMenu>
+#include <QDir>
 
 struct TweenManager::Private
 {
@@ -61,7 +62,7 @@ TweenManager::TweenManager(QWidget *parent) : QWidget(parent), k(new Private)
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
     k->input = new QLineEdit;
-    k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/plus_sign.png"), 22);
+    k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "plus_sign.png"), 22);
     k->addButton->setToolTip(tr("Create a new Tween"));
     connect(k->input, SIGNAL(returnPressed()), this, SLOT(addTween()));
     connect(k->addButton, SIGNAL(clicked()), this, SLOT(addTween()));

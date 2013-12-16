@@ -54,7 +54,7 @@ struct Configurator::Private
 
     TupItemTweener *currentTween;
 
-    int framesTotal;
+    int framesTotal; 
     int currentFrame;
 
     TupToolPlugin::Mode mode;
@@ -107,7 +107,7 @@ void Configurator::setPropertiesPanel()
 {
     k->settingsPanel = new Settings(this);
 
-    connect(k->settingsPanel, SIGNAL(startingPointChanged(int)), this, SIGNAL(startingPointChanged(int)));
+    connect(k->settingsPanel, SIGNAL(initFrameChanged(int)), this, SIGNAL(initFrameChanged(int)));
     connect(k->settingsPanel, SIGNAL(clickedSelect()), this, SIGNAL(clickedSelect()));
     connect(k->settingsPanel, SIGNAL(clickedDefineProperties()), this, SIGNAL(clickedDefineProperties()));
     connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
@@ -191,9 +191,9 @@ int Configurator::startComboSize()
     return k->settingsPanel->startComboSize();
 }
 
-QString Configurator::tweenToXml(int currentFrame, QPointF point)
+QString Configurator::tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point)
 {
-    return k->settingsPanel->tweenToXml(currentFrame, point);
+    return k->settingsPanel->tweenToXml(currentScene, currentLayer, currentFrame, point);
 }
 
 int Configurator::totalSteps()

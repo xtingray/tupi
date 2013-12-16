@@ -91,8 +91,8 @@ class Tweener : public TupToolPlugin
         void applyReset();
         void applyTween();
         void removeTween(const QString &name);
-        void setCreatePath();
-        void setSelect();
+        void setTweenPath();
+        void setSelection();
         void setEditEnv();
         void updateMode(TupToolPlugin::Mode mode);
         void updateStartFrame(int index);

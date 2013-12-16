@@ -265,14 +265,16 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame, QPointF point, QString &path)
+QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point, QString &path)
 {
     QDomDocument doc;
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
     root.setAttribute("type", TupItemTweener::Position);
-    root.setAttribute("init", currentFrame);
+    root.setAttribute("initFrame", currentFrame);
+    root.setAttribute("initLayer", currentLayer);
+    root.setAttribute("initScene", currentScene);
     root.setAttribute("frames", k->stepViewer->totalSteps());
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     root.setAttribute("coords", path);

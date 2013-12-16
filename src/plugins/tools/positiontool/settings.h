@@ -51,9 +51,6 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-        // enum Mode { Add = 1, Edit, View };
-        // enum EditMode { Selection = 0, Path, None };
-
         Settings(QWidget *parent = 0);
         ~Settings();
 
@@ -64,7 +61,7 @@ class Settings : public QWidget
         int startFrame();
 
         void updateSteps(const QGraphicsPathItem *path);
-        QString tweenToXml(int currentFrame, QPointF point, QString &path);
+        QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point, QString &path);
         int totalSteps();
         // void activatePathMode();
         // void activateSelectionMode();
