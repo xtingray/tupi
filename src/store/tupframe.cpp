@@ -259,7 +259,6 @@ void TupFrame::fromXml(const QString &xml)
                           n2 = n2.nextSibling();
                    }
                } else if (e.tagName() == "svg") {
-
                           QString symbol = e.attribute("id");
 
                           if (symbol.length() > 0) {
@@ -913,7 +912,7 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
     }
 
     #ifdef K_DEBUG
-           tError() << "TupFrame::createItem() - Error: Couldn't create QGraphicsItem object";
+           tError() << "TupFrame::createItem() - Fatal Error: Couldn't create QGraphicsItem object";
            tError() << "TupFrame::createItem() - xml: ";
            tError() << xml;
     #endif
@@ -921,27 +920,45 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
     return 0;
 }
 
-// SQA: Check if this method really is being used
 TupSvgItem *TupFrame::createSvgItem(QPointF coords, const QString &xml, bool loaded)
 {
     QDomDocument document;
-    if (!document.setContent(xml))
+    if (!document.setContent(xml)) {
+        #ifdef K_DEBUG
+               tError() << "TupFrame::createSvgItem() - Fatal Error: Svg xml content is invalid!";
+               tError() << "TupFrame::createSvgItem() - xml: ";
+               tError() << xml;
+        #endif
         return 0;
+    }
 
     QDomElement root = document.documentElement();
     QString id = root.attribute("id");
-    QString path = root.attribute("itemPath");
+    TupLibraryObject *object = project()->library()->findObject(id);
+    if (object) {
+        QString path = object->dataPath();
+        TupSvgItem *item = new TupSvgItem(path, this);
+        if (item) {
+            item->setSymbolName(id);
+            item->moveBy(coords.x(), coords.y()); 
+            addSvgItem(id, item);
+            if (loaded)
+                TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), 
+                                             k->svg.size() - 1, coords, TupLibraryObject::Svg, xml, project());
+            return item;
+        } else {
+            #ifdef K_DEBUG
+                   tError() << "TupFrame::createSvgItem() - Fatal Error: Svg object is invalid!";
+            #endif
+            return 0;
+        }
+    }
 
-    TupSvgItem *item = new TupSvgItem(path, this);
-    item->moveBy(coords.x(), coords.y()); 
+    #ifdef K_DEBUG
+           tError() << "TupFrame::createSvgItem() - Fatal Error: TupLibraryObject variable is NULL!";
+    #endif
 
-    addSvgItem(id, item);
-
-    if (loaded)
-        TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), 
-                                     k->svg.size() - 1, coords, TupLibraryObject::Svg, xml, project());
-
-    return item;
+    return 0;
 }
 
 void TupFrame::setGraphics(GraphicObjects objects)

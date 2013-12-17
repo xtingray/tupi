@@ -591,13 +591,11 @@ void Tweener::applyTween()
 		 TupLayer *layer = scene->layer(k->initLayer);
 		 TupFrame *frame = layer->frame(k->currentTween->initFrame());
 		 int objectIndex = frame->indexOf(item);
-
-                 tError() << "applyTween() - Object index: " << objectIndex;
-
 		 QRectF rect = item->sceneBoundingRect();
 		 QPointF point = rect.topLeft();
+                 TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item); 
 
-		 if (TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item)) {
+		 if (svg) {
 		     type = TupLibraryObject::Svg;
 		     objectIndex = frame->indexOf(svg);
 		 } else {
@@ -608,7 +606,10 @@ void Tweener::applyTween()
 
 		 if (k->initFrame != k->currentTween->initFrame()) {
 		     QDomDocument dom;
-		     dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
+                     if (type == TupLibraryObject::Svg)
+                         dom.appendChild(svg->toXml(dom));
+                     else
+		         dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
 
 		     TupProjectRequest request = TupRequestBuilder::createItemRequest(k->initScene, k->initLayer, 
 										      k->initFrame, 0, QPointF(), 
@@ -626,12 +627,13 @@ void Tweener::applyTween()
 
 
                      frame = layer->frame(k->initFrame);
-                     if (type == TupLibraryObject::Item)
+                     if (type == TupLibraryObject::Item) {
                          objectIndex = frame->graphicItemsCount() - 1;
-                     else
+                         newList.append(frame->graphic(objectIndex)->item());
+                     } else {
                          objectIndex = frame->svgItemsCount() - 1;
-
-                     newList.append(frame->graphic(objectIndex)->item());
+                         newList.append(frame->svg(objectIndex));
+                     }
 		 }
 
 		 QString route = pathToCoords();
@@ -641,7 +643,7 @@ void Tweener::applyTween()
 					     objectIndex,
 					     QPointF(), k->scene->spaceMode(), type,
 					     TupProjectRequest::SetTween,
-                                             k->configurator->tweenToXml(k->initScene, k->initLayer, k->initFrame, QPoint(0, 0), route));
+                                             k->configurator->tweenToXml(k->initScene, k->initLayer, k->initFrame, point, route));
 		 emit requested(&request);
 	}
 

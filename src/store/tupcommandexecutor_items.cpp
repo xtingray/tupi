@@ -82,19 +82,26 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
             if (layer) {
                 TupFrame *frame = layer->frame(framePosition);
                 if (frame) {
-                    // SQA: Check if svg objects are really created in this method 
                     if (type == TupLibraryObject::Svg) {
                         TupSvgItem *svg = frame->createSvgItem(point, xml);
-                        if (svg)
+                        if (svg) {
                             response->setItemIndex(frame->svgItemsCount()-1);
-                        else
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupCommandExecutor::createItem() - Fatal Error: Svg object is invalid!";
+                            #endif
                             return false;
+                        }
                     } else {
                         QGraphicsItem *item = frame->createItem(point, xml);
-                        if (item)
+                        if (item) {
                             response->setItemIndex(frame->graphicItemsCount()-1);
-                        else
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupCommandExecutor::createItem() - Fatal Error: QGraphicsItem object is invalid!";
+                            #endif
                             return false;
+                        }
                     }
 
                     response->setFrameState(frame->isEmpty());
@@ -102,13 +109,13 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
                 } else {
                     #ifdef K_DEBUG
-                           tError() << "TupCommandExecutor::createItem() - Error: " << tr("Frame doesn't exist!");
+                           tError() << "TupCommandExecutor::createItem() - Fatal Error: Frame doesn't exist! [ " << framePosition << " ]";
                     #endif
                     return false;
                 }
             } else {
                 #ifdef K_DEBUG
-                       tError() << "TupCommandExecutor::createItem() - Error: " << tr("Layer doesn't exist!");
+                       tError() << "TupCommandExecutor::createItem() - Fatal Error: Layer doesn't exist! [ " << layerPosition << " ]";
                 #endif
                 return false;
             }
@@ -123,7 +130,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                            frame = bg->dynamicFrame();
                 } else {
                     #ifdef K_DEBUG
-                           tError() << "TupCommandExecutor::createItem() - Invalid mode!";
+                           tError() << "TupCommandExecutor::createItem() - Fatal Error: Invalid mode!";
                     #endif
 
                     return false;
@@ -132,28 +139,36 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
                         TupSvgItem *svg = frame->createSvgItem(point, xml);
-                        if (svg)
+                        if (svg) {
                             response->setItemIndex(frame->indexOf(svg));
-                        else
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupCommandExecutor::createItem() - Fatal Error: Svg object is invalid!";
+                            #endif
                             return false;
+                        }
                     } else {
                         QGraphicsItem *item = frame->createItem(point, xml);
-                        if (item)
+                        if (item) {
                             response->setItemIndex(frame->indexOf(item));
-                        else
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupCommandExecutor::createItem() - Fatal Error: QGraphicsItem object is invalid!";
+                            #endif
                             return false;
+                        }
                     }
 
                     emit responsed(response);
                 } else {
                     #ifdef K_DEBUG
-                           tError() << "TupCommandExecutor::createItem() - Invalid background frame!";
+                           tError() << "TupCommandExecutor::createItem() - Fatal Error: Invalid background frame!";
                     #endif
                     return false;
                 }
             } else {
                 #ifdef K_DEBUG
-                       tError() << "TupCommandExecutor::createItem() - Invalid background data structure!";
+                       tError() << "TupCommandExecutor::createItem() - Fatal Error: Invalid background data structure!";
                 #endif
                 return false;
             }
@@ -161,7 +176,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
     } else {
         #ifdef K_DEBUG
-               tError() << "TupCommandExecutor::createItem() - Error: Invalid scene index!";
+               tError() << "TupCommandExecutor::createItem() - Fatal Error: Invalid scene index!";
         #endif
         return false;
     }
@@ -881,11 +896,7 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
     int framePosition = response->frameIndex();
     TupLibraryObject::Type itemType = response->itemType();
     int position = response->itemIndex();
-    
     QString xml = response->arg().toString();
-    // tFatal() << "TupCommandExecutor::setTween() - xml: ";
-    // tFatal() << xml;
-
     TupScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
@@ -899,28 +910,26 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
                 tween->fromXml(xml);
 
                 if (itemType == TupLibraryObject::Item) {
-
-                    TupGraphicObject *object = frame->graphic(position);
-                    if (object == 0) {
+                    TupGraphicObject *item = frame->graphic(position);
+                    if (item) {
+                        item->setTween(tween);
+                        scene->addTweenObject(item);
+                    } else {
                         #ifdef K_DEBUG
-                               tFatal() << "TupCommandExecutor::setTween() - Invalid graphic index: " << position;
+                               tError() << "TupCommandExecutor::setTween() - Fatal Error: Invalid graphic index [ " << position << " ]";
                         #endif
                         return false;
-                    } else {
-                        object->setTween(tween);
-                        scene->addTweenObject(object);
                     }
-
                 } else {
-                    TupSvgItem *object = frame->svg(position); 
-                    if (object == 0) {
+                    TupSvgItem *svg = frame->svg(position); 
+                    if (svg) {
+                        svg->setTween(tween);
+                        scene->addTweenObject(svg);
+                    } else {
                         #ifdef K_DEBUG
-                               tFatal() << "TupCommandExecutor::setTween() - Invalid svg index: " << position;
+                               tError() << "TupCommandExecutor::setTween() - Fatal Error: Invalid svg index [ " << position << " ]";
                         #endif
                         return false;
-                    } else {
-                        object->setTween(tween);
-                        scene->addTweenObject(object);
                     }
                 }
 

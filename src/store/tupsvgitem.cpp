@@ -51,14 +51,12 @@ struct TupSvgItem::Private
     QPointF lastTweenPos;
 };
 
-TupSvgItem::TupSvgItem(QGraphicsItem * parent)
-    : QGraphicsSvgItem(parent), k(new Private)
+TupSvgItem::TupSvgItem(QGraphicsItem * parent) : QGraphicsSvgItem(parent), k(new Private)
 {
     setAcceptHoverEvents(true);
 }
 
-TupSvgItem::TupSvgItem(QString &file, TupFrame *frame)
-    : QGraphicsSvgItem(file), k(new Private)
+TupSvgItem::TupSvgItem(QString &file, TupFrame *frame) : QGraphicsSvgItem(file), k(new Private)
 {
     setAcceptHoverEvents(true);
     k->path = file;
