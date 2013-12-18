@@ -67,6 +67,7 @@ class Configurator : public QFrame
         void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
+        int startFrame();
         int startComboSize();
         void closeSettingsPanel();
         TupToolPlugin::Mode mode();

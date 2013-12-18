@@ -50,9 +50,6 @@ class Settings : public QWidget
     Q_OBJECT
 
     public:
-        // enum Mode { Add = 1, Edit, View };
-        // enum EditMode { Selection = 0, Properties, None };
-
         Settings(QWidget *parent = 0);
         ~Settings();
 
@@ -64,21 +61,22 @@ class Settings : public QWidget
         int totalSteps();
 
         void notifySelection(bool flag);
+        int startFrame();
         int startComboSize();
         QString currentTweenName() const;
-        void activatePropertiesMode(TupToolPlugin::EditMode mode);
-        // void activateSelectionMode();
+        void activateMode(TupToolPlugin::EditMode mode);
         QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point);
 
     private slots:
         void applyTween();
         void emitOptionChanged(int option);
-        void checkBottomLimit(int index);
+        // void checkBottomLimit(int index);
         void checkTopLimit(int index);
         void updateTotalSteps(const QString &text);
         void updateLoopCheckbox(int state);
         void updateReverseCheckbox(int state);
-        
+        void updateLastFrame();
+     
     signals:
         void clickedSelect();
         void clickedDefineProperties();

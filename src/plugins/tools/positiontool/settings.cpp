@@ -49,6 +49,7 @@
 #include <QBoxLayout>
 #include <QHeaderView>
 #include <QGraphicsPathItem>
+#include <QDir>
 
 struct Settings::Private
 {
@@ -189,7 +190,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int startFram
 
     k->comboInit->setEnabled(false);
     k->apply->setToolTip(tr("Save Tween"));
-    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
+    k->remove->setIcon(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
 
     initStartCombo(framesTotal, startFrame);

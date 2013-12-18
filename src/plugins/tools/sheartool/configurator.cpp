@@ -186,6 +186,11 @@ void Configurator::setStartFrame(int currentIndex)
     k->settingsPanel->setStartFrame(currentIndex);
 }
 
+int Configurator::startFrame()
+{
+    return k->settingsPanel->startFrame();
+}
+
 int Configurator::startComboSize()
 {
     return k->settingsPanel->startComboSize();
@@ -203,18 +208,19 @@ int Configurator::totalSteps()
 
 void Configurator::activatePropertiesMode(TupToolPlugin::EditMode mode)
 {
-    k->settingsPanel->activatePropertiesMode(mode);
+    k->settingsPanel->activateMode(mode);
 }
 
 void Configurator::addTween(const QString &name)
 {
-    activeTweenManagerPanel(false);
-
     k->mode = TupToolPlugin::Add;
-    k->state = Configurator::Properties;
 
     k->settingsPanel->setParameters(name, k->framesTotal, k->currentFrame);
+    
+    activeTweenManagerPanel(false);
     activePropertiesPanel(true);
+
+    k->state = Properties;
 
     emit setMode(k->mode);
 }
@@ -224,7 +230,7 @@ void Configurator::editTween()
     activeTweenManagerPanel(false);
 
     k->mode = TupToolPlugin::Edit;
-    k->state = Configurator::Properties;
+    k->state = Properties;
 
     k->settingsPanel->notifySelection(true);
     k->settingsPanel->setParameters(k->currentTween);

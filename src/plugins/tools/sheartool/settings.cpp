@@ -127,7 +127,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activatePropertiesMode(TupToolPlugin::Selection);
+    activateMode(TupToolPlugin::Selection);
 }
 
 Settings::~Settings()
@@ -149,7 +149,8 @@ void Settings::setInnerForm()
     k->comboInit->setEditable(false);
 
     k->comboInit->setValidator(new QIntValidator(k->comboInit));
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
+    // connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLastFrame()));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
@@ -294,24 +295,21 @@ void Settings::setParameters(const QString &name, int framesTotal, int initFrame
     k->mode = TupToolPlugin::Add;
     k->input->setText(name);
 
-    activatePropertiesMode(TupToolPlugin::Selection);
+    k->comboInit->setEnabled(false);
+    activateMode(TupToolPlugin::Selection);
     k->apply->setToolTip(tr("Save Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
 
-    k->comboInit->setCurrentIndex(initFrame);
-    k->comboInit->setEditable(false);
-    k->comboInit->setEnabled(false);
+    initStartCombo(framesTotal, initFrame);
 }
 
 // Editing new Tween
 
 void Settings::setParameters(TupItemTweener *currentTween)
 {
-    tError() << "Settings::setParameters() - Tracing env...";
-
     setEditMode();
-    activatePropertiesMode(TupToolPlugin::Properties);
+    activateMode(TupToolPlugin::Properties);
 
     k->input->setText(currentTween->name());
 
@@ -353,6 +351,11 @@ void Settings::setStartFrame(int currentIndex)
         k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
 }
 
+int Settings::startFrame()
+{
+    return k->comboInit->currentIndex();
+}
+
 int Settings::startComboSize()
 {
     return k->comboInit->count();
@@ -385,6 +388,10 @@ void Settings::applyTween()
 
     // SQA: Verify whether tween is really well applied before call setEditMode!
     setEditMode();
+
+    if (!k->comboInit->isEnabled())
+        k->comboInit->setEnabled(true);
+
     emit clickedApplyTween();
 }
 
@@ -521,11 +528,12 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
     return doc.toString();
 }
 
-void Settings::activatePropertiesMode(TupToolPlugin::EditMode mode)
+void Settings::activateMode(TupToolPlugin::EditMode mode)
 {
     k->options->setCurrentIndex(mode);
 }
 
+/*
 void Settings::checkBottomLimit(int index)
 {
     if (index >= 0) {
@@ -533,11 +541,20 @@ void Settings::checkBottomLimit(int index)
         checkFramesRange();
     }
 }
+*/
 
 void Settings::checkTopLimit(int index)
 {
     Q_UNUSED(index);
     checkFramesRange();
+}
+
+void Settings::updateLastFrame()
+{
+    int begin = k->comboInit->currentText().toInt();
+    int end = begin + k->totalSteps - 1;
+
+    k->comboEnd->setEditText(QString::number(end));
 }
 
 void Settings::checkFramesRange()
