@@ -651,9 +651,8 @@ void Tweener::frameResponse(const TupFrameResponse *event)
         init(k->scene);
 
     if (event->action() == TupProjectRequest::Select) {
-        if (k->initLayer != event->layerIndex() || k->initScene != event->sceneIndex()) {
+        if (k->initLayer != event->layerIndex() || k->initScene != event->sceneIndex())
             init(k->scene);
-        }
     }
 }
 
