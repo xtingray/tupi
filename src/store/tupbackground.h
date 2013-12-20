@@ -36,12 +36,12 @@
 #ifndef TUPBACKGROUND_H
 #define TUPBACKGROUND_H
 
-#include <QImage>
-#include <QPixmap>
-
 #include "tupabstractserializable.h"
 #include "tupglobal_store.h"
 #include "tupscene.h"
+
+#include <QImage>
+#include <QPixmap>
 
 /**
  * @author Gustav Gonzalez
