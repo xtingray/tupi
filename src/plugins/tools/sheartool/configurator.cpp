@@ -206,7 +206,7 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activatePropertiesMode(TupToolPlugin::EditMode mode)
+void Configurator::activateMode(TupToolPlugin::EditMode mode)
 {
     k->settingsPanel->activateMode(mode);
 }
@@ -301,8 +301,8 @@ TupToolPlugin::Mode Configurator::mode()
 
 void Configurator::applyItem()
 {
-     k->mode = TupToolPlugin::Edit;
-     emit clickedApplyTween();
+    k->mode = TupToolPlugin::Edit;
+    emit clickedApplyTween();
 }
 
 void Configurator::resetUI()

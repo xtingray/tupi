@@ -36,8 +36,8 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include <QFrame>
 #include "settings.h"
+#include <QFrame>
 
 class QGraphicsPathItem;
 class QListWidgetItem;
@@ -61,9 +61,10 @@ class Configurator : public QFrame
 
         void initStartCombo(int framesTotal, int currentFrame);
         void setStartFrame(int currentIndex);
-
+        int startFrame();
+  
         int totalSteps();
-        void activatePropertiesMode(TupToolPlugin::EditMode mode);
+        void activateMode(TupToolPlugin::EditMode mode);
         void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
@@ -71,7 +72,7 @@ class Configurator : public QFrame
         void closeSettingsPanel();
         TupToolPlugin::Mode mode();
         void resetUI();
-        QString tweenToXml(int currentFrame, QPointF point);
+        QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point);
         
     private slots:
         void applyItem();

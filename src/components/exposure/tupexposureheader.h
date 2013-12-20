@@ -39,15 +39,9 @@
 #include <QHeaderView>
 #include <QPainter>
 #include <QStyleOptionButton>
-//#include <QMap>
 #include <QVector>
-//#include <QItemDelegate>
 #include <QLineEdit>
 #include <QMouseEvent>
-//#include <QMenu>
-
-//#include "tdebug.h"
-//#include <tupglobal.h>
 
 struct LayerItem
 {
@@ -78,6 +72,7 @@ class TupExposureHeader: public QHeaderView
         bool signalMovedBlocked();
         void setVisibilityChanged(int logicalndex, bool visibility);
         int layersTotal();
+        int currentLayerIndex();
 
     public slots:
         void updateSelection(int col);

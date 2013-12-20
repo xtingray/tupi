@@ -186,14 +186,19 @@ void Configurator::setStartFrame(int currentIndex)
     k->settingsPanel->setStartFrame(currentIndex);
 }
 
+int Configurator::startFrame()
+{
+    return k->settingsPanel->startFrame();
+}
+
 int Configurator::startComboSize()
 {
     return k->settingsPanel->startComboSize();
 }
 
-QString Configurator::tweenToXml(int currentFrame, QPointF point)
+QString Configurator::tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point)
 {
-    return k->settingsPanel->tweenToXml(currentFrame, point);
+    return k->settingsPanel->tweenToXml(currentScene, currentLayer, currentFrame, point);
 }
 
 int Configurator::totalSteps()
@@ -201,9 +206,9 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
-void Configurator::activatePropertiesMode(TupToolPlugin::EditMode mode)
+void Configurator::activateMode(TupToolPlugin::EditMode mode)
 {
-    k->settingsPanel->activatePropertiesMode(mode);
+    k->settingsPanel->activateMode(mode);
 }
 
 void Configurator::addTween(const QString &name)

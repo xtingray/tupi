@@ -83,15 +83,14 @@ class Tweener : public TupToolPlugin
         void disableSelection();
         void addTarget();
         void removeTweenFromProject(const QString &name);
-        int maxZValue();
 
     private:
         struct Private;
         Private *const k;
 
     private slots:
-        void setSelect();
-        void setAngleMode();
+        void setSelection();
+        void setPropertiesMode();
         void updateMode(TupToolPlugin::Mode mode);
         void applyReset();
         void applyTween();

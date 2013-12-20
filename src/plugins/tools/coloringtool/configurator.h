@@ -36,8 +36,8 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include <QFrame>
 #include "settings.h"
+#include <QFrame>
 
 class QGraphicsPathItem;
 class QListWidgetItem;
@@ -61,17 +61,20 @@ class Configurator : public QFrame
 
         void initStartCombo(int framesTotal, int currentFrame);
         void setStartFrame(int currentIndex);
+        int startFrame();
 
         int totalSteps();
+        void activateMode(TupToolPlugin::EditMode mode);
         void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
+        int startComboSize();
         void setInitialColor(QColor color);
 
         void closeSettingsPanel();
         TupToolPlugin::Mode mode();
         void resetUI();
-        QString tweenToXml(int currentFrame);
+        QString tweenToXml(int currentScene, int currentLayer, int currentFrame);
         
     private slots:
         void applyItem();

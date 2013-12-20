@@ -186,9 +186,19 @@ void Configurator::setStartFrame(int currentIndex)
     k->settingsPanel->setStartFrame(currentIndex);
 }
 
-QString Configurator::tweenToXml(int currentFrame)
+int Configurator::startFrame()
 {
-    return k->settingsPanel->tweenToXml(currentFrame);
+    return k->settingsPanel->startFrame();
+}
+
+int Configurator::startComboSize()
+{
+    return k->settingsPanel->startComboSize();
+}
+
+QString Configurator::tweenToXml(int currentScene, int currentLayer, int currentFrame)
+{
+    return k->settingsPanel->tweenToXml(currentScene, currentLayer, currentFrame);
 }
 
 int Configurator::totalSteps()

@@ -78,7 +78,7 @@ class Tweener : public TupToolPlugin
         int framesTotal();
         void clearSelection();
         void disableSelection();
-        void addTargetSign();
+        void addTarget();
         void removeTweenFromProject(const QString &name);
 
     private:

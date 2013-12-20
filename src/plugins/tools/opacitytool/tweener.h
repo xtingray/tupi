@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#ifndef OPACITYTWEENER_H
+#define OPACITYTWEENER_H
 
 #include "tuptoolplugin.h"
 #include "settings.h"
@@ -86,7 +86,7 @@ class Tweener : public TupToolPlugin
 
     private slots:
         void setCurrentTween(const QString &name);
-        void setSelect();
+        void setSelection();
         void setPropertiesMode(); 
         void updateMode(TupToolPlugin::Mode mode);
         void updateStartPoint(int index);

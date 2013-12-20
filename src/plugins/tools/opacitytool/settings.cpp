@@ -47,6 +47,7 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QDir>
 
 struct Settings::Private
 {
@@ -100,10 +101,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->options->addItem(tr("Set Properties"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
-    k->apply = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/save.png"), 22);
+    k->apply = new TImageButton(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "save.png"), 22);
     connect(k->apply, SIGNAL(clicked()), this, SLOT(applyTween()));
 
-    k->remove = new TImageButton(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"), 22);
+    k->remove = new TImageButton(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "close.png"), 22);
     connect(k->remove, SIGNAL(clicked()), this, SIGNAL(clickedResetTween()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
@@ -122,7 +123,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activatePropertiesMode(TupToolPlugin::Selection);
+    activateMode(TupToolPlugin::Selection);
 }
 
 Settings::~Settings()
@@ -144,7 +145,7 @@ void Settings::setInnerForm()
     k->comboInit->setEditable(false);
     k->comboInit->setValidator(new QIntValidator(k->comboInit));
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLastFrame()));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
@@ -282,20 +283,18 @@ void Settings::setParameters(const QString &name, int framesTotal, int initFrame
     k->mode = TupToolPlugin::Add;
     k->input->setText(name);
 
-    activatePropertiesMode(TupToolPlugin::Selection);
+    activateMode(TupToolPlugin::Selection);
     k->apply->setToolTip(tr("Save Tween"));
-    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close.png"));
+    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
 
-    k->comboInit->setCurrentIndex(initFrame);
-    k->comboInit->setEditable(false);
-    k->comboInit->setEnabled(false);
+    initStartCombo(framesTotal, initFrame);
 }
 
 void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
-    activatePropertiesMode(TupToolPlugin::Properties);
+    activateMode(TupToolPlugin::Properties);
 
     k->input->setText(currentTween->name());
 
@@ -337,6 +336,16 @@ void Settings::setStartFrame(int currentIndex)
         k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
 }
 
+int Settings::startFrame()
+{
+    return k->comboInit->currentIndex();
+}
+
+int Settings::startComboSize()
+{
+    return k->comboInit->count();
+}
+
 int Settings::totalSteps()
 {
     return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
@@ -346,7 +355,7 @@ void Settings::setEditMode()
 {
     k->mode = TupToolPlugin::Edit;
     k->apply->setToolTip(tr("Update Tween"));
-    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
+    k->remove->setIcon(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "close_properties.png"));
     k->remove->setToolTip(tr("Close Tween properties"));
 }
 
@@ -364,6 +373,10 @@ void Settings::applyTween()
 
     // SQA: Verify Tween is really well applied before call setEditMode!
     setEditMode();
+
+    if (!k->comboInit->isEnabled())
+        k->comboInit->setEnabled(true);
+
     emit clickedApplyTween();
 }
 
@@ -403,14 +416,16 @@ void Settings::emitOptionChanged(int option)
     }
 }
 
-QString Settings::tweenToXml(int currentFrame)
+QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFrame)
 {
     QDomDocument doc;
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", currentTweenName());
     root.setAttribute("type", TupItemTweener::Opacity);
-    root.setAttribute("init", currentFrame);
+    root.setAttribute("initFrame", currentFrame);
+    root.setAttribute("initLayer", currentLayer);
+    root.setAttribute("initScene", currentScene);
   
     checkFramesRange();
     root.setAttribute("frames", k->totalSteps);
@@ -486,15 +501,17 @@ QString Settings::tweenToXml(int currentFrame)
     return doc.toString();
 }
 
-void Settings::activatePropertiesMode(TupToolPlugin::EditMode mode)
+void Settings::activateMode(TupToolPlugin::EditMode mode)
 {
     k->options->setCurrentIndex(mode);
 }
 
-void Settings::checkBottomLimit(int index)
+void Settings::updateLastFrame()
 {
-    emit startingPointChanged(index);
-    checkFramesRange();
+    int begin = k->comboInit->currentText().toInt();
+    int end = begin + k->totalSteps - 1;
+
+    k->comboEnd->setEditText(QString::number(end));
 }
 
 void Settings::checkTopLimit(int index)
@@ -519,12 +536,16 @@ void Settings::checkFramesRange()
 
 void Settings::updateLoopCheckbox(int state)
 {
+    Q_UNUSED(state);
+
     if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
         k->loopBox->setChecked(false);
 }
 
 void Settings::updateReverseCheckbox(int state)
 {
+    Q_UNUSED(state);
+
     if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
         k->reverseLoopBox->setChecked(false);
 }

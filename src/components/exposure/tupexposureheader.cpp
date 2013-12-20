@@ -45,8 +45,8 @@
 #include <QMouseEvent>
 #include <QMenu>
 
-#include "tdebug.h"
-#include <tupglobal.h>
+// #include "tdebug.h"
+// #include <tupglobal.h>
 
 /*
 struct LayerItem
@@ -258,6 +258,11 @@ void TupExposureHeader::updateSelection(int col)
 int TupExposureHeader::layersTotal()
 {
     return m_layers.size();
+}
+
+int TupExposureHeader::currentLayerIndex()
+{
+    return currentCol;
 }
 
 //#include "tupexposuretable.moc"

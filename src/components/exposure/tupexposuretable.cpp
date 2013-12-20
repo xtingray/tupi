@@ -353,6 +353,8 @@ void TupExposureTable::selectFrame(int layerIndex, int frameIndex)
            T_FUNCINFO;
     #endif
 
+    if (k->header->currentLayerIndex() != layerIndex)
+        k->header->updateSelection(layerIndex);
     setCurrentCell(frameIndex, k->header->logicalIndex(layerIndex));
 }
 
@@ -586,7 +588,7 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
             setCurrentCell(row, currentColumn());
         } else {
             #ifdef K_DEBUG
-                   tError() << "TupExposureTable::keyPressEvent() - Error: wrong frame index: " << row;
+                   tWarning() << "TupExposureTable::keyPressEvent() - Warning: wrong frame index [ " << row << " ]";
             #endif
         }
 
@@ -600,7 +602,7 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
             setCurrentCell(next, currentColumn());
         } else {
             #ifdef K_DEBUG
-                   tError() << "TupExposureTable::keyPressEvent() - Error: wrong frame index: " << next;
+                   tWarning() << "TupExposureTable::keyPressEvent() - Warning: wrong frame index [ " << next << " ]";
             #endif
         }
 

@@ -729,7 +729,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *e)
                 break;
                 case TupProjectRequest::Lock:
                  {
-                     table->setLockFrame(e->layerIndex(), e->frameIndex(),  e->arg().toBool());
+                     table->setLockFrame(e->layerIndex(), e->frameIndex(), e->arg().toBool());
                  }
                 break;
                 case TupProjectRequest::Rename:
@@ -740,16 +740,17 @@ void TupExposureSheet::frameResponse(TupFrameResponse *e)
                 case TupProjectRequest::Select:
                  {
                      table->blockSignals(true);
-                     // setScene(e->sceneIndex());
                      table->selectFrame(e->layerIndex(), e->frameIndex());
                      table->blockSignals(false);
                  }
                 break;
                 case TupProjectRequest::Expand:
                  {
+                     /*
                      tFatal() << "TupExposureSheet::frameResponse - Expand! -> Just Tracing!";
                      tFatal() << "TupExposureSheet::frameResponse - Starting point: -> " << e->frameIndex();
                      tFatal() << "TupExposureSheet::frameResponse - Range: -> " << e->arg().toInt();
+                     */
                      for(int i = 0; i < e->arg().toInt(); i++)
                          table->insertFrame(e->layerIndex(), e->frameIndex()+i+1, 
                                             table->frameName(e->layerIndex(), e->frameIndex()), 

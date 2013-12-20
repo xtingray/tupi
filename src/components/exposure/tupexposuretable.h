@@ -63,7 +63,8 @@ class TupExposureTable : public QTableWidget
         {
           Unset = 0,
           Empty,
-          Used
+          Used,
+          UsedWithTween
         };
 
         TupExposureTable(QWidget * parent = 0);

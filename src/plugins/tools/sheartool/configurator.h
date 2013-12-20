@@ -63,7 +63,7 @@ class Configurator : public QFrame
         void setStartFrame(int currentIndex);
 
         int totalSteps();
-        void activatePropertiesMode(TupToolPlugin::EditMode mode);
+        void activateMode(TupToolPlugin::EditMode mode);
         void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);

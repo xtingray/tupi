@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef ROTATIONTWEENER_H
-#define ROTATIONTWEENER_H
+#ifndef SCALETWEENER_H
+#define SCALETWEENER_H
 
 #include "tuptoolplugin.h"
 #include "settings.h"
@@ -80,14 +80,14 @@ class Tweener : public TupToolPlugin
         void disableSelection();
         void addTarget();
         void removeTweenFromProject(const QString &name);
-        int maxZValue();
+        // int maxZValue();
 
     private:
         struct Private;
         Private *const k;
 
     private slots:
-        void setSelect();
+        void setSelection();
         void setPropertiesMode();
         void updateMode(TupToolPlugin::Mode mode);
         void applyReset();

@@ -188,9 +188,19 @@ void Configurator::setStartFrame(int currentIndex)
     k->settingsPanel->setStartFrame(currentIndex);
 }
 
-QString Configurator::tweenToXml(int currentFrame)
+int Configurator::startFrame()
 {
-    return k->settingsPanel->tweenToXml(currentFrame);
+    return k->settingsPanel->startFrame();
+}
+
+int Configurator::startComboSize()
+{
+    return k->settingsPanel->startComboSize();
+}
+
+QString Configurator::tweenToXml(int currentScene, int currentLayer, int currentFrame)
+{
+    return k->settingsPanel->tweenToXml(currentScene, currentLayer, currentFrame);
 }
 
 int Configurator::totalSteps()
@@ -198,10 +208,13 @@ int Configurator::totalSteps()
     return k->settingsPanel->totalSteps();
 }
 
+void Configurator::activateMode(TupToolPlugin::EditMode mode)
+{
+    k->settingsPanel->activateMode(mode);
+}
+
 void Configurator::addTween(const QString &name)
 {
-    tFatal() << "Configurator::addTween() - Adding Tween: " << name;
-
     activeTweenManagerPanel(false);
 
     k->mode = TupToolPlugin::Add;
