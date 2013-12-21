@@ -43,7 +43,7 @@
 
 /*
 #ifdef HAVE_GST10
-#include <gst/gst.h>
+#include "gst/gst.h"
 #endif
 */
 

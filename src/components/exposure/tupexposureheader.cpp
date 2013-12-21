@@ -45,8 +45,7 @@
 #include <QMouseEvent>
 #include <QMenu>
 
-// #include "tdebug.h"
-// #include <tupglobal.h>
+#include "tdebug.h"
 
 /*
 struct LayerItem

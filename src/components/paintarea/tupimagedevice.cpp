@@ -38,7 +38,6 @@
 
 #include <QPainter>
 #include <QPaintEngine>
-// #include <QTimer>
 
 TupImageDevice::TupImageDevice(QWidget *parent) : QWidget(parent)
 {
