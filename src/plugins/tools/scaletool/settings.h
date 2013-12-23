@@ -70,7 +70,6 @@ class Settings : public QWidget
     private slots:
         void applyTween();
         void emitOptionChanged(int option);
-        void checkBottomLimit(int index);
         void checkTopLimit(int index);
         void updateTotalSteps(const QString &text);
         void updateLoopCheckbox(int state);

@@ -532,16 +532,6 @@ void Settings::activateMode(TupToolPlugin::EditMode mode)
     k->options->setCurrentIndex(mode);
 }
 
-/*
-void Settings::checkBottomLimit(int index)
-{
-    if (index >= 0) {
-        emit initFrameChanged(index);
-        checkFramesRange();
-    }
-}
-*/
-
 void Settings::checkTopLimit(int index)
 {
     Q_UNUSED(index);
