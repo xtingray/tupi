@@ -16,6 +16,7 @@ SOURCES += tffmpegmoviegenerator.cpp \
 CONFIG += plugin warn_on
 TEMPLATE = lib 
 TARGET = tupiffmpegplugin
+LIBS += -lavformat -lavcodec -lavutil
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
