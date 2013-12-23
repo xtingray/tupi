@@ -43,7 +43,7 @@ TUPI_INSTALL=$2
 INSTALL_NAME=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
 
 declare -a LIBS=('libtupigui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
-'libquazip.dylib' 'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' \
+'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' \
 'libtupifwcore.dylib');
 
 cd $TUPI_GIT_REPOSITORY
@@ -74,7 +74,7 @@ for lib in ${LIBS[@]}; do
     $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/Tupi $lib @executable_path/../Frameworks/$lib  \;
 done
 
-cp -r /usr/local/Cellar/qt/4.8.3/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib $TUPI_INSTALL/Tupi.app/Contents/Resources
+cp -r /usr/local/Cellar/qt/4.8.5/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib $TUPI_INSTALL/Tupi.app/Contents/Resources
 
 cd $TUPI_INSTALL
 
@@ -91,5 +91,5 @@ for lib in ${LIBS[@]}; do
     done
 done
 
-macdeployqt Tupi.app -no-strip -dmg
+sudo macdeployqt Tupi.app -no-strip -dmg
 

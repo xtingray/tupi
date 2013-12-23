@@ -13,4 +13,4 @@ unix:!macx {
 
 # Input
 SOURCES += main.cpp
-LIBS += -lquazip
+LIBS += -L/usr/local/lib -lquazip
