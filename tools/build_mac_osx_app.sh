@@ -93,3 +93,7 @@ done
 
 sudo macdeployqt Tupi.app -no-strip -dmg
 
+# DLYB manual fixes
+cd Tupi.app/Contents/Frameworks/
+install_name_tool -change @executable_path/../Frameworks/libavutil.52.18.100.dylib @executable_path/../Frameworks/libavutil.52.dylib libtupifwgui.dylib
+
