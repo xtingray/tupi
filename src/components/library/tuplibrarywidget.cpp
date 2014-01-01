@@ -792,7 +792,8 @@ void TupLibraryWidget::importBitmap()
             if (answer == QMessageBox::Yes) {
                 pixmap = new QPixmap();
                 QString extension = fileInfo.suffix().toUpper();
-                QByteArray ba = extension.toAscii();
+                // QByteArray ba = extension.toAscii();
+                QByteArray ba = extension.toLatin1();
                 const char* ext = ba.data();
                 if (pixmap->loadFromData(data, ext)) {
                     QPixmap newpix;
@@ -972,7 +973,8 @@ void TupLibraryWidget::importBitmapArray()
                              if (resize) {
                                  pixmap = new QPixmap();
                                  QString extension = fileInfo.suffix().toUpper();
-                                 QByteArray ba = extension.toAscii();
+                                 // QByteArray ba = extension.toAscii();
+                                 QByteArray ba = extension.toLatin1(); 
                                  const char* ext = ba.data();
                                  if (pixmap->loadFromData(data, ext)) {
                                      int width = projectWidth;

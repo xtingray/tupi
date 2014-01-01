@@ -53,6 +53,7 @@ class QKeySequence;
 class InkTool : public TupToolPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.maefloresta.tupi.TupToolInterface" FILE "inktool.json")
     
     public:
         InkTool();

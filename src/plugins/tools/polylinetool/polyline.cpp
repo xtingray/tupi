@@ -485,4 +485,4 @@ QCursor PolyLine::cursor() const
     return k->cursor;
 }
 
-Q_EXPORT_PLUGIN2(tup_polyline, PolyLine);
+// Q_EXPORT_PLUGIN2(tup_polyline, PolyLine);

@@ -61,7 +61,8 @@ struct TControlNode::Private
 
 TControlNode::TControlNode(int index, TNodeGroup *nodeGroup, const QPointF & pos, 
                            QGraphicsItem *graphicParent, QGraphicsScene *scene, int level) : 
-                           QGraphicsItem(0, scene), k(new Private)
+                           QGraphicsItem(), k(new Private)
+                           // QGraphicsItem(0, scene), k(new Private)
 {
     k->index  = index;
     k->graphicParent = 0;
@@ -143,12 +144,14 @@ QRectF TControlNode::boundingRect() const
 
     if (k->rightNode) {
         if (k->rightNode->isVisible())
-            rect.unite(k->rightNode->boundingRect());
+            rect.united(k->rightNode->boundingRect());
+            // rect.unite(k->rightNode->boundingRect());
     }
 
     if (k->leftNode) {
         if (k->leftNode->isVisible())
-           rect.unite(k->leftNode->boundingRect());
+            rect.united(k->leftNode->boundingRect());
+           // rect.unite(k->leftNode->boundingRect());
     }
 
     return rect;

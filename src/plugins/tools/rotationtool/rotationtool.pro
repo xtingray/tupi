@@ -14,9 +14,20 @@ SOURCES += tweener.cpp \
            configurator.cpp \
            settings.cpp
 
+OTHER_FILES += rotationtool.json
+
 CONFIG += plugin warn_on
 TEMPLATE = lib
 TARGET = tupirotationtool
+
+INCLUDEPATH += ../../../libbase
+INCLUDEPATH += ../../../store
+INCLUDEPATH += ../../../libtupi
+INCLUDEPATH += = ../common
+LIBS += -L../../../libbase
+LIBS += -L../../../store
+LIBS += -L../../../libtupi
+LIBS += -L../common
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

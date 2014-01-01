@@ -125,7 +125,8 @@ void TupColorPicker::setColor(int hue, int saturation)
     QRect rect(colorPoint(), QSize(20,20));
     k->hue = nhue; 
     k->saturation = nsat;
-    rect = rect.unite(QRect(colorPoint(), QSize(20,20)));
+    // rect = rect.unite(QRect(colorPoint(), QSize(20,20)));
+    rect = rect.united(QRect(colorPoint(), QSize(20,20)));
     rect.translate(contentsRect().x()-9, contentsRect().y()-9);
 
     repaint(rect);
@@ -139,7 +140,8 @@ void TupColorPicker::setHUE(int hue)
 
     QRect rect(colorPoint(), QSize(20, 20));
     k->hue = newHue;
-    rect = rect.unite(QRect(colorPoint(), QSize(20, 20)));
+    // rect = rect.unite(QRect(colorPoint(), QSize(20, 20)));
+    rect = rect.united(QRect(colorPoint(), QSize(20, 20)));
     rect.translate(contentsRect().x()-9, contentsRect().y()-9);
 
     repaint(rect);
@@ -153,7 +155,8 @@ void TupColorPicker::setSaturation(int saturation)
 
     QRect rect(colorPoint(), QSize(20,20));
     k->saturation = newSat;
-    rect = rect.unite(QRect(colorPoint(), QSize(20,20)));
+    // rect = rect.unite(QRect(colorPoint(), QSize(20,20)));
+    rect = rect.united(QRect(colorPoint(), QSize(20,20)));
     rect.translate(contentsRect().x()-9, contentsRect().y()-9);
 
     repaint(rect);

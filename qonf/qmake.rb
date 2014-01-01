@@ -89,6 +89,8 @@ class QMake
                            if version[i] < minver[i]
                               return false 
                            elsif version[i] > minver[i]
+                              @path = path
+                              print "(Found: #{qtversion}) "
                               return true
                            end
                         end
@@ -140,7 +142,7 @@ class QMake
         if recur
             options += "-r"
         end
-        
+
         output = `#{@path} #{args} #{options} `
         
         if output.strip.empty?

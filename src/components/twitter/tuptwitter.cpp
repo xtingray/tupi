@@ -80,7 +80,8 @@ void Tupwitter::start()
             this, SLOT(closeRequest(QNetworkReply*)));
 
     k->request.setUrl(QUrl(url));
-    k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
+    //k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
+    k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toLatin1());
 
     k->reply = k->manager->get(k->request);
     connect(k->reply, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -99,7 +100,8 @@ Tupwitter::~Tupwitter()
 void Tupwitter::requestFile(QString target)
 {
     k->request.setUrl(QUrl(target));
-    k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
+    // k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
+    k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toLatin1());
     k->reply = k->manager->get(k->request);
 }
 

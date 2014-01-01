@@ -420,19 +420,19 @@ void TupMainWindow::setupFileActions()
 
     TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
                                 QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
-    m_actionManager->insert(save, "saveproject", "file");
     save->setStatusTip(tr("Save current project in current location"));
+    m_actionManager->insert(save, "saveproject", "file");
 
     TAction *saveAs = new TAction(QPixmap(THEME_DIR + "icons/save_as.png"), tr("Save project &As..."), 
-                                  QKeySequence(tr("Ctrl+Shift+S")), m_actionManager);
+                                  QKeySequence(tr("Ctrl+Shift+S")), this, SLOT(saveAs()), m_actionManager);
 
-    connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
+    // connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
     m_actionManager->insert(saveAs, "saveprojectas", "file");
 
-    TAction *close = new TAction(QPixmap(THEME_DIR + "icons/close.png"), tr("Cl&ose project"), 
-                                 QKeySequence(tr("Ctrl+W")), m_actionManager);
-    connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
+    TAction *close = new TAction(QPixmap(THEME_DIR + "icons/close.png"), tr("Cl&ose project"), QKeySequence(tr("Ctrl+W")), 
+                                 this, SLOT(closeProject()), m_actionManager);
+    // connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
     close->setStatusTip(tr("Close active project"));
     m_actionManager->insert(close, "closeproject", "file");
 

@@ -9,9 +9,20 @@ target.path = /plugins/
 HEADERS += contourselection.h
 SOURCES += contourselection.cpp
 
+OTHER_FILES += contourselectiontool.json
+
 CONFIG += plugin warn_on
 TEMPLATE = lib
 TARGET = tupicontourselectiontool
+
+INCLUDEPATH += ../../../libbase
+INCLUDEPATH += ../../../store
+INCLUDEPATH += ../../../libtupi
+INCLUDEPATH += = ../common
+LIBS += -L../../../libbase
+LIBS += -L../../../store
+LIBS += -L../../../libtupi
+LIBS += -L../common
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

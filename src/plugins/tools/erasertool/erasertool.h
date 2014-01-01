@@ -50,6 +50,7 @@ class TupPathItem;
 class EraserTool : public TupToolPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.maefloresta.tupi.TupToolInterface" FILE "erasertool.json")
     
     public:
         EraserTool();

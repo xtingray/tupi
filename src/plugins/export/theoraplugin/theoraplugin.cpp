@@ -124,6 +124,6 @@ const char* TheoraPlugin::getExceptionMsg() {
     return errorMsg;
 }
 
-#ifdef HAVE_THEORA
-       Q_EXPORT_PLUGIN( TheoraPlugin );
-#endif
+// #ifdef HAVE_THEORA
+//        Q_EXPORT_PLUGIN( TheoraPlugin );
+// #endif

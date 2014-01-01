@@ -273,4 +273,4 @@ void PencilTool::sceneResponse(const TupSceneResponse *event)
         reset(k->scene);
 }
 
-Q_EXPORT_PLUGIN2(tup_brush, PencilTool);
+// Q_EXPORT_PLUGIN2(tup_brush, PencilTool);

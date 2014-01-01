@@ -170,5 +170,5 @@ void EraserTool::keyPressEvent(QKeyEvent *event)
         emit closeHugeCanvas();
 }
 
-Q_EXPORT_PLUGIN2(tup_eraser, EraserTool)
+// Q_EXPORT_PLUGIN2(tup_eraser, EraserTool)
 

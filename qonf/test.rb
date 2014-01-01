@@ -118,7 +118,6 @@ class Test
                     end
 
                     Info.info << "Priority: " << priority << "\n"
-
                     
                     # Provide solution
                     solution = parser.solution

@@ -18,8 +18,16 @@ SOURCES += tuppenwidget.cpp
 *:!macx{
     CONFIG += dll warn_on
 }
+
 TEMPLATE = lib
 TARGET = tupipen
+
+INCLUDEPATH += ../../libbase
+INCLUDEPATH += ../../store
+INCLUDEPATH += ../../libtupi
+LIBS += -L../../libbase
+LIBS += -L../../store
+LIBS += -L../../libtupi
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -49,6 +49,7 @@
 #include <QStyleOption>
 #include <QGroupBox>
 #include <QFontMetrics>
+#include <QDrag>
 
 /******************************************************************
  * Helper classes

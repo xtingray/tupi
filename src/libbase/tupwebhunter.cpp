@@ -73,7 +73,8 @@ void TupWebHunter::start()
 
     QNetworkRequest request;
     request.setUrl(QUrl(k->url));
-    request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
+    // request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
+    request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toLatin1());
 
     QNetworkReply *reply = manager->get(request);
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(slotError(QNetworkReply::NetworkError)));

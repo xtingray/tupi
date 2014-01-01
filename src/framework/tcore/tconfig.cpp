@@ -173,7 +173,8 @@ void TConfig::sync()
 
 void TConfig::beginGroup(const QString & prefix)
 {
-    QString stripped = Qt::escape(prefix);
+    // QString stripped = Qt::escape(prefix);
+    QString stripped = QString(prefix).toHtmlEscaped();
 
     stripped.replace(' ', "_");
     stripped.replace('\n', "");

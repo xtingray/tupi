@@ -346,4 +346,4 @@ QCursor ViewTool::cursor() const
    return QCursor(Qt::ArrowCursor);
 }
 
-Q_EXPORT_PLUGIN2(tup_view, ViewTool)
+// Q_EXPORT_PLUGIN2(tup_view, ViewTool)

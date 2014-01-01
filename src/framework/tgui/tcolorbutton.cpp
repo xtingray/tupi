@@ -51,6 +51,7 @@
 #include <QDropEvent>
 #include <QDragEnterEvent>
 #include <QMouseEvent>
+#include <QMimeData>
 
 TColorButton::TColorButton(QWidget* parent) : QAbstractButton(parent)
 {

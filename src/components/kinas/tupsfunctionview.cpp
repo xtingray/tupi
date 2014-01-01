@@ -45,7 +45,8 @@ TupSFunctionView::TupSFunctionView(QWidget *parent) : QTreeWidget(parent)
     setHeaderLabels(QStringList() << "Members");
     setRootIsDecorated (true);
 
-    header()->setResizeMode(QHeaderView::Stretch);
+    // header()->setResizeMode(QHeaderView::Stretch);
+    header()->setSectionResizeMode(QHeaderView::Stretch);
 
     setEditTriggers(QAbstractItemView::AnyKeyPressed);
 

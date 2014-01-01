@@ -49,10 +49,12 @@ struct TupLineGuide::Private
     bool enabled;
 };
 
-TupLineGuide::TupLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), k(new Private)
+// TupLineGuide::TupLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), k(new Private)
+TupLineGuide::TupLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(), k(new Private)
 {
     k->orientation = o;
     k->enabled = true;
+
     // setAcceptsHoverEvents(true);
     // setAcceptedMouseButtons(0);
     // setFlag(QGraphicsItem::ItemIsFocusable, false);

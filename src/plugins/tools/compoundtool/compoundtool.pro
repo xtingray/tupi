@@ -19,9 +19,20 @@ SOURCES += tweener.cpp \
            tweenertable.cpp \
            positionsettings.cpp
 
+OTHER_FILES += compoundtool.json
+
 CONFIG += plugin warn_on
 TEMPLATE = lib
 TARGET = tupicompoundtool
+
+INCLUDEPATH += ../../../libbase
+INCLUDEPATH += ../../../store
+INCLUDEPATH += ../../../libtupi
+INCLUDEPATH += = ../common
+LIBS += -L../../../libbase
+LIBS += -L../../../store
+LIBS += -L../../../libtupi
+LIBS += -L../common
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

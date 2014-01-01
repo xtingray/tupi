@@ -166,5 +166,5 @@ const char* GenericExportPlugin::getExceptionMsg() {
     return errorMsg;
 }
 
-Q_EXPORT_PLUGIN(GenericExportPlugin);
+// Q_EXPORT_PLUGIN(GenericExportPlugin);
 

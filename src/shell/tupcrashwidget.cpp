@@ -175,7 +175,8 @@ void TupCrashWidget::addBacktracePage(const QString &execInfo, const QString &ba
 void TupCrashWidget::restart()
 {
    QString path = QString::fromLocal8Bit(::getenv("TUPI_BIN")) + "/tupi &";
-   QByteArray ba = path.toAscii();
+   // QByteArray ba = path.toAscii();
+   QByteArray ba = path.toLatin1();
    system(ba.data());
    kill(m_pid, 9);
 }

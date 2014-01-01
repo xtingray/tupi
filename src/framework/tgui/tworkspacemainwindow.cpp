@@ -34,12 +34,11 @@
  ***************************************************************************/
 
 #include "tworkspacemainwindow.h"
-#include <QWorkspace>
 
 TWorkspaceMainWindow::TWorkspaceMainWindow(QWidget *parent) : TMainWindow(parent)
 {
-    m_workspace = new QWorkspace;
-    setCentralWidget(m_workspace);
+    mdiArea = new QMdiArea;
+    setCentralWidget(mdiArea);
 }
 
 TWorkspaceMainWindow::~TWorkspaceMainWindow()
@@ -49,7 +48,8 @@ TWorkspaceMainWindow::~TWorkspaceMainWindow()
 void TWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
 {
     addToPerspective(widget, perspective);
-    m_workspace->addWindow(widget);
+    // mdiArea->addWindow(widget);
+    mdiArea->addSubWindow(widget);
     widget->show();
 }
 

@@ -278,7 +278,8 @@ bool TupSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
                qreal offsetX = x;        // correction offsets
                qreal offsetY = y;        // for relative commands
 
-               switch (pathElem.toAscii()) {
+               // switch (pathElem.toAscii()) {
+               switch (pathElem.toLatin1()) {
                        case 'm': 
                        {
                            x = x0 = arg[0] + offsetX;
@@ -500,7 +501,8 @@ bool TupSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
                        break;
             }
 
-            lastMode = pathElem.toAscii();
+            // lastMode = pathElem.toAscii();
+            lastMode = pathElem.toLatin1();
         }
     }
 

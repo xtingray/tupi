@@ -111,7 +111,7 @@ void FillTool::setupActions()
 void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     if (input->buttons() == Qt::LeftButton) {
-        QGraphicsItem *item = scene->itemAt(input->pos());
+        QGraphicsItem *item = scene->itemAt(input->pos(), QTransform());
 
         if (!item) {
             #ifdef K_DEBUG
@@ -271,4 +271,4 @@ QCursor FillTool::cursor() const
     return QCursor(Qt::ArrowCursor);
 }
 
-Q_EXPORT_PLUGIN2(tup_fill, FillTool)
+// Q_EXPORT_PLUGIN2(tup_fill, FillTool)

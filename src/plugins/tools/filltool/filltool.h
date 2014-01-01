@@ -51,6 +51,7 @@ class TupPathItem;
 class FillTool : public TupToolPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "com.maefloresta.tupi.TupToolInterface" FILE "filltool.json")
     
     public:
         FillTool();

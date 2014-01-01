@@ -37,7 +37,6 @@
 #define TREELISTWIDGET_H
 
 #include "tglobal.h"
-
 #include <QTreeWidget>
 
 /**
@@ -64,7 +63,7 @@ class T_GUI_EXPORT TreeListWidget : public QTreeWidget
         void editDoubleClickedItem(QTreeWidgetItem *item, int col);
         
     protected slots:
-        virtual void closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
+        virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
         
     signals:
         void itemRenamed(QTreeWidgetItem *item);

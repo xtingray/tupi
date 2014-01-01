@@ -173,8 +173,11 @@ void TCellView::setup()
 
     setItemSize(18, 18);
 
-    horizontalHeader()->setResizeMode(QHeaderView::Custom);
-    verticalHeader()->setResizeMode(QHeaderView::Custom);
+    // horizontalHeader()->setResizeMode(QHeaderView::Custom);
+    // verticalHeader()->setResizeMode(QHeaderView::Custom);
+
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Custom);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Custom);
 }
 
 void TCellView::setItemSize(int w, int h)
