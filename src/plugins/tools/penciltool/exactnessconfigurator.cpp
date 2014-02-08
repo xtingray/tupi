@@ -92,10 +92,8 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     m_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     m_table->setMaximumHeight(22*m_table->rowCount() + 3);
-    // m_table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-    // m_table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    m_table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    m_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    m_table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
+    m_table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     mainLayout->addWidget(m_table);
 

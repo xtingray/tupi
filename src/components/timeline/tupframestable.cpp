@@ -255,11 +255,8 @@ void TupFramesTable::setup()
     
     setItemSize(10, 25);
     
-    // horizontalHeader()->setResizeMode(QHeaderView::Custom);
-    // verticalHeader()->setResizeMode(QHeaderView::Custom);
-
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Custom);
-    verticalHeader()->setSectionResizeMode(QHeaderView::Custom);
+    horizontalHeader()->setResizeMode(QHeaderView::Custom);
+    verticalHeader()->setResizeMode(QHeaderView::Custom);
 }
 
 void TupFramesTable::emitFrameSelected(int col)

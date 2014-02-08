@@ -53,7 +53,6 @@
 class GeometricTool : public TupToolPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "com.maefloresta.tupi.TupToolInterface" FILE "geometrictool.json")
     
     public:
         GeometricTool();

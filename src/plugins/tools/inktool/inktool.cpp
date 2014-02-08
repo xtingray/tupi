@@ -644,4 +644,4 @@ QCursor InkTool::cursor() const
     return k->cursor;
 }
 
-// Q_EXPORT_PLUGIN2(tup_brush, InkTool);
+Q_EXPORT_PLUGIN2(tup_brush, InkTool);

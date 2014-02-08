@@ -47,7 +47,7 @@ TupTLRuler::TupTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 
     setHighlightSections(true);
 
-    // setClickable(true);	
+    setClickable(true);	
     connect(this, SIGNAL(sectionClicked(int)), this, SLOT(updateSelected(int)));
 }
 

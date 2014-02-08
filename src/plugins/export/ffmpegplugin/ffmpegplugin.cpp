@@ -181,7 +181,7 @@ const char* FFMpegPlugin::getExceptionMsg() {
     return errorMsg;
 }
 
-// #ifdef HAVE_FFMPEG
-// Q_EXPORT_PLUGIN( FFMpegPlugin );
-// #endif
+#ifdef HAVE_FFMPEG
+Q_EXPORT_PLUGIN( FFMpegPlugin );
+#endif
 

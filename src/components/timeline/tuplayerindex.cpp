@@ -68,7 +68,7 @@ class TupLayerIndexHeader : public QHeaderView
 
 TupLayerIndexHeader::TupLayerIndexHeader(QWidget * parent) : QHeaderView(Qt::Horizontal , parent)
 {
-    //setClickable(true);
+    setClickable(true);
     setCascadingSectionResizes(true);
     //setMaximumHeight(20);
     setFixedHeight(26);

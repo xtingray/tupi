@@ -37,9 +37,9 @@
 #include "tdebug.h"
 
 #include <QtGui>
-#include <QLineEdit>
 
-TupScenesDelegate::TupScenesDelegate(QObject *parent) : QItemDelegate(parent)
+TupScenesDelegate::TupScenesDelegate(QObject *parent)
+    : QItemDelegate(parent)
 {
 }
 

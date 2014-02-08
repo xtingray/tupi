@@ -44,7 +44,7 @@
 
 #include <QApplication>
 #include <QMap>
-// #include <QColorGroup>
+#include <QColorGroup>
 
 #include <QLineEdit>
 #include <QPushButton>

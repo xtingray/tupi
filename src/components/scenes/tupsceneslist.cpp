@@ -50,8 +50,7 @@ TupScenesList::TupScenesList(QWidget *parent) : TreeListWidget(parent), k(new Pr
 {
     k->scenesTotal = 0;
     setHeaderLabels(QStringList() << "");
-    // header()->setResizeMode(QHeaderView::ResizeToContents);
-    header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    header()->setResizeMode(QHeaderView::ResizeToContents);
     setColumnCount(1);
 
     setItemDelegate(new TupScenesDelegate(this));

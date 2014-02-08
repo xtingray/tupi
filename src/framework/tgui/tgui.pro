@@ -72,7 +72,7 @@ HEADERS += taction.h \
            treewidgetsearchline.h \
            tvhbox.h \
            tviewbutton.h \
-           # twaitstyle.h \
+           twaitstyle.h \
            twidgetlistview.h \
            twizard.h \
            tworkspacemainwindow.h \
@@ -129,7 +129,7 @@ SOURCES += taction.cpp \
            treewidgetsearchline.cpp \
            tvhbox.cpp \
            tviewbutton.cpp \
-           # twaitstyle.cpp \
+           twaitstyle.cpp \
            twidgetlistview.cpp \
            twizard.cpp \
            tworkspacemainwindow.cpp \

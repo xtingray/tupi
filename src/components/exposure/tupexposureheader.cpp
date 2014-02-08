@@ -64,8 +64,7 @@ struct LayerItem
 TupExposureHeader::TupExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizontal, parent), m_sectionEdited(-1),
                                                        m_blockSectionMoved(false)
 {
-    // setClickable(true);
-    setSectionsClickable(true);
+    setClickable(true);
 
     //SQA: Disabled while layers movability is enhanced 
     //setMovable(true);

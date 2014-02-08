@@ -15,20 +15,9 @@ SOURCES += selecttool.cpp \
            nodemanager.cpp \ 
            infopanel.cpp
 
-OTHER_FILES += selecttool.json
-
 CONFIG += plugin warn_on
 TEMPLATE = lib
 TARGET = tupiselecttool
-
-INCLUDEPATH += ../../../libbase
-INCLUDEPATH += ../../../store
-INCLUDEPATH += ../../../libtupi
-INCLUDEPATH += = ../common
-LIBS += -L../../../libbase
-LIBS += -L../../../store
-LIBS += -L../../../libtupi
-LIBS += -L../common
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

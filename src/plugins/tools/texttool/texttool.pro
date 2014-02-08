@@ -11,20 +11,9 @@ HEADERS += texttool.h \
 SOURCES += texttool.cpp \
            textconfigurator.cpp 
 
-OTHER_FILES += texttool.json
-
 CONFIG += plugin warn_on
 TEMPLATE = lib
 TARGET = tupitexttool
-
-INCLUDEPATH += ../../../libbase
-INCLUDEPATH += ../../../store
-INCLUDEPATH += ../../../libtupi
-INCLUDEPATH += = ../common
-LIBS += -L../../../libbase
-LIBS += -L../../../store
-LIBS += -L../../../libtupi
-LIBS += -L../common
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

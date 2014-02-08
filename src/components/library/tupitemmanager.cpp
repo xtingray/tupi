@@ -40,8 +40,6 @@
 
 #include <QHeaderView>
 #include <QMenu>
-#include <QMimeData>
-#include <QDrag>
 
 /**
  * This class provides some methods for the TupLibraryWidget.
@@ -54,8 +52,7 @@ TupItemManager::TupItemManager(QWidget *parent) : TreeListWidget(parent), m_curr
     currentSelection = "";
     setHeaderLabels(QStringList() << "" << "");
 
-    // header()->setResizeMode(QHeaderView::ResizeToContents);
-    header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    header()->setResizeMode(QHeaderView::ResizeToContents);
     setItemDelegate(new TupTreeDelegate(this));
     setColumnCount(3);
 

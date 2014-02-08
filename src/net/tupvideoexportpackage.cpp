@@ -56,13 +56,13 @@ TupVideoExportPackage::TupVideoExportPackage(const QString &title, const QString
     QString indexes = "";
     for (int i=0; i < sceneIndexes.size(); i++)
          indexes += QString::number(sceneIndexes.at(i)) + ","; 
+
     indexes.remove(indexes.length() - 1, 1);
 
     video.setAttribute("scenes", indexes);
-
-    QDomText titleDom = createTextNode(title.toHtmlEscaped());
-    QDomText topicDom = createTextNode(topics.toHtmlEscaped());
-    QDomText descDom = createTextNode(description.toHtmlEscaped());
+    QDomText titleDom = createTextNode(Qt::escape(title));
+    QDomText topicDom = createTextNode(Qt::escape(topics));
+    QDomText descDom = createTextNode(Qt::escape(description));
 
     video.appendChild(createElement("title")).appendChild(titleDom);
     video.appendChild(createElement("topics")).appendChild(topicDom);

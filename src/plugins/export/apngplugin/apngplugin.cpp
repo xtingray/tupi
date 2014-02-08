@@ -125,6 +125,6 @@ const char* APNGPlugin::getExceptionMsg() {
     return errorMsg;
 }
 
-// #ifdef HAVE_THEORA
-//        Q_EXPORT_PLUGIN( APNGPlugin );
-// #endif
+#ifdef HAVE_THEORA
+       Q_EXPORT_PLUGIN( APNGPlugin );
+#endif

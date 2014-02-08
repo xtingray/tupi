@@ -499,8 +499,7 @@ void TupCanvas::wakeUpLibrary()
                 if (answer == QMessageBox::Yes) {
                     pixmap = new QPixmap();
                     QString extension = fileInfo.suffix().toUpper();
-                    // QByteArray ba = extension.toAscii();
-                    QByteArray ba = extension.toLatin1();
+                    QByteArray ba = extension.toAscii();
                     const char* ext = ba.data();
                     if (pixmap->loadFromData(data, ext)) {
                         QPixmap newpix;

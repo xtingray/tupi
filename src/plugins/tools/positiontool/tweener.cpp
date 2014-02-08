@@ -891,4 +891,4 @@ TupToolPlugin::EditMode Tweener::currentEditMode()
     return k->editMode;
 }
 
-// Q_EXPORT_PLUGIN2(tup_tweener, Tweener);
+Q_EXPORT_PLUGIN2(tup_tweener, Tweener);

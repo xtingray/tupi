@@ -64,7 +64,7 @@ class Settings : public QWidget
         int totalSteps();
 
         QString currentTweenName() const;
-        void activateMode(TupToolPlugin::EditMode mode);
+        void activatePropertiesMode(TupToolPlugin::EditMode mode);
         void notifySelection(bool flag);
         int startComboSize();
         void setInitialColor(QColor color);
@@ -73,12 +73,12 @@ class Settings : public QWidget
     private slots:
         void applyTween();
         void emitOptionChanged(int option);
+        void checkBottomLimit(int index);
         void checkTopLimit(int index);
         void updateLoopCheckbox(int state);
         void updateReverseCheckbox(int state);
         void setInitialColor();
         void setEndingColor();
-        void updateLastFrame();
         
     signals:
         void clickedSelect();

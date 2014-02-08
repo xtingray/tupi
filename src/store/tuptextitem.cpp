@@ -40,8 +40,8 @@
 #include <QFocusEvent>
 #include <QTimer>
 
-// TupTextItem::TupTextItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsTextItem(parent, scene), m_flags(flags()), m_isEditable(false)
-TupTextItem::TupTextItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsTextItem(parent), m_flags(flags()), m_isEditable(false)
+TupTextItem::TupTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
+    : QGraphicsTextItem(parent, scene), m_flags(flags()), m_isEditable(false)
 {
     setOpenExternalLinks(true);
     setEditable(false);

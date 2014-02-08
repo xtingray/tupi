@@ -111,14 +111,8 @@ TupColorPalette::TupColorPalette(QWidget *parent) : TupModuleWidgetBase(parent),
     k->splitter->addWidget(k->tab);
 
     TCONFIG->beginGroup("ColorPalette");
-    // QVariant fgColor = TCONFIG->value("LastForegroundColor", Qt::black);
-    // QVariant bgColor = TCONFIG->value("LastBackgroundColor", Qt::transparent); 
-    /*
-    QVariant fgColor = TCONFIG->value("LastForegroundColor", QColor(Qt::black));
-    QVariant bgColor = TCONFIG->value("LastBackgroundColor", QColor(Qt::transparent));   
-    QColor foreground = QColor(fgColor.value<QString>());
-    QColor background = QColor(bgColor.value<QString>());
-    */
+    QColor foreground = QColor(TCONFIG->value("LastForegroundColor", Qt::black).toString());
+    QColor background = QColor(TCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
 }
 
 TupColorPalette::~TupColorPalette()
@@ -461,7 +455,7 @@ void TupColorPalette::init()
     k->displayColorForms->setColor(color);
     k->gradientManager->setCurrentColor(Qt::white);
 
-    TupPaintAreaEvent event(TupPaintAreaEvent::ChangeColorPen, QColor(Qt::black));
+    TupPaintAreaEvent event(TupPaintAreaEvent::ChangeColorPen, Qt::black);
     emit paintAreaEventTriggered(&event);
 
     event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, brush);

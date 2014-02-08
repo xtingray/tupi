@@ -37,8 +37,7 @@
 #define TWORKSPACEMAINWINDOW_H
 
 #include "tmainwindow.h"
-#include <QMdiArea>
-// #include <QWorkspace>
+#include <QWorkspace>
 
 /**
  * @author David Cuadrado
@@ -55,8 +54,7 @@ class T_IDEAL_EXPORT TWorkspaceMainWindow : public TMainWindow
         void removeWidget(QWidget *widget);
 
     private:
-        // QWorkspace *m_workspace;
-        QMdiArea *mdiArea;
+        QWorkspace *m_workspace;
 };
 
 #endif

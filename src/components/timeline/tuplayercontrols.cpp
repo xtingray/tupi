@@ -67,7 +67,7 @@ class TupLayerControlsHeader : public QHeaderView
 
 TupLayerControlsHeader::TupLayerControlsHeader(QWidget * parent) : QHeaderView(Qt::Horizontal , parent)
 {
-    // setClickable(true);
+    setClickable(true);
     setCascadingSectionResizes(true);
     setFixedHeight(26);
     
@@ -138,13 +138,11 @@ void TupLayerControlsItemDelegate::drawCheck(QPainter *painter, const QStyleOpti
 {
     const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
 
-    /*
     QRect checkRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
                                           check(option, option.rect, Qt::Checked).size(),
                                           QRect(option.rect.x() + textMargin, option.rect.y(),
                                           option.rect.width() - (textMargin * 2), option.rect.height()));
     QItemDelegate::drawCheck(painter, option, checkRect, state);
-    */
 }
 
 void TupLayerControlsItemDelegate::drawFocus(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect) const

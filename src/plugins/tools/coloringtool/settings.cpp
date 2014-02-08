@@ -126,7 +126,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout->addLayout(buttonsLayout);
     k->layout->setSpacing(5);
 
-    activateMode(TupToolPlugin::Selection);
+    activatePropertiesMode(TupToolPlugin::Selection);
 }
 
 Settings::~Settings()
@@ -148,7 +148,7 @@ void Settings::setInnerForm()
     k->comboInit->setEditable(false);
     k->comboInit->setValidator(new QIntValidator(k->comboInit));
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLastFrame()));
+    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
@@ -285,7 +285,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int initFrame
     k->mode = TupToolPlugin::Add;
     k->input->setText(name);
 
-    activateMode(TupToolPlugin::Selection);
+    activatePropertiesMode(TupToolPlugin::Selection);
     k->apply->setToolTip(tr("Save Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "close.png"));
     k->remove->setToolTip(tr("Cancel Tween"));
@@ -296,7 +296,7 @@ void Settings::setParameters(const QString &name, int framesTotal, int initFrame
 void Settings::setParameters(TupItemTweener *currentTween)
 {
     setEditMode();
-    activateMode(TupToolPlugin::Properties);
+    activatePropertiesMode(TupToolPlugin::Properties);
 
     k->input->setText(currentTween->name());
 
@@ -547,17 +547,15 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
     return doc.toString();
 }
 
-void Settings::activateMode(TupToolPlugin::EditMode mode)
+void Settings::activatePropertiesMode(TupToolPlugin::EditMode mode)
 {
     k->options->setCurrentIndex(mode);
 }
 
-void Settings::updateLastFrame()
+void Settings::checkBottomLimit(int index)
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = begin + k->totalSteps - 1;
-
-    k->comboEnd->setEditText(QString::number(end));
+    emit startingPointChanged(index);
+    checkFramesRange();
 }
 
 void Settings::checkTopLimit(int index)

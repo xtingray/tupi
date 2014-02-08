@@ -43,8 +43,7 @@ TWidgetListView::TWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 {
     verticalHeader()->hide();
     horizontalHeader()->hide();
-    // horizontalHeader()->setResizeMode(QHeaderView::Custom);
-    horizontalHeader()->setSectionResizeMode(QHeaderView::Custom);
+    horizontalHeader()->setResizeMode(QHeaderView::Custom);
 }
 
 TWidgetListView::~TWidgetListView()

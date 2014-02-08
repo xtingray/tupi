@@ -463,5 +463,5 @@ void GeometricTool::frameResponse(const TupFrameResponse *event)
         init(k->scene);
 }
 
-// Q_EXPORT_PLUGIN2(tup_geometric, GeometricTool)
+Q_EXPORT_PLUGIN2(tup_geometric, GeometricTool)
 

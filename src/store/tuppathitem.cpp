@@ -46,8 +46,7 @@
 #include <QPainterPath>
 #include <QCursor>
 
-// TupPathItem::TupPathItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
-TupPathItem::TupPathItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent), m_dragOver(false)
+TupPathItem::TupPathItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
     setAcceptDrops(true);
 }
@@ -182,14 +181,10 @@ void TupPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     m_dragOver = false;
 
-    if (event->mimeData()->hasColor()) {
-        QVariant color = event->mimeData()->colorData();
-        setBrush(QBrush(color.value<QColor>()));
-        // setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
-    } else if (event->mimeData()->hasImage()) {
-               QVariant pixmap = event->mimeData()->imageData();
-               setBrush(QBrush(pixmap.value<QPixmap>()));
-    }
+    if (event->mimeData()->hasColor())
+        setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
+    else if (event->mimeData()->hasImage())
+             setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
 
     update();
 }

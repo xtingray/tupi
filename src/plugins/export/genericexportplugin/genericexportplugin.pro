@@ -9,18 +9,9 @@ target.path = /plugins/
 HEADERS += genericexportplugin.h
 SOURCES += genericexportplugin.cpp
 
-OTHER_FILES += genericexportplugin.json
-
 CONFIG += plugin warn_on
 TEMPLATE = lib 
 TARGET = tupigenericexportplugin
-
-INCLUDEPATH += ../../../libbase
-INCLUDEPATH += ../../../store
-INCLUDEPATH += ../../../libtupi
-LIBS += -L../../../libbase
-LIBS += -L../../../store
-LIBS += -L../../../libtupi
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

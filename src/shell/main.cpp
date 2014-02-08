@@ -46,9 +46,9 @@
 #include "tupcrashhandler.h"
 #endif
 
-// #ifdef ENABLE_TUPISTYLE
-// #include "twaitstyle.h"
-// #endif
+#ifdef ENABLE_TUPISTYLE
+#include "twaitstyle.h"
+#endif
 
 #include <QFile>
 #include <QTextStream>
@@ -59,7 +59,7 @@
 #include <QTranslator>
 #include <QDesktopWidget>
 #include <QThread>
-// #include <QPlastiqueStyle>
+#include <QPlastiqueStyle>
 
 #ifndef CONFIG_H
 #define CONFIG_H
@@ -171,13 +171,11 @@ int main(int argc, char ** argv)
 
     // SQA: Tupi gui styles must be re-factored
     // Setting the gui style for the interface
-/*
 #ifdef ENABLE_TUPISTYLE
     QApplication::setStyle(new KWaitStyle());
 #elif defined(Q_OS_LINUX)
     QApplication::setStyle(new QPlastiqueStyle());
 #endif
-*/
 
     // SQA: This code is deprecated
     /*

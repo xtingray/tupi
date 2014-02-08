@@ -11,20 +11,9 @@ HEADERS += penciltool.h \
 SOURCES += penciltool.cpp \
            exactnessconfigurator.cpp
 
-OTHER_FILES += penciltool.json
-
 CONFIG += plugin warn_on
 TEMPLATE = lib 
 TARGET = tupipenciltool
-
-INCLUDEPATH += ../../../libbase
-INCLUDEPATH += ../../../store
-INCLUDEPATH += ../../../libtupi
-INCLUDEPATH += = ../common
-LIBS += -L../../../libbase
-LIBS += -L../../../store
-LIBS += -L../../../libtupi
-LIBS += -L../common
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

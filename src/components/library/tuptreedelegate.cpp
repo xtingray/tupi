@@ -37,7 +37,6 @@
 #include "tdebug.h"
 
 #include <QtGui>
-#include <QLineEdit>
 
 TupTreeDelegate::TupTreeDelegate(QObject *parent) : QItemDelegate(parent)
 {
@@ -47,12 +46,16 @@ TupTreeDelegate::~TupTreeDelegate()
 {
 }
 
-void TupTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void TupTreeDelegate::paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const
 {
     QItemDelegate::paint(painter, option, index);
 }
 
-QWidget *TupTreeDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *TupTreeDelegate::createEditor(QWidget *parent,
+        const QStyleOptionViewItem & /* option */,
+        const QModelIndex &index) const
 {
     if (index.column() != 1)
         return 0;
@@ -64,14 +67,16 @@ QWidget *TupTreeDelegate::createEditor(QWidget *parent, const QStyleOptionViewIt
     return lineEdit;
 }
 
-void TupTreeDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void TupTreeDelegate::setEditorData(QWidget *editor,
+                                    const QModelIndex &index) const
 {
     QVariant value = index.model()->data(index, Qt::DisplayRole);
     if (QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor))
         lineEdit->setText(value.toString());
 }
 
-void TupTreeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void TupTreeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+                                   const QModelIndex &index) const
 {
     QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
     if (!lineEdit->isModified())

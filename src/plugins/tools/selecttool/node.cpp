@@ -66,7 +66,7 @@ struct Node::Private
 };
 
 Node::Node(TypeNode node, ActionNode action, const QPointF &pos, NodeManager *manager, QGraphicsItem *parent, QGraphicsScene *scene, int zValue) : 
-           QGraphicsItem(0), k(new Private)
+           QGraphicsItem(0, scene), k(new Private)
 {
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, false);

@@ -166,8 +166,7 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
     if (k->currentTool.compare(tr("Line Selection")) == 0) {
         // If a node is the target... abort!
         if (event->buttons() == Qt::RightButton) {
-            // if (qgraphicsitem_cast<TControlNode *>(scene()->itemAt(mapToScene(event->pos()))))
-            if (qgraphicsitem_cast<TControlNode *>(scene()->itemAt(mapToScene(event->pos()), QTransform())))
+            if (qgraphicsitem_cast<TControlNode *>(scene()->itemAt(mapToScene(event->pos()))))
                 return;
         }
     }
@@ -182,12 +181,10 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
     if (k->currentTool.compare(tr("Object Selection")) == 0) {
         if (event->buttons() == Qt::RightButton) {
             // If a node is the target... abort!
-            // if (qgraphicsitem_cast<Node *>(scene()->itemAt(mapToScene(event->pos()))))
-            if (qgraphicsitem_cast<Node *>(scene()->itemAt(mapToScene(event->pos()), QTransform())))
+            if (qgraphicsitem_cast<Node *>(scene()->itemAt(mapToScene(event->pos()))))
                 return;
 
-            // if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
-            if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()), QTransform())) {
+            if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
                 if (item->opacity() == 1) {
                     item->setFlag(QGraphicsItem::ItemIsSelectable, true);
                     // item->setSelected(true);

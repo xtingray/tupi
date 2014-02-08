@@ -628,4 +628,4 @@ void Tweener::frameResponse(const TupFrameResponse *event)
     }
 }
 
-// Q_EXPORT_PLUGIN2(tup_tweener, Tweener);
+Q_EXPORT_PLUGIN2(tup_tweener, Tweener);

@@ -49,7 +49,6 @@
 class PolyLine : public TupToolPlugin
 {    
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "com.maefloresta.tupi.TupToolInterface" FILE "polylinetool.json")
     
     public:
         PolyLine();

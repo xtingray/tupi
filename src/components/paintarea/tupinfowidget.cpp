@@ -130,10 +130,8 @@ void TupInfoWidget::setUIContext()
 
     k->table->setMaximumWidth(250);
     k->table->setMaximumHeight((k->currencyList.count() - 1)*30);
-    // k->table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-    // k->table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    k->table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    k->table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    k->table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
+    k->table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     QBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(1, 1, 1, 1);

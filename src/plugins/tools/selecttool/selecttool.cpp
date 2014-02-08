@@ -807,4 +807,4 @@ void SelectTool::sceneResponse(const TupSceneResponse *event)
         reset(k->scene);
 }
 
-// Q_EXPORT_PLUGIN2(tup_select, SelectTool);
+Q_EXPORT_PLUGIN2(tup_select, SelectTool);

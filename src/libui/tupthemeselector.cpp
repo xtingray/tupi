@@ -173,13 +173,12 @@ void TupThemeSelector::setupChooseColor()
     
     m_allSchemes = new QTreeWidget;
     m_allSchemes->setHeaderLabels(QStringList() << tr("Schema") << tr("Owner") << tr("Date"));
-    // m_allSchemes->header()->setResizeMode(QHeaderView::Stretch);
-    m_allSchemes->header()->setSectionResizeMode(QHeaderView::Stretch);
+    m_allSchemes->header()->setResizeMode(QHeaderView::Stretch);
     
     schemaLayout->addWidget(m_allSchemes);
     
     connect(m_allSchemes, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, 
-            SLOT(loadSchemaFromListView(QTreeWidgetItem *, int)));
+                    SLOT(loadSchemaFromListView(QTreeWidgetItem *, int)));
     
     QPushButton *saveSchemeButton = new QPushButton(tr("Save schema"));
     connect(saveSchemeButton, SIGNAL(clicked()), SLOT(saveSchema()));
