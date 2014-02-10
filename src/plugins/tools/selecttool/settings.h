@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INFOPANEL_H
-#define INFOPANEL_H
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include "tapplicationproperties.h"
 
@@ -44,7 +44,7 @@
  * @author Gustav Gonzalez 
 */
 
-class InfoPanel : public QWidget
+class Settings : public QWidget
 {
     Q_OBJECT
 
@@ -52,12 +52,12 @@ class InfoPanel : public QWidget
         enum Flip { Vertical = 1, Horizontal, Crossed };
         enum Order { ToBack = 0, ToFront, ToBackOneLevel, ToFrontOneLevel };
 
-        InfoPanel(QWidget *parent = 0);
-        ~InfoPanel();
+        Settings(QWidget *parent = 0);
+        ~Settings();
 
      signals:
-        void callFlip(InfoPanel::Flip flip);
-        void callOrderAction(InfoPanel::Order action);
+        void callFlip(Settings::Flip flip);
+        void callOrderAction(Settings::Order action);
 
      private slots:
         void vFlip();
@@ -67,6 +67,10 @@ class InfoPanel : public QWidget
         void sendToBackOneLevel();
         void sendToFront();
         void sendToFrontOneLevel();
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

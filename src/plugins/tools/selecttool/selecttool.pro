@@ -9,11 +9,11 @@ target.path = /plugins/
 HEADERS += selecttool.h \
            node.h \
            nodemanager.h \ 
-           infopanel.h
+           settings.h
 SOURCES += selecttool.cpp \
            node.cpp \
            nodemanager.cpp \ 
-           infopanel.cpp
+           settings.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib

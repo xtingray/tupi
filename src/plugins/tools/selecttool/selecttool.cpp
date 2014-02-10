@@ -334,9 +334,9 @@ int SelectTool::toolType() const
 QWidget *SelectTool::configurator() 
 {
     if (!panel) {
-        panel = new InfoPanel;
-        connect(panel, SIGNAL(callFlip(InfoPanel::Flip)), this, SLOT(applyFlip(InfoPanel::Flip)));
-        connect(panel, SIGNAL(callOrderAction(InfoPanel::Order)), this, SLOT(applyOrderAction(InfoPanel::Order)));
+        panel = new Settings;
+        connect(panel, SIGNAL(callFlip(Settings::Flip)), this, SLOT(applyFlip(Settings::Flip)));
+        connect(panel, SIGNAL(callOrderAction(Settings::Order)), this, SLOT(applyOrderAction(Settings::Order)));
     }
 
     return panel;
@@ -634,7 +634,7 @@ void SelectTool::updateItems(TupGraphicsScene *scene)
     }
 }
 
-void SelectTool::applyFlip(InfoPanel::Flip flip)
+void SelectTool::applyFlip(Settings::Flip flip)
 {
     k->selectedObjects = k->scene->selectedItems();
 
@@ -644,11 +644,11 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
              QMatrix m;
              m.translate(point.x(), point.y());
 
-             if (flip == InfoPanel::Horizontal)
+             if (flip == Settings::Horizontal)
                  m.scale(-1.0, 1.0);
-             else if (flip == InfoPanel::Vertical)
+             else if (flip == Settings::Vertical)
                       m.scale(1.0, -1.0);
-             else if (flip == InfoPanel::Crossed)
+             else if (flip == Settings::Crossed)
                       m.scale(-1.0, -1.0);
 
              m.translate(-point.x(), -point.y());
@@ -714,7 +714,7 @@ void SelectTool::applyFlip(InfoPanel::Flip flip)
     }
 }
 
-void SelectTool::applyOrderAction(InfoPanel::Order action)
+void SelectTool::applyOrderAction(Settings::Order action)
 {
     k->selectedObjects = k->scene->selectedItems();
 

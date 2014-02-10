@@ -33,22 +33,30 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "infopanel.h"
-#include <QBoxLayout>
-#include <QTextEdit>
-#include <QDir>
-
+#include "settings.h"
 #include "timagebutton.h"
 #include "tseparator.h"
 #include "tglobal.h"
 #include "tdebug.h"
 
-InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
+#include <QBoxLayout>
+#include <QTextEdit>
+#include <QSpinBox>
+#include <QDir>
+
+struct Settings::Private
+{
+    QSpinBox *xPosField;
+    QSpinBox *yPosField;
+};
+
+Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QBoxLayout *flipLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *flips = new QLabel(tr("Flips"));
+    //  flips->setFont(QFont("Arial", 8, QFont::Normal, false));
     flips->setAlignment(Qt::AlignHCenter);
     flipLayout->addWidget(flips);
     mainLayout->addLayout(flipLayout);
@@ -57,11 +65,11 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(0);
 
-    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/horizontal_flip.png"), 22);
+    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "horizontal_flip.png"), 22);
     horizontalFlip->setToolTip(tr("Horizontal Flip"));
-    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/vertical_flip.png"), 22);
+    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "vertical_flip.png"), 22);
     verticalFlip->setToolTip(tr("Vertical Flip"));
-    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/crossed_flip.png"), 22);
+    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "crossed_flip.png"), 22);
     crossedFlip->setToolTip(tr("Crossed Flip"));
     connect(horizontalFlip, SIGNAL(clicked()), this, SLOT(hFlip()));
     connect(verticalFlip, SIGNAL(clicked()), this, SLOT(vFlip()));
@@ -85,16 +93,16 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     orderButtonsLayout->setMargin(0);
     orderButtonsLayout->setSpacing(0);
 
-    TImageButton *toBack = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_back.png"), 22);
+    TImageButton *toBack = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_back.png"), 22);
     toBack->setToolTip(tr("Send object to back"));
 
-    TImageButton *toBackOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_back_one.png"), 22);
+    TImageButton *toBackOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_back_one.png"), 22);
     toBackOneLevel->setToolTip(tr("Send object to back one level"));
 
-    TImageButton *toFront = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_front.png"), 22);
+    TImageButton *toFront = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_front.png"), 22);
     toFront->setToolTip(tr("Send object to front"));
 
-    TImageButton *toFrontOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons/to_front_one.png"), 22);
+    TImageButton *toFrontOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_front_one.png"), 22);
     toFrontOneLevel->setToolTip(tr("Send object to front one level"));
 
     connect(toBack, SIGNAL(clicked()), this, SLOT(sendToBack()));
@@ -137,42 +145,42 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     mainLayout->addStretch(2);
 }
 
-InfoPanel::~InfoPanel()
+Settings::~Settings()
 {
 }
 
-void InfoPanel::hFlip()
+void Settings::hFlip()
 {
-    emit callFlip(InfoPanel::Horizontal);
+    emit callFlip(Settings::Horizontal);
 }
 
-void InfoPanel::vFlip()
+void Settings::vFlip()
 {
-    emit callFlip(InfoPanel::Vertical);
+    emit callFlip(Settings::Vertical);
 }
 
-void InfoPanel::cFlip()
+void Settings::cFlip()
 {
-    emit callFlip(InfoPanel::Crossed);
+    emit callFlip(Settings::Crossed);
 }
 
-void InfoPanel::sendToBack()
+void Settings::sendToBack()
 {
-    emit callOrderAction(InfoPanel::ToBack);
+    emit callOrderAction(Settings::ToBack);
 }
 
-void InfoPanel::sendToBackOneLevel()
+void Settings::sendToBackOneLevel()
 {
-    emit callOrderAction(InfoPanel::ToBackOneLevel);
+    emit callOrderAction(Settings::ToBackOneLevel);
 }
 
-void InfoPanel::sendToFront()
+void Settings::sendToFront()
 {
-    emit callOrderAction(InfoPanel::ToFront);
+    emit callOrderAction(Settings::ToFront);
 }
 
-void InfoPanel::sendToFrontOneLevel()
+void Settings::sendToFrontOneLevel()
 {
-    emit callOrderAction(InfoPanel::ToFrontOneLevel);
+    emit callOrderAction(Settings::ToFrontOneLevel);
 }
 

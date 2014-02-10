@@ -40,7 +40,7 @@
 #include "tuppathitem.h"
 #include "tupproject.h"
 #include "tupgraphicsscene.h"
-#include "infopanel.h"
+#include "settings.h"
 #include "tupprojectresponse.h"
 
 #include <QObject>
@@ -91,8 +91,8 @@ class SelectTool : public TupToolPlugin
     private slots:
         void syncNodes();
         void updateItems(TupGraphicsScene *scene);
-        void applyFlip(InfoPanel::Flip flip);
-        void applyOrderAction(InfoPanel::Order order);
+        void applyFlip(Settings::Flip flip);
+        void applyOrderAction(Settings::Order order);
 
     private:
         void setupActions();
@@ -102,7 +102,7 @@ class SelectTool : public TupToolPlugin
 
         struct Private;
         Private *const k;
-        InfoPanel *panel;
+        Settings *panel;
 
 };
 
