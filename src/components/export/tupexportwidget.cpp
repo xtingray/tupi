@@ -602,20 +602,14 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 #if defined(Q_OS_UNIX)
 
     if (m_currentFormat == TupExportInterface::APNG || (m_currentFormat != TupExportInterface::PNG && m_currentFormat != TupExportInterface::JPEG)) { // Animated Image or Animation
-
         if (!filename.endsWith(QDir::separator()))
             filename += QDir::separator();
 
         filename += m_project->projectName();
         filename += extension;
-
     } else { // Images Array
-
         filename = getenv("HOME");
 
-        // SQA: This code has been disabled temporary
-        bgTransparency->setEnabled(false);
-        /*
         if (m_currentFormat == TupExportInterface::JPEG) {
             if (bgTransparency->isEnabled())
                 bgTransparency->setEnabled(false);
@@ -623,7 +617,6 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
             if (!bgTransparency->isEnabled())
                 bgTransparency->setEnabled(true);
         }
-        */
     } 
 
     m_filePath->setText(filename);
