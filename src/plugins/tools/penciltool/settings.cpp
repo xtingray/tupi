@@ -33,42 +33,58 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef EXACTNESSCONFIGURATOR_H
-#define EXACTNESSCONFIGURATOR_H
+#include "settings.h"
+#include "tglobal.h"
+#include "timagebutton.h"
+#include "tdebug.h"
+#include "tconfig.h"
 
-#include "tapplicationproperties.h"
+#include <QBoxLayout>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QHeaderView>
+#include <QPushButton>
 
-#include <QDoubleSpinBox>
-#include <QLabel>
-
-class QTableWidget;
-class QTableWidgetItem;
-
-/**
- * @author Jorge Cuadrado
-*/
-
-class ExactnessConfigurator : public QWidget
+Settings::Settings(QWidget *parent) :QWidget(parent)
 {
-    Q_OBJECT
+    #ifdef K_DEBUG
+           TINIT;
+    #endif
 
-    public:
-        ExactnessConfigurator(QWidget *parent = 0);
-        ~ExactnessConfigurator();
-        double exactness() const;
-        
-    protected:
-        void resizeEvent(QResizeEvent *e);
-        
-    private slots:
-        void addCurrentValue();
-        void removeCurrentValue();
-        void updateValueFromItem(QTableWidgetItem *item);
-        
-    private:
-        QDoubleSpinBox *m_exactness;
-        QTableWidget *m_table;
+    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-};
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *label = new QLabel(tr("Smoothness"));
+    label->setAlignment(Qt::AlignHCenter); 
+    layout->addWidget(label);
+    m_exactness = new QDoubleSpinBox();
 
-#endif
+    m_exactness->setDecimals(2);
+    m_exactness->setSingleStep(0.1);
+    m_exactness->setMaximum(100);
+    layout->addWidget(m_exactness);
+
+    mainLayout->addLayout(layout);
+
+    mainLayout->addStretch(2);
+
+    TCONFIG->beginGroup("BrushTool");
+    double smoothness = TCONFIG->value("Smoothness", -1).toDouble();
+
+    if (smoothness > 0) 
+        m_exactness->setValue(smoothness);
+    else
+        m_exactness->setValue(4.0);
+}
+
+Settings::~Settings()
+{
+    #ifdef K_DEBUG
+           TEND;
+    #endif
+}
+
+double Settings::exactness() const
+{
+    return m_exactness->value();
+}

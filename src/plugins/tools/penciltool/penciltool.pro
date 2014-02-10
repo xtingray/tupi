@@ -7,9 +7,9 @@ INSTALLS += target
 target.path = /plugins/
 
 HEADERS += penciltool.h \
-           exactnessconfigurator.h
+           settings.h
 SOURCES += penciltool.cpp \
-           exactnessconfigurator.cpp
+           settings.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib 

@@ -6,7 +6,7 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez                                                     *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
  *   KTooN's versions:                                                     * 
  *                                                                         *
@@ -33,58 +33,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef PENCILTOOL_H
-#define PENCILTOOL_H
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-#include "tuptoolplugin.h"
-#include "settings.h"
-#include "tuppathitem.h"
-#include "tupprojectresponse.h"
+#include "tapplicationproperties.h"
 
-#include <QObject>
-#include <QSpinBox>
-// #include <QTimer>
+#include <QDoubleSpinBox>
+#include <QLabel>
 
-class QKeySequence;
+class QTableWidget;
+class QTableWidgetItem;
 
 /**
- * @author David Cuadrado
+ * @author Jorge Cuadrado
 */
 
-class PencilTool : public TupToolPlugin
+class Settings : public QWidget
 {
     Q_OBJECT
-    
+
     public:
-        PencilTool();
-        virtual ~PencilTool();
+        Settings(QWidget *parent = 0);
+        ~Settings();
+        double exactness() const;
         
-        virtual void init(TupGraphicsScene *scene);
-        virtual QStringList keys() const;
-        virtual void press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
-        virtual void move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
-        virtual void release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene);
-        virtual QMap<QString, TAction *>actions() const;
-        int toolType() const;
-        virtual QWidget *configurator();
-        virtual void aboutToChangeTool();
-        virtual void saveConfig();
-        virtual void keyPressEvent(QKeyEvent *event);
-        virtual QCursor cursor() const;
-        virtual void sceneResponse(const TupSceneResponse *event);
-
     private:
-        void setupActions();
-        void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
-        void reset(TupGraphicsScene *scene);
-
-    signals:
-        void closeHugeCanvas();
-        void callForPlugin(int menu, int index);
-
-    private:
-        struct Private;
-        Private *const k;
+        QDoubleSpinBox *m_exactness;
 };
 
 #endif

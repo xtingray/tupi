@@ -64,7 +64,7 @@ struct PencilTool::Private
     QPointF firstPoint;
     QPointF oldPos;
     QPainterPath path;
-    ExactnessConfigurator *configurator;
+    Settings *configurator;
     QMap<QString, TAction *> actions;
     TupPathItem *item;
     QCursor cursor;
@@ -233,7 +233,7 @@ int PencilTool::toolType() const
 QWidget *PencilTool::configurator() 
 {
     if (! k->configurator)
-        k->configurator = new ExactnessConfigurator;
+        k->configurator = new Settings;
 
     return k->configurator;
 }
