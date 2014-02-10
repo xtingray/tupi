@@ -60,6 +60,7 @@ class Settings : public QWidget
      signals:
         void callFlip(Settings::Flip flip);
         void callOrderAction(Settings::Order action);
+        void updateItemPosition(int x, int y);
 
      private slots:
         void vFlip();
@@ -70,6 +71,8 @@ class Settings : public QWidget
         void sendToFront();
         void sendToFrontOneLevel();
         void openTipPanel();
+        void notifyXMovement(int x);
+        void notifyYMovement(int y);
 
     private:
         struct Private;

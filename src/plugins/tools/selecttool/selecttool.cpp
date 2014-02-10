@@ -343,6 +343,7 @@ QWidget *SelectTool::configurator()
         panel = new Settings;
         connect(panel, SIGNAL(callFlip(Settings::Flip)), this, SLOT(applyFlip(Settings::Flip)));
         connect(panel, SIGNAL(callOrderAction(Settings::Order)), this, SLOT(applyOrderAction(Settings::Order)));
+        connect(panel, SIGNAL(updateItemPosition(int, int)), this, SLOT(updateItemPosition(int, int)));
     }
 
     return panel;
@@ -823,6 +824,17 @@ void SelectTool::updateItemPosition() {
         QGraphicsItem *item = manager->parentItem();
         QPoint point = item->mapToScene(item->boundingRect().center()).toPoint();
         panel->setPos(point.x(), point.y());
+    }
+}
+
+void SelectTool::updateItemPosition(int x, int y) {
+    tError() << "SelectTool::updateItemPosition() - Just tracing...";
+    if (k->nodeManagers.count() == 1) {
+        tError() << "SelectTool::updateItemPosition() - Moving to: " << x << " / " << y;
+        NodeManager *manager = k->nodeManagers.first();
+        QGraphicsItem *item = manager->parentItem();
+        item->moveBy(x, y);
+        manager->syncNodesFromParent();
     }
 }
 

@@ -93,6 +93,7 @@ class SelectTool : public TupToolPlugin
         void updateItems(TupGraphicsScene *scene);
         void applyFlip(Settings::Flip flip);
         void applyOrderAction(Settings::Order order);
+        void updateItemPosition(int x, int y);
 
     private:
         void setupActions();

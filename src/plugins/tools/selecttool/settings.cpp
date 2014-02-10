@@ -51,6 +51,8 @@ struct Settings::Private
     QSpinBox *xPosField;
     QSpinBox *yPosField;
     QPushButton *tips;
+    int currentX;
+    int currentY;
 };
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
@@ -131,11 +133,14 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     toolsLayout->addWidget(position);
 
     k->xPosField = new QSpinBox;
-    k->xPosField->setMinimum(-2000);
-    k->xPosField->setMaximum(2000);
+    k->xPosField->setMinimum(-5000);
+    k->xPosField->setMaximum(5000);
+    connect(k->xPosField, SIGNAL(valueChanged(int)), this, SLOT(notifyXMovement(int))); 
+
     k->yPosField = new QSpinBox;
-    k->yPosField->setMinimum(-2000);
-    k->yPosField->setMaximum(2000);
+    k->yPosField->setMinimum(-5000);
+    k->yPosField->setMaximum(5000);
+    connect(k->yPosField, SIGNAL(valueChanged(int)), this, SLOT(notifyYMovement(int)));
 
     k->xPosField->setEnabled(false);
     k->yPosField->setEnabled(false);
@@ -237,17 +242,41 @@ void Settings::setPos(int x, int y) {
     if (!k->xPosField->isEnabled())
         enablePositionControls(true);
 
+    k->xPosField->blockSignals(true);
+    k->yPosField->blockSignals(true);
+
     k->xPosField->setValue(x);
     k->yPosField->setValue(y);
+    k->currentX = x;
+    k->currentY = y;
+
+    k->xPosField->blockSignals(false);
+    k->yPosField->blockSignals(false);
 }
 
 void Settings::enablePositionControls(bool flag)
 {
     if (!flag) {
+        k->xPosField->blockSignals(true);
+        k->yPosField->blockSignals(true);
+
         k->xPosField->setValue(0);
         k->yPosField->setValue(0);
+
+        k->xPosField->blockSignals(false);
+        k->yPosField->blockSignals(false);
     }
 
     k->xPosField->setEnabled(flag);
     k->yPosField->setEnabled(flag);
+}
+
+void Settings::notifyXMovement(int x) {
+    emit updateItemPosition(x - k->currentX, 0);
+    k->currentX = k->xPosField->value();
+}
+
+void Settings::notifyYMovement(int y) {
+    emit updateItemPosition(0, y - k->currentY);
+    k->currentY = k->yPosField->value();
 }
