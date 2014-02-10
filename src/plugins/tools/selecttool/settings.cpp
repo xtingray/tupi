@@ -46,30 +46,37 @@
 
 struct Settings::Private
 {
+    QWidget *tools;
+    QWidget *help;
     QSpinBox *xPosField;
     QSpinBox *yPosField;
+    QPushButton *tips;
 };
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-    QBoxLayout *flipLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    k->tools = new QWidget(this);
+    QBoxLayout *toolsLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->tools);
+
     QLabel *flips = new QLabel(tr("Flips"));
-    //  flips->setFont(QFont("Arial", 8, QFont::Normal, false));
+    flips->setFont(QFont("Arial", 8, QFont::Normal, false));
     flips->setAlignment(Qt::AlignHCenter);
-    flipLayout->addWidget(flips);
-    mainLayout->addLayout(flipLayout);
+    toolsLayout->addWidget(flips);
 
     QBoxLayout *buttonsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(0);
 
-    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "horizontal_flip.png"), 22);
+    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() 
+                                                    + "horizontal_flip.png"), 22);
     horizontalFlip->setToolTip(tr("Horizontal Flip"));
-    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "vertical_flip.png"), 22);
+    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() 
+                                                  + "vertical_flip.png"), 22);
     verticalFlip->setToolTip(tr("Vertical Flip"));
-    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "crossed_flip.png"), 22);
+    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() 
+                                                 + "crossed_flip.png"), 22);
     crossedFlip->setToolTip(tr("Crossed Flip"));
     connect(horizontalFlip, SIGNAL(clicked()), this, SLOT(hFlip()));
     connect(verticalFlip, SIGNAL(clicked()), this, SLOT(vFlip()));
@@ -79,15 +86,14 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     buttonsLayout->addWidget(verticalFlip);
     buttonsLayout->addWidget(crossedFlip);
 
-    mainLayout->addLayout(buttonsLayout);
+    toolsLayout->addLayout(buttonsLayout);
 
-    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
+    toolsLayout->addWidget(new TSeparator(Qt::Horizontal));
 
-    QBoxLayout *orderLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *order = new QLabel(tr("Order"));
+    order->setFont(QFont("Arial", 8, QFont::Normal, false));
     order->setAlignment(Qt::AlignHCenter);
-    orderLayout->addWidget(order);
-    mainLayout->addLayout(orderLayout);
+    toolsLayout->addWidget(order);
 
     QBoxLayout *orderButtonsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
     orderButtonsLayout->setMargin(0);
@@ -115,16 +121,44 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     orderButtonsLayout->addWidget(toFront);
     orderButtonsLayout->addWidget(toFrontOneLevel);
 
-    mainLayout->addLayout(orderButtonsLayout);
+    toolsLayout->addLayout(orderButtonsLayout);
 
-    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
+    toolsLayout->addWidget(new TSeparator(Qt::Horizontal));
+
+    QLabel *position = new QLabel(tr("Position"));
+    position->setFont(QFont("Arial", 8, QFont::Normal, false));
+    position->setAlignment(Qt::AlignHCenter);
+    toolsLayout->addWidget(position);
+
+    k->xPosField = new QSpinBox;
+    k->xPosField->setMinimum(-2000);
+    k->xPosField->setMaximum(2000);
+    k->yPosField = new QSpinBox;
+    k->yPosField->setMinimum(-2000);
+    k->yPosField->setMaximum(2000);
+
+    k->xPosField->setEnabled(false);
+    k->yPosField->setEnabled(false);
+
+    toolsLayout->addWidget(k->xPosField);
+    toolsLayout->addWidget(k->yPosField);
+
+    toolsLayout->addWidget(new TSeparator(Qt::Horizontal));
+
+    mainLayout->addWidget(k->tools);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Tips"));
-    label->setAlignment(Qt::AlignHCenter); 
-    layout->addWidget(label);
+    k->tips = new QPushButton(tr("Show Tips"));
+    k->tips->setToolTip(tr("A little help for the Selection tool")); 
+    k->tips->setFont(QFont("Arial", 8, QFont::Normal, false));
+    layout->addWidget(k->tips);
+    connect(k->tips, SIGNAL(clicked()), this, SLOT(openTipPanel())); 
 
     mainLayout->addLayout(layout);
+
+    k->help = new QWidget(this);
+    k->help->hide();
+    QBoxLayout *helpLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->help);
 
     QTextEdit *textArea = new QTextEdit; 
 
@@ -137,11 +171,12 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Proportional scaling on selection") + "</p>");
 
     QString text = textArea->document()->toPlainText();
-    int height = (text.length()*270)/230;
-
+    int height = (text.length()*270)/200;
     textArea->setFixedHeight(height);
 
-    mainLayout->addWidget(textArea);
+    helpLayout->addWidget(textArea); 
+
+    mainLayout->addWidget(k->help);
     mainLayout->addStretch(2);
 }
 
@@ -184,3 +219,35 @@ void Settings::sendToFrontOneLevel()
     emit callOrderAction(Settings::ToFrontOneLevel);
 }
 
+void Settings::openTipPanel() {
+    if (k->tools->isVisible()) {
+        k->tools->hide();
+        k->tips->setText(tr("Show Tools"));
+        k->tips->setToolTip(tr("Tools panel for the Selection tool"));
+        k->help->show();
+    } else {
+        k->tools->show();
+        k->tips->setText(tr("Show Tips"));
+        k->tips->setToolTip(tr("A little help for the Selection tool"));
+        k->help->hide();
+    }
+}
+
+void Settings::setPos(int x, int y) {
+    if (!k->xPosField->isEnabled())
+        enablePositionControls(true);
+
+    k->xPosField->setValue(x);
+    k->yPosField->setValue(y);
+}
+
+void Settings::enablePositionControls(bool flag)
+{
+    if (!flag) {
+        k->xPosField->setValue(0);
+        k->yPosField->setValue(0);
+    }
+
+    k->xPosField->setEnabled(flag);
+    k->yPosField->setEnabled(flag);
+}

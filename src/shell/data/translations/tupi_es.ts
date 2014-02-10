@@ -106,17 +106,6 @@
     </message>
 </context>
 <context>
-    <name>ExactnessConfigurator</name>
-    <message>
-        <source>Smoothness</source>
-        <translation>Suavidad</translation>
-    </message>
-    <message>
-        <source>My Values:</source>
-        <translation>Mis Valores:</translation>
-    </message>
-</context>
-<context>
     <name>ExportTo</name>
     <message>
         <source>Image name prefix: </source>
@@ -251,44 +240,8 @@
 <context>
     <name>InfoPanel</name>
     <message>
-        <source>Rotation mode</source>
-        <translation>Modo de Rotación</translation>
-    </message>
-    <message>
-        <source>Double click on any node or shortcut Alt + R</source>
-        <translation>Doble clic sobre cualquier nodo o combinación Alt + R</translation>
-    </message>
-    <message>
-        <source>Arrows</source>
-        <translation>Flechas</translation>
-    </message>
-    <message>
-        <source>Movement on selection</source>
-        <translation>Movimiento de la selección</translation>
-    </message>
-    <message>
-        <source>Shift + Arrows</source>
-        <translation>Shift + Flechas</translation>
-    </message>
-    <message>
-        <source>Slow movement on selection</source>
-        <translation>Movimiento lento de la selección</translation>
-    </message>
-    <message>
-        <source>Ctrl + Arrows</source>
-        <translation>Ctrl + Flechas</translation>
-    </message>
-    <message>
-        <source>Fast movement on selection</source>
-        <translation>Movimiento rápido de la selección</translation>
-    </message>
-    <message>
         <source>Shift + Left Mouse Button</source>
         <translation>Shift + Botón Izquierdo del Ratón</translation>
-    </message>
-    <message>
-        <source>Proportional scaling on selection</source>
-        <translation>Escala proporcional de la selección</translation>
     </message>
     <message>
         <source>Close line</source>
@@ -301,22 +254,6 @@
     <message>
         <source>Set width/height proportional dimensions</source>
         <translation>Aplicar dimensiones de ancho/altura proporcionales</translation>
-    </message>
-    <message>
-        <source>Flips</source>
-        <translation>Transformaciones</translation>
-    </message>
-    <message>
-        <source>Horizontal Flip</source>
-        <translation>Voltear Horizontalmente</translation>
-    </message>
-    <message>
-        <source>Vertical Flip</source>
-        <translation>Voltear Verticalmente</translation>
-    </message>
-    <message>
-        <source>Crossed Flip</source>
-        <translation>Voltear en ambos Ejes</translation>
     </message>
     <message>
         <source>Mouse Double Click</source>
@@ -337,26 +274,6 @@
     <message>
         <source>Shift</source>
         <translation>Desplazamiento</translation>
-    </message>
-    <message>
-        <source>Order</source>
-        <translation>Ordenar</translation>
-    </message>
-    <message>
-        <source>Send object to back</source>
-        <translation>Enviar objeto hacia atrás</translation>
-    </message>
-    <message>
-        <source>Send object to back one level</source>
-        <translation>Enviar objeto hacia atrás un nivel</translation>
-    </message>
-    <message>
-        <source>Send object to front</source>
-        <translation>Enviar objeto al frente</translation>
-    </message>
-    <message>
-        <source>Send object to front one level</source>
-        <translation>Enviar objeto al frente un nivel</translation>
     </message>
 </context>
 <context>
@@ -794,6 +711,90 @@
     <message>
         <source>Select objects for Tweening first!</source>
         <translation>Seleccione los objetos para el Tween primero!</translation>
+    </message>
+    <message>
+        <source>Smoothness</source>
+        <translation>Suavidad</translation>
+    </message>
+    <message>
+        <source>Flips</source>
+        <translation>Transformaciones</translation>
+    </message>
+    <message>
+        <source>Horizontal Flip</source>
+        <translation>Voltear Horizontalmente</translation>
+    </message>
+    <message>
+        <source>Vertical Flip</source>
+        <translation>Voltear Verticalmente</translation>
+    </message>
+    <message>
+        <source>Crossed Flip</source>
+        <translation>Voltear en ambos Ejes</translation>
+    </message>
+    <message>
+        <source>Order</source>
+        <translation>Ordenar</translation>
+    </message>
+    <message>
+        <source>Send object to back</source>
+        <translation>Enviar objeto hacia atrás</translation>
+    </message>
+    <message>
+        <source>Send object to back one level</source>
+        <translation>Enviar objeto hacia atrás un nivel</translation>
+    </message>
+    <message>
+        <source>Send object to front</source>
+        <translation>Enviar objeto al frente</translation>
+    </message>
+    <message>
+        <source>Send object to front one level</source>
+        <translation>Enviar objeto al frente un nivel</translation>
+    </message>
+    <message>
+        <source>Tips</source>
+        <translation>Tips</translation>
+    </message>
+    <message>
+        <source>Rotation mode</source>
+        <translation>Modo de Rotación</translation>
+    </message>
+    <message>
+        <source>Double click on any node or shortcut Alt + R</source>
+        <translation>Doble clic sobre cualquier nodo o combinación Alt + R</translation>
+    </message>
+    <message>
+        <source>Arrows</source>
+        <translation>Flechas</translation>
+    </message>
+    <message>
+        <source>Movement on selection</source>
+        <translation>Movimiento de la selección</translation>
+    </message>
+    <message>
+        <source>Shift + Arrows</source>
+        <translation>Shift + Flechas</translation>
+    </message>
+    <message>
+        <source>Slow movement on selection</source>
+        <translation>Movimiento lento de la selección</translation>
+    </message>
+    <message>
+        <source>Ctrl + Arrows</source>
+        <translation>Ctrl + Flechas</translation>
+    </message>
+    <message>
+        <source>Fast movement on selection</source>
+        <translation>Movimiento rápido de la selección</translation>
+    </message>
+    <message>
+        <source>Shift + Left Mouse Button</source>
+        <translation>Shift + Botón Izquierdo del Ratón</translation>
+    </message>
+    <message>
+        <source>Proportional scaling on selection</source>
+        <translation>Escala proporcional de la selección</translation>
     </message>
 </context>
 <context>
@@ -1264,17 +1265,6 @@
     <message>
         <source>Percent</source>
         <translation>Porcentaje</translation>
-    </message>
-</context>
-<context>
-    <name>TupCommandExecutor</name>
-    <message>
-        <source>Frame doesn&apos;t exist!</source>
-        <translation>El marco no existe!</translation>
-    </message>
-    <message>
-        <source>Layer doesn&apos;t exist!</source>
-        <translation>La capa no existe!</translation>
     </message>
 </context>
 <context>
@@ -4002,10 +3992,6 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
         <translation>El Tween de Color no puede ser aplicado a imágenes raster</translation>
     </message>
     <message>
-        <source>Coloring Tween can&apos;t be applied to Svg files</source>
-        <translation>El Tween de Color no puede ser aplicado a objectos Svg</translation>
-    </message>
-    <message>
         <source>Info</source>
         <translation>Información</translation>
     </message>
@@ -4016,6 +4002,10 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
     <message>
         <source>Shift+H</source>
         <translation>Shift+H</translation>
+    </message>
+    <message>
+        <source>Coloring Tween can&apos;t be applied to SVG files</source>
+        <translation>El Tween de Color no puede ser aplicado a objetos SVG</translation>
     </message>
 </context>
 <context>

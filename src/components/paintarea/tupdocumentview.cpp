@@ -1278,7 +1278,6 @@ void TupDocumentView::updateBgColor(const QColor color)
 void TupDocumentView::enableOnionFeature()
 {
     if (!k->onionEnabled) {
-
         if (k->prevOnionValue == 0)
             k->prevOnionSkinSpin->setValue(1);
         else
@@ -1290,15 +1289,12 @@ void TupDocumentView::enableOnionFeature()
             k->nextOnionSkinSpin->setValue(k->nextOnionValue);
 
         k->onionEnabled = true;
-
     } else {
-
         k->prevOnionValue = k->prevOnionSkinSpin->value();
         k->nextOnionValue = k->nextOnionSkinSpin->value();
         k->prevOnionSkinSpin->setValue(0);
         k->nextOnionSkinSpin->setValue(0);
         k->onionEnabled = false;
-
     }
 
     k->paintArea->updatePaintArea();

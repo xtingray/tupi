@@ -140,6 +140,8 @@ void SelectTool::reset(TupGraphicsScene *scene)
                       }
              }
     }
+
+    panel->enablePositionControls(false);
 }
 
 QStringList SelectTool::keys() const
@@ -218,7 +220,7 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
 
                ++it;
         }
-        
+
         foreach (QGraphicsItem *item, k->selectedObjects) {
                  if (item && dynamic_cast<TupAbstractSerializable* > (item)) {
                      NodeManager *node = new NodeManager(item, scene, k->baseZValue);
@@ -306,6 +308,10 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
                      }
                  }
         }
+
+        updateItemPosition();
+    } else {
+        panel->enablePositionControls(false);
     } 
 }
 
@@ -471,6 +477,8 @@ void SelectTool::itemResponse(const TupItemResponse *event)
         return;
     }
 
+    updateItemPosition();
+
     switch (event->action()) {
             case TupProjectRequest::Transform:
             {
@@ -577,6 +585,8 @@ void SelectTool::keyPressEvent(QKeyEvent *event)
 
                             QTimer::singleShot(0, this, SLOT(syncNodes()));
                    }
+
+                   updateItemPosition();
                }
     } else if (event->modifiers() == Qt::ShiftModifier) {
                verifyActiveSelection();
@@ -805,6 +815,15 @@ void SelectTool::sceneResponse(const TupSceneResponse *event)
 {
     if (event->action() == TupProjectRequest::Select)
         reset(k->scene);
+}
+
+void SelectTool::updateItemPosition() {
+    if (k->nodeManagers.count() == 1) {
+        NodeManager *manager = k->nodeManagers.first();
+        QGraphicsItem *item = manager->parentItem();
+        QPoint point = item->mapToScene(item->boundingRect().center()).toPoint();
+        panel->setPos(point.x(), point.y());
+    }
 }
 
 Q_EXPORT_PLUGIN2(tup_select, SelectTool);

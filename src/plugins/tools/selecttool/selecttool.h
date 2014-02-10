@@ -99,6 +99,7 @@ class SelectTool : public TupToolPlugin
         void verifyActiveSelection();
         void updateRealZoomFactor();
         void reset(TupGraphicsScene *scene);
+        void updateItemPosition();
 
         struct Private;
         Private *const k;

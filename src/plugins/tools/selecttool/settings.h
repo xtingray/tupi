@@ -54,6 +54,8 @@ class Settings : public QWidget
 
         Settings(QWidget *parent = 0);
         ~Settings();
+        void setPos(int x, int y);
+        void enablePositionControls(bool flag);
 
      signals:
         void callFlip(Settings::Flip flip);
@@ -67,6 +69,7 @@ class Settings : public QWidget
         void sendToBackOneLevel();
         void sendToFront();
         void sendToFrontOneLevel();
+        void openTipPanel();
 
     private:
         struct Private;
