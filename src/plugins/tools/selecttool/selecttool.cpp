@@ -42,6 +42,7 @@
 #include "tupscene.h"
 #include "tuplayer.h"
 #include "tupsvgitem.h"
+#include "tupellipseitem.h"
 #include "tupgraphicobject.h"
 #include "tupinputdeviceinformation.h"
 #include "tupgraphicsscene.h"
@@ -67,6 +68,8 @@ struct SelectTool::Private
     qreal scaleFactor;
     qreal realFactor;
     int baseZValue;
+    TupEllipseItem *center;
+    bool targetIsIncluded;
 };
 
 SelectTool::SelectTool(): k(new Private), panel(0)
@@ -90,6 +93,7 @@ void SelectTool::init(TupGraphicsScene *scene)
     k->scene = scene;
     k->scene->clearSelection();
     k->baseZValue = 20000 + (scene->scene()->layersTotal() * 10000);
+    k->targetIsIncluded = false;
 
     reset(scene);
 }
@@ -142,6 +146,10 @@ void SelectTool::reset(TupGraphicsScene *scene)
     }
 
     panel->enablePositionControls(false);
+    if (k->targetIsIncluded) {
+        k->scene->removeItem(k->center);
+        k->targetIsIncluded = false;
+    }
 }
 
 QStringList SelectTool::keys() const
@@ -312,7 +320,11 @@ void SelectTool::release(const TupInputDeviceInformation *input, TupBrushManager
         updateItemPosition();
     } else {
         panel->enablePositionControls(false);
-    } 
+        if (k->targetIsIncluded) {
+            k->scene->removeItem(k->center);
+            k->targetIsIncluded = false;
+        } 
+    }
 }
 
 void SelectTool::setupActions()
@@ -824,17 +836,72 @@ void SelectTool::updateItemPosition() {
         QGraphicsItem *item = manager->parentItem();
         QPoint point = item->mapToScene(item->boundingRect().center()).toPoint();
         panel->setPos(point.x(), point.y());
+    } else { 
+      if (k->nodeManagers.count() > 1) {
+          NodeManager *manager = k->nodeManagers.first();
+          QGraphicsItem *item = manager->parentItem();
+          QPoint left = item->mapToScene(item->boundingRect().topLeft()).toPoint();  
+          QPoint right = item->mapToScene(item->boundingRect().bottomRight()).toPoint();
+          int minX = left.x();
+          int maxX = right.x(); 
+          int minY = left.y();
+          int maxY = right.y();
+
+          foreach (NodeManager *node, k->nodeManagers) {
+                   QGraphicsItem *item = node->parentItem();
+                   QPoint left = item->mapToScene(item->boundingRect().topLeft()).toPoint(); 
+                   int leftX = left.x();
+                   int leftY = left.y();
+                   if (leftX < minX)
+                       minX = leftX;
+                   if (leftY < minY)
+                       minY = leftY;
+                   QPoint right = item->mapToScene(item->boundingRect().bottomRight()).toPoint();  
+                   int rightX = right.x();
+                   int rightY = right.y();
+                   if (rightX > maxX)
+                       maxX = rightX;
+                   if (rightY > maxY)
+                       maxY = rightY;
+          }
+          int x = minX + ((maxX - minX)/2); 
+          int y = minY + ((maxY - minY)/2);
+          panel->setPos(x, y);
+
+          if (!k->targetIsIncluded) {
+              k->center = new TupEllipseItem(QRectF(QPointF(x, y), QSize(8, 8)));
+              QPen pen(QColor(255, 0, 0), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+              k->center->setPen(pen);
+              k->center->setBrush(QColor(255, 0, 0));
+              k->center->setZValue(k->baseZValue + 1);
+              k->scene->includeObject(k->center);
+
+              k->targetIsIncluded = true;
+          } else {
+              QPoint current = k->center->mapToScene(k->center->boundingRect().topLeft()).toPoint(); 
+              int deltaX = x - current.x();
+              int deltaY = y - current.y();
+              k->center->moveBy(deltaX, deltaY);
+          }
+      }
     }
 }
 
 void SelectTool::updateItemPosition(int x, int y) {
-    tError() << "SelectTool::updateItemPosition() - Just tracing...";
     if (k->nodeManagers.count() == 1) {
-        tError() << "SelectTool::updateItemPosition() - Moving to: " << x << " / " << y;
         NodeManager *manager = k->nodeManagers.first();
         QGraphicsItem *item = manager->parentItem();
         item->moveBy(x, y);
         manager->syncNodesFromParent();
+    } else {
+        if (k->nodeManagers.count() > 1) {
+            foreach (NodeManager *node, k->nodeManagers) {
+                     QGraphicsItem *item = node->parentItem();
+                     item->moveBy(x, y);
+                     node->syncNodesFromParent();
+            }
+            k->center->moveBy(x, y);
+        }
     }
 }
 
