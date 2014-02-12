@@ -52,6 +52,8 @@ TupProjectParser::~TupProjectParser()
 
 bool TupProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
+    Q_UNUSED(atts);
+
     if (root() == "server_project") {
         if (tag == "users")
             setReadText(true);

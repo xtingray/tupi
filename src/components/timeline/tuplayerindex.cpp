@@ -68,7 +68,7 @@ class TupLayerIndexHeader : public QHeaderView
 
 TupLayerIndexHeader::TupLayerIndexHeader(QWidget * parent) : QHeaderView(Qt::Horizontal , parent)
 {
-    setClickable(true);
+    //setClickable(true);
     setCascadingSectionResizes(true);
     //setMaximumHeight(20);
     setFixedHeight(26);
@@ -278,12 +278,17 @@ void TupLayerIndex::moveLayer(int position, int newPosition)
 
 void TupLayerIndex::lockLayer(int position, bool locked)
 {
+    Q_UNUSED(locked);
+
     if (position < 0 || position >= rowCount()) 
         return;
 }
 
 void TupLayerIndex::setLocalRequest(int layer, int column)
 {
+    Q_UNUSED(layer);
+    Q_UNUSED(column);
+
     emit localRequest();
 }
 

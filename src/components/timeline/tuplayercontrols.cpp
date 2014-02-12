@@ -67,7 +67,7 @@ class TupLayerControlsHeader : public QHeaderView
 
 TupLayerControlsHeader::TupLayerControlsHeader(QWidget * parent) : QHeaderView(Qt::Horizontal , parent)
 {
-    setClickable(true);
+    // setClickable(true);
     setCascadingSectionResizes(true);
     setFixedHeight(26);
     
@@ -136,17 +136,26 @@ TupLayerControlsItemDelegate::~TupLayerControlsItemDelegate()
 void TupLayerControlsItemDelegate::drawCheck(QPainter *painter, const QStyleOptionViewItem &option,
                                            const QRect &, Qt::CheckState state) const
 {
-    const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+    Q_UNUSED(painter);
+    Q_UNUSED(option);
+    Q_UNUSED(state);
 
+    // const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+
+    /*
     QRect checkRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
                                           check(option, option.rect, Qt::Checked).size(),
                                           QRect(option.rect.x() + textMargin, option.rect.y(),
                                           option.rect.width() - (textMargin * 2), option.rect.height()));
     QItemDelegate::drawCheck(painter, option, checkRect, state);
+    */
 }
 
 void TupLayerControlsItemDelegate::drawFocus(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect) const
 {
+    Q_UNUSED(painter);
+    Q_UNUSED(option);
+    Q_UNUSED(rect);
 }
 
 void TupLayerControlsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
@@ -226,6 +235,8 @@ void TupLayerControls::insertLayer(int position)
 
 void TupLayerControls::insertSoundLayer(int position, const QString &name)
 {
+    Q_UNUSED(name);
+
     if (position >= 0 && position <= rowCount()) {
         fixSize();
     }
@@ -251,14 +262,16 @@ void TupLayerControls::resizeEvent(QResizeEvent *)
 
 void TupLayerControls::fixSize()
 {
+    /*
     int offset = 0;
 
     if (verticalScrollBar()->isVisible())
         offset = verticalScrollBar()->width()-2;
     else
         offset = -2;
+    */
 
-    int width = this->width() - offset;
+    // int width = this->width() - offset;
     horizontalHeader()->resizeSection(0, 20);
     horizontalHeader()->resizeSection(1, 20);
 
@@ -273,6 +286,7 @@ void TupLayerControls::setRowHeight(int rowHeight)
 
 void TupLayerControls::commitData(QWidget *editor)
 {
+    Q_UNUSED(editor);
 }
 
 void TupLayerControls::moveLayer(int position, int newPosition)
@@ -285,6 +299,8 @@ void TupLayerControls::moveLayer(int position, int newPosition)
 
 void TupLayerControls::lockLayer(int position, bool locked)
 {
+    Q_UNUSED(locked);
+
     if (position < 0 || position >= rowCount()) 
         return;
 }

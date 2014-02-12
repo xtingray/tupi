@@ -138,9 +138,9 @@ void TupCellsColor::dragEnterEvent(QDragEnterEvent *event)
 void TupCellsColor::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasColor()) {
-        QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
+        // QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
 
-        // TODO: crear item in ktcellscolor.cpp
+        // SQA: crear item in tupcellscolor.cpp
 
         if (event->source() == this) {
             event->setDropAction(Qt::MoveAction);

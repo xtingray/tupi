@@ -47,6 +47,7 @@
 #include <QPushButton>
 #include <QDomDocument>
 #include <QFile>
+#include <QDir>
 
 TipDialog::TipDialog(QStringList &labels, const QString &file, QWidget *parent) : QDialog(parent)
 {
@@ -65,35 +66,25 @@ TipDialog::TipDialog(QStringList &labels, TipDatabase *database, QWidget *parent
 void TipDialog::setupGUI()
 {
     setWindowTitle(tags.at(0));
-    setWindowIcon(QPixmap(THEME_DIR + "icons/today_tip.png"));
-    
+    setWindowIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "today_tip.png"));
+
     int h,s,v;
     QColor baseColor = palette().base().color();
     baseColor.getHsv(&h,&s,&v);
     baseColor.setHsv(h, int(s*(71/76.0)), int(v*(67/93.0)));
-    // baseColor.setHsv(h, int(s*(10/6.0)), int(v*(93/99.0)));
     
     QVBoxLayout *layout = new QVBoxLayout(this);
-    
     textBrowser = new QTextBrowser;
-
-    /* 
-    QTextFrameFormat format = textBrowser->document()->rootFrame()->frameFormat();
-    format.setMargin(15);
-    format.setBorder(5);
-    textBrowser->document()->rootFrame()->setFrameFormat(format);
-    */
-    
     textBrowser->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
     textBrowser->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
     textBrowser->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     textBrowser->setOpenExternalLinks(true);
-    
-    /*    
-    QPalette pal = textBrowser->palette();
-    pal.setBrush(QPalette::Base, baseColor);
-    textBrowser->setPalette(pal);
-    */
+
+    QStringList path;
+    QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
+    path << resources + "css";
+    path << resources + "images";
+    textBrowser->setSearchPaths(path);
     
     layout->addWidget(textBrowser);
     layout->addWidget(new TSeparator);

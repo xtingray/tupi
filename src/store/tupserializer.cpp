@@ -160,7 +160,7 @@ QDomElement TupSerializer::gradient(const QGradient *gradient, QDomDocument &doc
 
 QGradient * TupSerializer::createGradient(const QXmlAttributes &atts)
 {
-    QGradient *result;
+    QGradient *result = 0;
 
     switch (atts.value("type").toInt()) {
         case QGradient::LinearGradient:
@@ -290,9 +290,10 @@ void TupSerializer::loadPen(QPen &pen, const QXmlAttributes &atts)
     }
 }
 
-void TupSerializer::loadPen(QPen &pen, const QDomElement &e)
+void TupSerializer::loadPen(QPen &pen, const QDomElement &event)
 {
-    
+    Q_UNUSED(pen); 
+    Q_UNUSED(event);
 }
 
 QDomElement TupSerializer::font(const QFont *font, QDomDocument &doc)

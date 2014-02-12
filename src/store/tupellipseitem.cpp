@@ -62,6 +62,7 @@ TupEllipseItem::~TupEllipseItem()
 
 void TupEllipseItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupEllipseItem::toXml(QDomDocument &doc) const

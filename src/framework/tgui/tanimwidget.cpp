@@ -74,10 +74,8 @@ TAnimWidget::TAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 {
     resize(px.width()/2, px.height());
 
-    QPoint position = QPoint(50, px.height());
-
-    QFont kfont("lucida", 10, QFont::Bold, false);
-    QFontMetrics fontMetrics(kfont);
+    QFont tfont("lucida", 10, QFont::Bold, false);
+    QFontMetrics fontMetrics(tfont);
 
     m_textRect = QRectF(QPointF(20, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo(QSize(px.width(), 0)));
     m_counter = 0;

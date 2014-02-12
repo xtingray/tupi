@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 
 #: en/thanks.html+html.body.center.table.tr.td:33
-msgid "www.labtoon.org"
+msgid "www.labtoon.co"
 msgstr ""
 
 #: en/thanks.html+html.body.center.table.tr.td:41

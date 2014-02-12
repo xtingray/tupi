@@ -145,7 +145,7 @@ bool TheoraMovieGenerator::begin()
         tError() << "TheoraMovieGenerator::begin() - Error: could not set encoder flags for soft encoding";
 
     if (buf_delay < 0) {
-        if ((keyframe_frequency*7>>1) > 5*k->fps/1)
+        if (((int) keyframe_frequency*7>>1) > 5*k->fps/1)
             arg = keyframe_frequency*7>>1;
         else
             arg = 5*k->fps;

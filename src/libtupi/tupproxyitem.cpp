@@ -81,10 +81,8 @@ QGraphicsItem *TupProxyItem::item() const
 
 QRectF TupProxyItem::boundingRect() const
 {
-    if (k->realItem) {
-        QRectF tmp = k->realItem->boundingRect();
+    if (k->realItem)
         return k->realItem->boundingRect();
-    }
     
     return QRectF(0, 0, 0, 0);
 }

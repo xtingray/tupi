@@ -99,25 +99,36 @@ void TupLayerManager::insertLayer(int position, const QString &name)
 
 void TupLayerManager::insertSoundLayer(int position, const QString &name)
 {
+    Q_UNUSED(position);
+    Q_UNUSED(name);
 }
 
 void TupLayerManager::removeLayer(int position)
 {
+    Q_UNUSED(position);
 }
 
 void TupLayerManager::renameLayer(int position, const QString &name)
 {
+    Q_UNUSED(position);
+    Q_UNUSED(name);
 }
 
 void TupLayerManager::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
+
     k->layerIndex->refresh();
 }
 
 void TupLayerManager::moveLayer(int position, int newPosition)
 {
+    Q_UNUSED(position);
+    Q_UNUSED(newPosition);
 }
 
 void TupLayerManager::lockLayer(int position, bool locked)
 {
+    Q_UNUSED(position);
+    Q_UNUSED(locked);
 }

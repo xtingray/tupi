@@ -53,7 +53,7 @@ TabDialog::TabDialog(QWidget *parent, bool modal) : QDialog(parent)
     setModal(modal);
 }
 
-TabDialog::TabDialog(int buttons, QWidget *parent, bool modal)
+TabDialog::TabDialog(int buttons, QWidget *parent, bool modal) : QDialog(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);

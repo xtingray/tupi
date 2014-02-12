@@ -91,6 +91,7 @@ TupGraphicObject::~TupGraphicObject()
 
 void TupGraphicObject::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupGraphicObject::toXml(QDomDocument &doc) const

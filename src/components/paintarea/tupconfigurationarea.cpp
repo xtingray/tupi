@@ -216,6 +216,8 @@ void TupConfigurationArea::shrink()
 
 void TupConfigurationArea::enterEvent(QEvent *event)
 {
+    Q_UNUSED(event);
+
     if (k->locker.isActive()) 
         k->locker.stop();
 
@@ -227,6 +229,8 @@ void TupConfigurationArea::enterEvent(QEvent *event)
 
 void TupConfigurationArea::leaveEvent(QEvent *event)
 {
+    Q_UNUSED(event);
+
     if (k->shower.isActive())
         k->shower.stop();
 

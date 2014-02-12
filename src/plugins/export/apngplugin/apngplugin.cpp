@@ -65,7 +65,12 @@ TupExportInterface::Formats APNGPlugin::availableFormats()
 
 bool APNGPlugin::exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format fmt, const QSize &size, int fps)
 {
+    Q_UNUSED(color);
+    Q_UNUSED(filePath);
+    Q_UNUSED(scenes);
     Q_UNUSED(fmt);
+    Q_UNUSED(size);
+    Q_UNUSED(fps);
 
     /*
     int frames = 0;

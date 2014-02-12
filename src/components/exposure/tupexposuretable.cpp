@@ -661,7 +661,8 @@ void TupExposureTable::reset()
 
     int rows = rowCount();
     for (int i=1; i < rows;  i++) {
-         QTableWidgetItem *item = takeItem(i, 0);
+         takeItem(i, 0);
+         // QTableWidgetItem *item = takeItem(i, 0);
     }
 
     k->header->setLastFrame(0, 1);

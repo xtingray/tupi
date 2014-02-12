@@ -219,11 +219,12 @@ bool TupScene::removeLayer(int position)
         }
         */
 
-        QList<int> indexList = this->layers().indexes();
-        int size = this->layersTotal();
-
-        for (int i = 0; i < size; i++) 
-             TupLayer *layer = this->layer(indexList.at(i));
+        /*
+         QList<int> indexList = this->layers().indexes();
+         int size = this->layersTotal();
+         for (int i = 0; i < size; i++) 
+              TupLayer *layer = this->layer(indexList.at(i));
+        */
 
         delete layer;
 

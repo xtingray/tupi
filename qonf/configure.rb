@@ -306,26 +306,6 @@ module RQonf
           f << newfile
         }
 
-      newmakefile = ""
-      File.open("src/components/help/help/css/tupi.ini", "r") { |f|
-        lines = f.readlines
-        index = 0
-        while index < lines.size
-          line = lines[index]
-          if line.include? "TUPI_SHARE" then
-            newmakefile += "#{line.gsub(/\$\(TUPI_SHARE\)/, launcher_sharedir)}"
-          else
-            newmakefile += line
-          end
-
-          index += 1
-        end
-      }
-
-      File.open("src/components/help/help/css/tupi.css", "w") { |f|
-        f << newmakefile
-      }
-
     end
   end
 end # module

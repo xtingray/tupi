@@ -47,6 +47,7 @@ TupLineItem::~TupLineItem()
 
 void TupLineItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupLineItem::toXml(QDomDocument &doc) const

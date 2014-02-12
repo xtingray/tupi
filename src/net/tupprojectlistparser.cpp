@@ -80,12 +80,14 @@ bool TupProjectListParser::startTag(const QString &tag, const QXmlAttributes &at
 
 bool TupProjectListParser::endTag(const QString &tag)
 {
+    Q_UNUSED(tag);
+
     return true;
 }
 
 void TupProjectListParser::text(const QString &text)
 {
-    
+    Q_UNUSED(text); 
 }
 
 QList<TupProjectListParser::ProjectInfo> TupProjectListParser::works()

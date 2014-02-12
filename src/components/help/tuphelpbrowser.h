@@ -57,18 +57,15 @@ class TupHelpBrowser : public QWidget
         ~TupHelpBrowser();
 
     public slots:
-        void setDocument(const QString &doc);
         void setSource(const QString &filePath);
-        void setDataDirs(const QStringList &dirs);
 
     protected:
-        void keyPressEvent(QKeyEvent * event);
+        void keyPressEvent(QKeyEvent *event);
 
     private:
         void reload();
         QSplitter *m_separator;
         QTextBrowser *m_pageArea;
-        QTextDocument *m_document;
 };
 
 #endif

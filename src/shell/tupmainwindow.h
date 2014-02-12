@@ -64,7 +64,6 @@
 // Including headers about projects management
 #include "tupprojectmanager.h"
 #include "tupnetprojectmanagerhandler.h"
-#include "tupsplash.h"
 
 #include <QMainWindow>
 #include <QMenu>
@@ -106,7 +105,7 @@ class TupMainWindow : public TabbedMainWindow
              ImportProjectToNet
         };
 
-        TupMainWindow(TupSplash *splash = 0, int parameters = 1);
+        TupMainWindow(int parameters = 1);
         ~TupMainWindow();
 
     private:

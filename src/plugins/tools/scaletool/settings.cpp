@@ -288,6 +288,8 @@ void Settings::activeInnerForm(bool enable)
 
 void Settings::setParameters(const QString &name, int framesTotal, int initFrame)
 {
+    Q_UNUSED(framesTotal);
+
     k->mode = TupToolPlugin::Add;
     k->input->setText(name);
 
@@ -560,12 +562,16 @@ void Settings::checkFramesRange()
 
 void Settings::updateLoopCheckbox(int state)
 {
+    Q_UNUSED(state);
+
     if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
         k->loopBox->setChecked(false);
 }
 
 void Settings::updateReverseCheckbox(int state)
 {
+    Q_UNUSED(state);
+
     if (k->reverseLoopBox->isChecked() && k->loopBox->isChecked())
         k->reverseLoopBox->setChecked(false);
 }

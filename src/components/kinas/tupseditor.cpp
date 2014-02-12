@@ -60,8 +60,10 @@ void TupSEditor::dropEvent(QDropEvent *e)
     e->acceptProposedAction();
 }
 
-void TupSEditor::insertFromMimeData ( const QMimeData * source )
+void TupSEditor::insertFromMimeData(const QMimeData *source)
 {
+    Q_UNUSED(source);
+
     qDebug("INSERT");
 }
 

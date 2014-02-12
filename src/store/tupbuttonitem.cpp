@@ -41,113 +41,104 @@
 #include <QStyleOptionButton>
 #include <QApplication>
 
-TupButtonItem::TupButtonItem(QGraphicsItem * parent, QGraphicsScene * scene)
-	: QGraphicsItem(parent, scene)
+TupButtonItem::TupButtonItem(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsItem(parent, scene)
 {
-	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-	setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable  );
-	
-	m_iconSize = QSize(22,22);
+    QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
+    setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+    
+    m_iconSize = QSize(22,22);
 }
-
 
 TupButtonItem::~TupButtonItem()
 {
 }
 
-
 void TupButtonItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
-
 
 QDomElement TupButtonItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("button");
-	
-	return root;
+    QDomElement root = doc.createElement("button");
+    
+    return root;
 }
 
-
-void TupButtonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w )
+void TupButtonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w)
 {
-	QStyleOptionButton optionButton;
-	
-	optionButton.text = m_text;
-	optionButton.rect = boundingRect().toRect();
-	optionButton.icon = m_icon;
-	optionButton.iconSize = m_iconSize;
-	
-	if (option->state & QStyle::State_Sunken)
-	{
-		optionButton.state = option->state;
-	}
-	else
-	{
-		
-	}
-	QApplication::style()->drawControl( QStyle::CE_PushButton, &optionButton ,painter, w );
+    QStyleOptionButton optionButton;
+    
+    optionButton.text = m_text;
+    optionButton.rect = boundingRect().toRect();
+    optionButton.icon = m_icon;
+    optionButton.iconSize = m_iconSize;
+    
+    if (option->state & QStyle::State_Sunken)
+        optionButton.state = option->state;
+
+    QApplication::style()->drawControl(QStyle::CE_PushButton, &optionButton, painter, w);
 }
 
 QRectF TupButtonItem::boundingRect() const
 {
-	double width = 2;
-	double height = 2;
-	
-	QFontMetricsF fm(m_font);
-	
-	width += fm.width( m_text );
-	height += fm.height();
-	
-	width += m_iconSize.width();
-	height += m_iconSize.height();
-	
-	return QRectF(0, 0, width, height);
+    double width = 2;
+    double height = 2;
+    
+    QFontMetricsF fm(m_font);
+    
+    width += fm.width(m_text);
+    height += fm.height();
+    
+    width += m_iconSize.width();
+    height += m_iconSize.height();
+    
+    return QRectF(0, 0, width, height);
 }
 
 void TupButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	QGraphicsItem::mousePressEvent(event);
-	update();
+    QGraphicsItem::mousePressEvent(event);
+    update();
 }
 
 void TupButtonItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	QGraphicsItem::mouseReleaseEvent(event);
-	update();
+    QGraphicsItem::mouseReleaseEvent(event);
+    update();
 }
 
-void TupButtonItem::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void TupButtonItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	QGraphicsItem::mouseMoveEvent(event);
-	
-	emit clicked();
-	
-	update();
+    QGraphicsItem::mouseMoveEvent(event);
+    
+    emit clicked();
+    
+    update();
 }
 
 void TupButtonItem::setIconSize(const QSize &size)
 {
-	m_iconSize = size;
-	update();
+    m_iconSize = size;
+    update();
 }
 
 void TupButtonItem::setIcon(const QIcon &icon)
 {
-	m_icon = icon;
-	update();
+    m_icon = icon;
+    update();
 }
 
 void TupButtonItem::setText(const QString &text)
 {
-	m_text = text;
-	update();
+    m_text = text;
+    update();
 }
 
 void TupButtonItem::setFont(const QFont &font)
 {
-	m_font = font;
-	update();
+    m_font = font;
+    update();
 }
 
 

@@ -122,27 +122,29 @@ bool TClickableLabel::isChecked() const
     return m_checked;
 }
 
-void TClickableLabel::mousePressEvent(QMouseEvent *e)
+void TClickableLabel::mousePressEvent(QMouseEvent *event)
 {
     m_isDragging = false;
     
-    m_position = e->pos();
-    QWidget::mousePressEvent(e);
+    m_position = event->pos();
+    QWidget::mousePressEvent(event);
 }
 
-void TClickableLabel::mouseReleaseEvent(QMouseEvent *e)
+void TClickableLabel::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
+
     if (! m_isDragging) {
         m_checked = !m_checked;
         emit clicked();
     }
 }
 
-void TClickableLabel::mouseMoveEvent(QMouseEvent* e)
+void TClickableLabel::mouseMoveEvent(QMouseEvent *event)
 {
-    QWidget::mouseMoveEvent(e);
+    QWidget::mouseMoveEvent(event);
 
-    if ((e->pos() - m_position).manhattanLength() <  QApplication::startDragDistance())
+    if ((event->pos() - m_position).manhattanLength() <  QApplication::startDragDistance())
         return;
     
     QDrag *drag = new QDrag(this);

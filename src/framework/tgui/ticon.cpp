@@ -65,6 +65,10 @@ QColor TIcon::currentColor() const
 
 void TIcon::paint(QPainter *painter, const QRect &rect, Qt::Alignment alignment, Mode mode, State state) const
 {
+    Q_UNUSED(alignment);
+    Q_UNUSED(mode);
+    Q_UNUSED(state);
+
     painter->setPen(QPen(Qt::black));
     painter->fillRect(rect, k->brush);
 }

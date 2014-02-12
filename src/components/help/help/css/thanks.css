@@ -4,7 +4,7 @@ body {
 
 .sponsors {
      background-color:#ffffff;
-     background-image:url('../images/thanks.png');
+     background-image:url('file:thanks.png');
      background-repeat:no-repeat;
      background-position:center center;
 }

@@ -143,23 +143,20 @@ void TRulerBase::paintEvent ( QPaintEvent * )
 void TRulerBase::drawScale(QPainter *painter)
 {
     painter->save();
-    QFont kfont(font().family(), 7);
-    QFontMetrics fm(kfont);
-    painter->setFont(kfont);
+    QFont tfont(font().family(), 7);
+    QFontMetrics fm(tfont);
+    painter->setFont(tfont);
 
     int fact = 1;
-    int init;
 
     if (k->orientation == Qt::Horizontal) {
         painter->translate(k->zero.x(), 0);
-        init = (int)k->zero.x();
         painter->drawLine(-390, height()-1, width(), height()-1);
     } else {
         painter->drawLine(width()-1, 0, width()-1, height());
         fact = -1;
         painter->translate(0, k->zero.y());
         painter->rotate(90);
-        init = (int)k->zero.y();
     }
 
     int ypos = k->height*fact;

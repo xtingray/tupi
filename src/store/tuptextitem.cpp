@@ -53,12 +53,12 @@ TupTextItem::~TupTextItem()
 
 void TupTextItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupTextItem::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("text");
-    
     QDomText text = doc.createTextNode(toHtml());
     root.appendChild(text);
     
@@ -101,7 +101,8 @@ void TupTextItem::focusOutEvent(QFocusEvent * event)
     }
 }
 
-void TupTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+void TupTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
     setEditable(true);
 }

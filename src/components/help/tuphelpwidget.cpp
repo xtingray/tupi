@@ -34,25 +34,19 @@
  ***************************************************************************/
 
 #include "tuphelpwidget.h"
-#include <qlayout.h>
-#include <qtabwidget.h>
-#include <qdom.h>
-#include <qfile.h>
-#include <qmap.h>
+// Tupi Framework
+#include "tdebug.h"
+#include "tglobal.h"
 
 #include <QLocale>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 
-// Tupi Framework 
-#include "tdebug.h"
-#include "tglobal.h"
-
 TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : TupModuleWidgetBase(parent)
 {
     setWindowTitle(tr("Help"));
-    setWindowIcon(QPixmap(THEME_DIR + "icons/help.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "help.png"));
 
     QString lang = QString(QLocale::system().name()).left(2);
 
@@ -74,7 +68,7 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : TupModuleWi
     addChild(contentsListView);
 
     QDomDocument document;
-    QFile file(m_helpPath->path() + "/help.xml");
+    QFile file(m_helpPath->path() + QDir::separator() + "help.xml");
 
     QTreeWidgetItem *first = new QTreeWidgetItem;
 
@@ -84,12 +78,10 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : TupModuleWi
             QDomNode section = root.firstChild();
 
             while (!section.isNull()) {
-
                    QDomElement element = section.toElement();
 
                    if (!element.isNull()) {
                        if (element.tagName() == "Section") {
-
                            QTreeWidgetItem *item = new QTreeWidgetItem(contentsListView);
                            item->setText(0, element.attribute("title"));
                            m_files.insert(item, element.attribute("file"));
@@ -99,7 +91,6 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : TupModuleWi
 
                            QDomNode subSection = element.firstChild();
                            while (! subSection.isNull()) {
-
                                   QDomElement element2 = subSection.toElement();
                                   if (!element2.isNull()) {
                                       if (element2.tagName() == "SubSection") {
@@ -115,11 +106,15 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : TupModuleWi
                    section = section.nextSibling();
             }
         } else {
-                 qDebug("TupHelpWidget::Can't set contents");
+            #ifdef K_DEBUG
+                   tError() << "TupHelpWidget::TupHelpWidget() - Fatal Error: Can't set content";
+            #endif
         }
         file.close();
     } else {
-        qDebug("TupHelpWidget::Can't open");
+        #ifdef K_DEBUG
+               tError() << "TupHelpWidget::TupHelpWidget() - Fatal Error: Can't open 'help.xml' file";
+        #endif
     }
 
     contentsListView->show();
@@ -142,7 +137,7 @@ void TupHelpWidget::tryToLoadPage(QTreeWidgetItem *item, QTreeWidgetItem *previe
     if (item) {
         QString fileName = m_files[item];
         if (! fileName.isNull())
-            loadPage(m_helpPath->path()+"/"+ fileName);
+            loadPage(m_helpPath->path() + QDir::separator() + fileName);
     }
 }
 

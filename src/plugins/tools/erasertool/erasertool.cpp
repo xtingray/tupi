@@ -107,10 +107,16 @@ void EraserTool::press(const TupInputDeviceInformation *input, TupBrushManager *
 
 void EraserTool::move(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
+    Q_UNUSED(input);
+    Q_UNUSED(brushManager);
+    Q_UNUSED(scene);
 }
 
 void EraserTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
+    Q_UNUSED(input);
+    Q_UNUSED(brushManager);
+    Q_UNUSED(scene);
 }
 
 QMap<QString, TAction *> EraserTool::actions() const
@@ -130,6 +136,7 @@ QWidget  *EraserTool::configurator()
 
 void EraserTool::aboutToChangeScene(TupGraphicsScene *scene)
 {
+    Q_UNUSED(scene);
 }
 
 void EraserTool::aboutToChangeTool() 

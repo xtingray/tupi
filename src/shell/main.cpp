@@ -34,7 +34,7 @@
  ***************************************************************************/
 
 #include "tupapplication.h"
-#include "tupsplash.h"
+// #include "tupsplash.h"
 #include "tupmainwindow.h"
 #include "tuptwitter.h"
 #include "tapplicationproperties.h"
@@ -59,20 +59,10 @@
 #include <QTranslator>
 #include <QDesktopWidget>
 #include <QThread>
-#include <QPlastiqueStyle>
+// #include <QPlastiqueStyle>
+#include <QStyleFactory>
 
-#ifndef CONFIG_H
-#define CONFIG_H
-#endif
-
-#ifndef HAVE_SOUND
-#define HAVE_SOUND
-#endif
-
-#ifndef HAVE_FFMPEG
-#define HAVE_FFMPEG
-#endif
-
+/*
 using namespace std;
 
 class SleeperThread : public QThread
@@ -83,6 +73,7 @@ class SleeperThread : public QThread
             QThread::msleep(msecs);
         }
 };
+*/
 
 /**
  * Main class of the application.
@@ -116,21 +107,21 @@ int main(int argc, char ** argv)
     TCONFIG->beginGroup("General");
     QDir appDirPath(QApplication::applicationDirPath());
     if (! TCONFIG->isOk()) {
-#if defined(K_DEBUG)
-        TCONFIG->setValue("Debug", "true");
-#else
-        TCONFIG->setValue("Debug", "false");
-#endif
-#if defined(__APPLE__)
+        #if defined(K_DEBUG)
+            TCONFIG->setValue("Debug", "true");
+        #else
+            TCONFIG->setValue("Debug", "false");
+        #endif
 
-        TCONFIG->setValue("Home", appDirPath.absolutePath());
-#else
-        TCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("TUPI_HOME")));
-#endif
+        #if defined(Q_OS_MAC)
+            TCONFIG->setValue("Home", appDirPath.absolutePath());
+        #else
+            TCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("TUPI_HOME")));
+        #endif
         TCONFIG->setValue("Cache", QDir::tempPath());
     }
 
-#if defined(__APPLE__)
+#if defined(Q_OS_MAC)
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(appDirPath.absolutePath());
     kAppProp->setPluginDir(appDirPath.absolutePath() + "/plugins");
@@ -154,13 +145,6 @@ int main(int argc, char ** argv)
 
     kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default" + "/");
 
-    /*
-    tDebug() << "HOME_DIR: " << HOME_DIR;
-    tDebug() << "kAppProp->shareDir(): " << kAppProp->shareDir();
-    tDebug() << "DATA_DIR: " << DATA_DIR;
-    tDebug() << "THEME_DIR: " << THEME_DIR;
-    */
-
     // Setting the repository directory (where the projects are saved)
     application.createCache(TCONFIG->value("Cache").toString());
 
@@ -169,41 +153,15 @@ int main(int argc, char ** argv)
     // Tupwitter *twitter = new Tupwitter();
     // twitter->start();
 
-    // SQA: Tupi gui styles must be re-factored
-    // Setting the gui style for the interface
-#ifdef ENABLE_TUPISTYLE
-    QApplication::setStyle(new KWaitStyle());
-#elif defined(Q_OS_LINUX)
-    QApplication::setStyle(new QPlastiqueStyle());
-#endif
+    QStyle *style = QStyleFactory::create("fusion");
+    QApplication::setStyle(style);
 
-    // SQA: This code is deprecated
-    /*
-    if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure")) {
-        // Launching the basic configuration dialog
-        if (! application.firstRun()) {
-            // If dialog is canceled or Tupi can not be configured, kill the whole application
-            #ifdef K_DEBUG
-                  tFatal () << "********************* You need configure the application" << endl;
-           #endif
-
-           QMessageBox::critical(0, QObject::tr("Missing..."),
-                                 QObject::tr("You need configure the application"));
-           application.exit(-1);
-           return -1;
-        }
-
-        // Setting the new global variables for Tupi
-        kAppProp->setHomeDir(TCONFIG->value("Home").toString());
-        application.createCache(TCONFIG->value("Cache").toString());
-    }
-    */
-
+    /* SQA: Code pending for revision
     // Time to apply the theme for the application GUI
     QString themefile = TCONFIG->value("ThemeFile").toString();
-
     if (! themefile.isEmpty())
         application.applyTheme(themefile);
+    */
 
     // Loading localization files... now you got Tupi in your native language
 
@@ -211,6 +169,7 @@ int main(int argc, char ** argv)
     translator->load(kAppProp->shareDir() + "data/translations/" + "tupi_" + locale + ".qm");
     application.installTranslator(translator);
 
+/*
     // Time to show the Tupi initial splash
     TupSplash *splash = new TupSplash;
     splash->show();
@@ -224,18 +183,21 @@ int main(int argc, char ** argv)
     splash->setMessage(QObject::tr("Loading modules..."));
     SleeperThread::msleep(500);
 
-    TupMainWindow mainWindow(splash, argc);
+    // TupMainWindow mainWindow(splash, argc);
 
     splash->setMessage(QObject::tr("Loaded!"));
     SleeperThread::msleep(500);
+*/
 
+    TupMainWindow mainWindow(argc);
     mainWindow.showMaximized();
 
-    delete splash;
+    // delete splash;
 
     // Looking for plugins for Tupi
     #ifdef K_DEBUG
            tWarning() << "main.cpp - Loading plugins from: " << kAppProp->pluginDir();
+           tWarning() << "main.cpp - LANG: " << locale;
     #endif
     QApplication::addLibraryPath(kAppProp->pluginDir());
 

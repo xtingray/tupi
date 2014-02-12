@@ -97,6 +97,7 @@ bool TupRequestParser::startTag(const QString& qname, const QXmlAttributes& atts
 
 bool TupRequestParser::endTag(const QString& qname)
 {
+    Q_UNUSED(qname);
     return true;
 }
 

@@ -51,6 +51,8 @@ TupAckParser::~TupAckParser()
 
 bool TupAckParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
+    Q_UNUSED(atts);
+
     if (root() == "server_ack") {
         if (tag == "sign")
             setReadText(true);

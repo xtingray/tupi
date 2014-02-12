@@ -82,15 +82,6 @@
  * @author David Cuadrado
 */
 
-class SleeperThread : public QThread
-{
-    public:
-        static void msleep(unsigned long msecs)
-        {
-            QThread::msleep(msecs);
-        }
-};
-
 /**
  * @if english
  * This is the constructor method for this class.
@@ -101,9 +92,8 @@ class SleeperThread : public QThread
  * @return 
 */
 
-TupMainWindow::TupMainWindow(TupSplash *splash, int parameters) : 
-              TabbedMainWindow(), m_projectManager(0), animationTab(0), playerTab(0), 
-              m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
+TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectManager(0), animationTab(0), playerTab(0), 
+               m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -111,6 +101,7 @@ TupMainWindow::TupMainWindow(TupSplash *splash, int parameters) :
 
     // Loading audio player plugin
     // TAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
+
     setObjectName("TupMainWindow_");
 
     // Defining the status bar
@@ -127,21 +118,10 @@ TupMainWindow::TupMainWindow(TupSplash *splash, int parameters) :
     // Calling out the project manager
     m_projectManager = new TupProjectManager(this);
 
-    splash->setMessage(tr("Setting up the project manager"));
-    SleeperThread::msleep(500);
-
     // Calling out the events/actions manager
-    splash->setMessage(tr("Loading action manager..."));
     m_actionManager = new TActionManager(this);
 
-    // Defining the menu bar
-    splash->setMessage(tr("Creating menu bar..."));
-    SleeperThread::msleep(500);
-
     setupActions();
-	
-    splash->setMessage(tr("Creating GUI..."));
-    SleeperThread::msleep(500);
 	
     // Setting up all the GUI...
     createGUI(); // This method is called from the tupmainwindow_gui class
@@ -339,7 +319,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         addWidget(playerTab);
 
         helpTab = new TupHelpBrowser(this);
-        helpTab->setDataDirs(QStringList() << m_helper->helpPath());
+        // helpTab->setDataDirs(QStringList() << m_helper->helpPath());
 
         QString lang = (QLocale::system().name()).left(2);
         if (lang.length() < 2)  

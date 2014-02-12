@@ -64,6 +64,7 @@ void TupColorWidget::paintEvent(QPaintEvent *)
 
 void TupColorWidget::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     emit clicked();
 }
 

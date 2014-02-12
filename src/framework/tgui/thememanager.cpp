@@ -182,22 +182,26 @@ bool ThemeManager::characters(const QString &)
     return true;
 }
 
-bool ThemeManager::error(const QXmlParseException & exception)
+bool ThemeManager::error(const QXmlParseException &exception)
 {
     #ifdef K_DEBUG
            tError() << "ThemeManager::error() - Fatal Error: Can't process theme!";
            tError() << "ThemeManager::error() - Message: " << exception.message();
+    #else
+           Q_UNUSED(exception);
     #endif
 
     return false;
 }
 
-bool ThemeManager::fatalError(const QXmlParseException & exception)
+bool ThemeManager::fatalError(const QXmlParseException &exception)
 {
     #ifdef K_DEBUG
            tError() << "ThemeManager::error() - Fatal Error: Can't load theme...";
            tError() << "ThemeManager::error() - Line: " << exception.lineNumber() << " Column: " << exception.columnNumber();
            tError() << "ThemeManager::error() - Message: " << exception.message();
+    #else
+           Q_UNUSED(exception);
     #endif
 
     return false;

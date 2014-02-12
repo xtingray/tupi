@@ -78,6 +78,6 @@ class TUPI_EXPORT TupToolInterface
         virtual int toolType() const = 0;
 };
 
-Q_DECLARE_INTERFACE( TupToolInterface, "com.maefloresta.tupi.TupToolInterface/0.2" );
+Q_DECLARE_INTERFACE( TupToolInterface, "com.maefloresta.tupi.TupToolInterface/0.1" );
 
 #endif

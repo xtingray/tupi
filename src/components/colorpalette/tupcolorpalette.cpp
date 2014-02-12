@@ -111,8 +111,8 @@ TupColorPalette::TupColorPalette(QWidget *parent) : TupModuleWidgetBase(parent),
     k->splitter->addWidget(k->tab);
 
     TCONFIG->beginGroup("ColorPalette");
-    QColor foreground = QColor(TCONFIG->value("LastForegroundColor", Qt::black).toString());
-    QColor background = QColor(TCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
+    // QColor foreground = QColor(TCONFIG->value("LastForegroundColor", Qt::black).toString());
+    // QColor background = QColor(TCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
 }
 
 TupColorPalette::~TupColorPalette()

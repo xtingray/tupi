@@ -177,7 +177,7 @@ void TupProjectActionBar::setup(Actions actions)
     }
      
     if (actions & MoveFrameUp) {
-        TImageButton *button;
+        TImageButton *button = 0;
         if (k->container.compare("Exposure") == 0) {
             button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
         } else {
@@ -195,7 +195,7 @@ void TupProjectActionBar::setup(Actions actions)
     }
     
     if (actions & MoveFrameDown) {
-        TImageButton *button;
+        TImageButton *button = 0;
 
         if (k->container.compare("Exposure") == 0) {
             button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
@@ -291,12 +291,12 @@ void TupProjectActionBar::setup(Actions actions)
     mainLayout->addWidget(new TSeparator(Qt::Horizontal));
 }
 
-// TODO: Check why this function do nothing :S
+// SQA: Check why this function do nothing :S
 
 void TupProjectActionBar::insertSeparator(int position)
 {
+    /*
     Qt::Orientation sepOrientation = Qt::Vertical;
-    
     switch (k->orientation) {
             case Qt::Vertical:
             {
@@ -309,14 +309,15 @@ void TupProjectActionBar::insertSeparator(int position)
             }
             break;
     }
+    */
 
     k->buttonLayout->insertWidget(position + 1, new TSeparator(Qt::Vertical), 1, Qt::AlignCenter);
 }
 
 void TupProjectActionBar::insertBlankSpace(int position)
 {
+    /*
     Qt::Orientation sepOrientation = Qt::Vertical;
-   
     switch (k->orientation) {
             case Qt::Vertical:
             {
@@ -329,6 +330,7 @@ void TupProjectActionBar::insertBlankSpace(int position)
             }
             break;
     }
+    */
 
     QWidget *widget = new QWidget();
     widget->setFixedSize(5,5);

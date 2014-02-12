@@ -193,8 +193,10 @@ void TOsd::paintEvent(QPaintEvent *e)
     p.drawPixmap(e->rect().topLeft(), m_pixmap, e->rect());
 }
 
-void TOsd::mousePressEvent(QMouseEvent *e)
+void TOsd::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
+
     if (m_timer)
         m_timer->stop();
 

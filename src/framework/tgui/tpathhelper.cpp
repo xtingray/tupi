@@ -135,6 +135,8 @@ QPainterPath TPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 
 QPainterPath TPathHelper::buildPath(const QString &svgpath)
 {
+    Q_UNUSED(svgpath);
+
     #ifdef K_DEBUG
            tWarning() << "TPathHelper::buildPath() - Warning: method pending for implementation";
     #endif

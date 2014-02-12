@@ -50,6 +50,7 @@ class NodeManager;
 class Node : public QObject, public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
     
     public:
         enum TypeNode { TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center };

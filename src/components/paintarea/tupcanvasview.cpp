@@ -76,7 +76,7 @@ void TupCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setPen(QPen(QColor(230, 230, 230, 255), 6));
     QPointF topLeft = rect.center() - QPointF(w, h);
     QPointF bottomRight = rect.center() + QPointF(w, h);
-    QRectF workspace = QRectF(topLeft, k->projectSize);
+    // QRectF workspace = QRectF(topLeft, k->projectSize);
 
     painter->drawLine(topLeft - QPoint(0, 30), topLeft + QPoint(0, 30));  
     painter->drawLine(topLeft - QPoint(30, 0), topLeft + QPoint(30, 0)); 

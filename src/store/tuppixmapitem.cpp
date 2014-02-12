@@ -48,6 +48,7 @@ TupPixmapItem::~TupPixmapItem()
 
 void TupPixmapItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupPixmapItem::toXml(QDomDocument &doc) const

@@ -57,6 +57,7 @@ TupPathItem::~TupPathItem()
 
 void TupPathItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupPathItem::toXml(QDomDocument &doc) const

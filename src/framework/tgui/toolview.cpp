@@ -104,12 +104,12 @@ void ToolView::setSizeHint() {
 
 void ToolView::saveSize(bool checked)
 {
+    Q_UNUSED(checked);
+
     if (m_button->area() == Qt::LeftToolBarArea || m_button->area() == Qt::RightToolBarArea)
         m_size = width();
     else
         m_size = height();
-
-    //setVisible(checked);
 }
 
 QSize ToolView::sizeHint() const

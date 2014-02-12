@@ -195,6 +195,8 @@ void TupTimeLine::setLibrary(const TupLibrary *library)
 
 void TupTimeLine::sceneResponse(TupSceneResponse *response)
 {
+    Q_UNUSED(response);
+
     /*
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -240,6 +242,8 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
 
 void TupTimeLine::layerResponse(TupLayerResponse *response)
 {
+    Q_UNUSED(response);
+
     /*
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -311,6 +315,8 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
 
 void TupTimeLine::frameResponse(TupFrameResponse *response)
 {
+    Q_UNUSED(response);
+
     /*
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -374,6 +380,8 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
 
 void TupTimeLine::libraryResponse(TupLibraryResponse *response)
 {
+    Q_UNUSED(response);
+
     /*
     #ifdef K_DEBUG
            T_FUNCINFO;

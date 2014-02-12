@@ -58,6 +58,7 @@ bool TupNotificationParser::startTag(const QString &tag, const QXmlAttributes &a
 
 bool TupNotificationParser::endTag(const QString &tag)
 {
+    Q_UNUSED(tag);
     return true;
 }
 

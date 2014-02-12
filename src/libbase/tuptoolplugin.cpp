@@ -163,6 +163,7 @@ void TupToolPlugin::autoZoom()
 
 void TupToolPlugin::setProjectSize(const QSize size)
 {
+    Q_UNUSED(size);
 }
 
 QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modifiers)

@@ -41,13 +41,14 @@
 #include <QVBoxLayout>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QDir>
 
 // Help Browser
 
 TupHelpBrowser::TupHelpBrowser(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle(tr("Help"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_mode.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "help_mode.png")));
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(15);
@@ -56,34 +57,31 @@ TupHelpBrowser::TupHelpBrowser(QWidget *parent) : QWidget(parent)
 
     m_pageArea = new QTextBrowser(m_separator);
     m_pageArea->setOpenExternalLinks(true);
-
-    m_document = new QTextDocument(m_pageArea);
-
-    m_pageArea->setDocument(m_document);
 }
 
 TupHelpBrowser::~TupHelpBrowser()
 {
 }
 
-void TupHelpBrowser::setDocument(const QString &doc)
-{
-    m_document->setHtml(doc);
-}
-
 void TupHelpBrowser::setSource(const QString &filePath)
 {
-    m_pageArea->setSource(filePath);
-}
+    QString locale = QString(QLocale::system().name()).left(2);
+    if (locale.length() < 2)
+        locale = "en";
 
-void TupHelpBrowser::setDataDirs(const QStringList &dirs)
-{
-    m_pageArea->setSearchPaths(dirs);
+    QStringList path;
+    QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
+    path << resources + "css";
+    path << resources + "images";
+    path << resources + locale + QDir::separator() + "images";
+    m_pageArea->setSearchPaths(path);
+
+    m_pageArea->setSource(filePath);
 }
 
 // SQA: These methods are just temporary for developing reasons
 
-void TupHelpBrowser::keyPressEvent(QKeyEvent * event) {
+void TupHelpBrowser::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
             case (Qt::Key_R):
                   if (event->modifiers() == Qt::ControlModifier)

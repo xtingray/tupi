@@ -404,7 +404,8 @@ void TupProjectManager::emitResponse(TupProjectResponse *response)
 
     if (response->action() != TupProjectRequest::Select) {
         k->isModified = true;
-        if (TupSceneResponse *sceneResponse = static_cast<TupSceneResponse *>(response)) {
+        // if (TupSceneResponse *sceneResponse = static_cast<TupSceneResponse *>(response)) {
+        if (static_cast<TupSceneResponse *>(response)) {
             if (response->action() == TupProjectRequest::Remove)
                 emit projectHasChanged(true);
             else

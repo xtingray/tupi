@@ -257,6 +257,9 @@ void TupFramesTable::setup()
     
     horizontalHeader()->setResizeMode(QHeaderView::Custom);
     verticalHeader()->setResizeMode(QHeaderView::Custom);
+
+    // horizontalHeader()->setSectionResizeMode(QHeaderView::Custom);
+    // verticalHeader()->setSectionResizeMode(QHeaderView::Custom);
 }
 
 void TupFramesTable::emitFrameSelected(int col)
@@ -284,6 +287,8 @@ void TupFramesTable::emitFrameSelectionChanged()
 
 void TupFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetItem *prev)
 {
+    Q_UNUSED(prev);
+
     TupFramesTableItem *item = dynamic_cast<TupFramesTableItem *>(current);
     
     if (item) {
@@ -315,6 +320,8 @@ bool TupFramesTable::isSoundLayer(int row)
 
 void TupFramesTable::insertLayer(int pos, const QString &name)
 {
+    Q_UNUSED(name);
+
     insertRow(pos);
     
     Private::LayerItem layer;
@@ -326,6 +333,8 @@ void TupFramesTable::insertLayer(int pos, const QString &name)
 
 void TupFramesTable::insertSoundLayer(int layerPos, const QString &name)
 {
+    Q_UNUSED(name);
+
     insertRow(layerPos);
     
     Private::LayerItem layer;
@@ -400,6 +409,8 @@ int TupFramesTable::lastFrameByLayer(int layerPos)
 
 void TupFramesTable::insertFrame(int layerPos, const QString &name)
 {
+    Q_UNUSED(name);
+
     if (layerPos < 0 || layerPos >= k->layers.count()) 
         return;
     
@@ -433,6 +444,8 @@ void TupFramesTable::selectFrame(int index)
 
 void TupFramesTable::removeFrame(int layerPos, int position)
 {
+    Q_UNUSED(position);
+
     /*
     for (int frameIndex = position; frameIndex < columnCount(); frameIndex++)
          setAttribute( layerPos, position, TupFramesTableItem::IsUsed, false);
@@ -489,6 +502,9 @@ void TupFramesTable::fixSectionMoved(int logical, int visual, int newVisual)
 
 void TupFramesTable::emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
+     Q_UNUSED(previousRow);
+     Q_UNUSED(previousColumn);
+
      if (k->frameIndex != currentColumn || k->layerIndex != currentRow) {
          k->frameIndex = currentColumn;
          k->layerIndex = currentRow;

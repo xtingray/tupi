@@ -57,6 +57,7 @@ TupRectItem::~TupRectItem()
 
 void TupRectItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 QDomElement TupRectItem::toXml(QDomDocument &doc) const

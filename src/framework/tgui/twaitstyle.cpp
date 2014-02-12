@@ -48,6 +48,8 @@
 
 QPixmap cached(const QString &img, const QColor &color)
 {
+    Q_UNUSED(color);
+
     if (QPixmap *p = QPixmapCache::find(img))
         return *p;
 
@@ -543,6 +545,7 @@ void TWaitStyle::unpolish(QWidget *widget)
 
 void TWaitStyle::polish(QPalette &palette)
 {
+    Q_UNUSED(palette);
     // palette.setColor(QPalette::Background, QColor(241, 241, 241));
 }
 

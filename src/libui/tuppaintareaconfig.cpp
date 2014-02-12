@@ -50,7 +50,6 @@
 
 TupPaintAreaConfig::TupPaintAreaConfig(QWidget *parent) : QWidget(parent)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     setupPage();
 }
 

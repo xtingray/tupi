@@ -126,8 +126,10 @@ void TupiRuler::setRulerZoom(const qreal rulerZoom)
     update();
 }
 
-void TupiRuler::paintEvent(QPaintEvent* event)
+void TupiRuler::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
+
     bool isHorzRuler = Qt::Horizontal == k->rulerType;
     QPainter painter(this);
     painter.save();

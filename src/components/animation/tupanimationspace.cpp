@@ -72,10 +72,12 @@ void TupAnimationspace::mousePressEvent(QMouseEvent *event)
 
 void TupAnimationspace::mouseMoveEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void TupAnimationspace::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void TupAnimationspace::keyPressEvent(QKeyEvent *event) {

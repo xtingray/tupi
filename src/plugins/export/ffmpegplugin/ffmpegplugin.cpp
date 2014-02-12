@@ -116,6 +116,11 @@ TMovieGeneratorInterface::Format FFMpegPlugin::videoFormat(TupExportInterface::F
                  {
                    return TFFMpegMovieGenerator::NONE;
                  }
+            default:
+                 {
+                   return TFFMpegMovieGenerator::NONE;
+                 }
+                 break;
     }
 
     return TFFMpegMovieGenerator::NONE;
@@ -182,6 +187,6 @@ const char* FFMpegPlugin::getExceptionMsg() {
 }
 
 #ifdef HAVE_FFMPEG
-Q_EXPORT_PLUGIN( FFMpegPlugin );
+       Q_EXPORT_PLUGIN( FFMpegPlugin );
 #endif
 

@@ -85,7 +85,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     int w = width;
     int h = height;
 
-    st = av_new_stream(oc, 0);
+    // st = av_new_stream(oc, 0);
+    st = avformat_new_stream(oc, 0);
     if (!st) {
         errorMsg = "ffmpeg error: Could not alloc stream. This is not a problem directly related to Tupi. \
                     Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
@@ -210,7 +211,8 @@ bool TFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     }
 
     /* open the codec */
-    if (avcodec_open(c, codec) < 0) {
+    // if (avcodec_open(c, codec) < 0) {
+    if (avcodec_open2(c, codec, NULL) < 0) {
         errorMsg = "ffmpeg error: Could not open video codec. This is not a problem directly related to Tupi. \
                     Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
@@ -470,7 +472,9 @@ bool TFFMpegMovieGenerator::begin()
         return false;
     }
 
-    if (av_set_parameters(k->oc, 0) < 0) {
+    /*
+    // if (av_set_parameters(k->oc, 0) < 0) {
+    if (avformat_write_header(k->oc, NULL) < 0) {
         k->errorMsg = "ffmpeg error: Invalid output format parameters. This is not a problem directly related to Tupi. \
                        Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
         #ifdef K_DEBUG
@@ -478,8 +482,10 @@ bool TFFMpegMovieGenerator::begin()
         #endif
         return false;
     }
+    */
 
-    dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
+    // dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
+    av_dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
 
     if (!k->openVideo(k->oc, k->video_st)) {
         #ifdef K_DEBUG
@@ -489,7 +495,8 @@ bool TFFMpegMovieGenerator::begin()
     }
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
-        if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
+        // if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
+        if (avio_open(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
             k->errorMsg = "ffmpeg error: Could not open " + k->movieFile.toLocal8Bit() + ". This is not a problem directly related to Tupi. \
                            Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
             #ifdef K_DEBUG
@@ -499,7 +506,8 @@ bool TFFMpegMovieGenerator::begin()
         }
     }
 
-    av_write_header(k->oc);
+    // av_write_header(k->oc);
+    avformat_write_header(k->oc, NULL);
 
     k->video_pts = 0.0;
     k->frameCount = 0;
@@ -542,7 +550,8 @@ void TFFMpegMovieGenerator::end()
     }
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
-        url_fclose(k->oc->pb);
+        // url_fclose(k->oc->pb);
+        avio_close(k->oc->pb);
     }
 
     av_free(k->oc);

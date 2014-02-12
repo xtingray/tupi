@@ -36,15 +36,14 @@
 #ifndef TUPHELPWIDGET_H
 #define TUPHELPWIDGET_H
 
-#include <QWidget>
-#include <QMap>
-
-#include <QTreeWidget>
-#include <qdir.h>
-
 #include "tupmodulewidgetbase.h"
 
-class KHelpWidgetManager;
+#include <QWidget>
+#include <QMap>
+#include <QTreeWidget>
+#include <QDir>
+
+// class KHelpWidgetManager;
 
 /**
  * @author David Alejandro Cuadrado Cabrera
