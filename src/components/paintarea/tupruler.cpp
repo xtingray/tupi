@@ -33,12 +33,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupiruler.h" 
+#include "tupruler.h" 
 #include "tdebug.h"
 
 #include <cmath>
 
-struct TupiRuler::Private
+struct TupRuler::Private
 {
     Qt::Orientation rulerType;
     qreal origin;
@@ -47,22 +47,21 @@ struct TupiRuler::Private
     qreal currentZoomFactor;
     QPointF cursorPos;
     QPolygonF arrow;
-    qreal scaleValue; 
+    Transformation currentTransformation;
 };
 
-TupiRuler::TupiRuler(Qt::Orientation rulerType, QWidget *parent) : QWidget(parent), k(new Private)
+TupRuler::TupRuler(Qt::Orientation rulerType, QWidget *parent) : QWidget(parent), k(new Private)
 {
+    k->currentTransformation = None;
     k->rulerType = rulerType;
-    k->origin = 0.;
-    k->oldPos = 0.;
-    k->rulerZoom = 1.;
+    k->origin = 0.0;
+    k->oldPos = 0.0;
+    k->rulerZoom = 1.0;
     k->currentZoomFactor = 1;
-    k->scaleValue = 10;
 
     k->arrow = QPolygonF(3);
 
     if (rulerType == Qt::Horizontal) {
-
         setMaximumHeight(20);
         setMinimumHeight(20);
 
@@ -71,9 +70,7 @@ TupiRuler::TupiRuler(Qt::Orientation rulerType, QWidget *parent) : QWidget(paren
         k->arrow << QPointF(10.0, 0.0);
 
         k->arrow.translate(0, 14);
-
     } else {
-
         setMaximumWidth(20);
         setMinimumWidth(20);
 
@@ -88,31 +85,31 @@ TupiRuler::TupiRuler(Qt::Orientation rulerType, QWidget *parent) : QWidget(paren
     setFont(ruleFont);
 }
 
-TupiRuler::~TupiRuler()
+TupRuler::~TupRuler()
 {
 }
 
-QSize TupiRuler::minimumSizeHint() const
+QSize TupRuler::minimumSizeHint() const
 {
     return QSize(RULER_BREADTH, RULER_BREADTH);
 }
 
-Qt::Orientation TupiRuler::rulerType() const
+Qt::Orientation TupRuler::rulerType() const
 {
     return k->rulerType;
 }
 
-qreal TupiRuler::origin() const
+qreal TupRuler::origin() const
 {
     return k->origin;
 }
 
-qreal TupiRuler::rulerZoom() const
+qreal TupRuler::rulerZoom() const
 {
     return k->rulerZoom;
 }
 
-void TupiRuler::setOrigin(const qreal origin)
+void TupRuler::setOrigin(const qreal origin)
 {
     if (k->origin != origin) {
         k->origin = origin;
@@ -120,49 +117,50 @@ void TupiRuler::setOrigin(const qreal origin)
     }
 }
 
-void TupiRuler::setRulerZoom(const qreal rulerZoom)
+void TupRuler::setRulerZoom(const qreal rulerZoom)
 {
     k->currentZoomFactor *= rulerZoom;
     update();
 }
 
-void TupiRuler::paintEvent(QPaintEvent *event)
+void TupRuler::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    bool isHorzRuler = Qt::Horizontal == k->rulerType;
-    QPainter painter(this);
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing, true);
+    if (k->currentTransformation == None) {
+        bool isHorizontal = Qt::Horizontal == k->rulerType;
+        QPainter painter(this);
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing, true);
 
-    QRectF rulerRect = this->rect();
-    drawAScaleMeter(&painter, rulerRect);
+        QRectF rulerRect = this->rect();
+        QPointF starPt = isHorizontal ? rulerRect.bottomLeft() : rulerRect.topRight();
+        QPointF endPt = rulerRect.bottomRight();
 
-    painter.drawConvexPolygon(k->arrow);
+        qreal rulerStartMark = isHorizontal ? rulerRect.left() : rulerRect.top();
+        qreal rulerEndMark = isHorizontal ? rulerRect.right() : rulerRect.bottom();
+        if (k->origin < rulerStartMark || k->origin > rulerEndMark) {
+            if (Qt::Horizontal == k->rulerType)
+                endPt -= QPointF(18, 0);
+            else
+                endPt -= QPointF(0, 18);
+        }
 
-    QPointF starPt = isHorzRuler ? rulerRect.bottomLeft() : rulerRect.topRight();
-    QPointF endPt = rulerRect.bottomRight();
+        painter.drawLine(starPt, endPt);
+        drawAScaleMeter(&painter, rulerRect);
+        painter.drawConvexPolygon(k->arrow);
 
-    qreal rulerStartMark = isHorzRuler ? rulerRect.left() : rulerRect.top();
-    qreal rulerEndMark = isHorzRuler ? rulerRect.right() : rulerRect.bottom();
-    if (k->origin < rulerStartMark || k->origin > rulerEndMark) {
-        if (Qt::Horizontal == k->rulerType)
-            endPt -= QPointF(18, 0);
-        else
-            endPt -= QPointF(0, 18);
+        painter.restore();
     }
-
-    painter.drawLine(starPt, endPt);
-    painter.restore();
 }
 
-void TupiRuler::drawAScaleMeter(QPainter *painter, QRectF rulerRect)
+void TupRuler::drawAScaleMeter(QPainter *painter, QRectF rulerRect)
 {
-    qreal scaleMeter = k->scaleValue * k->currentZoomFactor;
+    qreal scaleMeter = 10 * k->currentZoomFactor;
 
-    bool isHorzRuler = Qt::Horizontal == k->rulerType;
-    qreal rulerStartMark = isHorzRuler ? rulerRect.left() : rulerRect.top();
-    qreal rulerEndMark = isHorzRuler ? rulerRect.right() : rulerRect.bottom();
+    bool isHorizontal = Qt::Horizontal == k->rulerType;
+    qreal rulerStartMark = isHorizontal ? rulerRect.left() : rulerRect.top();
+    qreal rulerEndMark = isHorizontal ? rulerRect.right() : rulerRect.bottom();
 
     if (scaleMeter > 3) {
         if (k->origin >= rulerStartMark && k->origin <= rulerEndMark) {        
@@ -179,9 +177,9 @@ void TupiRuler::drawAScaleMeter(QPainter *painter, QRectF rulerRect)
     }
 }
 
-void TupiRuler::drawFromOriginTo(QPainter* painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step)
+void TupRuler::drawFromOriginTo(QPainter* painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step)
 {
-    bool isHorzRuler = Qt::Horizontal == k->rulerType;
+    bool isHorizontal = Qt::Horizontal == k->rulerType;
     int counter = 0;
     qreal startPosition = 16;
 
@@ -190,17 +188,17 @@ void TupiRuler::drawFromOriginTo(QPainter* painter, QRectF rulerRect, qreal star
          if (counter % 5 == 0)
              startPosition = 12;
          if (counter % 10 == 0) {
-             startPosition = (isHorzRuler ? 9 : 0);
+             startPosition = (isHorizontal ? 9 : 0);
              if (step < 0 && current == startMark + 5) {
                  counter++;
                  continue;
              }
          }
 
-         qreal x1 = isHorzRuler ? current : rulerRect.left() + startPosition;
-         qreal y1 = isHorzRuler ? rulerRect.top() + startPosition : current;
-         qreal x2 = isHorzRuler ? current : rulerRect.right();
-         qreal y2 = isHorzRuler ? rulerRect.bottom() : current;
+         qreal x1 = isHorizontal ? current : rulerRect.left() + startPosition;
+         qreal y1 = isHorizontal ? rulerRect.top() + startPosition : current;
+         qreal x2 = isHorizontal ? current : rulerRect.right();
+         qreal y2 = isHorizontal ? rulerRect.bottom() : current;
 
          painter->drawLine(QLineF(x1, y1, x2, y2));
 
@@ -208,18 +206,18 @@ void TupiRuler::drawFromOriginTo(QPainter* painter, QRectF rulerRect, qreal star
              int tag = counter*10;
              if (step < 0)
                  tag *= -1;
-             painter->drawText(QPoint(x1 + (isHorzRuler ? 3 : 0), y1 + (isHorzRuler ? 3 : -2)), QString::number(tag));
+             painter->drawText(QPoint(x1 + (isHorizontal ? 3 : 0), y1 + (isHorizontal ? 3 : -2)), QString::number(tag));
          }
 
          counter++;
     }
 }
 
-void TupiRuler::drawMaximizedRuler(QPainter* painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step)
+void TupRuler::drawMaximizedRuler(QPainter* painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step)
 {
     endMark -= 20;
     int delta = (int) fabs(k->origin) % (int) step;
-    bool isHorzRuler = Qt::Horizontal == k->rulerType;
+    bool isHorizontal = Qt::Horizontal == k->rulerType;
     qreal startPosition = 16;
 
     int counter = fabs(k->origin)/step;
@@ -229,12 +227,12 @@ void TupiRuler::drawMaximizedRuler(QPainter* painter, QRectF rulerRect, qreal st
          if (counter % 5 == 0)
              startPosition = 12;
          if (counter % 10 == 0)
-             startPosition = (isHorzRuler ? 9 : 0);
+             startPosition = (isHorizontal ? 9 : 0);
 
-         qreal x1 = isHorzRuler ? current : rulerRect.left() + startPosition;
-         qreal y1 = isHorzRuler ? rulerRect.top() + startPosition : current;
-         qreal x2 = isHorzRuler ? current : rulerRect.right();
-         qreal y2 = isHorzRuler ? rulerRect.bottom() : current;
+         qreal x1 = isHorizontal ? current : rulerRect.left() + startPosition;
+         qreal y1 = isHorizontal ? rulerRect.top() + startPosition : current;
+         qreal x2 = isHorizontal ? current : rulerRect.right();
+         qreal y2 = isHorizontal ? rulerRect.bottom() : current;
 
          painter->drawLine(QLineF(x1, y1, x2, y2));
 
@@ -242,16 +240,16 @@ void TupiRuler::drawMaximizedRuler(QPainter* painter, QRectF rulerRect, qreal st
              int tag = counter*10;
              if (step < 0)
                  tag *= -1;
-             painter->drawText(QPoint(x1 + (isHorzRuler ? 3 : 0), y1 + (isHorzRuler ? 3 : -2)), QString::number(tag));
+             painter->drawText(QPoint(x1 + (isHorizontal ? 3 : 0), y1 + (isHorizontal ? 3 : -2)), QString::number(tag));
          }
 
          counter++;
     }
 }
 
-void TupiRuler::drawSimpleRuler(QPainter* painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step)
+void TupRuler::drawSimpleRuler(QPainter* painter, QRectF rulerRect, qreal startMark, qreal endMark, qreal step)
 {
-    bool isHorzRuler = Qt::Horizontal == k->rulerType;
+    bool isHorizontal = Qt::Horizontal == k->rulerType;
     int counter = 0;
     qreal startPosition = 16;
 
@@ -266,10 +264,10 @@ void TupiRuler::drawSimpleRuler(QPainter* painter, QRectF rulerRect, qreal start
              }
          }
 
-         qreal x1 = isHorzRuler ? current : rulerRect.left() + startPosition;
-         qreal y1 = isHorzRuler ? rulerRect.top() + startPosition : current;
-         qreal x2 = isHorzRuler ? current : rulerRect.right();
-         qreal y2 = isHorzRuler ? rulerRect.bottom() : current;
+         qreal x1 = isHorizontal ? current : rulerRect.left() + startPosition;
+         qreal y1 = isHorizontal ? rulerRect.top() + startPosition : current;
+         qreal x2 = isHorizontal ? current : rulerRect.right();
+         qreal y2 = isHorizontal ? rulerRect.bottom() : current;
 
          painter->drawLine(QLineF(x1, y1, x2, y2));
 
@@ -277,26 +275,31 @@ void TupiRuler::drawSimpleRuler(QPainter* painter, QRectF rulerRect, qreal start
     }
 }
 
-void TupiRuler::translateArrow(double dx, double dy)
+void TupRuler::translateArrow(double dx, double dy)
 {
     k->arrow.translate(dx, dy);
 }
 
-void TupiRuler::movePointers(const QPointF pos)
+void TupRuler::updateCurrentTransformation(Transformation current)
 {
-    if (Qt::Horizontal == k->rulerType) {
-        qreal x = pos.x() * k->currentZoomFactor;
-        translateArrow(-k->oldPos, 0);
-        translateArrow(k->origin + x, 0);
-        k->oldPos = k->origin + x;
-    } else {
-        qreal y = pos.y() * k->currentZoomFactor;
-        translateArrow(0, -k->oldPos);
-        translateArrow(0, k->origin + y);
-        k->oldPos = k->origin + y;
+    k->currentTransformation = current;
+}
+
+void TupRuler::movePointers(const QPointF pos)
+{
+    if (k->currentTransformation == None) {
+        if (k->rulerType == Qt::Horizontal) {
+            qreal x = pos.x() * k->currentZoomFactor;
+            translateArrow(-k->oldPos, 0);
+            translateArrow(k->origin + x, 0);
+            k->oldPos = k->origin + x;
+        } else {
+            qreal y = pos.y() * k->currentZoomFactor;
+            translateArrow(0, -k->oldPos);
+            translateArrow(0, k->origin + y);
+            k->oldPos = k->origin + y;
+        }
     }
 
     update();
 }
-
-

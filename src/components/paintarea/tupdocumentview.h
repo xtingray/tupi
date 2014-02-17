@@ -73,7 +73,6 @@ class TupDocumentView : public QMainWindow
         void setDrawGrid(bool draw);
 
         QPainter::RenderHints renderHints() const;
-        void setRotationAngle(int angle);
         void setZoom(qreal factor);
 
         TupBrushManager *brushManager() const;
@@ -84,6 +83,7 @@ class TupDocumentView : public QMainWindow
         int currentFramesTotal();
         int currentSceneIndex();
         void setZoomView(const QString &percent);
+        void setRotationAngle(int angle);
         QSize workSpaceSize() const;
         void updateUsersOnLine(const QString &login, int state);
 
@@ -95,6 +95,7 @@ class TupDocumentView : public QMainWindow
 
         // void setZoomFactor(int porcent);
         void updateScaleVars(double factor);
+        void updateRotationVars(int angle);
         void changeRulerOrigin(const QPointF &zero);
         void saveTimer();
         void showFullScreen();
@@ -115,6 +116,7 @@ class TupDocumentView : public QMainWindow
         void createToolBar();
         void createMenu();
         void createTools();
+        void updateRotationAngleFromRulers(int angle);
 
     private slots: 
         // Plugins

@@ -64,6 +64,7 @@ struct TupPaintAreaStatus::Private
     TupBrushStatus *bgStatus;
     TupToolStatus *toolStatus;
     qreal scaleFactor;
+    int angle;
     int currentFrame;
 };
 
@@ -72,6 +73,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     setSizeGripEnabled(false);
     k->documentView = parent;
     k->scaleFactor = 100;
+    k->angle = 0;
     k->currentFrame = 1;
 
     QWidget *frameContainer = new QWidget;
@@ -224,7 +226,7 @@ void TupPaintAreaStatus::setPen(const QPen &pen)
     k->brushStatus->setForeground(pen);
 }
 
-void TupPaintAreaStatus::applyRotation(const QString & text)
+void TupPaintAreaStatus::applyRotation(const QString &text)
 {
     int angle = text.toInt();
 
@@ -303,7 +305,6 @@ void TupPaintAreaStatus::updateFramePointer()
     int index = text.toInt(&ok); 
    
     if (ok) {
-
         if (index < 1 || index > 999) {
             k->frameField->setText(QString::number(k->currentFrame));
             return;
@@ -324,8 +325,21 @@ void TupPaintAreaStatus::updateFramePointer()
     }
 }
 
+void TupPaintAreaStatus::updateRotationAngle(int angle)
+{
+    k->angle = angle;
+    QString text = QString::number(angle); 
+    int index = k->rotation->findText(text);
+
+    k->rotation->blockSignals(true);
+    if (index != -1)
+        k->rotation->setCurrentIndex(index);
+    else
+        k->rotation->setEditText(text);
+    k->rotation->blockSignals(false);
+}
+
 void TupPaintAreaStatus::setBgColor(QColor color)
 {
     k->bgStatus->setColor(color);
 }
-

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPIRULER_H
-#define TUPIRULER_H
+#ifndef TUPRULER_H
+#define TUPRULER_H
 
 #include <QWidget>
 #include <QMouseEvent>
@@ -46,20 +46,22 @@
 
 #define RULER_BREADTH 20
 
-class TupiRuler : public QWidget
+class TupRuler : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(qreal origin READ origin WRITE setOrigin)
     Q_PROPERTY(qreal rulerZoom READ rulerZoom WRITE setRulerZoom)
 
     public:
-        TupiRuler(Qt::Orientation rulerType, QWidget *parent);
-        ~TupiRuler();
+        enum Transformation { None = 1, Rotation, Scale };
+        TupRuler(Qt::Orientation rulerType, QWidget *parent);
+        ~TupRuler();
 
         QSize minimumSizeHint() const;
         Qt::Orientation rulerType() const;
         qreal origin() const;
         qreal rulerZoom() const;
+        void updateCurrentTransformation(Transformation current);
 
     public slots:
         void setOrigin(const qreal origin);

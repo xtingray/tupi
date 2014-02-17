@@ -737,10 +737,15 @@ double TupGraphicalAlgorithm::distanceToPoint(const QPointF &pos)
 
 double TupGraphicalAlgorithm::angleForPos(const QPointF &pos, const QPointF &anchor)
 {
-    qreal angle = ::acos((pos.x()-anchor.x()) / distanceToPoint(pos - anchor));
+    qreal distance = distanceToPoint(pos - anchor);
+    qreal angle = 0;
 
-    if (pos.y()-anchor.y() > 0)
-        angle = M_PI * 2.0 - angle;
+    if (distance != 0) {
+        angle = ::acos((pos.x()-anchor.x()) / distanceToPoint(pos - anchor));
+
+        if (pos.y()-anchor.y() > 0)
+            angle = M_PI * 2.0 - angle;
+    }
 
     return angle;
 }

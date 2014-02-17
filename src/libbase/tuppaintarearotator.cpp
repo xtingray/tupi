@@ -35,6 +35,7 @@
 
 #include "tuppaintarearotator.h"
 #include "tuppaintareabase.h"
+#include "tdebug.h"
 
 #include <QTimer>
 

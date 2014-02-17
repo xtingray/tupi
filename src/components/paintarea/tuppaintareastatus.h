@@ -54,6 +54,7 @@ class TupPaintAreaStatus : public QStatusBar
         void setZoomFactor(const QString &text);
         void updateZoomFactor(double factor);
         qreal currentZoomFactor();
+        void updateRotationAngle(int angle);
         void setBgColor(QColor color);
 
     public slots:

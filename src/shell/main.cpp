@@ -34,13 +34,11 @@
  ***************************************************************************/
 
 #include "tupapplication.h"
-// #include "tupsplash.h"
 #include "tupmainwindow.h"
 #include "tuptwitter.h"
 #include "tapplicationproperties.h"
 #include "tdebug.h"
 #include "tcollapsiblewidget.h"
-// #include "taudioplayer.h"
 
 #ifdef Q_OS_UNIX
 #include "tupcrashhandler.h"
@@ -59,21 +57,7 @@
 #include <QTranslator>
 #include <QDesktopWidget>
 #include <QThread>
-// #include <QPlastiqueStyle>
 #include <QStyleFactory>
-
-/*
-using namespace std;
-
-class SleeperThread : public QThread
-{
-    public:
-        static void msleep(unsigned long msecs)
-        {
-            QThread::msleep(msecs);
-        }
-};
-*/
 
 /**
  * Main class of the application.
@@ -88,6 +72,7 @@ class SleeperThread : public QThread
 int main(int argc, char ** argv)
 {
     TupApplication application(argc, argv);
+    QString slash = QDir::separator();
 
 #ifdef K_DEBUG
        TDebug::setOutputChannel();
@@ -124,26 +109,27 @@ int main(int argc, char ** argv)
 #if defined(Q_OS_MAC)
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(appDirPath.absolutePath());
-    kAppProp->setPluginDir(appDirPath.absolutePath() + "/plugins");
-    kAppProp->setShareDir(appDirPath.absolutePath()+ "/share");
+    kAppProp->setPluginDir(appDirPath.absolutePath() + slash + "plugins");
+    kAppProp->setShareDir(appDirPath.absolutePath() + slash + "share");
 #else
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(QString::fromLocal8Bit(::getenv("TUPI_BIN")));
     kAppProp->setPluginDir(QString::fromLocal8Bit(::getenv("TUPI_PLUGIN")));
     kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("TUPI_SHARE")));
 #endif
+
     QString locale = QString(QLocale::system().name()).left(2);
 
     if (locale.length() < 2)
         locale = "en";
 
-    QDir dir(kAppProp->shareDir() + "data/" + locale + "/");
+    QDir dir(kAppProp->shareDir() + "data" + slash + locale + slash);
     if (! dir.exists())
-        kAppProp->setDataDir(kAppProp->shareDir() + "data/en/");
+        kAppProp->setDataDir(kAppProp->shareDir() + "data" + slash + "en" + slash);
     else
-        kAppProp->setDataDir(kAppProp->shareDir() + "data/" + locale + "/");
+        kAppProp->setDataDir(kAppProp->shareDir() + "data" + slash + locale + slash);
 
-    kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default" + "/");
+    kAppProp->setThemeDir(kAppProp->shareDir() + "themes" + slash + "default" + slash);
 
     // Setting the repository directory (where the projects are saved)
     application.createCache(TCONFIG->value("Cache").toString());
@@ -156,48 +142,18 @@ int main(int argc, char ** argv)
     QStyle *style = QStyleFactory::create("fusion");
     QApplication::setStyle(style);
 
-    /* SQA: Code pending for revision
-    // Time to apply the theme for the application GUI
-    QString themefile = TCONFIG->value("ThemeFile").toString();
-    if (! themefile.isEmpty())
-        application.applyTheme(themefile);
-    */
-
     // Loading localization files... now you got Tupi in your native language
 
     QTranslator *translator = new QTranslator;
-    translator->load(kAppProp->shareDir() + "data/translations/" + "tupi_" + locale + ".qm");
+    translator->load(kAppProp->shareDir() + "data" + slash + "translations" + slash + "tupi_" + locale + ".qm");
     application.installTranslator(translator);
-
-/*
-    // Time to show the Tupi initial splash
-    TupSplash *splash = new TupSplash;
-    splash->show();
-    QDesktopWidget desktop;
-    splash->move((int) (desktop.screenGeometry().width() - splash->width())/2,
-                 (int) (desktop.screenGeometry().height() - splash->height())/2);
-
-    splash->setMessage(QObject::tr("Initializing..."));
-    SleeperThread::msleep(500);
-
-    splash->setMessage(QObject::tr("Loading modules..."));
-    SleeperThread::msleep(500);
-
-    // TupMainWindow mainWindow(splash, argc);
-
-    splash->setMessage(QObject::tr("Loaded!"));
-    SleeperThread::msleep(500);
-*/
 
     TupMainWindow mainWindow(argc);
     mainWindow.showMaximized();
 
-    // delete splash;
-
     // Looking for plugins for Tupi
     #ifdef K_DEBUG
            tWarning() << "main.cpp - Loading plugins from: " << kAppProp->pluginDir();
-           tWarning() << "main.cpp - LANG: " << locale;
     #endif
     QApplication::addLibraryPath(kAppProp->pluginDir());
 

@@ -49,7 +49,8 @@
 
 struct TupCameraStatus::Private
 {
-    QComboBox *fps;
+    // QComboBox *fps;
+    QSpinBox *fps;
     QComboBox *scenes;
     QLabel *framesTotal;
     QCheckBox *loopBox;
@@ -102,16 +103,12 @@ TupCameraStatus::TupCameraStatus(TupViewCamera *camera, bool isNetworked, QWidge
     QLabel *fpsText = new QLabel("<B>" + tr("FPS") + ":</B> ");
     fpsText->setFont(font);
 
-    k->fps = new QComboBox();
-    k->fps->setIconSize(QSize(15, 15));
-    k->fps->setMaximumWidth(120);
-    k->fps->setFont(font);
+    k->fps = new QSpinBox();
+    k->fps->setMinimum(1);
+    k->fps->setMaximum(100);
+    k->fps->setValue(24);
 
-    for (int i=1; i<100; i++)
-         k->fps->addItem(QString::number(i));
-
-    k->fps->setCurrentIndex(23);
-    connect(k->fps, SIGNAL(currentIndexChanged(int)), camera, SLOT(setFPS(int)));
+    connect(k->fps, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
 
     sceneInfoLayout->addWidget(fpsText, 1);
     sceneInfoLayout->addWidget(k->fps, 1);
@@ -168,15 +165,15 @@ TupCameraStatus::~TupCameraStatus()
 
 void TupCameraStatus::setFPS(int frames)
 {
-    if (frames > 0 && frames < 100)
-        k->fps->setCurrentIndex(frames-1);
+    if (frames > 0 && frames < 101)
+        k->fps->setValue(frames);
     else
-        k->fps->setCurrentIndex(24);
+        k->fps->setValue(24);
 }
 
 int TupCameraStatus::getFPS()
 {
-    return k->fps->currentText().toInt(); 
+    return k->fps->value();
 }
 
 void TupCameraStatus::setCurrentScene(int index)

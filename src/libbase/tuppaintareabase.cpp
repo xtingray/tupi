@@ -201,8 +201,12 @@ void TupPaintAreaBase::setDrawGrid(bool draw)
 
 void TupPaintAreaBase::setTool(TupToolPlugin *tool)
 {
-    if (!scene()) 
+    if (!scene()) {
+        #ifdef K_DEBUG
+               tDebug() << "TupPaintAreaBase::setTool() - Fatal Error: No scene available";
+        #endif
         return;
+    }
 
     if (tool)
         disconnect(tool, SIGNAL(requested(const TupProjectRequest *)), 
@@ -237,20 +241,28 @@ void TupPaintAreaBase::mousePressEvent(QMouseEvent * event)
 
 void TupPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
 {
-    if (!canPaint()) 
+    if (!canPaint()) { 
+        #ifdef K_DEBUG
+               tWarning() << "TupPaintAreaBase::mouseMoveEvent() - The canvas is busy. Can't paint!";
+        #endif
         return;
+    }
 
-    // Rotate
+    // Rotate WorkSpace
     if (!k->scene->isDrawing() && event->buttons() == Qt::LeftButton 
         && (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
         setUpdatesEnabled(false);
         setDragMode(QGraphicsView::NoDrag);
+
 	QPointF p1 = event->pos();
         QPointF p2 = k->drawingRect.center();
-        k->rotator->rotateTo((int)(-(180 * TupGraphicalAlgorithm::angleForPos(p1,p2)) / M_PI));
+        int angle = (int)(-(180 * TupGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI);
+        k->rotator->rotateTo(angle);
+        emit rotated(-angle);
         setUpdatesEnabled(true);
     } else {
         QGraphicsView::mouseMoveEvent(event);
+
         if (!k->scene->mouseGrabberItem() && k->scene->isDrawing()) { // HACK
             QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
             mouseEvent.setWidget(viewport());
@@ -262,11 +274,10 @@ void TupPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
             mouseEvent.setAccepted(false);
             // QApplication::sendEvent(k->scene, &mouseEvent);
             k->scene->mouseMoved(&mouseEvent);
-         }
+        }
     }
 
     k->position = mapToScene(event->pos()); 
-
     emit cursorPosition(k->position);
 }
 
@@ -410,11 +421,7 @@ bool TupPaintAreaBase::canPaint() const
 
     if (k->scene) {
         TupFrame *frame = k->scene->currentFrame();
-
         if (frame) {
-            #ifdef K_DEBUG
-                   tWarning() << "TupPaintAreaBase::canPaint() - Warning: Current frame is NULL!";
-            #endif
             return !frame->isLocked();
         }
     } else {
@@ -448,17 +455,16 @@ void TupPaintAreaBase::wheelEvent(QWheelEvent *event)
     */
 }
 
-bool TupPaintAreaBase::viewportEvent(QEvent *e)
+bool TupPaintAreaBase::viewportEvent(QEvent *event)
 {
-    bool ret = QGraphicsView::viewportEvent(e);
+    bool flag = QGraphicsView::viewportEvent(event);
 
-    if (e->type() == QEvent::Show) {
-        if (k->scene->items().isEmpty()) {
+    if (event->type() == QEvent::Show) {
+        if (k->scene->items().isEmpty())
             k->scene->drawCurrentPhotogram();
-        }
     }
 
-    return ret;
+    return flag;
 }
 
 void TupPaintAreaBase::scaleView(qreal scaleFactor)
@@ -477,15 +483,14 @@ void TupPaintAreaBase::scaleView(qreal scaleFactor)
 
 void TupPaintAreaBase::setRotationAngle(int angle)
 {
-    rotate(angle - k->angle);
+    int degrees = angle - k->angle;
+    rotate(degrees);
     k->angle = angle;
 }
 
 void TupPaintAreaBase::setZoom(qreal scaleFactor)
 {
     scale(scaleFactor, scaleFactor);
-
-    // emit scaled(scaleFactor);
 }
 
 TupBrushManager *TupPaintAreaBase::brushManager() const

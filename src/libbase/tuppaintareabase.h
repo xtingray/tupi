@@ -100,6 +100,7 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
         void requestTriggered(const TupProjectRequest *event);
         void changedZero(const QPointF &zero);
         void scaled(double scaleFactor);
+        void rotated(int angle);
 
     public slots:
         void centerDrawingArea();

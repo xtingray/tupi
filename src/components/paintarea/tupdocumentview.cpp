@@ -189,6 +189,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     layout->addWidget(k->verticalRuler, 1, 0);
 
     connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(updateScaleVars(double)));
+    connect(k->paintArea, SIGNAL(rotated(int)), this, SLOT(updateRotationVars(int)));
     connect(k->paintArea, SIGNAL(updateStatusBgColor(QColor)), this, SLOT(updateStatusBgColor(QColor)));
 
     Tupi::RenderType renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt()); 
@@ -240,8 +241,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     // connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
     //         SLOT(setBrush(const QBrush &)));
 
-    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), k->status, 
-            SLOT(setPen(const QPen &)));
+    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), k->status, SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
@@ -286,10 +286,32 @@ QPainter::RenderHints TupDocumentView::renderHints() const
     return k->paintArea->renderHints();
 }
 
-void TupDocumentView::setRotationAngle(int angle)
+void TupDocumentView::updateRotationAngleFromRulers(int angle)
 {
     k->viewAngle = angle;
+
+    TupiRuler::Transformation flag = TupiRuler::None;
+    if (angle != 0 && angle != 90 && angle != 180  && angle != 270)
+        flag = TupiRuler::Rotation;
+    else
+        flag = TupiRuler::None;
+
+    k->verticalRuler->updateCurrentTransformation(flag);
+    k->horizontalRuler->updateCurrentTransformation(flag);
+}
+
+void TupDocumentView::setRotationAngle(int angle)
+{
+    updateRotationAngleFromRulers(angle);
+
     k->paintArea->setRotationAngle(angle);
+}
+
+void TupDocumentView::updateRotationVars(int angle)
+{
+    updateRotationAngleFromRulers(angle);
+
+    k->status->updateRotationAngle(angle);
 }
 
 void TupDocumentView::setZoom(qreal factor)
