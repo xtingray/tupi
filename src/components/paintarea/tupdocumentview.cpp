@@ -59,7 +59,7 @@
 #include "polyline.h"
 #include "tupimagedialog.h"
 #include "tupstoryboarddialog.h"
-#include "tupiruler.h"
+#include "tupruler.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -133,8 +133,8 @@ struct TupDocumentView::Private
     TupPaintArea *paintArea;
     TupCanvas *fullScreen;
 
-    TupiRuler *verticalRuler;
-    TupiRuler *horizontalRuler;
+    TupRuler *verticalRuler;
+    TupRuler *horizontalRuler;
 
     TActionManager *actionManager;
     TupConfigurationArea *configurationArea;
@@ -183,8 +183,8 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
 
     layout->addWidget(k->paintArea, 1, 1);
 
-    k->horizontalRuler = new TupiRuler(Qt::Horizontal, this);
-    k->verticalRuler = new TupiRuler(Qt::Vertical, this);
+    k->horizontalRuler = new TupRuler(Qt::Horizontal, this);
+    k->verticalRuler = new TupRuler(Qt::Vertical, this);
     layout->addWidget(k->horizontalRuler, 0, 1);
     layout->addWidget(k->verticalRuler, 1, 0);
 
@@ -290,11 +290,11 @@ void TupDocumentView::updateRotationAngleFromRulers(int angle)
 {
     k->viewAngle = angle;
 
-    TupiRuler::Transformation flag = TupiRuler::None;
+    TupRuler::Transformation flag = TupRuler::None;
     if (angle != 0 && angle != 90 && angle != 180  && angle != 270)
-        flag = TupiRuler::Rotation;
+        flag = TupRuler::Rotation;
     else
-        flag = TupiRuler::None;
+        flag = TupRuler::None;
 
     k->verticalRuler->updateCurrentTransformation(flag);
     k->horizontalRuler->updateCurrentTransformation(flag);
