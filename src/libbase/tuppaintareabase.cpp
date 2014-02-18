@@ -338,27 +338,6 @@ void TupPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
     //emit changedZero(painter->matrix().map(QPointF(0, 0)));
     emit changedZero(painter->worldTransform().map(QPointF(0, 0)));
 
-    // if enabled draw grid
-    if (k->drawGrid) {
-        // SQA: This code is not useful anymore, but is interesting
-        /*
-        int sx = (int)painter->matrix().m11();
-        int sy = (int)painter->matrix().m22();
-        painter->resetMatrix();
-        painter->scale(sx, sy);
-        */
-
-        // SQA: This procedure is very heavy. Must be optimized
-        //      Some kind of previously loaded buffer is required
-        painter->setPen(QPen(QColor(0, 0, 180, 50), 1));
-        int maxX = k->drawingRect.width() + 100;
-        int maxY = k->drawingRect.height() + 100; 
-        for (int i = -100; i <= maxX; i += 10)
-             painter->drawLine(i, -100, i, maxY);
-        for (int i = -100; i <= maxY; i += 10)
-             painter->drawLine(-100, i, maxX, i);
-    } 
-
     painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
     painter->restore();
 }
@@ -374,8 +353,20 @@ void TupPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
             if (currentScene->framesTotal() > 0) {
                 if (TupFrame *frame = k->scene->currentFrame()) {
                     if (frame) {
-                        if (frame->isLocked())
+                        if (frame->isLocked()) {
                             drawPadLock(painter, rect, tr("Locked!"));
+                        } else {
+                            // if enabled draw grid
+                            if (k->drawGrid) {
+                                painter->setPen(QPen(QColor(0, 0, 180, 50), 1));
+                                int maxX = k->drawingRect.width() + 100;
+                                int maxY = k->drawingRect.height() + 100;
+                                for (int i = -100; i <= maxX; i += 10)
+                                painter->drawLine(i, -100, i, maxY);
+                                for (int i = -100; i <= maxY; i += 10)
+                                     painter->drawLine(-100, i, maxX, i);
+                            }
+                        }
                     } 
                 }
             } else {
