@@ -50,7 +50,7 @@
 #include "tuplibrarywidget.h"
 #include "tuptimeline.h"
 #include "tupdebugwidget.h"
-#include "tupviewcamera.h"
+#include "tupcamerawidget.h"
 #include "tuphelpwidget.h"
 #include "tuphelpbrowser.h"
 #include "tuptwitterwidget.h"
@@ -196,6 +196,8 @@ class TupMainWindow : public TabbedMainWindow
           void updatePlayer();
           void updatePlayer(bool removeAction);
 
+          void resizeProjectDimension(const QSize size);
+
     private slots:
           void messageToStatus(const QString &);
           void preferences();
@@ -265,7 +267,7 @@ class TupMainWindow : public TabbedMainWindow
           ToolView *timeView;
           ToolView *debugView;
           ToolView *exportView;
-          TupViewCamera *viewCamera;
+          TupCameraWidget *cameraWidget;
           bool isSaveDialogOpen; 
           bool internetOn;
           int lastTab;

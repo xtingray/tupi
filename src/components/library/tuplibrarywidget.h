@@ -103,8 +103,8 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void requestCurrentGraphic();
 
     private:
-        void callExternalEditor(QTreeWidgetItem *item, TupNewItemDialog::ThirdParty software);
-        void executeSoftware(TupNewItemDialog::ThirdParty software, QString &path);
+        void callExternalEditor(QTreeWidgetItem *item, const QString &software);
+        void executeSoftware(const QString &software, QString &path);
         void updateItem(const QString &name, const QString &extension, TupLibraryObject *object);
         bool itemNameEndsWithDigit(QString &name);
         int getItemNameIndex(QString &name) const;

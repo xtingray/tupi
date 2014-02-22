@@ -455,3 +455,8 @@ bool TupProjectManager::cleanProjectPath(QString &projectPath)
 
     return result;
 }
+
+void TupProjectManager::updateProjectDimension(const QSize size)
+{
+    k->project->setDimension(size);     
+}

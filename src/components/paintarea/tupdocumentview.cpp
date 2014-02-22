@@ -60,6 +60,7 @@
 #include "tupimagedialog.h"
 #include "tupstoryboarddialog.h"
 #include "tupruler.h"
+#include "tupcamerainterface.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -81,6 +82,10 @@
 #include <QGridLayout>
 #include <QComboBox>
 #include <QDesktopWidget>
+#include <QMessageBox>
+
+#include <QCamera>
+#include <QCameraImageCapture>
 
 /**
  * This class defines all the environment for the Ilustration interface.
@@ -90,6 +95,7 @@
 
 struct TupDocumentView::Private
 {
+    QSize wsDimension;
     QActionGroup *gridGroup; 
     QActionGroup *editGroup; 
     QActionGroup *viewNextGroup; 
@@ -266,6 +272,11 @@ TupDocumentView::~TupDocumentView()
     delete k;
 }
 
+void TupDocumentView::setWorkSpaceSize(int width, int height)
+{
+    k->wsDimension = QSize(width, height);
+}
+
 void TupDocumentView::setAntialiasing(bool useIt)
 {
     k->paintArea->setAntialiasing(useIt);
@@ -398,7 +409,7 @@ void TupDocumentView::setupDrawActions()
     onionFactor->setStatusTip(tr("Set onion skin factor default value"));
 
     TAction *exportImage = new TAction(QPixmap(THEME_DIR + "icons/export_frame.png"),
-                                     "Export Current Frame As Image", QKeySequence(tr("@")),
+                                     tr("Export Current Frame As Image"), QKeySequence(tr("@")),
                                      this, SLOT(exportImage()), k->actionManager, "export_image");
     exportImage->setStatusTip("Export the current frame as image");
 
@@ -407,15 +418,20 @@ void TupDocumentView::setupDrawActions()
 
     if (k->isNetworked && server.compare("tupitu.be") == 0) {
         TAction *postImage = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"),
-                                         "Export Current Frame To Gallery", QKeySequence(tr("@")),
+                                         tr("Export Current Frame To Gallery"), QKeySequence(tr("@")),
                                          this, SLOT(postImage()), k->actionManager, "post_image");
         postImage->setStatusTip("Export the current frame to gallery");
     }
 
     TAction *storyboard = new TAction(QPixmap(THEME_DIR + "icons/storyboard.png"),
-                                     "Storyboard Settings", QKeySequence(tr("Ctrl+Shift+S")),
+                                     tr("Storyboard Settings"), QKeySequence(tr("Ctrl+Shift+S")),
                                      this, SLOT(storyboardSettings()), k->actionManager, "storyboard");
     storyboard->setStatusTip("Storyboard settings");
+
+    TAction *camera = new TAction(QPixmap(THEME_DIR + "icons/camera.png"),
+                                     tr("Camera Interface"), QKeySequence(tr("Ctrl+Shift+C")),
+                                     this, SLOT(cameraInterface()), k->actionManager, "camera");
+    camera->setStatusTip("Camera Interface");
 }
 
 void TupDocumentView::createTools()
@@ -1046,6 +1062,8 @@ void TupDocumentView::createToolBar()
 
     k->barGrid->addAction(k->actionManager->find("storyboard"));
 
+    k->barGrid->addAction(k->actionManager->find("camera"));
+
     addToolBarBreak();
 
     QLabel *dirLabel = new QLabel(tr("Direction") + ": ");
@@ -1550,4 +1568,84 @@ void TupDocumentView::fullScreenRightClick()
 {
    if (k->currentTool->name().compare(tr("PolyLine")) == 0)
        emit closePolyLine();
+}
+
+void TupDocumentView::cameraInterface()
+{
+    int camerasTotal = QCamera::availableDevices().count();
+    if (camerasTotal > 0) {
+        QByteArray cameraDevice = QCamera::availableDevices()[0];
+        QCamera *camera = new QCamera(cameraDevice);
+
+        QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
+        QList<QSize> resolutions = imageCapture->supportedResolutions();
+        QSize cameraSize = QSize(0, 0);
+        for (int i=0; i < resolutions.size(); i++) {
+             QSize resolution = resolutions.at(i);
+             if (resolution.width() > cameraSize.width()) {
+                 cameraSize.setWidth(resolution.width());
+                 cameraSize.setHeight(resolution.height());
+             }
+        }
+
+        if (k->project->dimension() != cameraSize) {
+            QDesktopWidget desktop;
+            QMessageBox msgBox;
+            msgBox.setWindowTitle(tr("Question"));
+            msgBox.setIcon(QMessageBox::Question);
+            msgBox.setText(tr("The camera resolution is different than your project size."));
+            msgBox.setInformativeText(tr("Do you want to adjust your project size?"));
+
+            msgBox.addButton(QString(tr("Adjust it")), QMessageBox::AcceptRole);
+            msgBox.addButton(QString(tr("Cancel")), QMessageBox::DestructiveRole);
+
+            msgBox.show();
+            msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 ,
+                        (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+
+            int ret = msgBox.exec();
+
+            switch (ret) {
+                    case QMessageBox::AcceptRole:
+                         resizeProjectDimension(cameraSize);
+                    break;
+            }
+        }
+
+        TupCameraInterface *dialog = new TupCameraInterface(k->project->dimension(), cameraSize, this);
+        // connect(dialog, SIGNAL(projectSizeHasChanged(int, int)), this, SLOT(resizeProjectDimension(int, int)));
+        dialog->show();
+    } else {
+        // No devices connected!
+        TOsd::self()->display(tr("Error"), tr("No cameras detected"), TOsd::Error);
+    }
+}
+
+void TupDocumentView::resizeProjectDimension(const QSize dimension)
+{
+    k->paintArea->updateDimension(dimension);
+
+    int width = k->wsDimension.width();
+    int height = k->wsDimension.height();
+    int pWidth = dimension.width();
+    int pHeight = dimension.height();
+
+    double proportion = 1;
+
+    if (pWidth > pHeight)
+        proportion = (double) width / (double) pWidth;
+    else
+        proportion = (double) height / (double) pHeight;
+
+    if (proportion <= 0.5) {
+        setZoomView("20");
+    } else if (proportion > 0.5 && proportion <= 0.75) {
+               setZoomView("25");
+    } else if (proportion > 0.75 && proportion <= 1.5) {
+               setZoomView("50");
+    } else if (proportion > 1.5 && proportion < 2) {
+               setZoomView("75");
+    }
+
+    emit projectSizeHasChanged(dimension);
 }

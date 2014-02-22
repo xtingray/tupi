@@ -36,7 +36,7 @@
 #ifndef TUPWORKSPACE_H
 #define TUPWORKSPACE_H
 
-#include "tupviewcamera.h"
+#include "tupcamerawidget.h"
 #include <QMainWindow>
 
 /**
@@ -48,7 +48,7 @@ class TupAnimationspace : public QMainWindow
     Q_OBJECT
 
     public:
-        TupAnimationspace(TupViewCamera *internal, QWidget *parent = 0);
+        TupAnimationspace(TupCameraWidget *internal, QWidget *parent = 0);
         ~TupAnimationspace();
 
     protected:
@@ -63,7 +63,7 @@ class TupAnimationspace : public QMainWindow
         // void dragEnterEvent(QDragEnterEvent* e);
 
     private:
-        TupViewCamera *camera;
+        TupCameraWidget *camera;
         bool playOn;
 };
 

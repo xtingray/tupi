@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupviewcamera.h"
+#include "tupcamerawidget.h"
 #include "tupexportwidget.h"
 #include "tdebug.h"
 #include "tseparator.h"
@@ -46,16 +46,17 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-struct TupViewCamera::Private
+struct TupCameraWidget::Private
 {
     QFrame *container;
-    TupAnimationArea *animationArea;
+    TupScreen *animationArea;
     TupCameraStatus *status;
     TupProject *project;
     int currentSceneIndex;
+    QLabel *scaleLabel;
 };
 
-TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
+TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -63,7 +64,7 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
 
     k->project = project;
 
-    setObjectName("TupViewCamera_");
+    setObjectName("TupCameraWidget_");
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
@@ -92,8 +93,13 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
 
     QString scale = "[ " + tr("Scale") + " ";
 
+    tError() << "TupCameraWidget::TupCameraWidget() - workspace width: " << width;
+    tError() << "TupCameraWidget::TupCameraWidget() - workspace height: " << height;
+    tError() << "TupCameraWidget::TupCameraWidget() - project width: " << pWidth;
+    tError() << "TupCameraWidget::TupCameraWidget() - project height: " << pHeight;
+
     if (pWidth < width && pHeight < height) {
-        k->animationArea = new TupAnimationArea(k->project);
+        k->animationArea = new TupScreen(k->project);
         scale += "1:1";
     } else {
         QSize dimension;
@@ -109,7 +115,7 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
         }
 
         scale += "1:" + QString::number(proportion, 'g', 2);
-        k->animationArea = new TupAnimationArea(k->project, dimension, true);
+        k->animationArea = new TupScreen(k->project, dimension, true);
     }
 
     scale += " | Size: ";
@@ -117,10 +123,10 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
     scale += " px ]";
 
     QLabel *icon = new QLabel();
-    icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
-    QLabel *title = new QLabel(tr("Render Camera Preview"));
-    QLabel *scaleLabel = new QLabel(scale);
-    scaleLabel->setFont(font);
+    icon->setPixmap(QPixmap(THEME_DIR + "icons/player.png"));
+    QLabel *title = new QLabel(tr("Scene Preview"));
+    k->scaleLabel = new QLabel(scale);
+    k->scaleLabel->setFont(font);
 
     QWidget *titleWidget = new QWidget();
     QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
@@ -133,7 +139,7 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
     QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
     scaleLayout->setContentsMargins(0, 0, 0, 0);
     scaleLayout->setAlignment(Qt::AlignCenter);
-    scaleLayout->addWidget(scaleLabel);
+    scaleLayout->addWidget(k->scaleLabel);
 
     layout->addWidget(titleWidget, 0, Qt::AlignCenter);
     layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
@@ -141,15 +147,15 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
 
     layout->addWidget(k->animationArea, 0, Qt::AlignCenter);
 
-    TupCameraBar *m_bar = new TupCameraBar;
-    layout->addWidget(m_bar, 0, Qt::AlignCenter);
-    m_bar->show();
+    TupCameraBar *cameraBar = new TupCameraBar;
+    layout->addWidget(cameraBar, 0, Qt::AlignCenter);
+    cameraBar->show();
 
-    connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
-    connect(m_bar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
-    connect(m_bar, SIGNAL(stop()), k->animationArea, SLOT(stop()));
-    connect(m_bar, SIGNAL(ff()), k->animationArea, SLOT(nextFrame()));
-    connect(m_bar, SIGNAL(rew()), k->animationArea, SLOT(previousFrame()));
+    connect(cameraBar, SIGNAL(play()), this, SLOT(doPlay()));
+    connect(cameraBar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
+    connect(cameraBar, SIGNAL(stop()), k->animationArea, SLOT(stop()));
+    connect(cameraBar, SIGNAL(ff()), k->animationArea, SLOT(nextFrame()));
+    connect(cameraBar, SIGNAL(rew()), k->animationArea, SLOT(previousFrame()));
 
     k->status = new TupCameraStatus(this, isNetworked);
     k->status->setScenes(k->project); 
@@ -164,50 +170,50 @@ TupViewCamera::TupViewCamera(TupProject *project, bool isNetworked, QWidget *par
     setLayout(layout);
 }
 
-TupViewCamera::~TupViewCamera()
+TupCameraWidget::~TupCameraWidget()
 {
     #ifdef K_DEBUG
            TEND;
     #endif
 }
 
-void TupViewCamera::setLoop()
+void TupCameraWidget::setLoop()
 {
     k->animationArea->setLoop(k->status->isLooping());
 }
 
-QSize TupViewCamera::sizeHint() const
+QSize TupCameraWidget::sizeHint() const
 {
     QSize size = QWidget::sizeHint();
     return size.expandedTo(QApplication::globalStrut());
 }
 
-void TupViewCamera::doPlay()
+void TupCameraWidget::doPlay()
 {
     k->animationArea->play();
 }
 
-void TupViewCamera::doPlayBack()
+void TupCameraWidget::doPlayBack()
 {
     k->animationArea->playBack();
 }
 
-void TupViewCamera::doStop()
+void TupCameraWidget::doStop()
 {
     k->animationArea->stop();
 }
 
-void TupViewCamera::nextFrame()
+void TupCameraWidget::nextFrame()
 {
     k->animationArea->nextFrame();
 }
 
-void TupViewCamera::previousFrame()
+void TupCameraWidget::previousFrame()
 {
     k->animationArea->previousFrame();
 }
 
-bool TupViewCamera::handleProjectResponse(TupProjectResponse *response)
+bool TupCameraWidget::handleProjectResponse(TupProjectResponse *response)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -259,7 +265,7 @@ bool TupViewCamera::handleProjectResponse(TupProjectResponse *response)
             default:
             {
                  #ifdef K_DEBUG
-                        tFatal() << "TupViewCamera::handleProjectResponse() - Unknown/Unhandled project action: " << sceneResponse->action();
+                        tFatal() << "TupCameraWidget::handleProjectResponse() - Unknown/Unhandled project action: " << sceneResponse->action();
                  #endif
             }
             break;
@@ -269,14 +275,14 @@ bool TupViewCamera::handleProjectResponse(TupProjectResponse *response)
     return k->animationArea->handleResponse(response);
 }
 
-void TupViewCamera::setFPS(int fps)
+void TupCameraWidget::setFPS(int fps)
 {
     fps++;
     k->project->setFPS(fps);
     k->animationArea->setFPS(fps);
 }
 
-void TupViewCamera::updateFramesTotal(int sceneIndex)
+void TupCameraWidget::updateFramesTotal(int sceneIndex)
 {
     TupScene *scene = k->project->scene(sceneIndex);
     if (scene) {
@@ -286,7 +292,7 @@ void TupViewCamera::updateFramesTotal(int sceneIndex)
     }
 }
 
-void TupViewCamera::exportDialog()
+void TupCameraWidget::exportDialog()
 {
     QDesktopWidget desktop;
 
@@ -297,7 +303,7 @@ void TupViewCamera::exportDialog()
     exportWidget->exec();
 }
 
-void TupViewCamera::postDialog()
+void TupCameraWidget::postDialog()
 {
     QDesktopWidget desktop;
 
@@ -317,7 +323,7 @@ void TupViewCamera::postDialog()
     }
 }
 
-void TupViewCamera::selectScene(int index)
+void TupCameraWidget::selectScene(int index)
 {
     if (index != k->animationArea->currentSceneIndex()) {
         TupProjectRequest event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);
@@ -330,14 +336,53 @@ void TupViewCamera::selectScene(int index)
     }
 }
 
-void TupViewCamera::updateScenes(int sceneIndex)
+void TupCameraWidget::updateScenes(int sceneIndex)
 {
     k->animationArea->resetPhotograms(sceneIndex);
 }
 
-void TupViewCamera::updateFirstFrame()
+void TupCameraWidget::updateFirstFrame()
 {
     k->animationArea->updateAnimationArea();
 }
 
+void TupCameraWidget::updateProjectDimension(const QSize dimension)
+{
+    setDimensionLabel(dimension);
+    k->animationArea->updateProjectDimension(dimension);
+    k->animationArea->updateAnimationArea();
+}
 
+void TupCameraWidget::setDimensionLabel(const QSize dimension)
+{
+    int width = size().width();
+    int height = size().height();
+    int pWidth = dimension.width();
+    int pHeight = dimension.height();
+
+    QString scale = "[ " + tr("Scale") + " ";
+
+    if (pWidth < width && pHeight < height) {
+        scale += "1:1";
+    } else {
+        QSize dimension;
+        double proportion = 1;
+        if (pWidth > pHeight) {
+            int newH = (pHeight*width)/pWidth;
+            dimension = QSize(width, newH);
+            proportion = (double) pWidth / (double) width;
+        } else {
+            int newW = (pWidth*height)/pHeight;
+            dimension = QSize(newW, height);
+            proportion = (double) pHeight / (double) height;
+        }
+
+        scale += "1:" + QString::number(proportion, 'g', 2);
+    }
+
+    scale += " | Size: ";
+    scale += QString::number(pWidth) + "x" + QString::number(pHeight);
+    scale += " px ]";
+
+    k->scaleLabel->setText(scale);
+}

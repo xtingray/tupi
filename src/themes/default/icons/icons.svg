@@ -14,7 +14,7 @@
    height="297mm"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
@@ -2317,9 +2317,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="32"
-     inkscape:cx="65.491171"
-     inkscape:cy="1021.4037"
+     inkscape:zoom="8"
+     inkscape:cx="51.333419"
+     inkscape:cy="1020.9094"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -9851,6 +9851,38 @@
          id="path7032-6-3-6-0-9-9-97-7-3-5-0-4-7"
          d="m 66.06051,32.341197 6.29e-4,-0.07805 -0.809381,0.0017 -3.98e-4,0.07668 z"
          style="fill:#008700;fill-opacity:1;stroke:none" />
+    </g>
+    <g
+       id="g4335"
+       transform="translate(-5,-3)"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/player.png"
+       inkscape:export-xdpi="11912.27"
+       inkscape:export-ydpi="11912.27">
+      <path
+         inkscape:export-ydpi="170"
+         inkscape:export-xdpi="170"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/background_foreground.png"
+         sodipodi:nodetypes="ccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path5081-9"
+         d="m 81.200849,30.196205 -2.612854,0.06296 0,0.550903 -0.456462,0.01574 0,-0.409242 -0.645343,-0.01574 0,1.054584 0.692563,-0.01574 0.01574,-0.299061 0.377762,-0.03148 0.04721,0.865705 2.534152,-0.03148 z"
+         style="fill:#008700;fill-opacity:1;stroke:none" />
+      <path
+         inkscape:export-ydpi="170"
+         inkscape:export-xdpi="170"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/background_foreground.png"
+         id="path5083-3-2-5"
+         d="m 79.280558,28.795339 c -0.382896,0 -0.692563,0.348591 -0.692563,0.771263 0,0.422672 0.309667,0.755524 0.692563,0.755524 0.382897,0 0.692564,-0.332852 0.692564,-0.755524 0,-0.422672 -0.309667,-0.771263 -0.692564,-0.771263 z m 0.0787,0.409242 c 0.190726,0 0.346282,0.182963 0.346282,0.393501 0,0.21054 -0.155556,0.377762 -0.346282,0.377762 -0.190726,0 -0.346281,-0.167222 -0.346281,-0.377762 0,-0.210538 0.155555,-0.393501 0.346281,-0.393501 z"
+         style="fill:#008700;fill-opacity:1;stroke:none"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="170"
+         inkscape:export-xdpi="170"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/background_foreground.png"
+         id="path5083-3-2-7-9"
+         d="m 80.571245,28.749533 c 0.382896,0 0.692564,0.348591 0.692564,0.771264 0,0.422672 -0.309668,0.755524 -0.692564,0.755524 -0.382896,0 -0.692564,-0.332852 -0.692564,-0.755524 0,-0.422673 0.309668,-0.771264 0.692564,-0.771264 z m -0.0787,0.409242 c -0.190726,0 -0.346282,0.182963 -0.346282,0.393501 0,0.21054 0.155556,0.377763 0.346282,0.377763 0.190727,0 0.346282,-0.167223 0.346282,-0.377763 0,-0.210538 -0.155555,-0.393501 -0.346282,-0.393501 z"
+         style="fill:#008700;fill-opacity:1;stroke:none"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>

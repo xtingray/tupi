@@ -57,7 +57,7 @@ struct TupCameraStatus::Private
     bool loop;
 };
 
-TupCameraStatus::TupCameraStatus(TupViewCamera *camera, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
+TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;

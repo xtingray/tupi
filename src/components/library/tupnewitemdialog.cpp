@@ -54,7 +54,7 @@ struct TupNewItemDialog::Private
     QComboBox *background;
     QComboBox *editor;
     QString name;
-    ThirdParty software;
+    QString software;
     QString fileExtension;
     QSize size;
     QColor colors[3];
@@ -85,7 +85,6 @@ TupNewItemDialog::TupNewItemDialog(QString &name, DialogType type, QSize size) :
         k->background->addItem(tr("Black"));
         k->bg = Qt::transparent;
 
-        k->software = Gimp;
 #ifdef Q_OS_UNIX
         if (QFile::exists("/usr/bin/gimp"))
             k->editor->addItem("Gimp");
@@ -100,11 +99,13 @@ TupNewItemDialog::TupNewItemDialog(QString &name, DialogType type, QSize size) :
         k->extension->addItem("SVG");
         k->editor->addItem("Inkscape");
         k->fileExtension = "SVG";
-        k->software = Inkscape;
+        k->software = "Inkscape";
     }
 
+    k->software = k->editor->currentText();
+
     connect(k->extension, SIGNAL(currentIndexChanged(int)), this, SLOT(updateExtension(int)));
-    connect(k->editor, SIGNAL(currentIndexChanged(int)), this, SLOT(updateEditor(int)));
+    connect(k->editor, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(updateEditor(const QString &)));
 
     QFormLayout *formLayout = new QFormLayout;
 
@@ -187,7 +188,7 @@ void TupNewItemDialog::updateExtension(int index)
 {
     k->fileExtension = k->extension->itemText(index);
 
-    if (index == 1 || (index == 0 && k->software == MyPaint)) {
+    if (index == 1 || (index == 0 && k->software.compare("MyPaint") == 0)) {
         if (k->background->itemText(0).compare(tr("Transparent")) == 0)
             k->background->removeItem(0);
     } else {
@@ -198,20 +199,19 @@ void TupNewItemDialog::updateExtension(int index)
 
 void TupNewItemDialog::updateBackground(int index)
 {
-    if (k->software == MyPaint)
+    if (k->software.compare("MyPaint") == 0)
         k->bg = k->colors[index+1];
     else    
         k->bg = k->colors[index];
 }
 
-void TupNewItemDialog::updateEditor(int index)
+void TupNewItemDialog::updateEditor(const QString &editor)
 {
-    QString software = k->editor->itemText(index);
     if (k->fileExtension.compare("SVG") == 0) {
-        k->software = Inkscape;
+        k->software = "Inkscape";
     } else {
-        k->software = TupNewItemDialog::ThirdParty(index);
-        if (index == 2) {
+        k->software = editor;
+        if (editor.compare("MyPaint") == 0) {
             if (k->background->itemText(0).compare(tr("Transparent")) == 0)
                 k->background->removeItem(0);
         } else {
@@ -242,7 +242,7 @@ QColor TupNewItemDialog::background() const
     return k->bg;
 }
 
-TupNewItemDialog::ThirdParty TupNewItemDialog::software() const
+QString TupNewItemDialog::software() const
 {
     return k->software;
 }

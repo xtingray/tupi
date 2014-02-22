@@ -276,10 +276,14 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connect(animationTab, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
         connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
 
+        connect(animationTab, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize))); 
+
         animationTab->setAntialiasing(true);
 
         int width = animationTab->workSpaceSize().width();
         int height = animationTab->workSpaceSize().height();
+        animationTab->setWorkSpaceSize(width, height);
+
         int pWidth = m_projectManager->project()->dimension().width();
         int pHeight = m_projectManager->project()->dimension().height();
 
@@ -300,20 +304,20 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
                    animationTab->setZoomView("75");
         }
 
-        // TupViewCamera *
-        viewCamera = new TupViewCamera(m_projectManager->project(), isNetworked);
-        connectWidgetToManager(viewCamera);
+        // TupCamera Widget
+        cameraWidget = new TupCameraWidget(m_projectManager->project(), isNetworked);
+        connectWidgetToManager(cameraWidget);
 
         m_libraryWidget->setNetworking(isNetworked);
 
         if (isNetworked) {
-            connect(viewCamera, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QString &, int, const QList<int>)), 
+            connect(cameraWidget, SIGNAL(requestForExportVideoToServer(const QString &, const QString &, const QString &, int, const QList<int>)), 
                     netProjectManager, SLOT(sendVideoRequest(const QString &, const QString &, const QString &, int, const QList<int>)));
         } else {
             connect(animationTab, SIGNAL(autoSave()), this, SLOT(callSave()));
         }
 
-        playerTab = new TupAnimationspace(viewCamera);
+        playerTab = new TupAnimationspace(cameraWidget);
         playerTab->setWindowIcon(QIcon(THEME_DIR + "icons/play_small.png"));
         playerTab->setWindowTitle(tr("Player"));
         addWidget(playerTab);
@@ -1231,12 +1235,12 @@ void TupMainWindow::updateCurrentTab(int index)
         if (lastTab == 2)
             helpView->expandDock(false);
         lastTab = 1;
-        viewCamera->updateFirstFrame();
-        viewCamera->setFocus();
+        cameraWidget->updateFirstFrame();
+        cameraWidget->setFocus();
     } else {
         if (index == 0) { // Animation mode
             if (lastTab == 1)
-                viewCamera->doStop();
+                cameraWidget->doStop();
 
             if (scenesView->isExpanded()) {
                 helpView->expandDock(false);
@@ -1396,7 +1400,7 @@ void TupMainWindow::updatePlayer()
 {
     if (animationTab) {
         int sceneIndex = animationTab->currentSceneIndex();
-        viewCamera->updateScenes(sceneIndex);
+        cameraWidget->updateScenes(sceneIndex);
     }
 }
 
@@ -1408,4 +1412,10 @@ void TupMainWindow::resetMousePointer()
 void TupMainWindow::updateUsersOnLine(const QString &login, int state)
 {
     animationTab->updateUsersOnLine(login, state);
+}
+
+void TupMainWindow::resizeProjectDimension(const QSize dimension)
+{
+    m_projectManager->updateProjectDimension(dimension);
+    cameraWidget->updateProjectDimension(dimension);
 }

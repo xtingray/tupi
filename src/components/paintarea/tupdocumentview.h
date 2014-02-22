@@ -65,6 +65,7 @@ class TupDocumentView : public QMainWindow
     public:
         TupDocumentView(TupProject *project, QWidget *parent = 0, bool isNetworked = true, const QStringList &users = QStringList());
         ~TupDocumentView();
+        void setWorkSpaceSize(int width, int height);
         void closeArea();
         QSize sizeHint() const;
 
@@ -90,9 +91,7 @@ class TupDocumentView : public QMainWindow
     private slots:
         void setNextOnionSkin(int n);
         void setPreviousOnionSkin(int n);
-
         void toggleShowGrid();
-
         // void setZoomFactor(int porcent);
         void updateScaleVars(double factor);
         void updateRotationVars(int angle);
@@ -108,6 +107,8 @@ class TupDocumentView : public QMainWindow
         void updateBackgroundShiftProperty(int shift);
         void renderDynamicBackground();
         void fullScreenRightClick();
+        void cameraInterface();
+        void resizeProjectDimension(const QSize dimension);
 
     private:
         struct Private;
@@ -163,6 +164,7 @@ class TupDocumentView : public QMainWindow
         void postStoryboard(int sceneIndex);
         void projectHasChanged();
         void closePolyLine();
+        void projectSizeHasChanged(const QSize dimension);
 
     // protected:
     // void closeEvent(QCloseEvent *e);

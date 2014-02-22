@@ -6,6 +6,8 @@
 INSTALLS += target
 target.path = /lib/
 
+INCLUDEPATH += /usr/include/QtMobility /usr/include/QtMultimediaKit
+
 macx {
     CONFIG += staticlib warn_on
 }
@@ -31,7 +33,8 @@ HEADERS += tuppaintarea.h \
            tupexposurescene.h \
            tuptoolsdialog.h \
            tupinfowidget.h \
-           tupruler.h
+           tupruler.h \
+           tupcamerainterface.h
 
 SOURCES += tuppaintarea.cpp \
            tupconfigurationarea.cpp \
@@ -54,7 +57,8 @@ SOURCES += tuppaintarea.cpp \
            tupexposurescene.cpp \
            tuptoolsdialog.cpp \
            tupinfowidget.cpp \
-           tupruler.cpp
+           tupruler.cpp \
+           tupcamerainterface.cpp
 
 *:!macx{
     CONFIG += dll warn_on

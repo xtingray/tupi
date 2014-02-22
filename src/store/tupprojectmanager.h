@@ -48,6 +48,7 @@ class TupCommandExecutor;
 class TupProjectResponse;
 
 #include <QObject>
+#include <QSize>
 
 /**
  * Events handler class for the project
@@ -82,6 +83,8 @@ class STORE_EXPORT TupProjectManager : public QObject
         bool isValid() const;
         void undoModified();
         void setOpen(bool isOpen);
+
+        void updateProjectDimension(const QSize size);
    
     /* 
     private:

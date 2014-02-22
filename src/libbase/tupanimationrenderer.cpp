@@ -123,8 +123,10 @@ void TupAnimationRenderer::renderPhotogram(int index)
 
 void TupAnimationRenderer::render(QPainter *painter)
 {
-    k->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), 
-                     k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio);
+    // k->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), 
+    //                  k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio);
+
+    k->scene->render(painter, k->scene->sceneRect().toRect(), k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio);
 }
 
 int TupAnimationRenderer::currentPhotogram() const

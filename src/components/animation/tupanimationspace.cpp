@@ -47,7 +47,7 @@
  * @author David Cuadrado
 */
 
-TupAnimationspace::TupAnimationspace(TupViewCamera *internal, QWidget *parent) : QMainWindow(parent)
+TupAnimationspace::TupAnimationspace(TupCameraWidget *internal, QWidget *parent) : QMainWindow(parent)
 {
     // TODO: Try a nice dark color for this window
     // setStyleSheet("QMainWindow { background-color: #d0d0d0; }");

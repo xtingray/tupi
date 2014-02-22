@@ -10,15 +10,15 @@ macx {
      CONFIG += staticlib warn_on
 }
 
-HEADERS += tupviewcamera.h \
+HEADERS += tupcamerawidget.h \
            tupcamerabar.h \
-           tupanimationarea.h \
+           tupscreen.h \
            tupcamerastatus.h \
            tupanimationspace.h
 
-SOURCES += tupviewcamera.cpp \
+SOURCES += tupcamerawidget.cpp \
            tupcamerabar.cpp \
-           tupanimationarea.cpp \
+           tupscreen.cpp \
            tupcamerastatus.cpp \
            tupanimationspace.cpp
 

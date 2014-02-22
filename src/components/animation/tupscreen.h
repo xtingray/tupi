@@ -33,60 +33,75 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPVIEWCAMERA_H
-#define TUPVIEWCAMERA_H
+#ifndef TUPSCREEN_H
+#define TUPSCREEN_H
 
-#include "tcirclebuttonbar.h"
-#include "tvhbox.h"
-#include "tupanimationarea.h"
-#include "tupcamerabar.h"
-#include "tupcamerastatus.h"
+#include "tupscene.h"
+#include "tupglobal.h"
+#include "tupabstractprojectresponsehandler.h"
 
-#include <QMainWindow>
+#include <QImage>
+#include <QPainter>
+#include <QPaintEvent>
 #include <QFrame>
 
-class TupProjectResponse;
-class QCheckBox;
-class TupCameraStatus;
-
 /**
- * @author David Cuadrado 
+ * @author David Cuadrado
 */
 
-class TupViewCamera : public QFrame
+class TUPI_EXPORT TupScreen : public QFrame, public TupAbstractProjectResponseHandler
 {
     Q_OBJECT
 
     public:
-        TupViewCamera(TupProject *work, bool isNetworked = false, QWidget *parent = 0);
-        ~TupViewCamera();
+        TupScreen(const TupProject *project, const QSize viewSize = QSize(), bool isScaled = false, QWidget *parent = 0);
+        ~TupScreen();
 
-        void updateFirstFrame();
         QSize sizeHint() const;
-        void updateScenes(int sceneIndex);
-
-    private slots:
-        void setLoop();
-        void selectScene(int index);
+        void setLoop(bool l);
+        void updateSceneIndex(int index);
+        TupScene *currentScene() const;
+        int currentSceneIndex();
+        void setFPS(int fps);
+        void resetPhotograms(int sceneIndex);
+        void updateAnimationArea();
+        void updateProjectDimension(const QSize dimension);
+        // void updatePhotograms(int sceneIndex);
 
     public slots:
-        bool handleProjectResponse(TupProjectResponse *event);
-        void setFPS(int fps);
-        void updateFramesTotal(int sceneIndex);
-        void exportDialog();
-        void postDialog();
-        void doPlay();
-        void doPlayBack();
-        void doStop();
-        void nextFrame();
-        void previousFrame();
+        virtual void render();
+        virtual void play();
+        virtual void playBack();
+        virtual void stop();
+        virtual void nextFrame();
+        virtual void previousFrame();
+
+    private slots:
+        void advance();
+        void back();
+
+    protected:
+        void frameResponse(TupFrameResponse *event);
+        void layerResponse(TupLayerResponse *event);
+        void sceneResponse(TupSceneResponse *event);
+        void projectResponse(TupProjectResponse *event);
+        void itemResponse(TupItemResponse *event);
+        void libraryResponse(TupLibraryResponse *request);
 
     signals:
+        void progressStep(int, int);
+        void toStatusBar(const QString &, int);
+        void sceneChanged(const TupScene *newScene);
         void requestTriggered(const TupProjectRequest *event);
-        void requestForExportVideoToServer(const QString &title, const QString &topics, const QString &description, int fps, const QList<int> indexes);
-        // void requestForExportStoryboardToServer(const QString &title, const QString &topics, const QString &description, const QList<int> indexes);
+
+    protected:
+        void paintEvent(QPaintEvent *event);
+        void resizeEvent(QResizeEvent *event);
 
     private:
+        void initPhotogramsArray();
+        void addPhotogramsArray(int index);
+        void updateFirstFrame();
         struct Private;
         Private *const k;
 };

@@ -79,6 +79,8 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
         QPointF viewPosition();
         QPointF centerPoint() const;
 
+        void updateDimension(const QSize dimension);
+
     private:
         virtual void saveState();
         virtual void restoreState();

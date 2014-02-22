@@ -33,7 +33,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupanimationarea.h"
+#include "tupscreen.h"
 #include "tupprojectresponse.h"
 #include "tupgraphicobject.h"
 #include "tupgraphicsscene.h"
@@ -50,7 +50,7 @@
 
 typedef QList<QImage> photoArray;
 
-struct TupAnimationArea::Private
+struct TupScreen::Private
 {
     QWidget *container;
     QImage renderCamera;
@@ -72,7 +72,7 @@ struct TupAnimationArea::Private
     QSize dimension;
 };
 
-TupAnimationArea::TupAnimationArea(const TupProject *project, const QSize viewSize, bool isScaled, QWidget *parent) : QFrame(parent), k(new Private)
+TupScreen::TupScreen(const TupProject *project, const QSize viewSize, bool isScaled, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -86,6 +86,9 @@ TupAnimationArea::TupAnimationArea(const TupProject *project, const QSize viewSi
         k->dimension = viewSize;
     else
         k->dimension = k->project->dimension();
+
+    tError() << "TupScreen::TupScreen() - width: " << k->dimension.width();
+    tError() << "TupScreen::TupScreen() - height: " << k->dimension.height();
 
     k->cyclicAnimation = false;
     k->fps = 24;
@@ -104,7 +107,7 @@ TupAnimationArea::TupAnimationArea(const TupProject *project, const QSize viewSi
     updateSceneIndex(0);
 }
 
-TupAnimationArea::~TupAnimationArea()
+TupScreen::~TupScreen()
 {
     #ifdef K_DEBUG
            TEND;
@@ -122,7 +125,7 @@ TupAnimationArea::~TupAnimationArea()
     Clean a photogram array if the scene has changed
 **/
 
-void TupAnimationArea::resetPhotograms(int sceneIndex)
+void TupScreen::resetPhotograms(int sceneIndex)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -139,7 +142,7 @@ void TupAnimationArea::resetPhotograms(int sceneIndex)
     }
 }
 
-void TupAnimationArea::initPhotogramsArray()
+void TupScreen::initPhotogramsArray()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -154,7 +157,7 @@ void TupAnimationArea::initPhotogramsArray()
     }
 }
 
-void TupAnimationArea::setFPS(int fps)
+void TupScreen::setFPS(int fps)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -173,7 +176,7 @@ void TupAnimationArea::setFPS(int fps)
    }
 }
 
-void TupAnimationArea::paintEvent(QPaintEvent *)
+void TupScreen::paintEvent(QPaintEvent *)
 {
    /*
    #ifdef K_DEBUG
@@ -186,6 +189,7 @@ void TupAnimationArea::paintEvent(QPaintEvent *)
            k->renderCamera = k->photograms[k->currentFramePosition];
    } else {
        k->firstShoot = false;
+       tError() << "TupScreen::paintEvent() - First render!";
    }
 
    QPainter painter;
@@ -195,14 +199,14 @@ void TupAnimationArea::paintEvent(QPaintEvent *)
    int y = (frameSize().height() - k->renderCamera.size().height()) / 2;
    painter.drawImage(QPoint(x, y), k->renderCamera);
 
-   painter.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
-   painter.drawRect(x, y, k->renderCamera.size().width()-1, k->renderCamera.size().height()-1);
+   // painter.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+   // painter.drawRect(x, y, k->renderCamera.size().width()-1, k->renderCamera.size().height()-1);
 }
 
-void TupAnimationArea::play()
+void TupScreen::play()
 {
    #ifdef K_DEBUG
-          tWarning("camera") << "TupAnimationArea::play() - Playing at " << k->fps << " FPS";
+          tWarning("camera") << "TupScreen::play() - Playing at " << k->fps << " FPS";
    #endif
 
    if (k->playBackTimer->isActive()) 
@@ -222,10 +226,10 @@ void TupAnimationArea::play()
    }
 }
 
-void TupAnimationArea::playBack()
+void TupScreen::playBack()
 {
    #ifdef K_DEBUG
-          tWarning("camera") << "TupAnimationArea::playBack() - Starting procedure...";
+          tWarning("camera") << "TupScreen::playBack() - Starting procedure...";
    #endif
 
    if (k->timer->isActive())
@@ -240,10 +244,10 @@ void TupAnimationArea::playBack()
    }
 }
 
-void TupAnimationArea::stop()
+void TupScreen::stop()
 {
     #ifdef K_DEBUG
-           tWarning("camera") << "TupAnimationArea::stop() - Stopping player!";
+           tWarning("camera") << "TupScreen::stop() - Stopping player!";
     #endif
    
     if (k->timer->isActive())
@@ -259,7 +263,7 @@ void TupAnimationArea::stop()
     repaint();
 }
 
-void TupAnimationArea::nextFrame()
+void TupScreen::nextFrame()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -272,7 +276,7 @@ void TupAnimationArea::nextFrame()
     repaint();
 }
 
-void TupAnimationArea::previousFrame()
+void TupScreen::previousFrame()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -285,7 +289,7 @@ void TupAnimationArea::previousFrame()
     repaint();
 }
 
-void TupAnimationArea::advance()
+void TupScreen::advance()
 {
     /*
     #ifdef K_DEBUG
@@ -309,7 +313,7 @@ void TupAnimationArea::advance()
     }
 }
 
-void TupAnimationArea::back()
+void TupScreen::back()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -326,15 +330,15 @@ void TupAnimationArea::back()
     }
 }
 
-void TupAnimationArea::frameResponse(TupFrameResponse *)
+void TupScreen::frameResponse(TupFrameResponse *)
 {
 }
 
-void TupAnimationArea::layerResponse(TupLayerResponse *)
+void TupScreen::layerResponse(TupLayerResponse *)
 {
 }
 
-void TupAnimationArea::sceneResponse(TupSceneResponse *event)
+void TupScreen::sceneResponse(TupSceneResponse *event)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -380,19 +384,19 @@ void TupAnimationArea::sceneResponse(TupSceneResponse *event)
    }
 }
 
-void TupAnimationArea::projectResponse(TupProjectResponse *)
+void TupScreen::projectResponse(TupProjectResponse *)
 {
 }
 
-void TupAnimationArea::itemResponse(TupItemResponse *)
+void TupScreen::itemResponse(TupItemResponse *)
 {
 }
 
-void TupAnimationArea::libraryResponse(TupLibraryResponse *)
+void TupScreen::libraryResponse(TupLibraryResponse *)
 {
 }
 
-void TupAnimationArea::render()
+void TupScreen::render()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -402,7 +406,7 @@ void TupAnimationArea::render()
 
     if (!scene) {
         #ifdef K_DEBUG
-               tError() << "TupAnimationArea::render() - [ Fatal Error ] - Scene is NULL! -> index: " << k->currentSceneIndex;
+               tError() << "TupScreen::render() - [ Fatal Error ] - Scene is NULL! -> index: " << k->currentSceneIndex;
         #endif
         return;
     }
@@ -413,7 +417,7 @@ void TupAnimationArea::render()
              k->sounds << layer;
 
     TupAnimationRenderer renderer(k->project->bgColor());
-    renderer.setScene(scene, k->project->dimension());
+    renderer.setScene(scene, k->dimension);
 
     QFont font = this->font();
     font.setPointSize(8);
@@ -433,16 +437,18 @@ void TupAnimationArea::render()
     int i = 1;
 
     while (renderer.nextPhotogram()) {
-           QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
+           QImage renderized = QImage(k->dimension, QImage::Format_RGB32);
 
            QPainter painter(&renderized);
            painter.setRenderHint(QPainter::Antialiasing);
            renderer.render(&painter);
 
            if (k->isScaled) {
+               tError() << "TupScreen::render() - Resizing photogram...";
                QImage resized = renderized.scaledToWidth(k->dimension.width(), Qt::SmoothTransformation);
                photogramList << resized;
            } else {
+               tError() << "TupScreen::render() - Using NO resized photogram...";
                photogramList << renderized;
            }
 
@@ -455,7 +461,7 @@ void TupAnimationArea::render()
     k->renderControl.replace(k->currentSceneIndex, true);
 }
 
-QSize TupAnimationArea::sizeHint() const
+QSize TupScreen::sizeHint() const
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -464,7 +470,7 @@ QSize TupAnimationArea::sizeHint() const
     return k->renderCamera.size();
 }
 
-void TupAnimationArea::resizeEvent(QResizeEvent *event)
+void TupScreen::resizeEvent(QResizeEvent *event)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -480,12 +486,12 @@ void TupAnimationArea::resizeEvent(QResizeEvent *event)
         update();
     } else {
         #ifdef K_DEBUG
-               tError() << "TupAnimationArea::resizeEvent() - [ Error ] - Current index is invalid -> " << k->currentSceneIndex;
+               tError() << "TupScreen::resizeEvent() - [ Error ] - Current index is invalid -> " << k->currentSceneIndex;
         #endif
     }
 }
 
-void TupAnimationArea::setLoop(bool loop)
+void TupScreen::setLoop(bool loop)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -494,7 +500,7 @@ void TupAnimationArea::setLoop(bool loop)
     k->cyclicAnimation = loop;
 }
 
-void TupAnimationArea::updateSceneIndex(int index)
+void TupScreen::updateSceneIndex(int index)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -506,17 +512,17 @@ void TupAnimationArea::updateSceneIndex(int index)
         k->photograms = k->animationList.at(k->currentSceneIndex);
     } else {
         #ifdef K_DEBUG
-               tError() << "TupAnimationArea::updateSceneIndex() - [ Error ] - Can't set current photogram array -> " << k->currentSceneIndex;
+               tError() << "TupScreen::updateSceneIndex() - [ Error ] - Can't set current photogram array -> " << k->currentSceneIndex;
         #endif
     }
 }
 
-int TupAnimationArea::currentSceneIndex()
+int TupScreen::currentSceneIndex()
 {
     return k->currentSceneIndex;
 }
 
-TupScene *TupAnimationArea::currentScene() const
+TupScene *TupScreen::currentScene() const
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -538,7 +544,7 @@ TupScene *TupAnimationArea::currentScene() const
     Update and paint the first image of the current scene
 **/
 
-void TupAnimationArea::updateAnimationArea()
+void TupScreen::updateAnimationArea()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -551,7 +557,7 @@ void TupAnimationArea::updateAnimationArea()
         update();
     } else {
         #ifdef K_DEBUG
-               tError() << "TupAnimationArea::updateAnimationArea() - [ Fatal Error ] - Can't access to scene index: " << k->currentSceneIndex;
+               tError() << "TupScreen::updateAnimationArea() - [ Fatal Error ] - Can't access to scene index: " << k->currentSceneIndex;
         #endif
     }
 }
@@ -560,7 +566,7 @@ void TupAnimationArea::updateAnimationArea()
     Prepare the first photogram of the current scene to be painted
 **/
 
-void TupAnimationArea::updateFirstFrame()
+void TupScreen::updateFirstFrame()
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -570,36 +576,40 @@ void TupAnimationArea::updateFirstFrame()
         TupScene *scene = k->project->scene(k->currentSceneIndex);
         if (scene) { 
             TupAnimationRenderer renderer(k->project->bgColor());
-            renderer.setScene(scene, k->project->dimension());
+            renderer.setScene(scene, k->dimension);
             renderer.renderPhotogram(0);
 
-            QImage firstFrame = QImage(k->project->dimension(), QImage::Format_RGB32);
+            QImage firstFrame = QImage(k->dimension, QImage::Format_RGB32);
 
             QPainter painter(&firstFrame);
             painter.setRenderHint(QPainter::Antialiasing);
             renderer.render(&painter);
 
             if (k->isScaled) {
+                tError() << "TupScreen::updateFirstFrame() - Image was scaled to fit!";
+                tError() << "TupScreen::updateFirstFrame() - firstFrame.width(): " <<  firstFrame.width();
+                tError() << "TupScreen::updateFirstFrame() - k->dimension.width(): " << k->dimension.width(); 
                 QImage resized = firstFrame.scaledToWidth(k->dimension.width(), Qt::SmoothTransformation);
                 k->renderCamera = resized;
             } else {
+                tError() << "TupScreen::updateFirstFrame() - Image was NOT scaled to fit!";
                 k->renderCamera = firstFrame;
             }
 
             k->firstShoot = true;
         } else {
             #ifdef K_DEBUG
-                   tError() << "TupAnimationArea::updateFirstFrame() - [ Fatal Error ] - Null scene at index: " << k->currentSceneIndex;
+                   tError() << "TupScreen::updateFirstFrame() - [ Fatal Error ] - Null scene at index: " << k->currentSceneIndex;
             #endif
         }
     } else {
         #ifdef K_DEBUG
-               tError() << "TupAnimationArea::updateFirstFrame() - [ Fatal Error ] - Can't access to scene index: " << k->currentSceneIndex;
+               tError() << "TupScreen::updateFirstFrame() - [ Fatal Error ] - Can't access to scene index: " << k->currentSceneIndex;
         #endif
     }
 }
 
-void TupAnimationArea::addPhotogramsArray(int sceneIndex)
+void TupScreen::addPhotogramsArray(int sceneIndex)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
@@ -611,3 +621,9 @@ void TupAnimationArea::addPhotogramsArray(int sceneIndex)
         k->animationList.insert(sceneIndex, photograms);
     }
 }
+
+void TupScreen::updateProjectDimension(const QSize dimension)
+{
+    k->dimension = dimension;
+}
+

@@ -504,3 +504,10 @@ QPointF TupPaintAreaBase::viewPosition()
     return k->position;
 }
 
+void TupPaintAreaBase::updateDimension(const QSize dimension)
+{
+    k->drawingRect = QRectF(QPointF(0, 0), dimension);
+    k->scene->setSceneRect(k->drawingRect);
+
+    update();
+}

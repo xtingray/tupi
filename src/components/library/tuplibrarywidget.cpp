@@ -584,7 +584,7 @@ void TupLibraryWidget::createRasterObject()
         QSize size = dialog.itemSize();
         QColor background = dialog.background();
         QString extension = dialog.itemExtension();
-        TupNewItemDialog::ThirdParty editor = dialog.software();
+        QString editor = dialog.software();
 
         QString imagesDir = k->project->dataDir() + "/images/";
         if (!QFile::exists(imagesDir)) {
@@ -677,7 +677,7 @@ void TupLibraryWidget::createVectorObject()
         QString name = dialog.itemName();
         QSize size = dialog.itemSize();
         QString extension = dialog.itemExtension();
-        TupNewItemDialog::ThirdParty editor = dialog.software();
+        QString editor = dialog.software();
 
         QString vectorDir = k->project->dataDir() + "/svg/";
         if (!QFile::exists(vectorDir)) {
@@ -1446,25 +1446,25 @@ void TupLibraryWidget::updateLibrary(QString node, QString target)
 
 void TupLibraryWidget::openInkscapeToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupNewItemDialog::Inkscape);
+    callExternalEditor(item, "Inkscape");
 }
 
 void TupLibraryWidget::openGimpToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupNewItemDialog::Gimp);
+    callExternalEditor(item, "Gimp");
 }
 
 void TupLibraryWidget::openKritaToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupNewItemDialog::Krita);
+    callExternalEditor(item, "Krita");
 }
 
 void TupLibraryWidget::openMyPaintToEdit(QTreeWidgetItem *item)
 {
-    callExternalEditor(item, TupNewItemDialog::MyPaint);
+    callExternalEditor(item, "MyPaint");
 }
 
-void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, TupNewItemDialog::ThirdParty software)
+void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, const QString &software)
 {
     if (item) {
         k->lastItemEdited = item;
@@ -1486,24 +1486,10 @@ void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, TupNewItemDialo
     }
 }
 
-void TupLibraryWidget::executeSoftware(TupNewItemDialog::ThirdParty software, QString &path)
+void TupLibraryWidget::executeSoftware(const QString &software, QString &path)
 {
     if (path.length() > 0 && QFile::exists(path)) {
-        QString program = "";
-        switch(software) {
-               case TupNewItemDialog::Inkscape:
-                    program = "/usr/bin/inkscape";
-               break;
-               case TupNewItemDialog::Gimp:
-                    program = "/usr/bin/gimp";
-               break;
-               case TupNewItemDialog::Krita:
-                    program = "/usr/bin/krita";
-               break;
-               case TupNewItemDialog::MyPaint:
-                    program = "/usr/bin/mypaint";
-               break;
-        }
+        QString program = "/usr/bin/" + software.toLower(); 
 
         QStringList arguments;
         arguments << path;

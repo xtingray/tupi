@@ -48,7 +48,6 @@ class TupNewItemDialog : public QDialog
 
     public:
         enum DialogType { Raster = 0, Vector };
-        enum ThirdParty { Gimp = 0, Krita, MyPaint, Inkscape };
 
         TupNewItemDialog(QString &name, DialogType type, QSize size);
         ~TupNewItemDialog();
@@ -57,13 +56,13 @@ class TupNewItemDialog : public QDialog
         QSize itemSize() const;
         QString itemExtension() const;
         QColor background() const;
-        ThirdParty software() const;
+        QString software() const;
 
     private slots:
         void checkValues();
         void updateExtension(int index);
         void updateBackground(int index);
-        void updateEditor(int index);
+        void updateEditor(const QString &editor);
 
     private:
         struct Private;

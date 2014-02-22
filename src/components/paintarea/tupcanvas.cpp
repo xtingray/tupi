@@ -38,8 +38,6 @@
 #include "tapplicationproperties.h"
 #include "tuptoolplugin.h"
 #include "timagebutton.h"
-#include "tglobal.h"
-#include "tconfig.h"
 #include "tdebug.h"
 #include "tuppendialog.h"
 #include "tuponionopacitydialog.h"

@@ -8,7 +8,7 @@
  *   2010:                                                                 *
  *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,38 +33,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCAMERASTATUS_H
-#define TUPCAMERASTATUS_H
+#ifndef TUPCAMERAINTERFACE_H
+#define TUPCAMERAINTERFACE_H
 
-#include "tupcamerawidget.h"
+#include <QDialog>
+#include <QCloseEvent>
+#include <QCamera>
+#include <QCameraViewfinder>
+#include <QCameraImageCapture>
 
-#include <QFrame>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QCheckBox>
-#include <QComboBox>
-
-class TupCameraWidget;
-
-class TupCameraStatus : public QFrame
+class TupCameraInterface : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupCameraStatus(TupCameraWidget *camera = 0, bool isNetworked = false, QWidget *parent = 0);
-        ~TupCameraStatus();
+        TupCameraInterface(const QSize projectSize = QSize(), const QSize cameraSize = QSize(), QWidget *parent = 0);
+        ~TupCameraInterface();
 
-        void setScenes(TupProject *project);
-        void setFPS(int frames);
-        int getFPS();
-        void setCurrentScene(int index);
-        void setFramesTotal(const QString &frames);
-        bool isLooping();
+    protected:
+        void closeEvent(QCloseEvent *event);
 
     signals:
-        void sceneIndexChanged(int index);
+        void projectSizeHasChanged(int w, int h);
+
+    private slots:
+        void shotCamera();
+        void cameraError(QCamera::Error error);
+        void imageSavedFromCamera(int id, const QString path);
 
     private:
+        void checkSizeProject();
         struct Private;
         Private *const k;
 };
