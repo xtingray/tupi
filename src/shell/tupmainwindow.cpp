@@ -932,6 +932,15 @@ void TupMainWindow::connectWidgetToManager(QWidget *widget)
     //connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
 }
 
+void TupMainWindow::disconnectWidgetToManager(QWidget *widget)
+{
+    disconnect(widget, SIGNAL(requestTriggered(const TupProjectRequest *)), m_projectManager,
+            SLOT(handleProjectRequest(const TupProjectRequest *)));
+
+    disconnect(m_projectManager, SIGNAL(responsed(TupProjectResponse*)), widget,
+            SLOT(handleProjectResponse(TupProjectResponse *)));
+}
+
 /**
  * @if english
  * This method defines the events handlers for the paint area.
@@ -1417,5 +1426,10 @@ void TupMainWindow::updateUsersOnLine(const QString &login, int state)
 void TupMainWindow::resizeProjectDimension(const QSize dimension)
 {
     m_projectManager->updateProjectDimension(dimension);
-    cameraWidget->updateProjectDimension(dimension);
+    disconnectWidgetToManager(cameraWidget);
+    delete cameraWidget; 
+    cameraWidget = new TupCameraWidget(m_projectManager->project(), isNetworked);
+    connectWidgetToManager(cameraWidget);
+
+    playerTab->setCameraWidget(cameraWidget);
 }

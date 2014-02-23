@@ -1648,4 +1648,5 @@ void TupDocumentView::resizeProjectDimension(const QSize dimension)
     }
 
     emit projectSizeHasChanged(dimension);
+    k->paintArea->updatePaintArea();
 }

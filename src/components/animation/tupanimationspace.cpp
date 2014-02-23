@@ -47,21 +47,27 @@
  * @author David Cuadrado
 */
 
-TupAnimationspace::TupAnimationspace(TupCameraWidget *internal, QWidget *parent) : QMainWindow(parent)
+TupAnimationspace::TupAnimationspace(TupCameraWidget *playerUI, QWidget *parent) : QMainWindow(parent)
 {
     // TODO: Try a nice dark color for this window
     // setStyleSheet("QMainWindow { background-color: #d0d0d0; }");
-    camera = internal;
+
+    playerInterface = playerUI;
     playOn = false;
-    QWidget *widget = new QWidget();
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, widget);
-    layout->addWidget(camera, 0, Qt::AlignCenter);
-    widget->setLayout(layout);
-    setCentralWidget(widget);
+    setCameraWidget(playerInterface);
 }
 
 TupAnimationspace::~TupAnimationspace()
 {
+}
+
+void TupAnimationspace::setCameraWidget(TupCameraWidget *playerUI) 
+{
+    container = new QWidget();
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, container);
+    layout->addWidget(playerInterface, 0, Qt::AlignCenter);
+    container->setLayout(layout);
+    setCentralWidget(container);
 }
 
 void TupAnimationspace::mousePressEvent(QMouseEvent *event)
@@ -85,25 +91,25 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
             case Qt::Key_Space:
                   if (event->modifiers()==Qt::ShiftModifier) {
-                      camera->doPlayBack();
+                      playerInterface->doPlayBack();
                   } else {
                       if (!playOn) {
-                          camera->doPlay();
+                          playerInterface->doPlay();
                           playOn = true;
                       } else {
-                          camera->doStop();
+                          playerInterface->doStop();
                           playOn = false;
                       }
                   }
             break;
             case Qt::Key_Escape:
-                  camera->doStop();
+                  playerInterface->doStop();
             break;
             case Qt::Key_Right:
-                  camera->nextFrame(); 
+                  playerInterface->nextFrame(); 
             break;
             case Qt::Key_Left:
-                  camera->previousFrame();
+                  playerInterface->previousFrame();
             break;
             case Qt::Key_Up:
 
@@ -113,29 +119,3 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event) {
             break;
     }
 }
-
-/*
-void TupAnimationspace::dropEvent(QDropEvent *event)
-{
-    if (event->mimeData()->hasColor()) {
-        QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
-        QPalette pal = palette();
-        pal.setColor(QPalette::Dark, color);
- 
-        setPalette(pal);
-        event->acceptProposedAction();
-    } else {
-        event->ignore();
-    }
-}
- 
-void TupAnimationspace::dragEnterEvent(QDragEnterEvent *event)
-{
-    setFocus();
-
-    if (event->mimeData()->hasColor()) 
-        event->acceptProposedAction();
-    else 
-        event->ignore();
- }
-*/

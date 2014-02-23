@@ -45,15 +45,20 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QStackedWidget>
 
 struct TupCameraWidget::Private
 {
     QFrame *container;
-    TupScreen *animationArea;
+    TupScreen *screen;
     TupCameraStatus *status;
     TupProject *project;
     int currentSceneIndex;
     QLabel *scaleLabel;
+    QSize playerDimension;
+    QSize screenDimension;
+    bool isScaled;
+    QStackedWidget *screenWidget;
 };
 
 TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
@@ -62,8 +67,12 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
            TINIT;
     #endif
 
-    k->project = project;
+    QDesktopWidget desktop;
+    int desktopWidth = (40 * desktop.screenGeometry().width()) / 100;
+    int desktopHeight = (40 * desktop.screenGeometry().height()) / 100;
+    k->screenDimension = QSize(desktopWidth, desktopHeight);
 
+    k->project = project;
     setObjectName("TupCameraWidget_");
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
@@ -86,47 +95,13 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     labelLayout->addWidget(name); 
     labelLayout->addWidget(description);
 
-    int width = size().width();
-    int height = size().height();
-    int pWidth = project->dimension().width();
-    int pHeight = project->dimension().height();
-
-    QString scale = "[ " + tr("Scale") + " ";
-
-    tError() << "TupCameraWidget::TupCameraWidget() - workspace width: " << width;
-    tError() << "TupCameraWidget::TupCameraWidget() - workspace height: " << height;
-    tError() << "TupCameraWidget::TupCameraWidget() - project width: " << pWidth;
-    tError() << "TupCameraWidget::TupCameraWidget() - project height: " << pHeight;
-
-    if (pWidth < width && pHeight < height) {
-        k->animationArea = new TupScreen(k->project);
-        scale += "1:1";
-    } else {
-        QSize dimension;
-        double proportion = 1;
-        if (pWidth > pHeight) {
-            int newH = (pHeight*width)/pWidth;
-            dimension = QSize(width, newH);
-            proportion = (double) pWidth / (double) width; 
-        } else {
-            int newW = (pWidth*height)/pHeight;
-            dimension = QSize(newW, height);
-            proportion = (double) pHeight / (double) height;
-        }
-
-        scale += "1:" + QString::number(proportion, 'g', 2);
-        k->animationArea = new TupScreen(k->project, dimension, true);
-    }
-
-    scale += " | Size: ";
-    scale += QString::number(pWidth) + "x" + QString::number(pHeight); 
-    scale += " px ]";
-
     QLabel *icon = new QLabel();
     icon->setPixmap(QPixmap(THEME_DIR + "icons/player.png"));
     QLabel *title = new QLabel(tr("Scene Preview"));
-    k->scaleLabel = new QLabel(scale);
+    k->scaleLabel = new QLabel;
     k->scaleLabel->setFont(font);
+
+    setDimensionLabel(k->project->dimension());
 
     QWidget *titleWidget = new QWidget();
     QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
@@ -145,7 +120,11 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
     layout->addLayout(labelLayout, Qt::AlignCenter);
 
-    layout->addWidget(k->animationArea, 0, Qt::AlignCenter);
+    k->screenWidget = new QStackedWidget;
+    k->screen = new TupScreen(k->project, k->playerDimension, k->isScaled);
+    k->screenWidget->addWidget(k->screen);
+
+    layout->addWidget(k->screenWidget, 0, Qt::AlignCenter);
 
     TupCameraBar *cameraBar = new TupCameraBar;
     layout->addWidget(cameraBar, 0, Qt::AlignCenter);
@@ -153,9 +132,9 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
 
     connect(cameraBar, SIGNAL(play()), this, SLOT(doPlay()));
     connect(cameraBar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
-    connect(cameraBar, SIGNAL(stop()), k->animationArea, SLOT(stop()));
-    connect(cameraBar, SIGNAL(ff()), k->animationArea, SLOT(nextFrame()));
-    connect(cameraBar, SIGNAL(rew()), k->animationArea, SLOT(previousFrame()));
+    connect(cameraBar, SIGNAL(stop()), k->screen, SLOT(stop()));
+    connect(cameraBar, SIGNAL(ff()), k->screen, SLOT(nextFrame()));
+    connect(cameraBar, SIGNAL(rew()), k->screen, SLOT(previousFrame()));
 
     k->status = new TupCameraStatus(this, isNetworked);
     k->status->setScenes(k->project); 
@@ -177,9 +156,47 @@ TupCameraWidget::~TupCameraWidget()
     #endif
 }
 
+void TupCameraWidget::setDimensionLabel(const QSize dimension)
+{
+    int screenWidth = k->screenDimension.width();
+    int screenHeight = k->screenDimension.height();
+
+    int projectWidth = dimension.width();
+    int projectHeight = dimension.height();
+
+    QString scale = "[ " + tr("Scale") + " ";
+    k->isScaled = false;
+
+    if (projectWidth <= screenWidth && projectHeight <= screenHeight) {
+        k->playerDimension = k->project->dimension();
+        scale += "1:1";
+    } else {
+        double proportion = 1;
+
+        if (projectWidth > projectHeight) {
+            int newH = (projectHeight*screenWidth)/projectWidth;
+            k->playerDimension = QSize(screenWidth, newH);
+            proportion = (double) projectWidth / (double) screenWidth;
+        } else { // projectHeight > projectWidth
+            int newW = (projectWidth*screenHeight)/projectHeight;
+            k->playerDimension = QSize(newW, screenHeight);
+            proportion = (double) projectHeight / (double) screenHeight;
+        }
+
+        scale += "1:" + QString::number(proportion, 'g', 2);
+        k->isScaled = true;
+    }
+
+    scale += " | " + tr("Size") + ": ";
+    scale += QString::number(projectWidth) + "x" + QString::number(projectHeight);
+    scale += " px ]";
+
+    k->scaleLabel->setText(scale);
+}
+
 void TupCameraWidget::setLoop()
 {
-    k->animationArea->setLoop(k->status->isLooping());
+    k->screen->setLoop(k->status->isLooping());
 }
 
 QSize TupCameraWidget::sizeHint() const
@@ -190,27 +207,27 @@ QSize TupCameraWidget::sizeHint() const
 
 void TupCameraWidget::doPlay()
 {
-    k->animationArea->play();
+    k->screen->play();
 }
 
 void TupCameraWidget::doPlayBack()
 {
-    k->animationArea->playBack();
+    k->screen->playBack();
 }
 
 void TupCameraWidget::doStop()
 {
-    k->animationArea->stop();
+    k->screen->stop();
 }
 
 void TupCameraWidget::nextFrame()
 {
-    k->animationArea->nextFrame();
+    k->screen->nextFrame();
 }
 
 void TupCameraWidget::previousFrame()
 {
-    k->animationArea->previousFrame();
+    k->screen->previousFrame();
 }
 
 bool TupCameraWidget::handleProjectResponse(TupProjectResponse *response)
@@ -220,7 +237,6 @@ bool TupCameraWidget::handleProjectResponse(TupProjectResponse *response)
     #endif
 
     if (TupSceneResponse *sceneResponse = static_cast<TupSceneResponse *>(response)) {
-
         int index = sceneResponse->sceneIndex();
 
         switch (sceneResponse->action()) {
@@ -272,14 +288,14 @@ bool TupCameraWidget::handleProjectResponse(TupProjectResponse *response)
         }
     }
 
-    return k->animationArea->handleResponse(response);
+    return k->screen->handleResponse(response);
 }
 
 void TupCameraWidget::setFPS(int fps)
 {
     fps++;
     k->project->setFPS(fps);
-    k->animationArea->setFPS(fps);
+    k->screen->setFPS(fps);
 }
 
 void TupCameraWidget::updateFramesTotal(int sceneIndex)
@@ -316,73 +332,28 @@ void TupCameraWidget::postDialog()
     if (exportWidget->isComplete() != QDialog::Rejected) {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes());
-        // if (exportWidget->workType() == TupExportWidget::Video)
-        //     emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes()); 
-        // else
-        //     emit requestForExportStoryboardToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), exportWidget->videoScenes());
     }
 }
 
 void TupCameraWidget::selectScene(int index)
 {
-    if (index != k->animationArea->currentSceneIndex()) {
+    if (index != k->screen->currentSceneIndex()) {
         TupProjectRequest event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);
         emit requestTriggered(&event);
 
         doStop();
-        k->animationArea->updateSceneIndex(index);
-        k->animationArea->updateAnimationArea();
+        k->screen->updateSceneIndex(index);
+        k->screen->updateAnimationArea();
         doPlay();
     }
 }
 
 void TupCameraWidget::updateScenes(int sceneIndex)
 {
-    k->animationArea->resetPhotograms(sceneIndex);
+    k->screen->resetPhotograms(sceneIndex);
 }
 
 void TupCameraWidget::updateFirstFrame()
 {
-    k->animationArea->updateAnimationArea();
-}
-
-void TupCameraWidget::updateProjectDimension(const QSize dimension)
-{
-    setDimensionLabel(dimension);
-    k->animationArea->updateProjectDimension(dimension);
-    k->animationArea->updateAnimationArea();
-}
-
-void TupCameraWidget::setDimensionLabel(const QSize dimension)
-{
-    int width = size().width();
-    int height = size().height();
-    int pWidth = dimension.width();
-    int pHeight = dimension.height();
-
-    QString scale = "[ " + tr("Scale") + " ";
-
-    if (pWidth < width && pHeight < height) {
-        scale += "1:1";
-    } else {
-        QSize dimension;
-        double proportion = 1;
-        if (pWidth > pHeight) {
-            int newH = (pHeight*width)/pWidth;
-            dimension = QSize(width, newH);
-            proportion = (double) pWidth / (double) width;
-        } else {
-            int newW = (pWidth*height)/pHeight;
-            dimension = QSize(newW, height);
-            proportion = (double) pHeight / (double) height;
-        }
-
-        scale += "1:" + QString::number(proportion, 'g', 2);
-    }
-
-    scale += " | Size: ";
-    scale += QString::number(pWidth) + "x" + QString::number(pHeight);
-    scale += " px ]";
-
-    k->scaleLabel->setText(scale);
+    k->screen->updateAnimationArea();
 }

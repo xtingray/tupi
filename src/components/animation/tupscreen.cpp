@@ -69,7 +69,7 @@ struct TupScreen::Private
     QList<QImage> photograms; 
     QList<photoArray> animationList;
     QList<bool> renderControl;
-    QSize dimension;
+    QSize screenDimension;
 };
 
 TupScreen::TupScreen(const TupProject *project, const QSize viewSize, bool isScaled, QWidget *parent) : QFrame(parent), k(new Private)
@@ -82,13 +82,7 @@ TupScreen::TupScreen(const TupProject *project, const QSize viewSize, bool isSca
     k->project = project;
     k->isScaled = isScaled;
 
-    if (k->isScaled)
-        k->dimension = viewSize;
-    else
-        k->dimension = k->project->dimension();
-
-    tError() << "TupScreen::TupScreen() - width: " << k->dimension.width();
-    tError() << "TupScreen::TupScreen() - height: " << k->dimension.height();
+    k->screenDimension = viewSize;
 
     k->cyclicAnimation = false;
     k->fps = 24;
@@ -189,7 +183,6 @@ void TupScreen::paintEvent(QPaintEvent *)
            k->renderCamera = k->photograms[k->currentFramePosition];
    } else {
        k->firstShoot = false;
-       tError() << "TupScreen::paintEvent() - First render!";
    }
 
    QPainter painter;
@@ -199,6 +192,7 @@ void TupScreen::paintEvent(QPaintEvent *)
    int y = (frameSize().height() - k->renderCamera.size().height()) / 2;
    painter.drawImage(QPoint(x, y), k->renderCamera);
 
+   // SQA: Border for the player. Useful for some tests
    // painter.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
    // painter.drawRect(x, y, k->renderCamera.size().width()-1, k->renderCamera.size().height()-1);
 }
@@ -417,7 +411,7 @@ void TupScreen::render()
              k->sounds << layer;
 
     TupAnimationRenderer renderer(k->project->bgColor());
-    renderer.setScene(scene, k->dimension);
+    renderer.setScene(scene, k->project->dimension());
 
     QFont font = this->font();
     font.setPointSize(8);
@@ -437,18 +431,16 @@ void TupScreen::render()
     int i = 1;
 
     while (renderer.nextPhotogram()) {
-           QImage renderized = QImage(k->dimension, QImage::Format_RGB32);
+           QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
 
            QPainter painter(&renderized);
            painter.setRenderHint(QPainter::Antialiasing);
            renderer.render(&painter);
 
            if (k->isScaled) {
-               tError() << "TupScreen::render() - Resizing photogram...";
-               QImage resized = renderized.scaledToWidth(k->dimension.width(), Qt::SmoothTransformation);
+               QImage resized = renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
                photogramList << resized;
            } else {
-               tError() << "TupScreen::render() - Using NO resized photogram...";
                photogramList << renderized;
            }
 
@@ -576,23 +568,19 @@ void TupScreen::updateFirstFrame()
         TupScene *scene = k->project->scene(k->currentSceneIndex);
         if (scene) { 
             TupAnimationRenderer renderer(k->project->bgColor());
-            renderer.setScene(scene, k->dimension);
+            renderer.setScene(scene, k->project->dimension());
             renderer.renderPhotogram(0);
 
-            QImage firstFrame = QImage(k->dimension, QImage::Format_RGB32);
+            QImage firstFrame = QImage(k->project->dimension(), QImage::Format_RGB32);
 
             QPainter painter(&firstFrame);
             painter.setRenderHint(QPainter::Antialiasing);
             renderer.render(&painter);
 
             if (k->isScaled) {
-                tError() << "TupScreen::updateFirstFrame() - Image was scaled to fit!";
-                tError() << "TupScreen::updateFirstFrame() - firstFrame.width(): " <<  firstFrame.width();
-                tError() << "TupScreen::updateFirstFrame() - k->dimension.width(): " << k->dimension.width(); 
-                QImage resized = firstFrame.scaledToWidth(k->dimension.width(), Qt::SmoothTransformation);
+                QImage resized = firstFrame.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
                 k->renderCamera = resized;
             } else {
-                tError() << "TupScreen::updateFirstFrame() - Image was NOT scaled to fit!";
                 k->renderCamera = firstFrame;
             }
 
@@ -621,9 +609,3 @@ void TupScreen::addPhotogramsArray(int sceneIndex)
         k->animationList.insert(sceneIndex, photograms);
     }
 }
-
-void TupScreen::updateProjectDimension(const QSize dimension)
-{
-    k->dimension = dimension;
-}
-

@@ -48,8 +48,9 @@ class TupAnimationspace : public QMainWindow
     Q_OBJECT
 
     public:
-        TupAnimationspace(TupCameraWidget *internal, QWidget *parent = 0);
+        TupAnimationspace(TupCameraWidget *playerUI, QWidget *parent = 0);
         ~TupAnimationspace();
+        void setCameraWidget(TupCameraWidget *playerUI);
 
     protected:
         void mousePressEvent(QMouseEvent *event);
@@ -59,11 +60,10 @@ class TupAnimationspace : public QMainWindow
 
     signals:
         void contextMenu(const QPoint &p);
-        // void dropEvent(QDropEvent* e);
-        // void dragEnterEvent(QDragEnterEvent* e);
 
     private:
-        TupCameraWidget *camera;
+        TupCameraWidget *playerInterface;
+        QWidget *container;
         bool playOn;
 };
 

@@ -64,7 +64,6 @@ class TupCameraWidget : public QFrame
         void updateFirstFrame();
         QSize sizeHint() const;
         void updateScenes(int sceneIndex);
-        void updateProjectDimension(const QSize dimension);
 
     private slots:
         void setLoop();

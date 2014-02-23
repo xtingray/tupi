@@ -132,6 +132,7 @@ class TupMainWindow : public TabbedMainWindow
          void setMenuItemsContext(bool flag);
 
          void connectWidgetToManager(QWidget *widget);
+         void disconnectWidgetToManager(QWidget *widget);
          void connectWidgetToPaintArea(QWidget *widget);
          void connectWidgetToLocalManager(QWidget *widget);
 
