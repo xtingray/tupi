@@ -109,6 +109,8 @@ class TupDocumentView : public QMainWindow
         void fullScreenRightClick();
         void cameraInterface();
         void resizeProjectDimension(const QSize dimension);
+        void insertPictureInFrame(int id, const QString path);
+        void advanceOneFrame();
 
     private:
         struct Private;

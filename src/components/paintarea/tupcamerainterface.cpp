@@ -37,6 +37,7 @@
 #include "tupapplication.h"
 #include "tapplicationproperties.h"
 #include "toptionaldialog.h"
+#include "talgorithm.h"
 #include "tdebug.h"
 
 #include <QBoxLayout>
@@ -45,6 +46,7 @@
 #include <QTimer>
 #include <QDesktopWidget>
 #include <QMessageBox>
+#include <QPushButton>
 
 struct TupCameraInterface::Private
 {
@@ -52,41 +54,100 @@ struct TupCameraInterface::Private
     QCameraImageCapture *imageCapture;
     QSize projectSize;
     QSize cameraSize;
+    QString dir;
+    int counter;
 };
 
-TupCameraInterface::TupCameraInterface(const QSize projectSize, const QSize cameraSize, QWidget *parent) : QDialog(parent), k(new Private)
+TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QList<QSize> resolutions, QCamera *camera, const QSize cameraSize, QCameraImageCapture *imageCapture, 
+                                       const QSize projectSize, QWidget *parent) : QDialog(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
     #endif
 
+    setModal(false);
+
     k->projectSize = projectSize;
     k->cameraSize = cameraSize;
+    k->counter = 1;
+
+    k->dir = CACHE_DIR + QDir::separator() + TAlgorithm::randomString(8); 
+    tError() << "TupCameraInterface() - k->dir: " << k->dir;
+
+    QDir dir;
+    if (dir.mkdir(k->dir))
+        tError() << "TupCameraInterface() - Fatal Error: Can't create dir!";
+
+    k->dir = k->dir + QDir::separator() + "pic";
 
     setWindowTitle(tr("Tupi Camera Manager"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
     resize(cameraSize.width(), cameraSize.height());
 
-    QByteArray cameraDevice = QCamera::availableDevices()[0];
-    k->camera = new QCamera(cameraDevice);
+    k->camera = camera;
     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
 
     QCameraViewfinder *viewFinder = new QCameraViewfinder;
     k->camera->setViewfinder(viewFinder);
     viewFinder->show();
 
-    k->imageCapture = new QCameraImageCapture(k->camera);
+    k->imageCapture = imageCapture;
     connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
 
-    QWidget *widget = new QWidget(this);
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, widget);
-    layout->addWidget(viewFinder);
-    widget->resize(k->cameraSize.width(), k->cameraSize.height());
+    QWidget *cameraWidget = new QWidget;
+    QBoxLayout *cameraLayout = new QBoxLayout(QBoxLayout::TopToBottom, cameraWidget);
+    cameraLayout->addWidget(viewFinder);
+    cameraWidget->resize(k->cameraSize.width(), k->cameraSize.height());
+
+    QWidget *menuWidget = new QWidget;
+    QBoxLayout *menuLayout = new QBoxLayout(QBoxLayout::TopToBottom, menuWidget);
+    
+    QLabel *modeLabel = new QLabel(tr("Mode"));
+    modeLabel->setAlignment(Qt::AlignHCenter);
+    QComboBox *modeCombo = new QComboBox();
+    modeCombo->addItem(tr("Camera"));
+    modeCombo->addItem(tr("History"));
+
+    QBoxLayout *modeLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    modeLayout->addWidget(modeLabel);
+    modeLayout->addWidget(modeCombo);
+
+    QWidget *cameraOptions = new QWidget;
+    QBoxLayout *cameraOptionsLayout = new QBoxLayout(QBoxLayout::TopToBottom, cameraOptions);
+
+    QLabel *devicesLabel = new QLabel(tr("Devices"));
+    devicesLabel->setAlignment(Qt::AlignHCenter);
+    QLabel *resolutionLabel = new QLabel(tr("Resolutions"));
+    resolutionLabel->setAlignment(Qt::AlignHCenter);
+    QComboBox *resolutionCombo = new QComboBox();
+    for (int i=0; i<resolutions.size(); i++) {
+         QSize size = resolutions.at(i);
+         QString label = QString::number(size.width()) + "x" + QString::number(size.height());
+         resolutionCombo->addItem(label);
+    }
+    resolutionCombo->setCurrentIndex(resolutions.size() - 1);
+    QPushButton *clickButton = new QPushButton(tr("Take Picture"));
+    connect(clickButton, SIGNAL(clicked()), this, SLOT(takePicture()));
+
+    cameraOptionsLayout->addWidget(devicesLabel);
+    cameraOptionsLayout->addWidget(devicesCombo);
+    cameraOptionsLayout->addWidget(resolutionLabel);
+    cameraOptionsLayout->addWidget(resolutionCombo);
+    cameraOptionsLayout->addWidget(clickButton);
+
+    modeLayout->addWidget(cameraOptions);
+
+    modeLayout->addStretch(2);
+    menuLayout->addLayout(modeLayout);
+
+    // menuLayout->addWidget(devicesCombo);
+
+    QBoxLayout *dialogLayout = new QBoxLayout(QBoxLayout::LeftToRight, this); 
+    dialogLayout->addWidget(cameraWidget);
+    dialogLayout->addWidget(menuWidget);
 
     k->camera->setCaptureMode(QCamera::CaptureStillImage);
     k->camera->start();
-
-    // QTimer::singleShot(10000, this, SLOT(shotCamera()));
 }
 
 TupCameraInterface::~TupCameraInterface()
@@ -106,16 +167,22 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
         k->camera->stop();
 }
 
-void TupCameraInterface::shotCamera()
+void TupCameraInterface::takePicture()
 {
+    QString imagePath = k->dir + QString::number(k->counter) + ".jpg";
+
+    tError() << "TupCameraInterface::takePicture() - imagePath: " << imagePath;
+
     //on half pressed shutter button
     k->camera->searchAndLock();
 
     //on shutter button pressed
-    k->imageCapture->capture("/tmp/test.png");
+    k->imageCapture->capture(imagePath);
 
     //on shutter button released
     k->camera->unlock();
+
+    k->counter++;
 }
 
 void TupCameraInterface::cameraError(QCamera::Error error)
@@ -127,9 +194,12 @@ void TupCameraInterface::cameraError(QCamera::Error error)
 
 void TupCameraInterface::imageSavedFromCamera(int id, const QString path)
 {
-    Q_UNUSED(id);
-
+    tError() << "TupCameraInterface::imageSavedFromCamera() - ID: " << id;  
     tError() << "TupCameraInterface::imageSavedFromCamera() - Image saved from Camera at: " << path;
+    if (path.isEmpty())
+        return;
+
+    emit pictureHasBeenSelected(id, path);
 }
 
 /*
@@ -161,7 +231,7 @@ void TupCameraInterface::checkSizeProject()
 
         switch (ret) {
             case QMessageBox::AcceptRole:
-                 emit projectSizeHasChanged(k->cameraSize.width(), k->cameraSize.height());
+                 emit projectSizeHasChanged(QSize(k->cameraSize.width(), k->cameraSize.height()));
                  tError() << "TupCameraInterface::checkSizeProject() - Calling signal projectSizeHasChanged()";
                  break;
         }

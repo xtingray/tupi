@@ -38,6 +38,7 @@
 
 #include <QDialog>
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QCamera>
 #include <QCameraViewfinder>
 #include <QCameraImageCapture>
@@ -47,17 +48,19 @@ class TupCameraInterface : public QDialog
     Q_OBJECT
 
     public:
-        TupCameraInterface(const QSize projectSize = QSize(), const QSize cameraSize = QSize(), QWidget *parent = 0);
+        TupCameraInterface(QComboBox *devicesCombo, QList<QSize> resolutions, QCamera *camera = 0, const QSize cameraSize = QSize(), 
+                           QCameraImageCapture *imageCapture = 0, const QSize projectSize = QSize(), QWidget *parent = 0);
         ~TupCameraInterface();
 
     protected:
         void closeEvent(QCloseEvent *event);
 
     signals:
-        void projectSizeHasChanged(int w, int h);
+        void projectSizeHasChanged(const QSize);
+        void pictureHasBeenSelected(int, const QString);
 
     private slots:
-        void shotCamera();
+        void takePicture();
         void cameraError(QCamera::Error error);
         void imageSavedFromCamera(int id, const QString path);
 

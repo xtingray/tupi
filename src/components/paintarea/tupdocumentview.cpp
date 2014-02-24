@@ -1575,6 +1575,14 @@ void TupDocumentView::cameraInterface()
     int camerasTotal = QCamera::availableDevices().count();
     if (camerasTotal > 0) {
         QByteArray cameraDevice = QCamera::availableDevices()[0];
+
+        QComboBox *devicesCombo = new QComboBox;
+        foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
+                QCamera *device = new QCamera(deviceName);
+                QString description = device->deviceDescription(deviceName);
+                devicesCombo->addItem(description);
+        }
+
         QCamera *camera = new QCamera(cameraDevice);
 
         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
@@ -1612,8 +1620,9 @@ void TupDocumentView::cameraInterface()
             }
         }
 
-        TupCameraInterface *dialog = new TupCameraInterface(k->project->dimension(), cameraSize, this);
-        // connect(dialog, SIGNAL(projectSizeHasChanged(int, int)), this, SLOT(resizeProjectDimension(int, int)));
+        TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, resolutions, camera, cameraSize, imageCapture, k->project->dimension(), this);
+        connect(dialog, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize)));
+        connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
         dialog->show();
     } else {
         // No devices connected!
@@ -1650,3 +1659,52 @@ void TupDocumentView::resizeProjectDimension(const QSize dimension)
     emit projectSizeHasChanged(dimension);
     k->paintArea->updatePaintArea();
 }
+
+void TupDocumentView::insertPictureInFrame(int id, const QString path)
+{
+    Q_UNUSED(id);
+
+    QFile f(path);
+    QFileInfo fileInfo(f);
+    QString symName = fileInfo.fileName().toLower();
+
+    if (f.open(QIODevice::ReadOnly)) {
+        QByteArray data = f.readAll();
+        f.close();
+
+        QString tag = symName;
+        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
+                                                                            TupLibraryObject::Image, k->project->spaceContext(), data, QString(),
+                                                                            k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
+                                                                            k->paintArea->currentFrameIndex());
+        emit requestTriggered(&request);
+
+        // QTimer::singleShot(10, this, SLOT(advanceOneFrame()));
+    int frameIndex = k->paintArea->currentFrameIndex() + 1;
+
+    request = TupRequestBuilder::createFrameRequest(0, 0, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex));
+    emit requestTriggered(&request);
+
+    request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
+                                                        TupProjectRequest::Select);
+    emit requestTriggered(&request);
+
+    }
+}
+
+void TupDocumentView::advanceOneFrame()
+{
+    tError() << "TupDocumentView::advanceOneFrame() - frame index: " << k->paintArea->currentFrameIndex();
+
+    // int frameIndex = 2;
+    // if (k->paintArea->currentFrameIndex() > 0)
+    int frameIndex = k->paintArea->currentFrameIndex() + 1;
+
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(0, 0, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex));
+    emit requestTriggered(&request);
+
+    request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
+                                                        TupProjectRequest::Select);
+    emit requestTriggered(&request);   
+}
+

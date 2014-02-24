@@ -1299,3 +1299,9 @@ int TupPaintArea::currentLayerIndex()
 {
     return graphicsScene()->currentLayerIndex();
 }
+
+int TupPaintArea::currentFrameIndex()
+{
+    return graphicsScene()->currentFrameIndex();
+}
+
