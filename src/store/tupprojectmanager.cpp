@@ -300,8 +300,9 @@ void TupProjectManager::handleProjectRequest(const TupProjectRequest *request)
 {
     #ifdef K_DEBUG
            T_FUNCINFO;
-           tWarning() << "Package: ";
-           tWarning() << request->xml();
+           // SQA: Enable these lines only for hard/tough debugging
+           // tWarning() << "Package: ";
+           // tWarning() << request->xml();
     #endif
 
     // SQA: the handler must advise when to build the command

@@ -38,6 +38,7 @@
 #include "tapplicationproperties.h"
 #include "toptionaldialog.h"
 #include "talgorithm.h"
+#include "tseparator.h"
 #include "tdebug.h"
 
 #include <QBoxLayout>
@@ -47,42 +48,61 @@
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QImageEncoderSettings>
 
 struct TupCameraInterface::Private
 {
     QCamera *camera;
     QCameraImageCapture *imageCapture;
-    QSize projectSize;
     QSize cameraSize;
     QString dir;
     int counter;
 };
 
-TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QList<QSize> resolutions, QCamera *camera, const QSize cameraSize, QCameraImageCapture *imageCapture, 
-                                       const QSize projectSize, QWidget *parent) : QDialog(parent), k(new Private)
+TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera, const QSize cameraSize, QCameraImageCapture *imageCapture, 
+                                       QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
     #endif
 
-    setModal(false);
+    QString res = QString::number(cameraSize.width()) + "x" + QString::number(cameraSize.height());
+    setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution: ") + res);
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
 
-    k->projectSize = projectSize;
     k->cameraSize = cameraSize;
+    QDesktopWidget desktop;
+    int desktopWidth = desktop.screenGeometry().width();
+    int desktopHeight = desktop.screenGeometry().height();
+    if (k->cameraSize.width() > desktopWidth || k->cameraSize.height() > desktopHeight) {
+        int width = 0;
+        int height = 0;
+        if (k->cameraSize.width() > k->cameraSize.height()) {
+            width = desktopWidth/2;
+            height = width * k->cameraSize.height() / k->cameraSize.width();
+        } else {
+            height = desktopHeight/2;
+            width = height * k->cameraSize.width() / k->cameraSize.height();
+        }
+
+        resize(width, height);
+    } else {
+        resize(k->cameraSize + QSize(100, 100));
+    }
+
+    tError() << "TupCameraInterface() - camera w: " << k->cameraSize.width();
+    tError() << "TupCameraInterface() - camera h: " << k->cameraSize.height();
+
     k->counter = 1;
 
-    k->dir = CACHE_DIR + QDir::separator() + TAlgorithm::randomString(8); 
+    k->dir = CACHE_DIR + TAlgorithm::randomString(8); 
     tError() << "TupCameraInterface() - k->dir: " << k->dir;
 
     QDir dir;
-    if (dir.mkdir(k->dir))
+    if (!dir.mkdir(k->dir))
         tError() << "TupCameraInterface() - Fatal Error: Can't create dir!";
 
     k->dir = k->dir + QDir::separator() + "pic";
-
-    setWindowTitle(tr("Tupi Camera Manager"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
-    resize(cameraSize.width(), cameraSize.height());
 
     k->camera = camera;
     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
@@ -92,55 +112,31 @@ TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QList<QSize> res
     viewFinder->show();
 
     k->imageCapture = imageCapture;
+
+    QImageEncoderSettings imageSettings;
+    imageSettings.setCodec("image/jpeg");
+    imageSettings.setResolution(k->cameraSize.width(), k->cameraSize.height());
+    k->imageCapture->setEncodingSettings(imageSettings);
     connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
 
     QWidget *cameraWidget = new QWidget;
     QBoxLayout *cameraLayout = new QBoxLayout(QBoxLayout::TopToBottom, cameraWidget);
     cameraLayout->addWidget(viewFinder);
-    cameraWidget->resize(k->cameraSize.width(), k->cameraSize.height());
 
     QWidget *menuWidget = new QWidget;
     QBoxLayout *menuLayout = new QBoxLayout(QBoxLayout::TopToBottom, menuWidget);
-    
-    QLabel *modeLabel = new QLabel(tr("Mode"));
-    modeLabel->setAlignment(Qt::AlignHCenter);
-    QComboBox *modeCombo = new QComboBox();
-    modeCombo->addItem(tr("Camera"));
-    modeCombo->addItem(tr("History"));
-
-    QBoxLayout *modeLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    modeLayout->addWidget(modeLabel);
-    modeLayout->addWidget(modeCombo);
-
-    QWidget *cameraOptions = new QWidget;
-    QBoxLayout *cameraOptionsLayout = new QBoxLayout(QBoxLayout::TopToBottom, cameraOptions);
 
     QLabel *devicesLabel = new QLabel(tr("Devices"));
     devicesLabel->setAlignment(Qt::AlignHCenter);
-    QLabel *resolutionLabel = new QLabel(tr("Resolutions"));
-    resolutionLabel->setAlignment(Qt::AlignHCenter);
-    QComboBox *resolutionCombo = new QComboBox();
-    for (int i=0; i<resolutions.size(); i++) {
-         QSize size = resolutions.at(i);
-         QString label = QString::number(size.width()) + "x" + QString::number(size.height());
-         resolutionCombo->addItem(label);
-    }
-    resolutionCombo->setCurrentIndex(resolutions.size() - 1);
+
     QPushButton *clickButton = new QPushButton(tr("Take Picture"));
     connect(clickButton, SIGNAL(clicked()), this, SLOT(takePicture()));
 
-    cameraOptionsLayout->addWidget(devicesLabel);
-    cameraOptionsLayout->addWidget(devicesCombo);
-    cameraOptionsLayout->addWidget(resolutionLabel);
-    cameraOptionsLayout->addWidget(resolutionCombo);
-    cameraOptionsLayout->addWidget(clickButton);
-
-    modeLayout->addWidget(cameraOptions);
-
-    modeLayout->addStretch(2);
-    menuLayout->addLayout(modeLayout);
-
-    // menuLayout->addWidget(devicesCombo);
+    menuLayout->addWidget(devicesLabel);
+    menuLayout->addWidget(devicesCombo);
+    menuLayout->addWidget(new TSeparator(Qt::Horizontal));
+    menuLayout->addWidget(clickButton);
+    menuLayout->addStretch(2);
 
     QBoxLayout *dialogLayout = new QBoxLayout(QBoxLayout::LeftToRight, this); 
     dialogLayout->addWidget(cameraWidget);
@@ -155,16 +151,18 @@ TupCameraInterface::~TupCameraInterface()
     #ifdef K_DEBUG
            TEND;
     #endif
-
-    delete k;
 }
 
 void TupCameraInterface::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
 
+    tError() << "TupCameraInterface::closeEvent() - Stopping camera!";
+
     if (k->camera)
         k->camera->stop();
+
+    delete k;
 }
 
 void TupCameraInterface::takePicture()
@@ -200,40 +198,4 @@ void TupCameraInterface::imageSavedFromCamera(int id, const QString path)
         return;
 
     emit pictureHasBeenSelected(id, path);
-}
-
-/*
-QImageEncoderSettings imageSettings;
-imageSettings.setCodec(“image/jpeg”);
-imageSettings.setResolution(1600, 1200);
-// Apply the encoding settings.
-imageCapture->setEncodingSettings(imageSettings);
-*/
-
-void TupCameraInterface::checkSizeProject()
-{
-    if (k->projectSize != k->cameraSize) {
-        QDesktopWidget desktop;
-        QMessageBox msgBox;
-        msgBox.setWindowTitle(tr("Question"));
-        msgBox.setIcon(QMessageBox::Question);
-        msgBox.setText(tr("The camera resolution is different than your project size."));
-        msgBox.setInformativeText(tr("Do you want to adjust your project size?"));
-
-        msgBox.addButton(QString(tr("Adjust it")), QMessageBox::AcceptRole);
-        msgBox.addButton(QString(tr("Cancel")), QMessageBox::DestructiveRole);
-
-        msgBox.show();
-        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 ,
-                    (int) (desktop.screenGeometry().height() - msgBox.height())/2);
-
-        int ret = msgBox.exec();
-
-        switch (ret) {
-            case QMessageBox::AcceptRole:
-                 emit projectSizeHasChanged(QSize(k->cameraSize.width(), k->cameraSize.height()));
-                 tError() << "TupCameraInterface::checkSizeProject() - Calling signal projectSizeHasChanged()";
-                 break;
-        }
-    }
 }

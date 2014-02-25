@@ -121,12 +121,15 @@ static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCod
         c->pix_fmt = AV_PIX_FMT_YUV420P;
     }
 
-    if (c->codec_id == CODEC_ID_MPEG2VIDEO) {
+    // if (c->codec_id == CODEC_ID_MPEG2VIDEO) {
+    if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
+
 	/* just for testing, we also add B frames */
 	c->max_b_frames = 2;
     }
 
-    if (c->codec_id == CODEC_ID_MPEG1VIDEO) {
+    // if (c->codec_id == CODEC_ID_MPEG1VIDEO) {
+    if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
         /* needed to avoid using macroblocks in which some coeffs overflow
            this doesnt happen with normal video, it just happens here as the
            motion of the chroma plane doesnt match the luma plane */
@@ -382,9 +385,9 @@ bool TFFMpegMovieGenerator::begin()
     }
 
     k->video_st = NULL;
-    if (k->fmt->video_codec != CODEC_ID_NONE) {
+    // if (k->fmt->video_codec != CODEC_ID_NONE) 
+    if (k->fmt->video_codec != AV_CODEC_ID_NONE) 
         k->video_st = addVideoStream(k->oc, &video_codec, k->fmt->video_codec, k->movieFile, width(), height(), k->fps, k->errorMsg);
-    }
 
     av_dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1); 
 	

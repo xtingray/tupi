@@ -15,7 +15,6 @@ macx {
 HEADERS += tuppaintarea.h \
            tupconfigurationarea.h \
            tupdocumentview.h \
-           # tupdocumentruler.h \
            tuppaintareastatus.h \
            tupimagedevice.h \
            tuppaintareacommand.h \
@@ -34,12 +33,12 @@ HEADERS += tuppaintarea.h \
            tuptoolsdialog.h \
            tupinfowidget.h \
            tupruler.h \
-           tupcamerainterface.h
+           tupcamerainterface.h \
+           tupcameradialog.h
 
 SOURCES += tuppaintarea.cpp \
            tupconfigurationarea.cpp \
            tupdocumentview.cpp \
-           # tupdocumentruler.cpp \
            tuppaintareastatus.cpp \
            tupimagedevice.cpp \
            tuppaintareacommand.cpp \
@@ -58,7 +57,8 @@ SOURCES += tuppaintarea.cpp \
            tuptoolsdialog.cpp \
            tupinfowidget.cpp \
            tupruler.cpp \
-           tupcamerainterface.cpp
+           tupcamerainterface.cpp \
+           tupcameradialog.cpp
 
 *:!macx{
     CONFIG += dll warn_on

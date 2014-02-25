@@ -6,9 +6,9 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *    Gustavo Gonzalez                                                     *
  *                                                                         *
- *   KTooN's versions:                                                     *
+ *   KTooN's versions:                                                     * 
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,36 +33,24 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCAMERAINTERFACE_H
-#define TUPCAMERAINTERFACE_H
+#ifndef TUPCAMERADIALOG_H
+#define TUPCAMERADIALOG_H
 
-#include <QFrame>
-#include <QCloseEvent>
-#include <QComboBox>
-#include <QCamera>
-#include <QCameraViewfinder>
-#include <QCameraImageCapture>
+#include <QDialog>
 
-class TupCameraInterface : public QFrame
+class TupCameraDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupCameraInterface(QComboBox *devicesCombo, QCamera *camera = 0, const QSize cameraSize = QSize(), 
-                           QCameraImageCapture *imageCapture = 0, QWidget *parent = 0);
-        ~TupCameraInterface();
-
-    protected:
-        void closeEvent(QCloseEvent *event);
-
-    signals:
-        void projectSizeHasChanged(const QSize size);
-        void pictureHasBeenSelected(int id, const QString path);
+        TupCameraDialog(const QSize projectSize, QList<QSize> resolutions, QWidget *parent=0);
+        ~TupCameraDialog();
+        QSize cameraResolution() const;
+        bool changeProjectSize();
 
     private slots:
-        void takePicture();
-        void cameraError(QCamera::Error error);
-        void imageSavedFromCamera(int id, const QString path);
+        void setCameraResolution(int index);
+        void projectSizeHasChanged(bool flag);
 
     private:
         struct Private;

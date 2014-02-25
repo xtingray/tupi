@@ -366,18 +366,6 @@
         <translation>Esta es una falla general</translation>
     </message>
     <message>
-        <source>Initializing...</source>
-        <translation>Inicializando...</translation>
-    </message>
-    <message>
-        <source>Loading modules...</source>
-        <translation>Cargando módulos...</translation>
-    </message>
-    <message>
-        <source>Loaded!</source>
-        <translation>Cargado!</translation>
-    </message>
-    <message>
         <source>add</source>
         <translation>add</translation>
     </message>
@@ -753,10 +741,6 @@
         <translation>Enviar objeto al frente un nivel</translation>
     </message>
     <message>
-        <source>Tips</source>
-        <translation>Tips</translation>
-    </message>
-    <message>
         <source>Rotation mode</source>
         <translation>Modo de Rotación</translation>
     </message>
@@ -795,6 +779,26 @@
     <message>
         <source>Proportional scaling on selection</source>
         <translation>Escala proporcional de la selección</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Posición</translation>
+    </message>
+    <message>
+        <source>Show Tips</source>
+        <translation>Ver Ayuda</translation>
+    </message>
+    <message>
+        <source>A little help for the Selection tool</source>
+        <translation>Pequeñas ayudas de la herramienta de Selección</translation>
+    </message>
+    <message>
+        <source>Show Tools</source>
+        <translation>Ver Herramientas</translation>
+    </message>
+    <message>
+        <source>Options panel for the Selection tool</source>
+        <translation>Panel de opciones para la herramienta de Selección</translation>
     </message>
 </context>
 <context>
@@ -1037,12 +1041,9 @@
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
-</context>
-<context>
-    <name>TupAnimationArea</name>
     <message>
-        <source>Rendering...</source>
-        <translation>Renderizando...</translation>
+        <source>About Tupi</source>
+        <translation>Acerca de Tupí</translation>
     </message>
 </context>
 <context>
@@ -1066,6 +1067,57 @@
     <message>
         <source>Forward</source>
         <translation>Adelantar</translation>
+    </message>
+</context>
+<context>
+    <name>TupCameraInterface</name>
+    <message>
+        <source>Tupi Camera Manager</source>
+        <translation>Gestor de Cámara de Tupí</translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation>Modo</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Cámara</translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation>Historial</translation>
+    </message>
+    <message>
+        <source>Devices</source>
+        <translation>Dispositivos</translation>
+    </message>
+    <message>
+        <source>Resolutions</source>
+        <translation>Resolutiones</translation>
+    </message>
+    <message>
+        <source>Take Picture</source>
+        <translation>Capturar Imagen</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>Pregunta</translation>
+    </message>
+    <message>
+        <source>The camera resolution is different than your project size.</source>
+        <translation>La resolución de su cámara es diferente a la dimensión de su proyecto.</translation>
+    </message>
+    <message>
+        <source>Do you want to adjust your project size?</source>
+        <translation>Desea ajustar la dimensión de su proyecto?</translation>
+    </message>
+    <message>
+        <source>Adjust it</source>
+        <translation>Ajustar</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1097,6 +1149,21 @@
     <message>
         <source>Post</source>
         <translation>Publicar</translation>
+    </message>
+</context>
+<context>
+    <name>TupCameraWidget</name>
+    <message>
+        <source>Scene Preview</source>
+        <translation>Previsualizador de Escenas</translation>
+    </message>
+    <message>
+        <source>Scale</source>
+        <translation>Escala</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation>Dimensión</translation>
     </message>
 </context>
 <context>
@@ -1644,6 +1711,54 @@
     <message>
         <source>Can&apos;t export frame as image</source>
         <translation>No se puede exportar el marco como imagen</translation>
+    </message>
+    <message>
+        <source>Export Current Frame As Image</source>
+        <translation>Exportar marco actual como Imagen</translation>
+    </message>
+    <message>
+        <source>Export Current Frame To Gallery</source>
+        <translation>Exportar marco actual a galería</translation>
+    </message>
+    <message>
+        <source>Storyboard Settings</source>
+        <translation>Propiedades de Storyboard</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Cámara</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+C</source>
+        <translation>Ctrl+Shift+C</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>Pregunta</translation>
+    </message>
+    <message>
+        <source>The camera resolution is different than your project size.</source>
+        <translation>La resolución de la cámara es diferente a la dimensión de su proyecto</translation>
+    </message>
+    <message>
+        <source>Do you want to adjust your project size?</source>
+        <translation>Desea ajustar la dimensión de su proyecto?</translation>
+    </message>
+    <message>
+        <source>Adjust it</source>
+        <translation>Ajustarlo</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>No cameras detected</source>
+        <translation>No se detectaron camaras conectadas</translation>
+    </message>
+    <message>
+        <source>Frame %1</source>
+        <translation>Marco %1</translation>
     </message>
 </context>
 <context>
@@ -2324,22 +2439,6 @@
     <message>
         <source>by</source>
         <translation>por</translation>
-    </message>
-    <message>
-        <source>Setting up the project manager</source>
-        <translation>Configurando el administrador de proyectos</translation>
-    </message>
-    <message>
-        <source>Loading action manager...</source>
-        <translation>Cargando el administrador de acciones...</translation>
-    </message>
-    <message>
-        <source>Creating menu bar...</source>
-        <translation>Creando la barra de menús...</translation>
-    </message>
-    <message>
-        <source>Creating GUI...</source>
-        <translation>Creando GUI...</translation>
     </message>
     <message>
         <source>Information</source>
@@ -3519,6 +3618,13 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
     </message>
 </context>
 <context>
+    <name>TupScreen</name>
+    <message>
+        <source>Rendering...</source>
+        <translation>Renderizando...</translation>
+    </message>
+</context>
+<context>
     <name>TupSplash</name>
     <message>
         <source>Version </source>
@@ -3808,17 +3914,6 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
     <message>
         <source>News!</source>
         <translation>Noticias!</translation>
-    </message>
-</context>
-<context>
-    <name>TupViewCamera</name>
-    <message>
-        <source>Render Camera Preview</source>
-        <translation>Vista previa de cámara</translation>
-    </message>
-    <message>
-        <source>Scale</source>
-        <translation>Escala</translation>
     </message>
 </context>
 <context>

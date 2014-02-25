@@ -87,6 +87,7 @@ class TupDocumentView : public QMainWindow
         void setRotationAngle(int angle);
         QSize workSpaceSize() const;
         void updateUsersOnLine(const QString &login, int state);
+        void resizeProjectDimension(const QSize dimension);
 
     private slots:
         void setNextOnionSkin(int n);
@@ -108,7 +109,6 @@ class TupDocumentView : public QMainWindow
         void renderDynamicBackground();
         void fullScreenRightClick();
         void cameraInterface();
-        void resizeProjectDimension(const QSize dimension);
         void insertPictureInFrame(int id, const QString path);
         void advanceOneFrame();
 

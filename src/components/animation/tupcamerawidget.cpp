@@ -45,7 +45,6 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QStackedWidget>
 
 struct TupCameraWidget::Private
 {
@@ -58,7 +57,6 @@ struct TupCameraWidget::Private
     QSize playerDimension;
     QSize screenDimension;
     bool isScaled;
-    QStackedWidget *screenWidget;
 };
 
 TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
@@ -120,11 +118,8 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
     layout->addLayout(labelLayout, Qt::AlignCenter);
 
-    k->screenWidget = new QStackedWidget;
     k->screen = new TupScreen(k->project, k->playerDimension, k->isScaled);
-    k->screenWidget->addWidget(k->screen);
-
-    layout->addWidget(k->screenWidget, 0, Qt::AlignCenter);
+    layout->addWidget(k->screen, 0, Qt::AlignCenter);
 
     TupCameraBar *cameraBar = new TupCameraBar;
     layout->addWidget(cameraBar, 0, Qt::AlignCenter);

@@ -1,4 +1,5 @@
 /***************************************************************************
+
  *   Project TUPI: Magia 2D                                                *
  *   Project Contact: info@maefloresta.com                                 *
  *   Project Website: http://www.maefloresta.com                           *
@@ -228,7 +229,7 @@ void Settings::openTipPanel() {
     if (k->tools->isVisible()) {
         k->tools->hide();
         k->tips->setText(tr("Show Tools"));
-        k->tips->setToolTip(tr("Tools panel for the Selection tool"));
+        k->tips->setToolTip(tr("Options panel for the Selection tool"));
         k->help->show();
     } else {
         k->tools->show();

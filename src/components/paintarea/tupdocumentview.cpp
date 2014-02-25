@@ -61,6 +61,7 @@
 #include "tupstoryboarddialog.h"
 #include "tupruler.h"
 #include "tupcamerainterface.h"
+#include "tupcameradialog.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -429,7 +430,7 @@ void TupDocumentView::setupDrawActions()
     storyboard->setStatusTip("Storyboard settings");
 
     TAction *camera = new TAction(QPixmap(THEME_DIR + "icons/camera.png"),
-                                     tr("Camera Interface"), QKeySequence(tr("Ctrl+Shift+C")),
+                                     tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
                                      this, SLOT(cameraInterface()), k->actionManager, "camera");
     camera->setStatusTip("Camera Interface");
 }
@@ -1596,34 +1597,28 @@ void TupDocumentView::cameraInterface()
              }
         }
 
-        if (k->project->dimension() != cameraSize) {
-            QDesktopWidget desktop;
-            QMessageBox msgBox;
-            msgBox.setWindowTitle(tr("Question"));
-            msgBox.setIcon(QMessageBox::Question);
-            msgBox.setText(tr("The camera resolution is different than your project size."));
-            msgBox.setInformativeText(tr("Do you want to adjust your project size?"));
+        QDesktopWidget desktop;
+        QSize projectSize = k->project->dimension();
 
-            msgBox.addButton(QString(tr("Adjust it")), QMessageBox::AcceptRole);
-            msgBox.addButton(QString(tr("Cancel")), QMessageBox::DestructiveRole);
+        TupCameraDialog *cameraDialog = new TupCameraDialog(k->project->dimension(), resolutions);
+        cameraDialog->show();
+        cameraDialog->move((int) (desktop.screenGeometry().width() - cameraDialog->width())/2 ,
+                           (int) (desktop.screenGeometry().height() - cameraDialog->height())/2);
 
-            msgBox.show();
-            msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 ,
-                        (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+        if (cameraDialog->exec() == QDialog::Accepted) {
+            QSize cameraSize = cameraDialog->cameraResolution();
+            if (cameraDialog->changeProjectSize()) {
+                if (cameraSize != projectSize) 
+                    resizeProjectDimension(cameraSize);
+            } 
 
-            int ret = msgBox.exec();
-
-            switch (ret) {
-                    case QMessageBox::AcceptRole:
-                         resizeProjectDimension(cameraSize);
-                    break;
-            }
+            TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, camera, cameraSize, imageCapture);
+            connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
+            dialog->show();
+            dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                         (int) (desktop.screenGeometry().height() - dialog->height())/2);
         }
 
-        TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, resolutions, camera, cameraSize, imageCapture, k->project->dimension(), this);
-        connect(dialog, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize)));
-        connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
-        dialog->show();
     } else {
         // No devices connected!
         TOsd::self()->display(tr("Error"), tr("No cameras detected"), TOsd::Error);
@@ -1669,26 +1664,25 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
     QString symName = fileInfo.fileName().toLower();
 
     if (f.open(QIODevice::ReadOnly)) {
+        if (id > 1) {
+            int frameIndex = k->paintArea->currentFrameIndex() + 1;
+
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(0, 0, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
+            emit requestTriggered(&request);
+
+            request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
+                                                            TupProjectRequest::Select);
+            emit requestTriggered(&request);
+        }
+
         QByteArray data = f.readAll();
         f.close();
-
         QString tag = symName;
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
                                                                             TupLibraryObject::Image, k->project->spaceContext(), data, QString(),
                                                                             k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
                                                                             k->paintArea->currentFrameIndex());
         emit requestTriggered(&request);
-
-        // QTimer::singleShot(10, this, SLOT(advanceOneFrame()));
-    int frameIndex = k->paintArea->currentFrameIndex() + 1;
-
-    request = TupRequestBuilder::createFrameRequest(0, 0, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex));
-    emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
-                                                        TupProjectRequest::Select);
-    emit requestTriggered(&request);
-
     }
 }
 
