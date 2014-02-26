@@ -149,6 +149,7 @@ struct TupDocumentView::Private
     TupPaintAreaStatus *status;
     QComboBox *spaceMode;
     bool dynamicFlag;
+    QSize cameraSize;
 
     TupProject *project;
     QTimer *timer;
@@ -1600,19 +1601,19 @@ void TupDocumentView::cameraInterface()
         QDesktopWidget desktop;
         QSize projectSize = k->project->dimension();
 
-        TupCameraDialog *cameraDialog = new TupCameraDialog(k->project->dimension(), resolutions);
+        TupCameraDialog *cameraDialog = new TupCameraDialog(projectSize, resolutions);
         cameraDialog->show();
         cameraDialog->move((int) (desktop.screenGeometry().width() - cameraDialog->width())/2 ,
                            (int) (desktop.screenGeometry().height() - cameraDialog->height())/2);
 
         if (cameraDialog->exec() == QDialog::Accepted) {
-            QSize cameraSize = cameraDialog->cameraResolution();
+            k->cameraSize = cameraDialog->cameraResolution();
             if (cameraDialog->changeProjectSize()) {
-                if (cameraSize != projectSize) 
-                    resizeProjectDimension(cameraSize);
+                if (k->cameraSize != projectSize) 
+                    resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, camera, cameraSize, imageCapture);
+            TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, camera, k->cameraSize, imageCapture);
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
             dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
@@ -1658,6 +1659,13 @@ void TupDocumentView::resizeProjectDimension(const QSize dimension)
 void TupDocumentView::insertPictureInFrame(int id, const QString path)
 {
     Q_UNUSED(id);
+   
+    // SQA: This is a hack - remember to check the QImageEncoderSettings issue 
+    QImage pixmap(path); 
+    if (pixmap.width() != k->cameraSize.width()) {
+        QImage resized = pixmap.scaledToWidth(k->cameraSize.width(), Qt::SmoothTransformation);
+        resized.save(path, "JPG", 100);
+    }
 
     QFile f(path);
     QFileInfo fileInfo(f);
@@ -1667,7 +1675,8 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
         if (id > 1) {
             int frameIndex = k->paintArea->currentFrameIndex() + 1;
 
-            TupProjectRequest request = TupRequestBuilder::createFrameRequest(0, 0, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
+                                                                              frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
             emit requestTriggered(&request);
 
             request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
@@ -1685,20 +1694,3 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
         emit requestTriggered(&request);
     }
 }
-
-void TupDocumentView::advanceOneFrame()
-{
-    tError() << "TupDocumentView::advanceOneFrame() - frame index: " << k->paintArea->currentFrameIndex();
-
-    // int frameIndex = 2;
-    // if (k->paintArea->currentFrameIndex() > 0)
-    int frameIndex = k->paintArea->currentFrameIndex() + 1;
-
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(0, 0, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex));
-    emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
-                                                        TupProjectRequest::Select);
-    emit requestTriggered(&request);   
-}
-

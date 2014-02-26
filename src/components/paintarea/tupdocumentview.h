@@ -110,7 +110,6 @@ class TupDocumentView : public QMainWindow
         void fullScreenRightClick();
         void cameraInterface();
         void insertPictureInFrame(int id, const QString path);
-        void advanceOneFrame();
 
     private:
         struct Private;

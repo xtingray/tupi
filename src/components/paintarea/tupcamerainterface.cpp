@@ -113,10 +113,13 @@ TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera,
 
     k->imageCapture = imageCapture;
 
+    /*
     QImageEncoderSettings imageSettings;
     imageSettings.setCodec("image/jpeg");
     imageSettings.setResolution(k->cameraSize.width(), k->cameraSize.height());
     k->imageCapture->setEncodingSettings(imageSettings);
+    */
+
     connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
 
     QWidget *cameraWidget = new QWidget;
