@@ -49,7 +49,7 @@ class TupCameraInterface : public QFrame
 
     public:
         TupCameraInterface(QComboBox *devicesCombo, QCamera *camera = 0, const QSize cameraSize = QSize(), 
-                           QCameraImageCapture *imageCapture = 0, QWidget *parent = 0);
+                           QCameraImageCapture *imageCapture = 0, const QString &path = QString(), QWidget *parent = 0);
         ~TupCameraInterface();
 
     protected:

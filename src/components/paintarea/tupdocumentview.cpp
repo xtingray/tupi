@@ -62,6 +62,7 @@
 #include "tupruler.h"
 #include "tupcamerainterface.h"
 #include "tupcameradialog.h"
+#include "talgorithm.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -1576,6 +1577,16 @@ void TupDocumentView::cameraInterface()
 {
     int camerasTotal = QCamera::availableDevices().count();
     if (camerasTotal > 0) {
+        QString path = CACHE_DIR + TAlgorithm::randomString(8);
+        QDir dir;
+        if (!dir.mkdir(path)) {
+            #ifdef K_DEBUG
+                   tError() << "TupCameraInterface() - Fatal Error: Can't create pictures directory -> " << path;
+            #endif
+            TOsd::self()->display(tr("Error"), tr("Can't create pictures directory"), TOsd::Error);
+        }
+        path = path + QDir::separator() + "pic";
+
         QByteArray cameraDevice = QCamera::availableDevices()[0];
 
         QComboBox *devicesCombo = new QComboBox;
@@ -1613,7 +1624,7 @@ void TupDocumentView::cameraInterface()
                     resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, camera, k->cameraSize, imageCapture);
+            TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, camera, k->cameraSize, imageCapture, path);
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
             dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
@@ -1662,8 +1673,11 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
    
     // SQA: This is a hack - remember to check the QImageEncoderSettings issue 
     QImage pixmap(path); 
-    if (pixmap.width() != k->cameraSize.width()) {
-        QImage resized = pixmap.scaledToWidth(k->cameraSize.width(), Qt::SmoothTransformation);
+    if (pixmap.size() != k->cameraSize) {
+        int width = (k->cameraSize.width() * pixmap.height()) / k->cameraSize.height();
+        int posX = (pixmap.width() - width)/2;
+        QImage mask = pixmap.copy(posX, 0, width, pixmap.height());
+        QImage resized = mask.scaledToWidth(k->cameraSize.width(), Qt::SmoothTransformation);
         resized.save(path, "JPG", 100);
     }
 

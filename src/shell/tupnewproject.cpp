@@ -165,7 +165,8 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     QCheckBox *activeNetOptions = new QCheckBox(tr("Tupitube project"));
     connect(activeNetOptions, SIGNAL(toggled(bool)), this, SLOT(enableNetOptions(bool)));
 
-    layout->addWidget(activeNetOptions, 5, 0, 1, 2, Qt::AlignLeft);
+    // SQA: Code temporarily disabled
+    // layout->addWidget(activeNetOptions, 5, 0, 1, 2, Qt::AlignLeft);
 
     addTab(infoContainer, tr("Project info"));
 
@@ -175,7 +176,8 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
 
     setupNetOptions();
 
-    addTab(netContainer, tr("Network"));
+    // SQA: Code temporarily disabled
+    // addTab(netContainer, tr("Network"));
     enableNetOptions(false);
 }
 

@@ -37,7 +37,6 @@
 #include "tupapplication.h"
 #include "tapplicationproperties.h"
 #include "toptionaldialog.h"
-#include "talgorithm.h"
 #include "tseparator.h"
 #include "tdebug.h"
 
@@ -59,8 +58,8 @@ struct TupCameraInterface::Private
     int counter;
 };
 
-TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera, const QSize cameraSize, QCameraImageCapture *imageCapture, 
-                                       QWidget *parent) : QFrame(parent), k(new Private)
+TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera, const QSize cameraSize, 
+                                       QCameraImageCapture *imageCapture, const QString &path, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -71,6 +70,8 @@ TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera,
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
 
     k->cameraSize = cameraSize;
+    k->dir = path;
+
     QDesktopWidget desktop;
     int desktopWidth = desktop.screenGeometry().width();
     int desktopHeight = desktop.screenGeometry().height();
@@ -84,30 +85,15 @@ TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera,
             height = desktopHeight/2;
             width = height * k->cameraSize.width() / k->cameraSize.height();
         }
-
-        resize(width, height);
-    } else {
-        resize(k->cameraSize + QSize(100, 100));
+        k->cameraSize = QSize(width, height);
     }
 
-    tError() << "TupCameraInterface() - camera w: " << k->cameraSize.width();
-    tError() << "TupCameraInterface() - camera h: " << k->cameraSize.height();
-
     k->counter = 1;
-
-    k->dir = CACHE_DIR + TAlgorithm::randomString(8); 
-    tError() << "TupCameraInterface() - k->dir: " << k->dir;
-
-    QDir dir;
-    if (!dir.mkdir(k->dir))
-        tError() << "TupCameraInterface() - Fatal Error: Can't create dir!";
-
-    k->dir = k->dir + QDir::separator() + "pic";
-
     k->camera = camera;
     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
 
     QCameraViewfinder *viewFinder = new QCameraViewfinder;
+    viewFinder->setFixedSize(k->cameraSize);
     k->camera->setViewfinder(viewFinder);
     viewFinder->show();
 
@@ -170,7 +156,13 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
 
 void TupCameraInterface::takePicture()
 {
-    QString imagePath = k->dir + QString::number(k->counter) + ".jpg";
+    QString prev = "";
+    if (k->counter < 10)
+        prev = "00";  
+    if (k->counter > 10 && k->counter < 100)
+        prev = "0";
+ 
+    QString imagePath = k->dir + prev + QString::number(k->counter) + ".jpg";
 
     tError() << "TupCameraInterface::takePicture() - imagePath: " << imagePath;
 
@@ -189,8 +181,9 @@ void TupCameraInterface::takePicture()
 void TupCameraInterface::cameraError(QCamera::Error error)
 {
     Q_UNUSED(error);
-
-    tError() << "TupCameraInterface::cameraError(QCamera::Error) - Wow! :S";
+    #ifdef K_DEBUG
+           tError() << "TupCameraInterface::cameraError() - Fatal Error: " << k->camera->errorString();
+    #endif
 }
 
 void TupCameraInterface::imageSavedFromCamera(int id, const QString path)
