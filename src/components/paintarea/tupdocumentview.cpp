@@ -1585,10 +1585,8 @@ void TupDocumentView::cameraInterface()
             #endif
             TOsd::self()->display(tr("Error"), tr("Can't create pictures directory"), TOsd::Error);
         }
-        path = path + QDir::separator() + "pic";
 
         QByteArray cameraDevice = QCamera::availableDevices()[0];
-
         QComboBox *devicesCombo = new QComboBox;
         foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
                 QCamera *device = new QCamera(deviceName);
@@ -1600,12 +1598,12 @@ void TupDocumentView::cameraInterface()
 
         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
         QList<QSize> resolutions = imageCapture->supportedResolutions();
-        QSize cameraSize = QSize(0, 0);
+        QSize maxCameraSize = QSize(0, 0);
         for (int i=0; i < resolutions.size(); i++) {
              QSize resolution = resolutions.at(i);
-             if (resolution.width() > cameraSize.width()) {
-                 cameraSize.setWidth(resolution.width());
-                 cameraSize.setHeight(resolution.height());
+             if (resolution.width() > maxCameraSize.width()) {
+                 maxCameraSize.setWidth(resolution.width());
+                 maxCameraSize.setHeight(resolution.height());
              }
         }
 
@@ -1619,12 +1617,14 @@ void TupDocumentView::cameraInterface()
 
         if (cameraDialog->exec() == QDialog::Accepted) {
             k->cameraSize = cameraDialog->cameraResolution();
+            QString title = QString::number(k->cameraSize.width()) + "x" + QString::number(k->cameraSize.height());
+
             if (cameraDialog->changeProjectSize()) {
                 if (k->cameraSize != projectSize) 
                     resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(devicesCombo, camera, k->cameraSize, imageCapture, path);
+            TupCameraInterface *dialog = new TupCameraInterface(title, devicesCombo, camera, maxCameraSize, imageCapture, path);
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
             dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
@@ -1674,11 +1674,21 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
     // SQA: This is a hack - remember to check the QImageEncoderSettings issue 
     QImage pixmap(path); 
     if (pixmap.size() != k->cameraSize) {
+        tError() << "TupDocumentView::insertPictureInFrame() - DEVEZE";
+        tError() << "Pixmap width: " << pixmap.width(); 
+        tError() << "Pixmap height: " << pixmap.height();
+        tError() << "Camera width: " << k->cameraSize.width();
+        tError() << "Camera height: " << k->cameraSize.height();
+        tError() << "Project width: " << k->project->dimension().width();
+        tError() << "Proyect height: " << k->project->dimension().height();
+
         int width = (k->cameraSize.width() * pixmap.height()) / k->cameraSize.height();
         int posX = (pixmap.width() - width)/2;
         QImage mask = pixmap.copy(posX, 0, width, pixmap.height());
         QImage resized = mask.scaledToWidth(k->cameraSize.width(), Qt::SmoothTransformation);
         resized.save(path, "JPG", 100);
+    } else {
+        tError() << "TupDocumentView::insertPictureInFrame() - No pic resizing was done!";
     }
 
     QFile f(path);
@@ -1696,10 +1706,11 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
             request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
                                                             TupProjectRequest::Select);
             emit requestTriggered(&request);
-        }
+        } 
 
         QByteArray data = f.readAll();
         f.close();
+        // SQA: You must verify that the object name doesn't exist in the library already
         QString tag = symName;
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
                                                                             TupLibraryObject::Image, k->project->spaceContext(), data, QString(),

@@ -899,9 +899,8 @@ bool TupProject::deleteDataDir()
         }
 
         if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg")) {
-
             #ifdef K_DEBUG
-                   tWarning("project") << "TupProject::deleteDataDir() - Removing directory -> " << dir.absolutePath(); 
+                   tWarning() << "TupProject::deleteDataDir() - Removing directory -> " << dir.absolutePath(); 
             #endif
 
             foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg") {
@@ -924,7 +923,7 @@ bool TupProject::deleteDataDir()
 
         if (! dir.rmdir(dir.absolutePath())) {
             #ifdef K_DEBUG
-                   tError("project") << "Cannot remove project data directory!";
+                   tError() << "TupProject::deleteDataDir() - Fatal Error: Can't remove project data directory!";
             #endif
         }
 

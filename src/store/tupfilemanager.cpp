@@ -212,11 +212,9 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
         QStringList scenes = projectDir.entryList(QStringList() << "*.tps", QDir::Readable | QDir::Files);
 
         if (scenes.count() > 0) {
-
             int index = 0;
             foreach (QString scenePath, scenes) {
                      scenePath = projectDir.path() + QDir::separator() + scenePath;
-
                      QFile file(scenePath);
 
                      if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {

@@ -58,18 +58,16 @@ struct TupCameraInterface::Private
     int counter;
 };
 
-TupCameraInterface::TupCameraInterface(QComboBox *devicesCombo, QCamera *camera, const QSize cameraSize, 
+TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesCombo, QCamera *camera, const QSize maxCameraSize, 
                                        QCameraImageCapture *imageCapture, const QString &path, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
     #endif
 
-    QString res = QString::number(cameraSize.width()) + "x" + QString::number(cameraSize.height());
-    setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution: ") + res);
+    setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution: ") + title);
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
-
-    k->cameraSize = cameraSize;
+    k->cameraSize = maxCameraSize;
     k->dir = path;
 
     QDesktopWidget desktop;
@@ -146,7 +144,17 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
 
-    tError() << "TupCameraInterface::closeEvent() - Stopping camera!";
+    QDir dir(k->dir);
+    foreach (QString file, dir.entryList(QStringList() << "*.jpg")) {
+             QString absolute = dir.absolutePath() + QDir::separator() + file;
+             QFile::remove(absolute);
+    }
+
+    if (! dir.rmdir(dir.absolutePath())) {
+        #ifdef K_DEBUG
+               tError() << "TupCameraInterface::closeEvent() - Fatal Error: Can't remove pictures directory -> " << dir.absolutePath();
+        #endif
+    }
 
     if (k->camera)
         k->camera->stop();
@@ -156,13 +164,13 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
 
 void TupCameraInterface::takePicture()
 {
-    QString prev = "";
+    QString prev = "pic";
     if (k->counter < 10)
-        prev = "00";  
+        prev += "00";  
     if (k->counter > 10 && k->counter < 100)
-        prev = "0";
+        prev += "0";
  
-    QString imagePath = k->dir + prev + QString::number(k->counter) + ".jpg";
+    QString imagePath = k->dir + QDir::separator() + prev + QString::number(k->counter) + ".jpg";
 
     tError() << "TupCameraInterface::takePicture() - imagePath: " << imagePath;
 

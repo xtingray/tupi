@@ -73,7 +73,6 @@ class TupLibraryWidget : public TupModuleWidgetBase
         virtual void frameResponse(TupFrameResponse *response);
 
     private slots:
-        void addFolder();
         void previewItem(QTreeWidgetItem *item);
         void insertObjectInWorkspace();
         void removeCurrentGraphic();
@@ -93,6 +92,7 @@ class TupLibraryWidget : public TupModuleWidgetBase
         void updateItemFromSaveAction();
 
     public slots:
+        void addFolder(const QString &folderName = QString());
         void importBitmap();
         void importSvg();
         void importBitmapArray();

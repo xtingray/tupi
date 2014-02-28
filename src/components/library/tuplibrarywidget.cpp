@@ -250,9 +250,9 @@ void TupLibraryWidget::setNetworking(bool isNetworked)
     k->isNetworked = isNetworked;
 }
 
-void TupLibraryWidget::addFolder()
+void TupLibraryWidget::addFolder(const QString &folderName)
 {
-    k->libraryTree->createFolder();
+    k->libraryTree->createFolder(folderName);
     k->mkdir = true;
 }
 
