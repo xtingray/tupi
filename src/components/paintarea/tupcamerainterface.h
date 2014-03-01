@@ -63,6 +63,7 @@ class TupCameraInterface : public QFrame
         void takePicture();
         void cameraError(QCamera::Error error);
         void imageSavedFromCamera(int id, const QString path);
+        void changeCameraDevice(const QString &cameraDesc);
 
     private:
         struct Private;

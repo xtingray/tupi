@@ -53,6 +53,7 @@ struct TupCameraInterface::Private
 {
     QCamera *camera;
     QCameraImageCapture *imageCapture;
+    QCameraViewfinder *viewFinder;
     QSize cameraSize;
     QString dir;
     int counter;
@@ -90,10 +91,10 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
     k->camera = camera;
     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
 
-    QCameraViewfinder *viewFinder = new QCameraViewfinder;
-    viewFinder->setFixedSize(k->cameraSize);
-    k->camera->setViewfinder(viewFinder);
-    viewFinder->show();
+    k->viewFinder = new QCameraViewfinder;
+    k->viewFinder->setFixedSize(k->cameraSize);
+    k->camera->setViewfinder(k->viewFinder);
+    k->viewFinder->show();
 
     k->imageCapture = imageCapture;
 
@@ -108,7 +109,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
 
     QWidget *cameraWidget = new QWidget;
     QBoxLayout *cameraLayout = new QBoxLayout(QBoxLayout::TopToBottom, cameraWidget);
-    cameraLayout->addWidget(viewFinder);
+    cameraLayout->addWidget(k->viewFinder);
 
     QWidget *menuWidget = new QWidget;
     QBoxLayout *menuLayout = new QBoxLayout(QBoxLayout::TopToBottom, menuWidget);
@@ -124,6 +125,8 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
     menuLayout->addWidget(new TSeparator(Qt::Horizontal));
     menuLayout->addWidget(clickButton);
     menuLayout->addStretch(2);
+
+    connect(devicesCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(changeCameraDevice(const QString &)));
 
     QBoxLayout *dialogLayout = new QBoxLayout(QBoxLayout::LeftToRight, this); 
     dialogLayout->addWidget(cameraWidget);
@@ -182,8 +185,6 @@ void TupCameraInterface::takePicture()
 
     //on shutter button released
     k->camera->unlock();
-
-    k->counter++;
 }
 
 void TupCameraInterface::cameraError(QCamera::Error error)
@@ -196,10 +197,41 @@ void TupCameraInterface::cameraError(QCamera::Error error)
 
 void TupCameraInterface::imageSavedFromCamera(int id, const QString path)
 {
-    tError() << "TupCameraInterface::imageSavedFromCamera() - ID: " << id;  
+    Q_UNUSED(id);
+
+    tError() << "TupCameraInterface::imageSavedFromCamera() - ID: " << k->counter;  
     tError() << "TupCameraInterface::imageSavedFromCamera() - Image saved from Camera at: " << path;
     if (path.isEmpty())
         return;
 
-    emit pictureHasBeenSelected(id, path);
+    emit pictureHasBeenSelected(k->counter, path);
+
+    k->counter++;
+}
+
+void TupCameraInterface::changeCameraDevice(const QString &cameraDesc)
+{
+    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
+            QCamera *device = new QCamera(deviceName);
+            QString description = device->deviceDescription(deviceName);
+            if (description.compare(cameraDesc) == 0) { 
+                if (k->camera) {
+                    k->camera->stop();
+                    disconnect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
+                    k->camera = device;
+                    connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
+
+                    disconnect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
+                    k->imageCapture = new QCameraImageCapture(k->camera);
+                    connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
+
+                    k->camera->setCaptureMode(QCamera::CaptureStillImage);
+                    k->camera->start();
+                    k->camera->setViewfinder(k->viewFinder);
+                    k->viewFinder->show();
+
+                    break;
+                }
+            }
+    }
 }

@@ -64,6 +64,9 @@ class T_GUI_EXPORT TXYSpinBox : public QGroupBox
         int y();
         void setModifyTogether(bool enable);
 
+    signals:
+        void valuesHaveChanged();
+
     private slots:
         void updateXValue();
         void updateYValue();
@@ -76,13 +79,6 @@ class T_GUI_EXPORT TXYSpinBox : public QGroupBox
         QSpinBox *m_y;
         QPushButton *m_separator;
         bool m_modifyTogether;
-
-    /*
-    signals:
-        void valueXChanged(double);
-        void valueYChanged(double);
-        void valueXYChanged(double, double);
-    */
 };
 
 #endif

@@ -51,6 +51,8 @@ TXYSpinBox::TXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     m_x = new QSpinBox;
     m_x->setMinimumWidth(60);
     internal->addWidget(m_x, 0, 1);
+    connect(m_x, SIGNAL(valueChanged(int)), this, SIGNAL(valuesHaveChanged()));
+
     m_textX->setBuddy(m_x);
 
     m_textY = new QLabel("Y: ");
@@ -59,6 +61,7 @@ TXYSpinBox::TXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     m_y = new QSpinBox;
     m_y->setMinimumWidth(60);
     internal->addWidget(m_y, 1, 1);
+    connect(m_y, SIGNAL(valueChanged(int)), this, SIGNAL(valuesHaveChanged()));
 
     m_textY->setBuddy(m_y);
     layout->addLayout(internal);

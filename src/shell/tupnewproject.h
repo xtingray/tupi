@@ -54,6 +54,8 @@ class TupNewProject : public TabDialog
     public:
 
         enum Format { FREE = 0, 
+                      FORMAT_520P,
+                      FORMAT_640P,
                       FORMAT_480P,
                       FORMAT_576P,
                       FORMAT_720P,
@@ -76,6 +78,7 @@ class TupNewProject : public TabDialog
     private slots:
         void setBgColor();
         void setPresets(int index);
+        void updateFormatCombo();
 
     public slots:
         void enableNetOptions(bool isEnabled);

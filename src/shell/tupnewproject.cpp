@@ -62,6 +62,7 @@ struct TupNewProject::Private
     QPushButton *colorButton;
     QSpinBox *fps;
 
+    QComboBox *presets;
     TXYSpinBox *size;
     bool useNetwork;
 
@@ -110,16 +111,18 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     QBoxLayout *presetsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
     QLabel *presetsLabel = new QLabel(tr("Presets") + " ");
 
-    QComboBox *presets = new QComboBox();
-    presets->addItem(tr("Free format"));
-    presets->addItem(tr("480p (PAL DV/DVD) - 25"));
-    presets->addItem(tr("576p (PAL DV/DVD) - 25"));
-    presets->addItem(tr("720p (HD) - 25"));
-    presets->addItem(tr("1280p (Full HD) - 25"));
-    connect(presets, SIGNAL(currentIndexChanged(int)), this, SLOT(setPresets(int)));
+    k->presets = new QComboBox();
+    k->presets->addItem(tr("Free format"));
+    k->presets->addItem(tr("520x380 - 24"));
+    k->presets->addItem(tr("640x480 - 24"));
+    k->presets->addItem(tr("480p (PAL DV/DVD) - 25"));
+    k->presets->addItem(tr("576p (PAL DV/DVD) - 25"));
+    k->presets->addItem(tr("720p (HD) - 25"));
+    k->presets->addItem(tr("1280p (Full HD) - 25"));
+    connect(k->presets, SIGNAL(currentIndexChanged(int)), this, SLOT(setPresets(int)));
 
     presetsLayout->addWidget(presetsLabel);
-    presetsLayout->addWidget(presets);
+    presetsLayout->addWidget(k->presets);
     layout->addLayout(presetsLayout, 3, 0, 1, 2, Qt::AlignCenter);
 
     QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
@@ -153,6 +156,8 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     k->size->setMaximum(15000);
     k->size->setX(520);
     k->size->setY(380);
+
+    connect(k->size, SIGNAL(valuesHaveChanged()), this, SLOT(updateFormatCombo()));
 
     QWidget *panel = new QWidget;
     QVBoxLayout *sizeLayout = new QVBoxLayout(panel);
@@ -335,14 +340,22 @@ void TupNewProject::setBgColor()
 
 void TupNewProject::setPresets(int index)
 {
+    k->size->blockSignals(true);
+
     switch(index) {
            case FREE: 
+           case FORMAT_520P:
            {
                k->size->setX(520);
                k->size->setY(380);
                k->fps->setValue(24);
-               k->size->setEnabled(true);
-               k->fps->setEnabled(true);
+           }
+           break;
+           case FORMAT_640P:
+           {
+               k->size->setX(640);
+               k->size->setY(480);
+               k->fps->setValue(24);
            }
            break;
            case FORMAT_480P:
@@ -350,8 +363,6 @@ void TupNewProject::setPresets(int index)
                k->size->setX(720);
                k->size->setY(480);
                k->fps->setValue(25);
-               k->size->setEnabled(false);
-               k->fps->setEnabled(false);
            }
            break;
            case FORMAT_576P:
@@ -359,8 +370,6 @@ void TupNewProject::setPresets(int index)
                k->size->setX(720);
                k->size->setY(576);
                k->fps->setValue(25);
-               k->size->setEnabled(false);
-               k->fps->setEnabled(false);
            }
            break;
            case FORMAT_720P:
@@ -368,8 +377,6 @@ void TupNewProject::setPresets(int index)
                k->size->setX(1280);
                k->size->setY(720);
                k->fps->setValue(25);
-               k->size->setEnabled(false);
-               k->fps->setEnabled(false);
            }
            break;
            case FORMAT_1280P:
@@ -377,14 +384,21 @@ void TupNewProject::setPresets(int index)
                k->size->setX(1920);
                k->size->setY(1280);
                k->fps->setValue(25);
-               k->size->setEnabled(false);
-               k->fps->setEnabled(false);
            }
            break;
     }
+
+    k->size->blockSignals(false);
 }
 
 QString TupNewProject::login() const
 {
     return k->login->text();
+}
+
+void TupNewProject::updateFormatCombo()
+{
+    k->presets->blockSignals(true);
+    k->presets->setCurrentIndex(0);
+    k->presets->blockSignals(false);
 }

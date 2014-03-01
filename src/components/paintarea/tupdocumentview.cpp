@@ -1591,7 +1591,16 @@ void TupDocumentView::cameraInterface()
         foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
                 QCamera *device = new QCamera(deviceName);
                 QString description = device->deviceDescription(deviceName);
-                devicesCombo->addItem(description);
+                bool found = false;
+                for (int i=0; i<devicesCombo->count(); i++) {
+                     QString item = devicesCombo->itemText(i);
+                     if (item.compare(description) == 0) {
+                         found = true;
+                         break;
+                     }
+                }
+                if (!found)
+                    devicesCombo->addItem(description);
         }
 
         QCamera *camera = new QCamera(cameraDevice);
@@ -1683,8 +1692,14 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
         tError() << "Proyect height: " << k->project->dimension().height();
 
         int width = (k->cameraSize.width() * pixmap.height()) / k->cameraSize.height();
+        int height = pixmap.height();
+
+        if (width > pixmap.width()) {
+
+        }
+
         int posX = (pixmap.width() - width)/2;
-        QImage mask = pixmap.copy(posX, 0, width, pixmap.height());
+        QImage mask = pixmap.copy(posX, 0, width, height);
         QImage resized = mask.scaledToWidth(k->cameraSize.width(), Qt::SmoothTransformation);
         resized.save(path, "JPG", 100);
     } else {
