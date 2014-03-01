@@ -1691,20 +1691,20 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
         tError() << "Project width: " << k->project->dimension().width();
         tError() << "Proyect height: " << k->project->dimension().height();
 
-        int width = (k->cameraSize.width() * pixmap.height()) / k->cameraSize.height();
         int height = pixmap.height();
-
-        if (width > pixmap.width()) {
-
-        }
-
+        int width = (k->cameraSize.width() * height) / k->cameraSize.height();
         int posX = (pixmap.width() - width)/2;
-        QImage mask = pixmap.copy(posX, 0, width, height);
+        int posY = 0;
+        if (width > pixmap.width()) {
+            width = pixmap.width();
+            height = (k->cameraSize.height() * width) / k->cameraSize.width(); 
+            posX = 0;
+            posY = (pixmap.height() - height)/2;
+        }
+        QImage mask = pixmap.copy(posX, posY, width, height);
         QImage resized = mask.scaledToWidth(k->cameraSize.width(), Qt::SmoothTransformation);
         resized.save(path, "JPG", 100);
-    } else {
-        tError() << "TupDocumentView::insertPictureInFrame() - No pic resizing was done!";
-    }
+    } 
 
     QFile f(path);
     QFileInfo fileInfo(f);
