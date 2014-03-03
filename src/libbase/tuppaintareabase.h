@@ -63,10 +63,12 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
         void setBgColor(const QColor color);
         void setAntialiasing(bool use);
         void setUseOpenGL(bool opengl);
-        void setDrawGrid(bool draw);
+        void drawGrid(bool draw);
+        void drawActionSafeArea(bool draw);
         void setTool(TupToolPlugin *tool);
 
-        bool drawGrid() const;
+        bool gridFlag() const;
+        bool actionSafeAreaFlag() const;
 
         void scaleView(qreal scaleFactor);
         void setRotationAngle(int angle);

@@ -133,7 +133,7 @@ struct TupDocumentView::Private
     double opacityFactor;
     int viewAngle;
     int autoSaveTime;
-    TAction *fullScreenAction;
+    // TAction *fullScreenAction;
     bool fullScreenOn;
     bool isNetworked;
     QStringList onLineUsers;
@@ -290,9 +290,14 @@ void TupDocumentView::setOpenGL(bool useIt)
     k->paintArea->setUseOpenGL(useIt);
 }
 
-void TupDocumentView::setDrawGrid(bool draw)
+void TupDocumentView::drawGrid()
 {
-    k->paintArea->setDrawGrid(draw);
+    k->paintArea->drawGrid(!k->paintArea->gridFlag());
+}
+
+void TupDocumentView::drawActionSafeArea()
+{
+    k->paintArea->drawActionSafeArea(!k->paintArea->actionSafeAreaFlag());
 }
 
 QPainter::RenderHints TupDocumentView::renderHints() const
@@ -353,43 +358,20 @@ void TupDocumentView::showPos(const QPointF &point)
 
 void TupDocumentView::setupDrawActions()
 {
-    TAction *showGrid = new TAction(QPixmap(THEME_DIR + "icons/subgrid.png"), 
-                                    tr("Show grid"), QKeySequence(tr("#")),
-                                    this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
-    showGrid->setStatusTip(tr("Show a grid over the canvas"));
-    showGrid->setCheckable(true);
+    new TAction(QPixmap(THEME_DIR + "icons/copy.png"), tr("Copy"), QKeySequence(tr("Ctrl+C")), 
+                k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
 
-    k->fullScreenAction = new TAction(QPixmap(THEME_DIR + "icons/full_screen.png"),
-                                    tr("Full screen"), QKeySequence(tr("F11")),
-                                    this, SLOT(showFullScreen()), k->actionManager, "full_screen");
-    k->fullScreenAction->setStatusTip(tr("Open a full screen view of canvas"));
+    new TAction(QPixmap(THEME_DIR + "icons/paste.png"), tr("Paste"), QKeySequence(tr("Ctrl+V")),
+                k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
 
-    TAction *copy = new TAction(QPixmap(THEME_DIR + "icons/copy.png"), 
-                                tr("Copy"), QKeySequence(tr("Ctrl+C")),
-                                k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
-    copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+    new TAction(QPixmap(THEME_DIR + "icons/cut.png"), tr("Cut"), QKeySequence(tr("Ctrl+X")),
+                k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
 
-    TAction *paste = new TAction(QPixmap(THEME_DIR + "icons/paste.png"), 
-                                 tr("Paste"), QKeySequence(tr("Ctrl+V")),
-                                 k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
-    paste->setStatusTip(tr("Pastes the clipboard into the current document"));
-
-    TAction *cut = new TAction(QPixmap(THEME_DIR + "icons/cut.png"), 
-                               tr("Cut"), QKeySequence(tr("Ctrl+X")),
-                               k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
-    cut->setStatusTip(tr("Cuts the selected items"));
-
-    TAction *del = new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), 
-                               QKeySequence(Qt::Key_Delete), k->paintArea, SLOT(deleteItems()), 
-                               k->actionManager, "delete");
+    new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), QKeySequence(Qt::Key_Delete), 
+                k->paintArea, SLOT(deleteItems()), k->actionManager, "delete");
     
-    del->setStatusTip(tr("Deletes the selected object"));
-
-    TAction *group = new TAction(QPixmap(THEME_DIR + "icons/group.png"), tr("&Group"),   
-                                 QKeySequence(tr("Ctrl+G")), k->paintArea, SLOT(groupItems()), 
-                                 k->actionManager, "group");
-
-    group->setStatusTip(tr("Group the selected objects into a single one"));
+    TAction *group = new TAction(QPixmap(THEME_DIR + "icons/group.png"), tr("&Group"), QKeySequence(tr("Ctrl+G")), 
+                k->paintArea, SLOT(groupItems()), k->actionManager, "group");
     group->setDisabled(true);
 
     TAction *ungroup = new TAction(QPixmap(THEME_DIR + "icons/ungroup.png"), tr("&Ungroup"), 
@@ -397,44 +379,28 @@ void TupDocumentView::setupDrawActions()
                                     k->actionManager, "ungroup");
     ungroup->setDisabled(true);
 
-    ungroup->setStatusTip(tr("Ungroups the selected object"));
+    new TAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"), QKeySequence(tr("Ctrl+Shift+O")), 
+                this, SLOT(enableOnionFeature()), k->actionManager, "onion");
 
-    TAction *onion = new TAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"),
-                               QKeySequence(tr("Ctrl+Shift+O")), this, SLOT(enableOnionFeature()),
-                               k->actionManager, "onion");
+    new TAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"), QKeySequence(tr("Ctrl+Shift+S")), 
+                this, SLOT(setDefaultOnionFactor()), k->actionManager, "onionfactor");
 
-    onion->setStatusTip(tr("Enable/Disable onion skin"));
-
-    TAction *onionFactor = new TAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"),
-                               QKeySequence(tr("Ctrl+Shift+S")), this, SLOT(setDefaultOnionFactor()),
-                               k->actionManager, "onionfactor");
-
-    onionFactor->setStatusTip(tr("Set onion skin factor default value"));
-
-    TAction *exportImage = new TAction(QPixmap(THEME_DIR + "icons/export_frame.png"),
-                                     tr("Export Current Frame As Image"), QKeySequence(tr("@")),
-                                     this, SLOT(exportImage()), k->actionManager, "export_image");
-    exportImage->setStatusTip("Export the current frame as image");
+    new TAction(QPixmap(THEME_DIR + "icons/export_frame.png"), tr("Export Current Frame As Image"), QKeySequence(tr("@")),
+                this, SLOT(exportImage()), k->actionManager, "export_image");
 
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
     if (k->isNetworked && server.compare("tupitu.be") == 0) {
-        TAction *postImage = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"),
-                                         tr("Export Current Frame To Gallery"), QKeySequence(tr("@")),
-                                         this, SLOT(postImage()), k->actionManager, "post_image");
-        postImage->setStatusTip("Export the current frame to gallery");
+        new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export Current Frame To Gallery"), QKeySequence(tr("@")),
+                    this, SLOT(postImage()), k->actionManager, "post_image");
     }
 
-    TAction *storyboard = new TAction(QPixmap(THEME_DIR + "icons/storyboard.png"),
-                                     tr("Storyboard Settings"), QKeySequence(tr("Ctrl+Shift+S")),
-                                     this, SLOT(storyboardSettings()), k->actionManager, "storyboard");
-    storyboard->setStatusTip("Storyboard settings");
+    new TAction(QPixmap(THEME_DIR + "icons/storyboard.png"), tr("Storyboard Settings"), QKeySequence(tr("Ctrl+Shift+S")),
+                this, SLOT(storyboardSettings()), k->actionManager, "storyboard");
 
-    TAction *camera = new TAction(QPixmap(THEME_DIR + "icons/camera.png"),
-                                     tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
-                                     this, SLOT(cameraInterface()), k->actionManager, "camera");
-    camera->setStatusTip("Camera Interface");
+    new TAction(QPixmap(THEME_DIR + "icons/camera.png"), tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
+                this, SLOT(cameraInterface()), k->actionManager, "camera");
 }
 
 void TupDocumentView::createTools()
@@ -833,7 +799,8 @@ void TupDocumentView::selectTool()
 
         switch (tool->toolType()) {
                 case TupToolInterface::Brush: 
-                     k->fullScreenAction->setDisabled(false);
+                     // k->fullScreenAction->setDisabled(false);
+                     k->status->enableFullScreenFeature(true);
                      if (toolName.compare(tr("Pencil"))==0) {
                          minWidth = 130;
                      } else if (toolName.compare(tr("Text"))==0) {
@@ -850,7 +817,8 @@ void TupDocumentView::selectTool()
                          k->brushesMenu->menuAction()->setIcon(action->icon());
                      break;
                 case TupToolInterface::Tweener:
-                     k->fullScreenAction->setDisabled(true);
+                     // k->fullScreenAction->setDisabled(true);
+                     k->status->enableFullScreenFeature(false);
                      minWidth = 220;
                      k->motionMenu->setDefaultAction(action);
                      k->motionMenu->setActiveAction(action);
@@ -858,14 +826,16 @@ void TupDocumentView::selectTool()
                          k->motionMenu->menuAction()->setIcon(action->icon());
                      break;
                 case TupToolInterface::Fill:
-                     k->fullScreenAction->setDisabled(false);
+                     // k->fullScreenAction->setDisabled(false);
+                     k->status->enableFullScreenFeature(true);
                      k->fillMenu->setDefaultAction(action);
                      k->fillMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->fillMenu->menuAction()->setIcon(action->icon());
                      break;
                 case TupToolInterface::Selection:
-                     k->fullScreenAction->setDisabled(false);
+                     // k->fullScreenAction->setDisabled(false);
+                     k->status->enableFullScreenFeature(true);
                      k->selectionMenu->setDefaultAction(action);
                      k->selectionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -877,7 +847,8 @@ void TupDocumentView::selectTool()
                      } 
                      break;
                 case TupToolInterface::View:
-                     k->fullScreenAction->setDisabled(false);
+                     // k->fullScreenAction->setDisabled(false);
+                     k->status->enableFullScreenFeature(true);
                      k->viewToolMenu->setDefaultAction(action);
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -1011,8 +982,8 @@ void TupDocumentView::createToolBar()
     k->barGrid->addAction(k->actionManager->find("cut"));
     k->barGrid->addAction(k->actionManager->find("delete"));
 
-    k->barGrid->addAction(k->actionManager->find("show_grid"));
-    k->barGrid->addAction(k->actionManager->find("full_screen"));
+    // k->barGrid->addAction(k->actionManager->find("show_grid"));
+    // k->barGrid->addAction(k->actionManager->find("full_screen"));
 
     k->barGrid->addAction(k->actionManager->find("group"));
     k->barGrid->addAction(k->actionManager->find("ungroup"));
@@ -1146,10 +1117,12 @@ void TupDocumentView::setNextOnionSkin(int level)
     k->paintArea->setNextFramesOnionSkinCount(level);
 }
 
-void TupDocumentView::toggleShowGrid()
+/*
+void TupDocumentView::showGrid()
 {
-    k->paintArea->setDrawGrid(!k->paintArea->drawGrid());
+    k->paintArea->drawGrid(!k->paintArea->gridFlag());
 }
+*/
 
 void TupDocumentView::updateScaleVars(double factor)
 {

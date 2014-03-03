@@ -56,6 +56,7 @@ class TupPaintAreaStatus : public QStatusBar
         qreal currentZoomFactor();
         void updateRotationAngle(int angle);
         void setBgColor(QColor color);
+        void enableFullScreenFeature(bool flag);
 
     public slots:
         void applyZoom(const QString &text);

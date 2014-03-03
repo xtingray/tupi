@@ -1070,54 +1070,45 @@
     </message>
 </context>
 <context>
+    <name>TupCameraDialog</name>
+    <message>
+        <source>Camera Resolution</source>
+        <translation>Resolución de la Cámara</translation>
+    </message>
+    <message>
+        <source>Please, choose the resolution you want to work with:</source>
+        <translation>Por favor, escoja la resolución con la que desea trabajar:</translation>
+    </message>
+    <message>
+        <source>Resize my project to fit camera resolution</source>
+        <translation>Redimensionar mi proyecto para que se ajuste a la cámara</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Aceptar</translation>
+    </message>
+</context>
+<context>
     <name>TupCameraInterface</name>
     <message>
         <source>Tupi Camera Manager</source>
         <translation>Gestor de Cámara de Tupí</translation>
     </message>
     <message>
-        <source>Mode</source>
-        <translation>Modo</translation>
-    </message>
-    <message>
-        <source>Camera</source>
-        <translation>Cámara</translation>
-    </message>
-    <message>
-        <source>History</source>
-        <translation>Historial</translation>
-    </message>
-    <message>
         <source>Devices</source>
         <translation>Dispositivos</translation>
-    </message>
-    <message>
-        <source>Resolutions</source>
-        <translation>Resolutiones</translation>
     </message>
     <message>
         <source>Take Picture</source>
         <translation>Capturar Imagen</translation>
     </message>
     <message>
-        <source>Question</source>
-        <translation>Pregunta</translation>
-    </message>
-    <message>
-        <source>The camera resolution is different than your project size.</source>
-        <translation>La resolución de su cámara es diferente a la dimensión de su proyecto.</translation>
-    </message>
-    <message>
-        <source>Do you want to adjust your project size?</source>
-        <translation>Desea ajustar la dimensión de su proyecto?</translation>
-    </message>
-    <message>
-        <source>Adjust it</source>
-        <translation>Ajustar</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <source>Current resolution: </source>
+        <translation>Resolución actual:</translation>
     </message>
 </context>
 <context>
@@ -1409,40 +1400,12 @@
         <translation>Selección de Objetos</translation>
     </message>
     <message>
-        <source>Show grid</source>
-        <translation>Mostrar malla</translation>
-    </message>
-    <message>
-        <source>#</source>
-        <translation>#</translation>
-    </message>
-    <message>
-        <source>Show a grid over the canvas</source>
-        <translation>Dibuja una malla sobre el canvas</translation>
-    </message>
-    <message>
-        <source>Full screen</source>
-        <translation>Pantalla completa</translation>
-    </message>
-    <message>
-        <source>F11</source>
-        <translation>F11</translation>
-    </message>
-    <message>
-        <source>Open a full screen view of canvas</source>
-        <translation>Vista del canvas en pantalla completa</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
         <source>Ctrl+C</source>
         <translation>Ctrl+C</translation>
-    </message>
-    <message>
-        <source>Copies the selection and puts it onto the clipboard</source>
-        <translation>Copia la selección y la pone disponible para pegar</translation>
     </message>
     <message>
         <source>Paste</source>
@@ -1453,10 +1416,6 @@
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <source>Pastes the clipboard into the current document</source>
-        <translation>Pega el objeto copiado en el documento actual</translation>
-    </message>
-    <message>
         <source>Cut</source>
         <translation>Cortar</translation>
     </message>
@@ -1465,28 +1424,16 @@
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <source>Cuts the selected items</source>
-        <translation>Corta los objetos seleccionados</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <source>Deletes the selected object</source>
-        <translation>Elimina el objeto seleccionado</translation>
-    </message>
-    <message>
         <source>&amp;Group</source>
-        <translation>&amp;Grupo</translation>
+        <translation>&amp;Agrupar</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
         <translation>Ctrl+G</translation>
-    </message>
-    <message>
-        <source>Group the selected objects into a single one</source>
-        <translation>Agrupa los objetos seleccionados en uno solo</translation>
     </message>
     <message>
         <source>&amp;Ungroup</source>
@@ -1497,10 +1444,6 @@
         <translation>Ctrl+Shift+G</translation>
     </message>
     <message>
-        <source>Ungroups the selected object</source>
-        <translation>Desagrupa el objeto seleccionado</translation>
-    </message>
-    <message>
         <source>Onion Skin</source>
         <translation>Papel cebolla</translation>
     </message>
@@ -1509,20 +1452,12 @@
         <translation>Ctrl+Shift+O</translation>
     </message>
     <message>
-        <source>Enable/Disable onion skin</source>
-        <translation>Habilita/Deshabilita el papel cebolla</translation>
-    </message>
-    <message>
         <source>Onion Skin Factor</source>
         <translation>Factor de Trasparencia</translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+S</translation>
-    </message>
-    <message>
-        <source>Set onion skin factor default value</source>
-        <translation>Asigna valor por defecto de opacidad del papel cebolla</translation>
     </message>
     <message>
         <source>@</source>
@@ -1733,32 +1668,16 @@
         <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <source>Question</source>
-        <translation>Pregunta</translation>
-    </message>
-    <message>
-        <source>The camera resolution is different than your project size.</source>
-        <translation>La resolución de la cámara es diferente a la dimensión de su proyecto</translation>
-    </message>
-    <message>
-        <source>Do you want to adjust your project size?</source>
-        <translation>Desea ajustar la dimensión de su proyecto?</translation>
-    </message>
-    <message>
-        <source>Adjust it</source>
-        <translation>Ajustarlo</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
         <source>No cameras detected</source>
         <translation>No se detectaron camaras conectadas</translation>
     </message>
     <message>
         <source>Frame %1</source>
         <translation>Marco %1</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create pictures directory</source>
+        <translation>No se puede crear el directorio de imágenes</translation>
     </message>
 </context>
 <context>
@@ -2992,10 +2911,6 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
         <translation>Propiedades</translation>
     </message>
     <message>
-        <source>Network</source>
-        <translation>Red</translation>
-    </message>
-    <message>
         <source>Password</source>
         <translation>Clave</translation>
     </message>
@@ -3078,6 +2993,14 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
     <message>
         <source>Please, fill in the server name or IP</source>
         <translation>Por favor, ingrese el nombre o el IP del servidor</translation>
+    </message>
+    <message>
+        <source>520x380 - 24</source>
+        <translation>520x380 - 24</translation>
+    </message>
+    <message>
+        <source>640x480 - 24</source>
+        <translation>640x480 - 24</translation>
     </message>
 </context>
 <context>
@@ -3320,6 +3243,30 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
     <message>
         <source>Rotate Workspace</source>
         <translation>Rotar Área de Trabajo</translation>
+    </message>
+    <message>
+        <source>Action Safe Area</source>
+        <translation>Área de Seguridad</translation>
+    </message>
+    <message>
+        <source>+</source>
+        <translation>+</translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation>Mostrar malla</translation>
+    </message>
+    <message>
+        <source>#</source>
+        <translation>#</translation>
+    </message>
+    <message>
+        <source>Full screen</source>
+        <translation>Pantalla completa</translation>
+    </message>
+    <message>
+        <source>F11</source>
+        <translation>F11</translation>
     </message>
 </context>
 <context>

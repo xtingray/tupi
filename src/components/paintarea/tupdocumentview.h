@@ -71,7 +71,6 @@ class TupDocumentView : public QMainWindow
 
         void setAntialiasing(bool useIt);
         void setOpenGL(bool useIt);
-        void setDrawGrid(bool draw);
 
         QPainter::RenderHints renderHints() const;
         void setZoom(qreal factor);
@@ -92,7 +91,6 @@ class TupDocumentView : public QMainWindow
     private slots:
         void setNextOnionSkin(int n);
         void setPreviousOnionSkin(int n);
-        void toggleShowGrid();
         // void setZoomFactor(int porcent);
         void updateScaleVars(double factor);
         void updateRotationVars(int angle);
@@ -147,7 +145,8 @@ class TupDocumentView : public QMainWindow
         void redo();
         void selectTool();
         void applyFilter();
-
+        void drawGrid();
+        void drawActionSafeArea();
         bool handleProjectResponse(TupProjectResponse *event);
 
     signals:

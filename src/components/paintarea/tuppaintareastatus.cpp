@@ -42,6 +42,7 @@
 #include "tupbrushstatus.h"
 #include "tuptoolstatus.h"
 
+#include <QPushButton>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLabel>
@@ -49,13 +50,15 @@
 #include <QIntValidator>
 #include <QObject>
 #include <QLineEdit>
+#include <QDir>
 
 ////////////////
 
 struct TupPaintAreaStatus::Private
 {
     TupDocumentView *documentView;
-
+ 
+    QPushButton *fullScreenButton;
     QLineEdit *frameField; 
     QComboBox *zoom;
     QComboBox *rotation;
@@ -75,6 +78,32 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     k->scaleFactor = 100;
     k->angle = 0;
     k->currentFrame = 1;
+
+    QPushButton *actionSafeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "safe_area.png")), "");
+    actionSafeAreaButton->setIconSize(QSize(16, 16));
+    actionSafeAreaButton->setToolTip(tr("Action Safe Area"));
+    actionSafeAreaButton->setShortcut(QKeySequence(tr("+")));
+    actionSafeAreaButton->setCheckable(true);
+    connect(actionSafeAreaButton, SIGNAL(clicked()), k->documentView, SLOT(drawActionSafeArea()));
+
+    addPermanentWidget(actionSafeAreaButton);
+
+    QPushButton *gridButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "subgrid.png")), "");
+    gridButton->setIconSize(QSize(16, 16));
+    gridButton->setToolTip(tr("Show grid"));
+    gridButton->setShortcut(QKeySequence(tr("#")));
+    gridButton->setCheckable(true);
+    connect(gridButton, SIGNAL(clicked()), k->documentView, SLOT(drawGrid()));
+
+    addPermanentWidget(gridButton);
+
+    k->fullScreenButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "full_screen.png")), "");
+    k->fullScreenButton->setIconSize(QSize(16, 16));
+    k->fullScreenButton->setToolTip(tr("Full screen"));
+    k->fullScreenButton->setShortcut(QKeySequence(tr("F11")));
+    connect(k->fullScreenButton, SIGNAL(clicked()), k->documentView, SLOT(showFullScreen()));
+
+    addPermanentWidget(k->fullScreenButton);
 
     QWidget *frameContainer = new QWidget;
     frameContainer->setFixedWidth(70);
@@ -141,7 +170,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
 
     QLabel *rotateLabel = new QLabel("");
     rotateLabel->setToolTip(tr("Rotate Workspace"));
-    QPixmap rotatePix(THEME_DIR + "icons/rotate_workspace.png");
+    QPixmap rotatePix(THEME_DIR + "icons" + QDir::separator() + "rotate_workspace.png");
     rotateLabel->setPixmap(rotatePix);
 
     rotLayout->addWidget(rotateLabel);
@@ -164,7 +193,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     ///////
 
     k->antialiasHint = new QCheckBox;
-    k->antialiasHint->setIcon(QIcon(QPixmap(THEME_DIR + "icons/antialiasing.png")));
+    k->antialiasHint->setIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "antialiasing.png")));
     k->antialiasHint->setToolTip(tr("Antialiasing"));
     // k->antialiasHint->setFocusPolicy(Qt::NoFocus);
     k->antialiasHint->setCheckable(true);
@@ -175,14 +204,14 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
 
     connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint()));
 
-    k->bgStatus = new TupBrushStatus(tr("Background Color"), QPixmap(THEME_DIR + "icons/background_color.png"), true);
+    k->bgStatus = new TupBrushStatus(tr("Background Color"), QPixmap(THEME_DIR + "icons" + QDir::separator() + "background_color.png"), true);
     k->bgStatus->setTooltip(tr("Click here to change background color"));
     addPermanentWidget(k->bgStatus);
     k->bgStatus->setColor(k->documentView->project()->bgColor());
 
     connect(k->bgStatus, SIGNAL(colorUpdated(const QColor)), this, SIGNAL(colorUpdated(const QColor)));
 
-    k->brushStatus = new TupBrushStatus(tr("Brush Color"), QPixmap(THEME_DIR + "icons/brush_color.png"), false);
+    k->brushStatus = new TupBrushStatus(tr("Brush Color"), QPixmap(THEME_DIR + "icons" + QDir::separator() + "brush_color.png"), false);
     k->brushStatus->setTooltip(tr("Click here to change brush color"));
     addPermanentWidget(k->brushStatus);
 
@@ -342,4 +371,9 @@ void TupPaintAreaStatus::updateRotationAngle(int angle)
 void TupPaintAreaStatus::setBgColor(QColor color)
 {
     k->bgStatus->setColor(color);
+}
+
+void TupPaintAreaStatus::enableFullScreenFeature(bool flag)
+{
+    k->fullScreenButton->setEnabled(flag);
 }
