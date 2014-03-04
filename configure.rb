@@ -138,10 +138,14 @@ _EOH_
              end
           end
        else # Other distros
-          if majorVersion[2] >= "54" and minorVersion[2] >= "35"
-             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
+          if FileTest.exists?("/usr/bin/pacman") # Arch / Manjaro
+             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.arch.cpp", destination)
           else
-             FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
+             if majorVersion[2] >= "54" and minorVersion[2] >= "35"
+                FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.new.cpp", destination)
+             else
+                FileUtils.cp("src/plugins/export/ffmpegplugin/tffmpegmoviegenerator.old.cpp", destination)
+             end
           end
        end
     end
