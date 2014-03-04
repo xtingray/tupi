@@ -1,15 +1,11 @@
 DEPENDPATH += .
+INCLUDEPATH += /usr/include/QtMobility /usr/include/QtMultimediaKit
 
 macx {
-    INCLUDEPATH += /usr/local/include/quazip
     CONFIG -= app_bundle
     CONFIG += warn_on static console
 }
 
-unix:!macx {
-  INCLUDEPATH += /usr/include/quazip
-}
-
 # Input
 SOURCES += main.cpp
-LIBS += -lquazip
+LIBS += -lQtMultimediaKit

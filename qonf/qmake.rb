@@ -56,7 +56,7 @@ class QMake
 
         paths.each { |path|
             begin
-                Info.info << $endl << "   Testing for #{path}... "
+                Info.info << "Testing for #{path}... "
                 valid = true
                 version = []
                 sites = []
@@ -80,6 +80,9 @@ class QMake
                         version = found.split(".")
                         if (found.length != 0)
                             qtversion = found.chop
+                            if (qtversion.start_with?('5'))
+                                return false
+                            end
                         end
                     }
                     next if $? != 0

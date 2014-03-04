@@ -159,7 +159,7 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
         #endif
     }
 
-    if (k->camera)
+    if (k->camera->state() == QCamera::ActiveState)
         k->camera->stop();
 
     delete k;
@@ -216,7 +216,9 @@ void TupCameraInterface::changeCameraDevice(const QString &cameraDesc)
             QString description = device->deviceDescription(deviceName);
             if (description.compare(cameraDesc) == 0) { 
                 if (k->camera) {
-                    k->camera->stop();
+                    if (k->camera->state() == QCamera::ActiveState)
+                        k->camera->stop();
+
                     disconnect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
                     k->camera = device;
                     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));

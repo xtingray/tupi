@@ -33,90 +33,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupanimationspace.h"
-#include "tdebug.h"
-
-#include <QMouseEvent>
-#include <QDropEvent>
-#include <QLinearGradient>
-#include <QBoxLayout>
-
-/**
- * This class defines the space which contains the Animation Mode interface.
- * Here is where the visual space for Animation Mode is defined.
- * @author David Cuadrado
+/*
+#include <stdio.h>
+#include <string.h>
+#include "zlib.h"
 */
 
-TupAnimationspace::TupAnimationspace(TupCameraWidget *playerUI, QWidget *parent) : QMainWindow(parent)
+#include <QCamera>
+#include <QCameraImageCapture>
+#include <QCameraViewfinder>
+
+int main()
 {
-    // TODO: Try a nice dark color for this window
-    // setStyleSheet("QMainWindow { background-color: #d0d0d0; }");
+    QByteArray cameraDevice = QCamera::availableDevices()[0];
+    QCamera *camera = new QCamera(cameraDevice);
+    QCameraViewfinder *viewFinder = new QCameraViewfinder();
+    camera->setViewfinder(viewFinder);
 
-    playerInterface = playerUI;
-    playOn = false;
-    setCameraWidget(playerInterface);
-}
+    camera->setCaptureMode(QCamera::CaptureStillImage);
+    new QCameraImageCapture(camera);
 
-TupAnimationspace::~TupAnimationspace()
-{
-}
-
-void TupAnimationspace::setCameraWidget(TupCameraWidget *playerUI) 
-{
-    container = new QWidget();
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, container);
-    playerInterface = playerUI;
-    layout->addWidget(playerInterface, 0, Qt::AlignCenter);
-    container->setLayout(layout);
-    setCentralWidget(container);
-}
-
-void TupAnimationspace::mousePressEvent(QMouseEvent *event)
-{
-    if (event->button () == Qt::RightButton)
-        emit contextMenu(mapToGlobal(event->pos()));
-}
-
-void TupAnimationspace::mouseMoveEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-void TupAnimationspace::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-void TupAnimationspace::keyPressEvent(QKeyEvent *event) {
-
-    switch (event->key()) {
-            case Qt::Key_Space:
-                  if (event->modifiers()==Qt::ShiftModifier) {
-                      playerInterface->doPlayBack();
-                  } else {
-                      if (!playOn) {
-                          playerInterface->doPlay();
-                          playOn = true;
-                      } else {
-                          playerInterface->doStop();
-                          playOn = false;
-                      }
-                  }
-            break;
-            case Qt::Key_Escape:
-                  playerInterface->doStop();
-            break;
-            case Qt::Key_Right:
-                  playerInterface->nextFrame(); 
-            break;
-            case Qt::Key_Left:
-                  playerInterface->previousFrame();
-            break;
-            case Qt::Key_Up:
-
-            break;
-            case Qt::Key_Down:
-
-            break;
-    }
+    if (camera->state() == QCamera::ActiveState)
+        camera->stop();
+ 
+    camera->start();
 }

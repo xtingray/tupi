@@ -115,7 +115,7 @@ module RQonf
     end
 
     def verifyQtVersion(minqtversion, qtdir)
-      Info.info << "Checking for Qt >= " << minqtversion << "... "
+      Info.info << "Checking for Qt >= " << minqtversion << " and Qt < 5.x ..." << $endl
 
       if @qmake.findQMake(minqtversion, true, qtdir)
         print "[ \033[92mOK\033[0m ]\n"
