@@ -77,6 +77,9 @@ TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSiz
 
     if (devicesCombo->count() > 1) {
         k->cameraReference = k->devicesCombo->itemText(0);
+        k->deviceIndex = 0; 
+        setCamera(k->cameraReference);
+
         QLabel *cameraLabel = new QLabel(tr("Available Camera Devices:"));
         layout->addWidget(cameraLabel);
         layout->addWidget(k->devicesCombo);
@@ -137,12 +140,7 @@ void TupCameraDialog::changeCameraDevice(const QString &cameraReference)
     disconnect(k->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraResolution(int)));
     k->cameraReference = cameraReference;
     k->deviceIndex = k->devicesCombo->currentIndex();
-    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
-            k->camera = new QCamera(deviceName);
-            QString description = k->camera->deviceDescription(deviceName);
-            if (description.compare(cameraReference) == 0)
-                break;
-    }
+    setCamera(k->cameraReference);
 
     QCameraImageCapture *imageCapture = new QCameraImageCapture(k->camera);
     k->resolutions = imageCapture->supportedResolutions();
@@ -157,6 +155,17 @@ void TupCameraDialog::changeCameraDevice(const QString &cameraReference)
     k->cameraSize = k->resolutions.at(k->resolutions.size() - 1);
 
     connect(k->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraResolution(int)));
+}
+
+void TupCameraDialog::setCamera(const QString &cameraReference)
+{
+    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
+            QString description = k->camera->deviceDescription(deviceName);
+            if (description.compare(cameraReference) == 0) {
+                k->camera = new QCamera(deviceName);
+                break;
+            }
+    }
 }
 
 void TupCameraDialog::setCameraResolution(int index)

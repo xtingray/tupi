@@ -59,6 +59,7 @@ class TupCameraDialog : public QDialog
         void projectSizeHasChanged(bool flag);
 
     private:
+        void setCamera(const QString &cameraReference);
         struct Private;
         Private *const k;
 };
