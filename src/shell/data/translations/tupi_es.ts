@@ -1072,14 +1072,6 @@
 <context>
     <name>TupCameraDialog</name>
     <message>
-        <source>Camera Resolution</source>
-        <translation>Resolución de la Cámara</translation>
-    </message>
-    <message>
-        <source>Please, choose the resolution you want to work with:</source>
-        <translation>Por favor, escoja la resolución con la que desea trabajar:</translation>
-    </message>
-    <message>
         <source>Resize my project to fit camera resolution</source>
         <translation>Redimensionar mi proyecto para que se ajuste a la cámara</translation>
     </message>
@@ -1090,6 +1082,22 @@
     <message>
         <source>Ok</source>
         <translation>Aceptar</translation>
+    </message>
+    <message>
+        <source>Camera Settings</source>
+        <translation>Ajustes de Cámara</translation>
+    </message>
+    <message>
+        <source>Available Camera Devices:</source>
+        <translation>Cámaras detectadas:</translation>
+    </message>
+    <message>
+        <source>Camera Detected:</source>
+        <translation>Cámara detectada:</translation>
+    </message>
+    <message>
+        <source>Available Camera Resolutions:</source>
+        <translation>Resoluciones de cámara diponibles:</translation>
     </message>
 </context>
 <context>

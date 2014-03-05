@@ -1592,7 +1592,7 @@ void TupDocumentView::cameraInterface()
         QDesktopWidget desktop;
         QSize projectSize = k->project->dimension();
 
-        TupCameraDialog *cameraDialog = new TupCameraDialog(projectSize, resolutions);
+        TupCameraDialog *cameraDialog = new TupCameraDialog(devicesCombo, projectSize, resolutions);
         cameraDialog->show();
         cameraDialog->move((int) (desktop.screenGeometry().width() - cameraDialog->width())/2 ,
                            (int) (desktop.screenGeometry().height() - cameraDialog->height())/2);
@@ -1601,12 +1601,17 @@ void TupDocumentView::cameraInterface()
             k->cameraSize = cameraDialog->cameraResolution();
             QString title = QString::number(k->cameraSize.width()) + "x" + QString::number(k->cameraSize.height());
 
+            if (devicesCombo->count() > 1) {
+                camera = cameraDialog->camera();
+                imageCapture = new QCameraImageCapture(camera);
+            }
+
             if (cameraDialog->changeProjectSize()) {
                 if (k->cameraSize != projectSize) 
                     resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(title, devicesCombo, camera, maxCameraSize, imageCapture, path);
+            TupCameraInterface *dialog = new TupCameraInterface(title, devicesCombo, cameraDialog->cameraIndex(), camera, maxCameraSize, imageCapture, path);
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
             dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,

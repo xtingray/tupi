@@ -59,7 +59,7 @@ struct TupCameraInterface::Private
     int counter;
 };
 
-TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesCombo, QCamera *camera, const QSize maxCameraSize, 
+TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesCombo, int cameraIndex, QCamera *camera, const QSize maxCameraSize, 
                                        QCameraImageCapture *imageCapture, const QString &path, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
@@ -74,7 +74,8 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
     QDesktopWidget desktop;
     int desktopWidth = desktop.screenGeometry().width();
     int desktopHeight = desktop.screenGeometry().height();
-    if (k->cameraSize.width() > desktopWidth || k->cameraSize.height() > desktopHeight) {
+
+    if (k->cameraSize.width() > desktopWidth || k->cameraSize.height() > desktopHeight || k->cameraSize.width() > 800) {
         int width = 0;
         int height = 0;
         if (k->cameraSize.width() > k->cameraSize.height()) {
@@ -85,7 +86,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
             width = height * k->cameraSize.width() / k->cameraSize.height();
         }
         k->cameraSize = QSize(width, height);
-    }
+    } 
 
     k->counter = 1;
     k->camera = camera;
@@ -122,6 +123,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
 
     menuLayout->addWidget(devicesLabel);
     menuLayout->addWidget(devicesCombo);
+    devicesCombo->setCurrentIndex(cameraIndex);
     menuLayout->addWidget(new TSeparator(Qt::Horizontal));
     menuLayout->addWidget(clickButton);
     menuLayout->addStretch(2);

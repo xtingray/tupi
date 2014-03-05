@@ -37,18 +37,24 @@
 #define TUPCAMERADIALOG_H
 
 #include <QDialog>
+#include <QComboBox>
+#include <QCamera>
 
 class TupCameraDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupCameraDialog(const QSize projectSize, QList<QSize> resolutions, QWidget *parent=0);
+        TupCameraDialog(QComboBox *devicesCombo, const QSize projectSize, QList<QSize> resolutions, QWidget *parent=0);
         ~TupCameraDialog();
+
+        int cameraIndex();
         QSize cameraResolution() const;
         bool changeProjectSize();
+        QCamera * camera();
 
     private slots:
+        void changeCameraDevice(const QString &camera);
         void setCameraResolution(int index);
         void projectSizeHasChanged(bool flag);
 

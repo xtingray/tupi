@@ -46,37 +46,65 @@
 #include <QPushButton>
 #include <QDir>
 
+#include <QCameraImageCapture>
+
 struct TupCameraDialog::Private
 {
     QSize projectSize;
     QSize cameraSize;
     bool resizeProject;
+
+    QCamera *camera;
+    QComboBox *devicesCombo;
+    QComboBox *resolutionCombo;
     QList<QSize> resolutions;
+    QString cameraReference;
+    int deviceIndex;
 };
 
-TupCameraDialog::TupCameraDialog(const QSize projectSize, QList<QSize> resolutions, QWidget *parent) : QDialog(parent), k(new Private)
+TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSize, QList<QSize> resolutions, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    setWindowTitle(tr("Camera Resolution"));
+    setWindowTitle(tr("Camera Settings"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")));
 
     k->projectSize = projectSize;
     k->resolutions = resolutions;
     k->resizeProject = false;
+    k->devicesCombo = devicesCombo;
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-    QLabel *resolutionLabel = new QLabel(tr("Please, choose the resolution you want to work with:"));
-    QComboBox *resolutionCombo = new QComboBox();
+    if (devicesCombo->count() > 1) {
+        k->cameraReference = k->devicesCombo->itemText(0);
+        QLabel *cameraLabel = new QLabel(tr("Available Camera Devices:"));
+        layout->addWidget(cameraLabel);
+        layout->addWidget(k->devicesCombo);
+        connect(devicesCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(changeCameraDevice(const QString &)));
+    } else {
+        QLabel *cameraLabel = new QLabel(tr("Camera Detected:"));
+        QLabel *cameraReference = new QLabel;
+        QFont font = cameraReference->font();
+        font.setBold(true);
+        cameraReference->setFont(font);
+        cameraReference->setText(k->devicesCombo->itemText(0));
+        layout->addWidget(cameraLabel);
+        layout->addWidget(cameraReference);
+    }
+
+    k->deviceIndex = 0;
+
+    QLabel *resolutionLabel = new QLabel(tr("Available Camera Resolutions:"));
+    k->resolutionCombo = new QComboBox();
     for (int i=0; i<k->resolutions.size(); i++) {
          QSize size = k->resolutions.at(i);
          QString label = QString::number(size.width()) + "x" + QString::number(size.height());
-         resolutionCombo->addItem(label);
+         k->resolutionCombo->addItem(label);
     }
-    resolutionCombo->setCurrentIndex(k->resolutions.size() - 1);
+    k->resolutionCombo->setCurrentIndex(k->resolutions.size() - 1);
     k->cameraSize = k->resolutions.at(k->resolutions.size() - 1);
 
-    connect(resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraResolution(int)));
+    connect(k->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraResolution(int)));
 
     QCheckBox *resizeCheck = new QCheckBox(tr("Resize my project to fit camera resolution"));
     connect(resizeCheck, SIGNAL(toggled(bool)), this, SLOT(projectSizeHasChanged(bool)));
@@ -94,7 +122,7 @@ TupCameraDialog::TupCameraDialog(const QSize projectSize, QList<QSize> resolutio
     ok->setDefault(true);
 
     layout->addWidget(resolutionLabel);
-    layout->addWidget(resolutionCombo);
+    layout->addWidget(k->resolutionCombo);
     layout->addWidget(resizeCheck);
 
     layout->addLayout(buttonLayout);
@@ -102,6 +130,33 @@ TupCameraDialog::TupCameraDialog(const QSize projectSize, QList<QSize> resolutio
 
 TupCameraDialog::~TupCameraDialog()
 {
+}
+
+void TupCameraDialog::changeCameraDevice(const QString &cameraReference)
+{
+    disconnect(k->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraResolution(int)));
+    k->cameraReference = cameraReference;
+    k->deviceIndex = k->devicesCombo->currentIndex();
+    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
+            k->camera = new QCamera(deviceName);
+            QString description = k->camera->deviceDescription(deviceName);
+            if (description.compare(cameraReference) == 0)
+                break;
+    }
+
+    QCameraImageCapture *imageCapture = new QCameraImageCapture(k->camera);
+    k->resolutions = imageCapture->supportedResolutions();
+    k->resolutionCombo->clear();
+
+    for (int i=0; i<k->resolutions.size(); i++) {
+         QSize size = k->resolutions.at(i);
+         QString label = QString::number(size.width()) + "x" + QString::number(size.height());
+         k->resolutionCombo->addItem(label);
+    }
+    k->resolutionCombo->setCurrentIndex(k->resolutions.size() - 1);
+    k->cameraSize = k->resolutions.at(k->resolutions.size() - 1);
+
+    connect(k->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraResolution(int)));
 }
 
 void TupCameraDialog::setCameraResolution(int index)
@@ -124,3 +179,12 @@ bool TupCameraDialog::changeProjectSize()
     return k->resizeProject;
 }
 
+int TupCameraDialog::cameraIndex()
+{
+    return k->deviceIndex;
+}
+
+QCamera * TupCameraDialog::camera()
+{
+    return k->camera;
+}
