@@ -36,6 +36,7 @@
 #include "tuppaintareaconfig.h"
 #include "tcolorbutton.h"
 #include "tconfig.h"
+#include "tdebug.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -59,10 +60,8 @@ TupPaintAreaConfig::~TupPaintAreaConfig()
 
 void TupPaintAreaConfig::setupPage()
 {
-    QFrame *page = new QFrame;
-    QGridLayout *pageLayout = new QGridLayout(page);
-    page->setFrameStyle(QFrame::Box | QFrame::Sunken);
-    
+    QGridLayout *pageLayout = new QGridLayout(this);
+
     TCONFIG->beginGroup("PaintArea");
     
     pageLayout->addWidget(new QLabel(tr("Grid color")), 0, 0);
@@ -98,8 +97,8 @@ void TupPaintAreaConfig::setupPage()
     
     m_onionSkinBackground->setColor(qvariant_cast<QColor>(TCONFIG->value("OnionSkinBackground", 
                     QColor(Qt::lightGray))));
-    
-    layout()->addWidget(page);
+
+    setLayout(pageLayout);
 }
 
 QColor TupPaintAreaConfig::gridColor() const

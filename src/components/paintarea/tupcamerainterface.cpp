@@ -47,7 +47,7 @@
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QImageEncoderSettings>
+// #include <QImageEncoderSettings>
 
 struct TupCameraInterface::Private
 {

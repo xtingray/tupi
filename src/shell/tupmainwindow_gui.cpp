@@ -263,7 +263,7 @@ void TupMainWindow::setupMenu()
     //m_settingsMenu->addAction(m_actionManager->find("wizard"));
     m_settingsMenu->addAction(m_actionManager->find("preferences"));
     // Temporary out while SQA is done
-    // m_actionManager->enable("preferences", false);
+    m_actionManager->enable("preferences", false);
 
 // Temporary out while SQA is done
     // Setting up the insert menu
