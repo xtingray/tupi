@@ -3660,6 +3660,10 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
         <source>Choose a directory...</source>
         <translation>Escoja un directorio...</translation>
     </message>
+    <message>
+        <source>Scene</source>
+        <translation>Escena</translation>
+    </message>
 </context>
 <context>
     <name>TupSymbolEditor</name>

@@ -376,7 +376,7 @@ void TupStoryBoardDialog::thumbnailGenerator()
              pixmap.scaledToWidth(96, Qt::SmoothTransformation);
 
              QIcon icon(pixmap);
-             QString label = "Scene " + QString::number(i);  
+             QString label = tr("Scene") + " " + QString::number(i);  
              addScene(label, icon);
          }
     }

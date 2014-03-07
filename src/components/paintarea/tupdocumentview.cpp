@@ -1661,14 +1661,6 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
     // SQA: This is a hack - remember to check the QImageEncoderSettings issue 
     QImage pixmap(path); 
     if (pixmap.size() != k->cameraSize) {
-        tError() << "TupDocumentView::insertPictureInFrame() - DEVEZE";
-        tError() << "Pixmap width: " << pixmap.width(); 
-        tError() << "Pixmap height: " << pixmap.height();
-        tError() << "Camera width: " << k->cameraSize.width();
-        tError() << "Camera height: " << k->cameraSize.height();
-        tError() << "Project width: " << k->project->dimension().width();
-        tError() << "Proyect height: " << k->project->dimension().height();
-
         int height = pixmap.height();
         int width = (k->cameraSize.width() * height) / k->cameraSize.height();
         int posX = (pixmap.width() - width)/2;
