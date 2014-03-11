@@ -177,3 +177,13 @@ void TupCameraWindow::showHistory(bool flag)
     k->videoSurface->showHistory(flag);
 }
 
+void TupCameraWindow::updateImagesOpacity(double opacity)
+{
+    k->videoSurface->updateImagesOpacity(opacity);
+}
+
+void TupCameraWindow::updateImagesDepth(int depth)
+{
+    k->videoSurface->updateImagesDepth(depth);
+}
+

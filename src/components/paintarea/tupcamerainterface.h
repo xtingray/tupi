@@ -65,6 +65,8 @@ class TupCameraInterface : public QFrame
         void drawGrid();
         void drawActionSafeArea();
         void showHistory();
+        void updateImagesOpacity(double opacity);
+        void updateImagesDepth(int depth);
 
     private:
         struct Private;

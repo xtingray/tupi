@@ -27,6 +27,8 @@ class TupVideoSurface: public QAbstractVideoSurface
         void drawActionSafeArea(bool flag);
         void setLastImage(const QImage &image);
         void showHistory(bool flag);
+        void updateImagesOpacity(double opacity);
+        void updateImagesDepth(int depth);
 
     private:
         int opacity(double opacity);

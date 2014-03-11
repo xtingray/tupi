@@ -203,3 +203,14 @@ void TupVideoSurface::showHistory(bool flag)
     k->showPrevious = flag;
     k->videoIF->updateVideo();
 }
+
+void TupVideoSurface::updateImagesOpacity(double opacity)
+{
+
+}
+
+void TupVideoSurface::updateImagesDepth(int depth)
+{
+
+}
+

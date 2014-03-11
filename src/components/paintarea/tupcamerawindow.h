@@ -25,6 +25,8 @@ class TupCameraWindow: public QWidget, public VideoIF
         void drawGrid(bool flag);
         void drawActionSafeArea(bool flag);
         void showHistory(bool flag);
+        void updateImagesOpacity(double opacity);
+        void updateImagesDepth(int depth);
 
     signals:
         void pictureHasBeenSelected(int id, const QString path);

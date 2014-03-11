@@ -126,12 +126,14 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     QLabel *devicesLabel = new QLabel(tr("Devices"));
     devicesLabel->setAlignment(Qt::AlignHCenter);
 
-    QPushButton *clickButton = new QPushButton(tr("Take Picture"));
+    QPushButton *clickButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")), "");
+    clickButton->setIconSize(QSize(20, 20));
+    clickButton->setToolTip(tr("Take picture"));
     connect(clickButton, SIGNAL(clicked()), this, SLOT(takePicture()));
 
     k->safeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "safe_area.png")), "");
     k->safeAreaButton->setIconSize(QSize(20, 20));
-    k->safeAreaButton->setToolTip(tr("Action Safe Area"));
+    k->safeAreaButton->setToolTip(tr("Show safe area"));
     k->safeAreaButton->setShortcut(QKeySequence(tr("+")));
     k->safeAreaButton->setCheckable(true);
     connect(k->safeAreaButton, SIGNAL(clicked()), this, SLOT(drawActionSafeArea()));
@@ -152,28 +154,43 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
 
     k->historyWidget = new QWidget;
     QBoxLayout *historyLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->historyWidget);
+    historyLayout->setContentsMargins(2, 2, 2, 2);
 
     QWidget *opacityWidget = new QWidget;
     QBoxLayout *opacityLayout = new QBoxLayout(QBoxLayout::LeftToRight, opacityWidget);
-    QLabel *opacityLabel = new QLabel(tr("Icon"));
+    opacityLayout->setContentsMargins(2, 2, 2, 2);
+
+    QLabel *opacityLabel = new QLabel;
+    opacityLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "onion.png"));
+    opacityLabel->setToolTip(tr("Image opacity level")); 
     QDoubleSpinBox *opacitySpin = new QDoubleSpinBox;
     opacitySpin->setValue(0.5);
     opacitySpin->setRange(0.0, 1.0);
     opacitySpin->setDecimals(1);
+    connect(opacitySpin, SIGNAL(valueChanged(double)), this, SLOT(updateImagesOpacity(double)));
+
     opacityLayout->addWidget(opacityLabel);
     opacityLayout->addWidget(opacitySpin); 
+    opacityLayout->addStretch(2);
 
     QWidget *previousWidget = new QWidget;
     QBoxLayout *previousLayout = new QBoxLayout(QBoxLayout::LeftToRight, previousWidget);
-    QLabel *previousLabel = new QLabel(tr("Icon"));
+    previousLayout->setContentsMargins(2, 2, 2, 2);
+
+    QLabel *previousLabel = new QLabel;
+    previousLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "layer.png"));
+    previousLabel->setToolTip(tr("Amount of images to show"));
     QSpinBox *previousSpin = new QSpinBox;
     previousSpin->setValue(1);
     previousSpin->setRange(1, 5);
+    connect(previousSpin, SIGNAL(valueChanged(int)), this, SLOT(updateImagesDepth(int)));
+
     previousLayout->addWidget(previousLabel);
     previousLayout->addWidget(previousSpin);
+    previousLayout->addStretch(2);
 
-    historyLayout->addWidget(opacityWidget);
-    historyLayout->addWidget(previousWidget);
+    historyLayout->addWidget(opacityWidget, 1, Qt::AlignHCenter);
+    historyLayout->addWidget(previousWidget, 1, Qt::AlignHCenter);
     historyLayout->addStretch(2);
 
     k->historyWidget->setVisible(false);
@@ -247,3 +264,12 @@ void TupCameraInterface::showHistory()
     k->currentCamera->showHistory(flag);
 }
 
+void TupCameraInterface::updateImagesOpacity(double opacity)
+{
+    k->currentCamera->updateImagesOpacity(opacity);
+}
+
+void TupCameraInterface::updateImagesDepth(int depth)
+{
+    k->currentCamera->updateImagesDepth(depth);
+}
