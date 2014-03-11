@@ -228,8 +228,10 @@ void TupMainWindow::setupMenu()
 
     m_fileMenu->addAction(m_actionManager->find("newproject"));
     m_fileMenu->addAction(m_actionManager->find("openproject"));
-    m_fileMenu->addAction(m_actionManager->find("opennetproject"));
-    m_fileMenu->addAction(m_actionManager->find("exportprojectserver"));
+
+    // SQA: This code has been disabled temporary
+    // m_fileMenu->addAction(m_actionManager->find("opennetproject"));
+    // m_fileMenu->addAction(m_actionManager->find("exportprojectserver"));
 
     // Adding Option Open Recent	
     m_recentProjectsMenu = new QMenu(tr("Recents"), this);
@@ -410,6 +412,8 @@ void TupMainWindow::setupFileActions()
     m_actionManager->insert( openFile, "openproject", "file" );
     openFile->setStatusTip(tr("Load existent project"));
 
+    // SQA: This code has been disabled temporary
+    /*
     TAction *openNetFile = new TAction(QPixmap(THEME_DIR + "icons/net_document.png"), tr("Open project from server..."), 
                                        tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
@@ -417,6 +421,7 @@ void TupMainWindow::setupFileActions()
     TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export project to server..."), tr(""), this, 
                                          SLOT(importProjectToServer()), m_actionManager);
     m_actionManager->insert(importNetFile, "exportprojectserver", "file");
+    */
 
     TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
                                 QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
@@ -553,7 +558,10 @@ void TupMainWindow::setupToolBar()
 
     toolbar->addAction(m_actionManager->find("newproject"));
     toolbar->addAction(m_actionManager->find("openproject"));
-    toolbar->addAction(m_actionManager->find("opennetproject"));
+
+    // SQA: This code has been disabled temporary
+    // toolbar->addAction(m_actionManager->find("opennetproject"));
+
     toolbar->addAction(m_actionManager->find("saveproject"));
     toolbar->addAction(m_actionManager->find("saveprojectas"));
     toolbar->addAction(m_actionManager->find("closeproject"));

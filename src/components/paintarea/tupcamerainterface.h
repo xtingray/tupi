@@ -48,8 +48,8 @@ class TupCameraInterface : public QFrame
     Q_OBJECT
 
     public:
-        TupCameraInterface(const QString &title, QComboBox *devicesCombo, int cameraIndex, QCamera *camera = 0, const QSize maxCameraSize = QSize(), 
-                           QCameraImageCapture *imageCapture = 0, const QString &path = QString(), QWidget *parent = 0);
+        TupCameraInterface(const QString &title, QList<QByteArray> cameraDevices, QComboBox *devicesCombo, int cameraIndex, 
+                           const QSize cameraSize = QSize(), const QString &path = QString(), QWidget *parent = 0);
         ~TupCameraInterface();
 
     protected:
@@ -60,10 +60,11 @@ class TupCameraInterface : public QFrame
         void pictureHasBeenSelected(int id, const QString path);
 
     private slots:
+        void changeCameraDevice(int index);
         void takePicture();
-        void cameraError(QCamera::Error error);
-        void imageSavedFromCamera(int id, const QString path);
-        void changeCameraDevice(const QString &cameraDesc);
+        void drawGrid();
+        void drawActionSafeArea();
+        void showHistory();
 
     private:
         struct Private;

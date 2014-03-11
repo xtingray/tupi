@@ -1559,7 +1559,7 @@ void TupDocumentView::cameraInterface()
             TOsd::self()->display(tr("Error"), tr("Can't create pictures directory"), TOsd::Error);
         }
 
-        QByteArray cameraDevice = QCamera::availableDevices()[0];
+        QList<QByteArray> cameraDevices;
         QComboBox *devicesCombo = new QComboBox;
         foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
                 QCamera *device = new QCamera(deviceName);
@@ -1572,10 +1572,13 @@ void TupDocumentView::cameraInterface()
                          break;
                      }
                 }
-                if (!found)
+                if (!found) {
                     devicesCombo->addItem(description);
+                    cameraDevices << deviceName;
+                }
         }
 
+        QByteArray cameraDevice = cameraDevices[0];
         QCamera *camera = new QCamera(cameraDevice);
 
         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
@@ -1611,7 +1614,9 @@ void TupDocumentView::cameraInterface()
                     resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(title, devicesCombo, cameraDialog->cameraIndex(), camera, maxCameraSize, imageCapture, path);
+            TupCameraInterface *dialog = new TupCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(), 
+                                                                maxCameraSize, path);
+
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
             dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,

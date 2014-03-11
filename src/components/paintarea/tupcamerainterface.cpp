@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupcamerainterface.h"
+#include "tupcamerawindow.h"
 #include "tupapplication.h"
 #include "tapplicationproperties.h"
 #include "toptionaldialog.h"
@@ -47,20 +48,22 @@
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QPushButton>
-// #include <QImageEncoderSettings>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
 
 struct TupCameraInterface::Private
 {
-    QCamera *camera;
-    QCameraImageCapture *imageCapture;
-    QCameraViewfinder *viewFinder;
-    QSize cameraSize;
-    QString dir;
+    QStackedWidget *widgetStack;
+    TupCameraWindow *currentCamera;
+    QPushButton *gridButton; 
+    QPushButton *safeAreaButton;
+    QPushButton *historyButton;
+    QWidget *historyWidget;
     int counter;
 };
 
-TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesCombo, int cameraIndex, QCamera *camera, const QSize maxCameraSize, 
-                                       QCameraImageCapture *imageCapture, const QString &path, QWidget *parent) : QFrame(parent), k(new Private)
+TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> cameraDevices, QComboBox *devicesCombo, int cameraIndex, 
+                                       const QSize cameraSize, const QString &path, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -68,49 +71,54 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
 
     setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution: ") + title);
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
-    k->cameraSize = maxCameraSize;
-    k->dir = path;
 
+    k->counter = 1;
+
+    k->widgetStack = new QStackedWidget();
+    QSize displaySize = cameraSize;
     QDesktopWidget desktop;
     int desktopWidth = desktop.screenGeometry().width();
     int desktopHeight = desktop.screenGeometry().height();
+    int maxWidth = 640;
+    if (cameraDevices.count() == 1)
+        maxWidth = 800;
 
-    if (k->cameraSize.width() > desktopWidth || k->cameraSize.height() > desktopHeight || k->cameraSize.width() > 800) {
-        int width = 0;
-        int height = 0;
-        if (k->cameraSize.width() > k->cameraSize.height()) {
-            width = desktopWidth/2;
-            height = width * k->cameraSize.height() / k->cameraSize.width();
-        } else {
-            height = desktopHeight/2;
-            width = height * k->cameraSize.width() / k->cameraSize.height();
-        }
-        k->cameraSize = QSize(width, height);
-    } 
+    for (int i=0; i < cameraDevices.size(); i++) {
+         QByteArray device = cameraDevices.at(i);
+         QCamera *camera = new QCamera(device); 
+         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
 
-    k->counter = 1;
-    k->camera = camera;
-    connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
+         QList<QSize> resolutions = imageCapture->supportedResolutions();
+         QSize maxCameraSize = QSize(0, 0);
+         for (int i=0; i < resolutions.size(); i++) {
+              QSize resolution = resolutions.at(i);
+              if (resolution.width() > maxCameraSize.width()) {
+                  maxCameraSize.setWidth(resolution.width());
+                  maxCameraSize.setHeight(resolution.height());
+              }
+         }
 
-    k->viewFinder = new QCameraViewfinder;
-    k->viewFinder->setFixedSize(k->cameraSize);
-    k->camera->setViewfinder(k->viewFinder);
-    k->viewFinder->show();
+         if (cameraSize.width() > desktopWidth || cameraSize.height() > desktopHeight || cameraSize.width() > maxWidth) {
+             int width = 0;
+             int height = 0;
+             if (cameraSize.width() > cameraSize.height()) {
+                 width = desktopWidth/2;
+                 height = width * cameraSize.height() / cameraSize.width();
+             } else {
+                 height = desktopHeight/2;
+                 width = height * cameraSize.width() / cameraSize.height();
+             }
+             displaySize = QSize(width, height);
+         }
 
-    k->imageCapture = imageCapture;
+         TupCameraWindow *cameraWindow = new TupCameraWindow(camera, maxCameraSize, displaySize, imageCapture, path);
+         connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
 
-    /*
-    QImageEncoderSettings imageSettings;
-    imageSettings.setCodec("image/jpeg");
-    imageSettings.setResolution(k->cameraSize.width(), k->cameraSize.height());
-    k->imageCapture->setEncodingSettings(imageSettings);
-    */
+         k->widgetStack->addWidget(cameraWindow);
+    }
 
-    connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
-
-    QWidget *cameraWidget = new QWidget;
-    QBoxLayout *cameraLayout = new QBoxLayout(QBoxLayout::TopToBottom, cameraWidget);
-    cameraLayout->addWidget(k->viewFinder);
+    k->widgetStack->setCurrentIndex(cameraIndex);
+    k->currentCamera = (TupCameraWindow *) k->widgetStack->currentWidget();
 
     QWidget *menuWidget = new QWidget;
     QBoxLayout *menuLayout = new QBoxLayout(QBoxLayout::TopToBottom, menuWidget);
@@ -121,21 +129,73 @@ TupCameraInterface::TupCameraInterface(const QString &title, QComboBox *devicesC
     QPushButton *clickButton = new QPushButton(tr("Take Picture"));
     connect(clickButton, SIGNAL(clicked()), this, SLOT(takePicture()));
 
+    k->safeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "safe_area.png")), "");
+    k->safeAreaButton->setIconSize(QSize(20, 20));
+    k->safeAreaButton->setToolTip(tr("Action Safe Area"));
+    k->safeAreaButton->setShortcut(QKeySequence(tr("+")));
+    k->safeAreaButton->setCheckable(true);
+    connect(k->safeAreaButton, SIGNAL(clicked()), this, SLOT(drawActionSafeArea()));
+
+    k->gridButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "subgrid.png")), "");
+    k->gridButton->setIconSize(QSize(20, 20));
+    k->gridButton->setToolTip(tr("Show grid"));
+    k->gridButton->setShortcut(QKeySequence(tr("#")));
+    k->gridButton->setCheckable(true);
+    connect(k->gridButton, SIGNAL(clicked()), this, SLOT(drawGrid()));
+
+    k->historyButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png")), "");
+    k->historyButton->setIconSize(QSize(20, 20));
+    k->historyButton->setToolTip(tr("Show previous images"));
+    k->historyButton->setShortcut(QKeySequence(tr("P")));
+    k->historyButton->setCheckable(true);
+    connect(k->historyButton, SIGNAL(clicked()), this, SLOT(showHistory()));
+
+    k->historyWidget = new QWidget;
+    QBoxLayout *historyLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->historyWidget);
+
+    QWidget *opacityWidget = new QWidget;
+    QBoxLayout *opacityLayout = new QBoxLayout(QBoxLayout::LeftToRight, opacityWidget);
+    QLabel *opacityLabel = new QLabel(tr("Icon"));
+    QDoubleSpinBox *opacitySpin = new QDoubleSpinBox;
+    opacitySpin->setValue(0.5);
+    opacitySpin->setRange(0.0, 1.0);
+    opacitySpin->setDecimals(1);
+    opacityLayout->addWidget(opacityLabel);
+    opacityLayout->addWidget(opacitySpin); 
+
+    QWidget *previousWidget = new QWidget;
+    QBoxLayout *previousLayout = new QBoxLayout(QBoxLayout::LeftToRight, previousWidget);
+    QLabel *previousLabel = new QLabel(tr("Icon"));
+    QSpinBox *previousSpin = new QSpinBox;
+    previousSpin->setValue(1);
+    previousSpin->setRange(1, 5);
+    previousLayout->addWidget(previousLabel);
+    previousLayout->addWidget(previousSpin);
+
+    historyLayout->addWidget(opacityWidget);
+    historyLayout->addWidget(previousWidget);
+    historyLayout->addStretch(2);
+
+    k->historyWidget->setVisible(false);
+
     menuLayout->addWidget(devicesLabel);
     menuLayout->addWidget(devicesCombo);
     devicesCombo->setCurrentIndex(cameraIndex);
     menuLayout->addWidget(new TSeparator(Qt::Horizontal));
     menuLayout->addWidget(clickButton);
+    menuLayout->addWidget(k->safeAreaButton);
+    menuLayout->addWidget(k->gridButton);
+    menuLayout->addWidget(k->historyButton);
+    menuLayout->addWidget(k->historyWidget);
     menuLayout->addStretch(2);
 
-    connect(devicesCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(changeCameraDevice(const QString &)));
+    connect(devicesCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCameraDevice(int)));
 
     QBoxLayout *dialogLayout = new QBoxLayout(QBoxLayout::LeftToRight, this); 
-    dialogLayout->addWidget(cameraWidget);
+    dialogLayout->addWidget(k->widgetStack);
     dialogLayout->addWidget(menuWidget);
 
-    k->camera->setCaptureMode(QCamera::CaptureStillImage);
-    k->camera->start();
+    k->currentCamera->startCamera();
 }
 
 TupCameraInterface::~TupCameraInterface()
@@ -149,93 +209,41 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
 
-    QDir dir(k->dir);
-    foreach (QString file, dir.entryList(QStringList() << "*.jpg")) {
-             QString absolute = dir.absolutePath() + QDir::separator() + file;
-             QFile::remove(absolute);
-    }
-
-    if (! dir.rmdir(dir.absolutePath())) {
-        #ifdef K_DEBUG
-               tError() << "TupCameraInterface::closeEvent() - Fatal Error: Can't remove pictures directory -> " << dir.absolutePath();
-        #endif
-    }
-
-    if (k->camera->state() == QCamera::ActiveState)
-        k->camera->stop();
-
-    delete k;
+    k->currentCamera->reset();
 }
 
 void TupCameraInterface::takePicture()
 {
-    QString prev = "pic";
-    if (k->counter < 10)
-        prev += "00";  
-    if (k->counter > 10 && k->counter < 100)
-        prev += "0";
- 
-    QString imagePath = k->dir + QDir::separator() + prev + QString::number(k->counter) + ".jpg";
-
-    tError() << "TupCameraInterface::takePicture() - imagePath: " << imagePath;
-
-    //on half pressed shutter button
-    k->camera->searchAndLock();
-
-    //on shutter button pressed
-    k->imageCapture->capture(imagePath);
-
-    //on shutter button released
-    k->camera->unlock();
-}
-
-void TupCameraInterface::cameraError(QCamera::Error error)
-{
-    Q_UNUSED(error);
-    #ifdef K_DEBUG
-           tError() << "TupCameraInterface::cameraError() - Fatal Error: " << k->camera->errorString();
-    #endif
-}
-
-void TupCameraInterface::imageSavedFromCamera(int id, const QString path)
-{
-    Q_UNUSED(id);
-
-    tError() << "TupCameraInterface::imageSavedFromCamera() - ID: " << k->counter;  
-    tError() << "TupCameraInterface::imageSavedFromCamera() - Image saved from Camera at: " << path;
-    if (path.isEmpty())
-        return;
-
-    emit pictureHasBeenSelected(k->counter, path);
-
+    k->currentCamera->takePicture(k->counter);
     k->counter++;
 }
 
-void TupCameraInterface::changeCameraDevice(const QString &cameraDesc)
+void TupCameraInterface::changeCameraDevice(int index)
 {
-    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
-            QCamera *device = new QCamera(deviceName);
-            QString description = device->deviceDescription(deviceName);
-            if (description.compare(cameraDesc) == 0) { 
-                if (k->camera) {
-                    if (k->camera->state() == QCamera::ActiveState)
-                        k->camera->stop();
+    TupCameraWindow *item = (TupCameraWindow *) k->widgetStack->currentWidget();
+    item->stopCamera(); 
 
-                    disconnect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
-                    k->camera = device;
-                    connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(cameraError(QCamera::Error)));
-
-                    disconnect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
-                    k->imageCapture = new QCameraImageCapture(k->camera);
-                    connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
-
-                    k->camera->setCaptureMode(QCamera::CaptureStillImage);
-                    k->camera->start();
-                    k->camera->setViewfinder(k->viewFinder);
-                    k->viewFinder->show();
-
-                    break;
-                }
-            }
-    }
+    k->widgetStack->setCurrentIndex(index);   
+    k->currentCamera = (TupCameraWindow *) k->widgetStack->currentWidget();
+    k->currentCamera->startCamera();
+    drawGrid();
+    drawActionSafeArea();
 }
+
+void TupCameraInterface::drawGrid()
+{
+    k->currentCamera->drawGrid(k->gridButton->isChecked());
+}
+
+void TupCameraInterface::drawActionSafeArea()
+{
+    k->currentCamera->drawActionSafeArea(k->safeAreaButton->isChecked());
+}
+
+void TupCameraInterface::showHistory()
+{
+    bool flag = k->historyButton->isChecked();
+    k->historyWidget->setVisible(flag);
+    k->currentCamera->showHistory(flag);
+}
+
