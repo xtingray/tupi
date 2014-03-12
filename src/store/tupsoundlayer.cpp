@@ -61,7 +61,7 @@ void TupSoundLayer::fromSymbol(const QString &symbolName)
 {
     TupLibrary *library = project()->library();
     
-    if (TupLibraryObject *object = library->findObject(symbolName)) {
+    if (TupLibraryObject *object = library->getObject(symbolName)) {
         if (object->type() == TupLibraryObject::Sound) {
             k->symbolName = symbolName;
             k->filePath = object->dataPath();

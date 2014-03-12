@@ -280,7 +280,7 @@ void TupLibraryWidget::previewItem(QTreeWidgetItem *item)
             return;
         }
 
-        TupLibraryObject *object = k->library->findObject(item->text(1) + "." + item->text(2).toLower());
+        TupLibraryObject *object = k->library->getObject(item->text(1) + "." + item->text(2).toLower());
 
         if (!object) {
             #ifdef K_DEBUG
@@ -397,7 +397,7 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
 {
     if (item) {
         QString id = item->text(3);
-        TupLibraryObject *object = k->library->findObject(id);
+        TupLibraryObject *object = k->library->getObject(id);
 
         if (object) {
             QString smallId = object->smallId();
@@ -497,7 +497,7 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
 void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
 {
     QString id = item->text(3);
-    TupLibraryObject *object = k->library->findObject(id);
+    TupLibraryObject *object = k->library->getObject(id);
     if (object) {
         QString path = object->dataPath();
         if (path.length() > 0) {
@@ -809,14 +809,14 @@ void TupLibraryWidget::importBitmap()
 
         int i = 0;
         QString tag = symName;
-        TupLibraryObject *object = k->library->findObject(tag);
+        TupLibraryObject *object = k->library->getObject(tag);
         while (object) {
                i++;
                int index = symName.lastIndexOf(".");
                QString name = symName.mid(0, index);
                QString extension = symName.mid(index, symName.length() - index);
                tag = name + "-" + QString::number(i) + extension;
-               object = k->library->findObject(tag);
+               object = k->library->getObject(tag);
         }
 
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
@@ -854,14 +854,14 @@ void TupLibraryWidget::importSvg()
 
         int i = 0;
         QString tag = symName;
-        TupLibraryObject *object = k->library->findObject(tag);
+        TupLibraryObject *object = k->library->getObject(tag);
         while (object) {
                i++;
                int index = symName.lastIndexOf(".");
                QString name = symName.mid(0, index);
                QString extension = symName.mid(index, symName.length() - index);
                tag = name + "-" + QString::number(i) + extension;
-               object = k->library->findObject(tag);
+               object = k->library->getObject(tag);
         }
 
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
@@ -1191,7 +1191,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                  int index = id.lastIndexOf(".");
                  QString name = id.mid(0, index);
                  QString extension = id.mid(index + 1, id.length() - index).toUpper();
-                 TupLibraryObject *obj = k->library->findObject(id);
+                 TupLibraryObject *obj = k->library->getObject(id);
 
                  if (index < 0)
                      extension = "OBJ"; 
@@ -1469,7 +1469,7 @@ void TupLibraryWidget::callExternalEditor(QTreeWidgetItem *item, const QString &
     if (item) {
         k->lastItemEdited = item;
         QString id = item->text(1) + "." + item->text(2).toLower();
-        TupLibraryObject *object = k->library->findObject(id);
+        TupLibraryObject *object = k->library->getObject(id);
 
         if (object) {
             QString path = object->dataPath();

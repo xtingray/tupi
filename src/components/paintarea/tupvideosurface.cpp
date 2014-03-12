@@ -127,24 +127,24 @@ void TupVideoSurface::paint(QPainter *painter)
 
          if (k->grid) {
              painter->setPen(k->greenThinPen);
-             int initX = width/2; 
-             int initY = height/2;
+             int midX = width/2; 
+             int midY = height/2;
 
-             painter->drawLine(initX, 0, initX, height);
-             painter->drawLine(0, initY, width, initY);  
+             painter->drawLine(midX, 0, midX, height);
+             painter->drawLine(0, midY, width, midY);  
 
              painter->setPen(k->gridPen);
-             initX = width/2 - k->gridSpace;
+             int initX = midX - k->gridSpace;
              for (int i=initX; i > 0; i -= k->gridSpace)
                   painter->drawLine(i, 0, i, height);
-             initX = width/2 + k->gridSpace;
+             initX = midX + k->gridSpace;
              for (int i=initX; i < width; i += k->gridSpace)
                   painter->drawLine(i, 0, i, height);
 
-             initY = height/2 - k->gridSpace;
+             int initY = midY - k->gridSpace;
              for (int i=initY; i > 0; i -= k->gridSpace)
                   painter->drawLine(0, i, width, i);
-             initY = height/2 + k->gridSpace;
+             initY = midY + k->gridSpace;
              for (int i=initY; i < height; i += k->gridSpace)
                   painter->drawLine(0, i, width, i);
          }

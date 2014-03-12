@@ -262,7 +262,7 @@ void TupFrame::fromXml(const QString &xml)
                           QString symbol = e.attribute("id");
 
                           if (symbol.length() > 0) {
-                              TupLibraryObject *object = project()->library()->findObject(symbol);
+                              TupLibraryObject *object = project()->library()->getObject(symbol);
 
                               QString path(object->dataPath());
                               QDomNode n2 = e.firstChild();
@@ -934,7 +934,7 @@ TupSvgItem *TupFrame::createSvgItem(QPointF coords, const QString &xml, bool loa
 
     QDomElement root = document.documentElement();
     QString id = root.attribute("id");
-    TupLibraryObject *object = project()->library()->findObject(id);
+    TupLibraryObject *object = project()->library()->getObject(id);
     if (object) {
         QString path = object->dataPath();
         TupSvgItem *item = new TupSvgItem(path, this);

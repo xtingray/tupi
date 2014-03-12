@@ -86,7 +86,7 @@ class STORE_EXPORT TupLibraryFolder : public QObject, public TupAbstractSerializ
         bool moveObject(const QString &id, const QString &folder);
         bool moveObjectToRoot(const QString &id);
         
-        TupLibraryObject *findObject(const QString &id) const;
+        TupLibraryObject *getObject(const QString &id) const;
         
         Folders folders() const;
         LibraryObjects objects() const;

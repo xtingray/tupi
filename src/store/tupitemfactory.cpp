@@ -226,7 +226,7 @@ bool TupItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
                    item->setSymbolName(id);
 
                    if (k->library)
-                       item->setObject(k->library->findObject(id));
+                       item->setObject(k->library->getObject(id));
 
                    k->objects.push(item);
                } else {
@@ -238,7 +238,7 @@ bool TupItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
                    qgraphicsitem_cast<TupGraphicLibraryItem *>(k->item)->setSymbolName(id);
 
                    if (k->library)
-                       qgraphicsitem_cast<TupGraphicLibraryItem *>(k->item)->setObject(k->library->findObject(id));
+                       qgraphicsitem_cast<TupGraphicLibraryItem *>(k->item)->setObject(k->library->getObject(id));
 
                    k->objects.push(k->item);
                }

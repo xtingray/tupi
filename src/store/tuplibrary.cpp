@@ -73,14 +73,13 @@ void TupLibrary::fromXml(const QString &xml)
                // SQA: Check why this weird if :S
                /*
                if (e.tagName() == "library") {
-                
+
                } else if (e.tagName() == "folder") {
                           QString doc;
                           {
                              QTextStream ts(&doc);
                              ts << n;
                           }
-                
                           TupLibraryFolder::fromXml(doc);
               }
               */
@@ -92,7 +91,6 @@ void TupLibrary::fromXml(const QString &xml)
 QDomElement TupLibrary::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("library");
-    
     root.appendChild(TupLibraryFolder::toXml(doc));
     
     return root;

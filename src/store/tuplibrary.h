@@ -57,6 +57,7 @@ class STORE_EXPORT TupLibrary : public TupLibraryFolder
             Symbol = 0x01,
             Folder
         };
+
         TupLibrary(const QString &id, TupProject *parent = 0);
         ~TupLibrary();
         

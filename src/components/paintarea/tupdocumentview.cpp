@@ -63,6 +63,7 @@
 #include "tupcamerainterface.h"
 #include "tupcameradialog.h"
 #include "talgorithm.h"
+#include "tuplibrary.h"
 
 #include <QLayout>
 #include <QStatusBar>
@@ -133,7 +134,6 @@ struct TupDocumentView::Private
     double opacityFactor;
     int viewAngle;
     int autoSaveTime;
-    // TAction *fullScreenAction;
     bool fullScreenOn;
     bool isNetworked;
     QStringList onLineUsers;
@@ -232,10 +232,6 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
 
     setupDrawActions();
 
-    //k->configurationArea = new TupConfigurationArea(this);
-    //addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
-    //k->configurationArea->close();
-   
     createTools(); 
     createToolBar();
     
@@ -475,7 +471,6 @@ void TupDocumentView::loadPlugins()
     TAction *pencil = 0;
 
     foreach (QObject *plugin, TupPluginManager::instance()->tools()) {
-
              TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(plugin);
 
              if (tool->toolType() != TupToolInterface::Tweener) {
@@ -799,7 +794,6 @@ void TupDocumentView::selectTool()
 
         switch (tool->toolType()) {
                 case TupToolInterface::Brush: 
-                     // k->fullScreenAction->setDisabled(false);
                      k->status->enableFullScreenFeature(true);
                      if (toolName.compare(tr("Pencil"))==0) {
                          minWidth = 130;
@@ -817,7 +811,6 @@ void TupDocumentView::selectTool()
                          k->brushesMenu->menuAction()->setIcon(action->icon());
                      break;
                 case TupToolInterface::Tweener:
-                     // k->fullScreenAction->setDisabled(true);
                      k->status->enableFullScreenFeature(false);
                      minWidth = 220;
                      k->motionMenu->setDefaultAction(action);
@@ -826,7 +819,6 @@ void TupDocumentView::selectTool()
                          k->motionMenu->menuAction()->setIcon(action->icon());
                      break;
                 case TupToolInterface::Fill:
-                     // k->fullScreenAction->setDisabled(false);
                      k->status->enableFullScreenFeature(true);
                      k->fillMenu->setDefaultAction(action);
                      k->fillMenu->setActiveAction(action);
@@ -834,7 +826,6 @@ void TupDocumentView::selectTool()
                          k->fillMenu->menuAction()->setIcon(action->icon());
                      break;
                 case TupToolInterface::Selection:
-                     // k->fullScreenAction->setDisabled(false);
                      k->status->enableFullScreenFeature(true);
                      k->selectionMenu->setDefaultAction(action);
                      k->selectionMenu->setActiveAction(action);
@@ -847,7 +838,6 @@ void TupDocumentView::selectTool()
                      } 
                      break;
                 case TupToolInterface::View:
-                     // k->fullScreenAction->setDisabled(false);
                      k->status->enableFullScreenFeature(true);
                      k->viewToolMenu->setDefaultAction(action);
                      k->viewToolMenu->setActiveAction(action);
@@ -1707,5 +1697,8 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
                                                                             k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
                                                                             k->paintArea->currentFrameIndex());
         emit requestTriggered(&request);
+
+        TupLibrary *library = k->project->library();
+        tError() << "TupDocumentView::insertPictureInFrame() - Library count: " << library->objectsCount();
     }
 }

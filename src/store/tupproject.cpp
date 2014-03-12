@@ -647,7 +647,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
 
         if (frame) {
 
-            TupLibraryObject *object = k->library->findObject(name);
+            TupLibraryObject *object = k->library->getObject(name);
 
             if (object) {
 
