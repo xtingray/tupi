@@ -29,10 +29,9 @@ class TupVideoSurface: public QAbstractVideoSurface
         void showHistory(bool flag);
         void updateImagesOpacity(double opacity);
         void updateImagesDepth(int depth);
+        void updateGridSpacing(int space);
 
     private:
-        int opacity(double opacity);
-
         struct Private;
         Private *const k;
 };

@@ -58,6 +58,7 @@ struct TupCameraInterface::Private
     QPushButton *gridButton; 
     QPushButton *safeAreaButton;
     QPushButton *historyButton;
+    QWidget *gridWidget;
     QWidget *historyWidget;
     int counter;
 };
@@ -145,6 +146,34 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     k->gridButton->setCheckable(true);
     connect(k->gridButton, SIGNAL(clicked()), this, SLOT(drawGrid()));
 
+    k->gridWidget = new QWidget;
+    QBoxLayout *gridLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->gridWidget);
+    gridLayout->setContentsMargins(2, 2, 2, 2);
+
+    QWidget *spacingWidget = new QWidget;
+    QBoxLayout *spacingLayout = new QBoxLayout(QBoxLayout::LeftToRight, spacingWidget);
+    spacingLayout->setContentsMargins(2, 2, 2, 2);
+
+    QLabel *gridLabel = new QLabel;
+    gridLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "grid_spacing.png"));
+    gridLabel->setToolTip(tr("Grid spacing"));
+    gridLabel->setMargin(2);
+
+    QSpinBox *gridSpacing = new QSpinBox;
+    gridSpacing->setSingleStep(10);
+    gridSpacing->setRange(10, 100);
+    gridSpacing->setValue(10);
+    connect(gridSpacing, SIGNAL(valueChanged(int)), this, SLOT(updateGridSpacing(int)));
+
+    spacingLayout->addWidget(gridLabel);
+    spacingLayout->addWidget(gridSpacing);
+    spacingLayout->addStretch(2);
+
+    gridLayout->addWidget(spacingWidget, 1, Qt::AlignHCenter);
+    gridLayout->addStretch(2);
+
+    k->gridWidget->setVisible(false);
+
     k->historyButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png")), "");
     k->historyButton->setIconSize(QSize(20, 20));
     k->historyButton->setToolTip(tr("Show previous images"));
@@ -164,9 +193,10 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     opacityLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "onion.png"));
     opacityLabel->setToolTip(tr("Image opacity level")); 
     QDoubleSpinBox *opacitySpin = new QDoubleSpinBox;
+    opacitySpin->setSingleStep(0.1);
     opacitySpin->setValue(0.5);
     opacitySpin->setRange(0.0, 1.0);
-    opacitySpin->setDecimals(1);
+    opacitySpin->setDecimals(2);
     connect(opacitySpin, SIGNAL(valueChanged(double)), this, SLOT(updateImagesOpacity(double)));
 
     opacityLayout->addWidget(opacityLabel);
@@ -182,7 +212,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     previousLabel->setToolTip(tr("Amount of images to show"));
     QSpinBox *previousSpin = new QSpinBox;
     previousSpin->setValue(1);
-    previousSpin->setRange(1, 5);
+    previousSpin->setRange(0, 5);
     connect(previousSpin, SIGNAL(valueChanged(int)), this, SLOT(updateImagesDepth(int)));
 
     previousLayout->addWidget(previousLabel);
@@ -202,6 +232,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     menuLayout->addWidget(clickButton);
     menuLayout->addWidget(k->safeAreaButton);
     menuLayout->addWidget(k->gridButton);
+    menuLayout->addWidget(k->gridWidget);
     menuLayout->addWidget(k->historyButton);
     menuLayout->addWidget(k->historyWidget);
     menuLayout->addStretch(2);
@@ -249,7 +280,9 @@ void TupCameraInterface::changeCameraDevice(int index)
 
 void TupCameraInterface::drawGrid()
 {
-    k->currentCamera->drawGrid(k->gridButton->isChecked());
+    bool flag = k->gridButton->isChecked();
+    k->gridWidget->setVisible(flag);
+    k->currentCamera->drawGrid(flag);
 }
 
 void TupCameraInterface::drawActionSafeArea()
@@ -272,4 +305,9 @@ void TupCameraInterface::updateImagesOpacity(double opacity)
 void TupCameraInterface::updateImagesDepth(int depth)
 {
     k->currentCamera->updateImagesDepth(depth);
+}
+
+void TupCameraInterface::updateGridSpacing(int space)
+{
+    k->currentCamera->updateGridSpacing(space);
 }

@@ -135,8 +135,6 @@ void TupCameraWindow::takePicture(int counter)
 
     QString imagePath = k->dir + QDir::separator() + prev + QString::number(counter) + ".jpg";
 
-    tError() << "TupCameraWindow::takePicture() - imagePath: " << imagePath;
-
     //on half pressed shutter button
     k->camera->searchAndLock();
 
@@ -153,8 +151,6 @@ void TupCameraWindow::imageSavedFromCamera(int id, const QString path)
 {
     Q_UNUSED(id);
 
-    tError() << "TupCameraInterface::imageSavedFromCamera() - ID: " << k->counter;
-    tError() << "TupCameraInterface::imageSavedFromCamera() - Image saved from Camera at: " << path;
     if (path.isEmpty())
         return;
 
@@ -185,5 +181,10 @@ void TupCameraWindow::updateImagesOpacity(double opacity)
 void TupCameraWindow::updateImagesDepth(int depth)
 {
     k->videoSurface->updateImagesDepth(depth);
+}
+
+void TupCameraWindow::updateGridSpacing(int space)
+{
+    k->videoSurface->updateGridSpacing(space);
 }
 

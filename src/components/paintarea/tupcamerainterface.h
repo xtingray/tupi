@@ -67,6 +67,7 @@ class TupCameraInterface : public QFrame
         void showHistory();
         void updateImagesOpacity(double opacity);
         void updateImagesDepth(int depth);
+        void updateGridSpacing(int space);
 
     private:
         struct Private;

@@ -27,6 +27,7 @@ class TupCameraWindow: public QWidget, public VideoIF
         void showHistory(bool flag);
         void updateImagesOpacity(double opacity);
         void updateImagesDepth(int depth);
+        void updateGridSpacing(int space);
 
     signals:
         void pictureHasBeenSelected(int id, const QString path);

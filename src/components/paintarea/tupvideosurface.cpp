@@ -7,12 +7,23 @@ struct TupVideoSurface::Private
     QVideoFrame frame;
     QImage::Format imageFormat;
     QSize displaySize;
-    QImage previousImage;
+    QList<QImage> history;
+    int widgetWidth;
+    int widgetHeight;
+
     bool isScaled;
     bool showPrevious;
     bool safeArea;
     bool grid;
-    double opacity;
+    int opacity;
+    int historySize;
+    int gridSpace;
+
+    QPen gridPen;
+    QPen whitePen;
+    QPen grayPen;
+    QPen greenThickPen;
+    QPen greenThinPen;
 };
 
 TupVideoSurface::TupVideoSurface(QWidget *widget, VideoIF *target, const QSize &camResolution, 
@@ -28,7 +39,19 @@ TupVideoSurface::TupVideoSurface(QWidget *widget, VideoIF *target, const QSize &
     k->safeArea = false;
     k->grid = false;
     k->showPrevious = false;
-    k->opacity = 0.5;
+    k->opacity = 127;
+    k->historySize = 1; 
+    k->gridSpace = 10;
+
+    k->gridPen = QPen(QColor(0, 0, 180, 50), 1);
+    k->whitePen = QPen(QColor(255, 255, 255, 255), 1);
+    k->grayPen = QPen(QColor(150, 150, 150, 255), 1);
+    k->greenThickPen = QPen(QColor(0, 135, 0, 255), 3);
+    k->greenThinPen = QPen(QColor(0, 135, 0, 255), 1);
+
+    QRect rect = k->targetWidget->rect();
+    k->widgetWidth = rect.size().width();
+    k->widgetHeight = rect.size().height();
 }
 
 TupVideoSurface::~TupVideoSurface()
@@ -75,40 +98,59 @@ void TupVideoSurface::paint(QPainter *painter)
              height = image.height();
          }
 
-         QRect rect = k->targetWidget->rect();
-         QPoint leftTop((qAbs(rect.size().width() - width)) / 2, 
-                        (qAbs(rect.size().height() - height)) / 2);
+         QPoint leftTop((qAbs(k->widgetWidth - width))/2, (qAbs(k->widgetHeight - height))/2);
 
          if (!image.isNull()) 
              painter->drawImage(leftTop, image);
 
-         if (k->showPrevious) {
-             if (!k->previousImage.isNull()) {
-                 QPixmap transparent(k->previousImage.size());
-                 transparent.fill(Qt::transparent);
-                 QPainter p;
-                 p.begin(&transparent);
-                 p.setCompositionMode(QPainter::CompositionMode_Source);
-                 p.drawPixmap(0, 0, QPixmap::fromImage(k->previousImage));
-                 p.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-                 p.fillRect(transparent.rect(), QColor(0, 0, 0, opacity(k->opacity)));
-                 p.end();
-                 if (k->isScaled)
-                     transparent = transparent.scaledToWidth(k->displaySize.width(), Qt::SmoothTransformation);
-                 painter->drawPixmap(leftTop, transparent);
+         if (k->showPrevious && !k->history.empty() && k->historySize > 0) {
+             int times = k->historySize;
+             int limit = k->history.count();
+             if (times > limit)
+                 times = limit;
+             int init = limit - times;
+             int end = limit-1;
+             for (int i=init; i <= end; i++) {
+                  QImage image = k->history.at(i);
+                  QPixmap transparent(image.size());
+                  transparent.fill(Qt::transparent);
+                  QPainter p;
+                  p.begin(&transparent);
+                  p.setCompositionMode(QPainter::CompositionMode_Source);
+                  p.drawPixmap(0, 0, QPixmap::fromImage(image));
+                  p.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+                  p.fillRect(transparent.rect(), QColor(0, 0, 0, k->opacity));
+                  p.end();
+                  painter->drawPixmap(leftTop, transparent);
              }
          }
 
          if (k->grid) {
-             painter->setPen(QPen(QColor(0, 0, 180, 50), 1));
-             for (int i = 0; i <= width; i += 10)
+             painter->setPen(k->greenThinPen);
+             int initX = width/2; 
+             int initY = height/2;
+
+             painter->drawLine(initX, 0, initX, height);
+             painter->drawLine(0, initY, width, initY);  
+
+             painter->setPen(k->gridPen);
+             initX = width/2 - k->gridSpace;
+             for (int i=initX; i > 0; i -= k->gridSpace)
                   painter->drawLine(i, 0, i, height);
-             for (int i = 0; i <= height; i += 10)
+             initX = width/2 + k->gridSpace;
+             for (int i=initX; i < width; i += k->gridSpace)
+                  painter->drawLine(i, 0, i, height);
+
+             initY = height/2 - k->gridSpace;
+             for (int i=initY; i > 0; i -= k->gridSpace)
+                  painter->drawLine(0, i, width, i);
+             initY = height/2 + k->gridSpace;
+             for (int i=initY; i < height; i += k->gridSpace)
                   painter->drawLine(0, i, width, i);
          }
 
          if (k->safeArea) {
-             painter->setPen(QPen(QColor(255, 255, 255, 255), 1));
+             painter->setPen(k->whitePen);
              int outerBorder = width/19;
              int innerBorder = width/6;
 
@@ -124,31 +166,36 @@ void TupVideoSurface::paint(QPainter *painter)
              QPointF right = rectRight - QPointF(outerBorder, outerBorder);
              QRectF outerRect(left, right);
 
-             painter->setPen(QPen(QColor(150, 150, 150, 255), 1));
+             painter->setPen(k->grayPen);
              painter->drawRect(outerRect);
 
-             painter->setPen(QPen(QColor(0, 135, 0, 255), 3));
-             painter->drawLine(QPoint(hSpace, left.y() - 8), QPoint(hSpace, left.y() + 8));
-             painter->drawLine(QPoint(hSpace - 5, left.y()), QPoint(hSpace + 5, left.y()));
-             painter->drawLine(QPoint(hSpace2, left.y() - 8), QPoint(hSpace2, left.y() + 8));
-             painter->drawLine(QPoint(hSpace2 - 5, left.y()), QPoint(hSpace2 + 5, left.y()));
+             int leftY = left.y();
+             int leftX = left.x();
+             int rightY = right.y();
+             int rightX = right.x();
 
-             painter->drawLine(QPoint(hSpace, right.y() - 8), QPoint(hSpace, right.y() + 8));
-             painter->drawLine(QPoint(hSpace - 5, right.y()), QPoint(hSpace + 5, right.y()));
-             painter->drawLine(QPoint(hSpace2, right.y() - 8), QPoint(hSpace2, right.y() + 8));
-             painter->drawLine(QPoint(hSpace2 - 5, right.y()), QPoint(hSpace2 + 5, right.y()));
+             painter->setPen(k->greenThickPen);
+             painter->drawLine(QPoint(hSpace, leftY - 8), QPoint(hSpace, leftY + 8));
+             painter->drawLine(QPoint(hSpace - 5, leftY), QPoint(hSpace + 5, leftY));
+             painter->drawLine(QPoint(hSpace2, leftY - 8), QPoint(hSpace2, leftY + 8));
+             painter->drawLine(QPoint(hSpace2 - 5, leftY), QPoint(hSpace2 + 5, leftY));
 
-             painter->drawLine(QPoint(left.x() - 8, vSpace), QPoint(left.x() + 8, vSpace));
-             painter->drawLine(QPoint(left.x(), vSpace - 5), QPoint(left.x(), vSpace + 5));
-             painter->drawLine(QPoint(left.x() - 8, vSpace2), QPoint(left.x() + 8, vSpace2));
-             painter->drawLine(QPoint(left.x(), vSpace2 - 5), QPoint(left.x(), vSpace2 + 5));
+             painter->drawLine(QPoint(hSpace, rightY - 8), QPoint(hSpace, rightY + 8));
+             painter->drawLine(QPoint(hSpace - 5, rightY), QPoint(hSpace + 5, rightY));
+             painter->drawLine(QPoint(hSpace2, rightY - 8), QPoint(hSpace2, rightY + 8));
+             painter->drawLine(QPoint(hSpace2 - 5, rightY), QPoint(hSpace2 + 5, rightY));
 
-             painter->drawLine(QPoint(right.x() - 8, vSpace), QPoint(right.x() + 8, vSpace));
-             painter->drawLine(QPoint(right.x(), vSpace - 5), QPoint(right.x(), vSpace + 5));
-             painter->drawLine(QPoint(right.x() - 8, vSpace2), QPoint(right.x() + 8, vSpace2));
-             painter->drawLine(QPoint(right.x(), vSpace2 - 5), QPoint(right.x(), vSpace2 + 5));
+             painter->drawLine(QPoint(leftX - 8, vSpace), QPoint(leftX + 8, vSpace));
+             painter->drawLine(QPoint(leftX, vSpace - 5), QPoint(leftX, vSpace + 5));
+             painter->drawLine(QPoint(leftX - 8, vSpace2), QPoint(leftX + 8, vSpace2));
+             painter->drawLine(QPoint(leftX, vSpace2 - 5), QPoint(leftX, vSpace2 + 5));
 
-             painter->setPen(QPen(QColor(0, 135, 0, 255), 1));
+             painter->drawLine(QPoint(rightX - 8, vSpace), QPoint(rightX + 8, vSpace));
+             painter->drawLine(QPoint(rightX, vSpace - 5), QPoint(rightX, vSpace + 5));
+             painter->drawLine(QPoint(rightX - 8, vSpace2), QPoint(rightX + 8, vSpace2));
+             painter->drawLine(QPoint(rightX, vSpace2 - 5), QPoint(rightX, vSpace2 + 5));
+
+             painter->setPen(k->greenThinPen);
 
              left = rectLeft + QPointF(innerBorder, innerBorder);
              right = rectRight - QPointF(innerBorder, innerBorder);
@@ -189,13 +236,13 @@ void TupVideoSurface::drawActionSafeArea(bool flag)
 
 void TupVideoSurface::setLastImage(const QImage &image)
 {
-    k->previousImage = image;
-}
+    QImage pic = image; 
+    if (k->isScaled)
+        pic = pic.scaledToWidth(k->displaySize.width(), Qt::SmoothTransformation);
 
-int TupVideoSurface::opacity(double opacity)
-{
-    double value = opacity*255;
-    return (int) value;
+    k->history << pic;
+    if (k->history.count() > 5)
+        k->history.removeFirst();
 }
 
 void TupVideoSurface::showHistory(bool flag)
@@ -206,11 +253,18 @@ void TupVideoSurface::showHistory(bool flag)
 
 void TupVideoSurface::updateImagesOpacity(double opacity)
 {
-
+    k->opacity = (int) (255*opacity);
+    k->videoIF->updateVideo();
 }
 
 void TupVideoSurface::updateImagesDepth(int depth)
 {
-
+    k->historySize = depth;
+    k->videoIF->updateVideo();
 }
 
+void TupVideoSurface::updateGridSpacing(int space)
+{
+    k->gridSpace = space;
+    k->videoIF->updateVideo();
+}
