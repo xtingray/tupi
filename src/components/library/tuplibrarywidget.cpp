@@ -757,7 +757,7 @@ void TupLibraryWidget::importBitmap()
     QFile f(image);
     QFileInfo fileInfo(f);
 
-    QString symName = fileInfo.fileName().toLower();
+    QString key = fileInfo.fileName().toLower();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -770,7 +770,7 @@ void TupLibraryWidget::importBitmap()
         int projectHeight = k->project->dimension().height();
 
         #ifdef K_DEBUG
-               tFatal() << "TupLibraryWidget::importBitmap() - Image filename: " << symName << " | Raw Size: " << data.size();
+               tFatal() << "TupLibraryWidget::importBitmap() - Image filename: " << key << " | Raw Size: " << data.size();
                tFatal() << "TupLibraryWidget::importBitmap() - Image Size: " << "[" << picWidth << ", " << picHeight << "]" << " | Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
         #endif
 
@@ -808,18 +808,15 @@ void TupLibraryWidget::importBitmap()
         }
 
         int i = 0;
-        QString tag = symName;
-        TupLibraryObject *object = k->library->getObject(tag);
-        while (object) {
+        int index = key.lastIndexOf(".");
+        QString name = key.mid(0, index);
+        QString extension = key.mid(index, key.length() - index);
+        while (k->library->exists(key)) {
                i++;
-               int index = symName.lastIndexOf(".");
-               QString name = symName.mid(0, index);
-               QString extension = symName.mid(index, symName.length() - index);
-               tag = name + "-" + QString::number(i) + extension;
-               object = k->library->getObject(tag);
+               key = name + "-" + QString::number(i) + extension;
         }
 
-        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
+        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, key,
                                                                           TupLibraryObject::Image, k->project->spaceContext(), data, QString(), 
                                                                           k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
@@ -840,7 +837,7 @@ void TupLibraryWidget::importSvg()
     QFile f(svgPath);
     QFileInfo fileInfo(f);
 
-    QString symName = fileInfo.fileName().toLower();
+    QString key = fileInfo.fileName().toLower();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -853,18 +850,15 @@ void TupLibraryWidget::importSvg()
         tFatal() << "TupLibraryWidget::importSvg() - Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
 
         int i = 0;
-        QString tag = symName;
-        TupLibraryObject *object = k->library->getObject(tag);
-        while (object) {
+        int index = key.lastIndexOf(".");
+        QString name = key.mid(0, index);
+        QString extension = key.mid(index, key.length() - index);
+        while (k->library->exists(key)) {
                i++;
-               int index = symName.lastIndexOf(".");
-               QString name = symName.mid(0, index);
-               QString extension = symName.mid(index, symName.length() - index);
-               tag = name + "-" + QString::number(i) + extension;
-               object = k->library->getObject(tag);
+               key = name + "-" + QString::number(i) + extension;
         }
 
-        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
+        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, key,
                                                        TupLibraryObject::Svg, k->project->spaceContext(), data, QString(), 
                                                        k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);

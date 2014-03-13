@@ -151,6 +151,7 @@ struct TupDocumentView::Private
     QComboBox *spaceMode;
     bool dynamicFlag;
     QSize cameraSize;
+    int photoCounter;
 
     TupProject *project;
     QTimer *timer;
@@ -174,6 +175,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     k->isNetworked = isNetworked;
     k->onLineUsers = users;
     k->dynamicFlag = false;
+    k->photoCounter = 1;
 
     k->actionManager = new TActionManager(this);
 
@@ -1605,7 +1607,7 @@ void TupDocumentView::cameraInterface()
             } 
 
             TupCameraInterface *dialog = new TupCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(), 
-                                                                maxCameraSize, path);
+                                                                maxCameraSize, path, k->photoCounter);
 
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
@@ -1651,8 +1653,6 @@ void TupDocumentView::resizeProjectDimension(const QSize dimension)
 
 void TupDocumentView::insertPictureInFrame(int id, const QString path)
 {
-    Q_UNUSED(id);
-   
     // SQA: This is a hack - remember to check the QImageEncoderSettings issue 
     QImage pixmap(path); 
     if (pixmap.size() != k->cameraSize) {
@@ -1673,7 +1673,7 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
 
     QFile f(path);
     QFileInfo fileInfo(f);
-    QString symName = fileInfo.fileName().toLower();
+    QString key = fileInfo.fileName().toLower();
 
     if (f.open(QIODevice::ReadOnly)) {
         if (id > 1) {
@@ -1690,15 +1690,25 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
 
         QByteArray data = f.readAll();
         f.close();
-        // SQA: You must verify that the object name doesn't exist in the library already
-        QString tag = symName;
-        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, tag,
+
+        TupLibrary *library = k->project->library();
+        tError() << "TupDocumentView::insertPictureInFrame() - Library count: " << library->objectsCount();
+        while(library->exists(key)) {
+              id++;
+              QString prev = "pic";
+              if (id < 10)
+                  prev += "00";
+              if (id >= 10 && id < 100)
+                  prev += "0";
+              key = prev + QString::number(id) + ".jpg";
+        }
+
+        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, key,
                                                                             TupLibraryObject::Image, k->project->spaceContext(), data, QString(),
                                                                             k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
                                                                             k->paintArea->currentFrameIndex());
         emit requestTriggered(&request);
 
-        TupLibrary *library = k->project->library();
-        tError() << "TupDocumentView::insertPictureInFrame() - Library count: " << library->objectsCount();
+        k->photoCounter = id + 1;
     }
 }

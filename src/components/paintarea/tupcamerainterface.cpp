@@ -64,7 +64,7 @@ struct TupCameraInterface::Private
 };
 
 TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> cameraDevices, QComboBox *devicesCombo, int cameraIndex, 
-                                       const QSize cameraSize, const QString &path, QWidget *parent) : QFrame(parent), k(new Private)
+                                       const QSize cameraSize, const QString &path, int counter, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
@@ -73,7 +73,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution: ") + title);
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
 
-    k->counter = 1;
+    k->counter = counter;
 
     k->widgetStack = new QStackedWidget();
     QSize displaySize = cameraSize;
@@ -124,7 +124,11 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     QWidget *menuWidget = new QWidget;
     QBoxLayout *menuLayout = new QBoxLayout(QBoxLayout::TopToBottom, menuWidget);
 
-    QLabel *devicesLabel = new QLabel(tr("Devices"));
+    QLabel *devicesLabel = new QLabel;
+    QString deviceString = tr("Cameras");
+    if (devicesCombo->count() == 1)
+        deviceString = tr("Camera");
+    devicesLabel->setText(deviceString);
     devicesLabel->setAlignment(Qt::AlignHCenter);
 
     QPushButton *clickButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")), "");
@@ -226,7 +230,17 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     k->historyWidget->setVisible(false);
 
     menuLayout->addWidget(devicesLabel);
-    menuLayout->addWidget(devicesCombo);
+    if (devicesCombo->count() == 1) {
+        QLabel *deviceDesc = new QLabel;
+        QFont font = deviceDesc->font();
+        font.setBold(true);
+        deviceDesc->setFont(font);
+        deviceDesc->setText(devicesCombo->itemText(0));
+        menuLayout->addWidget(deviceDesc);
+    } else {
+        menuLayout->addWidget(devicesCombo);
+    } 
+
     devicesCombo->setCurrentIndex(cameraIndex);
     menuLayout->addWidget(new TSeparator(Qt::Horizontal));
     menuLayout->addWidget(clickButton);

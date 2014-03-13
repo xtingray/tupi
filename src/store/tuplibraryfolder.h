@@ -85,6 +85,8 @@ class STORE_EXPORT TupLibraryFolder : public QObject, public TupAbstractSerializ
         
         bool moveObject(const QString &id, const QString &folder);
         bool moveObjectToRoot(const QString &id);
+
+        bool exists(const QString &id);
         
         TupLibraryObject *getObject(const QString &id) const;
         
@@ -97,7 +99,7 @@ class STORE_EXPORT TupLibraryFolder : public QObject, public TupAbstractSerializ
         TupProject *project() const;
         void reset();
 
-        TupLibraryFolder *findFolder(const QString &id) const;
+        TupLibraryFolder *getFolder(const QString &id) const;
         bool folderExists(const QString &id) const;
 
         void updatePaths(const QString &newPath);

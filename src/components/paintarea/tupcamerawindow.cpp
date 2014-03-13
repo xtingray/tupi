@@ -130,7 +130,7 @@ void TupCameraWindow::takePicture(int counter)
     QString prev = "pic";
     if (counter < 10)
         prev += "00";
-    if (counter > 10 && counter < 100)
+    if (counter >= 10 && counter < 100)
         prev += "0";
 
     QString imagePath = k->dir + QDir::separator() + prev + QString::number(counter) + ".jpg";
