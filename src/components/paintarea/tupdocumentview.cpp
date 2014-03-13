@@ -1575,6 +1575,8 @@ void TupDocumentView::cameraInterface()
 
         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
         QList<QSize> resolutions = imageCapture->supportedResolutions();
+
+        /*
         QSize maxCameraSize = QSize(0, 0);
         for (int i=0; i < resolutions.size(); i++) {
              QSize resolution = resolutions.at(i);
@@ -1583,6 +1585,7 @@ void TupDocumentView::cameraInterface()
                  maxCameraSize.setHeight(resolution.height());
              }
         }
+        */
 
         QDesktopWidget desktop;
         QSize projectSize = k->project->dimension();
@@ -1594,6 +1597,9 @@ void TupDocumentView::cameraInterface()
 
         if (cameraDialog->exec() == QDialog::Accepted) {
             k->cameraSize = cameraDialog->cameraResolution();
+
+            tError() << "TupDocumentView::cameraInterface() - Camera Size: " << k->cameraSize.width() << ", " << k->cameraSize.height();
+
             QString title = QString::number(k->cameraSize.width()) + "x" + QString::number(k->cameraSize.height());
 
             if (devicesCombo->count() > 1) {
@@ -1606,8 +1612,8 @@ void TupDocumentView::cameraInterface()
                     resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(), 
-                                                                maxCameraSize, path, k->photoCounter);
+            TupCameraInterface *dialog = new TupCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(),
+                                                                k->cameraSize, path, k->photoCounter);
 
             connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
             dialog->show();
@@ -1692,7 +1698,6 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
         f.close();
 
         TupLibrary *library = k->project->library();
-        tError() << "TupDocumentView::insertPictureInFrame() - Library count: " << library->objectsCount();
         while(library->exists(key)) {
               id++;
               QString prev = "pic";

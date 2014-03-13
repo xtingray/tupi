@@ -17,6 +17,10 @@ TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camResolution, con
 {
     setFixedSize(displayResolution + QSize(1, 1));
 
+    tError() << "TupCameraWindow() - Display Res: " << displayResolution.width() << ", " << displayResolution.height();
+    tError() << "TupCameraWindow() - Camera Res: " << camResolution.width() << ", " << camResolution.height();
+    tError() << "";
+
     k->dir = path;
 
     k->camera = input;
@@ -36,6 +40,7 @@ TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camResolution, con
     QVideoRendererControl *rendererControl = service->requestControl<QVideoRendererControl*>();
 
     bool isScaled = false;
+
     if (camResolution != displayResolution)
         isScaled = true;
 

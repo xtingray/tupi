@@ -264,7 +264,6 @@ bool TupLibraryFolder::exists(const QString &id)
     }
 
     foreach (TupLibraryFolder *folder, k->folders) {
-             TupLibraryObject *object = folder->getObject(id);
              if (folder->exists(id))
                  return true;
     }

@@ -1,4 +1,5 @@
 #include "tupvideosurface.h"
+#include "tdebug.h"
 
 struct TupVideoSurface::Private
 {
@@ -18,6 +19,8 @@ struct TupVideoSurface::Private
     int opacity;
     int historySize;
     int gridSpace;
+    int historyInit;
+    int historyEnd;
 
     QPen gridPen;
     QPen whitePen;
@@ -42,6 +45,8 @@ TupVideoSurface::TupVideoSurface(QWidget *widget, VideoIF *target, const QSize &
     k->opacity = 127;
     k->historySize = 1; 
     k->gridSpace = 10;
+    k->historyInit = 0;
+    k->historyEnd = 0;
 
     k->gridPen = QPen(QColor(0, 0, 180, 50), 1);
     k->whitePen = QPen(QColor(255, 255, 255, 255), 1);
@@ -104,13 +109,7 @@ void TupVideoSurface::paint(QPainter *painter)
              painter->drawImage(leftTop, image);
 
          if (k->showPrevious && !k->history.empty() && k->historySize > 0) {
-             int times = k->historySize;
-             int limit = k->history.count();
-             if (times > limit)
-                 times = limit;
-             int init = limit - times;
-             int end = limit-1;
-             for (int i=init; i <= end; i++) {
+             for (int i=k->historyInit; i <= k->historyEnd; i++) {
                   QImage image = k->history.at(i);
                   QPixmap transparent(image.size());
                   transparent.fill(Qt::transparent);
@@ -237,12 +236,32 @@ void TupVideoSurface::drawActionSafeArea(bool flag)
 void TupVideoSurface::setLastImage(const QImage &image)
 {
     QImage pic = image; 
-    if (k->isScaled)
-        pic = pic.scaledToWidth(k->displaySize.width(), Qt::SmoothTransformation);
+    if (k->isScaled) {
+        // pic = pic.scaledToWidth(k->displaySize.width(), Qt::SmoothTransformation);
+
+        tError() << "TupVideoSurface::setLastImage() - Display Res: " << k->displaySize.width() << ", " << k->displaySize.height();
+        tError() << "TupVideoSurface::setLastImage() - Image Res: " << pic.width() << ", " << pic.height();
+
+        tError() << "";
+        int height = pic.height();
+        int width = (k->displaySize.width() * height) / k->displaySize.height();
+        int posX = (pic.width() - width)/2;
+        int posY = 0;
+        if (width > pic.width()) {
+            width = pic.width();
+            height = (k->displaySize.height() * width) / k->displaySize.width();
+            posX = 0;
+            posY = (pic.height() - height)/2;
+        }
+        QImage mask = pic.copy(posX, posY, width, height);
+        pic = mask.scaledToWidth(k->displaySize.width(), Qt::SmoothTransformation);
+    }
 
     k->history << pic;
     if (k->history.count() > 5)
         k->history.removeFirst();
+
+    calculateImageDepth();
 }
 
 void TupVideoSurface::showHistory(bool flag)
@@ -260,6 +279,7 @@ void TupVideoSurface::updateImagesOpacity(double opacity)
 void TupVideoSurface::updateImagesDepth(int depth)
 {
     k->historySize = depth;
+    calculateImageDepth();
     k->videoIF->updateVideo();
 }
 
@@ -267,4 +287,14 @@ void TupVideoSurface::updateGridSpacing(int space)
 {
     k->gridSpace = space;
     k->videoIF->updateVideo();
+}
+
+void TupVideoSurface::calculateImageDepth()
+{
+    int times = k->historySize;
+    int limit = k->history.count();
+    if (times > limit)
+        times = limit;
+    k->historyInit = limit - times;
+    k->historyEnd = limit-1;
 }

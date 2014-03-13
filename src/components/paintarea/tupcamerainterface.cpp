@@ -80,11 +80,38 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     QDesktopWidget desktop;
     int desktopWidth = desktop.screenGeometry().width();
     int desktopHeight = desktop.screenGeometry().height();
+
     int maxWidth = 640;
-    if (cameraDevices.count() == 1)
+
+    if (cameraDevices.count() == 1) {
         maxWidth = 800;
 
-    for (int i=0; i < cameraDevices.size(); i++) {
+        QByteArray device = cameraDevices.at(i);
+        QCamera *camera = new QCamera(device);
+        QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
+
+        if (cameraSize.width() > desktopWidth) {
+            int width = 0;
+            int height = 0;
+            width = desktopWidth/2;
+            height = width * cameraSize.height() / cameraSize.width();
+            displaySize = QSize(width, height);
+         } else {
+             if (cameraSize.width() > maxWidth) {
+                 int width = 0;
+                 int height = 0;
+                 width = maxWidth;
+                 height = width * cameraSize.height() / cameraSize.width();
+                 displaySize = QSize(width, height);
+             }
+         }
+
+         TupCameraWindow *cameraWindow = new TupCameraWindow(camera, cameraSize, displaySize, imageCapture, path);
+         connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
+
+         k->widgetStack->addWidget(cameraWindow);
+    } else {
+         for (int i=0; i < cameraDevices.size(); i++) {
          QByteArray device = cameraDevices.at(i);
          QCamera *camera = new QCamera(device); 
          QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
@@ -116,7 +143,8 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
          connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
 
          k->widgetStack->addWidget(cameraWindow);
-    }
+         }
+    } 
 
     k->widgetStack->setCurrentIndex(cameraIndex);
     k->currentCamera = (TupCameraWindow *) k->widgetStack->currentWidget();

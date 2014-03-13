@@ -121,10 +121,17 @@ void Tweener::init(TupGraphicsScene *scene)
        T_FUNCINFO;
     #endif
 
-    delete k->path;
-    k->path = 0;
-    delete k->nodesGroup;
-    k->nodesGroup = 0;
+    if (k->nodesGroup) {
+        k->nodesGroup->clear();
+        delete k->nodesGroup;
+        k->nodesGroup = 0;
+    }
+
+    if (k->path) {
+        delete k->path;
+        k->path = 0;
+    }
+
     k->scene = scene;
     k->objects.clear();
     k->baseZValue = 20000 + (scene->scene()->layersTotal() * 10000);

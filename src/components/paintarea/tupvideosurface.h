@@ -32,6 +32,7 @@ class TupVideoSurface: public QAbstractVideoSurface
         void updateGridSpacing(int space);
 
     private:
+        void calculateImageDepth();
         struct Private;
         Private *const k;
 };
