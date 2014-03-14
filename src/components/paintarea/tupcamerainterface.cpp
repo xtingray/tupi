@@ -37,16 +37,16 @@
 #include "tupcamerawindow.h"
 #include "tupapplication.h"
 #include "tapplicationproperties.h"
-#include "toptionaldialog.h"
 #include "tseparator.h"
+#include "talgorithm.h"
+#include "tosd.h"
+#include "tupcolorwidget.h"
 #include "tdebug.h"
 
 #include <QBoxLayout>
 #include <QIcon>
 #include <QDir>
-#include <QTimer>
 #include <QDesktopWidget>
-#include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QDoubleSpinBox>
@@ -61,16 +61,18 @@ struct TupCameraInterface::Private
     QWidget *gridWidget;
     QWidget *historyWidget;
     int counter;
+    QColor gridColor;
+    TupColorWidget *colorCell;
 };
 
 TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> cameraDevices, QComboBox *devicesCombo, int cameraIndex, 
-                                       const QSize cameraSize, const QString &path, int counter, QWidget *parent) : QFrame(parent), k(new Private)
+                                       const QSize cameraSize, int counter, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
            TINIT;
     #endif
 
-    setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution: ") + title);
+    setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution:") + " " + title);
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
 
     k->counter = counter;
@@ -79,71 +81,45 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     QSize displaySize = cameraSize;
     QDesktopWidget desktop;
     int desktopWidth = desktop.screenGeometry().width();
-    int desktopHeight = desktop.screenGeometry().height();
 
-    int maxWidth = 640;
+    if (cameraSize.width() > desktopWidth) {
+        int width = desktopWidth/2;
+        int height = width * cameraSize.height() / cameraSize.width();
+        displaySize = QSize(width, height);
+    } else {
+        int maxWidth = 640;
+        if (desktopWidth > 800)
+            maxWidth = 800;
+
+        if (cameraSize.width() > maxWidth) {
+            int height = maxWidth * cameraSize.height() / cameraSize.width();
+            displaySize = QSize(maxWidth, height);
+        }
+    }
+
+    QString path = randomPath();
 
     if (cameraDevices.count() == 1) {
-        maxWidth = 800;
-
-        QByteArray device = cameraDevices.at(i);
+        QByteArray device = cameraDevices.at(0);
         QCamera *camera = new QCamera(device);
         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
 
-        if (cameraSize.width() > desktopWidth) {
-            int width = 0;
-            int height = 0;
-            width = desktopWidth/2;
-            height = width * cameraSize.height() / cameraSize.width();
-            displaySize = QSize(width, height);
-         } else {
-             if (cameraSize.width() > maxWidth) {
-                 int width = 0;
-                 int height = 0;
-                 width = maxWidth;
-                 height = width * cameraSize.height() / cameraSize.width();
-                 displaySize = QSize(width, height);
-             }
-         }
+        TupCameraWindow *cameraWindow = new TupCameraWindow(camera, cameraSize, displaySize, imageCapture, path);
+        connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
 
-         TupCameraWindow *cameraWindow = new TupCameraWindow(camera, cameraSize, displaySize, imageCapture, path);
-         connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
-
-         k->widgetStack->addWidget(cameraWindow);
+        k->widgetStack->addWidget(cameraWindow);
     } else {
-         for (int i=0; i < cameraDevices.size(); i++) {
-         QByteArray device = cameraDevices.at(i);
-         QCamera *camera = new QCamera(device); 
-         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
+        for (int i=0; i < cameraDevices.size(); i++) {
+             QByteArray device = cameraDevices.at(i);
+             QCamera *camera = new QCamera(device); 
+             QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
+             QSize camSize = setBestResolution(imageCapture->supportedResolutions(), cameraSize);
 
-         QList<QSize> resolutions = imageCapture->supportedResolutions();
-         QSize maxCameraSize = QSize(0, 0);
-         for (int i=0; i < resolutions.size(); i++) {
-              QSize resolution = resolutions.at(i);
-              if (resolution.width() > maxCameraSize.width()) {
-                  maxCameraSize.setWidth(resolution.width());
-                  maxCameraSize.setHeight(resolution.height());
-              }
-         }
+             TupCameraWindow *cameraWindow = new TupCameraWindow(camera, camSize, displaySize, imageCapture, path);
+             connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
 
-         if (cameraSize.width() > desktopWidth || cameraSize.height() > desktopHeight || cameraSize.width() > maxWidth) {
-             int width = 0;
-             int height = 0;
-             if (cameraSize.width() > cameraSize.height()) {
-                 width = desktopWidth/2;
-                 height = width * cameraSize.height() / cameraSize.width();
-             } else {
-                 height = desktopHeight/2;
-                 width = height * cameraSize.width() / cameraSize.height();
-             }
-             displaySize = QSize(width, height);
-         }
-
-         TupCameraWindow *cameraWindow = new TupCameraWindow(camera, maxCameraSize, displaySize, imageCapture, path);
-         connect(cameraWindow, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SIGNAL(pictureHasBeenSelected(int, const QString)));
-
-         k->widgetStack->addWidget(cameraWindow);
-         }
+             k->widgetStack->addWidget(cameraWindow);
+        }
     } 
 
     k->widgetStack->setCurrentIndex(cameraIndex);
@@ -179,12 +155,8 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     connect(k->gridButton, SIGNAL(clicked()), this, SLOT(drawGrid()));
 
     k->gridWidget = new QWidget;
-    QBoxLayout *gridLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->gridWidget);
-    gridLayout->setContentsMargins(2, 2, 2, 2);
-
-    QWidget *spacingWidget = new QWidget;
-    QBoxLayout *spacingLayout = new QBoxLayout(QBoxLayout::LeftToRight, spacingWidget);
-    spacingLayout->setContentsMargins(2, 2, 2, 2);
+    QGridLayout *gridLayout = new QGridLayout(k->gridWidget);
+    gridLayout->setContentsMargins(50, 2, 50, 2);
 
     QLabel *gridLabel = new QLabel;
     gridLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "grid_spacing.png"));
@@ -197,12 +169,19 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     gridSpacing->setValue(10);
     connect(gridSpacing, SIGNAL(valueChanged(int)), this, SLOT(updateGridSpacing(int)));
 
-    spacingLayout->addWidget(gridLabel);
-    spacingLayout->addWidget(gridSpacing);
-    spacingLayout->addStretch(2);
+    QLabel *colorLabel = new QLabel;
+    colorLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "color_palette.png"));
+    colorLabel->setToolTip(tr("Grid color"));
+    colorLabel->setMargin(2);
 
-    gridLayout->addWidget(spacingWidget, 1, Qt::AlignHCenter);
-    gridLayout->addStretch(2);
+    k->gridColor = QColor(0, 0, 180, 50);
+    k->colorCell = new TupColorWidget(k->gridColor);
+    connect(k->colorCell, SIGNAL(clicked()), this, SLOT(updateColour()));
+
+    gridLayout->addWidget(gridLabel, 0, 0, Qt::AlignHCenter);
+    gridLayout->addWidget(gridSpacing, 0, 1, Qt::AlignHCenter);
+    gridLayout->addWidget(colorLabel, 1, 0, Qt::AlignHCenter);
+    gridLayout->addWidget(k->colorCell, 1, 1, Qt::AlignHCenter);
 
     k->gridWidget->setVisible(false);
 
@@ -214,12 +193,8 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     connect(k->historyButton, SIGNAL(clicked()), this, SLOT(showHistory()));
 
     k->historyWidget = new QWidget;
-    QBoxLayout *historyLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->historyWidget);
-    historyLayout->setContentsMargins(2, 2, 2, 2);
-
-    QWidget *opacityWidget = new QWidget;
-    QBoxLayout *opacityLayout = new QBoxLayout(QBoxLayout::LeftToRight, opacityWidget);
-    opacityLayout->setContentsMargins(2, 2, 2, 2);
+    QGridLayout *historyLayout = new QGridLayout(k->historyWidget);
+    historyLayout->setContentsMargins(50, 2, 50, 2);
 
     QLabel *opacityLabel = new QLabel;
     opacityLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "onion.png"));
@@ -231,14 +206,6 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     opacitySpin->setDecimals(2);
     connect(opacitySpin, SIGNAL(valueChanged(double)), this, SLOT(updateImagesOpacity(double)));
 
-    opacityLayout->addWidget(opacityLabel);
-    opacityLayout->addWidget(opacitySpin); 
-    opacityLayout->addStretch(2);
-
-    QWidget *previousWidget = new QWidget;
-    QBoxLayout *previousLayout = new QBoxLayout(QBoxLayout::LeftToRight, previousWidget);
-    previousLayout->setContentsMargins(2, 2, 2, 2);
-
     QLabel *previousLabel = new QLabel;
     previousLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "layer.png"));
     previousLabel->setToolTip(tr("Amount of images to show"));
@@ -247,13 +214,10 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     previousSpin->setRange(0, 5);
     connect(previousSpin, SIGNAL(valueChanged(int)), this, SLOT(updateImagesDepth(int)));
 
-    previousLayout->addWidget(previousLabel);
-    previousLayout->addWidget(previousSpin);
-    previousLayout->addStretch(2);
-
-    historyLayout->addWidget(opacityWidget, 1, Qt::AlignHCenter);
-    historyLayout->addWidget(previousWidget, 1, Qt::AlignHCenter);
-    historyLayout->addStretch(2);
+    historyLayout->addWidget(opacityLabel, 0, 0, Qt::AlignHCenter);
+    historyLayout->addWidget(opacitySpin, 0, 1, Qt::AlignHCenter);
+    historyLayout->addWidget(previousLabel, 1, 0, Qt::AlignHCenter);
+    historyLayout->addWidget(previousSpin, 1, 1, Qt::AlignHCenter);
 
     k->historyWidget->setVisible(false);
 
@@ -302,6 +266,35 @@ void TupCameraInterface::closeEvent(QCloseEvent *event)
     k->currentCamera->reset();
 }
 
+QSize TupCameraInterface::setBestResolution(QList<QSize> resolutions, QSize cameraSize)
+{
+    QSize maxCameraSize = QSize(0, 0);
+    for (int i=0; i < resolutions.size(); i++) {
+         QSize resolution = resolutions.at(i);
+         if (cameraSize.width() == resolution.width() && cameraSize.height() == resolution.height())
+             return cameraSize;
+         if (resolution.width() > maxCameraSize.width())
+             maxCameraSize = resolution;
+    }
+
+    return maxCameraSize;
+}
+
+QString TupCameraInterface::randomPath()
+{
+    QString path = CACHE_DIR + TAlgorithm::randomString(8);
+    QDir dir;
+    if (!dir.mkdir(path)) {
+        #ifdef K_DEBUG
+               tError() << "TupCameraInterface::randomPath() - Fatal Error: Can't create pictures directory -> " << path;
+        #endif
+        path = "";
+        TOsd::self()->display(tr("Error"), tr("Can't create pictures directory"), TOsd::Error);
+    }
+
+    return path;
+}
+
 void TupCameraInterface::takePicture()
 {
     k->currentCamera->takePicture(k->counter);
@@ -316,8 +309,10 @@ void TupCameraInterface::changeCameraDevice(int index)
     k->widgetStack->setCurrentIndex(index);   
     k->currentCamera = (TupCameraWindow *) k->widgetStack->currentWidget();
     k->currentCamera->startCamera();
+
     drawGrid();
     drawActionSafeArea();
+    showHistory();
 }
 
 void TupCameraInterface::drawGrid()
@@ -352,4 +347,13 @@ void TupCameraInterface::updateImagesDepth(int depth)
 void TupCameraInterface::updateGridSpacing(int space)
 {
     k->currentCamera->updateGridSpacing(space);
+}
+
+void TupCameraInterface::updateColour()
+{
+    QColor color = QColorDialog::getColor(k->gridColor, this);
+    if (color.isValid()) {
+        k->currentCamera->updateGridColor(color);
+        k->colorCell->setBrush(QBrush(color));
+    }
 }

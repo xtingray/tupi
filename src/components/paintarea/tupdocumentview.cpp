@@ -61,8 +61,8 @@
 #include "tupstoryboarddialog.h"
 #include "tupruler.h"
 #include "tupcamerainterface.h"
+#include "tupbasiccamerainterface.h"
 #include "tupcameradialog.h"
-#include "talgorithm.h"
 #include "tuplibrary.h"
 
 #include <QLayout>
@@ -1542,15 +1542,6 @@ void TupDocumentView::cameraInterface()
 {
     int camerasTotal = QCamera::availableDevices().count();
     if (camerasTotal > 0) {
-        QString path = CACHE_DIR + TAlgorithm::randomString(8);
-        QDir dir;
-        if (!dir.mkdir(path)) {
-            #ifdef K_DEBUG
-                   tError() << "TupCameraInterface() - Fatal Error: Can't create pictures directory -> " << path;
-            #endif
-            TOsd::self()->display(tr("Error"), tr("Can't create pictures directory"), TOsd::Error);
-        }
-
         QList<QByteArray> cameraDevices;
         QComboBox *devicesCombo = new QComboBox;
         foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
@@ -1572,20 +1563,8 @@ void TupDocumentView::cameraInterface()
 
         QByteArray cameraDevice = cameraDevices[0];
         QCamera *camera = new QCamera(cameraDevice);
-
         QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
         QList<QSize> resolutions = imageCapture->supportedResolutions();
-
-        /*
-        QSize maxCameraSize = QSize(0, 0);
-        for (int i=0; i < resolutions.size(); i++) {
-             QSize resolution = resolutions.at(i);
-             if (resolution.width() > maxCameraSize.width()) {
-                 maxCameraSize.setWidth(resolution.width());
-                 maxCameraSize.setHeight(resolution.height());
-             }
-        }
-        */
 
         QDesktopWidget desktop;
         QSize projectSize = k->project->dimension();
@@ -1597,30 +1576,30 @@ void TupDocumentView::cameraInterface()
 
         if (cameraDialog->exec() == QDialog::Accepted) {
             k->cameraSize = cameraDialog->cameraResolution();
-
-            tError() << "TupDocumentView::cameraInterface() - Camera Size: " << k->cameraSize.width() << ", " << k->cameraSize.height();
-
             QString title = QString::number(k->cameraSize.width()) + "x" + QString::number(k->cameraSize.height());
-
-            if (devicesCombo->count() > 1) {
-                camera = cameraDialog->camera();
-                imageCapture = new QCameraImageCapture(camera);
-            }
 
             if (cameraDialog->changeProjectSize()) {
                 if (k->cameraSize != projectSize) 
                     resizeProjectDimension(k->cameraSize);
             } 
 
-            TupCameraInterface *dialog = new TupCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(),
-                                                                k->cameraSize, path, k->photoCounter);
+            if (cameraDialog->useBasicCamera()) {
+                TupBasicCameraInterface *dialog = new TupBasicCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(), k->cameraSize, k->photoCounter);
 
-            connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
-            dialog->show();
-            dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
-                         (int) (desktop.screenGeometry().height() - dialog->height())/2);
+                connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
+                dialog->show();
+                dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                             (int) (desktop.screenGeometry().height() - dialog->height())/2);
+            } else {
+                TupCameraInterface *dialog = new TupCameraInterface(title, cameraDevices, devicesCombo, cameraDialog->cameraIndex(),
+                                                                k->cameraSize, k->photoCounter);
+
+                connect(dialog, SIGNAL(pictureHasBeenSelected(int, const QString)), this, SLOT(insertPictureInFrame(int, const QString)));
+                dialog->show();
+                dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 ,
+                             (int) (desktop.screenGeometry().height() - dialog->height())/2);
+            }
         }
-
     } else {
         // No devices connected!
         TOsd::self()->display(tr("Error"), tr("No cameras detected"), TOsd::Error);

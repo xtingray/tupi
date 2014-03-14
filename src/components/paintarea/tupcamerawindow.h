@@ -12,7 +12,7 @@ class TupCameraWindow: public QWidget, public VideoIF
     Q_OBJECT
 
     public:
-        TupCameraWindow(QCamera *input, const QSize &camResolution, const QSize &displayResolution, 
+        TupCameraWindow(QCamera *input, const QSize &camSize, const QSize &displaySize, 
                         QCameraImageCapture *imageCapture, const QString &path, QWidget *parent = 0);
         ~TupCameraWindow();
 
@@ -28,6 +28,7 @@ class TupCameraWindow: public QWidget, public VideoIF
         void updateImagesOpacity(double opacity);
         void updateImagesDepth(int depth);
         void updateGridSpacing(int space);
+        void updateGridColor(const QColor color);
 
     signals:
         void pictureHasBeenSelected(int id, const QString path);

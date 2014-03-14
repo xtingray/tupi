@@ -60,6 +60,7 @@ struct TupCameraDialog::Private
     QList<QSize> resolutions;
     QString cameraReference;
     int deviceIndex;
+    bool useBasicInterface;
 };
 
 TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSize, QList<QSize> resolutions, QWidget *parent) : QDialog(parent), k(new Private)
@@ -68,6 +69,7 @@ TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSiz
     setWindowTitle(tr("Camera Settings"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")));
 
+    k->useBasicInterface = false;
     k->projectSize = projectSize;
     k->resolutions = resolutions;
     k->resizeProject = false;
@@ -112,6 +114,9 @@ TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSiz
     QCheckBox *resizeCheck = new QCheckBox(tr("Resize my project to fit camera resolution"));
     connect(resizeCheck, SIGNAL(toggled(bool)), this, SLOT(projectSizeHasChanged(bool)));
 
+    QCheckBox *lowCheck = new QCheckBox(tr("Use the basic camera interface (low resources)"));
+    connect(lowCheck, SIGNAL(toggled(bool)), this, SLOT(enableBasicCamera(bool)));
+
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
 
@@ -127,6 +132,7 @@ TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSiz
     layout->addWidget(resolutionLabel);
     layout->addWidget(k->resolutionCombo);
     layout->addWidget(resizeCheck);
+    layout->addWidget(lowCheck);
 
     layout->addLayout(buttonLayout);
 }
@@ -193,7 +199,12 @@ int TupCameraDialog::cameraIndex()
     return k->deviceIndex;
 }
 
-QCamera * TupCameraDialog::camera()
+void TupCameraDialog::enableBasicCamera(bool flag)
 {
-    return k->camera;
+    k->useBasicInterface = flag;
+}
+
+bool TupCameraDialog::useBasicCamera()
+{
+    return k->useBasicInterface;
 }

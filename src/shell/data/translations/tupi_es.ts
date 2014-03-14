@@ -1047,6 +1047,37 @@
     </message>
 </context>
 <context>
+    <name>TupBasicCameraInterface</name>
+    <message>
+        <source>Tupi Camera Manager</source>
+        <translation>Gestor de Cámara de Tupí</translation>
+    </message>
+    <message>
+        <source>Current resolution:</source>
+        <translation>Resolución actual:</translation>
+    </message>
+    <message>
+        <source>Cameras</source>
+        <translation>Cámaras</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Cámara</translation>
+    </message>
+    <message>
+        <source>Take picture</source>
+        <translation>Capturar imagen</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create pictures directory</source>
+        <translation>No se puede crear el directorio de imágenes</translation>
+    </message>
+</context>
+<context>
     <name>TupCameraBar</name>
     <message>
         <source>Rewind</source>
@@ -1099,6 +1130,10 @@
         <source>Available Camera Resolutions:</source>
         <translation>Resoluciones de cámara diponibles:</translation>
     </message>
+    <message>
+        <source>Use the basic camera interface (low resources)</source>
+        <translation>Usar la interfaz básica de cámara (bajos recursos)</translation>
+    </message>
 </context>
 <context>
     <name>TupCameraInterface</name>
@@ -1107,16 +1142,68 @@
         <translation>Gestor de Cámara de Tupí</translation>
     </message>
     <message>
-        <source>Devices</source>
-        <translation>Dispositivos</translation>
-    </message>
-    <message>
-        <source>Take Picture</source>
-        <translation>Capturar Imagen</translation>
-    </message>
-    <message>
-        <source>Current resolution: </source>
+        <source>Current resolution:</source>
         <translation>Resolución actual:</translation>
+    </message>
+    <message>
+        <source>Cameras</source>
+        <translation>Cámaras</translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation>Cámara</translation>
+    </message>
+    <message>
+        <source>Take picture</source>
+        <translation>Capturar imagen</translation>
+    </message>
+    <message>
+        <source>Show safe area</source>
+        <translation>Mostrar área de seguridad </translation>
+    </message>
+    <message>
+        <source>+</source>
+        <translation>+</translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation>Mostrar malla</translation>
+    </message>
+    <message>
+        <source>#</source>
+        <translation>#</translation>
+    </message>
+    <message>
+        <source>Grid spacing</source>
+        <translation>Espacio de la malla</translation>
+    </message>
+    <message>
+        <source>Grid color</source>
+        <translation>Color de Malla</translation>
+    </message>
+    <message>
+        <source>Show previous images</source>
+        <translation>Mostrar imágenes previas</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Image opacity level</source>
+        <translation>Nivel de opacidad de la imagen</translation>
+    </message>
+    <message>
+        <source>Amount of images to show</source>
+        <translation>Cantidad de imágenes a mostrar</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Can&apos;t create pictures directory</source>
+        <translation>No se puede crear el directorio de imágenes</translation>
     </message>
 </context>
 <context>
@@ -1682,10 +1769,6 @@
     <message>
         <source>Frame %1</source>
         <translation>Marco %1</translation>
-    </message>
-    <message>
-        <source>Can&apos;t create pictures directory</source>
-        <translation>No se puede crear el directorio de imágenes</translation>
     </message>
 </context>
 <context>
@@ -2570,14 +2653,6 @@
     <message>
         <source>Load existent project</source>
         <translation>Cargar proyecto existente</translation>
-    </message>
-    <message>
-        <source>Open project from server...</source>
-        <translation>Abrir proyecto desde servidor...</translation>
-    </message>
-    <message>
-        <source>Export project to server...</source>
-        <translation>Exportar proyecto a servidor...</translation>
     </message>
     <message>
         <source>Save project</source>

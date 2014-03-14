@@ -51,12 +51,13 @@ class TupCameraDialog : public QDialog
         int cameraIndex();
         QSize cameraResolution() const;
         bool changeProjectSize();
-        QCamera * camera();
+        bool useBasicCamera();
 
     private slots:
         void changeCameraDevice(const QString &camera);
         void setCameraResolution(int index);
         void projectSizeHasChanged(bool flag);
+        void enableBasicCamera(bool flag);
 
     private:
         void setCamera(const QString &cameraReference);

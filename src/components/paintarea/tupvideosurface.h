@@ -16,7 +16,7 @@ class TupVideoSurface: public QAbstractVideoSurface
     Q_OBJECT
 
     public:
-        TupVideoSurface(QWidget *widget, VideoIF *target, const QSize &camResolution, bool isScaled, QObject *parent = 0);
+        TupVideoSurface(QWidget *widget, VideoIF *target, const QSize &displaySize, bool isScaled, QObject *parent = 0);
         ~TupVideoSurface();
 
         bool start(const QVideoSurfaceFormat &format);
@@ -30,6 +30,7 @@ class TupVideoSurface: public QAbstractVideoSurface
         void updateImagesOpacity(double opacity);
         void updateImagesDepth(int depth);
         void updateGridSpacing(int space);
+        void updateGridColor(const QColor color);
 
     private:
         void calculateImageDepth();

@@ -52,14 +52,14 @@ class TupColorWidget : public QWidget
     Q_OBJECT
 
     public:
-        TupColorWidget() : m_brush(Qt::transparent) {};
-        ~TupColorWidget() {};
+        TupColorWidget(const QBrush m_brush = Qt::transparent);
+        ~TupColorWidget();
         void setBrush(const QBrush &brush);
         QSize sizeHint() const;
         QColor color();
 
     protected:
-        void paintEvent(QPaintEvent *);
+        void paintEvent(QPaintEvent *event);
         void mousePressEvent(QMouseEvent * event);
 
     signals:

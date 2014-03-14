@@ -12,14 +12,10 @@ struct TupCameraWindow::Private
     int counter;
 };
 
-TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camResolution, const QSize &displayResolution, QCameraImageCapture *imageCapture, 
+TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camSize, const QSize &displaySize, QCameraImageCapture *imageCapture, 
                                  const QString &path, QWidget *parent) : QWidget(parent), k(new Private)
 {
-    setFixedSize(displayResolution + QSize(1, 1));
-
-    tError() << "TupCameraWindow() - Display Res: " << displayResolution.width() << ", " << displayResolution.height();
-    tError() << "TupCameraWindow() - Camera Res: " << camResolution.width() << ", " << camResolution.height();
-    tError() << "";
+    setFixedSize(displaySize + QSize(1, 1));
 
     k->dir = path;
 
@@ -34,17 +30,17 @@ TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camResolution, con
 
     QVideoEncoderControl *encoderControl = service->requestControl<QVideoEncoderControl*>();
     QVideoEncoderSettings settings = encoderControl->videoSettings();
-    settings.setResolution(camResolution);
+    settings.setResolution(camSize);
     encoderControl->setVideoSettings(settings);
 
     QVideoRendererControl *rendererControl = service->requestControl<QVideoRendererControl*>();
 
     bool isScaled = false;
 
-    if (camResolution != displayResolution)
+    if (camSize != displaySize)
         isScaled = true;
 
-    k->videoSurface = new TupVideoSurface(this, this, displayResolution, isScaled, this);
+    k->videoSurface = new TupVideoSurface(this, this, displaySize, isScaled, this);
     rendererControl->setSurface(k->videoSurface);
 }
 
@@ -191,5 +187,10 @@ void TupCameraWindow::updateImagesDepth(int depth)
 void TupCameraWindow::updateGridSpacing(int space)
 {
     k->videoSurface->updateGridSpacing(space);
+}
+
+void TupCameraWindow::updateGridColor(const QColor color)
+{
+    k->videoSurface->updateGridColor(color);
 }
 

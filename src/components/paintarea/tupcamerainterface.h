@@ -40,7 +40,6 @@
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QCamera>
-#include <QCameraViewfinder>
 #include <QCameraImageCapture>
 
 class TupCameraInterface : public QFrame
@@ -49,14 +48,13 @@ class TupCameraInterface : public QFrame
 
     public:
         TupCameraInterface(const QString &title, QList<QByteArray> cameraDevices, QComboBox *devicesCombo, int cameraIndex, 
-                           const QSize cameraSize = QSize(), const QString &path = QString(), int counter = 1, QWidget *parent = 0);
+                           const QSize cameraSize = QSize(), int counter = 1, QWidget *parent = 0);
         ~TupCameraInterface();
 
     protected:
         void closeEvent(QCloseEvent *event);
 
     signals:
-        void projectSizeHasChanged(const QSize size);
         void pictureHasBeenSelected(int id, const QString path);
 
     private slots:
@@ -68,8 +66,11 @@ class TupCameraInterface : public QFrame
         void updateImagesOpacity(double opacity);
         void updateImagesDepth(int depth);
         void updateGridSpacing(int space);
+        void updateColour();
 
     private:
+        QSize setBestResolution(QList<QSize> resolutions, QSize cameraSize);
+        QString randomPath();
         struct Private;
         Private *const k;
 };

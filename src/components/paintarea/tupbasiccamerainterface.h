@@ -8,7 +8,7 @@
  *   2010:                                                                 *
  *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,58 +33,41 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupcolorwidget.h"
-#include "tdebug.h"
+#ifndef TUPBASICCAMERAINTERFACE_H
+#define TUPBASICCAMERAINTERFACE_H
 
-#include <QPainter>
+#include <QFrame>
+#include <QCloseEvent>
+#include <QComboBox>
+#include <QCamera>
+#include <QCameraViewfinder>
+#include <QCameraImageCapture>
 
-/**
- * This class defines the options panel in the bottom of the paint area.
- * Controls for Rotation, Antialising and OpenGL
- * @author David Cuadrado
-*/
-
-TupColorWidget::TupColorWidget(const QBrush color) : m_brush(color)
+class TupBasicCameraInterface : public QFrame
 {
-    setFixedSize(20, 20);
-}
+    Q_OBJECT
 
-TupColorWidget::~TupColorWidget()
-{
-}
+    public:
+        TupBasicCameraInterface(const QString &title, QList<QByteArray> cameraDevices, QComboBox *devicesCombo, int cameraIndex, 
+                           const QSize cameraSize = QSize(), int counter = 1, QWidget *parent = 0);
+        ~TupBasicCameraInterface();
 
-QSize TupColorWidget::sizeHint() const
-{
-    QSize size(20, 20);
-    return size;
-}
+    protected:
+        void closeEvent(QCloseEvent *event);
 
-void TupColorWidget::setBrush(const QBrush &brush)
-{
-    m_brush = brush;
-    update();
-}
+    signals:
+        void projectSizeHasChanged(const QSize size);
+        void pictureHasBeenSelected(int id, const QString path);
 
-void TupColorWidget::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
+    private slots:
+        void changeCameraDevice(int index);
+        void takePicture();
+        void imageSavedFromCamera(int id, const QString path);
 
-    QPainter painter(this);
-    painter.fillRect(rect(), m_brush);
-    QColor color = Qt::black;
-    if (m_brush.color() == Qt::black)
-        color = Qt::white;
-    painter.setPen(QPen(color));
-    painter.drawRect(0, 0, 20, 20);
-}
+    private:
+        QString randomPath();
+        struct Private;
+        Private *const k;
+};
 
-void TupColorWidget::mousePressEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    emit clicked();
-}
-
-QColor TupColorWidget::color()
-{
-    return m_brush.color();
-}
+#endif
