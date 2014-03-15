@@ -156,7 +156,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
 
     k->gridWidget = new QWidget;
     QGridLayout *gridLayout = new QGridLayout(k->gridWidget);
-    gridLayout->setContentsMargins(50, 2, 50, 2);
+    gridLayout->setHorizontalSpacing(2);
 
     QLabel *gridLabel = new QLabel;
     gridLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "grid_spacing.png"));
@@ -194,7 +194,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
 
     k->historyWidget = new QWidget;
     QGridLayout *historyLayout = new QGridLayout(k->historyWidget);
-    historyLayout->setContentsMargins(50, 2, 50, 2);
+    historyLayout->setHorizontalSpacing(2);
 
     QLabel *opacityLabel = new QLabel;
     opacityLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "onion.png"));
