@@ -73,7 +73,6 @@ void TupHelpBrowser::setSource(const QString &filePath)
     QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
     path << resources + "css";
     path << resources + "images";
-    path << resources + locale + QDir::separator() + "images";
     m_pageArea->setSearchPaths(path);
 
     m_pageArea->setSource(filePath);
