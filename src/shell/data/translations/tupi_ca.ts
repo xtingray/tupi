@@ -106,17 +106,6 @@
     </message>
 </context>
 <context>
-    <name>ExactnessConfigurator</name>
-    <message>
-        <source>Smoothness</source>
-        <translation>Suavitat</translation>
-    </message>
-    <message>
-        <source>My Values:</source>
-        <translation>Els meus valors:</translation>
-    </message>
-</context>
-<context>
     <name>ExportTo</name>
     <message>
         <source>Image name prefix: </source>
@@ -286,78 +275,6 @@
         <source>X key or Right mouse button</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Flips</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Horizontal Flip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Vertical Flip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Crossed Flip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Order</source>
-        <translation type="unfinished">Endreça</translation>
-    </message>
-    <message>
-        <source>Send object to back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send object to back one level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send object to front</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send object to front one level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rotation mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Double click on any node or shortcut Alt + R</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Arrows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Movement on selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shift + Arrows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Slow movement on selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl + Arrows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fast movement on selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Proportional scaling on selection</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>InkTool</name>
@@ -449,14 +366,6 @@
         <translation type="unfinished">Aquesta és una fallida general</translation>
     </message>
     <message>
-        <source>Initializing...</source>
-        <translation type="unfinished">Inicialitzant...</translation>
-    </message>
-    <message>
-        <source>Loaded!</source>
-        <translation type="unfinished">Carregat!</translation>
-    </message>
-    <message>
         <source>add</source>
         <translation>afegeix</translation>
     </message>
@@ -495,10 +404,6 @@
     <message>
         <source>convert</source>
         <translation>converteix</translation>
-    </message>
-    <message>
-        <source>Loading modules...</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Fatal Error</source>
@@ -795,6 +700,106 @@
         <source>Shear in</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Smoothness</source>
+        <translation type="unfinished">Suavitat</translation>
+    </message>
+    <message>
+        <source>Flips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Horizontal Flip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical Flip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Crossed Flip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order</source>
+        <translation type="unfinished">Endreça</translation>
+    </message>
+    <message>
+        <source>Send object to back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send object to back one level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send object to front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send object to front one level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A little help for the Selection tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Double click on any node or shortcut Alt + R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Movement on selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift + Arrows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Slow movement on selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl + Arrows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fast movement on selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift + Left Mouse Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proportional scaling on selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options panel for the Selection tool</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpinControl</name>
@@ -1036,12 +1041,40 @@
         <source>Close</source>
         <translation>Tanca</translation>
     </message>
+    <message>
+        <source>About Tupi</source>
+        <translation type="unfinished">En quant a Tupi</translation>
+    </message>
 </context>
 <context>
-    <name>TupAnimationArea</name>
+    <name>TupBasicCameraInterface</name>
     <message>
-        <source>Rendering...</source>
-        <translation>Renderitzant...</translation>
+        <source>Tupi Camera Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current resolution:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cameras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Take picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t create pictures directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1065,6 +1098,112 @@
     <message>
         <source>Forward</source>
         <translation>Avança</translation>
+    </message>
+</context>
+<context>
+    <name>TupCameraDialog</name>
+    <message>
+        <source>Camera Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available Camera Devices:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera Detected:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available Camera Resolutions:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resize my project to fit camera resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use the basic camera interface (low resources)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TupCameraInterface</name>
+    <message>
+        <source>Tupi Camera Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current resolution:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cameras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Take picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show safe area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation type="unfinished">Mostra graella</translation>
+    </message>
+    <message>
+        <source>#</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid color</source>
+        <translation type="unfinished">Color de graella</translation>
+    </message>
+    <message>
+        <source>Show previous images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image opacity level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amount of images to show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t create pictures directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1096,6 +1235,21 @@
     <message>
         <source>Post</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TupCameraWidget</name>
+    <message>
+        <source>Scene Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished">Mida</translation>
     </message>
 </context>
 <context>
@@ -1267,17 +1421,6 @@
     </message>
 </context>
 <context>
-    <name>TupCommandExecutor</name>
-    <message>
-        <source>Frame doesn&apos;t exist!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Layer doesn&apos;t exist!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>TupConfigurationArea</name>
     <message>
         <source>Cursor here for expand</source>
@@ -1352,40 +1495,12 @@
         <translation type="unfinished">Selecció d&apos;objectes</translation>
     </message>
     <message>
-        <source>Show grid</source>
-        <translation type="unfinished">Mostra graella</translation>
-    </message>
-    <message>
-        <source>#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show a grid over the canvas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>F11</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open a full screen view of canvas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation type="unfinished">Copia</translation>
     </message>
     <message>
         <source>Ctrl+C</source>
         <translation type="unfinished">Ctrl+C</translation>
-    </message>
-    <message>
-        <source>Copies the selection and puts it onto the clipboard</source>
-        <translation type="unfinished">Copia la selecció al porta-retalls</translation>
     </message>
     <message>
         <source>Paste</source>
@@ -1396,10 +1511,6 @@
         <translation type="unfinished">Ctrl-V</translation>
     </message>
     <message>
-        <source>Pastes the clipboard into the current document</source>
-        <translation type="unfinished">Enganxa al document des del porta-retalls</translation>
-    </message>
-    <message>
         <source>Cut</source>
         <translation type="unfinished">Retalla</translation>
     </message>
@@ -1408,16 +1519,8 @@
         <translation type="unfinished">Ctrl+X</translation>
     </message>
     <message>
-        <source>Cuts the selected items</source>
-        <translation type="unfinished">Retalla els objetes seleccionats</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation type="unfinished">Neteja</translation>
-    </message>
-    <message>
-        <source>Deletes the selected object</source>
-        <translation type="unfinished">Suprimeix l&apos;objete seleccionat</translation>
     </message>
     <message>
         <source>&amp;Group</source>
@@ -1428,20 +1531,12 @@
         <translation type="unfinished">Ctrl+G</translation>
     </message>
     <message>
-        <source>Group the selected objects into a single one</source>
-        <translation type="unfinished">Agrupa els objectes seleccionats en només un</translation>
-    </message>
-    <message>
         <source>&amp;Ungroup</source>
         <translation type="unfinished">&amp;Desagrupa</translation>
     </message>
     <message>
         <source>Ctrl+Shift+G</source>
         <translation type="unfinished">Ctrl+Shift+G</translation>
-    </message>
-    <message>
-        <source>Ungroups the selected object</source>
-        <translation type="unfinished">Desagrupa l&apos;objete seleccionat</translation>
     </message>
     <message>
         <source>Onion Skin</source>
@@ -1452,19 +1547,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable/Disable onion skin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Onion Skin Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set onion skin factor default value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1654,6 +1741,34 @@
     <message>
         <source>Can&apos;t export frame as image</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Current Frame As Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Current Frame To Gallery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Storyboard Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No cameras detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frame %1</source>
+        <translation type="unfinished">Marc %1</translation>
     </message>
 </context>
 <context>
@@ -2332,22 +2447,6 @@
         <translation>Tupi: Magia 2D Livre</translation>
     </message>
     <message>
-        <source>Setting up the project manager</source>
-        <translation type="unfinished">Configurant l&apos;administrador de projectes</translation>
-    </message>
-    <message>
-        <source>Loading action manager...</source>
-        <translation type="unfinished">Carregant l&apos;administrador d&apos;accions...</translation>
-    </message>
-    <message>
-        <source>Creating menu bar...</source>
-        <translation type="unfinished">Creant la barra de menús...</translation>
-    </message>
-    <message>
-        <source>Creating GUI...</source>
-        <translation type="unfinished">Creant GUI...</translation>
-    </message>
-    <message>
         <source>Opening a new document...</source>
         <translation type="unfinished">Obrint un nou document...</translation>
     </message>
@@ -2470,10 +2569,6 @@
     <message>
         <source>Load existent project</source>
         <translation type="unfinished">Carrega projecte existent</translation>
-    </message>
-    <message>
-        <source>Open project from server...</source>
-        <translation type="unfinished">Obre projecte des de servidor...</translation>
     </message>
     <message>
         <source>Save project</source>
@@ -2752,10 +2847,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export project to server...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Actions Bar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2886,10 +2977,6 @@ Please, contact the animation server admin to get access.</source>
         <translation type="unfinished">Propietats</translation>
     </message>
     <message>
-        <source>Network</source>
-        <translation type="unfinished">Xarxa</translation>
-    </message>
-    <message>
         <source>Password</source>
         <translation type="unfinished">Clau</translation>
     </message>
@@ -2987,6 +3074,14 @@ Please, contact the animation server admin to get access.</source>
     </message>
     <message>
         <source>White</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>520x380 - 24</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>640x480 - 24</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3229,6 +3324,30 @@ Please, contact the animation server admin to get access.</source>
     </message>
     <message>
         <source>Click here to change brush color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Action Safe Area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation type="unfinished">Mostra graella</translation>
+    </message>
+    <message>
+        <source>#</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>F11</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3528,6 +3647,13 @@ Please, contact the animation server admin to get access.</source>
     </message>
 </context>
 <context>
+    <name>TupScreen</name>
+    <message>
+        <source>Rendering...</source>
+        <translation type="unfinished">Renderitzant...</translation>
+    </message>
+</context>
+<context>
     <name>TupSplash</name>
     <message>
         <source>Version </source>
@@ -3606,6 +3732,10 @@ Please, contact the animation server admin to get access.</source>
     </message>
     <message>
         <source>Storyboard exported successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scene</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3820,17 +3950,6 @@ Please, contact the animation server admin to get access.</source>
     </message>
 </context>
 <context>
-    <name>TupViewCamera</name>
-    <message>
-        <source>Render Camera Preview</source>
-        <translation>Vista prèvia de càmera</translation>
-    </message>
-    <message>
-        <source>Scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>TupViewColorCells</name>
     <message>
         <source>Default Palette</source>
@@ -3945,10 +4064,6 @@ Please, contact the animation server admin to get access.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Coloring Tween can&apos;t be applied to Svg files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Shift+C</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4014,6 +4129,10 @@ Please, contact the animation server admin to get access.</source>
     </message>
     <message>
         <source>Shift+H</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coloring Tween can&apos;t be applied to SVG files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
