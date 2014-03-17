@@ -110,7 +110,7 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
 
     // Naming the main frame...
     setWindowTitle(tr("Tupi: Open 2D Magic"));
-    setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
+    setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "about.png"));
 
     // Defining the render type for the drawings
     m_renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt());
@@ -318,7 +318,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         }
 
         playerTab = new TupAnimationspace(cameraWidget);
-        playerTab->setWindowIcon(QIcon(THEME_DIR + "icons/play_small.png"));
+        playerTab->setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "play_small.png"));
         playerTab->setWindowTitle(tr("Player"));
         addWidget(playerTab);
 
@@ -329,18 +329,18 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         if (lang.length() < 2)  
             lang = "en";
 
-        QString helpPath = SHARE_DIR + "data/help/" + QString(lang + "/cover.html");
+        QString helpPath = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator() + lang + QDir::separator() + "cover.html";
 
         QFile file(helpPath);
         if (!file.exists())
-            helpPath = SHARE_DIR + "data/help/" + QString("en/cover.html");
+            helpPath = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator() + "en" + QDir::separator() + "cover.html";
 
         helpTab->setSource(helpPath);
 
         addWidget(helpTab);
 
-        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() 
-                              + "/twitter.html";
+        QString twitterPath = QDir::homePath() + QDir::separator() + "." + QCoreApplication::applicationName() 
+                              + QDir::separator() + "twitter.html";
 
         if (QFile::exists(twitterPath)) {
             internetOn = true;
@@ -371,8 +371,8 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         m_exposureSheet->setScene(0);
 
-        connect(m_projectManager, SIGNAL(projectHasChanged(bool)), this, SLOT(updatePlayer(bool)));
-        connect(animationTab, SIGNAL(projectHasChanged()), this, SLOT(updatePlayer()));
+        // connect(m_projectManager, SIGNAL(projectHasChanged(bool)), this, SLOT(updatePlayer(bool)));
+        // connect(animationTab, SIGNAL(projectHasChanged()), this, SLOT(updatePlayer()));
     }
 }
 
@@ -476,8 +476,8 @@ void TupMainWindow::resetUI()
            T_FUNCINFO;
     #endif
 
-    disconnect(animationTab, SIGNAL(projectHasChanged()), this, SLOT(updatePlayer()));
-    disconnect(m_projectManager, SIGNAL(projectHasChanged(bool)), this, SLOT(updatePlayer(bool)));
+    // disconnect(animationTab, SIGNAL(projectHasChanged()), this, SLOT(updatePlayer()));
+    // disconnect(m_projectManager, SIGNAL(projectHasChanged(bool)), this, SLOT(updatePlayer(bool)));
 
     setCurrentTab(0);
 
@@ -1244,6 +1244,7 @@ void TupMainWindow::updateCurrentTab(int index)
         if (lastTab == 2)
             helpView->expandDock(false);
         lastTab = 1;
+        updatePlayer();
         cameraWidget->updateFirstFrame();
         cameraWidget->setFocus();
     } else {

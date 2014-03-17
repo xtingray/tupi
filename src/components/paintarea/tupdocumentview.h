@@ -162,7 +162,7 @@ class TupDocumentView : public QMainWindow
         void updatePenFromFullScreen(const QPen &pen);
         void updateStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void postStoryboard(int sceneIndex);
-        void projectHasChanged();
+        // void projectHasChanged();
         void closePolyLine();
         void projectSizeHasChanged(const QSize dimension);
 
