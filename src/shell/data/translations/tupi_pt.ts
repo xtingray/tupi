@@ -1044,129 +1044,129 @@
     <message>
         <location filename="../src/plugins/tools/penciltool/settings.cpp" line="57"/>
         <source>Smoothness</source>
-        <translation type="unfinished">Suavidade</translation>
+        <translation>Suavidade</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="66"/>
         <source>Flips</source>
-        <translation type="unfinished">Transformações</translation>
+        <translation>Transformações</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="77"/>
         <source>Horizontal Flip</source>
-        <translation type="unfinished">Virar Horizontalmente</translation>
+        <translation>Virar Horizontalmente</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="80"/>
         <source>Vertical Flip</source>
-        <translation type="unfinished">Virar Verticalmente</translation>
+        <translation>Virar Verticalmente</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="83"/>
         <source>Crossed Flip</source>
-        <translation type="unfinished">Virar para ambas as direções</translation>
+        <translation>Virar para ambas as direções</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="96"/>
         <source>Order</source>
-        <translation type="unfinished">Ordenar</translation>
+        <translation>Ordenar</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="106"/>
         <source>Send object to back</source>
-        <translation type="unfinished">Enviar o objeto para trás</translation>
+        <translation>Enviar o objeto para trás</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="109"/>
         <source>Send object to back one level</source>
-        <translation type="unfinished">Enviar o objeto para trás um nível</translation>
+        <translation>Enviar o objeto para trás um nível</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="112"/>
         <source>Send object to front</source>
-        <translation type="unfinished">Enviar o objeto para frente</translation>
+        <translation>Enviar o objeto para frente</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="115"/>
         <source>Send object to front one level</source>
-        <translation type="unfinished">Enviar o objeto para frente um nível</translation>
+        <translation>Enviar o objeto para frente um nível</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="131"/>
         <source>Position</source>
-        <translation type="unfinished">Posição</translation>
+        <translation>Posição</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="157"/>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="236"/>
         <source>Show Tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Exibir Dicas</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="158"/>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="237"/>
         <source>A little help for the Selection tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Uma pequena ajuda para a ferramenta Seleção</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="173"/>
         <source>Rotation mode</source>
-        <translation type="unfinished">Modo de rotação</translation>
+        <translation>Modo de rotação</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="173"/>
         <source>Double click on any node or shortcut Alt + R</source>
-        <translation type="unfinished">Clique duplo em qualquer nó ou atalho Alt + R</translation>
+        <translation>Clique duplo em qualquer nó ou atalho Alt + R</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="174"/>
         <source>Arrows</source>
-        <translation type="unfinished">Setas</translation>
+        <translation>Setas</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="174"/>
         <source>Movement on selection</source>
-        <translation type="unfinished">Movimento da seleção</translation>
+        <translation>Movimento da seleção</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="175"/>
         <source>Shift + Arrows</source>
-        <translation type="unfinished">Shift + Setas</translation>
+        <translation>Shift + Setas</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="175"/>
         <source>Slow movement on selection</source>
-        <translation type="unfinished">Movimento lento da seleção</translation>
+        <translation>Movimento lento da seleção</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="176"/>
         <source>Ctrl + Arrows</source>
-        <translation type="unfinished">Ctrl + Setas</translation>
+        <translation>Ctrl + Setas</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="176"/>
         <source>Fast movement on selection</source>
-        <translation type="unfinished">Movimento rápido da seleção</translation>
+        <translation>Movimento rápido da seleção</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="177"/>
         <source>Shift + Left Mouse Button</source>
-        <translation type="unfinished">Shift + Botão Esquerdo do Mouse</translation>
+        <translation>Shift + Botão Esquerdo do Mouse</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="177"/>
         <source>Proportional scaling on selection</source>
-        <translation type="unfinished">Escala proporcional da seleção</translation>
+        <translation>Escala proporcional da seleção</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="231"/>
         <source>Show Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Exibir Ferramentas</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selecttool/settings.cpp" line="232"/>
         <source>Options panel for the Selection tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Painel de opções para a ferramenta Seleção</translation>
     </message>
 </context>
 <context>
@@ -1449,7 +1449,7 @@
     <message>
         <location filename="../src/libui/tupabout.cpp" line="58"/>
         <source>About Tupi</source>
-        <translation type="unfinished">Sobre o Tupi</translation>
+        <translation>Sobre o Tupi</translation>
     </message>
     <message>
         <location filename="../src/libui/tupabout.cpp" line="126"/>
@@ -1472,37 +1472,37 @@
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="69"/>
         <source>Tupi Camera Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerenciador de Câmera do Tupi</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="69"/>
         <source>Current resolution:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolução atual:</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="130"/>
         <source>Cameras</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmeras</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="132"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmera</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="138"/>
         <source>Take picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Tirar uma foto</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="205"/>
         <source>Error</source>
-        <translation type="unfinished">Erro</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupbasiccamerainterface.cpp" line="205"/>
         <source>Can&apos;t create pictures directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é possível criar o diretório de fotos</translation>
     </message>
 </context>
 <context>
@@ -1538,42 +1538,42 @@
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="69"/>
         <source>Camera Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Definições da Câmera</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="85"/>
         <source>Available Camera Devices:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispositivos de Câmera Disponíveis:</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="90"/>
         <source>Camera Detected:</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmera Detectada:</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="102"/>
         <source>Available Camera Resolutions:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resoluções de Câmera Disponíveis:</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="114"/>
         <source>Resize my project to fit camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Redimensionar meu projeto para caber na resolução da câmera</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="117"/>
         <source>Use the basic camera interface (low resources)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar a interface básica de câmera (poucos recursos)</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="123"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcameradialog.cpp" line="127"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1581,87 +1581,87 @@
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="75"/>
         <source>Tupi Camera Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerenciador de Câmera do Tupi</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="75"/>
         <source>Current resolution:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolução atual:</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="132"/>
         <source>Cameras</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmeras</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="134"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmera</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="140"/>
         <source>Take picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Tirar foto</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="145"/>
         <source>Show safe area</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar área segura</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="146"/>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="152"/>
         <source>Show grid</source>
-        <translation type="unfinished">Mostrar grade</translation>
+        <translation>Mostrar grade</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="153"/>
         <source>#</source>
-        <translation type="unfinished">#</translation>
+        <translation>#</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="163"/>
         <source>Grid spacing</source>
-        <translation type="unfinished"></translation>
+        <translation>Espaçamento da grade</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="174"/>
         <source>Grid color</source>
-        <translation type="unfinished">Cor da grade</translation>
+        <translation>Cor da grade</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="190"/>
         <source>Show previous images</source>
-        <translation type="unfinished"></translation>
+        <translation>Exibir imagens anteriores</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="191"/>
         <source>P</source>
-        <translation type="unfinished">P</translation>
+        <translation>P</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="201"/>
         <source>Image opacity level</source>
-        <translation type="unfinished"></translation>
+        <translation>Nível de opacidade da imagem</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="211"/>
         <source>Amount of images to show</source>
-        <translation type="unfinished"></translation>
+        <translation>Quantidade de imagens para exibir</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="292"/>
         <source>Error</source>
-        <translation type="unfinished">Erro</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcamerainterface.cpp" line="292"/>
         <source>Can&apos;t create pictures directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é possível criar o diretório de fotos</translation>
     </message>
 </context>
 <context>
@@ -1707,17 +1707,17 @@
     <message>
         <location filename="../src/components/animation/tupcamerawidget.cpp" line="98"/>
         <source>Scene Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Pré-visualização da Cena</translation>
     </message>
     <message>
         <location filename="../src/components/animation/tupcamerawidget.cpp" line="162"/>
         <source>Scale</source>
-        <translation type="unfinished">Escala</translation>
+        <translation>Escala</translation>
     </message>
     <message>
         <location filename="../src/components/animation/tupcamerawidget.cpp" line="185"/>
         <source>Size</source>
-        <translation type="unfinished">Tamanho</translation>
+        <translation>Tamanho</translation>
     </message>
 </context>
 <context>
@@ -2144,27 +2144,27 @@
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="386"/>
         <source>Export Current Frame As Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar Quadro Atual Como Imagem</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="393"/>
         <source>Export Current Frame To Gallery</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar Quadro Atual para a Galeria</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="397"/>
         <source>Storyboard Settings</source>
-        <translation type="unfinished">Propriedades do Storyboard</translation>
+        <translation>Propriedades do Storyboard</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="400"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmera</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="400"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="406"/>
@@ -2408,12 +2408,12 @@
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1605"/>
         <source>No cameras detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhuma câmera detectada</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="1668"/>
         <source>Frame %1</source>
-        <translation type="unfinished">Quadro %1</translation>
+        <translation>Quadro %1</translation>
     </message>
 </context>
 <context>
@@ -3992,12 +3992,12 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/shell/tupnewproject.cpp" line="116"/>
         <source>520x380 - 24</source>
-        <translation type="unfinished"></translation>
+        <translation>520x380 - 24</translation>
     </message>
     <message>
         <location filename="../src/shell/tupnewproject.cpp" line="117"/>
         <source>640x480 - 24</source>
-        <translation type="unfinished"></translation>
+        <translation>640x480 - 24</translation>
     </message>
     <message>
         <location filename="../src/shell/tupnewproject.cpp" line="118"/>
@@ -4378,32 +4378,32 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="84"/>
         <source>Action Safe Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Área Segura de Ação</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="85"/>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="93"/>
         <source>Show grid</source>
-        <translation type="unfinished">Mostrar grade</translation>
+        <translation>Mostrar grade</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="94"/>
         <source>#</source>
-        <translation type="unfinished">#</translation>
+        <translation>#</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="102"/>
         <source>Full screen</source>
-        <translation type="unfinished">Tela cheia</translation>
+        <translation>Tela cheia</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="103"/>
         <source>F11</source>
-        <translation type="unfinished">F11</translation>
+        <translation>F11</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tuppaintareastatus.cpp" line="114"/>
@@ -4830,7 +4830,7 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/components/animation/tupscreen.cpp" line="421"/>
         <source>Rendering...</source>
-        <translation type="unfinished">Renderizando...</translation>
+        <translation>Renderizando...</translation>
     </message>
 </context>
 <context>
@@ -4919,7 +4919,7 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="379"/>
         <source>Scene</source>
-        <translation type="unfinished">Cena</translation>
+        <translation>Cena</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="393"/>
@@ -5371,7 +5371,7 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/plugins/tools/coloringtool/tweener.cpp" line="185"/>
         <source>Coloring Tween can&apos;t be applied to SVG files</source>
-        <translation type="unfinished"></translation>
+        <translation>Intermeios de cor não pode ser aplicado a arquivos SVG</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/coloringtool/tweener.cpp" line="262"/>
