@@ -7,12 +7,6 @@ Its interface has been designed looking for provide a high level
 experience of usability for artists and non artists, using as main 
 development resource the Qt framework. 
 
-  Copyright (C) 2010 Gustav Gonzalez / xtingray
-
-  Copying and distribution of this file, with or without modification,
-  are permitted in any medium without royalty provided the copyright
-  notice and this notice are preserved.
-
 See the files ./INSTALL* for building and installation instructions.
 
 Primary distribution point: 
@@ -40,4 +34,3 @@ Patches are very welcome; if possible, please make them with diff -c and
 include ChangeLog entries.
 
 Tupi is free software. See the file COPYING for copying conditions.
-
