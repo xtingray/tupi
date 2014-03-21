@@ -27,7 +27,6 @@ tupiglobal.pri
 
 launcher/tupi
 launcher/tupi.desktop
-src/components/help/help/css/tupi.css
 
 3rdparty/Makefile
 3rdparty/potrace/Makefile
