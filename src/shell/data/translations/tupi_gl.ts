@@ -157,7 +157,7 @@
     </message>
     <message>
         <source>Directory doesn&apos;t exist! Please, choose another path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non existe ese directorio! Escolla outra ruta.</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -182,10 +182,6 @@
     <message>
         <source>Enable background transparency</source>
         <translation>Activar a transparencia do fondo</translation>
-    </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1997,7 +1993,7 @@
     </message>
     <message>
         <source>/Step: </source>
-        <translation>/Paso:</translation>
+        <translation>/Paso: </translation>
     </message>
     <message>
         <source>Line</source>
@@ -2853,7 +2849,7 @@
     </message>
     <message>
         <source>Directory does not exist! Please, choose another path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non existe ese directorio! Escolla outra ruta.</translation>
     </message>
 </context>
 <context>

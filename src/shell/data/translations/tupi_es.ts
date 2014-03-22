@@ -160,8 +160,8 @@
         <translation>Error</translation>
     </message>
     <message>
-        <source>Directory doesn't exist! Please, choose another path.</source>
-        <translation type="unfinished"></translation>
+        <source>Directory doesn&apos;t exist! Please, choose another path.</source>
+        <translation>El directorio no existe! Por favor, escoja otra ruta.</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2543,10 +2543,6 @@
         <translation>Importando paletas</translation>
     </message>
     <message>
-        <source>Directory doesn't exist! Please, choose another path.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
         <translation>No tienes permisos para crear este archivo. Por favor, escoge otra ruta.</translation>
     </message>
@@ -2849,6 +2845,10 @@
     <message>
         <source>Actions Bar</source>
         <translation>Barra de Acciones</translation>
+    </message>
+    <message>
+        <source>Directory does not exist! Please, choose another path.</source>
+        <translation>El directorio no existe! Por favor, escoja otra ruta.</translation>
     </message>
 </context>
 <context>

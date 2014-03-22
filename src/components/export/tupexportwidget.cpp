@@ -734,7 +734,10 @@ void ExportTo::exportIt()
 
     QDir directory(path);
     if (!directory.exists()) {
-        TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" doesn't exist! Please, choose another path."), TOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Directory doesn't exist! Please, choose another path."), TOsd::Error);
+        #ifdef K_DEBUG
+               tError() << "ExportTo::exportIt() - Fatal Error: Directory doesn't exist! -> " << path.toLocal8Bit();
+        #endif
         return;
     } else {
         QFile file(directory.filePath(name));
