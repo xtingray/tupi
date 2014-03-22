@@ -1034,7 +1034,10 @@ void TupMainWindow::saveAs()
 
     QDir directory(path);
     if (!directory.exists()) {
-        TOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), TOsd::Error);
+        TOsd::self()->display(tr("Error"), tr("Directory does not exist! Please, choose another path."), TOsd::Error);
+        #ifdef K_DEBUG
+               tError() << "TupMainWindow::saveAs() - Fatal Error: Directory doesn't exist! -> " << path.toLocal8Bit();
+        #endif
         return;
     } else {
         QFile file(directory.filePath(name));

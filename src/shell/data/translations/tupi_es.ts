@@ -160,8 +160,8 @@
         <translation>Error</translation>
     </message>
     <message>
-        <source>Directory &quot;</source>
-        <translation>Directorio &quot;</translation>
+        <source>Directory doesn't exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2543,8 +2543,8 @@
         <translation>Importando paletas</translation>
     </message>
     <message>
-        <source>Directory &quot;</source>
-        <translation>Directorio &quot;</translation>
+        <source>Directory doesn't exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>

@@ -156,8 +156,8 @@
         <translation>El prefix per les imatges no pot estar buit! Si us plau, escrigui un prefix.</translation>
     </message>
     <message>
-        <source>Directory &quot;</source>
-        <translation>Directori &quot;</translation>
+        <source>Directory doesn&apos;t exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -182,6 +182,10 @@
     <message>
         <source>Information</source>
         <translation type="unfinished">Informació</translation>
+    </message>
+    <message>
+        <source>Directory &quot;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2321,10 +2325,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No preview available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2402,6 +2402,10 @@
     </message>
     <message>
         <source>Import audio file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2497,10 +2501,6 @@
     <message>
         <source>Importing palettes</source>
         <translation type="unfinished">Important paletes</translation>
-    </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation>Directori &quot;</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2848,6 +2848,10 @@
     </message>
     <message>
         <source>Actions Bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory does not exist! Please, choose another path.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

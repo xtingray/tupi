@@ -56,7 +56,7 @@
     </message>
     <message>
         <source>Basic</source>
-        <translation>Basico</translation>
+        <translation>Básico</translation>
     </message>
     <message>
         <source>Axial</source>
@@ -68,7 +68,7 @@
     </message>
     <message>
         <source>Dot Spacing</source>
-        <translation>Punto espazo</translation>
+        <translation>Espazo entre puntos</translation>
     </message>
     <message>
         <source>Size Tolerance</source>
@@ -87,7 +87,7 @@
     <name>ContourSelection</name>
     <message>
         <source>Line Selection</source>
-        <translation>Selección de nodos</translation>
+        <translation>Selección de contorno</translation>
     </message>
     <message>
         <source>N</source>
@@ -156,8 +156,8 @@
         <translation>O prefixo para o nome das imaxes non pode quedar baleiro, escriba un prefixo.</translation>
     </message>
     <message>
-        <source>Directory &quot;</source>
-        <translation>Directorio «</translation>
+        <source>Directory doesn&apos;t exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -181,6 +181,10 @@
     </message>
     <message>
         <source>Enable background transparency</source>
+        <translation>Activar a transparencia do fondo</translation>
+    </message>
+    <message>
+        <source>Directory &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -207,7 +211,7 @@
     <name>GenericExportPlugin</name>
     <message>
         <source>Image Array</source>
-        <translation type="unfinished"></translation>
+        <translation>Contedor de imaxes</translation>
     </message>
 </context>
 <context>
@@ -411,7 +415,7 @@
     </message>
     <message>
         <source>Well, Tupi has crashed...</source>
-        <translation>Vaites, Tupí quebrou...</translation>
+        <translation>Vaites! Tupí quebrou...</translation>
     </message>
     <message>
         <source>Re-launch Tupi</source>
@@ -435,7 +439,7 @@
     </message>
     <message>
         <source>Wall from</source>
-        <translation type="unfinished"></translation>
+        <translation>Muro desde</translation>
     </message>
 </context>
 <context>
@@ -505,15 +509,15 @@
     </message>
     <message>
         <source>Animated PNG (APNG)</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG animado PNG (APNG)</translation>
     </message>
     <message>
         <source>Animated Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Imaxe animada</translation>
     </message>
     <message>
         <source>Image Array</source>
-        <translation type="unfinished">Contedores de imaxes</translation>
+        <translation>Contedor de imaxes</translation>
     </message>
 </context>
 <context>
@@ -702,114 +706,114 @@
     </message>
     <message>
         <source>Smoothness</source>
-        <translation type="unfinished">Suavidade</translation>
+        <translation>Suavidade</translation>
     </message>
     <message>
         <source>Flips</source>
-        <translation type="unfinished">Volteados</translation>
+        <translation>Volteados</translation>
     </message>
     <message>
         <source>Horizontal Flip</source>
-        <translation type="unfinished">Volteado horizontal</translation>
+        <translation>Volteado horizontal</translation>
     </message>
     <message>
         <source>Vertical Flip</source>
-        <translation type="unfinished">Volteado vertical</translation>
+        <translation>Volteado vertical</translation>
     </message>
     <message>
         <source>Crossed Flip</source>
-        <translation type="unfinished">Volteado sobre ambos eixos</translation>
+        <translation>Volteado sobre ambos eixos</translation>
     </message>
     <message>
         <source>Order</source>
-        <translation type="unfinished">Ordenar</translation>
+        <translation>Ordenar</translation>
     </message>
     <message>
         <source>Send object to back</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar o obxecto cara atrás</translation>
     </message>
     <message>
         <source>Send object to back one level</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar o obxecto un nivel cara atrás</translation>
     </message>
     <message>
         <source>Send object to front</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar o obxecto cara adiante</translation>
     </message>
     <message>
         <source>Send object to front one level</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar o obxecto un nivel cara adiante</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posición</translation>
+        <translation>Posición</translation>
     </message>
     <message>
         <source>Show Tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Amosar os consellos</translation>
     </message>
     <message>
         <source>A little help for the Selection tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Unha pequena axuda para a ferramenta de selección</translation>
     </message>
     <message>
         <source>Rotation mode</source>
-        <translation type="unfinished">Modo de rotación</translation>
+        <translation>Modo de rotación</translation>
     </message>
     <message>
         <source>Double click on any node or shortcut Alt + R</source>
-        <translation type="unfinished">Premer dúas veces sobre calquera nodo ou o atallo Alt + R</translation>
+        <translation>Premer dúas veces sobre calquera nodo ou o atallo Alt + R</translation>
     </message>
     <message>
         <source>Arrows</source>
-        <translation type="unfinished">Frechas</translation>
+        <translation>Frechas</translation>
     </message>
     <message>
         <source>Movement on selection</source>
-        <translation type="unfinished">Movemento da selección</translation>
+        <translation>Movemento da selección</translation>
     </message>
     <message>
         <source>Shift + Arrows</source>
-        <translation type="unfinished">Maiús + Frechas</translation>
+        <translation>Maiús + Frechas</translation>
     </message>
     <message>
         <source>Slow movement on selection</source>
-        <translation type="unfinished">Movemento lento da selección</translation>
+        <translation>Movemento lento da selección</translation>
     </message>
     <message>
         <source>Ctrl + Arrows</source>
-        <translation type="unfinished">Ctrl + Frechas</translation>
+        <translation>Ctrl + Frechas</translation>
     </message>
     <message>
         <source>Fast movement on selection</source>
-        <translation type="unfinished">Movemento rápido da selección</translation>
+        <translation>Movemento rápido da selección</translation>
     </message>
     <message>
         <source>Shift + Left Mouse Button</source>
-        <translation type="unfinished">Maiús + botón esquerdo do rato</translation>
+        <translation>Maiús + botón esquerdo do rato</translation>
     </message>
     <message>
         <source>Proportional scaling on selection</source>
-        <translation type="unfinished">Escala proporcional da selección</translation>
+        <translation>Escalado proporcional da selección</translation>
     </message>
     <message>
         <source>Show Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Amosar as ferramentas</translation>
     </message>
     <message>
         <source>Options panel for the Selection tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Panel de opcións para a ferramenta de selección</translation>
     </message>
 </context>
 <context>
     <name>SpinControl</name>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished"></translation>
+        <translation>Ángulo</translation>
     </message>
 </context>
 <context>
@@ -1043,38 +1047,38 @@
     </message>
     <message>
         <source>About Tupi</source>
-        <translation type="unfinished">Sobre Tupí</translation>
+        <translation>Sobre o Tupí</translation>
     </message>
 </context>
 <context>
     <name>TupBasicCameraInterface</name>
     <message>
         <source>Tupi Camera Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Xestor de cámaras do Tupí</translation>
     </message>
     <message>
         <source>Current resolution:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolución actual:</translation>
     </message>
     <message>
         <source>Cameras</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámaras</translation>
     </message>
     <message>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámara</translation>
     </message>
     <message>
         <source>Take picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar imaxe</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Produciuse un erro</translation>
+        <translation>Produciuse un erro</translation>
     </message>
     <message>
         <source>Can&apos;t create pictures directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Non foi posíbel crear o directorio de imaxes!</translation>
     </message>
 </context>
 <context>
@@ -1104,106 +1108,106 @@
     <name>TupCameraDialog</name>
     <message>
         <source>Camera Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Axustes da cámara</translation>
     </message>
     <message>
         <source>Available Camera Devices:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámaras detectadas:</translation>
     </message>
     <message>
         <source>Camera Detected:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámara detectada:</translation>
     </message>
     <message>
         <source>Available Camera Resolutions:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolucións de cámara dispoñíbeis:</translation>
     </message>
     <message>
         <source>Resize my project to fit camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Redimensionar o meu proxecto para que se axuste á cámara</translation>
     </message>
     <message>
         <source>Use the basic camera interface (low resources)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar a interface básica da cámara (baixos recursos)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
 </context>
 <context>
     <name>TupCameraInterface</name>
     <message>
         <source>Tupi Camera Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Xestor de cámaras do Tupí</translation>
     </message>
     <message>
         <source>Current resolution:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolución actual:</translation>
     </message>
     <message>
         <source>Cameras</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámaras</translation>
     </message>
     <message>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámara</translation>
     </message>
     <message>
         <source>Take picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar imaxe</translation>
     </message>
     <message>
         <source>Show safe area</source>
-        <translation type="unfinished"></translation>
+        <translation>Amosar a área segura</translation>
     </message>
     <message>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="unfinished">Mostrar a grella</translation>
+        <translation>Amosar a grella</translation>
     </message>
     <message>
         <source>#</source>
-        <translation type="unfinished">#</translation>
+        <translation>#</translation>
     </message>
     <message>
         <source>Grid spacing</source>
-        <translation type="unfinished"></translation>
+        <translation>Espazo da grella</translation>
     </message>
     <message>
         <source>Grid color</source>
-        <translation type="unfinished">Cor da grella</translation>
+        <translation>Cor da grella</translation>
     </message>
     <message>
         <source>Show previous images</source>
-        <translation type="unfinished"></translation>
+        <translation>Amosar os fotogramas anteriores</translation>
     </message>
     <message>
         <source>P</source>
-        <translation type="unfinished">P</translation>
+        <translation>P</translation>
     </message>
     <message>
         <source>Image opacity level</source>
-        <translation type="unfinished"></translation>
+        <translation>Nivel de opacidade da imaxe</translation>
     </message>
     <message>
         <source>Amount of images to show</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantidade de imaxes que amosar</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Produciuse un erro</translation>
+        <translation>Produciuse un erro</translation>
     </message>
     <message>
         <source>Can&apos;t create pictures directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Non foi posíbel crear o directorio de imaxes!</translation>
     </message>
 </context>
 <context>
@@ -1234,145 +1238,145 @@
     </message>
     <message>
         <source>Post</source>
-        <translation>Envío</translation>
+        <translation>Publicar</translation>
     </message>
 </context>
 <context>
     <name>TupCameraWidget</name>
     <message>
         <source>Scene Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista previa da escena</translation>
     </message>
     <message>
         <source>Scale</source>
-        <translation type="unfinished">Escala</translation>
+        <translation>Escala</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished">Tamaño</translation>
+        <translation>Tamaño</translation>
     </message>
 </context>
 <context>
     <name>TupCanvas</name>
     <message>
         <source>Tupi: Open 2D Magic</source>
-        <translation>Tupí: Maxia 2D Livre</translation>
+        <translation>Tupí: Maxia 2D Libre</translation>
     </message>
     <message>
         <source>Sketch Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Ferramentas de trazo</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Imaxes</translation>
+        <translation>Imaxes</translation>
     </message>
     <message>
         <source>Selection Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Ferramentas de selección</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished">Desfacer</translation>
+        <translation>Desfacer</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished">Refacer</translation>
+        <translation>Refacer</translation>
     </message>
     <message>
         <source>Delete Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar a selección</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Achegar</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Afastar</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished">Man</translation>
+        <translation>Man</translation>
     </message>
     <message>
         <source>Pen Properties</source>
-        <translation type="unfinished">Propiedades da pluma</translation>
+        <translation>Propiedades da pluma</translation>
     </message>
     <message>
         <source>Exposure Sheet</source>
-        <translation type="unfinished">Táboa de exposicións</translation>
+        <translation>Táboa de exposicións</translation>
     </message>
     <message>
         <source>Import a SVG file...</source>
-        <translation type="unfinished">Importar un ficheiro SVG...</translation>
+        <translation>Importar un ficheiro SVG...</translation>
     </message>
     <message>
         <source>Vector</source>
-        <translation type="unfinished"></translation>
+        <translation>Vector</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished">Información</translation>
+        <translation>Información</translation>
     </message>
     <message>
         <source>Image is bigger than workspace.</source>
-        <translation type="unfinished">A imaxe é máis grande que a área de traballo.</translation>
+        <translation>A imaxe é máis grande que a área de traballo.</translation>
     </message>
     <message>
         <source>Do you want to resize it?</source>
-        <translation type="unfinished">Quere redimensionala?</translation>
+        <translation>Quere redimensionala?</translation>
     </message>
     <message>
         <source>Scene %1</source>
-        <translation type="unfinished">Escena %1</translation>
+        <translation>Escena %1</translation>
     </message>
     <message>
         <source>Layer 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Capa 1</translation>
     </message>
     <message>
         <source>Frame 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fotograma 1</translation>
     </message>
     <message>
         <source>Layer %1</source>
-        <translation type="unfinished">Capa %1</translation>
+        <translation>Capa %1</translation>
     </message>
     <message>
         <source>Frame %1</source>
-        <translation type="unfinished">Fotograma %1</translation>
+        <translation>Fotograma %1</translation>
     </message>
     <message>
         <source>Pencil</source>
-        <translation type="unfinished">Lapis</translation>
+        <translation>Lapis</translation>
     </message>
     <message>
         <source>Ink</source>
-        <translation type="unfinished">Tinta</translation>
+        <translation>Tinta</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Elipse</translation>
+        <translation>Elipse</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Rectángulo</translation>
+        <translation>Rectángulo</translation>
     </message>
     <message>
         <source>Object Selection</source>
-        <translation type="unfinished">Selección de obxectos</translation>
+        <translation>Selección de obxectos</translation>
     </message>
     <message>
         <source>Line Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selección de contorno</translation>
     </message>
     <message>
         <source>Color Palette</source>
-        <translation type="unfinished">Paleta de cores</translation>
+        <translation>Paleta de cores</translation>
     </message>
     <message>
         <source>Pen Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño do lapis</translation>
     </message>
 </context>
 <context>
@@ -1492,283 +1496,283 @@
     <name>TupDocumentView</name>
     <message>
         <source>Object Selection</source>
-        <translation type="unfinished">Selección de obxectos</translation>
+        <translation>Selección de obxectos</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Copiar</translation>
+        <translation>Copiar</translation>
     </message>
     <message>
         <source>Ctrl+C</source>
-        <translation type="unfinished">Ctrl+C</translation>
+        <translation>Ctrl+C</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished">Pegar</translation>
+        <translation>Pegar</translation>
     </message>
     <message>
         <source>Ctrl+V</source>
-        <translation type="unfinished">Ctrl-V</translation>
+        <translation>Ctrl-V</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished">Cortar</translation>
+        <translation>Cortar</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
-        <translation type="unfinished">Ctrl+X</translation>
+        <translation>Ctrl+X</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Eliminar</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>&amp;Group</source>
-        <translation type="unfinished">&amp;Grupo</translation>
+        <translation>&amp;Agrupar</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation type="unfinished">Ctrl+G</translation>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
         <source>&amp;Ungroup</source>
-        <translation type="unfinished">&amp;Desagrupar</translation>
+        <translation>&amp;Desagrupar</translation>
     </message>
     <message>
         <source>Ctrl+Shift+G</source>
-        <translation type="unfinished">Ctrl+Maiús+G</translation>
+        <translation>Ctrl+Maiús+G</translation>
     </message>
     <message>
         <source>Onion Skin</source>
-        <translation type="unfinished">Papel cebola</translation>
+        <translation>Papel cebola</translation>
     </message>
     <message>
         <source>Ctrl+Shift+O</source>
-        <translation type="unfinished">Ctrl+Maiús+O</translation>
+        <translation>Ctrl+Maiús+O</translation>
     </message>
     <message>
         <source>Onion Skin Factor</source>
-        <translation type="unfinished">Factor  do papel cebola</translation>
+        <translation>Factor do papel cebola</translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished">Ctrl+Maiús+S</translation>
+        <translation>Ctrl+Maiús+S</translation>
     </message>
     <message>
         <source>@</source>
-        <translation type="unfinished">@</translation>
+        <translation>@</translation>
     </message>
     <message>
         <source>Draw tools</source>
-        <translation type="unfinished">Ferramentas de debuxo</translation>
+        <translation>Ferramentas de debuxo</translation>
     </message>
     <message>
         <source>Brushes</source>
-        <translation type="unfinished">Pinceis</translation>
+        <translation>Pinceis</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Selección</translation>
+        <translation>Selección</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Recheo</translation>
+        <translation>Recheo</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Ver</translation>
+        <translation>Ver</translation>
     </message>
     <message>
         <source>Tweening</source>
-        <translation type="unfinished">Interpolación</translation>
+        <translation>Interpolación</translation>
     </message>
     <message>
         <source>Image Array</source>
-        <translation type="unfinished">Contedores de imaxes</translation>
+        <translation>Contedor de imaxes</translation>
     </message>
     <message>
         <source>Pencil</source>
-        <translation type="unfinished">Lapis</translation>
+        <translation>Lapis</translation>
     </message>
     <message>
         <source>Ink</source>
-        <translation type="unfinished">Tinta</translation>
+        <translation>Tinta</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished">Borrador</translation>
+        <translation>Borrador</translation>
     </message>
     <message>
         <source>PolyLine</source>
-        <translation type="unfinished">Poliliña</translation>
+        <translation>Poliliña</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation type="unfinished">Liña</translation>
+        <translation>Liña</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Rectángulo</translation>
+        <translation>Rectángulo</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Elipse</translation>
+        <translation>Elipse</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Texto</translation>
+        <translation>Texto</translation>
     </message>
     <message>
         <source>Position Tween</source>
-        <translation type="unfinished">Posición da interpolación</translation>
+        <translation>Posición da interpolación</translation>
     </message>
     <message>
         <source>Rotation Tween</source>
-        <translation type="unfinished">Rotación da interpolación</translation>
+        <translation>Rotación da interpolación</translation>
     </message>
     <message>
         <source>Scale Tween</source>
-        <translation type="unfinished">Escala da interpolación</translation>
+        <translation>Escala da interpolación</translation>
     </message>
     <message>
         <source>Shear Tween</source>
-        <translation type="unfinished">Cortar a interpolación</translation>
+        <translation>Cortar a interpolación</translation>
     </message>
     <message>
         <source>Opacity Tween</source>
-        <translation type="unfinished">Opacidade da interpolación</translation>
+        <translation>Opacidade da interpolación</translation>
     </message>
     <message>
         <source>Coloring Tween</source>
-        <translation type="unfinished">Coloreado da interpolación</translation>
+        <translation>Coloreado da interpolación</translation>
     </message>
     <message>
         <source>Compound Tween</source>
-        <translation type="unfinished">Composición da interpolación</translation>
+        <translation>Composición da interpolación</translation>
     </message>
     <message>
         <source>Internal fill</source>
-        <translation type="unfinished">Recheo interno</translation>
+        <translation>Recheo interno</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Achegar</translation>
     </message>
     <message>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
+        <translation>%1</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Afastar</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished">Man</translation>
+        <translation>Man</translation>
     </message>
     <message>
         <source>Paint area actions</source>
-        <translation type="unfinished">Pintar a área de accións</translation>
+        <translation>Pintar a área de accións</translation>
     </message>
     <message>
         <source>Dynamic Background Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Propiedades dinámicas do fondo</translation>
     </message>
     <message>
         <source>Frames Mode</source>
-        <translation type="unfinished">Modo dos fotogramas</translation>
+        <translation>Modo dos fotogramas</translation>
     </message>
     <message>
         <source>Static BG Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo estático</translation>
     </message>
     <message>
         <source>Dynamic BG Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo dinámico</translation>
     </message>
     <message>
         <source>Previous Frames</source>
-        <translation type="unfinished">Fotogramas anteriores</translation>
+        <translation>Fotogramas anteriores</translation>
     </message>
     <message>
         <source>Next Frames</source>
-        <translation type="unfinished">Seguintes fotogramas</translation>
+        <translation>Seguintes fotogramas</translation>
     </message>
     <message>
         <source>Direction</source>
-        <translation type="unfinished">Dirección</translation>
+        <translation>Dirección</translation>
     </message>
     <message>
         <source>Left to Right</source>
-        <translation type="unfinished"></translation>
+        <translation>De esquerda a dereita</translation>
     </message>
     <message>
         <source>Right to Left</source>
-        <translation type="unfinished"></translation>
+        <translation>De dereita a esquerda</translation>
     </message>
     <message>
         <source>Top to Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>De arriba abaixo</translation>
     </message>
     <message>
         <source>Bottom to Top</source>
-        <translation type="unfinished"></translation>
+        <translation>De abaixo arriba</translation>
     </message>
     <message>
         <source>Shift Length</source>
-        <translation type="unfinished"></translation>
+        <translation>Lonxitude do desprazamento</translation>
     </message>
     <message>
         <source>Export Frame As</source>
-        <translation type="unfinished">Exportar o fotograma como</translation>
+        <translation>Exportar o fotograma como</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Imaxes</translation>
+        <translation>Imaxes</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished">Información</translation>
+        <translation>Información</translation>
     </message>
     <message>
         <source>Frame has been exported successfully</source>
-        <translation type="unfinished">O fotograma foi exportado satisfactoriamente</translation>
+        <translation>O fotograma foi exportado satisfactoriamente</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Produciuse un erro</translation>
+        <translation>Produciuse un erro</translation>
     </message>
     <message>
         <source>Can&apos;t export frame as image</source>
-        <translation type="unfinished">Non foi posíbel exportar o fotograma como imaxe</translation>
+        <translation>Non foi posíbel exportar o fotograma como imaxe</translation>
     </message>
     <message>
         <source>Export Current Frame As Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar o fotograma actual como imaxe</translation>
     </message>
     <message>
         <source>Export Current Frame To Gallery</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar o fotograma actual á galería</translation>
     </message>
     <message>
         <source>Storyboard Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Axustes do guión gráfico</translation>
     </message>
     <message>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámara</translation>
     </message>
     <message>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Maiús+C</translation>
     </message>
     <message>
         <source>No cameras detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Non se detectaron cámaras</translation>
     </message>
     <message>
         <source>Frame %1</source>
-        <translation type="unfinished">Fotograma %1</translation>
+        <translation>Fotograma %1</translation>
     </message>
 </context>
 <context>
@@ -1787,76 +1791,76 @@
     </message>
     <message>
         <source>Export to Animated Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como imaxe animada</translation>
     </message>
     <message>
         <source>Post Animation in Tupitube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar a animación en Tupitube</translation>
     </message>
     <message>
         <source>Video Formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Formatos de vídeo</translation>
     </message>
     <message>
         <source>Open Video Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato aberto de vídeo</translation>
     </message>
     <message>
         <source>Image Array</source>
-        <translation type="unfinished">Contedores de imaxes</translation>
+        <translation>Contedor de imaxes</translation>
     </message>
     <message>
         <source>Animated Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Imaxe animada</translation>
     </message>
 </context>
 <context>
     <name>TupExportWizard</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished">Atrás</translation>
+        <translation>Atrás</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished">Seguinte</translation>
+        <translation>Seguinte</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Exportar</translation>
+        <translation>Exportar</translation>
     </message>
     <message>
         <source>Post</source>
-        <translation type="unfinished">Envío</translation>
+        <translation>Publicar</translation>
     </message>
 </context>
 <context>
     <name>TupExposureDialog</name>
     <message>
         <source>Exposure Sheet</source>
-        <translation type="unfinished">Táboa de exposicións</translation>
+        <translation>Táboa de exposicións</translation>
     </message>
     <message>
         <source>Scene</source>
-        <translation type="unfinished"></translation>
+        <translation>Escena</translation>
     </message>
     <message>
         <source>Work Team</source>
-        <translation type="unfinished"></translation>
+        <translation>Equipo de traballo</translation>
     </message>
 </context>
 <context>
     <name>TupExposureScene</name>
     <message>
         <source>Layer</source>
-        <translation type="unfinished">Capa</translation>
+        <translation>Capa</translation>
     </message>
     <message>
         <source>Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Fotograma</translation>
     </message>
 </context>
 <context>
@@ -1919,39 +1923,39 @@
     </message>
     <message>
         <source>20 frames</source>
-        <translation type="unfinished">10 fotogramas {20 ?}</translation>
+        <translation>20 fotogramas</translation>
     </message>
     <message>
         <source>50 frames</source>
-        <translation type="unfinished">10 fotogramas {50 ?}</translation>
+        <translation>50 fotogramas</translation>
     </message>
     <message>
         <source>100 frames</source>
-        <translation type="unfinished">10 fotogramas {100 ?}</translation>
+        <translation>100 fotogramas</translation>
     </message>
     <message>
         <source>Copy TL forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar a LT cara adiante</translation>
     </message>
     <message>
         <source>1 time</source>
-        <translation type="unfinished"></translation>
+        <translation>1 vez</translation>
     </message>
     <message>
         <source>2 times</source>
-        <translation type="unfinished"></translation>
+        <translation>2 veces</translation>
     </message>
     <message>
         <source>3 times</source>
-        <translation type="unfinished"></translation>
+        <translation>3 veces</translation>
     </message>
     <message>
         <source>4 times</source>
-        <translation type="unfinished"></translation>
+        <translation>4 veces</translation>
     </message>
     <message>
         <source>5 times</source>
-        <translation type="unfinished"></translation>
+        <translation>5 veces</translation>
     </message>
 </context>
 <context>
@@ -2001,11 +2005,11 @@
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Achegar</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Afastar</translation>
     </message>
 </context>
 <context>
@@ -2066,101 +2070,101 @@
     </message>
     <message>
         <source>Topics</source>
-        <translation type="unfinished">Temas</translation>
+        <translation>Temas</translation>
     </message>
 </context>
 <context>
     <name>TupInfoWidget</name>
     <message>
         <source>Currency Converter</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertedor de moedas</translation>
     </message>
     <message>
         <source>Currency</source>
-        <translation type="unfinished"></translation>
+        <translation>Moeda</translation>
     </message>
     <message>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
+        <translation>%1</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Orixe</translation>
     </message>
     <message>
         <source>Update data every</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar os datos cada</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished">1</translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>minute</source>
-        <translation type="unfinished"></translation>
+        <translation>minuto</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>minutos</translation>
     </message>
     <message>
         <source>Link file to Object</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligar o ficheiro ao obxecto</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os ficheiros (*.*)</translation>
     </message>
 </context>
 <context>
     <name>TupItemManager</name>
     <message>
         <source>New folder %1</source>
-        <translation type="unfinished">Novo cartafol %1</translation>
+        <translation>Novo cartafol %1</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Opcións</translation>
+        <translation>Opcións</translation>
     </message>
     <message>
         <source>Edit with Inkscape</source>
-        <translation type="unfinished">Editar con Inkscape</translation>
+        <translation>Editar con Inkscape</translation>
     </message>
     <message>
         <source>Edit with Gimp</source>
-        <translation type="unfinished">Editar con Gimp</translation>
+        <translation>Editar con Gimp</translation>
     </message>
     <message>
         <source>Edit with Krita</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar con Krita</translation>
     </message>
     <message>
         <source>Edit with MyPaint</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar con MyPaint</translation>
     </message>
     <message>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clonar</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Exportar</translation>
+        <translation>Exportar</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Renomear</translation>
+        <translation>Renomear</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Eliminar</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Create new raster item</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un novo obxecto raster</translation>
     </message>
     <message>
         <source>Create new svg item</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un novo obxecto svg</translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2231,7 @@
     </message>
     <message>
         <source>Item %1</source>
-        <translation>Elemento %1</translation>
+        <translation>Obxecto %1</translation>
     </message>
 </context>
 <context>
@@ -2378,31 +2382,31 @@
     </message>
     <message>
         <source>Export object...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar o obxecto...</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished">Información</translation>
+        <translation>Información</translation>
     </message>
     <message>
         <source>Item exported successfully!</source>
-        <translation type="unfinished"></translation>
+        <translation>O obxecto foi exportado satisfactoriamente!</translation>
     </message>
     <message>
         <source>Couldn&apos;t create images directory!</source>
-        <translation type="unfinished"></translation>
+        <translation>Non foi posíbel crear o directorio de imaxes!</translation>
     </message>
     <message>
         <source>Couldn&apos;t create vector directory!</source>
-        <translation type="unfinished"></translation>
+        <translation>Non foi posíbel crear o directorio de vectores!</translation>
     </message>
     <message>
         <source>Tupi library item</source>
-        <translation type="unfinished"></translation>
+        <translation>Obxecto da biblioteca do Tupí</translation>
     </message>
     <message>
         <source>Vector</source>
-        <translation type="unfinished"></translation>
+        <translation>Vector</translation>
     </message>
 </context>
 <context>
@@ -2493,10 +2497,6 @@
     <message>
         <source>Importing palettes</source>
         <translation>Importando paletas</translation>
-    </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation>Directorio «</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2652,7 +2652,7 @@
     </message>
     <message>
         <source>Tupi: Open 2D Magic</source>
-        <translation>Tupí: Maxia 2D Livre</translation>
+        <translation>Tupí: Maxia 2D Libre</translation>
     </message>
     <message>
         <source>Information</source>
@@ -2849,6 +2849,10 @@
     </message>
     <message>
         <source>Actions Bar</source>
+        <translation>Barra de accións</translation>
+    </message>
+    <message>
+        <source>Directory does not exist! Please, choose another path.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2898,54 +2902,54 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>User has no available projects in the server</source>
-        <translation type="unfinished"></translation>
+        <translation>O usuario non ten proxectos dispoñíbeis neste servidor</translation>
     </message>
 </context>
 <context>
     <name>TupNewItemDialog</name>
     <message>
         <source>Create new raster item</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un novo obxecto raster</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparente</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Branco</translation>
+        <translation>Branco</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Negro</translation>
     </message>
     <message>
         <source>Create new vector item</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un novo obxecto vector</translation>
     </message>
     <message>
         <source>&amp;Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nome:</translation>
     </message>
     <message>
         <source>&amp;Extension:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Extensión:</translation>
     </message>
     <message>
         <source>&amp;Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Largo:</translation>
     </message>
     <message>
         <source>&amp;Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Alto:</translation>
     </message>
     <message>
         <source>&amp;Background:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fondo:</translation>
     </message>
     <message>
         <source>&amp;Open it with:</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir &amp;con:</translation>
     </message>
 </context>
 <context>
@@ -3080,11 +3084,11 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>520x380 - 24</source>
-        <translation type="unfinished"></translation>
+        <translation>520x380 - 24</translation>
     </message>
     <message>
         <source>640x480 - 24</source>
-        <translation type="unfinished"></translation>
+        <translation>640x480 - 24</translation>
     </message>
 </context>
 <context>
@@ -3098,23 +3102,23 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     <name>TupOnionOpacityDialog</name>
     <message>
         <source>Onion Paper</source>
-        <translation type="unfinished"></translation>
+        <translation>Papel cebola</translation>
     </message>
     <message>
         <source>-0.05</source>
-        <translation type="unfinished"></translation>
+        <translation>-0.05</translation>
     </message>
     <message>
         <source>-0.01</source>
-        <translation type="unfinished"></translation>
+        <translation>-0.01</translation>
     </message>
     <message>
         <source>+0.01</source>
-        <translation type="unfinished"></translation>
+        <translation>+0.01</translation>
     </message>
     <message>
         <source>+0.05</source>
-        <translation type="unfinished"></translation>
+        <translation>+0.05</translation>
     </message>
 </context>
 <context>
@@ -3149,7 +3153,7 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>No items selected</source>
-        <translation>Non hai ningún elemento seleccionado</translation>
+        <translation>Non hai ningún obxecto seleccionado</translation>
     </message>
     <message>
         <source>Pencil</source>
@@ -3157,7 +3161,7 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>Line Selection</source>
-        <translation>Selección da área</translation>
+        <translation>Selección de contorno</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -3197,47 +3201,47 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>Paste in...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pegar en...</translation>
     </message>
     <message>
         <source>next 5 frames</source>
-        <translation type="unfinished"></translation>
+        <translation>seguintes 5 fotogramas</translation>
     </message>
     <message>
         <source>next 10 frames</source>
-        <translation type="unfinished"></translation>
+        <translation>seguintes 10 fotogramas</translation>
     </message>
     <message>
         <source>next 20 frames</source>
-        <translation type="unfinished"></translation>
+        <translation>seguintes 20 fotogramas</translation>
     </message>
     <message>
         <source>next 50 frames</source>
-        <translation type="unfinished"></translation>
+        <translation>seguintes 50 fotogramas</translation>
     </message>
     <message>
         <source>next 100 frames</source>
-        <translation type="unfinished"></translation>
+        <translation>seguintes 100 fotogramas</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished">Enviar</translation>
+        <translation>Enviar</translation>
     </message>
     <message>
         <source>To back</source>
-        <translation type="unfinished"></translation>
+        <translation>Cara atrás</translation>
     </message>
     <message>
         <source>To front</source>
-        <translation type="unfinished"></translation>
+        <translation>Cara adiante</translation>
     </message>
     <message>
         <source>One level to back</source>
-        <translation type="unfinished"></translation>
+        <translation>Un nivel cara atrás</translation>
     </message>
     <message>
         <source>One level to front</source>
-        <translation type="unfinished"></translation>
+        <translation>Un nivel cara adiante</translation>
     </message>
 </context>
 <context>
@@ -3330,50 +3334,50 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>Action Safe Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Área de seguranza</translation>
     </message>
     <message>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="unfinished">Mostrar a grella</translation>
+        <translation>Amosar a grella</translation>
     </message>
     <message>
         <source>#</source>
-        <translation type="unfinished">#</translation>
+        <translation>#</translation>
     </message>
     <message>
         <source>Full screen</source>
-        <translation type="unfinished">Pantalla completa</translation>
+        <translation>Pantalla completa</translation>
     </message>
     <message>
         <source>F11</source>
-        <translation type="unfinished">F11</translation>
+        <translation>F11</translation>
     </message>
 </context>
 <context>
     <name>TupPenDialog</name>
     <message>
         <source>Pen Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño do lapis</translation>
     </message>
     <message>
         <source>-5</source>
-        <translation type="unfinished"></translation>
+        <translation>-5</translation>
     </message>
     <message>
         <source>-1</source>
-        <translation type="unfinished"></translation>
+        <translation>-1</translation>
     </message>
     <message>
         <source>+1</source>
-        <translation type="unfinished"></translation>
+        <translation>+1</translation>
     </message>
     <message>
         <source>+5</source>
-        <translation type="unfinished"></translation>
+        <translation>+5</translation>
     </message>
 </context>
 <context>
@@ -3652,7 +3656,7 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     <name>TupScreen</name>
     <message>
         <source>Rendering...</source>
-        <translation type="unfinished">Debuxando...</translation>
+        <translation>Debuxando...</translation>
     </message>
 </context>
 <context>
@@ -3666,79 +3670,79 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     <name>TupStoryBoardDialog</name>
     <message>
         <source>Storyboard Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Axustes do guión gráfico</translation>
     </message>
     <message>
         <source>&amp;Export as HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Exportar como HTML</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pechar</translation>
     </message>
     <message>
         <source>&amp;Post</source>
-        <translation type="unfinished"></translation>
+        <translation>Pu&amp;blicar</translation>
     </message>
     <message>
         <source>Storyboard General Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Información xeral do guión gráfico</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished">Autor</translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Summary</source>
-        <translation type="unfinished"></translation>
+        <translation>Resumo</translation>
     </message>
     <message>
         <source>Topics</source>
-        <translation type="unfinished">Temas</translation>
+        <translation>Temas</translation>
     </message>
     <message>
         <source>Scene Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Información da escena</translation>
     </message>
     <message>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Duración</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished">Descrición</translation>
+        <translation>Descrición</translation>
     </message>
     <message>
         <source>Cover</source>
-        <translation type="unfinished"></translation>
+        <translation>Portada</translation>
     </message>
     <message>
         <source>Storyboard</source>
-        <translation type="unfinished">Guión gráfico (Storyboard)</translation>
+        <translation>Guión gráfico (Storyboard)</translation>
     </message>
     <message>
         <source>Scene No %1 - Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Escena n° %1 - Información</translation>
     </message>
     <message>
         <source>Choose a directory...</source>
-        <translation type="unfinished">Escolla un directorio...</translation>
+        <translation>Escolla un directorio...</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished">Información</translation>
+        <translation>Información</translation>
     </message>
     <message>
         <source>Storyboard exported successfully!</source>
-        <translation type="unfinished"></translation>
+        <translation>O guión gráfico foi exportado satisfactoriamente!</translation>
     </message>
     <message>
         <source>Scene</source>
-        <translation type="unfinished"></translation>
+        <translation>Escena</translation>
     </message>
 </context>
 <context>
@@ -3905,43 +3909,43 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     <name>TupToolsDialog</name>
     <message>
         <source>Pencil</source>
-        <translation type="unfinished">Lapis</translation>
+        <translation>Lapis</translation>
     </message>
     <message>
         <source>Ink</source>
-        <translation type="unfinished">Tinta</translation>
+        <translation>Tinta</translation>
     </message>
     <message>
         <source>Polyline</source>
-        <translation type="unfinished"></translation>
+        <translation>Poliliña</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Elipse</translation>
+        <translation>Elipse</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Rectángulo</translation>
+        <translation>Rectángulo</translation>
     </message>
     <message>
         <source>Object Selection</source>
-        <translation type="unfinished">Selección de obxectos</translation>
+        <translation>Selección de obxectos</translation>
     </message>
     <message>
         <source>Line Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selección de contorno</translation>
     </message>
     <message>
         <source>Color Palette</source>
-        <translation type="unfinished">Paleta de cores</translation>
+        <translation>Paleta de cores</translation>
     </message>
     <message>
         <source>Pen Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño do lapis</translation>
     </message>
     <message>
         <source>Opacity Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valor da opacidade</translation>
     </message>
 </context>
 <context>
@@ -3982,7 +3986,7 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     <name>TupWebHunter</name>
     <message>
         <source>Information Temporarily Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Información temporalmente non dispoñíbel</translation>
     </message>
 </context>
 <context>
@@ -4135,7 +4139,7 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>Coloring Tween can&apos;t be applied to SVG files</source>
-        <translation type="unfinished"></translation>
+        <translation>O coloreado da interpolación non pode aplicarse aos obxectos SVG</translation>
     </message>
 </context>
 <context>
@@ -4272,7 +4276,7 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>Set Animation Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Estabeleza as propiedades da animación</translation>
     </message>
 </context>
 <context>
@@ -4291,15 +4295,15 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Achegar</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Afastar</translation>
     </message>
     <message>
         <source>Shift+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Maiús+Z</translation>
     </message>
 </context>
 <context>

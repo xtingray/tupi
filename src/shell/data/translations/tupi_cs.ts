@@ -185,21 +185,21 @@
         <translation>Vybrat adresář...</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="722"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="725"/>
         <source>Warning!</source>
         <translation>Varování!</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="723"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="726"/>
         <source>File exists. Overwrite it?</source>
         <translation>Soubor existuje. Přepsat jej?</translation>
     </message>
     <message>
         <location filename="../src/components/export/tupexportwidget.cpp" line="689"/>
         <location filename="../src/components/export/tupexportwidget.cpp" line="703"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="734"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="740"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="781"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="737"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="743"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="784"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
@@ -215,27 +215,31 @@
     </message>
     <message>
         <location filename="../src/components/export/tupexportwidget.cpp" line="703"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="734"/>
-        <source>Directory &quot;</source>
-        <translation>Adresář &quot;</translation>
+        <source>Directory doesn&apos;t exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="740"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="737"/>
+        <source>Directory &quot;</source>
+        <translation type="unfinished">Adresář &quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="743"/>
         <source>You have no permission to create this file. Please, choose another path.</source>
         <translation>Nemáte žádné oprávnění pro vytvoření tohoto souboru. Vyberte, prosím, jinou cestu.</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="781"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="784"/>
         <source>Format problem. Tupi Internal error.</source>
         <translation>Potíže s formátem. Vnitřní chyba Tupi.</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="788"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="791"/>
         <source>Information</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="792"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="795"/>
         <source>ERROR!</source>
         <translation>Chyba!</translation>
     </message>
@@ -1712,7 +1716,7 @@
     <message>
         <location filename="../src/components/animation/tupcamerawidget.cpp" line="162"/>
         <source>Scale</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Velikost</translation>
     </message>
     <message>
         <location filename="../src/components/animation/tupcamerawidget.cpp" line="185"/>
@@ -2419,47 +2423,47 @@
 <context>
     <name>TupExportWidget</name>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="989"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="992"/>
         <source>Export to Video</source>
         <translation>Vyvést jako video</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="999"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1002"/>
         <source>Export to Video File</source>
         <translation>Vyvést jako videosoubor</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1002"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1005"/>
         <source>Export to Images Array</source>
         <translation>Vyvést jako řadu obrázků</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1005"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1008"/>
         <source>Export to Animated Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1021"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1024"/>
         <source>Post Animation in Tupitube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1050"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1053"/>
         <source>Video Formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1052"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1055"/>
         <source>Open Video Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1054"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1057"/>
         <source>Image Array</source>
         <translation type="unfinished">Řady obrázků</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1056"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1059"/>
         <source>Animated Image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3295,8 +3299,8 @@
         <location filename="../src/shell/tupmainwindow.cpp" line="589"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="679"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="765"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1057"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1092"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1060"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1095"/>
         <source>Tupi: Open 2D Magic</source>
         <translation>Tupi: Otevřené dvojrozměrné kouzlo</translation>
     </message>
@@ -3308,7 +3312,7 @@
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="249"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="370"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1084"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1087"/>
         <source>Information</source>
         <translation>Informace</translation>
     </message>
@@ -3319,7 +3323,7 @@
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="267"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1138"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1141"/>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="321"/>
         <source>Animation</source>
         <translation>Kreslený film</translation>
@@ -3368,8 +3372,8 @@
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="679"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="765"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1057"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1092"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1060"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1095"/>
         <source>by</source>
         <translation>Od</translation>
     </message>
@@ -3381,17 +3385,17 @@
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="697"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1021"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1343"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1347"/>
         <source>Tupi Project Package (*.tup)</source>
         <translation>Balíček s projektem Tupi (*.tup)</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="769"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1037"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1043"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1094"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1351"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1046"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1097"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1355"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1359"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
@@ -3407,7 +3411,7 @@
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="874"/>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="500"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="501"/>
         <source>Tip of the day</source>
         <translation>Rada na tento den</translation>
     </message>
@@ -3428,7 +3432,7 @@
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="874"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1376"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1380"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
@@ -3454,56 +3458,56 @@
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="1037"/>
-        <source>Directory &quot;</source>
-        <translation>Adresář &quot;</translation>
+        <source>Directory does not exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1043"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1046"/>
         <source>You have no permission to create this file. Please, choose another path.</source>
         <translation>Nemáte žádné oprávnění pro vytvoření tohoto souboru. Vyberte, prosím, jinou cestu.</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1084"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1087"/>
         <source>Project &lt;b&gt;%1&lt;/b&gt; saved</source>
         <translation>Projekt &lt;b&gt;%1&lt;/b&gt; uložen</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1094"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1097"/>
         <source>Cannot save the project!</source>
         <translation>Projekt nelze uložit!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1139"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1142"/>
         <source>New camera</source>
         <translation>Nová kamera</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1342"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1346"/>
         <source>Import project package</source>
         <translation>Zavést balíček s projektem</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1351"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1355"/>
         <source>Can&apos;t import project. File is empty!</source>
         <translation>Nelze zavést projekt. Soubor je prázdný!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1355"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1359"/>
         <source>Can&apos;t save the project. File doesn&apos;t exist!</source>
         <translation>Nelze uložit projekt. Soubor neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1371"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1375"/>
         <source>Fatal Error</source>
         <translation>Vážná chyba</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1373"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1377"/>
         <source>The connection to the server has been lost.</source>
         <translation>Spojení se serverem bylo ztraceno.</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1374"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1378"/>
         <source>Please, try to connect again in a while</source>
         <translation>Pokuste se, prosím, připojit za chvíli</translation>
     </message>
@@ -3788,32 +3792,32 @@
         <translation>Ctrl+K</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="500"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="501"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="555"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="557"/>
         <source>Actions Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="695"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="693"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="698"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="696"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl+Z</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="701"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="699"/>
         <source>Redo</source>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow_gui.cpp" line="704"/>
+        <location filename="../src/shell/tupmainwindow_gui.cpp" line="702"/>
         <source>Ctrl+Y</source>
         <translation>Ctrl+Y</translation>
     </message>
@@ -4320,27 +4324,27 @@ Spojte se, prosím, se správcem serveru s animacemi pro získání přístupu.<
 <context>
     <name>TupPaintAreaBase</name>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="187"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="201"/>
         <source>OpenGL isn&apos;t supported</source>
         <translation>OpenGL není podporováno</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="362"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="372"/>
         <source>No Scene!</source>
         <translation>Žádný výjev!</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="369"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="379"/>
         <source>Locked!</source>
         <translation>Uzamčeno!</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="430"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="448"/>
         <source>No Frames!</source>
         <translation>Žádné snímky!</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="433"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="451"/>
         <source>No Layers!</source>
         <translation>Žádné vrstvy!</translation>
     </message>
@@ -5614,49 +5618,49 @@ Spojte se, prosím, se správcem serveru s animacemi pro získání přístupu.<
 <context>
     <name>VideoProperties</name>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="840"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="843"/>
         <source>Set Animation Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="852"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="855"/>
         <source>Title</source>
         <translation>Název</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="853"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="856"/>
         <source>My Video</source>
         <translation>Moje video</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="858"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="861"/>
         <source>Topics</source>
         <translation>Náměty</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="859"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="862"/>
         <source>#topic1 #topic2 #topic3</source>
         <translation>#námět1 #námět2 #námět3</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="864"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="867"/>
         <source>Description</source>
         <translation>Popis</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="870"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="873"/>
         <source>Just a little taste of my style :)</source>
         <translation>Jen malá ochutnávka mého stylu :-)</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="931"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="951"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="934"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="954"/>
         <source>Set a title for the picture here!</source>
         <translation>Zde nastavte název obrázku!</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="938"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="962"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="941"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="965"/>
         <source>Set some topic tags for the picture here!</source>
         <translation>Zde nastavte nějaké značky týkající se námětu obrázku!</translation>
     </message>

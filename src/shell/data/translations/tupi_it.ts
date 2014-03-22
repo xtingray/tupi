@@ -160,8 +160,8 @@
         <translation>Il prefisso dei nomi delle immagini non può essere omesso! Inserisci un prefisso.</translation>
     </message>
     <message>
-        <source>Directory &quot;</source>
-        <translation>Cartella &quot;</translation>
+        <source>Directory doesn&apos;t exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -181,6 +181,10 @@
     </message>
     <message>
         <source>Enable background transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2555,10 +2559,6 @@
         <translation>Salva progetto con nome</translation>
     </message>
     <message>
-        <source>Directory &quot;</source>
-        <translation>Cartella &quot;</translation>
-    </message>
-    <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
         <translation>Non hai i permessi per creare il file . Per favore, scegli un altro percorso.</translation>
     </message>
@@ -2844,6 +2844,10 @@
     </message>
     <message>
         <source>Actions Bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory does not exist! Please, choose another path.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
