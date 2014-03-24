@@ -1036,7 +1036,8 @@ void TupMainWindow::saveAs()
     if (!directory.exists()) {
         TOsd::self()->display(tr("Error"), tr("Directory does not exist! Please, choose another path."), TOsd::Error);
         #ifdef K_DEBUG
-               tError() << "TupMainWindow::saveAs() - Fatal Error: Directory doesn't exist! -> " << path.toLocal8Bit();
+               QString file = path.toLocal8Bit();
+               tError() << "TupMainWindow::saveAs() - Fatal Error: Directory doesn't exist! -> " << file;
         #endif
         return;
     } else {

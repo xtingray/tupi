@@ -702,7 +702,8 @@ void ExportTo::exportIt()
         if (filename.length() == 0) {
             TOsd::self()->display(tr("Error"), tr("Directory doesn't exist! Please, choose another path."), TOsd::Error);
             #ifdef K_DEBUG
-                   tError() << "ExportTo::exportIt() - Fatal Error: Directory doesn't exist! -> " << path.toLocal8Bit();
+                   QString file = path.toLocal8Bit();
+                   tError() << "ExportTo::exportIt() - Fatal Error: Directory doesn't exist! -> " << file;
             #endif
             return;
         }
@@ -736,7 +737,8 @@ void ExportTo::exportIt()
     if (!directory.exists()) {
         TOsd::self()->display(tr("Error"), tr("Directory doesn't exist! Please, choose another path."), TOsd::Error);
         #ifdef K_DEBUG
-               tError() << "ExportTo::exportIt() - Fatal Error: Directory doesn't exist! -> " << path.toLocal8Bit();
+               QString file = path.toLocal8Bit();
+               tError() << "ExportTo::exportIt() - Fatal Error: Directory doesn't exist! -> " << file;
         #endif
         return;
     } else {
