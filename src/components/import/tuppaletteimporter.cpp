@@ -100,17 +100,39 @@ bool TupPaletteImporter::importGimpPalette(const QString &file)
                          QString line = stream.readLine();
                          int init = line.indexOf("(") + 1;
                          int end = line.indexOf(")");
+                         if (init == -1 || end == -1) {
+                             #ifdef K_DEBUG
+                                    tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format -> " << line;
+                             #endif
+                             return false;
+                         }
+
                          QString text = line.mid(init, end - init); 
                          QStringList rgb = text.split(",");
+                         if (rgb.count() != 3) {
+                             #ifdef K_DEBUG
+                                    tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format -> " << line;
+                             #endif
+                             return false;
+                         }
+
                          QColor color;
                          for (int i = 0; i < rgb.size(); ++i) {
-                              int item = rgb.at(i).trimmed().toInt();
-                              if (i == 0)
-                                  color.setRed(item);
-                              if (i == 1)
-                                  color.setGreen(item);
-                              if (i == 2)
-                                  color.setBlue(item);
+                              bool ok;
+                              int item = rgb.at(i).trimmed().toInt(&ok, 10);
+                              if (ok) {
+                                  if (i == 0)
+                                      color.setRed(item);
+                                  if (i == 1)
+                                      color.setGreen(item);
+                                  if (i == 2)
+                                      color.setBlue(item);
+                              } else {
+                                  #ifdef K_DEBUG
+                                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format -> " << line;
+                                  #endif
+                                  return false;
+                              }
                          }
 
                          if (color.isValid()) {
