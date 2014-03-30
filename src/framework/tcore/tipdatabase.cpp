@@ -117,16 +117,13 @@ void TipDatabase::loadTips(const QString &filePath)
                 tip.text = "<html>\n";
                 tip.text += "<head>\n";
                 tip.text += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=utf-8\">\n";
-                tip.text += "<link rel=\"stylesheet\" type=\"text\/css\" href=\"file:tupi.css\" />\n";
+                tip.text += "<link rel=\"stylesheet\" type=\"text/css\" href=\"file:tupi.css\" />\n";
                 tip.text += "</head>\n";
                 tip.text += "<body class=\"tip_background0" + QString::number(index) + "\">\n";
                 tip.text += e.text();
                 tip.text += "\n</body>\n";
                 tip.text += "</html>";
                 k->tips << tip;
-
-                tError() << "TipDatabase::loadTips() - tip: ";
-                tWarning() << tip.text;
             }
         }
         n = n.nextSibling();

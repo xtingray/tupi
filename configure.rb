@@ -180,8 +180,8 @@ _EOH_
     # config.addLib("-ltupifwsound")
     
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Aram\\\\\"')
-    config.addDefine('REVISION=\\\\\"git03\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Argentum\\\\\"')
+    config.addDefine('REVISION=\\\\\"git04\\\\\"')
 
     if conf.hasArgument?("install-headers")
        config.addDefine("ADD_HEADERS");

@@ -200,12 +200,10 @@ class TupMainWindow : public TabbedMainWindow
           void resizeProjectDimension(const QSize size);
 
     private slots:
-          void messageToStatus(const QString &);
           void preferences();
           void aboutTupi();
           void showTipDialog();
           void importPalettes();
-          void connectToDisplays(const QWidget *widget);
           void saveProject();
           void openRecentProject();
           void createCommand(const TupPaintAreaEvent *event);

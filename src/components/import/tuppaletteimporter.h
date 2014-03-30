@@ -53,17 +53,14 @@ class TupPaletteImporter
         TupPaletteImporter();
         ~TupPaletteImporter();
 
-        void import(const QString &file, PaletteType pt);
-        void saveFile(const QString &path);
+        bool import(const QString &file, PaletteType type);
+        bool saveFile(const QString &path);
         QString filePath() const;
 
     private:
-        void importGimpPalette(const QString &file);
-
-    private:
-        TupPaletteDocument *m_document;
-        QString m_paletteName;
-        QString m_filePath;
+        bool importGimpPalette(const QString &file);
+        struct Private;
+        Private *const k;
 };
 
 #endif

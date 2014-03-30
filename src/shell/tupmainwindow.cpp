@@ -104,10 +104,6 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
 
     setObjectName("TupMainWindow_");
 
-    // Defining the status bar
-    m_statusBar = new TupStatusBar(this);
-    setStatusBar(m_statusBar);
-
     // Naming the main frame...
     setWindowTitle(tr("Tupi: Open 2D Magic"));
     setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "about.png"));
@@ -267,7 +263,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         animationTab->setWindowTitle(tr("Animation"));
         addWidget(animationTab);
 
-        connectToDisplays(animationTab);
         connectWidgetToManager(animationTab);
         connectWidgetToLocalManager(animationTab);
         connect(animationTab, SIGNAL(modeHasChanged(TupProject::Mode)), this, SLOT(expandExposureView(TupProject::Mode))); 
@@ -581,9 +576,6 @@ void TupMainWindow::resetUI()
     if (exposureView->isExpanded())
         exposureView->expandDock(false);
 
-    m_statusBar->setStatus(tr(""));
-    // projectSaved = false;
-
     setUpdatesEnabled(true);
 
     setWindowTitle(tr("Tupi: Open 2D Magic"));
@@ -829,8 +821,6 @@ void TupMainWindow::save()
 
 void TupMainWindow::preferences()
 {
-    m_statusBar->setStatus(tr("Preferences Dialog Opened"));
-
     TupPreferences *preferences = new TupPreferences(this);
     connect(preferences, SIGNAL(timerChanged()), animationTab, SLOT(updateTimer()));
     preferences->show();
@@ -893,21 +883,29 @@ void TupMainWindow::showTipDialog()
 void TupMainWindow::importPalettes()
 {
     const char *home = getenv("HOME");
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), home, 
-                                                       tr("Gimp Palette (*.gpl)"));
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), home, tr("Gimp Palette (*.txt *.css)"));
 
-    m_statusBar->setStatus(tr("Importing palettes"));
-    QStringList::ConstIterator it = files.begin();
-	
-    //int progress = 1;
-    while (it != files.end()) {
+    QStringList::ConstIterator file = files.begin();
+    while (file != files.end()) {
            TupPaletteImporter importer;
-           importer.import(*it, TupPaletteImporter::Gimp);
-           ++it;
-
-           importer.saveFile(SHARE_DIR + "data/palettes");
-           m_colorPalette->parsePaletteFile( importer.filePath());
-           //m_statusBar->advance(progress++, files.count());
+           bool ok = importer.import(*file, TupPaletteImporter::Gimp);
+           if (ok) {
+               QString home = getenv("HOME");
+               QString path = home + QDir::separator() + ".tupi" + QDir::separator() + "palettes";
+               ok = importer.saveFile(path);
+               if (ok) {
+                   m_colorPalette->parsePaletteFile(importer.filePath());
+               } else {
+                   #ifdef K_DEBUG
+                          tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't export file -> " << (*file);
+                   #endif
+               }
+           } else {
+               #ifdef K_DEBUG
+                      tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't import palette -> " << (*file);
+               #endif
+           }
+           file++;
     }
 }
 
@@ -969,20 +967,6 @@ void TupMainWindow::connectWidgetToLocalManager(QWidget *widget)
 {
     connect(widget, SIGNAL(localRequestTriggered(const TupProjectRequest *)), 
             m_projectManager, SLOT(handleLocalRequest(const TupProjectRequest *)));
-}
-
-/**
- * @if english
- * This method sets a message into the status bar.
- * @endif
- * @if spanish
- * Este metodo asigna un mensaje a la barra de estados.
- * @endif
- */
-
-void TupMainWindow::messageToStatus(const QString &msg)
-{
-    m_statusBar->setStatus(msg);
 }
 
 /**

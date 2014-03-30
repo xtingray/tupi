@@ -34,62 +34,85 @@
  ***************************************************************************/
 
 #include "tuppaletteimporter.h"
-#include <QFile>
-#include <QTextStream>
-
 #include "tdebug.h"
 
-TupPaletteImporter::TupPaletteImporter() : m_document(0)
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
+
+struct TupPaletteImporter::Private
+{
+    TupPaletteDocument *document;
+    QString paletteName;
+    QString filePath;
+};
+
+TupPaletteImporter::TupPaletteImporter() : k(new Private)
 {
 }
 
 TupPaletteImporter::~TupPaletteImporter()
 {
-    if (m_document) 
-        delete m_document;
 }
 
-void TupPaletteImporter::import(const QString &file, PaletteType pt)
+bool TupPaletteImporter::import(const QString &file, PaletteType type)
 {
-    switch (pt) {
+    switch (type) {
             case Gimp:
-             {
-                 importGimpPalette(file);
-             }
-             break;
+            {
+                 return importGimpPalette(file);
+            }
+            break;
     }
+
+    return false;
 }
 
-void TupPaletteImporter::importGimpPalette(const QString &file)
+bool TupPaletteImporter::importGimpPalette(const QString &file)
 {
-   QFile f(file);
+   QFile input(file);
 
-   if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-       QTextStream stream(&f);
+   if (input.open(QIODevice::ReadOnly | QIODevice::Text)) {
+       QTextStream stream(&input);
 
-       if (! stream.readLine().contains("GIMP Palette")) {
+       QFileInfo info(file);
+       k->paletteName = info.baseName().toLower();
+       QString exttension = info.suffix().toLower();
+       k->document = new TupPaletteDocument(k->paletteName, false);
+
+       tError() << "TupPaletteImporter::importGimpPalette() - Filename: " << k->paletteName;
+
+       if (exttension.compare("txt") == 0) {
+           while (!stream.atEnd()) {
+                  QString line = stream.readLine();
+                  if (line.startsWith("#")) {
+                      QColor color(line);
+                      if (color.isValid()) {
+                          k->document->addColor(color);
+                      } else {
+                          #ifdef K_DEBUG
+                                 tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format -> " << line;
+                          #endif
+                          return false;
+                      }
+                  }
+           }
+       } else if (exttension.compare("css") == 0) {
+                  while (!stream.atEnd()) {
+                         QString line = stream.readLine();
+                  }
+       } else {
            #ifdef K_DEBUG
-                  tError() << "Don't contains \"GIMP Palette\"";
+                  tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid extension!";
            #endif
-           return;
+           return false;
        }
 
-       QString string = "";
-       string = stream.readLine();
-
-       m_paletteName = string.section("Name:", 1).trimmed();
-
-       if (m_document) 
-           delete m_document;
-
-       m_document = new TupPaletteDocument(m_paletteName, false);
-
-       stream >> string;
-
+       /*
        if (! string.contains("#"))
            stream.readLine();
 		
-       QRegExp rgb("\\s*([\\d]{0,3})\\s+([\\d]{0,3})\\s+([\\d]{0,3})\\s+.*$");
+       // QRegExp rgb("\\s*([\\d]{0,3})\\s+([\\d]{0,3})\\s+([\\d]{0,3})\\s+.*$");
        while (!stream.atEnd()) {
               QString line = stream.readLine();
 
@@ -106,36 +129,53 @@ void TupPaletteImporter::importGimpPalette(const QString &file)
                   QColor c(r, g, b);
 
                   if (c.isValid()) {
-                      m_document->addColor(c);
+                      k->document->addColor(c);
                   } else {
                       #ifdef K_DEBUG
-                             tError() << "Bad color";
+                             tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format";
                       #endif
+                      return false;
                   }
               } else {
                   #ifdef K_DEBUG
-                         tError() << "No find";
+                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Couldn't find a color value";
                   #endif
+                  return false;
               }
        }
+       */
     }
+
+    return true;
 }
 
-void TupPaletteImporter::saveFile(const QString &path)
+bool TupPaletteImporter::saveFile(const QString &path)
 {
-    if (m_paletteName.isNull())
-        return;
+    if (k->paletteName.isNull()) {
+        #ifdef K_DEBUG
+               tError() << "TupPaletteImporter::saveFile() - Fatal Error: Palette name is null!";
+        #endif
+        return false;
+    }
 
-    QFile file(path + "/" + m_paletteName.remove(' ') + ".tpal");
+    QString pathName = path + QDir::separator() + k->paletteName.replace(" ", "_") + ".tpal";
+
+    QFile file(pathName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream ts(&file);
-        ts << m_document->toString();
-
-        m_filePath = path+"/" + m_paletteName.remove(' ') + ".tpal";
+        ts << k->document->toString();
+        k->filePath = pathName;
+    } else {
+        #ifdef K_DEBUG
+               tError() << "TupPaletteImporter::saveFile() - Fatal Error: Insufficient permission to save palette file -> " << pathName;
+        #endif
+        return false;
     }
+
+    return true;
 }
 
 QString TupPaletteImporter::filePath() const
 {
-    return m_filePath;
+    return k->filePath;
 }

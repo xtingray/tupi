@@ -63,6 +63,8 @@ struct TupPaintAreaStatus::Private
     QComboBox *zoom;
     QComboBox *rotation;
     QCheckBox *antialiasHint;
+    QLabel *positionLabel;
+
     TupBrushStatus *brushStatus;
     TupBrushStatus *bgStatus;
     TupToolStatus *toolStatus;
@@ -78,6 +80,13 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     k->scaleFactor = 100;
     k->angle = 0;
     k->currentFrame = 1;
+
+    k->positionLabel = new QLabel; 
+    QFont font = this->font();
+    font.setPointSize(8);
+    k->positionLabel->setFont(font);
+
+    addPermanentWidget(k->positionLabel, 1);
 
     QPushButton *actionSafeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "safe_area.png")), "");
     actionSafeAreaButton->setIconSize(QSize(16, 16));
@@ -112,7 +121,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     frameLayout->setMargin(1);
     QLabel *frameLabel = new QLabel("");
     frameLabel->setToolTip(tr("Current Frame"));
-    QPixmap framePix(THEME_DIR + "icons/frame_number.png");
+    QPixmap framePix(THEME_DIR + "icons" + QDir::separator() + "frame_number.png");
     frameLabel->setPixmap(framePix);
 
     k->frameField = new QLineEdit(frameContainer);
@@ -133,17 +142,14 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
 
     QLabel *zoomTool = new QLabel("");
     zoomTool->setToolTip(tr("Zoom"));
-    QPixmap pix(THEME_DIR + "icons/zoom_small.png");
+    QPixmap pix(THEME_DIR + "icons" + QDir::separator() + "zoom_small.png");
     zoomTool->setPixmap(pix);
-    // zoomTool->setMaximumSize(15, 15);
 
     zoomLayout->addWidget(zoomTool);
 
     k->zoom = new QComboBox();
     k->zoom->setDuplicatesEnabled(false);
     k->zoom->setEditable(true);
-    //k->zoom->setFocusPolicy(Qt::NoFocus);
-    //k->zoom->setInsertPolicy(QComboBox::InsertBeforeCurrent);
 
     for (int i = 500; i >= 250; i-=50)
          k->zoom->addItem(QString::number(i), i);
@@ -165,8 +171,6 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     QHBoxLayout *rotLayout = new QHBoxLayout(rotContainer);
     rotLayout->setSpacing(3);
     rotLayout->setMargin(1);
-
-    // rotLayout->addWidget(new QLabel(tr("Rotate")));
 
     QLabel *rotateLabel = new QLabel("");
     rotateLabel->setToolTip(tr("Rotate Workspace"));
@@ -190,12 +194,9 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
 
     connect(k->rotation, SIGNAL(activated(const QString &)), this, SLOT(applyRotation(const QString &)));
 
-    ///////
-
     k->antialiasHint = new QCheckBox;
     k->antialiasHint->setIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "antialiasing.png")));
     k->antialiasHint->setToolTip(tr("Antialiasing"));
-    // k->antialiasHint->setFocusPolicy(Qt::NoFocus);
     k->antialiasHint->setCheckable(true);
     k->antialiasHint->setChecked(true);
     k->antialiasHint->setFixedWidth(36);
@@ -376,4 +377,9 @@ void TupPaintAreaStatus::setBgColor(QColor color)
 void TupPaintAreaStatus::enableFullScreenFeature(bool flag)
 {
     k->fullScreenButton->setEnabled(flag);
+}
+
+void TupPaintAreaStatus::updatePosition(const QString &position)
+{
+    k->positionLabel->setText(position);
 }

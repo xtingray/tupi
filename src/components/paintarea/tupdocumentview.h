@@ -150,7 +150,6 @@ class TupDocumentView : public QMainWindow
         bool handleProjectResponse(TupProjectResponse *event);
 
     signals:
-        void sendToStatus(const QString &msg);
         void requestTriggered(const TupProjectRequest *event);
         void localRequestTriggered(const TupProjectRequest *event);
         void autoSave();

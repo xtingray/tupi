@@ -73,7 +73,6 @@ void TupMainWindow::createGUI()
     m_actionManager->insert(colorView->toggleViewAction(), "show_palette");
     addToPerspective(colorView->toggleViewAction(), Animation);
 
-    connectToDisplays(m_colorPalette);
     connectWidgetToPaintArea(m_colorPalette);
 
     // Adding the pen parameters widget to the left side of the interface 
@@ -83,7 +82,6 @@ void TupMainWindow::createGUI()
     m_actionManager->insert(penView->toggleViewAction(), "show_pen");
     addToPerspective(penView->toggleViewAction(), Animation);
 
-    connectToDisplays(m_penWidget);
     connectWidgetToPaintArea(m_penWidget);
 
     // Adding the objects library widget to the left side of the interface
@@ -94,7 +92,6 @@ void TupMainWindow::createGUI()
     libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Animation, "Library", QKeySequence(tr("Shift+L")));
     m_actionManager->insert(libraryView->toggleViewAction(), "show_library");
     addToPerspective(libraryView->toggleViewAction(), Animation);
-    connectToDisplays(m_libraryWidget);
 
     new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap.png"), tr("Bitmap"), QKeySequence(tr("Alt+B")), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
@@ -127,7 +124,6 @@ void TupMainWindow::createGUI()
 
     connectWidgetToManager(m_scenes);
     connectWidgetToLocalManager(m_scenes);
-    connectToDisplays(m_scenes);
 
     // Adding the exposure sheet to the right side of the interface
     m_exposureSheet = new TupExposureSheet;
@@ -137,7 +133,6 @@ void TupMainWindow::createGUI()
 
     connectWidgetToManager(m_exposureSheet);
     connectWidgetToLocalManager(m_exposureSheet);
-    connectToDisplays(m_exposureSheet);
 
     // Adding the help widget to the right side of the interface
 
@@ -153,7 +148,6 @@ void TupMainWindow::createGUI()
 
     connect(m_helper, SIGNAL(pageLoaded(const QString &)), this, 
             SLOT(showHelpPage(const QString &)));
-    connectToDisplays(m_helper);
 
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new TupTimeLine;
@@ -164,7 +158,6 @@ void TupMainWindow::createGUI()
 
     connectWidgetToManager(m_timeLine);
     connectWidgetToLocalManager(m_timeLine);
-    connectToDisplays(m_timeLine);
 
 #if defined(QT_GUI_LIB) && defined(K_DEBUG)
     QDesktopWidget desktop;
@@ -183,20 +176,6 @@ void TupMainWindow::createGUI()
     */
 
     enableToolViews(false);
-}
-
-/**
- * @if english
- * This method links widgets with status displayer
- * @endif
- * @if spanish
- * Este metodo enlaza widgets con el visualizador de estados
- * @endif
- */
-
-void TupMainWindow::connectToDisplays(const QWidget *widget)
-{
-    connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
 }
 
 /**
@@ -250,8 +229,11 @@ void TupMainWindow::setupMenu()
 
     m_fileMenu->addSeparator();
     m_fileMenu->addAction(m_actionManager->find("export"));
-    m_fileMenu->addSeparator();
-    m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
+
+    // SQA: This option has been moved to the Import menu
+    // m_fileMenu->addSeparator();
+    // m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
+
     m_fileMenu->addSeparator();
     m_fileMenu->addAction(m_actionManager->find("Exit"));
     m_fileMenu->addSeparator();
@@ -287,8 +269,10 @@ void TupMainWindow::setupMenu()
     m_insertMenu->addAction(m_actionManager->find("importbitmaparray"));
     m_insertMenu->addAction(m_actionManager->find("importsvg"));
     m_insertMenu->addAction(m_actionManager->find("importsvgarray"));
-
     //m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
+
+    m_insertMenu->addSeparator();
+    m_insertMenu->addAction(m_actionManager->find("ImportPalettes"));
 
     // Setting up the window menu
     // setupWindowActions();

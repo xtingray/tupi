@@ -68,7 +68,9 @@ void TipDialog::setupGUI()
     setWindowTitle(tags.at(0));
     setWindowIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "today_tip.png"));
 
-    int h,s,v;
+    int h;
+    int s;
+    int v;
     QColor baseColor = palette().base().color();
     baseColor.getHsv(&h,&s,&v);
     baseColor.setHsv(h, int(s*(71/76.0)), int(v*(67/93.0)));

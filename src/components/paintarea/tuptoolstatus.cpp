@@ -38,6 +38,7 @@
 #include "tconfig.h"
 
 #include <QLabel>
+#include <QDir>
 #include <QHBoxLayout>
 
 TupToolStatus::TupToolStatus()
@@ -47,13 +48,13 @@ TupToolStatus::TupToolStatus()
     layout->setSpacing(2);
 
     tool = new QLabel("");
-    QPixmap pix(THEME_DIR + "icons/pencil.png");
+    QPixmap pic(THEME_DIR + "icons" + QDir::separator() + "pencil.png");
     tool->setToolTip(tr("Current Tool"));
-    tool->setPixmap(pix);
-    // tool->setMaximumSize(20, 20);
+    tool->setPixmap(pic);
 
     QLabel *label = new QLabel(tr("Current Tool"));
-    QFont font("Helvetica", 8, QFont::Normal);
+    QFont font = this->font();
+    font.setPointSize(8);
     label->setFont(font);
     layout->addWidget(label);
     layout->addSpacing(3);

@@ -3493,8 +3493,8 @@
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="897"/>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation type="unfinished">GIMP Palette (*.gpl)</translation>
+        <source>Gimp Palette</source>
+        <translation type="unfinished">GIMP Palette</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="899"/>
