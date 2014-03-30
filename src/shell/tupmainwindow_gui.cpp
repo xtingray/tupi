@@ -245,6 +245,7 @@ void TupMainWindow::setupMenu()
 
     // Adding Options wizard and preferences
     //m_settingsMenu->addAction(m_actionManager->find("wizard"));
+
     m_settingsMenu->addAction(m_actionManager->find("preferences"));
     // Temporary out while SQA is done
     m_actionManager->enable("preferences", false);
@@ -393,7 +394,7 @@ void TupMainWindow::setupFileActions()
 
     TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "open.png"), tr("Open project"), QKeySequence(tr("Ctrl+O")), 
                                     this, SLOT(openProject()), m_actionManager);
-    m_actionManager->insert( openFile, "openproject", "file" );
+    m_actionManager->insert(openFile, "openproject", "file");
     openFile->setStatusTip(tr("Load existent project"));
 
     // SQA: This code has been disabled temporary
@@ -428,7 +429,7 @@ void TupMainWindow::setupFileActions()
     // Import Palette action
 
     TAction *importPalette = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "import.png"), tr("&Import GIMP palettes"),
-                                         QKeySequence(tr("Ctrl+G")), this, SLOT(importPalettes()), m_actionManager);
+                                         QKeySequence(tr("Shift+G")), this, SLOT(importPalettes()), m_actionManager);
     importPalette->setStatusTip(tr("Import palettes"));
     m_actionManager->insert(importPalette, "importpalettes", "file");
 
@@ -459,11 +460,13 @@ void TupMainWindow::setupFileActions()
 
 void TupMainWindow::setupSettingsActions()
 {
+    /*
     TAction *wizard = new TAction(tr("Launch configuration wizard..."), QKeySequence(), 
                                   qobject_cast<TupApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
     wizard->setStatusTip(tr("Launch first configuration wizard"));
+    */
 
-    TAction * preferences = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "properties.png"), tr("Pr&eferences..."), 
+    TAction *preferences = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "properties.png"), tr("Pr&eferences..."), 
                                         QKeySequence(tr("Ctrl+P")), this, SLOT( preferences()),
                                         m_actionManager, "preferences");
     preferences->setStatusTip(tr("Opens the preferences dialog box"));

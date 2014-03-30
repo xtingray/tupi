@@ -2503,10 +2503,6 @@
         <translation>Archivo de Proyecto (*.tup)</translation>
     </message>
     <message>
-        <source>Preferences Dialog Opened</source>
-        <translation>Dialogo de preferencias abierto</translation>
-    </message>
-    <message>
         <source>Tip of the day</source>
         <translation>Consejo del día</translation>
     </message>
@@ -2533,14 +2529,6 @@
     <message>
         <source>Import gimp palettes</source>
         <translation>Importar paletas de gimp</translation>
-    </message>
-    <message>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation>Paleta de Gimp (*.gpl)</translation>
-    </message>
-    <message>
-        <source>Importing palettes</source>
-        <translation>Importando paletas</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2691,10 +2679,6 @@
         <translation>&amp;Importar paletas de Gimp</translation>
     </message>
     <message>
-        <source>Ctrl+G</source>
-        <translation>Ctrl+G</translation>
-    </message>
-    <message>
         <source>Import palettes</source>
         <translation>Importar paletas</translation>
     </message>
@@ -2721,14 +2705,6 @@
     <message>
         <source>Close application</source>
         <translation>Cerrar aplicación</translation>
-    </message>
-    <message>
-        <source>Launch configuration wizard...</source>
-        <translation>Cargar asistente de configuración...</translation>
-    </message>
-    <message>
-        <source>Launch first configuration wizard</source>
-        <translation>Cargar primer asistente de configuración</translation>
     </message>
     <message>
         <source>Pr&amp;eferences...</source>
@@ -2849,6 +2825,22 @@
     <message>
         <source>Directory does not exist! Please, choose another path.</source>
         <translation>El directorio no existe! Por favor, escoja otra ruta.</translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.txt *.css)</source>
+        <translation>Paleta de Gimp (*txt *css)</translation>
+    </message>
+    <message>
+        <source>Gimp palette import was successful</source>
+        <translation>La paleta de Gimp fue exportada exitosamente</translation>
+    </message>
+    <message>
+        <source>Gimp palette import was unsuccessful</source>
+        <translation>La paleta de Gimp no pudo ser exportada</translation>
+    </message>
+    <message>
+        <source>Shift+G</source>
+        <translation>Shift+G</translation>
     </message>
 </context>
 <context>
