@@ -886,6 +886,7 @@ void TupMainWindow::importPalettes()
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), home, tr("Gimp Palette (*.txt *.css)"));
 
     QStringList::ConstIterator file = files.begin();
+    bool isOk = true;
     while (file != files.end()) {
            TupPaletteImporter importer;
            bool ok = importer.import(*file, TupPaletteImporter::Gimp);
@@ -899,14 +900,21 @@ void TupMainWindow::importPalettes()
                    #ifdef K_DEBUG
                           tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't export file -> " << (*file);
                    #endif
+                   isOk = false;
                }
            } else {
                #ifdef K_DEBUG
                       tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't import palette -> " << (*file);
                #endif
+               isOk = false;
            }
            file++;
     }
+
+    if (isOk)
+        TOsd::self()->display(tr("Information"), tr("Gimp palette import was successful"), TOsd::Info);
+    else
+        TOsd::self()->display(tr("Error"), tr("Gimp palette import was unsuccessful"), TOsd::Error);
 }
 
 /**

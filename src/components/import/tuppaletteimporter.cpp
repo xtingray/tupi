@@ -77,12 +77,10 @@ bool TupPaletteImporter::importGimpPalette(const QString &file)
 
        QFileInfo info(file);
        k->paletteName = info.baseName().toLower();
-       QString exttension = info.suffix().toLower();
+       QString extension = info.suffix().toLower();
        k->document = new TupPaletteDocument(k->paletteName, false);
 
-       tError() << "TupPaletteImporter::importGimpPalette() - Filename: " << k->paletteName;
-
-       if (exttension.compare("txt") == 0) {
+       if (extension.compare("txt") == 0) {
            while (!stream.atEnd()) {
                   QString line = stream.readLine();
                   if (line.startsWith("#")) {
@@ -97,9 +95,32 @@ bool TupPaletteImporter::importGimpPalette(const QString &file)
                       }
                   }
            }
-       } else if (exttension.compare("css") == 0) {
+       } else if (extension.compare("css") == 0) {
                   while (!stream.atEnd()) {
                          QString line = stream.readLine();
+                         int init = line.indexOf("(") + 1;
+                         int end = line.indexOf(")");
+                         QString text = line.mid(init, end - init); 
+                         QStringList rgb = text.split(",");
+                         QColor color;
+                         for (int i = 0; i < rgb.size(); ++i) {
+                              int item = rgb.at(i).trimmed().toInt();
+                              if (i == 0)
+                                  color.setRed(item);
+                              if (i == 1)
+                                  color.setGreen(item);
+                              if (i == 2)
+                                  color.setBlue(item);
+                         }
+
+                         if (color.isValid()) {
+                             k->document->addColor(color);
+                         } else {
+                             #ifdef K_DEBUG
+                                    tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format -> " << line;
+                             #endif
+                             return false;
+                         }
                   }
        } else {
            #ifdef K_DEBUG
@@ -107,43 +128,6 @@ bool TupPaletteImporter::importGimpPalette(const QString &file)
            #endif
            return false;
        }
-
-       /*
-       if (! string.contains("#"))
-           stream.readLine();
-		
-       // QRegExp rgb("\\s*([\\d]{0,3})\\s+([\\d]{0,3})\\s+([\\d]{0,3})\\s+.*$");
-       while (!stream.atEnd()) {
-              QString line = stream.readLine();
-
-              if (rgb.indexIn(line) != -1) {
-                  QStringList capturedTexts = rgb.capturedTexts();
-
-                  if (capturedTexts.count() != 4)
-                      continue;
-
-                  int r = capturedTexts[1].toInt();
-                  int g = capturedTexts[2].toInt();
-                  int b = capturedTexts[3].toInt();
-
-                  QColor c(r, g, b);
-
-                  if (c.isValid()) {
-                      k->document->addColor(c);
-                  } else {
-                      #ifdef K_DEBUG
-                             tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format";
-                      #endif
-                      return false;
-                  }
-              } else {
-                  #ifdef K_DEBUG
-                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Couldn't find a color value";
-                  #endif
-                  return false;
-              }
-       }
-       */
     }
 
     return true;
