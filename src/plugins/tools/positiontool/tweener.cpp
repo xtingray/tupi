@@ -158,8 +158,8 @@ void Tweener::init(TupGraphicsScene *scene)
 
 void Tweener::updateStartFrame(int index)
 {
-    if (k->initFrame != index && index >= 0) 
-        k->initFrame = index;
+    if (k->initFrame != index && index >= 0)
+        k->initFrame = index - 1;
 }
 
 /* This method returns the plugin name */

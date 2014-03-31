@@ -70,86 +70,151 @@ bool TupPaletteImporter::import(const QString &file, PaletteType type)
 
 bool TupPaletteImporter::importGimpPalette(const QString &file)
 {
-   QFile input(file);
+    QFile input(file);
 
-   if (input.open(QIODevice::ReadOnly | QIODevice::Text)) {
-       QTextStream stream(&input);
+    if (input.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&input);
 
-       QFileInfo info(file);
-       k->paletteName = info.baseName().toLower();
-       QString extension = info.suffix().toLower();
-       k->document = new TupPaletteDocument(k->paletteName, false);
+        QFileInfo info(file);
+        QString extension = info.suffix().toLower();
 
-       if (extension.compare("txt") == 0) {
-           while (!stream.atEnd()) {
-                  QString line = stream.readLine();
-                  if (line.startsWith("#")) {
-                      QColor color(line);
-                      if (color.isValid()) {
-                          k->document->addColor(color);
-                      } else {
-                          #ifdef K_DEBUG
-                                 tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format -> " << line;
-                          #endif
-                          return false;
-                      }
-                  }
-           }
-       } else if (extension.compare("css") == 0) {
-                  while (!stream.atEnd()) {
-                         QString line = stream.readLine();
-                         int init = line.indexOf("(") + 1;
-                         int end = line.indexOf(")");
-                         if (init == -1 || end == -1) {
-                             #ifdef K_DEBUG
-                                    tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format -> " << line;
-                             #endif
-                             return false;
-                         }
+        if (extension.compare("gpl") == 0) {
+            if (! stream.readLine().contains("GIMP Palette")) {
+                #ifdef K_DEBUG
+                       tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.gpl) -> " << file;
+                #endif
+                return false;
+            }
 
-                         QString text = line.mid(init, end - init); 
-                         QStringList rgb = text.split(",");
-                         if (rgb.count() != 3) {
-                             #ifdef K_DEBUG
-                                    tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format -> " << line;
-                             #endif
-                             return false;
-                         }
+            QString line = stream.readLine();
+            if (!line.startsWith("Name:")) {
+                #ifdef K_DEBUG
+                       tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.gpl) -> " << file;
+                #endif
+                return false;
+            }
 
-                         QColor color;
-                         for (int i = 0; i < rgb.size(); ++i) {
-                              bool ok;
-                              int item = rgb.at(i).trimmed().toInt(&ok, 10);
-                              if (ok) {
-                                  if (i == 0)
-                                      color.setRed(item);
-                                  if (i == 1)
-                                      color.setGreen(item);
-                                  if (i == 2)
-                                      color.setBlue(item);
-                              } else {
+            k->paletteName = line.section("Name:", 1).trimmed();
+            k->document = new TupPaletteDocument(k->paletteName, false);
+
+            line = stream.readLine();
+            while(!line.contains("#"))
+                  line = stream.readLine();
+
+            while (!stream.atEnd()) {
+                   line = stream.readLine().left(11).trimmed();
+                   QStringList rgb = getColorArray(line);
+
+                   if (rgb.count() != 3) {
+                       #ifdef K_DEBUG
+                              tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.gpl) -> " << line;
+                       #endif
+                       return false;
+                   }
+
+                   QColor color;
+                   for (int i = 0; i < 3; ++i) {
+                        bool ok;
+                        int item = rgb.at(i).toInt(&ok, 10);
+                        if (ok) {
+                            if (i == 0)
+                                color.setRed(item);
+                            if (i == 1)
+                                color.setGreen(item);
+                            if (i == 2)
+                                color.setBlue(item);
+                        } else {
+                            #ifdef K_DEBUG
+                                   tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.gpl) -> " << line;
+                            #endif
+                            return false;
+                        }
+                   }
+
+                   if (color.isValid()) {
+                       k->document->addColor(color);
+                   } else {
+                       #ifdef K_DEBUG
+                              tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format (.gpl) -> " << line;
+                       #endif
+                       return false;
+                   }
+            }
+        } else {
+            k->paletteName = info.baseName().toLower();
+            k->document = new TupPaletteDocument(k->paletteName, false);
+
+            if (extension.compare("txt") == 0) {
+                while (!stream.atEnd()) {
+                       QString line = stream.readLine();
+                       if (line.startsWith("#")) {
+                           QColor color(line);
+                           if (color.isValid()) {
+                               k->document->addColor(color);
+                           } else {
+                               #ifdef K_DEBUG
+                                      tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format (.txt) -> " << line;
+                               #endif
+                               return false;
+                           }
+                       }
+                }
+            } else if (extension.compare("css") == 0) {
+                       while (!stream.atEnd()) {
+                              QString line = stream.readLine();
+                              int init = line.indexOf("(") + 1;
+                              int end = line.indexOf(")");
+                              if (init == -1 || end == -1) {
                                   #ifdef K_DEBUG
-                                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format -> " << line;
+                                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.css) -> " << line;
                                   #endif
                                   return false;
                               }
-                         }
 
-                         if (color.isValid()) {
-                             k->document->addColor(color);
-                         } else {
-                             #ifdef K_DEBUG
-                                    tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format -> " << line;
-                             #endif
-                             return false;
-                         }
-                  }
-       } else {
-           #ifdef K_DEBUG
-                  tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid extension!";
-           #endif
-           return false;
-       }
+                              QString text = line.mid(init, end - init); 
+                              QStringList rgb = text.split(",");
+                              if (rgb.count() != 3) {
+                                  #ifdef K_DEBUG
+                                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.css) -> " << line;
+                                  #endif
+                                  return false;
+                              }
+
+                              QColor color;
+                              for (int i = 0; i < 3; ++i) {
+                                   bool ok;
+                                   int item = rgb.at(i).trimmed().toInt(&ok, 10);
+                                   if (ok) {
+                                       if (i == 0)
+                                           color.setRed(item);
+                                       if (i == 1)
+                                           color.setGreen(item);
+                                       if (i == 2)
+                                           color.setBlue(item);
+                                   } else {
+                                       #ifdef K_DEBUG
+                                              tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid palette format (.css) -> " << line;
+                                       #endif
+                                       return false;
+                                   }
+                              }
+
+                              if (color.isValid()) {
+                                  k->document->addColor(color);
+                              } else {
+                                  #ifdef K_DEBUG
+                                         tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid color format (.css) -> " << line;
+                                  #endif
+                                  return false;
+                              }
+                       }
+            } else {
+                #ifdef K_DEBUG
+                       tError() << "TupPaletteImporter::importGimpPalette() - Fatal Error: Invalid extension! -> " << extension;
+                #endif
+                return false;
+            }
+        }
     }
 
     return true;
@@ -185,3 +250,30 @@ QString TupPaletteImporter::filePath() const
 {
     return k->filePath;
 }
+
+QStringList TupPaletteImporter::getColorArray(const QString &line)
+{
+    QByteArray array = line.toLocal8Bit();
+    QStringList rgb;
+    QString color = "";
+    bool gotIt = false;
+    for (int i=0; i<array.size(); i++) {
+         QChar letter(array.at(i));
+         if (letter.isDigit()) {
+             color += letter;
+             if (gotIt)
+                 gotIt = false;
+             if (i == array.size() - 1)
+                 rgb << color;
+         } else {
+                 if (!gotIt) {
+                     rgb << color;
+                     color = "";
+                     gotIt = true;
+                 }
+         }
+    }
+
+    return rgb;
+}
+

@@ -45,7 +45,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
-#include <QComboBox>
+#include <QSpinBox>
 #include <QBoxLayout>
 #include <QHeaderView>
 #include <QGraphicsPathItem>
@@ -59,7 +59,7 @@ struct Settings::Private
     QLineEdit *input;
     TRadioButtonGroup *options;
     StepsViewer *stepViewer;
-    QComboBox *comboInit;
+    QSpinBox *comboInit;
     QLabel *totalLabel;
     bool selectionDone;
     TupToolPlugin::Mode mode; 
@@ -75,7 +75,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-    setFont(QFont("Arial", 8, QFont::Normal, false));
+    QFont font = this->font();
+    font.setPointSize(8);
+    setFont(font);
+    // setFont(QFont("Arial", 8, QFont::Normal, false));
 
     QLabel *nameLabel = new QLabel(tr("Name") + ": ");
     k->input = new QLineEdit;
@@ -131,18 +134,14 @@ void Settings::setInnerForm()
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
     startingLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    k->comboInit = new QComboBox();
-    k->comboInit->setFixedWidth(60);
-    //k->comboInit->setMaximumWidth(50);
-    //k->comboInit->setEditable(false);
+    k->comboInit = new QSpinBox();
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SIGNAL(startingFrameChanged(int)));
+    connect(k->comboInit, SIGNAL(valueChanged(int)), this, SIGNAL(startingFrameChanged(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
     startLayout->setMargin(0);
     startLayout->setSpacing(0);
-    // startLayout->addWidget(startingLabel);
     startLayout->addWidget(k->comboInit);
 
     k->stepViewer = new StepsViewer;
@@ -161,8 +160,6 @@ void Settings::setInnerForm()
     innerLayout->addWidget(k->stepViewer);
 
     innerLayout->addLayout(totalLayout);
-
-    // k->innerPanel->setLayout(innerLayout);
 
     k->layout->addWidget(k->innerPanel);
 
@@ -217,25 +214,24 @@ void Settings::setParameters(TupItemTweener *currentTween)
 void Settings::initStartCombo(int framesTotal, int currentIndex)
 {
     k->comboInit->clear();
-    for (int i=1; i<=framesTotal; i++)
-         k->comboInit->addItem(QString::number(i));
-
-    k->comboInit->setCurrentIndex(currentIndex);
+    k->comboInit->setMinimum(1);
+    k->comboInit->setMaximum(framesTotal);
+    k->comboInit->setValue(currentIndex);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
-    k->comboInit->setCurrentIndex(currentIndex);
+    k->comboInit->setValue(currentIndex);
 }
 
 int Settings::startFrame()
 {
-    return k->comboInit->currentIndex();
+    return k->comboInit->value() - 1;
 }
 
 int Settings::startComboSize()
 {
-    return k->comboInit->count();
+    return k->comboInit->maximum();
 }
 
 void Settings::updateSteps(const QGraphicsPathItem *path)

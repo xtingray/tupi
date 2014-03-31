@@ -2832,11 +2832,11 @@
     </message>
     <message>
         <source>Gimp palette import was successful</source>
-        <translation>La paleta de Gimp fue exportada exitosamente</translation>
+        <translation>La paleta de Gimp fue importada exitosamente</translation>
     </message>
     <message>
         <source>Gimp palette import was unsuccessful</source>
-        <translation>La paleta de Gimp no pudo ser exportada</translation>
+        <translation>La paleta de Gimp no pudo ser importada</translation>
     </message>
     <message>
         <source>Shift+G</source>

@@ -883,38 +883,40 @@ void TupMainWindow::showTipDialog()
 void TupMainWindow::importPalettes()
 {
     const char *home = getenv("HOME");
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), home, tr("Gimp Palette (*.txt *.css)"));
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp palettes"), home, tr("Gimp Palette (*.gpl *.txt *.css)"));
 
-    QStringList::ConstIterator file = files.begin();
-    bool isOk = true;
-    while (file != files.end()) {
-           TupPaletteImporter importer;
-           bool ok = importer.import(*file, TupPaletteImporter::Gimp);
-           if (ok) {
-               QString home = getenv("HOME");
-               QString path = home + QDir::separator() + ".tupi" + QDir::separator() + "palettes";
-               ok = importer.saveFile(path);
+    if (files.count() > 0) { 
+        QStringList::ConstIterator file = files.begin();
+        bool isOk = true;
+        while (file != files.end()) {
+               TupPaletteImporter importer;
+               bool ok = importer.import(*file, TupPaletteImporter::Gimp);
                if (ok) {
-                   m_colorPalette->parsePaletteFile(importer.filePath());
+                   QString home = getenv("HOME");
+                   QString path = home + QDir::separator() + ".tupi" + QDir::separator() + "palettes";
+                   ok = importer.saveFile(path);
+                   if (ok) {
+                       m_colorPalette->parsePaletteFile(importer.filePath());
+                   } else {
+                       #ifdef K_DEBUG
+                              tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't import file -> " << (*file);
+                       #endif
+                       isOk = false;
+                   }
                } else {
                    #ifdef K_DEBUG
-                          tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't export file -> " << (*file);
+                          tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't import palette -> " << (*file);
                    #endif
                    isOk = false;
                }
-           } else {
-               #ifdef K_DEBUG
-                      tError() << "TupMainWindow::importPalettes() - Fatal Error: Couldn't import palette -> " << (*file);
-               #endif
-               isOk = false;
-           }
-           file++;
-    }
+               file++;
+        }
 
-    if (isOk)
-        TOsd::self()->display(tr("Information"), tr("Gimp palette import was successful"), TOsd::Info);
-    else
-        TOsd::self()->display(tr("Error"), tr("Gimp palette import was unsuccessful"), TOsd::Error);
+        if (isOk)
+            TOsd::self()->display(tr("Information"), tr("Gimp palette import was successful"), TOsd::Info);
+        else
+            TOsd::self()->display(tr("Error"), tr("Gimp palette import was unsuccessful"), TOsd::Error);
+    }
 }
 
 /**

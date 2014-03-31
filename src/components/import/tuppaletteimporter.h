@@ -59,6 +59,7 @@ class TupPaletteImporter
 
     private:
         bool importGimpPalette(const QString &file);
+        QStringList getColorArray(const QString &line);
         struct Private;
         Private *const k;
 };
