@@ -747,11 +747,17 @@ void TupLibraryWidget::createVectorObject()
     }
 }
 
-void TupLibraryWidget::importBitmap()
+void TupLibraryWidget::importBitmapGroup()
 {
-    QString image = QFileDialog::getOpenFileName (this, tr("Import an image..."), QDir::homePath(),  
-                                                  tr("Images") + " (*.png *.xpm *.jpg *.jpeg *.gif)");
-    if (image.isEmpty()) 
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import images..."), QDir::homePath(),
+                                                      tr("Images") + " (*.png *.xpm *.jpg *.jpeg *.gif)");
+    for (int i = 0; i < files.size(); ++i)
+         importBitmap(files.at(i));
+}
+
+void TupLibraryWidget::importBitmap(const QString &image)
+{
+    if (image.isEmpty())
         return;
 
     QFile f(image);
@@ -771,7 +777,8 @@ void TupLibraryWidget::importBitmap()
 
         #ifdef K_DEBUG
                tFatal() << "TupLibraryWidget::importBitmap() - Image filename: " << key << " | Raw Size: " << data.size();
-               tFatal() << "TupLibraryWidget::importBitmap() - Image Size: " << "[" << picWidth << ", " << picHeight << "]" << " | Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
+               tFatal() << "TupLibraryWidget::importBitmap() - Image Size: " << "[" << picWidth << ", " << picHeight << "]" 
+                        << " | Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
         #endif
 
         if (picWidth > projectWidth || picHeight > projectHeight) {
@@ -827,27 +834,34 @@ void TupLibraryWidget::importBitmap()
     }
 }
 
-void TupLibraryWidget::importSvg()
+void TupLibraryWidget::importSvgGroup()
 {
-    QString svgPath = QFileDialog::getOpenFileName (this, tr("Import a SVG file..."), QDir::homePath(),
-                                                    tr("Vector") + " (*.svg)");
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import SVG files..."), QDir::homePath(),
+                                                      tr("Vector") + " (*.svg)");
+    for (int i = 0; i < files.size(); ++i)
+         importSvg(files.at(i));
+}
+
+void TupLibraryWidget::importSvg(const QString &svgPath)
+{
     if (svgPath.isEmpty())
         return;
 
-    QFile f(svgPath);
-    QFileInfo fileInfo(f);
+    QFile file(svgPath);
+    QFileInfo fileInfo(file);
 
     QString key = fileInfo.fileName().toLower();
 
-    if (f.open(QIODevice::ReadOnly)) {
-        QByteArray data = f.readAll();
-        f.close();
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray data = file.readAll();
+        file.close();
 
-        // SQA: This block is just for debugging!   
-        tFatal() << "TupLibraryWidget::importSvg() - Inserting SVG into project: " << k->project->projectName();
-        int projectWidth = k->project->dimension().width();
-        int projectHeight = k->project->dimension().height();
-        tFatal() << "TupLibraryWidget::importSvg() - Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
+        #ifdef K_DEBUG
+               tFatal() << "TupLibraryWidget::importSvg() - Inserting SVG into project: " << k->project->projectName();
+               int projectWidth = k->project->dimension().width();
+               int projectHeight = k->project->dimension().height();
+               tFatal() << "TupLibraryWidget::importSvg() - Project Size: " << "[" << projectWidth << ", " << projectHeight << "]";
+        #endif
 
         int i = 0;
         int index = key.lastIndexOf(".");
@@ -1311,7 +1325,7 @@ void TupLibraryWidget::importGraphicObject()
     QString option = k->itemType->currentText();
 
     if (option.compare(tr("Image")) == 0) {
-        importBitmap();
+        importBitmapGroup();
         return;
     }
 
@@ -1321,7 +1335,7 @@ void TupLibraryWidget::importGraphicObject()
     }
 
     if (option.compare(tr("Svg File")) == 0) {
-        importSvg();
+        importSvgGroup();
         return;
     }
 

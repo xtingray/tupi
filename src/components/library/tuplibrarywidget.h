@@ -93,8 +93,10 @@ class TupLibraryWidget : public TupModuleWidgetBase
 
     public slots:
         void addFolder(const QString &folderName = QString());
-        void importBitmap();
-        void importSvg();
+        void importBitmapGroup();
+        void importBitmap(const QString &image);
+        void importSvgGroup();
+        void importSvg(const QString &svgPath);
         void importBitmapArray();
         void importSvgArray();
         void importSound();

@@ -78,7 +78,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     QFont font = this->font();
     font.setPointSize(8);
     setFont(font);
-    // setFont(QFont("Arial", 8, QFont::Normal, false));
 
     QLabel *nameLabel = new QLabel(tr("Name") + ": ");
     k->input = new QLineEdit;

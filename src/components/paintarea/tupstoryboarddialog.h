@@ -45,6 +45,7 @@
 #include <QSize>
 #include <QIcon>
 #include <QListWidgetItem>
+#include <QPrinter>
 
 class TupStoryBoardDialog : public QDialog
 {
@@ -57,9 +58,11 @@ class TupStoryBoardDialog : public QDialog
 
     private slots:
         void updateForm(QListWidgetItem *current, QListWidgetItem *previous);
-        void exportStoryBoard();
+        void exportStoyrboard(const QString &type);
         void postStoryboardAtServer();
         void closeDialog();
+        void exportAsHTML();
+        void exportAsPDF();
 
     signals:
         void updateStoryboard(TupStoryboard *, int sceneIndex);
@@ -84,6 +87,8 @@ class TupStoryBoardDialog : public QDialog
         QString getSceneTitle() const;
         QString getSceneDuration() const;
         QString getSceneDescription() const;
+        void createHTMLFiles(const QString &path);
+        void cleanDirectory(const QString &path);
  
         struct Private;
         Private *const k;

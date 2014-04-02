@@ -60,6 +60,10 @@
 #include <QFileDialog>
 #include <QDesktopWidget>
 #include <QLocale>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QTextBrowser>
+#include <QComboBox>
 
 struct TupStoryBoardDialog::Private
 {
@@ -141,7 +145,7 @@ TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *i
 
     setModal(true);
     setWindowTitle(tr("Storyboard Settings"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/storyboard.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "storyboard.png")));
 
     k->layout = new QHBoxLayout(this);
     k->formLayout = new QVBoxLayout;
@@ -151,15 +155,22 @@ TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *i
     setStoryForm();
     setSceneForm();
 
-    QPushButton *exportButton = new QPushButton(tr("&Export as HTML"));
-    connect(exportButton, SIGNAL(clicked()), this, SLOT(exportStoryBoard()));
+    QPushButton *pdfButton = new QPushButton(tr("&PDF"));
+    pdfButton->setToolTip(tr("Export as PDF"));
+    connect(pdfButton, SIGNAL(clicked()), this, SLOT(exportAsPDF()));
 
-    QPushButton *closeButton = new QPushButton(tr("&Close"));
+    QPushButton *htmlButton = new QPushButton(tr("&HTML"));
+    htmlButton->setToolTip(tr("Export as HTML"));
+    connect(htmlButton, SIGNAL(clicked()), this, SLOT(exportAsHTML()));
+
+    QPushButton *closeButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "close.png")), "");
+    closeButton->setToolTip(tr("Close"));
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
-    buttonBox->addButton(exportButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(pdfButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(htmlButton, QDialogButtonBox::ActionRole);
 
     if (k->isNetworked) {
         QPushButton *postButton = new QPushButton(tr("&Post"));
@@ -454,16 +465,8 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
     k->screenLabel->setPixmap(pixmap);
 }
 
-void TupStoryBoardDialog::exportStoryBoard()
+void TupStoryBoardDialog::createHTMLFiles(const QString &path)
 {
-    saveLastComponent();
-
-    QString dir = getenv("HOME");
-    QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
-                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if (path.isEmpty())
-        return;
-
     if (k->scaledSize.width() <= 520) {
         QDir directory(k->path);
         QStringList files = directory.entryList();
@@ -494,7 +497,8 @@ void TupStoryBoardDialog::exportStoryBoard()
         }
     }
 
-    QFile::copy(kAppProp->shareDir() + "data/storyboard/tupi.css", path + QDir::separator() + "tupi.css");
+    QFile::copy(kAppProp->shareDir() + "data" + QDir::separator() + "storyboard" + QDir::separator() + "tupi.css", 
+                path + QDir::separator() + "tupi.css");
 
     QString index = path + QDir::separator() + "index.html";
 
@@ -546,8 +550,56 @@ void TupStoryBoardDialog::exportStoryBoard()
     out << "</html>";
 
     file.close(); 
+}
 
-    TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
+void TupStoryBoardDialog::exportAsHTML()
+{
+    saveLastComponent();
+
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), QDir::homePath(),
+                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!path.isEmpty()) {
+        createHTMLFiles(path);
+        TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
+    }
+}
+
+void TupStoryBoardDialog::exportAsPDF()
+{
+    saveLastComponent();
+
+    QString path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
+    QDir().mkpath(path);
+    if (!path.isEmpty())
+        createHTMLFiles(path);
+
+    QString pdfPath = QFileDialog::getSaveFileName(this, tr("Save PDF file"), QDir::homePath(), tr("PDF file (*.pdf)"));
+
+    if (!pdfPath.isEmpty()) {
+        QFile file(path + "index.html");
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+
+        QString htmlContent;
+        QTextStream in(&file);
+        htmlContent = in.readAll();
+
+        QPrinter printer;
+        printer.setPageSize(QPrinter::A4);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(pdfPath);
+
+        QTextBrowser *document = new QTextBrowser;
+        QStringList paths;
+        paths << path;
+        document->setSearchPaths(paths);
+        document->setHtml(htmlContent);
+        document->print(&printer);
+        delete document;
+        cleanDirectory(path);
+
+        TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
+    }
 }
 
 void TupStoryBoardDialog::postStoryboardAtServer()
@@ -584,15 +636,7 @@ void TupStoryBoardDialog::saveLastComponent()
 void TupStoryBoardDialog::closeDialog()
 {
     saveLastComponent();
-
-    QDir dir(k->path);
-    QStringList files = dir.entryList();
-    for (int i = 0; i < files.size(); ++i) {
-         QString file = files.at(i).toLocal8Bit().constData();
-         if (file != "." && file != "..")
-             QFile::remove(k->path + file);
-    }
-    dir.rmdir(k->path); 
+    cleanDirectory(k->path);
 
     if (k->isNetworked)
         emit updateStoryboard(k->storyboard, k->sceneIndex);
@@ -634,3 +678,25 @@ QString TupStoryBoardDialog::getSceneDescription() const
 {
     return QString::fromUtf8(k->sceneDescriptionEdit->toPlainText().toUtf8());
 }
+
+void TupStoryBoardDialog::exportStoyrboard(const QString &type)
+{
+    if (type.compare(tr("PDF")) == 0) {
+        exportAsPDF();
+    } else if (type.compare(tr("Html")) == 0) {
+               exportAsHTML();
+    }
+}
+
+void TupStoryBoardDialog::cleanDirectory(const QString &path)
+{
+    QDir dir(path);
+    QStringList files = dir.entryList();
+    for (int i = 0; i < files.size(); ++i) {
+         QString file = files.at(i).toLocal8Bit().constData();
+         if (file != "." && file != "..")
+             QFile::remove(path + file);
+    }
+    dir.rmdir(path);
+}
+

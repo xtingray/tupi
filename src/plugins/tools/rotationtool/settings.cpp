@@ -46,6 +46,7 @@
 #include <QLineEdit>
 #include <QBoxLayout>
 #include <QComboBox>
+#include <QSpinBox>
 #include <QCheckBox>
 #include <QDir>
 
@@ -60,16 +61,16 @@ struct Settings::Private
 
     QLineEdit *input;
     TRadioButtonGroup *options;
-    QComboBox *comboInit;
-    QComboBox *comboEnd;
+    QSpinBox *comboInit;
+    QSpinBox *comboEnd;
 
     QComboBox *comboType;
     TupItemTweener::RotationType rotationType;
 
-    QComboBox *comboStart;
-    QComboBox *comboFinish;
+    QSpinBox *comboStart;
+    QSpinBox *comboFinish;
 
-    QComboBox *comboSpeed;
+    QSpinBox *degreesSpinbox;
     QCheckBox *rangeLoopBox;
     QCheckBox *reverseLoopBox;
     QLabel *totalLabel;
@@ -93,7 +94,9 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-    setFont(QFont("Arial", 8, QFont::Normal, false));
+    QFont font = this->font();
+    font.setPointSize(8);
+    setFont(font);
 
     QLabel *nameLabel = new QLabel(tr("Name") + ": ");
     k->input = new QLineEdit;
@@ -149,22 +152,20 @@ void Settings::setInnerForm()
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
     startingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboInit = new QComboBox();
-    k->comboInit->setMaximumWidth(50);
-    k->comboInit->setEditable(false);
-    k->comboInit->setValidator(new QIntValidator(k->comboInit));
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLastFrame()));
-
+    k->comboInit = new QSpinBox();
+    k->comboInit->setEnabled(false);
+    connect(k->comboInit, SIGNAL(valueChanged(int)), this, SLOT(updateLastFrame()));
+ 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboEnd = new QComboBox();
-    k->comboEnd->setFixedWidth(60);
-    k->comboEnd->setEditable(true);
-    k->comboEnd->addItem(QString::number(1));
-    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
-    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+    k->comboEnd = new QSpinBox();
+    k->comboEnd->setMinimum(1);
+    k->comboEnd->setMaximum(100);
+    k->comboEnd->setValue(1);
+    k->comboEnd->setEnabled(true);
+    connect(k->comboEnd, SIGNAL(valueChanged(int)), this, SLOT(checkTopLimit(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -205,13 +206,12 @@ void Settings::setInnerForm()
 
     QLabel *speedLabel = new QLabel(tr("Speed (Degrees/Frame)") + ": ");
     speedLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    k->comboSpeed = new QComboBox();
-    k->comboSpeed->setMaximumWidth(50);
-    k->comboSpeed->setEditable(true);
-    k->comboSpeed->setValidator(new QIntValidator(k->comboSpeed));
-    for (int i=0; i<=359; i++)
-         k->comboSpeed->addItem(QString::number(i));
-    k->comboSpeed->setCurrentIndex(5);
+
+    k->degreesSpinbox = new QSpinBox;
+    k->degreesSpinbox->setEnabled(true);
+    k->degreesSpinbox->setMinimum(0);
+    k->degreesSpinbox->setMaximum(359);
+    k->degreesSpinbox->setValue(5);
 
     QVBoxLayout *speedLayout = new QVBoxLayout;
     speedLayout->setAlignment(Qt::AlignHCenter);
@@ -223,7 +223,7 @@ void Settings::setInnerForm()
     speedLayout2->setAlignment(Qt::AlignHCenter);
     speedLayout2->setMargin(0);
     speedLayout2->setSpacing(0);
-    speedLayout2->addWidget(k->comboSpeed);
+    speedLayout2->addWidget(k->degreesSpinbox);
 
     innerLayout->addLayout(startLayout);
     innerLayout->addLayout(endLayout);
@@ -305,13 +305,11 @@ void Settings::setRangeForm()
     QLabel *startLabel = new QLabel(tr("Start at") + ": ");
     startLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    k->comboStart = new QComboBox();
-    k->comboStart->setEditable(true);
-    k->comboStart->setValidator(new QIntValidator(k->comboStart));
-    for (int i=0; i<=359; i++)
-         k->comboStart->addItem(QString::number(i));
-
-    connect(k->comboStart, SIGNAL(currentIndexChanged(int)), this, SLOT(checkRange(int)));
+    k->comboStart = new QSpinBox;
+    k->comboStart->setEnabled(true);
+    k->comboStart->setMinimum(0);
+    k->comboStart->setMaximum(359);
+    connect(k->comboStart, SIGNAL(valueChanged(int)), this, SLOT(checkRange(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -323,14 +321,11 @@ void Settings::setRangeForm()
     QLabel *endLabel = new QLabel(tr("Finish at") + ": ");
     endLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    k->comboFinish = new QComboBox();
-    k->comboFinish->setEditable(true);
-    k->comboFinish->setValidator(new QIntValidator(k->comboFinish));
-    for (int i=0; i<=359; i++)
-         k->comboFinish->addItem(QString::number(i));
-    k->comboFinish->setCurrentIndex(5);
-
-    connect(k->comboFinish, SIGNAL(currentIndexChanged(int)), this, SLOT(checkRange(int)));
+    k->comboFinish = new QSpinBox;
+    k->comboFinish->setEnabled(true);
+    k->comboFinish->setMinimum(0);
+    k->comboFinish->setMaximum(359);
+    connect(k->comboFinish, SIGNAL(valueChanged(int)), this, SLOT(checkRange(int)));
 
     QHBoxLayout *endLayout = new QHBoxLayout;
     endLayout->setAlignment(Qt::AlignHCenter);
@@ -402,24 +397,21 @@ void Settings::setParameters(TupItemTweener *currentTween)
     k->input->setText(currentTween->name());
 
     k->comboInit->setEnabled(true);
-    k->comboInit->setEditable(true);
-    k->comboInit->setCurrentIndex(currentTween->initFrame());
-    k->comboEnd->setItemText(0, QString::number(currentTween->initFrame() + currentTween->frames()));
-    k->comboEnd->setCurrentIndex(0);
+    k->comboInit->setValue(currentTween->initFrame());
+
+    k->comboEnd->setValue(currentTween->initFrame() + currentTween->frames());
 
     checkFramesRange();
 
     k->comboType->setCurrentIndex(currentTween->tweenRotationType());
-    k->comboSpeed->setItemText(0, QString::number(currentTween->tweenRotateSpeed()));
-    k->comboSpeed->setCurrentIndex(0);
+    k->degreesSpinbox->setValue(currentTween->tweenRotateSpeed());
 
     if (currentTween->tweenRotationType() == TupItemTweener::Continuos) {
         k->comboClock->setCurrentIndex(currentTween->tweenRotateDirection());
     } else {
-        k->comboStart->setItemText(0, QString::number(currentTween->tweenRotateStartDegree()));
-        k->comboStart->setCurrentIndex(0);
-        k->comboFinish->setItemText(0, QString::number(currentTween->tweenRotateEndDegree()));
-        k->comboFinish->setCurrentIndex(0);
+        k->comboStart->setValue(currentTween->tweenRotateStartDegree());
+        k->comboFinish->setValue(currentTween->tweenRotateEndDegree());
+
         k->rangeLoopBox->setChecked(currentTween->tweenRotateLoop());
         k->reverseLoopBox->setChecked(currentTween->tweenRotateReverseLoop());
     }
@@ -430,36 +422,35 @@ void Settings::initStartCombo(int framesTotal, int currentIndex)
     k->comboInit->clear();
     k->comboEnd->clear();
 
-    for (int i=1; i<=framesTotal; i++) {
-         k->comboInit->addItem(QString::number(i));
-         k->comboEnd->addItem(QString::number(i));
-    }
+    k->comboInit->setMinimum(1);
+    k->comboInit->setMaximum(framesTotal);
+    k->comboInit->setValue(currentIndex + 1);
 
-    k->comboInit->setCurrentIndex(currentIndex);
-    k->comboEnd->setCurrentIndex(framesTotal - 1);
+    k->comboEnd->setMinimum(1);
+    k->comboEnd->setValue(framesTotal);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
-    k->comboInit->setCurrentIndex(currentIndex);
-    int end = k->comboEnd->currentText().toInt();
+    k->comboInit->setValue(currentIndex + 1);
+    int end = k->comboEnd->value();
     if (end < currentIndex+1)
-        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
+        k->comboEnd->setValue(currentIndex + 1);
 }
 
 int Settings::startFrame()
 {
-    return k->comboInit->currentIndex();
+    return k->comboInit->value() - 1;
 }
 
 int Settings::startComboSize()
 {
-    return k->comboInit->count();
+    return k->comboInit->maximum();
 }
 
 int Settings::totalSteps()
 {
-    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
+    return k->comboEnd->value() - (k->comboInit->value() - 1);
 }
 
 void Settings::setEditMode()
@@ -543,7 +534,7 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
 
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     root.setAttribute("rotationType", k->rotationType);
-    int speed = k->comboSpeed->currentText().toInt();
+    int speed = k->degreesSpinbox->value();
     root.setAttribute("rotateSpeed", speed);
 
     if (k->rotationType == TupItemTweener::Continuos) {
@@ -568,10 +559,10 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                else
                    root.setAttribute("rotateLoop", "0");
 
-               int start = k->comboStart->currentText().toInt();
+               int start = k->comboStart->value();
                root.setAttribute("rotateStartDegree", start);
 
-               int end = k->comboFinish->currentText().toInt();
+               int end = k->comboFinish->value();
                root.setAttribute("rotateEndDegree", end);
 
                bool reverse = k->reverseLoopBox->isChecked();
@@ -661,20 +652,18 @@ void Settings::checkTopLimit(int index)
 
 void Settings::updateLastFrame()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = begin + k->totalSteps - 1;
-
-    k->comboEnd->setEditText(QString::number(end));
+    int end = k->comboInit->value() + k->totalSteps - 1;
+    k->comboEnd->setValue(end);
 }
 
 void Settings::checkFramesRange()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = k->comboEnd->currentText().toInt();
+    int begin = k->comboInit->value();
+    int end = k->comboEnd->value();
         
     if (begin > end) {
-        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
-        end = k->comboEnd->currentText().toInt();
+        k->comboEnd->setValue(k->comboEnd->maximum() - 1);
+        end = k->comboEnd->value();
     }
 
     k->totalSteps = end - begin + 1;
@@ -707,13 +696,13 @@ void Settings::checkRange(int index)
 {
     Q_UNUSED(index);
 
-    int start = k->comboStart->currentText().toInt();
-    int end = k->comboFinish->currentText().toInt();
+    int start = k->comboStart->value();
+    int end = k->comboFinish->value();
 
     if (start == end) {
-        if (k->comboFinish->currentIndex() == 359)
-            k->comboStart->setCurrentIndex(k->comboStart->currentIndex() - 1);
+        if (k->comboFinish->value() == 359)
+            k->comboStart->setValue(k->comboStart->value() - 1);
         else
-            k->comboFinish->setCurrentIndex(k->comboFinish->currentIndex() + 1);
+            k->comboFinish->setValue(k->comboFinish->value() + 1);
     }
 }

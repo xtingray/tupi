@@ -882,8 +882,7 @@ void TupMainWindow::showTipDialog()
 
 void TupMainWindow::importPalettes()
 {
-    const char *home = getenv("HOME");
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp palettes"), home, tr("Gimp Palette (*.gpl *.txt *.css)"));
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp palettes"), QDir::homePath(), tr("Gimp Palette (*.gpl *.txt *.css)"));
 
     if (files.count() > 0) { 
         QStringList::ConstIterator file = files.begin();
