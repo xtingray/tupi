@@ -272,11 +272,8 @@ void Configurator::setInitialColor(QColor color)
 
 void Configurator::closeTweenProperties()
 {
-    if (k->mode == TupToolPlugin::Add) {
+    if (k->mode == TupToolPlugin::Add)
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == TupToolPlugin::Edit) {
-        closeSettingsPanel();
-    }
 
     emit clickedResetInterface();
 

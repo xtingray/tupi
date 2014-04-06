@@ -199,7 +199,7 @@ void Settings::setParameters(TupItemTweener *currentTween)
     setEditMode();
 
     notifySelection(true);
-    activateMode(TupToolPlugin::Path);
+    activateMode(TupToolPlugin::Properties);
 
     k->input->setText(currentTween->name());
     k->comboInit->setEnabled(true);

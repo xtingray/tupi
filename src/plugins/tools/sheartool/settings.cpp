@@ -46,6 +46,8 @@
 #include <QLineEdit>
 #include <QBoxLayout>
 #include <QComboBox>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QCheckBox>
 #include <QDir>
 
@@ -59,16 +61,19 @@ struct Settings::Private
     TupToolPlugin::Mode mode;
     QLineEdit *input;
     TRadioButtonGroup *options;
-    QComboBox *comboInit;
-    QComboBox *comboEnd;
+
+    QSpinBox *comboInit;
+    QSpinBox *comboEnd;
 
     QLabel *totalLabel;
     int totalSteps;
 
     TupItemTweener::TransformAxes shearAxes;
     QComboBox *comboAxes;
-    QComboBox *comboFactor;
-    QComboBox *comboIterations;
+
+    QDoubleSpinBox *comboFactor;
+    QSpinBox *comboIterations;
+
     QCheckBox *loopBox;
     QCheckBox *reverseLoopBox;
 
@@ -144,22 +149,18 @@ void Settings::setInnerForm()
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
     startingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboInit = new QComboBox();
-    k->comboInit->setMaximumWidth(50);
-    k->comboInit->setEditable(false);
 
-    k->comboInit->setValidator(new QIntValidator(k->comboInit));
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLastFrame()));
+    k->comboInit = new QSpinBox;
+    k->comboInit->setEnabled(false);
+    connect(k->comboInit, SIGNAL(valueChanged(int)), this, SLOT(updateLastFrame()));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboEnd = new QComboBox();
-    k->comboEnd->setFixedWidth(60);
-    k->comboEnd->setEditable(true);
-    k->comboEnd->addItem(QString::number(1));
-    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
-    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+    k->comboEnd = new QSpinBox;
+    k->comboEnd->setEnabled(true);
+    k->comboEnd->setValue(1);
+    connect(k->comboEnd, SIGNAL(valueChanged(int)), this, SLOT(checkTopLimit(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -196,23 +197,12 @@ void Settings::setInnerForm()
     axesLayout->addWidget(axesLabel);
     axesLayout->addWidget(k->comboAxes);
 
-    k->comboFactor = new QComboBox();
-
-    for (int i=9; i>=1; i--) {
-         k->comboFactor->addItem("-0." + QString::number(i));
-         k->comboFactor->addItem("-0." + QString::number(i) + "5");
-    }
-
-    k->comboFactor->addItem("-0.05");
-    k->comboFactor->addItem("0.05");
-
-    for (int i=1; i<=9; i++) {
-         k->comboFactor->addItem("0." + QString::number(i));
-         k->comboFactor->addItem("0." + QString::number(i) + "5");
-    }
-
-    k->comboFactor->addItem("1.0");
-    k->comboFactor->setCurrentIndex(20);
+    k->comboFactor = new QDoubleSpinBox;
+    k->comboFactor->setMinimum(-9.0);
+    k->comboFactor->setMaximum(9.0);
+    k->comboFactor->setDecimals(2);
+    k->comboFactor->setSingleStep(0.05);
+    k->comboFactor->setValue(0.10);
 
     QLabel *speedLabel = new QLabel(tr("Scaling Factor") + ": ");
     speedLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -223,11 +213,9 @@ void Settings::setInnerForm()
     speedLayout->addWidget(speedLabel);
     speedLayout->addWidget(k->comboFactor);
 
-    k->comboIterations = new QComboBox();
-    k->comboIterations->setEditable(true);
-    k->comboIterations->setValidator(new QIntValidator(k->comboIterations));
-    for (int i=1; i<=100; i++)
-         k->comboIterations->addItem(QString::number(i));
+    k->comboIterations = new QSpinBox;
+    k->comboIterations->setEnabled(true);
+    k->comboIterations->setMinimum(1);
 
     QLabel *iterationsLabel = new QLabel(tr("Iterations") + ": ");
     iterationsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -313,17 +301,14 @@ void Settings::setParameters(TupItemTweener *currentTween)
     k->input->setText(currentTween->name());
 
     k->comboInit->setEnabled(true);
-    k->comboInit->setEditable(true);
-    k->comboInit->setCurrentIndex(currentTween->initFrame());
-    k->comboEnd->setItemText(0, QString::number(currentTween->initFrame() + currentTween->frames()));
-    k->comboEnd->setCurrentIndex(0);
+    k->comboInit->setValue(currentTween->initFrame() + 1);
+    k->comboEnd->setValue(currentTween->initFrame() + currentTween->frames());
 
     checkFramesRange();
 
     k->comboAxes->setCurrentIndex(currentTween->tweenShearAxes());
-    k->comboFactor->setItemText(0, QString::number(currentTween->tweenShearFactor()));
-    k->comboIterations->setCurrentIndex(0);
-    k->comboIterations->setItemText(0, QString::number(currentTween->tweenShearIterations()));
+    k->comboFactor->setValue(currentTween->tweenShearFactor());
+    k->comboIterations->setValue(currentTween->tweenShearIterations());
     k->loopBox->setChecked(currentTween->tweenShearLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenShearReverseLoop());
 }
@@ -333,36 +318,35 @@ void Settings::initStartCombo(int framesTotal, int currentIndex)
     k->comboInit->clear();
     k->comboEnd->clear();
 
-    for (int i=1; i<=framesTotal; i++) {
-         k->comboInit->addItem(QString::number(i));
-         k->comboEnd->addItem(QString::number(i));
-    }
+    k->comboInit->setMinimum(1);
+    k->comboInit->setMaximum(framesTotal);
+    k->comboInit->setValue(currentIndex + 1);
 
-    k->comboInit->setCurrentIndex(currentIndex);
-    k->comboEnd->setCurrentIndex(framesTotal - 1);
+    k->comboEnd->setMinimum(1);
+    k->comboEnd->setValue(framesTotal);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
-    k->comboInit->setCurrentIndex(currentIndex);
-    int end = k->comboEnd->currentText().toInt();
+    k->comboInit->setValue(currentIndex + 1);
+    int end = k->comboEnd->value();
     if (end < currentIndex+1)
-        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
+        k->comboEnd->setValue(currentIndex + 1);
 }
 
 int Settings::startFrame()
 {
-    return k->comboInit->currentIndex();
+    return k->comboInit->value() - 1;
 }
 
 int Settings::startComboSize()
 {
-    return k->comboInit->count();
+    return k->comboInit->maximum();
 }
 
 int Settings::totalSteps()
 {
-    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
+    return k->comboEnd->value() - (k->comboInit->value() - 1);
 }
 
 void Settings::setEditMode()
@@ -446,14 +430,14 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     k->shearAxes = TupItemTweener::TransformAxes(k->comboAxes->currentIndex());
     root.setAttribute("shearAxes", k->shearAxes);
-    double factor = k->comboFactor->currentText().toDouble();
+
+    double factor = k->comboFactor->value();
     root.setAttribute("shearFactor", factor);
 
-    int iterations = k->comboIterations->currentText().toInt();
+    int iterations = k->comboIterations->value();
     if (iterations == 0) {
         iterations = 1;
-        k->comboIterations->setCurrentIndex(0);
-        k->comboIterations->setItemText(0, QString::number(iterations));
+        k->comboIterations->setValue(1);
     }
     root.setAttribute("shearIterations", iterations);
 
@@ -550,20 +534,18 @@ void Settings::checkTopLimit(int index)
 
 void Settings::updateLastFrame()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = begin + k->totalSteps - 1;
-
-    k->comboEnd->setEditText(QString::number(end));
+    int end = k->comboInit->value() + k->totalSteps - 1;
+    k->comboEnd->setValue(end);
 }
 
 void Settings::checkFramesRange()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = k->comboEnd->currentText().toInt();
-        
+    int begin = k->comboInit->value();
+    int end = k->comboEnd->value();
+
     if (begin > end) {
-        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
-        end = k->comboEnd->currentText().toInt();
+        k->comboEnd->setValue(k->comboEnd->maximum() - 1);
+        end = k->comboEnd->value();
     }
 
     k->totalSteps = end - begin + 1;

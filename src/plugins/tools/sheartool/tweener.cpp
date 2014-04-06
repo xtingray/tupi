@@ -589,6 +589,8 @@ void Tweener::updateMode(TupToolPlugin::Mode mode)
     k->mode = mode;
 
     if (k->mode == TupToolPlugin::Edit) {
+        k->editMode = TupToolPlugin::Properties;
+
         k->initScene = k->currentTween->initScene();
         k->initLayer = k->currentTween->initLayer();
         k->initFrame = k->currentTween->initFrame();
@@ -604,6 +606,8 @@ void Tweener::updateMode(TupToolPlugin::Mode mode)
             k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), TupItemTweener::Shear);
             k->origin = k->currentTween->transformOriginPoint();
         }
+
+        addTarget();
     }
 }
 

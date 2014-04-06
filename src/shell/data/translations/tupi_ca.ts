@@ -183,10 +183,6 @@
         <source>Information</source>
         <translation type="unfinished">Informació</translation>
     </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FillTool</name>
@@ -2241,10 +2237,6 @@
         <translation>Biblioteca</translation>
     </message>
     <message>
-        <source>Import an image...</source>
-        <translation>Importa una imatge...</translation>
-    </message>
-    <message>
         <source>Images</source>
         <translation>Imatges</translation>
     </message>
@@ -2365,10 +2357,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import a SVG file...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Vector</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2406,6 +2394,14 @@
     </message>
     <message>
         <source>Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import images...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import SVG files...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2485,22 +2481,6 @@
     <message>
         <source>Tupi Project Package (*.tup)</source>
         <translation type="unfinished">Fitxer de projecte (*.tup)</translation>
-    </message>
-    <message>
-        <source>Preferences Dialog Opened</source>
-        <translation type="unfinished">Diàleg de preferències obert</translation>
-    </message>
-    <message>
-        <source>Import gimp palettes</source>
-        <translation type="unfinished">Importa paletes del gimp</translation>
-    </message>
-    <message>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation type="unfinished">Paleta del Gimp (*.gpl)</translation>
-    </message>
-    <message>
-        <source>Importing palettes</source>
-        <translation type="unfinished">Important paletes</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2629,14 +2609,6 @@
     <message>
         <source>Close application</source>
         <translation type="unfinished">Tanca aplicació</translation>
-    </message>
-    <message>
-        <source>Launch configuration wizard...</source>
-        <translation type="unfinished">Arrenca assistent de configuració...</translation>
-    </message>
-    <message>
-        <source>Launch first configuration wizard</source>
-        <translation type="unfinished">Arrenca primer assistent de configuració</translation>
     </message>
     <message>
         <source>Pr&amp;eferences...</source>
@@ -2795,10 +2767,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ctrl+G</source>
-        <translation type="unfinished">Ctrl+G</translation>
-    </message>
-    <message>
         <source>Ctrl+R</source>
         <translation type="unfinished">Ctrl+R</translation>
     </message>
@@ -2852,6 +2820,26 @@
     </message>
     <message>
         <source>Directory does not exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Gimp palettes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.gpl *.txt *.css)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp palette import was successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp palette import was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+G</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3671,14 +3659,6 @@ Please, contact the animation server admin to get access.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Export as HTML</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Post</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3740,6 +3720,42 @@ Please, contact the animation server admin to get access.</source>
     </message>
     <message>
         <source>Scene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Tanca</translation>
+    </message>
+    <message>
+        <source>Save PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Html</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

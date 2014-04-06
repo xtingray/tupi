@@ -235,7 +235,6 @@ void Configurator::editTween()
     k->settingsPanel->notifySelection(true);
     k->settingsPanel->setParameters(k->currentTween);
     activePropertiesPanel(true);
-
     emit setMode(k->mode);
 }
 
@@ -273,14 +272,10 @@ void Configurator::notifySelection(bool flag)
 
 void Configurator::closeTweenProperties()
 {
-    if (k->mode == TupToolPlugin::Add) {
+    if (k->mode == TupToolPlugin::Add)
         k->tweenManager->removeItemFromList();
-    } else if (k->mode == TupToolPlugin::Edit) {
-        closeSettingsPanel();
-    }
 
     emit clickedResetInterface();
-
     closeSettingsPanel();
 }
 
@@ -291,6 +286,8 @@ void Configurator::closeSettingsPanel()
         activePropertiesPanel(false);
         k->mode = TupToolPlugin::View;
         k->state = Configurator::Manager;
+    } else {
+        k->settingsPanel->activateMode(TupToolPlugin::Properties);
     }
 }
 

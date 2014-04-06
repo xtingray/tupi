@@ -45,7 +45,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QBoxLayout>
-#include <QComboBox>
+#include <QSpinBox>
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QDir>
@@ -57,15 +57,19 @@ struct Settings::Private
     TupToolPlugin::Mode mode;
 
     QLineEdit *input;
-    QComboBox *comboInit;
-    QComboBox *comboEnd;
+
+    QSpinBox *comboInit;
+    QSpinBox *comboEnd;
+
     TRadioButtonGroup *options;
 
     QPushButton *initColorButton;
     QColor initialColor;
     QPushButton *endColorButton;
     QColor endingColor;
-    QComboBox *comboIterations;
+
+    QSpinBox *comboIterations;
+
     QCheckBox *loopBox;
     QCheckBox *reverseLoopBox;
 
@@ -143,22 +147,18 @@ void Settings::setInnerForm()
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
     startingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboInit = new QComboBox();
-    k->comboInit->setMaximumWidth(50);
-    k->comboInit->setEditable(false);
-    k->comboInit->setValidator(new QIntValidator(k->comboInit));
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkBottomLimit(int)));
+    k->comboInit = new QSpinBox;
+    k->comboInit->setEnabled(false);
+    connect(k->comboInit, SIGNAL(valueChanged(int)), this, SLOT(checkBottomLimit()));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboEnd = new QComboBox();
-    k->comboEnd->setFixedWidth(60);
-    k->comboEnd->setEditable(true);
-    k->comboEnd->addItem(QString::number(1));
-    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
-    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+    k->comboEnd = new QSpinBox;
+    k->comboEnd->setEnabled(true);
+    k->comboEnd->setValue(1);
+    connect(k->comboEnd, SIGNAL(valueChanged(int)), this, SLOT(checkTopLimit(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -214,11 +214,9 @@ void Settings::setInnerForm()
     coloringEndLayout->addWidget(coloringEndLabel);
     coloringEndLayout->addWidget(k->endColorButton);
 
-    k->comboIterations = new QComboBox();
-    k->comboIterations->setEditable(true);
-    k->comboIterations->setValidator(new QIntValidator(k->comboIterations));
-    for (int i=1; i<=100; i++)
-         k->comboIterations->addItem(QString::number(i));
+    k->comboIterations = new QSpinBox;
+    k->comboIterations->setEnabled(true);
+    k->comboIterations->setMinimum(1);
 
     QLabel *iterationsLabel = new QLabel(tr("Iterations") + ": ");
     iterationsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -230,7 +228,6 @@ void Settings::setInnerForm()
     iterationsLayout->addWidget(k->comboIterations);
 
     k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
-    // k->loopBox->setChecked(true);
     connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
     QVBoxLayout *loopLayout = new QVBoxLayout;
@@ -301,11 +298,10 @@ void Settings::setParameters(TupItemTweener *currentTween)
     k->input->setText(currentTween->name());
 
     k->comboInit->setEnabled(true);
-    k->comboInit->setEditable(true);
-    k->comboInit->setCurrentIndex(currentTween->initFrame());
+    k->comboInit->setValue(currentTween->initFrame() + 1);
+
     int lastFrame = currentTween->initFrame() + currentTween->frames();
-    k->comboEnd->setItemText(0, QString::number(lastFrame));
-    k->comboEnd->setCurrentIndex(0);
+    k->comboEnd->setValue(lastFrame);
 
     checkFramesRange();
 
@@ -313,8 +309,9 @@ void Settings::setParameters(TupItemTweener *currentTween)
     updateColor(currentTween->tweenEndingColor(), k->endColorButton);
 
     int iterations = currentTween->tweenColorIterations();
-    k->comboIterations->setCurrentIndex(0);
-    k->comboIterations->setItemText(0, QString::number(iterations));
+
+    k->comboIterations->setValue(iterations);
+
     k->loopBox->setChecked(currentTween->tweenColorLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenColorReverseLoop());
 }
@@ -324,36 +321,35 @@ void Settings::initStartCombo(int framesTotal, int currentIndex)
     k->comboInit->clear();
     k->comboEnd->clear();
 
-    for (int i=1; i<=framesTotal; i++) {
-         k->comboInit->addItem(QString::number(i));
-         k->comboEnd->addItem(QString::number(i));
-    }
+    k->comboInit->setMinimum(1);
+    k->comboInit->setMaximum(framesTotal);
+    k->comboInit->setValue(currentIndex + 1);
 
-    k->comboInit->setCurrentIndex(currentIndex);
-    k->comboEnd->setCurrentIndex(framesTotal - 1);
+    k->comboEnd->setMinimum(1);
+    k->comboEnd->setValue(framesTotal);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
-    k->comboInit->setCurrentIndex(currentIndex);
-    int end = k->comboEnd->currentText().toInt();
+    k->comboInit->setValue(currentIndex + 1);
+    int end = k->comboEnd->value();
     if (end < currentIndex+1)
-        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
+        k->comboEnd->setValue(currentIndex + 1);
 }
 
 int Settings::startFrame()
 {
-    return k->comboInit->currentIndex();
+    return k->comboInit->value() - 1;
 }
 
 int Settings::startComboSize()
 {
-    return k->comboInit->count();
+    return k->comboInit->maximum();
 }
 
 int Settings::totalSteps()
 {
-    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
+    return k->comboEnd->value() - (k->comboInit->value() - 1);
 }
 
 void Settings::setEditMode()
@@ -465,11 +461,10 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                         + "," + QString::number(endingBlue);
     root.setAttribute("endingColor", colorText);
 
-    int iterations = k->comboIterations->currentText().toInt();
+    int iterations = k->comboIterations->value();
     if (iterations == 0) {
         iterations = 1;
-        k->comboIterations->setCurrentIndex(0);
-        k->comboIterations->setItemText(0, QString::number(iterations));
+        k->comboIterations->setValue(1);
     }
     root.setAttribute("colorIterations", iterations);
 
@@ -566,12 +561,12 @@ void Settings::checkTopLimit(int index)
 
 void Settings::checkFramesRange()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = k->comboEnd->currentText().toInt();
+    int begin = k->comboInit->value();
+    int end = k->comboEnd->value();
 
     if (begin > end) {
-        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
-        end = k->comboEnd->currentText().toInt();
+        k->comboEnd->setValue(k->comboEnd->maximum() - 1);
+        end = k->comboEnd->value();
     }
 
     k->totalSteps = end - begin + 1;

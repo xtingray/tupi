@@ -2237,10 +2237,6 @@
         <translation>Biblioteca</translation>
     </message>
     <message>
-        <source>Import an image...</source>
-        <translation>Importar unha imaxe...</translation>
-    </message>
-    <message>
         <source>Images</source>
         <translation>Imaxes</translation>
     </message>
@@ -2341,10 +2337,6 @@
         <translation>Produciuse un erro</translation>
     </message>
     <message>
-        <source>Import a SVG file...</source>
-        <translation>Importar un ficheiro SVG...</translation>
-    </message>
-    <message>
         <source>Image files found: %1.</source>
         <translation>Atopáronse ficheiros de imaxe: %1.</translation>
     </message>
@@ -2403,6 +2395,14 @@
     <message>
         <source>Vector</source>
         <translation>Vector</translation>
+    </message>
+    <message>
+        <source>Import images...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import SVG files...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2477,22 +2477,6 @@
     <message>
         <source>Tupi Project Package (*.tup)</source>
         <translation>Paquete de proxecto de Tupí (*.tup)</translation>
-    </message>
-    <message>
-        <source>Preferences Dialog Opened</source>
-        <translation>Diálogo de preferencias aberto</translation>
-    </message>
-    <message>
-        <source>Import gimp palettes</source>
-        <translation>Importar paletas do Gimp</translation>
-    </message>
-    <message>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation>Paleta do Gimp (*.gpl)</translation>
-    </message>
-    <message>
-        <source>Importing palettes</source>
-        <translation>Importando paletas</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2621,14 +2605,6 @@
     <message>
         <source>Close application</source>
         <translation>Pechar o aplicativo</translation>
-    </message>
-    <message>
-        <source>Launch configuration wizard...</source>
-        <translation>Iniciar o asistente de configuración...</translation>
-    </message>
-    <message>
-        <source>Launch first configuration wizard</source>
-        <translation>Iniciar o primeiro asistente de configuración</translation>
     </message>
     <message>
         <source>Pr&amp;eferences...</source>
@@ -2792,10 +2768,6 @@
         <translation>Ctrl+Maiús+S</translation>
     </message>
     <message>
-        <source>Ctrl+G</source>
-        <translation>Ctrl+G</translation>
-    </message>
-    <message>
         <source>Ctrl+R</source>
         <translation>Ctrl+R</translation>
     </message>
@@ -2850,6 +2822,26 @@
     <message>
         <source>Directory does not exist! Please, choose another path.</source>
         <translation>Non existe ese directorio! Escolla outra ruta.</translation>
+    </message>
+    <message>
+        <source>Import Gimp palettes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.gpl *.txt *.css)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp palette import was successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp palette import was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+G</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3669,14 +3661,6 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
         <translation>Axustes do guión gráfico</translation>
     </message>
     <message>
-        <source>&amp;Export as HTML</source>
-        <translation>&amp;Exportar como HTML</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Pechar</translation>
-    </message>
-    <message>
         <source>&amp;Post</source>
         <translation>Pu&amp;blicar</translation>
     </message>
@@ -3739,6 +3723,42 @@ Póñase en contacto co administrador do servidor da animación para que lle dea
     <message>
         <source>Scene</source>
         <translation>Escena</translation>
+    </message>
+    <message>
+        <source>&amp;PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Pechar</translation>
+    </message>
+    <message>
+        <source>Save PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Html</source>
+        <translation type="unfinished">Html</translation>
     </message>
 </context>
 <context>

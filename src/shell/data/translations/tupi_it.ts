@@ -183,10 +183,6 @@
         <source>Enable background transparency</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Directory &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>FillTool</name>
@@ -2277,10 +2273,6 @@
         <translation>Anteprima non disponibile</translation>
     </message>
     <message>
-        <source>Import an image...</source>
-        <translation>Importa un&apos;immagine...</translation>
-    </message>
-    <message>
         <source>Images</source>
         <translation>Immagini</translation>
     </message>
@@ -2303,10 +2295,6 @@
     <message>
         <source>Cannot open file: %1</source>
         <translation>Impossibile aprire il file: %1</translation>
-    </message>
-    <message>
-        <source>Import a SVG file...</source>
-        <translation>Importa un file SVG...</translation>
     </message>
     <message>
         <source>Choose the images directory...</source>
@@ -2406,6 +2394,14 @@
     </message>
     <message>
         <source>Vector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import images...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import SVG files...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2519,10 +2515,6 @@
         <translation>Impossibile aprire il progetto!</translation>
     </message>
     <message>
-        <source>Preferences Dialog Opened</source>
-        <translation>Finestra delle preferenze aperta</translation>
-    </message>
-    <message>
         <source>Tip of the day</source>
         <translation>Suggerimento del giorno</translation>
     </message>
@@ -2541,18 +2533,6 @@
     <message>
         <source>Close</source>
         <translation>Chiudi</translation>
-    </message>
-    <message>
-        <source>Import gimp palettes</source>
-        <translation>Importa tavolozza di Gimp</translation>
-    </message>
-    <message>
-        <source>Gimp Palette (*.gpl)</source>
-        <translation>Tavolozza di Gimp (*.gpl)</translation>
-    </message>
-    <message>
-        <source>Importing palettes</source>
-        <translation>Importazione delle tavolozze</translation>
     </message>
     <message>
         <source>Save Project As</source>
@@ -2763,10 +2743,6 @@
         <translation>&amp;Importa tavolozze di Gimp</translation>
     </message>
     <message>
-        <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import palettes</source>
         <translation>Importa tavolozze</translation>
     </message>
@@ -2793,14 +2769,6 @@
     <message>
         <source>Close application</source>
         <translation>Chiudi l&apos;applicazione</translation>
-    </message>
-    <message>
-        <source>Launch configuration wizard...</source>
-        <translation>Avvia l&apos;assistente di configurazione...</translation>
-    </message>
-    <message>
-        <source>Launch first configuration wizard</source>
-        <translation>Avvia l&apos;assistente di configurazione iniziale</translation>
     </message>
     <message>
         <source>Pr&amp;eferences...</source>
@@ -2848,6 +2816,26 @@
     </message>
     <message>
         <source>Directory does not exist! Please, choose another path.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Gimp palettes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.gpl *.txt *.css)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp palette import was successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gimp palette import was unsuccessful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift+G</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3668,10 +3656,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
         <translation type="unfinished">Impostazioni dello storyboard</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Chiudi</translation>
-    </message>
-    <message>
         <source>Storyboard General Information</source>
         <translation type="unfinished">Informazioni generali dello storyboard</translation>
     </message>
@@ -3720,10 +3704,6 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
         <translation type="unfinished">Storyboard esportato con successo!</translation>
     </message>
     <message>
-        <source>&amp;Export as HTML</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Post</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3738,6 +3718,42 @@ Contatta l&apos;amministratore del server per ottenere l&apos;accesso.</translat
     <message>
         <source>Scene</source>
         <translation type="unfinished">Scena</translation>
+    </message>
+    <message>
+        <source>&amp;PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Chiudi</translation>
+    </message>
+    <message>
+        <source>Save PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Html</source>
+        <translation type="unfinished">Html</translation>
     </message>
 </context>
 <context>

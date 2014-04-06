@@ -2265,20 +2265,12 @@
         <translation>Adicionar una carpeta a la lista de objetos</translation>
     </message>
     <message>
-        <source>Import an image...</source>
-        <translation>Importar una imagen...</translation>
-    </message>
-    <message>
         <source>Image is bigger than workspace.</source>
         <translation>La imagen es más grande que el área de trabajo.</translation>
     </message>
     <message>
         <source>Do you want to resize it?</source>
         <translation>Desea redimensionarla?</translation>
-    </message>
-    <message>
-        <source>Import a SVG file...</source>
-        <translation>Importar un archivo SVG...</translation>
     </message>
     <message>
         <source>Images</source>
@@ -2404,6 +2396,14 @@
         <source>Vector</source>
         <translation>Vectorial</translation>
     </message>
+    <message>
+        <source>Import images...</source>
+        <translation>Importar imágenes...</translation>
+    </message>
+    <message>
+        <source>Import SVG files...</source>
+        <translation>Importar archivos SVG...</translation>
+    </message>
 </context>
 <context>
     <name>TupListProjectDialog</name>
@@ -2525,10 +2525,6 @@
     <message>
         <source>Close</source>
         <translation>Cerrar</translation>
-    </message>
-    <message>
-        <source>Import gimp palettes</source>
-        <translation>Importar paletas de gimp</translation>
     </message>
     <message>
         <source>You have no permission to create this file. Please, choose another path.</source>
@@ -2827,10 +2823,6 @@
         <translation>El directorio no existe! Por favor, escoja otra ruta.</translation>
     </message>
     <message>
-        <source>Gimp Palette (*.txt *.css)</source>
-        <translation>Paleta de Gimp (*txt *css)</translation>
-    </message>
-    <message>
         <source>Gimp palette import was successful</source>
         <translation>La paleta de Gimp fue importada exitosamente</translation>
     </message>
@@ -2841,6 +2833,14 @@
     <message>
         <source>Shift+G</source>
         <translation>Shift+G</translation>
+    </message>
+    <message>
+        <source>Import Gimp palettes</source>
+        <translation>Importar paletas de Gimp</translation>
+    </message>
+    <message>
+        <source>Gimp Palette (*.gpl *.txt *.css)</source>
+        <translation>Paleta Gimp (*.gpl *.txt *.css)</translation>
     </message>
 </context>
 <context>
@@ -3660,10 +3660,6 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
         <translation>Propiedades de Storyboard</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
-    </message>
-    <message>
         <source>Storyboard General Information</source>
         <translation>Información General del Storyboard</translation>
     </message>
@@ -3712,10 +3708,6 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
         <translation>Storyboard exportado satisfactoriamente!</translation>
     </message>
     <message>
-        <source>&amp;Export as HTML</source>
-        <translation>&amp;Exportar como HTML</translation>
-    </message>
-    <message>
         <source>&amp;Post</source>
         <translation>&amp;Publicar</translation>
     </message>
@@ -3730,6 +3722,42 @@ Por favor, contacte al administrador del sistema para tener acceso.</translation
     <message>
         <source>Scene</source>
         <translation>Escena</translation>
+    </message>
+    <message>
+        <source>&amp;PDF</source>
+        <translation>&amp;PDF</translation>
+    </message>
+    <message>
+        <source>Export as PDF</source>
+        <translation>Exportar como PDF</translation>
+    </message>
+    <message>
+        <source>&amp;HTML</source>
+        <translation>&amp;HTML</translation>
+    </message>
+    <message>
+        <source>Export as HTML</source>
+        <translation>Exportar como HTML</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Cerrar</translation>
+    </message>
+    <message>
+        <source>Save PDF file</source>
+        <translation>Guardar archivo PDF</translation>
+    </message>
+    <message>
+        <source>PDF file (*.pdf)</source>
+        <translation>Archivo PDF (*.pdf)</translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation>PDF</translation>
+    </message>
+    <message>
+        <source>Html</source>
+        <translation>Html</translation>
     </message>
 </context>
 <context>

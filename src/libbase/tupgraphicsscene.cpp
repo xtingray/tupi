@@ -1074,7 +1074,7 @@ void TupGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             if (k->tool->toolType() == TupToolPlugin::Tweener && event->isAccepted()) {
                 tFatal() << "TupGraphicsScene::mousePressEvent() - Tracing!";
-                if (k->tool->currentEditMode() == TupToolPlugin::Path)
+                if (k->tool->currentEditMode() == TupToolPlugin::Properties)
                     return;
             } 
 

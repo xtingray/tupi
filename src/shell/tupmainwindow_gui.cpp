@@ -567,6 +567,12 @@ void TupMainWindow::setupToolBar()
 
 void TupMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
 {	
+    if (recents.count() > 10) {
+        int limit = recents.count() - 10;
+        for(int i=0; i<limit; i++)
+            recents.removeLast();
+    }
+
     int i = 0;
     QAction *action[recents.length()];
 
@@ -574,7 +580,6 @@ void TupMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
     m_recentProjects.clear();
 
     foreach (QString recent, recents) {
-             // if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
              if (!recent.isEmpty()) {
                  m_recentProjects << recent;
                  action[i] = new QAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "recent_files.png"), recent, this); 

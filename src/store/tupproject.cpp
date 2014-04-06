@@ -923,7 +923,7 @@ bool TupProject::deleteDataDir()
 
         if (! dir.rmdir(dir.absolutePath())) {
             #ifdef K_DEBUG
-                   tError() << "TupProject::deleteDataDir() - Fatal Error: Can't remove project data directory!";
+                   tError() << "TupProject::deleteDataDir() - Fatal Error: Can't remove project data directory! -> " << dataDir();
             #endif
         }
 

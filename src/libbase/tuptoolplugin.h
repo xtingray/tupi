@@ -67,7 +67,7 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
         enum ColorTools { InvalidColor = -1, ColorTool = 0 };
 
         enum Mode { Add = 1, Edit, View };
-        enum EditMode { None, Selection = 0, Path, Properties };
+        enum EditMode { Selection = 0, Properties, None };
 
         explicit TupToolPlugin(QObject *parent = 0);
         ~TupToolPlugin();

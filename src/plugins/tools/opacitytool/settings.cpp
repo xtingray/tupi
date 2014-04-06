@@ -45,7 +45,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QBoxLayout>
-#include <QComboBox>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QCheckBox>
 #include <QDir>
 
@@ -56,13 +57,17 @@ struct Settings::Private
     TupToolPlugin::Mode mode;
 
     QLineEdit *input;
-    QComboBox *comboInit;
-    QComboBox *comboEnd;
+
+    QSpinBox *comboInit;
+    QSpinBox *comboEnd;
+
     TRadioButtonGroup *options;
 
-    QComboBox *comboInitFactor;
-    QComboBox *comboEndFactor;
-    QComboBox *comboIterations;
+    QDoubleSpinBox *comboInitFactor;
+    QDoubleSpinBox *comboEndFactor;
+
+    QSpinBox *comboIterations;
+
     QCheckBox *loopBox;
     QCheckBox *reverseLoopBox;
 
@@ -140,22 +145,18 @@ void Settings::setInnerForm()
 
     QLabel *startingLabel = new QLabel(tr("Starting at frame") + ": ");
     startingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboInit = new QComboBox();
-    k->comboInit->setMaximumWidth(50);
-    k->comboInit->setEditable(false);
-    k->comboInit->setValidator(new QIntValidator(k->comboInit));
 
-    connect(k->comboInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLastFrame()));
+    k->comboInit = new QSpinBox;
+    k->comboInit->setEnabled(false);
+    connect(k->comboInit, SIGNAL(valueChanged(int)), this, SLOT(updateLastFrame()));
 
     QLabel *endingLabel = new QLabel(tr("Ending at frame") + ": ");
     endingLabel->setAlignment(Qt::AlignVCenter);
-    k->comboEnd = new QComboBox();
-    k->comboEnd->setFixedWidth(60);
-    k->comboEnd->setEditable(true);
-    k->comboEnd->addItem(QString::number(1));
-    k->comboEnd->setValidator(new QIntValidator(k->comboEnd));
 
-    connect(k->comboEnd, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTopLimit(int)));
+    k->comboEnd = new QSpinBox;
+    k->comboEnd->setEnabled(true);
+    k->comboEnd->setValue(1);
+    connect(k->comboEnd, SIGNAL(valueChanged(int)), this, SLOT(checkTopLimit(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
     startLayout->setAlignment(Qt::AlignHCenter);
@@ -179,13 +180,12 @@ void Settings::setInnerForm()
     totalLayout->setSpacing(0);
     totalLayout->addWidget(k->totalLabel);
 
-    k->comboInitFactor = new QComboBox();
-    for (int i=0; i<=9; i++) {
-         k->comboInitFactor->addItem("0." + QString::number(i));
-         k->comboInitFactor->addItem("0." + QString::number(i) + "5");
-    }
-    k->comboInitFactor->addItem("1.0");
-    k->comboInitFactor->setCurrentIndex(20);
+    k->comboInitFactor = new QDoubleSpinBox;
+    k->comboInitFactor->setMinimum(0.00);
+    k->comboInitFactor->setMaximum(1.00);
+    k->comboInitFactor->setDecimals(2);
+    k->comboInitFactor->setSingleStep(0.05);
+    k->comboInitFactor->setValue(1.00);
 
     QLabel *opacityInitLabel = new QLabel(tr("Initial Opacity") + ": ");
     opacityInitLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -196,12 +196,12 @@ void Settings::setInnerForm()
     opacityInitLayout->addWidget(opacityInitLabel);
     opacityInitLayout->addWidget(k->comboInitFactor);
 
-    k->comboEndFactor = new QComboBox();
-    for (int i=0; i<=9; i++) {
-         k->comboEndFactor->addItem("0." + QString::number(i));
-         k->comboEndFactor->addItem("0." + QString::number(i) + "5");
-    }
-    k->comboEndFactor->addItem("1.0");
+    k->comboEndFactor = new QDoubleSpinBox;
+    k->comboEndFactor->setMinimum(0.00);
+    k->comboEndFactor->setMaximum(1.00);
+    k->comboEndFactor->setDecimals(2);
+    k->comboEndFactor->setSingleStep(0.05);
+    k->comboEndFactor->setValue(0.00);
 
     QLabel *opacityEndLabel = new QLabel(tr("Ending Opacity") + ": ");
     opacityEndLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -212,11 +212,9 @@ void Settings::setInnerForm()
     opacityEndLayout->addWidget(opacityEndLabel);
     opacityEndLayout->addWidget(k->comboEndFactor);
 
-    k->comboIterations = new QComboBox();
-    k->comboIterations->setEditable(true);
-    k->comboIterations->setValidator(new QIntValidator(k->comboIterations));
-    for (int i=1; i<=100; i++)
-         k->comboIterations->addItem(QString::number(i));
+    k->comboIterations = new QSpinBox;
+    k->comboIterations->setEnabled(true);
+    k->comboIterations->setMinimum(1);
 
     QLabel *iterationsLabel = new QLabel(tr("Iterations") + ": ");
     iterationsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -228,7 +226,6 @@ void Settings::setInnerForm()
     iterationsLayout->addWidget(k->comboIterations);
 
     k->loopBox = new QCheckBox(tr("Loop"), k->innerPanel);
-    // k->loopBox->setChecked(true);
     connect(k->loopBox, SIGNAL(stateChanged(int)), this, SLOT(updateReverseCheckbox(int)));
 
     QVBoxLayout *loopLayout = new QVBoxLayout;
@@ -299,17 +296,14 @@ void Settings::setParameters(TupItemTweener *currentTween)
     k->input->setText(currentTween->name());
 
     k->comboInit->setEnabled(true);
-    k->comboInit->setEditable(true);
-    k->comboInit->setCurrentIndex(currentTween->initFrame());
-    k->comboEnd->setItemText(0, QString::number(currentTween->initFrame() + currentTween->frames()));
-    k->comboEnd->setCurrentIndex(0);
+    k->comboInit->setValue(currentTween->initFrame() + 1);
+    k->comboEnd->setValue(currentTween->initFrame() + currentTween->frames());
 
     checkFramesRange();
 
-    k->comboInitFactor->setItemText(0, QString::number(currentTween->tweenOpacityInitialFactor()));
-    k->comboEndFactor->setItemText(0, QString::number(currentTween->tweenOpacityEndingFactor()));
-    k->comboIterations->setCurrentIndex(0);
-    k->comboIterations->setItemText(0, QString::number(currentTween->tweenOpacityIterations()));
+    k->comboInitFactor->setValue(currentTween->tweenOpacityInitialFactor());
+    k->comboEndFactor->setValue(currentTween->tweenOpacityEndingFactor());
+    k->comboIterations->setValue(currentTween->tweenOpacityIterations());
     k->loopBox->setChecked(currentTween->tweenOpacityLoop());
     k->reverseLoopBox->setChecked(currentTween->tweenOpacityReverseLoop());
 }
@@ -319,36 +313,35 @@ void Settings::initStartCombo(int framesTotal, int currentIndex)
     k->comboInit->clear();
     k->comboEnd->clear();
 
-    for (int i=1; i<=framesTotal; i++) {
-         k->comboInit->addItem(QString::number(i));
-         k->comboEnd->addItem(QString::number(i));
-    }
+    k->comboInit->setMinimum(1);
+    k->comboInit->setMaximum(framesTotal);
+    k->comboInit->setValue(currentIndex + 1);
 
-    k->comboInit->setCurrentIndex(currentIndex);
-    k->comboEnd->setCurrentIndex(framesTotal - 1);
+    k->comboEnd->setMinimum(1);
+    k->comboEnd->setValue(framesTotal);
 }
 
 void Settings::setStartFrame(int currentIndex)
 {
-    k->comboInit->setCurrentIndex(currentIndex);
-    int end = k->comboEnd->currentText().toInt();
+    k->comboInit->setValue(currentIndex + 1);
+    int end = k->comboEnd->value();
     if (end < currentIndex+1)
-        k->comboEnd->setItemText(0, QString::number(currentIndex + 1));
+        k->comboEnd->setValue(currentIndex + 1);
 }
 
 int Settings::startFrame()
 {
-    return k->comboInit->currentIndex();
+    return k->comboInit->value() - 1;
 }
 
 int Settings::startComboSize()
 {
-    return k->comboInit->count();
+    return k->comboInit->maximum();
 }
 
 int Settings::totalSteps()
 {
-    return k->comboEnd->currentText().toInt() - k->comboInit->currentIndex();
+    return k->comboEnd->value() - (k->comboInit->value() - 1);
 }
 
 void Settings::setEditMode()
@@ -431,17 +424,16 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
     root.setAttribute("frames", k->totalSteps);
     root.setAttribute("origin", "0,0");
 
-    double initFactor = k->comboInitFactor->currentText().toDouble();
+    double initFactor = k->comboInitFactor->value();
     root.setAttribute("initOpacityFactor", initFactor);
 
-    double endFactor = k->comboEndFactor->currentText().toDouble();
+    double endFactor = k->comboEndFactor->value();
     root.setAttribute("endOpacityFactor", endFactor);
 
-    int iterations = k->comboIterations->currentText().toInt();
+    int iterations = k->comboIterations->value();
     if (iterations == 0) {
         iterations = 1;
-        k->comboIterations->setCurrentIndex(0);
-        k->comboIterations->setItemText(0, QString::number(iterations));
+        k->comboIterations->setValue(1);
     }
     root.setAttribute("opacityIterations", iterations);
 
@@ -508,10 +500,8 @@ void Settings::activateMode(TupToolPlugin::EditMode mode)
 
 void Settings::updateLastFrame()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = begin + k->totalSteps - 1;
-
-    k->comboEnd->setEditText(QString::number(end));
+    int end = k->comboInit->value() + k->totalSteps - 1;
+    k->comboEnd->setValue(end);
 }
 
 void Settings::checkTopLimit(int index)
@@ -522,12 +512,12 @@ void Settings::checkTopLimit(int index)
 
 void Settings::checkFramesRange()
 {
-    int begin = k->comboInit->currentText().toInt();
-    int end = k->comboEnd->currentText().toInt();
+    int begin = k->comboInit->value();
+    int end = k->comboEnd->value();
 
     if (begin > end) {
-        k->comboEnd->setCurrentIndex(k->comboEnd->count()-1);
-        end = k->comboEnd->currentText().toInt();
+        k->comboEnd->setValue(k->comboEnd->maximum() - 1);
+        end = k->comboEnd->value();
     }
 
     k->totalSteps = end - begin + 1;
