@@ -190,52 +190,52 @@
         <translation>Escolha um diretório...</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="726"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="723"/>
         <source>Warning!</source>
         <translation>Alerta!</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="727"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="724"/>
         <source>File exists. Overwrite it?</source>
         <translation>O arquivo existe. Deseja sobrescrevê-lo?</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="689"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="703"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="738"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="748"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="789"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="688"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="700"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="734"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="744"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="784"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="689"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="688"/>
         <source>Images name prefix can&apos;t be empty! Please, type a prefix.</source>
         <translation>O prefixo do nome das imagens não pode ser vazio! Por favor, digite um prefixo.</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="703"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="738"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="700"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="734"/>
         <source>Directory doesn&apos;t exist! Please, choose another path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diretório não existe! Por favor, escolha outro caminho.</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="748"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="744"/>
         <source>You have no permission to create this file. Please, choose another path.</source>
         <translation>Você não tem permissão para criar este arquivo. Por favor, escolha outro caminho.</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="789"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="784"/>
         <source>Format problem. Tupi Internal error.</source>
         <translation>Problema no formato. Erro Interno do Tupi.</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="796"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="791"/>
         <source>Information</source>
         <translation>Informação</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="800"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="795"/>
         <source>ERROR!</source>
         <translation>ERRO!</translation>
     </message>
@@ -2419,47 +2419,47 @@
 <context>
     <name>TupExportWidget</name>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="997"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="992"/>
         <source>Export to Video</source>
         <translation>Exportar para Vídeo</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1007"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1002"/>
         <source>Export to Video File</source>
         <translation>Exportar para Arquivo de Vídeo</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1010"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1005"/>
         <source>Export to Images Array</source>
         <translation>Exportar como Sequência de Imagens</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1013"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1008"/>
         <source>Export to Animated Image</source>
         <translation>Exportar como Imagem Animada</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1029"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1024"/>
         <source>Post Animation in Tupitube</source>
         <translation>Publicar Animação no Tupitube</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1058"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1053"/>
         <source>Video Formats</source>
         <translation>Formatos de Vídeo</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1060"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1055"/>
         <source>Open Video Format</source>
         <translation>Formato de Vídeo Aberto</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1062"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1057"/>
         <source>Image Array</source>
         <translation>Sequência de Imagens</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="1064"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="1059"/>
         <source>Animated Image</source>
         <translation>Imagem Animada</translation>
     </message>
@@ -3099,7 +3099,7 @@
     <message>
         <location filename="../src/components/library/tuplibrarywidget.cpp" line="752"/>
         <source>Import images...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar imagens...</translation>
     </message>
     <message>
         <location filename="../src/components/library/tuplibrarywidget.cpp" line="787"/>
@@ -3139,7 +3139,7 @@
     <message>
         <location filename="../src/components/library/tuplibrarywidget.cpp" line="839"/>
         <source>Import SVG files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar arquivos SVG...</translation>
     </message>
     <message>
         <location filename="../src/components/library/tuplibrarywidget.cpp" line="840"/>
@@ -3371,22 +3371,22 @@
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="885"/>
         <source>Import Gimp palettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar paletas do Gimp</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="885"/>
         <source>Gimp Palette (*.gpl *.txt *.css)</source>
-        <translation type="unfinished"></translation>
+        <translation>Paleta do Gimp (*.gpl *.txt *.css)</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="915"/>
         <source>Gimp palette import was successful</source>
-        <translation type="unfinished"></translation>
+        <translation>Paleta do Gimp importada com sucesso</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="917"/>
         <source>Gimp palette import was unsuccessful</source>
-        <translation type="unfinished"></translation>
+        <translation>Importação da paleta do Gimp falhou</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="1013"/>
@@ -3396,7 +3396,7 @@
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="1030"/>
         <source>Directory does not exist! Please, choose another path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diretório não existe! Por favor, escolha outro caminho.</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="1081"/>
@@ -3657,7 +3657,7 @@
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="432"/>
         <source>Shift+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift+G</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="121"/>
@@ -4843,27 +4843,27 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="158"/>
         <source>&amp;PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;PDF</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="159"/>
         <source>Export as PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como PDF</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="162"/>
         <source>&amp;HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;HTML</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="163"/>
         <source>Export as HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como HTML</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="167"/>
         <source>Close</source>
-        <translation type="unfinished">Fechar</translation>
+        <translation>Fechar</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="176"/>
@@ -4953,22 +4953,22 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="576"/>
         <source>Save PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvar arquivo PDF</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="576"/>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Arquivo PDF (*.pdf)</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="684"/>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupstoryboarddialog.cpp" line="686"/>
         <source>Html</source>
-        <translation type="unfinished">Html</translation>
+        <translation>Html</translation>
     </message>
 </context>
 <context>
@@ -5643,49 +5643,49 @@ Por favor, contatar o administrador do servidor de animação para obter acesso.
 <context>
     <name>VideoProperties</name>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="848"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="843"/>
         <source>Set Animation Properties</source>
         <translation>Definir Propriedades da Animação</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="860"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="855"/>
         <source>Title</source>
         <translation>Título</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="861"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="856"/>
         <source>My Video</source>
         <translation>Meu Vídeo</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="866"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="861"/>
         <source>Topics</source>
         <translation>Tópicos</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="867"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="862"/>
         <source>#topic1 #topic2 #topic3</source>
         <translation>#tópico1 #tópico2 #tópico3</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="872"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="867"/>
         <source>Description</source>
         <translation>Descrição</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="878"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="873"/>
         <source>Just a little taste of my style :)</source>
         <translation>Uma pequena amostra do meu estilo :)</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="939"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="959"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="934"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="954"/>
         <source>Set a title for the picture here!</source>
         <translation>Defina um título para a imagem aqui!</translation>
     </message>
     <message>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="946"/>
-        <location filename="../src/components/export/tupexportwidget.cpp" line="970"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="941"/>
+        <location filename="../src/components/export/tupexportwidget.cpp" line="965"/>
         <source>Set some topic tags for the picture here!</source>
         <translation>Defina algumas etiquetas de tópicos para a imagem aqui!</translation>
     </message>

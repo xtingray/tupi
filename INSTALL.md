@@ -24,6 +24,7 @@ installed the next list of dependencies in your computer:
   video manipulation
 * zlib-dev: A file-compression library
 * quazip: A very handy API to deal with zip files
+* qtmobility-dev: A useful Qt library to manage camera devices
 
 For Ubuntu users (version 10.10) with some experience using the console, 
 these are the commands they should run to install Tupi dependencies:
@@ -36,6 +37,7 @@ Open a terminal (from Aplications -> Accesories) and type:
     % udo apt-get install libqt4-gui qt4-qmake qt4-dev-tools    [Press enter]
     % sudo apt-get install zlib1g-dev    [Press enter]
     % sudo apt-get install libquazip0-dev    [Press enter]
+    % sudo apt-get install qtmobility-dev    [Press enter]
 
 Note: If you are not using Ubuntu, check for the equivalent packages for your
 Linux distro

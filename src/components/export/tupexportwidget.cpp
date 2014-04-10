@@ -57,6 +57,7 @@
 #include <QCheckBox>
 #include <QtDebug>
 #include <QLocale>
+#include <QDir>
 
 /**
  * This class handles the whole process to export a project into a movie format.
@@ -501,7 +502,7 @@ ExportTo::ExportTo(const TupProject *project, TupExportWidget::OutputFormat outp
     filePathLayout->addWidget(m_filePath);
 
     QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR + "icons/open.png"));
+    button->setIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "open.png"));
 
     if (output == TupExportWidget::ImagesArray) {
         connect(button, SIGNAL(clicked()), this, SLOT(chooseDirectory()));
@@ -681,7 +682,6 @@ void ExportTo::exportIt()
     QString name = "";
 
     if (m_currentFormat == TupExportInterface::JPEG || m_currentFormat == TupExportInterface::PNG) { // Images Array
-
         name = m_prefix->text();
         path = m_filePath->text();
 
@@ -694,9 +694,7 @@ void ExportTo::exportIt()
             path = getenv("HOME");
 
         filename = path + QDir::separator() + name;
-
     } else { // Animation or Animated Image
-
         filename = m_filePath->text();
 
         if (filename.length() == 0) {
@@ -730,7 +728,6 @@ void ExportTo::exportIt()
             if (reply == QMessageBox::No)
                 return;
         } 
-
     }
 
     QDir directory(path);
@@ -754,7 +751,6 @@ void ExportTo::exportIt()
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     if (m_currentExporter) {
-
         #ifdef K_DEBUG
                tWarning() << "ExportTo::exportIt() - Exporting to file: " << filename;
         #endif
@@ -995,7 +991,7 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
 
     if (isLocal) {
         setWindowTitle(tr("Export to Video"));
-        setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
+        setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "export.png"));
 
         m_pluginSelectionPage = new SelectPlugin();
         addPage(m_pluginSelectionPage);
@@ -1027,7 +1023,7 @@ TupExportWidget::TupExportWidget(const TupProject *project, QWidget *parent, boo
 
     } else {
         setWindowTitle(tr("Post Animation in Tupitube"));
-        setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
+        setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "net_document.png"));
 
         m_scenesSelectionPage = new SelectScenes(this);
         m_scenesSelectionPage->setScenes(project->scenes().values());

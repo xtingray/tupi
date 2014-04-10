@@ -7,8 +7,6 @@ Its interface has been designed looking for provide a high level
 experience of usability for artists and non artists, using as main 
 development resource the Qt framework. 
 
-Copyright (C) 2010 Gustav Gonzalez / @xtingray
-
 Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright
 notice and this notice are preserved.
