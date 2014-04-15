@@ -20,37 +20,49 @@ below:
 
    Note: an Apple ID account is required to download XCode
 
-2. Install the Macports (package manager) available at:
-                        http://www.macports.org/
-   Read the installation instructions at:
-                  http://www.macports.org/install.php
+2. Install Homebrew (package manager) available at:
+  http://brew.sh
 
-3. Install required ports:
-   $ sudo port install zlib
-   $ sudo port install ffmpeg +nonfree 
-   $ sudo port install aspell
-   $ sudo port install git-core
-   $ sudo port install qt4-mac
+3. Install required packages via homebrew:
 
-4. Download Tupi source code from Gitorious:
-   $ git clone -b experimental https://git.gitorious.org/tupi/tupi.git
+  $ brew install libogg
+  $ brew install theora
+  $ brew install ffmpeg
+  
+4. Download and unzip Quazip (Qt/C++ wrapper for ZIP/UNZIP) from:
+  http://sourceforge.net/projects/quazip
+  
+5. Add the file quazip/quazip.pro with the following instructions before the win32 section:
+ unix:macx {
+  CONFIG -= app_bundle
+  CONFIG += warn_on console
+  LIBS += -lz
+ }
+ 
+6. Build quazip:
+  $ qmake 
+  $ make 
+  $ INSTALL_ROOT=/usr/local make install
+
+7. Change Quazip id
+   $ /usr/local/lib
+   $ install_name_tool -id /usr/local/lib/libquazip.1.dylib libquazip.1.0.0.dylib
+
+8. Download Tupi source code from Github:
+   $ git clone -b experimental https://github.com/xtingray/tupi.git
 
 5. Move into project's directory:
    $ cd tupi
 
-6. Run the configure script: 
-   $ ./configure --prefix=/opt/local --bindir=/opt/local/bin/ --libdir=/opt/local/lib 
-                 --sharedir=/opt/local/share --with-debug
+6. Run the configure script, replace foo with your user name: 
+   $ mkdir -p /Users/foo/Projects/dist
+   $ ./configure --prefix=/Users/foo/Projects/dist --bindir=/Users/foo/Projects/dist --with-debug
 
 7. Compile the project:
    $ make
 
 8. Install binaries and resources:
-   $ sudo make install
+   $ make install
 
-9. Run Tupi:
-   /opt/local/bin/tupi
-
-TODO:
-1. To make Tupi port file for Macports
-2. To build App Bundle for easy install (.dmg)
+9. Build Tupi.app:
+   /tools/build_mac_osx_app.sh /Users/foo/Projects/tupi /Users/foo/Projects/dist

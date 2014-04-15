@@ -6,7 +6,7 @@ Standards-Version: 3.9.3
 Build-Depends: debhelper (>= 7), autotools-dev, ruby, libavformat-dev, 
  libavcodec-dev, qt4-dev-tools, qt4-qmake, libqt4-dev, libqt4-opengl, 
  libqt4-opengl-dev, libqt4-gui, imagemagick, zlib1g-dev, libogg-dev, 
- libtheora-dev, libquazip0-dev
+ libtheora-dev, libquazip0-dev, qtmobility-dev
 Homepage: http://www.maefloresta.com
 
 Package: tupi
@@ -19,7 +19,7 @@ Depends: ${misc:Depends},
  libqt4-opengl (>= 4:4.7.0~), libqt4-svg (>= 4:4.7.0~), 
  libqt4-xml (>= 4:4.7.0~), libqtcore4 (>= 4:4.7.0~), 
  libqtgui4 (>= 4:4.7.0~), libstdc++6 (>= 4.5.1-7~), zlib1g, 
- libogg0, libtheora0, libquazip0
+ libogg0, libtheora0, libquazip0, qtmobility-examples, qtmobility-l10n
 Description: 2D vectorial/animation tool
  Tupi: Open 2D Magic  is a design  and  authoring tool for digital 
  artists  interested  in  2D  Animation,  offering  an   interface 
