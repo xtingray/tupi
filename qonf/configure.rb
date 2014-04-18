@@ -114,10 +114,10 @@ module RQonf
       @ffmpeg = false
     end
 
-    def verifyQtVersion(minqtversion, qtdir)
+    def verifyQtVersion(minqtversion, verbose, qtdir)
       Info.info << "Checking for Qt >= " << minqtversion << " and Qt < 5.x ..." << $endl
 
-      if @qmake.findQMake(minqtversion, true, qtdir)
+      if @qmake.findQMake(minqtversion, verbose, qtdir)
         print "[ \033[92mOK\033[0m ]\n"
       else
         print "[ \033[91mFAILED\033[0m ]\n"

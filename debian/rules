@@ -12,7 +12,7 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
-	./configure --prefix=`pwd`/debian/tupi/usr --sharedir=`pwd`/debian/tupi/usr/share/tupi --package-build
+	./configure --without-debug --prefix=`pwd`/debian/tupi/usr --sharedir=`pwd`/debian/tupi/usr/share/tupi --package-build
 	$(MAKE)	
 
 	touch build-stamp

@@ -65,6 +65,11 @@ _EOH_
         exit 0
     end
 
+    debug = 1
+    if conf.hasArgument?("without-debug")
+       debug = 0
+    end
+
     if conf.hasArgument?("with-ffmpeg") and conf.hasArgument?("without-ffmpeg")  
        Info.error << " ERROR: Options --with-ffmpeg and --without-ffmpeg are mutually exclusive\n"
        exit 0
@@ -88,7 +93,7 @@ _EOH_
 
     if conf.hasArgument?("with-qtdir")
        qtdir = conf.argumentValue("with-qtdir")
-       conf.verifyQtVersion("4.7.0", qtdir)
+       conf.verifyQtVersion("4.7.0", debug, qtdir)
        if distro == "lucid"
           config.addDefine("K_LUCID")
        end
@@ -98,7 +103,7 @@ _EOH_
           Info.error << " Try the option --help for more info\n"
           exit 0
        else
-          conf.verifyQtVersion("4.7.0", "")
+          conf.verifyQtVersion("4.7.0", debug, "")
        end
     end
 
@@ -148,11 +153,6 @@ _EOH_
              end
           end
        end
-    end
-
-    debug = 1
-    if conf.hasArgument?("without-debug")
-       debug = 0
     end
 
     if conf.hasArgument?("without-ffmpeg")
