@@ -50,6 +50,7 @@
 class STORE_EXPORT TupButtonItem : public QObject, public QGraphicsItem, public TupAbstractSerializable
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 
     public:
         TupButtonItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
