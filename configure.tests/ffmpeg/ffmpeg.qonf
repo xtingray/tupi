@@ -19,6 +19,7 @@
         <linux package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" >
             <distribution name="gentoo" package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="Try: emerge ffmpeg" />
             <distribution name="ubuntu" package="libavcodec-dev libavformat-dev" url="http://ffmpeg.sourceforge.net/" comment="Try: apt-get install libavformat-dev libavcodec-dev" />
+            <distribution name="fedora" package="ffmpeg-devel libvpx-devel" url="http://ffmpeg.sourceforge.net/" comment="Try: yum install ffmpeg-devel libvpx-devel" />
         </linux>
         <windows package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" />
         <macosx package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" />
