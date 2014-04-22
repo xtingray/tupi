@@ -465,7 +465,7 @@ void TupStoryBoardDialog::updateForm(QListWidgetItem *current, QListWidgetItem *
     k->screenLabel->setPixmap(pixmap);
 }
 
-void TupStoryBoardDialog::createHTMLFiles(const QString &path)
+void TupStoryBoardDialog::createHTMLFiles(const QString &path, DocType type)
 {
     if (k->scaledSize.width() <= 520) {
         QDir directory(k->path);
@@ -497,8 +497,12 @@ void TupStoryBoardDialog::createHTMLFiles(const QString &path)
         }
     }
 
-    QFile::copy(kAppProp->shareDir() + "data" + QDir::separator() + "storyboard" + QDir::separator() + "tupi.css", 
-                path + QDir::separator() + "tupi.css");
+    QString base = kAppProp->shareDir() + "data" + QDir::separator() + "storyboard" + QDir::separator();
+
+    if (type == HTML) 
+        QFile::copy(base + "tupi.html.css", path + QDir::separator() + "tupi.css");
+    else
+        QFile::copy(base + "tupi.pdf.css", path + QDir::separator() + "tupi.css");
 
     QString index = path + QDir::separator() + "index.html";
 
@@ -510,41 +514,78 @@ void TupStoryBoardDialog::createHTMLFiles(const QString &path)
     QTextStream out(&file);
     out << "<html>\n";
     out << "<head>\n";
-    out << "<title>" << k->storyboard->storyTitle() << "</title>\n";
+    QString record = k->storyboard->storyTitle();
+    if (record.length() == 0)
+        record = "&nbsp;";
+    out << "<title>" << record << "</title>\n";
     out << "<link rel=\"stylesheet\" type=\"text/css\" href=\"tupi.css\" media=\"screen\" />\n";
     out << "</head>\n";
     out << "<body>\n";
     out << "<div id=\"header\">\n";
     out << "<div id=\"title\">Storyboard</div>\n";
-    out << "<div id=\"item\"><div id=\"item-header\">Title:</div>\n";
-    out << "<div id=\"item-data\">" << k->storyboard->storyTitle() << "</div></div>\n";
-    out << "<div id=\"item\"><div id=\"item-header\">Author:</div>\n";
-    out << "<div id=\"item-data\">" << k->storyboard->storyAuthor() << "</div></div>\n";
-    out << "<div id=\"item\"><div id=\"item-header\">Summary:</div>\n";
-    out << "<div id=\"item-data\">" << k->storyboard->storySummary() << "</div></div>\n";
-    out << "<div id=\"item\"><div id=\"item-header\">Scenes Total:</div>\n";
-    out << "<div id=\"item-data\">" << QString::number(k->storyboard->size()) << "</div></div>\n";
+    out << "<div id=\"item\">\n";
+    out << "     <div id=\"item-header\">Title:</div>\n";
+    out << "     <div id=\"item-data\">" << record << "</div>\n";
+    out << "     </div>\n";
+    out << "<div id=\"item\">\n";
+    out << "     <div id=\"item-header\">Author:</div>\n";
+    record = k->storyboard->storyAuthor();
+    if (record.length() == 0)
+        record = "&nbsp;";
+    out << "     <div id=\"item-data\">" << record << "</div>\n";
     out << "</div>\n";
+    out << "<div id=\"item\">\n";
+    out << "     <div id=\"item-header\">Summary:</div>\n";
+    record = k->storyboard->storySummary();
+    if (record.length() == 0)
+        record = "&nbsp;";
+    out << "     <div id=\"item-data\">" << record << "</div>\n";
+    out << "</div>\n";
+    out << "<div id=\"item\">\n";
+    out << "     <div id=\"item-header\">Scenes Total:</div>\n";
+    out << "     <div id=\"item-data\">" << QString::number(k->storyboard->size()) << "</div>\n";
+    out << "</div>\n";
+    out << "</div>\n";
+    if (type == PDF) {
+        out << "<div id=\"page-break\">\n";
+        out << "</div>\n";
+    }
 
-    for (int i=0; i < k->storyboard->size(); i++) {
+    int scenes = k->storyboard->size();
+    for (int i=0; i < scenes; i++) {
          out << "<div id=\"scene\">\n";
          QString image = "<img src=\"scene" + QString::number(i) + ".png\" />\n";
          out << image;
          out << "<div id=\"paragraph\">\n";
          out << "<div id=\"scene-item\">\n";
          out << " <div id=\"scene-header\">Title:</div>\n";
-         out << " <div id=\"scene-data\">" << k->storyboard->sceneTitle(i) << "</div>\n";
+         record = k->storyboard->sceneTitle(i);
+         if (record.length() == 0)
+             record = "&nbsp;";
+         out << " <div id=\"scene-data\">" << record << "</div>\n";
          out << "</div>\n";
          out << "<div id=\"scene-item\">\n";
          out << " <div id=\"scene-header\">Duration:</div>\n";
-         out << " <div id=\"scene-data\">" << k->storyboard->sceneDuration(i) << "</div>\n";
+         record = k->storyboard->sceneDuration(i);
+         if (record.length() == 0)
+             record = "&nbsp;";
+         out << " <div id=\"scene-data\">" << record << "</div>\n";
          out << "</div>\n";
          out << "<div id=\"scene-item\">\n";
          out << " <div id=\"scene-header\">Description:</div>\n";
-         out << " <div id=\"scene-data\">" << k->storyboard->sceneDescription(i)  << "</div>\n";
+         record = k->storyboard->sceneDescription(i);
+         if (record.length() == 0)
+             record = "&nbsp;";
+         out << " <div id=\"scene-data\">" << record << "</div>\n";
          out << "</div>\n";
          out << "</div>\n";
          out << "</div>\n";
+         if (type == PDF) {
+             if (i < (k->storyboard->size() - 1)) {
+                 out << "<div id=\"page-break\">\n";
+                 out << "</div>\n";
+             }
+         }
     }
     out << "</body>\n";
     out << "</html>";
@@ -559,7 +600,7 @@ void TupStoryBoardDialog::exportAsHTML()
     QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), QDir::homePath(),
                                                      QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!path.isEmpty()) {
-        createHTMLFiles(path);
+        createHTMLFiles(path, HTML);
         TOsd::self()->display(tr("Info"), tr("Storyboard exported successfully!"), TOsd::Info);
     }
 }
@@ -571,7 +612,7 @@ void TupStoryBoardDialog::exportAsPDF()
     QString path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
     QDir().mkpath(path);
     if (!path.isEmpty())
-        createHTMLFiles(path);
+        createHTMLFiles(path, PDF);
 
     QString pdfPath = QFileDialog::getSaveFileName(this, tr("Save PDF file"), QDir::homePath(), tr("PDF file (*.pdf)"));
 

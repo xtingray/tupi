@@ -55,6 +55,7 @@ class TupStoryBoardDialog : public QDialog
         TupStoryBoardDialog(bool isNetworked, TupExportInterface *imagePlugin, const QColor &color, 
                             const QSize &size, TupScene *scene, int sceneIndex, QWidget *parent);
         ~TupStoryBoardDialog();
+        enum DocType { HTML = 1, PDF };
 
     private slots:
         void updateForm(QListWidgetItem *current, QListWidgetItem *previous);
@@ -87,7 +88,7 @@ class TupStoryBoardDialog : public QDialog
         QString getSceneTitle() const;
         QString getSceneDuration() const;
         QString getSceneDescription() const;
-        void createHTMLFiles(const QString &path);
+        void createHTMLFiles(const QString &path, DocType type);
         void cleanDirectory(const QString &path);
  
         struct Private;
