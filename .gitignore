@@ -2,11 +2,13 @@
 *.o
 *.so
 *.a
-*.moc/
+*.moc
 *.0
 *.1
 *.dylib
 *.pro.user
+moc_*
+.qmake.stash
 
 bin/
 src/framework/tgui/qrc_tgui_images.cpp
