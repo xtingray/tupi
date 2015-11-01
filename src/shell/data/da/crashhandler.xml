@@ -1,6 +1,0 @@
-<CrashHandler>
-	<Title text="Ødelæggende fejl" />
-	<Message text="Kære Animator:" color="red" />
-	<Button text="Luk" />
-	<Default text="Tupi gik ned på grund af en famøs software fejl! Det er vi meget kede af :(&lt;br&gt;&lt;br&gt;Men - alt er ikke tabt! Du kan hjælpe os med at fikse problemet.&lt;br&gt;Lav venligst en bug rapport på &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; og hjælp os med at lave et bedre program.&lt;br&gt;&lt;br&gt;Tak,&lt;br&gt;&lt;br&gt;--Det &lt;i&gt;flove&lt;/i&gt; udviklings team" image="crash.png" />
-</CrashHandler>

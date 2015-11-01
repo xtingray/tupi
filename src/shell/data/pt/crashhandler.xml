@@ -1,6 +1,0 @@
-<CrashHandler>
-	<Title text="Fatal error" />
-	<Message text="Dear Animator:" color="red" />
-	<Button text="Close" />
-	<Default text="Tupi crashed due an infamous software bug! We're terribly sorry about this :(&lt;br&gt;&lt;br&gt;But, everything's not lost! You could potentially help us to fix the crash.&lt;br&gt;Please, make a bug report on &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; and help us to make a better software.&lt;br&gt;&lt;br&gt;Thanks,&lt;br&gt;&lt;br&gt;--The &lt;i&gt;ashamed&lt;/i&gt; development team" image="crash.png" />
-</CrashHandler>

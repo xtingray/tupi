@@ -1,6 +1,0 @@
-<CrashHandler>
-	<Title text="Schwerer Fehler" />
-	<Message text="Lieber Animator:" color="red" />
-	<Button text="Close" />
-	<Default text="Tupi ist wegen eines schwerwiegenden Softwarefehlers abgestuerzt! Wir bedauern dieses sehr! &lt;br;&gt;&lt;br&gt;Aber, noch ist nicht alles verloren! Sie koennen uns helfen diesen Fehler zu beseitigen.&lt;br&gt;Bitte senden Sie uns einen Fehlerreport an &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; und helfen Sie uns die Software zu verbessern.&lt;br&gt;&lt;br&gt;Vielen Dank,&lt;br&gt;&lt;br&gt;--Das &lt;i&gt;beschaemted&lt;/i&gt; Entwicklerteam" image="crash.png" />
-</CrashHandler>

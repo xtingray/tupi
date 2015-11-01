@@ -1,8 +1,0 @@
-<TipOfDay>
-        <tip>Una vez abierto un proyecto, usando el atajo de teclado &lt;b&gt;F11&lt;/b&gt;, se puede visualizar el entorno de trabajo en &lt;b&gt;Pantalla Completa&lt;/b&gt;. Para retornar a la interfaz habitual, volver a presionar &lt;b&gt;F11&lt;/b&gt;.</tip>
-        <tip>Es posible acercar o alejar (zoom in / zoom out) el área de trabajo girando la rueda del ratón.</tip>
-        <tip>Eligiendo un color para el relleno desde el panel &lt;b&gt;Paleta de Colores&lt;/b&gt;, se pueden dibujar formas opacas con el color elegido. Para volver a obtener trazos sin relleno, hacer clic sobre el ícono que se encuentra junto a los cuadros de color de borde y relleno en el mismo panel.</tip> 
-        <tip>Seleccionando un marco y usando el atajo de teclado &lt;b&gt;Ctrl + Avpag&lt;/b&gt;, se obtiene una copia exacta de dicho marco en la posición siguiente. Es muy útil cuando se anima con la técnica de recorte (cutout) para desplazar un objeto paso a paso.</tip>
-        <tip>Con el atajo &lt;b&gt;Alt + R&lt;/b&gt; se activa la rotación del elemento seleccionado. Para restringir su giro, presionar la tecla &lt;b&gt;Shift&lt;/b&gt; durante la acción.</tip>
-        <tip>Clic derecho sobre el panel de la &lt;b&gt;Biblioteca&lt;/b&gt;, permite crear imágenes raster (mapa de bits) y svg desde programas externos como Gimp, Krita, MyPaint e Inkscape.</tip>
-</TipOfDay>
