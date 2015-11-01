@@ -1,0 +1,6 @@
+<CrashHandler>
+	<Title text="Критична помилка" />
+	<Message text="Шановний художнику," color="red" />
+	<Button text="Закрити" />
+	<Default text="Tupi завершила роботу через прикру помилку у програмному коді! Ми дуже про це шкодуємо :(&lt;br&gt;&lt;br&gt;Але не варто занепадати духом! Ви можете допомогти нам виправити цю помилку.&lt;br&gt;Будь ласка, створіть повідомлення про ваду за допомогою сторінки &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; і допоможіть нам у покращенні програми.&lt;br&gt;&lt;br&gt;Дякуємо,&lt;br&gt;&lt;br&gt;--Щиро ваша команда розробників" image="crash.png" />
+</CrashHandler>

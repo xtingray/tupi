@@ -1,0 +1,137 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="file:tupi.css" />
+</head>
+<body class="tupi_background5">
+<p class="title">Ayuda con traducciones</p>
+<p class="paragraph">
+Debido a la constante generaci&oacute;n de nueva informaci&oacute;n por parte de nuestro equipo de desarrollo y a la 
+necesidad de comunicarla a toda la comunidad y en diferentes idiomas, hemos decidido realizar una convocatoria
+particular a todas las personas con habilidades para traducir textos de un idioma a otro.<br/>
+Dentro de los tipos de documentos que constantemente necesitamos traducir se encuentran: 
+<ul>
+<li> Noticias y Anuncios en nuestro sitio web</li>
+<li> Tutoriales, Manuales y Ejemplos</li>
+<li> Archivos de soporte de idioma para <b>Tup&iacute;</b> (necesarios para que el programa pueda ser utilizado en ingl&eacute;s, espa&ntilde;ol, portugu&eacute;s, catal&aacute;n, etc)</li>
+</ul>
+</p>
+<p class="paragraph">
+Para las noticias y los tutoriales, s&oacute;lo basta con tu deseo de ayudar y que te pongas en contacto con nosotros, para que nos cuentes que texto en particular quieres traducir o si deseas que te asignemos alguno: siempre tenemos algo para 
+traducir.
+</p>
+<p class="paragraph">
+Por otro lado, &iquest;En qu&eacute; consiste el soporte de idioma? Expresado en t&eacute;rminos sencillos, se trata de la capacidad de una aplicaci&oacute;n para imprimir todos sus mensajes en un idioma en particular. Si est&aacute;s interesado en que <b>Tup&iacute;</b>
+tenga soporte en Chino, en &Aacute;rabe, en Franc&eacute;s o en cualquier otro idioma que sea de tu inter&eacute;s, entonces te encuentras en el lugar indicado para colaborar.
+<br/>
+Para el caso de los archivos de soporte de idioma, es necesario que tengas algunos conocimientos en las herramientas y los procedimientos que utilizamos para crear y administrar este tipo de archivos.
+Sigue las siguientes instrucciones, y podr&aacute;s convertirte en uno de nuestros m&aacute;s importantes traductores:
+</p>
+<p class="paragraph">
+<b>1. Aprende qu&eacute; es <i>linguist</i> y como funciona.</b> Empecemos por el principio, <b>Tup&iacute;</b> es una aplicaci&oacute;n de software desarrollada con la biblioteca <i>Qt</i>, la cual se encuentra escrita en lenguaje <i>C++</i>. La buena noticia es que no tienes que aprender ni <i>Qt</i> ni <i>C++</i> para ayudarnos a traducir.<br/>
+Sin embargo, es importante que tengas en cuenta que <i>Qt</i> no s&oacute;lo consiste en una biblioteca de desarrollo, sino que tambi&eacute;n incluye varias herramientas adicionales que facilitan el desarrollo de aplicaciones. Una de ellas es <i>linguist</i>, un sencillo programa que viene inclu&iacute;do en la instalaci&oacute;n de <i>Qt</i> y que te permitir&aacute; crear el soporte de nuevos idiomas para <b>Tup&iacute;</b>. 
+<center>
+<img src="file:linguist01.png"/>
+<p class="paragraph">
+<b>Fig #68.</b> Aplicaci&oacute;n <i>linguist</i>
+</p>
+</center>
+<p class="paragraph">
+Si tienes instalado <i>Qt</i> en tu computador, seguramente ya tienes instalado <i>linguist</i>. Busca el acceso a la aplicaci&oacute;n en el men&uacute; principal de tu entorno gr&aacute;fico, en la secci&oacute;n de <i>Programaci&oacute;n</i>: 
+</p>
+<center>
+<img src="file:linguist02.png"/>
+<p class="paragraph">
+<b>Fig #69.</b> Abriendo <i>linguist</i>                  
+</p>
+</center>
+<p class="paragraph">
+La materia prima de esta utilidad es un archivo de extensi&oacute;n "<b>.ts</b>", a partir del cual podr&aacute;s traducir todos los mensajes que hacen parte de <b>Tup&iacute;</b> al idioma que t&uacute; quieras. Una buena noticia, es que no tienes que empezar desde cero, pues ya contamos con uno (<a href="http://www.maefloresta.com">tupi_es.ts</a>) en nuestro sitio web. Desc&aacute;rgalo y ren&oacute;mbralo de acuerdo al idioma al que quieras traducirlo. Por ejemplo, si quieres crear el soporte de Italiano para <b>Tup&iacute;</b>, entonces renombra el archivo a <i>tupi_it.ts</it> y &aacute;brelo desde el programa <i>linguist</i> as&iacute;:  
+</p>
+<center>
+<table>
+<tr>
+<td>
+<img src="file:linguist03.png"/>
+</td>
+<td>
+<img src="file:linguist04.png"/>
+</td>
+</tr>
+</table>
+<p class="paragraph">
+<b>Fig #70.</b> Abriendo un archivo de traducci&oacute;n (.ts) 
+</p>
+</center>
+<p class="paragraph">
+Ahora, demos un vistazo a los componentes m&aacute;s importantes del programa, espec&iacute;ficamente a los que vamos a utilizar. El primero es el listado de contextos. Su nombre suena complejo, pero no es otra cosa que una lista de grupos de palabras. Es decir, cada &iacute;tem de la lista que vemos en la figura, simplemente representa a un grupo de palabras asociadas a ese contexto.
+</p>
+<center>
+<img src="file:linguist05.png"/>
+<p class="paragraph">
+<b>Fig #71.</b> Listado de contextos
+</p>
+</center>
+<p class="paragraph">
+El siguiente componente, es la lista las palabras o mensajes asociados a un contexto. Estos mensajes son los que aparecen en <b>Tup&iacute;</b> y son los que debemos traducir. Cada contexto puede tener un n&uacute;mero de mensajes variable a traducir. Independiente de ello, todos los textos deben ser traducidos.
+</p>
+<center>
+<img src="file:linguist06.png"/>
+<p class="paragraph">
+<b>Fig #72.</b> Listado de palabras de un contexto
+</p>
+</center>
+<p class="paragraph">
+Hasta el momento, ya tenemos ubicados los nombres de los grupos (contextos) y el listado de palabras por cada contexto. Ahora, ubiquemos la parte m&aacute;s importante de la herramienta, la forma de traducciones:
+</p>
+<center>
+<img src="file:linguist07.png"/>
+<p class="paragraph">
+<b>Fig #73.</b> Forma de traducciones 
+</p>
+</center>
+<p class="paragraph">
+Ahora veamos en detalle cuales campos debemos tener en cuenta, en la forma de traducciones:
+</p>
+<center>
+<img src="file:linguist08.png"/>
+<p class="paragraph">
+<b>Fig #74.</b> Forma de traducciones en detalle
+</p>
+</center>
+<p class="paragraph">
+El cuadro subrayado con <font color="#a90000"><b>rojo</b></font> contiene la palabra que debemos traducir; en este caso particular, la palabra "<i>Pen</i>". El cuadro subrayado con <font color="#008400"><b>verde</b></font> contiene el espacio en donde debemos colocar la traducci&oacute;n de la palabra. En este caso particular de traducci&oacute;n al Espa&ntilde;ol: "<i>L&aacute;piz</i>".<br/>
+Muy bien, ya vimos un ejemplo puntual, ahora hagamos una descripci&oacute;n general de todo el proceso: 
+Una vez abierto el archivo de traducci&oacute;n (ej: <i>tupi_it.ts</i>), debemos seleccionar uno a uno, todos los contextos (<font color="#157e15"><b>1</b></font>). Por cada contexto seleccionado, tendremos que hacer clic sobre cada una de las palabras en la lista de la segunda columna de la interfaz (<font color="#1d5d8a"><b>2</b></font>), con el fin de traducirlas desde la forma ubicada en la parte inferior (<font color="#c81818"><b>3</b></font>). Una vez hayamos recorrido todos los contextos y no queden m&aacute;s palabras para traducir, habremos terminado con la tarea.<br/>   
+</p>
+<center>
+<img src="file:linguist09.png"/>
+<p class="paragraph">
+<b>Fig #75.</b> Componentes principales de la aplicaci&oacute;n <i>linguist</i>
+</p>
+</center>
+<p class="paragraph">
+Finalmente, debemos guardar los cambios y enviar nuestro archivo por correo al equipo de desarrollo para que lo incluya en futuras versiones de <b>Tup&iacute;</b>.
+</p>
+<center>
+<table>
+<tr>
+<td>
+<img src="file:linguist10.png"/>
+</td>
+<td>
+<img src="file:linguist11.png"/>
+</td>
+</tr>
+</table>
+<p class="paragraph">
+<b>Fig #76.</b> Guardando el proyecto de traducci&oacute;n (.ts)
+</p>
+</center>
+<p class="paragraph">
+Si quieres aprender m&aacute;s acerca de <i>linguist</i>, puedes consultar el manual oficial aqu&iacute;:
+<center>
+<a href="http://doc.qt.nokia.com/4.6/linguist-manual.html">http://doc.qt.nokia.com/4.6/linguist-manual.html</a>
+</center>
+</p>
+</body>
+</html>

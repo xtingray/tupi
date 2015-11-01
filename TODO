@@ -1,0 +1,31 @@
+- Tools -
+	* fill +
+	* selection
+		- rotate/shear
+		- Normal(flip)
+	
+	* paint
+		- Polyline +
+
+- GUI Components -
+	* Sound +
+	* PaintArea
+		- Ruler +
+		- Lines of guide +
+	* Tweening +
+	* Library +
+
+- Store -
+	* Item
+		- Flip
+		- Order (send back, send front...) +
+		
+	* Frames/Layers/Scenes
+		- Copy, Paste and Cut
+		- Expand frames
+
+- General -
+	* Export to SVG
+	* Import from SVG
+	* Import Bitmaps +
+

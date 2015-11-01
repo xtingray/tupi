@@ -1,0 +1,6 @@
+<CrashHandler>
+	<Title text="致命的なエラー" />
+	<Message text="アニメーターの方へ:" color="red" />
+	<Button text="閉じる" />
+	<Default text="Tupi はソフトウェアの重大なバグによりクラッシュしました！申し訳ありません :(&lt;br&gt;&lt;br&gt;ですが、すべての望みが失われたわけではありません！クラッシュの修正に寄与していただける可能性があります。&lt;br&gt;バグ報告を &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; までお送りいただき、ソフトウェアの改善に是非ご協力ください。&lt;br&gt;&lt;br&gt;--&lt;i&gt;ふがいない&lt;/i&gt;開発チームより" image="crash.png" />
+</CrashHandler>

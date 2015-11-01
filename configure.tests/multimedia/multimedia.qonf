@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<qonf optional="false" >
+	<test name="Qt Multimedia">
+		<dir path="." />
+	</test>
+	<provide>
+		<defines>
+			<define value="HAVE_MULTIMEDIA" />
+		</defines>
+	</provide>
+	<solution>
+		<linux package="qtmultimedia5-dev" url="http://qt-project.org" comment="" >
+			<distribution name="gentoo" package="qtmultimedia5-dev" url="http://qt-project.org" comment="Try: emerge qtmultimedia5-dev" />
+			<distribution name="ubuntu" package="qtmultimedia5-dev" url="http://qt-project.org" comment="Try: apt-get install qtmultimedia5-dev" />
+		</linux>
+		<windows package="qtmultimedia5-dev" url="http://qt-project.org" comment="" />
+		<macosx package="qtmultimedia5-dev" url="http://http://qt-project.org" comment="" />
+	</solution>
+</qonf>

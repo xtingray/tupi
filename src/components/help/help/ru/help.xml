@@ -1,0 +1,34 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<KHelpSystem>
+    <Section title="Обложка" file="cover.html" />
+    <Section title="Введение" file="chapter0.html">
+        <SubSection title="Наше видение и лицензия" file="philosophy.html" />
+        <SubSection title="Анимация для начинающих" file="init.html" />
+    </Section>
+    <Section title="Tupi? Что это?" file="chapter1.html">
+        <SubSection title="Основные компоненты" file="components.html" />
+        <SubSection title="Модуль рисования" file="animation.html" />
+        <SubSection title="Модуль анимации" file="player.html" />
+        <SubSection title="Модуль справки" file="help.html" />
+    </Section>
+    <Section title="Попробуем на примере!" file="chapter2.html">
+        <SubSection title="Начнем сначала!" file="first.html" />
+        <SubSection title="Начнем проект" file="new.html" />
+        <SubSection title="Время рисовать" file="drawing.html" />
+        <SubSection title="Добавляем новые кадры" file="adding_frames.html" />
+        <SubSection title="Давайте посмотрим" file="preview_time.html" />
+        <SubSection title="Создаем видео-файл!" file="video_file.html" />
+        <SubSection title="Stop Motion? Это возможно?" file="stop_motion.html" />
+    </Section>
+    <Section title="Дополнительные материалы" file="chapter3.html">
+        <SubSection title="Интересные ссылки" file="links.html" />
+        <SubSection title="Клавиатурные сокращения" file="shortcuts.html" />
+    </Section>
+    <Section title="Можете нам помочь?" file="chapter4.html">
+        <SubSection title="Как сотрудничать!" file="how_to_help.html" />
+        <SubSection title="Помощь с переводом" file="translations.html" />
+    </Section>
+    <Section title="О Labtoon" file="chapter5.html">
+        <SubSection title="Кто мы?" file="labtoon.html" />
+    </Section>
+</KHelpSystem>

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<qonf optional="true">
+    <test name="Libav">
+        <dir path="." />
+    </test>
+    <provide>
+        <defines>
+            <define value="HAVE_LIBAV" />
+        </defines>
+        <libs>
+            <lib path="-lavformat" />
+            <lib path="-lavcodec" />
+        </libs>
+        <includes>
+            <include path="/usr/include/libavformat/" />
+            <include path="/usr/include/libavcodec/" />
+        </includes>
+    </provide>
+    <solution>
+        <linux package="ffmpeg" url="http://libav.org/" comment="" >
+            <distribution name="gentoo" package="ffmpeg" url="http://libav.org/" comment="Try: emerge ffmpeg" />
+            <distribution name="ubuntu" package="libavcodec-dev libavformat-dev" url="http://libav.org/" comment="Try: apt-get install libavformat-dev libavcodec-dev" />
+            <distribution name="fedora" package="ffmpeg-devel libvpx-devel" url="http://libav.org/" comment="Try: yum install ffmpeg-devel libvpx-devel" />
+        </linux>
+        <windows package="libav" url="http://libav.org/" comment="" />
+        <macosx package="libav" url="http://libav.org/" comment="" />
+    </solution>
+</qonf>

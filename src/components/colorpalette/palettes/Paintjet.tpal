@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Palette editable="false" name="Paintjet" >
+ <Color colorName="#000000" alpha="255" />
+ <Color colorName="#000000" alpha="255" />
+ <Color colorName="#18140c" alpha="255" />
+ <Color colorName="#f4f0e8" alpha="255" />
+ <Color colorName="#c44448" alpha="255" />
+ <Color colorName="#30845c" alpha="255" />
+ <Color colorName="#f0e848" alpha="255" />
+ <Color colorName="#343074" alpha="255" />
+ <Color colorName="#bc306c" alpha="255" />
+ <Color colorName="#2874c4" alpha="255" />
+ <Color colorName="#18140c" alpha="255" />
+ <Color colorName="#f4f0e8" alpha="255" />
+ <Color colorName="#c44448" alpha="255" />
+ <Color colorName="#30845c" alpha="255" />
+ <Color colorName="#f0e848" alpha="255" />
+ <Color colorName="#343074" alpha="255" />
+ <Color colorName="#bc306c" alpha="255" />
+ <Color colorName="#2874c4" alpha="255" />
+</Palette>

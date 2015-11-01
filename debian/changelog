@@ -1,0 +1,5 @@
+tupi (0.2-git05-ubuntu1) utopic; urgency=low
+
+  * Proof of concept for the Tupi debian package
+
+ -- Gustav Gonzalez [xtingray] <info@maefloresta.com>  Sat, 06 Dec 2014 00:00:00 -0500

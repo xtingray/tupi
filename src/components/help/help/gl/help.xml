@@ -1,0 +1,34 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<KHelpSystem>
+    <Section title="Capa" file="cover.html" />
+    <Section title="Introdución" file="chapter0.html">
+        <SubSection title="A nosa visión e a Licenza" file="philosophy.html" />
+        <SubSection title="Animación para principiantes" file="init.html" />
+    </Section>
+    <Section title="Tupí? Que é iso?" file="chapter1.html">
+        <SubSection title="Compoñentes principais" file="components.html" />
+        <SubSection title="Módulo de animación" file="animation.html" />
+        <SubSection title="Módulo de reprodución" file="player.html" />
+        <SubSection title="Módulo de axuda" file="help.html" />
+    </Section>
+    <Section title="Un exemplo moi básico" file="chapter2.html">
+        <SubSection title="Primeiro, o primeiro!" file="first.html" />
+        <SubSection title="Iniciemos un proxecto" file="new.html" />
+        <SubSection title="Hora de debuxar" file="drawing.html" />
+        <SubSection title="Engadindo novos fotogramas" file="adding_frames.html" />
+        <SubSection title="Vexamos como está a quedar" file="preview_time.html" />
+        <SubSection title="Creemos un ficheiro de vídeo" file="video_file.html" />
+        <SubSection title="Stop Motion? é posíbel?" file="stop_motion.html" />
+    </Section>
+    <Section title="Recursos adicionais" file="chapter3.html">
+        <SubSection title="Ligazóns de interese" file="links.html" />
+        <SubSection title="Accesos directos" file="shortcuts.html" />
+    </Section>
+    <Section title="Queres axudarnos?" file="chapter4.html">
+        <SubSection title="Como colaborar?" file="how_to_help.html" />
+        <SubSection title="Axuda coas traducións" file="translations.html" />
+    </Section>
+    <Section title="Sobre Tupí" file="chapter5.html">
+        <SubSection title="Sobre o noso equipo" file="tupi.html" />
+    </Section>
+</KHelpSystem>

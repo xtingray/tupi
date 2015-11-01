@@ -1,0 +1,6 @@
+<CrashHandler>
+	<Title text="Produciuse un erro fatal" />
+	<Message text="Querido animador:" color="red" />
+	<Button text="Pechar" />
+	<Default text="Tupí quebrou debido a una infame falla de programación! Estamos moi doidos por elo :(&lt;br&gt;&lt;br&gt;Mais non se perdeu todo! Podería axudarnos a mellorar o programa.&lt;br&gt;Envíenos un informe do erro empregando a páxina &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; para que poidamos arranxalo canto antes. &lt;br&gt;&lt;br&gt;Moitas grazas,&lt;br&gt;&lt;br&gt;--O &lt;i&gt;avergonzado&lt;/i&gt; equipo de desenvolvemento." image="crash.png" />
+</CrashHandler>

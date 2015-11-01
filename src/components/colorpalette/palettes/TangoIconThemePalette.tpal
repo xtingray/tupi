@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Palette editable="false" name="Tango Icon Theme Palette" >
+ <Color colorName="#fce94f" alpha="255" />
+ <Color colorName="#edd400" alpha="255" />
+ <Color colorName="#c4a000" alpha="255" />
+ <Color colorName="#8ae234" alpha="255" />
+ <Color colorName="#73d216" alpha="255" />
+ <Color colorName="#4e9a06" alpha="255" />
+ <Color colorName="#fcaf3e" alpha="255" />
+ <Color colorName="#f57900" alpha="255" />
+ <Color colorName="#ce5c00" alpha="255" />
+ <Color colorName="#729fcf" alpha="255" />
+ <Color colorName="#3465a4" alpha="255" />
+ <Color colorName="#204a87" alpha="255" />
+ <Color colorName="#ad7fa8" alpha="255" />
+ <Color colorName="#75507b" alpha="255" />
+ <Color colorName="#5c3566" alpha="255" />
+ <Color colorName="#e9b96e" alpha="255" />
+ <Color colorName="#c17d11" alpha="255" />
+ <Color colorName="#8f5902" alpha="255" />
+ <Color colorName="#ef2929" alpha="255" />
+ <Color colorName="#cc0000" alpha="255" />
+ <Color colorName="#a40000" alpha="255" />
+ <Color colorName="#eeeeec" alpha="255" />
+ <Color colorName="#eeeeec" alpha="255" />
+ <Color colorName="#d3d7cf" alpha="255" />
+ <Color colorName="#babdb6" alpha="255" />
+ <Color colorName="#888a85" alpha="255" />
+ <Color colorName="#555753" alpha="255" />
+ <Color colorName="#2e3436" alpha="255" />
+</Palette>

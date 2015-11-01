@@ -1,0 +1,28 @@
+/**
+ * @if english 
+ * @mainpage Tupi: 2D Animation Toolkit
+ * @section intro Introduction
+ * Tupi is a 2D Animation Toolkit designed by animators (Toonka Films ) for animators, focused to the Cartoon Industry. This project is covered by the GPL License using g++, OpenGL and QT as programming resources from KDevelop as the development platform. By now, Tupi is only available for Unix systems. 
+ * @section toc Table of contents
+ * @li @ref requirements
+ * @li @ref usecase
+ * @elseif spanish 
+ * @line
+ * @mainpage Tupi: Herramienta de Animación en 2D
+ * @section intro Introducción
+ * <p>
+ * Este documento representa el compendio de toda la informaci&oacute;n generada durante el desarrollo del proyecto Tupi: Kit de Animaci&oacute;n. 
+ * Tupi es un ambiente de desarrollo para animaci&oacute;n, dise&ntilde;ado por animadores (Toonka Films) para animadores y enfocado a la industria de los Cartoons. Este proyecto esta cubierto por los t&eacute;rminos de la licencia GPL, utilizando g++, OpenGL y Qt como recursos de programaci&oacute;n desde KDevelop como herramienta de implementaci&oacute;n. 
+* </p><p>
+* El objetivo fundamental de este contenido, es ofrecer a nuevos desarrolladores una gu&iacute;a etallada sobre el an&aacute;lisis y dise&ntilde;o de la aplicacion, los elementos que hacen parte de su arquitectura, sus estructuras de datos y la forma en que los diferentes componentes de software interactuan entre si, todo esto, con el fin de facilitar el dominio del c&oacute;digo fuente del proyecto y de esta manera, permitir que programadores inicialmente ajenos al proyecto, puedan aportar de manera r&aacute;pida y eficiente nuevas funcionalidades a la aplicaci&oacute;n trav&eacute;s del aprovechamiento y extensi&oacute;n de su API.
+ * </p><p>
+ * Todos los diagramas incluidos en este documento, fueron desarrollados bajo el Lenguaje de Modelamiento Unificado (UML).
+ * </p><p>
+ * Nota: Debido a que este es un proyecto en constante desarrollo, esta documentaci&oacute;n se encuentra en proceso de cambio continuo.
+ * </p>
+ * @endif
+ * @section toc Tabla de Contenidos
+ * @li @ref requirements
+ * @li @ref usecase
+ *
+*/

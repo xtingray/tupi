@@ -1,0 +1,49 @@
+Source: tupi
+Section: graphics
+Priority: extra
+Maintainer: Gustav Gonzalez [xtingray] <info@maefloresta.com>
+Standards-Version: 3.9.3
+Build-Depends: debhelper (>= 7), autotools-dev, ruby, 
+ libavformat-dev,
+ libavcodec-dev, 
+ qt5-qmake, 
+ qttools5-dev-tools,
+ qtmultimedia5-dev, 
+ libqt5opengl5-dev,
+ libqt5svg5-dev, 
+ imagemagick, 
+ zlib1g-dev, 
+ libogg-dev, 
+ libtheora-dev, 
+ libquazip-qt5-dev
+Homepage: http://www.maefloresta.com
+
+Package: tupi
+Architecture: any
+Depends: ${misc:Depends}, 
+ libavcodec | libavcodec-extra-56, 
+ libavformat56 | libavformat-extra-56, 
+ libavutil54 | libavutil-extra-54, 
+ libc6, 
+ libgcc1,
+ libqt5multimediawidgets5, 
+ libqt5multimedia5-plugins, 
+ libqt5svg5, 
+ libstdc++6, 
+ zlib1g, 
+ libogg0, 
+ libtheora0, 
+ libquazip-qt5-1
+Description: 2D vectorial/animation tool
+ Tupi: Open 2D Magic  is a design  and  authoring tool for digital 
+ artists  interested  in  2D  Animation,  offering  an   interface 
+ experience  focused  on 8-100 years old kids. It's source code is 
+ based on the KTooN project.
+ Some of  its main  features are: basic illustration tools (shapes, 
+ fill, text),  gradient tools, onion  skin, brushes  editor, pencil 
+ with smoothness  support, basic  object library (for svg files and 
+ raster images) and many others.
+ Using its modules of Animation and Reproduction  you can export 2D
+ projects to several formats as OGG, MPEG, AVI, MOV and SWF. 
+ Additionally, the  option of  exporting  Image arrays as output is 
+ available.

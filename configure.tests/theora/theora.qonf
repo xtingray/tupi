@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<qonf optional="true">
+    <test name="Theora">
+        <dir path="." />
+    </test>
+    <provide>
+        <defines>
+            <define value="HAVE_THEORA" />
+        </defines>
+        <libs>
+            <lib path="-ltheora" /> 
+            <lib path="-ltheoraenc" />
+            <lib path="-ltheoradec" /> 
+            <lib path="-logg" />
+        </libs>
+    </provide>
+    <solution>
+        <linux package="libtheora" url="http://www.theora.org/" comment="" >
+            <distribution name="gentoo" package="libtheora" url="http://www.theora.org/" comment="Try: emerge libtheora" />
+            <distribution name="ubuntu" package="libogg-dev libtheora-dev" url="http://www.theora.org/" comment="Try: apt-get install libogg-dev libtheora-dev" />
+        </linux>
+        <windows package="libtheora" url="http://www.theora.org/" comment="" />
+        <macosx package="libtheora" url="http://www.theora.org/" comment="" />
+    </solution>
+</qonf>

@@ -1,0 +1,277 @@
+body {
+     background-color:#ffffff;
+}
+
+.tupi_background1 {
+     background-image:url('file:bg1.png');
+}
+
+.tupi_background2 {
+     background-image:url('file:bg2.png');
+}
+
+.tupi_background3 {
+     background-image:url('file:bg3.png');
+}
+
+.tupi_background4 {
+     background-image:url('file:bg4.png');
+}
+
+.tupi_background5 {
+     background-image:url('file:bg5.png');
+}
+
+.tupi_background6 {
+     background-image:url('file:bg6.png');
+}
+
+.tip_background00 {
+     background-image:url('file:tip_bg01.png');
+     color:#000000;
+}
+
+.tip_background01 {
+     background-image:url('file:tip_bg02.png');
+     color:#000000;
+}
+
+.tip_background02 {
+     background-image:url('file:tip_bg03.png');
+     color:#000000;
+}
+
+.tupi {
+     background-color:#ffffff;
+     background-image:url('file:tupi.png');
+     background-repeat:no-repeat;
+     background-position:left top;
+     color:#000000;
+}
+
+.title {
+     margin-left:10px;
+     color:#000000;
+     text-align:left;
+     text-decoration:underline;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:16px;
+     font-weight:bold;
+}
+
+.subtitle {
+     margin-left:9px;
+     color:#000000;
+     text-align:left;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:16px;
+     font-weight:bold;
+}
+
+.paragraph {
+     margin-left:10px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.item {
+     margin-left:0px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.code {
+     margin-left:10px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:italic;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.frame {
+     width:405px;
+     border-style:solid;
+     border-width:1px;
+     border-color:#cccccc;
+}
+
+.table {
+     width:400px;
+     background-color:#ffffff;
+}
+
+.line {
+     width:400px;
+     margin-left:auto;
+     margin-right:auto;
+}
+
+.url {
+     width:200px;
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:bold;
+}
+
+a:link {
+     text-decoration:underline;
+     color:#004000;
+     font-weight:bold;
+}
+
+a:visited {
+     text-decoration:underline;
+     color:#004000;
+     font-weight:bold;
+}
+
+a:active {
+     text-decoration:underline;
+     color:#004000;
+     font-weight:bold;
+}
+
+a:hover {
+     text-decoration:underline;
+     color:#004000;
+     font-weight:bold;
+}
+
+.big_title {
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:36px;
+     font-weight:bold;
+}
+
+.shortcut_table {
+     padding:10px;
+     border:2px solid #000000;
+}
+
+.shortcut_subtitle {
+     padding:3px;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:bold;
+}
+
+.shortcut_record {
+     padding:3px;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:10px;
+     font-weight:normal;
+}
+
+.twitter_white {
+     background-color:#fff;
+}
+
+.twitter_headline {
+     background-image:url('file:bg1.png');
+     color:#000000;
+     text-align:left;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:26px;
+     font-weight:bold;
+}
+
+.twitter_logo {
+     vertical-align:middle;
+}
+
+.twitter_tupi_version {
+     background-color:#eee;
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:normal;
+}
+
+.twitter_tupi_update {
+     background-color:#eee; 
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:normal;
+}
+
+.twitter_tupi_donation {
+     background-color:#ddd;
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:normal;
+}
+
+.twitter_tweet {
+     /* background-color:#fff; */
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:normal;
+}
+
+.twitter_separator {
+     height:2px;     
+     font-size:5px;
+}
+
+.twitter_links {
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:normal;
+     font-weight:bold;
+}
+
+

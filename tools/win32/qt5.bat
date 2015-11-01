@@ -1,0 +1,17 @@
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\icudt52.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\icuin52.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\icuuc52.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\libgcc_s_dw2-1.dll C:\tupi\sources\qt5\
+copy "C:\Qt-5.3.2\5.3\mingw482_32\bin\libstdc++-6.dll" C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\libwinpthread-1.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Core.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Gui.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Multimedia.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5MultimediaWidgets.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Network.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5OpenGL.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5PrintSupport.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Svg.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Widgets.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\bin\Qt5Xml.dll C:\tupi\sources\qt5\
+copy C:\Qt-5.3.2\5.3\mingw482_32\plugins\platforms\qwindows.dll C:\tupi\sources\platforms\

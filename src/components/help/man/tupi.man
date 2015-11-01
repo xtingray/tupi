@@ -1,0 +1,27 @@
+.TH TUPI 1 LOCAL
+
+.SH NAME 
+
+tupi \- Magia 2D. Animation Tool 
+
+.SH SYNOPSIS
+
+.B tupi
+
+.SH AVAILABILITY
+
+All UNIX flavors
+
+.SH DESCRIPTION
+
+Tupi is a free software 2D animation tool for 8-100
+.br
+years old kids. All the information about tutorials
+.br
+and manuals about this program are available from:
+.br
+http://www.maefloresta.com
+
+.SH AUTHOR
+
+A lot of developers + Gustav Gonzalez [xtingray]

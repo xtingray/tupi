@@ -1,0 +1,6 @@
+<CrashHandler>
+	<Title text="Erro fatal" />
+	<Message text="Caro Animador:" color="red" />
+	<Button text="Fechar" />
+	<Default text="O Tupi parou devido a uma falha no software! Estamos terrivelmente tristes com isto :(&lt;br&gt;&lt;br&gt;mas nem tudo está perdido! Pode ajudar-nos a corrigir o problema.&lt;br&gt;Por favor, envie um relatório do erro em &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'&gt;http://maefloresta.com/&lt;/a&gt; e ajude-nos a fazer um software melhor.&lt;br&gt;&lt;br&gt;Obrigado,&lt;br&gt;&lt;br&gt;--A &lt;i&gt;ashamed&lt;/i&gt; equipa de desenvolvimento" image="crash.png" />
+</CrashHandler>

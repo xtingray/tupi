@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<qonf optional="true" >
+	<test name="OpenGL">
+		<dir path="." />
+	</test>
+	<provide>
+		<modules>
+			<module value="opengl" />
+		</modules>
+	</provide>
+	<solution>
+		<linux package="Qt" url="http://www.trolltech.com/" comment="" >
+			<distribution name="gentoo" package="qt" url="http://www.trolltech.com" comment="Try to emerge &gt;=x11-libs/qt-4.2 with opengl use flag"  />
+			<distribution name="ubuntu" package="libqt4-gui" url="http://www.trolltech.com" comment="Try: apt-get install mesa-common-dev and recompile Qt" />
+		</linux>
+		<windows package="Qt" url="http://www.trolltech.com/" comment="" />
+		<macosx package="Qt" url="http://www.trolltech.com/" comment="" />
+	</solution>
+</qonf>
