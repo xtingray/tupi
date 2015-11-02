@@ -69,7 +69,7 @@ void TipDialog::setupGUI()
     textBrowser->setOpenExternalLinks(true);
 
     QStringList path;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString resources = SHARE_DIR + "help" + QDir::separator();
 #else
 	QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();

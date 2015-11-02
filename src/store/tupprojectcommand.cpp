@@ -51,7 +51,7 @@ struct TupProjectCommand::Private
 TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProjectRequest *request) : QUndoCommand(), k(new Private())
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand()]";
         #else
             T_FUNCINFO;
@@ -65,7 +65,7 @@ TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProj
     if (!parser.parse(request->xml())) {
         #ifdef K_DEBUG
             QString msg = "TupProjectCommand::TupProjectCommand(): - Parser error!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal() << msg;
@@ -79,7 +79,7 @@ TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProj
     if (!k->response) {
         #ifdef K_DEBUG
             QString msg = "TupProjectCommand::TupProjectCommand() - Unparsed response!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal() << msg;
@@ -93,7 +93,7 @@ TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProj
 TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, TupProjectResponse *response) : QUndoCommand(), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand()]";
         #else
             T_FUNCINFO;
@@ -139,7 +139,7 @@ void TupProjectCommand::initText()
              {				  
                  #ifdef K_DEBUG
                      QString msg = "TProjectCommand::initText() - Error: can't handle ID: " + QString::number(k->response->part());
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -218,7 +218,7 @@ TupProjectCommand::~TupProjectCommand()
 void TupProjectCommand::redo()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand()] - k->response->part(): " << k->response->part();
         #else
             T_FUNCINFO << k->response->part();
@@ -237,7 +237,7 @@ void TupProjectCommand::redo()
             {
                 #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::redo() - Error: Project response isn't implemented";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qWarning() << msg;
                      #else
                          tWarning() << msg;
@@ -274,7 +274,7 @@ void TupProjectCommand::redo()
             {
                 #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::redo() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -294,7 +294,7 @@ void TupProjectCommand::undo()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::undo() - Error: Project response isn't implemented";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -331,7 +331,7 @@ void TupProjectCommand::undo()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::undo() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -345,7 +345,7 @@ void TupProjectCommand::undo()
 void TupProjectCommand::frameCommand()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand::frameCommand()]";
         #else
             T_FUNCINFO;
@@ -414,7 +414,7 @@ void TupProjectCommand::frameCommand()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::frameCommand() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -484,7 +484,7 @@ void TupProjectCommand::layerCommand()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::layerCommand() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -554,7 +554,7 @@ void TupProjectCommand::sceneCommand()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::sceneCommand() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -569,7 +569,7 @@ void TupProjectCommand::itemCommand()
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand::itemCommand()]";
         #else
             T_FUNCINFO;
@@ -645,7 +645,7 @@ void TupProjectCommand::itemCommand()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::itemCommand() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -659,7 +659,7 @@ void TupProjectCommand::itemCommand()
 void TupProjectCommand::libraryCommand()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand::libraryCommand()]";
         #else
             T_FUNCINFO;
@@ -697,7 +697,7 @@ void TupProjectCommand::libraryCommand()
             {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectCommand::libraryCommand() - Error: Unknown project response";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;

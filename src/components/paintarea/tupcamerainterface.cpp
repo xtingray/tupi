@@ -53,7 +53,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
                                        const QSize cameraSize, int counter, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCameraInterface()]";
         #else
             TINIT;
@@ -255,7 +255,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
 TupCameraInterface::~TupCameraInterface()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupCameraInterface()]";
         #else
             TEND;
@@ -291,7 +291,7 @@ QString TupCameraInterface::randomPath()
     if (!dir.mkdir(path)) {
         #ifdef K_DEBUG
             QString msg = "TupCameraInterface::randomPath() - Fatal Error: Can't create pictures directory -> " + path;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

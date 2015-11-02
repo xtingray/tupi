@@ -69,7 +69,7 @@ struct TupScreen::Private
 TupScreen::TupScreen(TupProject *project, const QSize viewSize, bool isScaled, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen()]";
         #else
             TINIT;
@@ -103,7 +103,7 @@ TupScreen::TupScreen(TupProject *project, const QSize viewSize, bool isScaled, Q
 TupScreen::~TupScreen()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupScreen()]";
         #else
             TEND;
@@ -125,7 +125,7 @@ TupScreen::~TupScreen()
 void TupScreen::resetPhotograms(int sceneIndex)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::resetPhotograms()]";
         #else
             T_FUNCINFO;
@@ -146,7 +146,7 @@ void TupScreen::resetPhotograms(int sceneIndex)
 void TupScreen::initPhotogramsArray()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::initPhotogramsArray()]";
         #else
             T_FUNCINFO;
@@ -165,7 +165,7 @@ void TupScreen::initPhotogramsArray()
 void TupScreen::setFPS(int fps)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::setFPS()]";
         #else
             T_FUNCINFO;
@@ -189,7 +189,7 @@ void TupScreen::paintEvent(QPaintEvent *)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::paintEvent()]";
         #else
             T_FUNCINFO;
@@ -221,7 +221,7 @@ void TupScreen::play()
 {
     #ifdef K_DEBUG
         QString msg = "TupScreen::play() - Playing at " + QString::number(k->fps) + " FPS";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning("camera") << msg;
@@ -251,7 +251,7 @@ void TupScreen::playBack()
 {
     #ifdef K_DEBUG
         QString msg = "TupScreen::playBack() - Starting procedure...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning("camera") << msg;
@@ -274,7 +274,7 @@ void TupScreen::stop()
 {
     #ifdef K_DEBUG
         QString msg = "TupScreen::stop() - Stopping player!";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning("camera") << msg;
@@ -300,7 +300,7 @@ void TupScreen::stop()
 void TupScreen::nextFrame()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::nextFrame()]";
         #else
             T_FUNCINFO;
@@ -322,7 +322,7 @@ void TupScreen::previousFrame()
 {
     /* 
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::previousFrame()]";
         #else
             T_FUNCINFO;
@@ -345,7 +345,7 @@ void TupScreen::advance()
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::advance()]";
         #else
             T_FUNCINFO;
@@ -372,7 +372,7 @@ void TupScreen::advance()
 void TupScreen::back()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::back()]";
         #else
             T_FUNCINFO;
@@ -401,7 +401,7 @@ void TupScreen::layerResponse(TupLayerResponse *)
 void TupScreen::sceneResponse(TupSceneResponse *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::sceneResponse()]";
         #else
             T_FUNCINFO;
@@ -463,7 +463,7 @@ void TupScreen::libraryResponse(TupLibraryResponse *)
 void TupScreen::render()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::render()]";
         #else
             T_FUNCINFO;
@@ -476,7 +476,7 @@ void TupScreen::render()
     if (!scene) {
         #ifdef K_DEBUG
             QString msg = "TupScreen::render() - [ Fatal Error ] - Scene is NULL! -> index: " + QString::number(k->currentSceneIndex);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -530,7 +530,7 @@ void TupScreen::render()
 QSize TupScreen::sizeHint() const
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::sizeHint()]";
         #else
             T_FUNCINFO;
@@ -543,7 +543,7 @@ QSize TupScreen::sizeHint() const
 void TupScreen::resizeEvent(QResizeEvent *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::resizeEvent()]";
         #else
             T_FUNCINFO;
@@ -561,7 +561,7 @@ void TupScreen::resizeEvent(QResizeEvent *event)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupScreen::resizeEvent() - [ Error ] - Current index is invalid -> " + QString::number(k->currentSceneIndex);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -573,7 +573,7 @@ void TupScreen::resizeEvent(QResizeEvent *event)
 void TupScreen::setLoop(bool loop)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::setLoop()]";
         #else
             T_FUNCINFO;
@@ -586,7 +586,7 @@ void TupScreen::setLoop(bool loop)
 void TupScreen::updateSceneIndex(int index)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::updateSceneIndex()]";
         #else
             T_FUNCINFO;
@@ -600,7 +600,7 @@ void TupScreen::updateSceneIndex(int index)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupScreen::updateSceneIndex() - [ Error ] - Can't set current photogram array -> " + QString::number(k->currentSceneIndex);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -617,7 +617,7 @@ int TupScreen::currentSceneIndex()
 TupScene *TupScreen::currentScene() const
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::currentScene()]";
         #else
             T_FUNCINFO;
@@ -643,7 +643,7 @@ TupScene *TupScreen::currentScene() const
 void TupScreen::updateAnimationArea()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::updateAnimationArea()]";
         #else
             T_FUNCINFO;
@@ -658,7 +658,7 @@ void TupScreen::updateAnimationArea()
     } else {
         #ifdef K_DEBUG
             QString msg = "TupScreen::updateAnimationArea() - [ Fatal Error ] - Can't access to scene index: " + QString::number(k->currentSceneIndex);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -674,7 +674,7 @@ void TupScreen::updateAnimationArea()
 void TupScreen::updateFirstFrame()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::updateFirstFrame()]";
         #else
             T_FUNCINFO;
@@ -711,7 +711,7 @@ void TupScreen::updateFirstFrame()
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupScreen::updateFirstFrame() - [ Fatal Error ] - Null scene at index: " + QString::number(k->currentSceneIndex);
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -721,7 +721,7 @@ void TupScreen::updateFirstFrame()
     } else {
         #ifdef K_DEBUG
             QString msg = "TupScreen::updateFirstFrame() - [ Fatal Error ] - Can't access to scene index: " + QString::number(k->currentSceneIndex);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -733,7 +733,7 @@ void TupScreen::updateFirstFrame()
 void TupScreen::addPhotogramsArray(int sceneIndex)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScreen::addPhotogramsArray()]";
         #else
             T_FUNCINFO;

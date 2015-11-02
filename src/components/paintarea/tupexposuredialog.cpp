@@ -170,7 +170,7 @@ void TupExposureDialog::setSheet(int sceneIndex, int layerIndex, int frameIndex)
 void TupExposureDialog::goToScene(int column, int sceneIndex)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExposureDialog::goToScene()]";
         #else
             T_FUNCINFO;
@@ -217,7 +217,7 @@ void TupExposureDialog::goToScene(int column, int sceneIndex)
 void TupExposureDialog::refreshUI(int frame, int layer)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExposureDialog::refreshUI()]";
         #else
             T_FUNCINFO;

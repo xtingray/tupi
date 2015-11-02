@@ -73,7 +73,7 @@ void TupPluginSelector::reset()
 
 void TupPluginSelector::addPlugin(const QString &plugin)
 {
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
        if (QSysInfo::windowsVersion() != QSysInfo::WV_XP) {
            new QListWidgetItem(plugin, m_exporterList);
        } else {
@@ -108,17 +108,18 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
 {
     m_formatList->clear();
 
-    if (formats & TupExportInterface::WEBM) {
-        QListWidgetItem *format = new QListWidgetItem(tr("WEBM Video"), m_formatList);
-        format->setData(3124, TupExportInterface::WEBM);
-    }
-
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_LINUX
     if (formats & TupExportInterface::OGV) {
         QListWidgetItem *format = new QListWidgetItem(tr("OGV Video"), m_formatList);
         format->setData(3124, TupExportInterface::OGV);
     }
 #endif
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+    if (formats & TupExportInterface::WEBM) {
+        QListWidgetItem *format = new QListWidgetItem(tr("WEBM Video"), m_formatList);
+        format->setData(3124, TupExportInterface::WEBM);
+    }
 
     if (formats & TupExportInterface::MPEG) {
         QListWidgetItem *format = new QListWidgetItem(tr("MPEG Video"), m_formatList);
@@ -139,6 +140,7 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
         QListWidgetItem *format = new QListWidgetItem(tr("ASF Video"), m_formatList);
         format->setData(3124, TupExportInterface::ASF);
     }
+#endif
 
     if (formats & TupExportInterface::MOV) {
         QListWidgetItem *format = new QListWidgetItem(tr("QuickTime Video"), m_formatList);
@@ -182,8 +184,6 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
 
 char const* TupPluginSelector::getFormatExtension(const QString format) 
 { 
-    tError() << "TupPluginSelector::getFormatExtension() - format: " << format;
-
     if (format.compare(tr("WEBM Video")) == 0)
         return ".webm";
 
@@ -239,10 +239,6 @@ void TupPluginSelector::selectedFormatItem(QListWidgetItem *item)
         QListWidgetItem *familyItem = (QListWidgetItem *) family.at(0); 
 
         QString familyLabel = familyItem->text(); 
-
-        tError() << "TupPluginSelector::selectedFormatItem() - familyLabel: " << familyLabel;
-        tError() << "TupPluginSelector::selectedFormatItem() - extension: " << extension;
-
         if (familyLabel.compare(tr("Animated Image")) == 0) {
             emit animatedImageFormatSelected(item->data(3124).toInt(), extension);
         } else if (familyLabel.compare(tr("Image Sequence")) == 0) {

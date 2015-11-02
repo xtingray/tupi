@@ -107,7 +107,7 @@ void TupBackground::fromXml(const QString &xml)
                } else {
                    #ifdef K_DEBUG
                        QString msg = "TupBackground::fromXml() - Error: The background input is invalid";
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg;
                        #else
                            tError() << msg;
@@ -174,7 +174,7 @@ double TupBackground::staticOpacity()
 void TupBackground::renderDynamicView()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupBackground::renderDynamicView()]";
         #else
             T_FUNCINFO;

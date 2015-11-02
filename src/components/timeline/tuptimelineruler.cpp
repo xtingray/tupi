@@ -38,7 +38,7 @@
 TupTimeLineRuler::TupTimeLineRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLineRuler()]";
         #else
             TINIT;
@@ -52,7 +52,7 @@ TupTimeLineRuler::TupTimeLineRuler(QWidget *parent) : QHeaderView(Qt::Horizontal
 TupTimeLineRuler::~TupTimeLineRuler()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupTimeLineRuler()]";
         #else
             TEND;

@@ -138,7 +138,7 @@ TupLayer *TupScene::createLayer(QString name, int position, bool loaded)
     if (position < 0 || position > k->layers.count()) {        
         #ifdef K_DEBUG
             QString msg = "TupScene::createLayer() - Invalid index -> " + QString::number(position);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -162,7 +162,7 @@ TupLayer *TupScene::createLayer(QString name, int position, bool loaded)
 TupSoundLayer *TupScene::createSoundLayer(int position, bool loaded)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[createSoundLayer()] - position: " << position;
         #else
             T_FUNCINFO << position;
@@ -172,7 +172,7 @@ TupSoundLayer *TupScene::createSoundLayer(int position, bool loaded)
     if (position < 0 || position > k->soundLayers.count()) {    
         #ifdef K_DEBUG
             QString msg = "TupScene::createSoundLayer() - [ Fatal Error ] - Index incorrect!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -197,7 +197,7 @@ TupSoundLayer *TupScene::createSoundLayer(int position, bool loaded)
 bool TupScene::removeLayer(int position)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupScene::removeLayer()] - position: " << position;
         #else
             T_FUNCINFO << position;
@@ -231,7 +231,7 @@ TupLayer *TupScene::layer(int position) const
             QString msg1 = " FATAL ERROR: LAYERS TOTAL: " + QString::number(k->layers.count());
             QString msg2 = " FATAL ERROR: index out of bound -> Position: " + QString::number(position);
             QString msg3 = " FATAL ERROR: The layer requested doesn't exist anymore";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg1;
                 qDebug() << msg2;
                 qDebug() << msg3;
@@ -252,7 +252,7 @@ TupSoundLayer *TupScene::soundLayer(int position) const
     if (position < 0 || position >= k->soundLayers.count()) {
         #ifdef K_DEBUG
             QString msg = " FATAL ERROR: index out of bound " + QString::number(position);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                qDebug() << msg;
             #else
                T_FUNCINFO << msg;
@@ -356,7 +356,7 @@ bool TupScene::moveLayer(int from, int to)
     if (from < 0 || from >= k->layers.count() || to < 0 || to >= k->layers.count()) {
         #ifdef K_DEBUG
             QString msg = "TupScene::moveLayer() - FATAL ERROR: Layer index out of bound " + QString::number(to);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                  qDebug() << msg;
             #else
                  tError() << msg;

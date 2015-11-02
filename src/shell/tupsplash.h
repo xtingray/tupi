@@ -46,7 +46,7 @@
 
 #ifdef K_DEBUG
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <QDebug>
 #else
 #include "tdebug.h"

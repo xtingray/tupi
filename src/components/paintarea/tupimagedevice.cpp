@@ -38,7 +38,7 @@
 TupImageDevice::TupImageDevice(QWidget *parent) : QWidget(parent)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupImageDevice()]";
         #else
             TINIT;
@@ -57,7 +57,7 @@ TupImageDevice::TupImageDevice(QWidget *parent) : QWidget(parent)
 TupImageDevice::~TupImageDevice()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupImageDevice()]";
         #else
            TEND;

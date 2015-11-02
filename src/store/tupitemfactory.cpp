@@ -112,7 +112,7 @@ bool TupItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupItemFactory::startTag()] - qname: " << qname;
         #else
             T_FUNCINFOX("items") << qname;
@@ -287,7 +287,7 @@ bool TupItemFactory::endTag(const QString& qname)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupItemFactory::endTag()] - qname: " << qname;
         #else
             T_FUNCINFOX("items") << qname;
@@ -342,7 +342,7 @@ bool TupItemFactory::endTag(const QString& qname)
     } else {
                #ifdef K_DEBUG
                    QString msg = "TupItemFactory::endTag() - Unknown tag: " + qname;
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qWarning() << msg;
                    #else
                        tWarning("items") << msg;

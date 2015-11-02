@@ -60,7 +60,7 @@ TupTwitterWidget::TupTwitterWidget(QWidget *parent) : QWidget(parent), k(new Pri
 TupTwitterWidget::~TupTwitterWidget()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupTwitterWidget()]";
         #else
             TEND;
@@ -71,7 +71,7 @@ TupTwitterWidget::~TupTwitterWidget()
 void TupTwitterWidget::setSource(const QString &filePath)
 {
     QStringList path;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString resources = SHARE_DIR + "help" + QDir::separator();
 #else
     QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();

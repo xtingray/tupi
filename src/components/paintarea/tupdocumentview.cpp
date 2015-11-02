@@ -140,7 +140,7 @@ struct TupDocumentView::Private
 TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNetworked, const QStringList &users) : QMainWindow(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupDocumentView()]";
         #else
             TINIT;
@@ -203,7 +203,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
             default:
                  #ifdef K_DEBUG
                      QString msg = "TupDocumentView() - Unsopported render, switching to native!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qWarning() << msg;
                      #else
                          tWarning() << msg;
@@ -249,7 +249,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
 TupDocumentView::~TupDocumentView()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupDocumentView()]";
         #else
             TEND;
@@ -430,7 +430,7 @@ void TupDocumentView::setupDrawActions()
     new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "storyboard.png"), tr("Storyboard Settings"), QKeySequence(tr("Ctrl+Shift+S")),
                 this, SLOT(storyboardSettings()), k->actionManager, "storyboard");
 
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
         if (QSysInfo::windowsVersion() != QSysInfo::WV_XP) {
             new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png"), tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
                         this, SLOT(cameraInterface()), k->actionManager, "camera");
@@ -476,7 +476,7 @@ void TupDocumentView::loadPlugins()
                  if (exporter) {
                      #ifdef K_DEBUG
                          QString msg = "TupDocumentView::loadPlugins() - plugin: " + exporter->key();
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qWarning() << msg;
                          #else
                              tWarning() << msg;
@@ -495,7 +495,7 @@ void TupDocumentView::loadPlugins()
     if (!imagePluginLoaded) {
         #ifdef K_DEBUG
             QString msg = "TupDocumentView::loadPlugins() - Warning: Couldn't found plugin -> " + tr("Image Sequence");
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -520,7 +520,7 @@ void TupDocumentView::loadPlugins()
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
                       QString msg = "TupDocumentView::loadPlugins() - Tool Loaded: " + *it;
-                      #ifdef Q_OS_WIN32
+                      #ifdef Q_OS_WIN
                           qWarning() << msg;
                       #else
                           tWarning() << msg;
@@ -655,7 +655,7 @@ void TupDocumentView::loadPlugins()
                   } else {
                       #ifdef K_DEBUG
                           QString msg = "TupDocumentView::loadPlugins() - Fatal Error: Tool action is NULL -> " + *it;
-                          #ifdef Q_OS_WIN32
+                          #ifdef Q_OS_WIN
                               qDebug() << msg;
                           #else
                               tError() << msg;
@@ -683,7 +683,7 @@ void TupDocumentView::loadPlugins()
 
     k->miscMenu->addAction(k->actionManager->find("storyboard"));
 
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
         if (QSysInfo::windowsVersion() != QSysInfo::WV_XP)
             k->miscMenu->addAction(k->actionManager->find("camera"));
     #else
@@ -700,7 +700,7 @@ void TupDocumentView::loadPlugins()
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
                       QString msg = "TupDocumentView::loadPlugins() - Filter Loaded: " + *it;
-                      #ifdef Q_OS_WIN32
+                      #ifdef Q_OS_WIN
                           qDebug() << msg;
                       #else
                           tDebug("plugins") << msg;
@@ -742,7 +742,7 @@ void TupDocumentView::loadPlugins()
 void TupDocumentView::loadPlugin(int menu, int index)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupDocumentView::loadPlugin()]";
         #else
             T_FUNCINFO;
@@ -852,7 +852,7 @@ void TupDocumentView::loadPlugin(int menu, int index)
                  {
                      #ifdef K_DEBUG
                          QString msg = "TupDocumentView::loadPlugin() - Error: Invalid Menu Index / No plugin loaded";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tError() << msg;
@@ -875,7 +875,7 @@ void TupDocumentView::loadPlugin(int menu, int index)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupDocumentView::loadPlugin() - Error: Action pointer is NULL!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -888,7 +888,7 @@ void TupDocumentView::loadPlugin(int menu, int index)
 void TupDocumentView::selectTool()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupDocumentView::selectTool()]";
         #else
             T_FUNCINFO;
@@ -1007,7 +1007,7 @@ void TupDocumentView::selectTool()
     } else {
         #ifdef K_DEBUG
             QString msg = "TupDocumentView::selectTool() - Fatal Error: Action from sender() is NULL";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -1019,7 +1019,7 @@ void TupDocumentView::selectTool()
 void TupDocumentView::selectToolFromMenu(QAction *action)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupDocumentView::selectToolFromMenu()]";
         #else
             T_FUNCINFO;
@@ -1041,7 +1041,7 @@ void TupDocumentView::selectToolFromMenu(QAction *action)
             } else {
                 #ifdef K_DEBUG
                     QString msg = "TupDocumentView::selectToolFromMenu() - Default action is NULL";
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -1052,7 +1052,7 @@ void TupDocumentView::selectToolFromMenu(QAction *action)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupDocumentView::selectToolFromMenu() - Warning: Action with NO parent! Aborting...";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal() << msg;
@@ -1683,7 +1683,7 @@ void TupDocumentView::sendStoryboard(TupStoryboard *storyboard, int sceneIndex)
     if (k->isNetworked) {
         #ifdef K_DEBUG
             QString msg = "TupDocumentView::sendStoryboard() - Sending storyboard...";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -1974,7 +1974,7 @@ void TupDocumentView::importPapagayoLipSync()
             TOsd::self()->display(tr("Error"), tr("Papagayo project already exists!\nPlease, rename the project's file"), TOsd::Error);
             #ifdef K_DEBUG
                    QString msg = "TupDocumentView::importPapagayoLipSync() - Fatal Error: Papagayo file is invalid!";
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -2078,7 +2078,7 @@ void TupDocumentView::importPapagayoLipSync()
                         TOsd::self()->display(tr("Error"), tr("Papagayo file is invalid!"), TOsd::Error);
                         #ifdef K_DEBUG
                             QString msg = "TupDocumentView::importPapagayoLipSync() - Fatal Error: Papagayo file is invalid!";
-                            #ifdef Q_OS_WIN32
+                            #ifdef Q_OS_WIN
                                 qDebug() << msg;
                             #else
                                 tError() << msg;
@@ -2089,7 +2089,7 @@ void TupDocumentView::importPapagayoLipSync()
                     TOsd::self()->display(tr("Error"), tr("Images directory is empty!"), TOsd::Error);
                     #ifdef K_DEBUG
                         QString msg = "TupDocumentView::importPapagayoLipSync() - Fatal Error: Images directory is empty!";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tError() << msg;
@@ -2100,7 +2100,7 @@ void TupDocumentView::importPapagayoLipSync()
                 TOsd::self()->display(tr("Error"), tr("Papagayo project is invalid!"), TOsd::Error);
                 #ifdef K_DEBUG
                     QString msg = "TupDocumentView::importPapagayoLipSync() - Fatal Error: Papagayo file is invalid!";
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -2111,7 +2111,7 @@ void TupDocumentView::importPapagayoLipSync()
             TOsd::self()->display(tr("Error"), tr("Papagayo project is invalid!"), TOsd::Error);
             #ifdef K_DEBUG
                 QString msg = "TupDocumentView::importPapagayoLipSync() - Fatal Error: Papagayo file doesn't exist!";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;

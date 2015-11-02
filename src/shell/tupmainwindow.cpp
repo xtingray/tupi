@@ -95,7 +95,7 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
                m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow()]";
         #else
             TINIT;
@@ -167,7 +167,7 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
 TupMainWindow::~TupMainWindow()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupMainWindow()]";
         #else
             TEND;
@@ -196,7 +196,7 @@ TupMainWindow::~TupMainWindow()
 void TupMainWindow::createNewLocalProject()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::createNewLocalProject()]";
         #else
             T_FUNCINFO;
@@ -248,7 +248,7 @@ void TupMainWindow::createNewNetProject(const QString &title, const QStringList 
 void TupMainWindow::setWorkSpace(const QStringList &users)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::setWorkSpace()]";
         #else
             T_FUNCINFO;
@@ -336,14 +336,14 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         QString twitterPath = QDir::homePath() + QDir::separator() + "." + QCoreApplication::applicationName() 
                               + QDir::separator() + "twitter.html";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             twitterPath.replace("/", "\\");
         #endif
 			  
         if (QFile::exists(twitterPath)) {
             #ifdef K_DEBUG
                 QString msg = "TupMainWindow::setWorkSpace() - Loading page -> " + twitterPath;
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qWarning() << msg;
                 #else
                     tWarning() << msg;
@@ -358,7 +358,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupMainWindow::setWorkSpace() - Fatal Error: Couldn't load page -> " + twitterPath;
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -414,7 +414,7 @@ void TupMainWindow::newProject()
 {
     #ifdef K_DEBUG
         QString msg = "Creating new project...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
            qWarning() << msg;
         #else
            tWarning() << msg;
@@ -437,7 +437,7 @@ void TupMainWindow::newProject()
             setupLocalProject(wizard->parameters());
             createNewLocalProject();
         }
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN32)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN)
     m_debug->setProjectStatus(true); 
 #endif
     }
@@ -458,7 +458,7 @@ void TupMainWindow::newProject()
 bool TupMainWindow::closeProject()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::closeProject()]";
         #else
             T_FUNCINFO;
@@ -512,7 +512,7 @@ bool TupMainWindow::closeProject()
 void TupMainWindow::resetUI()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::resetUI()]";
         #else
             T_FUNCINFO;
@@ -527,7 +527,7 @@ void TupMainWindow::resetUI()
     scenesView->expandDock(false);
     timeView->expandDock(false);
 
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN32)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN)
     debugView->expandDock(false);
 #endif
 
@@ -605,7 +605,7 @@ void TupMainWindow::resetUI()
 
     resetMousePointer();
 
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN32)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN)
     m_debug->setProjectStatus(false);
 #endif
 }
@@ -683,7 +683,7 @@ void TupMainWindow::setupNetworkProject(TupProjectManagerParams *params)
 void TupMainWindow::setupLocalProject(TupProjectManagerParams *params)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::setupLocalProject()]";
         #else
             T_FUNCINFO;
@@ -737,7 +737,7 @@ void TupMainWindow::openProject(const QString &path)
 {
     #ifdef K_DEBUG
         QString msg = "TupMainWindow::openProject() - Opening project: " + path;
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
            qWarning() << msg;
         #else
            tWarning() << msg;
@@ -865,7 +865,7 @@ void TupMainWindow::showHelp()
 
     QString cover = QString() + "help" + QDir::separator() + lang + QDir::separator() + "cover.html";
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString helpPath = SHARE_DIR + cover;
 #else
     QString helpPath = SHARE_DIR + "data" + QDir::separator() + cover;
@@ -873,7 +873,7 @@ void TupMainWindow::showHelp()
 
     QFile file(helpPath);
     if (!file.exists()) {
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             helpPath = SHARE_DIR + "help" + QDir::separator() + "en" + QDir::separator() + "cover.html";
             helpPath.replace("/","\\");
         #else
@@ -951,7 +951,7 @@ void TupMainWindow::importPalettes()
                    } else {
                        #ifdef K_DEBUG
                            QString msg = "TupMainWindow::importPalettes() - Fatal Error: Couldn't import file -> " + QString(*file);
-                           #ifdef Q_OS_WIN32
+                           #ifdef Q_OS_WIN
                                qDebug() << msg;
                            #else
                                tError() << msg;
@@ -962,7 +962,7 @@ void TupMainWindow::importPalettes()
                } else {
                    #ifdef K_DEBUG
                        QString msg = "TupMainWindow::importPalettes() - Fatal Error: Couldn't import palette -> " + QString(*file);
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg;
                        #else
                            tError() << msg;
@@ -1077,7 +1077,7 @@ void TupMainWindow::saveAs()
         #ifdef K_DEBUG
             QString file = path.toLocal8Bit();
             QString msg = "TupMainWindow::saveAs() - Fatal Error: Directory doesn't exist! -> " + file;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -1120,7 +1120,7 @@ void TupMainWindow::saveAs()
 void TupMainWindow::saveProject()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::saveProject()]";
         #else
             T_FUNCINFO;
@@ -1241,7 +1241,7 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
     if (!animationTab) {
         #ifdef K_DEBUG
             QString msg = "TupMainWindow::createCommand() - No animationTab... Aborting!"; 
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                qDebug() << msg;
             #else
                tFatal() << msg;
@@ -1433,7 +1433,7 @@ void TupMainWindow::netProjectSaved()
 void TupMainWindow::updatePlayer(bool removeAction)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupMainWindow::updatePlayer()]";
         #else
             T_FUNCINFO;

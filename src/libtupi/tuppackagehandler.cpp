@@ -60,7 +60,7 @@ bool TupPackageHandler::makePackage(const QString &projectPath, const QString &p
     if (!QFile::exists(projectPath)) {        
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::makePackage() - Project path doesn't exist -> " + projectPath;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -79,7 +79,7 @@ bool TupPackageHandler::makePackage(const QString &projectPath, const QString &p
     if (!zip.open(QuaZip::mdCreate)) {
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::makePackage() - Error while create package: " + QString::number(zip.getZipError());
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -92,7 +92,7 @@ bool TupPackageHandler::makePackage(const QString &projectPath, const QString &p
     if (! compress(&zip, projectPath)) {
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::makePackage() - Error while compress project: " + QString::number(zip.getZipError());
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -107,7 +107,7 @@ bool TupPackageHandler::makePackage(const QString &projectPath, const QString &p
     if (zip.getZipError() != 0) {
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::makePackage() - Error: " + QString::number(zip.getZipError());
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -147,7 +147,7 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
              if (!inFile.open(QIODevice::ReadOnly)) {
                  #ifdef K_DEBUG
                      QString msg = "Error opening file " + inFile.fileName() + " : " + inFile.errorString();
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -192,7 +192,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
     if (list.size() == 0) {
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::importPackage() - Project file is empty! -> " + packagePath;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -208,7 +208,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
     if (!zip.open(QuaZip::mdUnzip)) {
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::importPackage() - Error while open package: " + QString::number(zip.getZipError());
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -231,7 +231,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            if (!zip.getCurrentFileInfo(&info)) {
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Can't get current file: " + QString::number(zip.getZipError());
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -244,7 +244,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            if (!file.open(QIODevice::ReadOnly)) {
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Can't open file " + QString::number(file.getZipError());
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -254,7 +254,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
                return false;
            }
 
-           #ifdef Q_OS_WIN32
+           #ifdef Q_OS_WIN
                name = file.getActualFileName();
             #else
                name = CACHE_DIR + file.getActualFileName();    
@@ -271,7 +271,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            if (file.getZipError() != UNZ_OK) {           
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Error while open package " + QString::number(file.getZipError());
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -289,7 +289,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
                        QString msg1 = "TupPackageHandler::importPackage() - Error while open file: " + out.fileName();
                        QString msg2 = "TupPackageHandler::importPackage() - Error Description: " + out.errorString();
                        QString msg3 = "TupPackageHandler::importPackage() - Error type: " + QString::number(out.error());
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg1;
                            qDebug() << msg2;
                            qDebug() << msg3;
@@ -310,7 +310,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            } else {           
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Error creating path: " + name;
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -323,7 +323,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            if (file.getZipError()!=UNZ_OK) {
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Error while open package " + QString::number(file.getZipError());
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -335,7 +335,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            if (!file.atEnd()) {
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Not EOF Error";
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -349,7 +349,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
            if (file.getZipError()!=UNZ_OK) {
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Error while open package " + QString::number(file.getZipError());
-                   #ifdef Q_OS_WIN32
+                   #ifdef Q_OS_WIN
                        qDebug() << msg;
                    #else
                        tError() << msg;
@@ -366,7 +366,7 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
     if (zip.getZipError() != UNZ_OK) {
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::importPackage() - Error while open package " + QString::number(file.getZipError());
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

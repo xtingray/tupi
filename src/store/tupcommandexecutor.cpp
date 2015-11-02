@@ -57,7 +57,7 @@ void TupCommandExecutor::getScenes(TupSceneResponse *response)
 bool TupCommandExecutor::createScene(TupSceneResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::createScene()]";
         #else
             T_FUNCINFO;
@@ -99,7 +99,7 @@ bool TupCommandExecutor::createScene(TupSceneResponse *response)
 bool TupCommandExecutor::removeScene(TupSceneResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::removeScene()]";
         #else
             T_FUNCINFO;
@@ -124,7 +124,7 @@ bool TupCommandExecutor::removeScene(TupSceneResponse *response)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupCommandExecutor::removeScene() - Scene index doesn't exist -> " + QString::number(position);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError("library") << msg;
@@ -154,7 +154,7 @@ bool TupCommandExecutor::lockScene(TupSceneResponse *response)
 
     #ifdef K_DEBUG
         QString msg = "TupCommandExecutor::lockScene() - Scene is locked: " + QString::number(lock);
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning("library") << msg;

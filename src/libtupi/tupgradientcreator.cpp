@@ -168,7 +168,7 @@ void TupGradientCreator::setGradient(const QBrush & brush)
     } else {
         #ifdef K_DEBUG
 		    QString msg = "TupGradientCreator::setGradient() - Error: Brush has no gradient (null)";
-		    #ifdef Q_OS_WIN32
+		    #ifdef Q_OS_WIN
                qDebug() << msg;
             #else
                tError() << msg;

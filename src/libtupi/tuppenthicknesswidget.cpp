@@ -125,7 +125,7 @@ void TupPenThicknessWidget::paintEvent(QPaintEvent *)
              } else {
                 #ifdef K_DEBUG
                     QString msg = "TupPenThicknessWidget::paintEvent() - Warning! NO gradient!";
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;

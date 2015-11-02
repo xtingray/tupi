@@ -40,7 +40,7 @@
 #include "tcollapsiblewidget.h"
 
 #ifdef K_DEBUG
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <QDebug>
 #else
 #include "tdebug.h"
@@ -107,7 +107,7 @@ int main(int argc, char ** argv)
             TCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("TUPI_HOME")));
         #endif
         
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             if (QSysInfo::windowsVersion() == QSysInfo::WV_XP) {
                 QDir dir("C:\temp");
                 if (!dir.exists()) {
@@ -129,7 +129,7 @@ int main(int argc, char ** argv)
 
 #ifdef K_DEBUG
     QString debug = "main.cpp - CACHE path: " + TCONFIG->value("Cache").toString();
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
         qWarning() << debug;
     #else
         tWarning() << debug;
@@ -152,7 +152,7 @@ int main(int argc, char ** argv)
     if (locale.length() < 2)
         locale = "en";
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString xmlDir = kAppProp->shareDir() + "xml" + slash;
 #else
     QString xmlDir = kAppProp->shareDir() + "data" + slash + "xml" + slash;
@@ -176,7 +176,7 @@ int main(int argc, char ** argv)
     QApplication::setStyle(style);
 
     if ((locale.compare("en") != 0) && ((locale.compare("es") == 0) || (locale.compare("pt") == 0))) {
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             QString langFile = kAppProp->shareDir() + "translations" + slash + "tupi_" + locale + ".qm";
         #else
             QString langFile = kAppProp->shareDir() + "data" + slash + "translations" + slash + "tupi_" + locale + ".qm";
@@ -189,7 +189,7 @@ int main(int argc, char ** argv)
         } else {
             #ifdef K_DEBUG
                 QString msg = "main.cpp - Error: Can't open file -> " + langFile;
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -204,7 +204,7 @@ int main(int argc, char ** argv)
     // Looking for plugins for Tupi
     #ifdef K_DEBUG
         QString msg = "main.cpp - Loading plugins from: " + kAppProp->pluginDir();
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;

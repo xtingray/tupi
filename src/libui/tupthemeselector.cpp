@@ -307,7 +307,7 @@ void TupThemeSelector::loadSchemaFromListView(QTreeWidgetItem *item, int)
         
         if (! item->text(0).isEmpty()) {
             #ifdef K_DEBUG
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << "[TupThemeSelector::loadSchemaFromListView()]";
                 #else
                     T_FUNCINFO;

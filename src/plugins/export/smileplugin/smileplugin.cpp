@@ -141,7 +141,7 @@ void SmilePlugin::createPar(const QString &filePath, double duration)
     m_body.appendChild(par);
 }
 
-const char* SmilePlugin::getExceptionMsg() {
+QString SmilePlugin::getExceptionMsg() const {
     return errorMsg;
 }
 

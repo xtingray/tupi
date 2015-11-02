@@ -277,7 +277,7 @@ TupProjectRequest TupRequestBuilder::fromResponse(TupProjectResponse *response)
                  {
                     #ifdef K_DEBUG
                         QString msg = "TupRequestBuilder::fromResponse() - Error: wOw! Unknown response! O_o";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qWarning() << msg;
                         #else
                             tWarning() << msg;

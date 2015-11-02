@@ -49,12 +49,6 @@ TweenManager::TweenManager(QWidget *parent) : QWidget(parent), k(new Private)
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-#ifndef Q_OS_MAC
-    QFont font = this->font();
-    font.setPointSize(8);
-    setFont(font);
-#endif
-
     k->input = new QLineEdit;
     k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "plus_sign.png"), 22);
     k->addButton->setToolTip(tr("Create a new Tween"));
@@ -98,11 +92,6 @@ void TweenManager::loadTweenList(QList<QString> tweenList)
 
     for (int i=0; i < tweenList.size(); i++) {
         QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
-#ifndef Q_OS_MAC
-        QFont font = this->font();
-        font.setPointSize(8);
-        tweenerItem->setFont(font);
-#endif
         tweenerItem->setText(tweenList.at(i));
         tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
@@ -128,12 +117,6 @@ void TweenManager::addTween()
     if (name.length() > 0) {
         if (!itemExists(name)) {
             QListWidgetItem *tweenerItem = new QListWidgetItem(k->tweensList);
-#ifndef Q_OS_MAC
-            QFont font = this->font();
-            font.setPointSize(8);
-            tweenerItem->setFont(font);
-#endif 
-            // tweenerItem->setFont(QFont("verdana", 8));
             tweenerItem->setText(name);
             tweenerItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             k->input->clear();

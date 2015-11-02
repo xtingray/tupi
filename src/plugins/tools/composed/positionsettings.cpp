@@ -63,12 +63,6 @@ PositionSettings::PositionSettings(QWidget *parent) : QWidget(parent), k(new Pri
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-#ifndef Q_OS_MAC
-    QFont font = this->font();
-    font.setPointSize(8);
-    setFont(font);
-#endif
-
     QLabel *componentLabel = new QLabel(tr("Component") + ": ");
     componentLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 

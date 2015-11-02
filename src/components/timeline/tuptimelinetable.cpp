@@ -402,7 +402,7 @@ bool TupTimeLineTable::frameIsLocked(int layerIndex, int frameIndex)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupTimeLineTable::frameIsLocked() - Layer: " + QString::number(layerIndex) + QString(", Frame: ") + QString::number(frameIndex) + QString(" doesn't exist");
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

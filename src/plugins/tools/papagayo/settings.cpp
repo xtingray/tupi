@@ -79,19 +79,8 @@ void Settings::setInnerForm()
     QBoxLayout *innerLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->innerPanel);
     innerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-#ifndef Q_OS_MAC 
-    QFont font = this->font();
-    font.setPointSize(8);
-    setFont(font);
-#endif
-
     QLabel *nameLabel = new QLabel(tr("Editing") + ": ");
     k->lipSyncName = new QLabel;
-
-#ifndef Q_OS_MAC
-    font.setBold(true);
-    k->lipSyncName->setFont(font);
-#endif
 
     QHBoxLayout *nameLayout = new QHBoxLayout;
     nameLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -210,11 +199,6 @@ void Settings::openLipSyncProperties(TupLipSync *lipsync)
     if (total > 0) {
         for (int i=0; i < total; i++) {
              QListWidgetItem *item = new QListWidgetItem(k->mouthsList);
-#ifndef Q_OS_MAC
-             QFont font = font();
-             font.setPointSize(8);
-             item->setFont(font);
-#endif
              item->setText(tr("mouth") + "_" + QString::number(i));
              item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         }

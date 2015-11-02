@@ -44,7 +44,7 @@
 bool TupCommandExecutor::createFrame(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::createFrame()]";
         #else
             T_FUNCINFO;
@@ -189,7 +189,7 @@ bool TupCommandExecutor::moveFrame(TupFrameResponse *response)
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupCommandExecutor::moveFrame() - Error while moving frame";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -223,7 +223,7 @@ bool TupCommandExecutor::exchangeFrame(TupFrameResponse *response)
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupCommandExecutor::exchangeFrame() - Error while exchanging frames";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -269,7 +269,7 @@ bool TupCommandExecutor::lockFrame(TupFrameResponse *response)
 bool TupCommandExecutor::renameFrame(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::renameFrame()]";
         #else
             T_FUNCINFO;
@@ -313,7 +313,7 @@ bool TupCommandExecutor::renameFrame(TupFrameResponse *response)
 bool TupCommandExecutor::selectFrame(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::selectFrame()]";
         #else
             T_FUNCINFO;
@@ -343,7 +343,7 @@ bool TupCommandExecutor::selectFrame(TupFrameResponse *response)
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupCommandExecutor::selectFrame() - Invalid frame index -> " + QString::number(position);
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -413,7 +413,7 @@ bool TupCommandExecutor::expandFrame(TupFrameResponse *response)
 bool TupCommandExecutor::pasteFrame(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::pasteFrame()]";
         #else
             T_FUNCINFO;

@@ -59,7 +59,7 @@ bool TMovieGenerator::movieHeaderOk()
     return true;
 }
 
-const char* TMovieGenerator::getErrorMsg()
+QString TMovieGenerator::getErrorMsg() const
 {
     return 0;
 }

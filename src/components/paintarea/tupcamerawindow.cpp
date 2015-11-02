@@ -68,7 +68,7 @@ void TupCameraWindow::reset()
     if (! dir.rmdir(dir.absolutePath())) {
         #ifdef K_DEBUG
             QString msg = "TupCameraInterface::closeEvent() - Fatal Error: Can't remove pictures directory -> " + dir.absolutePath();
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

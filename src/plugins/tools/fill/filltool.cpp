@@ -102,7 +102,7 @@ void FillTool::setupActions()
 void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[FillTool::press()]";
         #else
             T_FUNCINFOX("tools");
@@ -118,7 +118,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
         if (!item) {
             #ifdef K_DEBUG
                 QString msg = "FillTool::press() - No item found";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -132,7 +132,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     TOsd::self()->display(tr("Error"), tr("Sorry, only native objects can be filled"), TOsd::Error);
                     #ifdef K_DEBUG
                         QString msg = "FillTool::press() - Warning: item is a RASTER object!";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qWarning() << msg;
                         #else
                             tWarning() << msg;
@@ -147,7 +147,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     TOsd::self()->display(tr("Error"), tr("Sorry, only native objects can be filled"), TOsd::Error);
                     #ifdef K_DEBUG
                         QString msg = "FillTool::press() - Warning: item is a SVG object!";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qWarning() << msg;
                         #else
                             tWarning() << msg;
@@ -166,7 +166,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     if ((zValue < zBottomLimit) || (zValue >= zTopLimit) || (item->toolTip().length()!=0) || (opacity < 1)) {
                         #ifdef K_DEBUG
                             QString msg = "FillTool::press() - Warning: Object belongs to other frame/layer or to background frames";
-                            #ifdef Q_OS_WIN32
+                            #ifdef Q_OS_WIN
                                 qWarning() << msg;
                             #else
                                 tWarning() << msg;
@@ -179,7 +179,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                         if ((zValue < 10000) || (zValue >= 20000)) {
                             #ifdef K_DEBUG
                                 QString msg = "FillTool::press() - Warning: Object belongs to dynamic background frame";
-                                #ifdef Q_OS_WIN32
+                                #ifdef Q_OS_WIN
                                     qWarning() << msg;
                                 #else
                                     tWarning() << msg;
@@ -215,7 +215,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                 } else {
                     #ifdef K_DEBUG
                         QString msg = "FillTool::press() - Fatal Error: Invalid spaceContext!"; 
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tError() << msg;
@@ -247,7 +247,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
             } else {
                 #ifdef K_DEBUG
                     QString msg = "FillTool::press() - Fatal Error: Invalid object index [ " + QString::number(position) + " ]";
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -257,7 +257,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
         } else {
             #ifdef K_DEBUG
                 QString msg = "FillTool::press() - Fatal Error: QAbstractGraphicsShapeItem cast has failed!";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;

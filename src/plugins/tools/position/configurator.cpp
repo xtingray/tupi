@@ -79,13 +79,6 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 
     QLabel *title = new QLabel(tr("Position Tween"));
     title->setAlignment(Qt::AlignHCenter);
-
-#ifndef Q_OS_MAC 
-    QFont font = this->font();
-    font.setPointSize(8);
-    title->setFont(font);
-#endif
-
     k->layout->addWidget(title);
 
     k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -109,7 +102,7 @@ Configurator::~Configurator()
 void Configurator::loadTweenList(QList<QString> tweenList)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Configurator::loadTweenList()]";
         #else
             T_FUNCINFO;
@@ -269,7 +262,7 @@ void Configurator::editTween()
 void Configurator::closeTweenProperties()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Configurator::closeTweenProperties()]";
         #else
             T_FUNCINFO;
@@ -320,7 +313,7 @@ void Configurator::notifySelection(bool flag)
 void Configurator::closeSettingsPanel()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Configurator::closeSettingsPanel()]";
         #else
             T_FUNCINFO;
@@ -349,7 +342,7 @@ void Configurator::applyItem()
 void Configurator::resetUI()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Configurator::resetUI()]";
         #else
             T_FUNCINFO;

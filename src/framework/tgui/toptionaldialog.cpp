@@ -39,15 +39,10 @@ TOptionalDialog::TOptionalDialog(const QString &text,const QString &title,QWidge
 {
     setWindowTitle(title);
     m_layout = new QVBoxLayout;
-    
     m_layout->addStretch(10);
-    
     QLabel *label = new QLabel(text, this);
-    
     m_layout->addWidget(label);
-    
     m_layout->addStretch(10);
-    
     m_layout->addWidget(new TSeparator);
     
     QHBoxLayout *buttonLayout = new QHBoxLayout;

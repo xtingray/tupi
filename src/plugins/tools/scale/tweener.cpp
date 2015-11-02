@@ -137,7 +137,7 @@ QStringList Tweener::keys() const
 void Tweener::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::press()]";
         #else
             T_FUNCINFO;
@@ -165,7 +165,7 @@ void Tweener::move(const TupInputDeviceInformation *input, TupBrushManager *brus
 void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::release()]";
         #else
             T_FUNCINFO;
@@ -551,7 +551,7 @@ void Tweener::removeTweenFromProject(const QString &name)
     } else {
         #ifdef K_DEBUG
             QString msg = "Tweener::removeTweenFromProject() - Scale tween couldn't be removed -> " + name;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

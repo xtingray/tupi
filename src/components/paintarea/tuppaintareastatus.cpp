@@ -64,12 +64,15 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     k->angle = 0;
     k->currentFrame = 1;
 
+    QWidget *empty = new QWidget();
+    empty->setFixedWidth(5);
+    addPermanentWidget(empty, 1);
+
     k->positionLabel = new QLabel; 
     QFont font = this->font();
     font.setPointSize(8);
     k->positionLabel->setFont(font);
-
-    addPermanentWidget(k->positionLabel, 1);
+    addPermanentWidget(k->positionLabel, 2);
 
     QPushButton *resetWSButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "reset_workspace.png")), "");
     resetWSButton->setIconSize(QSize(16, 16));

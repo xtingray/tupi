@@ -105,7 +105,7 @@ void TupWebHunter::slotError(QNetworkReply::NetworkError error)
                  { 
                  #ifdef K_DEBUG
                      QString msg = "TupWebHunter::slotError() - Network Error: Host not found";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -117,7 +117,7 @@ void TupWebHunter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupWebHunter::slotError() - Network Error: Time out!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -129,7 +129,7 @@ void TupWebHunter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupWebHunter::slotError() - Network Error: Connection Refused!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -141,7 +141,7 @@ void TupWebHunter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupWebHunter::slotError() - Network Error: Content not found!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;
@@ -154,7 +154,7 @@ void TupWebHunter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupWebHunter::slotError() - Network Error: Unknown Network error!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tError() << msg;

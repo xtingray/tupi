@@ -38,7 +38,7 @@
 Configurator::Configurator(QWidget *parent) :QWidget(parent)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Configurator()]";
         #else
             TINIT;
@@ -138,7 +138,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
 Configurator::~Configurator()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~Configurator()]";
         #else
             TEND;

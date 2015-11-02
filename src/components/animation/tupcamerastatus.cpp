@@ -47,14 +47,14 @@ struct TupCameraStatus::Private
 TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupCameraStatus()]";
         #else
            TINIT;
         #endif
     #endif
 
-    // setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+    setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
     // setMidLineWidth(2);
     // setLineWidth(1);
 
@@ -64,18 +64,18 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     // sceneInfoLayout->setSpacing(0);
     // sceneInfoLayout->setMargin(3);
 
-    QFont font = this->font();
-#ifndef Q_OS_MAC
-    font.setPointSize(8);
-#endif
+    // QFont font = this->font();
+// #ifndef Q_OS_MAC
+    // font.setPointSize(8);
+// #endif
 
     QLabel *sceneNameText = new QLabel("<B>" + tr("Scene name") + ":</B> ");
-    sceneNameText->setFont(font);
+    // sceneNameText->setFont(font);
 
     k->scenes = new QComboBox();
     // k->scenes->setIconSize(QSize(15, 15));
     // k->scenes->setMaximumWidth(120);
-    k->scenes->setFont(font);
+    // k->scenes->setFont(font);
     connect(k->scenes, SIGNAL(activated(int)), this, SIGNAL(sceneIndexChanged(int)));
 
     sceneInfoLayout->addWidget(sceneNameText, 1);
@@ -83,10 +83,10 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     sceneInfoLayout->addSpacing(20);
 
     QLabel *label = new QLabel("<B>" + tr("Frames total") + ":</B> ");
-    label->setFont(font);
+    // label->setFont(font);
 
     k->framesCount = new QLabel;
-    k->framesCount->setFont(font);
+    // k->framesCount->setFont(font);
 
     sceneInfoLayout->addWidget(label, 1);
     sceneInfoLayout->addWidget(k->framesCount, 1);
@@ -94,7 +94,7 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     sceneInfoLayout->addSpacing(20);
 
     QLabel *fpsText = new QLabel("<B>" + tr("FPS") + ":</B> ");
-    fpsText->setFont(font);
+    // fpsText->setFont(font);
 
     k->fps = new QSpinBox();
     // k->fps->setMinimum(1);
@@ -129,7 +129,7 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
 
     QPushButton *exportButton = new QPushButton(tr("Export"));
     exportButton->setIcon(QIcon(THEME_DIR + "icons/export_button.png"));
-    exportButton->setFont(font);
+    // exportButton->setFont(font);
     exportButton->setFocusPolicy(Qt::NoFocus);
 
     connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));
@@ -139,7 +139,7 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
         sceneInfoLayout->addSpacing(5);
         QPushButton *postButton = new QPushButton(tr("Post"));
         postButton->setIcon(QIcon(THEME_DIR + "icons/import_project.png"));
-        postButton->setFont(font);
+        // postButton->setFont(font);
         postButton->setFocusPolicy(Qt::NoFocus);
 
         connect(postButton, SIGNAL(pressed()), camera, SLOT(postDialog()));
@@ -152,7 +152,7 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
 TupCameraStatus::~TupCameraStatus()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupCameraStatus()]";
         #else
             TEND;

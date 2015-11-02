@@ -59,7 +59,7 @@ bool ThemeManager::applyTheme(const QString &file)
     } else {
         #ifdef K_DEBUG
             QString msg = "ThemeManager::applyTheme() - Fatal Error: Can't process the theme file: " + file;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -88,7 +88,7 @@ bool ThemeManager::applyTheme(const ThemeDocument &kd)
     } else {
         #ifdef K_DEBUG
             QString msg = "ThemeManager::applyTheme() - Fatal Error: Can't process theme document";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -193,7 +193,7 @@ bool ThemeManager::error(const QXmlParseException &exception)
 {
     #ifdef K_DEBUG
         QString msg = "ThemeManager::error() - Fatal Error: Can't process theme!";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << msg;
             qDebug() << "ThemeManager::error() - Message: " << exception.message();
         #else
@@ -213,7 +213,7 @@ bool ThemeManager::fatalError(const QXmlParseException &exception)
         QString msg1 = "ThemeManager::error() - Fatal Error: Can't load theme...";
         QString msg2 = "ThemeManager::error() - Line: " + QString::number(exception.lineNumber()) + " Column: " + QString::number(exception.columnNumber());
         QString msg3 = "ThemeManager::error() - Message: " + exception.message();
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << msg1;
             qDebug() << msg2;
             qDebug() << msg3;

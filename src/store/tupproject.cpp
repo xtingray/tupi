@@ -69,7 +69,7 @@ struct TupProject::Private
 TupProject::TupProject(QObject *parent) : QObject(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject()]";
         #else
             TINIT;
@@ -90,7 +90,7 @@ TupProject::TupProject(QObject *parent) : QObject(parent), k(new Private)
 TupProject::~TupProject()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupProject()]";
         #else
             TEND;
@@ -115,7 +115,7 @@ void TupProject::loadLibrary(const QString &filename)
     } else {               
         #ifdef K_DEBUG
             QString msg = "TupProject::loadLibrary() - Cannot open library from: " + filename;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal("library") << msg;
@@ -265,7 +265,7 @@ void TupProject::updateScene(int position, TupScene *scene)
 bool TupProject::removeScene(int position)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::removeScene()]";
         #else
             T_FUNCINFO;
@@ -280,7 +280,7 @@ bool TupProject::removeScene(int position)
             if (!QFile::remove(path)) {        
                 #ifdef K_DEBUG
                     QString msg = "TupProject::removeScene() - Error removing file " + path;
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -316,7 +316,7 @@ bool TupProject::moveScene(int position, int newPosition)
     if (position < 0 || newPosition < 0) {
         #ifdef K_DEBUG
             QString msg = "TupProject::moveScene() - Failed moving scene from " + QString::number(position) + " to " + QString::number(newPosition);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -338,7 +338,7 @@ bool TupProject::moveScene(int position, int newPosition)
 TupScene *TupProject::scene(int position) const
 {    
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::scene()] - position: " << position;
         #else
             T_FUNCINFOX("project") << position;
@@ -348,7 +348,7 @@ TupScene *TupProject::scene(int position) const
     if (position < 0) {
         #ifdef K_DEBUG
             QString msg = "TupProject::scene() - FATAL ERROR: index out of bound (" + QString::number(position) + ")";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -476,7 +476,7 @@ Scenes TupProject::scenes() const
 bool TupProject::createSymbol(int type, const QString &name, const QByteArray &data, const QString &folder)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::createSymbol()]";
         #else
             T_FUNCINFOX("symbol");
@@ -486,7 +486,7 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
     if (!k->isOpen) {        
         #ifdef K_DEBUG
             QString msg = "TupProject::createSymbol() - Fatal error: project is NOT open!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -499,7 +499,7 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
     if (k->library->createSymbol(TupLibraryObject::Type(type), name, data, folder) == 0) {
         #ifdef K_DEBUG
             QString msg = "TupProject::createSymbol() - Fatal error: object can't be created. Data is NULL!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -509,7 +509,7 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
     } else {        
         #ifdef K_DEBUG
             QString msg = "TupProject::createSymbol() - Object added successfully -> " + name;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -523,7 +523,7 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
 bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type type)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::removeSymbol()]";
         #else
             T_FUNCINFO;
@@ -573,7 +573,7 @@ bool TupProject::removeSymbol(const QString &name, TupLibraryObject::Type type)
 bool TupProject::addFolder(const QString &name)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::addFolder()]";
         #else
             T_FUNCINFO;
@@ -588,7 +588,7 @@ bool TupProject::addFolder(const QString &name)
 bool TupProject::removeFolder(const QString &name)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::removeFolder()]";
         #else
             T_FUNCINFO;
@@ -607,7 +607,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
                                    int layerIndex, int frameIndex)
 {    
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupProject::insertSymbolIntoFrame()]";
         #else
             T_FUNCINFO;
@@ -642,7 +642,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupProject::insertSymbolIntoFrame() - Fatal Error: invalid spaceMode!";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -727,7 +727,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
                         default:
                              #ifdef K_DEBUG
                                  QString msg = "TupProject::insertSymbolIntoFrame() -> Unknown Object Type";
-                                 #ifdef Q_OS_WIN32
+                                 #ifdef Q_OS_WIN
                                      qDebug() << msg;
                                  #else
                                      tFatal() << msg;
@@ -740,7 +740,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
             } else {                
                 #ifdef K_DEBUG
                     QString msg = "TupProject::insertSymbolIntoFrame() - Object NOT found at library! " + name;
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -752,7 +752,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
         } else {
                 #ifdef K_DEBUG
                     QString msg = "TupProject::insertSymbolIntoFrame() - Invalid frame!";
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -762,7 +762,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
     } else {        
         #ifdef K_DEBUG
             QString msg = "TupProject::insertSymbolIntoFrame() - Invalid scene!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -777,7 +777,7 @@ bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Ty
 {
     #ifdef K_DEBUG
         QString msg = "TupProject::removeSymbolFromFrame() - Removing symbol " + name + " from project...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
             tFatal() << msg;
@@ -943,7 +943,7 @@ bool TupProject::deleteDataDir()
         if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg")) {            
             #ifdef K_DEBUG
                 QString msg = "TupProject::deleteDataDir() - Removing directory -> " + dir.absolutePath();
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qWarning() << msg;
                 #else
                     tWarning() << msg;
@@ -971,7 +971,7 @@ bool TupProject::deleteDataDir()
         if (! dir.rmdir(dir.absolutePath())) {
             #ifdef K_DEBUG
                 QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove project data directory! -> " + dataDir();
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;

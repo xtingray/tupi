@@ -140,7 +140,7 @@ int TupProjectResponse::action() const
                      {
                         #ifdef K_DEBUG
                             QString msg = "TupProjectResponse::action() : Fatal Error: Unhandled action -> " + QString::number(k->action);
-                            #ifdef Q_OS_WIN32
+                            #ifdef Q_OS_WIN
                                 qDebug() << msg;
                             #else
                                 tError() << msg;
@@ -437,7 +437,7 @@ TupProjectResponse *TupProjectResponseFactory::create(int part, int action)
              {
                  #ifdef K_DEBUG
                      QString msg = "TupProjectResponseFactory::create() - Error: Unknown/Unhandled element: " + QString::number(part);
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tFatal() << msg;

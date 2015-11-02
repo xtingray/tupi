@@ -50,7 +50,7 @@ struct TNodeGroup::Private
 TNodeGroup::TNodeGroup(QGraphicsItem *parent, QGraphicsScene *scene, GroupType type, int level): k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup()]";
         #else
             TINIT;
@@ -74,7 +74,7 @@ QGraphicsItem *TNodeGroup::parentItem()
 TNodeGroup::~TNodeGroup()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TNodeGroup()]";
         #else
             TEND;
@@ -101,7 +101,7 @@ void TNodeGroup::clear()
 void TNodeGroup::syncNodes(const QPainterPath &path)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup::syncNodes()]";
         #else
             T_FUNCINFO;
@@ -122,7 +122,7 @@ void TNodeGroup::syncNodes(const QPainterPath &path)
 void TNodeGroup::syncNodesFromParent()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup::syncNodesFromParent()]";
         #else
             T_FUNCINFO;
@@ -138,7 +138,7 @@ void TNodeGroup::syncNodesFromParent()
 void TNodeGroup::setParentItem(QGraphicsItem *newParent)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup::setParentItem()]";
         #else
             T_FUNCINFO;
@@ -156,7 +156,7 @@ void TNodeGroup::moveElementTo(int index, const QPointF& pos)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup::moveElementTo()]";
         #else
             T_FUNCINFO;
@@ -229,7 +229,7 @@ int TNodeGroup::removeSelectedNodes()
 void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup::createNodes()]";
         #else
             T_FUNCINFO;
@@ -299,7 +299,7 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
     } else {
         #ifdef K_DEBUG
             QString msg = "TNodeGroup::createNodes() - Fatal Error: Item is NULL!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -315,7 +315,7 @@ void TNodeGroup::addControlNode(TControlNode*)
 void TNodeGroup::emitNodeClicked(TControlNode::State state)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TNodeGroup::emitNodeClicked()]";
         #else
             T_FUNCINFO;

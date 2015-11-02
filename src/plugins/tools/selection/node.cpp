@@ -141,7 +141,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Node::itemChange()]";
         #else
             T_FUNCINFO;
@@ -162,7 +162,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Node::mousePressEvent()]";
         #else
             T_FUNCINFO;
@@ -176,7 +176,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Node::mouseReleaseEvent()]";
         #else
             T_FUNCINFO;
@@ -273,7 +273,7 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Node::mouseDoubleClickEvent()]";
         #else
             T_FUNCINFO;

@@ -40,7 +40,7 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
                                  m_currentFormat(TupExportInterface::NONE), m_project(project)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExportModule::TupExportModule()]";
         #else
             TINIT;
@@ -194,14 +194,9 @@ void TupExportModule::setCurrentExporter(TupExportInterface *currentExporter)
 
 void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
 {
-    tError() << "TupExportModule::setCurrentFormat() - currentFormat: " << currentFormat;
-
     m_currentFormat = TupExportInterface::Format(currentFormat);
     extension = value;
     filename = path;
-
-    tError() << "TupExportModule::setCurrentFormat() - m_currentFormat: " << m_currentFormat;
-    tError() << "TupExportModule::setCurrentFormat() - extension: " << extension;
 
     if (m_currentFormat == TupExportInterface::APNG || (m_currentFormat != TupExportInterface::PNG 
         && m_currentFormat != TupExportInterface::JPEG && m_currentFormat != TupExportInterface::SVG)) { // Animated Image or Animation
@@ -210,13 +205,9 @@ void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
 
         filename += m_project->projectName();
         filename += extension;
-
-        tError() << "TupExportModule::setCurrentFormat() - Exporting Animation...";
     } else { // Images Array
         // filename = getenv("HOME");
         filename = QDir::homePath();
-
-        tError() << "TupExportModule::setCurrentFormat() - filename: " << filename;
 
         if (m_currentFormat == TupExportInterface::JPEG || m_currentFormat == TupExportInterface::SVG) {
             if (bgTransparency->isEnabled())
@@ -225,24 +216,17 @@ void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
             if (!bgTransparency->isEnabled())
                 bgTransparency->setEnabled(true);
         }
-
-        tError() << "TupExportModule::setCurrentFormat() - Exporting Image Squence...";
     } 
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     filename.replace(QString("/"), QString("\\"));
 #endif
-
-    tError() << "TupExportModule::setCurrentFormat() - m_filePath: " << filename;
 
     m_filePath->setText(filename);
 }
 
 void TupExportModule::updateNameField()
 {
-   tError() << "TupExportModule::updateNameField() - Just tracing...";
-   tError() << "TupExportModule::updateNameField() - filename: " << filename;
-
    if (filename.length() > 0) 
        m_filePath->setText(filename);
 }
@@ -254,8 +238,6 @@ void TupExportModule::enableTransparency(bool flag)
 
 void TupExportModule::chooseFile()
 {
-    tError() << "TupExportModule::chooseFile() - Just tracing...";
-
     QFileDialog dialog(this);
     dialog.setDirectory(filename);
     const char *filter = "Video File (*" + extension.toLocal8Bit() + ")";
@@ -271,9 +253,6 @@ void TupExportModule::chooseFile()
 
 void TupExportModule::chooseDirectory()
 {
-    tError() << "TupExportModule::chooseDirectory() - Just tracing...";
-
-    // QString dir = getenv("HOME");
     QString dir = QDir::homePath();
     filename = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
                                                  QFileDialog::ShowDirsOnly
@@ -294,7 +273,7 @@ void TupExportModule::updateState(const QString &name)
 void TupExportModule::exportIt()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExportModule::exportIt()]";
         #else
             T_FUNCINFO;
@@ -304,9 +283,6 @@ void TupExportModule::exportIt()
     bool done = false; 
     bool isArray = false;
     QString name = "";
-
-    tError() << "TupExportModule::exportIt() - m_currentFormat: " << m_currentFormat;
-    tError() << "TupExportModule::exportIt() - extension: " << extension;
 
     if (m_currentFormat == TupExportInterface::JPEG || m_currentFormat == TupExportInterface::PNG || m_currentFormat == TupExportInterface::SVG) { // Images Array
         isArray = true;
@@ -340,7 +316,7 @@ void TupExportModule::exportIt()
             #ifdef K_DEBUG
                 QString file = path.toLocal8Bit();
                 QString msg = "TupExportModule::exportIt() - [Tracer 01] Fatal Error: Directory doesn't exist! -> " + file;
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -380,7 +356,7 @@ void TupExportModule::exportIt()
         #ifdef K_DEBUG
             QString file = path.toLocal8Bit();
             QString msg = "TupExportModule::exportIt() - [Tracer 02] Fatal Error: Directory doesn't exist! -> " + file;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -388,7 +364,6 @@ void TupExportModule::exportIt()
         #endif
         return;
     } else {
-        tError() << "VALUE -> m_currentFormat : " << m_currentFormat;
         if (m_currentFormat == TupExportInterface::JPEG || m_currentFormat == TupExportInterface::PNG || m_currentFormat == TupExportInterface::SVG) { // Images Array
             QFileInfo dir(path);
             if (!dir.isReadable() || !dir.isWritable()) {
@@ -412,7 +387,7 @@ void TupExportModule::exportIt()
         #ifdef K_DEBUG
             QString file = path.toLocal8Bit();
             QString msg = "TupExportModule::exportIt() -  Exporting to file: " + file;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -423,7 +398,7 @@ void TupExportModule::exportIt()
 
         #ifdef K_DEBUG
             QString msg1 = "TupExportModule::exportIt() - Exporting " + QString::number(scenes.count()) + " scenes";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg1;
             #else
                 tWarning() << msg1;
@@ -463,8 +438,13 @@ void TupExportModule::exportIt()
         TOsd::self()->display(tr("Information"), tr(message.toLocal8Bit()));
         emit isDone();
     } else {
-        const char *msg = m_currentExporter->getExceptionMsg();
-        QMessageBox::critical(this, tr("ERROR!"), tr(msg), QMessageBox::Ok);
+        QString msg = m_currentExporter->getExceptionMsg();
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Fatal Error: Can't export video"));
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setTextFormat(Qt::RichText);
+        msgBox.setText(msg);
+        msgBox.exec();
     }
 }
 

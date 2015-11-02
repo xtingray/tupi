@@ -121,7 +121,7 @@ QDomElement TupSvgItem::toXml(QDomDocument &doc) const
     if (k->name.length() == 0) {
         #ifdef K_DEBUG
             QString msg = "TupFrame::fromXml() - Error: Object ID is null!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

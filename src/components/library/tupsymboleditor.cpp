@@ -125,7 +125,7 @@ void TupSymbolEditor::loadTools()
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
                       QString msg = "TupSymbolEditor::loadTools() - *** Tool Loaded: " + *it;
-                      #ifdef Q_OS_WIN32
+                      #ifdef Q_OS_WIN
                           qDebug() << msg;
                       #else
                           tDebug("plugins") << msg;
@@ -170,7 +170,7 @@ void TupSymbolEditor::loadTools()
 void TupSymbolEditor::selectTool()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupSymbolEditor::selectTool()]";
         #else
             T_FUNCINFO;

@@ -38,7 +38,7 @@
 InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[InfoPanel()]";
         #else
             TINIT;
@@ -65,7 +65,7 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 InfoPanel::~InfoPanel()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~InfoPanel()]";
         #else
             TEND;

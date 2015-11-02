@@ -61,7 +61,7 @@ struct TupExportWidget::Private
 TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLocal) : TupExportWizard(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExportWidget()]";
         #else
             TINIT;
@@ -120,7 +120,7 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
 TupExportWidget::~TupExportWidget()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupExportWidget()]";
         #else
             TEND;
@@ -149,7 +149,7 @@ void TupExportWidget::loadPlugins()
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "TupExportWidget::loadPlugins() - [ Fatal Error ] - Can't load export plugin";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                             qDebug() << msg;
                          #else
                             tError() << msg;
@@ -179,7 +179,7 @@ void TupExportWidget::setExporter(const QString &plugin)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupExportWidget::setExporter() - [ Fatal Error ] - Can't load export plugin -> " + plugin;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

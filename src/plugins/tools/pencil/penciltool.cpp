@@ -87,7 +87,7 @@ void PencilTool::setupActions()
 void PencilTool::init(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[PencilTool::init()]";
         #else
             T_FUNCINFOX("tools");

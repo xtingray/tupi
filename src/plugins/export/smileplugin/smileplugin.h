@@ -62,8 +62,10 @@ class TUPI_EXPORT SmilePlugin : public TupExportPluginObject
 
         virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format format, const QSize &size, int fps);
         virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size);
-        virtual const char* getExceptionMsg();
-        const char *errorMsg;
+        // virtual const char* getExceptionMsg();
+        // const char *errorMsg;
+        virtual QString getExceptionMsg() const;
+        QString errorMsg;
 
     private:
         QStringList createImages(const QList<TupScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");

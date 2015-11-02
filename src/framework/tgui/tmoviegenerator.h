@@ -51,7 +51,7 @@ class T_GUI_EXPORT TMovieGenerator : public QImage, public TMovieGeneratorInterf
         void nextFrame();
         void reset();
         virtual bool movieHeaderOk() = 0;
-        virtual const char* getErrorMsg() = 0;
+        virtual QString getErrorMsg() const = 0;
 
     protected:
         virtual bool begin();

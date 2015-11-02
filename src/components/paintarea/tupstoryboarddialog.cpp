@@ -629,7 +629,7 @@ void TupStoryBoardDialog::postStoryboardAtServer()
 {
     #ifdef K_DEBUG
         QString msg = "TupStoryBoardDialog::postStoryBoardAtServer() - Posting in Tupitube!";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;

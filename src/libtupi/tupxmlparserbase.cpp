@@ -111,7 +111,7 @@ bool TupXmlParserBase::characters(const QString & ch)
 bool TupXmlParserBase::error(const QXmlParseException & exception)
 {
 #ifdef K_DEBUG	
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
         QString msg1 = exception.lineNumber() + QString("x") + exception.columnNumber() + QString(": ") + exception.message();
         qDebug() << msg1;
     #else
@@ -127,7 +127,7 @@ bool TupXmlParserBase::error(const QXmlParseException & exception)
 bool TupXmlParserBase::fatalError(const QXmlParseException & exception)
 {
 #ifdef K_DEBUG	
-    #ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN
         QString msg1 = exception.lineNumber() + QString("x") + exception.columnNumber() + QString(": ") + exception.message();
         qDebug() << msg1;
     #else
@@ -183,7 +183,7 @@ bool TupXmlParserBase::parse(QFile *file)
          if (! file->open(QIODevice::ReadOnly | QIODevice::Text)) {
 #ifdef K_DEBUG
              QString msg = "TupXmlParserBase::parse() - Cannot open file " + file->fileName();
-             #ifdef Q_OS_WIN32
+             #ifdef Q_OS_WIN
                  qDebug() << msg;
              #else
                  tWarning() << msg;

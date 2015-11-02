@@ -38,14 +38,10 @@
 TabDialog::TabDialog(QWidget *parent, bool modal) : QDialog(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout;
-
     m_tabWidget = new TTabWidget(this);
-    
     mainLayout->addWidget(m_tabWidget);
     setLayout(mainLayout);
-    
     setupButtons(Cancel|Ok);
-    
     setModal(modal);
 }
 

@@ -51,7 +51,7 @@ struct TupTimeLine::Private
 TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidgetBase(parent, "TupTimeLine"), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine()]";
         #else
             TINIT;
@@ -85,7 +85,7 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
 TupTimeLine::~TupTimeLine()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupTimeLine()]";
         #else
             TEND;
@@ -142,7 +142,7 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
     // Q_UNUSED(response);
 
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::sceneResponse()]";
         #else
             T_FUNCINFO;
@@ -183,7 +183,7 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
             default:
                  #ifdef K_DEBUG
                      QString msg = "TupTimeLine::sceneResponse : Unknown action :/";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
                          tFatal() << msg;
@@ -198,7 +198,7 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
     // Q_UNUSED(response);
 
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::layerResponse()]";
         #else
             T_FUNCINFO;
@@ -254,7 +254,7 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
     // Q_UNUSED(response);
 
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::frameResponse()]";
         #else
             T_FUNCINFO;
@@ -310,7 +310,7 @@ void TupTimeLine::libraryResponse(TupLibraryResponse *response)
     // Q_UNUSED(response);
 
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::libraryResponse()]";
         #else
             T_FUNCINFO;
@@ -342,7 +342,7 @@ void TupTimeLine::requestCommand(int action)
     if (scenePos < 0) {
         #ifdef K_DEBUG
             QString msg = "TupTimeLine::requestCommand() - Fatal Error: Scene index is invalid -> " + QString::number(scenePos);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal("timeline") << msg;
@@ -357,7 +357,7 @@ void TupTimeLine::requestCommand(int action)
     if (layerPos < 0) {
         #ifdef K_DEBUG
             QString msg = "TupTimeLine::requestCommand() - Fatal Error: Layer index is invalid -> " + QString::number(layerPos);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal("timeline") << msg;
@@ -372,7 +372,7 @@ void TupTimeLine::requestCommand(int action)
     if (framePos < 0) {
         #ifdef K_DEBUG
             QString msg = "TupTimeLine::requestCommand() - Fatal Error: Frame index is invalid -> " + QString::number(framePos);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal("timeline") << msg;
@@ -386,7 +386,7 @@ void TupTimeLine::requestCommand(int action)
         if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
             #ifdef K_DEBUG
                 QString msg = "TupTimeLine::requestCommand() - Fatal Error: Frame action has failed!";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tFatal("timeline") << msg;
@@ -400,7 +400,7 @@ void TupTimeLine::requestCommand(int action)
         if (!requestLayerAction(action, layerPos, scenePos)) {
             #ifdef K_DEBUG
                 QString msg = "TupTimeLine::requestCommand() - Fatal Error: Layer action has failed!";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tFatal("timeline") << msg;
@@ -414,7 +414,7 @@ void TupTimeLine::requestCommand(int action)
         if (!requestSceneAction(action, scenePos)) {
             #ifdef K_DEBUG
                 QString msg = "TupTimeLine::requestCommand() - Fatal Error: Scene action has failed!";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tFatal("timeline") << msg;
@@ -429,7 +429,7 @@ bool TupTimeLine::requestFrameAction(int action, int framePos, int layerPos, int
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::requestFrameAction()]";
         #else
             T_FUNCINFO;
@@ -630,7 +630,7 @@ void TupTimeLine::requestLayerVisibilityAction(int layer, bool isVisible)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::requestLayerVisibilityAction()]";
         #else
             T_FUNCINFO;
@@ -648,7 +648,7 @@ void TupTimeLine::requestLayerRenameAction(int layer, const QString &name)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::requestLayerRenameAction()]";
             qDebug() << "name: " << name;
         #else

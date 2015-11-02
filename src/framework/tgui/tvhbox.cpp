@@ -80,7 +80,7 @@ void TVHBox::moveWidgetUp(QWidget *widget)
     } else {
         #ifdef K_DEBUG
             QString msg = "TVHBox::moveWidgetUp() - Error: The widget isn't in the layout";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

@@ -522,7 +522,7 @@ void TupLipSync::fromXml(const QString &xml)
     if (! document.setContent(xml)) {
         #ifdef K_DEBUG
             QString msg = "TupLipSync::fromXml() - File corrupted!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
                 qWarning() << "Content:";
                 qWarning() << xml;

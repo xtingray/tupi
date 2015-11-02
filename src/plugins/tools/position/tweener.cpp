@@ -106,7 +106,7 @@ Tweener::~Tweener()
 void Tweener::init(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::init()]";
         #else
             T_FUNCINFO;
@@ -168,7 +168,7 @@ QStringList Tweener::keys() const
 void Tweener::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::press()]";
         #else
             T_FUNCINFO;
@@ -204,7 +204,7 @@ void Tweener::move(const TupInputDeviceInformation *input, TupBrushManager *brus
 void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::release()]";
         #else
             T_FUNCINFO;
@@ -524,7 +524,7 @@ void Tweener::applyReset()
 void Tweener::applyTween()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::applyTween()]";
         #else
             T_FUNCINFO;
@@ -675,7 +675,7 @@ void Tweener::applyTween()
 void Tweener::updatePath()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::updatePath()]";
         #else
             T_FUNCINFO;
@@ -696,7 +696,7 @@ void Tweener::saveConfig()
 void Tweener::updateScene(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::updateScene()]";
         #else
             T_FUNCINFO;
@@ -776,7 +776,7 @@ void Tweener::removeTweenFromProject(const QString &name)
     } else {
         #ifdef K_DEBUG
             QString msg = "Tweener::removeTweenFromProject() - Position tween couldn't be removed -> " + name;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -879,7 +879,7 @@ void Tweener::disableSelection()
 void Tweener::sceneResponse(const TupSceneResponse *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::sceneResponse()]";
         #else
             T_FUNCINFO;
@@ -898,7 +898,7 @@ void Tweener::sceneResponse(const TupSceneResponse *event)
 void Tweener::layerResponse(const TupLayerResponse *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::layerResponse()]";
         #else
             T_FUNCINFO;
@@ -912,7 +912,7 @@ void Tweener::layerResponse(const TupLayerResponse *event)
 void Tweener::frameResponse(const TupFrameResponse *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Tweener::frameResponse()]";
         #else
             T_FUNCINFO;

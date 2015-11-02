@@ -51,7 +51,7 @@ TupBasicCameraInterface::TupBasicCameraInterface(const QString &title, QList<QBy
                                        const QSize cameraSize, int counter, QWidget *parent) : QFrame(parent), k(new Private)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupBasicCameraInterface()]";
         #else
            TINIT;
@@ -168,7 +168,7 @@ TupBasicCameraInterface::TupBasicCameraInterface(const QString &title, QList<QBy
 TupBasicCameraInterface::~TupBasicCameraInterface()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupBasicCameraInterface()]";
         #else
             TEND;
@@ -189,7 +189,7 @@ void TupBasicCameraInterface::closeEvent(QCloseEvent *event)
     if (! dir.rmdir(dir.absolutePath())) {
         #ifdef K_DEBUG
             QString msg = "TupBasicCameraInterface::closeEvent() - Fatal Error: Can't remove pictures directory -> " + dir.absolutePath();
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -208,7 +208,7 @@ QString TupBasicCameraInterface::randomPath()
     if (!dir.mkdir(path)) {
         #ifdef K_DEBUG
             QString msg = "TupBasicCameraInterface::randomPath() - Fatal Error: Can't create pictures directory -> " + path;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

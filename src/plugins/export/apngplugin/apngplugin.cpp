@@ -116,7 +116,7 @@ bool APNGPlugin::exportFrame(int frameIndex, const QColor color, const QString &
     return false;
 }
 
-const char* APNGPlugin::getExceptionMsg() {
+QString APNGPlugin::getExceptionMsg() const {
     return errorMsg;
 }
 

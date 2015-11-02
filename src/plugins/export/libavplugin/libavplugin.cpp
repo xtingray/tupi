@@ -50,8 +50,10 @@ QString LibavPlugin::key() const
 
 TupExportInterface::Formats LibavPlugin::availableFormats()
 {
-    return TupExportInterface::WEBM | TupExportInterface::OGV | TupExportInterface::MPEG | TupExportInterface::SWF 
-           | TupExportInterface::AVI | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
+    // SQA: MPEG codec was removed because it crashes. Check the issue.
+    // TupExportInterface::MPEG
+    return TupExportInterface::WEBM | TupExportInterface::OGV | TupExportInterface::SWF | TupExportInterface::AVI 
+           | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
 }
 
 TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Format format)
@@ -72,11 +74,13 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
                    return TLibavMovieGenerator::SWF;
                  }
                  break;
+            /* SQA: MPEG codec was removed because it crashes. Check the issue
             case TupExportInterface::MPEG:
                  {
                    return TLibavMovieGenerator::MPEG;
                  }
                  break;
+            */
             case TupExportInterface::AVI:
                  {
                    return TLibavMovieGenerator::AVI;
@@ -135,7 +139,7 @@ bool LibavPlugin::exportToFormat(const QColor color, const QString &filePath, co
              errorMsg = generator->getErrorMsg();
              #ifdef K_DEBUG
                  QString msg = "LibavPlugin::exportToFormat() - [ Fatal Error ] - Can't create video -> " + filePath;
-                 #ifdef Q_OS_WIN32
+                 #ifdef Q_OS_WIN
                      qDebug() << msg;
                  #else
                      tError() << msg;
@@ -177,6 +181,6 @@ bool LibavPlugin::exportFrame(int frameIndex, const QColor color, const QString 
     return false;
 }
 
-const char* LibavPlugin::getExceptionMsg() {
+QString LibavPlugin::getExceptionMsg() const {
     return errorMsg;
 }

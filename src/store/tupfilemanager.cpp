@@ -54,7 +54,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
 {
     #ifdef K_DEBUG
         QString msg = "TupFileManager::save() - Saving file -> " + fileName;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -82,7 +82,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
             if (projectDir.rename(oldDirName, projectDir.path())) {
                 #ifdef K_DEBUG
                     QString msg = "TupFileManager::save() - Directory renamed to -> " + projectDir.path(); 
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qWarning() << msg;
                     #else
                         tWarning() << msg;
@@ -93,7 +93,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
                 if (! projectDir.mkdir(projectDir.path())) {
                     #ifdef K_DEBUG
                         QString msg = "TupFileManager::save() - Error: Can't create path -> " + projectDir.path();
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tError() << msg;
@@ -103,7 +103,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
                 } else {
                     #ifdef K_DEBUG
                         QString msg = "TupFileManager::save() - Directory was created successfully -> " + projectDir.path();
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qWarning() << msg;
                         #else
                             tWarning() << msg;
@@ -117,7 +117,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
             if (! projectDir.mkdir(projectDir.path())) {
                 #ifdef K_DEBUG
                     QString msg = "TupFileManager::save() - Error: Can't create path -> " + projectDir.path();
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -127,7 +127,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
             } else {
                 #ifdef K_DEBUG
                     QString msg = "TupFileManager::save() - Directory was created successfully -> " + projectDir.path();
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qWarning() << msg;
                     #else
                         tWarning() << msg;
@@ -151,7 +151,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
      } else {
          #ifdef K_DEBUG
              QString msg = "TupFileManager::save() - Error: Can't create file -> " + projectDir.path() + QDir::separator() + "project.tpp";
-             #ifdef Q_OS_WIN32
+             #ifdef Q_OS_WIN
                  qDebug() << msg;
              #else
                  tError() << msg;
@@ -179,7 +179,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
           } else {
               #ifdef K_DEBUG
                   QString msg = "TupFileManager::save() - Error: Can't create file -> " + scenePath;
-                  #ifdef Q_OS_WIN32
+                  #ifdef Q_OS_WIN
                       qDebug() << msg;
                   #else
                       tError() << msg;
@@ -204,7 +204,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
      } else {
          #ifdef K_DEBUG
              QString msg = "TupFileManager::save() - Error: Can't create file -> " + projectDir.path() + QDir::separator() + "library.tpl";
-             #ifdef Q_OS_WIN32
+             #ifdef Q_OS_WIN
                  qDebug() << msg;
              #else
                  tError() << msg;
@@ -219,7 +219,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
     if (ok) {
         #ifdef K_DEBUG
             QString msg = "TupFileManager::save() - Project saved in -> " + fileName;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -228,7 +228,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupFileManager::save() - Error: Project couldn't be saved in -> " + fileName;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -242,7 +242,7 @@ bool TupFileManager::save(const QString &fileName, TupProject *project)
 bool TupFileManager::load(const QString &fileName, TupProject *project)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupFileManager::load()] - fileName: " + fileName;
         #else
             T_FUNCINFO << fileName; 
@@ -263,7 +263,7 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
                 QString msg1 = "TupFileManager::load() - Error while open .tpp file. Name: " + pfile.fileName();
                 QString msg2 = "TupFileManager::load() - Path: " + projectDir.path();
                 QString msg3 = "TupFileManager::load() - Error Description: " + pfile.errorString(); 
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg1;
                     qDebug() << msg2;
                     qDebug() << msg3;
@@ -303,7 +303,7 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
                      } else {
                          #ifdef K_DEBUG
                              QString msg = "TupFileManager::load() - Error: Can't open file -> " + scenePath;
-                             #ifdef Q_OS_WIN32
+                             #ifdef Q_OS_WIN
                                  qDebug() << msg;
                              #else
                                  tError() << msg;
@@ -320,7 +320,7 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupFileManager::load() - Error: No scene files found (*.tps)";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -332,7 +332,7 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
 
     #ifdef K_DEBUG
         QString msg = "TupFileManager::load() - Error: Can't import package -> " + fileName;
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
             tError() << msg;

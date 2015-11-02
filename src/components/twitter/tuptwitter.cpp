@@ -66,7 +66,7 @@ void TupTwitter::start()
 
     #ifdef K_DEBUG
         QString msg = "TupTwitter::start() - Getting news updates...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -86,7 +86,7 @@ void TupTwitter::start()
 TupTwitter::~TupTwitter()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupTwitter()]";
         #else
             TEND;
@@ -100,7 +100,7 @@ void TupTwitter::requestFile(QString target)
 {
     #ifdef K_DEBUG
         QString msg = "TupTwitter::requestFile() - Requesting url -> " + target;
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -116,7 +116,7 @@ void TupTwitter::closeRequest(QNetworkReply *reply)
 {
     #ifdef K_DEBUG
         QString msg = "TupTwitter::closeRequest() - Closing request...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -140,7 +140,7 @@ void TupTwitter::closeRequest(QNetworkReply *reply)
                 } else {
                     #ifdef K_DEBUG
                         QString msg = "TupTwitter::closeRequest() - Network Error: Invalid data!";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tError() << msg;
@@ -152,7 +152,7 @@ void TupTwitter::closeRequest(QNetworkReply *reply)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupTwitter::closeRequest() - Network Error: Gosh! No Internet? :S";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -168,7 +168,7 @@ void TupTwitter::slotError(QNetworkReply::NetworkError error)
                  { 
                  #ifdef K_DEBUG
                      QString msg = "TupTwitter::slotError() - Network Error: Host not found";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                             qDebug() << msg;
                      #else
                             tError() << msg;
@@ -180,7 +180,7 @@ void TupTwitter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupTwitter::slotError() - Network Error: Time out!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                             qDebug() << msg;
                      #else
                             tError() << msg;
@@ -192,7 +192,7 @@ void TupTwitter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupTwitter::slotError() - Network Error: Connection Refused!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                             qDebug() << msg;
                      #else
                             tError() << msg;
@@ -204,7 +204,7 @@ void TupTwitter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupTwitter::slotError() - Network Error: Content not found!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                             qDebug() << msg;
                      #else
                             tError() << msg;
@@ -217,7 +217,7 @@ void TupTwitter::slotError(QNetworkReply::NetworkError error)
                  {
                  #ifdef K_DEBUG
                      QString msg = "TupTwitter::slotError() - Network Error: Unknown Network error!";
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                             qDebug() << msg;
                      #else
                             tError() << msg;
@@ -232,7 +232,7 @@ void TupTwitter::checkSoftwareUpdates(QByteArray array)
 {
     #ifdef K_DEBUG
         QString msg = "TupTwitter::checkSoftwareUpdates() - Processing updates file...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -269,7 +269,7 @@ void TupTwitter::formatStatus(QByteArray array)
 {
     #ifdef K_DEBUG
         QString msg = "TupTwitter::formatStatus() - Formatting news file...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -321,7 +321,7 @@ void TupTwitter::formatStatus(QByteArray array)
 
     #ifdef K_DEBUG
         msg = "TupTwitter::formatStatus() - Saving file -> " + twitterPath;
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;

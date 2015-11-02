@@ -213,7 +213,7 @@ void TupExposureTable::requestFrameRenaming(QTableWidgetItem * item)
 void TupExposureTable::requestFrameSelection(int currentSelectedRow, int currentColumn, int previousRow, int previousColumn)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExposureTable::requestFrameSelection()]";
         #else
             T_FUNCINFO;
@@ -324,7 +324,7 @@ bool TupExposureTable::frameIsLocked(int layerIndex, int frameIndex)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupExposureTable::frameIsLocked() - Layer: " + QString::number(layerIndex) + QString(", Frame: ") + QString::number(frameIndex) + QString(" doesn't exist");
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -352,7 +352,7 @@ void TupExposureTable::updateFrameState(int layerIndex, int frameIndex, TupExpos
     } else {
         #ifdef K_DEBUG
             QString msg = "TupExposureTable::updateFrameState() - Error: No frame at [" + QString::number(layerIndex) + ", " + QString::number(frameIndex) + "]";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -364,7 +364,7 @@ void TupExposureTable::updateFrameState(int layerIndex, int frameIndex, TupExpos
 void TupExposureTable::selectFrame(int layerIndex, int frameIndex)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExposureTable::selectFrame()]";
         #else
             T_FUNCINFO;
@@ -390,7 +390,7 @@ int TupExposureTable::currentLayer() const
 int TupExposureTable::currentFrame() const
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExposureTable::currentFrame()]";
         #else
             T_FUNCINFO;
@@ -492,7 +492,7 @@ void TupExposureTable::removeFrame(int layerIndex, int frameIndex, bool fromMenu
     } else {
         #ifdef K_DEBUG
             QString msg = "TupExposureTable::removeFrame() - No item available at [" + QString::number(layerIndex) + ", " + QString::number(frameIndex) + "]";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -530,7 +530,7 @@ void TupExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
 void TupExposureTable::markUsedFrames(int frameIndex, int layerIndex)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupExposureTable::markUsedFrames()]";
         #else
             T_FUNCINFO;
@@ -622,7 +622,7 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupExposureTable::keyPressEvent() - Warning: wrong frame index [ " + QString::number(row) + " ]";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qWarning() << msg;
                 #else
                     tWarning() << msg;

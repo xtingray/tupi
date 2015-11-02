@@ -80,12 +80,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-#ifndef Q_OS_MAC 
-    QFont font = this->font();
-    font.setPointSize(8);
-    setFont(font);
-#endif
-
     QLabel *nameLabel = new QLabel(tr("Name") + ": ");
     k->input = new QLineEdit;
 

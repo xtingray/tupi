@@ -170,7 +170,7 @@ void TupStoryboard::setSceneTitle(int index, const QString &title)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupStoryboard::setSceneTitle() - Invalid index -> " + QString::number(index);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -186,7 +186,7 @@ void TupStoryboard::setSceneDuration(int index, const QString &duration)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupStoryboard::setSceneDuration() - Invalid index: " + QString::number(index);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -202,7 +202,7 @@ void TupStoryboard::setSceneDescription(int index, const QString &description)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupStoryboard::setSceneDuration() - Invalid index: " + QString::number(index);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

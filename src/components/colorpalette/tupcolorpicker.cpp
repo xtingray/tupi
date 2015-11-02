@@ -72,7 +72,7 @@ TupColorPicker::~TupColorPicker()
     delete k;
 
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupColorPicker()]";
         #else
             TEND;

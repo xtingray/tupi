@@ -56,7 +56,7 @@ void DefaultSettings::save(TMainWindow *window)
 {
     #ifdef K_DEBUG
             QString msg = "DefaultSettings::save() - Saving UI settings...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -103,7 +103,7 @@ void DefaultSettings::restore(TMainWindow *window)
 {
     #ifdef K_DEBUG
 	    QString msg = "DefaultSettings::restore() - Restoring UI settings...";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -320,7 +320,7 @@ void TMainWindow::moveToolView(ToolView *view, Qt::DockWidgetArea newPlace)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TMainWindow::moveToolView()]";
         #else
             T_FUNCINFO;
@@ -427,7 +427,7 @@ Qt::DockWidgetArea TMainWindow::toDockWidgetArea(Qt::ToolBarArea area)
                {
                    #ifdef K_DEBUG
                        QString msg = "TMainWindow::toDockWidgetArea() - Floating -> " + QString::number(area);
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qWarning() << msg;
                        #else
                            tWarning() << msg;
@@ -467,7 +467,7 @@ Qt::ToolBarArea TMainWindow::toToolBarArea(Qt::DockWidgetArea area)
                {
                  #ifdef K_DEBUG
                      QString msg = "TMainWindow::toToolBarArea() - Floating -> " + QString::number(area);
-                     #ifdef Q_OS_WIN32
+                     #ifdef Q_OS_WIN
                          qWarning() << msg;
                      #else
                          tWarning() << msg;
@@ -495,7 +495,7 @@ void TMainWindow::relayoutViewButton(bool topLevel)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TMainWindow::relayoutViewButton()]";
         #else
             T_FUNCINFO;
@@ -531,7 +531,7 @@ void TMainWindow::relayoutToolView()
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TMainWindow::relayoutToolView()]";
         #else
             T_FUNCINFO;

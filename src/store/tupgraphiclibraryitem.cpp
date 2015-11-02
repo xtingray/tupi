@@ -85,7 +85,7 @@ void TupGraphicLibraryItem::setObject(TupLibraryObject *object)
     if (!object) {
         #ifdef K_DEBUG
             QString msg = "TupGraphicLibraryItem::setObject() - Setting null library object";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -96,7 +96,7 @@ void TupGraphicLibraryItem::setObject(TupLibraryObject *object)
     }
     
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << "TupGraphicLibraryItem::setObject() - object->symbolName(): " << object->symbolName();
         #else
             T_FUNCINFOX("library") << object->symbolName();

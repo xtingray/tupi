@@ -85,12 +85,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-#ifndef Q_OS_MAC 
-    QFont font = this->font();
-    font.setPointSize(8);
-    setFont(font);
-#endif
-
     QLabel *nameLabel = new QLabel(tr("Name") + ": ");
     k->input = new QLineEdit;
 
@@ -462,7 +456,7 @@ void Settings::applyTween()
         TOsd::self()->display(tr("Info"), tr("You must select at least one object!"), TOsd::Info); 
         #ifdef K_DEBUG
             QString msg = "Settings::applyTween() - You must select at least one object!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -476,7 +470,7 @@ void Settings::applyTween()
         TOsd::self()->display(tr("Info"), tr("You must set Tween properties first!"), TOsd::Info);
         #ifdef K_DEBUG
             QString msg = "Settings::applyTween() - You must set Tween properties first!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -527,7 +521,7 @@ void Settings::emitOptionChanged(int option)
                     TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
                     #ifdef K_DEBUG
                         QString msg = "Settings::emitOptionChanged() - You must set Tween properties first!";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tError() << msg;

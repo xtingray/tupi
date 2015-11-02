@@ -100,7 +100,7 @@ void Target::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Target::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Target::mouseReleaseEvent()]";
         #else
             T_FUNCINFO;

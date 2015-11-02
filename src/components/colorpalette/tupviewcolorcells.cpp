@@ -72,7 +72,7 @@ TupViewColorCells::~TupViewColorCells()
 
     #ifdef K_DEBUG
         QString msg = "TupViewColorCells::~TupViewColorCells() - Saving color palettes in: " + brushesDir.path();
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning("palette") << msg;
@@ -90,7 +90,7 @@ TupViewColorCells::~TupViewColorCells()
     delete k;
 	
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TupViewColorCells()]";
         #else
             TEND;
@@ -133,7 +133,7 @@ void TupViewColorCells::setupForm()
     k->customGradientPalette->setType(TupCellsColor::Gradient);
     addPalette(k->customGradientPalette);
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString palettesPath = SHARE_DIR + "palettes";
 #else
     QString palettesPath = SHARE_DIR + "data" + QDir::separator() + "palettes";
@@ -159,7 +159,7 @@ void TupViewColorCells::readPalettes(const QString &paletteDir)
 {
     #ifdef K_DEBUG
         QString msg = "TupViewColorCells::readPalettes() - Reading palettes from: " + paletteDir;
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning("palette") << msg;
@@ -179,7 +179,7 @@ void TupViewColorCells::readPalettes(const QString &paletteDir)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupViewColorCells::readPalettes() - Error: Invalid path -> " + paletteDir;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError("palette") << msg;
@@ -200,7 +200,7 @@ void TupViewColorCells::readPaletteFile(const QString &file)
     } else {
         #ifdef K_DEBUG
             QString msg = "TupViewColorCells::readPaletteFile() - Error while parse palette file: " + file;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -259,7 +259,7 @@ void TupViewColorCells::addPalette(TupCellsColor *palette)
 void TupViewColorCells::changeColor(QTableWidgetItem* item)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupViewColorCells::changeColor()]";
         #else
             T_FUNCINFO;

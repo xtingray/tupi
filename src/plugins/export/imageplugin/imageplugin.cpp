@@ -198,7 +198,7 @@ bool ImagePlugin::exportFrame(int frameIndex, const QColor color, const QString 
     return result;
 }
 
-const char* ImagePlugin::getExceptionMsg() {
+QString ImagePlugin::getExceptionMsg() const {
     return errorMsg;
 }
 

@@ -49,7 +49,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     setFixedSize(525, 458);
 
     QStringList path;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString resources = SHARE_DIR + "help" + QDir::separator();
 #else
 	QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
@@ -76,7 +76,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     if (!file.open(QIODevice::ReadOnly)) {
         #ifdef K_DEBUG
             QString msg = "TupAbout::TupAbout() - Fatal Error: Can't open \"credits.xml\" file";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -88,7 +88,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     if (!doc.setContent(&file)) {
         #ifdef K_DEBUG
             QString msg = "TupAbout::TupAbout() - Fatal Error: File \"credits.xml\" is corrupt!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -122,7 +122,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     // Acknowledgment Tab 
 
     QString sponsorFile = QString() + "help" + QDir::separator() + lang + QDir::separator() + "thanks.html";
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString sponsorPath = SHARE_DIR + sponsorFile;
 #else
     QString sponsorPath = SHARE_DIR + "data" + QDir::separator() + sponsorFile;
@@ -138,7 +138,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     // Tupi Description Tab 
 
     QString tupiFile = QString() + "help" + QDir::separator() + lang + QDir::separator() + "tupi_short.html";
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString tupiPath = SHARE_DIR + tupiFile;
 #else
     QString tupiPath = SHARE_DIR + "data" + QDir::separator() + tupiFile;
@@ -154,7 +154,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     // 4: License Terms Tab
 
     QString licenseFile = QString() + "help" + QDir::separator() + lang + QDir::separator() + "philosophy.html"; 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString licensePath = SHARE_DIR + licenseFile;
 #else
     QString licensePath = SHARE_DIR + "data" + QDir::separator() + licenseFile;

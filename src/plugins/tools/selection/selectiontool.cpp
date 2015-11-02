@@ -82,7 +82,7 @@ SelectionTool::~SelectionTool()
 void SelectionTool::init(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[SelectionTool::init()]";
         #else
             T_FUNCINFOX("tools");
@@ -103,7 +103,7 @@ void SelectionTool::init(TupGraphicsScene *scene)
 void SelectionTool::reset(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[SelectionTool::reset()]";
         #else
             T_FUNCINFOX("tools");
@@ -148,7 +148,7 @@ void SelectionTool::reset(TupGraphicsScene *scene)
                               } else {
                                   #ifdef K_DEBUG
                                       QString msg = "SelectionTool::reset() - Fatal Error: Invalid spaceContext!";
-                                      #ifdef Q_OS_WIN32
+                                      #ifdef Q_OS_WIN
                                           qDebug() << msg;
                                       #else
                                           tError() << msg;
@@ -304,7 +304,7 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
                      } else {
                          #ifdef K_DEBUG
                              QString msg = "SelectionTool::release() - Fatal Error: Invalid item position !!! [ " + QString::number(position) + " ]";
-                             #ifdef Q_OS_WIN32
+                             #ifdef Q_OS_WIN
                                  qDebug() << msg;
                              #else
                                  tError() << msg;
@@ -359,7 +359,7 @@ TupFrame* SelectionTool::frameAt(int sceneIndex, int layerIndex, int frameIndex)
             } else {
                 #ifdef K_DEBUG
                     QString msg = "SelectionTool::frameAt() - Fatal Error: Layer is NULL! -> " + QString::number(layerIndex);
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -377,7 +377,7 @@ TupFrame* SelectionTool::frameAt(int sceneIndex, int layerIndex, int frameIndex)
     } else {
        #ifdef K_DEBUG
            QString msg = "SelectionTool::frameAt() - Fatal Error: Scene is NULL! -> " + QString::number(sceneIndex);
-           #ifdef Q_OS_WIN32
+           #ifdef Q_OS_WIN
                qDebug() << msg;
            #else
                tError() << msg;
@@ -427,7 +427,7 @@ QWidget *SelectionTool::configurator()
 void SelectionTool::aboutToChangeScene(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[SelectionTool::aboutToChangeScene()]";
         #else
             T_FUNCINFOX("tools");
@@ -441,7 +441,7 @@ void SelectionTool::aboutToChangeTool()
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[SelectionTool::aboutToChangeTool()]";
         #else
             T_FUNCINFOX("tools");
@@ -453,7 +453,7 @@ void SelectionTool::aboutToChangeTool()
 void SelectionTool::itemResponse(const TupItemResponse *event)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[SelectionTool::itemResponse()]";
         #else
             T_FUNCINFOX("tools");
@@ -482,7 +482,7 @@ void SelectionTool::itemResponse(const TupItemResponse *event)
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "SelectionTool::itemResponse - No item found";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tError() << msg;
@@ -753,7 +753,7 @@ void SelectionTool::applyGroupAction(Settings::Group action)
                      } else {
                          #ifdef K_DEBUG
                              QString msg = "SelectionTool::applyGroupAction() - Fatal Error: Index of item is invalid! -> -1";
-                             #ifdef Q_OS_WIN32
+                             #ifdef Q_OS_WIN
                                  qDebug() << msg;
                              #else
                                  tError() << msg;

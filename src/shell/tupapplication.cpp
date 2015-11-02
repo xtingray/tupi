@@ -51,7 +51,7 @@ TupApplication::~TupApplication()
 {
     #ifdef K_DEBUG
         QString msg = "[Destroying ~TupApplication]";
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
            qDebug() << msg;
         #else
            tDebug() << msg;
@@ -65,7 +65,7 @@ void TupApplication::createCache(const QString &cacheDir)
     if (!cache.exists()) {
         #ifdef K_DEBUG
             QString msg = "Initializing repository: " + cacheDir;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -75,7 +75,7 @@ void TupApplication::createCache(const QString &cacheDir)
        if (!cache.mkdir(cacheDir)) {
            #ifdef K_DEBUG
                QString msg = "TupApplication::createCache() - Fatal Error: Can't create project repository";
-               #ifdef Q_OS_WIN32
+               #ifdef Q_OS_WIN
                    qDebug() << msg;
                #else
                    tError() << msg;

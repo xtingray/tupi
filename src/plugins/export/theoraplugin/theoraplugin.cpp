@@ -83,7 +83,7 @@ bool TheoraPlugin::exportToFormat(const QColor color, const QString &filePath, c
              errorMsg = generator->getErrorMsg();
              #ifdef K_DEBUG
                     QString msg = "FFMpegPlugin::exportToFormat() - [ Fatal Error ] - Can't create video -> " + filePath;
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -126,6 +126,6 @@ bool TheoraPlugin::exportFrame(int frameIndex, const QColor color, const QString
     return false;
 }
 
-const char* TheoraPlugin::getExceptionMsg() {
+QString TheoraPlugin::getExceptionMsg() const {
     return errorMsg;
 }

@@ -122,7 +122,7 @@ bool TupLocalProjectManagerHandler::isUndoCommand(const QString &xml)
 void TupLocalProjectManagerHandler::handleProjectRequest(const TupProjectRequest *request)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupLocalProjectManagerHandler::handleProjectRequest()]";
         #else
             T_FUNCINFO;
@@ -135,7 +135,7 @@ void TupLocalProjectManagerHandler::handleProjectRequest(const TupProjectRequest
     } else {
         #ifdef K_DEBUG
             QString msg = "TupLocalProjectManagerHandler::handleProjectRequest() - INVALID REQUEST! ID: " + QString::number(request->id());
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

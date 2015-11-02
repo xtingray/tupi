@@ -40,7 +40,7 @@
 Settings::Settings(QWidget *parent) : QWidget(parent)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[Settings()]";
         #else
             TINIT;
@@ -76,7 +76,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
 Settings::~Settings()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~Settings()]";
         #else
             TEND;

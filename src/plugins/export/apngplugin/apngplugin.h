@@ -64,8 +64,10 @@ class TUPI_EXPORT APNGPlugin : public TupExportPluginObject
         virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, TupExportInterface::Format format, const QSize &size, int fps);
         virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size);
 
-        virtual const char* getExceptionMsg();
-        const char *errorMsg;
+        // virtual const char* getExceptionMsg();
+        // const char *errorMsg;
+        virtual QString getExceptionMsg();
+        QString errorMsg;
 };
 
 #endif

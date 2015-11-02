@@ -69,13 +69,6 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 
     QLabel *title = new QLabel(tr("Scale Tween"));
     title->setAlignment(Qt::AlignHCenter);
-
-#ifndef Q_OS_MAC 
-    QFont font = this->font();
-    font.setPointSize(8);
-    title->setFont(font);
-#endif
-
     k->layout->addWidget(title);
 
     k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);

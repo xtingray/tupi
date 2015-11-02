@@ -90,7 +90,7 @@ void NodesTool::reset(TupGraphicsScene *scene)
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "NodesTool::reset() - Fatal Error: Invalid spaceContext!";
-                                      #ifdef Q_OS_WIN32
+                                      #ifdef Q_OS_WIN
                                           qDebug() << msg;
                                       #else
                                           tError() << msg;
@@ -189,7 +189,7 @@ void NodesTool::release(const TupInputDeviceInformation *input, TupBrushManager 
             } else {
                 #ifdef K_DEBUG
                     QString msg = "NodesTool::release() - Fatal Error: Invalid position [ " + QString::number(position) + " ]";
-                    #ifdef Q_OS_WIN32
+                    #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
                         tError() << msg;
@@ -229,7 +229,7 @@ TupFrame* NodesTool::currentFrame()
 void NodesTool::itemResponse(const TupItemResponse *response)
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[NodesTool::itemResponse()]";
         #else
             T_FUNCINFOX("NodesTool");
@@ -256,7 +256,7 @@ void NodesTool::itemResponse(const TupItemResponse *response)
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "NodesTool::itemResponse() - Fatal Error: No item was found";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tError() << msg;
@@ -277,7 +277,7 @@ void NodesTool::itemResponse(const TupItemResponse *response)
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "NodesTool::itemResponse() - Fatal Error: No item was found";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tError() << msg;
@@ -302,7 +302,7 @@ void NodesTool::itemResponse(const TupItemResponse *response)
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "NodesTool::itemResponse() - Fatal error: No item was found";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tError() << msg;

@@ -229,14 +229,14 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
 					   
                    if (m == 100) {
                        QString msg = "InkTool::move() - M: NAN";
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg;
                        #else
                            tError() << msg;
                        #endif
                    } else {
                        QString msg = "InkTool::move() - M: " + QString::number(m);
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg;
                        #else
                            tError() << msg;
@@ -245,14 +245,14 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
 
                    if (isNAN) {
                        QString msg = "InkTool::move() - M(inv): NAN";
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg;
                        #else
                            tError() << msg;
                        #endif
                    } else {
                        QString msg = "InkTool::move() - M(inv): " + QString::number(pm);
-                       #ifdef Q_OS_WIN32
+                       #ifdef Q_OS_WIN
                            qDebug() << msg;
                        #else
                            tError() << msg;
@@ -343,7 +343,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 if (k->previewPoint.y() < currentPoint.y()) {
                     #ifdef K_DEBUG
                         QString msg = "    -> InkTool::move() - Going down-right";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tDebug() << msg;
@@ -365,7 +365,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 } else if (k->previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                QString msg = "    -> InkTool::move() - Going up-right";
-                               #ifdef Q_OS_WIN32
+                               #ifdef Q_OS_WIN
                                    qDebug() << msg;
                                #else
                                    tDebug() << msg;
@@ -386,7 +386,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 } else {
                      #ifdef K_DEBUG
                          QString msg = "    -> InkTool::move() - Going right";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tDebug() << msg;
@@ -409,7 +409,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 if (k->previewPoint.y() < currentPoint.y()) {
                     #ifdef K_DEBUG
                         QString msg = "    -> InkTool::move() - Going down-left";
-                        #ifdef Q_OS_WIN32
+                        #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
                             tDebug() << msg;
@@ -431,7 +431,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 } else if (k->previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                QString msg = "    -> InkTool::move() - Going up-left";
-                               #ifdef Q_OS_WIN32
+                               #ifdef Q_OS_WIN
                                    qDebug() << msg;
                                #else
                                    tDebug() << msg;
@@ -463,7 +463,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 } else {
                      #ifdef K_DEBUG
                          QString msg = "    -> InkTool::move() - Going left";
-                         #ifdef Q_OS_WIN32
+                         #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
                              tDebug() << msg;
@@ -485,7 +485,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                        if (k->previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                QString msg = "    -> InkTool::move() - Going up";
-                               #ifdef Q_OS_WIN32
+                               #ifdef Q_OS_WIN
                                    qDebug() << msg;
                                #else
                                    tDebug() << msg;
@@ -505,7 +505,7 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                        } else {
                            #ifdef K_DEBUG
                                QString msg = "    -> InkTool::move() - Going down";
-                               #ifdef Q_OS_WIN32
+                               #ifdef Q_OS_WIN
                                    qDebug() << msg;
                                #else
                                    tDebug() << msg;

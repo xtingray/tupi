@@ -64,7 +64,7 @@ class T_GUI_EXPORT TMovieGeneratorInterface
         virtual void nextFrame() = 0;
         virtual void reset() = 0;
         virtual bool movieHeaderOk() = 0;
-        virtual const char* getErrorMsg() = 0;
+        virtual QString getErrorMsg() const = 0;
 
         void saveMovie(const QString &filename) {
                        end();

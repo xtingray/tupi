@@ -50,12 +50,6 @@ LipSyncManager::LipSyncManager(QWidget *parent) : QWidget(parent), k(new Private
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-#ifndef Q_OS_MAC
-    QFont font = this->font();
-    font.setPointSize(8);
-    setFont(font);
-#endif
-
     QBoxLayout *listLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     listLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
@@ -103,11 +97,6 @@ void LipSyncManager::loadLipSyncList(QList<QString> list)
     int total = list.size();
     for (int i=0; i < total; i++) {
         QListWidgetItem *item = new QListWidgetItem(k->lipSyncList);
-#ifndef Q_OS_MAC
-        QFont font = this->font();
-        font.setPointSize(8);
-        item->setFont(font);
-#endif
         item->setText(list.at(i));
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
@@ -170,11 +159,6 @@ void LipSyncManager::addNewRecord(const QString &name)
     f.setPointSize(8);
 
     QListWidgetItem *item = new QListWidgetItem(k->lipSyncList);
-#ifndef Q_OS_MAC
-    QFont font = this->font();
-    font.setPointSize(8);
-    item->setFont(font);
-#endif
     item->setText(name);
     item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 

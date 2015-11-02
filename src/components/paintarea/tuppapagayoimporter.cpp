@@ -169,7 +169,7 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
         k->isValid = false;
         #ifdef K_DEBUG
             QString msg = "TupPapagayoImporter() - Fatal Error: Insufficient permissions to load file! -> " + file;
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

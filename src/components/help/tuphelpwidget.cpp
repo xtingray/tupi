@@ -55,7 +55,7 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : QWidget(par
 
     #ifdef K_DEBUG
         QString msg = "TupHelpWidget() - Loading help files from -> " + k->helpPath->path();
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
             tWarning() << msg;
@@ -110,7 +110,7 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : QWidget(par
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupHelpWidget::TupHelpWidget() - Fatal Error: Can't set content";
-                #ifdef Q_OS_WIN32
+                #ifdef Q_OS_WIN
                     qDebug() << msg;
                 #else
                     tError() << msg;
@@ -121,7 +121,7 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : QWidget(par
     } else {
         #ifdef K_DEBUG
             QString msg = "TupHelpWidget::TupHelpWidget() - Fatal Error: Can't open 'help.xml' file";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;

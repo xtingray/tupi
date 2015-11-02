@@ -97,7 +97,7 @@ void TupConfigurationArea::toggleLock()
 void TupConfigurationArea::shrink()
 {
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TupConfigurationArea::shrink()]";
         #else
             T_FUNCINFO;
@@ -108,7 +108,7 @@ void TupConfigurationArea::shrink()
     if (!mainWindow || !widget()) {
         #ifdef K_DEBUG
             QString msg = "TupConfigurationArea::shrink() - Fatal error!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tError() << msg;
@@ -195,7 +195,7 @@ void TupConfigurationArea::shrink()
     if (! QApplication::sendEvent(mainWindow, &move)) {
         #ifdef K_DEBUG
             QString msg = "TupConfigurationArea::shrink() - Error while moving!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;
@@ -212,7 +212,7 @@ void TupConfigurationArea::shrink()
     if (! QApplication::sendEvent(mainWindow, &release)) {
         #ifdef K_DEBUG
             QString msg = "TupConfigurationArea::shrink() - Error while releasing!";
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qWarning() << msg;
             #else
                 tWarning() << msg;

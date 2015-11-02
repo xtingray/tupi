@@ -39,7 +39,7 @@ TApplication::TApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[TApplication()]";
         #else
             TINIT;
@@ -63,7 +63,7 @@ TApplication::~TApplication()
 
     /*
     #ifdef K_DEBUG
-        #ifdef Q_OS_WIN32
+        #ifdef Q_OS_WIN
             qDebug() << "[~TApplication()]";
         #else
             TEND;

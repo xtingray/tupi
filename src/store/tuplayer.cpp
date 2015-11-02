@@ -272,7 +272,7 @@ TupFrame *TupLayer::frame(int position) const
         #ifdef K_DEBUG
             QString msg1 = "TupLayer::frame() - FATAL ERROR: frame index out of bound : " + QString::number(position);
             QString msg2 = "TupLayer::frame() - FATAL ERROR: index limit : " + QString::number(k->frames.count()-1);
-            #ifdef Q_OS_WIN32
+            #ifdef Q_OS_WIN
                 qDebug() << msg1;
                 qDebug() << msg2;
             #else
