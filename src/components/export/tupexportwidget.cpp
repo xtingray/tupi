@@ -145,7 +145,12 @@ void TupExportWidget::loadPlugins()
                      if (exporter->key().compare(tr("Animated Image")) == 0)
                          index = 3;
 
-                     pluginList.insert(index, exporter);
+                     #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+                         pluginList.insert(index, exporter);
+                     #else
+                         if (exporter->key().compare(tr("Open Video Format")) != 0)
+                             pluginList.insert(index, exporter);
+                     #endif
                  } else {
                      #ifdef K_DEBUG
                          QString msg = "TupExportWidget::loadPlugins() - [ Fatal Error ] - Can't load export plugin";
