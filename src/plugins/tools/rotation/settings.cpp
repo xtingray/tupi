@@ -634,7 +634,6 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                    }
                }
     }
-
     doc.appendChild(root);
 
     return doc.toString();

@@ -319,6 +319,7 @@ QWidget *Tweener::configurator()
 }
 
 /* This method is called when there's a change on/of scene */
+
 void Tweener::aboutToChangeScene(TupGraphicsScene *scene)
 {
     Q_UNUSED(scene);
@@ -578,10 +579,6 @@ void Tweener::applyTween()
 
         foreach (QGraphicsItem *item, k->objects) {
                  TupLibraryObject::Type type = TupLibraryObject::Item;
-
-                 // TupProject *project = k->scene->scene()->project();
-                 // TupScene *scene = project->scene(k->initScene);
-
                  TupScene *scene = k->scene->scene();
                  TupLayer *layer = scene->layer(k->initLayer);
                  TupFrame *frame = layer->frame(k->currentTween->initFrame());
