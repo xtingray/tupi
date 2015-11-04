@@ -48,6 +48,7 @@
 #include "tuprectitem.h"
 #include "tuplineitem.h"
 #include "tupsvgitem.h"
+#include "tupitemgroup.h"
 #include "tupitemtweener.h"
 #include "tuprequestbuilder.h"
 #include "tupprojectrequest.h"
@@ -555,12 +556,12 @@ void Tweener::applyTween()
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  } else {
                      if (qgraphicsitem_cast<TupPathItem *>(item) || qgraphicsitem_cast<TupEllipseItem *>(item) 
-                         || qgraphicsitem_cast<TupLineItem *>(item) || qgraphicsitem_cast<TupRectItem *>(item))
+                         || qgraphicsitem_cast<TupLineItem *>(item) || qgraphicsitem_cast<TupRectItem *>(item)
+                         || qgraphicsitem_cast<TupItemGroup *>(item))
                          point = item->pos();
                  }
 
                  QString route = pathToCoords();
-
                  TupProjectRequest request = TupRequestBuilder::createItemRequest(
                                              k->initScene, k->initLayer, k->initFrame,
                                              objectIndex,

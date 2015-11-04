@@ -258,8 +258,8 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
     root.setAttribute("initLayer", currentLayer);
     root.setAttribute("initScene", currentScene);
     root.setAttribute("frames", k->stepViewer->totalSteps());
-    // root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
-    root.setAttribute("origin", "0,0");
+    root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
+    // root.setAttribute("origin", "0,0");
     root.setAttribute("coords", path);
 
     foreach (TupTweenerStep *step, k->stepViewer->steps())
