@@ -298,7 +298,6 @@ void TupLayer::fromXml(const QString &xml)
     setLayerName(root.attribute("name", layerName()));
     setOpacity(root.attribute("opacity", "1.0").toDouble());
     setVisible(root.attribute("visible", "1").toInt());
-    tError() << "TupLayer::fromXml() -> is visible? " << k->isVisible;
     QDomNode n = root.firstChild();
 
     while (!n.isNull()) {

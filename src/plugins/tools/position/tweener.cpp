@@ -549,8 +549,15 @@ void Tweener::applyTween()
                  TupLibraryObject::Type type = TupLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item); 
                  QRectF rect = item->sceneBoundingRect();
-                 QPointF point = rect.topLeft();
+                 // QPointF point = rect.topLeft();
+                 QPointF point = item->pos();
 
+                 if (TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item)) {
+                     type = TupLibraryObject::Svg;
+                     objectIndex = k->scene->currentFrame()->indexOf(svg);
+                 }
+
+                 /*
                  if (TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item)) {
                      type = TupLibraryObject::Svg;
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
@@ -560,6 +567,7 @@ void Tweener::applyTween()
                          || qgraphicsitem_cast<TupItemGroup *>(item))
                          point = item->pos();
                  }
+                 */
 
                  QString route = pathToCoords();
                  TupProjectRequest request = TupRequestBuilder::createItemRequest(
