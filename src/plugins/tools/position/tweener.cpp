@@ -592,8 +592,9 @@ void Tweener::applyTween()
                  TupLayer *layer = scene->layer(k->initLayer);
                  TupFrame *frame = layer->frame(k->currentTween->initFrame());
                  int objectIndex = frame->indexOf(item);
-                 QRectF rect = item->sceneBoundingRect();
-                 QPointF point = rect.topLeft();
+                 // QRectF rect = item->sceneBoundingRect();
+                 // QPointF point = rect.topLeft();
+                 QPointF point = item->pos();
                  TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item); 
 
                  if (svg) {
