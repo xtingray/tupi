@@ -351,9 +351,11 @@ bool TupExposureTable::frameIndexIsValid(int frameIndex)
 TupExposureTable::FrameType TupExposureTable::frameState(int layerIndex, int frameIndex)
 { 
     TupExposureTable::FrameType type = TupExposureTable::Unset;
-    QTableWidgetItem *frame = item(frameIndex, layerIndex);
-    if (frame)
-        type = TupExposureTable::FrameType(frame->data(TupExposureTable::IsEmpty).toInt()); 
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *frame = item(frameIndex, layerIndex);
+        if (frame)
+            type = TupExposureTable::FrameType(frame->data(TupExposureTable::IsEmpty).toInt()); 
+    }
 
     return type;
 }
