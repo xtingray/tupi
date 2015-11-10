@@ -84,7 +84,6 @@ void TupExposureVerticalHeader::paintSection(QPainter * painter, const QRect & r
     text = text.setNum(logicalIndex + 1);
     QFont font = this->font();
     font.setPointSize(7);
-    // QFont font("Arial", 7, QFont::Normal, false);
     QFontMetrics fm(font);
 
     int x = rect.normalized().x() + ((rect.normalized().width() - fm.width(text))/2);
@@ -238,16 +237,14 @@ void TupExposureTable::requestFrameSelection(int currentSelectedRow, int current
 
             return;
         } else {
-            if (layerIndexIsValid(currentColumn) && frameIndexIsValid(currentSelectedRow)) {
-                QTableWidgetItem *frame = item(currentSelectedRow, currentColumn);
-                if (frame) {
-                    if (previousColumn != currentColumn || previousRow != currentSelectedRow)
-                        emit frameSelected(currentLayer(), currentRow());
+            QTableWidgetItem *frame = item(currentSelectedRow, currentColumn);
+            if (frame) {
+                if (previousColumn != currentColumn || previousRow != currentSelectedRow)
+                    emit frameSelected(currentLayer(), currentRow());
 
-                    if ((previousColumn != currentColumn) || (columnCount() == 1))
-                        k->header->updateSelection(currentColumn);
-                } 
-            }
+                if ((previousColumn != currentColumn) || (columnCount() == 1))
+                    k->header->updateSelection(currentColumn);
+            } 
         }
     } else { // A layer is being removed
         k->removingLayer = false;
