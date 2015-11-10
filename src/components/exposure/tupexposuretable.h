@@ -141,6 +141,8 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void layerVisibilityChanged(int visualIndexLayer, bool visibility);
 
     private:
+        bool layerIndexIsValid(int layerIndex);
+        bool frameIndexIsValid(int frameIndex);
         struct Private;
         Private *const k;
 };

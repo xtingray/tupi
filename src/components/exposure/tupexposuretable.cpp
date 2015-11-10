@@ -238,14 +238,16 @@ void TupExposureTable::requestFrameSelection(int currentSelectedRow, int current
 
             return;
         } else {
-            QTableWidgetItem *frame = item(currentSelectedRow, currentColumn);
-            if (frame) {
-                if (previousColumn != currentColumn || previousRow != currentSelectedRow)
-                    emit frameSelected(currentLayer(), currentRow());
+            if (layerIndexIsValid(currentColumn) && frameIndexIsValid(currentSelectedRow)) {
+                QTableWidgetItem *frame = item(currentSelectedRow, currentColumn);
+                if (frame) {
+                    if (previousColumn != currentColumn || previousRow != currentSelectedRow)
+                        emit frameSelected(currentLayer(), currentRow());
 
-                if ((previousColumn != currentColumn) || (columnCount() == 1))
-                    k->header->updateSelection(currentColumn);
-            } 
+                    if ((previousColumn != currentColumn) || (columnCount() == 1))
+                        k->header->updateSelection(currentColumn);
+                } 
+            }
         }
     } else { // A layer is being removed
         k->removingLayer = false;
@@ -290,24 +292,26 @@ TupExposureTable::~TupExposureTable()
 
 QString TupExposureTable::frameName(int layerIndex, int frameIndex)
 {
-    QTableWidgetItem *frame = item(frameIndex , layerIndex);
-    if (frame)
-        return frame->text();
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *frame = item(frameIndex, layerIndex);
+        if (frame)
+            return frame->text();
+    }
 
     return "";
 }
 
 void TupExposureTable::setFrameName(int layerIndex, int frameIndex, const QString &name)
 {
-    QTableWidgetItem *frame = item(frameIndex, layerIndex);
-    QFont font = this->font();
-    font.setPointSize(7);
-    frame->setFont(font);
-    // frame->setFont(QFont("Arial", 7, QFont::Normal, false));
-
-    if (frame) {
-        if (frame->text() != name)
-            frame->setText(name);
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *frame = item(frameIndex, layerIndex);
+        QFont font = this->font();
+        font.setPointSize(7);
+        frame->setFont(font);
+        if (frame) {
+            if (frame->text() != name)
+                frame->setText(name);
+        }
     }
 }
 
@@ -318,46 +322,69 @@ void TupExposureTable::setLayerName(int layerIndex, const QString & name)
 
 bool TupExposureTable::frameIsLocked(int layerIndex, int frameIndex)
 {
-    QTableWidgetItem *frame = item(frameIndex, layerIndex);
-    if (frame) {
-        return frame->data(IsLocked).toBool();
-    } else {
-        #ifdef K_DEBUG
-            QString msg = "TupExposureTable::frameIsLocked() - Layer: " + QString::number(layerIndex) + QString(", Frame: ") + QString::number(frameIndex) + QString(" doesn't exist");
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-            #else
-                tError() << msg;
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *frame = item(frameIndex, layerIndex);
+        if (frame) {
+            return frame->data(IsLocked).toBool();
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "TupExposureTable::frameIsLocked() - Layer: " + QString::number(layerIndex) + QString(", Frame: ") + QString::number(frameIndex) + QString(" doesn't exist");
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
             #endif
-        #endif
+        }
     }
+
     return false;
+}
+
+bool TupExposureTable::layerIndexIsValid(int layerIndex)
+{
+    if (layerIndex > 0 && layerIndex < columnCount())
+        return true;
+
+    return false; 
+}
+
+bool TupExposureTable::frameIndexIsValid(int frameIndex)
+{
+    if (frameIndex > 0 && frameIndex < rowCount())
+        return true;
+
+    return false;  
 }
 
 TupExposureTable::FrameType TupExposureTable::frameState(int layerIndex, int frameIndex)
 { 
     TupExposureTable::FrameType type = TupExposureTable::Unset;
-    QTableWidgetItem *frame = item(frameIndex, layerIndex);
-    if (frame)
-        type = TupExposureTable::FrameType(frame->data(TupExposureTable::IsEmpty).toInt()); 
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *frame = item(frameIndex, layerIndex);
+        if (frame)
+            type = TupExposureTable::FrameType(frame->data(TupExposureTable::IsEmpty).toInt()); 
+    }
 
     return type;
 }
 
 void TupExposureTable::updateFrameState(int layerIndex, int frameIndex, TupExposureTable::FrameType value)
 {
-    QTableWidgetItem *frame = item(frameIndex, layerIndex);
-    if (frame) {
-        frame->setData(IsEmpty, value);
-    } else {
-        #ifdef K_DEBUG
-            QString msg = "TupExposureTable::updateFrameState() - Error: No frame at [" + QString::number(layerIndex) + ", " + QString::number(frameIndex) + "]";
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-            #else
-                tError() << msg;
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *frame = item(frameIndex, layerIndex);
+        if (frame) {
+            frame->setData(IsEmpty, value);
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "TupExposureTable::updateFrameState() - Error: No frame at [" + QString::number(layerIndex) + ", " + QString::number(frameIndex) + "]";
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
             #endif
-        #endif
+        }
     }
 }
 
@@ -446,16 +473,17 @@ void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString
 void TupExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
 {
     int logicalIndex = k->header->logicalIndex(layerIndex);
-    QTableWidgetItem * frame = item(frameIndex, logicalIndex);
+    if (layerIndexIsValid(logicalIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem * frame = item(frameIndex, logicalIndex);
+        if (frame) {
+            if (frame->data(TupExposureTable::IsEmpty).toInt() != Unset) {
+                if (locked)
+                    frame->setBackgroundColor(QColor(255, 0, 0, 90));
+                else
+                    frame->setBackgroundColor(QColor(255, 255, 255));
 
-    if (frame) {
-        if (frame->data(TupExposureTable::IsEmpty).toInt() != Unset) {
-            if (locked)
-                frame->setBackgroundColor(QColor(255, 0, 0, 90));
-            else
-                frame->setBackgroundColor(QColor(255, 255, 255));
-
-            frame->setData(IsLocked, locked);
+                frame->setData(IsLocked, locked);
+            }
         }
     }
 }
@@ -485,19 +513,21 @@ void TupExposureTable::removeFrame(int layerIndex, int frameIndex, bool fromMenu
 {
     k->removingFrame = fromMenu;
 
-    QTableWidgetItem *item = takeItem(frameIndex, layerIndex);
+    if (layerIndexIsValid(layerIndex) && frameIndexIsValid(frameIndex)) {
+        QTableWidgetItem *item = takeItem(frameIndex, layerIndex);
 
-    if (item) {
-        k->header->setLastFrame(layerIndex, k->header->lastFrame(layerIndex)-1);
-    } else {
-        #ifdef K_DEBUG
-            QString msg = "TupExposureTable::removeFrame() - No item available at [" + QString::number(layerIndex) + ", " + QString::number(frameIndex) + "]";
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-            #else
-                tError() << msg;
+        if (item) {
+            k->header->setLastFrame(layerIndex, k->header->lastFrame(layerIndex)-1);
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "TupExposureTable::removeFrame() - No item available at [" + QString::number(layerIndex) + ", " + QString::number(frameIndex) + "]";
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
             #endif
-        #endif
+        }
     }
 }
 

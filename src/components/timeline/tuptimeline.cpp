@@ -63,6 +63,8 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
 
     k->project = project;
     k->library = k->project->library();
+
+    // SQA: Pending to add the feature "Layer Opacity" as part of this action bar
     
     k->actionBar = new TupProjectActionBar(QString("TimeLine"), TupProjectActionBar::InsertLayer |
                         TupProjectActionBar::RemoveLayer |
@@ -72,7 +74,7 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
                         TupProjectActionBar::MoveFrameBackward |
                         TupProjectActionBar::MoveFrameForward |
                         TupProjectActionBar::LockFrame);
-   
+
     addChild(k->actionBar, Qt::AlignCenter);
     
     k->container = new TTabWidget(this);

@@ -548,7 +548,7 @@ void Tweener::applyTween()
         foreach (QGraphicsItem *item, k->objects) {   
                  TupLibraryObject::Type type = TupLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item); 
-                 QRectF rect = item->sceneBoundingRect();
+                 // QRectF rect = item->sceneBoundingRect();
                  // QPointF point = rect.topLeft();
                  QPointF point = item->pos();
 
