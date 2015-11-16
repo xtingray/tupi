@@ -129,7 +129,7 @@ void SelectionTool::reset(TupGraphicsScene *scene)
                       // qreal opacity = item->opacity();
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceContext() == TupProject::FRAMES_EDITION) {
-                              if ((zValue >= zBottomLimit) && (zValue < zTopLimit) && (item->toolTip().length()==0)) {
+                              if ((zValue >= zBottomLimit) && (zValue < zTopLimit) && (item->toolTip().length() == 0)) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);

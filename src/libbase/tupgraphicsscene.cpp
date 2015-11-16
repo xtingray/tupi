@@ -470,7 +470,8 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
         if (k->tool) {
             if (k->tool->toolType() == TupToolInterface::Selection) {
                 if (frameType == TupFrame::Regular) {
-                    if (k->layerOnProcess == k->framePosition.layer && k->frameOnProcess == k->framePosition.frame)
+                    if (k->layerOnProcess == k->framePosition.layer && k->frameOnProcess == k->framePosition.frame 
+                        && (item->toolTip().length() == 0)) 
                         item->setFlag(QGraphicsItem::ItemIsSelectable, true);
                 } else {
                     if (k->spaceContext != TupProject::FRAMES_EDITION)
@@ -515,7 +516,8 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
                 if (k->tool) {
                     if (k->tool->toolType() == TupToolInterface::Selection) {
                         if (frameType == TupFrame::Regular) {
-                            if (k->layerOnProcess == k->framePosition.layer && k->frameOnProcess == k->framePosition.frame)
+                            if (k->layerOnProcess == k->framePosition.layer && k->frameOnProcess == k->framePosition.frame
+                                && (svgItem->toolTip().length() == 0))
                                 svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
                         } else {
                             if (k->spaceContext != TupProject::FRAMES_EDITION)
