@@ -52,12 +52,11 @@ class TUPI_EXPORT TupItemGroup: public TupAbstractSerializable, public QGraphics
         ~TupItemGroup();
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
-        
         void recoverChilds();
         QList<QGraphicsItem *> childs();
         
     protected:
-        QVariant itemChange(GraphicsItemChange change, const QVariant & value);
+        QVariant itemChange(GraphicsItemChange change, const QVariant &value);
         
     private:
         struct Private;

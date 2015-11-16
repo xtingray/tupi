@@ -52,12 +52,19 @@ TupItemGroup::~TupItemGroup()
 
 QVariant TupItemGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    /*
     if (change == QGraphicsItem::ItemChildRemovedChange) {
         // k->childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
-    } else if ( change == QGraphicsItem::ItemChildAddedChange ) {
+    } else if (change == QGraphicsItem::ItemChildAddedChange ) {
         if (!k->childs.contains(qvariant_cast<QGraphicsItem *>(value))) {
             k->childs << qvariant_cast<QGraphicsItem *>(value);
         }
+    }
+    */
+
+    if (change == QGraphicsItem::ItemChildAddedChange ) {
+        if (!k->childs.contains(qvariant_cast<QGraphicsItem *>(value)))
+            k->childs << qvariant_cast<QGraphicsItem *>(value);
     }
     
     return QGraphicsItemGroup::itemChange(change, value);
@@ -65,12 +72,16 @@ QVariant TupItemGroup::itemChange(GraphicsItemChange change, const QVariant &val
 
 void TupItemGroup::recoverChilds()
 {
-    foreach (QGraphicsItem *item, k->childs) {
-             if (TupItemGroup *child = qgraphicsitem_cast<TupItemGroup *>(item))
-                 child->recoverChilds();
+    int i = 0;
+    // foreach (QGraphicsItem *item, k->childs) {
+    int total = k->childs.count();
+    for(int i=0; i< k->childs.count(); i++) {
+        QGraphicsItem *item = k->childs.at(i);
+        if (TupItemGroup *child = qgraphicsitem_cast<TupItemGroup *>(item))
+            child->recoverChilds();
         
-             if (item->parentItem() != this)
-                 item->setParentItem(this);
+        if (item->parentItem() != this)
+            item->setParentItem(this);
     }
 }
 
