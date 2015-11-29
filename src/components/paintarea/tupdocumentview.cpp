@@ -957,7 +957,7 @@ void TupDocumentView::selectTool()
                      if (toolName.compare(tr("Object Selection"))==0) {
                          minWidth = 130;
                          connect(k->paintArea, SIGNAL(itemAddedOnSelection(TupGraphicsScene *)), 
-                                 tool, SLOT(updateItems(TupGraphicsScene *)));
+                                 tool, SLOT(initItems(TupGraphicsScene *)));
                      } 
                      break;
                 case TupToolInterface::View:

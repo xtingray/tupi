@@ -85,7 +85,7 @@ void PapagayoTool::init(TupGraphicsScene *scene)
 {
     k->scene = scene;
     k->mode = TupToolPlugin::View;
-    k->baseZValue = 20000 + (scene->scene()->layersCount() * 10000);
+    k->baseZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
 
     k->initScene = k->scene->currentSceneIndex();
 

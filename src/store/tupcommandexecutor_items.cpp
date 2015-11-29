@@ -1180,7 +1180,6 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
                 }
 
                 emit responsed(response);
-
                 return true;
             }
         }

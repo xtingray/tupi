@@ -61,14 +61,14 @@ void NodesTool::init(TupGraphicsScene *scene)
     k->scene = scene;
     if (k->scene->selectedItems().count() > 0)
         k->scene->clearSelection();
-    k->baseZValue = 20000 + (k->scene->scene()->layersCount() * 10000); 
+    k->baseZValue = (2*ZLAYER_LIMIT) + (k->scene->scene()->layersCount() * ZLAYER_LIMIT); 
     reset(k->scene);
 }
 
 void NodesTool::reset(TupGraphicsScene *scene)
 {
-    int zBottomLimit = (scene->currentLayerIndex() + 2)*10000;
-    int zTopLimit = zBottomLimit + 10000;
+    int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
+    int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
 
     foreach (QGraphicsItem *item, scene->items()) {
              int zValue = item->zValue();
@@ -83,7 +83,7 @@ void NodesTool::reset(TupGraphicsScene *scene)
                  if (scene->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                      item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                  } else if (scene->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
-                            if (zValue >= 10000) 
+                            if (zValue >= ZLAYER_LIMIT) 
                                 item->setFlags(QGraphicsItem::ItemIsSelectable);
                             else 
                                 item->setFlag(QGraphicsItem::ItemIsSelectable, false);

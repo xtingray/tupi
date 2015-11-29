@@ -93,7 +93,7 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->shift = "0";
 
     k->repeat = 1;
-    k->zLevelIndex = (k->layer->layerIndex() + 1)*10000; // Layers levels starts from 2
+    k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT; // Layers levels starts from 2
 }
 
 TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new Private)
@@ -111,7 +111,7 @@ TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new
         k->zLevelIndex = 0;
         k->type = DynamicBg;
     } else {
-        k->zLevelIndex = 10000;
+        k->zLevelIndex = ZLAYER_LIMIT;
         k->type = StaticBg;
     }
 }
@@ -546,7 +546,7 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
     switch(move) {
            case MoveBack :
              {
-                int zMin = (layerIndex + 1)*10000;
+                int zMin = (layerIndex + 1)*ZLAYER_LIMIT;
 
                 if (type == TupLibraryObject::Svg) {
                     int zLimit = k->svg.at(currentIndex)->zValue();
@@ -710,8 +710,8 @@ bool TupFrame::moveItem(TupLibraryObject::Type type, int currentIndex, int actio
            break;
            case MoveOneLevelBack :
              {
-                // int zMin = (k->layerIndex + 1)*10000;
-                int zMin = (layerIndex + 1)*10000;
+                // int zMin = (k->layerIndex + 1)*ZLAYER_LIMIT;
+                int zMin = (layerIndex + 1)*ZLAYER_LIMIT;
 
                 if (type == TupLibraryObject::Svg) {
                     if (k->svg.at(currentIndex)->zValue() == zMin) {
@@ -1418,7 +1418,7 @@ void TupFrame::updateZLevel(int zLevelIndex)
     for (int i = 0; i < graphicsSize; ++i) {
          TupGraphicObject *object = k->graphics.at(i); 
          int currentZValue = object->itemZValue();
-         int zLevel = zLevelIndex + (currentZValue % 10000);
+         int zLevel = zLevelIndex + (currentZValue % ZLAYER_LIMIT);
          object->setItemZValue(zLevel);
          if (i == (graphicsSize-1)) {
              if (zLevel > max)
@@ -1430,7 +1430,7 @@ void TupFrame::updateZLevel(int zLevelIndex)
     for (int i = 0; i < graphicsSize; ++i) {
          TupSvgItem *item = k->svg.value(i);
          int currentZValue = item->zValue();
-         int zLevel = zLevelIndex + (currentZValue % 10000);
+         int zLevel = zLevelIndex + (currentZValue % ZLAYER_LIMIT);
          item->setZValue(zLevel);
          if (i == (graphicsSize-1)) {
              if (zLevel > max)
@@ -1442,6 +1442,6 @@ void TupFrame::updateZLevel(int zLevelIndex)
         k->zLevelIndex = max;
         k->zLevelIndex++;
     } else {
-        k->zLevelIndex = (k->layer->layerIndex() + 1)*10000;
+        k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT;
     }
 }

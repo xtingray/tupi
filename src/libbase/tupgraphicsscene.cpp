@@ -88,8 +88,8 @@ struct TupGraphicsScene::Private
     QList<TupLineGuide *> lines;
     TupProject::Mode spaceContext;   
     TupLibrary *library;
-    int layerOnProcess;
-    int frameOnProcess;
+    // int layerOnProcess;
+    // int frameOnProcess;
     double layerOnProcessOpacity;
 };
 
@@ -211,19 +211,17 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
     cleanWorkSpace();
     // Painting the background
     drawSceneBackground(photogram);
-
     bool valid = false;
 
     // Drawing frames from every layer
 
     for (int i=0; i < k->scene->layersCount(); i++) {
          TupLayer *layer = k->scene->layer(i);
-         k->layerOnProcess = i;
+         // k->layerOnProcess = i;
          k->layerOnProcessOpacity = layer->opacity();
 
          if (layer->framesCount() > 0 && photogram < layer->framesCount()) {
              TupFrame *mainFrame = layer->frame(photogram);
-
              QString currentFrame = "";
 
              if (mainFrame) {
@@ -240,7 +238,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
                                      limit = 0;
 
                                  for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
-                                      k->frameOnProcess = frameIndex;
+                                      // k->frameOnProcess = frameIndex;
                                       TupFrame *frame = layer->frame(frameIndex);
                                       if (frame)
                                           addFrame(frame, opacity, Previous);
@@ -251,7 +249,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
                          }
 
                          // Painting current frame
-                         k->frameOnProcess = photogram;
+                         // k->frameOnProcess = photogram;
                          addFrame(mainFrame);
 
                          // Painting next frames
@@ -265,7 +263,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
                                      limit = layer->frames().count() - 1;
 
                                  for (int frameIndex = photogram+1; frameIndex <= limit; frameIndex++) {
-                                      k->frameOnProcess = frameIndex;
+                                      // k->frameOnProcess = frameIndex;
                                       TupFrame * frame = layer->frame(frameIndex);
                                       if (frame)
                                           addFrame(frame, opacity, Next);
@@ -458,27 +456,18 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
     if (item) {
         k->onionSkin.opacityMap.insert(item, opacity);
 
-        if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item))
+        if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item)) {
             group->recoverChilds();
+            group->setFlag(QGraphicsItem::ItemIsSelectable, false);
+            group->setFlag(QGraphicsItem::ItemIsMovable, false);
+            // group->setSelected(false);
+        }
 
         item->setSelected(false);
         if (frameType == TupFrame::Regular)
             item->setOpacity(opacity * k->layerOnProcessOpacity);
         else
             item->setOpacity(opacity);
-
-        if (k->tool) {
-            if (k->tool->toolType() == TupToolInterface::Selection) {
-                if (frameType == TupFrame::Regular) {
-                    if (k->layerOnProcess == k->framePosition.layer && k->frameOnProcess == k->framePosition.frame 
-                        && (item->toolTip().length() == 0)) 
-                        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                } else {
-                    if (k->spaceContext != TupProject::FRAMES_EDITION)
-                        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                }
-            }
-        }
 
         addItem(item);
     }
@@ -512,19 +501,6 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
                 // SQA: Experimental code related to interactive features
                 // if (svgItem->symbolName().compare("dollar.svg")==0)
                 //     connect(svgItem, SIGNAL(enabledChanged()), this, SIGNAL(showInfoWidget()));
-
-                if (k->tool) {
-                    if (k->tool->toolType() == TupToolInterface::Selection) {
-                        if (frameType == TupFrame::Regular) {
-                            if (k->layerOnProcess == k->framePosition.layer && k->frameOnProcess == k->framePosition.frame
-                                && (svgItem->toolTip().length() == 0))
-                                svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                        } else {
-                            if (k->spaceContext != TupProject::FRAMES_EDITION)
-                                svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                        }
-                    }
-                }
 
                 addItem(svgItem);
             } else {
@@ -572,13 +548,11 @@ void TupGraphicsScene::addTweeningObjects(int photogram)
     */
 
     QList<TupGraphicObject *> tweenList = k->scene->tweeningGraphicObjects();
-
-    for (int i=0; i < tweenList.count(); i++) {
+    int total = tweenList.count();
+    for (int i=0; i < total; i++) {
          TupGraphicObject *object = tweenList.at(i);
 
-         // if (object->frame()->layer()->isVisible()) {
          if (object->layerIsVisible()) {
-             // int origin = object->frame()->index();
              int origin = object->frameIndex();
 
              if (TupItemTweener *tween = object->tween()) {
@@ -1242,7 +1216,6 @@ void TupGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // This condition locks all the tools while workspace is rotated 
     if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
         if (k->tool) {      
-
             if (k->tool->toolType() == TupToolPlugin::Brush && event->isAccepted())
                 return;
 
@@ -1252,7 +1225,6 @@ void TupGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             } 
 
             // If there's no frame... the tool is disabled 
-
             if (currentFrame()) {
                 if (event->buttons() == Qt::LeftButton) {
                     k->tool->begin();
@@ -1549,6 +1521,14 @@ TupBrushManager *TupGraphicsScene::brushManager() const
 
 void TupGraphicsScene::aboutToMousePress()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupGraphicsScene::aboutToMousePress()]";
+        #else
+            T_FUNCINFOX("item");
+        #endif
+    #endif
+
     QHash<QGraphicsItem *, double>::iterator it = k->onionSkin.opacityMap.begin();
 
     while (it != k->onionSkin.opacityMap.end()) {

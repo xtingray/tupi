@@ -55,8 +55,8 @@ FillTool::~FillTool()
 void FillTool::init(TupGraphicsScene *scene)
 {
     /*
-    int zBottomLimit = (scene->currentLayerIndex() + 2)*10000;
-    int zTopLimit = zBottomLimit + 10000;
+    int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
+    int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
 
     foreach (QGraphicsItem *item, scene->items()) {
              if (scene->spaceContext() == TupProject::FRAMES_EDITION) {
@@ -159,8 +159,8 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                 int zValue = item->zValue();
 
                 if (scene->spaceContext() == TupProject::FRAMES_EDITION) {
-                    int zBottomLimit = (scene->currentLayerIndex() + 2)*10000;
-                    int zTopLimit = zBottomLimit + 10000;
+                    int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
+                    int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
                     qreal opacity = item->opacity();
 
                     if ((zValue < zBottomLimit) || (zValue >= zTopLimit) || (item->toolTip().length()!=0) || (opacity < 1)) {
@@ -176,7 +176,7 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     }
                 } else {
                     if (scene->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
-                        if ((zValue < 10000) || (zValue >= 20000)) {
+                        if ((zValue < ZLAYER_LIMIT) || (zValue >= (2*ZLAYER_LIMIT))) {
                             #ifdef K_DEBUG
                                 QString msg = "FillTool::press() - Warning: Object belongs to dynamic background frame";
                                 #ifdef Q_OS_WIN

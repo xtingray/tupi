@@ -63,8 +63,10 @@ QVariant TupItemGroup::itemChange(GraphicsItemChange change, const QVariant &val
     */
 
     if (change == QGraphicsItem::ItemChildAddedChange ) {
-        if (!k->childs.contains(qvariant_cast<QGraphicsItem *>(value)))
-            k->childs << qvariant_cast<QGraphicsItem *>(value);
+        QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(value);
+        tError() << "TupItemGroup::itemChange() - item zValue: " << item->zValue();
+        if (!k->childs.contains(item)) 
+            k->childs << item;
     }
     
     return QGraphicsItemGroup::itemChange(change, value);
@@ -72,11 +74,11 @@ QVariant TupItemGroup::itemChange(GraphicsItemChange change, const QVariant &val
 
 void TupItemGroup::recoverChilds()
 {
-    int i = 0;
-    // foreach (QGraphicsItem *item, k->childs) {
     int total = k->childs.count();
-    for(int i=0; i< k->childs.count(); i++) {
+    for(int i=0; i<total; i++) {
         QGraphicsItem *item = k->childs.at(i);
+        tError() << "TupItemGroup::recoverChilds() - item zValue: " << item->zValue();
+
         if (TupItemGroup *child = qgraphicsitem_cast<TupItemGroup *>(item))
             child->recoverChilds();
         
@@ -97,7 +99,6 @@ void TupItemGroup::fromXml(const QString &)
 QDomElement TupItemGroup::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("group");
-    
     foreach (QGraphicsItem *item, childItems())
              root.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(doc));
 

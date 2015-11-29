@@ -87,3 +87,5 @@ namespace Tupi
 };
 
 #endif
+
+#define ZLAYER_LIMIT 10000

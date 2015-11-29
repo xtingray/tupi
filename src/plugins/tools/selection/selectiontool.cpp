@@ -94,39 +94,38 @@ void SelectionTool::init(TupGraphicsScene *scene)
 
     k->scene = scene;
     k->scene->clearSelection();
-    k->nodeZValue = 20000 + (scene->scene()->layersCount() * 10000);
+    k->nodeZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
     k->targetIsIncluded = false;
 
-    reset(scene);
+    initItems(scene);
 }
 
-void SelectionTool::reset(TupGraphicsScene *scene)
+void SelectionTool::initItems(TupGraphicsScene *scene)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[SelectionTool::reset()]";
+            qDebug() << "[SelectionTool::initItems()]";
         #else
             T_FUNCINFOX("tools");
         #endif
     #endif
 
-    int zBottomLimit = (scene->currentLayerIndex() + 2)*10000;
-    int zTopLimit = zBottomLimit + 10000;
+    int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
+    int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
 
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
-                      // SQA: Temporary code for debugging issues
+                      // SQA: Code just for debugging issues
                       /*
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
                       QDomElement root = dom.documentElement();
-                      tFatal() << "SelectionTool::reset() - XML: ";
+                      tFatal() << "SelectionTool::initItems() - XML: ";
                       tFatal() << dom.toString();
                       */
 
                       int zValue = item->zValue();
-                      // qreal opacity = item->opacity();
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceContext() == TupProject::FRAMES_EDITION) {
                               if ((zValue >= zBottomLimit) && (zValue < zTopLimit) && (item->toolTip().length() == 0)) {
@@ -139,7 +138,7 @@ void SelectionTool::reset(TupGraphicsScene *scene)
                               if (scene->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                               } else if (scene->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
-                                         if (zValue >= 10000) {
+                                         if (zValue >= ZLAYER_LIMIT) {
                                              item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                                          } else {
                                              item->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -147,7 +146,7 @@ void SelectionTool::reset(TupGraphicsScene *scene)
                                          }
                               } else {
                                   #ifdef K_DEBUG
-                                      QString msg = "SelectionTool::reset() - Fatal Error: Invalid spaceContext!";
+                                      QString msg = "SelectionTool::initItems() - Fatal Error: Invalid spaceContext!";
                                       #ifdef Q_OS_WIN
                                           qDebug() << msg;
                                       #else
@@ -242,7 +241,6 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
 
     if (k->selectedObjects.count() > 0) {
         k->selectionFlag = true;
-
         foreach (NodeManager *manager, k->nodeManagers) {
                  QGraphicsItem *item = manager->parentItem();
                  int parentIndex = k->selectedObjects.indexOf(item); 
@@ -827,7 +825,7 @@ void SelectionTool::updateZoomFactor(qreal scaleFactor)
 void SelectionTool::sceneResponse(const TupSceneResponse *event)
 {
     if (event->action() == TupProjectRequest::Select)
-        reset(k->scene);
+        initItems(k->scene);
 }
 
 void SelectionTool::updateItemPosition() 

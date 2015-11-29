@@ -372,7 +372,7 @@ bool TupScene::moveLayer(int from, int to)
 
     Frames frames = sourceLayer->frames(); 
     int totalFrames = frames.size();
-    int zLevelIndex = (to + 2)*10000;
+    int zLevelIndex = (to + 2)*ZLAYER_LIMIT;
     for (int i = 0; i < totalFrames; i++) {
          TupFrame *frame = frames.at(i);
          frame->updateZLevel(zLevelIndex);
@@ -380,7 +380,7 @@ bool TupScene::moveLayer(int from, int to)
 
     frames = destinyLayer->frames(); 
     totalFrames = frames.size();
-    zLevelIndex = (from + 2)*10000;
+    zLevelIndex = (from + 2)*ZLAYER_LIMIT;
     for (int i = 0; i < totalFrames; i++) {
          TupFrame *frame = frames.at(i);
          frame->updateZLevel(zLevelIndex);

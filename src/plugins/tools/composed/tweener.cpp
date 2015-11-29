@@ -105,7 +105,7 @@ void Tweener::init(TupGraphicsScene *scene)
     k->pathAdded = false;
     delete k->group;
     k->group = 0;
-    k->baseZValue = 20000 + (scene->scene()->layersCount() * 10000);
+    k->baseZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
 
     k->scene = scene;
     k->objects.clear();
@@ -427,7 +427,7 @@ void Tweener::setSelect()
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
-                      if ((item->zValue() >= 20000) && (item->toolTip().length()==0)) {
+                      if ((item->zValue() >= (2*ZLAYER_LIMIT)) && (item->toolTip().length()==0)) {
                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
                       }
              }

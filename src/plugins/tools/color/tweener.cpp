@@ -339,8 +339,8 @@ void Tweener::setSelection()
 {
     k->editMode = TupToolPlugin::Selection;
 
-    int bottomBoundary = 20000 + (k->initLayer*10000);
-    int topBoundary = bottomBoundary + 10000;
+    int bottomBoundary = (2*ZLAYER_LIMIT) + (k->initLayer*ZLAYER_LIMIT);
+    int topBoundary = bottomBoundary + ZLAYER_LIMIT;
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);

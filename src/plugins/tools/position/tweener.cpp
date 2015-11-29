@@ -127,7 +127,7 @@ void Tweener::init(TupGraphicsScene *scene)
 
     k->scene = scene;
     k->objects.clear();
-    k->baseZValue = 20000 + (scene->scene()->layersCount() * 10000);
+    k->baseZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
 
     k->isPathInScene = false;
     k->pathOffset = QPointF(0, 0); 
@@ -417,8 +417,8 @@ void Tweener::setSelection()
 
     k->editMode = TupToolPlugin::Selection;
 
-    int bottomBoundary = 20000 + (k->scene->currentLayerIndex()*10000);
-    int topBoundary = bottomBoundary + 10000; 
+    int bottomBoundary = (2*ZLAYER_LIMIT) + (k->scene->currentLayerIndex()*ZLAYER_LIMIT);
+    int topBoundary = bottomBoundary + ZLAYER_LIMIT; 
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
@@ -534,7 +534,6 @@ void Tweener::applyTween()
     #endif
 
     QString name = k->configurator->currentTweenName();
-
     if (name.length() == 0) {
         TOsd::self()->display(tr("Error"), tr("Tween name is missing!"), TOsd::Error);
         return;
@@ -548,26 +547,12 @@ void Tweener::applyTween()
         foreach (QGraphicsItem *item, k->objects) {   
                  TupLibraryObject::Type type = TupLibraryObject::Item;
                  int objectIndex = k->scene->currentFrame()->indexOf(item); 
-                 // QRectF rect = item->sceneBoundingRect();
-                 // QPointF point = rect.topLeft();
                  QPointF point = item->pos();
 
                  if (TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item)) {
                      type = TupLibraryObject::Svg;
                      objectIndex = k->scene->currentFrame()->indexOf(svg);
                  }
-
-                 /*
-                 if (TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item)) {
-                     type = TupLibraryObject::Svg;
-                     objectIndex = k->scene->currentFrame()->indexOf(svg);
-                 } else {
-                     if (qgraphicsitem_cast<TupPathItem *>(item) || qgraphicsitem_cast<TupEllipseItem *>(item) 
-                         || qgraphicsitem_cast<TupLineItem *>(item) || qgraphicsitem_cast<TupRectItem *>(item)
-                         || qgraphicsitem_cast<TupItemGroup *>(item))
-                         point = item->pos();
-                 }
-                 */
 
                  QString route = pathToCoords();
                  TupProjectRequest request = TupRequestBuilder::createItemRequest(
@@ -592,18 +577,12 @@ void Tweener::applyTween()
                  TupLayer *layer = scene->layer(k->initLayer);
                  TupFrame *frame = layer->frame(k->currentTween->initFrame());
                  int objectIndex = frame->indexOf(item);
-                 // QRectF rect = item->sceneBoundingRect();
-                 // QPointF point = rect.topLeft();
                  QPointF point = item->pos();
                  TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item); 
 
                  if (svg) {
                      type = TupLibraryObject::Svg;
                      objectIndex = frame->indexOf(svg);
-                 } else {
-                     if (qgraphicsitem_cast<TupPathItem *>(item) || qgraphicsitem_cast<TupEllipseItem *>(item) 
-                         || qgraphicsitem_cast<TupLineItem *>(item) || qgraphicsitem_cast<TupRectItem *>(item))
-                         point = item->pos();
                  }
 
                  if (k->initFrame != k->currentTween->initFrame()) {
@@ -638,7 +617,6 @@ void Tweener::applyTween()
                  }
 
                  QString route = pathToCoords();
-
                  TupProjectRequest request = TupRequestBuilder::createItemRequest(
                                              k->initScene, k->initLayer, k->initFrame,
                                              objectIndex,
