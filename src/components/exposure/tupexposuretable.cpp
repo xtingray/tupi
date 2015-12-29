@@ -190,7 +190,7 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
     connect(k->header, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(layerVisibilityChanged(int, bool)));
     connect(k->header, SIGNAL(nameChanged(int, const QString &)), this, SIGNAL(layerNameChanged(int, const QString & )));
     connect(k->header, SIGNAL(sectionMoved(int, int, int)), this, SLOT(requestLayerMove(int, int, int)));
-    connect(k->header, SIGNAL(selectionChanged(int)), this, SLOT(updateLayerSelection(int)));
+    connect(k->header, SIGNAL(headerSelectionChanged(int)), this, SLOT(updateLayerSelection(int)));
 
     setHorizontalHeader(k->header);
 

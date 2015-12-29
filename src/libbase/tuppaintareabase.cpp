@@ -277,9 +277,7 @@ void TupPaintAreaBase::mousePressEvent(QMouseEvent * event)
         return;
     }
 
-    // SQA: This instruction will be removed ASP 
     k->scene->aboutToMousePress();
-
     QGraphicsView::mousePressEvent(event);
 }
 

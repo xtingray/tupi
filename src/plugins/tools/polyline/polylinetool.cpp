@@ -122,6 +122,7 @@ void PolyLineTool::init(TupGraphicsScene *scene)
 
     initEnv(false);
 
+    /*
     foreach (QGraphicsView *view,  scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
         
@@ -130,6 +131,7 @@ void PolyLineTool::init(TupGraphicsScene *scene)
                       item->setFlag(QGraphicsItem::ItemIsMovable, false);
              }
     }
+    */
 }
 
 QStringList PolyLineTool::keys() const

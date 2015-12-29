@@ -50,17 +50,9 @@ class TUPI_EXPORT TupItemGroup: public TupAbstractSerializable, public QGraphics
     public:
         TupItemGroup(QGraphicsItem *parent = 0);
         ~TupItemGroup();
+
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
-        void recoverChilds();
-        QList<QGraphicsItem *> childs();
-        
-    protected:
-        QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-        
-    private:
-        struct Private;
-        Private *const k;
 };
 
 #endif

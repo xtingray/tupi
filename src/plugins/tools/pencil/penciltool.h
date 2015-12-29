@@ -94,7 +94,7 @@ class TUPI_PLUGIN PencilTool : public TupToolPlugin
     private:
         void setupActions();
         void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
-        void reset(TupGraphicsScene *scene);
+        // void reset(TupGraphicsScene *scene);
 
     signals:
         void closeHugeCanvas();

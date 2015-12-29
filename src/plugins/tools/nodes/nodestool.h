@@ -111,7 +111,7 @@ class TUPI_PLUGIN NodesTool : public TupToolPlugin
         void callForPlugin(int menu, int index);
  
     private:
-        void reset(TupGraphicsScene *scene);
+        // void reset(TupGraphicsScene *scene);
         void setupActions();
         TupFrame* currentFrame();
         

@@ -664,7 +664,6 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
 
 void TupLibraryWidget::renameObject(QTreeWidgetItem *item)
 {
-    tError() << "TupLibraryWidget::renameObject() - Renaming object!";
     if (item) {
         k->renaming = true;
         k->oldId = item->text(1);
@@ -845,6 +844,51 @@ void TupLibraryWidget::createVectorObject()
         bool isOk = painter.end();
 
         if (isOk) {
+            QDomDocument doc;
+            QFile file(path);
+            if (!file.open(QIODevice::ReadOnly)) {
+                #ifdef K_DEBUG
+                    QString msg = "TupLibraryWidget::createVectorObject() - Fatal Error: SVG file couldn't be opened -> " + path;
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif
+                return;
+            }
+            if (!doc.setContent(&file)) {
+                #ifdef K_DEBUG
+                    QString msg = "TupLibraryWidget::createVectorObject() - Fatal Error: SVG file couldn't be parsed as XML -> " + path;
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif
+                return;
+            }
+            file.close();
+
+            QDomNodeList roots = doc.elementsByTagName("svg");
+            QDomElement root = roots.at(0).toElement(); 
+            root.setAttribute("width", size.width());
+            root.setAttribute("height", size.height());
+            if (!file.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                #ifdef K_DEBUG
+                    QString msg = "TupLibraryWidget::createVectorObject() - Fatal Error: SVG file couldn't be updated -> " + path;
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif
+                return;
+            } 
+            QByteArray xml = doc.toByteArray();
+            file.write(xml);
+            file.close();
+
             TupLibraryObject *newObject = new TupLibraryObject();
             newObject->setSymbolName(symbolName);
             newObject->setType(TupLibraryObject::Svg);

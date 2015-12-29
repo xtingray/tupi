@@ -472,6 +472,14 @@ bool TupScene::tweenExists(const QString &name, TupItemTweener::Type type)
 
 bool TupScene::removeTween(const QString &name, TupItemTweener::Type type)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupScene::removeTween()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
              if (TupItemTweener *tween = object->tween()) {
                  if ((tween->name().compare(name) == 0) && (tween->type() == type)) {

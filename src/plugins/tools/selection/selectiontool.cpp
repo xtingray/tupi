@@ -110,6 +110,10 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
         #endif
     #endif
 
+    foreach (QGraphicsView *view, scene->views())
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+
+    /*
     int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
     int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
 
@@ -117,22 +121,22 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
                       // SQA: Code just for debugging issues
-                      /*
                       QDomDocument dom;
                       dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
                       QDomElement root = dom.documentElement();
                       tFatal() << "SelectionTool::initItems() - XML: ";
                       tFatal() << dom.toString();
-                      */
 
                       int zValue = item->zValue();
                       if (!qgraphicsitem_cast<Node *>(item)) {
                           if (scene->spaceContext() == TupProject::FRAMES_EDITION) {
                               if ((zValue >= zBottomLimit) && (zValue < zTopLimit) && (item->toolTip().length() == 0)) {
                                   item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                                  tError() << "SelectionTool::initItems() - Enabling moving feature in item at " << item->zValue();
                               } else {
                                   item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                                   item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                                  tError() << "SelectionTool::initItems() - Disabling moving feature in item at " << item->zValue();
                               }
                           } else {
                               if (scene->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
@@ -159,6 +163,7 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
                       }
              }
     }
+    */
 
     panel->enablePositionControls(false);
     if (k->targetIsIncluded) {

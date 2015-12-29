@@ -36,60 +36,12 @@
 #include "tupitemgroup.h"
 #include "tupserializer.h"
 
-struct TupItemGroup::Private
-{
-    QList<QGraphicsItem *> childs;
-};
-
-TupItemGroup::TupItemGroup(QGraphicsItem *parent) : QGraphicsItemGroup(parent), k(new Private)
+TupItemGroup::TupItemGroup(QGraphicsItem *parent) : QGraphicsItemGroup(parent)
 {
 }
 
 TupItemGroup::~TupItemGroup()
 {
-    delete k;
-}
-
-QVariant TupItemGroup::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    /*
-    if (change == QGraphicsItem::ItemChildRemovedChange) {
-        // k->childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
-    } else if (change == QGraphicsItem::ItemChildAddedChange ) {
-        if (!k->childs.contains(qvariant_cast<QGraphicsItem *>(value))) {
-            k->childs << qvariant_cast<QGraphicsItem *>(value);
-        }
-    }
-    */
-
-    if (change == QGraphicsItem::ItemChildAddedChange ) {
-        QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(value);
-        tError() << "TupItemGroup::itemChange() - item zValue: " << item->zValue();
-        if (!k->childs.contains(item)) 
-            k->childs << item;
-    }
-    
-    return QGraphicsItemGroup::itemChange(change, value);
-}
-
-void TupItemGroup::recoverChilds()
-{
-    int total = k->childs.count();
-    for(int i=0; i<total; i++) {
-        QGraphicsItem *item = k->childs.at(i);
-        tError() << "TupItemGroup::recoverChilds() - item zValue: " << item->zValue();
-
-        if (TupItemGroup *child = qgraphicsitem_cast<TupItemGroup *>(item))
-            child->recoverChilds();
-        
-        if (item->parentItem() != this)
-            item->setParentItem(this);
-    }
-}
-
-QList<QGraphicsItem *> TupItemGroup::childs()
-{
-    return k->childs;
 }
 
 void TupItemGroup::fromXml(const QString &)
@@ -105,7 +57,6 @@ QDomElement TupItemGroup::toXml(QDomDocument &doc) const
     QPointF point = this->scenePos();
     QString pos = "(" + QString::number(point.x()) + ", " + QString::number(point.y()) + ")";
     root.setAttribute("pos", pos);
-
     root.appendChild(TupSerializer::properties(this, doc));
     
     return root;

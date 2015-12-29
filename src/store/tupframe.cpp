@@ -93,7 +93,8 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->shift = "0";
 
     k->repeat = 1;
-    k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT; // Layers levels starts from 2
+    // k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT; // Layers levels starts from 2
+    k->zLevelIndex = 0;
 }
 
 TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new Private)
@@ -369,18 +370,13 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
 
 void TupFrame::addItem(const QString &id, QGraphicsItem *item)
 {
-    if (TupGraphicLibraryItem *graphic = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
-        QGraphicsItem *libraryItem = graphic->item();
-        QDomDocument dom;
-        TupItemFactory itemFactory;
-        if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(libraryItem)) {
-            dom.appendChild(dynamic_cast<TupAbstractSerializable *>(group)->toXml(dom));
-            item = itemFactory.create(dom.toString());
-        } else if (graphic->itemType() == TupLibraryObject::Item) {
-                   dom.appendChild(dynamic_cast<TupAbstractSerializable *>(libraryItem)->toXml(dom));
-                   item = itemFactory.create(dom.toString());
-        }
-    }
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupFrame::addItem()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
 
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
@@ -500,13 +496,12 @@ int TupFrame::createItemGroup(int position, QList<int> group)
 
     QGraphicsItem *block = qgraphicsitem_cast<QGraphicsItem *>(itemGroup);
     block->setZValue(zBase);
-
     insertItem(position, block);
 
     return position;
 }
 
-QList<QGraphicsItem *> TupFrame::splitItemsGroup(int position)
+QList<QGraphicsItem *> TupFrame::splitGroup(int position)
 {
     QList<QGraphicsItem *> items;
     QGraphicsItem *object = qgraphicsitem_cast<TupItemGroup *>(item(position));
@@ -514,8 +509,8 @@ QList<QGraphicsItem *> TupFrame::splitItemsGroup(int position)
     if (object) {
         if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item(position))) {
             removeGraphicAt(position);
-            items = group->childs();
-            foreach (QGraphicsItem *child, group->childs()) {
+            items = group->childItems();
+            foreach (QGraphicsItem *child, group->childItems()) {
                      group->removeFromGroup(child);
                      addItem("path", child);
             }

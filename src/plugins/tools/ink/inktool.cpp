@@ -110,6 +110,7 @@ void InkTool::init(TupGraphicsScene *scene)
     tError() << "InkTool::init() - k->widthVar: " << k->widthVar;
     */
 
+    /*
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -120,6 +121,7 @@ void InkTool::init(TupGraphicsScene *scene)
                  }
              }
     }
+    */
 }
 
 QStringList InkTool::keys() const

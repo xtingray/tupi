@@ -76,8 +76,8 @@ class TUPI_EXPORT TupExportInterface
         virtual ~TupExportInterface() {};
         virtual QString key() const = 0;
         virtual Formats availableFormats() = 0;
-        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, Format format, const QSize &size, int fps, TupLibrary *library) = 0;
-        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size, TupLibrary *library) = 0;
+        virtual bool exportToFormat(const QColor color, const QString &filePath, const QList<TupScene *> &scenes, Format format, const QSize &size, int fps, TupLibrary *library = 0) = 0;
+        virtual bool exportFrame(int frameIndex, const QColor color, const QString &filePath, TupScene *scene, const QSize &size, TupLibrary *library = 0) = 0;
         virtual QString getExceptionMsg() const = 0;
 };
 

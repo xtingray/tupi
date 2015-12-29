@@ -1711,7 +1711,6 @@ void TupDocumentView::updateUsersOnLine(const QString &login, int state)
 // SQA: This method must support multi-user notifications (pending)
 void TupDocumentView::updateStaticOpacity(double opacity)
 {
-    tError() << "TupDocumentView::updateStaticOpacity() - Flag 0";
     int sceneIndex = k->paintArea->currentSceneIndex();
     TupScene *scene = k->project->scene(sceneIndex);
     if (scene) {

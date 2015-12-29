@@ -114,16 +114,19 @@ void PencilTool::init(TupGraphicsScene *scene)
     }
     */
 
-    reset(k->scene);
+    // reset(k->scene);
 }
 
+/*
 void PencilTool::reset(TupGraphicsScene *scene)
 {
+    tError() << "PencilTool::reset() - Tracing...";
     foreach (QGraphicsItem *item, scene->items()) {
              item->setFlag(QGraphicsItem::ItemIsSelectable, false);
              item->setFlag(QGraphicsItem::ItemIsMovable, false);
     }
 }
+*/
 
 QStringList PencilTool::keys() const
 {
@@ -264,6 +267,6 @@ QCursor PencilTool::cursor() const
 
 void PencilTool::sceneResponse(const TupSceneResponse *event)
 {
-    if (event->action() == TupProjectRequest::Select)
-        reset(k->scene);
+    // if (event->action() == TupProjectRequest::Select)
+    //     reset(k->scene);
 }

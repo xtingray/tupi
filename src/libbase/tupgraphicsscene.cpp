@@ -82,15 +82,12 @@ struct TupGraphicsScene::Private
     TupInputDeviceInformation *inputInformation;
 
     bool isDrawing;
-    int layerCounter;
-    // int objectCounter;
 
     QList<TupLineGuide *> lines;
     TupProject::Mode spaceContext;   
     TupLibrary *library;
-    // int layerOnProcess;
-    // int frameOnProcess;
     double layerOnProcessOpacity;
+    int zLevel;
 };
 
 TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -217,53 +214,45 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
 
     for (int i=0; i < k->scene->layersCount(); i++) {
          TupLayer *layer = k->scene->layer(i);
-         // k->layerOnProcess = i;
          k->layerOnProcessOpacity = layer->opacity();
+         int framesCount = layer->framesCount();
+         k->zLevel = (i + 2)*ZLAYER_LIMIT;
 
-         if (layer->framesCount() > 0 && photogram < layer->framesCount()) {
+         if (photogram < framesCount) {
              TupFrame *mainFrame = layer->frame(photogram);
              QString currentFrame = "";
 
              if (mainFrame) {
                  if (layer) {
                      if (layer->isVisible()) {
-                         // Painting previews frames
                          if (drawContext) {
+                             // Painting previews frames
+                             int maximum = qMax(k->onionSkin.previous, k->onionSkin.next);
+                             double opacityFactor = k->opacity / (double)maximum;
+                             double opacity = k->opacity + ((maximum - k->onionSkin.previous)*opacityFactor);
                              if (k->onionSkin.previous > 0 && photogram > 0) {
-                                 double opacity = k->opacity;
-                                 double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.previous);
-
                                  int limit = photogram - k->onionSkin.previous;
                                  if (limit < 0) 
                                      limit = 0;
 
-                                 for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
-                                      // k->frameOnProcess = frameIndex;
+                                 for (int frameIndex = limit; frameIndex < photogram; frameIndex++) {
                                       TupFrame *frame = layer->frame(frameIndex);
                                       if (frame)
                                           addFrame(frame, opacity, Previous);
 
-                                      opacity -= opacityFactor;
+                                      opacity += opacityFactor;
                                  }
                              }
-                         }
 
-                         // Painting current frame
-                         // k->frameOnProcess = photogram;
-                         addFrame(mainFrame);
-
-                         // Painting next frames
-                         if (drawContext) {
-                             if (k->onionSkin.next > 0 && layer->framesCount() > photogram + 1) {
-                                 double opacity = k->opacity;
-                                 double opacityFactor = opacity / (double)qMin(layer->frames().count(), k->onionSkin.next);
+                             // Painting next frames
+                             if (k->onionSkin.next > 0 && framesCount > photogram + 1) {
+                                 opacity = k->opacity + (opacityFactor*(maximum - 1));
 
                                  int limit = photogram + k->onionSkin.next;
-                                 if (limit >= layer->frames().count()) 
-                                     limit = layer->frames().count() - 1;
+                                 if (limit >= framesCount) 
+                                     limit = framesCount - 1;
 
                                  for (int frameIndex = photogram+1; frameIndex <= limit; frameIndex++) {
-                                      // k->frameOnProcess = frameIndex;
                                       TupFrame * frame = layer->frame(frameIndex);
                                       if (frame)
                                           addFrame(frame, opacity, Next);
@@ -273,11 +262,14 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
                              }
                          }
 
-                         addLipSyncObjects(layer, photogram, mainFrame->getTopZLevel());
+                         // Painting current frame
+                         addFrame(mainFrame);
+
+                         // addLipSyncObjects(layer, photogram, mainFrame->getTopZLevel());
+                         addLipSyncObjects(layer, photogram, k->zLevel);
 
                          // SQA: Crashpoint when layers are deleted 
                          valid = true;
-                         k->layerCounter = i;
                      }
                   }
               }
@@ -289,7 +281,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
     if (valid) {
         addTweeningObjects(photogram);
         addSvgTweeningObjects(photogram);
-        update();
     }
 
     if (k->tool)
@@ -325,8 +316,10 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
         if (k->spaceContext == TupProject::DYNAMIC_BACKGROUND_EDITION) {
             if (!bg->dynamicBgIsEmpty()) {
                 TupFrame *frame = bg->dynamicFrame();
-                if (frame)
+                if (frame) {
+                    k->zLevel = 0;
                     addFrame(frame, frame->opacity());
+                }
             } else {
                 #ifdef K_DEBUG
                     QString msg = "TupGraphicsScene::drawSceneBackground() - Dynamic background frame is empty";
@@ -346,7 +339,7 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                        QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
                        item->setZValue(0);
                        TupFrame *frame = bg->dynamicFrame();
-                       if (frame)
+                       if (frame) 
                            item->setOpacity(frame->opacity());
                        addItem(item);
                    } else {
@@ -388,8 +381,10 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
 
             if (!bg->staticBgIsEmpty()) {
                 TupFrame *frame = bg->staticFrame();
-                if (frame)
+                if (frame) {
+                    k->zLevel = ZLAYER_LIMIT;
                     addFrame(frame, frame->opacity());
+                }
             } else {
                 #ifdef K_DEBUG
                     QString msg = "TupGraphicsScene::drawSceneBackground() - Static background frame is empty";
@@ -418,7 +413,7 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
 
     TupFrame::FrameType frameType = frame->type();
 
-    for (int i=0; i < frame->graphicItemsCount(); ++i) {
+    for (int i=0; i < frame->graphicItemsCount(); i++) {
          TupGraphicObject *object = frame->graphic(i);
          if (mode != TupGraphicsScene::Current) {
              if (!object->hasTween())
@@ -428,7 +423,7 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
          }
     }
 
-    for (int i = 0; i < frame->svgItemsCount(); i++) {
+    for (int i=0; i < frame->svgItemsCount(); i++) {
          TupSvgItem *object = frame->svg(i);
          if (!object->hasTween()) {
              addSvgObject(object, frameType, opacity);
@@ -457,17 +452,27 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
         k->onionSkin.opacityMap.insert(item, opacity);
 
         if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item)) {
-            group->recoverChilds();
-            group->setFlag(QGraphicsItem::ItemIsSelectable, false);
-            group->setFlag(QGraphicsItem::ItemIsMovable, false);
-            // group->setSelected(false);
+            if (frameType == TupFrame::Regular)
+                group->setOpacity(opacity * k->layerOnProcessOpacity);
+            else
+                group->setOpacity(opacity);
+
+            group->setZValue(k->zLevel);
+            k->zLevel++;
+            group->setSelected(false);
+
+            addItem(group);
+            return;
         }
 
-        item->setSelected(false);
         if (frameType == TupFrame::Regular)
             item->setOpacity(opacity * k->layerOnProcessOpacity);
         else
             item->setOpacity(opacity);
+
+        item->setZValue(k->zLevel);
+        k->zLevel++;
+        item->setSelected(false);
 
         addItem(item);
     }
@@ -501,6 +506,11 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
                 // SQA: Experimental code related to interactive features
                 // if (svgItem->symbolName().compare("dollar.svg")==0)
                 //     connect(svgItem, SIGNAL(enabledChanged()), this, SIGNAL(showInfoWidget()));
+
+                svgItem->setZValue(k->zLevel);
+                k->zLevel++;
+
+                // SQA: Pending to implement SVG group support
 
                 addItem(svgItem);
             } else {
@@ -790,9 +800,7 @@ void TupGraphicsScene::addSvgTweeningObjects(int photogram)
     for (int i=0; i < svgList.count(); i++) {
          TupSvgItem *object = svgList.at(i);
 
-         // if (object->frame()->layer()->isVisible()) {
          if (object->layerIsVisible()) {
-             // int origin = object->frame()->index();
              int origin = object->frameIndex();
 
              if (TupItemTweener *tween = object->tween()) {
@@ -1167,7 +1175,6 @@ void TupGraphicsScene::setTool(TupToolPlugin *tool)
         #endif
     #endif
 
-    // SQA: Check if this code is really required
     if (k->spaceContext == TupProject::FRAMES_EDITION) {
         drawCurrentPhotogram();
     } else {
@@ -1383,9 +1390,7 @@ void TupGraphicsScene::keyReleaseEvent(QKeyEvent *event)
 }
 
 /*
-
 // SQA: Check this code, not sure whether it does something or it's handy :S
-
 void TupGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
     if (event->mimeData()->hasFormat("tupi-ruler"))
@@ -1435,7 +1440,6 @@ void TupGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent * event)
         }
     }
 }
-
 */
 
 bool TupGraphicsScene::event(QEvent *e)
@@ -1517,8 +1521,6 @@ TupBrushManager *TupGraphicsScene::brushManager() const
     return k->brushManager;
 }
 
-// SQA: Check if this method is actually used, including variable "opacityMap"
-
 void TupGraphicsScene::aboutToMousePress()
 {
     #ifdef K_DEBUG
@@ -1529,17 +1531,37 @@ void TupGraphicsScene::aboutToMousePress()
         #endif
     #endif
 
-    QHash<QGraphicsItem *, double>::iterator it = k->onionSkin.opacityMap.begin();
+    if (k->onionSkin.opacityMap.empty() || k->tool->toolType() == TupToolInterface::Tweener)
+        return;
 
-    while (it != k->onionSkin.opacityMap.end()) {
-           if (it.value() != 1.0) {
-               it.key()->setAcceptedMouseButtons(Qt::NoButton);
-               it.key()->setFlag(QGraphicsItem::ItemIsSelectable, false);
-           } else {
-               it.key()->setAcceptedMouseButtons(Qt::LeftButton | Qt::RightButton | Qt::MidButton | Qt::XButton1
+    QHash<QGraphicsItem *, double>::iterator it = k->onionSkin.opacityMap.begin();
+    QString tool = k->tool->name();
+
+    if (tool.compare(tr("Object Selection")) == 0 || tool.compare(tr("Nodes Selection")) == 0) {
+        while (it != k->onionSkin.opacityMap.end()) {
+            if (it.value() != 1.0 || it.key()->toolTip().length() > 0) {
+                it.key()->setAcceptedMouseButtons(Qt::NoButton);
+                it.key()->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                it.key()->setFlag(QGraphicsItem::ItemIsMovable, false);
+            } else {
+                it.key()->setAcceptedMouseButtons(Qt::LeftButton | Qt::RightButton | Qt::MidButton | Qt::XButton1
                                                   | Qt::XButton2);
-           }
-           ++it;
+                if (tool.compare(tr("Object Selection")) == 0) {
+                    it.key()->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                } else {
+                    it.key()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    it.key()->setFlag(QGraphicsItem::ItemIsMovable, false);
+                }
+            }
+            ++it;
+        }
+    } else {
+        while (it != k->onionSkin.opacityMap.end()) {
+            it.key()->setAcceptedMouseButtons(Qt::NoButton);
+            it.key()->setFlag(QGraphicsItem::ItemIsSelectable, false);
+            it.key()->setFlag(QGraphicsItem::ItemIsMovable, false);
+            ++it;
+        }
     }
 }
 
@@ -1560,13 +1582,15 @@ void TupGraphicsScene::includeObject(QGraphicsItem *object, bool isPolyLine) // 
         if (layer) {
             TupFrame *frame = layer->frame(k->framePosition.frame);
             if (frame) {
-                int zLevel = frame->getTopZLevel();
+                // int zLevel = frame->getTopZLevel();
+                int zLevel = k->zLevel;
                 if (isPolyLine) // SQA: Polyline hack
                     zLevel--;
                 if (object) {
                     object->setOpacity(layer->opacity());
                     object->setZValue(zLevel);
                     addItem(object);
+                    k->zLevel++;
                 } else {
                     #ifdef K_DEBUG
                         QString msg = "TupGraphicsScene::includeObject() - Fatal Error: Graphic item is NULL!";

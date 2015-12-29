@@ -62,11 +62,20 @@ void NodesTool::init(TupGraphicsScene *scene)
     if (k->scene->selectedItems().count() > 0)
         k->scene->clearSelection();
     k->baseZValue = (2*ZLAYER_LIMIT) + (k->scene->scene()->layersCount() * ZLAYER_LIMIT); 
-    reset(k->scene);
+    // reset(k->scene);
 }
 
+/*
 void NodesTool::reset(TupGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[NodesTool::reset()]";
+        #else
+            T_FUNCINFOX("tools");
+        #endif
+    #endif
+
     int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
     int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
 
@@ -101,6 +110,7 @@ void NodesTool::reset(TupGraphicsScene *scene)
              }
     }
 }
+*/
 
 QStringList NodesTool::keys() const
 {
@@ -293,7 +303,7 @@ void NodesTool::itemResponse(const TupItemResponse *response)
             break;
             case TupProjectRequest::Ungroup:
             {
-                 reset(k->scene);
+                 // reset(k->scene);
                  if (item) {
                      k->nodeGroup = new TNodeGroup(item, k->scene, TNodeGroup::LineSelection, k->baseZValue);
                      k->nodeGroup->show();

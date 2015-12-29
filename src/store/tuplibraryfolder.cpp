@@ -408,8 +408,6 @@ bool TupLibraryFolder::renameObject(const QString &folder, const QString &oldId,
 
 bool TupLibraryFolder::renameFolder(const QString &oldId, const QString &newId)
 {
-    tError() << "TupLibraryFolder::renameFolder() - Renaming folder from " << oldId << " to " << newId;
-    
     TupLibraryFolder *folder = getFolder(oldId);
 
     if (folder) {

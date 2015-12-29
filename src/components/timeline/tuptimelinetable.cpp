@@ -181,14 +181,14 @@ TupTimeLineTable::TupTimeLineTable(int sceneIndex, QWidget *parent) : QTableWidg
     k->layerIndex = 0;
 
     k->ruler = new TupTimeLineRuler;
-    connect(k->ruler, SIGNAL(selectionChanged(int)), this, SLOT(frameSelectionFromRuler(int)));
+    connect(k->ruler, SIGNAL(headerSelectionChanged(int)), this, SLOT(frameSelectionFromRuler(int)));
 
     k->removingLayer = false;
     k->removingFrame = false;
 
     k->layerColumn = new TupTimeLineHeader;
     connect(k->layerColumn, SIGNAL(nameChanged(int, const QString &)), this, SIGNAL(layerNameChanged(int, const QString &)));
-    connect(k->layerColumn, SIGNAL(selectionChanged(int)), this, SLOT(frameSelectionFromLayerHeader(int)));
+    connect(k->layerColumn, SIGNAL(headerSelectionChanged(int)), this, SLOT(frameSelectionFromLayerHeader(int)));
     connect(k->layerColumn, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(visibilityChanged(int, bool)));
     connect(k->layerColumn, SIGNAL(sectionMoved(int, int, int)), this, SLOT(requestLayerMove(int, int, int)));
 

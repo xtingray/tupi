@@ -38,10 +38,12 @@
 
 // #include "tglobal.h"
 
-#if defined(QT_SHARED) || defined(QT_PLUGIN)
-#define T_CORE_EXPORT Q_DECL_EXPORT
-#else
-#define T_CORE_EXPORT
+#ifndef T_CORE_EXPORT
+  #if defined(QT_SHARED) || defined(QT_PLUGIN)
+    #define T_CORE_EXPORT Q_DECL_EXPORT
+  #else
+    #define T_CORE_EXPORT
+  #endif
 #endif
 
 #include <QFile>

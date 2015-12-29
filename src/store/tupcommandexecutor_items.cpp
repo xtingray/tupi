@@ -141,7 +141,6 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 #endif
                 return false;
             }
-
         } else { 
             TupBackground *bg = scene->background();
             if (bg) {
@@ -571,7 +570,7 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                 TupFrame *frame = layer->frame(framePosition);
                 if (frame) {
                     QString strItems = "";
-                    QList<QGraphicsItem *> items = frame->splitItemsGroup(position);
+                    QList<QGraphicsItem *> items = frame->splitGroup(position);
                     foreach (QGraphicsItem *item, items) {
                              if (frame->indexOf(item) != -1) {
                                  if (strItems.isEmpty())
@@ -619,7 +618,7 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
 
                 if (frame) {
                     QString strItems = "";
-                    QList<QGraphicsItem *> items = frame->splitItemsGroup(position);
+                    QList<QGraphicsItem *> items = frame->splitGroup(position);
                     foreach (QGraphicsItem *item, items) {
                              if (frame->indexOf(item) != -1) {
                                  if (strItems.isEmpty())
@@ -1146,10 +1145,10 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
                 tween->fromXml(xml);
 
                 if (itemType == TupLibraryObject::Item) {
-                    TupGraphicObject *item = frame->graphic(position);
-                    if (item) {
-                        item->setTween(tween);
-                        scene->addTweenObject(item);
+                    TupGraphicObject *object = frame->graphic(position);
+                    if (object) {
+                        object->setTween(tween);
+                        scene->addTweenObject(object);
                     } else {
                         #ifdef K_DEBUG
                             QString msg = "TupCommandExecutor::setTween() - Error: Invalid graphic index -> " + QString::number(position);

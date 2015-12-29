@@ -325,10 +325,6 @@ bool TupProject::moveScene(int position, int newPosition)
         return false;
     }
 
-    tError() << "TupProject::moveScene() - position: " << position;
-    tError() << "TupProject::moveScene() - newPosition: " << newPosition;
-    tError() << "TupProject::moveScene() - scenes count: " << k->scenes.count();
-
     TupScene *scene = k->scenes.takeAt(position);
     k->scenes.insert(newPosition, scene);
 

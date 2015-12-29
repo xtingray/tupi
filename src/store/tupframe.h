@@ -120,7 +120,7 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        QGraphicsItem *item(int position) const;
        
        int createItemGroup(int position, QList<int> group);
-       QList<QGraphicsItem *> splitItemsGroup(int position);
+       QList<QGraphicsItem *> splitGroup(int position);
              
        TupLayer *layer() const;
        TupScene *scene() const;
