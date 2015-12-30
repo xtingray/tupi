@@ -267,6 +267,8 @@ QCursor PencilTool::cursor() const
 
 void PencilTool::sceneResponse(const TupSceneResponse *event)
 {
+    Q_UNUSED(event);
+
     // if (event->action() == TupProjectRequest::Select)
     //     reset(k->scene);
 }

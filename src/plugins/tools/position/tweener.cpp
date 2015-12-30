@@ -396,6 +396,14 @@ void Tweener::setTweenPath()
 
 void Tweener::setSelection()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[Tweener::setSelection()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (k->mode == TupToolPlugin::Edit) {
         if (k->initFrame != k->scene->currentFrameIndex()) {
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentTween->initScene(),
@@ -417,17 +425,9 @@ void Tweener::setSelection()
 
     k->editMode = TupToolPlugin::Selection;
 
-    int bottomBoundary = (2*ZLAYER_LIMIT) + (k->scene->currentLayerIndex()*ZLAYER_LIMIT);
-    int topBoundary = bottomBoundary + ZLAYER_LIMIT; 
-
-    foreach (QGraphicsView * view, k->scene->views()) {
+    k->scene->enableItemsForSelection();
+    foreach (QGraphicsView *view, k->scene->views())
              view->setDragMode(QGraphicsView::RubberBandDrag);
-             foreach (QGraphicsItem *item, view->scene()->items()) {
-                      if ((item->zValue() >= bottomBoundary) && (item->zValue() < topBoundary) && (item->toolTip().length()==0)) 
-                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-             }
-    }
-
     // When Object selection is enabled, previous selection is set
     if (k->objects.size() > 0) {
         foreach (QGraphicsItem *item, k->objects) {

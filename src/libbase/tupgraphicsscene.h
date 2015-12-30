@@ -111,7 +111,8 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void mouseMoved(QGraphicsSceneMouseEvent *event);
         void mouseReleased(QGraphicsSceneMouseEvent *event);
 
-        virtual void aboutToMousePress();
+        void setSelectionRange();
+        void enableItemsForSelection();
 
         void includeObject(QGraphicsItem *object, bool isPolyLine = false);
 

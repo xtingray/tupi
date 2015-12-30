@@ -93,6 +93,8 @@ InkTool::~InkTool()
 
 void InkTool::init(TupGraphicsScene *scene)
 {
+    Q_UNUSED(scene);
+
     k->spacing = k->configurator->spacingValue();
 
     TCONFIG->beginGroup("PenParameters");

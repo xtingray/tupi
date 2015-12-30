@@ -277,7 +277,7 @@ void TupPaintAreaBase::mousePressEvent(QMouseEvent * event)
         return;
     }
 
-    k->scene->aboutToMousePress();
+    k->scene->setSelectionRange();
     QGraphicsView::mousePressEvent(event);
 }
 

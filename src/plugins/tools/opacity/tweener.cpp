@@ -325,9 +325,9 @@ void Tweener::setSelection()
 {
     k->editMode = TupToolPlugin::Selection;
 
+    /*
     int bottomBoundary = (2*ZLAYER_LIMIT) + (k->initLayer*ZLAYER_LIMIT);
     int topBoundary = bottomBoundary + ZLAYER_LIMIT;
-
     foreach (QGraphicsView *view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, view->scene()->items()) {
@@ -335,7 +335,11 @@ void Tweener::setSelection()
                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
              }
     }
+    */
 
+    k->scene->enableItemsForSelection();
+    foreach (QGraphicsView *view, k->scene->views())
+             view->setDragMode(QGraphicsView::RubberBandDrag);
     // When Object selection is enabled, previous selection is set
     if (k->objects.size() > 0) {
         foreach (QGraphicsItem *item, k->objects) {

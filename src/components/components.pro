@@ -14,3 +14,4 @@ SUBDIRS += scenes \
            paintarea \
            twitter \
            animation 
+SUBDIRS += debug
