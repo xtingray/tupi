@@ -40,6 +40,7 @@
 #include "tupabstractserializable.h"
 #include "tupsvgitem.h"
 #include "tupbackground.h"
+#include "tupgraphiclibraryitem.h"
 
 #include <QGraphicsScene>
 #include <QDomDocument>
@@ -92,7 +93,8 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        double opacity(); 
 
        TupFrame::FrameType type();
-       
+      
+       void addLibraryItem(const QString &id, TupGraphicLibraryItem *libraryItem);
        void addItem(const QString &id, QGraphicsItem *item);
        void removeImageItemFromFrame(const QString &id);
        void updateIdFromFrame(const QString &oldId, const QString &newId);

@@ -463,19 +463,8 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
         else
             k->onionSkin.accessMap.insert(item, false);
 
-        if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item)) {
-            group->setSelected(false);
-            if (frameType == TupFrame::Regular)
-                group->setOpacity(opacity * k->layerOnProcessOpacity);
-            else
-                group->setOpacity(opacity);
-
-            group->setZValue(k->zLevel);
-            k->zLevel++;
-
-            addItem(group);
-            return;
-        }
+        if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item))
+            group->recoverChilds();
 
         item->setSelected(false);
         if (frameType == TupFrame::Regular)

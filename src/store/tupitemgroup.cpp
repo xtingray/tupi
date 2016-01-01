@@ -36,12 +36,44 @@
 #include "tupitemgroup.h"
 #include "tupserializer.h"
 
-TupItemGroup::TupItemGroup(QGraphicsItem *parent) : QGraphicsItemGroup(parent)
+struct TupItemGroup::Private
+{
+    QList<QGraphicsItem *> children;
+};
+
+TupItemGroup::TupItemGroup(QGraphicsItem *parent) : QGraphicsItemGroup(parent), k(new Private)
 {
 }
 
 TupItemGroup::~TupItemGroup()
 {
+    delete k;
+}
+
+void TupItemGroup::addToGroup(QGraphicsItem *item)
+{
+    k->children << item;
+    QGraphicsItemGroup::addToGroup(item);
+}
+
+void TupItemGroup::recoverChilds()
+{
+    int total = k->children.count();
+    for(int i=0; i<total; i++) {
+        QGraphicsItem *item = k->children.at(i);
+        item->setZValue(i);
+
+        if (TupItemGroup *child = qgraphicsitem_cast<TupItemGroup *>(item))
+            child->recoverChilds();
+        
+        if (item->parentItem() != this)
+            item->setParentItem(this);
+    }
+}
+
+QList<QGraphicsItem *> TupItemGroup::childItems()
+{
+    return k->children;
 }
 
 void TupItemGroup::fromXml(const QString &)
@@ -51,12 +83,16 @@ void TupItemGroup::fromXml(const QString &)
 QDomElement TupItemGroup::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("group");
-    foreach (QGraphicsItem *item, childItems())
-             root.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(doc));
+    int total = k->children.count();
+    for(int i=0; i<total; i++) {
+        QGraphicsItem *item = k->children.at(i);
+        root.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(doc));
+    }
 
     QPointF point = this->scenePos();
     QString pos = "(" + QString::number(point.x()) + ", " + QString::number(point.y()) + ")";
     root.setAttribute("pos", pos);
+
     root.appendChild(TupSerializer::properties(this, doc));
     
     return root;

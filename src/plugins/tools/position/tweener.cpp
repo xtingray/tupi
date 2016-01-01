@@ -508,8 +508,8 @@ void Tweener::applyReset()
 
     if (k->path) {
         // if (k->initFrame == k->scene->currentFrameIndex())
-        if (k->path)
-            k->scene->removeItem(k->path);
+        // if (k->path)
+        k->scene->removeItem(k->path);
         k->isPathInScene = false;
         k->path = 0;
     }

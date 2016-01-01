@@ -39,7 +39,6 @@
 #include "tupitemfactory.h"
 #include "tupserializer.h"
 #include "tupgraphicobject.h"
-#include "tupgraphiclibraryitem.h"
 #include "tuppixmapitem.h"
 #include "tuplibrary.h"
 #include "tupitemgroup.h"
@@ -366,6 +365,19 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
     }
 
     return root;
+}
+
+void TupFrame::addLibraryItem(const QString &id, TupGraphicLibraryItem *libraryItem)
+{
+    QGraphicsItem *item = libraryItem->item();
+    if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item)) {
+        QDomDocument dom;
+        TupItemFactory itemFactory;
+        dom.appendChild(dynamic_cast<TupAbstractSerializable *>(group)->toXml(dom));
+        item = itemFactory.create(dom.toString());
+    } 
+
+    addItem(id, item);
 }
 
 void TupFrame::addItem(const QString &id, QGraphicsItem *item)

@@ -656,7 +656,7 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
                              TupGraphicLibraryItem *libraryItem = new TupGraphicLibraryItem(object);
                              int zLevel = frame->getTopZLevel();
                              libraryItem->setZValue(zLevel);
-                             frame->addItem(name, libraryItem);
+                             frame->addLibraryItem(name, libraryItem);
                         }
                         break;
                         case TupLibraryObject::Image:
