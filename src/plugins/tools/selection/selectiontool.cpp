@@ -181,6 +181,14 @@ QStringList SelectionTool::keys() const
 
 void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[SelectionTool::press()]";
+        #else
+            T_FUNCINFOX("tools");
+        #endif
+    #endif
+
     Q_UNUSED(brushManager);
 
     k->selectionFlag = false;
@@ -236,6 +244,14 @@ void SelectionTool::move(const TupInputDeviceInformation *input, TupBrushManager
 
 void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[SelectionTool::release()]";
+        #else
+            T_FUNCINFOX("tools");
+        #endif
+    #endif
+
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
