@@ -132,6 +132,7 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
 void TupPaintAreaBase::setBgColor(const QColor color)
 {
     k->bgcolor = color;
+    viewport()->update();
 }
 
 void TupPaintAreaBase::saveState()

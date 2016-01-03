@@ -202,7 +202,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     k->bgStatus = new TupBrushStatus(tr("Background Color"), QPixmap(THEME_DIR + "icons" + QDir::separator() + "background_color.png"), true);
     k->bgStatus->setTooltip(tr("Click here to change background color"));
     addPermanentWidget(k->bgStatus);
-    k->bgStatus->setColor(k->documentView->project()->bgColor());
+    k->bgStatus->setColor(k->documentView->projectBGColor());
 
     connect(k->bgStatus, SIGNAL(colorUpdated(const QColor)), this, SIGNAL(colorUpdated(const QColor)));
 

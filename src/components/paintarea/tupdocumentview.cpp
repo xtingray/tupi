@@ -2144,3 +2144,9 @@ void TupDocumentView::resetWorkSpaceTransformations()
     k->status->setRotationAngle("0");
     k->status->setZoomPercent("100");
 }
+
+QColor TupDocumentView::projectBGColor() const
+{
+    return k->project->bgColor();
+}
+
