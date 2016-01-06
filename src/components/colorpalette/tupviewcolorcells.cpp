@@ -101,6 +101,7 @@ TupViewColorCells::~TupViewColorCells()
 void TupViewColorCells::setupForm()
 {
     k->chooserPalette = new QComboBox(this);
+    k->chooserPalette->setStyleSheet("combobox-popup: 0;");
 
     k->containerPalette = new QStackedWidget(this);
     layout()->addWidget(k->chooserPalette);
@@ -199,7 +200,7 @@ void TupViewColorCells::readPaletteFile(const QString &file)
         addPalette(name, brushes, editable);
     } else {
         #ifdef K_DEBUG
-            QString msg = "TupViewColorCells::readPaletteFile() - Error while parse palette file: " + file;
+            QString msg = "TupViewColorCells::readPaletteFile() - Fatal error while parsing palette file: " + file;
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
@@ -211,6 +212,16 @@ void TupViewColorCells::readPaletteFile(const QString &file)
 
 void TupViewColorCells::addPalette(const QString & name, const QList<QBrush> & brushes, bool editable)
 {
+    /*
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupViewColorCells::addPalette()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+    */
+
     if (name == "Default Palette") {
         QList<QBrush>::ConstIterator it = brushes.begin();
 
@@ -349,7 +360,7 @@ void TupViewColorCells::addCurrentColor()
             || (k->currentColor.color().isValid() && palette->type() == TupCellsColor::Gradient)) {
             if (15 <= k->currentColor.style() && k->currentColor.style() < 18) {
                 palette = k->customGradientPalette;
-                k->chooserPalette->setCurrentIndex( k->chooserPalette->findText ( k->customGradientPalette->name()));
+                k->chooserPalette->setCurrentIndex(k->chooserPalette->findText(k->customGradientPalette->name()));
                 k->containerPalette->setCurrentWidget(k->customGradientPalette);
             } else {
                 palette = k->customColorPalette;

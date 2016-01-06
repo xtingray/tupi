@@ -375,8 +375,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         //     connect(animationTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         m_projectManager->undoModified();
-
-        // SQA: Check if this instruction is really required
         m_colorPalette->init();
 
         TCONFIG->beginGroup("PenParameters");

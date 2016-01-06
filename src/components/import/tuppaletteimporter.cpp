@@ -285,8 +285,18 @@ bool TupPaletteImporter::saveFile(const QString &path)
     }
 
     QString pathName = path + QDir::separator() + k->paletteName.replace(" ", "_") + ".tpal";
-
     QFile file(pathName);
+    if (file.exists()) {
+        #ifdef K_DEBUG
+            QString msg = "TupPaletteImporter::saveFile() - Warning: Palette file already exists! -> " + pathName;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tWarning() << msg;
+            #endif
+        #endif
+    }
+
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream ts(&file);
         ts << k->document->toString();

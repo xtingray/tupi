@@ -3973,8 +3973,8 @@ Please, rename the project&apos;s file</source>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="350"/>
-        <source>Save project &amp;as...</source>
-        <translation>Guardar projecto como...</translation>
+        <source>Save project as...</source>
+        <translation>Guardar proyecto como...</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="351"/>
@@ -4630,22 +4630,22 @@ Please, contact the animation server admin to get access.</source>
 <context>
     <name>TupPaintAreaBase</name>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="394"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="395"/>
         <source>No Scene!</source>
         <translation>No hay escena!</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="401"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="402"/>
         <source>Locked!</source>
         <translation>Bloqueado!</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="470"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="471"/>
         <source>No Frames!</source>
         <translation>No hay marcos!</translation>
     </message>
     <message>
-        <location filename="../src/libbase/tuppaintareabase.cpp" line="473"/>
+        <location filename="../src/libbase/tuppaintareabase.cpp" line="474"/>
         <source>No Layers!</source>
         <translation>No hay capas!</translation>
     </message>
