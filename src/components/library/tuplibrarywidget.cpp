@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tuplibrarywidget.h"
+#include "tuplayer.h"
 
 #define RETURN_IF_NOT_LIBRARY if (!k->library) return;
 
@@ -1085,23 +1086,42 @@ void TupLibraryWidget::importSvg(const QString &svgPath)
     }
 }
 
-void TupLibraryWidget::importBitmapArray()
+void TupLibraryWidget::verifyFramesAvailability(int filesTotal)
+{
+    TupScene *scene = k->project->scene(k->currentFrame.scene);
+    TupLayer *layer = scene->layer(k->currentFrame.layer);
+    int framesTotal = layer->framesCount();
+    int initFrame = k->currentFrame.frame;
+    int scope = initFrame + filesTotal;
+    if (scope > framesTotal) {
+        int limit = scope - framesTotal;
+        for (int i=framesTotal; i<scope; i++) {
+             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer,
+                                                                               i, TupProjectRequest::Add, tr("Frame %1").arg(i+1));
+             emit requestTriggered(&request);
+        }
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, initFrame,
+                                                                          TupProjectRequest::Select);
+        emit requestTriggered(&request);
+    }
+}
+
+void TupLibraryWidget::importBitmapSequence()
 {
     QString dir = getenv("HOME");
     QString path = QFileDialog::getExistingDirectory(this, tr("Choose the images directory..."), dir,
-                                                 QFileDialog::ShowDirsOnly
-                                                 | QFileDialog::DontResolveSymlinks);
+                                                     QFileDialog::ShowDirsOnly
+                                                     | QFileDialog::DontResolveSymlinks);
     if (path.isEmpty())
         return;
 
     QDir source(path); 
     QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
-    int size = photograms.size();
+    int filesTotal = photograms.size();
 
     // Ensuring to get only graphic files here. Check extensions! (PNG, JPG, GIF, XPM) 
-
     int imagesCounter = 0; 
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < filesTotal; ++i) {
          if (photograms.at(i).isFile()) {
              QString extension = photograms.at(i).suffix().toUpper();
              if (extension.compare("JPEG")==0 || extension.compare("JPG")==0 || extension.compare("PNG")==0 || extension.compare("GIF")==0 || 
@@ -1141,6 +1161,7 @@ void TupLibraryWidget::importBitmapArray()
         int answer = msgBox.exec();
 
         if (answer == QMessageBox::Ok) {
+            verifyFramesAvailability(filesTotal);
 
             QString directory = source.dirName();
             k->libraryTree->createFolder(directory);
@@ -1155,7 +1176,7 @@ void TupLibraryWidget::importBitmapArray()
             progressDialog.setFont(font);
             progressDialog.setLabelText(tr("Loading images..."));
             progressDialog.setCancelButton(0);
-            progressDialog.setRange(1, size);
+            progressDialog.setRange(1, filesTotal);
             progressDialog.show();
             int index = 1;
 
@@ -1165,7 +1186,8 @@ void TupLibraryWidget::importBitmapArray()
             TupLibraryFolder *folder = new TupLibraryFolder(directory, k->project);
             k->library->addFolder(folder);
 
-            for (int i = 0; i < size; ++i) {
+            int initFrame = k->currentFrame.frame;
+            for (int i = 0; i < filesTotal; ++i) {
                  if (photograms.at(i).isFile()) {
                      QString extension = photograms.at(i).suffix().toUpper();
                      if (extension.compare("JPEG")==0 || extension.compare("JPG")==0 || extension.compare("PNG")==0 || extension.compare("GIF")==0 ||
@@ -1176,7 +1198,6 @@ void TupLibraryWidget::importBitmapArray()
                          QFileInfo fileInfo(f);
 
                          if (f.open(QIODevice::ReadOnly)) {
-
                              QByteArray data = f.readAll();
                              f.close();
 
@@ -1196,18 +1217,11 @@ void TupLibraryWidget::importBitmapArray()
                              }
                            
                              TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, symName,
-                                                                          TupLibraryObject::Image, k->project->spaceContext(), data, directory);
+                                                         TupLibraryObject::Image, k->project->spaceContext(), data, directory);
                              emit requestTriggered(&request);
-
-                             if (i < photograms.size()-1 && imagesCounter > 1) {
-                                 TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
-                                                                              k->currentFrame.frame + 1, TupProjectRequest::Add, tr("Frame %1").arg(k->currentFrame.frame + 2));
-                                 emit requestTriggered(&request);
-
-                                 request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
-                                                             TupProjectRequest::Select);
-                                 emit requestTriggered(&request);
-                             }
+                             request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
+                                                                             TupProjectRequest::Select);
+                             emit requestTriggered(&request);
 
                              progressDialog.setLabelText(tr("Loading image #%1").arg(index));
                              progressDialog.setValue(index);
@@ -1219,17 +1233,19 @@ void TupLibraryWidget::importBitmapArray()
                          }
                      }
                  }
-             }
+            }
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, initFrame,
+                                                                              TupProjectRequest::Select);
+            emit requestTriggered(&request);
 
-             QApplication::restoreOverrideCursor();
-
+            QApplication::restoreOverrideCursor();
         }
     } else {
         TOsd::self()->display(tr("Error"), tr("No image files were found.<br/>Please, try another directory"), TOsd::Error);
     }
 }
 
-void TupLibraryWidget::importSvgArray() 
+void TupLibraryWidget::importSvgSequence() 
 {
     QDesktopWidget desktop;
     QString dir = getenv("HOME");
@@ -1241,11 +1257,11 @@ void TupLibraryWidget::importSvgArray()
 
     QDir source(path); 
     QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
-    int size = photograms.size();
+    int filesTotal = photograms.size();
 
     // Ensuring to get only SVG files here. Check extension! (SVG)
     int svgCounter = 0;
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < filesTotal; ++i) {
          if (photograms.at(i).isFile()) {
              QString extension = photograms.at(i).suffix().toUpper();
              if (extension.compare("SVG")==0)
@@ -1274,6 +1290,7 @@ void TupLibraryWidget::importSvgArray()
         int answer = msgBox.exec();
 
         if (answer == QMessageBox::Ok) {
+            verifyFramesAvailability(filesTotal);
             QString directory = source.dirName();
             k->libraryTree->createFolder(directory);
 
@@ -1286,7 +1303,7 @@ void TupLibraryWidget::importSvgArray()
             progressDialog.setFont(font);
             progressDialog.setLabelText(tr("Loading SVG files..."));
             progressDialog.setCancelButton(0);
-            progressDialog.setRange(1, size);
+            progressDialog.setRange(1, filesTotal);
             progressDialog.show();
             int index = 1;
 
@@ -1296,7 +1313,8 @@ void TupLibraryWidget::importSvgArray()
             TupLibraryFolder *folder = new TupLibraryFolder(directory, k->project);
             k->library->addFolder(folder);
 
-            for (int i = 0; i < size; ++i) {
+            int initFrame = k->currentFrame.frame;
+            for (int i = 0; i < filesTotal; ++i) {
                  if (photograms.at(i).isFile()) {
                      QString extension = photograms.at(i).suffix().toUpper();
                      if (extension.compare("SVG")==0) {
@@ -1311,17 +1329,9 @@ void TupLibraryWidget::importSvgArray()
                              TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, symName,
                                                                                        TupLibraryObject::Svg, k->project->spaceContext(), data, directory);
                              emit requestTriggered(&request);
-
-                             if (i < photograms.size()-1 && svgCounter > 1) {
-
-                                 TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
-                                                                              k->currentFrame.frame + 1, TupProjectRequest::Add, tr("Frame %1").arg(k->currentFrame.frame + 2));
-                                 emit requestTriggered(&request);
-
-                                 request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
-                                                             TupProjectRequest::Select);
-                                 emit requestTriggered(&request);
-                             }
+                             request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
+                                                                             TupProjectRequest::Select);
+                             emit requestTriggered(&request);
 
                              progressDialog.setLabelText(tr("Loading SVG file #%1").arg(index));
                              progressDialog.setValue(index);
@@ -1334,10 +1344,11 @@ void TupLibraryWidget::importSvgArray()
                          }
                      }
                  }
-             }
-
-             QApplication::restoreOverrideCursor();
-
+            }
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, initFrame,
+                                                                              TupProjectRequest::Select);
+            emit requestTriggered(&request);
+            QApplication::restoreOverrideCursor();
         }
     } else {
         TOsd::self()->display(tr("Error"), tr("No SVG files were found.<br/>Please, try another directory"), TOsd::Error);
@@ -1555,7 +1566,7 @@ void TupLibraryWidget::importLibraryObject()
     }
 
     if (option.compare(tr("Image Sequence")) == 0) {
-        importBitmapArray();
+        importBitmapSequence();
         return;
     }
 
@@ -1565,7 +1576,7 @@ void TupLibraryWidget::importLibraryObject()
     }
 
     if (option.compare(tr("Svg Sequence")) == 0) {
-        importSvgArray();
+        importSvgSequence();
         return;
     }
 
