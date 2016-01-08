@@ -1219,9 +1219,11 @@ void TupLibraryWidget::importBitmapSequence()
                              TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, symName,
                                                          TupLibraryObject::Image, k->project->spaceContext(), data, directory);
                              emit requestTriggered(&request);
-                             request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
-                                                                             TupProjectRequest::Select);
-                             emit requestTriggered(&request);
+                             if (i < filesTotal-1) {
+                                 request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
+                                                                                 TupProjectRequest::Select);
+                                 emit requestTriggered(&request);
+                             }
 
                              progressDialog.setLabelText(tr("Loading image #%1").arg(index));
                              progressDialog.setValue(index);
@@ -1327,11 +1329,13 @@ void TupLibraryWidget::importSvgSequence()
                              f.close();
 
                              TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, symName,
-                                                                                       TupLibraryObject::Svg, k->project->spaceContext(), data, directory);
+                                                                            TupLibraryObject::Svg, k->project->spaceContext(), data, directory);
                              emit requestTriggered(&request);
-                             request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
-                                                                             TupProjectRequest::Select);
-                             emit requestTriggered(&request);
+                             if (i < filesTotal-1) {
+                                 request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
+                                                                                 TupProjectRequest::Select);
+                                 emit requestTriggered(&request);
+                             }
 
                              progressDialog.setLabelText(tr("Loading SVG file #%1").arg(index));
                              progressDialog.setValue(index);
