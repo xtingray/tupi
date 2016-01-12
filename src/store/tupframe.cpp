@@ -75,6 +75,7 @@ struct TupFrame::Private
 
 TupFrame::TupFrame() : k(new Private)
 {
+    k->type = Regular;
     k->isLocked = false;
     k->isVisible = true;
 }
@@ -212,7 +213,7 @@ void TupFrame::fromXml(const QString &xml)
     #endif
 
     QDomDocument document;
-    if (! document.setContent(xml)) {    
+    if (!document.setContent(xml)) {    
         #ifdef K_DEBUG
             QString msg = "TupFrame::fromXml() - File corrupted!";
             #ifdef Q_OS_WIN
@@ -242,7 +243,6 @@ void TupFrame::fromXml(const QString &xml)
         setOpacity(root.attribute("opacity", "1.0").toDouble());
 
     QDomNode n = root.firstChild();
-
     while (!n.isNull()) {
            QDomElement e = n.toElement();
 
@@ -286,7 +286,6 @@ void TupFrame::fromXml(const QString &xml)
                               createItem(point, newDoc);
                               last = k->graphics.at(k->graphics.size()-1);
                           }
-
                           n2 = n2.nextSibling();
                    }
                } else if (e.tagName() == "svg") {
@@ -318,7 +317,6 @@ void TupFrame::fromXml(const QString &xml)
                                          svg->setTween(tweener);
                                          scene()->addTweenObject(svg);
                                      }
-
                                      n2 = n2.nextSibling(); 
                               }
                           } else {                              
@@ -333,7 +331,6 @@ void TupFrame::fromXml(const QString &xml)
                           }
                } 
            }
-        
            n = n.nextSibling();
     }
 }

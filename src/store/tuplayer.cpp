@@ -49,6 +49,10 @@ struct TupLayer::Private
     double opacity;
 };
 
+TupLayer::TupLayer() : k(new Private)
+{
+}
+
 TupLayer::TupLayer(TupScene *parent, int index) : QObject(parent), k(new Private)
 {
     k->index = index;

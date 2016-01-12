@@ -62,6 +62,7 @@ class TUPI_EXPORT TupLayer : public QObject, public TupAbstractSerializable
     Q_OBJECT
 
     public:
+        TupLayer();
         TupLayer(TupScene *parent, int index = 0);
         ~TupLayer();
         

@@ -77,6 +77,7 @@ class TUPI_EXPORT TupScene : public QObject, public TupAbstractSerializable
     Q_OBJECT
 
     public:
+        TupScene();
         TupScene(TupProject *parent, const QSize dimension, const QColor bgColor);
         ~TupScene();
 

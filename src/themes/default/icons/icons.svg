@@ -1692,16 +1692,6 @@
          id="stop3962-6" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3958-6"
-       id="linearGradient6887"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.5182036,0,0,1.5182036,-22.242437,15.901589)"
-       x1="0.34375"
-       y1="4.9403062"
-       x2="3.3339467"
-       y2="2.8307009" />
-    <linearGradient
        id="linearGradient3931-6-7">
       <stop
          style="stop-color:#008700;stop-opacity:1;"
@@ -1811,7 +1801,7 @@
        xlink:href="#linearGradient3958-6"
        id="linearGradient11023"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.5182036,0,0,1.5182036,-22.242437,15.901589)"
+       gradientTransform="matrix(0,-13.023103,-13.023103,0,709.43907,-91.13781)"
        x1="0.34375"
        y1="4.9403062"
        x2="3.3339467"
@@ -2739,9 +2729,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.3463542"
-     inkscape:cx="88.241795"
-     inkscape:cy="1118.2751"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="642.983"
+     inkscape:cy="1185.276"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2750,7 +2740,7 @@
      inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
-     showguides="true"
+     showguides="false"
      inkscape:guide-bbox="true" />
   <metadata
      id="metadata7">
@@ -2760,7 +2750,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -12295,6 +12285,81 @@
              style="fill:#ffffff;fill-opacity:0.48538011;stroke:none" />
         </g>
       </g>
+    </g>
+    <g
+       id="g6233"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/src/images/frames.png"
+       inkscape:export-xdpi="750"
+       inkscape:export-ydpi="750">
+      <rect
+         y="-159.8526"
+         x="649.3634"
+         height="60"
+         width="60"
+         id="rect5936"
+         style="fill:#ffffff;fill-opacity:0;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="597.56848"
+         inkscape:export-xdpi="597.56848"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/new.png"
+         sodipodi:nodetypes="ccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path3121-2-1-3"
+         d="m 694.61912,-133.79248 c -0.54273,-2.20445 -3.01263,-0.19884 -2.79219,1.56467 l -0.80084,25.90893 -35.62327,0.42873 0.0515,-27.62473 35.98,-1.83351 c 2.10268,-0.33909 0.27947,-2.44795 -1.48402,-2.99058 l -37.58319,1.2661 c 0,0 -0.48165,34.43376 -0.53192,34.21757 l 42.78293,0.68752 z"
+         style="fill:#008700;fill-opacity:1;stroke:none" />
+      <g
+         transform="translate(-0.58865558,0.4639779)"
+         id="g6111">
+        <path
+           style="fill:#008700;fill-opacity:1;stroke:none"
+           d="m 661.77245,-136.225 0.0515,-7.62473 35.98,-1.83351 c 2.10268,-0.33909 0.27947,-2.44795 -1.48402,-2.99058 l -37.58319,1.2661 c 0,0 -0.48165,12.68376 -0.53192,12.46757 z"
+           id="path3121-2-1-3-10"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccc"
+           inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/new.png"
+           inkscape:export-xdpi="597.56848"
+           inkscape:export-ydpi="597.56848" />
+        <path
+           style="fill:#008700;fill-opacity:1;stroke:none"
+           d="m 701.16536,-144.07136 c -0.54273,-2.20445 -3.01263,-0.19884 -2.79219,1.56467 l -0.80084,25.90893 -3.52503,0.21742 -1.66587,3.24616 8.78293,0.68752 z"
+           id="path3121-2-1-3-10-0"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccc"
+           inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/new.png"
+           inkscape:export-xdpi="597.56848"
+           inkscape:export-ydpi="597.56848" />
+      </g>
+      <g
+         id="g6111-9"
+         transform="translate(5.7262522,-8.8635981)">
+        <path
+           style="fill:#008700;fill-opacity:1;stroke:none"
+           d="m 661.77245,-136.225 0.0515,-7.62473 35.98,-1.83351 c 2.10268,-0.33909 0.27947,-2.44795 -1.48402,-2.99058 l -37.58319,1.2661 c 0,0 -0.48165,12.68376 -0.53192,12.46757 z"
+           id="path3121-2-1-3-10-09"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccc"
+           inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/new.png"
+           inkscape:export-xdpi="597.56848"
+           inkscape:export-ydpi="597.56848" />
+        <path
+           style="fill:#008700;fill-opacity:1;stroke:none"
+           d="m 701.16536,-144.07136 c -0.54273,-2.20445 -3.01263,-0.19884 -2.79219,1.56467 l -0.80084,25.90893 -3.52503,0.21742 -1.66587,3.24616 8.78293,0.68752 z"
+           id="path3121-2-1-3-10-0-2"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccc"
+           inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/new.png"
+           inkscape:export-xdpi="597.56848"
+           inkscape:export-ydpi="597.56848" />
+      </g>
+      <path
+         inkscape:export-ydpi="597.56848"
+         inkscape:export-xdpi="597.56848"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/new.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="rect3927-3-4-5"
+         d="m 692.81843,-103.34697 -1.93311,-33.16822 -37.84841,0.40702 -0.61041,32.35428 z"
+         style="fill:url(#linearGradient11023);fill-opacity:1;stroke:none" />
     </g>
   </g>
 </svg>

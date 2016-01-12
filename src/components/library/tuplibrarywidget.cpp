@@ -1094,7 +1094,7 @@ void TupLibraryWidget::verifyFramesAvailability(int filesTotal)
     int initFrame = k->currentFrame.frame;
     int scope = initFrame + filesTotal;
     if (scope > framesTotal) {
-        int limit = scope - framesTotal;
+        // int limit = scope - framesTotal;
         for (int i=framesTotal; i<scope; i++) {
              TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer,
                                                                                i, TupProjectRequest::Add, tr("Frame %1").arg(i+1));
