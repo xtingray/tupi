@@ -58,14 +58,6 @@ struct TupScene::Private
     QList<TupSvgItem *> tweeningSvgObjects;
 };
 
-TupScene::TupScene(const QSize dimension, const QColor bgColor) : k(new Private)
-{
-    k->dimension = dimension;
-    k->bgColor = bgColor;
-    k->layerCount = 0;
-    k->background = new TupBackground(this, dimension, bgColor);
-}
-
 TupScene::TupScene(TupProject *parent, const QSize dimension, const QColor bgColor) : QObject(parent), k(new Private)
 {
     k->dimension = dimension;
