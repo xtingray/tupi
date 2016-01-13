@@ -1092,14 +1092,18 @@ bool TupFrame::removeSvgAt(int position)
 QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loaded)
 {
     TupItemFactory itemFactory;
-    itemFactory.setLibrary(project()->library());
+    TupLibrary *library = project()->library();
+    if (library)
+        itemFactory.setLibrary(library);
     QGraphicsItem *graphicItem = itemFactory.create(xml);
 
     if (graphicItem) {
         graphicItem->setPos(coords);
         QString id = "path";
-        if (itemFactory.type() == TupItemFactory::Library)
-            id = itemFactory.itemID(xml);
+        if (library) {
+            if (itemFactory.type() == TupItemFactory::Library)
+                id = itemFactory.itemID(xml);
+        }
 
         addItem(id, graphicItem);
 
