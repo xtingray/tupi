@@ -231,7 +231,7 @@ void TupFrame::fromXml(const QString &xml)
     }
 
     QDomElement root = document.documentElement();
-    setFrameName(root.attribute("name", ""));
+    setFrameName(root.attribute("name", tr("Frame")));
 
     if (k->type == DynamicBg) {
         setDynamicDirection(root.attribute("direction", "0"));
@@ -1092,6 +1092,7 @@ bool TupFrame::removeSvgAt(int position)
 QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loaded)
 {
     TupItemFactory itemFactory;
+    # SQA: Refactor the code related to the library variable within this class
     TupLibrary *library = project()->library();
     if (library)
         itemFactory.setLibrary(library);
