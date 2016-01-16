@@ -1092,7 +1092,7 @@ bool TupFrame::removeSvgAt(int position)
 QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loaded)
 {
     TupItemFactory itemFactory;
-    # SQA: Refactor the code related to the library variable within this class
+    // SQA: Refactor the code related to the library variable within this class
     TupLibrary *library = project()->library();
     if (library)
         itemFactory.setLibrary(library);
