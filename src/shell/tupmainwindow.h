@@ -115,6 +115,7 @@ class TupMainWindow : public TabbedMainWindow
              Animation = 0x01,
              Player = 0x02,
              News = 0x04,
+             Play = 0x08,
              All = Animation | Player | News
         };
 

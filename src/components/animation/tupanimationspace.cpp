@@ -111,6 +111,9 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_Down:
 
             break;
+            case Qt::Key_Return:
+                  emit newPerspective(0);
+            break;
             case Qt::Key_1:
                   if (event->modifiers() == Qt::ControlModifier)
                       emit newPerspective(0);

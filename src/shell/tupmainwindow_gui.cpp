@@ -504,17 +504,21 @@ void TupMainWindow::changePerspective(QAction *action)
     // Animation or Player perspective
     if (perspective == Animation || perspective == Player) {
         setCurrentTab(perspective - 1);
-    } else {
-        if (perspective == News) // News perspective
-            setCurrentTab(2);
-    }
+    } else if (perspective == News) { // News perspective
+               setCurrentTab(2);
+    } 
 
     action->setChecked(true);
 }
 
 void TupMainWindow::changePerspective(int index)
 {
-    setCurrentTab(index);
+    if (index == 4) {
+        setCurrentTab(1);
+        cameraWidget->doPlay();
+    } else {
+        setCurrentTab(index);
+    }
 }
 
 void TupMainWindow::setUndoRedoActions()
