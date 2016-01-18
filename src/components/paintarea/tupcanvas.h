@@ -41,7 +41,7 @@
 #include "tapplication.h"
 #include "tupgraphicsscene.h"
 #include "tupcanvasview.h"
-#include "tupexposuredialog.h"
+// #include "tupexposuredialog.h"
 #include "tuptoolsdialog.h"
 #include "tuponionopacitydialog.h"
 #include "tuppendialog.h"
@@ -86,7 +86,7 @@ class TUPI_EXPORT TupCanvas : public QFrame
                   TupBrushManager *brushManager = 0, bool isNetworked = false, const QStringList &onLineUsers = QStringList());
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
-        void updateOnLineUsers(const QStringList &onLineUsers);
+        // void updateOnLineUsers(const QStringList &onLineUsers);
 
    protected:
         void closeEvent(QCloseEvent *event);
@@ -109,7 +109,7 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void penProperties();
         void opacityDialog();
         void setOnionOpacity(double opacity);
-        void exposureDialog();
+        // void exposureDialog();
 
         void oneFrameBack();
         void oneFrameForward();
@@ -118,7 +118,7 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void wakeUpDeleteSelection();
         void wakeUpZoomIn();
         void wakeUpZoomOut();
-        void wakeUpShift();
+        // void wakeUpShift();
 
         void undo();
         void redo();
@@ -126,13 +126,13 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void updateSketchMenuState();
         void updateSelectionMenuState();
         void updateMenuStates();
-        void showInfoWidget();
-        void hideInfoWidget();
+        // void showInfoWidget();
+        // void hideInfoWidget();
 
-        void updateExposureDialogState();
-        void createScene();
-        void createLayer(int sceneIndex, int layerIndex);
-        void createFrame(int sceneIndex, int layerIndex, int layersCount, int frameIndex);
+        // void updateExposureDialogState();
+        // void createScene();
+        // void createLayer(int sceneIndex, int layerIndex);
+        // void createFrame(int sceneIndex, int layerIndex, int layersCount, int frameIndex);
 
    signals:
         void requestTriggered(const TupProjectRequest *event);
@@ -143,7 +143,7 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void updateZoomFactorFromFullScreen(qreal factor);
         void callAction(int menu, int index);
         void goToFrame(int frame, int layer, int scene);
-        void goToScene(int scene);
+        // void goToScene(int scene);
         void closeSketchMenu();
         void closeSelectionMenu();
         void closePenPropertiesMenu();

@@ -48,12 +48,12 @@ struct TupCanvas::Private
     bool sketchMenuIsOpen;
     bool selectionMenuIsOpen;
     bool propertiesMenuIsOpen;
-    bool exposureDialogIsOpen;
+    // bool exposureDialogIsOpen;
     UserHand hand;
     // TupInfoWidget *display;
     bool isNetworked;
     QStringList onLineUsers;
-    TupExposureDialog *exposureDialog;
+    // TupExposureDialog *exposureDialog;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
@@ -87,7 +87,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     k->sketchMenuIsOpen = false;
     k->selectionMenuIsOpen = false;
     k->propertiesMenuIsOpen = false;
-    k->exposureDialogIsOpen = false;
+    // k->exposureDialogIsOpen = false;
 
     graphicsView = new TupCanvasView(this, screenSize, k->size, project->bgColor());
     connect(graphicsView, SIGNAL(rightClick()), this, SIGNAL(rightClick()));
@@ -129,17 +129,21 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     zoomOut->setToolTip(tr("Zoom Out"));
     connect(zoomOut, SIGNAL(clicked()), this, SLOT(wakeUpZoomOut()));
 
+    /*
     TImageButton *shift = new TImageButton(QPixmap(THEME_DIR + "icons/hand_big.png"), 60, this, true);
     shift->setToolTip(tr("Shift"));
     connect(shift, SIGNAL(clicked()), this, SLOT(wakeUpShift()));
+    */
 
     TImageButton *penProperties = new TImageButton(QPixmap(THEME_DIR + "icons/color_palette_big.png"), 60, this, true);
     penProperties->setToolTip(tr("Pen Properties"));
     connect(penProperties, SIGNAL(clicked()), this, SLOT(penProperties()));
 
+    /*
     TImageButton *exposure = new TImageButton(QPixmap(THEME_DIR + "icons/exposure_sheet_big.png"), 60, this, true);
     exposure->setToolTip(tr("Exposure Sheet"));
     connect(exposure, SIGNAL(clicked()), this, SLOT(exposureDialog()));
+    */
 
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -154,9 +158,9 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     controls->addWidget(trash);
     controls->addWidget(zoomIn);
     controls->addWidget(zoomOut);
-    controls->addWidget(shift);
+    // controls->addWidget(shift);
     controls->addWidget(penProperties);
-    controls->addWidget(exposure);
+    // controls->addWidget(exposure);
 
     QBoxLayout *infoLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     infoLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -324,9 +328,9 @@ void TupCanvas::penProperties()
         dialog->show();
 
         if (k->hand == Right)
-            dialog->move(72, 610);
+            dialog->move(72, 542);
         else
-            dialog->move(1182, 610);
+            dialog->move(1182, 542);
 
         k->propertiesMenuIsOpen = true;
     } else {
@@ -374,6 +378,7 @@ void TupCanvas::setOnionOpacity(double opacity)
     emit updateOnionOpacityFromFullScreen(opacity); 
 }
 
+/*
 void TupCanvas::exposureDialog()
 {
     updateMenuStates();
@@ -396,6 +401,7 @@ void TupCanvas::exposureDialog()
     k->exposureDialog->move((int) (desktop.screenGeometry().width() - k->exposureDialog->width())/2 ,
                         (int) (desktop.screenGeometry().height() - k->exposureDialog->height())/2);
 }
+*/
 
 void TupCanvas::oneFrameBack()
 {
@@ -525,11 +531,13 @@ void TupCanvas::wakeUpZoomOut()
     emit updateZoomFactorFromFullScreen(0.7);
 }
 
+/*
 void TupCanvas::wakeUpShift()
 {
     updateMenuStates();
     emit callAction(TupToolPlugin::ZoomMenu, TupToolPlugin::ShiftTool);
 }
+*/
 
 void TupCanvas::undo()
 {
@@ -580,6 +588,7 @@ void TupCanvas::updateMenuStates()
     }
 }
 
+/*
 void TupCanvas::showInfoWidget()
 {
     // k->display->show();
@@ -601,7 +610,9 @@ void TupCanvas::updateExposureDialogState()
 {
     k->exposureDialogIsOpen = false;
 }
+*/
 
+/*
 void TupCanvas::createScene()
 {
     int sceneIndex = k->project->scenesCount();
@@ -648,3 +659,5 @@ void TupCanvas::createFrame(int sceneIndex, int layerIndex, int layersCount, int
     // emit requestTriggered(&request);
     emit localRequestTriggered(&request);
 }
+
+*/

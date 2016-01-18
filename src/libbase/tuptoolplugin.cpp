@@ -252,12 +252,12 @@ QPair<int, int> TupToolPlugin::setKeyAction(int key, Qt::KeyboardModifiers modif
                  else
                      tool = TupToolPlugin::ZoomInTool;
             break;
-            */
 
             case Qt::Key_H:
                  menu = TupToolPlugin::ZoomMenu;
                  tool = TupToolPlugin::ShiftTool;
             break;
+            */
 
             case Qt::Key_Right:
                  menu = TupToolPlugin::Arrows;

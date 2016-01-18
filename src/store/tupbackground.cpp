@@ -297,3 +297,13 @@ int TupBackground::dyanmicShift()
     return dynamicBg->dynamicShift();
 }
 
+TupScene * TupBackground::scene()
+{
+    return static_cast<TupScene *>(parent());
+}
+
+TupProject * TupBackground::project()
+{
+    return scene()->project();
+}
+

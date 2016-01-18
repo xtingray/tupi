@@ -56,8 +56,8 @@ TupLayer::TupLayer() : k(new Private)
 }
 */
 
-// TupLayer::TupLayer(TupScene *parent, int index) : QObject(parent), k(new Private)
 TupLayer::TupLayer(TupScene *scene, int index) : k(new Private)
+// TupLayer::TupLayer(TupScene *parent, int index) : QObject(parent), k(new Private)
 {
     k->scene = scene;
     k->index = index;
@@ -363,8 +363,8 @@ QDomElement TupLayer::toXml(QDomDocument &doc) const
 
 TupScene *TupLayer::scene() const
 {
-    // return static_cast<TupScene *>(parent());
     return k->scene;
+    // return static_cast<TupScene *>(parent());
 }
 
 TupProject *TupLayer::project() const

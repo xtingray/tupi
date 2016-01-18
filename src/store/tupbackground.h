@@ -74,6 +74,8 @@ class TUPI_EXPORT TupBackground : public QObject, public TupAbstractSerializable
         double dynamicOpacity();
         void setStaticOpacity(double opacity);
         double staticOpacity();
+        TupScene * scene();
+        TupProject * project();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

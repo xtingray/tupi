@@ -1093,9 +1093,11 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
 {
     TupItemFactory itemFactory;
     // SQA: Refactor the code related to the library variable within this class
+
     TupLibrary *library = project()->library();
     if (library)
         itemFactory.setLibrary(library);
+
     QGraphicsItem *graphicItem = itemFactory.create(xml);
 
     if (graphicItem) {
@@ -1108,9 +1110,12 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
 
         addItem(id, graphicItem);
 
-        if (loaded)
-            TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), k->graphics.size() - 1, 
-                                         coords, TupLibraryObject::Item, xml, project());
+        if (k->type == Regular) {
+            if (loaded)
+                TupProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), k->graphics.size() - 1, 
+                                             coords, TupLibraryObject::Item, xml, project());
+        }
+
         return graphicItem;
     }
 
@@ -1343,7 +1348,11 @@ TupScene *TupFrame::scene() const
 
 TupProject *TupFrame::project() const
 {
-    return layer()->project();
+    if (k->type == Regular)
+        return layer()->project();
+
+    TupBackground *bg = static_cast<TupBackground *>(parent());
+    return bg->project();
 }
 
 int TupFrame::graphicItemsCount()

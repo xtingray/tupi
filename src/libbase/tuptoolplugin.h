@@ -67,7 +67,7 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
         enum SelectTools { InvalidSelection = -1, NodesTool = 0, ObjectsTool };
         enum FillTools { InvalidFill = -1, InsideTool = 0, ContourTool };
         // enum ViewTools { InvalidView = -1, ZoomInTool = 0, ZoomOutTool, ShiftTool };
-        enum ViewTools { InvalidView = -1, ShiftTool };
+        // enum ViewTools { InvalidView = -1, ShiftTool };
         enum ColorTools { InvalidColor = -1, ColorTool = 0 };
 
         enum Mode { Add = 1, Edit, View };

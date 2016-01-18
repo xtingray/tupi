@@ -1563,7 +1563,7 @@ void TupDocumentView::showFullScreen()
     connect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
 
     connect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
-    connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
+    // connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
 }
 
 void TupDocumentView::updatePenThickness(int size) 
@@ -1708,8 +1708,8 @@ void TupDocumentView::updateUsersOnLine(const QString &login, int state)
         k->onLineUsers.removeAt(index); 
     }
 
-    if (k->fullScreenOn)
-        k->fullScreen->updateOnLineUsers(k->onLineUsers);
+    // if (k->fullScreenOn)
+    //     k->fullScreen->updateOnLineUsers(k->onLineUsers);
 }
 
 // SQA: This method must support multi-user notifications (pending)
