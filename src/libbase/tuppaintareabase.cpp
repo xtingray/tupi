@@ -98,7 +98,6 @@ struct TupPaintAreaBase::Private
     QPen greenThinPen;
     QPen blackPen;
     bool spaceBar;
-    bool moveEnabled;
 
     QPoint initPoint;
     QPoint centerPoint;
@@ -121,7 +120,6 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     k->actionSafeAreaFlag = false;
     k->angle = 0;
     k->spaceBar = false;
-    k->moveEnabled = false;
 
     k->rotator = new TupPaintAreaRotator(this, this);
     k->drawingRect = QRectF(QPointF(0, 0), dimension);
@@ -286,12 +284,6 @@ void TupPaintAreaBase::mousePressEvent(QMouseEvent * event)
         return;
     }
 
-    if (k->spaceBar) {
-        k->initPoint = mapToScene(event->pos()).toPoint();
-        k->moveEnabled = true;
-        return;
-    }
-
     k->scene->setSelectionRange();
     QGraphicsView::mousePressEvent(event);
 }
@@ -311,10 +303,12 @@ void TupPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
         return;
     }
 
-    if (k->moveEnabled) {
-        QPoint point = mapToScene(event->pos()).toPoint();
+    QPoint point = mapToScene(event->pos()).toPoint();
+    if (k->spaceBar) {
         updateCenter(point);
         return;
+    } else {
+        k->initPoint = point;
     }
 
     // Rotate WorkSpace
@@ -353,11 +347,6 @@ void TupPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
 void TupPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
-
-    if (k->spaceBar) {
-        k->moveEnabled = false;
-        return;
-    }
 
     if (! k->scene->mouseGrabberItem() && k->scene->isDrawing()) { // HACK
         QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseRelease);

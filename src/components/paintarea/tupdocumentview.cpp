@@ -1529,7 +1529,6 @@ void TupDocumentView::showFullScreen()
     int screenH = desktop.screenGeometry().height();
 
     k->cacheScaleFactor = k->nodesScaleFactor;
-
     qreal scaleFactor = 1;
 
     QSize projectSize = k->project->dimension();
@@ -1548,7 +1547,6 @@ void TupDocumentView::showFullScreen()
     if (toolName.compare(tr("Shift")) == 0)
         k->currentTool->setActiveView("FULL_SCREEN");
 
-    k->fullScreen->showFullScreen();
     k->nodesScaleFactor = 1;
     updateNodesScale(scaleFactor);
 
@@ -1561,9 +1559,12 @@ void TupDocumentView::showFullScreen()
     connect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
     connect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
     connect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
-
+    connect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
     connect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
     // connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
+    connect(k->fullScreen, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
+
+    k->fullScreen->showFullScreen();
 }
 
 void TupDocumentView::updatePenThickness(int size) 
@@ -1590,9 +1591,9 @@ void TupDocumentView::closeFullScreen()
         disconnect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
         disconnect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
         disconnect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
-
         disconnect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
-        disconnect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
+        // disconnect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
+        disconnect(k->fullScreen, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
         k->fullScreen->close();
         k->fullScreenOn = false;

@@ -48,12 +48,9 @@ struct TupCanvas::Private
     bool sketchMenuIsOpen;
     bool selectionMenuIsOpen;
     bool propertiesMenuIsOpen;
-    // bool exposureDialogIsOpen;
     UserHand hand;
-    // TupInfoWidget *display;
     bool isNetworked;
     QStringList onLineUsers;
-    // TupExposureDialog *exposureDialog;
 };
 
 TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *scene, 
@@ -72,10 +69,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     k->hand = Right;
-    // k->hand = Left;
- 
     k->scene = scene;
-    // connect(k->scene, SIGNAL(showInfoWidget()), this, SLOT(showInfoWidget()));
   
     k->isNetworked = isNetworked;
     k->onLineUsers = onLineUsers;
@@ -87,7 +81,6 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     k->sketchMenuIsOpen = false;
     k->selectionMenuIsOpen = false;
     k->propertiesMenuIsOpen = false;
-    // k->exposureDialogIsOpen = false;
 
     graphicsView = new TupCanvasView(this, screenSize, k->size, project->bgColor());
     connect(graphicsView, SIGNAL(rightClick()), this, SIGNAL(rightClick()));
@@ -129,21 +122,13 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     zoomOut->setToolTip(tr("Zoom Out"));
     connect(zoomOut, SIGNAL(clicked()), this, SLOT(wakeUpZoomOut()));
 
-    /*
-    TImageButton *shift = new TImageButton(QPixmap(THEME_DIR + "icons/hand_big.png"), 60, this, true);
-    shift->setToolTip(tr("Shift"));
-    connect(shift, SIGNAL(clicked()), this, SLOT(wakeUpShift()));
-    */
-
     TImageButton *penProperties = new TImageButton(QPixmap(THEME_DIR + "icons/color_palette_big.png"), 60, this, true);
     penProperties->setToolTip(tr("Pen Properties"));
     connect(penProperties, SIGNAL(clicked()), this, SLOT(penProperties()));
 
-    /*
-    TImageButton *exposure = new TImageButton(QPixmap(THEME_DIR + "icons/exposure_sheet_big.png"), 60, this, true);
-    exposure->setToolTip(tr("Exposure Sheet"));
-    connect(exposure, SIGNAL(clicked()), this, SLOT(exposureDialog()));
-    */
+    TImageButton *close = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
+    close->setToolTip(tr("Close Full Screen"));
+    connect(close, SIGNAL(clicked()), this, SIGNAL(closeHugeCanvas()));
 
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -158,20 +143,13 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     controls->addWidget(trash);
     controls->addWidget(zoomIn);
     controls->addWidget(zoomOut);
-    // controls->addWidget(shift);
     controls->addWidget(penProperties);
-    // controls->addWidget(exposure);
+    controls->addWidget(close);
 
     QBoxLayout *infoLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     infoLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     infoLayout->setContentsMargins(0, 0, 0, 0);
     infoLayout->setSpacing(5);
-
-    // SQA: Experimental code
-    // k->display = new TupInfoWidget(this);
-    // connect(k->display, SIGNAL(closePanel()), this, SLOT(hideInfoWidget()));
-    // infoLayout->addWidget(k->display);
-    // k->display->hide();
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -279,7 +257,6 @@ void TupCanvas::selectionTools()
 
     if (!k->selectionMenuIsOpen) {
         QList<QString> toolsList;
-        // toolsList << "ObjectsTool";
         toolsList << "NodesTool";
 
         TupToolsDialog *dialog = new TupToolsDialog(toolsList, this);
@@ -377,31 +354,6 @@ void TupCanvas::setOnionOpacity(double opacity)
     k->scene->setOnionFactor(opacity);
     emit updateOnionOpacityFromFullScreen(opacity); 
 }
-
-/*
-void TupCanvas::exposureDialog()
-{
-    updateMenuStates();
-    k->exposureDialogIsOpen = true;
-
-    QDesktopWidget desktop;
-    k->exposureDialog = new TupExposureDialog(k->project, k->scene->currentSceneIndex(), 
-                                                      k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                      k->isNetworked, k->onLineUsers, this);
-    connect(k->exposureDialog, SIGNAL(goToFrame(int, int, int)), this, SIGNAL(goToFrame(int, int, int)));
-    connect(k->exposureDialog, SIGNAL(goToScene(int)), this, SIGNAL(goToScene(int)));
-    connect(k->exposureDialog, SIGNAL(callNewScene()), this, SLOT(createScene()));
-    connect(k->exposureDialog, SIGNAL(callNewLayer(int, int)), this, SLOT(createLayer(int, int)));
-    connect(k->exposureDialog, SIGNAL(callNewFrame(int, int, int, int)), this, SLOT(createFrame(int, int, int, int)));
-    connect(k->exposureDialog, SIGNAL(windowHasBeenClosed()), this, SLOT(updateExposureDialogState()));
-
-    QApplication::restoreOverrideCursor();
-
-    k->exposureDialog->show();
-    k->exposureDialog->move((int) (desktop.screenGeometry().width() - k->exposureDialog->width())/2 ,
-                        (int) (desktop.screenGeometry().height() - k->exposureDialog->height())/2);
-}
-*/
 
 void TupCanvas::oneFrameBack()
 {
@@ -531,14 +483,6 @@ void TupCanvas::wakeUpZoomOut()
     emit updateZoomFactorFromFullScreen(0.7);
 }
 
-/*
-void TupCanvas::wakeUpShift()
-{
-    updateMenuStates();
-    emit callAction(TupToolPlugin::ZoomMenu, TupToolPlugin::ShiftTool);
-}
-*/
-
 void TupCanvas::undo()
 {
     updateMenuStates();
@@ -587,77 +531,3 @@ void TupCanvas::updateMenuStates()
         return;
     }
 }
-
-/*
-void TupCanvas::showInfoWidget()
-{
-    // k->display->show();
-}
-
-void TupCanvas::hideInfoWidget()
-{
-    // k->display->hide();
-}
-
-void TupCanvas::updateOnLineUsers(const QStringList &onLineUsers)
-{
-    k->onLineUsers = onLineUsers;
-    if (k->exposureDialogIsOpen)
-        k->exposureDialog->updateUsersList(onLineUsers);
-}
-
-void TupCanvas::updateExposureDialogState()
-{
-    k->exposureDialogIsOpen = false;
-}
-*/
-
-/*
-void TupCanvas::createScene()
-{
-    int sceneIndex = k->project->scenesCount();
-
-    TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Add, tr("Scene %1").arg(sceneIndex + 1));
-    emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createLayerRequest(sceneIndex, 0, TupProjectRequest::Add, tr("Layer 1"));
-    emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Add, tr("Frame 1"));
-    emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
-    emit localRequestTriggered(&request);
-}
-
-void TupCanvas::createLayer(int sceneIndex, int layerIndex)
-{
-    TupProjectRequest request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::Add, tr("Layer %1").arg(layerIndex + 1));
-    emit requestTriggered(&request);
-
-    // tError() << "TupCanvas::createLayer() - Creating layer at [ " << sceneIndex << ", " << layerIndex << " ]";
-
-    int oneRow = k->scene->framesCount();
-    for(int i=0; i<oneRow; i++) {
-        request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
-        emit requestTriggered(&request);
-    }
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Select);
-    // emit requestTriggered(&request);
-    emit localRequestTriggered(&request);
-}
-
-void TupCanvas::createFrame(int sceneIndex, int layerIndex, int layersCount, int frameIndex)
-{
-    for(int i=0; i<layersCount; i++) {
-        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, i, frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
-        emit requestTriggered(&request);
-    }
-
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Select);
-    // emit requestTriggered(&request);
-    emit localRequestTriggered(&request);
-}
-
-*/
