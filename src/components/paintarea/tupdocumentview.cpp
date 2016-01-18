@@ -133,7 +133,7 @@ struct TupDocumentView::Private
     TAction *nodesAction;
     TAction *borderFillAction;
     TAction *fillAction;
-    TAction *shiftAction;
+    // TAction *shiftAction;
     TAction *papagayoAction;
 };
 
@@ -637,12 +637,14 @@ void TupDocumentView::loadPlugins()
                                        k->borderFillAction = action;
                                  }
                                  break;
+                               /*
                                case TupToolInterface::View:
                                  {
                                    if (toolName.compare(tr("Shift")) == 0)
                                        k->shiftAction = action;
                                  }
                                  break;
+                               */
                                case TupToolInterface::LipSync:
                                  {
                                    if (toolName.compare(tr("Papagayo Lip-sync")) == 0)
@@ -727,8 +729,8 @@ void TupDocumentView::loadPlugins()
     k->toolbar->addAction(k->fillAction);
     k->toolbar->addAction(k->borderFillAction);
     k->toolbar->addSeparator();
-    k->toolbar->addAction(k->shiftAction);
-    k->toolbar->addSeparator();
+    // k->toolbar->addAction(k->shiftAction);
+    // k->toolbar->addSeparator();
     k->toolbar->addAction(k->motionMenu->menuAction());
     k->toolbar->addSeparator();
     k->toolbar->addAction(k->miscMenu->menuAction());
@@ -843,11 +845,13 @@ void TupDocumentView::loadPlugin(int menu, int index)
                          action = k->borderFillAction;
                  }
             break;
+            /*
             case TupToolPlugin::ZoomMenu:
                  {
                      action = k->shiftAction;
                  }
             break;
+            */
             default:
                  {
                      #ifdef K_DEBUG

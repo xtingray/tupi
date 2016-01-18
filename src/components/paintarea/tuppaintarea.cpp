@@ -1350,6 +1350,8 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         #endif
     #endif
 
+    TupPaintAreaBase::keyPressEvent(event);
+
     if (event->key() == Qt::Key_Return) {
         emit newPerspective(4);
         return;
@@ -1418,10 +1420,12 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
+/*
 void TupPaintArea::keyReleaseEvent(QKeyEvent *event)
 {
     TupPaintAreaBase::keyReleaseEvent(event);
 }
+*/
 
 void TupPaintArea::goOneFrameBack()
 {

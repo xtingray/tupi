@@ -98,11 +98,15 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
         virtual void saveState();
         virtual void restoreState();
         void drawPadLock(QPainter *painter, const QRectF &rect, QString text);
+        void updateCenter(const QPoint point);
 
     protected:
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseMoveEvent(QMouseEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent *event);
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
+
         virtual void tabletEvent(QTabletEvent *event);
         virtual void enterEvent(QEvent *event);
         virtual void leaveEvent(QEvent *event);

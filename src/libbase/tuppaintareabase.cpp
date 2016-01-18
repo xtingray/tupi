@@ -97,6 +97,11 @@ struct TupPaintAreaBase::Private
     QPen greenBoldPen;
     QPen greenThinPen;
     QPen blackPen;
+    bool spaceBar;
+    bool moveEnabled;
+
+    QPoint initPoint;
+    QPoint centerPoint;
 };
 
 TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary *library) : QGraphicsView(parent), k(new Private)
@@ -115,9 +120,12 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     k->gridFlag = false;
     k->actionSafeAreaFlag = false;
     k->angle = 0;
+    k->spaceBar = false;
+    k->moveEnabled = false;
 
     k->rotator = new TupPaintAreaRotator(this, this);
     k->drawingRect = QRectF(QPointF(0, 0), dimension);
+    k->centerPoint = k->drawingRect.center().toPoint();
 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);
@@ -278,6 +286,12 @@ void TupPaintAreaBase::mousePressEvent(QMouseEvent * event)
         return;
     }
 
+    if (k->spaceBar) {
+        k->initPoint = mapToScene(event->pos()).toPoint();
+        k->moveEnabled = true;
+        return;
+    }
+
     k->scene->setSelectionRange();
     QGraphicsView::mousePressEvent(event);
 }
@@ -294,6 +308,12 @@ void TupPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
             #endif
         #endif
 
+        return;
+    }
+
+    if (k->moveEnabled) {
+        QPoint point = mapToScene(event->pos()).toPoint();
+        updateCenter(point);
         return;
     }
 
@@ -334,6 +354,11 @@ void TupPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
 
+    if (k->spaceBar) {
+        k->moveEnabled = false;
+        return;
+    }
+
     if (! k->scene->mouseGrabberItem() && k->scene->isDrawing()) { // HACK
         QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseRelease);
         mouseEvent.setWidget(viewport());
@@ -346,6 +371,18 @@ void TupPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
         // QApplication::sendEvent(k->scene, &mouseEvent);
         k->scene->mouseReleased(&mouseEvent);
     }
+}
+
+void TupPaintAreaBase::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space)
+        k->spaceBar = true;
+}
+
+void TupPaintAreaBase::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space)
+        k->spaceBar = false;
 }
 
 void TupPaintAreaBase::tabletEvent(QTabletEvent *event)
@@ -611,3 +648,33 @@ void TupPaintAreaBase::updateDimension(const QSize dimension)
 
     update();
 }
+
+void TupPaintAreaBase::updateCenter(const QPoint point)
+{
+    int x = point.x();
+    int y = point.y();
+
+    int cx = k->centerPoint.x();
+    int cy = k->centerPoint.y();
+
+    int x0 = k->initPoint.x();
+    int y0 = k->initPoint.y();
+
+    int b = fabs(x0 - x);
+    int h = fabs(y0 - y);
+    if (x0 > x)
+        cx += b;
+    else
+        cx -= b;
+
+    if (y0 > y)
+        cy += h;
+    else
+        cy -= h;
+
+    k->centerPoint = QPoint(cx, cy);
+    centerOn(k->centerPoint);
+    setSceneRect(cx - (k->drawingRect.width()/2), cy - (k->drawingRect.height()/2),
+                 k->drawingRect.width(), k->drawingRect.height());
+}
+
