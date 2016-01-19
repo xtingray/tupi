@@ -49,7 +49,6 @@ TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDi
     setModal(true);
     setWindowTitle(tr("Pen Size"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/brush.png")));
-    // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
 
     k->brushManager = brushManager;
     k->currentSize = k->brushManager->penWidth();
@@ -64,7 +63,7 @@ TupPenDialog::TupPenDialog(TupBrushManager *brushManager, QWidget *parent) : QDi
     setButtonsPanel();
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
-    // closeButton->setToolTip(tr("Close"));
+    closeButton->setToolTip(tr("Close"));
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -107,12 +106,12 @@ void TupPenDialog::setButtonsPanel()
     connect(minus, SIGNAL(clicked()), this, SLOT(onePointLess()));
 
     k->sizeLabel = new QLabel(QString::number(k->currentSize));
+    k->sizeLabel->setAlignment(Qt::AlignHCenter);
     QFont font = this->font();
     font.setPointSize(24);
     font.setBold(true);
     k->sizeLabel->setFont(font);
-    // k->sizeLabel->setFont(QFont("Arial", 24, QFont::Bold));
-    k->sizeLabel->setFixedWidth(40);
+    k->sizeLabel->setFixedWidth(100);
 
     TImageButton *plus = new TImageButton(QPixmap(THEME_DIR + "icons/plus_sign_medium.png"), 40, this, true);
     plus->setToolTip(tr("+1"));

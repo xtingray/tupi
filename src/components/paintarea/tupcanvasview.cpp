@@ -37,19 +37,22 @@
 
 struct TupCanvasView::Private
 {
+    TupGraphicsScene *scene;
     QSize screenSize;
     QSize projectSize;
     QColor bg;
 };
 
-TupCanvasView::TupCanvasView(QWidget *parent, const QSize &screenSize, const QSize &projectSize, 
+TupCanvasView::TupCanvasView(QWidget *parent, TupGraphicsScene *scene, const QSize &screenSize, const QSize &projectSize, 
                              const QColor &bg) : QGraphicsView(parent), k(new Private)
 {
     setAccessibleName("FULL_SCREEN");
     k->screenSize = screenSize;
     k->projectSize = projectSize;
     k->bg = bg;
+    k->scene = scene;
 
+    setScene(k->scene);
     setRenderHint(QPainter::Antialiasing, true);
     setRenderHint(QPainter::TextAntialiasing, true);
     setBackgroundBrush(QBrush(k->bg, Qt::SolidPattern));
@@ -90,5 +93,6 @@ void TupCanvasView::mousePressEvent(QMouseEvent *event)
         return;
     }
 
+    k->scene->setSelectionRange();
     QGraphicsView::mousePressEvent(event);
 }

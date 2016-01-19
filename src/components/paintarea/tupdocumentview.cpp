@@ -1538,8 +1538,8 @@ void TupDocumentView::showFullScreen()
         scaleFactor = (double) (screenH - 50) / (double) projectSize.height();
 
     k->fullScreen = new TupCanvas(this, Qt::Window|Qt::FramelessWindowHint, k->paintArea->graphicsScene(), 
-                                 k->paintArea->centerPoint(), QSize(screenW, screenH), k->project, scaleFactor,
-                                 k->viewAngle, brushManager(), k->isNetworked, k->onLineUsers); 
+                                  k->paintArea->centerPoint(), QSize(screenW, screenH), k->project, scaleFactor,
+                                  k->viewAngle, brushManager());
 
     k->fullScreen->updateCursor(k->currentTool->cursor());
 

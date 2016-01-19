@@ -41,7 +41,6 @@
 #include "tapplication.h"
 #include "tupgraphicsscene.h"
 #include "tupcanvasview.h"
-#include "tuptoolsdialog.h"
 #include "tuponionopacitydialog.h"
 #include "tuppendialog.h"
 #include "timagebutton.h"
@@ -49,6 +48,7 @@
 #include "tupprojectrequest.h"
 #include "tuprequestbuilder.h"
 #include "tupproject.h"
+#include "tuptoolplugin.h"
 
 #include <QFrame>
 #include <QPointF>
@@ -82,7 +82,7 @@ class TUPI_EXPORT TupCanvas : public QFrame
         TupCanvas(QWidget *parent=0, Qt::WindowFlags f=0, TupGraphicsScene *scene=0, 
                   const QPointF centerPoint = QPoint(0, 0) , const QSize &size = QSize(0, 0), 
                   TupProject *project = 0, qreal scaleFactor = 1, int angle=0, 
-                  TupBrushManager *brushManager = 0, bool isNetworked = false, const QStringList &onLineUsers = QStringList());
+                  TupBrushManager *brushManager = 0);
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
 
@@ -99,12 +99,15 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void colorDialog(const QColor &current);
 
    private slots:
-        void sketchTools();
-        void selectionTools();
+        void wakeUpPencil();
+        void wakeUpPolyline();
+        void wakeUpEllipse();
+        void wakeUpRectangle();
+        void wakeUpSelection();
+        void wakeUpNodes();
 
         void colorDialog();
         void penDialog();
-        void penProperties();
         void opacityDialog();
         void setOnionOpacity(double opacity);
 
@@ -119,10 +122,6 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void undo();
         void redo();
 
-        void updateSketchMenuState();
-        void updateSelectionMenuState();
-        void updateMenuStates();
-
    signals:
         void requestTriggered(const TupProjectRequest *event);
         void localRequestTriggered(const TupProjectRequest *event);
@@ -132,9 +131,6 @@ class TUPI_EXPORT TupCanvas : public QFrame
         void updateZoomFactorFromFullScreen(qreal factor);
         void callAction(int menu, int index);
         void goToFrame(int frame, int layer, int scene);
-        void closeSketchMenu();
-        void closeSelectionMenu();
-        void closePenPropertiesMenu();
         void rightClick();
         void closeHugeCanvas();
 };

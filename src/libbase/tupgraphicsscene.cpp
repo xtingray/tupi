@@ -1511,7 +1511,7 @@ void TupGraphicsScene::setSelectionRange()
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupGraphicsScene::aboutToMousePress()]";
+            qDebug() << "[TupGraphicsScene::setSelectionRange()]";
         #else
             T_FUNCINFOX("item");
         #endif

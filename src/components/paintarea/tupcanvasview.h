@@ -37,7 +37,8 @@
 #define TUPCANVASVIEW_H
 
 #include "tglobal.h"
-#include "tuppaintareabase.h"
+#include "tupgraphicsscene.h"
+// #include "tuppaintareabase.h"
 
 #include <QGraphicsView>
 #include <QPainter>
@@ -49,7 +50,7 @@ class TUPI_EXPORT TupCanvasView : public QGraphicsView
     Q_OBJECT
 
     public:
-        TupCanvasView(QWidget *parent=0, const QSize &screenSize = QSize(0, 0), 
+        TupCanvasView(QWidget *parent=0, TupGraphicsScene *scene=0, const QSize &screenSize = QSize(0, 0), 
                       const QSize &projectSize = QSize(0, 0), const QColor &bg = QColor(Qt::white));
         ~TupCanvasView();
 

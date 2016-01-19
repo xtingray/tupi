@@ -47,10 +47,8 @@ struct TupOnionOpacityDialog::Private
 TupOnionOpacityDialog::TupOnionOpacityDialog(const QColor &color, double opacity, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
-    setWindowTitle(tr("Onion Paper"));
+    setWindowTitle(tr("Onion Skin Factor"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/onion.png")));
-
-    // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
 
     k->color = color;
     k->currentOpacity = opacity;
@@ -65,7 +63,7 @@ TupOnionOpacityDialog::TupOnionOpacityDialog(const QColor &color, double opacity
     setButtonsPanel();
 
     TImageButton *closeButton = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 60, this, true);
-    // closeButton->setToolTip(tr("Close"));
+    closeButton->setToolTip(tr("Close"));
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -112,12 +110,12 @@ void TupOnionOpacityDialog::setButtonsPanel()
         number = number + "0";
 
     k->sizeLabel = new QLabel(number);
+    k->sizeLabel->setAlignment(Qt::AlignHCenter);
     QFont font = this->font();
     font.setPointSize(24);
     font.setBold(true);
     k->sizeLabel->setFont(font);
-    // k->sizeLabel->setFont(QFont("Arial", 24, QFont::Bold));
-    k->sizeLabel->setFixedWidth(65);
+    k->sizeLabel->setFixedWidth(100);
 
     TImageButton *plus = new TImageButton(QPixmap(THEME_DIR + "icons/plus_sign_medium.png"), 40, this, true);
     plus->setToolTip(tr("+0.01"));
