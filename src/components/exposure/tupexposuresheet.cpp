@@ -250,7 +250,8 @@ void TupExposureSheet::applyAction(int action)
                  int framesNum = k->currentTable->usedFrames(k->currentTable->currentColumn());
                  for (int i=0;i < framesNum;i++) {
                       request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), layer, i, 
-                                                                     TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                                                      TupProjectRequest::Add, tr("Frame"));
+                                                                      // TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
                       emit requestTriggered(&request);
                  }
                }
@@ -472,7 +473,8 @@ void TupExposureSheet::insertFrame(int indexLayer, int indexFrame)
     #endif
 
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                                 indexLayer, indexFrame, TupProjectRequest::Add, tr("Frame %1").arg(indexFrame + 1));
+                                                   indexLayer, indexFrame, TupProjectRequest::Add, tr("Frame"));
+                                                   // indexLayer, indexFrame, TupProjectRequest::Add, tr("Frame %1").arg(indexFrame + 1));
     emit requestTriggered(&request);
 }
 
@@ -751,8 +753,8 @@ void TupExposureSheet::frameResponse(TupFrameResponse *e)
                 break;
                 case TupProjectRequest::Reset:
                  {
-                     if (k->currentTable->framesCountAtCurrentLayer() == 1)
-                         table->setFrameName(e->layerIndex(), e->frameIndex(), tr("Frame") + " 1");
+                     // if (k->currentTable->framesCountAtCurrentLayer() == 1)
+                     //     table->setFrameName(e->layerIndex(), e->frameIndex(), tr("Frame") + " 1");
                      table->updateFrameState(e->layerIndex(), e->frameIndex(), TupExposureTable::Empty);
                      return;
                  }
@@ -910,12 +912,14 @@ void TupExposureSheet::insertFrames(int n)
              emit requestTriggered(&event);
         }
 
+        /*
         lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
         for (int index=target; index <= lastFrame; index++) {
              target++;
-             TupProjectRequest event = TupRequestBuilder::createFrameRequest(scene, layer, index, TupProjectRequest::Rename, tr("Frame %1").arg(target));
+             TupProjectRequest event = TupRequestBuilder::createFrameRequest(scene, layer, index, TupProjectRequest::Rename, tr("Frame"));
              emit requestTriggered(&event);
         }
+        */
 
         selectFrame(layer, frame);
     }

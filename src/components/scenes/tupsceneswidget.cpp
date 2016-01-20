@@ -166,7 +166,8 @@ void TupScenesWidget::emitRequestInsertScene()
     event = TupRequestBuilder::createLayerRequest(index, 0, TupProjectRequest::Add, tr("Layer %1").arg(1));
     emit requestTriggered(&event);
 
-    event = TupRequestBuilder::createFrameRequest(index, 0, 0, TupProjectRequest::Add, tr("Frame %1").arg(1));
+    // event = TupRequestBuilder::createFrameRequest(index, 0, 0, TupProjectRequest::Add, tr("Frame %1").arg(1));
+    event = TupRequestBuilder::createFrameRequest(index, 0, 0, TupProjectRequest::Add, tr("Frame"));
     emit requestTriggered(&event);
 
     event = TupRequestBuilder::createSceneRequest(index, TupProjectRequest::Select);

@@ -209,7 +209,8 @@ void TupProjectManager::setupNewProject()
         request = TupRequestBuilder::createLayerRequest(0, 0, TupProjectRequest::Add, tr("Layer %1").arg(1));
         handleProjectRequest(&request);
 
-        request = TupRequestBuilder::createFrameRequest(0, 0, 0, TupProjectRequest::Add, tr("Frame %1").arg(1));
+        // request = TupRequestBuilder::createFrameRequest(0, 0, 0, TupProjectRequest::Add, tr("Frame %1").arg(1));
+        request = TupRequestBuilder::createFrameRequest(0, 0, 0, TupProjectRequest::Add, tr("Frame"));
         handleProjectRequest(&request);
     }
 }

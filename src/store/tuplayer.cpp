@@ -214,8 +214,8 @@ bool TupLayer::resetFrame(int position)
 
     if (toReset) {
         QString label = toReset->frameName();
-        if (framesCount() == 1)
-            label = tr("Frame") + " 1";
+        // if (framesCount() == 1)
+        //     label = tr("Frame") + " 1";
         TupFrame *frame = new TupFrame(this); 
         frame->setFrameName(label);
         k->frames.insert(position, frame);
