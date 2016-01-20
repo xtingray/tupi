@@ -269,6 +269,7 @@ void TupExposureSheet::applyAction(int action)
                {
                  int usedFrames = k->currentTable->usedFrames(k->currentTable->currentColumn());
                  if (k->currentTable->currentRow() >= usedFrames) {
+                     // SQA: Check if this code is really used
                      for (int layer=0; layer < k->currentTable->layersCount(); layer++) { 
                           if (usedFrames >= k->currentTable->usedFrames(layer)) {
                               int finish = k->currentTable->currentFrame() + 1;
@@ -750,6 +751,8 @@ void TupExposureSheet::frameResponse(TupFrameResponse *e)
                 break;
                 case TupProjectRequest::Reset:
                  {
+                     if (k->currentTable->framesCountAtCurrentLayer() == 1)
+                         table->setFrameName(e->layerIndex(), e->frameIndex(), tr("Frame") + " 1");
                      table->updateFrameState(e->layerIndex(), e->frameIndex(), TupExposureTable::Empty);
                      return;
                  }
@@ -896,11 +899,9 @@ void TupExposureSheet::insertFrames(int n)
     if (target > lastFrame) {
         for (int i=0; i<n; i++)
              insertFrame(layer, k->currentTable->framesCountAtCurrentLayer());
-
-        selectFrame(layer, k->currentTable->currentFrame());
+        selectFrame(layer, k->currentTable->currentFrame() + 1);
     } else {
         int frame = k->currentTable->currentFrame() + 1; 
-
         for (int i=0; i<n; i++)
              insertFrame(layer, k->currentTable->framesCountAtCurrentLayer());
 

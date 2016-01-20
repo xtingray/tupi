@@ -145,7 +145,7 @@ void TupProjectActionBar::setup(Actions actions)
         TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
         button->setToolTip(tr("Insert frame"));
         // SQA: This short-cut has been moved to Zoom In feature
-        button->setShortcut(QKeySequence(Qt::Key_Plus));
+        button->setShortcut(QKeySequence(Qt::Key_9));
         
         k->actions.addButton(button, InsertFrame);
         
@@ -157,7 +157,7 @@ void TupProjectActionBar::setup(Actions actions)
         TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
         button->setToolTip(tr("Remove frame"));
         // SQA: This short-cut has been moved to Zoom Out feature
-        button->setShortcut(QKeySequence(Qt::Key_Minus));
+        button->setShortcut(QKeySequence(Qt::Key_0));
         
         k->actions.addButton(button, RemoveFrame);
         
