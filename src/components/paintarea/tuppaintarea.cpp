@@ -1450,7 +1450,8 @@ void TupPaintArea::goOneFrameForward()
         TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
                                                      scene->currentLayerIndex(),
                                                      frameIndex,
-                                                     TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
+                                                     TupProjectRequest::Add, tr("Frame"));
+                                                     // TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
         emit requestTriggered(&request);
     }
 
