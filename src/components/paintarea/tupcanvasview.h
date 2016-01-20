@@ -44,6 +44,8 @@
 #include <QPainter>
 #include <QRectF>
 #include <QMouseEvent>
+#include <QKeyEvent>
+#include <cmath>
 
 class TUPI_EXPORT TupCanvasView : public QGraphicsView
 {
@@ -57,11 +59,15 @@ class TUPI_EXPORT TupCanvasView : public QGraphicsView
     protected:
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
         virtual void mousePressEvent(QMouseEvent *event);
+        virtual void mouseMoveEvent(QMouseEvent *event);
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
 
     signals:
         void rightClick();
 
     private:
+        void updateCenter(const QPoint point);
         struct Private;
         Private *const k;
 };

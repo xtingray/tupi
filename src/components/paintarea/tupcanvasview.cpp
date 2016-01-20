@@ -41,6 +41,11 @@ struct TupCanvasView::Private
     QSize screenSize;
     QSize projectSize;
     QColor bg;
+    bool spaceBar;
+    QRectF drawingRect;
+
+    QPoint initPoint;
+    QPoint centerPoint;
 };
 
 TupCanvasView::TupCanvasView(QWidget *parent, TupGraphicsScene *scene, const QSize &screenSize, const QSize &projectSize, 
@@ -51,11 +56,17 @@ TupCanvasView::TupCanvasView(QWidget *parent, TupGraphicsScene *scene, const QSi
     k->projectSize = projectSize;
     k->bg = bg;
     k->scene = scene;
+    k->spaceBar = false;
+
+    k->drawingRect = k->scene->sceneRect();
+    k->centerPoint = k->drawingRect.center().toPoint();
 
     setScene(k->scene);
     setRenderHint(QPainter::Antialiasing, true);
     setRenderHint(QPainter::TextAntialiasing, true);
     setBackgroundBrush(QBrush(k->bg, Qt::SolidPattern));
+    setMouseTracking(true);
+    setInteractive(true);
 }
 
 TupCanvasView::~TupCanvasView()
@@ -67,15 +78,14 @@ void TupCanvasView::drawBackground(QPainter *painter, const QRectF &rect)
     QGraphicsView::drawBackground(painter, rect);
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
-
     painter->setPen(QPen(Qt::NoPen));
 
     double w = (double) k->projectSize.width() / (double) 2;
     double h = (double) k->projectSize.height() / (double) 2;
 
     painter->setPen(QPen(QColor(230, 230, 230, 255), 6));
-    QPointF topLeft = rect.center() - QPointF(w, h);
-    QPointF bottomRight = rect.center() + QPointF(w, h);
+    QPointF topLeft = k->drawingRect.center() - QPointF(w, h);
+    QPointF bottomRight = k->drawingRect.center() + QPointF(w, h);
 
     painter->drawLine(topLeft - QPoint(0, 30), topLeft + QPoint(0, 30));  
     painter->drawLine(topLeft - QPoint(30, 0), topLeft + QPoint(30, 0)); 
@@ -95,4 +105,59 @@ void TupCanvasView::mousePressEvent(QMouseEvent *event)
 
     k->scene->setSelectionRange();
     QGraphicsView::mousePressEvent(event);
+}
+
+void TupCanvasView::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint point = mapToScene(event->pos()).toPoint();
+    if (k->spaceBar) {
+        updateCenter(point);
+        return;
+    } else {
+        k->initPoint = point;
+    }
+
+    QGraphicsView::mouseMoveEvent(event);
+}
+
+void TupCanvasView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space)
+        k->spaceBar = true;
+
+    QGraphicsView::keyPressEvent(event);
+}
+
+void TupCanvasView::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space)
+        k->spaceBar = false;
+}
+
+void TupCanvasView::updateCenter(const QPoint point)
+{
+    int x = point.x();
+    int y = point.y();
+
+    int cx = k->centerPoint.x();
+    int cy = k->centerPoint.y();
+
+    int x0 = k->initPoint.x();
+    int y0 = k->initPoint.y();
+
+    int b = fabs(x0 - x);
+    int h = fabs(y0 - y);
+    if (x0 > x)
+        cx += b;
+    else
+        cx -= b;
+
+    if (y0 > y)
+        cy += h;
+    else
+        cy -= h;
+
+    k->centerPoint = QPoint(cx, cy);
+    centerOn(k->centerPoint);
+    setSceneRect(cx - (k->drawingRect.width()/2), cy - (k->drawingRect.height()/2), k->drawingRect.width(), k->drawingRect.height());
 }
