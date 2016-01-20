@@ -95,13 +95,13 @@ void TupMainWindow::createGUI()
 		m_actionManager, "importBitmap");
 
     new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png"), tr("Bitmap Sequence"), QKeySequence(tr("Alt+Shift+B")), 
-		m_libraryWidget, SLOT(importBitmapArray()), m_actionManager, "importBitmapArray");
+		m_libraryWidget, SLOT(importBitmapSequence()), m_actionManager, "importBitmapSequence");
 
     new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "svg.png"), tr("SVG File"), QKeySequence(tr("Alt+S")), m_libraryWidget, SLOT(importSvgGroup()),
 		m_actionManager, "importSvg");
 
     new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "svg_array.png"), tr("SVG Sequence"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, 
-		SLOT(importSvgArray()), m_actionManager, "importSvgArray");
+		SLOT(importSvgSequence()), m_actionManager, "importSvgSequence");
 
     //new TAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
     //            m_actionManager, "importAudioFile");
@@ -219,9 +219,9 @@ void TupMainWindow::setupMenu()
 
     // Adding Options import bitmap and import audio file
     m_insertMenu->addAction(m_actionManager->find("importBitmap"));
-    m_insertMenu->addAction(m_actionManager->find("importBitmapArray"));
+    m_insertMenu->addAction(m_actionManager->find("importBitmapSequence"));
     m_insertMenu->addAction(m_actionManager->find("importSvg"));
-    m_insertMenu->addAction(m_actionManager->find("importSvgArray"));
+    m_insertMenu->addAction(m_actionManager->find("importSvgSequence"));
     // m_insertMenu->addAction(m_actionManager->find("importAudioFile"));
 
     m_insertMenu->addSeparator();

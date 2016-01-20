@@ -1238,7 +1238,7 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
 {
     if (!animationTab) {
         #ifdef K_DEBUG
-            QString msg = "TupMainWindow::createCommand() - No animationTab... Aborting!"; 
+            QString msg = "TupMainWindow::createCommand() - No animation tab... aborting!"; 
             #ifdef Q_OS_WIN
                qDebug() << msg;
             #else
@@ -1249,10 +1249,8 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
     }
 
     TupPaintAreaCommand *command = animationTab->createCommand(event);
-
     if (command) { 
         m_projectManager->undoHistory()->push(command);
-
         if (event->action() == TupPaintAreaEvent::ChangeColorPen) {
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
         } else if (event->action() == TupPaintAreaEvent::ChangeBrush) {

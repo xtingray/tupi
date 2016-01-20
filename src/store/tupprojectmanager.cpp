@@ -198,7 +198,6 @@ void TupProjectManager::setupNewProject()
     }
 
     if (!k->isNetworked) {
-       
         QString projectPath = CACHE_DIR + k->params->projectName(); 
         cleanProjectPath(projectPath);
 
@@ -419,7 +418,7 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
 /**
  * This function creates a command to execute an action, i.e. add a frame. 
  * The command has the information necessary to undo its effect.
- * Usually this command must be added in the commands stack.
+ * Usually this command must be added into the commands stack.
  * The command created is not deleted by this class, this task depends on the user.
  * @param event 
  * @return 
@@ -436,11 +435,13 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
 
     if (request->isValid()) {
         TupProjectCommand *command = new TupProjectCommand(k->commandExecutor, request);
-
-        if (addToStack)
+        if (addToStack) {
+            tError() << "TupProjectManager::createCommand() - Adding command into undo stack...";
             k->undoStack->push(command);
-        else  
+        } else {  
+            tError() << "TupProjectManager::createCommand() - Calling redo method...";
             command->redo();
+        }
     } else {
         #ifdef K_DEBUG
             QString msg = "TupProjectManager::createCommand() - Invalid request";

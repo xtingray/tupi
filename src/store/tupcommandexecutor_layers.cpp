@@ -50,35 +50,20 @@ bool TupCommandExecutor::createLayer(TupLayerResponse *response)
         #endif
     #endif
 
+    tError() << "TupCommandExecutor::createLayer() - Creating Layer for the first time";
     int scenePosition = response->sceneIndex();
     int position = response->layerIndex();
-
     QString name = response->arg().toString();
     QString state = response->state();
 
     TupScene *scene = m_project->scene(scenePosition);
-
     if (scene) {
         TupLayer *layer = scene->createLayer(name, position);
-
-        if (! layer) 
+        if (!layer) 
             return false;
 
-        /*
-        if (!name.isEmpty())
-            layer->setLayerName(name);
-        else
-            response->setArg(layer->layerName());
-        */
-
-        layer->setLayerName(name);
-
-        // response->setArg(layer->layerName());
-        // layer->fromXml(state);
-        // m_project->updateScene(scenePosition, scene);
-
+        // layer->setLayerName(name);
         emit responsed(response);
-
         return true;
     }
 
@@ -94,12 +79,16 @@ bool TupCommandExecutor::removeLayer(TupLayerResponse *response)
             T_FUNCINFO;
         #endif
     #endif
+
+    if (response->mode() == TupProjectResponse::Do)
+        tError() << "TupCommandExecutor::createLayer() - Removing Layer for the first time";
+    if (response->mode() == TupProjectResponse::Undo)
+        tError() << "TupCommandExecutor::createLayer() - Removing Layer as UNDO action";
 		
     int scenePos = response->sceneIndex();
     int position = response->layerIndex();
 
     TupScene *scene = m_project->scene(scenePos);
-
     if (scene) {
         TupLayer *layer = scene->layer(position);
         if (layer) {

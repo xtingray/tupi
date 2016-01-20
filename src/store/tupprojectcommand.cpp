@@ -58,21 +58,21 @@ TupProjectCommand::TupProjectCommand(TupCommandExecutor *executor, const TupProj
         #endif
     #endif
 
-    k->executor = executor;
-    k->executed = false;
-
     TupRequestParser parser;
     if (!parser.parse(request->xml())) {
         #ifdef K_DEBUG
-            QString msg = "TupProjectCommand::TupProjectCommand(): - Parser error!";
+            QString msg = "TupProjectCommand::TupProjectCommand(): - Fatal error: request xml can't be parsed!";
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
                 tFatal() << msg;
             #endif
         #endif
+        return;
     }
 
+    k->executor = executor;
+    k->executed = false;
     k->response = parser.response();
     k->response->setExternal(request->isExternal());
 
@@ -413,7 +413,7 @@ void TupProjectCommand::frameCommand()
             default: 
             {
                  #ifdef K_DEBUG
-                     QString msg = "TupProjectCommand::frameCommand() - Error: Unknown project response";
+                     QString msg = "TupProjectCommand::frameCommand() - Fatal Error: Unknown project request";
                      #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else
@@ -432,7 +432,19 @@ void TupProjectCommand::layerCommand()
     switch (response->action()) {
             case TupProjectRequest::Add:
             {
+                 tError() << "TupProjectCommand::layerCommand() - Adding layer...";
                  k->executor->createLayer(response);
+                 /*
+                 if (response->mode() == TupProjectResponse::Do) {
+                     k->executor->createLayer(response);
+                     return;
+                 }
+
+                 if (response->mode() == TupProjectResponse::Redo) {
+                     tError() << "TupProjectCommand::layerCommand() - Restoring last layer removed...";
+                     return; 
+                 }
+                 */
             }
             break;
             case TupProjectRequest::AddLipSync:
@@ -447,6 +459,7 @@ void TupProjectCommand::layerCommand()
             break;
             case TupProjectRequest::Remove:
             {
+                 tError() << "TupProjectCommand::layerCommand() - Removing layer...";
                  k->executor->removeLayer(response);
             }
             break;

@@ -557,11 +557,19 @@ void TupExposureSheet::sceneResponse(TupSceneResponse *e)
     switch(e->action()) {
            case TupProjectRequest::Add:
             {
+                tError() << "TupExposureSheet::sceneResponse() - Adding scene into interface - mode: " << e->mode();
+                tError() << "TupExposureSheet::sceneResponse() - Scene index: " << e->sceneIndex();
+                tError() << "";
+
                 addScene(e->sceneIndex(), e->arg().toString());
             }
            break;
            case TupProjectRequest::Remove:
             {
+                tError() << "TupExposureSheet::sceneResponse() - Removing scene into interface - mode: " << e->mode();
+                tError() << "TupExposureSheet::sceneResponse() - Scene index: " << e->sceneIndex();
+                tError() << "";
+
                 k->scenesContainer->removeScene(e->sceneIndex());
             }
            break;
@@ -615,11 +623,17 @@ void TupExposureSheet::layerResponse(TupLayerResponse *e)
         switch (e->action()) {
                 case TupProjectRequest::Add:
                  {
+                     tError() << "TupExposureSheet::layerResponse() - Adding layer into interface - mode: " << e->mode();
+                     tError() << "TupExposureSheet::layerResponse() - Layer index: " << e->layerIndex();
+                     tError() << "";
                      table->insertLayer(e->layerIndex(), e->arg().toString());
                  }
                 break;
                 case TupProjectRequest::Remove:
                  {
+                     tError() << "TupExposureSheet::layerResponse() - Removing layer from interface - mode: " << e->mode();
+                     tError() << "TupExposureSheet::layerResponse() - Layer index: " << e->layerIndex();
+                     tError() << "";
                      table->removeLayer(e->layerIndex());
                  }
                 break;
