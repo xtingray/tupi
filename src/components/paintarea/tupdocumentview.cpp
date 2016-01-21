@@ -1564,6 +1564,9 @@ void TupDocumentView::showFullScreen()
     // connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
     connect(k->fullScreen, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
+    if (toolName.compare(tr("Object Selection")) == 0)
+        k->fullScreen->enableRubberBand();
+
     k->fullScreen->showFullScreen();
 }
 
@@ -1930,7 +1933,8 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
             int frameIndex = k->paintArea->currentFrameIndex() + 1;
 
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
-                                                                              frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
+                                                                              frameIndex, TupProjectRequest::Add, tr("Frame"));
+                                                                              // frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
             emit requestTriggered(&request);
 
             request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
@@ -2063,7 +2067,8 @@ void TupDocumentView::importPapagayoLipSync()
                                 int layersCount = scene->layersCount();
                                 for (int i = sceneFrames; i < lipSyncFrames; i++) {
                                      for (int j = 0; j < layersCount; j++) {
-                                          request = TupRequestBuilder::createFrameRequest(sceneIndex, j, i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                          // request = TupRequestBuilder::createFrameRequest(sceneIndex, j, i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                          request = TupRequestBuilder::createFrameRequest(sceneIndex, j, i, TupProjectRequest::Add, tr("Frame"));
                                           emit requestTriggered(&request);
                                      }
                                 }

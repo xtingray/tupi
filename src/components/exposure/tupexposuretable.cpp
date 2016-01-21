@@ -629,7 +629,7 @@ int TupExposureTable::framesCountAtCurrentLayer()
 
 void TupExposureTable::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Up) {
+    if (event->key() == Qt::Key_Up || event->key() == Qt::Key_PageUp) {
         int row = currentRow()-1;
         if (row > -1) {
             setCurrentCell(row, currentColumn());
@@ -647,7 +647,7 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    if (event->key() == Qt::Key_Down) {
+    if (event->key() == Qt::Key_Down || event->key() == Qt::Key_PageDown) {
         int framesCount = k->header->lastFrame(currentLayer());
         int next = currentRow()+1;
         if (next >= framesCount)

@@ -85,6 +85,7 @@ class TUPI_EXPORT TupCanvas : public QFrame
                   TupBrushManager *brushManager = 0);
         ~TupCanvas();
         void updateCursor(const QCursor &cursor);
+        void enableRubberBand();
 
    protected:
         void closeEvent(QCloseEvent *event);

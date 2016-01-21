@@ -110,6 +110,7 @@ class TUPI_PLUGIN SelectionTool : public TupToolPlugin
         void setupActions();
         bool selectionIsActive();
         void updateItemPosition();
+        void removeTarget();
         TupFrame* currentFrame();
         TupFrame* frameAt(int sceneIndex, int layerIndex, int frameIndex);
 

@@ -95,8 +95,7 @@ void SelectionTool::init(TupGraphicsScene *scene)
     k->scene = scene;
     k->scene->clearSelection();
     k->nodeZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
-    k->targetIsIncluded = false;
-
+    removeTarget();
     initItems(scene);
 }
 
@@ -166,6 +165,11 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
     */
 
     panel->enablePositionControls(false);
+    removeTarget();
+}
+
+void SelectionTool::removeTarget()
+{
     if (k->targetIsIncluded) {
         k->scene->removeItem(k->center);
         k->scene->removeItem(k->target1);

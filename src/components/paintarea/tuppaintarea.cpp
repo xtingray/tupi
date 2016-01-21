@@ -1071,7 +1071,8 @@ void TupPaintArea::multipasteObject(int pasteTotal)
                           TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentSceneIndex,
                                                                                             currentScene->currentLayerIndex(),
                                                                                             i,
-                                                                                            TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                                                                            TupProjectRequest::Add, tr("Frame"));
+                                                                                            // TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
                           emit requestTriggered(&request);
                      }
                  }
@@ -1411,7 +1412,13 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    // if (event->key() == Qt::Key_Right) {
+    /*
+    if (event->key() == Qt::Key_Down) {
+        goOneFrameForward();
+        return;
+    }
+    */
+
     if (event->key() == Qt::Key_PageDown) {
         if (event->modifiers() == Qt::ControlModifier)
             quickCopy();

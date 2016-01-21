@@ -395,3 +395,9 @@ void TupCanvas::redo()
     if (redo) 
         redo->trigger();
 }
+
+void TupCanvas::enableRubberBand()
+{
+    graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+}
+

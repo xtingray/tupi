@@ -366,6 +366,8 @@ void TupPaintAreaBase::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space)
         k->spaceBar = true;
+
+    QGraphicsView::keyPressEvent(event);
 }
 
 void TupPaintAreaBase::keyReleaseEvent(QKeyEvent *event)
