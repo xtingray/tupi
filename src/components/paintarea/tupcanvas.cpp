@@ -73,10 +73,20 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
 
     graphicsView = new TupCanvasView(this, scene, screenSize, k->size, project->bgColor());
     connect(graphicsView, SIGNAL(rightClick()), this, SIGNAL(rightClick()));
+    connect(graphicsView, SIGNAL(zoomIn()), this, SLOT(wakeUpZoomIn()));
+    connect(graphicsView, SIGNAL(zoomOut()), this, SLOT(wakeUpZoomOut()));
 
     graphicsView->centerOn(centerPoint);
     graphicsView->scale(scaleFactor, scaleFactor);
     graphicsView->rotate(angle);
+
+    TImageButton *frameBackward = new TImageButton(QPixmap(THEME_DIR + "icons/frame_backward_big.png"), 50, this, true);
+    frameBackward->setToolTip(tr("Frame Backward"));
+    connect(frameBackward, SIGNAL(clicked()), this, SLOT(oneFrameBack()));
+
+    TImageButton *frameForward = new TImageButton(QPixmap(THEME_DIR + "icons/frame_forward_big.png"), 50, this, true);
+    frameForward->setToolTip(tr("Frame Forward"));
+    connect(frameForward, SIGNAL(clicked()), this, SLOT(oneFrameForward()));
 
     TImageButton *pencil = new TImageButton(QPixmap(THEME_DIR + "icons/pencil_big.png"), 50, this, true);
     pencil->setToolTip(tr("Pencil"));
@@ -94,13 +104,13 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     ellipse->setToolTip(tr("Circle"));
     connect(ellipse, SIGNAL(clicked()), this, SLOT(wakeUpEllipse()));
 
-    TImageButton *images = new TImageButton(QPixmap(THEME_DIR + "icons/bitmap_big.png"), 50, this, true);
-    images->setToolTip(tr("Images"));
-    connect(images, SIGNAL(clicked()), this, SLOT(wakeUpLibrary()));
-
     TImageButton *selection = new TImageButton(QPixmap(THEME_DIR + "icons/selection_big.png"), 50, this, true);
     selection->setToolTip(tr("Selection"));
     connect(selection, SIGNAL(clicked()), this, SLOT(wakeUpSelection()));
+
+    TImageButton *trash = new TImageButton(QPixmap(THEME_DIR + "icons/delete_big.png"), 50, this, true);
+    trash->setToolTip(tr("Delete Selection"));
+    connect(trash, SIGNAL(clicked()), this, SLOT(wakeUpDeleteSelection()));
 
     TImageButton *nodes = new TImageButton(QPixmap(THEME_DIR + "icons/nodes_big.png"), 50, this, true);
     nodes->setToolTip(tr("Nodes"));
@@ -114,10 +124,6 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     redo->setToolTip(tr("Redo"));
     connect(redo, SIGNAL(clicked()), this, SLOT(redo()));
 
-    TImageButton *trash = new TImageButton(QPixmap(THEME_DIR + "icons/delete_big.png"), 50, this, true);
-    trash->setToolTip(tr("Delete Selection"));
-    connect(trash, SIGNAL(clicked()), this, SLOT(wakeUpDeleteSelection()));
-
     TImageButton *zoomIn = new TImageButton(QPixmap(THEME_DIR + "icons/zoom_in_big.png"), 50, this, true);
     zoomIn->setToolTip(tr("Zoom In"));
     connect(zoomIn, SIGNAL(clicked()), this, SLOT(wakeUpZoomIn()));
@@ -125,6 +131,10 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     TImageButton *zoomOut = new TImageButton(QPixmap(THEME_DIR + "icons/zoom_out_big.png"), 50, this, true);
     zoomOut->setToolTip(tr("Zoom Out"));
     connect(zoomOut, SIGNAL(clicked()), this, SLOT(wakeUpZoomOut()));
+
+    TImageButton *images = new TImageButton(QPixmap(THEME_DIR + "icons/bitmap_big.png"), 50, this, true);
+    images->setToolTip(tr("Images"));
+    connect(images, SIGNAL(clicked()), this, SLOT(wakeUpLibrary()));
 
     TImageButton *color = new TImageButton(QPixmap(THEME_DIR + "icons/color_palette_big.png"), 50, this, true);
     color->setToolTip(tr("Color Palette"));
@@ -134,9 +144,9 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     size->setToolTip(tr("Pen Size"));
     connect(size, SIGNAL(clicked()), this, SLOT(penDialog()));
 
-    TImageButton *opacity = new TImageButton(QPixmap(THEME_DIR + "icons/onion_big.png"), 50, this, true);
-    opacity->setToolTip(tr("Onion Skin Factor"));
-    connect(opacity, SIGNAL(clicked()), this, SLOT(opacityDialog()));
+    TImageButton *onion = new TImageButton(QPixmap(THEME_DIR + "icons/onion_big.png"), 50, this, true);
+    onion->setToolTip(tr("Onion Skin Factor"));
+    connect(onion, SIGNAL(clicked()), this, SLOT(onionDialog()));
 
     TImageButton *close = new TImageButton(QPixmap(THEME_DIR + "icons/close_big.png"), 50, this, true);
     close->setToolTip(tr("Close Full Screen"));
@@ -145,23 +155,25 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     QBoxLayout *controls = new QBoxLayout(QBoxLayout::TopToBottom);
     controls->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     controls->setContentsMargins(3, 10, 3, 3);
-    controls->setSpacing(10);
+    controls->setSpacing(5);
 
+    controls->addWidget(frameBackward);
+    controls->addWidget(frameForward);
     controls->addWidget(pencil);
     controls->addWidget(polyline);
     controls->addWidget(rectangle);
     controls->addWidget(ellipse);
-    controls->addWidget(images);
     controls->addWidget(selection);
+    controls->addWidget(trash);
     controls->addWidget(nodes);
     controls->addWidget(undo);
     controls->addWidget(redo);
-    controls->addWidget(trash);
     controls->addWidget(zoomIn);
     controls->addWidget(zoomOut);
+    controls->addWidget(images);
     controls->addWidget(color);
     controls->addWidget(size);
-    controls->addWidget(opacity);
+    controls->addWidget(onion);
     controls->addWidget(close);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -220,10 +232,10 @@ void TupCanvas::penDialog()
                         (int) (desktop.screenGeometry().height() - dialog->height())/2);
 }
 
-void TupCanvas::opacityDialog()
+void TupCanvas::onionDialog()
 {
     QDesktopWidget desktop;
-    TupOnionOpacityDialog *dialog = new TupOnionOpacityDialog(k->brushManager->penColor(), k->scene->opacity(), this);
+    TupOnionDialog *dialog = new TupOnionDialog(k->brushManager->penColor(), k->scene->opacity(), this);
     connect(dialog, SIGNAL(updateOpacity(double)), this, SLOT(setOnionOpacity(double)));
 
     QApplication::restoreOverrideCursor();

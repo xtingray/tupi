@@ -25,7 +25,7 @@ HEADERS += tuppaintarea.h \
            tupimagedialog.h \
            tupstoryboarddialog.h \
            tuppendialog.h \
-           tuponionopacitydialog.h \
+           tuponiondialog.h \
            tupinfowidget.h \
            tupruler.h \
            tupcamerainterface.h \
@@ -51,7 +51,7 @@ SOURCES += tuppaintarea.cpp \
            tupimagedialog.cpp \
            tupstoryboarddialog.cpp \
            tuppendialog.cpp \
-           tuponionopacitydialog.cpp \
+           tuponiondialog.cpp \
            tupinfowidget.cpp \
            tupruler.cpp \
            tupcamerainterface.cpp \

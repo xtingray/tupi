@@ -125,6 +125,23 @@ void TupCanvasView::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Space)
         k->spaceBar = true;
 
+    if (event->key() == Qt::Key_Space)
+        k->spaceBar = true;
+
+    if (event->key() == Qt::Key_1) {
+        if (event->modifiers() == Qt::NoModifier) {
+            emit zoomIn();
+            return;
+        }
+    }
+
+    if (event->key() == Qt::Key_2) {
+        if (event->modifiers() == Qt::NoModifier) {
+            emit zoomOut();
+            return;
+        }
+    }
+
     QGraphicsView::keyPressEvent(event);
 }
 

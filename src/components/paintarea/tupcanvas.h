@@ -41,7 +41,7 @@
 #include "tapplication.h"
 #include "tupgraphicsscene.h"
 #include "tupcanvasview.h"
-#include "tuponionopacitydialog.h"
+#include "tuponiondialog.h"
 #include "tuppendialog.h"
 #include "timagebutton.h"
 #include "tupbrushmanager.h"
@@ -109,8 +109,8 @@ class TUPI_EXPORT TupCanvas : public QFrame
 
         void colorDialog();
         void penDialog();
-        void opacityDialog();
-        void setOnionOpacity(double opacity);
+        void onionDialog();
+        void setOnionOpacity(double onion);
 
         void oneFrameBack();
         void oneFrameForward();

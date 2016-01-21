@@ -65,6 +65,8 @@ class TUPI_EXPORT TupCanvasView : public QGraphicsView
 
     signals:
         void rightClick();
+        void zoomIn();
+        void zoomOut();
 
     private:
         void updateCenter(const QPoint point);

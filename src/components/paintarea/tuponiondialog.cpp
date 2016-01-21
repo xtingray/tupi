@@ -33,9 +33,9 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tuponionopacitydialog.h"
+#include "tuponiondialog.h"
 
-struct TupOnionOpacityDialog::Private
+struct TupOnionDialog::Private
 {
     QVBoxLayout *innerLayout;
     TupPenThicknessWidget *opacityPreview;
@@ -44,7 +44,7 @@ struct TupOnionOpacityDialog::Private
     double currentOpacity;
 };
 
-TupOnionOpacityDialog::TupOnionOpacityDialog(const QColor &color, double opacity, QWidget *parent) : QDialog(parent), k(new Private)
+TupOnionDialog::TupOnionDialog(const QColor &color, double opacity, QWidget *parent) : QDialog(parent), k(new Private)
 {
     setModal(true);
     setWindowTitle(tr("Onion Skin Factor"));
@@ -76,16 +76,16 @@ TupOnionOpacityDialog::TupOnionOpacityDialog(const QColor &color, double opacity
     layout->addLayout(k->innerLayout);
 }
 
-TupOnionOpacityDialog::~TupOnionOpacityDialog()
+TupOnionDialog::~TupOnionDialog()
 {
 }
 
-QSize TupOnionOpacityDialog::sizeHint() const
+QSize TupOnionDialog::sizeHint() const
 {
     return QSize(500, 250);
 }
 
-void TupOnionOpacityDialog::setOpacityCanvas()
+void TupOnionDialog::setOpacityCanvas()
 {
     k->opacityPreview = new TupPenThicknessWidget(this);
     k->opacityPreview->setColor(k->color);
@@ -95,7 +95,7 @@ void TupOnionOpacityDialog::setOpacityCanvas()
     k->innerLayout->addWidget(k->opacityPreview);
 }
 
-void TupOnionOpacityDialog::setButtonsPanel()
+void TupOnionDialog::setButtonsPanel()
 {
     TImageButton *minus5 = new TImageButton(QPixmap(THEME_DIR + "icons/minus_sign_big.png"), 40, this, true);
     minus5->setToolTip(tr("-0.05"));
@@ -135,27 +135,27 @@ void TupOnionOpacityDialog::setButtonsPanel()
     k->innerLayout->addLayout(layout);
 }
 
-void TupOnionOpacityDialog::fivePointsLess()
+void TupOnionDialog::fivePointsLess()
 {
     modifySize(-0.05);
 }
 
-void TupOnionOpacityDialog::onePointLess()
+void TupOnionDialog::onePointLess()
 {
     modifySize(-0.01);
 }
 
-void TupOnionOpacityDialog::onePointMore()
+void TupOnionDialog::onePointMore()
 {
     modifySize(0.01);
 }
 
-void TupOnionOpacityDialog::fivePointsMore()
+void TupOnionDialog::fivePointsMore()
 {
     modifySize(0.05);
 }
 
-void TupOnionOpacityDialog::modifySize(double value)
+void TupOnionDialog::modifySize(double value)
 {
     k->currentOpacity = (100 * k->currentOpacity)/100;
     k->currentOpacity += value;

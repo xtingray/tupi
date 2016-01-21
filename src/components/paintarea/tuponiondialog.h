@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPONIONOPACITYDIALOG_H
-#define TUPONIONOPACITYDIALOG_H
+#ifndef TUPONIONDIALOG_H
+#define TUPONIONDIALOG_H
 
 #include "tglobal.h"
 #include "tapplicationproperties.h"
@@ -49,13 +49,13 @@
 #include <QDialogButtonBox>
 #include <cmath>
 
-class TUPI_EXPORT TupOnionOpacityDialog : public QDialog
+class TUPI_EXPORT TupOnionDialog : public QDialog
 {
     Q_OBJECT
 
     public:
-        TupOnionOpacityDialog(const QColor &color, double opacity, QWidget *parent);
-        ~TupOnionOpacityDialog();
+        TupOnionDialog(const QColor &color, double opacity, QWidget *parent);
+        ~TupOnionDialog();
 
         QSize sizeHint() const;
 
