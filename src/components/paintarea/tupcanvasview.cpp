@@ -142,6 +142,16 @@ void TupCanvasView::keyPressEvent(QKeyEvent *event)
         }
     }
 
+    if (event->key() == Qt::Key_PageUp) {
+        emit frameBackward();
+        return;
+    }
+
+    if (event->key() == Qt::Key_PageDown) {
+        emit frameForward();
+        return;
+    }
+
     QGraphicsView::keyPressEvent(event);
 }
 

@@ -75,6 +75,8 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     connect(graphicsView, SIGNAL(rightClick()), this, SIGNAL(rightClick()));
     connect(graphicsView, SIGNAL(zoomIn()), this, SLOT(wakeUpZoomIn()));
     connect(graphicsView, SIGNAL(zoomOut()), this, SLOT(wakeUpZoomOut()));
+    connect(graphicsView, SIGNAL(frameBackward()), this, SLOT(oneFrameBack()));
+    connect(graphicsView, SIGNAL(frameForward()), this, SLOT(oneFrameForward()));
 
     graphicsView->centerOn(centerPoint);
     graphicsView->scale(scaleFactor, scaleFactor);
