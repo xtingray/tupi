@@ -50,7 +50,11 @@ bool TupCommandExecutor::createLayer(TupLayerResponse *response)
         #endif
     #endif
 
-    tError() << "TupCommandExecutor::createLayer() - Creating Layer for the first time";
+    if (response->mode() == TupProjectResponse::Do)
+        tError() << "TupCommandExecutor::createLayer() - Creating Layer for the first time";
+    if (response->mode() == TupProjectResponse::Redo)
+        tError() << "TupCommandExecutor::createLayer() - Creating Layer as REDO action"; 
+
     int scenePosition = response->sceneIndex();
     int position = response->layerIndex();
     QString name = response->arg().toString();

@@ -488,8 +488,8 @@ void TupExposureTable::setLayerVisibility(int visualIndex, bool visibility)
 void TupExposureTable::removeLayer(int layerIndex)
 {
     setUpdatesEnabled(false);
-    k->removingLayer = true;
 
+    k->removingLayer = true;
     k->header->removeSection(layerIndex);
     removeColumn(layerIndex);
 

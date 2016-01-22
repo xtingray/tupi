@@ -364,16 +364,22 @@ void TupPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 
 void TupPaintAreaBase::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Space)
+    if (event->key() == Qt::Key_Space) {
         k->spaceBar = true;
+        return;
+    }
 
     QGraphicsView::keyPressEvent(event);
 }
 
 void TupPaintAreaBase::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Space)
+    if (event->key() == Qt::Key_Space) {
         k->spaceBar = false;
+        return;
+    }
+
+    QGraphicsView::keyReleaseEvent(event);
 }
 
 void TupPaintAreaBase::tabletEvent(QTabletEvent *event)

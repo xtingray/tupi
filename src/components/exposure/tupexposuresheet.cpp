@@ -104,7 +104,6 @@ TupExposureSheet::~TupExposureSheet()
 void TupExposureSheet::createMenu()
 {
     k->menu = new QMenu(tr("actions"));
-
     QMenu *insertMenu = new QMenu(tr("Insert"));
 
     QAction *insertOne = new QAction(QIcon(THEME_DIR + "icons/add_frame.png"), tr("1 frame"), this); 
@@ -626,17 +625,25 @@ void TupExposureSheet::layerResponse(TupLayerResponse *e)
         switch (e->action()) {
                 case TupProjectRequest::Add:
                  {
-                     tError() << "TupExposureSheet::layerResponse() - Adding layer into interface - mode: " << e->mode();
                      tError() << "TupExposureSheet::layerResponse() - Layer index: " << e->layerIndex();
+                     if (e->mode() == TupProjectResponse::Do)
+                         tError() << "TupExposureSheet::layerResponse() - Creating Layer for the first time";
+                     if (e->mode() == TupProjectResponse::Redo)
+                         tError() << "TupExposureSheet::layerResponse() - Creating Layer as REDO action";
                      tError() << "";
+
                      table->insertLayer(e->layerIndex(), e->arg().toString());
                  }
                 break;
                 case TupProjectRequest::Remove:
                  {
-                     tError() << "TupExposureSheet::layerResponse() - Removing layer from interface - mode: " << e->mode();
                      tError() << "TupExposureSheet::layerResponse() - Layer index: " << e->layerIndex();
+                     if (e->mode() == TupProjectResponse::Do)
+                         tError() << "TupExposureSheet::layerResponse() - Removing Layer for the first time";
+                     if (e->mode() == TupProjectResponse::Undo)
+                         tError() << "TupExposureSheet::layerResponse() - Removing Layer as UNDO action";
                      tError() << "";
+
                      table->removeLayer(e->layerIndex());
                  }
                 break;
