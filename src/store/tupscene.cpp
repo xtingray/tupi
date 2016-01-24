@@ -48,6 +48,7 @@ struct TupScene::Private
     TupStoryboard *storyboard;
     TupBackground *background;
     Layers layers;
+    Layers undoLayers;
     SoundLayers soundLayers;
     QString name;
     bool isLocked;
@@ -194,6 +195,21 @@ TupSoundLayer *TupScene::createSoundLayer(int position, bool loaded)
     return layer;
 }
 
+bool TupScene::restoreLayer(int index)
+{
+    if (k->undoLayers.count() > 0) {
+        TupLayer *layer = k->undoLayers.takeLast();
+        if (layer) {
+            k->layers.insert(index, layer);
+            k->layerCount++;
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
 bool TupScene::removeLayer(int position)
 {
     #ifdef K_DEBUG
@@ -207,9 +223,8 @@ bool TupScene::removeLayer(int position)
     TupLayer *layer = this->layer(position);
     if (layer) {
         removeTweensFromLayer(position + 1);
-        k->layers.removeAt(position);
+        k->undoLayers << k->layers.takeAt(position);
         k->layerCount--;
-        delete layer;
 
         return true;
     }
@@ -224,9 +239,7 @@ bool TupScene::removeLayer(int position)
  */
 TupLayer *TupScene::layer(int position) const
 {
-    //if (position < 0 || position >= k->layers.count()) {
-
-    if (position < 0) {    
+    if (position < 0 || position >= k->layers.count()) {    
         #ifdef K_DEBUG
             QString msg1 = " FATAL ERROR: LAYERS TOTAL: " + QString::number(k->layers.count());
             QString msg2 = " FATAL ERROR: index out of bound -> Position: " + QString::number(position);
@@ -268,7 +281,7 @@ void TupScene::fromXml(const QString &xml)
 {
     QDomDocument document;
 
-    if (! document.setContent(xml))
+    if (!document.setContent(xml))
         return;
 
     QDomElement root = document.documentElement();
@@ -385,7 +398,6 @@ bool TupScene::moveLayer(int from, int to)
          TupFrame *frame = frames.at(i);
          frame->updateZLevel(zLevelIndex);
     }
-
     k->layers.swap(from, to);
 
     return true;
@@ -805,4 +817,3 @@ Mouths TupScene::getLipSyncList()
 
     return list;
 }
-

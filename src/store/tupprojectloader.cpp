@@ -50,6 +50,7 @@ void TupProjectLoader::createItem(int scenePosition, int layerPosition, int fram
 {
     TupItemResponse response(TupProjectRequest::Item, TupProjectRequest::Add);
 
+    response.setMode(TupProjectResponse::Do);
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);
     response.setFrameIndex(framePosition);
@@ -66,6 +67,7 @@ void TupProjectLoader::createFrame(int scenePosition, int layerPosition, int fra
 {
     TupFrameResponse response(TupProjectRequest::Frame, TupProjectRequest::Add);
 
+    response.setMode(TupProjectResponse::Do);
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);
     response.setFrameIndex(framePosition);
@@ -77,7 +79,8 @@ void TupProjectLoader::createFrame(int scenePosition, int layerPosition, int fra
 void TupProjectLoader::createLayer(int scenePosition, int layerPosition, const QString &name, TupProject *project)
 {
     TupLayerResponse response(TupProjectRequest::Layer, TupProjectRequest::Add);
-    
+   
+    response.setMode(TupProjectResponse::Do); 
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);
     response.setArg(name);
@@ -88,7 +91,8 @@ void TupProjectLoader::createLayer(int scenePosition, int layerPosition, const Q
 void TupProjectLoader::createSoundLayer(int scenePosition, int layerPosition, const QString &name, TupProject *project)
 {
     TupLibraryResponse response(TupProjectRequest::Library, TupProjectRequest::InsertSymbolIntoFrame);
-    
+   
+    response.setMode(TupProjectResponse::Do); 
     response.setSceneIndex(scenePosition);
     response.setLayerIndex(layerPosition);
     response.setArg(name);
@@ -101,6 +105,7 @@ void TupProjectLoader::createScene(const QString &name, int scenePosition, TupPr
 {
     TupSceneResponse response(TupProjectRequest::Scene, TupProjectRequest::Add);
 
+    response.setMode(TupProjectResponse::Do);
     response.setSceneIndex(scenePosition);
     response.setArg(name);
     
@@ -110,7 +115,8 @@ void TupProjectLoader::createScene(const QString &name, int scenePosition, TupPr
 void TupProjectLoader::createSymbol(TupLibraryObject::Type type, const QString &name, const QString &parent, const QByteArray &data, TupProject *project)
 {
     TupLibraryResponse response(TupProjectRequest::Library, TupProjectRequest::Add);
-   
+  
+    response.setMode(TupProjectResponse::Do); 
     response.setArg(name);
     response.setData(data);
     response.setSymbolType(type);

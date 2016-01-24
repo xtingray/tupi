@@ -45,6 +45,7 @@
 #include "tupprojectactionbar.h"
 #include "tuprequestbuilder.h"
 #include "tupproject.h"
+#include "tuplayer.h"
 #include "tuplibrary.h"
 
 #include <QStackedWidget>

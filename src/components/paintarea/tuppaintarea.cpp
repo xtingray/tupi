@@ -375,10 +375,10 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
     guiScene->frameResponse(event);
 }
 
-void TupPaintArea::layerResponse(TupLayerResponse *event)
+void TupPaintArea::layerResponse(TupLayerResponse *response)
 {
     #ifdef K_DEBUG
-        QString msg = "TupPaintArea::layerResponse() - [" + QString::number(event->sceneIndex()) + ", " + QString::number(event->layerIndex()) + "]";
+        QString msg = "TupPaintArea::layerResponse() - [" + QString::number(response->sceneIndex()) + ", " + QString::number(response->layerIndex()) + "]";
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
@@ -392,9 +392,13 @@ void TupPaintArea::layerResponse(TupLayerResponse *event)
 
     int frameIndex = guiScene->currentFrameIndex();
 
-    switch (event->action()) {
+    switch (response->action()) {
             case TupProjectRequest::Add:
                 {
+                    if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                        if (k->spaceMode == TupProject::FRAMES_EDITION)
+                            guiScene->drawCurrentPhotogram();
+                    }
                     return;
                 }
             break;
@@ -403,10 +407,10 @@ void TupPaintArea::layerResponse(TupLayerResponse *event)
                     TupScene *scene = k->project->scene(k->currentSceneIndex);
 
                     if (scene->layersCount() > 1) {
-                        if (event->layerIndex() != 0)
-                            guiScene->setCurrentFrame(event->layerIndex() - 1, frameIndex);
+                        if (response->layerIndex() != 0)
+                            guiScene->setCurrentFrame(response->layerIndex() - 1, frameIndex);
                         else
-                            guiScene->setCurrentFrame(event->layerIndex() + 1, frameIndex);
+                            guiScene->setCurrentFrame(response->layerIndex() + 1, frameIndex);
 
                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
                             guiScene->drawCurrentPhotogram();
@@ -440,7 +444,7 @@ void TupPaintArea::layerResponse(TupLayerResponse *event)
 
             case TupProjectRequest::TupProjectRequest::View:
                 {
-                    guiScene->setLayerVisible(event->layerIndex(), event->arg().toBool());
+                    guiScene->setLayerVisible(response->layerIndex(), response->arg().toBool());
                     if (k->spaceMode == TupProject::FRAMES_EDITION) {
                         guiScene->drawCurrentPhotogram();
                     } else {
@@ -452,7 +456,7 @@ void TupPaintArea::layerResponse(TupLayerResponse *event)
             break;
             case TupProjectRequest::TupProjectRequest::Move:
                 {
-                    guiScene->setCurrentFrame(event->arg().toInt(), frameIndex);
+                    guiScene->setCurrentFrame(response->arg().toInt(), frameIndex);
                     if (k->spaceMode == TupProject::FRAMES_EDITION) {
                         guiScene->drawCurrentPhotogram();
                     } else {
@@ -475,7 +479,7 @@ void TupPaintArea::layerResponse(TupLayerResponse *event)
             break;
     }
 
-    guiScene->layerResponse(event);
+    guiScene->layerResponse(response);
 }
 
 void TupPaintArea::sceneResponse(TupSceneResponse *event)

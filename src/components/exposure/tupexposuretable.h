@@ -48,11 +48,9 @@
 #include <QHeaderView>
 #include <QItemDelegate>
 #include <QLineEdit>
-
 #include <cmath>
 
 class TupExposureVerticalHeader;
-// class QMenu;
 
 /**
  * @author Jorge Cuadrado
@@ -113,7 +111,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
 
         TupExposureTable::FrameType frameState(int layerIndex, int frameIndex);
         void updateFrameState(int layerIndex, int frameIndex, TupExposureTable::FrameType value);
-		
+
     private slots:
         void markUsedFrames(int frameIndex,  int layerIndex);
         void requestFrameRenaming(QTableWidgetItem *item);

@@ -62,7 +62,7 @@
 #include <QHBoxLayout>
 #include <QList>
 #include <QMenu>
- 
+
 /**
 * @author Jorge Cuadrado
 */
@@ -88,11 +88,11 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void copyTimeLine(int times);
 
     protected:
-        virtual void sceneResponse(TupSceneResponse *event);
-        virtual void layerResponse(TupLayerResponse *event);
-        virtual void frameResponse(TupFrameResponse *event);
-        virtual void itemResponse(TupItemResponse *event);
-        virtual void libraryResponse(TupLibraryResponse *event);
+        virtual void sceneResponse(TupSceneResponse *response);
+        virtual void layerResponse(TupLayerResponse *response);
+        virtual void frameResponse(TupFrameResponse *response);
+        virtual void itemResponse(TupItemResponse *response);
+        virtual void libraryResponse(TupLibraryResponse *response);
 
     public slots:
         void closeAllScenes();

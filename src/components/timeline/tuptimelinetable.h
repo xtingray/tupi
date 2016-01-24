@@ -101,7 +101,8 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         int layersCount();
 
         // Frames
-        void insertFrame(int layerPos, const QString &name);
+        // void insertFrame(int layerPos, const QString &name);
+        void insertFrame(int layerPos);
         void selectFrame(int index);
         void setAttribute(int row, int col, TupTimeLineTableItem::Attributes att, bool value);
         void removeFrame(int layerPos, int position);

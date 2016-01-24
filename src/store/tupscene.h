@@ -103,8 +103,9 @@ class TUPI_EXPORT TupScene : public QObject, public TupAbstractSerializable
         bool removeLayer(int index);
 
         TupLayer *createLayer(QString name, int position, bool loaded = false);
-
         TupSoundLayer *createSoundLayer(int position, bool loaded = false);
+
+        bool restoreLayer(int index);
 
         bool moveLayer(int from, int to);
 

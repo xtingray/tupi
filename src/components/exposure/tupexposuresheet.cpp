@@ -617,72 +617,82 @@ void TupExposureSheet::sceneResponse(TupSceneResponse *e)
     }
 }
 
-void TupExposureSheet::layerResponse(TupLayerResponse *e)
+void TupExposureSheet::layerResponse(TupLayerResponse *response)
 {
-    TupExposureTable *table = k->scenesContainer->getTable(e->sceneIndex());
+    int sceneIndex = response->sceneIndex();
+    TupExposureTable *framesTable = k->scenesContainer->getTable(sceneIndex);
 
-    if (table) {
-        switch (e->action()) {
+    if (framesTable) {
+        int layerIndex = response->layerIndex();
+        switch (response->action()) {
                 case TupProjectRequest::Add:
                  {
-                     tError() << "TupExposureSheet::layerResponse() - Layer index: " << e->layerIndex();
-                     if (e->mode() == TupProjectResponse::Do)
-                         tError() << "TupExposureSheet::layerResponse() - Creating Layer for the first time";
-                     if (e->mode() == TupProjectResponse::Redo)
-                         tError() << "TupExposureSheet::layerResponse() - Creating Layer as REDO action";
-                     tError() << "";
+                     if (response->mode() == TupProjectResponse::Do) {
+                         framesTable->insertLayer(layerIndex, response->arg().toString());
+                         return;
+                     }
 
-                     table->insertLayer(e->layerIndex(), e->arg().toString());
+                     if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                         TupScene *scene = k->project->scene(sceneIndex);
+                         if (scene) {
+                             TupLayer *layer = scene->layer(layerIndex); 
+                             if (layer) {
+                                 framesTable->insertLayer(layerIndex, layer->layerName());
+                                 QList<TupFrame *> frames = layer->frames();
+                                 int total = frames.count();
+                                 for(int i=0; i<total; i++) {
+                                     TupFrame *frame = frames.at(i);
+                                     framesTable->insertFrame(layerIndex, i, frame->frameName(), response->external());
+                                     if (!frame->isEmpty())
+                                         framesTable->updateFrameState(layerIndex, i, TupExposureTable::Used);
+                                 }
+                             } 
+                         }
+                         return;
+                     }
                  }
                 break;
                 case TupProjectRequest::Remove:
                  {
-                     tError() << "TupExposureSheet::layerResponse() - Layer index: " << e->layerIndex();
-                     if (e->mode() == TupProjectResponse::Do)
-                         tError() << "TupExposureSheet::layerResponse() - Removing Layer for the first time";
-                     if (e->mode() == TupProjectResponse::Undo)
-                         tError() << "TupExposureSheet::layerResponse() - Removing Layer as UNDO action";
-                     tError() << "";
-
-                     table->removeLayer(e->layerIndex());
+                     framesTable->removeLayer(layerIndex);
                  }
                 break;
                 case TupProjectRequest::Move:
                  {
-                     table->moveLayer(e->layerIndex(), e->arg().toInt());
+                     framesTable->moveLayer(layerIndex, response->arg().toInt());
                  }
                 break;
                 case TupProjectRequest::Rename:
                  {
-                     table->setLayerName(e->layerIndex(), e->arg().toString());
+                     framesTable->setLayerName(layerIndex, response->arg().toString());
                  }
                 break;
                 case TupProjectRequest::Lock:
                  {
-                     table->setLockLayer(e->layerIndex(), e->arg().toBool());
+                     framesTable->setLockLayer(layerIndex, response->arg().toBool());
                  }
                 break;
                 case TupProjectRequest::Select:
                  {
-                     setScene(e->sceneIndex());
-                     table->blockSignals(true);
-                     table->selectFrame(e->layerIndex(), 0);
-                     table->blockSignals(false);
+                     setScene(sceneIndex);
+                     framesTable->blockSignals(true);
+                     framesTable->selectFrame(layerIndex, 0);
+                     framesTable->blockSignals(false);
 
-                     if (k->previousScene != e->sceneIndex() || k->previousLayer != e->layerIndex()) {
-                         k->previousScene = e->sceneIndex();
-                         k->previousLayer = e->layerIndex();
-                         updateLayerOpacity(e->sceneIndex(), e->layerIndex());
+                     if (k->previousScene != sceneIndex || k->previousLayer != layerIndex) {
+                         k->previousScene = sceneIndex;
+                         k->previousLayer = layerIndex;
+                         updateLayerOpacity(sceneIndex, layerIndex);
                      }
                  }
                 case TupProjectRequest::View:
                  {
-                     table->setLayerVisibility(e->layerIndex(), e->arg().toBool());
+                     framesTable->setLayerVisibility(layerIndex, response->arg().toBool());
                  }
                 break;
                 default:
                      #ifdef K_DEBUG
-                         QString msg = "TupExposureSheet::layerResponse - Layer option undefined! -> " + QString::number(e->action());
+                         QString msg = "TupExposureSheet::layerResponse - Layer option undefined! -> " + QString::number(response->action());
                          #ifdef Q_OS_WIN
                              qDebug() << msg;
                          #else
@@ -693,7 +703,7 @@ void TupExposureSheet::layerResponse(TupLayerResponse *e)
         }
     } else {
         #ifdef K_DEBUG
-            QString msg = "TupExposureSheet::layerResponse -> Scene index invalid: " + QString::number(e->sceneIndex());
+            QString msg = "TupExposureSheet::layerResponse -> Scene index invalid: " + QString::number(sceneIndex);
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
@@ -719,6 +729,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *e)
         switch (e->action()) {
                 case TupProjectRequest::Add:
                  {
+                     tError() << "TupExposureSheet::frameResponse() - Adding frame...";
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
                          setScene(e->sceneIndex());

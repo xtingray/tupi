@@ -56,47 +56,20 @@ bool TupCommandExecutor::createFrame(TupFrameResponse *response)
     int position = response->frameIndex();
     QString name = response->arg().toString();
 
-    // QString state = response->state();
-    
     TupScene *scene = m_project->scene(scenePosition);
-    
-    if (!scene) 
-        return false;
+    if (scene) {
+        scene->insertStoryBoardScene(position);
+        TupLayer *layer = scene->layer(layerPosition);
+        if (layer) {
+            TupFrame *frame = layer->createFrame(name, position);
+            if (!frame)
+                return false;
+            // response->setArg(frame->frameName());
+            // response->setFrameIndex(layer->visualIndexOf(frame));
+            emit responsed(response);
 
-    scene->insertStoryBoardScene(position);
-    
-    TupLayer *layer = scene->layer(layerPosition);
-    
-    if (layer) {
-        TupFrame *frame = layer->createFrame(name, position);
-        
-        if (!frame)
-            return false;
-       
-        /* 
-        if (!name.isEmpty()) {
-            #ifdef K_DEBUG
-                tDebug("items") << name;
-            #endif
-            frame->setFrameName(name);
-        } else {
-            response->setArg(frame->frameName());
+            return true;
         }
-        */
-
-        response->setArg(frame->frameName());
-        response->setFrameIndex(layer->visualIndexOf(frame));
-
-        emit responsed(response);
-
-        /* SQA: Check if this code is really necessary
-        if (!state.isEmpty()) {
-            frame->fromXml(state);
-            response->setArg(frame->frameName());
-        }
-        */
-
-        return true;
     }
     
     return false;

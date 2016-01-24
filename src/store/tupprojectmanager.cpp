@@ -436,13 +436,10 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
 
     if (request->isValid()) {
         TupProjectCommand *command = new TupProjectCommand(k->commandExecutor, request);
-        if (addToStack) {
-            tError() << "TupProjectManager::createCommand() - Adding command into undo stack...";
+        if (addToStack)
             k->undoStack->push(command);
-        } else {  
-            tError() << "TupProjectManager::createCommand() - Calling redo method...";
+        else  
             command->redo();
-        }
     } else {
         #ifdef K_DEBUG
             QString msg = "TupProjectManager::createCommand() - Invalid request";

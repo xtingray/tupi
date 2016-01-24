@@ -344,10 +344,9 @@ int TupTimeLineTable::lastFrameByLayer(int index)
 
 // FRAMES
 
-void TupTimeLineTable::insertFrame(int layerIndex, const QString &name)
+// void TupTimeLineTable::insertFrame(int layerIndex, const QString &name)
+void TupTimeLineTable::insertFrame(int layerIndex)
 {
-    Q_UNUSED(name);
-
     if (layerIndex < 0 || layerIndex >= rowCount())
         return;
 
@@ -477,8 +476,8 @@ void TupTimeLineTable::mousePressEvent(QMouseEvent *event)
 
 void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
 {
-    tError() << "TupTimeLineTable::keyPressEvent() - event->key() -> " << event->key();
-    tError() << "TupTimeLineTable::keyPressEvent() - event->modifiers() -> " << event->modifiers();
+    // tError() << "TupTimeLineTable::keyPressEvent() - event->key() -> " << event->key();
+    // tError() << "TupTimeLineTable::keyPressEvent() - event->modifiers() -> " << event->modifiers();
 
     // Fn + Left/Right arrow
     if (event->key() == 16777232 || event->key() == 16777233)

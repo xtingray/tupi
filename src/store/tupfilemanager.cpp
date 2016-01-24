@@ -250,7 +250,6 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
     #endif
 
     TupPackageHandler packageHandler;
-
     if (packageHandler.importPackage(fileName)) {
         QDir projectDir(packageHandler.importedProjectPath());
         QFile pfile(projectDir.path() + QDir::separator() + "project.tpp");
@@ -281,7 +280,6 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
         project->loadLibrary(projectDir.path() + QDir::separator() + "library.tpl");
 
         QStringList scenes = projectDir.entryList(QStringList() << "*.tps", QDir::Readable | QDir::Files);
-
         if (scenes.count() > 0) {
             int index = 0;
             foreach (QString scenePath, scenes) {

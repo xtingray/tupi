@@ -177,7 +177,6 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
     prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable);
     prototype->setTextAlignment(Qt::AlignCenter);
     prototype->setData(IsEmpty, Unset);
-
     setItemPrototype(prototype);
 
     setRowCount(100);
@@ -185,13 +184,13 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
     for (int i=0; i < 100; i++)
          setRowHeight(i, 20);
 
-    k->header = new TupExposureHeader(this);
+    tError() << "TupExposureTable() - Creating k->header...";
 
+    k->header = new TupExposureHeader(this);
     connect(k->header, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(layerVisibilityChanged(int, bool)));
     connect(k->header, SIGNAL(nameChanged(int, const QString &)), this, SIGNAL(layerNameChanged(int, const QString & )));
     connect(k->header, SIGNAL(sectionMoved(int, int, int)), this, SLOT(requestLayerMove(int, int, int)));
     connect(k->header, SIGNAL(headerSelectionChanged(int)), this, SLOT(updateLayerSelection(int)));
-
     setHorizontalHeader(k->header);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(markUsedFrames(int, int)));
@@ -199,13 +198,12 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
 
     setSelectionBehavior(QAbstractItemView::SelectItems);
     setSelectionMode(QAbstractItemView::SingleSelection);
-
     k->menu = 0;
 }
 
-void TupExposureTable::requestFrameRenaming(QTableWidgetItem * item)
+void TupExposureTable::requestFrameRenaming(QTableWidgetItem *item)
 {
-    QModelIndex  index = indexFromItem(item);
+    QModelIndex index = indexFromItem(item);
     emit frameRenamed(index.column(), index.row(), item->text());
 }
 
@@ -427,6 +425,7 @@ void TupExposureTable::insertLayer(int index, const QString & name)
 {
     insertColumn(index);
     setColumnWidth(index, 70);
+    tError() << "TupExposureTable::insertLayer() - Inserting layer with index: " << index << " - " << name;
     k->header->insertSection(index, name);
 }
 
@@ -436,16 +435,15 @@ void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString
     QFont font = this->font();
     font.setPointSize(7);
     frame->setFont(font);
-    // frame->setFont(QFont("Arial", 7, QFont::Normal, false));
     frame->setSizeHint(QSize(65, 10));
     frame->setText(name);
     frame->setData(IsEmpty, Empty);
     frame->setTextAlignment(Qt::AlignCenter);
 
     int logicalIndex = k->header->logicalIndex(layerIndex);
-
+    tError() << "TupExposureTable::insertFrame() - Tracing var layerIndex -> " << layerIndex;
+    tError() << "TupExposureTable::insertFrame() - Tracing var logicalIndex -> " << logicalIndex;
     k->header->setLastFrame(logicalIndex, k->header->lastFrame(logicalIndex) + 1);
-
     setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 
     for (int i = k->header->lastFrame(logicalIndex)-1; i > frameIndex; i--)
@@ -710,4 +708,3 @@ void TupExposureTable::reset()
 
     k->header->setLastFrame(0, 1);
 }
-

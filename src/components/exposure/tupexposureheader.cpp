@@ -106,6 +106,7 @@ void TupExposureHeader::insertSection(int section, const QString &text)
     layer.lastFrame = 0;
     layer.isVisible = true;
     layer.isLocked = false;
+
     m_sections.insert(section, layer);
 }
 

@@ -441,19 +441,7 @@ void TupProjectCommand::layerCommand()
     switch (response->action()) {
             case TupProjectRequest::Add:
             {
-                 tError() << "TupProjectCommand::layerCommand() - Adding layer...";
                  k->executor->createLayer(response);
-                 /*
-                 if (response->mode() == TupProjectResponse::Do) {
-                     k->executor->createLayer(response);
-                     return;
-                 }
-
-                 if (response->mode() == TupProjectResponse::Redo) {
-                     tError() << "TupProjectCommand::layerCommand() - Restoring last layer removed...";
-                     return; 
-                 }
-                 */
             }
             break;
             case TupProjectRequest::AddLipSync:
@@ -468,7 +456,6 @@ void TupProjectCommand::layerCommand()
             break;
             case TupProjectRequest::Remove:
             {
-                 tError() << "TupProjectCommand::layerCommand() - Removing layer...";
                  k->executor->removeLayer(response);
             }
             break;

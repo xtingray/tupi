@@ -413,6 +413,7 @@ TupFrame* SelectionTool::frameAt(int sceneIndex, int layerIndex, int frameIndex)
 
 void SelectionTool::setupActions()
 {
+    k->targetIsIncluded = false;
     k->selectionFlag = false;
     k->scaleFactor = 1;
     k->realFactor = 1;
