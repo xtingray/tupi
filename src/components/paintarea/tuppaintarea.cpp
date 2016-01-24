@@ -308,9 +308,17 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
     #endif
 
     TupGraphicsScene *guiScene = graphicsScene();
-
-    if (!guiScene->scene())
+    if (!guiScene->scene()) {
+        #ifdef K_DEBUG
+            QString msg = "TupPaintArea::frameResponse() - Fatal error: No TupScene available!";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return;
+    }
 
     if (!guiScene->isDrawing()) {
         switch (event->action()) {
@@ -326,10 +334,6 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
                             if (guiScene->currentFrameIndex() != event->frameIndex())
                                 emit frameChanged(event->frameIndex());
                         }
-
-                        // SQA: Check if this instruction is really required
-                        // setUpdatesEnabled(true);
-
                         guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
@@ -341,9 +345,14 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
 
                         if (guiScene->currentTool()->toolType() == TupToolInterface::Selection)
                             guiScene->resetCurrentTool();
-                            // guiScene->currentTool()->init(graphicsScene());
                     }
                 break;
+                case TupProjectRequest::Exchange:
+                    {
+                        if (k->spaceMode == TupProject::FRAMES_EDITION)
+                            guiScene->drawCurrentPhotogram();
+                    }
+                    break;
                 case TupProjectRequest::Lock:
                     {
                         if (guiScene->currentFrameIndex() == event->frameIndex())

@@ -340,21 +340,26 @@ void TupExposureSheet::applyAction(int action)
 
             case TupProjectActionBar::MoveFrameBackward:
                {
-                 TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                            k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                            TupProjectRequest::Exchange, k->currentTable->currentFrame()-1);
-                 emit requestTriggered(&request);
+                 int frameIndex = k->currentTable->currentFrame();
+                 if (frameIndex > 0) {
+                     TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
+                                                 k->currentTable->currentLayer(),  frameIndex,
+                                                 TupProjectRequest::Exchange, k->currentTable->currentFrame()-1);
+                     emit requestTriggered(&request);
+                 }
                }
                break;
 
             case TupProjectActionBar::MoveFrameForward:
                {
-                 if (k->currentTable->currentFrame()+1 == k->currentTable->framesCountAtCurrentLayer())
+                 int origin = k->currentTable->currentFrame();
+                 int destination = k->currentTable->currentFrame() + 1;
+                 if (destination == k->currentTable->framesCountAtCurrentLayer())
                      insertFrames(1);
 
                  TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                            k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                            TupProjectRequest::Exchange, k->currentTable->currentFrame()+1);
+                                             k->currentTable->currentLayer(), origin,
+                                             TupProjectRequest::Exchange, destination);
                  emit requestTriggered(&request);
                }
                break;
@@ -559,18 +564,18 @@ void TupExposureSheet::sceneResponse(TupSceneResponse *e)
     switch(e->action()) {
            case TupProjectRequest::Add:
             {
-                tError() << "TupExposureSheet::sceneResponse() - Adding scene into interface - mode: " << e->mode();
-                tError() << "TupExposureSheet::sceneResponse() - Scene index: " << e->sceneIndex();
-                tError() << "";
+                // tError() << "TupExposureSheet::sceneResponse() - Adding scene into interface - mode: " << e->mode();
+                // tError() << "TupExposureSheet::sceneResponse() - Scene index: " << e->sceneIndex();
+                // tError() << "";
 
                 addScene(e->sceneIndex(), e->arg().toString());
             }
            break;
            case TupProjectRequest::Remove:
             {
-                tError() << "TupExposureSheet::sceneResponse() - Removing scene into interface - mode: " << e->mode();
-                tError() << "TupExposureSheet::sceneResponse() - Scene index: " << e->sceneIndex();
-                tError() << "";
+                // tError() << "TupExposureSheet::sceneResponse() - Removing scene into interface - mode: " << e->mode();
+                // tError() << "TupExposureSheet::sceneResponse() - Scene index: " << e->sceneIndex();
+                // tError() << "";
 
                 k->scenesContainer->removeScene(e->sceneIndex());
             }
@@ -724,12 +729,11 @@ void TupExposureSheet::frameResponse(TupFrameResponse *e)
     #endif
 
     TupExposureTable *table = k->scenesContainer->getTable(e->sceneIndex());
-
     if (table) {
         switch (e->action()) {
                 case TupProjectRequest::Add:
                  {
-                     tError() << "TupExposureSheet::frameResponse() - Adding frame...";
+                     // tError() << "TupExposureSheet::frameResponse() - Adding frame at index: " << e->frameIndex();
                      table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
                          setScene(e->sceneIndex());

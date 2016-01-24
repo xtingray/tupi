@@ -83,6 +83,7 @@ class TUPI_EXPORT TupLayer : public QObject, public TupAbstractSerializable
         double opacity();
         
         TupFrame *createFrame(QString name, int position, bool loaded = false);
+        bool restoreFrame(int index);
         bool removeFrame(int position);
         bool resetFrame(int position);
         bool moveFrame(int from, int to);

@@ -103,7 +103,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
     connect(rectangle, SIGNAL(clicked()), this, SLOT(wakeUpRectangle()));
 
     TImageButton *ellipse = new TImageButton(QPixmap(THEME_DIR + "icons/ellipse_big.png"), 50, this, true);
-    ellipse->setToolTip(tr("Circle"));
+    ellipse->setToolTip(tr("Ellipse"));
     connect(ellipse, SIGNAL(clicked()), this, SLOT(wakeUpEllipse()));
 
     TImageButton *selection = new TImageButton(QPixmap(THEME_DIR + "icons/selection_big.png"), 50, this, true);

@@ -68,7 +68,7 @@ struct TupFrame::Private
     QList<QString> objectIndexes;
     SvgObjects svg;
     QList<QString> svgIndexes;
-    int repeat;
+    // int repeat;
     int zLevelIndex;
     double opacity;
 };
@@ -92,7 +92,7 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->direction = "-1";
     k->shift = "0";
 
-    k->repeat = 1;
+    // k->repeat = 1;
     // k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT; // Layers levels starts from 2
     k->zLevelIndex = 0;
 }
@@ -102,7 +102,7 @@ TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new
     k->name = label;
     k->isLocked = false;
     k->isVisible = true;
-    k->repeat = 1;
+    // k->repeat = 1;
     k->opacity = 1.0;
 
     k->direction = "-1";
@@ -1321,6 +1321,7 @@ int TupFrame::indexOf(QGraphicsItem *item) const
     return -1;
 }
 
+/*
 void TupFrame::setRepeat(int repeat)
 {
     k->repeat = repeat;
@@ -1330,6 +1331,7 @@ int TupFrame::repeat() const
 {
     return k->repeat;
 }
+*/
 
 int TupFrame::index() const
 {

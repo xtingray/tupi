@@ -134,8 +134,8 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        
        int index() const;
        
-       void setRepeat(int repeat);
-       int repeat() const;
+       // void setRepeat(int repeat);
+       // int repeat() const;
        
        void clear();
        int graphicItemsCount();

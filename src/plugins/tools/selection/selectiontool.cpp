@@ -112,58 +112,6 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
     foreach (QGraphicsView *view, scene->views())
              view->setDragMode(QGraphicsView::RubberBandDrag);
 
-    /*
-    int zBottomLimit = (scene->currentLayerIndex() + 2)*ZLAYER_LIMIT;
-    int zTopLimit = zBottomLimit + ZLAYER_LIMIT;
-
-    foreach (QGraphicsView *view, scene->views()) {
-             view->setDragMode(QGraphicsView::RubberBandDrag);
-             foreach (QGraphicsItem *item, scene->items()) {
-                      // SQA: Code just for debugging issues
-                      QDomDocument dom;
-                      dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
-                      QDomElement root = dom.documentElement();
-                      tFatal() << "SelectionTool::initItems() - XML: ";
-                      tFatal() << dom.toString();
-
-                      int zValue = item->zValue();
-                      if (!qgraphicsitem_cast<Node *>(item)) {
-                          if (scene->spaceContext() == TupProject::FRAMES_EDITION) {
-                              if ((zValue >= zBottomLimit) && (zValue < zTopLimit) && (item->toolTip().length() == 0)) {
-                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                                  tError() << "SelectionTool::initItems() - Enabling moving feature in item at " << item->zValue();
-                              } else {
-                                  item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                                  item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                                  tError() << "SelectionTool::initItems() - Disabling moving feature in item at " << item->zValue();
-                              }
-                          } else {
-                              if (scene->spaceContext() == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                                  item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                              } else if (scene->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
-                                         if (zValue >= ZLAYER_LIMIT) {
-                                             item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                                         } else {
-                                             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                                             item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                                         }
-                              } else {
-                                  #ifdef K_DEBUG
-                                      QString msg = "SelectionTool::initItems() - Fatal Error: Invalid spaceContext!";
-                                      #ifdef Q_OS_WIN
-                                          qDebug() << msg;
-                                      #else
-                                          tError() << msg;
-                                      #endif
-                                  #endif
-                                  return;
-                              }
-                          }
-                      }
-             }
-    }
-    */
-
     panel->enablePositionControls(false);
     removeTarget();
 }

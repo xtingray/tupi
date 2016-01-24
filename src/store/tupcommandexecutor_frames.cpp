@@ -61,13 +61,21 @@ bool TupCommandExecutor::createFrame(TupFrameResponse *response)
         scene->insertStoryBoardScene(position);
         TupLayer *layer = scene->layer(layerPosition);
         if (layer) {
-            TupFrame *frame = layer->createFrame(name, position);
-            if (!frame)
-                return false;
-            // response->setArg(frame->frameName());
-            // response->setFrameIndex(layer->visualIndexOf(frame));
-            emit responsed(response);
+            if (response->mode() == TupProjectResponse::Do) {
+                TupFrame *frame = layer->createFrame(name, position);
+                if (!frame)
+                    return false;
+                // response->setArg(frame->frameName());
+                // response->setFrameIndex(layer->visualIndexOf(frame));
+            }
 
+            if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                bool success = layer->restoreFrame(position);
+                if (!success)
+                    return false;
+            }
+
+            emit responsed(response);
             return true;
         }
     }
@@ -92,8 +100,7 @@ bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
             if (frame) {
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
-                response->setArg(frame->frameName());
-
+                // response->setArg(frame->frameName());
                 scene->removeTweensFromFrame(realPosition);
                 
                 if (layer->removeFrame(position)) {

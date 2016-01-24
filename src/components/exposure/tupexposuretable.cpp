@@ -184,8 +184,6 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
     for (int i=0; i < 100; i++)
          setRowHeight(i, 20);
 
-    tError() << "TupExposureTable() - Creating k->header...";
-
     k->header = new TupExposureHeader(this);
     connect(k->header, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(layerVisibilityChanged(int, bool)));
     connect(k->header, SIGNAL(nameChanged(int, const QString &)), this, SIGNAL(layerNameChanged(int, const QString & )));
@@ -425,7 +423,6 @@ void TupExposureTable::insertLayer(int index, const QString & name)
 {
     insertColumn(index);
     setColumnWidth(index, 70);
-    tError() << "TupExposureTable::insertLayer() - Inserting layer with index: " << index << " - " << name;
     k->header->insertSection(index, name);
 }
 
@@ -441,8 +438,6 @@ void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString
     frame->setTextAlignment(Qt::AlignCenter);
 
     int logicalIndex = k->header->logicalIndex(layerIndex);
-    tError() << "TupExposureTable::insertFrame() - Tracing var layerIndex -> " << layerIndex;
-    tError() << "TupExposureTable::insertFrame() - Tracing var logicalIndex -> " << logicalIndex;
     k->header->setLastFrame(logicalIndex, k->header->lastFrame(logicalIndex) + 1);
     setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 

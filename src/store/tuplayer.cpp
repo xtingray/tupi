@@ -41,6 +41,7 @@ struct TupLayer::Private
 {
     TupScene *scene;
     Frames frames;
+    Frames undoFrames;
     Mouths lipsyncList;
     bool isVisible;
     QString name;
@@ -50,14 +51,7 @@ struct TupLayer::Private
     double opacity;
 };
 
-/*
-TupLayer::TupLayer() : k(new Private)
-{
-}
-*/
-
 TupLayer::TupLayer(TupScene *scene, int index) : k(new Private)
-// TupLayer::TupLayer(TupScene *parent, int index) : QObject(parent), k(new Private)
 {
     k->scene = scene;
     k->index = index;
@@ -179,13 +173,29 @@ Mouths TupLayer::lipSyncList()
      return k->lipsyncList;
 }
 
+bool TupLayer::restoreFrame(int index)
+{
+    if (k->undoFrames.count() > 0) {
+        TupFrame *frame = k->undoFrames.takeLast();
+        if (frame) {
+            k->frames.insert(index, frame);
+            k->framesCount++;
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
 bool TupLayer::removeFrame(int position)
 {
     TupFrame *toRemove = frame(position);
 
     if (toRemove) {
-        k->frames.removeAt(position);
-        toRemove->setRepeat(toRemove->repeat()-1);
+        // k->frames.removeAt(position);
+        // toRemove->setRepeat(toRemove->repeat()-1);
+        k->undoFrames << k->frames.takeAt(position);
         k->framesCount--;
 
         return true;
@@ -251,8 +261,17 @@ bool TupLayer::moveFrame(int from, int to)
 
 bool TupLayer::exchangeFrame(int from, int to)
 {
-    if (from < 0 || from >= k->frames.count() || to < 0 || to > k->frames.count())
+    if (from < 0 || from >= k->frames.count() || to < 0 || to >= k->frames.count()) {
+        #ifdef K_DEBUG
+            QString msg = "TupLayer::exchangeFrame() - Fatal Error: frame indexes are invalid -> from: " + QString::number(from) + " / to: " + QString::number(to);
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return false;
+    }
 
     k->frames.swap(from, to);
 
@@ -281,8 +300,8 @@ TupFrame *TupLayer::frame(int position) const
 {
     if (position < 0 || position >= k->frames.count()) {        
         #ifdef K_DEBUG
-            QString msg1 = "TupLayer::frame() - FATAL ERROR: frame index out of bound : " + QString::number(position);
-            QString msg2 = "TupLayer::frame() - FATAL ERROR: index limit : " + QString::number(k->frames.count()-1);
+            QString msg1 = "TupLayer::frame() - Fatal Error: frame index out of bound : " + QString::number(position);
+            QString msg2 = "TupLayer::frame() - Fatal Error: index limit : " + QString::number(k->frames.count()-1);
             #ifdef Q_OS_WIN
                 qDebug() << msg1;
                 qDebug() << msg2;
