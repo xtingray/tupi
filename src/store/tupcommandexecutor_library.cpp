@@ -119,17 +119,6 @@ bool TupCommandExecutor::insertSymbolIntoFrame(TupLibraryResponse *response)
     if (m_project->scenesCount() > 0) {
         if (m_project->insertSymbolIntoFrame(response->spaceMode(), response->arg().toString(), 
             response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
-            /*
-            TupScene *scene = m_project->scene(response->sceneIndex()); 
-            if (scene) {
-                TupLayer *layer = scene->layer(response->layerIndex());
-                if (layer) {
-                    TupFrame *frame = layer->frame(response->frameIndex());
-                    if (frame)
-                        response->setFrameState(frame->isEmpty());
-                }
-            }
-            */
             emit responsed(response);
             return true;
         } 
