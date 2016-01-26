@@ -45,7 +45,7 @@ struct TupLayer::Private
     Mouths lipsyncList;
     bool isVisible;
     QString name;
-    int framesCount;
+    int framesCounter;
     bool isLocked;
     int index;
     double opacity;
@@ -57,7 +57,7 @@ TupLayer::TupLayer(TupScene *scene, int index) : k(new Private)
     k->index = index;
     k->isVisible = true;
     k->name = tr("Layer");
-    k->framesCount = 0;
+    k->framesCounter = 0;
     k->isLocked = false;
     k->opacity = 1.0;
 }
@@ -78,7 +78,7 @@ Frames TupLayer::frames()
 void TupLayer::setFrames(const Frames &frames)
 {
     k->frames = frames;
-    k->framesCount = frames.count();
+    k->framesCounter = frames.count();
 }
 
 void TupLayer::setFrame(int index, TupFrame *frame)
@@ -139,7 +139,7 @@ TupFrame *TupLayer::createFrame(QString name, int position, bool loaded)
         return 0;
 
     TupFrame *frame = new TupFrame(this);
-    k->framesCount++;
+    k->framesCounter++;
     frame->setFrameName(name);
     k->frames.insert(position, frame);
 
@@ -179,7 +179,7 @@ bool TupLayer::restoreFrame(int index)
         TupFrame *frame = k->undoFrames.takeLast();
         if (frame) {
             k->frames.insert(index, frame);
-            k->framesCount++;
+            k->framesCounter++;
             return true;
         }
         return false;
@@ -196,7 +196,7 @@ bool TupLayer::removeFrame(int position)
         // k->frames.removeAt(position);
         // toRemove->setRepeat(toRemove->repeat()-1);
         k->undoFrames << k->frames.takeAt(position);
-        k->framesCount--;
+        k->framesCounter--;
 
         return true;
     }
@@ -224,7 +224,7 @@ bool TupLayer::resetFrame(int position)
 
     if (toReset) {
         QString label = toReset->frameName();
-        // if (framesCount() == 1)
+        // if (framesCounter() == 1)
         //     label = tr("Frame") + " 1";
         TupFrame *frame = new TupFrame(this); 
         frame->setFrameName(label);
@@ -284,7 +284,6 @@ bool TupLayer::expandFrame(int position, int size)
         return false;
 
     TupFrame *toExpand = frame(position);
-
     if (toExpand) {
         int limit = position + size;
         for (int i = position + 1; i <= limit; i++)
@@ -367,8 +366,8 @@ QDomElement TupLayer::toXml(QDomDocument &doc) const
     root.setAttribute("visible", QString::number(k->isVisible)); 
 
     doc.appendChild(root);
-    int framesCount  = k->frames.size();
-    for (int i = 0; i < framesCount; i++) {
+    int framesCounter = k->frames.size();
+    for (int i = 0; i < framesCounter; i++) {
          TupFrame *frame = k->frames.at(i);
          root.appendChild(frame->toXml(doc));
     }
@@ -415,5 +414,5 @@ int TupLayer::objectIndex() const
 
 int TupLayer::framesCount() const
 {
-    return k->framesCount;
+    return k->framesCounter;
 }

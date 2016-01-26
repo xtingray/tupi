@@ -296,10 +296,10 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
     TupPaintAreaBase::mousePressEvent(event);
 }
 
-void TupPaintArea::frameResponse(TupFrameResponse *event)
+void TupPaintArea::frameResponse(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
-        QString msg = "TupPaintArea::frameResponse() - [" + QString::number(event->sceneIndex()) + ", " + QString::number(event->layerIndex()) + ", " + QString::number(event->frameIndex()) + "]";
+        QString msg = "TupPaintArea::frameResponse() - [" + QString::number(response->sceneIndex()) + ", " + QString::number(response->layerIndex()) + ", " + QString::number(response->frameIndex()) + "]";
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
@@ -321,23 +321,27 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
     }
 
     if (!guiScene->isDrawing()) {
-        switch (event->action()) {
+        switch (response->action()) {
                 case TupProjectRequest::Add:
+                // case TupProjectRequest::Remove:
+                case TupProjectRequest::Exchange:
                     {
+                        if (k->spaceMode == TupProject::FRAMES_EDITION)
+                            guiScene->drawCurrentPhotogram();
                     }
-                break; 
+                    break;
                 case TupProjectRequest::Select:
                 case TupProjectRequest::Paste:
                 case TupProjectRequest::Reset:
                     {
-                        if (event->action() == TupProjectRequest::Select) {
-                            if (guiScene->currentFrameIndex() != event->frameIndex())
-                                emit frameChanged(event->frameIndex());
+                        if (response->action() == TupProjectRequest::Select) {
+                            if (guiScene->currentFrameIndex() != response->frameIndex())
+                                emit frameChanged(response->frameIndex());
                         }
-                        guiScene->setCurrentFrame(event->layerIndex(), event->frameIndex());
+                        guiScene->setCurrentFrame(response->layerIndex(), response->frameIndex());
 
                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                            guiScene->drawPhotogram(event->frameIndex(), true);
+                            guiScene->drawPhotogram(response->frameIndex(), true);
                         } else {
                             guiScene->cleanWorkSpace();
                             guiScene->drawSceneBackground(guiScene->currentFrameIndex());
@@ -346,25 +350,11 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
                         if (guiScene->currentTool()->toolType() == TupToolInterface::Selection)
                             guiScene->resetCurrentTool();
                     }
-                break;
-                case TupProjectRequest::Exchange:
-                    {
-                        if (k->spaceMode == TupProject::FRAMES_EDITION)
-                            guiScene->drawCurrentPhotogram();
-                    }
                     break;
                 case TupProjectRequest::Lock:
                     {
-                        if (guiScene->currentFrameIndex() == event->frameIndex())
+                        if (guiScene->currentFrameIndex() == response->frameIndex())
                             viewport()->update();
-                    }
-                    break;
-                case TupProjectRequest::Remove:
-                    {
-                        if (event->frameIndex() == 0) {
-                            guiScene->cleanWorkSpace();
-                            viewport()->update();
-                        }
                     }
                     break;
                 default:
@@ -381,7 +371,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *event)
         #endif
     }
 
-    guiScene->frameResponse(event);
+    guiScene->frameResponse(response);
 }
 
 void TupPaintArea::layerResponse(TupLayerResponse *response)

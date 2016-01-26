@@ -367,11 +367,17 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
 void TupFrame::addLibraryItem(const QString &id, TupGraphicLibraryItem *libraryItem)
 {
     QGraphicsItem *item = libraryItem->item();
+    QDomDocument dom;
+    TupItemFactory itemFactory;
+
     if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item)) {
-        QDomDocument dom;
-        TupItemFactory itemFactory;
         dom.appendChild(dynamic_cast<TupAbstractSerializable *>(group)->toXml(dom));
         item = itemFactory.create(dom.toString());
+    } else {
+        if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(item)) {
+            dom.appendChild(dynamic_cast<TupAbstractSerializable *>(path)->toXml(dom));
+            item = itemFactory.create(dom.toString());
+        }
     } 
 
     addItem(id, item);

@@ -286,7 +286,6 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
         switch (response->action()) {
                 case TupProjectRequest::Add:
                 {
-                     // framesTable->insertFrame(response->layerIndex(), response->arg().toString());
                      framesTable->insertFrame(response->layerIndex());
                 }
                 break;

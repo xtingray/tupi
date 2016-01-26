@@ -38,8 +38,10 @@
 struct TupSceneTabWidget::Private
 {
     QList<TupExposureTable *> tables;
+    QList<TupExposureTable *> undoTables;
     QTabWidget *tabber;
     QList<QDoubleSpinBox *> opacityControl;
+    QList<QDoubleSpinBox *> undoOpacities;
 };
 
 TupSceneTabWidget::TupSceneTabWidget(QWidget *parent) : QFrame(parent), k(new Private)
@@ -102,10 +104,42 @@ void TupSceneTabWidget::addScene(int index, const QString &name, TupExposureTabl
     k->tabber->insertTab(index, frame, name);
 }
 
+void TupSceneTabWidget::restoreScene(int index, const QString &name)
+{
+    QFrame *frame = new QFrame;
+    QVBoxLayout *layout = new QVBoxLayout(frame);
+    layout->setMargin(1);
+
+    QHBoxLayout *opacityLayout = new QHBoxLayout;
+    opacityLayout->setAlignment(Qt::AlignHCenter);
+
+    QLabel *header = new QLabel();
+    QPixmap pix(THEME_DIR + "icons/layer_opacity.png");
+    header->setToolTip(tr("Current Layer Opacity"));
+    header->setPixmap(pix);
+
+    TupExposureTable *table = k->undoTables.takeLast();
+    QDoubleSpinBox *opacitySpinBox = k->undoOpacities.takeLast();
+    k->opacityControl << opacitySpinBox;
+
+    opacityLayout->addWidget(header);
+    opacityLayout->addWidget(opacitySpinBox);
+
+    layout->addLayout(opacityLayout);
+    layout->addWidget(table);
+    frame->setLayout(layout);
+
+    k->tables.insert(index, table);
+    k->tabber->insertTab(index, frame, name);
+}
+
 void TupSceneTabWidget::removeScene(int index) 
 {
-    k->tables.removeAt(index);
-    k->opacityControl.removeAt(index);
+    // k->tables.removeAt(index);
+    // k->opacityControl.removeAt(index);
+
+    k->undoTables << k->tables.takeAt(index);
+    k->undoOpacities << k->opacityControl.takeAt(index);
 
     blockSignals(true);
     k->tabber->removeTab(index);

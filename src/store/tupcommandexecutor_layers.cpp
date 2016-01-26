@@ -62,6 +62,7 @@ bool TupCommandExecutor::createLayer(TupLayerResponse *response)
             if (!layer) 
                 return false;
         }
+
         if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
             bool success = scene->restoreLayer(position);
             if (!success)

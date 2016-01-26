@@ -66,33 +66,22 @@ bool TupCommandExecutor::createScene(TupSceneResponse *response)
 
     int position = response->sceneIndex();
     QString name = response->arg().toString();
-    
-    // if (position < 0 || position > m_project->scenes().count())
     if (position < 0)
         return false;
-    
-    TupScene *scene = m_project->createScene(name, position);
-    if (!scene) 
-        return false;
-   
-    /* 
-    if (!name.isEmpty())
-        scene->setSceneName(name);
-    else
-        response->setArg(scene->sceneName());
-    */
-    
-    emit responsed(response);
-   
-    /* SQA: Check if this code is really necessary 
-    QString state =  response->state();
-    
-    if (! state.isEmpty()) {
-        scene->fromXml(state);
-        response->setArg(scene->sceneName());
+
+    if (response->mode() == TupProjectResponse::Do) {
+        TupScene *scene = m_project->createScene(name, position);
+        if (!scene) 
+            return false;
     }
-    */
-    
+
+    if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) { 
+        bool success = m_project->restoreScene(position);
+        if (!success)
+            return false;
+    }
+
+    emit responsed(response);
     return true;
 }
 

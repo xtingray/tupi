@@ -107,6 +107,7 @@ class TUPI_EXPORT TupProject : public QObject, public TupAbstractSerializable
 
         TupScene *createScene(QString name, int position, bool loaded = false);
         void updateScene(int position, TupScene *scene);
+        bool restoreScene(int position);
         bool removeScene(int position);
         bool moveScene(int position, int newPosition);
 

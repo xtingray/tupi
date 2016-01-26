@@ -69,11 +69,19 @@ int TupProjectResponse::part() const
 int TupProjectResponse::action() const
 {
     if (k->mode == Undo) {
-
         switch (k->action) {
                 case TupProjectRequest::Add:
                      {
                         return TupProjectRequest::Remove;
+                     }
+                break;
+                case TupProjectRequest::Remove:
+                     {
+                        return TupProjectRequest::Add;
+                     }
+                break;
+                case TupProjectRequest::Exchange:
+                     {
                      }
                 break;
                 case TupProjectRequest::InsertSymbolIntoFrame:
@@ -120,11 +128,6 @@ int TupProjectResponse::action() const
                 break;
                 case TupProjectRequest::Convert:
                      {
-                     }
-                break;
-                case TupProjectRequest::Remove:
-                     {
-                        return TupProjectRequest::Add;
                      }
                 break;
                 case TupProjectRequest::Group:

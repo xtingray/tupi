@@ -57,6 +57,7 @@ struct TupProject::Private
     QString cachePath; 
 
     Scenes scenes;
+    Scenes undoScenes;
     int sceneCounter;
     TupLibrary *library;
     bool isOpen;
@@ -262,6 +263,21 @@ void TupProject::updateScene(int position, TupScene *scene)
     k->scenes.insert(position, scene);
 }
 
+bool TupProject::restoreScene(int position)
+{
+    if (k->undoScenes.count() > 0) {
+        TupScene *scene = k->undoScenes.takeLast();
+        if (scene) {
+            k->scenes.insert(position, scene);
+            k->sceneCounter++;
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
 bool TupProject::removeScene(int position)
 {
     #ifdef K_DEBUG
@@ -275,7 +291,6 @@ bool TupProject::removeScene(int position)
     TupScene *toRemove = scene(position);
     if (toRemove) {
         QString path = dataDir() + QDir::separator() + "scene" + QString::number(position) + ".tps";
-
         if (QFile::exists(path)) {
             if (!QFile::remove(path)) {        
                 #ifdef K_DEBUG
@@ -300,9 +315,8 @@ bool TupProject::removeScene(int position)
             }
         }
 
-        k->scenes.removeAt(position);
-        // delete toRemove;
-        // toRemove = 0;
+        k->undoScenes << k->scenes.takeAt(position);
+        // k->scenes.removeAt(position);
         k->sceneCounter--;
 
         return true;

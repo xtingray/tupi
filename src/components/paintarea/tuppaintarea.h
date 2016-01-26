@@ -150,12 +150,12 @@ class TUPI_EXPORT TupPaintArea : public TupPaintAreaBase, public TupAbstractProj
         void mousePressEvent(QMouseEvent *event);
         // void tabletEvent(QTabletEvent *event);
 
-        void frameResponse(TupFrameResponse *event);
-        void layerResponse(TupLayerResponse *event);
-        void sceneResponse(TupSceneResponse *event);
-        void itemResponse(TupItemResponse *event);
-        void libraryResponse(TupLibraryResponse *request);
-        void projectResponse(TupProjectResponse *projectResponse);
+        void frameResponse(TupFrameResponse *response);
+        void layerResponse(TupLayerResponse *response);
+        void sceneResponse(TupSceneResponse *response);
+        void itemResponse(TupItemResponse *response);
+        void libraryResponse(TupLibraryResponse *response);
+        void projectResponse(TupProjectResponse *response);
 
         bool canPaint() const;
 
