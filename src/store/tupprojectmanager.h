@@ -74,12 +74,12 @@ class TUPI_EXPORT TupProjectManager : public QObject
 
         bool isOpen() const;
         bool isModified() const;
-        // TupProject *project() const;
         TupProject *project();
         void setHandler(TupAbstractProjectHandler *handler, bool isNetworked);
         TupAbstractProjectHandler *handler() const;
 
-        QUndoStack *undoHistory() const;
+        void createCommand(TupProjectCommand *command);
+        void clearUndoStack();
 
         virtual bool saveProject(const QString &fileName);
         virtual bool loadProject(const QString &fileName);
@@ -90,11 +90,6 @@ class TUPI_EXPORT TupProjectManager : public QObject
 
         void updateProjectDimension(const QSize size);
    
-    /* 
-    private:
-        void setupProjectDir();
-    */
-
     protected slots:
         virtual void handleProjectRequest(const TupProjectRequest *request);
         virtual void handleLocalRequest(const TupProjectRequest *request);
@@ -102,11 +97,13 @@ class TUPI_EXPORT TupProjectManager : public QObject
 
     private slots:
         void emitResponse(TupProjectResponse *response);
+        void undo();
+        void redo();
 
     signals:
         void responsed(TupProjectResponse *reponse);
         void requestOpenProject(const QString& filename);
-        void projectHasChanged(bool removeAction); 
+        // void projectHasChanged(); 
         //void updateAnimationModule(TupProject *project, int sceneIndex, int layerIndex, int frameIndex);
 
     private:

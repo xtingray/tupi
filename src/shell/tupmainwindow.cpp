@@ -204,7 +204,6 @@ void TupMainWindow::createNewLocalProject()
     #endif
 
     TupMainWindow::requestType = NewLocalProject;
-
     m_projectManager->setupNewProject();
     m_projectManager->setOpen(true);
  
@@ -391,6 +390,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
     }
 
     connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateTabContext(int)));
+    m_projectManager->clearUndoStack();
 }
 
 void TupMainWindow::updateTabContext(int tab)
@@ -1250,7 +1250,8 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
 
     TupPaintAreaCommand *command = animationTab->createCommand(event);
     if (command) { 
-        m_projectManager->undoHistory()->push(command);
+        m_projectManager->createCommand((TupProjectCommand *)command);
+
         if (event->action() == TupPaintAreaEvent::ChangeColorPen) {
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
         } else if (event->action() == TupPaintAreaEvent::ChangeBrush) {

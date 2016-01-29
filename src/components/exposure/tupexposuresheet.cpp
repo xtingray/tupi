@@ -780,16 +780,23 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                                      k->currentTable->clearSelection();
                              } else {
                                  // When the item deleted is not the last one
-                                 int layer = k->currentTable->currentLayer();
-                                 for (int index=target+1; index <= lastFrame; index++) {
-                                      TupExposureTable::FrameType type;
-                                      type = k->currentTable->frameState(layer, index);
-                                      k->currentTable->updateFrameState(layer, index - 1, type);
-
-                                      QString label = k->currentTable->frameName(layer, index);
-                                      renameFrame(layer, index - 1, label);
+                                 // int layer = k->currentTable->currentLayer();
+                                 TupScene *scene = k->project->scene(sceneIndex);
+                                 if (scene) {
+                                     TupLayer *layer = scene->layer(layerIndex);
+                                     if (layer) {
+                                         for (int index=target+1; index <= lastFrame; index++) {
+                                              TupFrame *frame = layer->frame(index-1);
+                                              TupExposureTable::FrameType type = TupExposureTable::Empty;
+                                              if (!frame->isEmpty())
+                                                  type = TupExposureTable::Used;
+                                              k->currentTable->updateFrameState(layerIndex, index - 1, type);
+                                              QString label = k->currentTable->frameName(layerIndex, index);
+                                              renameFrame(layerIndex, index - 1, label);
+                                         }
+                                         table->removeFrame(layerIndex, lastFrame, k->fromMenu);
+                                     }
                                  }
-                                 table->removeFrame(layerIndex, lastFrame, k->fromMenu);
                              }
                          }
                          k->fromMenu = false;

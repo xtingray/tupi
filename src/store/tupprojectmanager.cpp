@@ -452,20 +452,34 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
     }
 }
 
-// TupProject *TupProjectManager::project() const
+void TupProjectManager::createCommand(TupProjectCommand *command)
+{
+    k->undoStack->push(command);
+}
+
 TupProject *TupProjectManager::project()
 {
     return k->project;
 }
 
-QUndoStack *TupProjectManager::undoHistory() const
+void TupProjectManager::undo()
 {
-    return k->undoStack;
+    k->undoStack->undo();
+}
+
+void TupProjectManager::redo()
+{
+    k->undoStack->redo();    
+}
+
+void TupProjectManager::clearUndoStack()
+{
+    k->undoStack->clear();
 }
 
 void TupProjectManager::emitResponse(TupProjectResponse *response)
 {	
-	#ifdef K_DEBUG
+    #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupProjectManager::emitResponse()] - response->action(): " << response->action();
         #else
@@ -473,9 +487,12 @@ void TupProjectManager::emitResponse(TupProjectResponse *response)
         #endif
     #endif	
 
+    if (response->action() != TupProjectRequest::Select)
+        k->isModified = true;
+
+    /*
     if (response->action() != TupProjectRequest::Select) {
         k->isModified = true;
-        // if (TupSceneResponse *sceneResponse = static_cast<TupSceneResponse *>(response)) {
         if (static_cast<TupSceneResponse *>(response)) {
             if (response->action() == TupProjectRequest::Remove)
                 emit projectHasChanged(true);
@@ -485,6 +502,7 @@ void TupProjectManager::emitResponse(TupProjectResponse *response)
             emit projectHasChanged(false);
         }
     }
+    */
 
     if (!k->handler) {
         // SQA: Check if this is the right way to handle this condition 
@@ -517,9 +535,8 @@ bool TupProjectManager::cleanProjectPath(QString &projectPath)
                 result = QFile::remove(info.absoluteFilePath());
             }
 
-            if (!result) {
+            if (!result)
                 return result;
-            }
         }
         result = dir.rmdir(projectPath);
     }

@@ -219,10 +219,10 @@ void TupProjectCommand::redo()
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupProjectCommand::redo()]";
+            qDebug() << "[TupProjectCommand::redo()] - Executing REDO action...";
             // qDebug() << "[TupProjectCommand::redo()] - k->response->part(): " << k->response->part();
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << "[TupProjectCommand::redo()] - Executing REDO action...";
             // T_FUNCINFO << k->response->part();
         #endif
     #endif
@@ -291,9 +291,9 @@ void TupProjectCommand::undo()
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupProjectCommand::undo()]";
+            qDebug() << "[TupProjectCommand::undo()] - Executing UNDO action...";
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << "[TupProjectCommand::undo()] - Executing UNDO action...";
         #endif
     #endif
 

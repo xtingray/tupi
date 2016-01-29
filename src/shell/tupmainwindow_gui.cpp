@@ -523,16 +523,15 @@ void TupMainWindow::changePerspective(int index)
 
 void TupMainWindow::setUndoRedoActions()
 {
-    // Setting undo/redo actions
-    QAction *undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
-    undo->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "undo.png"));
+    QAction *undo = new QAction(QIcon(THEME_DIR + "icons" + QDir::separator() + "undo.png"), tr("Undo"), this);
     undo->setIconVisibleInMenu(true);
     undo->setShortcut(QKeySequence(tr("Ctrl+Z")));
+    connect(undo, SIGNAL(triggered()), m_projectManager, SLOT(undo()));
 
-    QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this, tr("Redo"));
-    redo->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "redo.png"));
+    QAction *redo = new QAction(QIcon(THEME_DIR + "icons" + QDir::separator() + "redo.png"), tr("Redo"), this);
     redo->setIconVisibleInMenu(true);
     redo->setShortcut(QKeySequence(tr("Ctrl+Y")));
+    connect(redo, SIGNAL(triggered()), m_projectManager, SLOT(redo()));
 
     kApp->insertGlobalAction(undo, "undo");
     kApp->insertGlobalAction(redo, "redo");

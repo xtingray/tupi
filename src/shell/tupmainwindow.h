@@ -101,21 +101,11 @@ class TupMainWindow : public TabbedMainWindow
 
     public:
 
-/*
-        enum Perspective {
-             Animation = 0x01,
-             Player = 0x02,
-             Help = 0x04,
-             News = 0x08,
-             All = Animation | Player | Help | News
-        };
-*/
-
         enum Perspective {
              Animation = 0x01,
              Player = 0x02,
              News = 0x04,
-             Play = 0x08,
+             // Play = 0x08,
              All = Animation | Player | News
         };
 
@@ -200,11 +190,7 @@ class TupMainWindow : public TabbedMainWindow
           void openProjectFromServer();
           void importProjectToServer();
           void exportProject();
-
           void saveAs();
-
-          // void showHelpPage(const QString &document);
-          // void showWidgetPage();
 
           void showAnimationMenu(const QPoint &p);
 
@@ -293,6 +279,7 @@ class TupMainWindow : public TabbedMainWindow
           ToolView *timeView;
           ToolView *debugView;
           ToolView *exportView;
+
           TupCameraWidget *cameraWidget;
           bool isSaveDialogOpen; 
           bool internetOn;
