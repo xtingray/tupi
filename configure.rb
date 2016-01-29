@@ -176,8 +176,8 @@ _EOH_
     end
 
     config.addDefine('VERSION=\\\\\"0.2\\\\\"')
-    config.addDefine('CODE_NAME=\\\\\"Amandy\\\\\"')
-    config.addDefine('REVISION=\\\\\"git05\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Kunumi\\\\\"')
+    config.addDefine('REVISION=\\\\\"git06\\\\\"')
 
     if File.exists?('/etc/canaima_version')
        config.addDefine("CANAIMA")
