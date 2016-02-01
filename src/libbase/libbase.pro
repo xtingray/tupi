@@ -7,6 +7,7 @@ unix {
 }
 
 win32 {
+    LIBS += -llibEGL -llibGLESv2 -lgdi32 -luser32
     include(../../win.pri)
 }
 

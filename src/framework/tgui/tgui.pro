@@ -161,8 +161,8 @@ unix {
 }
 
 win32 {
-    LIBS += -L..\tcore\release\ -ltupifwcore
-    INCLUDEPATH += ..\tcore
+    LIBS += -L../tcore/release/ -ltupifwcore
+    INCLUDEPATH += ../tcore
 }
 
 # macx {

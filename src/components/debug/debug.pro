@@ -33,6 +33,8 @@ LIBTUPI_DIR = ../../libtupi/
 INCLUDEPATH += $$LIBTUPI_DIR
 LIBS += -L$$LIBTUPI_DIR -ltupi
 
-!include(../../../tupiglobal.pri) {
+unix {
+   !include(../../../tupiglobal.pri) {
          error("Run ./configure first!")
+   }
 }
