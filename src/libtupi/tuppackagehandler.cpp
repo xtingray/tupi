@@ -57,6 +57,9 @@ TupPackageHandler::~TupPackageHandler()
 
 bool TupPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
 {
+	qDebug() << "TupPackageHandler::makePackage() - projectPath: " << projectPath;
+	qDebug() << "TupPackageHandler::makePackage() - packagePath: " << packagePath;
+	
     if (!QFile::exists(projectPath)) {        
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::makePackage() - Project path doesn't exist -> " + projectPath;
