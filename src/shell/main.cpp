@@ -123,9 +123,11 @@ int main(int argc, char ** argv)
                 TCONFIG->setValue("Cache", QDir::tempPath());
             }
         #else
-                TCONFIG->setValue("Cache", QDir::tempPath());    
+            TCONFIG->setValue("Cache", QDir::tempPath());    
         #endif
     }
+
+    qDebug() << "main.cpp - CACHE DIR: " << QDir::tempPath();
 
 #ifdef K_DEBUG
     QString debug = "main.cpp - CACHE path: " + TCONFIG->value("Cache").toString();

@@ -300,24 +300,6 @@ bool TupProjectManager::isValid() const
     return k->handler->isValid();
 }
 
-/*
-void TupProjectManager::setupProjectDir()
-{
-    QString name = (k->project->projectName().isEmpty() ? TAlgorithm::randomString(6) : k->project->projectName());
-    QString dataDir = CACHE_DIR + "/" + name;
-    QDir projectDir = dataDir;
-
-    if (!projectDir.exists()) {
-        if (projectDir.mkpath(projectDir.absolutePath())) {
-            QStringList dirs;
-            dirs << "audio" << "video" << "images" << "svg";
-            foreach (QString dir, dirs)
-                     projectDir.mkdir(dir);
-        }
-    }
-}
-*/
-
 /**
  * This function is called when some event is triggered by the project
  * It must be re-implemented if you want to deal with the event in another way, i.ex: send it through the net.
