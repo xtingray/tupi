@@ -109,7 +109,7 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
 
     // Naming the main frame...
     setWindowTitle(tr("Tupi: Open 2D Magic"));
-    setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "about.png"));
+    setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
     m_renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt());
@@ -326,15 +326,14 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         }
 
         playerTab = new TupAnimationspace(cameraWidget);
-        playerTab->setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "play_small.png"));
+        playerTab->setWindowIcon(QIcon(THEME_DIR + "icons/play_small.png"));
         playerTab->setWindowTitle(tr("Player"));
         connect(playerTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
         addWidget(playerTab);
 
         connect(animationTab, SIGNAL(updateFPS(int)), cameraWidget, SLOT(setStatusFPS(int)));
 
-        QString twitterPath = QDir::homePath() + QDir::separator() + "." + QCoreApplication::applicationName() 
-                              + QDir::separator() + "twitter.html";
+        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
 
         /*
         #ifdef Q_OS_WIN
@@ -757,7 +756,7 @@ void TupMainWindow::openProject(const QString &path)
 
         if (m_projectManager->loadProject(path)) {
             if (QDir::isRelativePath(path))
-                m_fileName = QDir::currentPath() + QDir::separator() + path;
+                m_fileName = QDir::currentPath() + "/" + path;
             else
                 m_fileName = path;
 
@@ -864,21 +863,21 @@ void TupMainWindow::showHelp()
     if (lang.length() < 2)
         lang = "en";
 
-    QString cover = QString() + "help" + QDir::separator() + lang + QDir::separator() + "cover.html";
+    QString cover = QString() + "help/" + lang + "/cover.html";
 
 #ifdef Q_OS_WIN
     QString helpPath = SHARE_DIR + cover;
 #else
-    QString helpPath = SHARE_DIR + "data" + QDir::separator() + cover;
+    QString helpPath = SHARE_DIR + "data/" + cover;
 #endif
 
     QFile file(helpPath);
     if (!file.exists()) {
         #ifdef Q_OS_WIN
-            helpPath = SHARE_DIR + "help" + QDir::separator() + "en" + QDir::separator() + "cover.html";
+            helpPath = SHARE_DIR + "help/en/cover.html";
             // helpPath.replace("/","\\");
         #else
-            helpPath = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator() + "en" + QDir::separator() + "cover.html";
+            helpPath = SHARE_DIR + "data/help/en/cover.html";
         #endif
     }
 
@@ -945,7 +944,7 @@ void TupMainWindow::importPalettes()
                bool ok = importer.import(*file, TupPaletteImporter::Gimp);
                if (ok) {
                    QString home = getenv("HOME");
-                   QString path = home + QDir::separator() + ".tupi" + QDir::separator() + "palettes";
+                   QString path = home + "/.tupi/palettes";
                    ok = importer.saveFile(path);
                    if (ok) {
                        m_colorPalette->parsePaletteFile(importer.filePath());
@@ -1053,7 +1052,7 @@ void TupMainWindow::connectWidgetToLocalManager(QWidget *widget)
 void TupMainWindow::saveAs()
 {
     QString home = getenv("HOME");
-    home.append(QDir::separator() + projectName);
+    home.append("/" + projectName);
 
     isSaveDialogOpen = true;
 
