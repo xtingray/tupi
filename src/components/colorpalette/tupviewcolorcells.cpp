@@ -83,7 +83,7 @@ TupViewColorCells::~TupViewColorCells()
          TupCellsColor *palette = qobject_cast<TupCellsColor *>(k->containerPalette->widget(i));
          if (palette) {
              if (!palette->isReadOnly())
-                 palette->save(CONFIG_DIR + "palettes" + QDir::separator() + palette->name() + ".tpal");
+                 palette->save(CONFIG_DIR + "palettes/" + palette->name() + ".tpal");
          }
     }
 
@@ -137,7 +137,7 @@ void TupViewColorCells::setupForm()
 #ifdef Q_OS_WIN
     QString palettesPath = SHARE_DIR + "palettes";
 #else
-    QString palettesPath = SHARE_DIR + "data" + QDir::separator() + "palettes";
+    QString palettesPath = SHARE_DIR + "data/palettes";
 #endif
     readPalettes(palettesPath); // Pre-installed
     readPalettes(CONFIG_DIR + "palettes"); // Locals
