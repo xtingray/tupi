@@ -118,20 +118,20 @@ void TApplicationProperties::setRevision(const QString &path)
 
 QString TApplicationProperties::homeDir() const
 {
-    return k->homeDir + QDir::separator();
+    return k->homeDir + "/";
 }
 
 QString TApplicationProperties::binDir() const
 {
-    return k->binDir + QDir::separator();
+    return k->binDir + "/";
 }
 
 QString TApplicationProperties::shareDir() const
 {
     if (k->shareDir.isEmpty())
-        return k->homeDir + QDir::separator() + "share";
+        return k->homeDir + "/share";
 
-    return k->shareDir + QDir::separator();
+    return k->shareDir + "/";
 }
 
 QString TApplicationProperties::dataDir() const
@@ -140,8 +140,7 @@ QString TApplicationProperties::dataDir() const
         QString locale = QString(QLocale::system().name()).left(2);
         if (locale.length() < 2)
             locale = "en";
-
-        return k->shareDir + QDir::separator() + "data" + QDir::separator() + "xml" + QDir::separator() + locale + QDir::separator();
+        return k->shareDir + "/data/xml/" + locale + "/";
     }
 
     return k->dataDir;
@@ -150,29 +149,29 @@ QString TApplicationProperties::dataDir() const
 QString TApplicationProperties::themeDir() const
 {
     if (k->themeDir.isEmpty())
-        return k->shareDir + QDir::separator() + "themes" + QDir::separator() + "default" + QDir::separator();
+        return k->shareDir + "/themes/default/";
 
     return k->themeDir;
 }
 
 QString TApplicationProperties::pluginDir() const
 {
-    return k->pluginDir + QDir::separator();
+    return k->pluginDir + "/";
 }
 
 QString TApplicationProperties::configDir() const
 {
-    return QDir::homePath() + QDir::separator() + "." + qApp->applicationName() + QDir::separator();
+    return QDir::homePath() + "/" + "." + qApp->applicationName() + "/";
 }
 
 QString TApplicationProperties::cacheDir() const
 {
-    return k->cacheDir + QDir::separator();
+    return k->cacheDir + "/";
 }
 
 QString TApplicationProperties::repositoryDir() const
 {
-    return k->repositoryDir + QDir::separator();
+    return k->repositoryDir + "/";
 }
 
 QString TApplicationProperties::version() const

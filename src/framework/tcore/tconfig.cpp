@@ -62,17 +62,8 @@ TConfig::TConfig() : QObject(), k(new Private)
         #endif
     #endif
 
-    QString base = QDir::homePath() + QDir::separator();
-
-	/*
-    #ifdef Q_OS_WIN
-            k->configDirectory.setPath(base + QCoreApplication::applicationName());
-    #else
-            k->configDirectory.setPath(base + "." + QCoreApplication::applicationName());
-    #endif
-	*/
-	
-	k->configDirectory.setPath(base + "." + QCoreApplication::applicationName());
+    QString base = QDir::homePath() + "/";
+    k->configDirectory.setPath(base + "." + QCoreApplication::applicationName());
 
     if (!k->configDirectory.exists()) {
         k->firstTime = true;
@@ -99,7 +90,7 @@ TConfig::TConfig() : QObject(), k(new Private)
         k->firstTime = false;
     }
 
-    k->path = k->configDirectory.path() + QDir::separator() + QCoreApplication::applicationName().toLower() + ".cfg";
+    k->path = k->configDirectory.path() + "/" + QCoreApplication::applicationName().toLower() + ".cfg";
     init();
 }
 

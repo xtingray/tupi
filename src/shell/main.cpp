@@ -76,7 +76,6 @@
 int main(int argc, char ** argv)
 {
     TupApplication application(argc, argv);
-    QString slash = QDir::separator();
 
 #ifdef Q_OS_UNIX
 #ifdef K_DEBUG
@@ -141,8 +140,8 @@ int main(int argc, char ** argv)
 #if defined(Q_OS_MAC)
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(appDirPath.absolutePath());
-    kAppProp->setPluginDir(appDirPath.absolutePath() + slash + "plugins");
-    kAppProp->setShareDir(appDirPath.absolutePath() + slash + "share");
+    kAppProp->setPluginDir(appDirPath.absolutePath() + "/plugins");
+    kAppProp->setShareDir(appDirPath.absolutePath() + "/share");
 #else
     kAppProp->setHomeDir(TCONFIG->value("Home").toString());
     kAppProp->setBinDir(QString::fromLocal8Bit(::getenv("TUPI_BIN")));
@@ -155,17 +154,17 @@ int main(int argc, char ** argv)
         locale = "en";
 
 #ifdef Q_OS_WIN
-    QString xmlDir = kAppProp->shareDir() + "xml" + slash;
+    QString xmlDir = kAppProp->shareDir() + "xml/";
 #else
-    QString xmlDir = kAppProp->shareDir() + "data" + slash + "xml" + slash;
+    QString xmlDir = kAppProp->shareDir() + "data/xml/";
 #endif
-    QDir dir(xmlDir + locale + slash);
+    QDir dir(xmlDir + locale + "/");
     if (!dir.exists())
-        kAppProp->setDataDir(xmlDir + "en" + slash);
+        kAppProp->setDataDir(xmlDir + "en/");
     else
-        kAppProp->setDataDir(xmlDir + locale + slash);
+        kAppProp->setDataDir(xmlDir + locale + "/");
         
-    kAppProp->setThemeDir(kAppProp->shareDir() + "themes" + slash + "default" + slash);
+    kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default/");
 
     // Setting the repository directory (where the projects are saved)
     application.createCache(TCONFIG->value("Cache").toString());
@@ -181,9 +180,9 @@ int main(int argc, char ** argv)
     // if ((locale.compare("en") != 0) && ((locale.compare("es") == 0) || (locale.compare("pt") == 0))) {
     if (locale.compare("es") == 0) {
         #ifdef Q_OS_WIN
-            QString langFile = kAppProp->shareDir() + "translations" + slash + "tupi_" + locale + ".qm";
+            QString langFile = kAppProp->shareDir() + "translations/tupi_" + locale + ".qm";
         #else
-            QString langFile = kAppProp->shareDir() + "data" + slash + "translations" + slash + "tupi_" + locale + ".qm";
+            QString langFile = kAppProp->shareDir() + "data/translations/tupi_" + locale + ".qm";
         #endif
         if (QFile::exists(langFile)) {
             // Loading localization files...
