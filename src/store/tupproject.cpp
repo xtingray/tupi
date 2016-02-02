@@ -290,7 +290,7 @@ bool TupProject::removeScene(int position)
     
     TupScene *toRemove = scene(position);
     if (toRemove) {
-        QString path = dataDir() + QDir::separator() + "scene" + QString::number(position) + ".tps";
+        QString path = dataDir() + "/scene" + QString::number(position) + ".tps";
         if (QFile::exists(path)) {
             if (!QFile::remove(path)) {        
                 #ifdef K_DEBUG
@@ -309,8 +309,8 @@ bool TupProject::removeScene(int position)
         int total = k->sceneCounter - 1;
         if (position < total) {
             for (int i=position + 1; i<=total; i++) {
-                 QString oldName = dataDir() + QDir::separator() + "scene" + QString::number(i) + ".tps";  
-                 QString newName = dataDir() + QDir::separator() + "scene" + QString::number(i-1) + ".tps";
+                 QString oldName = dataDir() + "/scene" + QString::number(i) + ".tps";  
+                 QString newName = dataDir() + "/scene" + QString::number(i-1) + ".tps";
                  QFile::rename(oldName, newName); 
             }
         }
@@ -964,7 +964,7 @@ bool TupProject::deleteDataDir()
                      if (dir.exists(subdir)) {
                          dir.cd(subdir);
                          foreach (QString file, dir.entryList()) {
-                                  QString absolute = dir.absolutePath() + QDir::separator() + file;
+                                  QString absolute = dir.absolutePath() + "/" + file;
 
                                   if (!file.startsWith(".")) {
                                       QFileInfo finfo(absolute);

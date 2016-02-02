@@ -96,6 +96,7 @@ TupLibraryObject::Type TupLibraryObject::type() const
 void TupLibraryObject::setSymbolName(const QString &name)
 {
     k->symbolName = name;
+    // SQA: Check if this line is really required
     k->symbolName.replace(QDir::separator(), "-");
     k->smallId = k->symbolName.section('.', 0, 0);
     k->extension = k->symbolName.section('.', 1, 1).toUpper();
@@ -338,17 +339,17 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
     switch (k->type) {
             case TupLibraryObject::Image:
             {
-                 k->dataPath = dataDir + QDir::separator() + "images" + QDir::separator() + k->dataPath;
+                 k->dataPath = dataDir + "/images/" + k->dataPath;
             }
             break;
             case TupLibraryObject::Sound:
             {
-                 k->dataPath = dataDir + QDir::separator() + "audio" + QDir::separator() + k->dataPath;
+                 k->dataPath = dataDir + "/audio/" + k->dataPath;
             }
             break;
             case TupLibraryObject::Svg:
             {
-                 k->dataPath = dataDir + QDir::separator() + "svg" + QDir::separator() + k->dataPath;
+                 k->dataPath = dataDir + "/svg/" + k->dataPath;
             }
             break;
             default: 
@@ -447,7 +448,7 @@ void TupLibraryObject::saveData(const QString &dataDir)
     switch (k->type) {
             case TupLibraryObject::Sound:
             {
-                 QString path = dataDir + QDir::separator() + "audio" + QDir::separator();
+                 QString path = dataDir + "/audio/";
             
                  if (! QFile::exists(path)) {
                      QDir dir;
@@ -486,7 +487,7 @@ void TupLibraryObject::saveData(const QString &dataDir)
             break;
             case TupLibraryObject::Svg:
             {
-                 QString saved = dataDir + QDir::separator() + "svg" + QDir::separator();
+                 QString saved = dataDir + "/svg/";
 
                  if (! QFile::exists(saved)) {
                      QDir dir;
@@ -505,7 +506,7 @@ void TupLibraryObject::saveData(const QString &dataDir)
             break;
             case TupLibraryObject::Image:
             {
-                 QString destination = dataDir + QDir::separator() + "images" + QDir::separator();
+                 QString destination = dataDir + "/images/";
             
                  if (!QFile::exists(destination)) {
                      QDir dir;

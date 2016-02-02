@@ -107,7 +107,7 @@ bool ImagePlugin::exportToFormat(const QColor bgColor, const QString &filePath, 
                     index += QString("%1").arg(photogram);
 
                     if (QString(extension).compare("SVG") == 0) {
-                        QString path = fileInfo.absolutePath() + QDir::separator() + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower());
+                        QString path = fileInfo.absolutePath() + "/" + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower());
 
                         QSvgGenerator generator;
                         generator.setFileName(path);
@@ -135,7 +135,7 @@ bool ImagePlugin::exportToFormat(const QColor bgColor, const QString &filePath, 
                            renderer.render(&painter);
                        }
 
-                       image.save(fileInfo.absolutePath() + QDir::separator() + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension, 100);
+                       image.save(fileInfo.absolutePath() + "/" + QString(m_baseName + "%1.%2").arg(index).arg(QString(extension).toLower()), extension, 100);
                     }          
 
                     photogram++;

@@ -284,7 +284,7 @@ bool TupPaletteImporter::saveFile(const QString &path)
         return false;
     }
 
-    QString pathName = path + QDir::separator() + k->paletteName.replace(" ", "_") + ".tpal";
+    QString pathName = path + "/" + k->paletteName.replace(" ", "_") + ".tpal";
     QFile file(pathName);
     if (file.exists()) {
         #ifdef K_DEBUG

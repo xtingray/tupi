@@ -84,7 +84,5 @@ void TupApplication::createCache(const QString &cacheDir)
        }
     }
 
-    qDebug() << "TupApplication::createCache() - cacheDir: " << cacheDir;
-
     kAppProp->setCacheDir(cacheDir);
 }

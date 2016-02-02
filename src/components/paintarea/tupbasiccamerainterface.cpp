@@ -59,7 +59,7 @@ TupBasicCameraInterface::TupBasicCameraInterface(const QString &title, QList<QBy
     #endif
 
     setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution:") + " " + title);
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/camera.png")));
 
     k->counter = counter;
     k->path = randomPath();
@@ -125,7 +125,7 @@ TupBasicCameraInterface::TupBasicCameraInterface(const QString &title, QList<QBy
     devicesLabel->setText(deviceString);
     devicesLabel->setAlignment(Qt::AlignHCenter);
 
-    QPushButton *clickButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")), "");
+    QPushButton *clickButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/photo.png")), "");
     clickButton->setIconSize(QSize(20, 20));
     clickButton->setToolTip(tr("Take picture"));
     connect(clickButton, SIGNAL(clicked()), this, SLOT(takePicture()));
@@ -142,7 +142,7 @@ TupBasicCameraInterface::TupBasicCameraInterface(const QString &title, QList<QBy
         menuLayout->addWidget(devicesCombo);
     } 
 
-    QPushButton *exitButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "exit.png")), "");
+    QPushButton *exitButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/exit.png")), "");
     exitButton->setIconSize(QSize(20, 20));
     exitButton->setToolTip(tr("Close manager"));
     exitButton->setShortcut(Qt::Key_Escape);
@@ -182,7 +182,7 @@ void TupBasicCameraInterface::closeEvent(QCloseEvent *event)
 
     QDir dir(k->path);
     foreach (QString file, dir.entryList(QStringList() << "*.jpg")) {
-             QString absolute = dir.absolutePath() + QDir::separator() + file;
+             QString absolute = dir.absolutePath() + "/" + file;
              QFile::remove(absolute);
     }
 
@@ -230,7 +230,7 @@ void TupBasicCameraInterface::takePicture()
     if (k->counter >= 10 && k->counter < 100)
         prev += "0";
 
-    QString imagePath = k->path + QDir::separator() + prev + QString::number(k->counter) + ".jpg";
+    QString imagePath = k->path + "/" + prev + QString::number(k->counter) + ".jpg";
 
     //on half pressed shutter button
     k->currentCamera->searchAndLock();

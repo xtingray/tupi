@@ -61,7 +61,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     #endif
 
     setWindowTitle(tr("Tupi Camera Manager") + " | " + tr("Current resolution:") + " " + title);
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/camera.png")));
 
     k->counter = counter;
 
@@ -128,19 +128,19 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     devicesLabel->setText(deviceString);
     devicesLabel->setAlignment(Qt::AlignHCenter);
 
-    QPushButton *clickButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")), "");
+    QPushButton *clickButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/photo.png")), "");
     clickButton->setIconSize(QSize(20, 20));
     clickButton->setToolTip(tr("Take picture"));
     connect(clickButton, SIGNAL(clicked()), this, SLOT(takePicture()));
 
-    k->safeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "safe_area.png")), "");
+    k->safeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/safe_area.png")), "");
     k->safeAreaButton->setIconSize(QSize(20, 20));
     k->safeAreaButton->setToolTip(tr("Show safe area"));
     k->safeAreaButton->setShortcut(QKeySequence(tr("+")));
     k->safeAreaButton->setCheckable(true);
     connect(k->safeAreaButton, SIGNAL(clicked()), this, SLOT(drawActionSafeArea()));
 
-    k->gridButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "subgrid.png")), "");
+    k->gridButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/subgrid.png")), "");
     k->gridButton->setIconSize(QSize(20, 20));
     k->gridButton->setToolTip(tr("Show grid"));
     k->gridButton->setShortcut(QKeySequence(tr("#")));
@@ -152,7 +152,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     gridLayout->setHorizontalSpacing(2);
 
     QLabel *gridLabel = new QLabel;
-    gridLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "grid_spacing.png"));
+    gridLabel->setPixmap(QPixmap(THEME_DIR + "icons/grid_spacing.png"));
     gridLabel->setToolTip(tr("Grid spacing"));
     gridLabel->setMargin(2);
 
@@ -163,7 +163,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     connect(gridSpacing, SIGNAL(valueChanged(int)), this, SLOT(updateGridSpacing(int)));
 
     QLabel *colorLabel = new QLabel;
-    colorLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "color_palette.png"));
+    colorLabel->setPixmap(QPixmap(THEME_DIR + "icons/color_palette.png"));
     colorLabel->setToolTip(tr("Grid color"));
     colorLabel->setMargin(2);
 
@@ -178,7 +178,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
 
     k->gridWidget->setVisible(false);
 
-    k->historyButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png")), "");
+    k->historyButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/bitmap_array.png")), "");
     k->historyButton->setIconSize(QSize(20, 20));
     k->historyButton->setToolTip(tr("Show previous images"));
     k->historyButton->setShortcut(QKeySequence(tr("P")));
@@ -190,7 +190,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     historyLayout->setHorizontalSpacing(2);
 
     QLabel *opacityLabel = new QLabel;
-    opacityLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "onion.png"));
+    opacityLabel->setPixmap(QPixmap(THEME_DIR + "icons/onion.png"));
     opacityLabel->setToolTip(tr("Image opacity level")); 
     QDoubleSpinBox *opacitySpin = new QDoubleSpinBox;
     opacitySpin->setSingleStep(0.1);
@@ -200,7 +200,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
     connect(opacitySpin, SIGNAL(valueChanged(double)), this, SLOT(updateImagesOpacity(double)));
 
     QLabel *previousLabel = new QLabel;
-    previousLabel->setPixmap(QPixmap(THEME_DIR + "icons" + QDir::separator() + "layer.png"));
+    previousLabel->setPixmap(QPixmap(THEME_DIR + "icons/layer.png"));
     previousLabel->setToolTip(tr("Amount of images to show"));
     QSpinBox *previousSpin = new QSpinBox;
     previousSpin->setValue(1);
@@ -226,7 +226,7 @@ TupCameraInterface::TupCameraInterface(const QString &title, QList<QByteArray> c
         menuLayout->addWidget(devicesCombo);
     } 
 
-    QPushButton *exitButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "exit.png")), "");
+    QPushButton *exitButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/exit.png")), "");
     exitButton->setIconSize(QSize(20, 20));
     exitButton->setToolTip(tr("Close manager"));
     exitButton->setShortcut(Qt::Key_Escape);

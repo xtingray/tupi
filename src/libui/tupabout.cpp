@@ -44,15 +44,15 @@
 TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 {
     // SQA: Check if these instructions are doing something for real
-    setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "about.png"));
+    setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
     setWindowTitle(tr("About Tupi"));    
     setFixedSize(525, 458);
 
     QStringList path;
 #ifdef Q_OS_WIN
-    QString resources = SHARE_DIR + "help" + QDir::separator();
+    QString resources = SHARE_DIR + "help/";
 #else
-	QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
+    QString resources = SHARE_DIR + "data/help/";
 #endif
     path << resources + "css";
     path << resources + "images";
@@ -111,7 +111,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
            n = n.nextSibling();
     }
 
-    m_credits = new TAnimWidget(QPixmap(THEME_DIR + QDir::separator() + "images" + QDir::separator() + "credits.png"), creditsText);
+    m_credits = new TAnimWidget(QPixmap(THEME_DIR + "/images/credits.png"), creditsText);
     addTab(m_credits, tr("Credits"));
 
     QPalette pal = m_credits->palette();
@@ -121,11 +121,11 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 
     // Acknowledgment Tab 
 
-    QString sponsorFile = QString() + "help" + QDir::separator() + lang + QDir::separator() + "thanks.html";
+    QString sponsorFile = QString() + "help/" + lang + "/thanks.html";
 #ifdef Q_OS_WIN
     QString sponsorPath = SHARE_DIR + sponsorFile;
 #else
-    QString sponsorPath = SHARE_DIR + "data" + QDir::separator() + sponsorFile;
+    QString sponsorPath = SHARE_DIR + "data/" + sponsorFile;
 #endif
     QTextBrowser *sponsorsText = new QTextBrowser;
     sponsorsText->setSearchPaths(path);
@@ -137,11 +137,11 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 
     // Tupi Description Tab 
 
-    QString tupiFile = QString() + "help" + QDir::separator() + lang + QDir::separator() + "tupi_short.html";
+    QString tupiFile = QString() + "help/" + lang + "/tupi_short.html";
 #ifdef Q_OS_WIN
     QString tupiPath = SHARE_DIR + tupiFile;
 #else
-    QString tupiPath = SHARE_DIR + "data" + QDir::separator() + tupiFile;
+    QString tupiPath = SHARE_DIR + "data/" + tupiFile;
 #endif
     QTextBrowser *tupiText = new QTextBrowser;
     tupiText->setSearchPaths(path);
@@ -153,11 +153,11 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 
     // 4: License Terms Tab
 
-    QString licenseFile = QString() + "help" + QDir::separator() + lang + QDir::separator() + "philosophy.html"; 
+    QString licenseFile = QString() + "help/" + lang + "/philosophy.html"; 
 #ifdef Q_OS_WIN
     QString licensePath = SHARE_DIR + licenseFile;
 #else
-    QString licensePath = SHARE_DIR + "data" + QDir::separator() + licenseFile;
+    QString licensePath = SHARE_DIR + "data/" + licenseFile;
 #endif
     QTextBrowser *licenseText = new QTextBrowser;
     licenseText->setSearchPaths(path);

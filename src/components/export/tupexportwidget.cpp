@@ -72,7 +72,7 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
 
     if (isLocal) {
         setWindowTitle(tr("Export to Video"));
-        setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "export.png"));
+        setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
 
         k->pluginPage = new TupPluginSelector();
         addPage(k->pluginPage);
@@ -104,7 +104,7 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
 
     } else {
         setWindowTitle(tr("Post Animation in Tupitube"));
-        setWindowIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "net_document.png"));
+        setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
 
         k->scenesPage = new TupSceneSelector(this);
         k->scenesPage->setScenes(project->scenes());

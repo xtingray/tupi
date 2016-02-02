@@ -62,15 +62,15 @@ LipSyncManager::LipSyncManager(QWidget *parent) : QWidget(parent), k(new Private
 
     listLayout->addWidget(k->lipSyncList);
 
-    k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "plus_sign.png"), 22);
+    k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/plus_sign.png"), 22);
     k->addButton->setToolTip(tr("Import LipSync"));
     connect(k->addButton, SIGNAL(clicked()), this, SIGNAL(importLipSync()));
 
-    k->editButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "edit_sign.png"), 22);
+    k->editButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/edit_sign.png"), 22);
     k->editButton->setToolTip(tr("Edit LipSync"));
     connect(k->editButton, SIGNAL(clicked()), this, SLOT(editLipSync()));
 
-    k->delButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "minus_sign.png"), 22);
+    k->delButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/minus_sign.png"), 22);
     k->delButton->setToolTip(tr("Remove LipSync"));
     connect(k->delButton, SIGNAL(clicked()), this, SLOT(removeLipSync()));
 

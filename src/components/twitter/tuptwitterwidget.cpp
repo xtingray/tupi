@@ -72,9 +72,9 @@ void TupTwitterWidget::setSource(const QString &filePath)
 {
     QStringList path;
 #ifdef Q_OS_WIN
-    QString resources = SHARE_DIR + "help" + QDir::separator();
+    QString resources = SHARE_DIR + "help/";
 #else
-    QString resources = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
+    QString resources = SHARE_DIR + "data/help/";
 #endif
 
     path << resources + "css";

@@ -116,21 +116,21 @@ TupPenWidget::TupPenWidget(QWidget *parent) : TupModuleWidgetBase(parent), k(new
     QWidget *capWidget = new QWidget(this);
     QBoxLayout *capLayout = new QHBoxLayout(capWidget);
 
-    k->roundCapButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "round_cap.png")), "");
+    k->roundCapButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/round_cap.png")), "");
     k->roundCapButton->setToolTip(tr("Round"));
     k->roundCapButton->setIconSize(QSize(30, 15));
     k->roundCapButton->setCheckable(true);
 
     connect(k->roundCapButton, SIGNAL(clicked()), this, SLOT(enableRoundCapStyle()));
 
-    k->squareCapButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "square_cap.png")), "");
+    k->squareCapButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/square_cap.png")), "");
     k->squareCapButton->setToolTip(tr("Square"));
     k->squareCapButton->setIconSize(QSize(33, 15));
     k->squareCapButton->setCheckable(true);
 
     connect(k->squareCapButton, SIGNAL(clicked()), this, SLOT(enableSquareCapStyle()));
 
-    k->flatCapButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "flat_cap.png")), "");
+    k->flatCapButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/flat_cap.png")), "");
     k->flatCapButton->setToolTip(tr("Flat"));
     k->flatCapButton->setIconSize(QSize(27, 15));
     k->flatCapButton->setCheckable(true);
@@ -152,21 +152,21 @@ TupPenWidget::TupPenWidget(QWidget *parent) : TupModuleWidgetBase(parent), k(new
     QWidget *joinWidget = new QWidget(this);
     QBoxLayout *joinLayout = new QHBoxLayout(joinWidget);
 
-    k->roundJoinButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "round_join.png")), "");
+    k->roundJoinButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/round_join.png")), "");
     k->roundJoinButton->setToolTip(tr("Round"));
     k->roundJoinButton->setIconSize(QSize(30, 15));
     k->roundJoinButton->setCheckable(true);
 
     connect(k->roundJoinButton, SIGNAL(clicked()), this, SLOT(enableRoundJoinStyle()));
 
-    k->bevelJoinButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bevel_join.png")), "");
+    k->bevelJoinButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/bevel_join.png")), "");
     k->bevelJoinButton->setToolTip(tr("Bevel"));
     k->bevelJoinButton->setIconSize(QSize(33, 15));
     k->bevelJoinButton->setCheckable(true);
 
     connect(k->bevelJoinButton, SIGNAL(clicked()), this, SLOT(enableBevelJoinStyle()));
 
-    k->miterJoinButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "miter_join.png")), "");
+    k->miterJoinButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/miter_join.png")), "");
     k->miterJoinButton->setToolTip(tr("Miter"));
     k->miterJoinButton->setIconSize(QSize(27, 15));
     k->miterJoinButton->setCheckable(true);

@@ -190,7 +190,7 @@ void PapagayoTool::aboutToChangeTool()
 
 void PapagayoTool::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "papagayo.png"), 
+    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/papagayo.png"), 
                                       tr("Papagayo Lip-sync"), this);
     translater->setShortcut(QKeySequence(tr("Ctrl+Shift+P")));
 

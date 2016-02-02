@@ -580,13 +580,13 @@ void TupLibraryFolder::updatePaths(const QString &newPath)
              QString path = "";
 
              if (k->objects[oid]->type() == TupLibraryObject::Image)
-                 path = newPath + QDir::separator() + "images" + QDir::separator() + filename; 
+                 path = newPath + "/images/" + filename; 
 
              if (k->objects[oid]->type() == TupLibraryObject::Svg)
-                 path = newPath + QDir::separator() + "svg" + QDir::separator() + filename;
+                 path = newPath + "/svg/" + filename;
 
              if (k->objects[oid]->type() == TupLibraryObject::Sound)
-                 path = newPath + QDir::separator() + "audio" + QDir::separator() + filename;
+                 path = newPath + "/audio/" + filename;
 
              k->objects[oid]->setDataPath(path);
 

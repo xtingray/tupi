@@ -358,8 +358,8 @@ void Tweener::resetGUI()
 
 void Tweener::setupActions()
 {
-    TAction *action = new TAction(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "position_tween.png"), tr("Position Tween"), this);
-    action->setCursor(QCursor(kAppProp->themeDir() + "cursors" + QDir::separator() + "tweener.png", 0 ,0));
+    TAction *action = new TAction(QPixmap(kAppProp->themeDir() + "icons/position_tween.png"), tr("Position Tween"), this);
+    action->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png", 0 ,0));
     action->setShortcut(QKeySequence(tr("Shift+W")));
 
     k->actions.insert(tr("Position Tween"), action);

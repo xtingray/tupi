@@ -54,7 +54,7 @@ TupCameraDialog::TupCameraDialog(QComboBox *devicesCombo, const QSize projectSiz
 {
     setModal(true);
     setWindowTitle(tr("Camera Settings"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "photo.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/photo.png")));
 
     k->useBasicInterface = false;
     k->projectSize = projectSize;

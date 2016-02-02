@@ -71,14 +71,11 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     buttonsLayout->setMargin(0);
     buttonsLayout->setSpacing(0);
 
-    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() 
-                                                    + "horizontal_flip.png"), 22);
+    TImageButton *horizontalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/horizontal_flip.png"), 22);
     horizontalFlip->setToolTip(tr("Horizontal Flip"));
-    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() 
-                                                  + "vertical_flip.png"), 22);
+    TImageButton *verticalFlip = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/vertical_flip.png"), 22);
     verticalFlip->setToolTip(tr("Vertical Flip"));
-    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() 
-                                                 + "crossed_flip.png"), 22);
+    TImageButton *crossedFlip = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/crossed_flip.png"), 22);
     crossedFlip->setToolTip(tr("Crossed Flip"));
     connect(horizontalFlip, SIGNAL(clicked()), this, SLOT(hFlip()));
     connect(verticalFlip, SIGNAL(clicked()), this, SLOT(vFlip()));
@@ -99,16 +96,16 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     orderButtonsLayout->setMargin(0);
     orderButtonsLayout->setSpacing(0);
 
-    TImageButton *toBack = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_back.png"), 22);
+    TImageButton *toBack = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/to_back.png"), 22);
     toBack->setToolTip(tr("Send object to back"));
 
-    TImageButton *toBackOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_back_one.png"), 22);
+    TImageButton *toBackOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/to_back_one.png"), 22);
     toBackOneLevel->setToolTip(tr("Send object to back one level"));
 
-    TImageButton *toFront = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_front.png"), 22);
+    TImageButton *toFront = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/to_front.png"), 22);
     toFront->setToolTip(tr("Send object to front"));
 
-    TImageButton *toFrontOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "to_front_one.png"), 22);
+    TImageButton *toFrontOneLevel = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/to_front_one.png"), 22);
     toFrontOneLevel->setToolTip(tr("Send object to front one level"));
 
     connect(toBack, SIGNAL(clicked()), this, SLOT(sendToBack()));
@@ -135,12 +132,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     groupButtonsLayout->setMargin(0);
     groupButtonsLayout->setSpacing(0);
 
-    TImageButton *groupButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator()
-                                                 + "group.png"), 22);
+    TImageButton *groupButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/group.png"), 22);
     groupButton->setToolTip(tr("Group Objects"));
 
-    TImageButton *ungroupButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator()
-                                                   + "ungroup.png"), 22);
+    TImageButton *ungroupButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/ungroup.png"), 22);
     ungroupButton->setToolTip(tr("Ungroup Objects"));
 
     connect(groupButton, SIGNAL(clicked()), this, SLOT(groupItems()));

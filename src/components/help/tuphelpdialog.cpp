@@ -39,12 +39,12 @@ TupHelpDialog::TupHelpDialog(const QString &path, QWidget *parent) : QDialog(par
 {
     setModal(true);
     setWindowTitle(tr("Help Content"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "help_mode.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_mode.png")));
 
     #ifdef Q_OS_WIN
-        QString helpPath = SHARE_DIR + "help" + QDir::separator();
+        QString helpPath = SHARE_DIR + "help/";
     #else
-        QString helpPath = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator();
+        QString helpPath = SHARE_DIR + "data/help/";
     #endif
 
     TupHelpBrowser *helpBrowser = new TupHelpBrowser(path, this);

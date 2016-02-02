@@ -50,7 +50,7 @@ TweenManager::TweenManager(QWidget *parent) : QWidget(parent), k(new Private)
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
     k->input = new QLineEdit;
-    k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + QDir::separator() + "icons" + QDir::separator() + "plus_sign.png"), 22);
+    k->addButton = new TImageButton(QPixmap(kAppProp->themeDir() + "/icons/plus_sign.png"), 22);
     k->addButton->setToolTip(tr("Create a new Tween"));
     connect(k->input, SIGNAL(returnPressed()), this, SLOT(addTween()));
     connect(k->addButton, SIGNAL(clicked()), this, SLOT(addTween()));

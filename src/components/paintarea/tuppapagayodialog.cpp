@@ -53,13 +53,13 @@ TupPapagayoDialog::TupPapagayoDialog() : QDialog(), k(new Private)
     QVBoxLayout *buttonsLayout = new QVBoxLayout;
     QVBoxLayout *textLayout = new QVBoxLayout;
 
-    QPushButton *fileButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "papagayo.png")), " " + tr("&Load PGO File"), this); 
+    QPushButton *fileButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/papagayo.png")), " " + tr("&Load PGO File"), this); 
     connect(fileButton, SIGNAL(clicked()), this, SLOT(openFileDialog()));
 
-    QPushButton *imagesButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png")), " " + tr("Load &Images"), this);
+    QPushButton *imagesButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/bitmap_array.png")), " " + tr("Load &Images"), this);
     connect(imagesButton, SIGNAL(clicked()), this, SLOT(openImagesDialog()));
 
-    QPushButton *soundButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png")), " " + tr("Load &Sound"), this);
+    QPushButton *soundButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/bitmap_array.png")), " " + tr("Load &Sound"), this);
     connect(soundButton, SIGNAL(clicked()), this, SLOT(openSoundDialog()));
 
     buttonsLayout->addWidget(fileButton);

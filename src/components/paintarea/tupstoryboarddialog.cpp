@@ -117,7 +117,7 @@ TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *i
 
     setModal(true);
     setWindowTitle(tr("Storyboard Settings"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "storyboard.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/storyboard.png")));
 
     k->layout = new QHBoxLayout(this);
     k->formLayout = new QVBoxLayout;
@@ -135,7 +135,7 @@ TupStoryBoardDialog::TupStoryBoardDialog(bool isNetworked, TupExportInterface *i
     htmlButton->setToolTip(tr("Export as HTML"));
     connect(htmlButton, SIGNAL(clicked()), this, SLOT(exportAsHTML()));
 
-    QPushButton *closeButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "close.png")), "");
+    QPushButton *closeButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/close.png")), "");
     closeButton->setToolTip(tr("Close"));
     closeButton->setDefault(true);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(closeDialog()));
@@ -343,7 +343,7 @@ void TupStoryBoardDialog::thumbnailGenerator()
     if (k->storyboard->size() == 0)
         k->storyboard->init(0, framesCount);
 
-    k->path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
+    k->path = QDir::tempPath() + "/" + TAlgorithm::randomString(8) + "/";
     QDir().mkpath(k->path);
 
     for (int i=0; i < framesCount; i++) {
@@ -455,7 +455,7 @@ void TupStoryBoardDialog::createHTMLFiles(const QString &path, DocType type)
         for (int i = 0; i < files.size(); ++i) {
              QString file = files.at(i).toLocal8Bit().constData();
              if (file != "." && file != "..") {
-                 QString target = path + QDir::separator() + file;
+                 QString target = path + "/" + file;
                  if (QFile::exists(target))
                      QFile::remove(target);       
                  QFile::copy(k->path + file, target);
@@ -467,9 +467,7 @@ void TupStoryBoardDialog::createHTMLFiles(const QString &path, DocType type)
         for (int i = 0; i < files.size(); ++i) {
              QString file = files.at(i).toLocal8Bit().constData();
              QPixmap pixmap(k->path + file); 
-
-             QString destination = path + QDir::separator() + file;
-
+             QString destination = path + "/" + file;
              if (QFile::exists(destination))
                  QFile::remove(destination); 
 
@@ -479,14 +477,14 @@ void TupStoryBoardDialog::createHTMLFiles(const QString &path, DocType type)
         }
     }
 
-    QString base = kAppProp->shareDir() + "data" + QDir::separator() + "storyboard" + QDir::separator();
+    QString base = kAppProp->shareDir() + "data/storyboard/";
 
     if (type == HTML) 
-        QFile::copy(base + "tupi.html.css", path + QDir::separator() + "tupi.css");
+        QFile::copy(base + "tupi.html.css", path + "/tupi.css");
     else
-        QFile::copy(base + "tupi.pdf.css", path + QDir::separator() + "tupi.css");
+        QFile::copy(base + "tupi.pdf.css", path + "/tupi.css");
 
-    QString index = path + QDir::separator() + "index.html";
+    QString index = path + "/index.html";
 
     if (QFile::exists(index))
         QFile::remove(index);  
@@ -591,7 +589,7 @@ void TupStoryBoardDialog::exportAsPDF()
 {
     saveLastComponent();
 
-    QString path = QDir::tempPath() + QDir::separator() + TAlgorithm::randomString(8) + QDir::separator();
+    QString path = QDir::tempPath() + "/" + TAlgorithm::randomString(8) + "/";
     QDir().mkpath(path);
     if (!path.isEmpty())
         createHTMLFiles(path, PDF);

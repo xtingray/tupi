@@ -70,7 +70,7 @@ TupHelpWidget::TupHelpWidget(const QString &path, QWidget *parent) : QWidget(par
     layout->addWidget(contentsListView);
 
     QDomDocument document;
-    QFile file(k->helpPath->path() + QDir::separator() + "help.xml");
+    QFile file(k->helpPath->path() + "/help.xml");
 
     QTreeWidgetItem *first = new QTreeWidgetItem;
 
@@ -151,7 +151,7 @@ void TupHelpWidget::tryToLoadPage(QTreeWidgetItem *item, QTreeWidgetItem *previe
     if (item) {
         QString fileName = k->files[item];
         if (! fileName.isNull())
-            loadPage(k->helpPath->path() + QDir::separator() + fileName);
+            loadPage(k->helpPath->path() + "/" + fileName);
     }
 }
 

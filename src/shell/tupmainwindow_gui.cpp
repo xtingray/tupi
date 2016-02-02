@@ -91,16 +91,16 @@ void TupMainWindow::createGUI()
     m_actionManager->insert(libraryView->toggleViewAction(), "show_library");
     addToPerspective(libraryView->toggleViewAction(), Animation);
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap.png"), tr("Bitmap"), QKeySequence(tr("Alt+B")), m_libraryWidget, SLOT(importBitmapGroup()),
+    new TAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("Bitmap"), QKeySequence(tr("Alt+B")), m_libraryWidget, SLOT(importBitmapGroup()),
 		m_actionManager, "importBitmap");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "bitmap_array.png"), tr("Bitmap Sequence"), QKeySequence(tr("Alt+Shift+B")), 
+    new TAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("Bitmap Sequence"), QKeySequence(tr("Alt+Shift+B")), 
 		m_libraryWidget, SLOT(importBitmapSequence()), m_actionManager, "importBitmapSequence");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "svg.png"), tr("SVG File"), QKeySequence(tr("Alt+S")), m_libraryWidget, SLOT(importSvgGroup()),
+    new TAction(QPixmap(THEME_DIR + "icons/svg.png"), tr("SVG File"), QKeySequence(tr("Alt+S")), m_libraryWidget, SLOT(importSvgGroup()),
 		m_actionManager, "importSvg");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "svg_array.png"), tr("SVG Sequence"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, 
+    new TAction(QPixmap(THEME_DIR + "icons/svg_array.png"), tr("SVG Sequence"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, 
 		SLOT(importSvgSequence()), m_actionManager, "importSvgSequence");
 
     //new TAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
@@ -254,7 +254,7 @@ void TupMainWindow::setupMenu()
 
     // Adding Option Animation
     QAction *drawingPerspective = new QAction(tr("Animation"), this);
-    drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "animation_mode.png")); 
+    drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")); 
     drawingPerspective->setIconVisibleInMenu(true);
     drawingPerspective->setShortcut(QKeySequence("Ctrl+1"));
     drawingPerspective->setData(Animation);
@@ -262,7 +262,7 @@ void TupMainWindow::setupMenu()
 
     // Adding Option Player 
     QAction *animationPerspective = new QAction(tr("Player"), this);
-    animationPerspective->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "play_small.png"));
+    animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/play_small.png"));
     animationPerspective->setIconVisibleInMenu(true);
     animationPerspective->setShortcut(QKeySequence("Ctrl+2"));
     animationPerspective->setData(Player);
@@ -270,7 +270,7 @@ void TupMainWindow::setupMenu()
 
     // Adding Option News 
     QAction *newsPerspective = new QAction(tr("News"), this);
-    newsPerspective->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "news_mode.png"));
+    newsPerspective->setIcon(QPixmap(THEME_DIR + "icons/news_mode.png"));
     newsPerspective->setIconVisibleInMenu(true);
     newsPerspective->setShortcut(QKeySequence("Ctrl+3"));
     newsPerspective->setData(News);
@@ -321,28 +321,28 @@ void TupMainWindow::setMenuItemsContext(bool flag)
 
 void TupMainWindow::setupFileActions()
 {
-    TAction *newProject = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "new.png"), tr("New project"), QKeySequence(tr("Ctrl+N")),
+    TAction *newProject = new TAction(QPixmap(THEME_DIR + "icons/new.png"), tr("New project"), QKeySequence(tr("Ctrl+N")),
 				      this, SLOT(newProject()), m_actionManager);
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "newproject", "file");
 
-    TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "open.png"), tr("Open project"), QKeySequence(tr("Ctrl+O")), 
+    TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open project"), QKeySequence(tr("Ctrl+O")), 
 				    this, SLOT(openProject()), m_actionManager);
     m_actionManager->insert(openFile, "openproject", "file");
     openFile->setStatusTip(tr("Load existent project"));
 
     // SQA: This code has been disabled temporary
     /*
-    TAction *openNetFile = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "net_document.png"), tr("Open project from server..."), 
+    TAction *openNetFile = new TAction(QPixmap(THEME_DIR + "icons/net_document.png"), tr("Open project from server..."), 
 				       tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
-    TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "import_project.png"), tr("Export project to server..."), tr(""), this, 
+    TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export project to server..."), tr(""), this, 
 					 SLOT(importProjectToServer()), m_actionManager);
     m_actionManager->insert(importNetFile, "exportprojectserver", "file");
     */
 
-    TAction *save = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "save.png"), tr( "Save project" ),
+    TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
 				QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
     m_actionManager->insert(save, "saveproject", "file");
     save->setStatusTip(tr("Save current project in current location"));
@@ -359,24 +359,24 @@ void TupMainWindow::setupFileActions()
 
     // Import Palette action
 
-    TAction *importPalette = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "import.png"), tr("&Import GIMP palettes"),
+    TAction *importPalette = new TAction(QPixmap(THEME_DIR + "icons/import.png"), tr("&Import GIMP palettes"),
 					 QKeySequence(tr("Shift+G")), this, SLOT(importPalettes()), m_actionManager);
     importPalette->setStatusTip(tr("Import palettes"));
     m_actionManager->insert(importPalette, "importGimpPalettes", "file");
 
-    TAction *importPapagayo = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "papagayo.png"), tr("&Import Papagayo Lip-sync"),
+    TAction *importPapagayo = new TAction(QPixmap(THEME_DIR + "icons/papagayo.png"), tr("&Import Papagayo Lip-sync"),
                                          QKeySequence(tr("Alt+P")), this, SLOT(importPapagayoLipSync()), m_actionManager);
     importPapagayo->setStatusTip(tr("Import Papagayo lip-sync"));
     m_actionManager->insert(importPapagayo, "importPapagayoLipSync", "file");
 
     // Export Project action
-    TAction *exportProject = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "export.png"), tr("&Export Project"), QKeySequence(tr("Ctrl+R")),
+    TAction *exportProject = new TAction(QPixmap(THEME_DIR + "icons/export.png"), tr("&Export Project"), QKeySequence(tr("Ctrl+R")),
                                          this, SLOT(exportProject()), m_actionManager);
     exportProject->setStatusTip(tr("Export project to several video formats"));
     m_actionManager->insert(exportProject, "export", "file");
 
     // Exit action
-    TAction *exit = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "exit.png"), tr("E&xit"), QKeySequence(tr("Ctrl+Q")),
+    TAction *exit = new TAction(QPixmap(THEME_DIR + "icons/exit.png"), tr("E&xit"), QKeySequence(tr("Ctrl+Q")),
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
     exit->setStatusTip(tr("Close application"));
     m_actionManager->insert(exit, "exit", "file");
@@ -396,7 +396,7 @@ void TupMainWindow::setupFileActions()
 
 void TupMainWindow::setupSettingsActions()
 {
-    TAction *preferences = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "properties.png"), tr("Pr&eferences..."), 
+    TAction *preferences = new TAction(QPixmap(THEME_DIR + "icons/properties.png"), tr("Pr&eferences..."), 
                                         QKeySequence(tr("Ctrl+P")), this, SLOT( preferences()),
                                         m_actionManager, "preferences");
     preferences->setStatusTip(tr("Opens the preferences dialog box"));
@@ -413,11 +413,11 @@ void TupMainWindow::setupSettingsActions()
 
 void TupMainWindow::setupHelpActions()
 {
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "help_mode.png"), tr("Help Content"), QKeySequence(tr("F1")),
+    new TAction(QPixmap(THEME_DIR + "icons/help_mode.png"), tr("Help Content"), QKeySequence(tr("F1")),
                 this, SLOT(showHelp()), m_actionManager, "help");
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "today_tip.png"), tr("Tip of the day"), QKeySequence(tr("Ctrl+T")),
+    new TAction(QPixmap(THEME_DIR + "icons/today_tip.png"), tr("Tip of the day"), QKeySequence(tr("Ctrl+T")),
                 this, SLOT(showTipDialog()), m_actionManager, "tip_of_day");
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "about.png"), tr("About Tupi"), QKeySequence(tr("Ctrl+K")), 
+    new TAction(QPixmap(THEME_DIR + "icons/about.png"), tr("About Tupi"), QKeySequence(tr("Ctrl+K")), 
                 this, SLOT(aboutTupi()), m_actionManager, "about_tupi");
 }
 
@@ -473,7 +473,7 @@ void TupMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
     foreach (QString recent, recents) {
              if (!recent.isEmpty()) {
                  m_recentProjects << recent;
-                 action[i] = new QAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "recent_files.png"), recent, this); 
+                 action[i] = new QAction(QPixmap(THEME_DIR + "icons/recent_files.png"), recent, this); 
                  action[i]->setIconVisibleInMenu(true);
                  menu->addAction(action[i]);
                  connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
@@ -523,12 +523,12 @@ void TupMainWindow::changePerspective(int index)
 
 void TupMainWindow::setUndoRedoActions()
 {
-    QAction *undo = new QAction(QIcon(THEME_DIR + "icons" + QDir::separator() + "undo.png"), tr("Undo"), this);
+    QAction *undo = new QAction(QIcon(THEME_DIR + "icons/undo.png"), tr("Undo"), this);
     undo->setIconVisibleInMenu(true);
     undo->setShortcut(QKeySequence(tr("Ctrl+Z")));
     connect(undo, SIGNAL(triggered()), m_projectManager, SLOT(undo()));
 
-    QAction *redo = new QAction(QIcon(THEME_DIR + "icons" + QDir::separator() + "redo.png"), tr("Redo"), this);
+    QAction *redo = new QAction(QIcon(THEME_DIR + "icons/redo.png"), tr("Redo"), this);
     redo->setIconVisibleInMenu(true);
     redo->setShortcut(QKeySequence(tr("Ctrl+Y")));
     connect(redo, SIGNAL(triggered()), m_projectManager, SLOT(redo()));

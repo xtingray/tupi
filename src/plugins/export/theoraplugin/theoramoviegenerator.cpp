@@ -63,7 +63,7 @@ TheoraMovieGenerator::TheoraMovieGenerator(const QSize &size, int fps, double du
     k->fps = fps;
     k->streamDuration = duration;
     k->frames = frames;
-    k->movieFile = QDir::tempPath() + QDir::separator() + "tupi_video_" + TAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video_" + TAlgorithm::randomString(12);
     k->movieFile += ".ogv";
     k->framesCounter = 0;
 

@@ -147,7 +147,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
         #endif
     #endif
 
-    setWindowIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "animation_mode.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
 
     k->project = project;
     k->currentTool = 0;
@@ -385,62 +385,62 @@ void TupDocumentView::showPos(const QPointF &point)
 
 void TupDocumentView::setupDrawActions()
 {
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "copy.png"), tr("Copy"), QKeySequence(tr("Ctrl+C")), 
+    new TAction(QPixmap(THEME_DIR + "icons/copy.png"), tr("Copy"), QKeySequence(tr("Ctrl+C")), 
                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "paste.png"), tr("Paste"), QKeySequence(tr("Ctrl+V")),
+    new TAction(QPixmap(THEME_DIR + "icons/paste.png"), tr("Paste"), QKeySequence(tr("Ctrl+V")),
                 k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "cut.png"), tr("Cut"), QKeySequence(tr("Ctrl+X")),
+    new TAction(QPixmap(THEME_DIR + "icons/cut.png"), tr("Cut"), QKeySequence(tr("Ctrl+X")),
                 k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "delete.png"), tr("Delete"), QKeySequence(Qt::Key_Delete), 
+    new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), QKeySequence(Qt::Key_Delete), 
                 k->paintArea, SLOT(deleteItems()), k->actionManager, "delete");
    
     /* 
-    TAction *group = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "group.png"), tr("&Group"), QKeySequence(tr("Ctrl+G")), 
+    TAction *group = new TAction(QPixmap(THEME_DIR + "icons/group.png"), tr("&Group"), QKeySequence(tr("Ctrl+G")), 
                                  k->paintArea, SLOT(groupItems()), k->actionManager, "group");
     // SQA: Enabled just for initial development
     group->setDisabled(true);
 
-    TAction *ungroup = new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "ungroup.png"), tr("&Ungroup"), 
+    TAction *ungroup = new TAction(QPixmap(THEME_DIR + "icons/ungroup.png"), tr("&Ungroup"), 
                                     QKeySequence(tr("Ctrl+Shift+G")) , k->paintArea, SLOT(ungroupItems()), 
                                     k->actionManager, "ungroup");
     // SQA: Enabled just for initial development
     ungroup->setDisabled(true);
     */
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "layer.png"), tr("Onion Skin"), QKeySequence(tr("Ctrl+Shift+O")), 
+    new TAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"), QKeySequence(tr("Ctrl+Shift+O")), 
                 this, SLOT(enableOnionFeature()), k->actionManager, "onion");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "onion.png"), tr("Onion Skin Factor"), QKeySequence(tr("Ctrl+Shift+S")), 
+    new TAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"), QKeySequence(tr("Ctrl+Shift+S")), 
                 this, SLOT(setDefaultOnionFactor()), k->actionManager, "onionfactor");
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "export_frame.png"), tr("Export Frame As Image"), QKeySequence(tr("@")),
+    new TAction(QPixmap(THEME_DIR + "icons/export_frame.png"), tr("Export Frame As Image"), QKeySequence(tr("@")),
                 this, SLOT(exportImage()), k->actionManager, "export_image");
 
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
 
     if (k->isNetworked && server.compare("tupitu.be") == 0) {
-        new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "import_project.png"), tr("Export Frame To Gallery"), QKeySequence(tr("@")),
+        new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export Frame To Gallery"), QKeySequence(tr("@")),
                     this, SLOT(postImage()), k->actionManager, "post_image");
     }
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "storyboard.png"), tr("Storyboard Settings"), QKeySequence(tr("Ctrl+Shift+S")),
+    new TAction(QPixmap(THEME_DIR + "icons/storyboard.png"), tr("Storyboard Settings"), QKeySequence(tr("Ctrl+Shift+S")),
                 this, SLOT(storyboardSettings()), k->actionManager, "storyboard");
 
     #ifdef Q_OS_WIN
         if (QSysInfo::windowsVersion() != QSysInfo::WV_XP) {
-            new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png"), tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
+            new TAction(QPixmap(THEME_DIR + "icons/camera.png"), tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
                         this, SLOT(cameraInterface()), k->actionManager, "camera");
         }
     #else
-        new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "camera.png"), tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
+        new TAction(QPixmap(THEME_DIR + "icons/camera.png"), tr("Camera"), QKeySequence(tr("Ctrl+Shift+C")),
                     this, SLOT(cameraInterface()), k->actionManager, "camera");
     #endif
 
-    new TAction(QPixmap(THEME_DIR + "icons" + QDir::separator() + "papagayo.png"), tr("Papagayo Lip-sync Files"), QKeySequence(tr("Ctrl+Shift+P")),
+    new TAction(QPixmap(THEME_DIR + "icons/papagayo.png"), tr("Papagayo Lip-sync Files"), QKeySequence(tr("Ctrl+Shift+P")),
                 this, SLOT(papagayoManager()), k->actionManager, "papagayo");
 }
 
@@ -453,17 +453,17 @@ void TupDocumentView::createLateralToolBar()
 
     // Brushes menu
     k->shapesMenu = new QMenu(tr("Brushes"), k->toolbar);
-    k->shapesMenu->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "square.png"));
+    k->shapesMenu->setIcon(QPixmap(THEME_DIR + "icons/square.png"));
     connect(k->shapesMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     // Motion Tween menu
     k->motionMenu = new QMenu(tr("Tweening"), k->toolbar);
-    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "position_tween.png"));
+    k->motionMenu->setIcon(QPixmap(THEME_DIR + "icons/position_tween.png"));
     connect(k->motionMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     // Misc Tools menu
     k->miscMenu = new QMenu(tr("Misc Tools"), k->toolbar);
-    k->miscMenu->setIcon(QPixmap(THEME_DIR + "icons" + QDir::separator() + "export_frame.png"));
+    k->miscMenu->setIcon(QPixmap(THEME_DIR + "icons/export_frame.png"));
     // connect(k->miscMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 }
 
@@ -1120,9 +1120,9 @@ void TupDocumentView::createToolBar()
     addToolBar(k->barGrid);
 
     k->spaceMode = new QComboBox();
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons" + QDir::separator() + "frames_mode.png"), tr("Frames Mode"));
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons" + QDir::separator() + "static_background_mode.png"), tr("Static BG Mode"));
-    k->spaceMode->addItem(QIcon(THEME_DIR + "icons" + QDir::separator() + "dynamic_background_mode.png"), tr("Dynamic BG Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/frames_mode.png"), tr("Frames Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/static_background_mode.png"), tr("Static BG Mode"));
+    k->spaceMode->addItem(QIcon(THEME_DIR + "icons/dynamic_background_mode.png"), tr("Dynamic BG Mode"));
 
     connect(k->spaceMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setSpaceContext()));
     setSpaceContext();
@@ -2001,7 +2001,7 @@ void TupDocumentView::importPapagayoLipSync()
                     QSize mouthSize;
                     QString extension = ".svg";
                     QString firstImage = imagesList.at(0);
-                    QString pic = imagesDir + QDir::separator() + firstImage;
+                    QString pic = imagesDir + "/" + firstImage;
                     if (firstImage.endsWith(".svg")) {
                         QSvgRenderer *renderer = new QSvgRenderer(pic);
                         QRect rect = renderer->viewBox();
@@ -2027,7 +2027,7 @@ void TupDocumentView::importPapagayoLipSync()
                         // Adding mouth images in the library
                         foreach (QString fileName, imagesList) {
                                  QString key = fileName.toLower();
-                                 QFile f(mouthPath + QDir::separator() + fileName);
+                                 QFile f(mouthPath + "/" + fileName);
                                  if (f.open(QIODevice::ReadOnly)) {
                                      QByteArray data = f.readAll();
                                      f.close();

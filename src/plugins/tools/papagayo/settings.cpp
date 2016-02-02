@@ -149,7 +149,7 @@ void Settings::setInnerForm()
     k->textArea = new QTextEdit;
     k->textArea->setReadOnly(true);
 
-    TImageButton *remove = new TImageButton(QPixmap(kAppProp->themeDir() + "icons" + QDir::separator() + "close_properties.png"), 22);
+    TImageButton *remove = new TImageButton(QPixmap(kAppProp->themeDir() + "icons/close_properties.png"), 22);
     remove->setToolTip(tr("Close properties"));
     connect(remove, SIGNAL(clicked()), this, SIGNAL(closeLipSyncProperties()));
 

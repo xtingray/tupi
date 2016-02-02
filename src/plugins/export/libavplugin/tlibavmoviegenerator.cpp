@@ -363,7 +363,7 @@ TLibavMovieGenerator::TLibavMovieGenerator(TMovieGeneratorInterface::Format form
  : TMovieGenerator(width, height), k(new Private)
 {
     errorDetail = "This is not a problem directly related to <b>Tupi</b>. Please, check your libav installation and codec support. More info: <b>http://libav.org</b>";
-    k->movieFile = QDir::tempPath() + QDir::separator() + "tupi_video_" + TAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video_" + TAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
     k->streamDuration = duration;
@@ -373,7 +373,7 @@ TLibavMovieGenerator::TLibavMovieGenerator(TMovieGeneratorInterface::Format form
 TLibavMovieGenerator::TLibavMovieGenerator(TMovieGeneratorInterface::Format format, const QSize &size, int fps, double duration) : TMovieGenerator(size.width(), size.height()), k(new Private)
 {
     errorDetail = "This is not a problem directly related to <b>Tupi</b>. Please, check your libav installation and codec support. More info: <b>http://libav.org</b>";
-    k->movieFile = QDir::tempPath() + QDir::separator() + "tupi_video_" + TAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/tupi_video_" + TAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
     k->streamDuration = duration;

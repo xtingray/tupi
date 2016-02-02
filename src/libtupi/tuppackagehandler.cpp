@@ -57,9 +57,6 @@ TupPackageHandler::~TupPackageHandler()
 
 bool TupPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
 {
-	qDebug() << "TupPackageHandler::makePackage() - projectPath: " << projectPath;
-	qDebug() << "TupPackageHandler::makePackage() - packagePath: " << packagePath;
-	
     if (!QFile::exists(projectPath)) {        
         #ifdef K_DEBUG
             QString msg = "TupPackageHandler::makePackage() - Project path doesn't exist -> " + projectPath;
@@ -74,9 +71,9 @@ bool TupPackageHandler::makePackage(const QString &projectPath, const QString &p
     }
 
     // SQA: This code will be enabled in the future
-	/*
+    /*
     return JlCompress::compressDir(packagePath, projectPath, true);
-	*/
+    */
     
     QFileInfo packageInfo(packagePath);
     QuaZip zip(packagePath);
@@ -144,7 +141,7 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
                  continue;
              }
         
-		     // SQA: Add an additional variable to avoid calling the same function twice
+             // SQA: Add an additional variable to avoid calling the same function twice
              if (!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(stripRepositoryFromPath(filePath), stripRepositoryFromPath(filePath)))) 
                  return false;
 
@@ -169,10 +166,6 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
                  return false;
 
              outFile.close();
-
-             // if (outFile.getZipError()!=UNZ_OK)
-             //     return false;
-
              inFile.close();
     }
     
@@ -181,17 +174,12 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
 
 QString TupPackageHandler::stripRepositoryFromPath(QString path)
 {
-	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - path: " << path;
-	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - CACHE_DIR: " << CACHE_DIR;
     path.remove(CACHE_DIR);
-    qDebug() << "TupPackageHandler::stripRepositoryFromPath() - path without CACHE_DIR: " << path;
-	
-	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - path[0]: " << path[0];
-    if (path[0] == QDir::separator())
+
+    // if (path[0] == QDir::separator())
+    if (path.startsWith("/"))
         path.remove(0, 1);
 
-	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - final path: " << path;
-	
     return path;
 }
 
@@ -214,9 +202,8 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
         return false;
     }
     */
-	
-	qDebug() << "TupPackageHandler::importPackage() - packagePath: " << packagePath;
-        
+
+ 
     QuaZip zip(packagePath);
     
     if (!zip.open(QuaZip::mdUnzip)) {
@@ -268,23 +255,16 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
                return false;
            }
 
-		   /*
-           #ifdef Q_OS_WIN
-               name = file.getActualFileName();
-            #else
-               name = CACHE_DIR + file.getActualFileName();    
-           #endif
-		   */
-
            name = CACHE_DIR + file.getActualFileName();
 
-           if (name.endsWith(QDir::separator()))
+           // if (name.endsWith(QDir::separator()))
+           if (name.endsWith("/"))
                name.remove(name.count()-1, 1);
 
            if (name.endsWith(".tpp"))
                k->importedProjectPath = QFileInfo(name).path();
         
-           if (file.getZipError() != UNZ_OK) {           
+           if (file.getZipError()!=UNZ_OK) {           
                #ifdef K_DEBUG
                    QString msg = "TupPackageHandler::importPackage() - Error while open package " + QString::number(file.getZipError());
                    #ifdef Q_OS_WIN
@@ -415,7 +395,8 @@ QString TupPackageHandler::importedProjectPath() const
 
 QString TupPackageHandler::projectDirectory() const
 {
-    int index =  k->importedProjectPath.lastIndexOf(QDir::separator());
+    // int index = k->importedProjectPath.lastIndexOf(QDir::separator());
+    int index = k->importedProjectPath.lastIndexOf("/");
     QString directory = k->importedProjectPath.right(k->importedProjectPath.length() - (index + 1));
 
     return directory;

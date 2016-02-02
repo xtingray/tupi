@@ -469,7 +469,7 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
             QString extension = object->extension();
             TupLibraryObject::Type type = object->type();
             QString path = object->dataPath();
-            int limit = path.lastIndexOf(QDir::separator());
+            int limit = path.lastIndexOf("/");
             QString newPath = path.left(limit + 1); 
 
             QString symbolName = "";

@@ -42,7 +42,7 @@ TupToolStatus::TupToolStatus()
     layout->setSpacing(2);
 
     tool = new QLabel("");
-    QPixmap pic(THEME_DIR + "icons" + QDir::separator() + "pencil.png");
+    QPixmap pic(THEME_DIR + "icons/pencil.png");
     tool->setToolTip(tr("Current Tool"));
     tool->setPixmap(pic);
 

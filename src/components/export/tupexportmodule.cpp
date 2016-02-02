@@ -102,7 +102,7 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
     filePathLayout->addWidget(m_filePath);
 
     QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR + "icons" + QDir::separator() + "open.png"));
+    button->setIcon(QIcon(THEME_DIR + "icons/open.png"));
 
     if (output == TupExportWidget::ImagesArray)
         connect(button, SIGNAL(clicked()), this, SLOT(chooseDirectory()));
@@ -200,8 +200,8 @@ void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
 
     if (m_currentFormat == TupExportInterface::APNG || (m_currentFormat != TupExportInterface::PNG 
         && m_currentFormat != TupExportInterface::JPEG && m_currentFormat != TupExportInterface::SVG)) { // Animated Image or Animation
-        if (!filename.endsWith(QDir::separator()))
-            filename += QDir::separator();
+        if (!filename.endsWith("/"))
+            filename += "/";
 
         filename += m_project->projectName();
         filename += extension;
@@ -299,7 +299,7 @@ void TupExportModule::exportIt()
         if (path.length() == 0)
             path = QDir::homePath();
 
-        filename = path + QDir::separator() + name;
+        filename = path + "/" + name;
 
         if (QFile::exists(QString(filename + "0000" + extension))) {
             QMessageBox::StandardButton reply;
@@ -327,7 +327,7 @@ void TupExportModule::exportIt()
             return;
         }
 
-        int indexPath = filename.lastIndexOf(QDir::separator());
+        int indexPath = filename.lastIndexOf("/");
         int indexFile = filename.length() - indexPath;
         name = filename.right(indexFile - 1);
         path = filename.left(indexPath + 1);
@@ -338,7 +338,7 @@ void TupExportModule::exportIt()
         if (path.length() == 0) {
             //path = getenv("HOME");
             path = QDir::homePath();
-            filename = path + QDir::separator() + name;
+            filename = path + "/" + name;
         }
 
         if (QFile::exists(filename)) {
