@@ -229,11 +229,14 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
              if (mainFrame) {
                  if (layer) {
                      if (layer->isVisible()) {
+                         int maximum = qMax(k->onionSkin.previous, k->onionSkin.next);
+                         double opacityFactor = k->opacity / (double)maximum;
+                         double opacity = k->opacity + ((maximum - k->onionSkin.previous)*opacityFactor);
                          if (drawContext) {
                              // Painting previews frames
-                             int maximum = qMax(k->onionSkin.previous, k->onionSkin.next);
-                             double opacityFactor = k->opacity / (double)maximum;
-                             double opacity = k->opacity + ((maximum - k->onionSkin.previous)*opacityFactor);
+                             // int maximum = qMax(k->onionSkin.previous, k->onionSkin.next);
+                             // double opacityFactor = k->opacity / (double)maximum;
+                             // double opacity = k->opacity + ((maximum - k->onionSkin.previous)*opacityFactor);
                              if (k->onionSkin.previous > 0 && photogram > 0) {
                                  int limit = photogram - k->onionSkin.previous;
                                  if (limit < 0) 
@@ -250,6 +253,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
                                  }
                              }
 
+                             /*
                              // Painting next frames
                              if (k->onionSkin.next > 0 && framesCount > photogram + 1) {
                                  opacity = k->opacity + (opacityFactor*(maximum - 1));
@@ -268,11 +272,33 @@ void TupGraphicsScene::drawPhotogram(int photogram, bool drawContext)
                                       opacity -= opacityFactor;
                                  }
                              }
+                             */
                          }
 
                          // Painting current frame
                          k->frameOnProcess = photogram;
                          addFrame(mainFrame);
+
+                         if (drawContext) {
+                             // Painting next frames
+                             if (k->onionSkin.next > 0 && framesCount > photogram + 1) {
+                                 opacity = k->opacity + (opacityFactor*(maximum - 1));
+
+                                 int limit = photogram + k->onionSkin.next;
+                                 if (limit >= framesCount)
+                                     limit = framesCount - 1;
+
+                                 for (int frameIndex = photogram+1; frameIndex <= limit; frameIndex++) {
+                                      TupFrame * frame = layer->frame(frameIndex);
+                                      if (frame) {
+                                          k->frameOnProcess = frameIndex;
+                                          addFrame(frame, opacity, Next);
+                                      }
+
+                                      opacity -= opacityFactor;
+                                 }
+                             }
+                         }
 
                          // addLipSyncObjects(layer, photogram, mainFrame->getTopZLevel());
                          addLipSyncObjects(layer, photogram, k->zLevel);
