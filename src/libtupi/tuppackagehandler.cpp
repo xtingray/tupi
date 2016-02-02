@@ -214,6 +214,8 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
         return false;
     }
     */
+	
+	qDebug() << "TupPackageHandler::importPackage() - packagePath: " << packagePath;
         
     QuaZip zip(packagePath);
     
@@ -266,13 +268,15 @@ bool TupPackageHandler::importPackage(const QString &packagePath)
                return false;
            }
 
+		   /*
            #ifdef Q_OS_WIN
                name = file.getActualFileName();
             #else
                name = CACHE_DIR + file.getActualFileName();    
            #endif
+		   */
 
-           // name = CACHE_DIR + file.getActualFileName();
+           name = CACHE_DIR + file.getActualFileName();
 
            if (name.endsWith(QDir::separator()))
                name.remove(name.count()-1, 1);
