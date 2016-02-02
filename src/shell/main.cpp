@@ -147,6 +147,7 @@ int main(int argc, char ** argv)
     kAppProp->setBinDir(QString::fromLocal8Bit(::getenv("TUPI_BIN")));
     kAppProp->setPluginDir(QString::fromLocal8Bit(::getenv("TUPI_PLUGIN")));
     kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("TUPI_SHARE")));
+    qDebug() << "main.cpp -> TUPI_SHARE: " << QString::fromLocal8Bit(::getenv("TUPI_SHARE"));
 #endif
 
     QString locale = QString(QLocale::system().name()).left(2);
