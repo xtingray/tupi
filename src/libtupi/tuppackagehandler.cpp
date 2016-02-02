@@ -74,7 +74,9 @@ bool TupPackageHandler::makePackage(const QString &projectPath, const QString &p
     }
 
     // SQA: This code will be enabled in the future
-    // return JlCompress::compressDir(packagePath, projectPath, true);
+	/*
+    return JlCompress::compressDir(packagePath, projectPath, true);
+	*/
     
     QFileInfo packageInfo(packagePath);
     QuaZip zip(packagePath);
@@ -129,7 +131,7 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
     QuaZipFile outFile(zip);
     char c;
 
-    QFileInfoList files= QDir(path).entryInfoList();
+    QFileInfoList files = QDir(path).entryInfoList();
     
     foreach (QFileInfo file, files) {
              QString filePath = path + "/" + file.fileName();
@@ -142,6 +144,7 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
                  continue;
              }
         
+		     // SQA: Add an additional variable to avoid calling the same function twice
              if (!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(stripRepositoryFromPath(filePath), stripRepositoryFromPath(filePath)))) 
                  return false;
 
@@ -178,11 +181,17 @@ bool TupPackageHandler::compress(QuaZip *zip, const QString &path)
 
 QString TupPackageHandler::stripRepositoryFromPath(QString path)
 {
+	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - path: " << path;
+	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - CACHE_DIR: " << CACHE_DIR;
     path.remove(CACHE_DIR);
-
+    qDebug() << "TupPackageHandler::stripRepositoryFromPath() - path without CACHE_DIR: " << path;
+	
+	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - path[0]: " << path[0];
     if (path[0] == QDir::separator())
         path.remove(0, 1);
 
+	qDebug() << "TupPackageHandler::stripRepositoryFromPath() - final path: " << path;
+	
     return path;
 }
 
