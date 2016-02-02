@@ -335,9 +335,12 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         QString twitterPath = QDir::homePath() + QDir::separator() + "." + QCoreApplication::applicationName() 
                               + QDir::separator() + "twitter.html";
+
+        /*
         #ifdef Q_OS_WIN
             twitterPath.replace("/", "\\");
         #endif
+        */
 			  
         if (QFile::exists(twitterPath)) {
             #ifdef K_DEBUG
@@ -873,7 +876,7 @@ void TupMainWindow::showHelp()
     if (!file.exists()) {
         #ifdef Q_OS_WIN
             helpPath = SHARE_DIR + "help" + QDir::separator() + "en" + QDir::separator() + "cover.html";
-            helpPath.replace("/","\\");
+            // helpPath.replace("/","\\");
         #else
             helpPath = SHARE_DIR + "data" + QDir::separator() + "help" + QDir::separator() + "en" + QDir::separator() + "cover.html";
         #endif

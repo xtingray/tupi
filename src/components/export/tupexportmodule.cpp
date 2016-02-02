@@ -218,9 +218,11 @@ void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
         }
     } 
 
+/*
 #ifdef Q_OS_WIN
     filename.replace(QString("/"), QString("\\"));
 #endif
+*/
 
     m_filePath->setText(filename);
 }
