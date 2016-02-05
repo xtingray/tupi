@@ -6,6 +6,8 @@ DefaultGroupName=Tupi Open 2D Magic
 OutputDir=c:\devel\installer
 ChangesEnvironment=yes
 ChangesAssociations=yes
+; Uncomment this line for 64bit installer
+ArchitecturesInstallIn64BitMode=x64
 
 [Dirs]
 Name: "{app}\bin"
