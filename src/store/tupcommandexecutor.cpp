@@ -98,7 +98,7 @@ bool TupCommandExecutor::removeScene(TupSceneResponse *response)
     int position = response->sceneIndex();
     // int scenesCount = m_project->scenesCount();
 
-    TupScene *toRemove = m_project->scene(position);
+    TupScene *toRemove = m_project->sceneAt(position);
 
     if (toRemove) {
         QDomDocument document;
@@ -150,7 +150,7 @@ bool TupCommandExecutor::lockScene(TupSceneResponse *response)
         #endif
     #endif  
 
-    TupScene *scene = m_project->scene(position);
+    TupScene *scene = m_project->sceneAt(position);
     
     if (!scene)
         return false;
@@ -166,7 +166,7 @@ bool TupCommandExecutor::renameScene(TupSceneResponse *response)
 {
     int position = response->sceneIndex();
     QString newName = response->arg().toString();
-    TupScene *scene = m_project->scene(position);
+    TupScene *scene = m_project->sceneAt(position);
 
     if (!scene)
         return false;
@@ -190,7 +190,7 @@ bool TupCommandExecutor::setSceneVisibility(TupSceneResponse *response)
     int position = response->sceneIndex();
     bool view = response->arg().toBool();
     
-    TupScene *scene = m_project->scene(position);
+    TupScene *scene = m_project->sceneAt(position);
     
     if (!scene)
         return false;
@@ -205,7 +205,7 @@ bool TupCommandExecutor::resetScene(TupSceneResponse *response)
 {
     int position = response->sceneIndex();
     QString name = response->arg().toString();
-    TupScene *scene = m_project->scene(position);
+    TupScene *scene = m_project->sceneAt(position);
 
     if (!scene)
         return false;

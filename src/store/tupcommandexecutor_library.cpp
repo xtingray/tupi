@@ -150,11 +150,11 @@ bool TupCommandExecutor::removeSymbolFromFrame(TupLibraryResponse *response)
 
     if (m_project->scenesCount() > 0) {
         if (m_project->removeSymbolFromFrame(response->arg().toString(), response->symbolType())) {
-            TupScene *scene = m_project->scene(response->sceneIndex());
+            TupScene *scene = m_project->sceneAt(response->sceneIndex());
             if (scene) {
-                TupLayer *layer = scene->layer(response->layerIndex());
+                TupLayer *layer = scene->layerAt(response->layerIndex());
                 if (layer) {
-                    TupFrame *frame = layer->frame(response->frameIndex());
+                    TupFrame *frame = layer->frameAt(response->frameIndex());
                     if (frame) 
                         response->setFrameState(frame->isEmpty());
                 }

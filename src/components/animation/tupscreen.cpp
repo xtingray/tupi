@@ -472,7 +472,7 @@ void TupScreen::render()
 
     emit isRendering(0);
 
-    TupScene *scene = k->project->scene(k->currentSceneIndex);
+    TupScene *scene = k->project->sceneAt(k->currentSceneIndex);
     if (!scene) {
         #ifdef K_DEBUG
             QString msg = "TupScreen::render() - [ Fatal Error ] - Scene is NULL! -> index: " + QString::number(k->currentSceneIndex);
@@ -625,11 +625,11 @@ TupScene *TupScreen::currentScene() const
     #endif
 
     if (k->currentSceneIndex > -1) {
-        return k->project->scene(k->currentSceneIndex);
+        return k->project->sceneAt(k->currentSceneIndex);
     } else {
         if (k->project->scenesCount() == 1) {
             k->currentSceneIndex = 0;
-            return k->project->scene(0);
+            return k->project->sceneAt(0);
         } 
     }
 
@@ -682,7 +682,7 @@ void TupScreen::updateFirstFrame()
     #endif
 
     if (k->currentSceneIndex > -1 && k->currentSceneIndex < k->animationList.count()) {
-        TupScene *scene = k->project->scene(k->currentSceneIndex);
+        TupScene *scene = k->project->sceneAt(k->currentSceneIndex);
         if (scene) { 
             setLipSyncSettings();
 
@@ -749,7 +749,7 @@ void TupScreen::addPhotogramsArray(int sceneIndex)
 
 void TupScreen::setLipSyncSettings()
 {
-    TupScene *scene = k->project->scene(k->currentSceneIndex);
+    TupScene *scene = k->project->sceneAt(k->currentSceneIndex);
     if (scene) {
         if (scene->lipSyncTotal() > 0) {
             k->lipSyncRecords.clear();

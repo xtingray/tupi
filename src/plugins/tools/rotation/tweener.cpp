@@ -324,7 +324,7 @@ void Tweener::setCurrentTween(const QString &name)
 int Tweener::framesCount()
 {
     int total = 1;
-    TupLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+    TupLayer *layer = k->scene->scene()->layerAt(k->scene->currentLayerIndex());
     if (layer)
         total = layer->framesCount();
 
@@ -473,8 +473,8 @@ void Tweener::applyTween()
                  // TupScene *scene = project->scene(k->initScene);
 
                  TupScene *scene = k->scene->scene();
-                 TupLayer *layer = scene->layer(k->initLayer);
-                 TupFrame *frame = layer->frame(k->currentTween->initFrame());
+                 TupLayer *layer = scene->layerAt(k->initLayer);
+                 TupFrame *frame = layer->frameAt(k->currentTween->initFrame());
                  int objectIndex = -1;
                  QPointF origin = item->mapFromParent(k->origin);
                  TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
@@ -506,7 +506,7 @@ void Tweener::applyTween()
                                                                     type, TupProjectRequest::Remove);
                      emit requested(&request);
 
-                     frame = layer->frame(k->initFrame);
+                     frame = layer->frameAt(k->initFrame);
                      if (type == TupLibraryObject::Item) {
                          objectIndex = frame->graphicItemsCount() - 1;
                          newList.append(frame->graphic(objectIndex)->item());

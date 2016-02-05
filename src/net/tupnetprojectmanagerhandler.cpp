@@ -362,7 +362,7 @@ void TupNetProjectManagerHandler::handlePackage(const QString &root, const QStri
                    if ((parser.sceneIndex() >= 0) && (parser.storyboardXml().length() > 0)) {
                        TupStoryboard *storyboard = new TupStoryboard(k->username);
                        storyboard->fromXml(parser.storyboardXml());
-                       k->project->scene(parser.sceneIndex())->setStoryboard(storyboard);
+                       k->project->sceneAt(parser.sceneIndex())->setStoryboard(storyboard);
                    } else {
                        #ifdef K_DEBUG
                            QString msg = "ProjectManager::handlePackage() - [ Fatal Error ] - Can't parse project_storyboard package";

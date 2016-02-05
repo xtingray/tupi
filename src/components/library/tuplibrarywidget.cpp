@@ -1088,8 +1088,8 @@ void TupLibraryWidget::importSvg(const QString &svgPath)
 
 void TupLibraryWidget::verifyFramesAvailability(int filesTotal)
 {
-    TupScene *scene = k->project->scene(k->currentFrame.scene);
-    TupLayer *layer = scene->layer(k->currentFrame.layer);
+    TupScene *scene = k->project->sceneAt(k->currentFrame.scene);
+    TupLayer *layer = scene->layerAt(k->currentFrame.layer);
     int framesTotal = layer->framesCount();
     int initFrame = k->currentFrame.frame;
     int scope = initFrame + filesTotal;

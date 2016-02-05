@@ -288,7 +288,7 @@ bool TupProject::removeScene(int position)
         #endif
     #endif        
     
-    TupScene *toRemove = scene(position);
+    TupScene *toRemove = sceneAt(position);
     if (toRemove) {
         QString path = dataDir() + "/scene" + QString::number(position) + ".tps";
         if (QFile::exists(path)) {
@@ -345,11 +345,11 @@ bool TupProject::moveScene(int position, int newPosition)
     return true;
 }
 
-TupScene *TupProject::scene(int position) const
+TupScene *TupProject::sceneAt(int position) const
 {    
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupProject::scene()] - position: " << position;
+            qDebug() << "[TupProject::sceneAt()] - position: " << position;
         #else
             T_FUNCINFOX("project") << position;
         #endif
@@ -357,7 +357,7 @@ TupScene *TupProject::scene(int position) const
 
     if (position < 0) {
         #ifdef K_DEBUG
-            QString msg = "TupProject::scene() - FATAL ERROR: index out of bound (" + QString::number(position) + ")";
+            QString msg = "TupProject::sceneAt() - FATAL ERROR: index out of bound (" + QString::number(position) + ")";
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
@@ -625,14 +625,14 @@ bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString
     #endif        
     
     TupFrame *frame = 0;
-    TupScene *scene = this->scene(sceneIndex);
+    TupScene *scene = this->sceneAt(sceneIndex);
 
     if (scene) {
         if (spaceMode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layer(layerIndex);
+            TupLayer *layer = scene->layerAt(layerIndex);
 
             if (layer)
-                frame = layer->frame(frameIndex);
+                frame = layer->frameAt(frameIndex);
             else
                 return false;
         } else if (spaceMode == TupProject::STATIC_BACKGROUND_EDITION) { 

@@ -321,12 +321,12 @@ TupFrame* SelectionTool::frameAt(int sceneIndex, int layerIndex, int frameIndex)
 {
     TupFrame *frame = 0;
     TupProject *project = k->scene->scene()->project();
-    TupScene *scene = project->scene(sceneIndex);
+    TupScene *scene = project->sceneAt(sceneIndex);
     if (scene) {
         if (k->scene->spaceContext() == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layer(layerIndex);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                frame = layer->frame(frameIndex);
+                frame = layer->frameAt(frameIndex);
             } else {
                 #ifdef K_DEBUG
                     QString msg = "SelectionTool::frameAt() - Fatal Error: Layer is NULL! -> " + QString::number(layerIndex);

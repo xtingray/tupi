@@ -322,7 +322,7 @@ void TupCameraWidget::setStatusFPS(int fps)
 
 void TupCameraWidget::updateFramesTotal(int sceneIndex)
 {
-    TupScene *scene = k->project->scene(sceneIndex);
+    TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
         int total = scene->framesCount();
         k->status->setFramesTotal(QString::number(total)); 

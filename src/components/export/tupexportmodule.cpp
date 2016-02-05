@@ -454,7 +454,7 @@ QList<TupScene *> TupExportModule::scenesToExport() const
 {
     QList<TupScene *> scenes;
     foreach (int index, m_indexes)
-             scenes << m_project->scene(index);
+             scenes << m_project->sceneAt(index);
 
     return scenes;
 }

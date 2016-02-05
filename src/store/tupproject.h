@@ -99,7 +99,7 @@ class TUPI_EXPORT TupProject : public QObject, public TupAbstractSerializable
         void setDataDir(const QString &path);
         QString dataDir() const;
 
-        TupScene *scene(int position) const;
+        TupScene *sceneAt(int position) const;
 
         int visualIndexOf(TupScene *scene) const;
 

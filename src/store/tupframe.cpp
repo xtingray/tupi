@@ -253,7 +253,6 @@ void TupFrame::fromXml(const QString &xml)
                    TupGraphicObject *last = 0; // This variable contains the object in case of tweening 
                    while (!n2.isNull()) {
                           QDomElement e2 = n2.toElement();
-
                           if (e2.tagName() == "tweening" && last) {
                               TupItemTweener *tweener = new TupItemTweener(); 
                               QString newDoc;
@@ -264,7 +263,7 @@ void TupFrame::fromXml(const QString &xml)
 
                               tweener->fromXml(newDoc);
                               last->setTween(tweener);
-                              scene()->addTweenObject(last);
+                              scene()->addTweenObject(k->layer->layerIndex(), last);
                           } else {
                               QString newDoc;
                               {
@@ -315,7 +314,7 @@ void TupFrame::fromXml(const QString &xml)
                                          }
                                          tweener->fromXml(newDoc);
                                          svg->setTween(tweener);
-                                         scene()->addTweenObject(svg);
+                                         scene()->addTweenObject(k->layer->layerIndex(), svg);
                                      }
                                      n2 = n2.nextSibling(); 
                               }
@@ -995,7 +994,7 @@ bool TupFrame::removeGraphicAt(int position)
     TupGraphicObject *object = k->graphics.at(position);
     if (object) {
         if (object->hasTween())
-            this->scene()->removeTweenObject(object);
+            this->scene()->removeTweenObject(k->layer->layerIndex(), object);
 
         int zLimit = k->graphics.at(position)->itemZValue();
         k->objectIndexes.removeAt(position);

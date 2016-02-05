@@ -220,7 +220,7 @@ bool TupScene::removeLayer(int position)
         #endif
     #endif
 
-    TupLayer *layer = this->layer(position);
+    TupLayer *layer = this->layerAt(position);
     if (layer) {
         removeTweensFromLayer(position + 1);
         k->undoLayers << k->layers.takeAt(position);
@@ -237,7 +237,7 @@ bool TupScene::removeLayer(int position)
  * @param position 
  * @return 
  */
-TupLayer *TupScene::layer(int position) const
+TupLayer *TupScene::layerAt(int position) const
 {
     if (position < 0 || position >= k->layers.count()) {    
         #ifdef K_DEBUG
@@ -421,62 +421,108 @@ TupProject *TupScene::project() const
     return static_cast<TupProject *>(parent());
 }
 
-void TupScene::addTweenObject(TupGraphicObject *object)
+void TupScene::addTweenObject(int layerIndex, TupGraphicObject *object)
 {
-    k->tweeningGraphicObjects << object;
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->addTweenObject(object);
 }
 
-void TupScene::addTweenObject(TupSvgItem *object)
+void TupScene::addTweenObject(int layerIndex, TupSvgItem *object)
 {
-    k->tweeningSvgObjects << object;
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->addTweenObject(object);
 }
 
-void TupScene::updateTweenObject(int index, TupGraphicObject *object)
+void TupScene::updateTweenObject(int layerIndex, int objectIndex, TupGraphicObject *object)
 {
-    k->tweeningGraphicObjects.replace(index, object); 
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->updateTweenObject(objectIndex, object);
 }
 
-void TupScene::updateTweenObject(int index, TupSvgItem *object)
+void TupScene::updateTweenObject(int layerIndex, int objectIndex, TupSvgItem *object)
 {
-    k->tweeningSvgObjects.replace(index, object);
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->updateTweenObject(objectIndex, object);
 }
 
-void TupScene::removeTweenObject(TupGraphicObject *object)
+void TupScene::removeTweenObject(int layerIndex, TupGraphicObject *object)
 {
-    if (k->tweeningGraphicObjects.size() > 0)
-        k->tweeningGraphicObjects.removeAll(object);
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->removeTweenObject(object);
 }
 
-void TupScene::removeTweenObject(TupSvgItem *object)
+void TupScene::removeTweenObject(int layerIndex, TupSvgItem *object)
 {
-    if (k->tweeningSvgObjects.size() > 0)
-        k->tweeningSvgObjects.removeAll(object);
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->removeTweenObject(object);
 }
 
+/*
 QList<TupGraphicObject *> TupScene::tweeningGraphicObjects() const
 {
-    return k->tweeningGraphicObjects;
+    QList<TupGraphicObject *> list;
+    foreach(TupLayer *layer, k->layers)
+            list += layer->tweeningGraphicObjects();
+
+    return list;
+}
+*/
+
+QList<TupGraphicObject *> TupScene::tweeningGraphicObjects(int layerIndex) const
+{
+    QList<TupGraphicObject *> list;
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        list = layer->tweeningGraphicObjects();
+
+    return list;
 }
 
+/*
 QList<TupSvgItem *> TupScene::tweeningSvgObjects() const
 {
-    return k->tweeningSvgObjects;
+    QList<TupSvgItem *> list;
+    foreach(TupLayer *layer, k->layers)
+            list += layer->tweeningSvgObjects();
+
+    return list;
+}
+*/
+
+QList<TupSvgItem *> TupScene::tweeningSvgObjects(int layerIndex) const
+{
+    QList<TupSvgItem *> list;
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        list = layer->tweeningSvgObjects();
+
+    return list;
 }
 
 bool TupScene::tweenExists(const QString &name, TupItemTweener::Type type)
 {
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type))
-                     return true;
-             }
-    }
+    foreach(TupLayer *layer, k->layers) {
+            QList<TupGraphicObject *> objectList = layer->tweeningGraphicObjects(); 
+            foreach (TupGraphicObject *object, objectList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type))
+                             return true;
+                     }
+            }
 
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type))
-                     return true;
-             }
+            QList<TupSvgItem *> svgList = layer->tweeningSvgObjects();
+            foreach (TupSvgItem *object, svgList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type))
+                             return true;
+                     }
+            }
     }
 
     return false;
@@ -492,79 +538,65 @@ bool TupScene::removeTween(const QString &name, TupItemTweener::Type type)
         #endif
     #endif
 
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
-                     object->removeTween();
-                     removeTweenObject(object);
-                     return true;
-                 }
-             }
-    }
+    foreach(TupLayer *layer, k->layers) {
+            QList<TupGraphicObject *> objectList = layer->tweeningGraphicObjects();
+            foreach (TupGraphicObject *object, objectList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
+                             object->removeTween();
+                             removeTweenObject(layer->layerIndex(), object);
+                             return true;
+                         }
+                     }
+            }
 
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
-                     object->removeTween();
-                     removeTweenObject(object);
-                     return true;
-                 }
-             }
+            QList<TupSvgItem *> svgList = layer->tweeningSvgObjects();
+            foreach (TupSvgItem *object, svgList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
+                             object->removeTween();
+                             removeTweenObject(layer->layerIndex(), object);
+                             return true;
+                         }
+                     }
+            }
     }
 
     return false;
 }
 
-void TupScene::removeTweensFromLayer(int layer)
+void TupScene::removeTweensFromLayer(int layerIndex)
 {
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (object->frame()->layer()->layerIndex() == layer) {
-                 object->removeTween();
-                 removeTweenObject(object);
-             }
-    }
-
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (object->frame()->layer()->layerIndex() == layer) {
-                 object->removeTween();
-                 removeTweenObject(object);
-             }
-    }
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->removeAllTweens();
 }
 
-void TupScene::removeTweensFromFrame(int frame)
+void TupScene::removeTweensFromFrame(int layerIndex, int frameIndex)
 {
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (object->frame()->index() == frame) {
-                 object->removeTween();
-                 removeTweenObject(object);
-             }
-    }
-
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (object->frame()->index() == frame) {
-                 object->removeTween();
-                 removeTweenObject(object);
-             }
-    }
+    TupLayer *layer = layerAt(layerIndex);
+    if (layer)
+        layer->removeTweensFromFrame(frameIndex);
 }
 
 TupItemTweener *TupScene::tween(const QString &name, TupItemTweener::Type type)
 {
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
-                     return tween;
-                 }
-             }
-    }
+    foreach(TupLayer *layer, k->layers) {
+            QList<TupGraphicObject *> objectList = layer->tweeningGraphicObjects();
+            foreach (TupGraphicObject *object, objectList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type))
+                             return tween;
+                     }
+            }
 
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
-                     return tween;
-                 }
-             }
+            QList<TupSvgItem *> svgList = layer->tweeningSvgObjects();
+            foreach (TupSvgItem *object, svgList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type))
+                             return tween;
+                     }
+            }
     }
 
     return 0;
@@ -573,19 +605,22 @@ TupItemTweener *TupScene::tween(const QString &name, TupItemTweener::Type type)
 QList<QString> TupScene::getTweenNames(TupItemTweener::Type type)
 {
     QList<QString> names;
+    foreach(TupLayer *layer, k->layers) {
+            QList<TupGraphicObject *> objectList = layer->tweeningGraphicObjects();
+            foreach (TupGraphicObject *object, objectList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if (tween->type() == type && !names.contains(tween->name()))
+                             names.append(tween->name());
+                     }
+            }
 
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if (tween->type() == type && !names.contains(tween->name()))
-                     names.append(tween->name());
-             }
-    }
-
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if (tween->type() == type && !names.contains(tween->name()))
-                     names.append(tween->name());
-             } 
+            QList<TupSvgItem *> svgList = layer->tweeningSvgObjects();
+            foreach (TupSvgItem *object, svgList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if (tween->type() == type && !names.contains(tween->name()))
+                             names.append(tween->name());
+                     } 
+            }
     }
 
     return names;
@@ -594,42 +629,38 @@ QList<QString> TupScene::getTweenNames(TupItemTweener::Type type)
 QList<QGraphicsItem *> TupScene::getItemsFromTween(const QString &name, TupItemTweener::Type type)
 {
     QList<QGraphicsItem *> items;
+    foreach(TupLayer *layer, k->layers) {
+            QList<TupGraphicObject *> objectList = layer->tweeningGraphicObjects();
+            foreach (TupGraphicObject *object, objectList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type))
+                             items.append(object->item());
+                     }
+            }
 
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
-                     items.append(object->item());
-                 }
-             }
-    }
-
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (TupItemTweener *tween = object->tween()) {
-                 if ((tween->name().compare(name) == 0) && (tween->type() == type)) {
-                     items.append(object);
-                 }
-             }
+            QList<TupSvgItem *> svgList = layer->tweeningSvgObjects();
+            foreach (TupSvgItem *object, svgList) {
+                     if (TupItemTweener *tween = object->tween()) {
+                         if ((tween->name().compare(name) == 0) && (tween->type() == type))
+                             items.append(object);
+                     }
+            }
     }
 
     return items;
 }
 
+/*
 int TupScene::getTotalTweens()
 {
     int total = 0;
 
-    foreach (TupGraphicObject *object, k->tweeningGraphicObjects) {
-             if (object->hasTween()) 
-                 total++;
-    }
-
-    foreach (TupSvgItem *object, k->tweeningSvgObjects) {
-             if (object->hasTween())                    
-                 total++;
-    }
+    foreach(TupLayer *layer, k->layers) {
+            total += layer->tweensCount();
 
     return total;
 }
+*/
 
 int TupScene::framesCount()
 {
@@ -714,7 +745,6 @@ QList<QString> TupScene::getLipSyncNames()
 
     return names;
 }
-
 
 bool TupScene::lipSyncExists(const QString &name)
 {

@@ -571,7 +571,7 @@ void TupExposureSheet::sceneResponse(TupSceneResponse *response)
                 }
 
                 if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                    TupScene *scene = k->project->scene(sceneIndex);
+                    TupScene *scene = k->project->sceneAt(sceneIndex);
                     if (scene)
                         k->scenesContainer->restoreScene(sceneIndex, scene->sceneName());
                     return;
@@ -641,9 +641,9 @@ void TupExposureSheet::layerResponse(TupLayerResponse *response)
                      }
 
                      if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                         TupScene *scene = k->project->scene(sceneIndex);
+                         TupScene *scene = k->project->sceneAt(sceneIndex);
                          if (scene) {
-                             TupLayer *layer = scene->layer(layerIndex); 
+                             TupLayer *layer = scene->layerAt(layerIndex); 
                              if (layer) {
                                  framesTable->insertLayer(layerIndex, layer->layerName());
                                  QList<TupFrame *> frames = layer->frames();
@@ -749,11 +749,11 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                      }
 
                      if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                         TupScene *scene = k->project->scene(sceneIndex);
+                         TupScene *scene = k->project->sceneAt(sceneIndex);
                          if (scene) {
-                             TupLayer *layer = scene->layer(layerIndex);
+                             TupLayer *layer = scene->layerAt(layerIndex);
                              if (layer) {
-                                 TupFrame *frame = layer->frame(frameIndex);
+                                 TupFrame *frame = layer->frameAt(frameIndex);
                                  table->insertFrame(layerIndex, frameIndex, frame->frameName(), response->external());
                                  if (!frame->isEmpty())
                                      table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Used);
@@ -781,12 +781,12 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                              } else {
                                  // When the item deleted is not the last one
                                  // int layer = k->currentTable->currentLayer();
-                                 TupScene *scene = k->project->scene(sceneIndex);
+                                 TupScene *scene = k->project->sceneAt(sceneIndex);
                                  if (scene) {
-                                     TupLayer *layer = scene->layer(layerIndex);
+                                     TupLayer *layer = scene->layerAt(layerIndex);
                                      if (layer) {
                                          for (int index=target+1; index <= lastFrame; index++) {
-                                              TupFrame *frame = layer->frame(index-1);
+                                              TupFrame *frame = layer->frameAt(index-1);
                                               TupExposureTable::FrameType type = TupExposureTable::Empty;
                                               if (!frame->isEmpty())
                                                   type = TupExposureTable::Used;
@@ -1022,12 +1022,12 @@ void TupExposureSheet::lockFrame()
 void TupExposureSheet::updateFramesState()
 {
     for (int i=0; i < k->project->scenesCount(); i++) {
-         TupScene *scene = k->project->scene(i);
+         TupScene *scene = k->project->sceneAt(i);
          TupExposureTable *tab = k->scenesContainer->getTable(i);
          for (int j=0; j < scene->layersCount(); j++) {
-              TupLayer *layer = scene->layer(j);
+              TupLayer *layer = scene->layerAt(j);
               for (int k=0; k < layer->framesCount(); k++) {
-                   TupFrame *frame = layer->frame(k);
+                   TupFrame *frame = layer->frameAt(k);
                    if (frame->isEmpty())
                        tab->updateFrameState(j, k, TupExposureTable::Empty);
                    else
@@ -1148,9 +1148,9 @@ void TupExposureSheet::updateLayerOpacity(int sceneIndex, int layerIndex)
 double TupExposureSheet::getLayerOpacity(int sceneIndex, int layerIndex)
 {
     double opacity = 1.0;
-    TupScene *scene = k->project->scene(sceneIndex);
+    TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
-        TupLayer *layer = scene->layer(layerIndex);
+        TupLayer *layer = scene->layerAt(layerIndex);
         if (layer) {
             opacity = layer->opacity();
         } else {
@@ -1181,11 +1181,11 @@ void TupExposureSheet::initLayerVisibility()
 {
     int scenes = k->project->scenesCount(); 
     for (int sceneIndex=0; sceneIndex < scenes; sceneIndex++) {
-         TupScene *scene = k->project->scene(sceneIndex);
+         TupScene *scene = k->project->sceneAt(sceneIndex);
          if (scene) {
              int layers = scene->layersCount();
              for (int layerIndex=0; layerIndex < layers; layerIndex++) {
-                  TupLayer *layer = scene->layer(layerIndex);
+                  TupLayer *layer = scene->layerAt(layerIndex);
                   TupProjectRequest request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::View, layer->isVisible());
                   emit localRequestTriggered(&request);
              }

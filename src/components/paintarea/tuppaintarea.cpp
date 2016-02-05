@@ -112,7 +112,7 @@ void TupPaintArea::setCurrentScene(int index)
     #endif
 
     if (k->project->scenesCount() > 0) {
-        TupScene *scene = k->project->scene(index);
+        TupScene *scene = k->project->sceneAt(index);
         if (scene) {
             k->currentSceneIndex = index;
             graphicsScene()->setCurrentScene(scene);
@@ -403,7 +403,7 @@ void TupPaintArea::layerResponse(TupLayerResponse *response)
             break;
             case TupProjectRequest::Remove:
                 {
-                    TupScene *scene = k->project->scene(k->currentSceneIndex);
+                    TupScene *scene = k->project->sceneAt(k->currentSceneIndex);
 
                     if (scene->layersCount() > 1) {
                         if (response->layerIndex() != 0)
@@ -1062,7 +1062,7 @@ void TupPaintArea::multipasteObject(int pasteTotal)
                  total = currentScene->currentFrame()->svgItemsCount();
              }
 
-             TupScene *scene = k->project->scene(currentScene->currentSceneIndex());
+             TupScene *scene = k->project->sceneAt(currentScene->currentSceneIndex());
              if (scene) {
                  int framesCount = scene->framesCount();
                  int currentFrame = currentScene->currentFrameIndex();
@@ -1464,11 +1464,11 @@ void TupPaintArea::copyCurrentFrame()
 {
     TupGraphicsScene *gScene = graphicsScene();
 
-    TupScene *scene = k->project->scene(gScene->currentSceneIndex());
+    TupScene *scene = k->project->sceneAt(gScene->currentSceneIndex());
     if (scene) {
-        TupLayer *layer = scene->layer(gScene->currentLayerIndex());
+        TupLayer *layer = scene->layerAt(gScene->currentLayerIndex());
         if (layer) {
-            TupFrame *frame = layer->frame(gScene->currentFrameIndex());
+            TupFrame *frame = layer->frameAt(gScene->currentFrameIndex());
             if (frame) {
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
@@ -1482,8 +1482,6 @@ void TupPaintArea::copyCurrentFrame()
 void TupPaintArea::pasteDataOnCurrentFrame()
 {
     TupGraphicsScene *scene = graphicsScene();
-
-
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
                                                                     scene->currentLayerIndex(), 
                                                                     scene->currentFrameIndex(),

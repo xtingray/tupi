@@ -547,8 +547,8 @@ void Tweener::applyTween()
 
                  TupLibraryObject::Type type = TupLibraryObject::Item;
                  TupScene *scene = k->scene->scene();
-                 TupLayer *layer = scene->layer(k->scene->currentLayerIndex());
-                 TupFrame *frame = layer->frame(k->currentTween->initFrame());
+                 TupLayer *layer = scene->layerAt(k->scene->currentLayerIndex());
+                 TupFrame *frame = layer->frameAt(k->currentTween->initFrame());
                  int objectIndex = frame->indexOf(item);
 
                  QRectF rect = item->sceneBoundingRect();
@@ -589,7 +589,7 @@ void Tweener::applyTween()
                                                                    TupProjectRequest::Remove);
                      emit requested(&request);
 
-                     frame = layer->frame(k->startPoint);
+                     frame = layer->frameAt(k->startPoint);
                      if (type == TupLibraryObject::Item)
                          objectIndex = frame->graphicItemsCount() - 1;
                      else
@@ -838,7 +838,7 @@ void Tweener::setEditEnv()
 int Tweener::framesCount()
 {
     int total = 1;
-    TupLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex());
+    TupLayer *layer = k->scene->scene()->layerAt(k->scene->currentLayerIndex());
     if (layer)
         total = layer->framesCount();
 

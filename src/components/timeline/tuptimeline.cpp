@@ -218,9 +218,9 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
                      }
 
                      if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                         TupScene *scene = k->project->scene(sceneIndex);
+                         TupScene *scene = k->project->sceneAt(sceneIndex);
                          if (scene) {
-                             TupLayer *layer = scene->layer(layerIndex);
+                             TupLayer *layer = scene->layerAt(layerIndex);
                              if (layer) {
                                  framesTable->insertLayer(layerIndex, layer->layerName());
                                  QList<TupFrame *> frames = layer->frames();
@@ -694,7 +694,7 @@ void TupTimeLine::requestLayerRenameAction(int layer, const QString &name)
 void TupTimeLine::selectFrame(int indexLayer, int indexFrame)
 {
     int scenePos = k->container->currentIndex();
-    TupScene *scene = k->project->scene(scenePos);
+    TupScene *scene = k->project->sceneAt(scenePos);
     if (scene) {
         int lastFrame = framesTable(scenePos)->lastFrameByLayer(indexLayer);
 

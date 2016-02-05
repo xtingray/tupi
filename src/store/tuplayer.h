@@ -39,6 +39,7 @@
 #include "tglobal.h"
 #include "tupabstractserializable.h"
 #include "tupframe.h"
+#include "tupgraphicobject.h"
 #include "tuplipsync.h"
 
 #include <QDomDocument>
@@ -90,7 +91,7 @@ class TUPI_EXPORT TupLayer : public QObject, public TupAbstractSerializable
         bool exchangeFrame(int from, int to);
         bool expandFrame(int position, int size);
         
-        TupFrame *frame(int position) const;
+        TupFrame *frameAt(int position) const;
 
         TupLipSync *createLipSync(const QString &name, const QString &soundFile, int initFrame);
         void addLipSync(TupLipSync *lipsync);
@@ -103,12 +104,23 @@ class TUPI_EXPORT TupLayer : public QObject, public TupAbstractSerializable
 
         void updateLayerIndex(int index);
         int layerIndex();
-        
         int visualIndexOf(TupFrame *frame) const;
-        
         int objectIndex() const;
-
         int framesCount() const;
+
+        void addTweenObject(TupGraphicObject *object);
+        void addTweenObject(TupSvgItem *object);
+        void updateTweenObject(int index, TupGraphicObject *object);
+        void updateTweenObject(int index, TupSvgItem *object);
+        void removeTweenObject(TupGraphicObject *object);
+        void removeTweenObject(TupSvgItem *object);
+        QList<TupGraphicObject *> tweeningGraphicObjects() const;
+        QList<TupSvgItem *> tweeningSvgObjects() const;
+        bool tweenExists(const QString &name, TupItemTweener::Type type);
+        bool removeTween(const QString &name, TupItemTweener::Type type);
+        void removeAllTweens();
+        void removeTweensFromFrame(int frameIndex);
+        // int tweensCount();
 
     public:
         virtual void fromXml(const QString &xml);

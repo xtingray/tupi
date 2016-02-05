@@ -354,11 +354,11 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
             k->frameIndex = response->frameIndex();
 
             if (response->action() == TupProjectRequest::Copy) {
-                TupScene *scene = k->project->scene(k->sceneIndex);
+                TupScene *scene = k->project->sceneAt(k->sceneIndex);
                 if (scene) {
-                    TupLayer *layer = scene->layer(k->layerIndex);
+                    TupLayer *layer = scene->layerAt(k->layerIndex);
                     if (layer) {
-                        TupFrame *frame = layer->frame(k->frameIndex);
+                        TupFrame *frame = layer->frameAt(k->frameIndex);
                         if (frame) {
                             QDomDocument doc;
                             doc.appendChild(frame->toXml(doc));
@@ -374,9 +374,9 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
                        return;
             } else if (response->action() == TupProjectRequest::UpdateOpacity) {
                        double opacity = response->arg().toReal();
-                       TupScene *scene = k->project->scene(k->sceneIndex);
+                       TupScene *scene = k->project->sceneAt(k->sceneIndex);
                        if (scene) {
-                           TupLayer *layer = scene->layer(k->layerIndex);
+                           TupLayer *layer = scene->layerAt(k->layerIndex);
                            if (layer) {
                                layer->setOpacity(opacity);
                            } else {

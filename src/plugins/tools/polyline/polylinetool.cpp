@@ -253,12 +253,12 @@ void PolyLineTool::itemResponse(const TupItemResponse *response)
     TupFrame *frame = 0;
 
     TupProject *project = k->scene->scene()->project();
-    scene = project->scene(response->sceneIndex());
+    scene = project->sceneAt(response->sceneIndex());
     if (scene) {
         if (k->scene->spaceContext() == TupProject::FRAMES_EDITION) {
-            layer = scene->layer(response->layerIndex());
+            layer = scene->layerAt(response->layerIndex());
             if (layer) {
-                frame = layer->frame(response->frameIndex());
+                frame = layer->frameAt(response->frameIndex());
                 if (frame) {
                     item = frame->item(response->itemIndex());
                 } else {

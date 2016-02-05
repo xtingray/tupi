@@ -1094,7 +1094,7 @@ double TupDocumentView::backgroundOpacity(TupFrame::FrameType type)
 {
     double opacity = 1.0;
     int sceneIndex = k->paintArea->currentSceneIndex();
-    TupScene *scene = k->project->scene(sceneIndex);
+    TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
         TupBackground *bg = scene->background();
         if (bg) {
@@ -1404,7 +1404,7 @@ void TupDocumentView::setSpaceContext()
                k->project->updateSpaceContext(TupProject::DYNAMIC_BACKGROUND_EDITION);
 
                int sceneIndex = k->paintArea->currentSceneIndex();
-               TupScene *scene = k->project->scene(sceneIndex);
+               TupScene *scene = k->project->sceneAt(sceneIndex);
                if (scene) {
                    TupBackground *bg = scene->background();
                    if (bg) {
@@ -1448,10 +1448,10 @@ int TupDocumentView::currentFramesTotal()
    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
    int layerIndex = k->paintArea->graphicsScene()->currentLayerIndex();
 
-   TupScene *scene = k->project->scene(sceneIndex);
+   TupScene *scene = k->project->sceneAt(sceneIndex);
 
    if (scene) {
-       TupLayer *layer = scene->layer(layerIndex);
+       TupLayer *layer = scene->layerAt(layerIndex);
        if (layer)
            return layer->framesCount();
     }
@@ -1631,7 +1631,7 @@ void TupDocumentView::exportImage()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export Frame As"), QDir::homePath(),
                                                         tr("Images") + " (*.png *.jpg *.svg)");
     if (!fileName.isNull()) {
-        bool isOk = k->imagePlugin->exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->scene(sceneIndex), k->project->dimension(), k->project->library()); 
+        bool isOk = k->imagePlugin->exportFrame(frameIndex, k->project->bgColor(), fileName, k->project->sceneAt(sceneIndex), k->project->dimension(), k->project->library()); 
         updatePaintArea();
         if (isOk)
             TOsd::self()->display(tr("Information"), tr("Frame has been exported successfully"));
@@ -1673,7 +1673,7 @@ void TupDocumentView::storyboardSettings()
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     TupStoryBoardDialog *storySettings = new TupStoryBoardDialog(k->isNetworked, k->imagePlugin, k->project->bgColor(), k->project->dimension(), 
-                                                                 k->project->scene(sceneIndex), currentSceneIndex(), k->project->library(), this);
+                                                                 k->project->sceneAt(sceneIndex), currentSceneIndex(), k->project->library(), this);
     connect(storySettings, SIGNAL(updateStoryboard(TupStoryboard *, int)), this, SLOT(sendStoryboard(TupStoryboard *, int)));
 
     if (k->isNetworked)
@@ -1699,7 +1699,7 @@ void TupDocumentView::sendStoryboard(TupStoryboard *storyboard, int sceneIndex)
         #endif
         emit updateStoryboard(storyboard, sceneIndex);
     } else {
-        k->project->scene(sceneIndex)->setStoryboard(storyboard);    
+        k->project->sceneAt(sceneIndex)->setStoryboard(storyboard);    
     }
 }
 
@@ -1720,7 +1720,7 @@ void TupDocumentView::updateUsersOnLine(const QString &login, int state)
 void TupDocumentView::updateStaticOpacity(double opacity)
 {
     int sceneIndex = k->paintArea->currentSceneIndex();
-    TupScene *scene = k->project->scene(sceneIndex);
+    TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
         TupBackground *bg = scene->background();
         if (bg) {
@@ -1736,7 +1736,7 @@ void TupDocumentView::updateStaticOpacity(double opacity)
 void TupDocumentView::updateDynamicOpacity(double opacity)
 {
    int sceneIndex = k->paintArea->currentSceneIndex();
-   TupScene *scene = k->project->scene(sceneIndex);
+   TupScene *scene = k->project->sceneAt(sceneIndex);
    if (scene) {
        TupBackground *bg = scene->background();
        if (bg) {
@@ -1750,7 +1750,7 @@ void TupDocumentView::updateDynamicOpacity(double opacity)
 void TupDocumentView::setBackgroundDirection(int direction)
 {
    int sceneIndex = k->paintArea->currentSceneIndex();
-   TupScene *scene = k->project->scene(sceneIndex);
+   TupScene *scene = k->project->sceneAt(sceneIndex);
    if (scene) {
        TupBackground *bg = scene->background();
        if (bg)
@@ -1762,7 +1762,7 @@ void TupDocumentView::setBackgroundDirection(int direction)
 void TupDocumentView::updateBackgroundShiftProperty(int shift)
 {
    int sceneIndex = k->paintArea->currentSceneIndex();
-   TupScene *scene = k->project->scene(sceneIndex);
+   TupScene *scene = k->project->sceneAt(sceneIndex);
    if (scene) {
        TupBackground *bg = scene->background();
        if (bg)
@@ -1773,7 +1773,7 @@ void TupDocumentView::updateBackgroundShiftProperty(int shift)
 void TupDocumentView::renderDynamicBackground()
 {
    int sceneIndex = k->paintArea->currentSceneIndex();
-   TupScene *scene = k->project->scene(sceneIndex); 
+   TupScene *scene = k->project->sceneAt(sceneIndex); 
 
    if (scene) {
        TupBackground *bg = scene->background();
@@ -1977,7 +1977,7 @@ void TupDocumentView::importPapagayoLipSync()
         QString folder = info.fileName().toLower();
 
         int sceneIndex = k->paintArea->currentSceneIndex();
-        TupScene *scene = k->project->scene(sceneIndex);
+        TupScene *scene = k->project->sceneAt(sceneIndex);
         if (scene->lipSyncExists(folder)) {
             TOsd::self()->display(tr("Error"), tr("Papagayo project already exists!\nPlease, rename the project's file"), TOsd::Error);
             #ifdef K_DEBUG
@@ -2058,7 +2058,7 @@ void TupDocumentView::importPapagayoLipSync()
                         emit requestTriggered(&request);
 
                         // Adding frames if they are required
-                        TupScene *scene = k->project->scene(sceneIndex);
+                        TupScene *scene = k->project->sceneAt(sceneIndex);
                         if (scene) {
                             int sceneFrames = scene->framesCount();
                             int lipSyncFrames = currentIndex + parser->framesCount();
