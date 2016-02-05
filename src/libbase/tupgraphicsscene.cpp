@@ -453,7 +453,7 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
     }
 }
 
-void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType frameType, double opacity)
+void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance)
 {
     /*
     #ifdef K_DEBUG
@@ -485,8 +485,10 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
                 // if (svgItem->symbolName().compare("dollar.svg")==0)
                 //     connect(svgItem, SIGNAL(enabledChanged()), this, SIGNAL(showInfoWidget()));
 
-                svgItem->setZValue(k->zLevel);
-                k->zLevel++;
+                if (!svgItem->hasTween() || !tweenInAdvance) {
+                    svgItem->setZValue(k->zLevel);
+                    k->zLevel++;
+                }
 
                 // SQA: Pending to implement SVG group support
 
@@ -856,7 +858,7 @@ void TupGraphicsScene::addSvgTweeningObjects(int indexLayer, int photogram)
                             object->setTransform(transform);
                         }
 
-                        addSvgObject(object, TupFrame::Regular);
+                        addSvgObject(object, TupFrame::Regular, 1.0, true);
 
                         if (stepItem->has(TupTweenerStep::Opacity))
                             object->setOpacity(stepItem->opacity());
