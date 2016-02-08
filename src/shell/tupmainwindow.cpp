@@ -1256,11 +1256,8 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
         m_projectManager->createCommand((TupProjectCommand *)command);
 
         // Updating color on the Pen module interface
-        if (event->action() == TupPaintAreaEvent::ChangeColorPen) {
-            tError() << "TupMainWindow::createCommand() - Setting BORDER color: " << qvariant_cast<QColor>(event->data()).name();
-            tError() << "TupMainWindow::createCommand() - BORDER alpha color: " << qvariant_cast<QColor>(event->data()).alpha();
+        if (event->action() == TupPaintAreaEvent::ChangeColorPen)
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
-        }
     } 
 }
 
