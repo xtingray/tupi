@@ -175,8 +175,8 @@ int main(int argc, char ** argv)
     QApplication::setStyle(style);
 
     // SQA: Add support for at least two languages for the next release 
-    // if ((locale.compare("en") != 0) && ((locale.compare("es") == 0) || (locale.compare("pt") == 0))) {
-    if (locale.compare("es") == 0) {
+    if ((locale.compare("en") != 0) && ((locale.compare("es") == 0) || (locale.compare("pt") == 0))) {
+    // if (locale.compare("es") == 0) {
         #ifdef Q_OS_WIN
             QString langFile = kAppProp->shareDir() + "translations/tupi_" + locale + ".qm";
         #else

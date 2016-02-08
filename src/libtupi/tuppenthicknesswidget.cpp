@@ -72,6 +72,7 @@ void TupPenThicknessWidget::render(double opacity)
 void TupPenThicknessWidget::setColor(const QColor color)
 {
     k->color = color;
+    update();
 }
 
 void TupPenThicknessWidget::setBrush(int index)

@@ -65,6 +65,8 @@ typedef QList<TupSvgItem *> SvgObjects;
 
 class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
 {
+    Q_OBJECT
+
     public:
        enum FrameType { DynamicBg = 0, StaticBg, Regular };
        enum MoveItemType { MoveBack, MoveToFront, MoveOneLevelBack, MoveOneLevelToFront };

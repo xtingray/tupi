@@ -1252,14 +1252,14 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
 
     TupPaintAreaCommand *command = animationTab->createCommand(event);
     if (command) { 
+        // SQA: Implement Undo procedure for "Color" actions 
         m_projectManager->createCommand((TupProjectCommand *)command);
 
+        // Updating color on the Pen module interface
         if (event->action() == TupPaintAreaEvent::ChangeColorPen) {
+            tError() << "TupMainWindow::createCommand() - Setting BORDER color: " << qvariant_cast<QColor>(event->data()).name();
+            tError() << "TupMainWindow::createCommand() - BORDER alpha color: " << qvariant_cast<QColor>(event->data()).alpha();
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
-        } else if (event->action() == TupPaintAreaEvent::ChangeBrush) {
-                   // tFatal() << "TupMainWindow::createCommand() - event action == ChangeBrush";
-                   // tFatal() << "TupMainWindow::createCommand() - action: " << event->action();
-                   // m_penWidget->setBrush(qvariant_cast<QBrush>(event->data()));
         }
     } 
 }

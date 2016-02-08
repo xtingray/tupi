@@ -213,7 +213,7 @@ void TupPenWidget::setThickness(int value)
         TCONFIG->beginGroup("PenParameters");
         TCONFIG->setValue("Thickness", value);
 
-        emitPenChanged();
+        updatePenProperties();
     }
 }
 
@@ -221,7 +221,7 @@ void TupPenWidget::setStyle(int s)
 {
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
 
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::setBrushStyle(QListWidgetItem *item)
@@ -236,7 +236,7 @@ void TupPenWidget::setBrushStyle(QListWidgetItem *item)
         k->brush.setStyle(Qt::BrushStyle(index+1));
     }
 
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::setPenColor(const QColor color)
@@ -249,8 +249,6 @@ void TupPenWidget::setBrush(const QBrush brush)
 {
     k->brush = brush;
     k->thickPreview->setBrush(brush);
-
-    emitPenChanged();
 }
 
 void TupPenWidget::init()
@@ -271,7 +269,7 @@ QPen TupPenWidget::pen() const
     return k->pen;
 }
 
-void TupPenWidget::emitPenChanged()
+void TupPenWidget::updatePenProperties()
 {
     k->pen.setBrush(k->brush);
     emit penChanged(k->pen);
@@ -280,7 +278,7 @@ void TupPenWidget::emitPenChanged()
     emit paintAreaEventTriggered(&event);
 }
 
-void TupPenWidget::emitBrushChanged()
+void TupPenWidget::updateBrushProperties()
 {
     emit brushChanged(k->brush);
 
@@ -424,7 +422,7 @@ void TupPenWidget::enableRoundCapStyle()
         k->flatCapButton->setChecked(false);
 
     k->pen.setCapStyle(Qt::RoundCap);
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::enableSquareCapStyle()
@@ -439,7 +437,7 @@ void TupPenWidget::enableSquareCapStyle()
         k->flatCapButton->setChecked(false);
 
     k->pen.setCapStyle(Qt::SquareCap);
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::enableFlatCapStyle()
@@ -454,7 +452,7 @@ void TupPenWidget::enableFlatCapStyle()
         k->squareCapButton->setChecked(false);
 
     k->pen.setCapStyle(Qt::FlatCap);
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::enableRoundJoinStyle()
@@ -469,7 +467,7 @@ void TupPenWidget::enableRoundJoinStyle()
         k->bevelJoinButton->setChecked(false);
 
     k->pen.setJoinStyle(Qt::RoundJoin);
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::enableMiterJoinStyle()
@@ -484,7 +482,7 @@ void TupPenWidget::enableMiterJoinStyle()
         k->roundJoinButton->setChecked(false);
 
     k->pen.setJoinStyle(Qt::MiterJoin);
-    emitPenChanged();
+    updatePenProperties();
 }
 
 void TupPenWidget::enableBevelJoinStyle()
@@ -499,5 +497,5 @@ void TupPenWidget::enableBevelJoinStyle()
         k->roundJoinButton->setChecked(false);
 
     k->pen.setJoinStyle(Qt::BevelJoin);
-    emitPenChanged();
+    updatePenProperties();
 }

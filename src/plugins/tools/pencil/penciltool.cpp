@@ -153,8 +153,9 @@ void PencilTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
     Q_UNUSED(brushManager);
     QPointF lastPoint = input->pos();
 
-    foreach (QGraphicsView * view, scene->views())
-             view->setDragMode(QGraphicsView::NoDrag);
+    // SQA: This code was really necessary?
+    // foreach (QGraphicsView * view, scene->views())
+    //          view->setDragMode(QGraphicsView::NoDrag);
 
     k->path.moveTo(k->oldPos);
     k->path.lineTo(lastPoint);

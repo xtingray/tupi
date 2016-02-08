@@ -232,7 +232,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     connect(k->status, SIGNAL(newFramePointer(int)), k->paintArea, SLOT(goToFrame(int)));
     connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
 
-    // SQA: Verify if this code is doing something / SLOT setBrush() doesn't exist
+    // SQA: Implement the brush button within the status bar
     // connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
     //         SLOT(setBrush(const QBrush &)));
 
@@ -630,10 +630,10 @@ void TupDocumentView::loadPlugins()
                                  break;
                               case TupToolInterface::Fill:
                                  {
-                                   if (toolName.compare(tr("Internal fill")) == 0)
+                                   if (toolName.compare(tr("Internal Fill")) == 0)
                                        k->fillAction = action;
 
-                                   if (toolName.compare(tr("Line fill")) == 0)
+                                   if (toolName.compare(tr("Line Fill")) == 0)
                                        k->borderFillAction = action;
                                  }
                                  break;
@@ -667,7 +667,7 @@ void TupDocumentView::loadPlugins()
              }
     } // end foreach
 
-    for (int i = 0; i < brushTools.size(); ++i) 
+    for (int i = 0; i < brushTools.size(); ++i)
          k->shapesMenu->addAction(brushTools.at(i));
 
     // SQA: The Composed Tween is under development. This line is temporaly disabled
@@ -729,8 +729,6 @@ void TupDocumentView::loadPlugins()
     k->toolbar->addAction(k->fillAction);
     k->toolbar->addAction(k->borderFillAction);
     k->toolbar->addSeparator();
-    // k->toolbar->addAction(k->shiftAction);
-    // k->toolbar->addSeparator();
     k->toolbar->addAction(k->motionMenu->menuAction());
     k->toolbar->addSeparator();
     k->toolbar->addAction(k->miscMenu->menuAction());

@@ -79,24 +79,24 @@ void FillTool::init(TupGraphicsScene *scene)
 
 QStringList FillTool::keys() const
 {
-    return QStringList() << tr("Internal fill") << tr("Line fill");
+    return QStringList() << tr("Internal Fill") << tr("Line Fill");
 }
 
 void FillTool::setupActions()
 {
-    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "icons/internal_fill.png"), tr("Internal fill"), this);
+    TAction *action1 = new TAction(QIcon(kAppProp->themeDir() + "icons/internal_fill.png"), tr("Internal Fill"), this);
     action1->setShortcut(QKeySequence(tr("I")));
-    action1->setToolTip(tr("Internal fill") + " - " + "I");
+    action1->setToolTip(tr("Internal Fill") + " - " + "I");
     k->insideCursor = QCursor(kAppProp->themeDir() + "cursors/internal_fill.png", 0, 11);
     action1->setCursor(k->insideCursor);
-    k->actions.insert(tr("Internal fill"), action1);
+    k->actions.insert(tr("Internal Fill"), action1);
     
-    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "icons/line_fill.png"), tr("Line fill"), this);
+    TAction *action2 = new TAction(QIcon(kAppProp->themeDir() + "icons/line_fill.png"), tr("Line Fill"), this);
     action2->setShortcut(QKeySequence(tr("B")));
-    action2->setToolTip(tr("Line fill") + " - " + "B");
+    action2->setToolTip(tr("Line Fill") + " - " + "B");
     k->contourCursor = QCursor(kAppProp->themeDir() + "cursors/line_fill.png", 0, 13);
     action2->setCursor(k->contourCursor);
-    k->actions.insert(tr("Line fill"), action2);
+    k->actions.insert(tr("Line Fill"), action2);
 }
 
 void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
@@ -226,9 +226,13 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
             }
                 
             if (position >= 0) {
-                if (name() == tr("Internal fill")) {
+                if (name() == tr("Internal Fill")) {
+                    tError() << "FillTool::press() - Applying Internal Fill... ";
+                    tError() << "FillTool::press() - Internal Color: " << brushManager->pen().brush().color().name();
                     shape->setBrush(brushManager->pen().brush());
-                } else if (name() == tr("Line fill")) {
+                } else if (name() == tr("Line Fill")) {
+                           tError() << "FillTool::press() - Applying Line Fill... ";
+                           tError() << "FillTool::press() - Internal Color: " << brushManager->pen().brush().color().name();
                            QPen pen = shape->pen();
                            pen.setBrush(brushManager->pen().brush());
                            shape->setPen(pen);
@@ -336,9 +340,9 @@ void FillTool::keyPressEvent(QKeyEvent *event)
 
 QCursor FillTool::cursor() const
 {
-    if (name() == tr("Internal fill")) {
+    if (name() == tr("Internal Fill")) {
         return k->insideCursor;
-    } else if (name() == tr("Line fill")) {
+    } else if (name() == tr("Line Fill")) {
                return k->contourCursor;
     }
 

@@ -66,8 +66,8 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         QPen pen() const;
         
     private:
-        void emitPenChanged();
-        void emitBrushChanged();
+        void updatePenProperties();
+        void updateBrushProperties();
         void addBrushesList();
         
     public slots:
