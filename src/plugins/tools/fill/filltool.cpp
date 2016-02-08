@@ -227,12 +227,8 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                 
             if (position >= 0) {
                 if (name() == tr("Internal Fill")) {
-                    tError() << "FillTool::press() - Applying Internal Fill... ";
-                    tError() << "FillTool::press() - Internal Color: " << brushManager->pen().brush().color().name();
                     shape->setBrush(brushManager->pen().brush());
                 } else if (name() == tr("Line Fill")) {
-                           tError() << "FillTool::press() - Applying Line Fill... ";
-                           tError() << "FillTool::press() - Internal Color: " << brushManager->pen().brush().color().name();
                            QPen pen = shape->pen();
                            pen.setBrush(brushManager->pen().brush());
                            shape->setPen(pen);
