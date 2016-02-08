@@ -357,7 +357,10 @@ TupExposureTable::FrameType TupExposureTable::frameState(int layerIndex, int fra
 }
 
 void TupExposureTable::updateFrameState(int layerIndex, int frameIndex, TupExposureTable::FrameType value)
-{
+{	
+	if (layerIndex < 0 || frameIndex < 0)
+		return;
+	
     QTableWidgetItem *frame = item(frameIndex, layerIndex);
     if (frame) {
         frame->setData(IsEmpty, value);
