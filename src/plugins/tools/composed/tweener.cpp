@@ -530,7 +530,7 @@ void Tweener::applyTween()
             for (int i = framesNumber; i <= total; i++) {
                  TupProjectRequest requestFrame = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                                                       k->scene->currentLayerIndex(),
-                                                                                      i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                                                                      i, TupProjectRequest::Add, tr("Frame"));
                  emit requested(&requestFrame);
             }
         }
@@ -595,7 +595,7 @@ void Tweener::applyTween()
                      else
                          objectIndex = frame->svgItemsCount() - 1;
 
-                     newList.append(frame->graphic(objectIndex)->item());
+                     newList.append(frame->graphicAt(objectIndex)->item());
                  }
 
                  TupProjectRequest request = TupRequestBuilder::createItemRequest(
@@ -616,7 +616,7 @@ void Tweener::applyTween()
                      for (int i = framesNumber; i < total; i++) {
                           TupProjectRequest requestFrame = TupRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(),
                                                           k->scene->currentLayerIndex(),
-                                                          i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                                          i, TupProjectRequest::Add, tr("Frame"));
                           emit requested(&requestFrame);
                      }
                  }

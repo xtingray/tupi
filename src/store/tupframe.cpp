@@ -92,9 +92,8 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->direction = "-1";
     k->shift = "0";
 
-    // k->repeat = 1;
-    // k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT; // Layers levels starts from 2
-    k->zLevelIndex = 0;
+    k->zLevelIndex = (k->layer->layerIndex() + 2)*ZLAYER_LIMIT; // Layers levels starts from 2
+    // k->zLevelIndex = 0;
 }
 
 TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new Private)
@@ -350,15 +349,48 @@ QDomElement TupFrame::toXml(QDomDocument &doc) const
 
     doc.appendChild(root);
 
-    for (int i=0; i < k->graphics.size(); i++) {
-         TupGraphicObject *object = k->graphics.at(i);
-         root.appendChild(object->toXml(doc));
+    int objectsCount = k->graphics.count();
+    int svgCount = k->svg.count();
+
+    if (objectsCount == 0 && svgCount == 0)
+        return root;
+
+    if (objectsCount > 0 && svgCount == 0) {
+        foreach (TupGraphicObject *object, k->graphics)
+                 root.appendChild(object->toXml(doc));
+        return root;
     }
 
-    for (int i=0; i < k->svg.size(); i++) {
-         TupSvgItem *object = k->svg.at(i); 
-         root.appendChild(object->toXml(doc));
+    if (svgCount > 0 && objectsCount == 0) {
+        foreach (TupSvgItem *svg, k->svg) 
+                 root.appendChild(svg->toXml(doc));
+        return root;
     }
+
+    do {
+           int objectZValue = k->graphics.at(0)->itemZValue();
+           int svgZValue = k->svg.at(0)->zValue();
+
+           if (objectZValue < svgZValue) {
+               TupGraphicObject *object = k->graphics.takeFirst();
+               root.appendChild(object->toXml(doc));
+           } else { 
+               TupSvgItem *svg = k->svg.takeFirst();
+               root.appendChild(svg->toXml(doc));
+           }
+
+           if (k->graphics.isEmpty()) {
+               foreach (TupSvgItem *svg, k->svg) 
+                        root.appendChild(svg->toXml(doc));
+               break;
+           } else {
+               if (k->svg.isEmpty()) {
+                   foreach (TupGraphicObject *object, k->graphics)
+                            root.appendChild(object->toXml(doc));
+                   break;
+               }
+           }
+    } while (true);
 
     return root;
 }
@@ -439,6 +471,7 @@ void TupFrame::addSvgItem(const QString &id, TupSvgItem *item)
     #endif
     
     k->svgIndexes.append(id);
+
     item->setZValue(k->zLevelIndex);
     k->zLevelIndex++;
 
@@ -536,7 +569,7 @@ QList<QGraphicsItem *> TupFrame::splitGroup(int position)
 
 void TupFrame::replaceItem(int position, QGraphicsItem *item)
 {
-    TupGraphicObject *toReplace = this->graphic(position);
+    TupGraphicObject *toReplace = this->graphicAt(position);
 
     if (toReplace)
         toReplace->setItem(item);
@@ -1220,11 +1253,11 @@ SvgObjects TupFrame::svgItems() const
     return k->svg;
 }
 
-TupGraphicObject *TupFrame::graphic(int position) const
+TupGraphicObject *TupFrame::graphicAt(int position) const
 {
     if ((position < 0) || (position >= k->graphics.count())) {
         #ifdef K_DEBUG
-            QString msg = "TupFrame::graphic() - Fatal Error: index out of bound [ " + QString::number(position) + " ] /  Total items: " + QString::number(k->graphics.count());
+            QString msg = "TupFrame::graphicAt() - Fatal Error: index out of bound [ " + QString::number(position) + " ] /  Total items: " + QString::number(k->graphics.count());
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
@@ -1238,11 +1271,11 @@ TupGraphicObject *TupFrame::graphic(int position) const
     return k->graphics.at(position);
 }
 
-TupSvgItem *TupFrame::svg(int position) const
+TupSvgItem *TupFrame::svgAt(int position) const
 {
     if ((position < 0) || (position >= k->svg.count())) {
         #ifdef K_DEBUG
-            QString msg = "TupFrame::svg() -  Fatal Error: index out of bound [ " + QString::number(position) + " ] / Total items: " + QString::number(k->svg.count());
+            QString msg = "TupFrame::svgAt() -  Fatal Error: index out of bound [ " + QString::number(position) + " ] / Total items: " + QString::number(k->svg.count());
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else

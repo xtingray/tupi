@@ -344,7 +344,7 @@ void PapagayoTool::updateInitFrame(int index)
         int layersCount = scene->layersCount();
         for (int i = sceneFrames; i < lipSyncFrames; i++) {
              for (int j = 0; j < layersCount; j++) {
-                  TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, j, i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                  TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, j, i, TupProjectRequest::Add, tr("Frame"));
                   emit requested(&request);
              }
         }

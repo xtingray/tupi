@@ -10,12 +10,14 @@ macx {
 HEADERS += tuptimeline.h \
            tuptimelineruler.h \
            tuptimelinetable.h \ 
+           tupscenecontainer.h \
            # tuplayerindex.h \
            tuptimelineheader.h
 
 SOURCES += tuptimeline.cpp \
            tuptimelineruler.cpp \
            tuptimelinetable.cpp \
+           tupscenecontainer.cpp \
            # tuplayerindex.cpp \
            tuptimelineheader.cpp
 

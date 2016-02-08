@@ -6,9 +6,9 @@
  *                                                                         *
  *   Developers:                                                           *
  *   2010:                                                                 *
- *    Gustav Gonzalez / xtingray                                           *
+ *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     *
+ *   KTooN's versions:                                                     * 
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,101 +33,74 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupbackgroundscene.h"
+#include "tupscenecontainer.h"
 
-struct TupBackgroundScene::Private
+struct TupSceneContainer::Private
 {
-    TupFrame *bg;
+    QList<TupTimeLineTable *> scenes;
+    QList<TupTimeLineTable *> undoScenes;
 };
 
-TupBackgroundScene::TupBackgroundScene(const QSize dimension, const QColor color, TupFrame *background) : QGraphicsScene(), k(new Private)
+TupSceneContainer::TupSceneContainer(QWidget *parent) : QTabWidget(parent), k(new Private)
 {
-    setSceneRect(QRectF(QPointF(0,0), dimension));
-    setBackgroundBrush(color);
-    k->bg = background;
-    drawScene();
 }
 
-TupBackgroundScene::~TupBackgroundScene()
+TupSceneContainer::~TupSceneContainer()
 {
-    clearFocus();
-    clearSelection();
-
-    foreach (QGraphicsView *view, this->views())
-             view->setScene(0);
-
-    foreach (QGraphicsItem *item, items())
-             removeItem(item);
-
-    delete k;
 }
 
-void TupBackgroundScene::drawScene()
+void TupSceneContainer::insertScene(int sceneIndex, TupTimeLineTable *framesTable, const QString &sceneName)
 {
-    cleanWorkSpace();
-    addFrame(k->bg);
-    update();
+    k->scenes << framesTable; 
+    QTabWidget::insertTab(sceneIndex, framesTable, sceneName);
 }
 
-void TupBackgroundScene::renderView(QPainter *painter)
+void TupSceneContainer::restoreScene(int sceneIndex, const QString &sceneName)
 {
-    render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()),
-           sceneRect().toRect(), Qt::IgnoreAspectRatio);
+    TupTimeLineTable *framesTable = k->undoScenes.takeLast();
+    k->scenes << framesTable;
+    QTabWidget::insertTab(sceneIndex, framesTable, sceneName);
 }
 
-void TupBackgroundScene::cleanWorkSpace()
+void TupSceneContainer::removeScene(int sceneIndex)
 {
-    foreach (QGraphicsItem *item, items()) {
-             if (item->scene() == this)
-                 removeItem(item);
+    k->undoScenes << k->scenes.takeAt(sceneIndex);  
+    QTabWidget::removeTab(sceneIndex);
+}
+
+void TupSceneContainer::removeAllTabs()
+{
+    int total = this->count();
+    for (int i = 0; i < total; i++) {
+         k->undoScenes << k->scenes.takeAt(i); 
+         QTabWidget::removeTab(i);
+    }
+    // delete currentWidget();
+}
+
+#ifndef QT_NO_WHEELEVENT
+void TupSceneContainer::wheelEvent(QWheelEvent *ev)
+{
+    QRect rect = tabBar()->rect();
+    rect.setWidth(width());
+
+    if (rect.contains(ev->pos()))
+        wheelMove(ev->delta());
+}
+
+void TupSceneContainer::wheelMove(int delta)
+{
+    if (count() > 1) {
+        int current = currentIndex();
+        if (delta < 0) {
+            current = (current + 1) % count();
+        } else {
+            current--;
+            if (current < 0)
+                current = count() - 1;
+        }
+        setCurrentIndex(current);
     }
 }
 
-void TupBackgroundScene::addFrame(TupFrame *frame)
-{
-    if (frame) {
-        /*
-        QList<int> indexes = frame->itemIndexes();
-        for (int i = 0; i < indexes.size(); ++i) {
-             TupGraphicObject *object = frame->graphicAt(indexes.at(i));
-             addGraphicObject(object);
-        }
-        */
-
-        for (int i = 0; i < frame->graphicItemsCount(); i++) {
-             TupGraphicObject *object = frame->graphicAt(i);
-             addGraphicObject(object);
-        }
-
-        /*
-        indexes = frame->svgIndexes();
-        for (int i = 0; i < indexes.size(); ++i) {
-             TupSvgItem *object = frame->svgAt(indexes.at(i));
-             addSvgObject(object);
-        }
-        */
-
-        for (int i = 0; i < frame->svgItemsCount(); i++) {
-             TupSvgItem *object = frame->svgAt(i);
-             addSvgObject(object);
-        }
-    }
-}
-
-void TupBackgroundScene::addGraphicObject(TupGraphicObject *object)
-{
-    if (object) {
-        QGraphicsItem *item = object->item();
-        item->setSelected(false);
-        addItem(item);
-    }
-}
-
-void TupBackgroundScene::addSvgObject(TupSvgItem *svgItem)
-{
-    if (svgItem) {
-        svgItem->setSelected(false);
-        addItem(svgItem);
-    }
-}
-
+#endif

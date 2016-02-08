@@ -435,7 +435,7 @@ void SelectionTool::itemResponse(const TupItemResponse *event)
     QGraphicsItem *item = 0;
     TupFrame *frame = frameAt(event->sceneIndex(), event->layerIndex(), event->frameIndex());
     if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
-        item = frame->svg(event->itemIndex());
+        item = frame->svgAt(event->itemIndex());
     } else if (frame->graphicItemsCount()>0) {
                item = frame->item(event->itemIndex());
     }

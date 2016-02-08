@@ -33,64 +33,44 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPTIMELINE_H
-#define TUPTIMELINE_H
+#ifndef TUPSCENECONTAINER_H
+#define TUPSCENECONTAINER_H
 
 #include "tglobal.h"
-#include "tupmodulewidgetbase.h"
-#include "tupscenecontainer.h"
-#include "tupprojectrequest.h"
-#include "tuplibraryobject.h"
 #include "tuptimelinetable.h"
-#include "tupprojectactionbar.h"
-#include "tuprequestbuilder.h"
-#include "tupproject.h"
-#include "tuplayer.h"
-#include "tuplibrary.h"
 
-#include <QStackedWidget>
-#include <QList>
-#include <QHeaderView>
+#include <QTabWidget>
+#include <QWheelEvent>
+#include <QTabBar>
 
 /**
  * @author David Cuadrado
-**/
+*/
 
-class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
+class T_GUI_EXPORT TupSceneContainer : public QTabWidget
 {
     Q_OBJECT
 
     public:
-        TupTimeLine(TupProject *project, QWidget *parent = 0);
-        ~TupTimeLine();
-        void closeAllScenes();
-        
-    private:
-        TupTimeLineTable *framesTable(int sceneIndex);
-        
-    protected:
-        void sceneResponse(TupSceneResponse *response);
-        void layerResponse(TupLayerResponse *response);
-        void frameResponse(TupFrameResponse *response);
-        void libraryResponse(TupLibraryResponse *response);
+        TupSceneContainer(QWidget *parent = 0);
+        ~TupSceneContainer();
+        void insertScene(int sceneIndex, TupTimeLineTable *framesTable, const QString &title);
+        void restoreScene(int sceneIndex, const QString &title);
+        void removeScene(int sceneIndex);
         
     public slots:
-        void insertScene(int sceneIndex, const QString &name);
-        void removeScene(int sceneIndex);
-        void emitRequestChangeFrame(int sceneIndex, int layerIndex, int frameIndex);
-
-    private slots:
-        void requestCommand(int action);
-        bool requestFrameAction(int action, int frameIndex = -1, int layerIndex = -1, int sceneIndex = -1, const QVariant &arg = QVariant());
-        bool requestLayerAction(int action, int layerIndex = -1, int sceneIndex = -1, const QVariant &arg = QVariant());
-        bool requestSceneAction(int action, int sceneIndex = -1, const QVariant &arg = QVariant());
-        void selectFrame(int indexLayer, int indexFrame);
-        void requestLayerMove(int oldIndex, int newIndex);
-
-        void requestLayerVisibilityAction(int layer, bool isVisible);
-        void requestLayerRenameAction(int layer, const QString &name);
-        void requestSceneSelection(int sceneIndex);
+        void removeAllTabs();
         
+    protected:
+    #ifndef QT_NO_WHEELEVENT
+            virtual void wheelEvent(QWheelEvent *e);
+    #endif
+
+    protected slots:
+    #ifndef QT_NO_WHEELEVENT
+            virtual void wheelMove(int delta);
+    #endif
+
     private:
         struct Private;
         Private *const k;

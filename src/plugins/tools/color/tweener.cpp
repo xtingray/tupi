@@ -484,10 +484,10 @@ void Tweener::applyTween()
                      frame = layer->frameAt(k->initFrame);
                      if (type == TupLibraryObject::Item) {
                          objectIndex = frame->graphicItemsCount() - 1;
-                         newList.append(frame->graphic(objectIndex)->item());
+                         newList.append(frame->graphicAt(objectIndex)->item());
                      } else {
                          objectIndex = frame->svgItemsCount() - 1;
-                         newList.append(frame->svg(objectIndex));
+                         newList.append(frame->svgAt(objectIndex));
                      }
                  }
 
@@ -512,7 +512,7 @@ void Tweener::applyTween()
         for (int i = framesNumber; i < total; i++) {
              for (int j = 0; j < layersCount; j++) {
                   request = TupRequestBuilder::createFrameRequest(k->initScene, j, i,
-                                                                  TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
+                                                                  TupProjectRequest::Add, tr("Frame"));
                   emit requested(&request);
              }
         }

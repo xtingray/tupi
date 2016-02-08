@@ -67,22 +67,22 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
         #endif
     #endif        
     
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     TupLibraryObject::Type type = response->itemType(); 
     QPointF point = response->position();
 
     TupProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
 
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
   
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
                         TupSvgItem *svg = frame->createSvgItem(point, xml);
@@ -121,7 +121,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
                 } else {
                     #ifdef K_DEBUG
-                        QString msg = "TupCommandExecutor::createItem() - Error: Frame index doesn't exist! -> " + QString::number(framePosition);
+                        QString msg = "TupCommandExecutor::createItem() - Error: Frame index doesn't exist! -> " + QString::number(frameIndex);
                         #ifdef Q_OS_WIN
                             qDebug() << msg;
                         #else
@@ -132,7 +132,7 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 }
             } else {
                 #ifdef K_DEBUG
-                    QString msg = "TupCommandExecutor::createItem() - Error: Layer index doesn't exist! -> " + QString::number(layerPosition);
+                    QString msg = "TupCommandExecutor::createItem() - Error: Layer index doesn't exist! -> " + QString::number(layerIndex);
                     #ifdef Q_OS_WIN
                         qDebug() << msg;
                     #else
@@ -244,20 +244,20 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
         #endif
     #endif    
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     TupLibraryObject::Type type = response->itemType();
     TupProject::Mode mode = response->spaceMode();
 
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
 
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
 
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
 
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
@@ -267,12 +267,12 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                         emit responsed(response);
                         return true;
                     } else {
-                        TupGraphicObject *object = frame->graphic(response->itemIndex());
+                        TupGraphicObject *object = frame->graphicAt(response->itemIndex());
 
                         if (object) {
                             frame->removeGraphicAt(response->itemIndex());
                             if (object->hasTween()) 
-                                scene->removeTweenObject(layerPosition, object);
+                                scene->removeTweenObject(layerIndex, object);
 
                             response->setFrameState(frame->isEmpty());
                             emit responsed(response);
@@ -370,9 +370,9 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
         #endif
     #endif    
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int objectIndex = response->itemIndex();
     int action = response->arg().toInt();
     TupLibraryObject::Type type = response->itemType();
@@ -384,13 +384,13 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
         // action = ???;
     }
     
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     if (frame->moveItem(type, objectIndex, action)) {
                         emit responsed(response);
@@ -462,20 +462,20 @@ bool TupCommandExecutor::groupItems(TupItemResponse *response)
         #endif
     #endif
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
     QString strList = response->arg().toString();
 
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     QString::const_iterator itr = strList.constBegin();
                     QList<int> positions = TupSvg2Qt::parseIntList(++itr);
@@ -555,19 +555,19 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
         #endif
     #endif
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
     
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     QString strItems = "";
                     QList<QGraphicsItem *> items = frame->splitGroup(position);
@@ -735,21 +735,21 @@ bool TupCommandExecutor::convertItem(TupItemResponse *response)
         #endif
     #endif
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
     int toType = response->arg().toInt();
     
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
 
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
 
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
@@ -862,25 +862,25 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
         #endif
     #endif
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
     TupLibraryObject::Type type = response->itemType();
     QString xml = response->arg().toString();
 
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     QGraphicsItem *item;
                     if (type == TupLibraryObject::Svg)
-                        item = frame->svg(position);
+                        item = frame->svgAt(position);
                     else
                         item = frame->item(position);
 
@@ -923,7 +923,7 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                 if (frame) {
                     QGraphicsItem *item;
                     if (type == TupLibraryObject::Svg)
-                        item = frame->svg(position);
+                        item = frame->svgAt(position);
                     else
                         item = frame->item(position);
 
@@ -994,19 +994,19 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
     #endif
     */
     
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
-            TupLayer *layer = scene->layerAt(layerPosition);
+            TupLayer *layer = scene->layerAt(layerIndex);
             if (layer) {
-                TupFrame *frame = layer->frameAt(framePosition);
+                TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
@@ -1126,29 +1126,29 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
         #endif
     #endif
 
-    int scenePosition = response->sceneIndex();
-    int layerPosition = response->layerIndex();
-    int framePosition = response->frameIndex();
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     TupLibraryObject::Type itemType = response->itemType();
     int position = response->itemIndex();
     QString xml = response->arg().toString();
-    TupScene *scene = m_project->sceneAt(scenePosition);
+    TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
-        TupLayer *layer = scene->layerAt(layerPosition);
+        TupLayer *layer = scene->layerAt(layerIndex);
 
         if (layer) {
-            TupFrame *frame = layer->frameAt(framePosition);
+            TupFrame *frame = layer->frameAt(frameIndex);
 
             if (frame) {
                 TupItemTweener *tween = new TupItemTweener();
                 tween->fromXml(xml);
 
                 if (itemType == TupLibraryObject::Item) {
-                    TupGraphicObject *object = frame->graphic(position);
+                    TupGraphicObject *object = frame->graphicAt(position);
                     if (object) {
                         object->setTween(tween);
-                        scene->addTweenObject(layerPosition, object);
+                        scene->addTweenObject(layerIndex, object);
                     } else {
                         #ifdef K_DEBUG
                             QString msg = "TupCommandExecutor::setTween() - Error: Invalid graphic index -> " + QString::number(position);
@@ -1161,10 +1161,10 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
                         return false;
                     }
                 } else {
-                    TupSvgItem *svg = frame->svg(position); 
+                    TupSvgItem *svg = frame->svgAt(position); 
                     if (svg) {
                         svg->setTween(tween);
-                        scene->addTweenObject(layerPosition, svg);
+                        scene->addTweenObject(layerIndex, svg);
                     } else {
                         #ifdef K_DEBUG
                             QString msg = "TupCommandExecutor::setTween() - Error: Invalid svg index -> " + QString::number(position);

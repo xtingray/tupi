@@ -386,32 +386,75 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
     */
 
     TupFrame::FrameType frameType = frame->type();
+    QList<TupGraphicObject *> objects = frame->graphics(); 
+    QList<TupSvgItem *> svgItems = frame->svgItems();
 
-    for (int i=0; i < frame->graphicItemsCount(); i++) {
-         TupGraphicObject *object = frame->graphic(i);
-         if (mode != TupGraphicsScene::Current) {
-             if (!object->hasTween())
-                 addGraphicObject(object, frameType, opacity);
-         } else {
-             addGraphicObject(object, frameType,  opacity);
-         }
+    int objectsCount = objects.count();
+    int svgCount = svgItems.count();
+
+    if (objectsCount == 0 && svgCount == 0)
+        return;
+
+    if (objectsCount > 0 && svgCount == 0) {
+        foreach (TupGraphicObject *object, objects)
+                 processNativeObject(object, frameType, opacity, mode);
+        return;
     }
 
-    for (int i=0; i < frame->svgItemsCount(); i++) {
-         TupSvgItem *object = frame->svg(i);
-         if (!object->hasTween()) {
-             addSvgObject(object, frameType, opacity);
-         } else {
-             TupItemTweener *tween = object->tween();
-             if (k->framePosition.frame == tween->initFrame())
-                 addSvgObject(object, frameType, opacity);
-         }
+    if (svgCount > 0 && objectsCount == 0) {
+        foreach (TupSvgItem *svg, svgItems)
+                 processSVGObject(svg, frameType, opacity, mode);
+        return;
+    }
+
+    do {
+           int objectZValue = objects.at(0)->itemZValue();  
+           int svgZValue = svgItems.at(0)->zValue(); 
+
+           if (objectZValue < svgZValue) {
+               TupGraphicObject *object = objects.takeFirst();
+               processNativeObject(object, frameType, opacity, mode);
+           } else {  
+               TupSvgItem *svg = svgItems.takeFirst();
+               processSVGObject(svg, frameType, opacity, mode);
+           }
+
+           if (objects.isEmpty()) {
+               foreach (TupSvgItem *svg, svgItems)
+                        processSVGObject(svg, frameType, opacity, mode);
+               return;
+           } else {
+               if (svgItems.isEmpty()) {
+                   foreach (TupGraphicObject *object, objects)
+                            processNativeObject(object, frameType, opacity, mode);
+                   return;
+               }
+           }
+    } while (true);
+}
+
+void TupGraphicsScene::processNativeObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity, Context mode)
+{
+    if (mode != TupGraphicsScene::Current) {
+        if (!object->hasTween())
+            addGraphicObject(object, frameType, opacity);
+    } else {
+        addGraphicObject(object, frameType,  opacity);
+    }
+}
+
+void TupGraphicsScene::processSVGObject(TupSvgItem *svg, TupFrame::FrameType frameType, double opacity, Context mode)
+{
+    if (mode != TupGraphicsScene::Current) {
+        if (!svg->hasTween())
+            addSvgObject(svg, frameType, opacity);
+    } else {
+        addSvgObject(svg, frameType, opacity);
     }
 }
 
 void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance)
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupGraphicsScene::addGraphicObject()]";
@@ -419,7 +462,6 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
             T_FUNCINFO;
         #endif
     #endif
-    */
 
     QGraphicsItem *item = object->item();
     if (item) {
@@ -741,6 +783,7 @@ void TupGraphicsScene::addTweeningObjects(int layerIndex, int photogram)
                                     }
                                 }
                             }
+
                             addGraphicObject(object, TupFrame::Regular, 1.0, true);
 
                             if (stepItem->has(TupTweenerStep::Opacity))
@@ -1573,12 +1616,13 @@ void TupGraphicsScene::includeObject(QGraphicsItem *object, bool isPolyLine) // 
         if (layer) {
             TupFrame *frame = layer->frameAt(k->framePosition.frame);
             if (frame) {
-                // int zLevel = frame->getTopZLevel();
-                int zLevel = k->zLevel;
+                int zLevel = frame->getTopZLevel();
+                // int zLevel = k->zLevel;
                 if (isPolyLine) // SQA: Polyline hack
                     zLevel--;
                 if (object) {
                     object->setOpacity(layer->opacity());
+
                     object->setZValue(zLevel);
                     addItem(object);
                     k->zLevel++;

@@ -117,8 +117,8 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        GraphicObjects graphics() const;
        SvgObjects svgItems() const; 
        
-       TupGraphicObject *graphic(int position) const;
-       TupSvgItem *svg(int position) const; 
+       TupGraphicObject *graphicAt(int position) const;
+       TupSvgItem *svgAt(int position) const; 
        QGraphicsItem *item(int position) const;
        
        int createItemGroup(int position, QList<int> group);

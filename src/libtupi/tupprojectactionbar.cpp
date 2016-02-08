@@ -87,60 +87,9 @@ void TupProjectActionBar::setup(Actions actions)
     
     k->buttonLayout->setSpacing(1);
     k->buttonLayout->setMargin(1);
-    
     k->buttonLayout->addStretch();
-    
     int size = 16;
 
-   if (actions & InsertLayer) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
-        button->setToolTip(tr("Insert layer"));
-        button->setShortcut(QKeySequence(tr("F5")));
-
-        k->actions.addButton(button, InsertLayer);
-
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-
-    if (actions & RemoveLayer) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
-        button->setToolTip(tr("Remove layer"));
-        button->setShortcut(QKeySequence(tr("F6")));
-
-        k->actions.addButton(button, RemoveLayer);
-
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-
-    if (actions & MoveLayerUp) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
-        button->setToolTip(tr("Move layer up"));
-        button->setShortcut(QKeySequence(tr("F9")));
-
-        k->actions.addButton(button, MoveLayerUp);
-
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(true);
-    }
-    
-    if (actions & MoveLayerDown) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
-        button->setToolTip(tr("Move layer down"));
-        button->setShortcut(QKeySequence(tr("F10")));
-
-        k->actions.addButton(button, MoveLayerDown);
-
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-
-    if (actions & Separator) {
-        k->buttonLayout->addSpacing(5);
-        k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
-    }
-    
     if (actions & InsertFrame) {
         TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
         button->setToolTip(tr("Insert frame"));
@@ -223,8 +172,62 @@ void TupProjectActionBar::setup(Actions actions)
         button->setAnimated(k->isAnimated);
     }
 
+    if (actions & Separator) {
+        k->buttonLayout->addSpacing(5);
+        k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
+    }
+
+    if (actions & InsertLayer) {
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
+        button->setToolTip(tr("Insert layer"));
+        button->setShortcut(QKeySequence(tr("F5")));
+
+        k->actions.addButton(button, InsertLayer);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & RemoveLayer) {
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
+        button->setToolTip(tr("Remove layer"));
+        button->setShortcut(QKeySequence(tr("F6")));
+
+        k->actions.addButton(button, RemoveLayer);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & MoveLayerUp) {
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
+        button->setToolTip(tr("Move layer up"));
+        button->setShortcut(QKeySequence(tr("F9")));
+
+        k->actions.addButton(button, MoveLayerUp);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(true);
+    }
+
+    if (actions & MoveLayerDown) {
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
+        button->setToolTip(tr("Move layer down"));
+        button->setShortcut(QKeySequence(tr("F10")));
+
+        k->actions.addButton(button, MoveLayerDown);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & Separator) {
+        k->buttonLayout->addSpacing(5);
+        k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
+    }
+
     if (actions & InsertScene) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size); 
         button->setToolTip(tr("Insert scene"));
         
         k->actions.addButton(button, InsertScene);
@@ -234,7 +237,7 @@ void TupProjectActionBar::setup(Actions actions)
     }
      
     if (actions & RemoveScene) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);  // TODO
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);
         button->setToolTip(tr("Remove scene"));
 
         k->actions.addButton(button, RemoveScene);

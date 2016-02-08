@@ -69,14 +69,19 @@ TupExposureSheet::TupExposureSheet(QWidget *parent, TupProject *project) : TupMo
     setWindowTitle(tr("Exposure Sheet"));
     setWindowIcon(QPixmap(kAppProp->themeDir() + "icons/exposure_sheet.png"));
 
-    k->actionBar = new TupProjectActionBar(QString("Exposure"), TupProjectActionBar::InsertLayer |
-                        TupProjectActionBar::RemoveLayer |
-                        TupProjectActionBar::Separator |
-                        TupProjectActionBar::InsertFrame |
-                        TupProjectActionBar::RemoveFrame |
-                        TupProjectActionBar::MoveFrameBackward |
-                        TupProjectActionBar::MoveFrameForward | 
-                        TupProjectActionBar::LockFrame);
+    k->actionBar = new TupProjectActionBar(QString("Exposure"), 
+                                           TupProjectActionBar::InsertFrame |
+                                           TupProjectActionBar::RemoveFrame |
+                                           TupProjectActionBar::MoveFrameBackward |
+                                           TupProjectActionBar::MoveFrameForward | 
+                                           TupProjectActionBar::LockFrame |
+                                           TupProjectActionBar::Separator |
+                                           TupProjectActionBar::InsertLayer |
+                                           TupProjectActionBar::RemoveLayer |
+                                           // SQA: Refactor the TupProjectActionBar to handle separators in a clean way
+                                           // TupProjectActionBar::Separator |
+                                           TupProjectActionBar::InsertScene |
+                                           TupProjectActionBar::RemoveScene);
 
     connect(k->actionBar, SIGNAL(actionSelected(int)), this, SLOT(applyAction(int)));
     addChild(k->actionBar, Qt::AlignCenter);
@@ -239,32 +244,6 @@ void TupExposureSheet::applyAction(int action)
     }
 
     switch (action) {
-            case TupProjectActionBar::InsertLayer:
-               {
-                 int layer = k->currentTable->columnCount();
-                 TupProjectRequest request = TupRequestBuilder::createLayerRequest(k->scenesContainer->currentIndex(),
-                                                                                 layer, TupProjectRequest::Add, tr("Layer %1").arg(layer + 1));
-                 emit requestTriggered(&request);
-
-                 int framesNum = k->currentTable->usedFrames(k->currentTable->currentColumn());
-                 for (int i=0;i < framesNum;i++) {
-                      request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), layer, i, 
-                                                                      TupProjectRequest::Add, tr("Frame"));
-                                                                      // TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
-                      emit requestTriggered(&request);
-                 }
-               }
-               break;
-
-            case TupProjectActionBar::RemoveLayer:
-               {
-                 TupProjectRequest request = TupRequestBuilder::createLayerRequest(k->scenesContainer->currentIndex(), 
-                                                                                 k->currentTable->currentLayer(), 
-                                                                                 TupProjectRequest::Remove);
-                 emit requestTriggered(&request);
-               }
-               break;
-
             case TupProjectActionBar::InsertFrame:
                {
                  int usedFrames = k->currentTable->usedFrames(k->currentTable->currentColumn());
@@ -371,6 +350,55 @@ void TupExposureSheet::applyAction(int action)
                  TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
                                             k->currentTable->currentLayer(), k->currentTable->currentFrame(),
                                             TupProjectRequest::Lock, !locked);
+                 emit requestTriggered(&request);
+               }
+               break;
+
+            case TupProjectActionBar::InsertLayer:
+               {
+                 int layer = k->currentTable->columnCount();
+                 TupProjectRequest request = TupRequestBuilder::createLayerRequest(k->scenesContainer->currentIndex(),
+                                                                                 layer, TupProjectRequest::Add, tr("Layer %1").arg(layer + 1));
+                 emit requestTriggered(&request);
+
+                 int framesNum = k->currentTable->usedFrames(k->currentTable->currentColumn());
+                 for (int i=0;i < framesNum;i++) {
+                      request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), layer, i,
+                                                                      TupProjectRequest::Add, tr("Frame"));
+                      emit requestTriggered(&request);
+                 }
+               }
+               break;
+
+            case TupProjectActionBar::RemoveLayer:
+               {
+                 TupProjectRequest request = TupRequestBuilder::createLayerRequest(k->scenesContainer->currentIndex(),
+                                                                                 k->currentTable->currentLayer(),
+                                                                                 TupProjectRequest::Remove);
+                 emit requestTriggered(&request);
+               }
+               break;
+
+            case TupProjectActionBar::InsertScene:
+               {
+                 int sceneTarget = k->scenesContainer->count();
+                 TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneTarget, TupProjectRequest::Add, tr("Scene %1").arg(sceneTarget + 1));
+                 emit requestTriggered(&request);
+
+                 request = TupRequestBuilder::createLayerRequest(sceneTarget, 0, TupProjectRequest::Add, tr("Layer 1"));
+                 emit requestTriggered(&request);
+
+                 request = TupRequestBuilder::createFrameRequest(sceneTarget, 0, 0, TupProjectRequest::Add, tr("Frame"));
+                 emit requestTriggered(&request);
+
+                 request = TupRequestBuilder::createSceneRequest(sceneTarget, TupProjectRequest::Select);
+                 emit requestTriggered(&request);
+               }
+               break;
+
+            case TupProjectActionBar::RemoveScene:
+               {
+                 TupProjectRequest request = TupRequestBuilder::createSceneRequest(k->scenesContainer->currentIndex(), TupProjectRequest::Remove);
                  emit requestTriggered(&request);
                }
                break;

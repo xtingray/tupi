@@ -597,6 +597,9 @@ void TupStoryBoardDialog::exportAsPDF()
     QString pdfPath = QFileDialog::getSaveFileName(this, tr("Save PDF file"), QDir::homePath(), tr("PDF file (*.pdf)"));
 
     if (!pdfPath.isEmpty()) {
+        if (!pdfPath.toLower().endsWith(".pdf"))
+            pdfPath += ".pdf";
+
         QFile file(path + "index.html");
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             return;

@@ -150,7 +150,8 @@ TupLayer *TupScene::createLayer(QString name, int position, bool loaded)
     }
 
     k->layerCount++;
-    TupLayer *layer = new TupLayer(this, k->layerCount);
+    TupLayer *layer = new TupLayer(this, k->layerCount-1);
+    // k->layerCount++;
     layer->setLayerName(name);
     k->layers.insert(position, layer);
 
@@ -241,9 +242,9 @@ TupLayer *TupScene::layerAt(int position) const
 {
     if (position < 0 || position >= k->layers.count()) {    
         #ifdef K_DEBUG
-            QString msg1 = " FATAL ERROR: LAYERS TOTAL: " + QString::number(k->layers.count());
-            QString msg2 = " FATAL ERROR: index out of bound -> Position: " + QString::number(position);
-            QString msg3 = " FATAL ERROR: The layer requested doesn't exist anymore";
+            QString msg1 = "TupScene::layerAt() - FATAL ERROR: LAYERS TOTAL: " + QString::number(k->layers.count());
+            QString msg2 = "TupScene::layerAt() - FATAL ERROR: index out of bound -> Position: " + QString::number(position);
+            QString msg3 = "TupScene::layerAt() - FATAL ERROR: The layer requested doesn't exist anymore";
             #ifdef Q_OS_WIN
                 qDebug() << msg1;
                 qDebug() << msg2;
@@ -280,14 +281,11 @@ TupSoundLayer *TupScene::soundLayer(int position) const
 void TupScene::fromXml(const QString &xml)
 {
     QDomDocument document;
-
     if (!document.setContent(xml))
         return;
 
     QDomElement root = document.documentElement();
-
     setSceneName(root.attribute("name", sceneName()));
-
     QDomNode n = root.firstChild();
 
     while (!n.isNull()) {
@@ -295,8 +293,8 @@ void TupScene::fromXml(const QString &xml)
 
            if (!e.isNull()) {
                if (e.tagName() == "layer") {
-                   int pos = k->layers.count();
-                   TupLayer *layer = createLayer(e.attribute("name"), pos, true);
+                   int layerIndex = k->layers.count();
+                   TupLayer *layer = createLayer(e.attribute("name"), layerIndex, true);
 
                    if (layer) {
                        QString newDoc;
@@ -689,9 +687,9 @@ void TupScene::reset(QString &name)
     k->tweeningSvgObjects.clear();
 
     k->layerCount = 1;
-    TupLayer *layer = new TupLayer(this, k->layerCount);
+    TupLayer *layer = new TupLayer(this, 0);
     layer->setLayerName(tr("Layer %1").arg(1));
-    layer->createFrame(tr("Frame %1").arg(1), 0, false);
+    layer->createFrame(tr("Frame"), 0, false);
 
     k->layers.insert(0, layer);
 }

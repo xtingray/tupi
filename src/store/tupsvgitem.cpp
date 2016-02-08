@@ -143,15 +143,6 @@ void TupSvgItem::setTween(TupItemTweener *tween)
 {
     k->tween = tween;
     k->hasTween = true;
-
-    /*
-    if (!update) {
-        if (k->tween)
-            k->frame->scene()->addTweenObject(this);
-        else
-            k->frame->scene()->removeTweenObject(this);
-    }
-    */
 }
 
 bool TupSvgItem::hasTween()
