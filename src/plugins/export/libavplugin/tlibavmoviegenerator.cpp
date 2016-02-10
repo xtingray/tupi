@@ -48,6 +48,10 @@ extern "C" {
 }
 #endif
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
+#define av_frame_alloc  avcodec_alloc_frame
+#endif
+
 struct TLibavMovieGenerator::Private
 {
     AVFrame *frame;
@@ -213,6 +217,7 @@ bool TLibavMovieGenerator::Private::openVideo(AVCodec *codec, AVStream *st, cons
 
     /* allocate and init a re-usable frame */
     frame = av_frame_alloc();
+    // frame = avcodec_alloc_frame();
 
     if (!frame) {
         errorMsg = "There is no available memory to export your project as a video";
