@@ -455,6 +455,7 @@ void TupGraphicsScene::processSVGObject(TupSvgItem *svg, TupFrame::FrameType fra
 
 void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance)
 {
+    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupGraphicsScene::addGraphicObject()]";
@@ -462,6 +463,7 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
             T_FUNCINFO;
         #endif
     #endif
+    */
 
     QGraphicsItem *item = object->item();
     if (item) {
