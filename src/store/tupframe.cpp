@@ -52,7 +52,6 @@
 #include <QGraphicsView>
 #include <QCursor>
 #include <QSvgRenderer>
-#include <QTextCodec>
 
 struct TupFrame::Private
 {
@@ -214,8 +213,6 @@ void TupFrame::fromXml(const QString &xml)
     #endif
     */
 
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
     QDomDocument document;
     if (!document.setContent(xml)) {    
         #ifdef K_DEBUG
@@ -339,8 +336,6 @@ void TupFrame::fromXml(const QString &xml)
 
 QDomElement TupFrame::toXml(QDomDocument &doc) const
 {
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
     QDomElement root = doc.createElement("frame");
     root.setAttribute("name", k->name);
 
