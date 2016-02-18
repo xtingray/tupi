@@ -36,25 +36,24 @@
 ###########################################################################
 
 #Usage:
-# ./tools/build_mac_osx_app.sh /Users/username/Projects/tupi /Users/username/Projects/dist
+# ./tools/build_mac_osx_app.sh /Users/username/tupi/sources/tupi /Users/username/tupi/installer
 
 export PATH=/Users/xtingray/Qt/5.5/clang_64/bin:$PATH
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
 
 TUPI_GIT_REPOSITORY=$1
-TUPI_INSTALL=$2
-INSTALL_NAME=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
+INSTALLATION_PATH=$2
+INSTALLER_SCRIPT=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
 
 declare -a LIBS=('libtupigui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
-'libquazip.dylib' 'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' \
-'libtupifwcore.dylib');
+'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' 'libtupifwcore.dylib');
 
 cd $TUPI_GIT_REPOSITORY
 
 # make uninstall
 make install
 
-cd $TUPI_INSTALL
+cd $INSTALLATION_PATH
 cp -r lib/tupi/plugins Tupi.app/Contents/MacOS
 
 mkdir Tupi.app/Contents/MacOS/share
@@ -64,22 +63,21 @@ cp -r share/tupi/themes Tupi.app/Contents/MacOS/share/
 
 cd Tupi.app/Contents/MacOS/plugins
 
-find . -name "*.dylib" -exec $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/plugins/{} \/usr\/local\/lib\/ @executable_path/../Frameworks/ \;
+find . -name "*.dylib" -exec $INSTALLER_SCRIPT $INSTALLATION_PATH/Tupi.app/Contents/MacOS/plugins/{} \/usr\/local\/lib\/ @executable_path/../Frameworks/ \;
 
 for lib in ${LIBS[@]}; do
-    find . -name "*.dylib" -exec $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/plugins/{} $lib @executable_path/../Frameworks/$lib \;
+    find . -name "*.dylib" -exec $INSTALLER_SCRIPT $INSTALLATION_PATH/Tupi.app/Contents/MacOS/plugins/{} $lib @executable_path/../Frameworks/$lib \;
 done
 
-cd $TUPI_INSTALL/Tupi.app/Contents/MacOS
+cd $INSTALLATION_PATH/Tupi.app/Contents/MacOS
 
 for lib in ${LIBS[@]}; do
-    $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/MacOS/Tupi $lib @executable_path/../Frameworks/$lib  \;
+    $INSTALLER_SCRIPT $INSTALLATION_PATH/Tupi.app/Contents/MacOS/Tupi $lib @executable_path/../Frameworks/$lib  \;
 done
 
-# cp -r /usr/local/Cellar/qt/4.8.3/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib $TUPI_INSTALL/Tupi.app/Contents/Resources
-cp -r /Users/parquesoft/Qt5.3.0/MaintenanceTool.app/Contents/Resources/qt_menu.nib $TUPI_INSTALL/Tupi.app/Contents/Resources
+cp -r /Users/xtingray/Qt/MaintenanceTool.app/Contents/Resources/qt_menu.nib $INSTALLATION_PATH/Tupi.app/Contents/Resources
 
-cd $TUPI_INSTALL
+cd $INSTALLATION_PATH
 
 mkdir Tupi.app/Contents/Frameworks/
 
@@ -87,9 +85,9 @@ for lib in ${LIBS[@]}; do
     cp lib/tupi/$lib Tupi.app/Contents/Frameworks/
 done
 for lib in ${LIBS[@]}; do
-    $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/Frameworks/$lib  \/usr\/local\/lib\/ @executable_path/../Frameworks/
+    $INSTALLER_SCRIPT $INSTALLATION_PATH/Tupi.app/Contents/Frameworks/$lib  \/usr\/local\/lib\/ @executable_path/../Frameworks/
     for sublib in ${LIBS[@]}; do
-        $INSTALL_NAME $TUPI_INSTALL/Tupi.app/Contents/Frameworks/$lib $sublib @executable_path/../Frameworks/$sublib
+        $INSTALLER_SCRIPT $INSTALLATION_PATH/Tupi.app/Contents/Frameworks/$lib $sublib @executable_path/../Frameworks/$sublib
     done
 done
 
