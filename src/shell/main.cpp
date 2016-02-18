@@ -75,6 +75,7 @@
 
 int main(int argc, char ** argv)
 {
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     TupApplication application(argc, argv);
 
 #ifdef Q_OS_UNIX
@@ -175,13 +176,15 @@ int main(int argc, char ** argv)
     QApplication::setStyle(style);
 
     // SQA: Add support for at least two languages for the next release 
-    if ((locale.compare("en") != 0) && ((locale.compare("es") == 0) || (locale.compare("pt") == 0))) {
-    // if (locale.compare("es") == 0) {
+    QList<QString> langSupport;
+    langSupport << "es" << "fr" << "pt";
+    if (locale.compare("en") != 0 && langSupport.contains(locale)) {
         #ifdef Q_OS_WIN
             QString langFile = kAppProp->shareDir() + "translations/tupi_" + locale + ".qm";
         #else
             QString langFile = kAppProp->shareDir() + "data/translations/tupi_" + locale + ".qm";
         #endif
+
         if (QFile::exists(langFile)) {
             // Loading localization files...
             QTranslator *translator = new QTranslator;

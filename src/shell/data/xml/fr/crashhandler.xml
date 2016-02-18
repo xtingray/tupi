@@ -1,0 +1,10 @@
+<CrashHandler>
+	<Title text="Erreur fatale" />
+	<Message text="Cher animateur/trice:" color="red" />
+	<Button text="Close" />
+	<Default text="Tupi s'est planté à cause d'un  infâme bogue logiciel! Nous en sommes désolé:(&lt;br&gt;&lt;br&gt;Mais, tout est pas perdu!
+	Vous pourriez éventuellement nous aider à résoudre le plantage.&lt;br&gt;SVP, 
+	faite un rapport de bogue sur &lt;a href='http://www.maefloresta.com/portal/project/issues?projects=&status=Open&priorities=All&categories=bug'
+	&gt;http://maefloresta.com/&lt;/a&gt; et nous aider à faire un meilleur logiciel.&lt;br&gt;&lt;br&gt;Merci,&lt;br&gt;&lt;br&gt;--
+	L'&lt;i&gt;honteuse&lt;/i&gt; équipe de developpement" image="crash.png" />
+</CrashHandler>

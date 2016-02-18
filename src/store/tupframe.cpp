@@ -246,7 +246,6 @@ void TupFrame::fromXml(const QString &xml)
     QDomNode n = root.firstChild();
     while (!n.isNull()) {
            QDomElement e = n.toElement();
-
            if (!e.isNull()) {
                if (e.tagName() == "object") {
                    QDomNode n2 = e.firstChild();
