@@ -54,7 +54,6 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <QTextCodec>
 #include <QMessageBox>
 #include <QDir>
 #include <QLocale>
@@ -75,7 +74,6 @@
 
 int main(int argc, char ** argv)
 {
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     TupApplication application(argc, argv);
 
 #ifdef Q_OS_UNIX
