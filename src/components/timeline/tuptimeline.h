@@ -75,9 +75,9 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         void libraryResponse(TupLibraryResponse *response);
         
     public slots:
-        void insertScene(int sceneIndex, const QString &name);
+        void addScene(int sceneIndex, const QString &name);
         void removeScene(int sceneIndex);
-        void emitRequestChangeFrame(int sceneIndex, int layerIndex, int frameIndex);
+        // void emitChangeFrameRequest(int sceneIndex, int layerIndex, int frameIndex);
 
     private slots:
         void requestCommand(int action);
@@ -85,10 +85,12 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         bool requestLayerAction(int action, int layerIndex = -1, int sceneIndex = -1, const QVariant &arg = QVariant());
         bool requestSceneAction(int action, int sceneIndex = -1, const QVariant &arg = QVariant());
         void selectFrame(int indexLayer, int indexFrame);
-        void requestLayerMove(int oldIndex, int newIndex);
+        void removeFrameCopy(int layerIndex, int frameIndex);
+        void copyFrameForward(int layerIndex, int frameIndex);
+        void requestLayerMove(int oldLayerIndex, int newLayerIndex);
 
-        void requestLayerVisibilityAction(int layer, bool isVisible);
-        void requestLayerRenameAction(int layer, const QString &name);
+        void requestLayerVisibilityAction(int layerIndex, bool isVisible);
+        void requestLayerRenameAction(int layerIndex, const QString &name);
         void requestSceneSelection(int sceneIndex);
         
     private:

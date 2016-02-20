@@ -49,7 +49,7 @@ TupSceneContainer::~TupSceneContainer()
 {
 }
 
-void TupSceneContainer::insertScene(int sceneIndex, TupTimeLineTable *framesTable, const QString &sceneName)
+void TupSceneContainer::addScene(int sceneIndex, TupTimeLineTable *framesTable, const QString &sceneName)
 {
     k->scenes << framesTable; 
     QTabWidget::insertTab(sceneIndex, framesTable, sceneName);
@@ -76,6 +76,14 @@ void TupSceneContainer::removeAllTabs()
          QTabWidget::removeTab(i);
     }
     // delete currentWidget();
+}
+
+TupTimeLineTable * TupSceneContainer::currentScene()
+{
+    int index = currentIndex();
+    TupTimeLineTable *framesTable = k->scenes.at(index);
+
+    return framesTable;
 }
 
 #ifndef QT_NO_WHEELEVENT

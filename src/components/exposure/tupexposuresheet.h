@@ -97,10 +97,10 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
     public slots:
         void closeAllScenes();
         void applyAction(int action);
-        void addScene(int index, const QString &name);
-        void renameScene(int index, const QString &name);
-        void setScene(int index);
-        void changeVisibilityLayer(int, bool);
+        void addScene(int sceneIndex, const QString &name);
+        void renameScene(int sceneIndex, const QString &name);
+        void setScene(int sceneIndex);
+        void changeLayerVisibility(int, bool);
 
     private slots: 
         void requestChangeScene(int index);
@@ -115,10 +115,13 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void clearFrame();
         void lockFrame();
 
-        void insertFrame(int indexLayer, int indexFrame);
-        void renameFrame(int indexLayer, int indexFrame, const QString &name);
-        void selectFrame(int indexLayer, int indexFrame);
-        void requestRenameLayer(int indexLayer, const QString &name);
+        void insertFrame(int layerIndex, int frameIndex);
+        void renameFrame(int layerIndex, int frameIndex, const QString &name);
+        void selectFrame(int layerIndex, int frameIndex);
+        void removeFrameCopy(int layerIndex, int frameIndex);
+        void copyFrameForward(int layerIndex, int frameIndex);
+
+        void requestRenameLayer(int layerIndex, const QString &name);
         void moveLayer(int oldIndex, int newIndex);
         void actionTriggered(QAction *action);
 };

@@ -358,9 +358,9 @@ TupExposureTable::FrameType TupExposureTable::frameState(int layerIndex, int fra
 
 void TupExposureTable::updateFrameState(int layerIndex, int frameIndex, TupExposureTable::FrameType value)
 {	
-	if (layerIndex < 0 || frameIndex < 0)
-		return;
-	
+    if (layerIndex < 0 || frameIndex < 0)
+        return;
+
     QTableWidgetItem *frame = item(frameIndex, layerIndex);
     if (frame) {
         frame->setData(IsEmpty, value);
@@ -628,16 +628,13 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Up || event->key() == Qt::Key_PageUp) {
         int row = currentRow()-1;
         if (row > -1) {
-            setCurrentCell(row, currentColumn());
+            if (event->modifiers() == Qt::ControlModifier)
+                emit frameRemoved(currentLayer(), currentFrame());
+            else
+                setCurrentCell(row, currentColumn());
         } else {
-            #ifdef K_DEBUG
-                QString msg = "TupExposureTable::keyPressEvent() - Warning: wrong frame index [ " + QString::number(row) + " ]";
-                #ifdef Q_OS_WIN
-                    qWarning() << msg;
-                #else
-                    tWarning() << msg;
-                #endif
-            #endif
+            if (row == -1 && event->modifiers() == Qt::ControlModifier)
+                emit frameRemoved(currentLayer(), currentFrame());
         }
 
         return;
@@ -645,11 +642,15 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
 
     if (event->key() == Qt::Key_Down || event->key() == Qt::Key_PageDown) {
         int framesCount = k->header->lastFrame(currentLayer());
-        int next = currentRow()+1;
-        if (next >= framesCount)
-            markUsedFrames(next, currentColumn());
-        else
-            setCurrentCell(next, currentColumn());
+        int next = currentRow() + 1;
+        if (event->modifiers() == Qt::ControlModifier) {
+            emit frameCopied(currentLayer(), currentFrame());
+        } else {
+            if (next >= framesCount)
+                markUsedFrames(next, currentColumn());
+            else
+                setCurrentCell(next, currentColumn());
+        }
 
         return;
     }

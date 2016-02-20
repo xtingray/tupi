@@ -91,47 +91,48 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         
     public slots:
         // Layers
-        void insertLayer(int index, const QString &name);
-        void insertSoundLayer(int layerPos, const QString &name);
-        void removeLayer(int pos);
-        void moveLayer(int pos, int newPos);
-        int lastFrameByLayer(int layerPos);
+        void insertLayer(int layerIndex, const QString &name);
+        void insertSoundLayer(int layerIndex, const QString &name);
+        void removeLayer(int layerIndex);
+        void moveLayer(int oldLayerIndex, int newLayerIndex);
+        int lastFrameByLayer(int layerIndex);
         void updateLayerHeader(int layerIndex);
         int currentLayer();
         int layersCount();
 
         // Frames
-        // void insertFrame(int layerPos, const QString &name);
-        void insertFrame(int layerPos);
-        void selectFrame(int index);
-        void setAttribute(int row, int col, TupTimeLineTableItem::Attributes att, bool value);
-        void removeFrame(int layerPos, int position);
-        void lockFrame(int layerPosition, int position, bool lock);
+        void insertFrame(int layerIndex);
+        void selectFrame(int frameIndex);
+        void setAttribute(int layerIndex, int frameIndex, TupTimeLineTableItem::Attributes att, bool value);
+        void removeFrame(int layerIndex, int position);
+        void lockFrame(int layerIndex, int frameIndex, bool lock);
         void setItemSize(int w, int h);
-        void exchangeFrame(int currentFrame, int currentLayer, int newFrame, int newLayer);
+        void exchangeFrame(int currentFrameIndex, int currentLayerIndex, int newFrameIndex, int newLayerIndex);
         
     private:
         void setup();
         
     protected:
         void fixSize();
-        void mousePressEvent(QMouseEvent * event);
-        void keyPressEvent(QKeyEvent * event);
+        void mousePressEvent(QMouseEvent *event);
+        void keyPressEvent(QKeyEvent *event);
         void enterEvent(QEvent *event);
         void leaveEvent(QEvent *event);
         
     private slots:
         void frameSelectionFromRuler(int frameIndex);
         void frameSelectionFromLayerHeader(int layerIndex);
-        void requestFrameSelection(int currentSelectedRow, int currentSelectedColumn, int previousRow, int previousColumn);
-        void requestLayerMove(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+        void requestFrameSelection(int currentLayerIndex, int currentFrameIndex, int previousLayerIndex, int previousFrameIndex);
+        void requestLayerMove(int logicalIndex, int oldLayerIndex, int newLayerIndex);
         
     signals:
-        void frameChanged(int sceneIndex, int layerIndex, int frameIndex);
-        void frameSelected(int layer, int frame);
-        void visibilityChanged(int layer, bool isVisible);
-        void layerNameChanged(int layer, const QString &name);
-        void layerMoved(int oldVisualIndex, int newVisualIndex);
+        // void frameChanged(int sceneIndex, int layerIndex, int frameIndex);
+        void frameSelected(int layerIndex, int frameIndex);
+        void frameRemoved(int layerIndex, int frameIndex);
+        void frameCopied(int layerIndex, int frameIndex);
+        void visibilityChanged(int layerIndex, bool isVisible);
+        void layerNameChanged(int layerIndex, const QString &name);
+        void layerMoved(int oldLayerIndex, int newLayerIndex);
         
     private:
         struct Private;

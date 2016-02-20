@@ -1314,8 +1314,8 @@ void TupGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     */
 
     // SQA: Temporal solution for cases when there's no current frame defined
-    if (!currentFrame())
-        return;
+    // if (!currentFrame())
+    //     return;
 
     QGraphicsScene::mouseReleaseEvent(event);
     mouseReleased(event);
@@ -1332,6 +1332,9 @@ void TupGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
         #endif
     #endif
     */
+
+    if (!k->tool)
+        return;
 
     if (k->tool->toolType() == TupToolInterface::Brush) {
         if (event->button() == Qt::RightButton) 
