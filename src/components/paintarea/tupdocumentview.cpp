@@ -759,7 +759,7 @@ void TupDocumentView::loadPlugin(int menu, int index)
                      } else if (index == TupToolPlugin::FrameForward) {
                                 k->paintArea->goOneFrameForward();
                      } else if (index == TupToolPlugin::QuickCopy) {
-                                k->paintArea->quickCopy();
+                                k->paintArea->copyFrameForward();
                      }
                      return;
                  }

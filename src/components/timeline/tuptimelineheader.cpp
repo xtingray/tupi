@@ -204,7 +204,9 @@ void TupTimeLineHeader::removeSection(int index)
 
 int TupTimeLineHeader::lastFrame(int index)
 {
-    return k->layers[index].lastFrame;
+    if (index > -1 && index < k->layers.count())
+        return k->layers[index].lastFrame;
+    return -1;
 }
 
 void TupTimeLineHeader::updateLastFrame(int index, bool addition)

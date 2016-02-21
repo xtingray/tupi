@@ -372,7 +372,6 @@ void TupTimeLine::libraryResponse(TupLibraryResponse *response)
 void TupTimeLine::requestCommand(int action)
 {
     int sceneIndex = k->scenesContainer->currentIndex();
-
     if (sceneIndex < 0) {
         #ifdef K_DEBUG
             QString msg = "TupTimeLine::requestCommand() - Fatal Error: Scene index is invalid -> " + QString::number(sceneIndex);
@@ -387,7 +386,6 @@ void TupTimeLine::requestCommand(int action)
     }
 
     int layerIndex = framesTable(sceneIndex)->currentLayer();
-
     if (layerIndex < 0) {
         #ifdef K_DEBUG
             QString msg = "TupTimeLine::requestCommand() - Fatal Error: Layer index is invalid -> " + QString::number(layerIndex);
@@ -402,7 +400,6 @@ void TupTimeLine::requestCommand(int action)
     }
 
     int frameIndex = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
-
     if (frameIndex < 0) {
         #ifdef K_DEBUG
             QString msg = "TupTimeLine::requestCommand() - Fatal Error: Frame index is invalid -> " + QString::number(frameIndex);
@@ -758,8 +755,20 @@ void TupTimeLine::removeFrameCopy(int layerIndex, int frameIndex)
     int sceneIndex = k->scenesContainer->currentIndex();
     TupTimeLineTable *framesTable = k->scenesContainer->currentScene();
 
+    int framesCount;
+    TupScene *scene = k->project->sceneAt(sceneIndex);
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer)
+            framesCount = layer->framesCount();
+        else
+            return;
+    } else {
+        return;
+    }
+
     TupProjectRequest request;
-    if (framesTable->lastFrameByLayer(layerIndex) == 0) {
+    if (framesCount == 1) {
         request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Reset);
         emit requestTriggered(&request);
 
@@ -795,7 +804,7 @@ void TupTimeLine::copyFrameForward(int layerIndex, int frameIndex)
     emit localRequestTriggered(&request);
 
     int target = frameIndex + 1;
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Add, tr("Frame"));
+    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Add, "");
     emit requestTriggered(&request);
 
     request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Paste);

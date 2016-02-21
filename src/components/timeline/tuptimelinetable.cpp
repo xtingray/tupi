@@ -337,11 +337,14 @@ int TupTimeLineTable::layersCount()
 
 int TupTimeLineTable::lastFrameByLayer(int layerIndex)
 {
-    // if (layerIndex < 0 || layerIndex >= rowCount())
-    if (layerIndex < 0) 
+    // if (layerIndex < 0) 
+    if (layerIndex < 0 || layerIndex >= rowCount())
         return -1;
 
-    return k->layerColumn->lastFrame(layerIndex);
+    if (k->layerColumn)
+        return k->layerColumn->lastFrame(layerIndex);
+
+    return -1;
 }
 
 // FRAMES
