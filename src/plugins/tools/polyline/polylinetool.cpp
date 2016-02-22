@@ -215,7 +215,7 @@ void PolyLineTool::release(const TupInputDeviceInformation *input, TupBrushManag
     if (k->cutterOn)
         return;
 
-    if (k->begin) {
+    if (k->begin && k->item) {
         QDomDocument doc;
         doc.appendChild(k->item->toXml(doc));
         TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
@@ -227,15 +227,17 @@ void PolyLineTool::release(const TupInputDeviceInformation *input, TupBrushManag
  
         k->begin = false;
     } else {
-        if (!k->nodeGroup) {
-            k->nodeGroup = new TNodeGroup(k->item, k->scene, TNodeGroup::Polyline, k->item->zValue() + 1);
-            connect(k->nodeGroup, SIGNAL(nodeReleased()), this, SLOT(nodeChanged()));
-        } else {
-            k->nodeGroup->createNodes(k->item);
-        }
+        if (k->item) {
+            if (!k->nodeGroup) {
+                k->nodeGroup = new TNodeGroup(k->item, k->scene, TNodeGroup::Polyline, k->item->zValue() + 1);
+                connect(k->nodeGroup, SIGNAL(nodeReleased()), this, SLOT(nodeChanged()));
+            } else {
+                k->nodeGroup->createNodes(k->item);
+            }
 
-        k->nodeGroup->show();
-        k->nodeGroup->resizeNodes(k->realFactor);
+            k->nodeGroup->show();
+            k->nodeGroup->resizeNodes(k->realFactor);
+        }
     }
 }
 
@@ -429,6 +431,9 @@ void PolyLineTool::keyReleaseEvent(QKeyEvent *event)
 
 void PolyLineTool::initEnv(bool postInit)
 {
+    if (!k->item)
+        return;
+
     if (postInit) {
         if (k->nodeGroup) { 
             k->nodeGroup->clear();
