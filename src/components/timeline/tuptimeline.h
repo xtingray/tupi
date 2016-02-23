@@ -73,6 +73,9 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         void layerResponse(TupLayerResponse *response);
         void frameResponse(TupFrameResponse *response);
         void libraryResponse(TupLibraryResponse *response);
+
+    signals:
+        void newPerspective(int);
         
     public slots:
         void addScene(int sceneIndex, const QString &name);

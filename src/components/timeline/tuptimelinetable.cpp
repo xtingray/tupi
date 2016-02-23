@@ -487,6 +487,11 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
     if (event->key() == 16777232 || event->key() == 16777233)
         return;
 
+    if (event->key() == Qt::Key_Return) {
+        emit newPerspective(4);
+        return;
+    }
+
     if (event->key() == Qt::Key_Right || event->key() == Qt::Key_PageDown) {
         int limit = columnCount()-1;
         int next = currentColumn()+1;

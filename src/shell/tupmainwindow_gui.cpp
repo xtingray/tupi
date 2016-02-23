@@ -134,6 +134,8 @@ void TupMainWindow::createGUI()
 
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new TupTimeLine(m_projectManager->project());
+    connect(m_timeLine, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
+
     timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Animation, "Time Line", QKeySequence(tr("Shift+T")));
     m_actionManager->insert(timeView->toggleViewAction(), "show_timeline");
     addToPerspective(timeView->toggleViewAction(), Animation);

@@ -122,6 +122,7 @@ void TupTimeLine::addScene(int sceneIndex, const QString &name)
     connect(framesTable, SIGNAL(visibilityChanged(int, bool)), this, SLOT(requestLayerVisibilityAction(int, bool)));
     connect(framesTable, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestLayerRenameAction(int, const QString &))); 
     connect(framesTable, SIGNAL(layerMoved(int, int)), this, SLOT(requestLayerMove(int, int)));
+    connect(framesTable, SIGNAL(newPerspective(int)), this, SIGNAL(newPerspective(int)));
 
     k->scenesContainer->addScene(sceneIndex, framesTable, name);
 }
