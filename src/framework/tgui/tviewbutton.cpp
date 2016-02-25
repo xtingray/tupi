@@ -100,7 +100,6 @@ void TViewButton::setup()
     connect(m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
 	
     setChecked(false);
-    flag = false;
 
     m_blending = true;
 
@@ -114,16 +113,6 @@ void TViewButton::setup()
 TViewButton::~TViewButton()
 {
     delete m_animator;
-}
-
-void TViewButton::setFlag(bool value)
-{
-    flag = value;
-}
-
-bool TViewButton::flagValue()
-{
-    return flag;
 }
 
 void TViewButton::setOnlyText()
@@ -399,11 +388,11 @@ void TViewButton::toggleView()
 
     m_toolView->toggleViewAction()->trigger();
 
-    tError() << "TViewButton::toggleView() - m_toolView->isVisible() -> " << m_toolView->isVisible();
+    // tError() << "TViewButton::toggleView() - m_toolView->isVisible() -> " << m_toolView->isVisible();
 
     setChecked(m_toolView->isVisible());
 
-    tError() << "TViewButton::toggleView() - isChecked() -> " << isChecked();
+    // tError() << "TViewButton::toggleView() - isChecked() -> " << isChecked();
     m_toolView->setUpdatesEnabled(true);
     if (mw)
         mw->setUpdatesEnabled(true);

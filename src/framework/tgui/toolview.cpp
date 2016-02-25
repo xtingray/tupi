@@ -67,13 +67,10 @@ void ToolView::expandDock(bool flag)
 {
     expanded = flag;
 
-    if (flag) {
+    if (flag)
         show();
-        m_button->setFlag(true);
-    } else { 
+    else 
         close();
-        m_button->setFlag(false);
-    }
 
     //m_button->setChecked(flag);
     m_button->setActivated(flag);
@@ -86,13 +83,10 @@ bool ToolView::isExpanded()
 
 void ToolView::setExpandingFlag() 
 {
-    if (expanded) {
+    if (expanded)
         expanded = false;
-        m_button->setFlag(false);
-    } else {
+    else 
         expanded = true;
-        m_button->setFlag(true);
-    }
 }
 
 void ToolView::setSizeHint() 
@@ -157,15 +151,15 @@ void ToolView::setFixedSize(int s)
 
 void ToolView::showEvent(QShowEvent *event)
 {
-    closedFromCross = false;
-    m_button->setFlag(true);
-
     if (TMainWindow *mw = dynamic_cast<TMainWindow *>(parentWidget())) {
         if (!(mw->currentPerspective() & m_perspective)) {
             event->ignore(); // make sure!
             return;
         }
     }
+
+    closedFromCross = false;
+    tError() << "ToolView::showEvent() - SHOWING! closedFromCross -> " << closedFromCross;
 
     QDockWidget::showEvent(event);
 }
@@ -174,45 +168,26 @@ void ToolView::closeEvent(QCloseEvent *event)
 {
     tError() << "ToolView::closeEvent() - expanded -> " << expanded;
 
-    /*
-    if (expanded) {
-        if (dynamic_cast<TMainWindow *>(parentWidget())) {
-            tError() << "ToolView::closeEvent() - Closing dock! -> 1";
-            tError() << "";
-            expanded = false;
-            // m_button->click();
-            m_button->toggleView();
-            m_button->setChecked(false);
-            return;
-        }
-    } else {
-        if (dynamic_cast<TMainWindow *>(parentWidget())) {
-            expanded = false;
-            if (m_button->isChecked())
-                m_button->toggleView();
-        }
-    }
-    */
-
     if (dynamic_cast<TMainWindow *>(parentWidget())) {
+        event->accept();
         tError() << "ToolView::closeEvent() - Closing dock!";
         if (expanded) {
+            tError() << "ToolView::closeEvent() - Closed from CROSS!!!";
             closedFromCross = true;
             expanded = false;
-            m_button->setFlag(false);
-        } else {
-            closedFromCross = false;
         }
-        m_button->setFlag(false);
         if (m_button->isChecked())
             m_button->toggleView();
     }
+
+    tError() << "ToolView::closeEvent() - closedFromCross -> " << closedFromCross;
 
     QDockWidget::closeEvent(event);
 }
 
 bool ToolView::specialCase()
 {
+    tError() << "ToolView::specialCase() - closedFromCross -> " << closedFromCross;
     return closedFromCross;
 }
 

@@ -76,7 +76,6 @@ class T_GUI_EXPORT TViewButton : public QToolButton
         void setup();
 
         void setFlag(bool value);
-        bool flagValue();
 
     public slots:
         void setSensible(bool s);
@@ -112,7 +111,6 @@ class T_GUI_EXPORT TViewButton : public QToolButton
         ToolView *m_toolView;
         bool m_isSensible;
         bool m_blending;
-        bool flag;
 };
 
 #endif

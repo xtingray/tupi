@@ -612,7 +612,7 @@ void TMainWindow::setCurrentPerspective(int workspace)
                           bar->enable(view->button());
  
                           // if (view->button()->isChecked()) {
-                          if (view->isChecked() && !view->specialCase()) {
+                          if (view->isChecked()) {
                               tError() << "TMainWindow::setCurrentPerspective() - Showing view at ws -> " << workspace;
                               view->show(); 
                           }
