@@ -140,6 +140,8 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void layerMoved(int oldIndex, int newIndex);
         void layerVisibilityChanged(int visualIndexLayer, bool visibility);
 
+        void newPerspective(int);
+
     private:
         bool layerIndexIsValid(int layerIndex);
         bool frameIndexIsValid(int frameIndex);

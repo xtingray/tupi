@@ -76,6 +76,7 @@ class T_GUI_EXPORT ToolView : public QDockWidget
         QString getObjectID();
         bool isChecked();
         void setShortcut(QKeySequence shortcut);
+        bool specialCase();
 
     public slots:
         void saveSize(bool checked);
@@ -84,7 +85,8 @@ class T_GUI_EXPORT ToolView : public QDockWidget
         void setup(const QString &label);
 
     protected:
-        virtual void showEvent(QShowEvent *e);
+        virtual void showEvent(QShowEvent *event);
+        virtual void closeEvent(QCloseEvent *event);
 
 /*		
 #if QT_VERSION < 0x040200
@@ -101,6 +103,7 @@ class T_GUI_EXPORT ToolView : public QDockWidget
         int m_size;
         int m_perspective;
         bool expanded;
+        bool closedFromCross;
 };
 
 #endif

@@ -593,7 +593,6 @@ void TMainWindow::setCurrentPerspective(int workspace)
         return;
 
     typedef QList<ToolView *> Views;
-
     QList<Views > viewsList = m_toolViews.values();
 
     setUpdatesEnabled(false);
@@ -612,8 +611,10 @@ void TMainWindow::setCurrentPerspective(int workspace)
                       if (view->perspective() & workspace) {
                           bar->enable(view->button());
  
-                          if (view->button()->isChecked() && (workspace != 4) && view->getObjectID().compare("ToolView-Help")!=0) {
-                              view->show();
+                          // if (view->button()->isChecked()) {
+                          if (view->isChecked() && !view->specialCase()) {
+                              tError() << "TMainWindow::setCurrentPerspective() - Showing view at ws -> " << workspace;
+                              view->show(); 
                           }
                       } else {
                               bar->disable(view->button());

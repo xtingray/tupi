@@ -230,7 +230,7 @@ void TupScreen::play()
 
     k->isPlaying = true;
 
-    if (k->playBackTimer->isActive()) 
+    if (k->playBackTimer->isActive())
         stop();
 
     k->currentFramePosition = 0;
@@ -555,7 +555,11 @@ void TupScreen::resizeEvent(QResizeEvent *event)
     if (k->currentSceneIndex > -1) {
         k->currentFramePosition = 0;
         k->photograms = k->animationList.at(k->currentSceneIndex);
-        stop();
+        /*
+        if (k->timer->isActive() || k->playBackTimer->isActive()) {
+            stop();
+        }
+        */
         updateFirstFrame();
         update();
     } else {

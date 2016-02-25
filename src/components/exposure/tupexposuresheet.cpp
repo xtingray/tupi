@@ -213,6 +213,7 @@ void TupExposureSheet::addScene(int sceneIndex, const QString &name)
     connect(scene, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestRenameLayer(int, const QString &)));
     connect(scene, SIGNAL(layerMoved(int, int)), this, SLOT(moveLayer(int, int)));
     connect(scene, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(changeLayerVisibility(int, bool)));
+    connect(scene, SIGNAL(newPerspective(int)), this, SIGNAL(newPerspective(int))); 
 
     k->scenesContainer->addScene(sceneIndex, name, scene);
 }

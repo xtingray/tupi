@@ -94,6 +94,9 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         virtual void itemResponse(TupItemResponse *response);
         virtual void libraryResponse(TupLibraryResponse *response);
 
+    signals:
+        void newPerspective(int);
+
     public slots:
         void closeAllScenes();
         void applyAction(int action);

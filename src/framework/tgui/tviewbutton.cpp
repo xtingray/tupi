@@ -100,6 +100,7 @@ void TViewButton::setup()
     connect(m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
 	
     setChecked(false);
+    flag = false;
 
     m_blending = true;
 
@@ -113,6 +114,16 @@ void TViewButton::setup()
 TViewButton::~TViewButton()
 {
     delete m_animator;
+}
+
+void TViewButton::setFlag(bool value)
+{
+    flag = value;
+}
+
+bool TViewButton::flagValue()
+{
+    return flag;
 }
 
 void TViewButton::setOnlyText()
@@ -267,23 +278,23 @@ QMenu *TViewButton::createMenu()
     menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
     menu->addSeparator();
 	
-    QAction *a = menu->addAction(tr("Mouse sensibility"));
-    connect(a, SIGNAL(toggled(bool)), this, SLOT(setSensible(bool)));
-    a->setCheckable(true);
-    a->setChecked(isSensible());
+    QAction *action = menu->addAction(tr("Mouse sensibility"));
+    connect(action, SIGNAL(toggled(bool)), this, SLOT(setSensible(bool)));
+    action->setCheckable(true);
+    action->setChecked(isSensible());
 
     return menu;
 }
 
-void TViewButton::mousePressEvent(QMouseEvent *e)
+void TViewButton::mousePressEvent(QMouseEvent *event)
 {
     m_toolView->setExpandingFlag();
 
-    QToolButton::mousePressEvent(e);
+    QToolButton::mousePressEvent(event);
 
-    if (e->button() == Qt::RightButton) {
-        createMenu()->exec(e->globalPos());
-        e->accept();
+    if (event->button() == Qt::RightButton) {
+        createMenu()->exec(event->globalPos());
+        event->accept();
     }
 }
 
@@ -377,9 +388,7 @@ bool TViewButton::blending() const
 void TViewButton::toggleView()
 {
     QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
-
     m_toolView->setUpdatesEnabled(false);
-
     if (mw)
         mw->setUpdatesEnabled(false);
 
@@ -389,17 +398,16 @@ void TViewButton::toggleView()
         m_toolView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_toolView->toggleViewAction()->trigger();
-	
-    setChecked(m_toolView->isVisible());
-    m_toolView->setUpdatesEnabled(true);
 
+    tError() << "TViewButton::toggleView() - m_toolView->isVisible() -> " << m_toolView->isVisible();
+
+    setChecked(m_toolView->isVisible());
+
+    tError() << "TViewButton::toggleView() - isChecked() -> " << isChecked();
+    m_toolView->setUpdatesEnabled(true);
     if (mw)
         mw->setUpdatesEnabled(true);
-
-    if (m_toolView->objectName().compare("ToolView-Help") == 0)
-        emit helpIsOpen();
 }
-
 
 ToolView *TViewButton::toolView() const
 {
