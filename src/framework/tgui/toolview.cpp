@@ -38,11 +38,13 @@
 ToolView::ToolView(const QString &title, const QIcon &icon, const QString &code, QWidget * parent)
           : QDockWidget(title, parent), m_size(-1), m_perspective(0)
 {
+    setFeatures(QDockWidget::NoDockWidgetFeatures);
+    // SQA: This instruction should be enabled in the future
+    // setFeatures(AllDockWidgetFeatures);
     setWindowIcon(icon);
     setup(title);
     setObjectName("ToolView-" + code);
     expanded = false;
-    closedFromCross = false;
 }
 
 ToolView::~ToolView()
@@ -51,7 +53,6 @@ ToolView::~ToolView()
 
 void ToolView::setup(const QString &label)
 {
-    setFeatures(AllDockWidgetFeatures);
     m_button = new TViewButton(this);
     m_button->setToolTip(label);
 
@@ -72,7 +73,6 @@ void ToolView::expandDock(bool flag)
     else 
         close();
 
-    //m_button->setChecked(flag);
     m_button->setActivated(flag);
 }
 
@@ -158,37 +158,7 @@ void ToolView::showEvent(QShowEvent *event)
         }
     }
 
-    closedFromCross = false;
-    tError() << "ToolView::showEvent() - SHOWING! closedFromCross -> " << closedFromCross;
-
     QDockWidget::showEvent(event);
-}
-
-void ToolView::closeEvent(QCloseEvent *event)
-{
-    tError() << "ToolView::closeEvent() - expanded -> " << expanded;
-
-    if (dynamic_cast<TMainWindow *>(parentWidget())) {
-        event->accept();
-        tError() << "ToolView::closeEvent() - Closing dock!";
-        if (expanded) {
-            tError() << "ToolView::closeEvent() - Closed from CROSS!!!";
-            closedFromCross = true;
-            expanded = false;
-        }
-        if (m_button->isChecked())
-            m_button->toggleView();
-    }
-
-    tError() << "ToolView::closeEvent() - closedFromCross -> " << closedFromCross;
-
-    QDockWidget::closeEvent(event);
-}
-
-bool ToolView::specialCase()
-{
-    tError() << "ToolView::specialCase() - closedFromCross -> " << closedFromCross;
-    return closedFromCross;
 }
 
 void ToolView::enableButton(bool flag)
@@ -208,32 +178,3 @@ bool ToolView::isChecked()
 
     return false;
 }
-
-/*
-#if QT_VERSION < 0x040200
-
-bool ToolView::event(QEvent *e)
-{
-    bool toReturn =  QDockWidget::event(e);
-
-    if (e->type() == QEvent::MouseButtonPress) {
-        if (QMainWindow *mw = dynamic_cast<QMainWindow *>(parentWidget())) {
-            m_area = mw->dockWidgetArea(this);
-        }
-    } else if (e->type() == QEvent::MouseButtonRelease) {
-               if (QMainWindow *mw = dynamic_cast<QMainWindow *>(parentWidget())) {
-                   Qt::DockWidgetArea newArea = mw->dockWidgetArea(this);
-                   if (m_area != newArea) {
-                       mw->removeDockWidget(this);
-                       mw->addDockWidget(newArea, this);
-                       emit topLevelChanged(false);
-                   }
-               }
-    }
-
-    return toReturn;
-}
-
-#endif
-*/
-

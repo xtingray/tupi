@@ -96,7 +96,6 @@ void TViewButton::setup()
 
     m_isSensible = false;
     m_animator = new Animator(this);
-
     connect(m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
 	
     setChecked(false);
@@ -139,7 +138,6 @@ Qt::ToolBarArea TViewButton::area() const
 QSize TViewButton::sizeHint() const
 {
     QSize size = QToolButton::sizeHint();
-
     if (m_area == Qt::RightToolBarArea || m_area == Qt::LeftToolBarArea)
         size.transpose();
 
@@ -387,12 +385,7 @@ void TViewButton::toggleView()
         m_toolView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_toolView->toggleViewAction()->trigger();
-
-    // tError() << "TViewButton::toggleView() - m_toolView->isVisible() -> " << m_toolView->isVisible();
-
     setChecked(m_toolView->isVisible());
-
-    // tError() << "TViewButton::toggleView() - isChecked() -> " << isChecked();
     m_toolView->setUpdatesEnabled(true);
     if (mw)
         mw->setUpdatesEnabled(true);

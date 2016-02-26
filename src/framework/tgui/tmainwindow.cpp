@@ -506,14 +506,11 @@ void TMainWindow::relayoutViewButton(bool topLevel)
     if (!topLevel) {
         if (ToolView *toolView = dynamic_cast<ToolView *>(sender())) {
             m_forRelayout = toolView;
-
             QTimer::singleShot(0, this, SLOT(relayoutToolView()));
 
             // if a tool view is floating the button bar isn't exclusive
             TButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];
-
             bool exclusive = true;
-
             foreach (ToolView *v, m_toolViews[bar])
                      exclusive = exclusive && !v->isFloating();
 
@@ -612,13 +609,12 @@ void TMainWindow::setCurrentPerspective(int workspace)
                           bar->enable(view->button());
  
                           // if (view->button()->isChecked()) {
-                          if (view->isChecked()) {
-                              tError() << "TMainWindow::setCurrentPerspective() - Showing view at ws -> " << workspace;
+                          if (view->isChecked())
                               view->show(); 
-                          }
                       } else {
                               bar->disable(view->button());
-                              if (view->button()->isChecked() || view->isVisible())
+                              // if (view->button()->isChecked() || view->isVisible())
+                              if (view->isChecked() || view->isVisible())
                                   view->close();
                               hideButtonCount[bar]++;
                       }
@@ -657,7 +653,6 @@ void TMainWindow::setCurrentPerspective(int workspace)
     }
 
     QHashIterator<QAction *, int> actionIt(m_managedActions);
-
     while (actionIt.hasNext()) {
            actionIt.next();
 
