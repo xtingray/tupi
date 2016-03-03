@@ -68,27 +68,28 @@ class TUPI_EXPORT TupProjectActionBar : public QWidget
             
             InsertFrame = 1 << 1,
             RemoveFrame = 1 << 2,
-            MoveFrameBackward = 1 << 3,
-            MoveFrameForward = 1 << 4,
-            LockFrame = 1 << 5,
+            ExtendFrame = 1 << 3, 
+            MoveFrameBackward = 1 << 4,
+            MoveFrameForward = 1 << 5,
+            LockFrame = 1 << 6,
             
-            InsertLayer = 1 << 6,
-            RemoveLayer = 1 << 7,
-            MoveLayerUp = 1 << 8,
-            MoveLayerDown = 1 << 9,
-            LockLayer = 1 << 10,
+            InsertLayer = 1 << 7,
+            RemoveLayer = 1 << 8,
+            MoveLayerUp = 1 << 9,
+            MoveLayerDown = 1 << 10,
+            LockLayer = 1 << 11,
             
-            InsertScene = 1 << 11,
-            RemoveScene = 1 << 12,
-            MoveSceneUp = 1 << 13,
-            MoveSceneDown = 1 << 14,
-            LockScene = 1 << 15,
-            Separator = 1 << 16,
+            InsertScene = 1 << 12,
+            RemoveScene = 1 << 13,
+            MoveSceneUp = 1 << 14,
+            MoveSceneDown = 1 << 15,
+            LockScene = 1 << 16,
+            Separator = 1 << 17,
 
-            AllActions = InsertFrame | RemoveFrame | MoveFrameBackward | MoveFrameForward | LockFrame | InsertLayer | RemoveLayer 
+            AllActions = InsertFrame | RemoveFrame | ExtendFrame | MoveFrameBackward | MoveFrameForward | LockFrame | InsertLayer | RemoveLayer 
                                      | MoveLayerUp | MoveLayerDown | InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown,
 
-            FrameActions = InsertFrame | RemoveFrame | MoveFrameBackward | MoveFrameForward | LockFrame,
+            FrameActions = InsertFrame | ExtendFrame | RemoveFrame | MoveFrameBackward | MoveFrameForward | LockFrame,
             LayerActions = InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown | LockLayer,
             SceneActions = InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown
         };

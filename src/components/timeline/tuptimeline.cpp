@@ -70,6 +70,7 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
                         TupProjectActionBar::RemoveLayer |
                         TupProjectActionBar::Separator |
                         TupProjectActionBar::InsertFrame |
+                        TupProjectActionBar::ExtendFrame |
                         TupProjectActionBar::RemoveFrame |
                         TupProjectActionBar::MoveFrameBackward |
                         TupProjectActionBar::MoveFrameForward |
@@ -497,6 +498,12 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
                  }
 
                  selectFrame(layerIndex, lastFrame + 1);
+                 return true;
+            }
+            break;
+            case TupProjectActionBar::ExtendFrame:
+            {
+                 copyFrameForward(layerIndex, frameIndex);
                  return true;
             }
             break;

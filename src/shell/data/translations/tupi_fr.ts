@@ -1689,7 +1689,7 @@
     <message>
         <location filename="../src/components/animation/tupcamerastatus.cpp" line="85"/>
         <source>Frames total</source>
-        <translation>(????)</translation>
+        <translation type="unfinished">(????)</translation>
     </message>
     <message>
         <location filename="../src/components/animation/tupcamerastatus.cpp" line="96"/>
@@ -2227,7 +2227,7 @@
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="460"/>
         <source>Tweening</source>
-        <translation>(????)</translation>
+        <translation type="unfinished">(????)</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupdocumentview.cpp" line="465"/>
@@ -3575,7 +3575,7 @@ SVP, renommer le fichier du projet</translation>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="220"/>
         <source>[ by %1 | net mode ]</source>
-        <translation>[ par %1 | mode net] (????)</translation>
+        <translation type="unfinished">[ par %1 | mode net] (????)</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="259"/>
@@ -4271,7 +4271,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
     <message>
         <location filename="../src/shell/tupnewproject.cpp" line="103"/>
         <source>Presets</source>
-        <translation>Presets (????)</translation>
+        <translation type="unfinished">Presets (????)</translation>
     </message>
     <message>
         <location filename="../src/shell/tupnewproject.cpp" line="106"/>
@@ -6026,7 +6026,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
         <location filename="../src/plugins/tools/shear/tweener.cpp" line="260"/>
         <location filename="../src/plugins/tools/shear/tweener.cpp" line="571"/>
         <source>Shear Tween</source>
-        <translation>(????)</translation>
+        <translation type="unfinished">(????)</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/shear/tweener.cpp" line="258"/>

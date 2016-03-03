@@ -226,11 +226,11 @@ bool TupLayer::resetFrame(int position)
     TupFrame *toReset = frameAt(position);
 
     if (toReset) {
-        QString label = toReset->frameName();
+        // QString label = toReset->frameName();
         // if (framesCounter() == 1)
         //     label = tr("Frame") + " 1";
         TupFrame *frame = new TupFrame(this); 
-        frame->setFrameName(label);
+        frame->setFrameName(tr("Frame"));
         k->frames.insert(position, frame);
         return true;
     }

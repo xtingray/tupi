@@ -101,7 +101,18 @@ void TupProjectActionBar::setup(Actions actions)
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
     }
-    
+
+    if (actions & ExtendFrame) {
+        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/extend_frame.png"), size);
+        button->setToolTip(tr("Extend frame"));
+        // button->setShortcut(QKeySequence());
+
+        k->actions.addButton(button, ExtendFrame);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
     if (actions & RemoveFrame) {
         TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
         button->setToolTip(tr("Remove frame"));
@@ -113,7 +124,7 @@ void TupProjectActionBar::setup(Actions actions)
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
     }
-     
+
     if (actions & MoveFrameBackward) {
         TImageButton *button = 0;
         if (k->container.compare("Exposure") == 0) {

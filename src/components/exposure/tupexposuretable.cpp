@@ -670,10 +670,12 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         return;
     }   
 
+    /*
     if (event->key() == Qt::Key_Return) {
         emit newPerspective(4);
         return;
     }
+    */
 }
 
 // SQA : Verify if this method is required
