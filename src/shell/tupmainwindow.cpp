@@ -533,6 +533,7 @@ void TupMainWindow::resetUI()
 
     setUpdatesEnabled(false);
     setMenuItemsContext(false);
+    updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
 
     if (animationTab)
         animationTab->closeArea();
@@ -764,12 +765,10 @@ void TupMainWindow::openProject(const QString &path)
             projectName = m_projectManager->project()->projectName();
 
             int pos = m_recentProjects.indexOf(m_fileName);
-
             if (pos == -1) {
-                if (m_recentProjects.count() <= 6)
-                    m_recentProjects << m_fileName;
-                else
-                    m_recentProjects.push_front(m_fileName);
+                m_recentProjects.push_front(m_fileName);
+                if (m_recentProjects.count() > 5)
+                    m_recentProjects.removeLast();
             } else {
                 m_recentProjects.push_front(m_recentProjects.takeAt(pos));
             }
@@ -1137,6 +1136,16 @@ void TupMainWindow::saveProject()
         }
 
         if (m_projectManager->saveProject(m_fileName)) {  
+
+            int pos = m_recentProjects.indexOf(m_fileName);
+            if (pos == -1) {
+                m_recentProjects.push_front(m_fileName);
+                if (m_recentProjects.count() > 5)
+                    m_recentProjects.removeLast();
+            } else {
+                m_recentProjects.push_front(m_recentProjects.takeAt(pos));
+            }
+            
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> saved").arg(projectName));
             // projectSaved = true;
             int indexPath = m_fileName.lastIndexOf("/");

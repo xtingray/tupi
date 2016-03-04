@@ -279,8 +279,8 @@ void TMainWindow::removeToolView(ToolView *view)
              QList<ToolView *>::iterator it = views.begin();
 
              while (it != views.end()) {
-                    ToolView *v = *it;
-                    if (v == view) {
+                    ToolView *toolView = *it;
+                    if (toolView == view) {
                         views.erase(it);
                         bar->removeButton(view->button());
                         findIt = true;
@@ -304,8 +304,8 @@ void TMainWindow::enableToolViews(bool flag)
              QList<ToolView *>::iterator it = views.begin();
 
              while (it != views.end()) {
-                    ToolView *v = *it;
-                    v->enableButton(flag);
+                    ToolView *view = *it;
+                    view->enableButton(flag);
                     ++it;
              }
     }
@@ -348,7 +348,7 @@ void TMainWindow::addToPerspective(QWidget *widget, int perspective)
             addToolBar(bar);
     }
 
-    if (! m_managedWidgets.contains(widget)) {
+    if (!m_managedWidgets.contains(widget)) {
         m_managedWidgets.insert(widget, perspective);
 
         if (!(perspective & m_currentPerspective)) 
@@ -372,8 +372,8 @@ void TMainWindow::removeFromPerspective(QWidget *widget)
  */
 void TMainWindow::addToPerspective(const QList<QAction *> &actions, int perspective)
 {
-    foreach (QAction *a, actions)
-             addToPerspective(a, perspective);
+    foreach (QAction *action, actions)
+             addToPerspective(action, perspective);
 }
 
 /**
@@ -383,7 +383,7 @@ void TMainWindow::addToPerspective(const QList<QAction *> &actions, int perspect
  */
 void TMainWindow::addToPerspective(QAction *action, int perspective)
 {
-    if (! m_managedActions.contains(action)) {
+    if (!m_managedActions.contains(action)) {
         m_managedActions.insert(action, perspective);
 
         if (!(perspective & m_currentPerspective))
@@ -480,7 +480,6 @@ Qt::ToolBarArea TMainWindow::toToolBarArea(Qt::DockWidgetArea area)
     return Qt::LeftToolBarArea;
 }
 
-
 /**
  * Enable/disable button blending.
  * @param enable 
@@ -511,16 +510,16 @@ void TMainWindow::relayoutViewButton(bool topLevel)
             // if a tool view is floating the button bar isn't exclusive
             TButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];
             bool exclusive = true;
-            foreach (ToolView *v, m_toolViews[bar])
-                     exclusive = exclusive && !v->isFloating();
+            foreach (ToolView *view, m_toolViews[bar])
+                     exclusive = exclusive && !view->isFloating();
 
             bar->setExclusive(exclusive);
             bar->onlyShow(m_forRelayout, true);
         }
     } else {
             // Floating tool views aren't exclusive
-            if (ToolView *toolView = dynamic_cast<ToolView *>(sender()))
-                m_buttonBars[toolView->button()->area()]->setExclusive(false);
+            if (ToolView *view = dynamic_cast<ToolView *>(sender()))
+                m_buttonBars[view->button()->area()]->setExclusive(false);
     }
 }
 

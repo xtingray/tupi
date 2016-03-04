@@ -38,9 +38,7 @@
 ToolView::ToolView(const QString &title, const QIcon &icon, const QString &code, QWidget * parent)
           : QDockWidget(title, parent), m_size(-1), m_perspective(0)
 {
-    setFeatures(QDockWidget::NoDockWidgetFeatures);
-    // SQA: This instruction should be enabled in the future
-    // setFeatures(AllDockWidgetFeatures);
+    setFeatures(AllDockWidgetFeatures);
     setWindowIcon(icon);
     setup(title);
     setObjectName("ToolView-" + code);

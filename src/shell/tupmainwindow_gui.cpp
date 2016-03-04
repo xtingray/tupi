@@ -188,10 +188,13 @@ void TupMainWindow::setupMenu()
     // m_fileMenu->addAction(m_actionManager->find("exportprojectserver"));
 
     // Adding Option Open Recent	
-    m_recentProjectsMenu = new QMenu(tr("Recents"), this);
+    m_recentProjectsMenu = new QMenu(tr("Open recent"), this);
 
-    // TCONFIG->beginGroup("General");
-    QStringList recents = TCONFIG->value("Recents").toString().split(';');
+    TCONFIG->beginGroup("General");
+    QString files = TCONFIG->value("Recents").toString();
+    QStringList recents = files.split(';');
+    if (files.isEmpty())
+        recents.clear();
     updateOpenRecentMenu(m_recentProjectsMenu, recents);	
     m_fileMenu->addMenu(m_recentProjectsMenu);
 
@@ -462,33 +465,32 @@ void TupMainWindow::setupToolBar()
 
 void TupMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
 {
-    if (recents.count() > 10) {
-        int limit = recents.count() - 10;
-        for(int i=0; i<limit; i++)
-            recents.removeLast();
-    }
-
-    int i = 0;
-    QAction *action[recents.length()];
-
     menu->clear();
     m_recentProjects.clear();
 
-    foreach (QString recent, recents) {
-             if (!recent.isEmpty()) {
-                 m_recentProjects << recent;
-                 action[i] = new QAction(QPixmap(THEME_DIR + "icons/recent_files.png"), recent, this); 
-                 action[i]->setIconVisibleInMenu(true);
-                 menu->addAction(action[i]);
-                 connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
-                 i++;
-             } else {
-                 m_recentProjectsMenu->setEnabled(false);
-                 return; 
-             }
+    if (recents.count() == 0) {
+        m_recentProjectsMenu->setEnabled(false);
+        return;
+    } else {
+        if (recents.count() > 5) {
+            QStringList list; 
+            list << recents.mid(0, 4);
+            recents = list;
+        }
     }
 
-    if (i>0 && !m_recentProjectsMenu->isEnabled())
+    int i = 0;
+    QAction *action[5];
+    foreach (QString recent, recents) {
+             m_recentProjects << recent;
+             action[i] = new QAction(QPixmap(THEME_DIR + "icons/recent_files.png"), recent, this); 
+             action[i]->setIconVisibleInMenu(true);
+             menu->addAction(action[i]);
+             connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
+             i++;
+    }
+
+    if (!m_recentProjectsMenu->isEnabled())
         m_recentProjectsMenu->setEnabled(true);
 }
 
