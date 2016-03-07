@@ -75,5 +75,5 @@ void TupPreferencesDialog::apply()
 
 QSize TupPreferencesDialog::sizeHint() const
 {
-    return QSize(600, 400);
+    return QSize(600, 350);
 }
