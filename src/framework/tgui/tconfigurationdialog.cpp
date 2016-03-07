@@ -45,42 +45,40 @@ struct TConfigurationDialog::Private
 
 TConfigurationDialog::TConfigurationDialog(QWidget *parent) : QDialog(parent), k(new Private)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    
-    QHBoxLayout *pages = new QHBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QHBoxLayout *pagesLayout = new QHBoxLayout;
     
     k->list = new QListWidget(this);
-    k->list->setViewMode(QListView::IconMode);
-    k->list->setWrapping(false);
     k->list->setFlow(QListView::TopToBottom);
+    k->list->setWrapping(false);
+    k->list->setViewMode(QListView::IconMode);
     k->list->setIconSize(QSize(96, 84));
     k->list->setMovement(QListView::Static);
-    k->list->setMaximumWidth(128);
-    //k->list->setMinimumWidth(95);
-    k->list->setSpacing(12);
+    k->list->setSpacing(10);
     
     connect(k->list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
-    
-    pages->addWidget(k->list);
-    
+
+    QWidget *widget = new QWidget;
+    widget->setFixedWidth(130);
+    QVBoxLayout *listLayout = new QVBoxLayout(widget);
+    listLayout->addWidget(k->list);
+
     k->pageArea = new QStackedWidget;
-    pages->addWidget(k->pageArea, 1);
+    pagesLayout->addWidget(widget);
+    pagesLayout->addWidget(k->pageArea, 1);
+
+    mainLayout->addLayout(pagesLayout);
     
-    layout->addLayout(pages);
-    
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply, Qt::Horizontal, this);
-    
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(ok()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(cancel()));
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::Apply, Qt::Horizontal, this);
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     connect(buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), this, SLOT(apply()));
     
-    layout->addWidget(new TSeparator());
-    layout->addWidget(buttonBox);
+    mainLayout->addWidget(new TSeparator());
+    mainLayout->addWidget(buttonBox);
 }
 
 TConfigurationDialog::~TConfigurationDialog()
 {
-    delete k;
 }
 
 void TConfigurationDialog::addPage(QWidget *page, const QString &label, const QIcon &icon)
@@ -99,26 +97,16 @@ QWidget *TConfigurationDialog::currentPage() const
     return k->pageArea->currentWidget();
 }
 
-void TConfigurationDialog::ok()
-{
-    accept();
-}
-
-void TConfigurationDialog::cancel()
-{
-    reject();
-}
-
 void TConfigurationDialog::apply()
 {
 }
 
-void TConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *prev)
+void TConfigurationDialog::changePage(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    if (!curr)
-        curr = prev;
+    if (!current)
+        current = previous;
     
-    k->pageArea->setCurrentIndex(k->list->row(curr));
+    k->pageArea->setCurrentIndex(k->list->row(current));
 }
 
 void TConfigurationDialog::setCurrentItem(int row)

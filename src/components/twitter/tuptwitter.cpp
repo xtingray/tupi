@@ -93,7 +93,7 @@ TupTwitter::~TupTwitter()
         #endif
     #endif
 
-    delete k;
+    // delete k;
 }
 
 void TupTwitter::requestFile(QString target)
@@ -310,11 +310,11 @@ void TupTwitter::formatStatus(QByteArray array)
 
     QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
     QFile file(twitterPath);
-    file.open(QIODevice::WriteOnly);
-
-    QByteArray data = html.toUtf8();
-    file.write(data, qstrlen(data));
-    file.close();
+    if (file.open(QIODevice::WriteOnly)) {
+        QByteArray data = html.toUtf8();
+        file.write(data, qstrlen(data));
+        file.close();
+    }
 
     k->reply->deleteLater(); 
     k->manager->deleteLater();

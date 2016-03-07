@@ -35,13 +35,24 @@
 
 #include "tuppaintareaconfig.h"
 
+#include <QSpinBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+
 /**
  * This class handles the preferences dialog for the paint area settings.
  * Here is where the paint area parameters are set.
  * @author David Cuadrado
 */
 
-TupPaintAreaConfig::TupPaintAreaConfig(QWidget *parent) : QWidget(parent)
+struct TupPaintAreaConfig::Private
+{
+    TColorButton *gridColor;
+    QSpinBox *gridSeparation;
+};
+
+TupPaintAreaConfig::TupPaintAreaConfig(QWidget *parent) : QWidget(parent),  k(new Private)
 {
     setupPage();
 }
@@ -52,68 +63,71 @@ TupPaintAreaConfig::~TupPaintAreaConfig()
 
 void TupPaintAreaConfig::setupPage()
 {
-    QGridLayout *pageLayout = new QGridLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+
+    QWidget *widget = new QWidget;
+    QVBoxLayout *pageLayout = new QVBoxLayout;
+
+    QLabel *generalLabel = new QLabel(tr("Workspace Preferences"));
+    QFont labelFont = font();
+    labelFont.setBold(true);
+    labelFont.setPointSize(labelFont.pointSize() + 3);
+    generalLabel->setFont(labelFont);
+    pageLayout->addWidget(generalLabel);
+    pageLayout->addSpacing(15);
+
+    QLabel *startupLabel = new QLabel(tr("Grid Settings"));
+    labelFont = font();
+    labelFont.setBold(true);
+    startupLabel->setFont(labelFont);
+    pageLayout->addWidget(startupLabel);
 
     TCONFIG->beginGroup("PaintArea");
-    
-    pageLayout->addWidget(new QLabel(tr("Grid color")), 0, 0);
-    m_gridColor = new TColorButton;
-    pageLayout->addWidget(m_gridColor, 0, 1);
-    
-    m_gridColor->setColor(qvariant_cast<QColor>(TCONFIG->value("GridColor", QColor(Qt::gray))));
-    
-    pageLayout->addWidget(new QLabel(tr("Grid separation")), 1, 0);
-    m_gridSeparation = new QSpinBox(this);
-    
-    pageLayout->addWidget(m_gridSeparation, 1, 1);
-    
-    m_gridSeparation->setMaximum(100);
-    m_gridSeparation->setMinimum(10);
-    m_gridSeparation->setValue(10);
-    
-    pageLayout->addWidget(new QLabel(tr("Background color")), 2, 0);
-    m_backgroundColor = new TColorButton;
-    pageLayout->addWidget(m_backgroundColor, 2, 1);
-    
-    m_backgroundColor->setColor(qvariant_cast<QColor>(TCONFIG->value("BackgroundColor", QColor(Qt::white))));
-    
-    pageLayout->addWidget(new QLabel(tr("Onion skin color")), 3, 0);
-    m_onionSkinColor = new TColorButton;
-    pageLayout->addWidget(m_onionSkinColor, 3, 1);
-    
-    m_onionSkinColor->setColor(qvariant_cast<QColor>(TCONFIG->value("OnionSkinColor", QColor(Qt::lightGray))));
-    
-    pageLayout->addWidget(new QLabel(tr("Onion skin background ")), 4, 0);
-    m_onionSkinBackground = new TColorButton;
-    pageLayout->addWidget(m_onionSkinBackground, 4, 1);
-    
-    m_onionSkinBackground->setColor(qvariant_cast<QColor>(TCONFIG->value("OnionSkinBackground", 
-                    QColor(Qt::lightGray))));
+    QString colorName = TCONFIG->value("GridColor").toString();
+    // QString colorName = TCONFIG->value("GridColor", "#0000b4").toString();
+    // QColor color = qvariant_cast<QColor>(TCONFIG->value("GridColor", QColor(0, 0, 180, 50)));
+    QColor color(colorName);
+    // int separation = TCONFIG->value("GridSeparation", 10).toInt();
+    int separation = TCONFIG->value("GridSeparation").toInt();
 
-    setLayout(pageLayout);
+    QGridLayout *gridForm = new QGridLayout;
+
+    gridForm->addWidget(new QLabel(tr("Grid color:")), 0, 0, Qt::AlignLeft);
+    k->gridColor = new TColorButton;
+    k->gridColor->setColor(color);
+    gridForm->addWidget(k->gridColor, 0, 1, Qt::AlignLeft);
+
+    gridForm->addWidget(new QLabel(tr("Grid separation:")), 1, 0, Qt::AlignLeft);
+    k->gridSeparation = new QSpinBox(this);
+    k->gridSeparation->setMinimum(5);
+    k->gridSeparation->setMaximum(30);
+    k->gridSeparation->setValue(separation);
+    gridForm->addWidget(k->gridSeparation, 1, 1, Qt::AlignLeft);
+
+    pageLayout->addLayout(gridForm);
+
+    widget->setLayout(pageLayout);
+    layout->addWidget(widget);
+    layout->setAlignment(widget, Qt::AlignLeft);
+    layout->addStretch(3);
 }
 
+void TupPaintAreaConfig::saveValues()
+{
+    TCONFIG->beginGroup("PaintArea");
+    TCONFIG->setValue("GridColor", k->gridColor->color().name());
+    TCONFIG->setValue("GridSeparation", k->gridSeparation->value());
+    TCONFIG->sync();
+}
+
+/*
 QColor TupPaintAreaConfig::gridColor() const
 {
-    return m_gridColor->color();
-}
-
-QColor TupPaintAreaConfig::backgroundColor() const
-{
-    return m_backgroundColor->color();
-}
-
-QColor TupPaintAreaConfig::onionSkinColor() const
-{
-    return m_onionSkinColor->color();
-}
-
-QColor TupPaintAreaConfig::onionSkinBackground() const
-{
-    return m_onionSkinBackground->color();
+    return k->gridColor->color();
 }
 
 int TupPaintAreaConfig::gridSeparation() const
 {
-    return m_gridSeparation->value();
+    return k->gridSeparation->value();
 }
+*/

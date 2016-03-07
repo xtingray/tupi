@@ -210,13 +210,13 @@ void TupMainWindow::setupMenu()
     m_fileMenu->addSeparator();
     m_fileMenu->addAction(m_actionManager->find("Exit"));
 
-    // Setting up the Settings menu
-    setupSettingsActions();
+    // Setting up the Preferences menu
+    setPreferencesAction();
     m_settingsMenu = menuBar()->addMenu(tr("&Edit"));
 
     m_settingsMenu->addAction(m_actionManager->find("preferences"));
     // Temporary out while SQA is done
-    m_actionManager->enable("preferences", false);
+    // m_actionManager->enable("preferences", false);
 
     // Temporary out while SQA is done
     // Setting up the insert menu
@@ -311,7 +311,7 @@ void TupMainWindow::setMenuItemsContext(bool flag)
     m_actionManager->enable("export", flag);
     m_actionManager->enable("importBitmap", flag);
 
-    m_settingsMenu->setEnabled(flag);
+    // m_settingsMenu->setEnabled(flag);
     m_insertMenu->setEnabled(flag);
     m_windowMenu->setEnabled(flag);
     m_viewMenu->setEnabled(flag);
@@ -401,10 +401,10 @@ void TupMainWindow::setupFileActions()
  * @endif
 */
 
-void TupMainWindow::setupSettingsActions()
+void TupMainWindow::setPreferencesAction()
 {
     TAction *preferences = new TAction(QPixmap(THEME_DIR + "icons/properties.png"), tr("Pr&eferences..."), 
-                                        QKeySequence(tr("Ctrl+P")), this, SLOT( preferences()),
+                                        QKeySequence(tr("Ctrl+P")), this, SLOT(preferences()),
                                         m_actionManager, "preferences");
     preferences->setStatusTip(tr("Opens the preferences dialog box"));
 }

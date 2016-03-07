@@ -166,6 +166,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     QGridLayout *layout = new QGridLayout(frame);
 
     k->paintArea = new TupPaintArea(project, frame);
+    // k->paintArea->setUseOpenGL(false);
 
     TCONFIG->beginGroup("OnionParameters");
     k->opacityFactor = TCONFIG->value("OnionFactor", -1).toDouble();
@@ -189,30 +190,6 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     connect(k->paintArea, SIGNAL(zoomOut()), this, SLOT(applyZoomOut()));
     connect(k->paintArea, SIGNAL(newPerspective(int)), this, SIGNAL(newPerspective(int)));
 
-    Tupi::RenderType renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt()); 
-
-    switch (renderType) {
-            case Tupi::OpenGL:
-                 k->paintArea->setUseOpenGL(true);
-                 break;
-
-            case Tupi::Native:
-                 k->paintArea->setUseOpenGL(false);
-                 break;
-
-            default:
-                 #ifdef K_DEBUG
-                     QString msg = "TupDocumentView() - Unsopported render, switching to native!";
-                     #ifdef Q_OS_WIN
-                         qWarning() << msg;
-                     #else
-                         tWarning() << msg;
-                     #endif
-                 #endif
-                 k->paintArea->setUseOpenGL(false);
-            break;
-    }
-    
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), this, SLOT(showPos(const QPointF &)));
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, SLOT(movePointers(const QPointF&)));
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->horizontalRuler, SLOT(movePointers(const QPointF&)));
@@ -256,8 +233,8 @@ TupDocumentView::~TupDocumentView()
         #endif
     #endif
 
-    TCONFIG->beginGroup("General");
-    TCONFIG->setValue("AutoSave", k->autoSaveTime);
+    // TCONFIG->beginGroup("General");
+    // TCONFIG->setValue("AutoSave", k->autoSaveTime);
 
     if (k->currentTool)
         k->currentTool->saveConfig();
@@ -276,10 +253,12 @@ void TupDocumentView::setAntialiasing(bool useIt)
     k->paintArea->setAntialiasing(useIt);
 }
 
+/*
 void TupDocumentView::setOpenGL(bool useIt)
 {
     k->paintArea->setUseOpenGL(useIt);
 }
+*/
 
 void TupDocumentView::drawGrid()
 {
@@ -326,6 +305,8 @@ void TupDocumentView::updateRotationVars(int angle)
 
 void TupDocumentView::setZoomFactor(qreal factor)
 {
+    tError() << "TupDocumentView::setZoomFactor() - Tracing factor -> " << factor;
+
     k->paintArea->setZoom(factor);
     k->verticalRuler->setRulerZoom(factor);
     k->horizontalRuler->setRulerZoom(factor);
@@ -335,6 +316,8 @@ void TupDocumentView::setZoomFactor(qreal factor)
 
 void TupDocumentView::updateZoomVars(qreal factor)
 {
+    tError() << "TupDocumentView::updateZoomVars() - Tracing factor -> " << factor;
+
     k->status->updateZoomFactor(factor);
     k->verticalRuler->setRulerZoom(factor);
     k->horizontalRuler->setRulerZoom(factor);
@@ -344,6 +327,8 @@ void TupDocumentView::updateZoomVars(qreal factor)
 
 void TupDocumentView::applyZoomIn()
 {
+    tError() << "TupDocumentView::applyZoomIn() - Tracing...";
+
     qreal zoom = k->status->currentZoomFactor();
     if (zoom <= 495) {
         zoom += 5;
@@ -353,6 +338,8 @@ void TupDocumentView::applyZoomIn()
 
 void TupDocumentView::applyZoomOut()
 {
+    tError() << "TupDocumentView::applyZoomOut() - Tracing...";
+
     qreal zoom = k->status->currentZoomFactor();
     if (zoom >= 15) {
         zoom -= 5;
@@ -372,6 +359,8 @@ void TupDocumentView::updateNodesScale(qreal factor)
 
 void TupDocumentView::setZoomPercent(const QString &percent)
 {
+    tError() << "TupDocumentView::setZoomPercent() - percent: " << percent;
+
     k->nodesScaleFactor = percent.toDouble() / 100;
     k->status->setZoomPercent(percent);
 }
@@ -1354,6 +1343,7 @@ void TupDocumentView::updatePaintArea()
     k->paintArea->updatePaintArea(); 
 }
 
+/*
 void TupDocumentView::callAutoSave()
 {
     emit autoSave();
@@ -1375,6 +1365,7 @@ void TupDocumentView::saveTimer()
         k->timer->start(saveTime);
     }
 }
+*/
 
 void TupDocumentView::setSpaceContext()
 {
@@ -1881,12 +1872,17 @@ void TupDocumentView::resizeProjectDimension(const QSize dimension)
     int pWidth = dimension.width();
     int pHeight = dimension.height();
 
+    tError() << "TupDocumentView::resizeProjectDimension() - dimension: " << width << " - " << height;
+    tError() << "TupDocumentView::resizeProjectDimension() - dimension: " << pWidth << " - " << pHeight;
+
     double proportion = 1;
 
     if (pWidth > pHeight)
         proportion = (double) width / (double) pWidth;
     else
         proportion = (double) height / (double) pHeight;
+
+    tError() << "TupDocumentView::resizeProjectDimension() - proportion: " << proportion;
 
     if (proportion <= 0.5) {
         setZoomPercent("20");
@@ -2148,6 +2144,8 @@ void TupDocumentView::updatePerspective()
 
 void TupDocumentView::resetWorkSpaceTransformations()
 {
+    tError() << "TupDocumentView::resetWorkSpaceTransformations() - Tracing...";
+
     k->paintArea->resetWorkSpaceCenter(k->project->dimension());
     k->status->setRotationAngle("0");
     k->status->setZoomPercent("100");

@@ -39,7 +39,7 @@
 #include "tactionmanager.h"
 #include "tupdocumentview.h"
 #include "tupanimationspace.h"
-#include "tuppreferences.h"
+#include "tuppreferencesdialog.h"
 #include "tuphelpdialog.h"
 
 // modules
@@ -118,7 +118,7 @@ class TupMainWindow : public TabbedMainWindow
              ImportProjectToNet
         };
 
-        TupMainWindow(int parameters = 1);
+        TupMainWindow();
         ~TupMainWindow();
 
     private:
@@ -126,7 +126,7 @@ class TupMainWindow : public TabbedMainWindow
          * Creates the file action 
          */
          void setupFileActions();
-         void setupSettingsActions();
+         void setPreferencesAction();
          // void setupWindowActions();
          // void setupInsertActions();
 
@@ -154,6 +154,7 @@ class TupMainWindow : public TabbedMainWindow
          void setupLocalProject(TupProjectManagerParams *params);
          void setUndoRedoActions();
          void resetUI();
+         void updateRecentProjectList();
 
     protected:
          /**
@@ -180,7 +181,8 @@ class TupMainWindow : public TabbedMainWindow
           void updatePenThickness(const QPen &pen);
 
     private slots:
-          void setWorkSpace(const QStringList &users = QStringList() = QStringList());
+          void addTwitterPage();
+          void setWorkSpace(const QStringList &users = QStringList());
           void updateTabContext(int tab);
           void createNewLocalProject();
           void newProject();
@@ -227,7 +229,7 @@ class TupMainWindow : public TabbedMainWindow
 
     private:
           TupProjectManager *m_projectManager;
-          Tupi::RenderType m_renderType;
+          // Tupi::RenderType m_renderType;
           QString m_fileName;
           bool lastSave;
 

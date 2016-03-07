@@ -419,10 +419,10 @@ void TupLibraryWidget::removeCurrentItem()
     if (!k->libraryTree->currentItem()) 
         return;
 
-    TCONFIG->beginGroup("Library");
-    bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveObjectWithoutAsk", false));
+    TCONFIG->beginGroup("General");
+    bool ask = TCONFIG->value("ConfirmRemoveObject", true).toBool();
 
-    if (!noAsk) {
+    if (ask) {
         TOptionalDialog dialog(tr("Do you want to remove this object from Library?"), tr("Confirmation"), this);
         dialog.setModal(true);
         QDesktopWidget desktop;
@@ -432,8 +432,8 @@ void TupLibraryWidget::removeCurrentItem()
         if (dialog.exec() == QDialog::Rejected)
             return;
 
-        TCONFIG->beginGroup("Library");
-        TCONFIG->setValue("RemoveObjectWithoutAsk", dialog.shownAgain());
+        TCONFIG->beginGroup("General");
+        TCONFIG->setValue("ConfirmRemoveObject", dialog.shownAgain());
         TCONFIG->sync();
     }
 

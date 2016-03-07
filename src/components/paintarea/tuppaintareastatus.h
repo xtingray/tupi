@@ -83,7 +83,7 @@ class TUPI_EXPORT TupPaintAreaStatus : public QStatusBar
 
     private slots:
         void selectAntialiasingHint();
-        void selectRenderer(int id);
+        // void selectRenderer(int id);
         void updateFrameIndex(int index);
         void updateFramePointer();
 

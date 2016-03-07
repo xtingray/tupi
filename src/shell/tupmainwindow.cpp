@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupmainwindow.h"
+#include "tuptwitter.h"
 #include "tupnewproject.h"
 #include "tupabout.h"
 #include "tuppackagehandler.h"
@@ -91,7 +92,7 @@
  * @return 
 */
 
-TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectManager(0), animationTab(0), playerTab(0), 
+TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animationTab(0), playerTab(0), 
                m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
@@ -112,7 +113,7 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
-    m_renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt());
+    // m_renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt());
 
     // Calling out the project manager
     m_projectManager = new TupProjectManager(this);
@@ -126,8 +127,8 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
     setupToolBar();
 
     // Check if user wants to see a Tupi tip for every time he launches the program
-    TCONFIG->beginGroup("TipOfDay");
-    bool showTips = TCONFIG->value("ShowOnStart", true).toBool();
+    TCONFIG->beginGroup("General");
+    bool showTips = TCONFIG->value("ShowTipOfDay", true).toBool();
 
     // If option is enabled, then, show a little dialog with a nice tip
     if (showTips)
@@ -139,17 +140,18 @@ TupMainWindow::TupMainWindow(int parameters) : TabbedMainWindow(), m_projectMana
     // Defining the Animation view, as the first interface to show up   
     setCurrentPerspective(Animation);
 
-    TCONFIG->beginGroup("General");
-    // check if into the config file, user always wants to start opening his last project 
-    // created
-    bool openLast = TCONFIG->value("OpenLastProject").toBool();
-
-    if (openLast && parameters == 1)
-        openProject(TCONFIG->value("LastProject").toString());
-
     if (TCONFIG->firstTime()) {
-        TCONFIG->setValue("OpenLastProject", openLast);
-        TCONFIG->setValue("AutoSave", 2);
+        TCONFIG->beginGroup("General");
+        TCONFIG->setValue("OpenLastProject", false);
+        TCONFIG->setValue("ShowTipOfDay", true);
+        TCONFIG->setValue("ConfirmRemoveFrame", true); 
+        TCONFIG->setValue("ConfirmRemoveLayer", true); 
+        TCONFIG->setValue("ConfirmRemoveScene", true); 
+        TCONFIG->setValue("ConfirmRemoveObject", true); 
+        TCONFIG->beginGroup("PaintArea");
+        // TCONFIG->setValue("GridColor", QColor(0, 0, 180, 50).name());
+        TCONFIG->setValue("GridColor", "#0000b4");
+        TCONFIG->setValue("GridSeparation", 10);
     }
 
     TupMainWindow::requestType = None;
@@ -254,6 +256,11 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         #endif
     #endif
 
+    // Downloading maefloresta Twitter status
+    TupTwitter *twitter = new TupTwitter();
+    twitter->start();
+    connect(twitter, SIGNAL(pageReady()), this, SLOT(addTwitterPage()));
+
     if (m_projectManager->isOpen()) {
         if (TupMainWindow::requestType == NewLocalProject || TupMainWindow::requestType == NewNetProject)
             TOsd::self()->display(tr("Information"), tr("Opening a new document..."));
@@ -296,7 +303,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         int pHeight = m_projectManager->project()->dimension().height();
 
         double proportion = 1;
-
         if (pWidth > pHeight)
             proportion = (double) width / (double) pWidth;
         else
@@ -330,45 +336,9 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         playerTab->setWindowTitle(tr("Player"));
         connect(playerTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
         addWidget(playerTab);
-
         connect(animationTab, SIGNAL(updateFPS(int)), cameraWidget, SLOT(setStatusFPS(int)));
 
-        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
-
-        /*
-        #ifdef Q_OS_WIN
-            twitterPath.replace("/", "\\");
-        #endif
-        */
-			  
-        if (QFile::exists(twitterPath)) {
-            #ifdef K_DEBUG
-                QString msg = "TupMainWindow::setWorkSpace() - Loading page -> " + twitterPath;
-                #ifdef Q_OS_WIN
-                    qWarning() << msg;
-                #else
-                    tWarning() << msg;
-                #endif
-            #endif
-
-            internetOn = true;
-            newsTab = new TupTwitterWidget(this); 
-            newsTab->setSource(twitterPath);
-            connect(newsTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
-            addWidget(newsTab);
-        } else {
-            #ifdef K_DEBUG
-                QString msg = "TupMainWindow::setWorkSpace() - Fatal Error: Couldn't load page -> " + twitterPath;
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
-            #endif
-        }
-
         connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
-
         exposureView->expandDock(true);
 
         // SQA: Code useful for future features
@@ -393,6 +363,36 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
     connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateTabContext(int)));
     m_projectManager->clearUndoStack();
+}
+
+void TupMainWindow::addTwitterPage()
+{
+    QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
+    if (QFile::exists(twitterPath)) {
+        #ifdef K_DEBUG
+            QString msg = "TupMainWindow::addTwitterPage() - Loading page -> " + twitterPath;
+            #ifdef Q_OS_WIN
+                qWarning() << msg;
+            #else
+                tWarning() << msg;
+            #endif
+        #endif
+
+        internetOn = true;
+        newsTab = new TupTwitterWidget(this);
+        newsTab->setSource(twitterPath);
+        connect(newsTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
+        addWidget(newsTab);
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupMainWindow::addTwitterPage() - Warning: Couldn't load page -> " + twitterPath;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tWarning() << msg;
+            #endif
+        #endif
+    }
 }
 
 void TupMainWindow::updateTabContext(int tab)
@@ -503,7 +503,6 @@ bool TupMainWindow::closeProject()
         }
 
     }
-
     resetUI();
 
     return true;
@@ -763,16 +762,7 @@ void TupMainWindow::openProject(const QString &path)
 
             TupMainWindow::requestType = OpenLocalProject;
             projectName = m_projectManager->project()->projectName();
-
-            int pos = m_recentProjects.indexOf(m_fileName);
-            if (pos == -1) {
-                m_recentProjects.push_front(m_fileName);
-                if (m_recentProjects.count() > 5)
-                    m_recentProjects.removeLast();
-            } else {
-                m_recentProjects.push_front(m_recentProjects.takeAt(pos));
-            }
-
+            updateRecentProjectList();
             updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
 
             enableToolViews(true);
@@ -791,6 +781,18 @@ void TupMainWindow::openProject(const QString &path)
             setUpdatesEnabled(true);
             TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
         }
+    }
+}
+
+void TupMainWindow::updateRecentProjectList()
+{
+    int pos = m_recentProjects.indexOf(m_fileName);
+    if (pos == -1) {
+        m_recentProjects.push_front(m_fileName);
+        if (m_recentProjects.count() > 5)
+            m_recentProjects.removeLast();
+    } else {
+        m_recentProjects.push_front(m_recentProjects.takeAt(pos));
     }
 }
 
@@ -835,16 +837,13 @@ void TupMainWindow::importProjectToServer()
 
 void TupMainWindow::preferences()
 {
-    TupPreferences *preferences = new TupPreferences(this);
-    connect(preferences, SIGNAL(timerChanged()), animationTab, SLOT(updateTimer()));
+    TupPreferencesDialog *preferences = new TupPreferencesDialog(this);
+    // connect(preferences, SIGNAL(timerChanged()), animationTab, SLOT(updateTimer()));
     preferences->show();
 
     QDesktopWidget desktop;
     preferences->move((int) (desktop.screenGeometry().width() - preferences->width())/2 , 
                       (int) (desktop.screenGeometry().height() - preferences->height())/2);
-
-    preferences->exec();
-    delete preferences;
 }
 
 /**
@@ -874,7 +873,6 @@ void TupMainWindow::showHelp()
     if (!file.exists()) {
         #ifdef Q_OS_WIN
             helpPath = SHARE_DIR + "help/en/cover.html";
-            // helpPath.replace("/","\\");
         #else
             helpPath = SHARE_DIR + "data/help/en/cover.html";
         #endif
@@ -1136,15 +1134,7 @@ void TupMainWindow::saveProject()
         }
 
         if (m_projectManager->saveProject(m_fileName)) {  
-
-            int pos = m_recentProjects.indexOf(m_fileName);
-            if (pos == -1) {
-                m_recentProjects.push_front(m_fileName);
-                if (m_recentProjects.count() > 5)
-                    m_recentProjects.removeLast();
-            } else {
-                m_recentProjects.push_front(m_recentProjects.takeAt(pos));
-            }
+            updateRecentProjectList();
             
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> saved").arg(projectName));
             // projectSaved = true;
@@ -1230,7 +1220,7 @@ void TupMainWindow::closeEvent(QCloseEvent *event)
     }
 
     TCONFIG->beginGroup("General");
-    TCONFIG->setValue("LastProject", lastProject);
+    // TCONFIG->setValue("LastProject", lastProject);
     TCONFIG->setValue("Recents", m_recentProjects);
 
     TMainWindow::closeEvent(event);

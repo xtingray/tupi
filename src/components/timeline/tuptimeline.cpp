@@ -479,8 +479,6 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             case TupProjectActionBar::InsertFrame:
             {
                  int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
-                 // int currentFrame = framesTable(sceneIndex)->currentColumn();
-
                  if (currentFrame == lastFrame) {
                      request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, lastFrame + 1,
                                                   TupProjectRequest::Add, tr("Frame"));
@@ -511,8 +509,6 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             case TupProjectActionBar::RemoveFrame:
             {
                  int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
-                 // int currentFrame = framesTable(sceneIndex)->currentColumn(); 
-
                  if (currentFrame > lastFrame)
                      return false;
 
@@ -542,8 +538,6 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::MoveFrameBackward:
             {
-                 // int currentFrame = framesTable(sceneIndex)->currentColumn();
-
                  TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Exchange, currentFrame - 1);
                  emit requestTriggered(&request);
 
@@ -552,7 +546,6 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::MoveFrameForward:
             {
-                 // int currentFrame = framesTable(sceneIndex)->currentColumn();
                  int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
 
                  if (currentFrame == lastFrame) {
@@ -569,7 +562,6 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::LockFrame:
             {
-                 // int currentFrame = framesTable(sceneIndex)->currentColumn();
                  bool locked = framesTable(sceneIndex)->frameIsLocked(layerIndex, currentFrame);
 
                  TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Lock, !locked);

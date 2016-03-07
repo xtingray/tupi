@@ -352,10 +352,10 @@ void TupProjectActionBar::emitActionSelected(int action)
     {
         case RemoveFrame:
         {
-            TCONFIG->beginGroup("ExposureSheet");
-            bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveFrameWithoutAsk", false));
+            TCONFIG->beginGroup("General");
+            bool ask = TCONFIG->value("ConfirmRemoveFrame", true).toBool();
 
-            if (! noAsk) {
+            if (ask) {
                 TOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Confirmation"), this);
                 dialog.setModal(true);
                 QDesktopWidget desktop;
@@ -365,18 +365,18 @@ void TupProjectActionBar::emitActionSelected(int action)
                 if (dialog.exec() == QDialog::Rejected)
                     return;
 
-                TCONFIG->beginGroup("ExposureSheet");
-                TCONFIG->setValue("RemoveFrameWithoutAsk", dialog.shownAgain());
+                TCONFIG->beginGroup("General");
+                TCONFIG->setValue("ConfirmRemoveFrame", dialog.shownAgain());
                 TCONFIG->sync();
             }
         }
         break;
         case RemoveLayer:
         {
-            TCONFIG->beginGroup("ExposureSheet");
-            bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveLayerWithoutAsk", false));
+            TCONFIG->beginGroup("General");
+            bool ask = TCONFIG->value("ConfirmRemoveLayer", true).toBool();
 
-            if (! noAsk) {
+            if (ask) {
                 TOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Confirmation"), this);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,
@@ -385,18 +385,18 @@ void TupProjectActionBar::emitActionSelected(int action)
                 if (dialog.exec() == QDialog::Rejected)
                     return;
 
-                TCONFIG->beginGroup("ExposureSheet");
-                TCONFIG->setValue("RemoveLayerWithoutAsk", dialog.shownAgain());
+                TCONFIG->beginGroup("General");
+                TCONFIG->setValue("ConfirmRemoveLayer", dialog.shownAgain());
                 TCONFIG->sync();
             }
         }
         break;
         case RemoveScene:
         {
-            TCONFIG->beginGroup("ExposureSheet");
-            bool noAsk = qvariant_cast<bool>(TCONFIG->value("RemoveSceneWithoutAsk", false));
+            TCONFIG->beginGroup("General");
+            bool ask = TCONFIG->value("ConfirmRemoveScene", true).toBool();
 
-            if (! noAsk) {
+            if (! ask) {
                 TOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Confirmation"), this);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,
@@ -405,8 +405,8 @@ void TupProjectActionBar::emitActionSelected(int action)
                 if (dialog.exec() == QDialog::Rejected)
                     return;
 
-                TCONFIG->beginGroup("ExposureSheet");
-                TCONFIG->setValue("RemoveSceneWithoutAsk", dialog.shownAgain());
+                TCONFIG->beginGroup("General");
+                TCONFIG->setValue("ConfirmRemoveScene", dialog.shownAgain());
                 TCONFIG->sync();
             }
         }

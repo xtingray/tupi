@@ -66,14 +66,10 @@ class TUPI_EXPORT TupTwitterWidget : public QWidget
     public slots:
         void setSource(const QString &filePath);
 
-    private slots: 
-        void reload();
-
     protected:
         void keyPressEvent(QKeyEvent *event); 
 
     private:
-        void downLoadNews();
         struct Private;
         Private *const k;
 };

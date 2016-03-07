@@ -92,7 +92,7 @@ struct TupPaintAreaBase::Private
     TupGraphicsScene *scene;
 
     QPen greenThickPen;
-    QPen gridPen;
+    // QPen gridPen;
     QPen grayPen;
     QPen greenBoldPen;
     QPen greenThinPen;
@@ -110,7 +110,18 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     k->grid = 0;
 
     k->greenThickPen = QPen(QColor(0, 135, 0, 255), 2);
-    k->gridPen = QPen(QColor(0, 0, 180, 50), 1);
+
+    /*
+    // QColor gridColor = qvariant_cast<QColor>(TCONFIG->value("GridColor", QColor(QColor(0, 0, 180, 50))));
+    // QColor gridColor = qvariant_cast<QColor>(TCONFIG->value("GridColor"));
+    TCONFIG->beginGroup("PaintArea");
+    QString colorName = TCONFIG->value("GridColor", "#0000b4").toString();
+    QColor gridColor(colorName);
+    gridColor.setAlpha(50);
+    tError() << "gridColor: " << gridColor.name();
+    k->gridPen = QPen(gridColor, 1);
+    */
+
     k->grayPen = QPen(QColor(150, 150, 150, 255), 1);
     k->greenBoldPen = QPen(QColor(0, 135, 0, 255), 3);
     k->greenThinPen = QPen(QColor(0, 135, 0, 255), 1);
@@ -128,11 +139,13 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);
     centerDrawingArea();
-    setUseOpenGL(false);
+    // setUseOpenGL(false);
     setInteractive(true);
     setMouseTracking(true); 
 
-    restoreState();
+    // restoreState();
+    // setRenderHints(QPainter::RenderHints(QPainter::Antialiasing));
+    setRenderHints(QPainter::RenderHints(QPainter::HighQualityAntialiasing));
 }
 
 void TupPaintAreaBase::setBgColor(const QColor color)
@@ -141,12 +154,15 @@ void TupPaintAreaBase::setBgColor(const QColor color)
     viewport()->update();
 }
 
+/*
 void TupPaintAreaBase::saveState()
 {
     TConfig *config = kApp->config("PaintArea");
     config->setValue("RenderHints", int(renderHints()));
 }
+*/
 
+/*
 void TupPaintAreaBase::restoreState()
 {
     TConfig *config = kApp->config("PaintArea");
@@ -154,11 +170,12 @@ void TupPaintAreaBase::restoreState()
     int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
     setRenderHints(QPainter::RenderHints(renderHints));
 }
+*/
 
 TupPaintAreaBase::~TupPaintAreaBase()
 {
-    saveState();
-    delete k;
+    // saveState();
+    // delete k;
 }
 
 void TupPaintAreaBase::setAntialiasing(bool use)
@@ -177,6 +194,7 @@ void TupPaintAreaBase::setAntialiasing(bool use)
     setRenderHint(QPainter::TextAntialiasing, use);
 }
 
+/*
 void TupPaintAreaBase::setUseOpenGL(bool opengl)
 {
     #ifdef K_DEBUG
@@ -215,6 +233,7 @@ void TupPaintAreaBase::setUseOpenGL(bool opengl)
         viewport()->setAcceptDrops(true);
     }
 }
+*/
 
 void TupPaintAreaBase::drawGrid(bool draw)
 {
@@ -437,12 +456,20 @@ void TupPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
                         } else {
                             // if enabled draw grid
                             if (k->gridFlag) {
-                                painter->setPen(k->gridPen);
+                                TCONFIG->beginGroup("PaintArea");
+                                // QString colorName = TCONFIG->value("GridColor", "#0000b4").toString();
+                                QString colorName = TCONFIG->value("GridColor").toString();
+                                QColor gridColor(colorName);
+                                gridColor.setAlpha(50);
+                                QPen gridPen = QPen(gridColor, 1);
+                                // int separation = TCONFIG->value("GridSeparation", 10).toInt();
+                                int separation = TCONFIG->value("GridSeparation").toInt();
+                                painter->setPen(gridPen);
                                 int maxX = k->drawingRect.width() + 100;
                                 int maxY = k->drawingRect.height() + 100;
-                                for (int i = -100; i <= maxX; i += 10)
+                                for (int i = -100; i <= maxX; i += separation)
                                      painter->drawLine(i, -100, i, maxY);
-                                for (int i = -100; i <= maxY; i += 10)
+                                for (int i = -100; i <= maxY; i += separation)
                                      painter->drawLine(-100, i, maxX, i);
                             }
                             // if enabled action safe area

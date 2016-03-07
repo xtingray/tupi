@@ -40,14 +40,7 @@
 #include "tcolorbutton.h"
 #include "tconfig.h"
 
-#include <QWidget>
-#include <QSpinBox>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QLabel>
-
-class TColorButton;
+// class TColorButton;
 
 /**
  * @author David Cuadrado
@@ -59,19 +52,17 @@ class TUPI_EXPORT TupPaintAreaConfig : public QWidget
     public:
         TupPaintAreaConfig(QWidget *parent = 0);
         ~TupPaintAreaConfig();
-        
-        QColor gridColor() const;
-        QColor backgroundColor() const;
-        QColor onionSkinColor() const;
-        QColor onionSkinBackground() const;
-        int gridSeparation() const;
+
+        void saveValues();        
+        // QColor gridColor() const;
+        // int gridSeparation() const;
         
     private:
         void setupPage();
         
     private:
-        TColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
-        QSpinBox *m_gridSeparation;
+        struct Private;
+        Private *const k;
 };
 
 #endif

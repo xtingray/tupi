@@ -74,12 +74,10 @@ class T_GUI_EXPORT TConfigurationDialog : public QDialog
         void setCurrentItem(int row);
         
     public slots:
-        virtual void ok();
-        virtual void cancel();
         virtual void apply();
         
     private slots:
-        void changePage(QListWidgetItem *, QListWidgetItem*);
+        void changePage(QListWidgetItem *, QListWidgetItem *);
         
     private:
         struct Private;

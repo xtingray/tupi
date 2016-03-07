@@ -93,7 +93,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         QSize sizeHint() const;
 
         void setAntialiasing(bool useIt);
-        void setOpenGL(bool useIt);
+        // void setOpenGL(bool useIt);
 
         QPainter::RenderHints renderHints() const;
         void setZoomFactor(qreal factor);
@@ -121,7 +121,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void applyZoomOut();
         void updateRotationVars(int angle);
         void changeRulerOrigin(const QPointF &zero);
-        void saveTimer();
+        // void saveTimer();
         void showFullScreen();
         void closeFullScreen();
         void loadPlugin(int menu, int index);
@@ -154,7 +154,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void showPos(const QPointF &point);	
         void setCursor(const QCursor &cursor);
         void selectToolFromMenu(QAction *action);
-        void callAutoSave();
+        // void callAutoSave();
         void sendStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void updateStaticOpacity(double opacity);
         void updateDynamicOpacity(double opacity);

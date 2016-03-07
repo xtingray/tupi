@@ -35,7 +35,6 @@
 
 #include "tupapplication.h"
 #include "tupmainwindow.h"
-#include "tuptwitter.h"
 #include "tapplicationproperties.h"
 #include "tcollapsiblewidget.h"
 
@@ -95,12 +94,6 @@ int main(int argc, char ** argv)
     TCONFIG->beginGroup("General");
     QDir appDirPath(QApplication::applicationDirPath());
     if (! TCONFIG->isOk()) {
-        #if defined(K_DEBUG)
-            TCONFIG->setValue("Debug", "true");
-        #else
-            TCONFIG->setValue("Debug", "false");
-        #endif
-
         #if defined(Q_OS_MAC)
             TCONFIG->setValue("Home", appDirPath.absolutePath());
         #else
@@ -168,10 +161,6 @@ int main(int argc, char ** argv)
     // Setting the repository directory (where the projects are saved)
     application.createCache(TCONFIG->value("Cache").toString());
 
-    // Downloading maefloresta Twitter status
-    TupTwitter *twitter = new TupTwitter();
-    twitter->start();
-
     QStyle *style = QStyleFactory::create("fusion");
     QApplication::setStyle(style);
 
@@ -202,7 +191,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    TupMainWindow mainWindow(argc);
+    TupMainWindow mainWindow;
     mainWindow.showMaximized();
 
     // Looking for plugins for Tupi
@@ -222,11 +211,21 @@ int main(int argc, char ** argv)
         CHANDLER->setImagePath(THEME_DIR + "icons/");
     #endif
 
-    // If there is a second argument, it means to open a project from the command line
-    if (argc == 2) {
-        QString project = QString(argv[1]);
-        if (project.endsWith(".tup") || project.endsWith(".TUP"))
-            mainWindow.openProject(project);
+    if (argc == 1) {
+        bool openLast = TCONFIG->value("OpenLastProject").toBool();
+        if (openLast) {
+            QString files = TCONFIG->value("Recents").toString();
+            QStringList recents = files.split(';');
+            if (!files.isEmpty())
+                mainWindow.openProject(recents.first());
+        }
+    } else {
+        // If there is a second argument, it means to open a project from the command line
+        if (argc == 2) {
+            QString project = QString(argv[1]);
+            if (project.endsWith(".tup") || project.endsWith(".TUP"))
+                mainWindow.openProject(project);
+        }
     }
 
     // It's time to play with Tupi!

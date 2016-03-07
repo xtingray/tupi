@@ -86,10 +86,6 @@ void TupTwitterWidget::setSource(const QString &filePath)
 
 void TupTwitterWidget::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-            case (Qt::Key_R):
-                  if (event->modifiers() == Qt::ControlModifier)
-                      downLoadNews();
-            break;
             case Qt::Key_1:
                   if (event->modifiers() == Qt::ControlModifier)
                       emit newPerspective(0);
@@ -99,17 +95,4 @@ void TupTwitterWidget::keyPressEvent(QKeyEvent *event) {
                       emit newPerspective(1);
             break;
     }
-}
-
-void TupTwitterWidget::downLoadNews()
-{
-    // Downloading maefloresta Twitter status
-    TupTwitter *twitter = new TupTwitter();
-    connect(twitter, SIGNAL(pageReady()), this, SLOT(reload()));
-    twitter->start();
-}
-
-void TupTwitterWidget::reload()
-{
-    k->pageArea->reload(); 
 }

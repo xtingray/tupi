@@ -233,19 +233,19 @@ void TupPaintAreaStatus::selectAntialiasingHint()
     k->documentView->setAntialiasing(k->antialiasHint->isChecked()); 
 }
 
+/*
 void TupPaintAreaStatus::selectRenderer(int id)
 {
-  Q_UNUSED(id);
+    Q_UNUSED(id);
 
-  /*
     Tupi::RenderType type = Tupi::RenderType(k->renderer->itemData(id ).toInt());
 
     if (type == Tupi::OpenGL)
         k->documentView->setOpenGL(true);
     else
         k->documentView->setOpenGL(false);
-   */
 }
+*/
 
 void TupPaintAreaStatus::setPen(const QPen &pen)
 {
@@ -264,6 +264,8 @@ void TupPaintAreaStatus::applyRotation(const QString &text)
 
 void TupPaintAreaStatus::applyZoom(const QString &text)
 {
+    tError() << "TupPaintAreaStatus::applyZoom() - text: " << text;
+
     bool ok;
     int input = text.toInt(&ok, 10);
 
@@ -280,6 +282,8 @@ void TupPaintAreaStatus::applyZoom(const QString &text)
 
 void TupPaintAreaStatus::setZoomPercent(const QString &percent)
 {
+    tError() << "TupPaintAreaStatus::setZoomPercent() - percent: " << percent;
+
     updateZoomField(percent);
     applyZoom(percent);
 }

@@ -73,7 +73,7 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
 
         void setBgColor(const QColor color);
         void setAntialiasing(bool use);
-        void setUseOpenGL(bool opengl);
+        // void setUseOpenGL(bool opengl);
         void drawGrid(bool draw);
         void drawActionSafeArea(bool draw);
         void setTool(TupToolPlugin *tool);
@@ -95,8 +95,8 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
         void updateDimension(const QSize dimension);
 
     private:
-        virtual void saveState();
-        virtual void restoreState();
+        // virtual void saveState();
+        // virtual void restoreState();
         void drawPadLock(QPainter *painter, const QRectF &rect, QString text);
         void updateCenter(const QPoint point);
 
