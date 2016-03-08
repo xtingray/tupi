@@ -121,7 +121,8 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void insertFrame(int layerIndex, int frameIndex);
         void renameFrame(int layerIndex, int frameIndex, const QString &name);
         void selectFrame(int layerIndex, int frameIndex);
-        void removeFrameCopy(int layerIndex, int frameIndex);
+        // void removeFrameCopy(int layerIndex, int frameIndex);
+        void removeFrameCopy();
         void copyFrameForward(int layerIndex, int frameIndex);
 
         void requestRenameLayer(int layerIndex, const QString &name);

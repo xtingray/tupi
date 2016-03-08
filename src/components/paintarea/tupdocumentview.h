@@ -112,6 +112,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void resizeProjectDimension(const QSize dimension);
         void updatePerspective();
         QColor projectBGColor() const;
+        void updateWorkspace();
 
     private slots:
         void setNextOnionSkin(int n);

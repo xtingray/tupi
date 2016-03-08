@@ -396,7 +396,7 @@ void TupProjectActionBar::emitActionSelected(int action)
             TCONFIG->beginGroup("General");
             bool ask = TCONFIG->value("ConfirmRemoveScene", true).toBool();
 
-            if (! ask) {
+            if (ask) {
                 TOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Confirmation"), this);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,

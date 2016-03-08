@@ -63,18 +63,19 @@ class T_CORE_EXPORT TConfig : public QObject
 
     protected:
         explicit TConfig();
-        void init();
 
     public:
+        void checkConfigFile();
+        void initConfigFile();
         void beginGroup(const QString & prefix);
         void endGroup();
 
         void setValue(const QString & key, const QVariant & value);
-
         QVariant value(const QString & key, const QVariant & defaultValue = QVariant()) const;
 
         static TConfig *instance();
 
+        int configVersion();
         bool firstTime();
         bool isOk();
         QDomDocument document();

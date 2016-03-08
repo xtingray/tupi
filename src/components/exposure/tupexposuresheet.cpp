@@ -209,7 +209,8 @@ void TupExposureSheet::addScene(int sceneIndex, const QString &name)
     connect(scene, SIGNAL(frameUsed(int, int)), this, SLOT(insertFrame(int, int)));
     connect(scene, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(renameFrame(int, int, const QString &)));
     connect(scene, SIGNAL(frameSelected(int, int)), SLOT(selectFrame(int, int)));
-    connect(scene, SIGNAL(frameRemoved(int, int)), SLOT(removeFrameCopy(int, int)));
+    // connect(scene, SIGNAL(frameRemoved(int, int)), SLOT(removeFrameCopy(int, int)));
+    connect(scene, SIGNAL(frameRemoved()), SLOT(removeFrameCopy()));
     connect(scene, SIGNAL(frameCopied(int, int)), SLOT(copyFrameForward(int, int)));
     connect(scene, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestRenameLayer(int, const QString &)));
     connect(scene, SIGNAL(layerMoved(int, int)), this, SLOT(moveLayer(int, int)));
@@ -542,8 +543,12 @@ void TupExposureSheet::selectFrame(int layerIndex, int frameIndex)
     emit localRequestTriggered(&request);
 }
 
-void TupExposureSheet::removeFrameCopy(int layerIndex, int frameIndex)
+// void TupExposureSheet::removeFrameCopy(int layerIndex, int frameIndex)
+void TupExposureSheet::removeFrameCopy()
 {
+    k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
+
+    /*
     int sceneIndex = k->scenesContainer->currentIndex();
     TupProjectRequest request;
 
@@ -559,6 +564,7 @@ void TupExposureSheet::removeFrameCopy(int layerIndex, int frameIndex)
             emit localRequestTriggered(&request);
         }
     }
+    */
 }
 
 void TupExposureSheet::copyFrameForward(int layerIndex, int frameIndex)

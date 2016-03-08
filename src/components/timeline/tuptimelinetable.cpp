@@ -508,12 +508,14 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
         int next = currentColumn()-1;
         if (next >= 0) { 
             if (event->modifiers() == Qt::ControlModifier)
-                emit frameRemoved(currentRow(), currentColumn()); 
+                emit frameRemoved();
+                // emit frameRemoved(currentRow(), currentColumn()); 
             else
                 setCurrentCell(currentRow(), next);
         } else {
             if (next == -1 && event->modifiers() == Qt::ControlModifier)
-                emit frameRemoved(currentRow(), currentColumn());
+                emit frameRemoved();
+                // emit frameRemoved(currentRow(), currentColumn());
         }
         return;
     }

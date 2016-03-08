@@ -118,7 +118,8 @@ void TupTimeLine::addScene(int sceneIndex, const QString &name)
     framesTable->setItemSize(10, 20);
 
     connect(framesTable, SIGNAL(frameSelected(int, int)), this, SLOT(selectFrame(int, int)));
-    connect(framesTable, SIGNAL(frameRemoved(int, int)), SLOT(removeFrameCopy(int, int)));
+    // connect(framesTable, SIGNAL(frameRemoved(int, int)), SLOT(removeFrameCopy(int, int)));
+    connect(framesTable, SIGNAL(frameRemoved()), SLOT(removeFrameCopy()));
     connect(framesTable, SIGNAL(frameCopied(int, int)), SLOT(copyFrameForward(int, int)));
     connect(framesTable, SIGNAL(visibilityChanged(int, bool)), this, SLOT(requestLayerVisibilityAction(int, bool)));
     connect(framesTable, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestLayerRenameAction(int, const QString &))); 
@@ -751,8 +752,12 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
     }
 }
 
-void TupTimeLine::removeFrameCopy(int layerIndex, int frameIndex)
+// void TupTimeLine::removeFrameCopy(int layerIndex, int frameIndex)
+void TupTimeLine::removeFrameCopy()
 {
+    k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
+
+    /*
     int sceneIndex = k->scenesContainer->currentIndex();
     // TupTimeLineTable *framesTable = k->scenesContainer->currentScene();
 
@@ -784,6 +789,7 @@ void TupTimeLine::removeFrameCopy(int layerIndex, int frameIndex)
             emit localRequestTriggered(&request);
         }
     }
+    */
 }
 
 void TupTimeLine::copyFrameForward(int layerIndex, int frameIndex)

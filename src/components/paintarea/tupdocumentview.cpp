@@ -2139,3 +2139,7 @@ QColor TupDocumentView::projectBGColor() const
     return k->project->bgColor();
 }
 
+void TupDocumentView::updateWorkspace()
+{
+    k->paintArea->viewport()->update();
+}

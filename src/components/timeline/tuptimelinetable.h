@@ -128,7 +128,8 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
     signals:
         // void frameChanged(int sceneIndex, int layerIndex, int frameIndex);
         void frameSelected(int layerIndex, int frameIndex);
-        void frameRemoved(int layerIndex, int frameIndex);
+        // void frameRemoved(int layerIndex, int frameIndex);
+        void frameRemoved();
         void frameCopied(int layerIndex, int frameIndex);
         void visibilityChanged(int layerIndex, bool isVisible);
         void layerNameChanged(int layerIndex, const QString &name);

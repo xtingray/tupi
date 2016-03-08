@@ -149,7 +149,6 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         TCONFIG->setValue("ConfirmRemoveScene", true); 
         TCONFIG->setValue("ConfirmRemoveObject", true); 
         TCONFIG->beginGroup("PaintArea");
-        // TCONFIG->setValue("GridColor", QColor(0, 0, 180, 50).name());
         TCONFIG->setValue("GridColor", "#0000b4");
         TCONFIG->setValue("GridSeparation", 10);
     }
@@ -838,12 +837,14 @@ void TupMainWindow::importProjectToServer()
 void TupMainWindow::preferences()
 {
     TupPreferencesDialog *preferences = new TupPreferencesDialog(this);
-    // connect(preferences, SIGNAL(timerChanged()), animationTab, SLOT(updateTimer()));
     preferences->show();
 
     QDesktopWidget desktop;
     preferences->move((int) (desktop.screenGeometry().width() - preferences->width())/2 , 
                       (int) (desktop.screenGeometry().height() - preferences->height())/2);
+
+    if (preferences->exec() == QDialog::Accepted)
+        animationTab->updateWorkspace();
 }
 
 /**

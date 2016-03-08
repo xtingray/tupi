@@ -133,7 +133,8 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void frameUsed(int layerIndex, int frameIndex);
         void frameRenamed(int layerIndex, int frameIndex,const QString & name);
         void frameSelected(int layerIndex, int frameIndex);
-        void frameRemoved(int layerIndex, int frameIndex);
+        // void frameRemoved(int layerIndex, int frameIndex);
+        void frameRemoved();
         void frameCopied(int layerIndex, int frameIndex);
 
         void layerNameChanged(int layerIndex, const QString & name);

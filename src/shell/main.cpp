@@ -91,9 +91,9 @@ int main(int argc, char ** argv)
     kAppProp->setRevision(REVISION);
 
     // Time to define global variables for Tupi
-    TCONFIG->beginGroup("General");
     QDir appDirPath(QApplication::applicationDirPath());
-    if (! TCONFIG->isOk()) {
+    TCONFIG->beginGroup("General");
+    if (TCONFIG->firstTime()) {
         #if defined(Q_OS_MAC)
             TCONFIG->setValue("Home", appDirPath.absolutePath());
         #else

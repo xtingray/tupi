@@ -91,7 +91,7 @@ TConfig::TConfig() : QObject(), k(new Private)
     }
 
     k->path = k->configDirectory.path() + "/" + QCoreApplication::applicationName().toLower() + ".cfg";
-    init();
+    checkConfigFile();
 }
 
 TConfig::~TConfig()
@@ -110,13 +110,13 @@ TConfig::~TConfig()
 
 TConfig *TConfig::instance()
 {
-    if (! m_instance)
+    if (!m_instance)
         m_instance = new TConfig;
 
     return m_instance;
 }
 
-void TConfig::init()
+void TConfig::checkConfigFile()
 {
     QFile config(k->path);
     k->isOk = false;
@@ -127,11 +127,10 @@ void TConfig::init()
         int errorColumn = 0;
 
         k->isOk = k->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
-
         if (!k->isOk) {
             #ifdef K_DEBUG
-                QString msg1 = "TConfig::init() - Fatal Error: Configuration file is corrupted - Line: " + QString::number(errorLine) + " - Column: " + QString::number(errorColumn);
-                QString msg2 = "TConfig::init() - Message: " + errorMsg;
+                QString msg1 = "TConfig::checkConfigFile() - Fatal Error: Configuration file is corrupted - Line: " + QString::number(errorLine) + " - Column: " + QString::number(errorColumn);
+                QString msg2 = "TConfig::checkConfigFile() - Message: " + errorMsg;
                 #ifdef Q_OS_WIN
                     qDebug() << msg1;
                     qDebug() << msg2;
@@ -140,18 +139,38 @@ void TConfig::init()
                     tError() << msg2;
                 #endif
             #endif
+        } else {
+            if (configVersion() < QString(CONFIG_VERSION).toInt())
+                k->isOk = false;
         }
 
         config.close();
-   }
+    }
 
-   if (!k->isOk) {
-       QDomProcessingInstruction header = k->document.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-       k->document.appendChild(header);
+    if (!k->isOk)
+        initConfigFile();
+}
 
-       QDomElement root = k->document.createElement("Config");
-       k->document.appendChild(root);
-   }
+void TConfig::initConfigFile()
+{
+    k->document.clear();
+    QDomProcessingInstruction header = k->document.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+    k->document.appendChild(header);
+
+    QDomElement root = k->document.createElement("Config");
+    root.setAttribute("version", CONFIG_VERSION);
+    k->document.appendChild(root);
+
+    k->firstTime = true;
+    k->isOk = true;
+}
+
+int TConfig::configVersion()
+{
+   QDomElement root = k->document.documentElement();
+   int version = root.attribute("version", 0).toInt();
+
+   return version;
 }
 
 bool TConfig::firstTime()
@@ -171,25 +190,23 @@ QDomDocument TConfig::document()
 
 void TConfig::sync()
 {
-    QFile f(k->path);
+    QFile file(k->path);
 
-    if (f.open(QIODevice::WriteOnly)) {
-        QTextStream st(&f);
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream st(&file);
         st << k->document.toString() << endl;
         k->isOk = true;
-        f.close();
+        file.close();
     } else {
         k->isOk = false;
     }
 
-    init();
+    checkConfigFile();
 }
 
 void TConfig::beginGroup(const QString & prefix)
 {
-    // QString stripped = Qt::escape(prefix);
     QString stripped = QString(prefix).toHtmlEscaped();
-
     stripped.replace(' ', "_");
     stripped.replace('\n', "");
 
@@ -245,15 +262,15 @@ QVariant TConfig::value(const QString & key, const QVariant & defaultValue) cons
    if (element.isNull())
        return defaultValue;
 
-   QVariant v = element.attribute("value");
+   QVariant content = element.attribute("value");
 
-   if (v.toString() == "false") {
+   if (content.toString() == "false") {
        return false;
-   } else if (v.toString() == "true") {
+   } else if (content.toString() == "true") {
               return true;
    }
 
-   return v;
+   return content;
 }
 
 QDomElement TConfig::find(const QDomElement &element, const QString &key) const 

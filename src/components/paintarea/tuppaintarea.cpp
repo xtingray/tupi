@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tuppaintarea.h"
+#include "toptionaldialog.h"
 
 /**
  * This class defines the behavior of the main paint area when ilustration module is on
@@ -1535,6 +1536,23 @@ void TupPaintArea::copyFrameForward()
 
 void TupPaintArea::removeCurrentFrame()
 {
+    TCONFIG->beginGroup("General");
+    bool ask = TCONFIG->value("ConfirmRemoveFrame", true).toBool();
+    if (ask) {
+        TOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Confirmation"), this);
+        dialog.setModal(true);
+        QDesktopWidget desktop;
+        dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,
+                    (int) (desktop.screenGeometry().height() - dialog.sizeHint().height())/2);
+
+        if (dialog.exec() == QDialog::Rejected)
+            return;
+
+        TCONFIG->beginGroup("General");
+        TCONFIG->setValue("ConfirmRemoveFrame", dialog.shownAgain());
+        TCONFIG->sync();
+    }
+
     TupGraphicsScene *gScene = graphicsScene();
     int sceneIndex = gScene->currentSceneIndex();
     int layerIndex = gScene->currentLayerIndex();
