@@ -172,8 +172,10 @@ void TupCanvasView::updateCenter(const QPoint point)
     int x0 = k->initPoint.x();
     int y0 = k->initPoint.y();
 
-    int b = fabs(x0 - x);
-    int h = fabs(y0 - y);
+    // int b = fabs(x0 - x);
+    // int h = fabs(y0 - y);
+    int b = abs(x0 - x);
+    int h = abs(y0 - y);
     if (x0 > x)
         cx += b;
     else

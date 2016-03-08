@@ -754,7 +754,7 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
 void TupTimeLine::removeFrameCopy(int layerIndex, int frameIndex)
 {
     int sceneIndex = k->scenesContainer->currentIndex();
-    TupTimeLineTable *framesTable = k->scenesContainer->currentScene();
+    // TupTimeLineTable *framesTable = k->scenesContainer->currentScene();
 
     int framesCount;
     TupScene *scene = k->project->sceneAt(sceneIndex);
