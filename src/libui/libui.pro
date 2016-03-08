@@ -31,14 +31,14 @@ macx {
     CONFIG += plugin warn_on
 }
 
-HEADERS += tupthemeselector.h \
-           tupabout.h \
+# HEADERS += tupthemeselector.h \
+HEADERS += tupabout.h \
            tupgeneralpreferences.h \
            tuppreferencesdialog.h \
            tuppaintareaconfig.h 
 
-SOURCES += tupthemeselector.cpp \
-           tupabout.cpp \
+# SOURCES += tupthemeselector.cpp \
+SOURCES += tupabout.cpp \
            tupgeneralpreferences.cpp \
            tuppreferencesdialog.cpp \
            tuppaintareaconfig.cpp 

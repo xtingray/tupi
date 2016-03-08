@@ -37,18 +37,7 @@
 #define TUPABOUT_H
 
 #include "tglobal.h"
-#include "tapplicationproperties.h"
 #include "tabdialog.h"
-#include "tanimwidget.h"
-
-#include <QTextBrowser>
-#include <QLabel>
-#include <QPixmap>
-#include <QFile>
-#include <QDomDocument>
-#include <QTextStream>
-#include <QScrollArea>
-#include <QDir>
 
 /**
  * @brief Class that handles the about dialog box
@@ -75,9 +64,6 @@ class TUPI_EXPORT TupAbout : public TabDialog
     public:
         TupAbout(QWidget *parent);
         ~TupAbout();
-
-    private:
-        TAnimWidget *m_credits;
 };
 
 #endif

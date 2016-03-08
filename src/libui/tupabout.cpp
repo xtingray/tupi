@@ -34,6 +34,17 @@
  ***************************************************************************/
 
 #include "tupabout.h"
+#include "tanimwidget.h"
+#include "tapplicationproperties.h"
+
+#include <QTextBrowser>
+#include <QLabel>
+#include <QPixmap>
+#include <QFile>
+#include <QDomDocument>
+#include <QTextStream>
+#include <QScrollArea>
+#include <QDir>
 
 /**
  * This class defines the About dialog of Tupi.
@@ -111,13 +122,13 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
            n = n.nextSibling();
     }
 
-    m_credits = new TAnimWidget(QPixmap(THEME_DIR + "/images/credits.png"), creditsText);
-    addTab(m_credits, tr("Credits"));
+    TAnimWidget *credits = new TAnimWidget(QPixmap(THEME_DIR + "/images/credits.png"), creditsText);
+    addTab(credits, tr("Credits"));
 
-    QPalette pal = m_credits->palette();
-    pal.setColor(QPalette::Foreground, QColor(50, 50, 50, 255));
-    m_credits->setPalette(pal);
-    m_credits->setFont(QFont("verdana", 24));
+    QPalette palette = credits->palette();
+    palette.setColor(QPalette::Foreground, QColor(50, 50, 50, 255));
+    credits->setPalette(palette);
+    credits->setFont(QFont("verdana", 24));
 
     // Acknowledgment Tab 
 

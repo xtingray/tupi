@@ -270,10 +270,12 @@ void TupDocumentView::drawActionSafeArea()
     k->paintArea->drawActionSafeArea(!k->paintArea->actionSafeAreaFlag());
 }
 
+/*
 QPainter::RenderHints TupDocumentView::renderHints() const
 {
     return k->paintArea->renderHints();
 }
+*/
 
 void TupDocumentView::updateRotationAngleFromRulers(int angle)
 {

@@ -95,7 +95,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void setAntialiasing(bool useIt);
         // void setOpenGL(bool useIt);
 
-        QPainter::RenderHints renderHints() const;
+        // QPainter::RenderHints renderHints() const;
         void setZoomFactor(qreal factor);
 
         TupBrushManager *brushManager() const;

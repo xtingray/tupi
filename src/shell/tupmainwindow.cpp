@@ -895,9 +895,9 @@ void TupMainWindow::showHelp()
 void TupMainWindow::aboutTupi()
 {
     TupAbout *about = new TupAbout(this);
-    about->exec();
-
-    delete about;
+    about->show();
+    // about->exec();
+    // delete about;
 }
 
 /**
