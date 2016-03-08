@@ -305,8 +305,6 @@ void TupDocumentView::updateRotationVars(int angle)
 
 void TupDocumentView::setZoomFactor(qreal factor)
 {
-    tError() << "TupDocumentView::setZoomFactor() - Tracing factor -> " << factor;
-
     k->paintArea->setZoom(factor);
     k->verticalRuler->setRulerZoom(factor);
     k->horizontalRuler->setRulerZoom(factor);
@@ -316,8 +314,6 @@ void TupDocumentView::setZoomFactor(qreal factor)
 
 void TupDocumentView::updateZoomVars(qreal factor)
 {
-    tError() << "TupDocumentView::updateZoomVars() - Tracing factor -> " << factor;
-
     k->status->updateZoomFactor(factor);
     k->verticalRuler->setRulerZoom(factor);
     k->horizontalRuler->setRulerZoom(factor);
@@ -327,8 +323,6 @@ void TupDocumentView::updateZoomVars(qreal factor)
 
 void TupDocumentView::applyZoomIn()
 {
-    tError() << "TupDocumentView::applyZoomIn() - Tracing...";
-
     qreal zoom = k->status->currentZoomFactor();
     if (zoom <= 495) {
         zoom += 5;
@@ -338,8 +332,6 @@ void TupDocumentView::applyZoomIn()
 
 void TupDocumentView::applyZoomOut()
 {
-    tError() << "TupDocumentView::applyZoomOut() - Tracing...";
-
     qreal zoom = k->status->currentZoomFactor();
     if (zoom >= 15) {
         zoom -= 5;
@@ -359,8 +351,6 @@ void TupDocumentView::updateNodesScale(qreal factor)
 
 void TupDocumentView::setZoomPercent(const QString &percent)
 {
-    tError() << "TupDocumentView::setZoomPercent() - percent: " << percent;
-
     k->nodesScaleFactor = percent.toDouble() / 100;
     k->status->setZoomPercent(percent);
 }
@@ -1872,17 +1862,12 @@ void TupDocumentView::resizeProjectDimension(const QSize dimension)
     int pWidth = dimension.width();
     int pHeight = dimension.height();
 
-    tError() << "TupDocumentView::resizeProjectDimension() - dimension: " << width << " - " << height;
-    tError() << "TupDocumentView::resizeProjectDimension() - dimension: " << pWidth << " - " << pHeight;
-
     double proportion = 1;
 
     if (pWidth > pHeight)
         proportion = (double) width / (double) pWidth;
     else
         proportion = (double) height / (double) pHeight;
-
-    tError() << "TupDocumentView::resizeProjectDimension() - proportion: " << proportion;
 
     if (proportion <= 0.5) {
         setZoomPercent("20");
@@ -2144,8 +2129,6 @@ void TupDocumentView::updatePerspective()
 
 void TupDocumentView::resetWorkSpaceTransformations()
 {
-    tError() << "TupDocumentView::resetWorkSpaceTransformations() - Tracing...";
-
     k->paintArea->resetWorkSpaceCenter(k->project->dimension());
     k->status->setRotationAngle("0");
     k->status->setZoomPercent("100");

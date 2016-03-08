@@ -69,5 +69,5 @@ TOptionalDialog::~TOptionalDialog()
 
 bool TOptionalDialog::shownAgain()
 {
-    return m_checkBox->isChecked();
+    return !m_checkBox->isChecked();
 }

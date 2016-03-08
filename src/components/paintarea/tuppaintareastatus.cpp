@@ -264,8 +264,6 @@ void TupPaintAreaStatus::applyRotation(const QString &text)
 
 void TupPaintAreaStatus::applyZoom(const QString &text)
 {
-    tError() << "TupPaintAreaStatus::applyZoom() - text: " << text;
-
     bool ok;
     int input = text.toInt(&ok, 10);
 
@@ -282,8 +280,6 @@ void TupPaintAreaStatus::applyZoom(const QString &text)
 
 void TupPaintAreaStatus::setZoomPercent(const QString &percent)
 {
-    tError() << "TupPaintAreaStatus::setZoomPercent() - percent: " << percent;
-
     updateZoomField(percent);
     applyZoom(percent);
 }
