@@ -34,17 +34,14 @@ macx {
 # HEADERS += tupthemeselector.h \
 HEADERS += tupabout.h \
            tuppaintareaconfig.h \
-		   tupgeneralpreferences.h
-           # tupgeneralpreferences.h \
-           # tuppreferencesdialog.h \
-           # tuppaintareaconfig.h 
-
+		   tupgeneralpreferences.h \
+           tuppreferencesdialog.h
+ 
 # SOURCES += tupthemeselector.cpp \
 SOURCES += tupabout.cpp \
            tuppaintareaconfig.cpp \
-           tupgeneralpreferences.cpp
-           # tuppreferencesdialog.cpp \
-           # tuppaintareaconfig.cpp 
+           tupgeneralpreferences.cpp \
+           tuppreferencesdialog.cpp 
 
 *:!macx{
     CONFIG += dll warn_on

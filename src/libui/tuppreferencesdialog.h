@@ -43,9 +43,6 @@
 
 #include "tglobal.h"
 #include "tconfigurationdialog.h"
-#include "tapplicationproperties.h"
-#include "tupgeneralpreferences.h"
-#include "tuppaintareaconfig.h"
 
 class TUPI_EXPORT TupPreferencesDialog : public TConfigurationDialog
 {

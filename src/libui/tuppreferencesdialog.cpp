@@ -34,7 +34,9 @@
  ***************************************************************************/
 
 #include "tuppreferencesdialog.h"
-// #include "tformfactory.h"
+#include "tapplicationproperties.h"
+#include "tupgeneralpreferences.h"
+#include "tuppaintareaconfig.h"
 
 /**
  * This class handles the preferences dialog for Tupi.

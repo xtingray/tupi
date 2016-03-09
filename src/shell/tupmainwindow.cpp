@@ -836,17 +836,15 @@ void TupMainWindow::importProjectToServer()
 
 void TupMainWindow::preferences()
 {
-	/* 
-    TupPreferencesDialog *preferences = new TupPreferencesDialog(this);
-    preferences->show();
+    TupPreferencesDialog *dialog = new TupPreferencesDialog(this);
+    dialog->show();
 
     QDesktopWidget desktop;
-    preferences->move((int) (desktop.screenGeometry().width() - preferences->width())/2 , 
-                      (int) (desktop.screenGeometry().height() - preferences->height())/2);
+    dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 , 
+                      (int) (desktop.screenGeometry().height() - dialog->height())/2);
 
-    if (preferences->exec() == QDialog::Accepted)
+    if (dialog->exec() == QDialog::Accepted)
         animationTab->updateWorkspace();
-	*/
 }
 
 /**
