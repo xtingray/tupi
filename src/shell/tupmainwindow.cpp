@@ -836,6 +836,7 @@ void TupMainWindow::importProjectToServer()
 
 void TupMainWindow::preferences()
 {
+	/* 
     TupPreferencesDialog *preferences = new TupPreferencesDialog(this);
     preferences->show();
 
@@ -845,6 +846,7 @@ void TupMainWindow::preferences()
 
     if (preferences->exec() == QDialog::Accepted)
         animationTab->updateWorkspace();
+	*/
 }
 
 /**
