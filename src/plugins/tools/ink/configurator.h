@@ -38,13 +38,9 @@
 
 #include "tglobal.h"
 
-#include <QLabel>
-#include <QComboBox>
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
-#include <QBoxLayout>
-#include <QTextEdit>
 
 /**
  * @author Gustav Gonzalez 
@@ -61,22 +57,19 @@ class TUPI_PLUGIN Configurator : public QWidget
         ~Configurator();
         int spacingValue();
         qreal sizeToleranceValue();
-        // bool runSimulation();
         double smoothness() const;
-        // Configurator::Structure structureType();
+        bool showBorder();
+        int borderSizeValue();
 
     signals:
         void updateSpacing(int value);
         void updateSizeTolerance(int value);
 
-    // private slots:
-    //         void updateInterface(int state);
-
     private:
-        QComboBox *structureCombo;
         QSpinBox *spacingBox;
         QSpinBox *sizeBox;
-        // QCheckBox *checkBox;
+        QCheckBox *borderOption;
+        QSpinBox *borderSizeBox;
         QDoubleSpinBox *smoothBox;
 };
 

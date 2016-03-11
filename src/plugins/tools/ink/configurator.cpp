@@ -34,6 +34,10 @@
  ***************************************************************************/
 
 #include "configurator.h"
+#include "tconfig.h"
+
+#include <QLabel>
+#include <QBoxLayout>
 
 Configurator::Configurator(QWidget *parent) :QWidget(parent)
 {
@@ -45,36 +49,49 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
         #endif
     #endif
 
+    QFont titleFont = font(); 
+    titleFont.setBold(true);
+
+    TCONFIG->beginGroup("InkTool");
+    double spacing = TCONFIG->value("DotsSpacing", 5).toInt();
+    double tolerance = TCONFIG->value("Tolerance", 5).toInt();
+    double smoothness = TCONFIG->value("Smoothness", 4.0).toDouble();
+    bool border = TCONFIG->value("ShowBorder", true).toBool();
+    bool borderSize = TCONFIG->value("BorderSize", 1).toInt();
+
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-    /*
-    QTextEdit *textArea = new QTextEdit; 
-    textArea->setFixedHeight(170);
-    textArea->setHtml("<p>" + tr("This tool is just a <b>proof-of-concept</b> of the basic algorithm for the Tupi's free-tracing vectorial brushes") + "</p>"); 
-    mainLayout->addWidget(textArea);
-    */
+    QBoxLayout *borderLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *borderLabel = new QLabel(tr("Border"));
+    borderLabel->setFont(titleFont);
+    borderLabel->setAlignment(Qt::AlignHCenter);
+    borderLayout->addWidget(borderLabel);
+    mainLayout->addLayout(borderLayout);
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Parameters"));
-    label->setAlignment(Qt::AlignHCenter);
-    layout->addWidget(label);
-    mainLayout->addLayout(layout);
+    borderOption = new QCheckBox(tr("Show border line"));
+    borderOption->setChecked(border);
+    mainLayout->addWidget(borderOption);
 
-    /*
-    QBoxLayout *structureLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *structureLabel = new QLabel(tr("Structure"));
-    structureLabel->setAlignment(Qt::AlignHCenter);
-    structureLayout->addWidget(structureLabel);
+    QBoxLayout *borderSizeLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *borderSizeLabel = new QLabel(tr("Border Size"));
+    borderSizeLabel->setAlignment(Qt::AlignHCenter);
+    borderSizeLayout->addWidget(borderSizeLabel);
 
-    structureCombo = new QComboBox();
-    structureCombo->addItem(tr("Basic"));
-    structureCombo->addItem(tr("Axial"));
-    structureCombo->addItem(tr("Organic"));
-    structureCombo->setCurrentIndex(2);
-    structureLayout->addWidget(structureCombo);
+    borderSizeBox = new QSpinBox();
+    borderSizeBox->setSingleStep(1);
+    borderSizeBox->setMinimum(1);
+    borderSizeBox->setMaximum(10);
+    borderSizeBox->setValue(borderSize);
+    borderSizeLayout->addWidget(borderSizeBox);
 
-    mainLayout->addLayout(structureLayout);
-    */
+    mainLayout->addLayout(borderSizeLayout);
+
+    QBoxLayout *paramsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+    QLabel *paramsLabel = new QLabel(tr("Parameters"));
+    paramsLabel->setFont(titleFont);
+    paramsLabel->setAlignment(Qt::AlignHCenter);
+    paramsLayout->addWidget(paramsLabel);
+    mainLayout->addLayout(paramsLayout);
 
     QBoxLayout *spaceLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *spaceLabel = new QLabel(tr("Dot Spacing"));
@@ -85,7 +102,7 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     spacingBox->setSingleStep(1);
     spacingBox->setMinimum(1);
     spacingBox->setMaximum(10);
-    spacingBox->setValue(5);
+    spacingBox->setValue(spacing);
     spaceLayout->addWidget(spacingBox);
 
     connect(spacingBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSpacing(int)));
@@ -101,21 +118,12 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     sizeBox->setSingleStep(10);
     sizeBox->setMinimum(0);
     sizeBox->setMaximum(200);
-    sizeBox->setValue(50);
+    sizeBox->setValue(tolerance);
     sizeLayout->addWidget(sizeBox);
 
     connect(sizeBox, SIGNAL(valueChanged(int)), this, SIGNAL(updateSizeTolerance(int)));
 
     mainLayout->addLayout(sizeLayout);
-
-    /*
-    QBoxLayout *checkLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    checkBox = new QCheckBox(tr("Run simulation"));
-    checkBox->setChecked(true);
-    checkLayout->addWidget(checkBox);
-    connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(updateInterface(int)));
-    mainLayout->addLayout(checkLayout);
-    */
 
     QBoxLayout *smoothLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *smoothLabel = new QLabel(tr("Smoothness"));
@@ -123,27 +131,19 @@ Configurator::Configurator(QWidget *parent) :QWidget(parent)
     smoothLayout->addWidget(smoothLabel);
     smoothBox = new QDoubleSpinBox();
 
-    smoothBox->setValue(4.0);
+    smoothBox->setValue(smoothness);
     smoothBox->setDecimals(2);
     smoothBox->setSingleStep(0.1);
-    smoothBox->setMaximum(100);
+    smoothBox->setMinimum(0);
+    smoothBox->setMaximum(20);
     smoothLayout->addWidget(smoothBox);
 
     mainLayout->addLayout(smoothLayout);
-    // smoothBox->setDisabled(true);
-
     mainLayout->addStretch(2);
 }
 
 Configurator::~Configurator()
 {
-    #ifdef K_DEBUG
-        #ifdef Q_OS_WIN
-            qDebug() << "[~Configurator()]";
-        #else
-            TEND;
-        #endif
-    #endif
 }
 
 int Configurator::spacingValue()
@@ -156,32 +156,17 @@ qreal Configurator::sizeToleranceValue()
     return sizeBox->value();
 }
 
-/*
-bool Configurator::runSimulation()
-{
-    return checkBox->isChecked();
-}
-*/
-
-/*
-void Configurator::updateInterface(int state)
-{ 
-    if (state == 2)
-        smoothBox->setDisabled(false);
-    else
-        smoothBox->setDisabled(true);
-}
-*/
-
 double Configurator::smoothness() const
 {
     return smoothBox->value();
 }
 
-/*
-Configurator::Structure Configurator::structureType()
+bool Configurator::showBorder()
 {
-    int index = structureCombo->currentIndex();
-    return Structure(index);
+    return borderOption->isChecked();
 }
-*/
+
+int Configurator::borderSizeValue()
+{
+    return borderSizeBox->value();
+}

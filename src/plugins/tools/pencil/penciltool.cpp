@@ -35,20 +35,6 @@
 
 #include "penciltool.h"
 
-/*
-#include "tupinputdeviceinformation.h"
-#include "tupbrushmanager.h"
-#include "tupgraphicalgorithm.h"
-#include "tupgraphicsscene.h"
-#include "tuprequestbuilder.h"
-#include "tupprojectrequest.h"
-#include "tuplibraryobject.h"
-#include "tupellipseitem.h"
-#include "taction.h"
-#include "talgorithm.h"
-#include "tconfig.h"
-*/
-
 struct PencilTool::Private
 {
     QPointF firstPoint;
@@ -95,40 +81,9 @@ void PencilTool::init(TupGraphicsScene *scene)
     #endif
 
     k->scene = scene;
-	foreach (QGraphicsView * view, scene->views())
+    foreach (QGraphicsView * view, scene->views())
              view->setDragMode(QGraphicsView::NoDrag);
-
-    /*
-    foreach (QGraphicsView *view, scene->views()) {
-             view->setDragMode(QGraphicsView::NoDrag);
-             Q_CHECK_PTR(view->scene());
-             if (QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene())) {
-                 foreach (QGraphicsItem *item, scene->items()) {
-                          item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                          item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                 }
-             }
-    }
-
-    foreach (QGraphicsItem *item, scene->items()) {
-             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-             item->setFlag(QGraphicsItem::ItemIsMovable, false);
-    }
-    */
-
-    // reset(k->scene);
 }
-
-/*
-void PencilTool::reset(TupGraphicsScene *scene)
-{
-    tError() << "PencilTool::reset() - Tracing...";
-    foreach (QGraphicsItem *item, scene->items()) {
-             item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-             item->setFlag(QGraphicsItem::ItemIsMovable, false);
-    }
-}
-*/
 
 QStringList PencilTool::keys() const
 {
@@ -157,9 +112,6 @@ void PencilTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
 
     QPointF lastPoint = input->pos();
 
-    // foreach (QGraphicsView * view, scene->views())
-    //          view->setDragMode(QGraphicsView::NoDrag);
-
     k->path.moveTo(k->oldPos);
     k->path.lineTo(lastPoint);
 
@@ -174,15 +126,14 @@ void PencilTool::release(const TupInputDeviceInformation *input, TupBrushManager
     if (!k->item)
         return;
 
-    double smoothness = k->configurator->exactness();
-
     if (k->firstPoint == input->pos() && k->path.elementCount() == 1) {
-        smoothness = 0;
         qreal radius = ((qreal) brushManager->pen().width()) / ((qreal) 2);
         k->path.addEllipse(input->pos().x(), input->pos().y(), radius, radius);
-    } 
-
-    smoothPath(k->path, smoothness);
+    } else {
+        double smoothness = k->configurator->smoothness();
+        if (smoothness > 0)
+            smoothPath(k->path, smoothness);
+    }
 
     k->item->setBrush(brushManager->brush());
     k->item->setPath(k->path);
@@ -193,13 +144,12 @@ void PencilTool::release(const TupInputDeviceInformation *input, TupBrushManager
     TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), 
                                                                      0, QPoint(), scene->spaceContext(), TupLibraryObject::Item, TupProjectRequest::Add, 
                                                                      doc.toString());
-
     emit requested(&request);
 }
 
 void PencilTool::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 {
-    QPolygonF pol;
+    QPolygonF polygon;
     QList<QPolygonF> polygons = path.toSubpathPolygons();
     QList<QPolygonF>::iterator it = polygons.begin();
     QPolygonF::iterator pointIt;
@@ -208,17 +158,17 @@ void PencilTool::smoothPath(QPainterPath &path, double smoothness, int from, int
            pointIt = (*it).begin();
 
            while (pointIt <= (*it).end()-2) {
-                  pol << (*pointIt);
+                  polygon << (*pointIt);
                   pointIt += 2;
            }
            ++it;
     }
 
     if (smoothness > 0) {
-        path = TupGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
+        path = TupGraphicalAlgorithm::bezierFit(polygon, smoothness, from, to);
     } else {
         path = QPainterPath();
-        path.addPolygon(pol);
+        path.addPolygon(polygon);
     }
 }
 
@@ -248,7 +198,7 @@ void PencilTool::saveConfig()
 {
     if (k->configurator) {
         TCONFIG->beginGroup("PencilTool");
-        TCONFIG->setValue("Smoothness", k->configurator->exactness());
+        TCONFIG->setValue("Smoothness", k->configurator->smoothness());
     }
 }
 
@@ -272,7 +222,4 @@ QCursor PencilTool::cursor() const
 void PencilTool::sceneResponse(const TupSceneResponse *event)
 {
     Q_UNUSED(event);
-
-    // if (event->action() == TupProjectRequest::Select)
-    //     reset(k->scene);
 }

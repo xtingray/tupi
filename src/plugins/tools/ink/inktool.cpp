@@ -98,7 +98,7 @@ void InkTool::init(TupGraphicsScene *scene)
     k->spacing = k->configurator->spacingValue();
 
     TCONFIG->beginGroup("PenParameters");
-    int thickness = TCONFIG->value("Thickness", -1).toInt();
+    int thickness = TCONFIG->value("Thickness", 3).toInt();
     k->tolerance = k->configurator->sizeToleranceValue()/(qreal)100;
 
     k->widthVar = k->tolerance*thickness;
@@ -110,19 +110,6 @@ void InkTool::init(TupGraphicsScene *scene)
     tError() << "InkTool::init() - thickness: " << thickness;
     tError() << "InkTool::init() - k->tolerance: " << k->tolerance;
     tError() << "InkTool::init() - k->widthVar: " << k->widthVar;
-    */
-
-    /*
-    foreach (QGraphicsView * view, scene->views()) {
-             view->setDragMode(QGraphicsView::NoDrag);
-             Q_CHECK_PTR(view->scene());
-             if (QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene())) {
-                 foreach (QGraphicsItem *item, scene->items()) {
-                          item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                          item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                 }
-             }
-    }
     */
 }
 
@@ -192,15 +179,11 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
 
         k->item->setPath(k->path);
 
-        // tError() << "InkTool::move() - Flag 1";
-
         qreal slopeVar = std::abs(k->oldSlope - m);
         qreal distance = sqrt(pow(std::abs(currentPoint.x() - k->oldPos.x()), 2) + pow(std::abs(currentPoint.y() - k->oldPos.y()), 2));
 
         if ((k->dotsCounter > k->firstArrow) && ((k->dotsCounter % k->spacing == 0) || ((slopeVar >= 1) && (distance > 10)))) {
-
             if (k->arrowSize == -1) {
-                // tError() << "InkTool::move() - Flag 3";
                 qreal pow1 = pow(currentPoint.x() - k->firstPoint.x(), 2);
                 qreal pow2 = pow(currentPoint.y() - k->firstPoint.y(), 2); 
                 k->arrowSize = sqrt(pow1 + pow2);
@@ -217,14 +200,11 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
             qreal y0;
             qreal x1;
             qreal y1;
-            // bool isNAN = false;
 
-            if (m == 0) {
-                // isNAN = true;
+            if (m == 0)
                 pm = 100; 
-            } else {
+            else
                 pm = (-1) * (1/m);
-            } 
 
             #ifdef K_DEBUG
                    bool isNAN = false;
@@ -286,11 +266,11 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
 
                        if (fabs(limit) > k->widthVar) {
                            if (limit > 0) {
-                                   cutter -= 0.2;
-                                   if (cutter == 0)
-                                       found = true;
+                               cutter -= 0.2;
+                               if (cutter == 0)
+                                   found = true;
                            } else {
-                                   cutter += 0.2;
+                               cutter += 0.2;
                            }
                        } else {
                            found = true;
@@ -313,7 +293,6 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                 }
 
             } else { // Line's slope is 0 or very very close to
-
                     qreal delta;
                     qreal plus;
                     int random = rand() % 101;
@@ -365,7 +344,6 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                     qreal endX = currentPoint.x() + k->arrowSize;
                     qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
                     k->connector = QPoint(endX, endY);
-
                 } else if (k->previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                QString msg = "    -> InkTool::move() - Going up-right";
@@ -431,7 +409,6 @@ void InkTool::move(const TupInputDeviceInformation *input, TupBrushManager *brus
                     qreal endX = currentPoint.x() - k->arrowSize;
                     qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
                     k->connector = QPoint(endX, endY);
-
                 } else if (k->previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                QString msg = "    -> InkTool::move() - Going up-left";
@@ -562,7 +539,8 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
 
     scene->removeItem(k->item);
 
-    QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    int size = k->configurator->borderSizeValue();
+    QPen inkPen(brushManager->penColor(), size, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     if (k->firstPoint != currentPoint) {
         for (int i = k->leftPoints.size()-1; i > 0; i--) {
@@ -572,17 +550,21 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
 
         k->inkPath.moveTo(k->leftPoints.at(0));
         k->inkPath.lineTo(QPointF(0, 0));
-
         smoothPath(k->inkPath, k->configurator->smoothness());
 
-        TupPathItem *line = new TupPathItem();
-        line->setPen(inkPen);
-        line->setBrush(brushManager->penBrush());
-        line->setPath(k->inkPath);
-        scene->includeObject(line);
+        TupPathItem *stroke = new TupPathItem();
+        if (k->configurator->showBorder())
+            stroke->setPen(inkPen);
+        else
+            stroke->setPen(QPen(Qt::NoPen));
+
+        // stroke->setBrush(brushManager->penBrush());
+        stroke->setBrush(brushManager->brush());
+        stroke->setPath(k->inkPath);
+        scene->includeObject(stroke);
 
         QDomDocument doc;
-        doc.appendChild(line->toXml(doc));
+        doc.appendChild(stroke->toXml(doc));
         TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
                                                                          0, QPointF(), scene->spaceContext(), TupLibraryObject::Item, TupProjectRequest::Add, 
                                                                          doc.toString());
@@ -626,7 +608,7 @@ int InkTool::toolType() const
 
 QWidget *InkTool::configurator() 
 {
-    if (! k->configurator) {
+    if (!k->configurator) {
         k->configurator = new Configurator;
         connect(k->configurator, SIGNAL(updateSpacing(int)), this, SLOT(updateSpacingVar(int)));
         connect(k->configurator, SIGNAL(updateSizeTolerance(int)), this, SLOT(updateSizeToleranceVar(int)));
@@ -641,6 +623,14 @@ void InkTool::aboutToChangeTool()
 
 void InkTool::saveConfig()
 {
+    if (k->configurator) {
+        TCONFIG->beginGroup("InkTool");
+        TCONFIG->setValue("DotsSpacing", k->configurator->spacingValue());
+        TCONFIG->setValue("Tolerance", k->configurator->sizeToleranceValue());
+        TCONFIG->setValue("Smoothness", k->configurator->smoothness());
+        TCONFIG->setValue("ShowBorder", k->configurator->showBorder());
+        TCONFIG->setValue("BorderSize", k->configurator->borderSizeValue());
+    }
 }
 
 void InkTool::updateSpacingVar(int value)
@@ -657,14 +647,11 @@ void InkTool::smoothPath(QPainterPath &path, double smoothness, int from, int to
 {
     QPolygonF pol;
     QList<QPolygonF> polygons = path.toSubpathPolygons();
-
     QList<QPolygonF>::iterator it = polygons.begin();
-
     QPolygonF::iterator pointIt;
 
     while (it != polygons.end()) {
            pointIt = (*it).begin();
-
            while (pointIt <= (*it).end()-2) {
                   pol << (*pointIt);
                   pointIt += 2;
