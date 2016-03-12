@@ -63,7 +63,7 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
     public:
 
         enum MenuIndex { InvalidMenu = -1, BrushesMenu = 0, SelectionMenu, FillMenu, ZoomMenu, TweenerMenu, Arrows, ColorMenu };
-        enum BrushTools { InvalidBrush = -1, PencilTool = 0, InkTool, EraserTool, PolyLineTool, LineTool, RectangleTool, EllipseTool, TextTool, FrameBack, FrameForward, QuickCopy, Delete };
+        enum BrushTools { InvalidBrush = -1, PencilTool = 0, InkTool, SchemeTool, EraserTool, PolyLineTool, LineTool, RectangleTool, EllipseTool, TextTool, FrameBack, FrameForward, QuickCopy, Delete };
         enum SelectTools { InvalidSelection = -1, NodesTool = 0, ObjectsTool };
         enum FillTools { InvalidFill = -1, InsideTool = 0, ContourTool };
         // enum ViewTools { InvalidView = -1, ZoomInTool = 0, ZoomOutTool, ShiftTool };

@@ -123,9 +123,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         double opacity();
 
         int framesCount();
-
         void setLibrary(TupLibrary *library);
-
         void resetCurrentTool(); 
 
     // private slots:

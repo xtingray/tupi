@@ -128,12 +128,13 @@ struct TupDocumentView::Private
 
     TAction *pencilAction;
     TAction *inkAction;
+    // Note: Enable it only for debugging
+    // TAction *schemeAction;
     TAction *polyLineAction;
     TAction *selectionAction;
     TAction *nodesAction;
     TAction *borderFillAction;
     TAction *fillAction;
-    // TAction *shiftAction;
     TAction *papagayoAction;
 };
 
@@ -520,12 +521,8 @@ void TupDocumentView::loadPlugins()
                               case TupToolInterface::Brush:
                                  {
                                    // SQA: Experimental plugin (enable it only for testing)
-                                   /*
-                                   if (toolName.compare(tr("Scheme")) == 0) {
-                                       action->setDisabled(true);
-                                       brushTools[1] = action;
-                                   }
-                                   */
+                                   // if (toolName.compare(tr("Scheme")) == 0)
+                                   //     k->schemeAction = action;
 
                                    if (toolName.compare(tr("Pencil")) == 0)
                                        k->pencilAction = action;
@@ -700,6 +697,8 @@ void TupDocumentView::loadPlugins()
 
     k->toolbar->addAction(k->pencilAction);
     k->toolbar->addAction(k->inkAction);
+    // SQA: Enable it only for debugging goals
+    // k->toolbar->addAction(k->schemeAction);
     k->toolbar->addAction(k->polyLineAction);
     k->toolbar->addSeparator();
     k->toolbar->addAction(k->shapesMenu->menuAction());
@@ -771,6 +770,14 @@ void TupDocumentView::loadPlugin(int menu, int index)
                                  action = k->inkAction;
                              }
                              break;
+                             // SQA: Enable it only for debugging
+                             /*
+                             case TupToolPlugin::SchemeTool:
+                             {
+                                 action = k->schemeAction;
+                             }
+                             break;
+                             */
                              case TupToolPlugin::PolyLineTool:
                              {
                                  action = k->polyLineAction;
@@ -913,15 +920,19 @@ void TupDocumentView::selectTool()
                          minWidth = 130;
                      } else if (toolName.compare(tr("Text"))==0) {
                                 minWidth = 350;
-                     } 
-
-                     if (toolName.compare(tr("Rectangle"))==0 || toolName.compare(tr("Ellipse"))==0 || toolName.compare(tr("Line"))==0) { 
-                         minWidth = 130;
-                         k->shapesMenu->setDefaultAction(action);
-                         k->shapesMenu->setActiveAction(action);
-                         if (!action->icon().isNull())
-                             k->shapesMenu->menuAction()->setIcon(action->icon());
+                     } else { 
+                         if (toolName.compare(tr("Rectangle"))==0 || toolName.compare(tr("Ellipse"))==0 || toolName.compare(tr("Line"))==0) { 
+                             minWidth = 130;
+                             k->shapesMenu->setDefaultAction(action);
+                             k->shapesMenu->setActiveAction(action);
+                             if (!action->icon().isNull())
+                                 k->shapesMenu->menuAction()->setIcon(action->icon());
+                         }
                      }
+                     /* SQA: Enable it only for debugging
+                     if (toolName.compare(tr("Scheme"))==0)
+                         minWidth = 130;
+                     */
                      break;
                      
                 case TupToolInterface::Tweener:

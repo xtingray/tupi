@@ -1,7 +1,7 @@
 SUBDIRS += common \
            pencil \
            ink \
-           # scheme \
+           scheme \
            selection \
            nodes \
            text \

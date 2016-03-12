@@ -228,6 +228,9 @@ void TupScreen::play()
         #endif
     #endif
 
+    if (k->photograms.count() == 1)
+        return;
+
     k->isPlaying = true;
 
     if (k->playBackTimer->isActive())
@@ -560,8 +563,8 @@ void TupScreen::resizeEvent(QResizeEvent *event)
             stop();
         }
         */
-        updateFirstFrame();
-        update();
+        // updateFirstFrame();
+        // update();
     } else {
         #ifdef K_DEBUG
             QString msg = "TupScreen::resizeEvent() - [ Error ] - Current index is invalid -> " + QString::number(k->currentSceneIndex);
