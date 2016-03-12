@@ -144,8 +144,8 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     setMouseTracking(true); 
 
     // restoreState();
-    // setRenderHints(QPainter::RenderHints(QPainter::Antialiasing));
-    setRenderHints(QPainter::RenderHints(QPainter::HighQualityAntialiasing));
+    setRenderHints(QPainter::RenderHints(QPainter::Antialiasing));
+    // setRenderHints(QPainter::RenderHints(QPainter::HighQualityAntialiasing));
 }
 
 void TupPaintAreaBase::setBgColor(const QColor color)
