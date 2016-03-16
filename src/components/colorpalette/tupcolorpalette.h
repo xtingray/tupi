@@ -38,15 +38,15 @@
 
 #include "tglobal.h"
 #include "tupmodulewidgetbase.h"
-#include "tdualcolorbutton.h"
 #include "ticon.h"
 #include "timagebutton.h"
+#include "tcolorcell.h"
 #include "tconfig.h"
 #include "tuppaintareaevent.h"
 #include "tupcolorvalue.h"
 #include "tupviewcolorcells.h"
 #include "tupcolorpicker.h"
-#include "tupluminancepicker.h"
+#include "tslider.h"
 #include "tupgradientcreator.h"
 #include "tvhbox.h"
 
@@ -60,8 +60,6 @@
 #include <QSplitter>
 #include <QMenu>
 #include <QTabWidget>
-
-class TupColorPalette;
 
 /**
  * @author Jorge Cuadrado
@@ -77,46 +75,41 @@ class TUPI_EXPORT TupColorPalette : public TupModuleWidgetBase
         TupColorPalette(QWidget *parent = 0);
         ~TupColorPalette();
 
-        //SQA: change this for QBrush
+        // SQA: change this for QBrush
         QPair<QColor, QColor> color();
         void parsePaletteFile(const QString &file);
+
+    public slots:
         void init();
 
-    private:
-        struct Private;
-        Private *const k;
+    private slots:
+        void updateColorMode(TColorCell::FillType flag);
+        void setColor(const QBrush &brush);
+
+        void updateColor();
+        void syncColor(const QColor &color);
+        void setHS(int h, int s);
+        void updateColorFromPalette(const QBrush& brush);
+        void updateColorFromDisplay(const QBrush& brush);
+        void updateGradientColor(const QBrush &brush);
+        void switchColors();
+        void updateColorType(int index);
+		
+    signals:
+        void paintAreaEventTriggered(const TupPaintAreaEvent *event);
 
     private:
         void setupButtons();
-        void setupDisplayColor();
+        void setupColorDisplay();
         void setupMainPalette();
         void setupChooserTypeColor();
         void setupGradientManager();
         void setGlobalColors(const QBrush &brush);
         QIcon setComboColor(const QColor &color) const;
+        void updateLuminancePicker(const QColor &color);
 
-    // protected:
-    //    void mousePressEvent(QMouseEvent * e);
-
-    private slots:
-        void setColor(const QBrush &brush);
-        // void setFG(const QBrush &brush);
-        // void setBG(const QBrush &brush);
-        void updateColor();
-        // void changeTypeColor(TDualColorButton::ColorSpace s);
-        void syncHsv(int h, int s, int v);
-        void setHS(int h, int s);
-        void setColorSpace(int type);
-        void updateColorFromPalette(const QBrush& brush);
-        void updateColorFromDisplay(const QBrush& brush);
-        void updateColorSpace(TDualColorButton::ColorSpace space);
-        void updateGradientColor(const QBrush &brush);
-        void switchColors();
-        void resetColors();
-        void updateColorType(int index);
-		
-    signals:
-        void paintAreaEventTriggered(const TupPaintAreaEvent *event);
+        struct Private;
+        Private *const k;
 };
 
 #endif

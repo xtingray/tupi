@@ -1,15 +1,17 @@
 /***************************************************************************
- *   Project TUPI: Magia 2D                                                *
+ *   Project TUPI: Open 2D Magic                                           *
+ *   Component: tupi.mobile                                                *
  *   Project Contact: info@maefloresta.com                                 *
  *   Project Website: http://www.maefloresta.com                           *
- *   Project Leader: Gustav Gonzalez <info@maefloresta.com>                *
  *                                                                         *
  *   Developers:                                                           *
- *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *   2012:                                                                 *
+ *    Gustavo Gonzalez / @xtingray                                         *
+ *    Andres Calderon / @andresfcalderon                                   *
+ *    Antonio Vanegas / @hpsaturn                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
- *                                                                         *
+ *   Tupi is a fork of the KTooN project                                   *
+ *   KTooN's versions:                                                     *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
  *    Jorge Cuadrado                                                       *
@@ -17,7 +19,7 @@
  *    Fernado Roldan                                                       *
  *    Simena Dinas                                                         *
  *                                                                         *
- *   Copyright (C) 2010 Gustav Gonzalez - http://www.maefloresta.com       *
+ *   Copyright (C) 2012 Mae Floresta - http://www.maefloresta.com          *
  *   License:                                                              *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,38 +35,48 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPPAINTAREAEVENT_H
-#define TUPPAINTAREAEVENT_H
+#ifndef TSLIDER_H
+#define TSLIDER_H
 
 #include "tglobal.h"
-#include "tupprojectrequest.h"
 
-/**
- * @author David Cuadrado
-*/
+#include <QGraphicsView>
+#include <QMouseEvent>
+#include <QImage>
 
-class TUPI_EXPORT TupPaintAreaEvent
+class TUPI_EXPORT TSlider : public QGraphicsView
 {
+    Q_OBJECT
+
     public:
-        enum Action
-          {
-             None = 0,
-             ChangePen,
-             ChangePenColor,
-             ChangeBrush
-          };
+        enum Mode { Color = 0, Size, Opacity, FPS };
 
-        TupPaintAreaEvent(Action action, const QVariant &data);
-        virtual ~TupPaintAreaEvent();
+        explicit TSlider(Qt::Orientation orientation, Mode mode, const QColor& start, const QColor& end, QWidget *parent = 0);
+        ~TSlider();
 
-        Action action() const;
-        QVariant data() const;
+        void setBrushSettings(Qt::BrushStyle style, double opacity);
+        void setRange(int min, int max);
+        void setColors(const QColor& start, const QColor& end);
+        void setValue(int value);
+        void setEnabled(bool flag);
+        bool isEnabled();
 
-        virtual TupPaintAreaEvent *clone() const;
+    protected:
+        void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        void paintEvent(QPaintEvent *event);
+
+        void paintScales();
+
+    signals:
+        void valueChanged(int value);
+        void colorChanged(const QColor &color);
 
     private:
-        Action m_action;
-        QVariant m_data;
+       void calculateNewPosition(int pos);
+       void calculateColor(int value);
+       struct Private;
+       Private *const k;
 };
 
 #endif

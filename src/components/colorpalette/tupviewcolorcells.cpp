@@ -45,19 +45,23 @@ struct TupViewColorCells::Private
     TupCellsColor *customGradientPalette;
     int numColorRecent;
     QBrush currentColor;
+    QTableWidgetItem* currentCell;
+    QVBoxLayout *layout;
 };
 
 TupViewColorCells::TupViewColorCells(QWidget *parent) : QFrame(parent), k(new Private)
 {
     k->numColorRecent = 0;
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(0);
-    layout->setSpacing(0);
+    k->currentCell = 0;
+    k->layout = new QVBoxLayout;
+    k->layout->setMargin(0);
+    k->layout->setSpacing(0);
 
-    setLayout(layout);
     setFrameStyle(QFrame::Box | QFrame::Raised);
     setupForm();
     // setupButtons();
+
+    setLayout(k->layout);
 }
 
 TupViewColorCells::~TupViewColorCells()
@@ -87,7 +91,7 @@ TupViewColorCells::~TupViewColorCells()
          }
     }
 
-    delete k;
+    // delete k;
 	
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -104,8 +108,8 @@ void TupViewColorCells::setupForm()
     k->chooserPalette->setStyleSheet("combobox-popup: 0;");
 
     k->containerPalette = new QStackedWidget(this);
-    layout()->addWidget(k->chooserPalette);
-    layout()->addWidget(k->containerPalette);
+    k->layout->addWidget(k->chooserPalette);
+    k->layout->addWidget(k->containerPalette);
 
     // Default Palette
     k->defaultPalette = new TupCellsColor(k->containerPalette);
@@ -141,8 +145,6 @@ void TupViewColorCells::setupForm()
 #endif
     readPalettes(palettesPath); // Pre-installed
     readPalettes(CONFIG_DIR + "palettes"); // Locals
-
-    // fillDefaultColors(palettesPath);
 
     connect(k->chooserPalette, SIGNAL(activated(int)), k->containerPalette, SLOT(setCurrentIndex(int)));
 
@@ -189,18 +191,18 @@ void TupViewColorCells::readPalettes(const QString &paletteDir)
 	}
 }
 
-void TupViewColorCells::readPaletteFile(const QString &file)
+void TupViewColorCells::readPaletteFile(const QString &paletteFile)
 {
     TupPaletteParser parser;
-    QFile f(file);
-    if (parser.parse(&f)) {
+    QFile file(paletteFile);
+    if (parser.parse(&file)) {
         QList<QBrush> brushes = parser.brushes();
         QString name = parser.paletteName();
         bool editable = parser.paletteIsEditable();
         addPalette(name, brushes, editable);
     } else {
         #ifdef K_DEBUG
-            QString msg = "TupViewColorCells::readPaletteFile() - Fatal error while parsing palette file: " + file;
+            QString msg = "TupViewColorCells::readPaletteFile() - Fatal error while parsing palette file: " + paletteFile;
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
@@ -266,7 +268,6 @@ void TupViewColorCells::addPalette(TupCellsColor *palette)
     k->containerPalette->addWidget(palette);
 }
 
-
 void TupViewColorCells::changeColor(QTableWidgetItem* item)
 {
     #ifdef K_DEBUG
@@ -277,65 +278,17 @@ void TupViewColorCells::changeColor(QTableWidgetItem* item)
         #endif
     #endif
 
-    if (item)
+    if (item) {
+        k->currentCell = item;
         emit selectColor(item->background());
+    }
 }
 
-/*
-void TupViewColorCells::fillDefaultColors()
+void TupViewColorCells::clearSelection()
 {
-    int i;
-    int j;
-    j = 0;
-    //First column, first 6 rows, a gray scale
-    for (i = 0; i <= 5; i++)
-         k->defaultPalette->addItem(QColor(i * 51, i * 51, i * 51));
-
-    //First column, last 6 rows, basic colors
-    k->defaultPalette->addItem(QColor(255, 0, 0));
-    k->defaultPalette->addItem(QColor(0, 255, 0));
-    k->defaultPalette->addItem(QColor(0, 0, 255));
-    k->defaultPalette->addItem(QColor(255, 255, 0));
-    k->defaultPalette->addItem(QColor(0, 255, 255));
-    k->defaultPalette->addItem(QColor(255, 0, 255));
-
-    //Segment from column 1 to 6 and row 0 to 5
-    for (i = 0; i <= 5; i++) {
-         for (j = 1; j <= 6; j++)
-              k->defaultPalette->addItem(QColor(0, (j - 1) * 51, i * 51));
-    }
-
-    //Segment from column 1 to 6 and row 6 to 11
-    for (i = 6; i <= 11; i++) {
-         for (j = 1; j <= 6; j++)
-              k->defaultPalette->addItem(QColor(153, (j - 1) * 51, (i - 6) * 51));
-    }
-
-    //Segment from column 7 to 12 and row 0 to 5
-    for (i = 0; i <= 5; i++) {
-         for (j = 7; j <= 12; j++) 
-              k->defaultPalette->addItem(QColor(51, (j - 7) * 51, i * 51));
-    }
-
-    //Segment from column 7 to 12 and row 6 to 11
-    for (i = 6; i <= 11; i++) {
-         for (j = 7; j <= 12; j++)
-              k->defaultPalette->addItem(QColor(204, (j - 7) * 51, (i - 6) * 51));
-    }
-
-    //Segment from column 13 to 18 and row 0 to 5
-    for (i = 0; i <= 5; i++) {
-         for (j = 13; j <= 18; j++)
-              k->defaultPalette->addItem(QColor(102, (j - 13) * 51, i * 51));
-    }
-
-    //Segment from column 13 to 18 and row 6 to 11
-    for (i = 6; i <= 11; i++) {
-         for (j = 13; j <= 18; j++)
-              k->defaultPalette->addItem(QColor(255, (j - 13) * 51, (i - 6) * 51));
-    }
+    if (k->currentCell)
+        k->currentCell->setSelected(false);
 }
-*/
 
 void TupViewColorCells::fillNamedColor()
 {
@@ -408,7 +361,7 @@ void TupViewColorCells::setupButtons()
     layout()->addWidget(containerButtons);
 }
 
-void TupViewColorCells::setColor(const QBrush& b)
+void TupViewColorCells::setColor(const QBrush& brush)
 {
-    k->currentColor = b;
+    k->currentColor = brush;
 }

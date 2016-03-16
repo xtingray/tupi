@@ -17,14 +17,13 @@ macx {
 HEADERS += tupcolorpicker.h \
            tupcolorpalette.h \
            tupviewcolorcells.h \
-           tupluminancepicker.h \
            tupcellscolor.h \
            tuppaletteparser.h \
            tupcolorvalue.h
+
 SOURCES += tupcolorpicker.cpp \
            tupcolorpalette.cpp \
            tupviewcolorcells.cpp \
-           tupluminancepicker.cpp \
            tupcellscolor.cpp \
            tuppaletteparser.cpp \
            tupcolorvalue.cpp

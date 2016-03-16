@@ -158,7 +158,7 @@ struct TupExposureTable::Private
     TupExposureHeader *header;
     QMenu *menu;
     bool removingLayer;
-    bool removingFrame;
+    // bool removingFrame;
     bool isLocalRequest;
 };
 
@@ -171,7 +171,7 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
 
     setItemDelegate(new TupExposureItemDelegate(this));
     k->removingLayer = false;
-    k->removingFrame = false;
+    // k->removingFrame = false;
 
     QTableWidgetItem *prototype = new QTableWidgetItem();
     prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable);
@@ -216,6 +216,16 @@ void TupExposureTable::requestFrameSelection(int currentSelectedRow, int current
     #endif
 
     if (!k->removingLayer) { 
+        QTableWidgetItem *frame = item(currentSelectedRow, currentColumn);
+        if (frame) {
+            if (previousColumn != currentColumn || previousRow != currentSelectedRow)
+                emit frameSelected(currentLayer(), currentRow());
+
+            if ((previousColumn != currentColumn) || (columnCount() == 1))
+                k->header->updateSelection(currentColumn);
+        }
+
+        /*
         if (k->removingFrame) {
             k->removingFrame = false;
             
@@ -242,6 +252,7 @@ void TupExposureTable::requestFrameSelection(int currentSelectedRow, int current
                     k->header->updateSelection(currentColumn);
             } 
         }
+        */
     } else { // A layer is being removed
         k->removingLayer = false;
         selectFrame(currentColumn, currentSelectedRow);
@@ -492,9 +503,10 @@ void TupExposureTable::removeLayer(int layerIndex)
     setUpdatesEnabled(true);
 }
 
-void TupExposureTable::removeFrame(int layerIndex, int frameIndex, bool fromMenu)
+// void TupExposureTable::removeFrame(int layerIndex, int frameIndex, bool fromMenu)
+void TupExposureTable::removeFrame(int layerIndex, int frameIndex)
 {
-    k->removingFrame = fromMenu;
+    // k->removingFrame = fromMenu;
     QTableWidgetItem *item = takeItem(frameIndex, layerIndex);
 
     if (item) {

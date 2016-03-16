@@ -1,15 +1,17 @@
 /***************************************************************************
- *   Project TUPI: Magia 2D                                                *
+ *   Project TUPI: Open 2D Magic                                           *
+ *   Component: tupi.mobile                                                *
  *   Project Contact: info@maefloresta.com                                 *
  *   Project Website: http://www.maefloresta.com                           *
- *   Project Leader: Gustav Gonzalez <info@maefloresta.com>                *
  *                                                                         *
  *   Developers:                                                           *
- *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
+ *   2012:                                                                 *
+ *    Gustavo Gonzalez / @xtingray                                         *
+ *    Andres Calderon / @andresfcalderon                                   *
+ *    Antonio Vanegas / @hpsaturn                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
- *                                                                         *
+ *   Tupi is a fork of the KTooN project                                   *
+ *   KTooN's versions:                                                     *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
  *    Jorge Cuadrado                                                       *
@@ -17,7 +19,7 @@
  *    Fernado Roldan                                                       *
  *    Simena Dinas                                                         *
  *                                                                         *
- *   Copyright (C) 2010 Gustav Gonzalez - http://www.maefloresta.com       *
+ *   Copyright (C) 2012 Mae Floresta - http://www.maefloresta.com          *
  *   License:                                                              *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,48 +35,41 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPLUMINACEPICKER_H
-#define TUPLUMINACEPICKER_H
+#ifndef TCOLORCELL_H
+#define TCOLORCELL_H
 
 #include "tglobal.h"
 
-#include <QPainter>
-#include <qdrawutil.h>
+#include <QBrush>
+#include <QSize>
 #include <QPaintEvent>
-#include <QPixmap>
-#include <QMouseEvent>
 #include <QWidget>
 
-class TUPI_EXPORT TupLuminancePicker : public QWidget
+class TUPI_EXPORT TColorCell : public QWidget
 {
     Q_OBJECT
 
     public:
-        TupLuminancePicker(QWidget* parent=0);
-        ~TupLuminancePicker();
-        int value();
-
-    public slots:
-        void setColor(int h, int s, int v);
-        void setColor(int h, int s);
-        void setValue(int v);
-
-    signals:
-        void newHsv(int h, int s, int v);
+        enum FillType{Contour = 0, Inner};
+        TColorCell(FillType index, const QBrush &brush, const QSize &size);
+        ~TColorCell();
+        QSize sizeHint() const;
+        QBrush brush();
+        QColor color();
+        void setSelected(bool isSelected);
+        bool isSelected();
+        void setBrush(const QBrush &brush);
 
     protected:
-        void paintEvent(QPaintEvent*);
-        void mouseMoveEvent(QMouseEvent *);
-        void mousePressEvent(QMouseEvent *);
+        void paintEvent(QPaintEvent *painter);
+        void mousePressEvent(QMouseEvent *event);
+
+    signals:
+        void clicked(TColorCell::FillType index);
 
     private:
-        enum { foff = 3, coff = 4 }; //frame and contents offset
-
-    struct Private;
-    Private *const k;
-    int y2val(int y);
-    int val2y(int val);
+        struct Private;
+        Private *const k;
 };
 
 #endif
-

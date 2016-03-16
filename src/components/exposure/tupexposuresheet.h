@@ -114,7 +114,7 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void insertFramesFromMenu(QAction *action);
         void copyTimeLineFromMenu(QAction *action);
 
-        void removeOne();
+        // void removeOne();
         void clearFrame();
         void lockFrame();
 

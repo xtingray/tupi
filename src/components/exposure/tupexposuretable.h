@@ -86,7 +86,8 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void insertLayer(int index, const QString &name);
         void insertFrame(int layerIndex, int frameIndex, const QString &name, bool external);
         void removeLayer(int layerIndex);
-        void removeFrame(int layerIndex, int frameIndex, bool fromMenu);
+        // void removeFrame(int layerIndex, int frameIndex, bool fromMenu);
+        void removeFrame(int layerIndex, int frameIndex);
         void exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
         void moveLayer(int oldPosLayer, int newPosLayer);
 

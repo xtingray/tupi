@@ -70,12 +70,14 @@ struct InkTool::Private
     int dotsCounter;
     qreal penWidth;
     qreal oldSlope;
-    int spacing;
-    qreal tolerance;
-    qreal widthVar;
     int arrowSize;
     int firstArrow;
     QCursor cursor;
+
+    int spacing;
+    qreal tolerance;
+    qreal widthVar;
+    qreal smoothness;
 };
 
 InkTool::InkTool() : k(new Private)
@@ -95,14 +97,20 @@ void InkTool::init(TupGraphicsScene *scene)
 {
     Q_UNUSED(scene);
 
+    /*
     k->spacing = k->configurator->spacingValue();
+    k->tolerance = k->configurator->sizeToleranceValue()/(qreal)100;
+    k->smoothness = 3;
+    */
+
+    k->spacing = 1;
+    k->tolerance = 0;
+    k->smoothness = 3;
 
     TCONFIG->beginGroup("PenParameters");
     int thickness = TCONFIG->value("Thickness", 3).toInt();
-    k->tolerance = k->configurator->sizeToleranceValue()/(qreal)100;
 
     k->widthVar = k->tolerance*thickness;
-
     if (k->widthVar < 1)
         k->widthVar = 1; 
 		
@@ -524,11 +532,12 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
     scene->removeItem(k->item);
     QPointF currentPoint = input->pos();
     qreal radius = brushManager->pen().width();
-    int size = k->configurator->borderSizeValue();
-    QPen inkPen(brushManager->penColor(), size, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    // int size = k->configurator->borderSizeValue();
+    // QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     if (k->firstPoint == currentPoint && k->inkPath.elementCount() == 1) {
         QPointF distance((radius + 2)/2, (radius + 2)/2);
+        QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         TupEllipseItem *blackEllipse = new TupEllipseItem(QRectF(k->connector - distance, QSize(radius + 2, radius + 2)));
         blackEllipse->setPen(inkPen);
         blackEllipse->setBrush(brushManager->brush());
@@ -558,13 +567,19 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
     k->inkPath.moveTo(k->leftPoints.at(0));
     k->inkPath.lineTo(QPointF(0, 0));
 
-    smoothPath(k->inkPath, k->configurator->smoothness());
+    // smoothPath(k->inkPath, k->configurator->smoothness());
+    smoothPath(k->inkPath, k->smoothness);
 
     TupPathItem *stroke = new TupPathItem();
+    // stroke->setPen(QPen(Qt::NoPen));
+    stroke->setPen(QPen(brushManager->penColor()));
+
+    /*
     if (k->configurator->showBorder())
         stroke->setPen(inkPen);
     else
         stroke->setPen(QPen(Qt::NoPen));
+    */
 
     stroke->setBrush(brushManager->penColor());
     stroke->setPath(k->inkPath);
@@ -600,11 +615,13 @@ int InkTool::toolType() const
 
 QWidget *InkTool::configurator() 
 {
+    /*
     if (!k->configurator) {
         k->configurator = new Configurator;
         connect(k->configurator, SIGNAL(updateSpacing(int)), this, SLOT(updateSpacingVar(int)));
         connect(k->configurator, SIGNAL(updateSizeTolerance(int)), this, SLOT(updateSizeToleranceVar(int)));
     }
+    */
 
     return k->configurator;
 }
@@ -615,6 +632,7 @@ void InkTool::aboutToChangeTool()
 
 void InkTool::saveConfig()
 {
+    /*
     if (k->configurator) {
         TCONFIG->beginGroup("InkTool");
         TCONFIG->setValue("DotsSpacing", k->configurator->spacingValue());
@@ -623,6 +641,7 @@ void InkTool::saveConfig()
         TCONFIG->setValue("ShowBorder", k->configurator->showBorder());
         TCONFIG->setValue("BorderSize", k->configurator->borderSizeValue());
     }
+    */
 }
 
 void InkTool::updateSpacingVar(int value)

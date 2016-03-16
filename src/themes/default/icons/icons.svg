@@ -2729,9 +2729,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.9591214"
-     inkscape:cx="177.09563"
-     inkscape:cy="254.51634"
+     inkscape:zoom="2"
+     inkscape:cx="300.77231"
+     inkscape:cy="282.03491"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -12635,6 +12635,93 @@
            inkscape:export-xdpi="279"
            inkscape:export-ydpi="279" />
       </g>
+    </g>
+    <g
+       id="g6060"
+       inkscape:export-xdpi="762.81"
+       inkscape:export-ydpi="762.81">
+      <g
+         id="g6055">
+        <path
+           style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 218.46866,773.5535 -5.98585,9.4226 6.01415,9.4226"
+           id="path5062-3-7-0-6-3-5-6-4-4-4-7"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccc"
+           inkscape:export-filename="/home/xtingray/tupi/sources/huayra/tupi/src/themes/default/icons/grid_spacing.png"
+           inkscape:export-xdpi="433.32001"
+           inkscape:export-ydpi="433.32001" />
+        <path
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 213.29669,772.59789 8.16514,5.68522 1.81947,-11.31913 z"
+           id="rect6042-6-4-8"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc" />
+        <path
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 213.29669,793.26284 8.16514,-5.68522 1.81947,11.31913 z"
+           id="rect6042-6-4-8-0"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc" />
+      </g>
+    </g>
+    <g
+       id="g6029"
+       transform="translate(-1.4142136,0.88388347)">
+      <rect
+         transform="scale(-1,-1)"
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         ry="3.1145082"
+         y="-787.69934"
+         x="-324.68765"
+         height="15"
+         width="25"
+         id="rect3050-0-9-1"
+         style="fill:#e8e8e8;fill-opacity:1;stroke:#969696;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         transform="scale(-1,-1)"
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         ry="2.2481737"
+         y="-786.64758"
+         x="-323.66718"
+         height="12.896524"
+         width="22.959024"
+         id="rect3050-5-9-3-6"
+         style="fill:none;stroke:#c8c8c8;stroke-width:1.16732478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       transform="matrix(0,1,-1,0,1049.2535,468.89557)"
+       id="g6029-1"
+       inkscape:export-xdpi="2812.5"
+       inkscape:export-ydpi="2812.5">
+      <rect
+         transform="scale(-1,-1)"
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         ry="3.1145082"
+         y="-787.69934"
+         x="-324.68765"
+         height="15"
+         width="25"
+         id="rect3050-0-9-1-8"
+         style="fill:#e8e8e8;fill-opacity:1;stroke:#969696;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         transform="scale(-1,-1)"
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         ry="2.2481737"
+         y="-786.64758"
+         x="-323.66718"
+         height="12.896524"
+         width="22.959024"
+         id="rect3050-5-9-3-6-4"
+         style="fill:none;stroke:#c8c8c8;stroke-width:1.16732478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
   </g>
 </svg>

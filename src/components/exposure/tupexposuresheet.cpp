@@ -43,7 +43,7 @@ struct TupExposureSheet::Private
     TupProjectActionBar *actionBar;
     QMenu *menu;
     QString nameCopyFrame;
-    bool fromMenu;
+    // bool fromMenu;
     bool localRequest;
     int previousScene;
     int previousLayer;
@@ -61,7 +61,7 @@ TupExposureSheet::TupExposureSheet(QWidget *parent, TupProject *project) : TupMo
 
     k->project = project;
     k->currentTable = 0;
-    k->fromMenu = false;
+    // k->fromMenu = false;
     k->localRequest = false;
     k->previousScene = 0;
     k->previousLayer = 0;
@@ -140,10 +140,12 @@ void TupExposureSheet::createMenu()
 
     k->menu->addMenu(insertMenu);
 
+    /*
     QAction *removeOne = new QAction(QIcon(THEME_DIR + "icons/remove_frame.png"), tr("Remove frame"), this);
     removeOne->setIconVisibleInMenu(true);
     k->menu->addAction(removeOne);
     connect(removeOne, SIGNAL(triggered()), this, SLOT(removeOne()));
+    */
 
     QAction *clearAction = new QAction(QIcon(THEME_DIR + "icons/new.png"), tr("Clear frame"), this);
     clearAction->setIconVisibleInMenu(true);
@@ -291,7 +293,7 @@ void TupExposureSheet::applyAction(int action)
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene, layer, target, TupProjectRequest::Reset);
                      emit requestTriggered(&request);
 
-                     k->fromMenu = false; 
+                     // k->fromMenu = false; 
                      return;
                  }
 
@@ -324,7 +326,7 @@ void TupExposureSheet::applyAction(int action)
                      selectFrame(layer, target);
                  }
 
-                 k->fromMenu = false;
+                 // k->fromMenu = false;
                }
                break;
 
@@ -863,14 +865,16 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                      if (response->mode() == TupProjectResponse::Do) {
                          if (k->localRequest) {
                              k->localRequest = false;
-                             table->removeFrame(layerIndex, frameIndex, k->fromMenu);
+                             // table->removeFrame(layerIndex, frameIndex, k->fromMenu);
+                             table->removeFrame(layerIndex, frameIndex);
                          } else {
                              // int layer = k->currentTable->currentLayer();
                              int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
                              int target = frameIndex;
 
                              if (target == lastFrame) {
-                                 table->removeFrame(layerIndex, target, k->fromMenu);
+                                 // table->removeFrame(layerIndex, target, k->fromMenu);
+                                 table->removeFrame(layerIndex, target);
                                  if (target <= 0)
                                      k->currentTable->clearSelection();
                              } else {
@@ -889,12 +893,13 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                                               QString label = k->currentTable->frameName(layerIndex, index);
                                               renameFrame(layerIndex, index - 1, label);
                                          }
-                                         table->removeFrame(layerIndex, lastFrame, k->fromMenu);
+                                         // table->removeFrame(layerIndex, lastFrame, k->fromMenu);
+                                         table->removeFrame(layerIndex, lastFrame);
                                      }
                                  }
                              }
                          }
-                         k->fromMenu = false;
+                         // k->fromMenu = false;
                          return;
                      }
 
@@ -902,12 +907,14 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                          int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
                          int target = frameIndex;
                          if (target == lastFrame) {
-                             table->removeFrame(layerIndex, frameIndex, k->fromMenu);
+                             // table->removeFrame(layerIndex, frameIndex, k->fromMenu);
+                             table->removeFrame(layerIndex, frameIndex);
                              if (frameIndex > 0)
                                  frameIndex--;
                              table->selectFrame(layerIndex, frameIndex);
                          } else {
-                             table->removeFrame(layerIndex, frameIndex, k->fromMenu);
+                             table->removeFrame(layerIndex, frameIndex);
+                             // table->removeFrame(layerIndex, frameIndex, k->fromMenu);
                          }
                      }
                  }
@@ -1076,11 +1083,13 @@ void TupExposureSheet::insertFrames(int n)
     }
 }
 
+/*
 void TupExposureSheet::removeOne()
 {
     k->fromMenu = true;
     k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
 }
+*/
 
 void TupExposureSheet::clearFrame()
 {
