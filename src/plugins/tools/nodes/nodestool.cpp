@@ -133,6 +133,14 @@ void NodesTool::move(const TupInputDeviceInformation *input, TupBrushManager *br
 
 void NodesTool::release(const TupInputDeviceInformation *input, TupBrushManager *brushManager, TupGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[NodesTool::release()]";
+        #else
+            T_FUNCINFOX("tools");
+        #endif
+    #endif
+
     Q_UNUSED(brushManager);
 
     if (scene->selectedItems().count() > 0) {
@@ -180,6 +188,7 @@ void NodesTool::release(const TupInputDeviceInformation *input, TupBrushManager 
                 k->nodeGroup->clear();
         }
 
+
         k->nodeGroup = new TNodeGroup(item, scene, TNodeGroup::LineSelection, k->baseZValue);
         k->nodeGroup->show();
         k->activeSelection = true;
@@ -190,7 +199,6 @@ void NodesTool::release(const TupInputDeviceInformation *input, TupBrushManager 
             if (position >= 0 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodeGroup->parentItem())) {
                 QDomDocument doc;
                 doc.appendChild(qgraphicsitem_cast<TupPathItem *>(k->nodeGroup->parentItem())->toXml(doc));
-                    
                 TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
                                             scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
                                             QPointF(), scene->spaceContext(), TupLibraryObject::Item, 

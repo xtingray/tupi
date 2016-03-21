@@ -63,6 +63,7 @@ class TUPI_EXPORT TupGraphicLibraryItem : public TupProxyItem, public TupAbstrac
         
         void setSymbolName(const QString &name);
         QString symbolName() const;
+        QString symbolPath() const;
         
         void setObject(TupLibraryObject *object);
 

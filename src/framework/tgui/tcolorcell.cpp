@@ -44,14 +44,14 @@ struct TColorCell::Private
 {
     QBrush brush;
     FillType index;
-    bool selected;
+    bool checked;
     QSize size;
 };
 
 TColorCell::TColorCell(FillType index, const QBrush &brush, const QSize &size) : k(new Private)
 {
     k->index = index;
-    k->selected = false;
+    k->checked = false;
     k->brush = brush;
     k->size = size;
     setFixedSize(k->size);
@@ -74,7 +74,7 @@ void TColorCell::paintEvent(QPaintEvent *event)
     painter.fillRect(rect(), k->brush);
     QRect border = rect();
 
-    if (k->selected) {
+    if (k->checked) {
         painter.setPen(QPen(QColor(200, 200, 200), 8, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawRect(border);
         painter.setPen(QPen(QColor(190, 190, 190), 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -92,8 +92,8 @@ void TColorCell::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 
+    setChecked(true);
     emit clicked(k->index);
-    setSelected(true);
 }
 
 QColor TColorCell::color()
@@ -106,15 +106,15 @@ QBrush TColorCell::brush()
     return k->brush;
 }
 
-void TColorCell::setSelected(bool isSelected)
+void TColorCell::setChecked(bool isChecked)
 {
-    k->selected = isSelected;
+    k->checked = isChecked;
     update();
 }
 
-bool TColorCell::isSelected()
+bool TColorCell::isChecked()
 {
-    return k->selected;
+    return k->checked;
 }
 
 void TColorCell::setBrush(const QBrush &brush) 

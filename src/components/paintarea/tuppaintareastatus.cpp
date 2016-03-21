@@ -401,3 +401,8 @@ void TupPaintAreaStatus::updatePosition(const QString &position)
 {
     k->positionLabel->setText(position);
 }
+
+void TupPaintAreaStatus::updateContourColorButton(bool status)
+{
+    k->brushStatus->updateContourColorButton(status);
+}

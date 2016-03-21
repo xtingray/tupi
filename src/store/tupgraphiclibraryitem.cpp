@@ -40,6 +40,7 @@
 struct TupGraphicLibraryItem::Private
 {
     QString symbolName;
+    QString symbolPath;
     QString svgContent;
     // QList<QGraphicsItem *> items;
     TupLibraryObject::Type itemType;
@@ -104,6 +105,7 @@ void TupGraphicLibraryItem::setObject(TupLibraryObject *object)
     #endif
 
     k->symbolName = object->symbolName();
+    k->symbolPath = object->dataPath();
     switch(object->type()) {
         case TupLibraryObject::Item:
         case TupLibraryObject::Text:
@@ -141,3 +143,9 @@ QString TupGraphicLibraryItem::svgContent()
 {
    return k->svgContent;
 }
+
+QString TupGraphicLibraryItem::symbolPath() const
+{
+    return k->symbolPath;
+}
+

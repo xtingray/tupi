@@ -50,6 +50,7 @@ class TUPI_EXPORT TupLineItem : public QGraphicsLineItem, public TupAbstractSeri
     public:
         TupLineItem(QGraphicsItem *parent = 0);
         ~TupLineItem();
+        void setShadowColors(const QColor &color);
         
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

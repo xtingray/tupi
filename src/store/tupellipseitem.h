@@ -54,6 +54,7 @@ class TUPI_EXPORT TupEllipseItem: public TupAbstractSerializable, public QGraphi
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
         bool contains(const QPointF & point) const;
+        void setShadowColors(const QColor &color);
           
     protected:
         virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);

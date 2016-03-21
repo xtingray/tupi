@@ -38,13 +38,14 @@
 TupBrushStatus::TupBrushStatus(const QString &label, const QPixmap &pix, bool bg)
 {
     background = bg;
+    buttonIsChecked = false;
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(2);
     layout->setSpacing(2);
 
-    brush = new TupColorWidget;
-    connect(brush, SIGNAL(clicked()), this, SLOT(updateColour()));
+    brushCell = new TColorCell(TColorCell::Contour, QBrush(Qt::black), QSize(20, 20));
+    connect(brushCell, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateColour(TColorCell::FillType)));
 
     QLabel *icon = new QLabel("");
     icon->setToolTip(label);
@@ -52,7 +53,7 @@ TupBrushStatus::TupBrushStatus(const QString &label, const QPixmap &pix, bool bg
 
     layout->addWidget(icon);
     layout->addSpacing(3);
-    layout->addWidget(brush);
+    layout->addWidget(brushCell);
 }
 
 TupBrushStatus::~TupBrushStatus()
@@ -61,31 +62,42 @@ TupBrushStatus::~TupBrushStatus()
 
 void TupBrushStatus::setForeground(const QPen &pen)
 {
-    brush->setBrush(pen.brush());
+    brushCell->setBrush(pen.brush());
 }
 
 void TupBrushStatus::setColor(const QColor &color)
 {
     QBrush square(color);
-    brush->setBrush(square);
+    brushCell->setBrush(square);
 }
 
-void TupBrushStatus::updateColour()
+void TupBrushStatus::updateColour(TColorCell::FillType)
 {
     if (background) {
-        QColor color = QColorDialog::getColor(brush->color(), this);
+        QColor color = QColorDialog::getColor(brushCell->color(), this);
         if (color.isValid()) {
             setColor(color);
             emit colorUpdated(color);
         }
-
+        brushCell->setChecked(false);
     } else {
+        if (buttonIsChecked) {
+            brushCell->setChecked(false);
+            buttonIsChecked = false;
+        } else {
+            buttonIsChecked = true;
+        }
         emit colorRequested();
     }
 }
 
 void TupBrushStatus::setTooltip(const QString &tip)
 {
-    brush->setToolTip(tip);
+    brushCell->setToolTip(tip);
 }
 
+void TupBrushStatus::updateContourColorButton(bool status)
+{
+    brushCell->setChecked(status);
+    buttonIsChecked = status;
+}

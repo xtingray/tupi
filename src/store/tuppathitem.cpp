@@ -118,7 +118,7 @@ QDomElement TupPathItem::toXml(QDomDocument &doc) const
 
 void TupPathItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-    QGraphicsPathItem::paint(painter, option,widget);
+    QGraphicsPathItem::paint(painter, option, widget);
 }
 
 bool TupPathItem::contains(const QPointF & point) const
@@ -185,4 +185,20 @@ void TupPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
     }
 
     update();
+}
+
+void TupPathItem::setShadowColors(const QColor &color)
+{
+    QPen pathPen = pen();
+    if (pathPen.color() != Qt::transparent) {
+        pathPen.setColor(color);
+        QGraphicsPathItem::setPen(pathPen);
+    }
+
+    QBrush pathBrush = brush();
+    if (pathBrush.color() != Qt::transparent) {
+        QColor brushColor =  QColor(color.red() + 20, color.green() + 20, color.blue() + 20);
+        pathBrush.setColor(brushColor);
+        QGraphicsPathItem::setBrush(pathBrush);
+    }
 }

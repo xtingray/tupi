@@ -323,7 +323,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
 
     if (!guiScene->isDrawing()) {
         switch (response->action()) {
-                case TupProjectRequest::Add:
+                // case TupProjectRequest::Add:
                 // case TupProjectRequest::Remove:
                 case TupProjectRequest::Exchange:
                     {
@@ -342,7 +342,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                         guiScene->setCurrentFrame(response->layerIndex(), response->frameIndex());
 
                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                            guiScene->drawPhotogram(response->frameIndex(), true);
+                            guiScene->drawPhotogram(response->frameIndex(), TupGraphicsScene::Animation);
                         } else {
                             guiScene->cleanWorkSpace();
                             guiScene->drawSceneBackground(guiScene->currentFrameIndex());

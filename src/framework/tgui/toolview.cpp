@@ -65,7 +65,6 @@ TViewButton *ToolView::button() const
 void ToolView::expandDock(bool flag)
 {
     expanded = flag;
-
     if (flag)
         show();
     else 
@@ -85,6 +84,8 @@ void ToolView::setExpandingFlag()
         expanded = false;
     else 
         expanded = true;
+
+    emit dockExpanded(expanded); 
 }
 
 void ToolView::setSizeHint() 

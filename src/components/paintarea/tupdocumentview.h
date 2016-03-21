@@ -44,6 +44,7 @@
 #include "tuptoolinterface.h"
 #include "tupconfigurationarea.h"
 #include "tupstoryboard.h"
+#include "tcolorcell.h"
 
 #include <QMainWindow>
 #include <QLayout>
@@ -159,6 +160,11 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void sendStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void updateStaticOpacity(double opacity);
         void updateDynamicOpacity(double opacity);
+        void activeOnionColorScheme();
+        void updatePreviousOnionColor(TColorCell::FillType);
+        void updateNextOnionColor(TColorCell::FillType);
+        void updateLayersOnionColor(TColorCell::FillType);
+        void updateBackgroundOnionColor(TColorCell::FillType);
 
     public slots:
         void undo();
@@ -190,6 +196,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void projectSizeHasChanged(const QSize dimension);
         void updateFPS(int fps);
         void newPerspective(int index);
+        void colorPaletteExpanded(bool expanded);
 
     private:
         void setupDrawActions();
@@ -198,6 +205,8 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void createLateralToolBar();
         void updateRotationAngleFromRulers(int angle);
         double backgroundOpacity(TupFrame::FrameType type);
+        void updateOnionColorSchemeFlag(bool flag);
+
         struct Private;
         Private *const k;
 

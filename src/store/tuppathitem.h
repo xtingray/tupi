@@ -60,6 +60,7 @@ class TUPI_EXPORT TupPathItem : public TupAbstractSerializable, public QGraphics
         virtual QDomElement toXml(QDomDocument &doc) const;
         virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
         bool contains(const QPointF & point) const;
+        void setShadowColors(const QColor &color);
         
     protected:
         virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
@@ -68,6 +69,8 @@ class TUPI_EXPORT TupPathItem : public TupAbstractSerializable, public QGraphics
         
     private:
         bool m_dragOver;
+        QColor pathColor;
+        QBrush pathBrush;
 };
 
 #endif

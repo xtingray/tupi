@@ -69,6 +69,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
 
     public:
         enum Context { Current = 1, Previous, Next };
+        enum WorkSpace { Animation, Player };
 
         TupGraphicsScene();
         ~TupGraphicsScene();
@@ -78,7 +79,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void setCurrentScene(TupScene *scene);
         void drawCurrentPhotogram();
         
-        void drawPhotogram(int photogram, bool drawContext);
+        void drawPhotogram(int photogram, WorkSpace space);
         void drawSceneBackground(int photogram);
 
         void cleanWorkSpace();
@@ -144,6 +145,11 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void addTweeningObjects(int indexLayer, int photogram);
         void addSvgTweeningObjects(int indexLayer, int photogram);
         void addLipSyncObjects(TupLayer *layer, int photogram, int zLevel);
+        QGraphicsItem * cloneGraphicItem(QGraphicsItem *original);
+        void paintOnionScheme(QGraphicsItem *item, const QColor &color);
+        QGraphicsItem * paintOnionColorOnImage(TupGraphicLibraryItem *image, const QColor &color);
+        void paintOnionColorOnSVG(TupSvgItem *svgItem, const QColor &color, double opacity, TupFrame::FrameType frameType, bool tweenInAdvance);
+        void addSvgItem(TupSvgItem *svgItem, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance);
 
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

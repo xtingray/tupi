@@ -80,6 +80,7 @@ class TUPI_EXPORT TupPaintAreaStatus : public QStatusBar
         void applyZoom(const QString &text);
         void setPen(const QPen &pen);
         void applyRotation(const QString &text);
+        void updateContourColorButton(bool status);
 
     private slots:
         void selectAntialiasingHint();

@@ -50,14 +50,14 @@ class TUPI_EXPORT TColorCell : public QWidget
     Q_OBJECT
 
     public:
-        enum FillType{Contour = 0, Inner};
+        enum FillType{Contour = 0, Inner, Background, PreviousFrames, NextFrames, Layers};
         TColorCell(FillType index, const QBrush &brush, const QSize &size);
         ~TColorCell();
         QSize sizeHint() const;
         QBrush brush();
         QColor color();
-        void setSelected(bool isSelected);
-        bool isSelected();
+        void setChecked(bool isChecked);
+        bool isChecked();
         void setBrush(const QBrush &brush);
 
     protected:

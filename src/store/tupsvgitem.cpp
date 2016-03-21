@@ -53,7 +53,7 @@ TupSvgItem::TupSvgItem(QGraphicsItem * parent) : QGraphicsSvgItem(parent), k(new
     setAcceptHoverEvents(true);
 }
 
-TupSvgItem::TupSvgItem(QString &file, TupFrame *frame) : QGraphicsSvgItem(file), k(new Private)
+TupSvgItem::TupSvgItem(const QString &file, TupFrame *frame) : QGraphicsSvgItem(file), k(new Private)
 {
     setAcceptHoverEvents(true);
     k->path = file;

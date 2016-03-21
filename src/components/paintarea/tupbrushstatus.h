@@ -37,6 +37,7 @@
 #define TUPBRUSHSTATUS_H
 
 #include "tglobal.h"
+#include "tcolorcell.h"
 #include "tupcolorwidget.h"
 #include "tseparator.h"
 
@@ -61,17 +62,20 @@ class TUPI_EXPORT TupBrushStatus : public QWidget
         void setForeground(const QPen &pen);
         void setColor(const QColor &color);
         void setTooltip(const QString &tip);
+        void updateContourColorButton(bool status);
 
     signals:
         void colorRequested();
         void colorUpdated(const QColor);
 
     private slots:
-        void updateColour(); 
+        void updateColour(TColorCell::FillType); 
 
     private:
-        TupColorWidget *brush;
+        // TupColorWidget *brush;
+        TColorCell *brushCell;
         bool background;
+        bool buttonIsChecked;
 };
 
 #endif

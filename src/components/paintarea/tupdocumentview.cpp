@@ -85,6 +85,7 @@ struct TupDocumentView::Private
     QToolBar *toolbar;
     QToolBar *dynamicPropertiesBar;
     QToolBar *staticPropertiesBar;
+    QToolBar *onionPropertiesBar;
 
     QDoubleSpinBox *onionFactorSpin;
     QSpinBox *prevOnionSkinSpin;
@@ -136,6 +137,11 @@ struct TupDocumentView::Private
     TAction *borderFillAction;
     TAction *fillAction;
     TAction *papagayoAction;
+
+    TColorCell *pOnionCell;
+    TColorCell *nOnionCell;
+    TColorCell *lOnionCell;
+    TColorCell *bOnionCell;
 };
 
 TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNetworked, const QStringList &users) : QMainWindow(parent), k(new Private)
@@ -209,6 +215,7 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     connect(k->status, SIGNAL(colorUpdated(const QColor)), this, SLOT(updateBgColor(const QColor)));
     connect(k->status, SIGNAL(newFramePointer(int)), k->paintArea, SLOT(goToFrame(int)));
     connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
+    connect(this, SIGNAL(colorPaletteExpanded(bool)), k->status, SLOT(updateContourColorButton(bool)));
 
     // SQA: Implement the brush button within the status bar
     // connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
@@ -237,11 +244,14 @@ TupDocumentView::~TupDocumentView()
     // TCONFIG->beginGroup("General");
     // TCONFIG->setValue("AutoSave", k->autoSaveTime);
 
+    TCONFIG->beginGroup("OnionParameters");
+    TCONFIG->setValue("OnionColorScheme", false);
+
     if (k->currentTool)
         k->currentTool->saveConfig();
 
-    delete k->configurationArea;
-    delete k;
+    // delete k->configurationArea;
+    // delete k;
 }
 
 void TupDocumentView::setWorkSpaceSize(int width, int height)
@@ -396,10 +406,13 @@ void TupDocumentView::setupDrawActions()
                 this, SLOT(enableOnionFeature()), k->actionManager, "onion");
 
     new TAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"), QKeySequence(tr("Ctrl+Shift+S")), 
-                this, SLOT(setDefaultOnionFactor()), k->actionManager, "onionfactor");
+                this, SLOT(setDefaultOnionFactor()), k->actionManager, "onion_factor");
 
     new TAction(QPixmap(THEME_DIR + "icons/export_frame.png"), tr("Export Frame As Image"), QKeySequence(tr("@")),
                 this, SLOT(exportImage()), k->actionManager, "export_image");
+
+    new TAction(QPixmap(THEME_DIR + "icons/onion_color.png"), tr("Onion Color"), QKeySequence(),
+                          this, SLOT(activeOnionColorScheme()), k->actionManager, "onion_color");
 
     TCONFIG->beginGroup("Network");
     QString server = TCONFIG->value("Server").toString();
@@ -1106,6 +1119,7 @@ void TupDocumentView::createToolBar()
 
     k->staticPropertiesBar = new QToolBar(tr("Static Background Properties"), this);
     k->dynamicPropertiesBar = new QToolBar(tr("Dynamic Background Properties"), this);
+    k->onionPropertiesBar = new QToolBar(tr("Onion Color Properties"), this);
 
     addToolBar(k->barGrid);
 
@@ -1157,7 +1171,7 @@ void TupDocumentView::createToolBar()
         k->nextOnionSkinSpin->setValue(1);
 
     k->barGrid->addWidget(k->nextOnionSkinSpin);
-    k->barGrid->addAction(k->actionManager->find("onionfactor"));
+    k->barGrid->addAction(k->actionManager->find("onion_factor"));
 
     k->onionFactorSpin = new QDoubleSpinBox(this);
     k->onionFactorSpin->setRange(0.01, 0.99);
@@ -1167,6 +1181,7 @@ void TupDocumentView::createToolBar()
     connect(k->onionFactorSpin, SIGNAL(valueChanged(double)), this, SLOT(setOnionFactor(double)));
 
     k->barGrid->addWidget(k->onionFactorSpin);
+    k->barGrid->addAction(k->actionManager->find("onion_color"));
 
     addToolBarBreak();
 
@@ -1263,8 +1278,96 @@ void TupDocumentView::createToolBar()
 
     k->dynamicPropertiesBar->setVisible(false);
 
+    QWidget *empty9 = new QWidget;
+    empty9->setFixedWidth(5);
+    QWidget *empty10 = new QWidget;
+    empty10->setFixedWidth(5);
+    QWidget *empty11 = new QWidget;
+    empty11->setFixedWidth(5);
+    QWidget *empty12 = new QWidget;
+    empty12->setFixedWidth(5);
+    QWidget *empty13 = new QWidget;
+    empty13->setFixedWidth(5);
+    QWidget *empty14 = new QWidget;
+    empty14->setFixedWidth(5);
+    QWidget *empty15 = new QWidget;
+    empty15->setFixedWidth(5);
+    QWidget *empty16 = new QWidget;
+    empty16->setFixedWidth(5);
+    QWidget *empty17 = new QWidget;
+    empty17->setFixedWidth(5);
+    QWidget *empty18 = new QWidget;
+    empty18->setFixedWidth(5);
+
+    QString pfOString = TCONFIG->value("PreviousFramesOnionColor", "#969696").toString();
+    QString nfOString = TCONFIG->value("NextFramesOnionColor", "#000000").toString();
+    QString lOnionString = TCONFIG->value("LayersOnionColor", "#008700").toString();
+    QString bOnionString = TCONFIG->value("BackgroundOnionColor", "#000000").toString();
+
+    QColor pfOnionColor = QColor(pfOString); 
+    QColor nfOnionColor = QColor(nfOString);
+    QColor lOnionColor = QColor(lOnionString);
+    QColor bOnionColor = QColor(bOnionString);
+
+    QLabel *pOnionLabel = new QLabel();
+    QPixmap pOnionPix(THEME_DIR + "icons/ponion_color.png");
+    pOnionLabel->setToolTip(tr("Onion Color for Previous Frames"));
+    pOnionLabel->setPixmap(pOnionPix);
+
+    k->pOnionCell = new TColorCell(TColorCell::PreviousFrames, QBrush(pfOnionColor), QSize(20, 20));
+    connect(k->pOnionCell, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updatePreviousOnionColor(TColorCell::FillType)));
+
+    QLabel *nOnionLabel = new QLabel();
+    QPixmap nOnionPix(THEME_DIR + "icons/nonion_color.png");
+    nOnionLabel->setToolTip(tr("Onion Color for Next Frames"));
+    nOnionLabel->setPixmap(nOnionPix);
+
+    k->nOnionCell = new TColorCell(TColorCell::NextFrames, QBrush(nfOnionColor), QSize(20, 20));
+    connect(k->nOnionCell, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateNextOnionColor(TColorCell::FillType)));
+
+    QLabel *lOnionLabel = new QLabel();
+    QPixmap lOnionPix(THEME_DIR + "icons/lonion_color.png");
+    lOnionLabel->setToolTip(tr("Onion Color for Layers"));
+    lOnionLabel->setPixmap(lOnionPix);
+
+    k->lOnionCell = new TColorCell(TColorCell::Layers, QBrush(lOnionColor), QSize(20, 20));
+    connect(k->lOnionCell, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateLayersOnionColor(TColorCell::FillType)));
+
+    QLabel *bOnionLabel = new QLabel();
+    QPixmap bOnionPix(THEME_DIR + "icons/bonion_color.png");
+    bOnionLabel->setToolTip(tr("Onion Color for Background"));
+    bOnionLabel->setPixmap(bOnionPix);
+
+    k->bOnionCell = new TColorCell(TColorCell::Layers, QBrush(bOnionColor), QSize(20, 20));
+    connect(k->bOnionCell, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateBackgroundOnionColor(TColorCell::FillType)));
+
+    k->onionPropertiesBar->addWidget(pOnionLabel);
+    k->onionPropertiesBar->addWidget(empty9);
+    k->onionPropertiesBar->addWidget(k->pOnionCell);
+    k->onionPropertiesBar->addWidget(empty10);
+    k->onionPropertiesBar->addSeparator();
+    k->onionPropertiesBar->addWidget(empty11);
+    k->onionPropertiesBar->addWidget(nOnionLabel);
+    k->onionPropertiesBar->addWidget(empty12);
+    k->onionPropertiesBar->addWidget(k->nOnionCell);
+    k->onionPropertiesBar->addWidget(empty13);
+    k->onionPropertiesBar->addSeparator();
+    k->onionPropertiesBar->addWidget(empty14);
+    k->onionPropertiesBar->addWidget(lOnionLabel);
+    k->onionPropertiesBar->addWidget(empty15);
+    k->onionPropertiesBar->addWidget(k->lOnionCell);
+    k->onionPropertiesBar->addWidget(empty16);
+    k->onionPropertiesBar->addSeparator();
+    k->onionPropertiesBar->addWidget(empty17);
+    k->onionPropertiesBar->addWidget(bOnionLabel);
+    k->onionPropertiesBar->addWidget(empty18);
+    k->onionPropertiesBar->addWidget(k->bOnionCell);
+
+    k->onionPropertiesBar->setVisible(false);
+
     addToolBar(k->staticPropertiesBar);
     addToolBar(k->dynamicPropertiesBar);
+    addToolBar(k->onionPropertiesBar);
 }
 
 void TupDocumentView::closeArea()
@@ -1388,8 +1491,9 @@ void TupDocumentView::setSpaceContext()
                    renderDynamicBackground();
                }
                k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
-               k->staticPropertiesBar->setVisible(true);
                k->dynamicPropertiesBar->setVisible(false);
+               updateOnionColorSchemeFlag(false);
+               k->staticPropertiesBar->setVisible(true);
                k->motionMenu->setEnabled(false);
     } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                k->dynamicFlag = true;
@@ -1407,6 +1511,7 @@ void TupDocumentView::setSpaceContext()
                    }
                }
                k->staticPropertiesBar->setVisible(false);
+               updateOnionColorSchemeFlag(false);
                k->dynamicPropertiesBar->setVisible(true);
                k->motionMenu->setEnabled(false);
     }
@@ -1414,38 +1519,60 @@ void TupDocumentView::setSpaceContext()
     k->paintArea->updateSpaceContext();
     k->paintArea->updatePaintArea();
 
-   if (k->currentTool) {
-       k->currentTool->init(k->paintArea->graphicsScene()); 
-       if (((k->currentTool->toolType() == TupToolInterface::Tweener) || (k->currentTool->toolType() == TupToolInterface::LipSync))
-           && (mode != TupProject::FRAMES_EDITION)) {
-           k->pencilAction->trigger();
-       }
-   }
+    if (k->currentTool) {
+        k->currentTool->init(k->paintArea->graphicsScene()); 
+        if (((k->currentTool->toolType() == TupToolInterface::Tweener) || (k->currentTool->toolType() == TupToolInterface::LipSync))
+            && (mode != TupProject::FRAMES_EDITION)) {
+            k->pencilAction->trigger();
+        }
+    }
 
-   emit modeHasChanged(mode);
+    emit modeHasChanged(mode);
 }
 
 TupProject::Mode TupDocumentView::spaceContext()
 {
-   return TupProject::Mode(k->spaceMode->currentIndex());
+    return TupProject::Mode(k->spaceMode->currentIndex());
+}
+
+void TupDocumentView::activeOnionColorScheme()
+{
+    if (k->onionPropertiesBar->isVisible()) {
+        k->onionPropertiesBar->setVisible(false);
+        updateOnionColorSchemeFlag(false);
+    } else {
+        if (k->dynamicPropertiesBar->isVisible())
+            k->dynamicPropertiesBar->setVisible(false);
+        if (k->staticPropertiesBar->isVisible())
+            k->staticPropertiesBar->setVisible(false);
+        updateOnionColorSchemeFlag(true);
+    }
+    k->paintArea->updatePaintArea();
+}
+
+void TupDocumentView::updateOnionColorSchemeFlag(bool flag)
+{
+    TCONFIG->beginGroup("OnionParameters");
+    TCONFIG->setValue("OnionColorScheme", flag);
+    k->onionPropertiesBar->setVisible(flag);
 }
 
 TupProject *TupDocumentView::project()
 {
-   return k->project;
+    return k->project;
 }
 
 int TupDocumentView::currentFramesTotal()
 {
-   int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
-   int layerIndex = k->paintArea->graphicsScene()->currentLayerIndex();
+    int sceneIndex = k->paintArea->graphicsScene()->currentSceneIndex();
+    int layerIndex = k->paintArea->graphicsScene()->currentLayerIndex();
 
-   TupScene *scene = k->project->sceneAt(sceneIndex);
+    TupScene *scene = k->project->sceneAt(sceneIndex);
 
-   if (scene) {
-       TupLayer *layer = scene->layerAt(layerIndex);
-       if (layer)
-           return layer->framesCount();
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer)
+            return layer->framesCount();
     }
 
     return -1;
@@ -2155,4 +2282,56 @@ QColor TupDocumentView::projectBGColor() const
 void TupDocumentView::updateWorkspace()
 {
     k->paintArea->viewport()->update();
+}
+
+void TupDocumentView::updatePreviousOnionColor(TColorCell::FillType)
+{
+    QColor color = QColorDialog::getColor(k->pOnionCell->color(), this);
+    if (color.isValid()) {
+        k->pOnionCell->setBrush(QBrush(color));
+        TCONFIG->beginGroup("OnionParameters");
+        TCONFIG->setValue("PreviousFramesOnionColor", color.name());
+        k->paintArea->updatePaintArea();
+    }
+
+    k->pOnionCell->setChecked(false);
+}
+
+void TupDocumentView::updateNextOnionColor(TColorCell::FillType)
+{
+    QColor color = QColorDialog::getColor(k->nOnionCell->color(), this);
+    if (color.isValid()) {
+        k->nOnionCell->setBrush(QBrush(color));
+        TCONFIG->beginGroup("OnionParameters");
+        TCONFIG->setValue("NextFramesOnionColor", color.name());
+        k->paintArea->updatePaintArea();
+    }
+
+    k->nOnionCell->setChecked(false);
+}
+
+void TupDocumentView::updateLayersOnionColor(TColorCell::FillType)
+{
+    QColor color = QColorDialog::getColor(k->lOnionCell->color(), this);
+    if (color.isValid()) {
+        k->lOnionCell->setBrush(QBrush(color));
+        TCONFIG->beginGroup("OnionParameters");
+        TCONFIG->setValue("LayersOnionColor", color.name());
+        k->paintArea->updatePaintArea();
+    }
+
+    k->lOnionCell->setChecked(false);
+}
+
+void TupDocumentView::updateBackgroundOnionColor(TColorCell::FillType)
+{
+    QColor color = QColorDialog::getColor(k->bOnionCell->color(), this);
+    if (color.isValid()) {
+        k->bOnionCell->setBrush(QBrush(color));
+        TCONFIG->beginGroup("OnionParameters");
+        TCONFIG->setValue("BackgroundOnionColor", color.name());
+        k->paintArea->updatePaintArea();
+    }
+
+    k->bOnionCell->setChecked(false);
 }

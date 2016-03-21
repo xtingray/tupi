@@ -291,6 +291,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
         connect(animationTab, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize))); 
         connect(animationTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
+        connect(colorView, SIGNAL(dockExpanded(bool)), animationTab, SIGNAL(colorPaletteExpanded(bool)));
 
         animationTab->setAntialiasing(true);
 
@@ -999,6 +1000,21 @@ void TupMainWindow::connectWidgetToManager(QWidget *widget)
     //connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
 }
 
+/**
+ * @if english
+ * This method defines the events handlers for the local requests.
+ * @endif
+ * @if spanish
+ * Este metodo define los manejadores de eventos para las solicitudes locales.
+ * @endif
+*/
+
+void TupMainWindow::connectWidgetToLocalManager(QWidget *widget)
+{
+    connect(widget, SIGNAL(localRequestTriggered(const TupProjectRequest *)),
+            m_projectManager, SLOT(handleLocalRequest(const TupProjectRequest *)));
+}
+
 void TupMainWindow::disconnectWidgetToManager(QWidget *widget)
 {
     disconnect(widget, SIGNAL(requestTriggered(const TupProjectRequest *)), m_projectManager,
@@ -1021,21 +1037,6 @@ void TupMainWindow::connectWidgetToPaintArea(QWidget *widget)
 {
     connect(widget, SIGNAL(paintAreaEventTriggered(const TupPaintAreaEvent *)), this, 
             SLOT(createCommand(const TupPaintAreaEvent *)));
-}
-
-/**
- * @if english
- * This method defines the events handlers for the local requests.
- * @endif
- * @if spanish
- * Este metodo define los manejadores de eventos para las solicitudes locales.
- * @endif
-*/
-
-void TupMainWindow::connectWidgetToLocalManager(QWidget *widget)
-{
-    connect(widget, SIGNAL(localRequestTriggered(const TupProjectRequest *)), 
-            m_projectManager, SLOT(handleLocalRequest(const TupProjectRequest *)));
 }
 
 /**

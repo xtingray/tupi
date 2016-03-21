@@ -65,3 +65,22 @@ QDomElement TupLineItem::toXml(QDomDocument &doc) const
 
     return root;
 }
+
+void TupLineItem::setShadowColors(const QColor &color)
+{
+    QPen linePen = pen();
+    if (linePen.color() != Qt::transparent) {
+        linePen.setColor(color);
+        QGraphicsLineItem::setPen(linePen);
+    }
+
+    /*
+    QBrush rectBrush = brush();
+    if (rectBrush.color() != Qt::transparent) {
+        QColor brushColor =  QColor(color.red() + 20, color.green() + 20, color.blue() + 20);
+        rectBrush.setColor(brushColor);
+        QGraphicsLineItem::setBrush(rectBrush);
+    }
+    */
+}
+

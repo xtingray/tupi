@@ -56,7 +56,7 @@ class TUPI_EXPORT TupSvgItem : public QGraphicsSvgItem, public TupAbstractSerial
 {
     public:
         TupSvgItem(QGraphicsItem * parent = 0);
-        TupSvgItem(QString &file, TupFrame *frame);
+        TupSvgItem(const QString &file, TupFrame *frame = 0);
         ~TupSvgItem();
 
         void setSymbolName(const QString &symbolName);

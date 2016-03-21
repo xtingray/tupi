@@ -1140,7 +1140,6 @@ QGraphicsItem *TupFrame::createItem(QPointF coords, const QString &xml, bool loa
         itemFactory.setLibrary(library);
 
     QGraphicsItem *graphicItem = itemFactory.create(xml);
-
     if (graphicItem) {
         graphicItem->setPos(coords);
         QString id = "path";

@@ -100,8 +100,8 @@ class T_GUI_EXPORT TViewButton : public QToolButton
         void animate();
         void toggleSensibility();
 
-    signals:
-        void helpIsOpen();
+    // signals:
+    //     void helpIsOpen();
 
     private:
         Qt::ToolBarArea m_area;

@@ -36,6 +36,7 @@
 #include "settings.h"
 #include "timagebutton.h"
 #include "tconfig.h"
+#include "tseparator.h"
 
 Settings::Settings(QWidget *parent) : QWidget(parent)
 {
@@ -48,8 +49,16 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
     #endif
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic(THEME_DIR + "icons/pencil.png"); 
+    toolTitle->setPixmap(pic.scaledToWidth(16, Qt::SmoothTransformation));
+    toolTitle->setToolTip(tr("Pencil Properties"));
+    layout->addWidget(toolTitle);
+    layout->addWidget(new TSeparator(Qt::Horizontal));
+
     QLabel *label = new QLabel(tr("Smoothness"));
     label->setAlignment(Qt::AlignHCenter); 
     layout->addWidget(label);

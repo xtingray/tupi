@@ -340,6 +340,7 @@ bool TupItemFactory::endTag(const QString& qname)
                else
                    setItemGradient(*k->gradient, false);
     } else {
+               /*
                #ifdef K_DEBUG
                    QString msg = "TupItemFactory::endTag() - Unknown tag: " + qname;
                    #ifdef Q_OS_WIN
@@ -348,6 +349,7 @@ bool TupItemFactory::endTag(const QString& qname)
                        tWarning("items") << msg;
                    #endif
                #endif
+               */
     }
 
     return true;

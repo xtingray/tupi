@@ -115,14 +115,14 @@ bool TupAnimationRenderer::nextPhotogram()
     if (k->currentPhotogram == k->totalPhotograms)
         return false;
 
-    k->scene->drawPhotogram(k->currentPhotogram, false);
+    k->scene->drawPhotogram(k->currentPhotogram, TupGraphicsScene::Player);
 
     return true;
 }
 
 void TupAnimationRenderer::renderPhotogram(int index) 
 {
-    k->scene->drawPhotogram(index, false);
+    k->scene->drawPhotogram(index, TupGraphicsScene::Player);
 }
 
 void TupAnimationRenderer::render(QPainter *painter)

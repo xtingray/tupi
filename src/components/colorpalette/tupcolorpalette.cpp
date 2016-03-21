@@ -151,7 +151,7 @@ void TupColorPalette::setupColorDisplay()
     QColor contourColor(0, 0, 0);
     QBrush contourBrush = QBrush(Qt::black);
     k->contourColor = new TColorCell(TColorCell::Contour, contourBrush, cellSize);
-    k->contourColor->setSelected(true);
+    k->contourColor->setChecked(true);
     connect(k->contourColor, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateColorMode(TColorCell::FillType)));
 
     QBrush fillBrush = QBrush(Qt::transparent);
@@ -205,8 +205,8 @@ void TupColorPalette::updateColorMode(TColorCell::FillType flag)
     if (flag == TColorCell::Contour) {
         k->currentSpace = TColorCell::Contour;
         brush = k->contourColor->brush();
-        if (k->fillColor->isSelected()) 
-            k->fillColor->setSelected(false);
+        if (k->fillColor->isChecked()) 
+            k->fillColor->setChecked(false);
 
         if (k->fgType == Solid && k->tab->currentIndex() != 0) {
             k->tab->setCurrentIndex(0);
@@ -217,8 +217,8 @@ void TupColorPalette::updateColorMode(TColorCell::FillType flag)
         if (flag == TColorCell::Inner) {
             k->currentSpace = TColorCell::Inner;
             brush = k->fillColor->brush();
-            if (k->contourColor->isSelected())
-                k->contourColor->setSelected(false);
+            if (k->contourColor->isChecked())
+                k->contourColor->setChecked(false);
 
             if (k->bgType == Solid && k->tab->currentIndex() != 0) {
                 k->tab->setCurrentIndex(0);
@@ -429,9 +429,9 @@ void TupColorPalette::init()
     k->contourColor->setBrush(k->currentContourBrush); 
     k->fillColor->setBrush(fillBrush);
 
-    k->contourColor->setSelected(true);
-    if (k->fillColor->isSelected())
-        k->fillColor->setSelected(false);
+    k->contourColor->setChecked(true);
+    if (k->fillColor->isChecked())
+        k->fillColor->setChecked(false);
 
     k->paletteContainer->clearSelection();
 

@@ -118,7 +118,6 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
                     response->setFrameState(frame->isEmpty());
                     emit responsed(response);
-
                 } else {
                     #ifdef K_DEBUG
                         QString msg = "TupCommandExecutor::createItem() - Error: Frame index doesn't exist! -> " + QString::number(frameIndex);
@@ -986,10 +985,10 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::setPathItem()]";
-            qDebug() << xml;
+            qDebug() << response->arg().toString()
         #else
             T_FUNCINFOX("items");
-            SHOW_VAR(xml);
+            SHOW_VAR(response->arg().toString());
         #endif
     #endif
     */
