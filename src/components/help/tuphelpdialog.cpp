@@ -34,10 +34,13 @@
  ***************************************************************************/
 
 #include "tuphelpdialog.h"
+#include "tuphelpbrowser.h"
+#include "tuphelpwidget.h"
 
-TupHelpDialog::TupHelpDialog(const QString &path, QWidget *parent) : QDialog(parent)
+#include <QHBoxLayout>
+
+TupHelpDialog::TupHelpDialog(const QString &path, QWidget *parent) : QFrame(parent)
 {
-    setModal(true);
     setWindowTitle(tr("Help Content"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_mode.png")));
 

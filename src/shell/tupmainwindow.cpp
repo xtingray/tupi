@@ -879,7 +879,7 @@ void TupMainWindow::showHelp()
         #endif
     }
 
-    TupHelpDialog *dialog = new TupHelpDialog(helpPath, this);
+    TupHelpDialog *dialog = new TupHelpDialog(helpPath);
     dialog->showMaximized();
 }
 
@@ -896,8 +896,6 @@ void TupMainWindow::aboutTupi()
 {
     TupAbout *about = new TupAbout(this);
     about->show();
-    // about->exec();
-    // delete about;
 }
 
 /**

@@ -36,13 +36,11 @@
 #ifndef TUPHELPDIALOG_H
 #define TUPHELPDIALOG_H
 
-#include "tuphelpbrowser.h"
-#include "tuphelpwidget.h"
+#include "tglobal.h"
 
-#include <QDialog>
-#include <QHBoxLayout>
+#include <QFrame>
 
-class TupHelpDialog : public QDialog
+class TUPI_EXPORT TupHelpDialog : public QFrame
 {
     Q_OBJECT
 
