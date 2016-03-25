@@ -33,81 +33,27 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPVALUECOLOR_H
-#define TUPVALUECOLOR_H
+#ifndef INFOPANEL_H
+#define INFOPANEL_H
 
 #include "tglobal.h"
-#include "tdoublecombobox.h"
 
-#include <QFrame>
-#include <QHBoxLayout>
 #include <QLabel>
-#include <QCheckBox>
-#include <QDoubleSpinBox>
-#include <QGridLayout>
-#include <QSpinBox>
-#include <QLineEdit>
-#include <cmath>
+#include <QBoxLayout>
+#include <QTextEdit>
 
 /**
- * @author Jorge Cuadrado
-**/
+ * @author Gustav Gonzalez 
+*/
 
-class TUPI_EXPORT TupItemColorValue : public QFrame
+class TUPI_PLUGIN Settings : public QWidget
 {
     Q_OBJECT
 
     public:
-        TupItemColorValue( const QString &text = QString::null, QWidget *parent = 0);
-        ~TupItemColorValue();
-        int  value();
-        void setMax(int);
-        void setRange(int minimum, int maximum);
-        void setSuffix(const QString &suffix);
-
-    private:
-        struct Private;
-        Private *const k;
-
-    public slots:
-        void setValue(int val);
-
-    signals:
-        void valueChanged(int i);
-        void valueChanged(const QString &text);
-        void editingFinished();
-};
-
-class TUPI_EXPORT TupColorValue : public QFrame
-{
-    Q_OBJECT
-
-    public:
-        TupColorValue(QWidget *parent = 0);
-        ~TupColorValue();
-       int hue();
-       int saturation();
-       int value();
-       int alpha();
-
-    private:
-       struct Private;
-       Private *const k;
-
-    private:
-       void setupForm();
-
-    public slots:
-       void setColor(const QBrush & brush);
-
-    private slots:
-       void syncValuesRgb(int value = 0);
-
-    signals:
-       void brushChanged(const QBrush &);
-       void hueChanged(int);
-       void saturationChanged(int);
-       void valueChanged(int);
+        enum ToolType { Rectangle = 1, Ellipse, Line };
+        Settings(Settings::ToolType type, QWidget *parent = 0);
+        ~Settings();
 };
 
 #endif

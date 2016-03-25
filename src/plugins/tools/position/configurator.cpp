@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "configurator.h"
+#include "tapplicationproperties.h"
+#include "tseparator.h"
 #include "tweenmanager.h"
 #include "buttonspanel.h"
 #include "tupitemtweener.h"
@@ -77,9 +79,13 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-    QLabel *title = new QLabel(tr("Position Tween"));
-    title->setAlignment(Qt::AlignHCenter);
-    k->layout->addWidget(title);
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic(THEME_DIR + "icons/position_tween.png");
+    toolTitle->setPixmap(pic.scaledToWidth(20, Qt::SmoothTransformation));
+    toolTitle->setToolTip(tr("Position Tween Properties"));
+    k->layout->addWidget(toolTitle);
+    k->layout->addWidget(new TSeparator(Qt::Horizontal));
 
     k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     k->settingsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);

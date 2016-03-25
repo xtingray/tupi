@@ -35,17 +35,14 @@
 
 #include "tupbrushstatus.h"
 
-TupBrushStatus::TupBrushStatus(const QString &label, const QPixmap &pix, bool bg)
+TupBrushStatus::TupBrushStatus(const QString &label, TColorCell::FillType context, const QPixmap &pix)
 {
-    background = bg;
-    buttonIsChecked = false;
-
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(2);
     layout->setSpacing(2);
 
-    brushCell = new TColorCell(TColorCell::Contour, QBrush(Qt::black), QSize(20, 20));
-    connect(brushCell, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateColour(TColorCell::FillType)));
+    brushCell = new TColorCell(context, QBrush(Qt::black), QSize(20, 20));
+    brushCell->setEnabled(false);
 
     QLabel *icon = new QLabel("");
     icon->setToolTip(label);
@@ -60,44 +57,17 @@ TupBrushStatus::~TupBrushStatus()
 {
 }
 
-void TupBrushStatus::setForeground(const QPen &pen)
+void TupBrushStatus::setColor(const QPen &pen)
 {
     brushCell->setBrush(pen.brush());
 }
 
-void TupBrushStatus::setColor(const QColor &color)
+void TupBrushStatus::setColor(const QBrush &brush)
 {
-    QBrush square(color);
-    brushCell->setBrush(square);
-}
-
-void TupBrushStatus::updateColour(TColorCell::FillType)
-{
-    if (background) {
-        QColor color = QColorDialog::getColor(brushCell->color(), this);
-        if (color.isValid()) {
-            setColor(color);
-            emit colorUpdated(color);
-        }
-        brushCell->setChecked(false);
-    } else {
-        if (buttonIsChecked) {
-            brushCell->setChecked(false);
-            buttonIsChecked = false;
-        } else {
-            buttonIsChecked = true;
-        }
-        emit colorRequested();
-    }
+    brushCell->setBrush(brush);
 }
 
 void TupBrushStatus::setTooltip(const QString &tip)
 {
     brushCell->setToolTip(tip);
-}
-
-void TupBrushStatus::updateContourColorButton(bool status)
-{
-    brushCell->setChecked(status);
-    buttonIsChecked = status;
 }

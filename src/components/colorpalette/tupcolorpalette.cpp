@@ -35,6 +35,7 @@
 
 #include "tupcolorpalette.h"
 #include "timagebutton.h"
+#include "tseparator.h"
 
 struct TupColorPalette::Private
 {
@@ -42,17 +43,20 @@ struct TupColorPalette::Private
     QTabWidget *tab;
 
     TupViewColorCells *paletteContainer;
-    TupColorValue *displayColorForms;
+    TupColorForm *colorForm;
     TupColorPicker *colorPickerArea;
     TSlider *luminancePicker;
     TupGradientCreator *gradientManager;
 
     QLineEdit *htmlField;
+    QLineEdit *bgHtmlField;
+
     QBrush currentContourBrush;
     QBrush currentFillBrush;
 
     TColorCell *contourColor;
     TColorCell *fillColor;
+    TColorCell *bgColor;
 
     bool flagGradient;
     BrushType type;
@@ -91,7 +95,7 @@ TupColorPalette::TupColorPalette(QWidget *parent) : TupModuleWidgetBase(parent),
     addChild(k->splitter);
 
     setupMainPalette();
-    setupChooserTypeColor();
+    setupColorChooser();
     setupGradientManager();
 
     k->tab->setPalette(palette());
@@ -99,12 +103,6 @@ TupColorPalette::TupColorPalette(QWidget *parent) : TupModuleWidgetBase(parent),
     k->splitter->addWidget(k->tab);
 
     setMinimumWidth(316);
-
-    /*
-    TCONFIG->beginGroup("ColorPalette");
-    QColor foreground = QColor(TCONFIG->value("LastForegroundColor", Qt::black).toString());
-    QColor background = QColor(TCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
-    */
 }
 
 TupColorPalette::~TupColorPalette()
@@ -116,12 +114,6 @@ TupColorPalette::~TupColorPalette()
             TEND;
         #endif
     #endif
-
-    /*
-    TCONFIG->beginGroup("ColorPalette");
-    TCONFIG->setValue("LastForegroundColor", color().first);
-    TCONFIG->setValue("LastBackgroundColor", color().second);
-    */
 }
 
 void TupColorPalette::setupColorDisplay()
@@ -187,7 +179,7 @@ void TupColorPalette::setupColorDisplay()
     k->htmlField = new QLineEdit(topPanel);
     k->htmlField->setMaximumWidth(70);
     k->htmlField->setText("#000000");
-    connect(k->htmlField, SIGNAL(editingFinished()), this, SLOT(updateColor()));
+    connect(k->htmlField, SIGNAL(editingFinished()), this, SLOT(updateColorFromHTML()));
     mainLayout->addWidget(k->htmlField);
 
     mainLayout->addWidget(new QWidget());
@@ -196,42 +188,106 @@ void TupColorPalette::setupColorDisplay()
     generalLayout->addWidget(new QWidget());
     generalLayout->setAlignment(mainLayout, Qt::AlignHCenter|Qt::AlignVCenter);
 
+    generalLayout->addWidget(new TSeparator(Qt::Horizontal));    
+
+    QBoxLayout *bgLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    bgLayout->setMargin(0);
+    bgLayout->setSpacing(1);
+
+    bgLayout->addWidget(new QWidget());
+
+    QBrush bgBrush = QBrush(Qt::white);
+    k->bgColor = new TColorCell(TColorCell::Background, bgBrush, cellSize);
+    connect(k->bgColor, SIGNAL(clicked(TColorCell::FillType)), this, SLOT(updateColorMode(TColorCell::FillType)));
+    bgLayout->addWidget(k->bgColor);
+
+    bgLayout->setSpacing(5);
+
+    QLabel *bgLabel = new QLabel(tr("Background"), topPanel);
+    bgLabel->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+    bgLayout->addWidget(bgLabel);
+
+    QWidget *space1 = new QWidget();
+    space1->setFixedWidth(10);
+    bgLayout->addWidget(space1);
+
+    TImageButton *resetBgButton = new TImageButton(QIcon(QPixmap(THEME_DIR + "icons/reset_bg.png")), 15, this, true);
+    resetBgButton->setToolTip(tr("Reset background"));
+    connect(resetBgButton, SIGNAL(clicked()), this, SLOT(initBg()));
+    bgLayout->addWidget(resetBgButton);
+
+    QWidget *space2 = new QWidget();
+    space2->setFixedWidth(10);
+    bgLayout->addWidget(space2);
+
+    QLabel *bgHtmlLabel = new QLabel(tr("HTML"), topPanel);
+    bgHtmlLabel->setMaximumWidth(50);
+    bgHtmlLabel->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+    bgLayout->addWidget(bgHtmlLabel);
+
+    bgLayout->setSpacing(5);
+
+    k->bgHtmlField = new QLineEdit();
+    k->bgHtmlField->setMaximumWidth(70);
+    k->bgHtmlField->setText("#ffffff");
+    connect(k->bgHtmlField, SIGNAL(editingFinished()), this, SLOT(updateBgColorFromHTML()));
+    bgLayout->addWidget(k->bgHtmlField);
+
+    bgLayout->addWidget(new QWidget());
+
+    generalLayout->addLayout(bgLayout);
+    generalLayout->setAlignment(bgLayout, Qt::AlignHCenter);
+
+    generalLayout->addWidget(new QWidget());
+
     addChild(topPanel);
 }
 
 void TupColorPalette::updateColorMode(TColorCell::FillType flag)
 {
     QBrush brush;
-    if (flag == TColorCell::Contour) {
-        k->currentSpace = TColorCell::Contour;
-        brush = k->contourColor->brush();
-        if (k->fillColor->isChecked()) 
+    QColor color;
+
+    if (flag == TColorCell::Background) {
+        k->currentSpace = TColorCell::Background;
+        brush = k->bgColor->brush();
+        color = brush.color();
+        k->bgHtmlField->setText(color.name());
+
+        if (k->contourColor->isChecked())
+            k->contourColor->setChecked(false);
+        if (k->fillColor->isChecked())
             k->fillColor->setChecked(false);
-
-        if (k->fgType == Solid && k->tab->currentIndex() != 0) {
-            k->tab->setCurrentIndex(0);
-        } else if (k->fgType == Gradient && k->tab->currentIndex() != 1) {
-                   k->tab->setCurrentIndex(1);
-        }
     } else {
-        if (flag == TColorCell::Inner) {
-            k->currentSpace = TColorCell::Inner;
-            brush = k->fillColor->brush();
-            if (k->contourColor->isChecked())
-                k->contourColor->setChecked(false);
+        if (k->bgColor->isChecked())
+            k->bgColor->setChecked(false);
 
-            if (k->bgType == Solid && k->tab->currentIndex() != 0) {
-                k->tab->setCurrentIndex(0);
-            } else if (k->bgType == Gradient && k->tab->currentIndex() != 1) {
-                       k->tab->setCurrentIndex(1);
+        if (flag == TColorCell::Contour) {
+            k->currentSpace = TColorCell::Contour;
+            brush = k->contourColor->brush();
+            if (k->fillColor->isChecked()) 
+                k->fillColor->setChecked(false);
+        } else {
+            if (flag == TColorCell::Inner) {
+                k->currentSpace = TColorCell::Inner;
+                brush = k->fillColor->brush();
+                if (k->contourColor->isChecked())
+                    k->contourColor->setChecked(false);
             }
         }
+
+        color = brush.color();
+        k->htmlField->setText(color.name());
     }
 
-    QColor color = brush.color();
-    k->htmlField->setText(color.name());
+    if (k->fgType == Solid && k->tab->currentIndex() != 0) {
+        k->tab->setCurrentIndex(0);
+    } else if (k->fgType == Gradient && k->tab->currentIndex() != 1) {
+               k->tab->setCurrentIndex(1);
+    }
+
     updateLuminancePicker(color);
-    k->displayColorForms->setColor(color);
+    k->colorForm->setColor(color);
     k->gradientManager->setCurrentColor(color);
 }
 
@@ -244,7 +300,7 @@ void TupColorPalette::setupMainPalette()
     k->splitter->addWidget(k->paletteContainer);
 }
 
-void TupColorPalette::setupChooserTypeColor()
+void TupColorPalette::setupColorChooser()
 {
     QFrame *colorMixer = new QFrame;
     colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken);
@@ -260,11 +316,8 @@ void TupColorPalette::setupChooserTypeColor()
     k->luminancePicker->setRange(0, 100);
     k->luminancePicker->setValue(100);
 
-    k->displayColorForms = new TupColorValue(colorMixer);
-    k->displayColorForms->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    connect(k->displayColorForms, SIGNAL(hueChanged(int)), k->colorPickerArea, SLOT(setHUE(int)));
-    connect(k->displayColorForms, SIGNAL(saturationChanged(int)), k->colorPickerArea, SLOT(setSaturation(int)));
-    connect(k->displayColorForms, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
+    k->colorForm = new TupColorForm;
+    connect(k->colorForm, SIGNAL(brushChanged(const QBrush&)), this, SLOT(updateColorFromDisplay(const QBrush&)));
 
     mainLayout->addWidget(k->colorPickerArea);
     mainLayout->setAlignment(k->colorPickerArea, Qt::AlignHCenter);
@@ -272,8 +325,8 @@ void TupColorPalette::setupChooserTypeColor()
     mainLayout->addWidget(k->luminancePicker);
     mainLayout->setAlignment(k->luminancePicker, Qt::AlignHCenter);
 
-    mainLayout->addWidget(k->displayColorForms);
-    mainLayout->setAlignment(k->displayColorForms, Qt::AlignHCenter);
+    mainLayout->addWidget(k->colorForm);
+    mainLayout->setAlignment(k->colorForm, Qt::AlignHCenter);
 
     mainLayout->addStretch(2);
 
@@ -290,7 +343,7 @@ void TupColorPalette::setupGradientManager()
     k->tab->setTabEnabled(1, false);
 }
 
-void TupColorPalette::setColor(const QBrush& brush)
+void TupColorPalette::setColorOnAppFromHTML(const QBrush& brush)
 {
     QColor color = brush.color();
 
@@ -299,12 +352,11 @@ void TupColorPalette::setColor(const QBrush& brush)
             k->gradientManager->setCurrentColor(color);
 
         k->colorPickerArea->setColor(color.hue(), color.saturation());
+        k->paletteContainer->setColor(brush);
+        k->colorForm->setColor(color);
+
         // if (k->type == Solid)
         //     k->outlineAndFillColors->setCurrentColor(color);
-
-        k->htmlField->setText(color.name());
-        k->paletteContainer->setColor(brush);
-        k->displayColorForms->setColor(color);
     } else if (brush.gradient()) {
                QGradient gradient(*brush.gradient());
                // changeBrushType(tr("Gradient"));
@@ -314,40 +366,56 @@ void TupColorPalette::setColor(const QBrush& brush)
                if (sender() != k->gradientManager)
                    k->gradientManager->setGradient(gradient);
 
-               /* SQA: Gradient issue pending for revision
-               tFatal() << "TupColorPalette::setColor() - Sending gradient value!";
-               TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBrush, brush);
-               emit paintAreaEventTriggered(&event);
-               return;
-               */
+               // SQA: Gradient issue pending for revision
+               // tFatal() << "TupColorPalette::setColor() - Sending gradient value!";
+               // TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBrush, brush);
+               // emit paintAreaEventTriggered(&event);
+               // return;
     }
 
-    // tFatal() << "TupColorPalette::setColor() - Updating background color!";
-    TupPaintAreaEvent fillEvent(TupPaintAreaEvent::ChangeBrush, brush);
-    emit paintAreaEventTriggered(&fillEvent);
+    if (k->currentSpace == TColorCell::Background) {
+        k->bgColor->setBrush(brush);
+        emit bgColorChanged(color);
+        return;
+    }
 
-    // tFatal() << "TupColorPalette::setColor() - Updating foreground color!";
-    TupPaintAreaEvent contourEvent(TupPaintAreaEvent::ChangePenColor, k->contourColor->color()); 
-    emit paintAreaEventTriggered(&contourEvent);
+    if (k->currentSpace == TColorCell::Contour) {
+        k->contourColor->setBrush(brush); 
+        TupPaintAreaEvent contourEvent(TupPaintAreaEvent::ChangePenColor, k->contourColor->color());
+        emit paintAreaEventTriggered(&contourEvent);
+        return;
+    } 
+
+    if (k->currentSpace == TColorCell::Inner) { 
+        k->fillColor->setBrush(brush);
+        TupPaintAreaEvent fillEvent(TupPaintAreaEvent::ChangeBrush, brush);
+        emit paintAreaEventTriggered(&fillEvent);
+    }
 }
 
 void TupColorPalette::setGlobalColors(const QBrush &brush)
 {
-    if (k->currentSpace == TColorCell::Contour) {
-        k->contourColor->setBrush(brush);
-        k->currentContourBrush = brush;
+    if (k->currentSpace == TColorCell::Background) {
+        k->bgColor->setBrush(brush);
+        k->bgHtmlField->setText(brush.color().name());
 
-        TupPaintAreaEvent event(TupPaintAreaEvent::ChangePenColor, brush.color());
-        emit paintAreaEventTriggered(&event);
+        emit bgColorChanged(brush.color());
     } else {
-        k->fillColor->setBrush(brush);
-        k->currentFillBrush = brush;
+        if (k->currentSpace == TColorCell::Contour) {
+            k->contourColor->setBrush(brush);
+            k->currentContourBrush = brush;
 
-        TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBrush, brush);
-        emit paintAreaEventTriggered(&event);
+            TupPaintAreaEvent event(TupPaintAreaEvent::ChangePenColor, brush.color());
+            emit paintAreaEventTriggered(&event);
+        } else {
+            k->fillColor->setBrush(brush);
+            k->currentFillBrush = brush;
+
+            TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBrush, brush);
+            emit paintAreaEventTriggered(&event);
+        }
+        k->htmlField->setText(brush.color().name());
     }
-
-    k->htmlField->setText(brush.color().name());
 }
 
 void TupColorPalette::updateColorFromPalette(const QBrush &brush)
@@ -356,7 +424,7 @@ void TupColorPalette::updateColorFromPalette(const QBrush &brush)
     QColor color = brush.color();
 
     updateLuminancePicker(color);
-    k->displayColorForms->setColor(color);
+    k->colorForm->setColor(color);
     k->gradientManager->setCurrentColor(color);
 }
 
@@ -378,7 +446,7 @@ void TupColorPalette::updateGradientColor(const QBrush &brush)
 void TupColorPalette::syncColor(const QColor &color)
 {
     setGlobalColors(QBrush(color));
-    k->displayColorForms->setColor(color);
+    k->colorForm->setColor(color);
 }
 
 void TupColorPalette::setHS(int hue, int saturation)
@@ -392,14 +460,42 @@ void TupColorPalette::setHS(int hue, int saturation)
 
     setGlobalColors(QBrush(color));
     updateLuminancePicker(color);
-    k->displayColorForms->setColor(color);
+    k->colorForm->setColor(color);
 }
 
-void TupColorPalette::updateColor()
+void TupColorPalette::updateColorFromHTML()
 {
-    QColor tmpColor(k->htmlField->text());
-    tmpColor.setAlpha(k->displayColorForms->alpha());
-    setColor(tmpColor);
+    if (k->currentSpace == TColorCell::Background) {
+        k->bgColor->setChecked(false);
+        k->currentSpace = TColorCell::Contour;
+        k->contourColor->setChecked(true);
+    }
+
+    QString colorCode = k->htmlField->text();
+
+    QColor color(colorCode);
+    color.setAlpha(255);
+    
+    setColorOnAppFromHTML(color);
+}
+
+void TupColorPalette::updateBgColorFromHTML()
+{
+    if (k->currentSpace != TColorCell::Background) {
+        if (k->contourColor->isChecked())
+            k->contourColor->setChecked(false);
+        if (k->fillColor->isChecked())
+            k->fillColor->setChecked(false);
+
+        k->currentSpace = TColorCell::Background;
+        k->bgColor->setChecked(true);
+    }
+
+    QString colorCode = k->bgHtmlField->text();
+    QColor color(colorCode);
+    color.setAlpha(255);
+
+    setColorOnAppFromHTML(color);
 }
 
 QPair<QColor, QColor> TupColorPalette::color()
@@ -443,7 +539,7 @@ void TupColorPalette::init()
     k->luminancePicker->setColors(Qt::black, Qt::white);
     k->luminancePicker->setValue(0);
 
-    k->displayColorForms->setColor(contourColor);
+    k->colorForm->setColor(contourColor);
     k->gradientManager->setCurrentColor(Qt::white);
 
     TupPaintAreaEvent event(TupPaintAreaEvent::ChangePenColor, contourColor);
@@ -451,6 +547,17 @@ void TupColorPalette::init()
 
     event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, fillBrush);
     emit paintAreaEventTriggered(&event);
+}
+
+void TupColorPalette::initBg()
+{
+    QBrush brush(Qt::white);
+    k->bgColor->setBrush(brush);
+    k->bgColor->setChecked(true);
+    updateColorMode(TColorCell::Background);
+
+    k->paletteContainer->clearSelection();
+    emit bgColorChanged(brush.color());
 }
 
 void TupColorPalette::switchColors()
@@ -461,6 +568,8 @@ void TupColorPalette::switchColors()
     k->currentContourBrush = k->currentFillBrush;
     k->currentFillBrush = tmp;
 
+    if (k->bgColor->isChecked())
+        k->bgColor->setChecked(false);
     k->contourColor->setBrush(k->currentContourBrush); 
     k->fillColor->setBrush(k->currentFillBrush);
 
@@ -473,22 +582,13 @@ void TupColorPalette::switchColors()
     k->htmlField->setText(color.name());
     k->colorPickerArea->setColor(color.hue(), color.saturation());
     updateLuminancePicker(color);
-    k->displayColorForms->setColor(color);
+    k->colorForm->setColor(color);
 
     TupPaintAreaEvent event(TupPaintAreaEvent::ChangePenColor, k->currentContourBrush.color());
     emit paintAreaEventTriggered(&event);
 
     event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, k->currentFillBrush);
     emit paintAreaEventTriggered(&event);
-}
-
-QIcon TupColorPalette::setComboColor(const QColor &color) const
-{
-    QPixmap pixmap(10, 10);
-    pixmap.fill(color);
-    QIcon icon(pixmap); 
-
-    return icon;
 }
 
 void TupColorPalette::updateColorType(int index)

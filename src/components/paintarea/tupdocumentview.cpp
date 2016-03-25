@@ -192,7 +192,6 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
 
     connect(k->paintArea, SIGNAL(scaled(qreal)), this, SLOT(updateZoomVars(qreal)));
     connect(k->paintArea, SIGNAL(rotated(int)), this, SLOT(updateRotationVars(int)));
-    connect(k->paintArea, SIGNAL(updateStatusBgColor(QColor)), this, SLOT(updateStatusBgColor(QColor)));
     connect(k->paintArea, SIGNAL(zoomIn()), this, SLOT(applyZoomIn()));
     connect(k->paintArea, SIGNAL(zoomOut()), this, SLOT(applyZoomOut()));
     connect(k->paintArea, SIGNAL(newPerspective(int)), this, SIGNAL(newPerspective(int)));
@@ -211,17 +210,15 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     
     k->status = new TupPaintAreaStatus(this);
     setStatusBar(k->status);
-    connect(k->status, SIGNAL(colorRequested()), this, SIGNAL(expandColorPanel()));
-    connect(k->status, SIGNAL(colorUpdated(const QColor)), this, SLOT(updateBgColor(const QColor)));
     connect(k->status, SIGNAL(newFramePointer(int)), k->paintArea, SLOT(goToFrame(int)));
     connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
-    connect(this, SIGNAL(colorPaletteExpanded(bool)), k->status, SLOT(updateContourColorButton(bool)));
 
     // SQA: Implement the brush button within the status bar
     // connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
     //         SLOT(setBrush(const QBrush &)));
 
-    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), k->status, SLOT(setPen(const QPen &)));
+    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen &)), k->status, SLOT(setPen(const QPen &)));
+    connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush &)), k->status, SLOT(setBrush(const QBrush &)));
 
     // SQA: Find out why this timer instruction is required?
     QTimer::singleShot(500, this, SLOT(loadPlugins()));
@@ -1438,6 +1435,18 @@ TupBrushManager *TupDocumentView::brushManager() const
     return k->paintArea->brushManager();
 }
 
+QPen TupDocumentView::contourPen() const
+{
+    TupBrushManager *manager = k->paintArea->brushManager();
+    return manager->pen();
+}
+
+QBrush TupDocumentView::fillBrush() const
+{
+    TupBrushManager *manager = k->paintArea->brushManager();
+    return manager->brush();
+}
+
 TupPaintAreaCommand *TupDocumentView::createCommand(const TupPaintAreaEvent *event)
 {
     TupPaintAreaCommand *command = new TupPaintAreaCommand(k->paintArea, event);
@@ -1779,10 +1788,12 @@ void TupDocumentView::postImage()
     }
 }
 
+/*
 void TupDocumentView::updateStatusBgColor(const QColor color)
 {
     k->status->setBgColor(color);
 }
+*/
 
 void TupDocumentView::storyboardSettings()
 {

@@ -77,8 +77,8 @@ class T_GUI_EXPORT ToolView : public QDockWidget
         bool isChecked();
         void setShortcut(QKeySequence shortcut);
 
-    signals:
-        void dockExpanded(bool expanded);
+    // signals:
+    //     void dockExpanded(bool expanded);
 
     public slots:
         void saveSize(bool checked);

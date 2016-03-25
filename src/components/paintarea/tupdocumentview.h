@@ -100,6 +100,9 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void setZoomFactor(qreal factor);
 
         TupBrushManager *brushManager() const;
+        QPen contourPen() const;
+        QBrush fillBrush() const;
+
         TupPaintAreaCommand *createCommand(const TupPaintAreaEvent *event);
         void updatePaintArea();
         TupProject::Mode spaceContext();
@@ -127,7 +130,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void showFullScreen();
         void closeFullScreen();
         void loadPlugin(int menu, int index);
-        void updateStatusBgColor(const QColor color);
+        // void updateStatusBgColor(const QColor color);
         void updatePenThickness(int size);
         void updateOnionOpacity(double opacity);
         void setBackgroundDirection(int direction);
@@ -142,7 +145,6 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         // Plugins
         void loadPlugins();
         void setSpaceContext();
-        void updateBgColor(const QColor color);
         void enableOnionFeature();
         void setDefaultOnionFactor();
         void setOnionFactor(double value);
@@ -177,13 +179,13 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void updateNodesScale(qreal factor);
         void importPapagayoLipSync();
         void resetWorkSpaceTransformations();
+        void updateBgColor(const QColor color);
 
     signals:
         void requestTriggered(const TupProjectRequest *event);
         void localRequestTriggered(const TupProjectRequest *event);
         void autoSave();
         void modeHasChanged(TupProject::Mode mode);
-        void expandColorPanel();
         void requestExportImageToServer(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
         void openColorDialog(const QColor &);
         void updateColorFromFullScreen(const QColor &color);
@@ -196,7 +198,6 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void projectSizeHasChanged(const QSize dimension);
         void updateFPS(int fps);
         void newPerspective(int index);
-        void colorPaletteExpanded(bool expanded);
 
     private:
         void setupDrawActions();

@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "configurator.h"
+#include "tapplicationproperties.h"
+#include "tseparator.h"
 #include "lipsyncmanager.h"
 
 struct Configurator::Private
@@ -48,10 +50,19 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic(THEME_DIR + "icons/papagayo.png");
+    toolTitle->setPixmap(pic.scaledToWidth(20, Qt::SmoothTransformation));
+    toolTitle->setToolTip(tr("Papagayo LipSync Files"));
+    layout->addWidget(toolTitle);
+    layout->addWidget(new TSeparator(Qt::Horizontal));
+
+    /*
     QLabel *title = new QLabel(tr("Papagayo LipSync Files"));
     title->setAlignment(Qt::AlignHCenter);
-
     layout->addWidget(title);
+    */
 
     k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     k->settingsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);

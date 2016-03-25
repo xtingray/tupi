@@ -54,7 +54,7 @@ struct GeometricTool::Private
     TupLineItem *line;
     TupPathItem *path;
     TupGraphicsScene *scene;
-    InfoPanel *configurator;
+    Settings *configurator;
     bool added;
     QPointF currentPoint;
     QPointF lastPoint;
@@ -338,14 +338,14 @@ int GeometricTool::toolType() const
         
 QWidget *GeometricTool::configurator()
 {
-    InfoPanel::ToolType toolType = InfoPanel::Line;
+    Settings::ToolType toolType = Settings::Line;
 
     if (name() == tr("Rectangle"))
-        toolType = InfoPanel::Rectangle;
+        toolType = Settings::Rectangle;
     else if (name() == tr("Ellipse"))
-             toolType = InfoPanel::Ellipse;
+             toolType = Settings::Ellipse;
 
-    k->configurator = new InfoPanel(toolType);
+    k->configurator = new Settings(toolType);
     return k->configurator;
 }
 

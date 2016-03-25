@@ -14,10 +14,10 @@ INSTALLS += target
 target.path = /plugins/
 
 HEADERS += polylinetool.h \
-           infopanel.h
+           settings.h
 
 SOURCES += polylinetool.cpp \
-           infopanel.cpp
+           settings.cpp
 
 CONFIG += plugin warn_on
 TEMPLATE = lib

@@ -19,14 +19,14 @@ HEADERS += tupcolorpicker.h \
            tupviewcolorcells.h \
            tupcellscolor.h \
            tuppaletteparser.h \
-           tupcolorvalue.h
+           tupcolorform.h
 
 SOURCES += tupcolorpicker.cpp \
            tupcolorpalette.cpp \
            tupviewcolorcells.cpp \
            tupcellscolor.cpp \
            tuppaletteparser.cpp \
-           tupcolorvalue.cpp
+           tupcolorform.cpp
 
 *:!macx{
     CONFIG += dll warn_on

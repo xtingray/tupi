@@ -125,7 +125,6 @@ class TUPI_EXPORT TupPaintArea : public TupPaintAreaBase, public TupAbstractProj
         void frameChanged(int);
         void closePolyLine();
         void closeLine();
-        void updateStatusBgColor(const QColor color);
         void zoomIn();
         void zoomOut();
         void newPerspective(int index);

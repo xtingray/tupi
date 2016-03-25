@@ -528,7 +528,6 @@ void TupPaintArea::sceneResponse(TupSceneResponse *event)
                     QString colorName = event->arg().toString();
                     QColor color(colorName);
                     setBgColor(color);
-                    emit updateStatusBgColor(color);
                 }
                 break;
             default: 

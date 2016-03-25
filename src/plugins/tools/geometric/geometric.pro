@@ -14,10 +14,10 @@ INSTALLS += target
 target.path = /plugins/
 
 HEADERS += geometrictool.h \
-           infopanel.h 
+           settings.h 
 
 SOURCES += geometrictool.cpp \
-           infopanel.cpp
+           settings.cpp
 
 CONFIG += plugin
 TEMPLATE = lib 

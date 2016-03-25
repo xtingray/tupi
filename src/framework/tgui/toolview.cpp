@@ -85,7 +85,7 @@ void ToolView::setExpandingFlag()
     else 
         expanded = true;
 
-    emit dockExpanded(expanded); 
+    // emit dockExpanded(expanded); 
 }
 
 void ToolView::setSizeHint() 

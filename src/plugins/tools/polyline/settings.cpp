@@ -33,21 +33,31 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "infopanel.h"
+#include "settings.h"
+#include "tapplicationproperties.h"
+#include "tseparator.h"
 
-InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
+Settings::Settings(QWidget *parent) : QWidget(parent)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[InfoPanel()]";
+            qDebug() << "[Settings()]";
         #else
             TINIT;
         #endif
     #endif
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic(THEME_DIR + "icons/polyline.png");
+    toolTitle->setPixmap(pic.scaledToWidth(16, Qt::SmoothTransformation));
+    toolTitle->setToolTip(tr("PolyLine Properties"));
+    layout->addWidget(toolTitle);
+    layout->addWidget(new TSeparator(Qt::Horizontal));
+
     QLabel *label = new QLabel(tr("Tips"));
     label->setAlignment(Qt::AlignHCenter); 
     layout->addWidget(label);
@@ -62,11 +72,11 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     mainLayout->addStretch(2);
 }
 
-InfoPanel::~InfoPanel()
+Settings::~Settings()
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[~InfoPanel()]";
+            qDebug() << "[~Settings()]";
         #else
             TEND;
         #endif

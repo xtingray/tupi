@@ -65,7 +65,6 @@ class TUPI_EXPORT TupBrushManager : public QObject
         int penWidth() const;
         QColor penColor() const;
         QBrush penBrush() const;
-        
         QBrush brushColor() const;
         
     signals:

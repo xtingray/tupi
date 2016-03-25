@@ -33,27 +33,64 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INFOPANEL_H
-#define INFOPANEL_H
+#include "settings.h"
+#include "tapplicationproperties.h"
+#include "tseparator.h"
 
-#include "tglobal.h"
-
-#include <QLabel>
-#include <QBoxLayout>
-#include <QTextEdit>
-
-/**
- * @author Gustav Gonzalez 
-*/
-
-class TUPI_PLUGIN InfoPanel : public QWidget
+Settings::Settings(Settings::ToolType type, QWidget *parent) : QWidget(parent)
 {
-    Q_OBJECT
+    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 
-    public:
-        enum ToolType { Rectangle = 1, Ellipse, Line };
-        InfoPanel(InfoPanel::ToolType type, QWidget *parent = 0);
-        ~InfoPanel();
-};
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic;
 
-#endif
+    if (type == Settings::Rectangle) {
+        pic = QPixmap(THEME_DIR + "icons/square.png");
+        toolTitle->setToolTip(tr("Rectangle Properties"));
+    } else if (type == Settings::Ellipse) {
+        pic = QPixmap(THEME_DIR + "icons/ellipse.png");
+        toolTitle->setToolTip(tr("Ellipse Properties"));
+    } else if (type == Settings::Line) {
+        pic = QPixmap(THEME_DIR + "icons/line.png");
+        toolTitle->setToolTip(tr("Line Properties"));
+    }
+
+    toolTitle->setPixmap(pic.scaledToWidth(16, Qt::SmoothTransformation));
+    layout->addWidget(toolTitle);
+    layout->addWidget(new TSeparator(Qt::Horizontal));
+
+    QLabel *label = new QLabel(tr("Tips"));
+    label->setAlignment(Qt::AlignHCenter); 
+    layout->addWidget(label);
+
+    mainLayout->addLayout(layout);
+
+    QTextEdit *textArea = new QTextEdit; 
+
+    // SQA: Check this code with several screen resolutions. It must looks good with everyone! 
+    QFont font = this->font();
+    font.setPointSize(8);
+    textArea->setFont(font);
+    // textArea->setFont(QFont("Arial", 8, QFont::Normal, false));
+
+    if (type == Settings::Line) {
+        textArea->append("<p><b>" + tr("Mouse Right Click or X Key") + ":</b> " +  tr("Close the line path") + "</p>");
+        textArea->append("<p><b>" + tr("Shift") + ":</b> " +  tr("Align line to horizontal/vertical axis") + "</p>"); 
+    } else {
+        textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Set width/height proportional dimensions") + "</p>");
+    }
+
+    // QString text = textArea->document()->toPlainText();
+    // textArea->setFixedHeight(100);
+    // textArea->setFixedHeight(150);
+
+    mainLayout->addWidget(textArea);
+    mainLayout->addStretch(2);
+}
+
+Settings::~Settings()
+{
+}
+

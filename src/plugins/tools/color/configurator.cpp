@@ -34,6 +34,8 @@
  ***************************************************************************/
 
 #include "configurator.h"
+#include "tapplicationproperties.h"
+#include "tseparator.h"
 
 struct Configurator::Private
 {
@@ -63,9 +65,13 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     k->layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-    QLabel *title = new QLabel(tr("Coloring Tween"));
-    title->setAlignment(Qt::AlignHCenter);
-    k->layout->addWidget(title);
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic(THEME_DIR + "icons/coloring_tween.png");
+    toolTitle->setPixmap(pic.scaledToWidth(20, Qt::SmoothTransformation));
+    toolTitle->setToolTip(tr("Coloring Tween Properties"));
+    k->layout->addWidget(toolTitle);
+    k->layout->addWidget(new TSeparator(Qt::Horizontal));
 
     k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     k->settingsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);

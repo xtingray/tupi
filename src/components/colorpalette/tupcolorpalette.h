@@ -43,7 +43,7 @@
 #include "tcolorcell.h"
 #include "tconfig.h"
 #include "tuppaintareaevent.h"
-#include "tupcolorvalue.h"
+#include "tupcolorform.h"
 #include "tupviewcolorcells.h"
 #include "tupcolorpicker.h"
 #include "tslider.h"
@@ -84,9 +84,10 @@ class TUPI_EXPORT TupColorPalette : public TupModuleWidgetBase
 
     private slots:
         void updateColorMode(TColorCell::FillType flag);
-        void setColor(const QBrush &brush);
-
-        void updateColor();
+        void initBg();
+        void setColorOnAppFromHTML(const QBrush &brush);
+        void updateColorFromHTML();
+        void updateBgColorFromHTML();
         void syncColor(const QColor &color);
         void setHS(int h, int s);
         void updateColorFromPalette(const QBrush& brush);
@@ -96,16 +97,16 @@ class TUPI_EXPORT TupColorPalette : public TupModuleWidgetBase
         void updateColorType(int index);
 		
     signals:
+        void bgColorChanged(const QColor color);
         void paintAreaEventTriggered(const TupPaintAreaEvent *event);
 
     private:
         void setupButtons();
         void setupColorDisplay();
         void setupMainPalette();
-        void setupChooserTypeColor();
+        void setupColorChooser();
         void setupGradientManager();
         void setGlobalColors(const QBrush &brush);
-        QIcon setComboColor(const QColor &color) const;
         void updateLuminancePicker(const QColor &color);
 
         struct Private;

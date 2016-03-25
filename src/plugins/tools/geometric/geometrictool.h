@@ -41,7 +41,7 @@
 #include "tuprectitem.h"
 #include "tupellipseitem.h"
 #include "tuplineitem.h"
-#include "infopanel.h"
+#include "settings.h"
 
 #include <QObject>
 #include <QLabel>
@@ -108,7 +108,7 @@ class TUPI_PLUGIN GeometricTool : public TupToolPlugin
         TupRectItem *m_rect;
         TupEllipseItem *m_ellipse;
         TupLineItem *m_line;
-        InfoPanel *m_configurator;
+        Settings *m_configurator;
         bool added;
         QPointF firstPoint;
         QMap<QString, TAction *> m_actions;

@@ -286,12 +286,11 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connectWidgetToManager(animationTab);
         connectWidgetToLocalManager(animationTab);
         connect(animationTab, SIGNAL(modeHasChanged(TupProject::Mode)), this, SLOT(expandExposureView(TupProject::Mode))); 
-        connect(animationTab, SIGNAL(expandColorPanel()), this, SLOT(expandColorView()));
         connect(animationTab, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
         connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
         connect(animationTab, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize))); 
         connect(animationTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
-        connect(colorView, SIGNAL(dockExpanded(bool)), animationTab, SIGNAL(colorPaletteExpanded(bool)));
+        connect(m_colorPalette, SIGNAL(bgColorChanged(const QColor)), animationTab, SLOT(updateBgColor(const QColor)));
 
         animationTab->setAntialiasing(true);
 
@@ -1361,13 +1360,19 @@ void TupMainWindow::expandExposureView(TupProject::Mode contextMode)
     }
 }
 
-void TupMainWindow::expandColorView() 
+/*
+void TupMainWindow::expandColorView(TColorCell::FillType colorContext, bool buttonIsChecked) 
 {
-    if (colorView->isExpanded())
-        colorView->expandDock(false); 
-    else
-        colorView->expandDock(true);
+    if (buttonIsChecked) {
+        m_colorPalette->setColorContext(colorContext);
+        if (!colorView->isExpanded())
+            colorView->expandDock(true);
+    } else {
+        if (colorView->isExpanded())
+            colorView->expandDock(false); 
+    }
 }
+*/
 
 void TupMainWindow::requestProject()
 {

@@ -39,7 +39,7 @@
 #include "tglobal.h"
 #include "tuptoolplugin.h"
 #include "tuppathitem.h"
-#include "infopanel.h"
+#include "settings.h"
 #include "tcontrolnode.h"
 #include "tnodegroup.h"
 

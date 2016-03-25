@@ -44,6 +44,7 @@ struct TColorCell::Private
 {
     QBrush brush;
     FillType index;
+    bool enabled;
     bool checked;
     QSize size;
 };
@@ -51,6 +52,7 @@ struct TColorCell::Private
 TColorCell::TColorCell(FillType index, const QBrush &brush, const QSize &size) : k(new Private)
 {
     k->index = index;
+    k->enabled = true;
     k->checked = false;
     k->brush = brush;
     k->size = size;
@@ -74,13 +76,19 @@ void TColorCell::paintEvent(QPaintEvent *event)
     painter.fillRect(rect(), k->brush);
     QRect border = rect();
 
-    if (k->checked) {
-        painter.setPen(QPen(QColor(200, 200, 200), 8, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(border);
-        painter.setPen(QPen(QColor(190, 190, 190), 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(border);
-        painter.setPen(QPen(QColor(150, 150, 150), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawRect(border);
+    if (k->enabled) {
+        if (k->checked) {
+            painter.setPen(QPen(QColor(200, 200, 200), 8, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawRect(border);
+            painter.setPen(QPen(QColor(190, 190, 190), 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawRect(border);
+            painter.setPen(QPen(QColor(150, 150, 150), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawRect(border);
+        } else {
+            QRect frame = QRect(border.topLeft(), QSize(k->size.width()-1, k->size.height()-1));
+            painter.setPen(QPen(QColor(190, 190, 190), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawRect(frame);
+        }
     } else {
         QRect frame = QRect(border.topLeft(), QSize(k->size.width()-1, k->size.height()-1));
         painter.setPen(QPen(QColor(190, 190, 190), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -92,8 +100,16 @@ void TColorCell::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 
-    setChecked(true);
-    emit clicked(k->index);
+    if (k->enabled) {
+        setChecked(true);
+        emit clicked(k->index);
+    }
+}
+
+void TColorCell::setEnabled(bool isEnabled)
+{
+    k->enabled = isEnabled;
+    update();
 }
 
 QColor TColorCell::color()

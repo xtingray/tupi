@@ -62,7 +62,7 @@ struct PolyLineTool::Private
     
     QGraphicsLineItem *line1;
     QGraphicsLineItem *line2;
-    InfoPanel *configurator;
+    Settings *configurator;
     QCursor cursor;
     qreal realFactor;
     bool cutterOn;
@@ -581,7 +581,7 @@ int PolyLineTool::toolType() const
 QWidget *PolyLineTool::configurator() 
 {
     if (! k->configurator)
-        k->configurator = new InfoPanel;
+        k->configurator = new Settings;
 
     return k->configurator;
 }

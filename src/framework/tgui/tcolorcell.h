@@ -56,6 +56,7 @@ class TUPI_EXPORT TColorCell : public QWidget
         QSize sizeHint() const;
         QBrush brush();
         QColor color();
+        void setEnabled(bool isEnabled);
         void setChecked(bool isChecked);
         bool isChecked();
         void setBrush(const QBrush &brush);

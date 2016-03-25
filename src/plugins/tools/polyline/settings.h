@@ -33,43 +33,25 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "infopanel.h"
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-InfoPanel::InfoPanel(InfoPanel::ToolType type, QWidget *parent) : QWidget(parent)
+#include "tglobal.h"
+#include <QLabel>
+#include <QBoxLayout>
+#include <QTextEdit>
+
+/**
+ * @author Gustav Gonzalez 
+*/
+
+class TUPI_PLUGIN Settings : public QWidget
 {
-    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    Q_OBJECT
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel(tr("Tips"));
-    label->setAlignment(Qt::AlignHCenter); 
-    layout->addWidget(label);
+    public:
+        Settings(QWidget *parent = 0);
+        ~Settings();
+};
 
-    mainLayout->addLayout(layout);
-
-    QTextEdit *textArea = new QTextEdit; 
-
-    // SQA: Check this code with several screen resolutions. It must looks good with everyone! 
-    QFont font = this->font();
-    font.setPointSize(8);
-    textArea->setFont(font);
-    // textArea->setFont(QFont("Arial", 8, QFont::Normal, false));
-
-    if (type == InfoPanel::Line) {
-        textArea->append("<p><b>" + tr("Mouse Right Click or X Key") + ":</b> " +  tr("Close the line path") + "</p>");
-        textArea->append("<p><b>" + tr("Shift") + ":</b> " +  tr("Align line to horizontal/vertical axis") + "</p>"); 
-    } else {
-        textArea->append("<p><b>" + tr("Shift + Left Mouse Button") + ":</b> " +  tr("Set width/height proportional dimensions") + "</p>");
-    }
-
-    // QString text = textArea->document()->toPlainText();
-    // textArea->setFixedHeight(100);
-    // textArea->setFixedHeight(150);
-
-    mainLayout->addWidget(textArea);
-    mainLayout->addStretch(2);
-}
-
-InfoPanel::~InfoPanel()
-{
-}
-
+#endif

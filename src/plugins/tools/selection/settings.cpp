@@ -35,6 +35,7 @@
  ***************************************************************************/
 
 #include "settings.h"
+#include "tapplicationproperties.h"
 #include "timagebutton.h"
 #include "tseparator.h"
 
@@ -59,6 +60,14 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 #endif
 
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+
+    QLabel *toolTitle = new QLabel;
+    toolTitle->setAlignment(Qt::AlignHCenter);
+    QPixmap pic(THEME_DIR + "icons/selection.png");
+    toolTitle->setPixmap(pic.scaledToWidth(16, Qt::SmoothTransformation));
+    toolTitle->setToolTip(tr("Selection Properties"));
+    mainLayout->addWidget(toolTitle);
+    mainLayout->addWidget(new TSeparator(Qt::Horizontal));
 
     k->tools = new QWidget(this);
     QBoxLayout *toolsLayout = new QBoxLayout(QBoxLayout::TopToBottom, k->tools);

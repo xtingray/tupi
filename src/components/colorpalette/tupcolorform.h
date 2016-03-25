@@ -33,25 +33,66 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INFOPANEL_H
-#define INFOPANEL_H
+#ifndef TUPCOLORFORM_H
+#define TUPCOLORFORM_H
 
 #include "tglobal.h"
-#include <QLabel>
-#include <QBoxLayout>
-#include <QTextEdit>
 
 /**
- * @author Gustav Gonzalez 
-*/
+ * @author Jorge Cuadrado
+**/
 
-class TUPI_PLUGIN InfoPanel : public QWidget
+class TUPI_EXPORT TupFormItem : public QWidget
 {
     Q_OBJECT
 
     public:
-        InfoPanel(QWidget *parent = 0);
-        ~InfoPanel();
+        TupFormItem( const QString &text = QString::null, QWidget *parent = 0);
+        ~TupFormItem();
+        int  value();
+        void setMax(int);
+        void setRange(int minimum, int maximum);
+        void setSuffix(const QString &suffix);
+
+    private:
+        struct Private;
+        Private *const k;
+
+    public slots:
+        void setValue(int val);
+
+    signals:
+        void editingFinished();
+};
+
+class TUPI_EXPORT TupColorForm : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        TupColorForm(QWidget *parent = 0);
+        ~TupColorForm();
+
+    private:
+       struct Private;
+       Private *const k;
+
+    private:
+       void setupForm();
+
+    public slots:
+       void setColor(const QBrush & brush);
+
+    private slots:
+       void syncRgbValues();
+       void syncHsvValues();
+       void updateAlphaValue(int alpha);
+
+    signals:
+       void brushChanged(const QBrush &);
+       void hueChanged(int);
+       void saturationChanged(int);
+       void valueChanged(int);
 };
 
 #endif

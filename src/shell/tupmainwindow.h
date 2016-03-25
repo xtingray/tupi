@@ -221,7 +221,7 @@ class TupMainWindow : public TabbedMainWindow
           void createCommand(const TupPaintAreaEvent *event);
           void callSave();
           void expandExposureView(TupProject::Mode contextMode);
-          void expandColorView();
+          // void expandColorView(TColorCell::FillType colorContext, bool buttonIsChecked);
           void resetMousePointer();
           void updateUsersOnLine(const QString &login, int state);
           void importPapagayoLipSync();

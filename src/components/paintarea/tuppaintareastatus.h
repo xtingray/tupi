@@ -40,7 +40,8 @@
 #include "tupdocumentview.h"
 #include "tseparator.h"
 #include "tupbrushmanager.h"
-#include "tupcolorwidget.h"
+// #include "tupcolorwidget.h"
+#include "tcolorcell.h"
 #include "tupbrushstatus.h"
 #include "tuptoolstatus.h"
 
@@ -72,15 +73,14 @@ class TUPI_EXPORT TupPaintAreaStatus : public QStatusBar
         void updateZoomFactor(double factor);
         qreal currentZoomFactor();
         void updateRotationAngle(int angle);
-        void setBgColor(QColor color);
         void enableFullScreenFeature(bool flag);
         void updatePosition(const QString &position);
 
     public slots:
         void applyZoom(const QString &text);
         void setPen(const QPen &pen);
+        void setBrush(const QBrush  &brush);
         void applyRotation(const QString &text);
-        void updateContourColorButton(bool status);
 
     private slots:
         void selectAntialiasingHint();
@@ -89,8 +89,6 @@ class TUPI_EXPORT TupPaintAreaStatus : public QStatusBar
         void updateFramePointer();
 
     signals:
-        void colorRequested();
-        void colorUpdated(const QColor color);
         void newFramePointer(int index);
 
     private:
