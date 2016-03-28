@@ -614,7 +614,7 @@ bool TupProject::removeSound(const QString &name)
 }
 
 bool TupProject::insertSymbolIntoFrame(TupProject::Mode spaceMode, const QString &name, int sceneIndex, 
-                                   int layerIndex, int frameIndex)
+                                       int layerIndex, int frameIndex)
 {    
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN

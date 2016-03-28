@@ -8,7 +8,7 @@
  *   2010:                                                                 *
  *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,44 +33,61 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCOLORFORM_H
-#define TUPCOLORFORM_H
+#include "tupformitem.h"
 
-#include "tglobal.h"
-#include <QWidget>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QSpinBox>
 
-/**
- * @author Jorge Cuadrado
-**/
-
-class TUPI_EXPORT TupColorForm : public QWidget
+struct TupFormItem::Private
 {
-    Q_OBJECT
-
-    public:
-        TupColorForm(QWidget *parent = 0);
-        ~TupColorForm();
-
-    private:
-       struct Private;
-       Private *const k;
-
-    private:
-       void setupForm();
-
-    public slots:
-       void setColor(const QBrush & brush);
-
-    private slots:
-       void syncRgbValues();
-       void syncHsvValues();
-       void updateAlphaValue(int alpha);
-
-    signals:
-       void brushChanged(const QBrush &);
-       void hueChanged(int);
-       void saturationChanged(int);
-       void valueChanged(int);
+    QSpinBox *value;
 };
 
-#endif
+TupFormItem::TupFormItem(const QString &text, QWidget *parent) : QWidget(parent), k(new Private)
+{
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(0);
+    layout->setMargin(0);
+
+    QLabel *labelText = new QLabel(text);
+    k->value = new QSpinBox;
+    k->value->setMaximum(255);
+    k->value->setMinimum(0);
+    connect(k->value, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
+    layout->addWidget(labelText);
+    layout->addWidget(k->value);
+
+    setLayout(layout);
+}
+
+TupFormItem::~TupFormItem()
+{
+
+}
+
+void TupFormItem::setValue(int value)
+{
+    k->value->setValue(value);
+}
+
+int TupFormItem::value()
+{
+    return k->value->value();
+}
+
+void TupFormItem::setMax(int max)
+{
+    k->value->setMaximum(max);
+}
+
+void TupFormItem::setRange(int minimum, int maximum)
+{
+    k->value->setRange(minimum, maximum);
+}
+
+void TupFormItem::setSuffix(const QString &suffix)
+{
+    k->value->setSuffix(suffix);
+}
+

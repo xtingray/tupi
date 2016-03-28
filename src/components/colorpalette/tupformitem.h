@@ -8,7 +8,7 @@
  *   2010:                                                                 *
  *    Gustavo Gonzalez / xtingray                                          *
  *                                                                         *
- *   KTooN's versions:                                                     * 
+ *   KTooN's versions:                                                     *
  *                                                                         *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
@@ -33,44 +33,37 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPCOLORFORM_H
-#define TUPCOLORFORM_H
+#ifndef TUPFORMITEM_H
+#define TUPFORMITEM_H
 
 #include "tglobal.h"
-#include <QWidget>
+#include <QWidget> 
 
 /**
  * @author Jorge Cuadrado
 **/
 
-class TUPI_EXPORT TupColorForm : public QWidget
+class TUPI_EXPORT TupFormItem : public QWidget
 {
     Q_OBJECT
 
     public:
-        TupColorForm(QWidget *parent = 0);
-        ~TupColorForm();
+        TupFormItem(const QString &text = QString::null, QWidget *parent = 0);
+        ~TupFormItem();
+        int  value();
+        void setMax(int);
+        void setRange(int minimum, int maximum);
+        void setSuffix(const QString &suffix);
 
     private:
-       struct Private;
-       Private *const k;
-
-    private:
-       void setupForm();
+        struct Private;
+        Private *const k;
 
     public slots:
-       void setColor(const QBrush & brush);
-
-    private slots:
-       void syncRgbValues();
-       void syncHsvValues();
-       void updateAlphaValue(int alpha);
+        void setValue(int val);
 
     signals:
-       void brushChanged(const QBrush &);
-       void hueChanged(int);
-       void saturationChanged(int);
-       void valueChanged(int);
+        void editingFinished();
 };
 
 #endif

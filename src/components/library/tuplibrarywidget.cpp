@@ -406,9 +406,9 @@ void TupLibraryWidget::insertObjectInWorkspace()
     } 
 
     QString key = k->libraryTree->currentItem()->text(1) + "." + extension.toLower();
-
+    int objectType = k->libraryTree->itemType();
     TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::InsertSymbolIntoFrame, key,
-                                TupLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), k->project->spaceContext(), 
+                                TupLibraryObject::Type(objectType), k->project->spaceContext(), 
                                 0, QString(), k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
     emit requestTriggered(&request);
@@ -1020,8 +1020,8 @@ void TupLibraryWidget::importBitmap(const QString &image)
         }
 
         TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, key,
-                                                                          TupLibraryObject::Image, k->project->spaceContext(), data, QString(), 
-                                                                          k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+                                                                            TupLibraryObject::Image, k->project->spaceContext(), data, QString(), 
+                                                                            k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
 
         data.clear();

@@ -65,14 +65,15 @@ NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene, int zVa
 
 NodeManager::~NodeManager()
 {
-    clear();
+    // clear();
 }
 
 void NodeManager::clear()
 {
     foreach (Node *node, m_nodes) {
              if (node) {
-                 if (QGraphicsScene *scene = node->scene())
+                 QGraphicsScene *scene = node->scene();
+                 if (scene)
                      scene->removeItem(node);
              }
              delete node;

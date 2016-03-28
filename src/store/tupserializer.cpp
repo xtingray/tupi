@@ -82,20 +82,20 @@ void TupSerializer::loadProperties(QGraphicsItem *item, const QXmlAttributes &at
     item->setFlags(QGraphicsItem::GraphicsItemFlags(atts.value("flags").toInt()));
 }
 
-void TupSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
+void TupSerializer::loadProperties(QGraphicsItem *item, const QDomElement &element)
 {
-    if (e.tagName() == "properties") {
+    if (element.tagName() == "properties") {
         QMatrix matrix;
-        TupSvg2Qt::svgmatrix2qtmatrix(e.attribute("transform"), matrix);
+        TupSvg2Qt::svgmatrix2qtmatrix(element.attribute("transform"), matrix);
         QTransform transform(matrix);
         item->setTransform(transform); 
 
         QPointF pos;
-        TupSvg2Qt::parsePointF(e.attribute("pos"), pos);
+        TupSvg2Qt::parsePointF(element.attribute("pos"), pos);
         item->setPos(pos);
         
-        item->setEnabled(e.attribute("pos") != "0");
-        item->setFlags(QGraphicsItem::GraphicsItemFlags(e.attribute("flags").toInt()));
+        item->setEnabled(element.attribute("pos") != "0");
+        item->setFlags(QGraphicsItem::GraphicsItemFlags(element.attribute("flags").toInt()));
     }
 }
 

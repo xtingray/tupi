@@ -255,7 +255,14 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
                          type = TupLibraryObject::Svg;
                          position = currentFrame()->indexOf(svg);
                      } else {
-                         type = TupLibraryObject::Item;
+                         if (TupGraphicLibraryItem *libraryItem = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
+                             if (libraryItem->itemType() == TupLibraryObject::Image)
+                                 type = TupLibraryObject::Image;
+                             else
+                                 type = TupLibraryObject::Item;
+                         } else {
+                             type = TupLibraryObject::Item;
+                         }
                          position = currentFrame()->indexOf(node->parentItem());
                      }
 
@@ -422,7 +429,7 @@ void SelectionTool::aboutToChangeTool()
     */
 }
 
-void SelectionTool::itemResponse(const TupItemResponse *event)
+void SelectionTool::itemResponse(const TupItemResponse *response)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -433,16 +440,16 @@ void SelectionTool::itemResponse(const TupItemResponse *event)
     #endif
 
     QGraphicsItem *item = 0;
-    TupFrame *frame = frameAt(event->sceneIndex(), event->layerIndex(), event->frameIndex());
-    if (event->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
-        item = frame->svgAt(event->itemIndex());
+    TupFrame *frame = frameAt(response->sceneIndex(), response->layerIndex(), response->frameIndex());
+    if (response->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
+        item = frame->svgAt(response->itemIndex());
     } else if (frame->graphicItemsCount()>0) {
-               item = frame->item(event->itemIndex());
+               item = frame->item(response->itemIndex());
     }
 
     updateItemPosition();
 
-    switch (event->action()) {
+    switch (response->action()) {
             case TupProjectRequest::Transform:
             {
                  if (item) {
@@ -490,7 +497,7 @@ void SelectionTool::itemResponse(const TupItemResponse *event)
                  k->nodeManagers.clear();
                  k->selectedObjects.clear();
 
-                 QString list = event->arg().toString();
+                 QString list = response->arg().toString();
                  QString::const_iterator itr = list.constBegin();
                  QList<int> positions = TupSvg2Qt::parseIntList(++itr);
                  qSort(positions.begin(), positions.end());

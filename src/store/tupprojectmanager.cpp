@@ -314,8 +314,8 @@ void TupProjectManager::handleProjectRequest(const TupProjectRequest *request)
         #else
             T_FUNCINFO;
             // SQA: Enable these lines only for hard/tough debugging
-            // tWarning() << "Package: ";
-            // tWarning() << request->xml();			
+            tWarning() << "Package: ";
+            tWarning() << request->xml();			
         #endif
     #endif
 
@@ -344,7 +344,7 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
             T_FUNCINFO;
         #endif
     #endif	
-	
+
     TupRequestParser parser;
 
     if (parser.parse(request->xml())) {

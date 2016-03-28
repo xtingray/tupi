@@ -558,14 +558,14 @@ void TupItemManager::keyPressEvent(QKeyEvent * event)
     }
 
     if (event->key() == Qt::Key_Return) {
-        QTreeWidgetItem *current = currentItem();
-        if (current) {
-            if (current->text(2).length() == 0) {
-                if (current->childCount() > 0) {
-                    if (current->isExpanded())
-                        current->setExpanded(false);
+        QTreeWidgetItem *item = currentItem();
+        if (item) {
+            if (item->text(2).length() == 0) {
+                if (item->childCount() > 0) {
+                    if (item->isExpanded())
+                        item->setExpanded(false);
                     else
-                        current->setExpanded(true);
+                        item->setExpanded(true);
                 }
             }
         }
@@ -577,4 +577,14 @@ void TupItemManager::cleanUI()
 {
     clear();
     foldersTotal = 1;
+}
+
+int TupItemManager::itemType()
+{
+    int type = 0;
+    QTreeWidgetItem *item = currentItem();
+    if (item)
+        type = item->data(1, 3216).toInt();
+
+    return type;
 }

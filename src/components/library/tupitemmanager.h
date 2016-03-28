@@ -68,6 +68,7 @@ class TUPI_EXPORT TupItemManager : public TreeListWidget
         QString oldFolder();
         QTreeWidgetItem *getFolder(const QString &folderName);
         void cleanUI();
+        int itemType();
 
         enum ObjectType 
         {

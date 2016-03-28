@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupcolorform.h"
+#include "tupformitem.h"
 #include "tseparator.h"
 #include "tdoublecombobox.h"
 
@@ -42,62 +43,10 @@
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QGridLayout>
-#include <QSpinBox>
+// #include <QSpinBox>
 #include <QLineEdit>
 #include <QSlider>
 #include <cmath>
-
-struct TupFormItem::Private
-{
-    QSpinBox *value;
-};
-
-TupFormItem::TupFormItem(const QString &text, QWidget *parent) : QWidget(parent), k(new Private)
-{
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->setSpacing(0);
-    layout->setMargin(0);
-
-    QLabel *labelText = new QLabel(text);
-    k->value = new QSpinBox;
-    k->value->setMaximum(255);
-    k->value->setMinimum(0);
-    connect(k->value, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
-    layout->addWidget(labelText);
-    layout->addWidget(k->value);
-
-    setLayout(layout);
-}
-
-TupFormItem::~TupFormItem()
-{
-
-}
-
-void TupFormItem::setValue(int val)
-{
-    k->value->setValue(val);
-}
-
-int TupFormItem::value()
-{
-    return k->value->value();
-}
-
-void TupFormItem::setMax(int max)
-{
-    k->value->setMaximum(max);
-}
-
-void TupFormItem::setRange(int minimum, int maximum)
-{
-    k->value->setRange(minimum, maximum);
-}
-
-void TupFormItem::setSuffix(const QString &suffix)
-{
-    k->value->setSuffix(suffix);
-}
 
 struct TupColorForm::Private
 {

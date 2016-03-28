@@ -101,9 +101,9 @@ void SchemeTool::init(TupGraphicsScene *scene)
     if (k->widthVar < 1)
         k->widthVar = 1; 
 
-    tError() << "SchemeTool::init() - thickness: " << thickness;
-    tError() << "SchemeTool::init() - k->tolerance: " << k->tolerance;
-    tError() << "SchemeTool::init() - k->widthVar: " << k->widthVar;
+    // tError() << "SchemeTool::init() - thickness: " << thickness;
+    // tError() << "SchemeTool::init() - k->tolerance: " << k->tolerance;
+    // tError() << "SchemeTool::init() - k->widthVar: " << k->widthVar;
 
     TupTextItem *textItem = new TupTextItem;
     textItem->setPos(QPointF(5, 0));
@@ -191,7 +191,6 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
              view->setDragMode(QGraphicsView::NoDrag);
 
     QPointF currentPoint = input->pos();
-
     qreal my = currentPoint.y() - k->previewPoint.y(); 
     qreal mx = currentPoint.x() - k->previewPoint.x();
     qreal m;
@@ -204,35 +203,21 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
 
         k->path.moveTo(k->previewPoint);
         k->path.lineTo(currentPoint);
-
         k->item->setPath(k->path);
-
-        tError() << "SchemeTool::move() - Flag 1";
 
         qreal slopeVar = abs(k->oldSlope - m);
         qreal distance = sqrt(pow(abs(currentPoint.x() - k->oldPos.x()), 2) + pow(abs(currentPoint.y() - k->oldPos.y()), 2));
 
-        tError() << "SchemeTool::move() - k->firstArrow: " << k->firstArrow;
-        tError() << "SchemeTool::move() - k->dotsCounter: " << k->dotsCounter;
-
         if ((k->dotsCounter > k->firstArrow) && ((k->dotsCounter % k->spacing == 0) || ((slopeVar >= 1) && (distance > 10)))) {
-
             if (k->arrowSize == -1) {
-                tError() << "SchemeTool::move() - Flag 3";
                 qreal pow1 = pow(currentPoint.x() - k->firstPoint.x(), 2);
                 qreal pow2 = pow(currentPoint.y() - k->firstPoint.y(), 2); 
                 k->arrowSize = sqrt(pow1 + pow2);
-                tError() << "SchemeTool::move() - Flag 3A - pow1: " << pow1;
-                tError() << "SchemeTool::move() - Flag 3A - pow2: " << pow2;
-                tError() << "SchemeTool::move() - Flag 3A - k->arrowSize: " << k->arrowSize;
                 if (k->arrowSize > 0)
                     k->arrowSize = (rand() % k->arrowSize) + 1; 
                 else
                     k->arrowSize = 5;
             }
-
-            tError() << "SchemeTool::move() - Arrow Size: " << k->arrowSize;
-
             k->oldSlope = m;
 
             qreal pm;  
@@ -240,10 +225,10 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
             qreal y0;
             qreal x1;
             qreal y1;
-            bool isNAN = false;
+            // bool isNAN = false;
 
             if (m == 0) {
-                isNAN = true;
+                // isNAN = true;
                 pm = 100; 
             } else {
                 pm = (-1) * (1/m);
@@ -262,9 +247,7 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
             #endif
 
             qreal hypotenuse;
-
             if (fabs(pm) < 5) { // Line's slope is close to 0
-
                 int cutter = k->penWidth;
                 bool found = false;
                 qreal limit = 0;
@@ -310,12 +293,13 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
                        hypotenuse = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2));
                 }
 
+                /*
                 tError() << "SchemeTool::move() - H1: " << hypotenuse;
                 tError() << "SchemeTool::move() - Width: " << brushManager->pen().width();
                 tError() << "SchemeTool::move() - limit: " << limit;
                 tError() << "SchemeTool::move() - k->tolerance: " << k->tolerance;
                 tError() << "SchemeTool::move() - iterations: " << iterations;
-                    
+                */
             } else { // Line's slope is 0 or very very close to
 
                     qreal delta;
@@ -343,26 +327,23 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
 
                     hypotenuse = fabs(y1 - y0);
 
+                    /*
                     tError() << "SchemeTool::move() - Line's slope is 0!";
                     tError() << "SchemeTool::move() - k->widthVar: " << k->widthVar;
                     tError() << "SchemeTool::move() - k->tolerance: " << k->tolerance;
                     tError() << "SchemeTool::move() - H2: " << hypotenuse;
                     tError() << "SchemeTool::move() - Width: " << brushManager->pen().width();
+                    */
             }
 
-
             if (k->configurator->structureType() != Configurator::Basic) {
-
                 QPen perPen;
 
                 int h = hypotenuse;
-                if (h == brushManager->pen().width()) {
-                    tError() << "SchemeTool::move() - VioLeT!: " << h;
+                if (h == brushManager->pen().width())
                     perPen = QPen(QColor(255, 106, 255, 100), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-                } else {
-                    tError() << "SchemeTool::move() - Black!: " << h;
+                else
                     perPen = QPen(Qt::black, 0.5, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
-                }
 
                 TupLineItem *perpendicularLine = new TupLineItem();
                 perpendicularLine->setPen(perPen);
@@ -442,7 +423,6 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
                     qreal endX = currentPoint.x() - k->arrowSize;
                     qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
                     k->connector = QPoint(endX, endY);
-
                 } else if (k->previewPoint.y() > currentPoint.y()) {
                            #ifdef K_DEBUG
                                   tDebug() << "    -> SchemeTool::move() - Going up-left";
@@ -470,7 +450,6 @@ void SchemeTool::move(const TupInputDeviceInformation *input, TupBrushManager *b
                            qreal endX = currentPoint.x() - k->arrowSize;
                            qreal endY = (m*(endX - currentPoint.x())) + currentPoint.y();
                            k->connector = QPoint(endX, endY);
-
                 } else {
                      #ifdef K_DEBUG
                             tDebug() << "    -> SchemeTool::move() - Going left";
@@ -612,40 +591,26 @@ void SchemeTool::release(const TupInputDeviceInformation *input, TupBrushManager
     }
 
     if (k->configurator->runSimulation()) {
-
         QPen blackPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
         if (k->firstPoint != currentPoint) {
-
-            tError() << "SchemeTool::release() - Flag 1";
-            tError() << "SchemeTool::release() - Connector: [" << k->connector.x() << ", " << k->connector.y() << "]";
-
             k->pathRight.moveTo(k->connector);
             k->pathRight.lineTo(QPoint(0, 0));
             k->pathLeft.moveTo(k->connector);
             k->pathLeft.lineTo(QPoint(0, 0));
 
             smoothPath(k->pathRight, k->configurator->smoothness());
-
-            tError() << "SchemeTool::release() - Flag 2";
-
             smoothPath(k->pathLeft, k->configurator->smoothness());
-
-            tError() << "SchemeTool::release() - Flag 3";
 
             TupPathItem *blackRight = new TupPathItem();
             blackRight->setPen(blackPen);
             blackRight->setPath(k->pathRight);
             scene->includeObject(blackRight);
 
-            tError() << "SchemeTool::release() - Flag 4";
-
             TupPathItem *blackLeft = new TupPathItem();
             blackLeft->setPen(blackPen);
             blackLeft->setPath(k->pathLeft);
             scene->includeObject(blackLeft);
-
-            tError() << "SchemeTool::release() - Flag 5";
 
             QDomDocument doc;
             doc.appendChild(blackRight->toXml(doc));
@@ -722,7 +687,7 @@ void SchemeTool::updateSpacingVar(int value)
 
 void SchemeTool::updateSizeToleranceVar(int value)
 {
-    tError() << "SchemeTool::updateSizeToleranceVar() - Value: " << value;
+    // tError() << "SchemeTool::updateSizeToleranceVar() - Value: " << value;
     k->tolerance = (qreal)value/(qreal)100;
 }
 
@@ -757,7 +722,6 @@ void SchemeTool::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {
         emit closeHugeCanvas();
-    // } else if (event->modifiers() != Qt::ShiftModifier && event->modifiers() != Qt::ControlModifier) {
     } else {
         QPair<int, int> flags = TupToolPlugin::setKeyAction(event->key(), event->modifiers());
         if (flags.first != -1 && flags.second != -1)

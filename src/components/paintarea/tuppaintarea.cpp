@@ -557,10 +557,10 @@ void TupPaintArea::sceneResponse(TupSceneResponse *event)
     guiScene->sceneResponse(event);
 }
 
-void TupPaintArea::itemResponse(TupItemResponse *event)
+void TupPaintArea::itemResponse(TupItemResponse *response)
 {
     #ifdef K_DEBUG
-        QString msg = "TupPaintArea::itemResponse() - [" + QString::number(event->sceneIndex()) + ", " + QString::number(event->layerIndex()) + ", " + QString::number(event->frameIndex()) + "]";
+        QString msg = "TupPaintArea::itemResponse() - [" + QString::number(response->sceneIndex()) + ", " + QString::number(response->layerIndex()) + ", " + QString::number(response->frameIndex()) + "]";
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
@@ -569,12 +569,11 @@ void TupPaintArea::itemResponse(TupItemResponse *event)
     #endif
 
     TupGraphicsScene *guiScene = graphicsScene();
-
     if (!guiScene->scene())
         return;
 
     if (!guiScene->isDrawing()) {
-        switch(event->action()) {
+        switch(response->action()) {
             case TupProjectRequest::Transform:
                  {
                      viewport()->update();
@@ -629,7 +628,7 @@ void TupPaintArea::itemResponse(TupItemResponse *event)
         #endif
     }
 
-    guiScene->itemResponse(event);
+    guiScene->itemResponse(response);
 }
 
 void TupPaintArea::projectResponse(TupProjectResponse *)
@@ -880,10 +879,10 @@ void TupPaintArea::deleteItems()
 
                      if (itemIndex >= 0) {
                          TupProjectRequest event = TupRequestBuilder::createItemRequest( 
-                                                  currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
-                                                  currentScene->currentFrameIndex(), 
-                                                  itemIndex, QPointF(), k->spaceMode, type,
-                                                  TupProjectRequest::Remove);
+                                                   currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
+                                                   currentScene->currentFrameIndex(), 
+                                                   itemIndex, QPointF(), k->spaceMode, type,
+                                                   TupProjectRequest::Remove);
                          emit requestTriggered(&event);
                      } else {
                          #ifdef K_DEBUG
@@ -1602,7 +1601,6 @@ void TupPaintArea::goToFrame(int frameIndex, int layerIndex, int sceneIndex)
 {
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
                                                                       TupProjectRequest::Select);
-                                                                      // TupProjectRequest::Select, "1");
     emit localRequestTriggered(&request);
 }
 

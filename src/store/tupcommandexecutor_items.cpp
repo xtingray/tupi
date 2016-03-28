@@ -77,7 +77,6 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
     QString xml = response->arg().toString();
 
     TupScene *scene = m_project->sceneAt(sceneIndex);
-  
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
             TupLayer *layer = scene->layerAt(layerIndex);
@@ -267,7 +266,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                         return true;
                     } else {
                         TupGraphicObject *object = frame->graphicAt(response->itemIndex());
-
                         if (object) {
                             frame->removeGraphicAt(response->itemIndex());
                             if (object->hasTween()) 
@@ -276,7 +274,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                             response->setFrameState(frame->isEmpty());
                             emit responsed(response);
                             return true;
-
                         } else {
                             #ifdef K_DEBUG
                                 QString msg = "TupCommandExecutor::removeItem() - Error: Invalid object index (value: " + QString::number(response->itemIndex()) + ")";
@@ -291,7 +288,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                     }
                 }
             }
-
         } else {
             TupBackground *bg = scene->background();
             if (bg) {
@@ -450,7 +446,6 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
     return false;
 }
 
-
 bool TupCommandExecutor::groupItems(TupItemResponse *response)
 {
     #ifdef K_DEBUG
@@ -561,7 +556,6 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
     TupProject::Mode mode = response->spaceMode();
     
     TupScene *scene = m_project->sceneAt(sceneIndex);
-    
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
             TupLayer *layer = scene->layerAt(layerIndex);
@@ -594,7 +588,6 @@ bool TupCommandExecutor::ungroupItems(TupItemResponse *response)
                     return true;
                 }
             }
-
         } else {
             TupBackground *bg = scene->background();
             if (bg) {
@@ -870,7 +863,6 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
     QString xml = response->arg().toString();
 
     TupScene *scene = m_project->sceneAt(sceneIndex);
-    
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
             TupLayer *layer = scene->layerAt(layerIndex);
@@ -884,15 +876,40 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                         item = frame->item(position);
 
                     if (item) {
-                        QDomDocument orig;
-                        orig.appendChild(TupSerializer::properties(item, orig));
-                        QString current = orig.toString();
+                        if (response->mode() == TupProjectResponse::Do) {
+                            frame->storeItemTransformation(type, position, xml);
+                        } else {
+                            if (response->mode() == TupProjectResponse::Undo) {
+                                xml = frame->undoTransformation(type, position);
+                            } else if (response->mode() == TupProjectResponse::Redo) {
+                                       xml = frame->redoTransformation(type, position);
+                            }
+                        }
 
-                        QDomDocument doc;
-                        doc.setContent(xml);
-                        TupSerializer::loadProperties(item, doc.documentElement());
+                        if (xml.compare("RESET") == 0) {
+                            QTransform undo = item->transform();
+                            undo.reset();
+                            item->setTransform(undo);
 
-                        response->setArg(current); 
+                            if (type == TupLibraryObject::Svg || type == TupLibraryObject::Image) {
+                                QSizeF itemSize = item->boundingRect().size();  
+                                QSize size = m_project->dimension();
+                                int w = (size.width() - itemSize.width())/2;
+                                int h = (size.height() - itemSize.height())/2;
+                                item->setPos(QPointF(w, h));
+                            } else {
+                                item->setPos(QPointF(0, 0));
+                            }
+
+                            item->setEnabled(true);
+                            // item->setFlags(QGraphicsItem::GraphicsItemFlags(3));
+                        } else {
+                            QDomDocument doc;
+                            doc.setContent(xml);
+                            TupSerializer::loadProperties(item, doc.documentElement());
+                        }
+
+                        response->setArg(xml);
                         emit responsed(response);
                     
                         return true;
@@ -927,15 +944,40 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                         item = frame->item(position);
 
                     if (item) {
-                        QDomDocument orig;
-                        orig.appendChild(TupSerializer::properties(item, orig));
-                        QString current = orig.toString();
+                        if (response->mode() == TupProjectResponse::Do) {
+                            frame->storeItemTransformation(type, position, xml);
+                        } else {
+                            if (response->mode() == TupProjectResponse::Undo) {
+                                xml = frame->undoTransformation(type, position);
+                            } else if (response->mode() == TupProjectResponse::Redo) {
+                                       xml = frame->redoTransformation(type, position);
+                            }
+                        }
 
-                        QDomDocument doc;
-                        doc.setContent(xml);
-                        TupSerializer::loadProperties(item, doc.documentElement());
+                        if (xml.compare("RESET") == 0) {
+                            QTransform undo = item->transform();
+                            undo.reset();
+                            item->setTransform(undo);
 
-                        response->setArg(current);
+                            if (type == TupLibraryObject::Svg || type == TupLibraryObject::Image) {
+                                QSizeF itemSize = item->boundingRect().size();
+                                QSize size = m_project->dimension();
+                                int w = (size.width() - itemSize.width())/2;
+                                int h = (size.height() - itemSize.height())/2;
+                                item->setPos(QPointF(w, h));
+                            } else {
+                                item->setPos(QPointF(0, 0));
+                            }
+
+                            item->setEnabled(true);
+                            // item->setFlags(QGraphicsItem::GraphicsItemFlags(3));
+                        } else {
+                            QDomDocument doc;
+                            doc.setContent(xml);
+                            TupSerializer::loadProperties(item, doc.documentElement());
+                        }
+
+                        response->setArg(xml);
                         emit responsed(response);
 
                         return true;
@@ -961,7 +1003,6 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                     #endif
                     return false;
                 }
-
             } else {
                 #ifdef K_DEBUG
                     QString msg = "TupCommandExecutor::transformItem() - Error: Invalid background data structure!";

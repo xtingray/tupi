@@ -57,6 +57,8 @@ class TupScene;
 
 typedef QList<TupGraphicObject *> GraphicObjects;
 typedef QList<TupSvgItem *> SvgObjects;
+typedef QList<QStringList> UndoList;
+typedef QList<QStringList> RedoList;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -151,6 +153,10 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void reloadGraphicItem(const QString &id, const QString &path);
        void reloadSVGItem(const QString &id, TupLibraryObject *object);
        void updateZLevel(int zLevelIndex);
+
+       void storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties);
+       QString undoTransformation(TupLibraryObject::Type itemType, int index) const;
+       QString redoTransformation(TupLibraryObject::Type itemType, int index) const;
        
     public:
        virtual void fromXml(const QString &xml);

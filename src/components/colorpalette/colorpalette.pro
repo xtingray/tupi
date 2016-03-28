@@ -19,6 +19,7 @@ HEADERS += tupcolorpicker.h \
            tupviewcolorcells.h \
            tupcellscolor.h \
            tuppaletteparser.h \
+           tupformitem.h \
            tupcolorform.h
 
 SOURCES += tupcolorpicker.cpp \
@@ -26,6 +27,7 @@ SOURCES += tupcolorpicker.cpp \
            tupviewcolorcells.cpp \
            tupcellscolor.cpp \
            tuppaletteparser.cpp \
+           tupformitem.cpp \
            tupcolorform.cpp
 
 *:!macx{

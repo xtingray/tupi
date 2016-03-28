@@ -71,6 +71,11 @@ struct TupFrame::Private
     // int repeat;
     int zLevelIndex;
     double opacity;
+
+    UndoList itemsUndoList;
+    RedoList itemsDoList;
+    UndoList svgUndoList;
+    RedoList svgDoList;
 };
 
 TupFrame::TupFrame() : k(new Private)
@@ -1504,4 +1509,91 @@ void TupFrame::updateZLevel(int zLevelIndex)
     } else {
         k->zLevelIndex = (k->layer->layerIndex() + 1)*ZLAYER_LIMIT;
     }
+}
+
+void TupFrame::storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties)
+{
+    if (itemType == TupLibraryObject::Svg) {
+        if (index == k->svgDoList.count()) {
+            k->svgDoList << QStringList();
+            k->svgUndoList << QStringList();
+        }
+
+        QStringList doList = k->svgDoList.at(index);
+        doList << properties;
+        k->svgDoList.replace(index, doList);
+    } else {
+        if (index == k->itemsDoList.count()) {
+            k->itemsDoList << QStringList();
+            k->itemsUndoList << QStringList();
+        }
+
+        QStringList doList = k->itemsDoList.at(index);
+        doList << properties;
+        k->itemsDoList.replace(index, doList);
+    }
+}
+
+QString TupFrame::undoTransformation(TupLibraryObject::Type itemType, int index) const
+{
+    QString properties = "RESET";
+
+    if (itemType == TupLibraryObject::Svg) {
+        QStringList doList = k->svgDoList.at(index);
+        QStringList undoList = k->svgUndoList.at(index);
+   
+        if (!doList.isEmpty()) {
+            undoList << doList.takeLast();
+            if (!doList.isEmpty()) 
+                properties = doList.last();
+
+            k->svgDoList.replace(index, doList);
+            k->svgUndoList.replace(index, undoList);
+        }
+    } else {
+        QStringList doList = k->itemsDoList.at(index);
+        QStringList undoList = k->itemsUndoList.at(index);
+  
+        if (!doList.isEmpty()) {
+            undoList << doList.takeLast();
+            if (!doList.isEmpty())
+                properties = doList.last();
+
+            k->itemsDoList.replace(index, doList);
+            k->itemsUndoList.replace(index, undoList);
+        }
+    }
+
+    return properties;
+}
+
+QString TupFrame::redoTransformation(TupLibraryObject::Type itemType, int index) const
+{
+    QString properties = "";
+
+    if (itemType == TupLibraryObject::Svg) {
+        QStringList doList = k->svgDoList.at(index);
+        QStringList undoList = k->svgUndoList.at(index);
+
+        if (!undoList.isEmpty()) {
+            properties = undoList.takeLast();
+            doList << properties;
+
+            k->svgDoList.replace(index, doList);
+            k->svgUndoList.replace(index, undoList);
+        }
+    } else {
+        QStringList doList = k->itemsDoList.at(index);
+        QStringList undoList = k->itemsUndoList.at(index);
+
+        if (!undoList.isEmpty()) {
+            properties = undoList.takeLast();
+            doList << properties;
+
+            k->itemsDoList.replace(index, doList);
+            k->itemsUndoList.replace(index, undoList);
+        }
+    }
+
+    return properties;
 }
