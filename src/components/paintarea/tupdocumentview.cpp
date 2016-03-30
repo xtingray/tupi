@@ -1491,6 +1491,7 @@ void TupDocumentView::setSpaceContext()
             renderDynamicBackground();
         }
         k->project->updateSpaceContext(TupProject::FRAMES_EDITION);
+        k->actionManager->enable("onion_color", true);
         k->staticPropertiesBar->setVisible(false);
         k->dynamicPropertiesBar->setVisible(false);
         k->motionMenu->setEnabled(true);
@@ -1500,6 +1501,7 @@ void TupDocumentView::setSpaceContext()
                    renderDynamicBackground();
                }
                k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
+               k->actionManager->enable("onion_color", false);
                k->dynamicPropertiesBar->setVisible(false);
                updateOnionColorSchemeFlag(false);
                k->staticPropertiesBar->setVisible(true);
@@ -1507,15 +1509,16 @@ void TupDocumentView::setSpaceContext()
     } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
                k->dynamicFlag = true;
                k->project->updateSpaceContext(TupProject::DYNAMIC_BACKGROUND_EDITION);
+               k->actionManager->enable("onion_color", false);
 
                int sceneIndex = k->paintArea->currentSceneIndex();
                TupScene *scene = k->project->sceneAt(sceneIndex);
                if (scene) {
                    TupBackground *bg = scene->background();
                    if (bg) {
-                       int direction = bg->dyanmicDirection();
+                       int direction = bg->dynamicDirection();
                        k->dirCombo->setCurrentIndex(direction);
-                       int shift = bg->dyanmicShift();
+                       int shift = bg->dynamicShift();
                        k->shiftSpin->setValue(shift);
                    }
                }
@@ -1884,7 +1887,7 @@ void TupDocumentView::setBackgroundDirection(int direction)
    if (scene) {
        TupBackground *bg = scene->background();
        if (bg)
-           bg->setDyanmicDirection(direction);
+           bg->setDynamicDirection(direction);
    }
 }
 
@@ -1896,7 +1899,7 @@ void TupDocumentView::updateBackgroundShiftProperty(int shift)
    if (scene) {
        TupBackground *bg = scene->background();
        if (bg)
-           bg->setDyanmicShift(shift);
+           bg->setDynamicShift(shift);
    }
 }
 
@@ -2292,6 +2295,7 @@ QColor TupDocumentView::projectBGColor() const
 
 void TupDocumentView::updateWorkspace()
 {
+    k->paintArea->updateGridParameters();
     k->paintArea->viewport()->update();
 }
 

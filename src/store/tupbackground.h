@@ -60,16 +60,24 @@ class TUPI_EXPORT TupBackground : public QObject, public TupAbstractSerializable
         TupFrame* staticFrame();
         TupFrame* dynamicFrame(); 
         void renderDynamicView();
+        void renderStaticView();
+
         QPixmap dynamicView(int frameIndex);
-        void setDyanmicDirection(int direction);
-        void setDyanmicShift(int shift);
-        Direction dyanmicDirection();
-        int dyanmicShift();
-        void setDynamicRaster(QImage bg);
+        void setDynamicDirection(int direction);
+        void setDynamicShift(int shift);
+        Direction dynamicDirection();
+        int dynamicShift();
+
         QImage dynamicRaster();
+        QPixmap staticRaster();
+        bool dynamicRenderIsPending();
+        bool staticRenderIsPending();
+        void updateDynamicRenderStatus(bool flag);
+        void updateStaticRenderStatus(bool flag);
+
         bool dynamicBgIsEmpty();
         bool staticBgIsEmpty();
-        bool rasterRenderIsPending();
+
         void setDynamicOpacity(double opacity); 
         double dynamicOpacity();
         void setStaticOpacity(double opacity);
@@ -85,8 +93,10 @@ class TUPI_EXPORT TupBackground : public QObject, public TupAbstractSerializable
         QColor bgColor;
         TupFrame *staticBg;
         TupFrame *dynamicBg;
-        QImage raster;
-        bool noRender;
+        QImage dynamicBgRaster;
+        QImage staticBgRaster;
+        bool noDynamicRender;
+        bool noStaticRender;
 };
 
 #endif

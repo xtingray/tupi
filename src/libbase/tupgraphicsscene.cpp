@@ -130,6 +130,7 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     k->tool = 0;
     k->isDrawing = false;
 
+    // SQA: This color should be a parameter in the Preferences interface
     setBackgroundBrush(Qt::gray);
 
     k->inputInformation = new TupInputDeviceInformation(this);
@@ -260,7 +261,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                          if (space == Animation) {
                              // Painting previous frames
                              if (k->onionSkin.previous > 0 && photogram > 0) {
-                                 // k->frameContext = Previous;
                                  k->onionColor = pfOnionColor;
                                  int limit = photogram - k->onionSkin.previous;
                                  if (limit < 0) 
@@ -279,7 +279,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
 
                          // Painting current frame
                          k->frameOnProcess = photogram;
-                         // k->frameContext = Current;
                          addTweeningObjects(i, photogram);
                          addSvgTweeningObjects(i, photogram);
                          addFrame(mainFrame);
@@ -287,7 +286,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                          if (space == Animation) {
                              // Painting next frames
                              if (k->onionSkin.next > 0 && framesCount > photogram + 1) {
-                                 // k->frameContext = Next;
                                  opacity = k->opacity + (opacityFactor*(maximum - 1));
                                  k->onionColor = nfOnionColor;
                                  int limit = photogram + k->onionSkin.next;
@@ -347,7 +345,7 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                 TupFrame *frame = bg->dynamicFrame();
                 if (frame) {
                     k->zLevel = 0;
-                    addFrame(frame, frame->opacity());
+                    addBackgroundFrame(frame);
                 }
             } else {
                 #ifdef K_DEBUG
@@ -362,8 +360,8 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
             return;
         } else {
             if (!bg->dynamicBgIsEmpty()) {
-                if (bg->rasterRenderIsPending()) 
-                    bg->renderDynamicView();
+                if (bg->dynamicRenderIsPending())
+                    bg->renderDynamicView(); 
 
                 QPixmap pixmap = bg->dynamicView(photogram);
                 QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
@@ -394,8 +392,26 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
         if (!bg->staticBgIsEmpty()) {
             TupFrame *frame = bg->staticFrame();
             if (frame) {
-                k->zLevel = ZLAYER_LIMIT;
-                addFrame(frame, frame->opacity());
+                if (k->spaceContext == TupProject::STATIC_BACKGROUND_EDITION) {
+                    k->zLevel = ZLAYER_LIMIT;
+                    addBackgroundFrame(frame);
+                } else {
+                    if (bg->staticRenderIsPending())
+                        bg->renderStaticView();
+
+                    QPixmap pixmap = bg->staticRaster();
+                    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
+                    item->setZValue(1);
+                    item->setOpacity(frame->opacity());
+
+                    if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
+                        QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+                        effect->setColor(k->bOnionColor);
+                        item->setGraphicsEffect(effect);
+                    }
+
+                    addItem(item);
+                }
             }
             return;
         } else {
@@ -411,6 +427,127 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
     }
 }
 
+void TupGraphicsScene::addBackgroundFrame(TupFrame *frame)
+{
+    /*
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupGraphicsScene::addFrame()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+    */
+
+    double opacity = frame->opacity();
+    QList<TupGraphicObject *> objects = frame->graphics();
+    QList<TupSvgItem *> svgItems = frame->svgItems();
+
+    int objectsCount = objects.count();
+    int svgCount = svgItems.count();
+
+    if (objectsCount == 0 && svgCount == 0)
+        return;
+
+    if (objectsCount > 0 && svgCount == 0) {
+        foreach (TupGraphicObject *object, objects)
+                 addBackgroundGraphicObject(object, opacity);
+        return;
+    }
+
+    if (svgCount > 0 && objectsCount == 0) {
+        foreach (TupSvgItem *svg, svgItems)
+                 addBackgroundSvgObject(svg, opacity);
+        return;
+    }
+
+    do {
+        int objectZValue = objects.at(0)->itemZValue();
+        int svgZValue = svgItems.at(0)->zValue();
+
+        if (objectZValue < svgZValue) {
+            TupGraphicObject *object = objects.takeFirst();
+            addBackgroundGraphicObject(object, opacity);
+        } else {
+            TupSvgItem *svg = svgItems.takeFirst();
+            addBackgroundSvgObject(svg, opacity);
+        }
+
+        if (objects.isEmpty()) {
+            foreach (TupSvgItem *svg, svgItems)
+                     addBackgroundSvgObject(svg, opacity);
+            return;
+        } else {
+            if (svgItems.isEmpty()) {
+                foreach (TupGraphicObject *object, objects)
+                         addBackgroundGraphicObject(object, opacity);
+                return;
+            }
+        }
+    } while (true);
+}
+
+void TupGraphicsScene::addBackgroundGraphicObject(TupGraphicObject *object, double opacity)
+{
+    /*
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupGraphicsScene::addBackgroundGraphicObject()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+    */
+
+    QGraphicsItem *item = object->item();
+    if (item) {
+        k->onionSkin.accessMap.insert(item, true);
+
+        if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item))
+            group->recoverChilds();
+
+        item->setSelected(false);
+        item->setOpacity(opacity);
+        item->setZValue(k->zLevel);
+        k->zLevel++;
+
+        addItem(item);
+    }
+}
+
+void TupGraphicsScene::addBackgroundSvgObject(TupSvgItem *svgItem, double opacity)
+{
+    /*
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupGraphicsScene::addBackgroundSvgObject()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+    */
+
+    if (svgItem) {
+        k->onionSkin.accessMap.insert(svgItem, true);
+
+        svgItem->setSelected(false);
+        svgItem->setOpacity(opacity);
+        svgItem->setZValue(k->zLevel);
+        k->zLevel++;
+
+        addItem(svgItem);
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupGraphicsScene::addSvgObject() - Error: No SVG item!";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tFatal() << msg;
+            #endif
+        #endif
+    }
+}
+
 void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
 {
     /*
@@ -423,7 +560,7 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
     #endif
     */
 
-    TupFrame::FrameType frameType = frame->type();
+    // TupFrame::FrameType frameType = frame->type();
     QList<TupGraphicObject *> objects = frame->graphics(); 
     QList<TupSvgItem *> svgItems = frame->svgItems();
 
@@ -435,13 +572,13 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
 
     if (objectsCount > 0 && svgCount == 0) {
         foreach (TupGraphicObject *object, objects)
-                 processNativeObject(object, frameType, opacity, mode);
+                 processNativeObject(object, opacity, mode);
         return;
     }
 
     if (svgCount > 0 && objectsCount == 0) {
         foreach (TupSvgItem *svg, svgItems)
-                 processSVGObject(svg, frameType, opacity, mode);
+                 processSVGObject(svg, opacity, mode);
         return;
     }
 
@@ -451,47 +588,47 @@ void TupGraphicsScene::addFrame(TupFrame *frame, double opacity, Context mode)
 
         if (objectZValue < svgZValue) {
             TupGraphicObject *object = objects.takeFirst();
-            processNativeObject(object, frameType, opacity, mode);
+            processNativeObject(object, opacity, mode);
         } else {  
             TupSvgItem *svg = svgItems.takeFirst();
-            processSVGObject(svg, frameType, opacity, mode);
+            processSVGObject(svg, opacity, mode);
         }
 
         if (objects.isEmpty()) {
             foreach (TupSvgItem *svg, svgItems)
-                     processSVGObject(svg, frameType, opacity, mode);
+                     processSVGObject(svg, opacity, mode);
             return;
         } else {
             if (svgItems.isEmpty()) {
                 foreach (TupGraphicObject *object, objects)
-                         processNativeObject(object, frameType, opacity, mode);
+                         processNativeObject(object, opacity, mode);
                 return;
             }
         } 
     } while (true);
 }
 
-void TupGraphicsScene::processNativeObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity, Context mode)
+void TupGraphicsScene::processNativeObject(TupGraphicObject *object, double opacity, Context mode)
 {
     if (mode != TupGraphicsScene::Current) {
         if (!object->hasTween())
-            addGraphicObject(object, frameType, opacity);
+            addGraphicObject(object, opacity);
     } else {
-        addGraphicObject(object, frameType,  opacity);
+        addGraphicObject(object, opacity);
     }
 }
 
-void TupGraphicsScene::processSVGObject(TupSvgItem *svg, TupFrame::FrameType frameType, double opacity, Context mode)
+void TupGraphicsScene::processSVGObject(TupSvgItem *svg, double opacity, Context mode)
 {
     if (mode != TupGraphicsScene::Current) {
         if (!svg->hasTween())
-            addSvgObject(svg, frameType, opacity);
+            addSvgObject(svg, opacity);
     } else {
-        addSvgObject(svg, frameType, opacity);
+        addSvgObject(svg, opacity);
     }
 }
 
-void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance)
+void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, double opacity, bool tweenInAdvance)
 {
     /*
     #ifdef K_DEBUG
@@ -505,56 +642,37 @@ void TupGraphicsScene::addGraphicObject(TupGraphicObject *object, TupFrame::Fram
 
     QGraphicsItem *item = object->item();
     if (item) {
-        if (frameType == TupFrame::Regular) {
-            if (k->framePosition.frame == k->frameOnProcess) {
-                if (k->framePosition.layer != k->layerOnProcess) {
-                    if (k->space == Animation && k->onionColorScheme) {
-                        if (TupGraphicLibraryItem *image = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
-                            item = paintOnionColorOnImage(image, k->lOnionColor);
-                        } else {
-                            item = cloneGraphicItem(item);
-                            paintOnionScheme(item, k->lOnionColor);
-                        }
-                    }
-                    k->onionSkin.accessMap.insert(item, false);
-                } else {
-                    k->onionSkin.accessMap.insert(item, true);
-                }
-            } else {
+        if (k->framePosition.frame == k->frameOnProcess) {
+            if (k->framePosition.layer != k->layerOnProcess) {
                 if (k->space == Animation && k->onionColorScheme) {
                     if (TupGraphicLibraryItem *image = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
-                        item = paintOnionColorOnImage(image, k->onionColor);
+                        item = paintOnionColorOnImage(image, k->lOnionColor);
                     } else {
                         item = cloneGraphicItem(item);
-                        paintOnionScheme(item, k->onionColor);
+                        paintOnionScheme(item, k->lOnionColor);
                     }
                 }
                 k->onionSkin.accessMap.insert(item, false);
+            } else {
+                k->onionSkin.accessMap.insert(item, true);
             }
         } else {
-            if (k->spaceContext == TupProject::STATIC_BACKGROUND_EDITION || k->spaceContext == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                k->onionSkin.accessMap.insert(item, true);
-            } else {
-                if (k->space == Animation && k->onionColorScheme) {
-                    if (TupGraphicLibraryItem *image = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
-                        item = paintOnionColorOnImage(image, k->bOnionColor);
-                    } else {
-                        item = cloneGraphicItem(item);
-                        paintOnionScheme(item, k->bOnionColor);
-                    }
+            if (k->space == Animation && k->onionColorScheme) {
+                if (TupGraphicLibraryItem *image = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
+                    item = paintOnionColorOnImage(image, k->onionColor);
+                } else {
+                    item = cloneGraphicItem(item);
+                    paintOnionScheme(item, k->onionColor);
                 }
-                k->onionSkin.accessMap.insert(item, false);
             }
+            k->onionSkin.accessMap.insert(item, false);
         }
 
         if (TupItemGroup *group = qgraphicsitem_cast<TupItemGroup *>(item))
             group->recoverChilds();
 
         item->setSelected(false);
-        if (frameType == TupFrame::Regular)
-            item->setOpacity(opacity * k->layerOnProcessOpacity);
-        else
-            item->setOpacity(opacity);
+        item->setOpacity(opacity * k->layerOnProcessOpacity);
 
         if (!object->hasTween() || !tweenInAdvance) {
             item->setZValue(k->zLevel);
@@ -606,7 +724,7 @@ QGraphicsItem * TupGraphicsScene::paintOnionColorOnImage(TupGraphicLibraryItem *
     return pic;
 }
 
-void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance)
+void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, double opacity, bool tweenInAdvance)
 {
     /*
     #ifdef K_DEBUG
@@ -619,39 +737,27 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
     */
 
     if (svgItem) {
-        if (frameType == TupFrame::Regular) {
-            if (k->framePosition.frame == k->frameOnProcess) {
-                if (k->framePosition.layer != k->layerOnProcess) {
-                    if (k->space == Animation && k->onionColorScheme) {
-                        paintOnionColorOnSVG(svgItem, k->lOnionColor, opacity, frameType, tweenInAdvance);
-                        return;
-                    } else {
-                        k->onionSkin.accessMap.insert(svgItem, false);
-                    }
+        if (k->framePosition.frame == k->frameOnProcess) {
+            if (k->framePosition.layer != k->layerOnProcess) {
+                if (k->space == Animation && k->onionColorScheme) {
+                    paintOnionColorOnSVG(svgItem, k->lOnionColor, opacity, tweenInAdvance);
+                    return;
                 } else {
-                    k->onionSkin.accessMap.insert(svgItem, true);
+                    k->onionSkin.accessMap.insert(svgItem, false);
                 }
             } else {
-                if (k->space == Animation && k->onionColorScheme) {
-                    paintOnionColorOnSVG(svgItem, k->onionColor, opacity, frameType, tweenInAdvance);
-                    return;
-                } else {
-                    k->onionSkin.accessMap.insert(svgItem, false);
-                }
+                k->onionSkin.accessMap.insert(svgItem, true);
             }
         } else {
-            if (k->spaceContext == TupProject::STATIC_BACKGROUND_EDITION || k->spaceContext == TupProject::DYNAMIC_BACKGROUND_EDITION)
-                k->onionSkin.accessMap.insert(svgItem, true);
-            else
-                if (k->space == Animation && k->onionColorScheme) {
-                    paintOnionColorOnSVG(svgItem, k->bOnionColor, opacity, frameType, tweenInAdvance);
-                    return;
-                } else {
-                    k->onionSkin.accessMap.insert(svgItem, false);
-                }
+            if (k->space == Animation && k->onionColorScheme) {
+                paintOnionColorOnSVG(svgItem, k->onionColor, opacity, tweenInAdvance);
+                return;
+            } else {
+                k->onionSkin.accessMap.insert(svgItem, false);
+            }
         }
 
-        addSvgItem(svgItem, frameType, opacity, tweenInAdvance);
+        addSvgItem(svgItem, opacity, tweenInAdvance);
     } else {
         #ifdef K_DEBUG
             QString msg = "TupGraphicsScene::addSvgObject() - Error: No SVG item!";
@@ -664,7 +770,8 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
     } 
 } 
 
-void TupGraphicsScene::paintOnionColorOnSVG(TupSvgItem *svgItem, const QColor &color, double opacity, TupFrame::FrameType frameType, bool tweenInAdvance)
+/*
+void TupGraphicsScene::paintOnionColorOnBackgroundSVG(TupSvgItem *svgItem, const QColor &color, double opacity)
 {
     TupSvgItem *svg = new TupSvgItem(svgItem->itemPath());
     svg->setPos(svgItem->pos());
@@ -673,16 +780,38 @@ void TupGraphicsScene::paintOnionColorOnSVG(TupSvgItem *svgItem, const QColor &c
     svg->setGraphicsEffect(effect);
 
     k->onionSkin.accessMap.insert(svg, false);
-    addSvgItem(svg, frameType, opacity, tweenInAdvance);
+    addBackgroundSvgItem(svg, opacity);
+}
+*/
+
+void TupGraphicsScene::paintOnionColorOnSVG(TupSvgItem *svgItem, const QColor &color, double opacity, bool tweenInAdvance)
+{
+    TupSvgItem *svg = new TupSvgItem(svgItem->itemPath());
+    svg->setPos(svgItem->pos());
+    QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+    effect->setColor(color);
+    svg->setGraphicsEffect(effect);
+
+    k->onionSkin.accessMap.insert(svg, false);
+    addSvgItem(svg, opacity, tweenInAdvance);
 }
 
-void TupGraphicsScene::addSvgItem(TupSvgItem *svgItem, TupFrame::FrameType frameType, double opacity, bool tweenInAdvance)
+/*
+void TupGraphicsScene::addBackgroundSvgItem(TupSvgItem *svgItem, double opacity)
 {
     svgItem->setSelected(false);
-    if (frameType == TupFrame::Regular)
-        svgItem->setOpacity(opacity * k->layerOnProcessOpacity);
-    else
-        svgItem->setOpacity(opacity);
+    svgItem->setOpacity(opacity);
+    svgItem->setZValue(k->zLevel);
+    k->zLevel++;
+
+    addItem(svgItem);
+}
+*/
+
+void TupGraphicsScene::addSvgItem(TupSvgItem *svgItem, double opacity, bool tweenInAdvance)
+{
+    svgItem->setSelected(false);
+    svgItem->setOpacity(opacity * k->layerOnProcessOpacity);
 
     if (!svgItem->hasTween() || !tweenInAdvance) {
         svgItem->setZValue(k->zLevel);
@@ -828,7 +957,7 @@ void TupGraphicsScene::addTweeningObjects(int layerIndex, int photogram)
                                 // tFatal() << "TupGraphicsScene::addTweeningObjects() - Applying rotation - Angle: " << angle;
                             }
 
-                            addGraphicObject(object, TupFrame::Regular, 1.0, true);
+                            addGraphicObject(object, 1.0, true);
                         } else {
                             if (stepItem->has(TupTweenerStep::Position)) {
                                 qreal dx = stepItem->position().x() - (object->lastTweenPos().x() + adjustX);
@@ -909,7 +1038,7 @@ void TupGraphicsScene::addTweeningObjects(int layerIndex, int photogram)
                                 }
                             }
 
-                            addGraphicObject(object, TupFrame::Regular, 1.0, true);
+                            addGraphicObject(object, 1.0, true);
 
                             if (stepItem->has(TupTweenerStep::Opacity))
                                 object->item()->setOpacity(stepItem->opacity());
@@ -1026,7 +1155,7 @@ void TupGraphicsScene::addSvgTweeningObjects(int indexLayer, int photogram)
                             object->setTransform(transform);
                         }
 
-                        addSvgObject(object, TupFrame::Regular, 1.0, true);
+                        addSvgObject(object, 1.0, true);
 
                         if (stepItem->has(TupTweenerStep::Opacity))
                             object->setOpacity(stepItem->opacity());

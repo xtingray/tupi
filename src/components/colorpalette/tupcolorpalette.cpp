@@ -166,7 +166,7 @@ void TupColorPalette::setupColorDisplay()
 
     TImageButton *resetButton = new TImageButton(QIcon(QPixmap(THEME_DIR + "icons/reset_colors.png")), 15, this, true);
     resetButton->setToolTip(tr("Reset colors"));
-    connect(resetButton, SIGNAL(clicked()), this, SLOT(init()));
+    connect(resetButton, SIGNAL(clicked()), this, SLOT(reset()));
     mainLayout->addWidget(resetButton);
 
     mainLayout->addWidget(new QWidget());
@@ -512,22 +512,23 @@ void TupColorPalette::parsePaletteFile(const QString &file)
     k->paletteContainer->readPaletteFile(file);
 }
 
-void TupColorPalette::init()
+void TupColorPalette::reset()
 {
     k->currentSpace = TColorCell::Contour;
 
     QColor contourColor = Qt::black;
     k->currentContourBrush = QBrush(contourColor);
     k->htmlField->setText("#000000");
+
     QBrush fillBrush = QBrush(Qt::transparent);
     k->currentFillBrush = fillBrush;
 
-    k->contourColor->setBrush(k->currentContourBrush); 
+    k->contourColor->setBrush(k->currentContourBrush);
     k->fillColor->setBrush(fillBrush);
 
-    k->contourColor->setChecked(true);
     if (k->fillColor->isChecked())
         k->fillColor->setChecked(false);
+    k->contourColor->setChecked(true);
 
     k->paletteContainer->clearSelection();
 
@@ -547,6 +548,16 @@ void TupColorPalette::init()
 
     event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, fillBrush);
     emit paintAreaEventTriggered(&event);
+}
+
+void TupColorPalette::init()
+{
+    QBrush bgBrush = QBrush(Qt::white);
+    k->bgColor->setBrush(bgBrush);
+    if (k->bgColor->isChecked())
+        k->bgColor->setChecked(false);
+
+    reset();
 }
 
 void TupColorPalette::initBg()

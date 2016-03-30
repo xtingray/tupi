@@ -192,6 +192,12 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                         }
                     }
 
+                    if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                        bg->updateStaticRenderStatus(true);
+                    } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                        bg->updateDynamicRenderStatus(true);
+                    }
+
                     emit responsed(response);
                 } else {
                     #ifdef K_DEBUG
@@ -314,6 +320,12 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                     else
                         frame->removeGraphicAt(response->itemIndex());
 
+                    if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                        bg->updateStaticRenderStatus(true);
+                    } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                        bg->updateDynamicRenderStatus(true);
+                    }
+
                     emit responsed(response);
                     return true;
                 } else {
@@ -415,6 +427,12 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
 
                 if (frame) {
                     if (frame->moveItem(type, objectIndex, action)) {
+                        if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                            bg->updateStaticRenderStatus(true);
+                        } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                            bg->updateDynamicRenderStatus(true);
+                        }
+
                         emit responsed(response);
                         return true;
                     }
@@ -975,6 +993,12 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                             QDomDocument doc;
                             doc.setContent(xml);
                             TupSerializer::loadProperties(item, doc.documentElement());
+                        }
+
+                        if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                            bg->updateStaticRenderStatus(true);
+                        } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                            bg->updateDynamicRenderStatus(true);
                         }
 
                         response->setArg(xml);

@@ -183,7 +183,7 @@ class TupMainWindow : public TabbedMainWindow
     private slots:
           void addTwitterPage();
           void setWorkSpace(const QStringList &users = QStringList());
-          void updateTabContext(int tab);
+          // void updateTabContext(int tab);
           void createNewLocalProject();
           void newProject();
           bool closeProject();

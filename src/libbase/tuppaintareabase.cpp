@@ -47,35 +47,6 @@
 #include "tapplication.h"
 #include "tosd.h"
 
-#ifdef QT_OPENGL_LIB
-
-#include <QGLWidget>
-#include <QGLFramebufferObject>
-
-/**
- * This class defines the global paint area behavoir in the Ilustration Mode.
- * Here is where general events about the paint area are processed.
- * @author David Cuadrado & Jorge Cuadrado
-*/
-
-class GLDevice : public QGLWidget
-{
-    public:
-        GLDevice() : QGLWidget()
-                {
-                     makeCurrent();
-                }
-        ~GLDevice() {};
-
-    protected:
-        void initializeGL()
-                {
-                     glDisable(GL_DEPTH_TEST);
-                }
-};
-
-#endif
-
 struct TupPaintAreaBase::Private
 {
     QGraphicsRectItem *grid;
@@ -92,12 +63,13 @@ struct TupPaintAreaBase::Private
     TupGraphicsScene *scene;
 
     QPen greenThickPen;
-    // QPen gridPen;
     QPen grayPen;
     QPen greenBoldPen;
     QPen greenThinPen;
     QPen blackPen;
     bool spaceBar;
+    QPen gridPen;
+    int gridSeparation;
 
     QPoint initPoint;
     QPoint centerPoint;
@@ -107,20 +79,11 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
 {
     k->scene = new TupGraphicsScene();
     k->scene->setLibrary(library);
+
     k->grid = 0;
+    updateGridParameters();
 
     k->greenThickPen = QPen(QColor(0, 135, 0, 255), 2);
-
-    /*
-    // QColor gridColor = qvariant_cast<QColor>(TCONFIG->value("GridColor", QColor(QColor(0, 0, 180, 50))));
-    // QColor gridColor = qvariant_cast<QColor>(TCONFIG->value("GridColor"));
-    TCONFIG->beginGroup("PaintArea");
-    QString colorName = TCONFIG->value("GridColor", "#0000b4").toString();
-    QColor gridColor(colorName);
-    gridColor.setAlpha(50);
-    tError() << "gridColor: " << gridColor.name();
-    k->gridPen = QPen(gridColor, 1);
-    */
 
     k->grayPen = QPen(QColor(150, 150, 150, 255), 1);
     k->greenBoldPen = QPen(QColor(0, 135, 0, 255), 3);
@@ -139,13 +102,10 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);
     centerDrawingArea();
-    // setUseOpenGL(false);
     setInteractive(true);
     setMouseTracking(true); 
 
-    // restoreState();
     setRenderHints(QPainter::RenderHints(QPainter::Antialiasing));
-    // setRenderHints(QPainter::RenderHints(QPainter::HighQualityAntialiasing));
 }
 
 void TupPaintAreaBase::setBgColor(const QColor color)
@@ -154,86 +114,15 @@ void TupPaintAreaBase::setBgColor(const QColor color)
     viewport()->update();
 }
 
-/*
-void TupPaintAreaBase::saveState()
-{
-    TConfig *config = kApp->config("PaintArea");
-    config->setValue("RenderHints", int(renderHints()));
-}
-*/
-
-/*
-void TupPaintAreaBase::restoreState()
-{
-    TConfig *config = kApp->config("PaintArea");
-
-    int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
-    setRenderHints(QPainter::RenderHints(renderHints));
-}
-*/
-
 TupPaintAreaBase::~TupPaintAreaBase()
 {
-    // saveState();
-    // delete k;
 }
 
 void TupPaintAreaBase::setAntialiasing(bool use)
 {
-#ifdef QT_OPENGL_LIB
-    if (QGLWidget *gl = dynamic_cast<QGLWidget *>(viewport())) {
-        gl->setUpdatesEnabled(false); // works better
-        // gl->setFormat(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay /*| QGL::DirectRendering 
-        // | QGL::AccumBuffer | QGL::Rgba */));
-        gl->setFormat(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay));
-        gl->setUpdatesEnabled(true);
-    }
-#endif
-
     setRenderHint(QPainter::Antialiasing, use);
     setRenderHint(QPainter::TextAntialiasing, use);
 }
-
-/*
-void TupPaintAreaBase::setUseOpenGL(bool opengl)
-{
-    #ifdef K_DEBUG
-        #ifdef Q_OS_WIN
-            qDebug() << "[TupPaintAreaBase::setUseOpenGL()] - opengl: " << opengl;
-        #else
-            T_FUNCINFO << opengl;
-        #endif
-    #endif
-
-    QCursor cursor(Qt::ArrowCursor);
-    if (viewport())
-        cursor = viewport()->cursor();
-	
-#ifdef QT_OPENGL_LIB
-        if (opengl) {
-            setViewport(new GLDevice());
-        } else {
-            // setViewport(new TupImageDevice());
-        }
-#else
-        Q_UNUSED(opengl);
-        #ifdef K_DEBUG
-            QString msg = "OpenGL isn't supported";
-            #ifdef Q_OS_WIN
-                qWarning() << msg;
-            #else
-                kWarning() << msg;
-            #endif
-        #endif
-#endif
-
-    // to restore the cursor.
-    if (viewport()) {
-        viewport()->setCursor(cursor);
-        viewport()->setAcceptDrops(true);
-    }
-}
-*/
 
 void TupPaintAreaBase::drawGrid(bool draw)
 {
@@ -456,20 +345,12 @@ void TupPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
                         } else {
                             // if enabled draw grid
                             if (k->gridFlag) {
-                                TCONFIG->beginGroup("PaintArea");
-                                // QString colorName = TCONFIG->value("GridColor", "#0000b4").toString();
-                                QString colorName = TCONFIG->value("GridColor").toString();
-                                QColor gridColor(colorName);
-                                gridColor.setAlpha(50);
-                                QPen gridPen = QPen(gridColor, 1);
-                                // int separation = TCONFIG->value("GridSeparation", 10).toInt();
-                                int separation = TCONFIG->value("GridSeparation").toInt();
-                                painter->setPen(gridPen);
+                                painter->setPen(k->gridPen);
                                 int maxX = k->drawingRect.width() + 100;
                                 int maxY = k->drawingRect.height() + 100;
-                                for (int i = -100; i <= maxX; i += separation)
+                                for (int i = -100; i <= maxX; i += k->gridSeparation)
                                      painter->drawLine(i, -100, i, maxY);
-                                for (int i = -100; i <= maxY; i += separation)
+                                for (int i = -100; i <= maxY; i += k->gridSeparation)
                                      painter->drawLine(-100, i, maxX, i);
                             }
                             // if enabled action safe area
@@ -624,10 +505,8 @@ bool TupPaintAreaBase::viewportEvent(QEvent *event)
 void TupPaintAreaBase::scaleView(qreal scaleFactor)
 {
     qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-
     if (factor < 0.07 || factor > 100)
         return;
-
     scale(scaleFactor, scaleFactor);
 
     emit scaled(scaleFactor);
@@ -684,8 +563,6 @@ void TupPaintAreaBase::updateCenter(const QPoint point)
     int x0 = k->initPoint.x();
     int y0 = k->initPoint.y();
 
-    // int b = fabs(x0 - x);
-    // int h = fabs(y0 - y);
     int b = abs(x0 - x);
     int h = abs(y0 - y);
     if (x0 > x)
@@ -702,5 +579,15 @@ void TupPaintAreaBase::updateCenter(const QPoint point)
     centerOn(k->centerPoint);
     setSceneRect(cx - (k->drawingRect.width()/2), cy - (k->drawingRect.height()/2),
                  k->drawingRect.width(), k->drawingRect.height());
+}
+
+void TupPaintAreaBase::updateGridParameters()
+{
+    TCONFIG->beginGroup("PaintArea");
+    QString colorName = TCONFIG->value("GridColor").toString();
+    QColor gridColor(colorName);
+    gridColor.setAlpha(50);
+    k->gridPen = QPen(gridColor, 1);
+    k->gridSeparation = TCONFIG->value("GridSeparation").toInt();
 }
 

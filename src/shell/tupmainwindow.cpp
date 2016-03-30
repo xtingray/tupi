@@ -337,7 +337,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         addWidget(playerTab);
         connect(animationTab, SIGNAL(updateFPS(int)), cameraWidget, SLOT(setStatusFPS(int)));
 
-        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
         exposureView->expandDock(true);
 
         // SQA: Code useful for future features
@@ -358,10 +357,11 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         m_exposureSheet->setScene(0);
         m_exposureSheet->updateLayerOpacity(0, 0);
         m_exposureSheet->initLayerVisibility();
-    }
 
-    connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateTabContext(int)));
-    m_projectManager->clearUndoStack();
+        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
+        // connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateTabContext(int)));
+        m_projectManager->clearUndoStack();
+    }
 }
 
 void TupMainWindow::addTwitterPage()
@@ -394,11 +394,13 @@ void TupMainWindow::addTwitterPage()
     }
 }
 
+/*
 void TupMainWindow::updateTabContext(int tab)
 {
     if (tab == 0)
         animationTab->updatePerspective();
 }
+*/
 
 /**
  * @if english
@@ -1296,6 +1298,8 @@ void TupMainWindow::updateCurrentTab(int index)
         cameraWidget->setFocus();
     } else {
         if (index == 0) { // Animation mode
+            animationTab->updatePerspective(); // Just for Papagayo UI
+
             if (lastTab == 1)
                 cameraWidget->doStop();
 
@@ -1303,7 +1307,7 @@ void TupMainWindow::updateCurrentTab(int index)
                 scenesView->expandDock(true);
 
             if (contextMode == TupProject::FRAMES_EDITION) {
-                if (exposureView->isExpanded())
+                if (!exposureView->isExpanded())
                     exposureView->expandDock(true);
             } else {
                 exposureView->expandDock(false);
@@ -1311,7 +1315,6 @@ void TupMainWindow::updateCurrentTab(int index)
             }
 
             animationTab->updatePaintArea();
-
             lastTab = 0;
         } else {
             if (index == 3)
@@ -1347,8 +1350,9 @@ void TupMainWindow::callSave()
         saveProject();
 }
 
-void TupMainWindow::expandExposureView(TupProject::Mode contextMode) 
+void TupMainWindow::expandExposureView(TupProject::Mode mode) 
 {
+    contextMode = mode;
     if (contextMode == TupProject::FRAMES_EDITION) {
         exposureView->expandDock(true);
         exposureView->enableButton(true);

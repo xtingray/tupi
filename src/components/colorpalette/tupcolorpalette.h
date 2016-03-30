@@ -80,6 +80,7 @@ class TUPI_EXPORT TupColorPalette : public TupModuleWidgetBase
         void parsePaletteFile(const QString &file);
 
     public slots:
+        void reset();
         void init();
 
     private slots:
