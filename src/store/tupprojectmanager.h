@@ -89,6 +89,7 @@ class TUPI_EXPORT TupProjectManager : public QObject
         void setOpen(bool isOpen);
 
         void updateProjectDimension(const QSize size);
+        bool removeProjectPath(const QString &projectPath);
    
     protected slots:
         virtual void handleProjectRequest(const TupProjectRequest *request);
@@ -103,11 +104,8 @@ class TUPI_EXPORT TupProjectManager : public QObject
     signals:
         void responsed(TupProjectResponse *reponse);
         void requestOpenProject(const QString& filename);
-        // void projectHasChanged(); 
-        //void updateAnimationModule(TupProject *project, int sceneIndex, int layerIndex, int frameIndex);
 
     private:
-        bool cleanProjectPath(QString &projectPath);
         class Private;
         Private *const k;
 };

@@ -63,6 +63,7 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
     public:
         TupTimeLine(TupProject *project, QWidget *parent = 0);
         ~TupTimeLine();
+        void initLayerVisibility();
         void closeAllScenes();
         
     private:

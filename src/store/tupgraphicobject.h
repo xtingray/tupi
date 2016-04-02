@@ -82,6 +82,10 @@ class TUPI_EXPORT TupGraphicObject : public QObject, public TupAbstractSerializa
         void setItemZValue(int value);
         int itemZValue();
 
+        void storeItemTransformation(const QString &properties);
+        QString undoTransformation() const;
+        QString redoTransformation() const;
+
     public:
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc)  const;

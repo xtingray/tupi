@@ -60,10 +60,14 @@ bool TupCommandExecutor::createSymbol(TupLibraryResponse *response)
             return true;
         }
     } else {
-        if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data(), response->parent())) {
-            emit responsed(response);
-            return true;
-        } 
+        if (response->mode() == TupProjectResponse::Do) {
+            if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data(), response->parent())) {
+                emit responsed(response);
+                return true;
+            } 
+        } else {
+            // SQA: Undo/Redo actions must be implemented here 
+        }
     }
 
     return false;

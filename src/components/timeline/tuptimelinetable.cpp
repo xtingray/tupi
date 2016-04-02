@@ -317,12 +317,14 @@ void TupTimeLineTable::exchangeFrame(int currentFrameIndex, int currentLayerInde
 
 void TupTimeLineTable::setLayerVisibility(int layerIndex, bool isVisible)
 {
-    k->layerColumn->setSectionVisibility(layerIndex, isVisible);
+    if (k->layerColumn)
+        k->layerColumn->setSectionVisibility(layerIndex, isVisible);
 }
 
 void TupTimeLineTable::setLayerName(int layerIndex, const QString &name)
 {
-    k->layerColumn->setSectionTitle(layerIndex, name);
+    if (k->layerColumn)
+        k->layerColumn->setSectionTitle(layerIndex, name);
 }
 
 int TupTimeLineTable::currentLayer()

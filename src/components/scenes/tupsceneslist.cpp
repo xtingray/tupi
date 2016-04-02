@@ -185,11 +185,11 @@ void TupScenesList::resetUI()
         #endif
     #endif
 
-    blockSignals(true);
+    // blockSignals(true);
     clearSelection();
     k->scenesCount = 0;
     clear();
-    blockSignals(false);
+    // blockSignals(false);
 }
 
 void TupScenesList::keyPressEvent(QKeyEvent *event)

@@ -355,11 +355,8 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
 
         m_exposureSheet->setScene(0);
-        m_exposureSheet->updateLayerOpacity(0, 0);
-        m_exposureSheet->initLayerVisibility();
 
         connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
-        // connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateTabContext(int)));
         m_projectManager->clearUndoStack();
     }
 }
@@ -577,11 +574,7 @@ void TupMainWindow::resetUI()
     delete animationTab;
     animationTab = 0;
 
-    // Cleaning widgets
-    m_exposureSheet->blockSignals(true);
     m_exposureSheet->closeAllScenes();
-    m_exposureSheet->blockSignals(false);
-
     m_timeLine->closeAllScenes();
     m_scenes->closeAllScenes();
     m_libraryWidget->resetGUI();
@@ -603,6 +596,7 @@ void TupMainWindow::resetUI()
     }
 
     m_projectManager->closeProject();
+    m_projectManager->removeProjectPath(CACHE_DIR + projectName);
 
     resetMousePointer();
 
@@ -720,9 +714,7 @@ void TupMainWindow::openProject()
     if (package.isEmpty() || !package.endsWith(".tup")) 
         return;
 
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor)); 
     openProject(package);
-    QApplication::restoreOverrideCursor();
 }
 
 /**
@@ -751,6 +743,8 @@ void TupMainWindow::openProject(const QString &path)
     m_projectManager->setHandler(new TupLocalProjectManagerHandler, false);
     isNetworked = false;
 
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    m_actionManager->enable("open_project", false);
     if (closeProject()) {
         setUpdatesEnabled(false);
         tabWidget()->setCurrentWidget(animationTab);
@@ -778,11 +772,17 @@ void TupMainWindow::openProject(const QString &path)
 
             setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
             setWorkSpace();
+
+            m_exposureSheet->updateLayerOpacity(0, 0);
+            m_exposureSheet->initLayerVisibility();
+            m_timeLine->initLayerVisibility();
         } else {
             setUpdatesEnabled(true);
             TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
         }
     }
+    m_actionManager->enable("open_project", true);
+    QApplication::restoreOverrideCursor();
 }
 
 void TupMainWindow::updateRecentProjectList()
@@ -1049,21 +1049,26 @@ void TupMainWindow::connectWidgetToPaintArea(QWidget *widget)
 
 void TupMainWindow::saveAs()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupMainWindow::saveAs()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QString home = getenv("HOME");
     home.append("/" + projectName);
-
     isSaveDialogOpen = true;
 
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Project As"), home,
                        tr("Tupi Project Package (*.tup)"));
-
     if (fileName.isEmpty()) {
         isSaveDialogOpen = false;
         return;
     }
 
     isSaveDialogOpen = false;
-
     int indexPath = fileName.lastIndexOf("/");
     int indexFile = fileName.length() - indexPath;
     QString name = fileName.right(indexFile - 1);
@@ -1134,6 +1139,10 @@ void TupMainWindow::saveProject()
             return;
         }
 
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        m_actionManager->enable("save_project", false);
+        m_actionManager->enable("save_project_as", false);
+
         if (m_projectManager->saveProject(m_fileName)) {  
             updateRecentProjectList();
             
@@ -1149,6 +1158,9 @@ void TupMainWindow::saveProject()
         } else {
             TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
         }
+        m_actionManager->enable("save_project", true);
+        m_actionManager->enable("save_project_as", true);
+        QApplication::restoreOverrideCursor();
 
         if (isSaveDialogOpen)
             isSaveDialogOpen = false;
@@ -1187,7 +1199,7 @@ void TupMainWindow::openRecentProject()
  * Este metodo muestra el menu del modulo de Animacion.
  * @endif
 */
-
+// SQA: Check if this method is still used for something
 void TupMainWindow::showAnimationMenu(const QPoint &p)
 {
     QMenu *menu = new QMenu(tr("Animation"), playerTab);
@@ -1361,20 +1373,6 @@ void TupMainWindow::expandExposureView(TupProject::Mode mode)
         exposureView->enableButton(false);
     }
 }
-
-/*
-void TupMainWindow::expandColorView(TColorCell::FillType colorContext, bool buttonIsChecked) 
-{
-    if (buttonIsChecked) {
-        m_colorPalette->setColorContext(colorContext);
-        if (!colorView->isExpanded())
-            colorView->expandDock(true);
-    } else {
-        if (colorView->isExpanded())
-            colorView->expandDock(false); 
-    }
-}
-*/
 
 void TupMainWindow::requestProject()
 {

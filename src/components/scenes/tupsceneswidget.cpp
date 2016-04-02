@@ -214,7 +214,9 @@ void TupScenesWidget::closeAllScenes()
         #endif
     #endif
 
+    blockSignals(true);
     k->scenesTable->resetUI();
+    blockSignals(false);
 }
 
 void TupScenesWidget::sceneResponse(TupSceneResponse *e)

@@ -76,6 +76,21 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
     TupProject::Mode mode = response->spaceMode();
     QString xml = response->arg().toString();
 
+    /*
+    if (xml.isEmpty()) {
+        #ifdef K_DEBUG
+            QString msg = "TupCommandExecutor::createItem() - Fatal Error: xml content is empty!";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
+
+        return false;
+    }
+    */
+
     TupScene *scene = m_project->sceneAt(sceneIndex);
     if (scene) {
         if (mode == TupProject::FRAMES_EDITION) {
@@ -84,37 +99,46 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                 TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
-                        TupSvgItem *svg = frame->createSvgItem(point, xml);
-                        if (svg) {
-                            response->setItemIndex(frame->svgItemsCount()-1);
-                        } else {                            
-                            #ifdef K_DEBUG
-                                QString msg = "TupCommandExecutor::createItem() - Error: Svg object is invalid!";
-                                #ifdef Q_OS_WIN
-                                    qDebug() << msg;
-                                #else
-                                    tError() << msg;
-                                #endif
-                            #endif                            
-                            return false;
+                        if (response->mode() == TupProjectResponse::Do) {
+                            TupSvgItem *svg = frame->createSvgItem(point, xml);
+                            if (svg) {
+                                response->setItemIndex(frame->svgItemsCount()-1);
+                            } else {                            
+                                #ifdef K_DEBUG
+                                    QString msg = "TupCommandExecutor::createItem() - Error: Svg object is invalid!";
+                                    #ifdef Q_OS_WIN
+                                        qDebug() << msg;
+                                    #else
+                                        tError() << msg;
+                                    #endif
+                                #endif                            
+                                return false;
+                            }
+                        } else {
+                            frame->restoreSvg();
                         }
                     } else {
-                        QGraphicsItem *item = frame->createItem(point, xml);
-                        if (item) {
-                            response->setItemIndex(frame->graphicItemsCount()-1);
+                        if (response->mode() == TupProjectResponse::Do) {
+                            QGraphicsItem *item = frame->createItem(point, xml);
+                            if (item) {
+                                response->setItemIndex(frame->graphicItemsCount()-1);
+                            } else {
+                                #ifdef K_DEBUG
+                                    QString msg = "TupCommandExecutor::createItem() - Error: QGraphicsItem object is invalid!";
+                                    #ifdef Q_OS_WIN
+                                        qDebug() << msg;
+                                    #else
+                                        tError() << msg;
+                                    #endif
+                                #endif    
+                                return false;
+                            }
                         } else {
-                            #ifdef K_DEBUG
-                                QString msg = "TupCommandExecutor::createItem() - Error: QGraphicsItem object is invalid!";
-                                #ifdef Q_OS_WIN
-                                    qDebug() << msg;
-                                #else
-                                    tError() << msg;
-                                #endif
-                            #endif    
-                            return false;
+                            frame->restoreGraphic();
                         }
                     }
 
+                    frame->updateRenderStatus(true);
                     response->setFrameState(frame->isEmpty());
                     emit responsed(response);
                 } else {
@@ -161,34 +185,42 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
 
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
-                        TupSvgItem *svg = frame->createSvgItem(point, xml);
-                        if (svg) {
-                            response->setItemIndex(frame->indexOf(svg));
+                        if (response->mode() == TupProjectResponse::Do) {
+                            TupSvgItem *svg = frame->createSvgItem(point, xml);
+                            if (svg) {
+                                response->setItemIndex(frame->indexOf(svg));
+                            } else {
+                                #ifdef K_DEBUG
+                                    QString msg = "TupCommandExecutor::createItem() - Error: Svg object is invalid!";
+                                    #ifdef Q_OS_WIN
+                                        qDebug() << msg;
+                                    #else
+                                        tError() << msg;
+                                    #endif
+                                #endif    
+                                return false;
+                            }
                         } else {
-                            #ifdef K_DEBUG
-                                QString msg = "TupCommandExecutor::createItem() - Error: Svg object is invalid!";
-                                #ifdef Q_OS_WIN
-                                    qDebug() << msg;
-                                #else
-                                    tError() << msg;
-                                #endif
-                            #endif    
-                            return false;
+                            frame->restoreSvg();
                         }
-                    } else {
-                        QGraphicsItem *item = frame->createItem(point, xml);
-                        if (item) {
-                            response->setItemIndex(frame->indexOf(item));
+                    } else { 
+                        if (response->mode() == TupProjectResponse::Do) {
+                            QGraphicsItem *item = frame->createItem(point, xml);
+                            if (item) {
+                                response->setItemIndex(frame->indexOf(item));
+                            } else {
+                                #ifdef K_DEBUG
+                                    QString msg = "TupCommandExecutor::createItem() - Error: QGraphicsItem object is invalid!";
+                                    #ifdef Q_OS_WIN
+                                        qDebug() << msg;
+                                    #else
+                                        tError() << msg;
+                                    #endif
+                                #endif    
+                                return false;
+                            }
                         } else {
-                            #ifdef K_DEBUG
-                                QString msg = "TupCommandExecutor::createItem() - Error: QGraphicsItem object is invalid!";
-                                #ifdef Q_OS_WIN
-                                    qDebug() << msg;
-                                #else
-                                    tError() << msg;
-                                #endif
-                            #endif    
-                            return false;
+                            frame->restoreGraphic();
                         }
                     }
 
@@ -265,18 +297,21 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
 
                 if (frame) {
                     if (type == TupLibraryObject::Svg) {
-                        frame->removeSvgAt(response->itemIndex());
+                        frame->removeSvg(response->itemIndex());
 
+                        frame->updateRenderStatus(true);
                         response->setFrameState(frame->isEmpty());
                         emit responsed(response);
                         return true;
                     } else {
                         TupGraphicObject *object = frame->graphicAt(response->itemIndex());
                         if (object) {
-                            frame->removeGraphicAt(response->itemIndex());
-                            if (object->hasTween()) 
-                                scene->removeTweenObject(layerIndex, object);
+                            frame->removeGraphic(response->itemIndex());
 
+                            // if (object->hasTween()) 
+                            //     scene->removeTweenObject(layerIndex, object);
+
+                            frame->updateRenderStatus(true);
                             response->setFrameState(frame->isEmpty());
                             emit responsed(response);
                             return true;
@@ -292,6 +327,16 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                             return false;
                         }
                     }
+                } else {
+                    #ifdef K_DEBUG
+                        QString msg = "TupCommandExecutor::removeItem() - Error: Invalid frame index (value: " + QString::number(frameIndex) + ")";
+                        #ifdef Q_OS_WIN
+                            qDebug() << msg;
+                        #else
+                            tError() << msg;
+                        #endif
+                    #endif
+                    return false;
                 }
             }
         } else {
@@ -316,9 +361,9 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
 
                 if (frame) {
                     if (type == TupLibraryObject::Svg) 
-                        frame->removeSvgAt(response->itemIndex());
+                        frame->removeSvg(response->itemIndex());
                     else
-                        frame->removeGraphicAt(response->itemIndex());
+                        frame->removeGraphic(response->itemIndex());
 
                     if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
                         bg->updateStaticRenderStatus(true);
@@ -400,6 +445,7 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
                 TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     if (frame->moveItem(type, objectIndex, action)) {
+                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     }
@@ -927,6 +973,7 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                             TupSerializer::loadProperties(item, doc.documentElement());
                         }
 
+                        frame->updateRenderStatus(true);
                         response->setArg(xml);
                         emit responsed(response);
                     
@@ -1044,6 +1091,8 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
     return false;
 }
 
+// Nodes Edition
+
 bool TupCommandExecutor::setPathItem(TupItemResponse *response)
 {
     /*
@@ -1091,15 +1140,17 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                             doc.setContent(xml);
                             TupItemFactory factory;
                             factory.loadItem(item, xml);
-                            emit responsed(response);
+
+                            frame->updateRenderStatus(true);
+
                             response->setArg(current);
+                            emit responsed(response);
 
                             return true;
                        }
                     }
                 }
             }
-
         } else {
             TupBackground *bg = scene->background();
             if (bg) {
@@ -1134,8 +1185,15 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                             doc.setContent(xml);
                             TupItemFactory factory;
                             factory.loadItem(item, xml);
+
+                            if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+                                bg->updateStaticRenderStatus(true);
+                            } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
+                                bg->updateDynamicRenderStatus(true);
+                            }
+       
+                            response->setArg(current);  
                             emit responsed(response);
-                            response->setArg(current);
 
                             return true;
                         }
@@ -1242,6 +1300,7 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
                     }
                 }
 
+                frame->updateRenderStatus(true);
                 emit responsed(response);
                 return true;
             }

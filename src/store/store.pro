@@ -66,7 +66,7 @@ HEADERS += tuplayer.h \
            tuptweenerstep.h \
            tupsoundlayer.h \
            tupsvgitem.h \
-           tupbackgroundscene.h \
+           tupframescene.h \
            tupbackground.h \
            tupstoryboard.h \
            tuplipsync.h
@@ -114,7 +114,7 @@ SOURCES += tuplayer.cpp \
            tuptweenerstep.cpp \
            tupsoundlayer.cpp \
            tupsvgitem.cpp \
-           tupbackgroundscene.cpp \
+           tupframescene.cpp \
            tupbackground.cpp \
            tupstoryboard.cpp \
            tuplipsync.cpp

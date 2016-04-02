@@ -161,8 +161,10 @@ void TupTimeLineHeader::insertSection(int index, const QString &name)
 
 void TupTimeLineHeader::setSectionVisibility(int index, bool visibility)
 {
-    k->layers[index].isVisible = visibility;
-    updateSection(index);
+    if (index >= 0 && index < k->layers.count()) {
+        k->layers[index].isVisible = visibility;
+        updateSection(index);
+    }
 }
 
 void TupTimeLineHeader::setSectionTitle(int index, const QString &name)

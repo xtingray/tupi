@@ -33,85 +33,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupbackgroundscene.h"
+#ifndef TUPFRAMESCENE_H
+#define TUPFRAMESCENE_H
 
-struct TupBackgroundScene::Private
+#include "tglobal.h"
+#include "tupframe.h"
+#include "tupgraphicobject.h"
+#include "tupsvgitem.h"
+
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QPainter>
+
+class TUPI_EXPORT TupFrameScene : public QGraphicsScene
 {
-    TupFrame *bg;
+    Q_OBJECT
+
+    public:
+        TupFrameScene(const QSize dimension, const QColor color, TupFrame *background);
+        ~TupFrameScene();
+        void renderView(QPainter *painter);
+
+    private:
+        void drawScene();
+        void cleanWorkSpace();
+        void addFrame(TupFrame *frame);
+        void addGraphicObject(TupGraphicObject *object);
+        void addSvgObject(TupSvgItem *svgItem);
+
+        struct Private;
+        Private *const k;
 };
 
-TupBackgroundScene::TupBackgroundScene(const QSize dimension, const QColor color, TupFrame *background) : QGraphicsScene(), k(new Private)
-{
-    setSceneRect(QRectF(QPointF(0,0), dimension));
-    setBackgroundBrush(color);
-    k->bg = background;
-    drawScene();
-}
-
-TupBackgroundScene::~TupBackgroundScene()
-{
-    clearFocus();
-    clearSelection();
-
-    foreach (QGraphicsView *view, this->views())
-             view->setScene(0);
-
-    foreach (QGraphicsItem *item, items())
-             removeItem(item);
-
-    // delete k;
-}
-
-void TupBackgroundScene::drawScene()
-{
-    cleanWorkSpace();
-    addFrame(k->bg);
-    update();
-}
-
-void TupBackgroundScene::renderView(QPainter *painter)
-{
-    render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()),
-           sceneRect().toRect(), Qt::IgnoreAspectRatio);
-}
-
-void TupBackgroundScene::cleanWorkSpace()
-{
-    foreach (QGraphicsItem *item, items()) {
-             if (item->scene() == this)
-                 removeItem(item);
-    }
-}
-
-void TupBackgroundScene::addFrame(TupFrame *frame)
-{
-    if (frame) {
-        for (int i = 0; i < frame->graphicItemsCount(); i++) {
-             TupGraphicObject *object = frame->graphicAt(i);
-             addGraphicObject(object);
-        }
-
-        for (int i = 0; i < frame->svgItemsCount(); i++) {
-             TupSvgItem *object = frame->svgAt(i);
-             addSvgObject(object);
-        }
-    }
-}
-
-void TupBackgroundScene::addGraphicObject(TupGraphicObject *object)
-{
-    if (object) {
-        QGraphicsItem *item = object->item();
-        item->setSelected(false);
-        addItem(item);
-    }
-}
-
-void TupBackgroundScene::addSvgObject(TupSvgItem *svgItem)
-{
-    if (svgItem) {
-        svgItem->setSelected(false);
-        addItem(svgItem);
-    }
-}
-
+#endif

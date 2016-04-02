@@ -113,6 +113,7 @@ class TUPI_PLUGIN SelectionTool : public TupToolPlugin
         void removeTarget();
         TupFrame* currentFrame();
         TupFrame* frameAt(int sceneIndex, int layerIndex, int frameIndex);
+        void requestTransformation(QGraphicsItem *item, TupFrame *frame);
 
         struct Private;
         Private *const k;

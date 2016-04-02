@@ -35,7 +35,7 @@
 
 #include "tupbackground.h"
 #include "tupserializer.h"
-#include "tupbackgroundscene.h"
+#include "tupframescene.h"
 
 #include <cmath>
 
@@ -123,9 +123,16 @@ void TupBackground::fromXml(const QString &xml)
 
 QDomElement TupBackground::toXml(QDomDocument &doc) const
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupBackground::toXml()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QDomElement root = doc.createElement("background");
     doc.appendChild(root);
-
     root.appendChild(dynamicBg->toXml(doc));
     root.appendChild(staticBg->toXml(doc));
 
@@ -182,7 +189,7 @@ void TupBackground::renderStaticView()
         #endif
     #endif
 
-    TupBackgroundScene bgScene(dimension, Qt::transparent, staticBg);
+    TupFrameScene bgScene(dimension, Qt::transparent, staticBg);
     QImage image(dimension, QImage::Format_ARGB32);
     image.fill(Qt::transparent);
     {
@@ -191,15 +198,7 @@ void TupBackground::renderStaticView()
         bgScene.renderView(&painter);
     }
 
-    int width = dimension.width();
-    int height = dimension.height();
-
-    QImage background(width, height, QImage::Format_ARGB32);
-    background.fill(Qt::transparent);
-    QPainter canvas(&background);
-    canvas.drawImage(0, 0, image);
-    staticBgRaster = background;
-
+    staticBgRaster = image;
     noStaticRender = false;
 }
 
@@ -213,7 +212,7 @@ void TupBackground::renderDynamicView()
         #endif
     #endif 
 	
-    TupBackgroundScene bgScene(dimension, bgColor, dynamicBg);
+    TupFrameScene bgScene(dimension, bgColor, dynamicBg);
     QImage image(dimension, QImage::Format_ARGB32);
     {
         QPainter painter(&image);
@@ -234,7 +233,7 @@ void TupBackground::renderDynamicView()
     noDynamicRender = false;
 }
 
-QPixmap TupBackground::dynamicView(int frameIndex)
+QGraphicsPixmapItem * TupBackground::dynamicView(int frameIndex)
 {
     int posX = 0;
     int posY = 0;
@@ -291,7 +290,9 @@ QPixmap TupBackground::dynamicView(int frameIndex)
     QImage view = dynamicBgRaster.copy(posX, posY, dimension.width(), dimension.height()); 
     QPixmap pixmap = QPixmap::fromImage(view); 
 
-    return pixmap;
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
+
+    return item;
 }
 
 bool TupBackground::dynamicRenderIsPending()
@@ -319,10 +320,12 @@ QImage TupBackground::dynamicRaster()
     return dynamicBgRaster;
 }
 
-QPixmap TupBackground::staticRaster()
+QGraphicsPixmapItem * TupBackground::staticRaster()
 {
     QPixmap pixmap = QPixmap::fromImage(staticBgRaster);
-    return pixmap;
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
+
+    return item;
 }
 
 void TupBackground::setDynamicDirection(int direction)

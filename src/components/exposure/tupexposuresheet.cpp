@@ -640,10 +640,10 @@ void TupExposureSheet::closeAllScenes()
         #endif
     #endif
 
-    k->scenesContainer->blockSignals(true);
+    blockSignals(true);
     k->currentTable = 0;
     k->scenesContainer->removeAllTabs();
-    k->scenesContainer->blockSignals(false);
+    blockSignals(false);
 }
 
 void TupExposureSheet::sceneResponse(TupSceneResponse *response)
@@ -1276,6 +1276,14 @@ double TupExposureSheet::getLayerOpacity(int sceneIndex, int layerIndex)
 
 void TupExposureSheet::initLayerVisibility()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "TupExposureSheet::initLayerVisibility()";
+        #else
+            T_FUNCINFO << "TupExposureSheet::initLayerVisibility()";
+        #endif
+    #endif
+
     int scenes = k->project->scenesCount(); 
     for (int sceneIndex=0; sceneIndex < scenes; sceneIndex++) {
          TupScene *scene = k->project->sceneAt(sceneIndex);
@@ -1283,8 +1291,7 @@ void TupExposureSheet::initLayerVisibility()
              int layers = scene->layersCount();
              for (int layerIndex=0; layerIndex < layers; layerIndex++) {
                   TupLayer *layer = scene->layerAt(layerIndex);
-                  TupProjectRequest request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::View, layer->isVisible());
-                  emit localRequestTriggered(&request);
+                  k->scenesContainer->getTable(sceneIndex)->setLayerVisibility(layerIndex, layer->isVisible());
              }
          }
     }

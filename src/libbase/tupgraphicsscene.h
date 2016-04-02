@@ -91,7 +91,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void setNextOnionSkinCount(int n);
         void setPreviousOnionSkinCount(int n);
         
-        void setLayerVisible(int layerIndex, bool visible);
+        void updateLayerVisibility(int layerIndex, bool visible);
         
         TupScene *scene() const;
         
@@ -139,23 +139,14 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void addBackgroundFrame(TupFrame *frame);
         void addBackgroundGraphicObject(TupGraphicObject *object, double opacity);
         void addBackgroundSvgObject(TupSvgItem *svgItem, double opacity); 
-        // void addBackgroundSvgItem(TupSvgItem *svgItem, double opacity);
-        // void paintOnionColorOnBackgroundSVG(TupSvgItem *svgItem, const QColor &color, double opacity);
 
-        void addFrame(TupFrame *frame, double opacity = 1.0, Context mode = Current);
-        void addGraphicObject(TupGraphicObject *object, double opacity = 1.0, bool tweenInAdvance = false);
-        void processNativeObject(TupGraphicObject *object, double opacity, Context mode);
-        void processSVGObject(TupSvgItem *svg, double opacity, Context mode);
-        void addSvgObject(TupSvgItem *svgItem, double opacity = 1.0, bool tweenInAdvance = false);
+        void addFrame(TupFrame *frame);
+        void addGraphicObject(TupGraphicObject *object, bool tweenInAdvance = false);
+        void addSvgObject(TupSvgItem *svgItem, bool tweenInAdvance = false);
 
         void addTweeningObjects(int indexLayer, int photogram);
         void addSvgTweeningObjects(int indexLayer, int photogram);
         void addLipSyncObjects(TupLayer *layer, int photogram, int zLevel);
-        QGraphicsItem * cloneGraphicItem(QGraphicsItem *original);
-        void paintOnionScheme(QGraphicsItem *item, const QColor &color);
-        QGraphicsItem * paintOnionColorOnImage(TupGraphicLibraryItem *image, const QColor &color);
-        void paintOnionColorOnSVG(TupSvgItem *svgItem, const QColor &color, double opacity, bool tweenInAdvance);
-        void addSvgItem(TupSvgItem *svgItem, double opacity, bool tweenInAdvance);
 
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

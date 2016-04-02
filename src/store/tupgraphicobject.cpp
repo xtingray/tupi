@@ -47,6 +47,8 @@ struct TupGraphicObject::Private
     TupItemTweener *tween;
     TupFrame *frame;
     QPointF lastTweenPos;
+    QStringList doList;
+    QStringList undoList;
 };
 
 TupGraphicObject::TupGraphicObject(QGraphicsItem *item, TupFrame *parent) : QObject(parent), k(new Private)
@@ -230,4 +232,34 @@ void TupGraphicObject::setItemZValue(int value)
 int TupGraphicObject::itemZValue()
 {
     return k->item->zValue();
+}
+
+void TupGraphicObject::storeItemTransformation(const QString &properties)
+{
+    k->doList << properties;
+}
+
+QString TupGraphicObject::undoTransformation() const
+{
+    QString properties = "RESET"; 
+
+    if (!k->doList.isEmpty()) {
+        k->undoList << k-> doList.takeLast();
+        if (!k->doList.isEmpty())
+            properties = k->doList.last();
+    }
+
+    return properties;
+}
+
+QString TupGraphicObject::redoTransformation() const
+{
+    QString properties = "";
+
+    if (!k->undoList.isEmpty()) {
+        properties = k->undoList.takeLast();
+        k->doList << properties;
+    }
+
+    return properties;
 }

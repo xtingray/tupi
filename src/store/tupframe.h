@@ -57,8 +57,6 @@ class TupScene;
 
 typedef QList<TupGraphicObject *> GraphicObjects;
 typedef QList<TupSvgItem *> SvgObjects;
-typedef QList<QStringList> UndoList;
-typedef QList<QStringList> RedoList;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -109,9 +107,14 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
 
        void replaceItem(int position, QGraphicsItem *item);
        bool moveItem(TupLibraryObject::Type type, int currentPosition, int action);
-       
+      
+       bool removeGraphic(int position);
        bool removeGraphicAt(int position);
+       void restoreGraphic();
+
+       bool removeSvg(int position);
        bool removeSvgAt(int position);
+       void restoreSvg();
 
        QGraphicsItem *createItem(QPointF coords, const QString &xml, bool loaded = false);
        TupSvgItem *createSvgItem(QPointF coords, const QString &xml, bool loaded = false);
@@ -157,13 +160,21 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties);
        QString undoTransformation(TupLibraryObject::Type itemType, int index) const;
        QString redoTransformation(TupLibraryObject::Type itemType, int index) const;
+
+       void renderView();
+       bool renderIsPending();
+       void updateRenderStatus(bool flag);
+       QGraphicsPixmapItem * framePixmap();
        
     public:
        virtual void fromXml(const QString &xml);
        virtual QDomElement toXml(QDomDocument &doc) const;
        
     private:
-       void insertItem(int position, QGraphicsItem *item);
+       void insertItem(int position, QGraphicsItem *item, const QString &label);
+       void insertObject(int position, TupGraphicObject *object, const QString &label);
+       void insertSvg(int position, TupSvgItem *item, const QString &label);
+
        struct Private;
        Private *const k;
 };

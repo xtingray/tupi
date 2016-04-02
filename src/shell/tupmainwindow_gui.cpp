@@ -180,8 +180,8 @@ void TupMainWindow::setupMenu()
 
     // Menu File	
     m_fileMenu = menuBar()->addMenu(tr("&File"));
-    m_fileMenu->addAction(m_actionManager->find("newproject"));
-    m_fileMenu->addAction(m_actionManager->find("openproject"));
+    m_fileMenu->addAction(m_actionManager->find("new_project"));
+    m_fileMenu->addAction(m_actionManager->find("open_project"));
 
     // SQA: This code has been disabled temporary
     // m_fileMenu->addAction(m_actionManager->find("opennetproject"));
@@ -199,10 +199,10 @@ void TupMainWindow::setupMenu()
     m_fileMenu->addMenu(m_recentProjectsMenu);
 
     // Adding Options save, save as, close, export, import palettes and exit	
-    m_fileMenu->addAction(m_actionManager->find("saveproject"));
+    m_fileMenu->addAction(m_actionManager->find("save_project"));
 
-    m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
-    m_fileMenu->addAction(m_actionManager->find("closeproject"));
+    m_fileMenu->addAction(m_actionManager->find("save_project_as"));
+    m_fileMenu->addAction(m_actionManager->find("close_project"));
 
     m_fileMenu->addSeparator();
     m_fileMenu->addAction(m_actionManager->find("export"));
@@ -304,9 +304,9 @@ void TupMainWindow::setupMenu()
 
 void TupMainWindow::setMenuItemsContext(bool flag)
 {
-    m_actionManager->enable("saveproject", flag);
-    m_actionManager->enable("saveprojectas", flag);
-    m_actionManager->enable("closeproject", flag);
+    m_actionManager->enable("save_project", flag);
+    m_actionManager->enable("save_project_as", flag);
+    m_actionManager->enable("close_project", flag);
     m_actionManager->enable("hideaction", flag);
     m_actionManager->enable("export", flag);
     m_actionManager->enable("importBitmap", flag);
@@ -331,11 +331,11 @@ void TupMainWindow::setupFileActions()
     TAction *newProject = new TAction(QPixmap(THEME_DIR + "icons/new.png"), tr("New project"), QKeySequence(tr("Ctrl+N")),
 				      this, SLOT(newProject()), m_actionManager);
     newProject->setStatusTip(tr("Open new project"));
-    m_actionManager->insert(newProject, "newproject", "file");
+    m_actionManager->insert(newProject, "new_project", "file");
 
     TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open project"), QKeySequence(tr("Ctrl+O")), 
 				    this, SLOT(openProject()), m_actionManager);
-    m_actionManager->insert(openFile, "openproject", "file");
+    m_actionManager->insert(openFile, "open_project", "file");
     openFile->setStatusTip(tr("Load existent project"));
 
     // SQA: This code has been disabled temporary
@@ -351,18 +351,18 @@ void TupMainWindow::setupFileActions()
 
     TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
 				QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
-    m_actionManager->insert(save, "saveproject", "file");
+    m_actionManager->insert(save, "save_project", "file");
     save->setStatusTip(tr("Save current project in current location"));
 
     TAction *saveAs = new TAction(QPixmap(THEME_DIR + "icons/save_as.png"), tr("Save project as..."),
 				  QKeySequence(tr("Ctrl+Shift+S")), this, SLOT(saveAs()), m_actionManager);
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
-    m_actionManager->insert(saveAs, "saveprojectas", "file");
+    m_actionManager->insert(saveAs, "save_project_as", "file");
 
     TAction *close = new TAction(QPixmap(THEME_DIR + "icons/close.png"), tr("Cl&ose project"), QKeySequence(tr("Ctrl+W")),
 				 this, SLOT(closeProject()), m_actionManager);
     close->setStatusTip(tr("Close active project"));
-    m_actionManager->insert(close, "closeproject", "file");
+    m_actionManager->insert(close, "close_project", "file");
 
     // Import Palette action
 
@@ -443,15 +443,15 @@ void TupMainWindow::setupToolBar()
     mainToolBar->setIconSize(QSize(22, 22));
     addToolBar(Qt::TopToolBarArea, mainToolBar);
 
-    mainToolBar->addAction(m_actionManager->find("newproject"));
-    mainToolBar->addAction(m_actionManager->find("openproject"));
+    mainToolBar->addAction(m_actionManager->find("new_project"));
+    mainToolBar->addAction(m_actionManager->find("open_project"));
 
     // SQA: This code has been disabled temporary
     // mainToolBar->addAction(m_actionManager->find("opennetproject"));
 
-    mainToolBar->addAction(m_actionManager->find("saveproject"));
-    mainToolBar->addAction(m_actionManager->find("saveprojectas"));
-    mainToolBar->addAction(m_actionManager->find("closeproject"));
+    mainToolBar->addAction(m_actionManager->find("save_project"));
+    mainToolBar->addAction(m_actionManager->find("save_project_as"));
+    mainToolBar->addAction(m_actionManager->find("close_project"));
 }
 
 /**

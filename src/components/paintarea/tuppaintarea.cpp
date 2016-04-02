@@ -444,7 +444,7 @@ void TupPaintArea::layerResponse(TupLayerResponse *response)
 
             case TupProjectRequest::TupProjectRequest::View:
                 {
-                    guiScene->setLayerVisible(response->layerIndex(), response->arg().toBool());
+                    guiScene->updateLayerVisibility(response->layerIndex(), response->arg().toBool());
                     if (k->spaceMode == TupProject::FRAMES_EDITION) {
                         guiScene->drawCurrentPhotogram();
                     } else {
@@ -738,136 +738,50 @@ void TupPaintArea::deleteItems()
                      if (counter == total-1) 
                          k->deleteMode = false;
 
-                     TupLibraryObject::Type type;
-
+                     TupLibraryObject::Type type = TupLibraryObject::Svg;
                      TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
                      int itemIndex = -1;
+                     int frameIndex = -1;
+                     int layerIndex = -1;
 
-                     if (svg) {
-                         type = TupLibraryObject::Svg;
-                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                     if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                         frameIndex = currentScene->currentFrameIndex();
+                         layerIndex = currentScene->currentLayerIndex();
+                         if (svg) {
                              itemIndex = currentScene->currentFrame()->indexOf(svg);
-                         } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
-                                    TupBackground *bg = currentScene->scene()->background();
-                                    if (bg) {
-                                        TupFrame *frame = bg->staticFrame();
-                                        if (frame) {
-                                            itemIndex = frame->indexOf(svg);
-                                        } else {
-                                            #ifdef K_DEBUG
-                                                QString msg = "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
-                                                #ifdef Q_OS_WIN
-                                                    qDebug() << msg;
-                                                #else
-                                                    tError() << msg;
-                                                #endif
-                                            #endif
-                                        }
-                                    } else {
-                                        #ifdef K_DEBUG
-                                            QString msg = "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
-                                            #ifdef Q_OS_WIN
-                                                qDebug() << msg;
-                                            #else
-                                                tError() << msg;
-                                            #endif
-                                        #endif
-                                    }
-                         } else if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                                    TupBackground *bg = currentScene->scene()->background();
-                                    if (bg) {
-                                        TupFrame *frame = bg->dynamicFrame();
-                                        if (frame) {
-                                            itemIndex = frame->indexOf(svg);
-                                        } else {
-                                            #ifdef K_DEBUG
-                                                QString msg = "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
-                                                #ifdef Q_OS_WIN
-                                                    qDebug() << msg;
-                                                #else
-                                                    tError() << msg;
-                                                #endif
-                                            #endif
-                                        }
-                                    } else {
-                                        #ifdef K_DEBUG
-                                            QString msg = "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
-                                            #ifdef Q_OS_WIN
-                                                qDebug() << msg;
-                                            #else
-                                                tError() << msg;
-                                            #endif
-                                        #endif
-                                    }
                          } else {
-                             #ifdef K_DEBUG
-                                 QString msg = "TupPaintArea::deleteItems() - Fatal Error: invalid spaceMode!";
-                                 #ifdef Q_OS_WIN
-                                     qDebug() << msg;
-                                 #else
-                                     tError() << msg;
-                                 #endif
-                             #endif
+                             type = TupLibraryObject::Item;
+                             itemIndex = currentScene->currentFrame()->indexOf(item);
                          }
                      } else {
-                         type = TupLibraryObject::Item;
-                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                             itemIndex = currentScene->currentFrame()->indexOf(item);
-                         } else if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION) {
-                                    TupBackground *bg = currentScene->scene()->background();
-                                    if (bg) {
-                                        TupFrame *frame = bg->staticFrame();
-                                        if (frame) {
-                                            itemIndex = frame->indexOf(item);
-                                        } else {
-                                            #ifdef K_DEBUG
-                                                QString msg = "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
-                                                #ifdef Q_OS_WIN
-                                                    qDebug() << msg;
-                                                #else
-                                                    tError() << msg;
-                                                #endif
-                                            #endif
-                                        }
-                                    } else {
-                                        #ifdef K_DEBUG
-                                            QString msg = "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
-                                            #ifdef Q_OS_WIN
-                                                qDebug() << msg;
-                                            #else
-                                                tError() << msg;
-                                            #endif
-                                        #endif
-                                    }
-                         } else if (k->spaceMode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                                    TupBackground *bg = currentScene->scene()->background();
-                                    if (bg) {
-                                        TupFrame *frame = bg->dynamicFrame();
-                                        if (frame) {
-                                            itemIndex = frame->indexOf(item);
-                                        } else {
-                                            #ifdef K_DEBUG
-                                                QString msg = "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
-                                                #ifdef Q_OS_WIN
-                                                    qDebug() << msg;
-                                                #else
-                                                    tError() << msg;
-                                                #endif
-                                            #endif
-                                        }
-                                    } else {
-                                        #ifdef K_DEBUG
-                                            QString msg = "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
-                                            #ifdef Q_OS_WIN
-                                                qDebug() << msg;
-                                            #else
-                                                tError() << msg;
-                                            #endif
-                                        #endif
-                                    }
+                         TupBackground *bg = currentScene->scene()->background();
+                         if (bg) {
+                             TupFrame *frame;
+                             if (k->spaceMode == TupProject::STATIC_BACKGROUND_EDITION)
+                                 frame = bg->staticFrame();
+                             else
+                                 frame = bg->dynamicFrame();
+
+                             if (frame) {
+                                 if (svg) {
+                                     itemIndex = frame->indexOf(svg);
+                                 } else {
+                                     type = TupLibraryObject::Item;
+                                     itemIndex = frame->indexOf(item);
+                                 }
+                             } else {
+                                 #ifdef K_DEBUG
+                                     QString msg = "TupPaintArea::deleteItems() - Fatal Error: Background frame is NULL!";
+                                     #ifdef Q_OS_WIN
+                                         qDebug() << msg;
+                                     #else
+                                         tError() << msg;
+                                     #endif
+                                 #endif
+                             } 
                          } else {
                              #ifdef K_DEBUG
-                                 QString msg = "TupPaintArea::deleteItems() - Fatal Error: invalid spaceMode!";
+                                 QString msg = "TupPaintArea::deleteItems() - Fatal Error: Scene has no background element!";
                                  #ifdef Q_OS_WIN
                                      qDebug() << msg;
                                  #else
@@ -879,8 +793,7 @@ void TupPaintArea::deleteItems()
 
                      if (itemIndex >= 0) {
                          TupProjectRequest event = TupRequestBuilder::createItemRequest( 
-                                                   currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
-                                                   currentScene->currentFrameIndex(), 
+                                                   currentScene->currentSceneIndex(), layerIndex, frameIndex, 
                                                    itemIndex, QPointF(), k->spaceMode, type,
                                                    TupProjectRequest::Remove);
                          emit requestTriggered(&event);

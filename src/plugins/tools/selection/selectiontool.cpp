@@ -67,6 +67,9 @@ struct SelectionTool::Private
     QGraphicsLineItem *target2;
     bool targetIsIncluded;
     QString key;
+
+    int currentLayer;
+    int currentFrame;
 };
 
 SelectionTool::SelectionTool(): k(new Private), panel(0)
@@ -88,14 +91,14 @@ void SelectionTool::init(TupGraphicsScene *scene)
             T_FUNCINFOX("tools");
         #endif
     #endif
- 
-    qDeleteAll(k->nodeManagers);
-    k->nodeManagers.clear();
 
+    k->targetIsIncluded = false; 
+    // qDeleteAll(k->nodeManagers);
+    k->nodeManagers.clear();
     k->scene = scene;
     k->scene->clearSelection();
     k->nodeZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
-    removeTarget();
+    // removeTarget();
     initItems(scene);
 }
 
@@ -113,12 +116,13 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
              view->setDragMode(QGraphicsView::RubberBandDrag);
 
     panel->enablePositionControls(false);
-    removeTarget();
+    // removeTarget();
 }
 
 void SelectionTool::removeTarget()
 {
     if (k->targetIsIncluded) {
+        tError() << "SelectionTool::removeTarget() - Tracing target...";
         k->scene->removeItem(k->center);
         k->scene->removeItem(k->target1);
         k->scene->removeItem(k->target2);
@@ -207,8 +211,8 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    int position = -1;
-    TupLibraryObject::Type type;
+    // int position = -1;
+    // TupLibraryObject::Type type;
 
     k->selectedObjects = scene->selectedItems();
 
@@ -244,52 +248,10 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
                  }
         }
 
+        TupFrame *frame = currentFrame();
         foreach (NodeManager *node, k->nodeManagers) {
-                 if (node->isModified()) {
-                     QGraphicsItem *item = node->parentItem();
-                     QDomDocument doc;
-                     doc.appendChild(TupSerializer::properties(item, doc));
-                     TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
-
-                     if (svg) {
-                         type = TupLibraryObject::Svg;
-                         position = currentFrame()->indexOf(svg);
-                     } else {
-                         if (TupGraphicLibraryItem *libraryItem = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
-                             if (libraryItem->itemType() == TupLibraryObject::Image)
-                                 type = TupLibraryObject::Image;
-                             else
-                                 type = TupLibraryObject::Item;
-                         } else {
-                             type = TupLibraryObject::Item;
-                         }
-                         position = currentFrame()->indexOf(node->parentItem());
-                     }
-
-                     // * SQA: What is the goal of this piece of code? It must be recovered because it is required by net architecture!
-                     if (position >= 0) {
-                         // Restore matrix
-                         // node->restoreItem();
-
-                         TupProjectRequest event = TupRequestBuilder::createItemRequest( 
-                                    scene->currentSceneIndex(), 
-                                    scene->currentLayerIndex(), 
-                                    scene->currentFrameIndex(), position, QPointF(), 
-                                    scene->spaceContext(), type,
-                                    TupProjectRequest::Transform, doc.toString());
-
-                         emit requested(&event);
-                     } else {
-                         #ifdef K_DEBUG
-                             QString msg = "SelectionTool::release() - Fatal Error: Invalid item position !!! [ " + QString::number(position) + " ]";
-                             #ifdef Q_OS_WIN
-                                 qDebug() << msg;
-                             #else
-                                 tError() << msg;
-                             #endif
-                         #endif
-                     }
-                 }
+                 if (node->isModified())
+                     requestTransformation(node->parentItem(), frame);
         }
         updateItemPosition();
     } else {
@@ -311,7 +273,12 @@ TupFrame* SelectionTool::currentFrame()
     TupFrame *frame = 0;
     if (k->scene->spaceContext() == TupProject::FRAMES_EDITION) {
         frame = k->scene->currentFrame();
+        k->currentLayer = k->scene->currentLayerIndex();
+        k->currentFrame = k->scene->currentFrameIndex();
     } else {
+        k->currentLayer = -1;
+        k->currentFrame = -1;
+
         TupScene *tupScene = k->scene->scene();
         TupBackground *bg = tupScene->background();
         if (k->scene->spaceContext() == TupProject::STATIC_BACKGROUND_EDITION) {
@@ -439,6 +406,9 @@ void SelectionTool::itemResponse(const TupItemResponse *response)
         #endif
     #endif
 
+    if (response->action() == TupProjectRequest::Remove) // Do nothing
+        return;
+
     QGraphicsItem *item = 0;
     TupFrame *frame = frameAt(response->sceneIndex(), response->layerIndex(), response->frameIndex());
     if (response->itemType() == TupLibraryObject::Svg && frame->svgItemsCount()>0) {
@@ -516,11 +486,6 @@ void SelectionTool::itemResponse(const TupItemResponse *response)
                  syncNodes();
             }
             break;
-            case TupProjectRequest::Remove:
-            {
-                 // Do nothing
-            }
-            break;
             default:
             {
                  syncNodes();
@@ -576,6 +541,7 @@ void SelectionTool::keyPressEvent(QKeyEvent *event)
                        delta = 10;
 
                    k->selectedObjects = k->scene->selectedItems();
+                   TupFrame *frame = currentFrame();
 
                    foreach (QGraphicsItem *item, k->selectedObjects) {
                             if (event->key() == Qt::Key_Left)
@@ -591,6 +557,7 @@ void SelectionTool::keyPressEvent(QKeyEvent *event)
                                 item->moveBy(0, delta);
 
                             QTimer::singleShot(0, this, SLOT(syncNodes()));
+                            requestTransformation(item, frame);
                    }
 
                    updateItemPosition();
@@ -658,17 +625,18 @@ void SelectionTool::applyFlip(Settings::Flip flip)
                           TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(node->parentItem());
                           int position = -1;
                           TupLibraryObject::Type type = TupLibraryObject::Item;
+                          TupFrame *frame = currentFrame();
                           if (svg) {
                               type = TupLibraryObject::Svg;
-                              position = currentFrame()->indexOf(svg);
+                              position = frame->indexOf(svg);
                           } else {
-                              position = currentFrame()->indexOf(node->parentItem());
+                              position = frame->indexOf(node->parentItem());
                           }
 
                           TupProjectRequest event = TupRequestBuilder::createItemRequest(
                                                     k->scene->currentSceneIndex(),
-                                                    k->scene->currentLayerIndex(),
-                                                    k->scene->currentFrameIndex(), position, QPointF(), 
+                                                    k->currentLayer, k->currentFrame,
+                                                    position, QPointF(), 
                                                     k->scene->spaceContext(), type,
                                                     TupProjectRequest::Transform, doc.toString());
                           emit requested(&event);
@@ -685,15 +653,16 @@ void SelectionTool::applyOrderAction(Settings::Order action)
              TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
              int position = -1;
              TupLibraryObject::Type type = TupLibraryObject::Item;
+             TupFrame *frame = currentFrame();
              if (svg) {
                  type = TupLibraryObject::Svg;
-                 position = currentFrame()->indexOf(svg);
+                 position = frame->indexOf(svg);
              } else {
-                 position = currentFrame()->indexOf(item);
+                 position = frame->indexOf(item);
              }
 
              TupProjectRequest event = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
-                                       k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), position, QPointF(),
+                                       k->currentLayer, k->currentFrame, position, QPointF(),
                                        k->scene->spaceContext(), type, TupProjectRequest::Move, action);
              emit requested(&event);
     }
@@ -709,6 +678,8 @@ void SelectionTool::applyGroupAction(Settings::Group action)
              }
     }
 
+    TupFrame *frame = currentFrame();
+
     if (action == Settings::GroupItems) {
         k->selectedObjects = k->scene->selectedItems();
         int total = k->selectedObjects.count(); 
@@ -716,9 +687,8 @@ void SelectionTool::applyGroupAction(Settings::Group action)
             QString items = "(";
             int i = 1;
             int position = -1; 
-
             foreach (QGraphicsItem *item, k->selectedObjects) {
-                     int index = currentFrame()->indexOf(item);
+                     int index = frame->indexOf(item);
                      if (index > -1) {
                          if (i == 1) {
                              position = index;
@@ -747,8 +717,8 @@ void SelectionTool::applyGroupAction(Settings::Group action)
                      item->setSelected(false);
 
             TupProjectRequest event = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(),
-                                      k->scene->currentLayerIndex(),
-                                      k->scene->currentFrameIndex(), position, QPointF(), k->scene->spaceContext(),
+                                      k->currentLayer, k->currentFrame,
+                                      position, QPointF(), k->scene->spaceContext(),
                                       TupLibraryObject::Item, TupProjectRequest::Group, items);
             emit requested(&event);
         } else if (total == 1) {
@@ -769,8 +739,7 @@ void SelectionTool::applyGroupAction(Settings::Group action)
 
                                 TupProjectRequest event = TupRequestBuilder::createItemRequest(
                                                           k->scene->currentSceneIndex(),
-                                                          k->scene->currentLayerIndex(),
-                                                          k->scene->currentFrameIndex(),
+                                                          k->currentLayer, k->currentFrame,
                                                           itemIndex, QPointF(),
                                                           k->scene->spaceContext(), TupLibraryObject::Item,
                                                           TupProjectRequest::Ungroup);
@@ -898,5 +867,48 @@ void SelectionTool::updateItemPosition(int x, int y)
             k->target1->moveBy(x, y);
             k->target2->moveBy(x, y);
         }
+    }
+}
+
+void SelectionTool::requestTransformation(QGraphicsItem *item, TupFrame *frame)
+{
+    QDomDocument doc;
+    doc.appendChild(TupSerializer::properties(item, doc));
+    TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
+
+    int position = -1;
+    TupLibraryObject::Type type;
+
+    if (svg) {
+        type = TupLibraryObject::Svg;
+        position = frame->indexOf(svg);
+    } else {
+        if (TupGraphicLibraryItem *libraryItem = qgraphicsitem_cast<TupGraphicLibraryItem *>(item)) {
+            if (libraryItem->itemType() == TupLibraryObject::Image)
+                type = TupLibraryObject::Image;
+            else
+                type = TupLibraryObject::Item;
+        } else {
+            type = TupLibraryObject::Item;
+        }
+        position = frame->indexOf(item);
+    }
+
+    if (position >= 0) {
+        TupProjectRequest event = TupRequestBuilder::createItemRequest(
+                          k->scene->currentSceneIndex(), k->currentLayer, k->currentFrame,
+                          position, QPointF(), k->scene->spaceContext(), type,
+                          TupProjectRequest::Transform, doc.toString());
+
+        emit requested(&event);
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "SelectionTool::requestTransformation() - Fatal Error: Invalid item position !!! [ " + QString::number(position) + " ]";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
     }
 }

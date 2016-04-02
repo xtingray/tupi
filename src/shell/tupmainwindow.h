@@ -183,7 +183,6 @@ class TupMainWindow : public TabbedMainWindow
     private slots:
           void addTwitterPage();
           void setWorkSpace(const QStringList &users = QStringList());
-          // void updateTabContext(int tab);
           void createNewLocalProject();
           void newProject();
           bool closeProject();
@@ -193,6 +192,7 @@ class TupMainWindow : public TabbedMainWindow
           void importProjectToServer();
           void exportProject();
           void saveAs();
+          void saveProject();
 
           void showAnimationMenu(const QPoint &p);
 
@@ -216,12 +216,10 @@ class TupMainWindow : public TabbedMainWindow
           void aboutTupi();
           void showTipDialog();
           void importPalettes();
-          void saveProject();
           void openRecentProject();
           void createCommand(const TupPaintAreaEvent *event);
           void callSave();
           void expandExposureView(TupProject::Mode contextMode);
-          // void expandColorView(TColorCell::FillType colorContext, bool buttonIsChecked);
           void resetMousePointer();
           void updateUsersOnLine(const QString &login, int state);
           void importPapagayoLipSync();

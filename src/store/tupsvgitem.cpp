@@ -46,6 +46,9 @@ struct TupSvgItem::Private
     TupItemTweener *tween;
     bool hasTween;
     QPointF lastTweenPos;
+
+    QStringList doList;
+    QStringList undoList;
 };
 
 TupSvgItem::TupSvgItem(QGraphicsItem * parent) : QGraphicsSvgItem(parent), k(new Private)
@@ -199,4 +202,34 @@ void TupSvgItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void TupSvgItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsSvgItem::hoverLeaveEvent(event);
+}
+
+void TupSvgItem::storeItemTransformation(const QString &properties)
+{
+    k->doList << properties;
+}
+
+QString TupSvgItem::undoTransformation() const
+{
+    QString properties = "RESET";
+
+    if (!k->doList.isEmpty()) {
+        k->undoList << k-> doList.takeLast();
+        if (!k->doList.isEmpty())
+            properties = k->doList.last();
+    }
+
+    return properties;
+}
+
+QString TupSvgItem::redoTransformation() const
+{
+    QString properties = "";
+
+    if (!k->undoList.isEmpty()) {
+        properties = k->undoList.takeLast();
+        k->doList << properties;
+    }
+
+    return properties;
 }
