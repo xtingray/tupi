@@ -91,15 +91,11 @@ struct TupGraphicsScene::Private
     TupProject::Mode spaceContext;   
     TupLibrary *library;
     double layerOnProcessOpacity;
-    // int frameOnProcess;
     int layerOnProcess;
 
-    // Context frameContext;
     WorkSpace space;
     bool onionColorScheme;
 
-    // QColor pfOnionColor;
-    // QColor nfOnionColor;
     QColor onionColor;
     QColor lOnionColor;
     QColor bOnionColor;
@@ -286,9 +282,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                                               addItem(item);
                                               k->zLevel++;
                                           }
-
-                                          // k->frameOnProcess = frameIndex;
-                                          // addFrame(frame, opacity, Previous);
                                       }
                                       opacity += opacityFactor;
                                  }
@@ -296,7 +289,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                          }
 
                          // Painting current frame
-                         // k->frameOnProcess = photogram;
                          addTweeningObjects(i, photogram);
                          addSvgTweeningObjects(i, photogram);
 
@@ -310,10 +302,12 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                              item->setZValue(k->zLevel);
                              item->setOpacity(k->layerOnProcessOpacity);
 
-                             if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
-                                 QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-                                 effect->setColor(k->lOnionColor);
-                                 item->setGraphicsEffect(effect);
+                             if (space == Animation) {
+                                 if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
+                                     QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+                                     effect->setColor(k->lOnionColor);
+                                     item->setGraphicsEffect(effect);
+                                 }
                              }
 
                              addItem(item);
@@ -353,9 +347,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                                               addItem(item);
                                               k->zLevel++;
                                           }
-
-                                          // k->frameOnProcess = frameIndex;
-                                          // addFrame(frame, opacity, Next);
                                       }
                                       opacity -= opacityFactor;
                                  }
@@ -423,7 +414,6 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                     bg->renderDynamicView(); 
 
                 QGraphicsPixmapItem *item = new QGraphicsPixmapItem(bg->dynamicView(photogram));
-                // QGraphicsPixmapItem *item = bg->dynamicView(photogram);
                 item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                 item->setFlag(QGraphicsItem::ItemIsMovable, false);
                 item->setZValue(0);
@@ -432,10 +422,12 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                 if (frame) 
                     item->setOpacity(frame->opacity());
 
-                if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) { 
-                    QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-                    effect->setColor(k->bOnionColor);
-                    item->setGraphicsEffect(effect);
+                if (k->space == Animation) {
+                    if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) { 
+                        QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+                        effect->setColor(k->bOnionColor);
+                        item->setGraphicsEffect(effect);
+                    }
                 }
 
                 addItem(item);
@@ -462,17 +454,18 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                         bg->renderStaticView();
 
                     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(bg->staticRaster());
-                    // QGraphicsPixmapItem *item = bg->staticRaster();
                     item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                     item->setFlag(QGraphicsItem::ItemIsMovable, false);
                     item->setZValue(1);
 
                     item->setOpacity(frame->opacity());
 
-                    if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
-                        QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-                        effect->setColor(k->bOnionColor);
-                        item->setGraphicsEffect(effect);
+                    if (k->space == Animation) {
+                        if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
+                            QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+                            effect->setColor(k->bOnionColor);
+                            item->setGraphicsEffect(effect);
+                        }
                     }
 
                     addItem(item);
