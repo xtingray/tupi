@@ -138,20 +138,3 @@ bool TupRectItem::contains(const QPointF & point) const
     
     return QGraphicsRectItem::contains(point);
 }
-
-void TupRectItem::setShadowColors(const QColor &color)
-{
-    QPen rectPen = pen();
-    if (rectPen.color() != Qt::transparent) {
-        rectPen.setColor(color);
-        QGraphicsRectItem::setPen(rectPen);
-    }
-
-    QBrush rectBrush = brush();
-    if (rectBrush.color() != Qt::transparent) {
-        QColor brushColor =  QColor(color.red() + 20, color.green() + 20, color.blue() + 20);
-        rectBrush.setColor(brushColor);
-        QGraphicsRectItem::setBrush(rectBrush);
-    }
-}
-

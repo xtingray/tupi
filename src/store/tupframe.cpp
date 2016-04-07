@@ -82,7 +82,7 @@ struct TupFrame::Private
     int zLevelIndex;
     double opacity;
 
-    QGraphicsPixmapItem *framePixmap;
+    QPixmap framePixmap;
     bool renderIsPending;
 };
 
@@ -1670,8 +1670,7 @@ void TupFrame::renderView()
         frameScene.renderView(&painter);
     }
 
-    QPixmap pixmap = QPixmap::fromImage(image);
-    k->framePixmap = new QGraphicsPixmapItem(pixmap);
+    k->framePixmap = QPixmap::fromImage(image);
     k->renderIsPending = false;
 }
 
@@ -1685,7 +1684,7 @@ void TupFrame::updateRenderStatus(bool flag)
     k->renderIsPending = flag;
 }
 
-QGraphicsPixmapItem * TupFrame::framePixmap()
+QPixmap TupFrame::framePixmap() const
 {
     return k->framePixmap;
 }

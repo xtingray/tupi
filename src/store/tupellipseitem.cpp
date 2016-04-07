@@ -147,19 +147,3 @@ void TupEllipseItem::dropEvent(QGraphicsSceneDragDropEvent *event)
     }
     update();
 }
-
-void TupEllipseItem::setShadowColors(const QColor &color)
-{
-    QPen ellipsePen = pen();
-    if (ellipsePen.color() != Qt::transparent) {
-        ellipsePen.setColor(color);
-        QGraphicsEllipseItem::setPen(ellipsePen);
-    }
-
-    QBrush ellipseBrush = brush();
-    if (ellipseBrush.color() != Qt::transparent) {
-        QColor brushColor =  QColor(color.red() + 20, color.green() + 20, color.blue() + 20);
-        ellipseBrush.setColor(brushColor);
-        QGraphicsEllipseItem::setBrush(ellipseBrush);
-    }
-}

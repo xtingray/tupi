@@ -116,6 +116,7 @@ struct TupDocumentView::Private
     TupPaintAreaStatus *status;
     QComboBox *spaceMode;
     bool dynamicFlag;
+    bool staticFlag;
     QSize cameraSize;
     int photoCounter;
 
@@ -164,6 +165,8 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     k->isNetworked = isNetworked;
     k->onLineUsers = users;
     k->dynamicFlag = false;
+    k->staticFlag = false;
+
     k->photoCounter = 1;
     k->nodesScaleFactor = 1;
 
@@ -1490,16 +1493,23 @@ void TupDocumentView::setSpaceContext()
             k->dynamicFlag = false;
             renderDynamicBackground();
         }
+        if (k->staticFlag) {
+            k->staticFlag = false;
+            renderStaticBackground();
+        }
+
         k->project->updateSpaceContext(TupProject::FRAMES_EDITION);
         k->actionManager->enable("onion_color", true);
         k->staticPropertiesBar->setVisible(false);
         k->dynamicPropertiesBar->setVisible(false);
         k->motionMenu->setEnabled(true);
     } else if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
+               k->staticFlag = true;
                if (k->dynamicFlag) {
                    k->dynamicFlag = false;
                    renderDynamicBackground();
                }
+
                k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
                k->actionManager->enable("onion_color", false);
                k->dynamicPropertiesBar->setVisible(false);
@@ -1912,6 +1922,18 @@ void TupDocumentView::renderDynamicBackground()
        TupBackground *bg = scene->background();
        if (bg)
            bg->renderDynamicView();
+   }
+}
+
+void TupDocumentView::renderStaticBackground()
+{
+   int sceneIndex = k->paintArea->currentSceneIndex();
+   TupScene *scene = k->project->sceneAt(sceneIndex);
+
+   if (scene) {
+       TupBackground *bg = scene->background();
+       if (bg)
+           bg->renderStaticView();
    }
 }
 

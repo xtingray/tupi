@@ -109,7 +109,7 @@ class TUPI_PLUGIN NodesTool : public TupToolPlugin
     signals:
         void closeHugeCanvas();
         void callForPlugin(int menu, int index);
- 
+
     private:
         // void reset(TupGraphicsScene *scene);
         void setupActions();

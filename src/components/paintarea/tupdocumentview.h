@@ -136,6 +136,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void setBackgroundDirection(int direction);
         void updateBackgroundShiftProperty(int shift);
         void renderDynamicBackground();
+        void renderStaticBackground();
         void fullScreenRightClick();
         void cameraInterface();
         void insertPictureInFrame(int id, const QString path);

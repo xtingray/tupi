@@ -166,15 +166,19 @@ void TNodeGroup::moveElementTo(int index, const QPointF& pos)
 
     QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
     path.setElementPositionAt(index, pos.x(), pos.y());
-    // QPainterPath::Element e = path.elementAt(0);
     qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(path);
-    
+
+    /*
     if (k->changedNodes.contains(index)) {
         (*k->changedNodes.find(index)) = pos;
     } else {
         k->changedNodes.insert(index, pos);
         emit itemChanged(k->parentItem);
     }
+    */
+
+    k->changedNodes.insert(index, pos);
+    emit itemChanged(k->parentItem);
 }
 
 QHash<int, QPointF> TNodeGroup::changedNodes()
@@ -182,7 +186,12 @@ QHash<int, QPointF> TNodeGroup::changedNodes()
     return k->changedNodes;
 }
 
-void TNodeGroup::clearChangesNodes()
+bool TNodeGroup::hasChangedNodes()
+{
+    return k->changedNodes.count() > 0;
+}
+
+void TNodeGroup::clearChangedNodes()
 {
     if (!k->changedNodes.isEmpty())
         k->changedNodes.clear();

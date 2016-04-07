@@ -58,19 +58,24 @@ class TUPI_EXPORT TupPathItem : public TupAbstractSerializable, public QGraphics
         
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
-        virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
-        bool contains(const QPointF & point) const;
-        void setShadowColors(const QColor &color);
-        
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+        bool contains(const QPointF &point) const;
+        bool isNotEdited();
+        void saveOriginalPath();
+        QString pathToString() const;
+        void setPathFromString(const QString &route);
+        void undoPath();
+        void redoPath();
+ 
     protected:
-        virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
-        virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
+        virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent *event);
         virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
         
     private:
         bool m_dragOver;
-        QColor pathColor;
-        QBrush pathBrush;
+        QList<QString> undoList;
+        QList<QString> doList;
 };
 
 #endif

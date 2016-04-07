@@ -56,7 +56,6 @@ class TUPI_EXPORT TupRectItem : public QGraphicsRectItem, public TupAbstractSeri
         TupRectItem(const QRectF& rect, QGraphicsItem * parent = 0);
         ~TupRectItem();
         bool contains(const QPointF & point) const;
-        void setShadowColors(const QColor &color);
         
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

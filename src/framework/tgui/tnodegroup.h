@@ -69,7 +69,8 @@ class T_GUI_EXPORT TNodeGroup : public QObject
         
         void moveElementTo(int index, const QPointF &pos);
         QHash<int, QPointF > changedNodes();
-        void clearChangesNodes();
+        bool hasChangedNodes();
+        void clearChangedNodes();
         void restoreItem();
         void show();
 
@@ -82,8 +83,6 @@ class T_GUI_EXPORT TNodeGroup : public QObject
         void createNodes(QGraphicsPathItem *nodes);
         void emitNodeClicked(TControlNode::State state);
 
-        // void emitNodeMoved();
-        
         void expandAllNodes();
         bool isSelected();
         int size();

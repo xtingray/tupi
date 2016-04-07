@@ -271,7 +271,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                                               if (frame->renderIsPending())
                                                   frame->renderView();
 
-                                              QGraphicsPixmapItem *item = frame->framePixmap();
+                                              QGraphicsPixmapItem *item = new QGraphicsPixmapItem(frame->framePixmap());
                                               item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                                               item->setFlag(QGraphicsItem::ItemIsMovable, false);
                                               item->setZValue(k->zLevel);
@@ -304,7 +304,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                              if (mainFrame->renderIsPending())
                                  mainFrame->renderView();
 
-                             QGraphicsPixmapItem *item = mainFrame->framePixmap();
+                             QGraphicsPixmapItem *item = new QGraphicsPixmapItem(mainFrame->framePixmap());
                              item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                              item->setFlag(QGraphicsItem::ItemIsMovable, false);
                              item->setZValue(k->zLevel);
@@ -338,7 +338,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                                               if (frame->renderIsPending())
                                                   frame->renderView();
 
-                                              QGraphicsPixmapItem *item = frame->framePixmap();
+                                              QGraphicsPixmapItem *item = new QGraphicsPixmapItem(frame->framePixmap());
                                               item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                                               item->setFlag(QGraphicsItem::ItemIsMovable, false);
                                               item->setZValue(k->zLevel);
@@ -422,7 +422,8 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                 if (bg->dynamicRenderIsPending())
                     bg->renderDynamicView(); 
 
-                QGraphicsPixmapItem *item = bg->dynamicView(photogram);
+                QGraphicsPixmapItem *item = new QGraphicsPixmapItem(bg->dynamicView(photogram));
+                // QGraphicsPixmapItem *item = bg->dynamicView(photogram);
                 item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                 item->setFlag(QGraphicsItem::ItemIsMovable, false);
                 item->setZValue(0);
@@ -460,7 +461,8 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                     if (bg->staticRenderIsPending())
                         bg->renderStaticView();
 
-                    QGraphicsPixmapItem *item = bg->staticRaster();
+                    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(bg->staticRaster());
+                    // QGraphicsPixmapItem *item = bg->staticRaster();
                     item->setFlag(QGraphicsItem::ItemIsSelectable, false);
                     item->setFlag(QGraphicsItem::ItemIsMovable, false);
                     item->setZValue(1);

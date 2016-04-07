@@ -224,12 +224,6 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                         }
                     }
 
-                    if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-                        bg->updateStaticRenderStatus(true);
-                    } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                        bg->updateDynamicRenderStatus(true);
-                    }
-
                     emit responsed(response);
                 } else {
                     #ifdef K_DEBUG
@@ -365,12 +359,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                     else
                         frame->removeGraphic(response->itemIndex());
 
-                    if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-                        bg->updateStaticRenderStatus(true);
-                    } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                        bg->updateDynamicRenderStatus(true);
-                    }
-
                     emit responsed(response);
                     return true;
                 } else {
@@ -473,12 +461,6 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
 
                 if (frame) {
                     if (frame->moveItem(type, objectIndex, action)) {
-                        if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-                            bg->updateStaticRenderStatus(true);
-                        } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                            bg->updateDynamicRenderStatus(true);
-                        }
-
                         emit responsed(response);
                         return true;
                     }
@@ -1042,12 +1024,6 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                             TupSerializer::loadProperties(item, doc.documentElement());
                         }
 
-                        if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-                            bg->updateStaticRenderStatus(true);
-                        } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                            bg->updateDynamicRenderStatus(true);
-                        }
-
                         response->setArg(xml);
                         emit responsed(response);
 
@@ -1095,7 +1071,6 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
 
 bool TupCommandExecutor::setPathItem(TupItemResponse *response)
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::setPathItem()]";
@@ -1105,14 +1080,13 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
             SHOW_VAR(response->arg().toString());
         #endif
     #endif
-    */
     
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
     int frameIndex = response->frameIndex();
     int position = response->itemIndex();
     TupProject::Mode mode = response->spaceMode();
-    QString xml = response->arg().toString();
+    QString route = response->arg().toString();
     TupScene *scene = m_project->sceneAt(sceneIndex);
     
     if (scene) {
@@ -1123,29 +1097,18 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
-                        if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
-                            QDomDocument orig;
-                        
-                            if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(item))
-                                orig.appendChild(path->toXml(orig));
+                        if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(item)) {
+                            if (response->mode() == TupProjectResponse::Do)
+                                path->setPathFromString(route);
 
-                            QString current = orig.toString();
-                            /*
-                            #ifdef K_DEBUG
-                                   SHOW_VAR(current);
-                            #endif
-                            */
-                        
-                            QDomDocument doc;
-                            doc.setContent(xml);
-                            TupItemFactory factory;
-                            factory.loadItem(item, xml);
+                            if (response->mode() == TupProjectResponse::Redo)
+                                path->redoPath();
+
+                            if (response->mode() == TupProjectResponse::Undo)
+                                path->undoPath();
 
                             frame->updateRenderStatus(true);
-
-                            response->setArg(current);
                             emit responsed(response);
-
                             return true;
                        }
                     }
@@ -1174,27 +1137,17 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                 if (frame) {
                     QGraphicsItem *item = frame->item(position);
                     if (item) {
-                        if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
-                            QDomDocument orig;
+                        if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(item)) {
+                            if (response->mode() == TupProjectResponse::Do) 
+                                path->setPathFromString(route);
 
-                            if (TupPathItem *ktpath = qgraphicsitem_cast<TupPathItem *>(item))
-                                orig.appendChild(ktpath->toXml(orig));
+                            if (response->mode() == TupProjectResponse::Redo) 
+                                path->redoPath();
 
-                            QString current = orig.toString();
-                            QDomDocument doc;
-                            doc.setContent(xml);
-                            TupItemFactory factory;
-                            factory.loadItem(item, xml);
+                            if (response->mode() == TupProjectResponse::Undo) 
+                                path->undoPath();
 
-                            if (mode == TupProject::STATIC_BACKGROUND_EDITION) {
-                                bg->updateStaticRenderStatus(true);
-                            } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
-                                bg->updateDynamicRenderStatus(true);
-                            }
-       
-                            response->setArg(current);  
                             emit responsed(response);
-
                             return true;
                         }
                     } else {

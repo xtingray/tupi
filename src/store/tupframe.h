@@ -164,7 +164,7 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        void renderView();
        bool renderIsPending();
        void updateRenderStatus(bool flag);
-       QGraphicsPixmapItem * framePixmap();
+       QPixmap framePixmap() const;
        
     public:
        virtual void fromXml(const QString &xml);

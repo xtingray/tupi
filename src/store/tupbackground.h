@@ -41,7 +41,6 @@
 #include "tupscene.h"
 
 #include <QImage>
-// #include <QPixmap>
 #include <QGraphicsPixmapItem>
 
 /**
@@ -63,18 +62,16 @@ class TUPI_EXPORT TupBackground : public QObject, public TupAbstractSerializable
         void renderDynamicView();
         void renderStaticView();
 
-        QGraphicsPixmapItem * dynamicView(int frameIndex);
+        QPixmap dynamicView(int frameIndex);
         void setDynamicDirection(int direction);
         void setDynamicShift(int shift);
         Direction dynamicDirection();
         int dynamicShift();
 
         QImage dynamicRaster();
-        QGraphicsPixmapItem * staticRaster();
+        QPixmap staticRaster();
         bool dynamicRenderIsPending();
         bool staticRenderIsPending();
-        void updateDynamicRenderStatus(bool flag);
-        void updateStaticRenderStatus(bool flag);
 
         bool dynamicBgIsEmpty();
         bool staticBgIsEmpty();

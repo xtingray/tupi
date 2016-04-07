@@ -233,7 +233,7 @@ void TupBackground::renderDynamicView()
     noDynamicRender = false;
 }
 
-QGraphicsPixmapItem * TupBackground::dynamicView(int frameIndex)
+QPixmap TupBackground::dynamicView(int frameIndex)
 {
     int posX = 0;
     int posY = 0;
@@ -290,9 +290,7 @@ QGraphicsPixmapItem * TupBackground::dynamicView(int frameIndex)
     QImage view = dynamicBgRaster.copy(posX, posY, dimension.width(), dimension.height()); 
     QPixmap pixmap = QPixmap::fromImage(view); 
 
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
-
-    return item;
+    return pixmap;
 }
 
 bool TupBackground::dynamicRenderIsPending()
@@ -305,27 +303,15 @@ bool TupBackground::staticRenderIsPending()
     return noStaticRender;
 }
 
-void TupBackground::updateDynamicRenderStatus(bool flag)
-{
-    noDynamicRender = flag;
-}
-
-void TupBackground::updateStaticRenderStatus(bool flag)
-{
-    noStaticRender = flag;
-}
-
 QImage TupBackground::dynamicRaster()
 {
     return dynamicBgRaster;
 }
 
-QGraphicsPixmapItem * TupBackground::staticRaster()
+QPixmap TupBackground::staticRaster()
 {
     QPixmap pixmap = QPixmap::fromImage(staticBgRaster);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
-
-    return item;
+    return pixmap;
 }
 
 void TupBackground::setDynamicDirection(int direction)
