@@ -45,6 +45,7 @@
 /**
  * @author David Cuadrado
 */
+
 class TUPI_EXPORT TupBrushManager : public QObject
 {
     Q_OBJECT
@@ -53,14 +54,17 @@ class TUPI_EXPORT TupBrushManager : public QObject
         TupBrushManager(QObject * parent = 0);
         TupBrushManager(const QPen &pen, const QBrush &brush, QObject * parent = 0);
         ~TupBrushManager();
-        
+
+        QPen pen() const;        
         void setPen(const QPen &pen);
-        //void setPenBrush(const QBrush &brush);
         void setPenColor(const QColor &color);
-        QPen pen() const;
-        
+
+        QBrush brush() const; 
         void setBrush(const QBrush &brush);
-        QBrush brush() const;
+
+        void initBgColor(const QColor &color);
+        void setBgColor(const QColor &color);
+        QColor bgColor();
         
         int penWidth() const;
         QColor penColor() const;
@@ -70,11 +74,11 @@ class TUPI_EXPORT TupBrushManager : public QObject
     signals:
         void penChanged(const QPen &pen);
         void brushChanged(const QBrush &brush);
+        void bgColorChanged(const QColor color);
         
     private:
         struct Private;
         Private *const k;
-
 };
 
 #endif

@@ -45,7 +45,6 @@
 #include "tuppaintareaevent.h"
 #include "tuppaintareacommand.h"
 #include "tupgraphicsscene.h"
-#include "tupbrushmanager.h"
 #include "tupproject.h"
 #include "tupscene.h"
 #include "tuplayer.h"
@@ -216,12 +215,11 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     connect(k->status, SIGNAL(newFramePointer(int)), k->paintArea, SLOT(goToFrame(int)));
     connect(k->paintArea, SIGNAL(frameChanged(int)), k->status, SLOT(updateFrameIndex(int)));
 
-    // SQA: Implement the brush button within the status bar
-    // connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
-    //         SLOT(setBrush(const QBrush &)));
+    brushManager()->initBgColor(project->bgColor());
 
-    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen &)), k->status, SLOT(setPen(const QPen &)));
-    connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush &)), k->status, SLOT(setBrush(const QBrush &)));
+    connect(brushManager(), SIGNAL(penChanged(const QPen &)), this, SLOT(updatePen(const QPen &)));
+    connect(brushManager(), SIGNAL(brushChanged(const QBrush &)), this, SLOT(updateBrush(const QBrush &)));
+    connect(brushManager(), SIGNAL(bgColorChanged(const QColor &)), this, SLOT(updateBgColor(const QColor &)));
 
     // SQA: Find out why this timer instruction is required?
     QTimer::singleShot(500, this, SLOT(loadPlugins()));
@@ -1450,7 +1448,7 @@ QBrush TupDocumentView::fillBrush() const
     return manager->brush();
 }
 
-TupPaintAreaCommand *TupDocumentView::createCommand(const TupPaintAreaEvent *event)
+TupPaintAreaCommand *TupDocumentView::createPaintCommand(const TupPaintAreaEvent *event)
 {
     TupPaintAreaCommand *command = new TupPaintAreaCommand(k->paintArea, event);
     return command;
@@ -1613,6 +1611,7 @@ void TupDocumentView::updateBgColor(const QColor color)
    if (!k->isNetworked) {
        k->project->setBgColor(color);
        k->paintArea->setBgColor(color);
+       emit bgColorChanged(color);
    } else {
        TupProjectRequest event = TupRequestBuilder::createSceneRequest(currentSceneIndex(), TupProjectRequest::BgColor, color.name());
        emit requestTriggered(&event);
@@ -2371,4 +2370,16 @@ void TupDocumentView::updateBackgroundOnionColor(TColorCell::FillType)
     }
 
     k->bOnionCell->setChecked(false);
+}
+
+void TupDocumentView::updatePen(const QPen &pen)
+{
+    k->status->setPen(pen);
+    emit contourColorChanged(pen.color());
+}
+
+void TupDocumentView::updateBrush(const QBrush &brush)
+{
+    k->status->setBrush(brush);
+    emit fillColorChanged(brush.color());
 }

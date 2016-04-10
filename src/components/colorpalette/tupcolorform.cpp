@@ -43,7 +43,6 @@
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QGridLayout>
-// #include <QSpinBox>
 #include <QLineEdit>
 #include <QSlider>
 #include <cmath>
@@ -149,7 +148,9 @@ void TupColorForm::setColor(const QBrush &brush)
     k->valueV->setValue(color.value());
 
     k->alphaCounter->setText(QString::number(color.alpha()));
+    k->alphaSlider->blockSignals(true);
     k->alphaSlider->setValue(color.alpha());
+    k->alphaSlider->blockSignals(false);
     blockSignals(false);
 }
 

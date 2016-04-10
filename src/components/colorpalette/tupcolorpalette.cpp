@@ -166,7 +166,7 @@ void TupColorPalette::setupColorDisplay()
 
     TImageButton *resetButton = new TImageButton(QIcon(QPixmap(THEME_DIR + "icons/reset_colors.png")), 15, this, true);
     resetButton->setToolTip(tr("Reset colors"));
-    connect(resetButton, SIGNAL(clicked()), this, SLOT(reset()));
+    connect(resetButton, SIGNAL(clicked()), this, SLOT(init()));
     mainLayout->addWidget(resetButton);
 
     mainLayout->addWidget(new QWidget());
@@ -295,7 +295,7 @@ void TupColorPalette::setupMainPalette()
 {
     // Palettes
     k->paletteContainer = new TupViewColorCells(k->splitter);
-    connect(k->paletteContainer, SIGNAL(selectColor(const QBrush&)), this, SLOT(updateColorFromPalette(const QBrush&)));
+    connect(k->paletteContainer, SIGNAL(colorSelected(const QBrush&)), this, SLOT(updateColorFromPalette(const QBrush&)));
 
     k->splitter->addWidget(k->paletteContainer);
 }
@@ -375,12 +375,15 @@ void TupColorPalette::setColorOnAppFromHTML(const QBrush& brush)
 
     if (k->currentSpace == TColorCell::Background) {
         k->bgColor->setBrush(brush);
-        emit bgColorChanged(color);
+
+        TupPaintAreaEvent bgEvent(TupPaintAreaEvent::ChangeBgColor, k->bgColor->color());
+        emit paintAreaEventTriggered(&bgEvent);
         return;
     }
 
     if (k->currentSpace == TColorCell::Contour) {
         k->contourColor->setBrush(brush); 
+
         TupPaintAreaEvent contourEvent(TupPaintAreaEvent::ChangePenColor, k->contourColor->color());
         emit paintAreaEventTriggered(&contourEvent);
         return;
@@ -388,6 +391,7 @@ void TupColorPalette::setColorOnAppFromHTML(const QBrush& brush)
 
     if (k->currentSpace == TColorCell::Inner) { 
         k->fillColor->setBrush(brush);
+
         TupPaintAreaEvent fillEvent(TupPaintAreaEvent::ChangeBrush, brush);
         emit paintAreaEventTriggered(&fillEvent);
     }
@@ -399,7 +403,8 @@ void TupColorPalette::setGlobalColors(const QBrush &brush)
         k->bgColor->setBrush(brush);
         k->bgHtmlField->setText(brush.color().name());
 
-        emit bgColorChanged(brush.color());
+        TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBgColor, brush.color());
+        emit paintAreaEventTriggered(&event);
     } else {
         if (k->currentSpace == TColorCell::Contour) {
             k->contourColor->setBrush(brush);
@@ -422,7 +427,6 @@ void TupColorPalette::updateColorFromPalette(const QBrush &brush)
 {
     setGlobalColors(brush);
     QColor color = brush.color();
-
     updateLuminancePicker(color);
     k->colorForm->setColor(color);
     k->gradientManager->setCurrentColor(color);
@@ -431,10 +435,8 @@ void TupColorPalette::updateColorFromPalette(const QBrush &brush)
 void TupColorPalette::updateColorFromDisplay(const QBrush &brush)
 {
     setGlobalColors(brush);
-
     QColor color = brush.color();
     k->colorPickerArea->setColor(color.hue(), color.saturation());
-
     updateLuminancePicker(color);
 }
 
@@ -465,18 +467,25 @@ void TupColorPalette::setHS(int hue, int saturation)
 
 void TupColorPalette::updateColorFromHTML()
 {
+    QColor currentColor;
     if (k->currentSpace == TColorCell::Background) {
         k->bgColor->setChecked(false);
         k->currentSpace = TColorCell::Contour;
         k->contourColor->setChecked(true);
+        currentColor = k->contourColor->color();
+    } else if (k->currentSpace == TColorCell::Contour) {
+        currentColor = k->contourColor->color(); 
+    } else if (k->currentSpace == TColorCell::Inner) {
+        currentColor = k->fillColor->color();
     }
 
     QString colorCode = k->htmlField->text();
-
     QColor color(colorCode);
-    color.setAlpha(255);
-    
-    setColorOnAppFromHTML(color);
+
+    if (color != currentColor) {
+        color.setAlpha(255);
+        setColorOnAppFromHTML(color);
+    }
 }
 
 void TupColorPalette::updateBgColorFromHTML()
@@ -491,11 +500,14 @@ void TupColorPalette::updateBgColorFromHTML()
         k->bgColor->setChecked(true);
     }
 
+    QColor currentColor = k->bgColor->color();
     QString colorCode = k->bgHtmlField->text();
     QColor color(colorCode);
-    color.setAlpha(255);
 
-    setColorOnAppFromHTML(color);
+    if (color != currentColor) {
+        color.setAlpha(255);
+        setColorOnAppFromHTML(color);
+    }
 }
 
 QPair<QColor, QColor> TupColorPalette::color()
@@ -512,8 +524,11 @@ void TupColorPalette::parsePaletteFile(const QString &file)
     k->paletteContainer->readPaletteFile(file);
 }
 
-void TupColorPalette::reset()
+void TupColorPalette::init()
 {
+    if (k->bgColor->isChecked())
+        k->bgColor->setChecked(false);
+
     k->currentSpace = TColorCell::Contour;
 
     QColor contourColor = Qt::black;
@@ -537,27 +552,24 @@ void TupColorPalette::reset()
     if (!k->luminancePicker->isEnabled())
         k->luminancePicker->setEnabled(true);
 
+    blockSignals(true);
     k->luminancePicker->setColors(Qt::black, Qt::white);
     k->luminancePicker->setValue(0);
-
     k->colorForm->setColor(contourColor);
     k->gradientManager->setCurrentColor(Qt::white);
+    blockSignals(false);
+
+    TupPaintAreaEvent fillEvent(TupPaintAreaEvent::ChangeBrush, k->currentFillBrush);
+    emit paintAreaEventTriggered(&fillEvent);
 
     TupPaintAreaEvent event(TupPaintAreaEvent::ChangePenColor, contourColor);
     emit paintAreaEventTriggered(&event);
-
-    event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, fillBrush);
-    emit paintAreaEventTriggered(&event);
 }
 
-void TupColorPalette::init()
+void TupColorPalette::setBgColor(const QColor &color)
 {
-    QBrush bgBrush = QBrush(Qt::white);
-    k->bgColor->setBrush(bgBrush);
-    if (k->bgColor->isChecked())
-        k->bgColor->setChecked(false);
-
-    reset();
+    QBrush brush(color);
+    k->bgColor->setBrush(brush);
 }
 
 void TupColorPalette::initBg()
@@ -568,7 +580,9 @@ void TupColorPalette::initBg()
     updateColorMode(TColorCell::Background);
 
     k->paletteContainer->clearSelection();
-    emit bgColorChanged(brush.color());
+
+    TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBgColor, brush.color());
+    emit paintAreaEventTriggered(&event);
 }
 
 void TupColorPalette::switchColors()
@@ -590,16 +604,20 @@ void TupColorPalette::switchColors()
     else
         color = k->fillColor->color();
 
+    blockSignals(true);
     k->htmlField->setText(color.name());
     k->colorPickerArea->setColor(color.hue(), color.saturation());
     updateLuminancePicker(color);
     k->colorForm->setColor(color);
+    blockSignals(false);
 
-    TupPaintAreaEvent event(TupPaintAreaEvent::ChangePenColor, k->currentContourBrush.color());
+    TupPaintAreaEvent event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, k->currentFillBrush);
     emit paintAreaEventTriggered(&event);
 
-    event = TupPaintAreaEvent(TupPaintAreaEvent::ChangeBrush, k->currentFillBrush);
+    event = TupPaintAreaEvent(TupPaintAreaEvent::ChangePenColor, k->currentContourBrush.color());
     emit paintAreaEventTriggered(&event);
+
+    k->currentSpace = TColorCell::Contour;
 }
 
 void TupColorPalette::updateColorType(int index)
@@ -633,5 +651,56 @@ void TupColorPalette::updateLuminancePicker(const QColor &color)
     } else {
         k->luminancePicker->setColors(Qt::black, Qt::white);
         k->luminancePicker->setValue(0);
+    }
+}
+
+void TupColorPalette::updateContourColor(const QColor &color)
+{
+    if (k->bgColor->isChecked())
+        k->bgColor->setChecked(false);
+
+    if (k->fillColor->isChecked())
+        k->fillColor->setChecked(false);
+
+    if (!k->contourColor->isChecked())
+        k->contourColor->setChecked(true);
+
+    if (color != k->contourColor->color()) {
+        k->contourColor->setBrush(QBrush(color));
+        updateColorMode(TColorCell::Contour);
+    }
+}
+
+void TupColorPalette::updateFillColor(const QColor &color)
+{
+    if (k->bgColor->isChecked())
+        k->bgColor->setChecked(false);
+
+    if (k->contourColor->isChecked())
+        k->contourColor->setChecked(false);
+
+    if (!k->fillColor->isChecked())
+        k->fillColor->setChecked(true);
+
+    if (color != k->fillColor->color()) {
+        k->fillColor->setBrush(QBrush(color));
+        updateColorMode(TColorCell::Inner);
+    }
+}
+
+void TupColorPalette::updateBgColor(const QColor &color)
+{
+    if (k->contourColor->isChecked())
+        k->contourColor->setChecked(false);
+
+    if (k->fillColor->isChecked())
+        k->fillColor->setChecked(false);
+
+    if (!k->bgColor->isChecked())
+        k->bgColor->setChecked(true);
+
+    if (color != k->bgColor->color()) {
+        k->bgColor->setBrush(QBrush(color));
+        updateColorMode(TColorCell::Background);
     }
 }

@@ -206,11 +206,6 @@ void TupPathItem::saveOriginalPath()
 
 void TupPathItem::setPathFromString(const QString &route)         
 {
-    if (doList.isEmpty() && undoList.isEmpty()) {
-        QString original = pathToString();
-        doList << original;
-    }
-
     QPainterPath qPath;
     TupSvg2Qt::svgpath2qtpath(route, qPath);
     setPath(qPath);

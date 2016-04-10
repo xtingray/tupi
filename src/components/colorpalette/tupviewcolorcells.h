@@ -82,7 +82,7 @@ class TUPI_EXPORT TupViewColorCells : public QFrame
     //     QSize sizeHint() const;
 
     signals:
-        void selectColor(const QBrush &);
+        void colorSelected(const QBrush &);
 
     public slots:
         virtual void addCurrentColor();

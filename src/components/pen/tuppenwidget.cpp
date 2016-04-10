@@ -209,10 +209,8 @@ void TupPenWidget::setThickness(int value)
 {
     if (value > 0) {
         k->pen.setWidth(value);
-
         TCONFIG->beginGroup("PenParameters");
         TCONFIG->setValue("Thickness", value);
-
         updatePenProperties();
     }
 }
@@ -220,18 +218,16 @@ void TupPenWidget::setThickness(int value)
 void TupPenWidget::setStyle(int s)
 {
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
-
     updatePenProperties();
 }
 
 void TupPenWidget::setBrushStyle(QListWidgetItem *item)
 {
-    int index = k->brushesList->row(item);
- 
     if (item->toolTip().compare("TexturePattern") == 0) {
         k->brush = QBrush(QPixmap(THEME_DIR + "icons/brush_15.png"));
         k->thickPreview->setBrush(24);
     } else {
+        int index = k->brushesList->row(item);
         k->thickPreview->setBrush(index+1);
         k->brush.setStyle(Qt::BrushStyle(index+1));
     }
@@ -251,8 +247,9 @@ void TupPenWidget::setBrush(const QBrush brush)
     k->thickPreview->setBrush(brush);
 }
 
-void TupPenWidget::init()
+void TupPenWidget::init(int thickness)
 {
+    blockSignals(true);
     setPenColor(QColor(0, 0, 0));
 
     enableRoundCapStyle();
@@ -262,6 +259,9 @@ void TupPenWidget::init()
     QListWidgetItem *first = k->brushesList->item(0);
     k->brushesList->setCurrentItem(first);
     setBrushStyle(first);
+    blockSignals(false);
+
+    setThickness(thickness);
 }
 
 QPen TupPenWidget::pen() const
@@ -272,7 +272,6 @@ QPen TupPenWidget::pen() const
 void TupPenWidget::updatePenProperties()
 {
     k->pen.setBrush(k->brush);
-    emit penChanged(k->pen);
 
     TupPaintAreaEvent event(TupPaintAreaEvent::ChangePen, k->pen);
     emit paintAreaEventTriggered(&event);
@@ -280,8 +279,6 @@ void TupPenWidget::updatePenProperties()
 
 void TupPenWidget::updateBrushProperties()
 {
-    emit brushChanged(k->brush);
-
     TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBrush, k->brush);
     emit paintAreaEventTriggered(&event);
 }
@@ -422,6 +419,7 @@ void TupPenWidget::enableRoundCapStyle()
         k->flatCapButton->setChecked(false);
 
     k->pen.setCapStyle(Qt::RoundCap);
+
     updatePenProperties();
 }
 

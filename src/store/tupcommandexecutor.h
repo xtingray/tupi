@@ -75,6 +75,9 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         bool convertItem(TupItemResponse *response);
         bool transformItem(TupItemResponse *response);
         bool setPathItem(TupItemResponse *response);
+
+        bool setBrush(TupItemResponse *response);
+        bool setPen(TupItemResponse *response);
         
         bool removeScene(TupSceneResponse *response);
         bool removeLayer(TupLayerResponse *response);

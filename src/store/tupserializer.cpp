@@ -231,6 +231,8 @@ void TupSerializer::loadBrush(QBrush &brush, const QXmlAttributes &atts)
         QColor color(atts.value("color"));
         color.setAlpha(atts.value("alpha").toInt());
         brush.setColor(color);
+    } else {
+        brush.setColor(Qt::transparent);
     }
     
     QMatrix matrix;
@@ -238,18 +240,20 @@ void TupSerializer::loadBrush(QBrush &brush, const QXmlAttributes &atts)
     brush.setMatrix(matrix);
 }
 
-void TupSerializer::loadBrush(QBrush &brush, const QDomElement &e)
+void TupSerializer::loadBrush(QBrush &brush, const QDomElement &element)
 {
-    brush.setStyle(Qt::BrushStyle(e.attribute("style").toInt()));
+    brush.setStyle(Qt::BrushStyle(element.attribute("style").toInt()));
 
-    if (!e.attribute("color").isEmpty()) {
-        brush.setColor(QColor(e.attribute("color")));
+    if (!element.attribute("color").isEmpty()) {
+        QColor color(element.attribute("color"));
+        color.setAlpha(element.attribute("alpha").toInt());
+        brush.setColor(color);
     } else {
-        
+        brush.setColor(Qt::transparent);
     }
 
     QMatrix matrix;
-    TupSvg2Qt::svgmatrix2qtmatrix(e.attribute("transform"), matrix);
+    TupSvg2Qt::svgmatrix2qtmatrix(element.attribute("transform"), matrix);
     brush.setMatrix(matrix);
 }
 

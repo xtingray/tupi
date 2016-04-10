@@ -51,7 +51,8 @@ class TUPI_EXPORT TupPaintAreaEvent
              None = 0,
              ChangePen,
              ChangePenColor,
-             ChangeBrush
+             ChangeBrush,
+             ChangeBgColor
           };
 
         TupPaintAreaEvent(Action action, const QVariant &data);

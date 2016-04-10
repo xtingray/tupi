@@ -40,7 +40,7 @@ typedef QList<QImage> photoArray;
 struct TupScreen::Private
 {
     QWidget *container;
-    QImage renderCamera;
+    QImage currentPhotogram;
     QPoint imagePos;
     bool firstShoot;
     bool isScaled;
@@ -202,7 +202,7 @@ void TupScreen::paintEvent(QPaintEvent *)
 
     if (!k->firstShoot) {
         if (k->currentFramePosition > -1 && k->currentFramePosition < k->photograms.count())
-            k->renderCamera = k->photograms[k->currentFramePosition];
+            k->currentPhotogram = k->photograms[k->currentFramePosition];
     } else {
         k->firstShoot = false;
     }
@@ -210,11 +210,11 @@ void TupScreen::paintEvent(QPaintEvent *)
     QPainter painter;
     painter.begin(this);
 
-    painter.drawImage(k->imagePos, k->renderCamera);
+    painter.drawImage(k->imagePos, k->currentPhotogram);
 
     // SQA: Border for the player. Useful for some tests
     // painter.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
-    // painter.drawRect(x, y, k->renderCamera.size().width()-1, k->renderCamera.size().height()-1);
+    // painter.drawRect(x, y, k->currentPhotogram.size().width()-1, k->renderCamera.size().height()-1);
 }
 
 void TupScreen::play()
@@ -540,7 +540,7 @@ QSize TupScreen::sizeHint() const
         #endif
     #endif
 
-    return k->renderCamera.size();
+    return k->currentPhotogram.size();
 }
 
 void TupScreen::resizeEvent(QResizeEvent *event)
@@ -705,13 +705,13 @@ void TupScreen::updateFirstFrame()
 
             if (k->isScaled) {
                 QImage resized = firstFrame.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
-                k->renderCamera = resized;
+                k->currentPhotogram = resized;
             } else {
-                k->renderCamera = firstFrame;
+                k->currentPhotogram = firstFrame;
             }
 
-            int x = (frameSize().width() - k->renderCamera.size().width()) / 2;
-            int y = (frameSize().height() - k->renderCamera.size().height()) / 2;
+            int x = (frameSize().width() - k->currentPhotogram.size().width()) / 2;
+            int y = (frameSize().height() - k->currentPhotogram.size().height()) / 2;
             k->imagePos = QPoint(x, y);
 
             k->firstShoot = true;

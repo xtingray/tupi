@@ -279,8 +279,17 @@ void TupViewColorCells::changeColor(QTableWidgetItem* item)
     #endif
 
     if (item) {
-        k->currentCell = item;
-        emit selectColor(item->background());
+        if (k->currentCell) {
+            QColor currentColor = k->currentCell->background().color();
+            QColor newColor = item->background().color(); 
+            if (newColor != currentColor) {
+                k->currentCell = item;
+                emit colorSelected(item->background());
+            }
+        } else {
+            k->currentCell = item;
+            emit colorSelected(item->background());
+        }
     }
 }
 

@@ -68,103 +68,112 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
     Q_OBJECT
 
     public:
-       enum FrameType { DynamicBg = 0, StaticBg, Regular };
-       enum MoveItemType { MoveBack, MoveToFront, MoveOneLevelBack, MoveOneLevelToFront };
+        enum FrameType { DynamicBg = 0, StaticBg, Regular };
+        enum MoveItemType { MoveBack, MoveToFront, MoveOneLevelBack, MoveOneLevelToFront };
 
-       TupFrame();
-       TupFrame(TupLayer *parent);
-       TupFrame(TupBackground *bg, const QString &label);
+        TupFrame();
+        TupFrame(TupLayer *parent);
+        TupFrame(TupBackground *bg, const QString &label);
        
-       ~TupFrame();
+        ~TupFrame();
        
-       void setFrameName(const QString &name);
-       QString frameName() const;
+        void setFrameName(const QString &name);
+        QString frameName() const;
 
-       void setDynamicDirection(const QString &direction);
-       void setDynamicShift(const QString &shift);
-       TupBackground::Direction dynamicDirection() const;
-       int dynamicShift() const;
+        void setDynamicDirection(const QString &direction);
+        void setDynamicShift(const QString &shift);
+        TupBackground::Direction dynamicDirection() const;
+        int dynamicShift() const;
 
-       void setLocked(bool isLocked);
-       bool isLocked() const;
+        void setLocked(bool isLocked);
+        bool isLocked() const;
        
-       void setVisible(bool isVisible);
-       bool isVisible() const;
+        void setVisible(bool isVisible);
+        bool isVisible() const;
 
-       void setOpacity(double opacity);
-       double opacity(); 
+        void setOpacity(double opacity);
+        double opacity(); 
 
-       TupFrame::FrameType type();
+        TupFrame::FrameType type();
       
-       void addLibraryItem(const QString &id, TupGraphicLibraryItem *libraryItem);
-       void addItem(const QString &id, QGraphicsItem *item);
-       void removeImageItemFromFrame(const QString &id);
-       void updateIdFromFrame(const QString &oldId, const QString &newId);
+        void addLibraryItem(const QString &id, TupGraphicLibraryItem *libraryItem);
+        void addItem(const QString &id, QGraphicsItem *item);
+        void removeImageItemFromFrame(const QString &id);
+        void updateIdFromFrame(const QString &oldId, const QString &newId);
 
-       void addSvgItem(const QString &id, TupSvgItem *item);
-       void removeSvgItemFromFrame(const QString &id);
-       void updateSvgIdFromFrame(const QString &oldId, const QString &newId);
+        void addSvgItem(const QString &id, TupSvgItem *item);
+        void removeSvgItemFromFrame(const QString &id);
+        void updateSvgIdFromFrame(const QString &oldId, const QString &newId);
 
-       void replaceItem(int position, QGraphicsItem *item);
-       bool moveItem(TupLibraryObject::Type type, int currentPosition, int action);
+        void replaceItem(int position, QGraphicsItem *item);
+        bool moveItem(TupLibraryObject::Type type, int currentPosition, int action);
       
-       bool removeGraphic(int position);
-       bool removeGraphicAt(int position);
-       void restoreGraphic();
+        bool removeGraphic(int position);
+        bool removeGraphicAt(int position);
+        void restoreGraphic();
 
-       bool removeSvg(int position);
-       bool removeSvgAt(int position);
-       void restoreSvg();
+        bool removeSvg(int position);
+        bool removeSvgAt(int position);
+        void restoreSvg();
 
-       QGraphicsItem *createItem(QPointF coords, const QString &xml, bool loaded = false);
-       TupSvgItem *createSvgItem(QPointF coords, const QString &xml, bool loaded = false);
+        QGraphicsItem *createItem(QPointF coords, const QString &xml, bool loaded = false);
+        TupSvgItem *createSvgItem(QPointF coords, const QString &xml, bool loaded = false);
 
-       void setGraphics(GraphicObjects objects);       
-       void setSvgObjects(SvgObjects objects);
-       GraphicObjects graphics() const;
-       SvgObjects svgItems() const; 
+        void setGraphics(GraphicObjects objects);       
+        void setSvgObjects(SvgObjects objects);
+        GraphicObjects graphics() const;
+        SvgObjects svgItems() const; 
        
-       TupGraphicObject *graphicAt(int position) const;
-       TupSvgItem *svgAt(int position) const; 
-       QGraphicsItem *item(int position) const;
+        TupGraphicObject *graphicAt(int position) const;
+        TupSvgItem *svgAt(int position) const; 
+        QGraphicsItem *item(int position) const;
        
-       int createItemGroup(int position, QList<int> group);
-       QList<QGraphicsItem *> splitGroup(int position);
+        int createItemGroup(int position, QList<int> group);
+        QList<QGraphicsItem *> splitGroup(int position);
              
-       TupLayer *layer() const;
-       TupScene *scene() const;
-       TupProject *project() const;
+        TupLayer *layer() const;
+        TupScene *scene() const;
+        TupProject *project() const;
        
-       int indexOf(TupGraphicObject *object) const;
-       int indexOf(QGraphicsItem *item) const;
-       int indexOf(TupSvgItem *item) const;
+        int indexOf(TupGraphicObject *object) const;
+        int indexOf(QGraphicsItem *item) const;
+        int indexOf(TupSvgItem *item) const;
        
-       int index() const;
+        int index() const;
        
-       // void setRepeat(int repeat);
-       // int repeat() const;
-       
-       void clear();
-       int graphicItemsCount();
-       int svgItemsCount();
-       int itemsTotalCount();
+        void clear();
+        int graphicItemsCount();
+        int svgItemsCount();
+        int itemsTotalCount();
 
-       int getTopZLevel();
+        int getTopZLevel();
 
-       bool isEmpty();
+        bool isEmpty();
 
-       void reloadGraphicItem(const QString &id, const QString &path);
-       void reloadSVGItem(const QString &id, TupLibraryObject *object);
-       void updateZLevel(int zLevelIndex);
+        void reloadGraphicItem(const QString &id, const QString &path);
+        void reloadSVGItem(const QString &id, TupLibraryObject *object);
+        void updateZLevel(int zLevelIndex);
 
-       void storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties);
-       QString undoTransformation(TupLibraryObject::Type itemType, int index) const;
-       QString redoTransformation(TupLibraryObject::Type itemType, int index) const;
+        void storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties);
+        QString undoTransformation(TupLibraryObject::Type itemType, int index) const;
+        QString redoTransformation(TupLibraryObject::Type itemType, int index) const;
 
-       void renderView();
-       bool renderIsPending();
-       void updateRenderStatus(bool flag);
-       QPixmap framePixmap() const;
+        void renderView();
+        bool renderIsPending();
+        void updateRenderStatus(bool flag);
+        QPixmap framePixmap() const;
+
+       bool brushIsNotEdited(int itemIndex);
+       void saveInitBrush(int itemIndex);
+       void setBrushAtItem(int itemIndex, const QString &xml);
+       void redoBrushAction(int itemIndex);
+       void undoBrushAction(int itemIndex);
+
+       bool penIsNotEdited(int itemIndex);
+       void saveInitPen(int itemIndex);
+       void setPenAtItem(int itemIndex, const QString &xml);
+       void redoPenAction(int itemIndex);
+       void undoPenAction(int itemIndex);
        
     public:
        virtual void fromXml(const QString &xml);

@@ -290,7 +290,9 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
         connect(animationTab, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize))); 
         connect(animationTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
-        connect(m_colorPalette, SIGNAL(bgColorChanged(const QColor)), animationTab, SLOT(updateBgColor(const QColor)));
+        connect(animationTab, SIGNAL(contourColorChanged(const QColor &)), m_colorPalette, SLOT(updateContourColor(const QColor &))); 
+        connect(animationTab, SIGNAL(fillColorChanged(const QColor &)), m_colorPalette, SLOT(updateFillColor(const QColor &)));
+        connect(animationTab, SIGNAL(bgColorChanged(const QColor &)), m_colorPalette, SLOT(updateBgColor(const QColor &)));
 
         animationTab->setAntialiasing(true);
 
@@ -298,8 +300,9 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         int height = animationTab->workSpaceSize().height();
         animationTab->setWorkSpaceSize(width, height);
 
-        int pWidth = m_projectManager->project()->dimension().width();
-        int pHeight = m_projectManager->project()->dimension().height();
+        TupProject *project = m_projectManager->project();
+        int pWidth = project->dimension().width();
+        int pHeight = project->dimension().height();
 
         double proportion = 1;
         if (pWidth > pHeight)
@@ -345,18 +348,19 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         m_projectManager->undoModified();
         m_colorPalette->init();
+        m_colorPalette->setBgColor(project->bgColor());
 
         TCONFIG->beginGroup("PenParameters");
-        int thicknessValue = TCONFIG->value("Thickness", -1).toInt();
-        m_penWidget->init();
-        m_penWidget->setThickness(thicknessValue);
+        int thickness = TCONFIG->value("Thickness", -1).toInt();
+        m_penWidget->init(thickness);
+        // m_penWidget->setThickness(thickness);
 
         if (TupMainWindow::requestType == OpenLocalProject || TupMainWindow::requestType == OpenNetProject)
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
 
         m_exposureSheet->setScene(0);
-
         connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
+
         m_projectManager->clearUndoStack();
     }
 }
@@ -1034,8 +1038,8 @@ void TupMainWindow::disconnectWidgetToManager(QWidget *widget)
 
 void TupMainWindow::connectWidgetToPaintArea(QWidget *widget)
 {
-    connect(widget, SIGNAL(paintAreaEventTriggered(const TupPaintAreaEvent *)), this, 
-            SLOT(createCommand(const TupPaintAreaEvent *)));
+    connect(widget, SIGNAL(paintAreaEventTriggered(const TupPaintAreaEvent *)), 
+            this, SLOT(createPaintCommand(const TupPaintAreaEvent *)));
 }
 
 /**
@@ -1248,11 +1252,19 @@ void TupMainWindow::closeEvent(QCloseEvent *event)
  * @endif
 */
 
-void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
+void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupMainWindow::createPaintCommand()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (!animationTab) {
         #ifdef K_DEBUG
-            QString msg = "TupMainWindow::createCommand() - No animation tab... aborting!"; 
+            QString msg = "TupMainWindow::createPaintCommand() - No animation tab... aborting!"; 
             #ifdef Q_OS_WIN
                qDebug() << msg;
             #else
@@ -1262,7 +1274,8 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
         return;
     }
 
-    TupPaintAreaCommand *command = animationTab->createCommand(event);
+    TupPaintAreaCommand *command = animationTab->createPaintCommand(event);
+
     if (command) { 
         // SQA: Implement Undo procedure for "Color" actions 
         m_projectManager->createCommand((TupProjectCommand *)command);
@@ -1276,13 +1289,13 @@ void TupMainWindow::createCommand(const TupPaintAreaEvent *event)
 void TupMainWindow::updatePenColor(const QColor &color)
 {
     TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePenColor, color);
-    createCommand(event);
+    createPaintCommand(event);
 }
 
 void TupMainWindow::updatePenThickness(const QPen &pen)
 {
     TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePen, pen);
-    createCommand(event);
+    createPaintCommand(event);
 }
 
 /**

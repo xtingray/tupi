@@ -78,10 +78,13 @@ class TUPI_EXPORT TupColorPalette : public TupModuleWidgetBase
         // SQA: change this for QBrush
         QPair<QColor, QColor> color();
         void parsePaletteFile(const QString &file);
+        void setBgColor(const QColor &color);
 
     public slots:
-        void reset();
         void init();
+        void updateContourColor(const QColor &color);
+        void updateFillColor(const QColor &color);
+        void updateBgColor(const QColor &color);
 
     private slots:
         void updateColorMode(TColorCell::FillType flag);
@@ -98,7 +101,6 @@ class TUPI_EXPORT TupColorPalette : public TupModuleWidgetBase
         void updateColorType(int index);
 		
     signals:
-        void bgColorChanged(const QColor color);
         void paintAreaEventTriggered(const TupPaintAreaEvent *event);
 
     private:

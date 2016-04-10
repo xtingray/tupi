@@ -189,6 +189,16 @@ QString TupProjectCommand::actionString(int action)
             return QObject::tr("edit node");
         }
         break;
+        case TupProjectRequest::Pen:
+        {
+            return QObject::tr("pen");
+        }
+        break;
+        case TupProjectRequest::Brush:
+        {
+            return QObject::tr("brush");
+        }
+        break;
         case TupProjectRequest::View:
         {
             return QObject::tr("view");
@@ -622,6 +632,16 @@ void TupProjectCommand::itemCommand()
             case TupProjectRequest::EditNodes:
             {
                  k->executor->setPathItem(response);
+            }
+            break;
+            case TupProjectRequest::Pen:
+            {
+                 k->executor->setPen(response);
+            }
+            break;
+            case TupProjectRequest::Brush:
+            {
+                 k->executor->setBrush(response);
             }
             break;
             case TupProjectRequest::Select:

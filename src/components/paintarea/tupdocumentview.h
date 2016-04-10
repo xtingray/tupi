@@ -45,6 +45,7 @@
 #include "tupconfigurationarea.h"
 #include "tupstoryboard.h"
 #include "tcolorcell.h"
+#include "tupbrushmanager.h"
 
 #include <QMainWindow>
 #include <QLayout>
@@ -103,7 +104,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         QPen contourPen() const;
         QBrush fillBrush() const;
 
-        TupPaintAreaCommand *createCommand(const TupPaintAreaEvent *event);
+        TupPaintAreaCommand *createPaintCommand(const TupPaintAreaEvent *event);
         void updatePaintArea();
         TupProject::Mode spaceContext();
         TupProject *project();
@@ -169,6 +170,9 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void updateLayersOnionColor(TColorCell::FillType);
         void updateBackgroundOnionColor(TColorCell::FillType);
 
+        void updatePen(const QPen &pen);
+        void updateBrush(const QBrush &brush);
+
     public slots:
         void undo();
         void redo();
@@ -199,6 +203,9 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void projectSizeHasChanged(const QSize dimension);
         void updateFPS(int fps);
         void newPerspective(int index);
+        void contourColorChanged(const QColor &color);
+        void fillColorChanged(const QColor &color);
+        void bgColorChanged(const QColor &color);
 
     private:
         void setupDrawActions();

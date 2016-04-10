@@ -217,7 +217,7 @@ class TupMainWindow : public TabbedMainWindow
           void showTipDialog();
           void importPalettes();
           void openRecentProject();
-          void createCommand(const TupPaintAreaEvent *event);
+          void createPaintCommand(const TupPaintAreaEvent *event);
           void callSave();
           void expandExposureView(TupProject::Mode contextMode);
           void resetMousePointer();

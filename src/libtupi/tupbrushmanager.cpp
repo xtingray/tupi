@@ -46,6 +46,7 @@ struct TupBrushManager::Private
     Private() : pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap)), brush(Qt::transparent) {}
     QPen pen;
     QBrush brush;
+    QColor bgColor;
 };
 
 TupBrushManager::TupBrushManager(QObject * parent) : QObject(parent), k(new Private)
@@ -63,6 +64,11 @@ TupBrushManager::~TupBrushManager()
     delete k;
 }
 
+QPen TupBrushManager::pen() const
+{
+    return k->pen;
+}
+
 void TupBrushManager::setPen(const QPen &pen)
 {
     k->pen = pen;
@@ -78,20 +84,33 @@ void TupBrushManager::setPenColor(const QColor &color)
     emit penChanged(k->pen);
 }
 
-QPen TupBrushManager::pen() const
+QBrush TupBrushManager::brush() const
 {
-    return k->pen;
+    return k->brush;
 }
 
 void TupBrushManager::setBrush(const QBrush &brush)
 {
     k->brush = brush;
+
     emit brushChanged(brush);
 }
 
-QBrush TupBrushManager::brush() const
+void TupBrushManager::initBgColor(const QColor &color)
 {
-    return k->brush;
+    k->bgColor = color;
+}
+
+void TupBrushManager::setBgColor(const QColor &color)
+{
+    k->bgColor = color;
+
+    emit bgColorChanged(color);
+}
+
+QColor TupBrushManager::bgColor()
+{
+    return k->bgColor;
 }
 
 int TupBrushManager::penWidth() const

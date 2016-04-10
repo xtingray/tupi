@@ -1689,3 +1689,62 @@ QPixmap TupFrame::framePixmap() const
     return k->framePixmap;
 }
 
+bool TupFrame::brushIsNotEdited(int itemIndex)
+{
+     TupGraphicObject *object = k->graphics.at(itemIndex);
+     return object->brushIsNotEdited(); 
+}
+
+void TupFrame::saveInitBrush(int itemIndex)
+{
+     TupGraphicObject *object = k->graphics.at(itemIndex);
+     return object->saveInitBrush();
+}
+
+void TupFrame::setBrushAtItem(int itemIndex, const QString &xml)
+{
+    TupGraphicObject *object = k->graphics.at(itemIndex);
+    object->setBrush(xml);
+}
+
+void TupFrame::redoBrushAction(int itemIndex)
+{
+    TupGraphicObject *object = k->graphics.at(itemIndex);
+    object->redoBrushAction();
+}
+
+void TupFrame::undoBrushAction(int itemIndex)
+{
+    TupGraphicObject *object = k->graphics.at(itemIndex);
+    object->undoBrushAction();
+}
+
+bool TupFrame::penIsNotEdited(int itemIndex)
+{
+     TupGraphicObject *object = k->graphics.at(itemIndex);
+     return object->penIsNotEdited();
+}
+
+void TupFrame::saveInitPen(int itemIndex)
+{
+     TupGraphicObject *object = k->graphics.at(itemIndex);
+     return object->saveInitPen();
+}
+
+void TupFrame::setPenAtItem(int itemIndex, const QString &xml)
+{
+    TupGraphicObject *object = k->graphics.at(itemIndex);
+    object->setPen(xml);
+}
+
+void TupFrame::redoPenAction(int itemIndex)
+{
+    TupGraphicObject *object = k->graphics.at(itemIndex);
+    object->redoPenAction();
+}
+
+void TupFrame::undoPenAction(int itemIndex)
+{
+    TupGraphicObject *object = k->graphics.at(itemIndex);
+    object->undoPenAction();
+}

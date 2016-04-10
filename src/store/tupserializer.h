@@ -72,7 +72,7 @@ class TUPI_EXPORT TupSerializer
         
         static QDomElement brush(const QBrush *brush, QDomDocument &doc);
         static void loadBrush(QBrush &brush, const QXmlAttributes &atts);
-        static void loadBrush(QBrush &brush, const QDomElement &e);
+        static void loadBrush(QBrush &brush, const QDomElement &element);
         
         static QDomElement pen(const QPen *pen, QDomDocument &doc);
         static void loadPen(QPen &pen, const QXmlAttributes &atts);

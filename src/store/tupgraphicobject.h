@@ -86,6 +86,18 @@ class TUPI_EXPORT TupGraphicObject : public QObject, public TupAbstractSerializa
         QString undoTransformation() const;
         QString redoTransformation() const;
 
+        bool brushIsNotEdited();
+        void saveInitBrush();
+        void setBrush(const QString &xml);
+        void redoBrushAction();
+        void undoBrushAction();
+
+        bool penIsNotEdited();
+        void saveInitPen();
+        void setPen(const QString &xml);
+        void redoPenAction();
+        void undoPenAction();
+
     public:
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc)  const;

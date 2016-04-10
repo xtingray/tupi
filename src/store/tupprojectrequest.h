@@ -118,28 +118,30 @@ class TUPI_EXPORT TupProjectRequest
             Transform = 10,
             Convert = 11,
             EditNodes = 12,
-            InsertSymbolIntoFrame = 13,
-            RemoveSymbolFromFrame = 14,
+            Pen = 13,
+            Brush = 14,
+            InsertSymbolIntoFrame = 15,
+            RemoveSymbolFromFrame = 16,
 
-            SetTween = 15,
-            UpdateTween = 16,
-            RemoveTween = 17,
+            SetTween = 17,
+            UpdateTween = 18,
+            RemoveTween = 19,
             
             // frames
-            Update = 18,
-            Expand = 19,
-            Copy = 20,
-            Paste = 21,
+            Update = 20,
+            Expand = 21,
+            Copy = 22,
+            Paste = 23,
 
             // scenes
-            GetInfo = 22, 
-            BgColor = 23,
+            GetInfo = 24, 
+            BgColor = 25,
 
             // layer
-            AddLipSync = 24,
-            UpdateLipSync = 25,
-            RemoveLipSync = 26,
-            UpdateOpacity = 27
+            AddLipSync = 26,
+            UpdateLipSync = 27,
+            RemoveLipSync = 28,
+            UpdateOpacity = 29
         };
         
         enum Part

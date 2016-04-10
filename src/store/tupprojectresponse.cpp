@@ -93,6 +93,14 @@ int TupProjectResponse::action() const
                      {
                      }
                 break;
+                case TupProjectRequest::Pen:
+                     {
+                     }
+                break;
+                case TupProjectRequest::Brush:
+                     {
+                     }
+                break;
                 case TupProjectRequest::View:
                      {
                      }
