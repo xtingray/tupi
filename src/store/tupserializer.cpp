@@ -303,6 +303,7 @@ void TupSerializer::loadPen(QPen &pen, const QDomElement &element)
     pen.setWidthF(element.attribute("width").toDouble());
     pen.setMiterLimit(element.attribute("miterLimit").toInt());
 
+    /*
     QColor color;
     QString colorName = element.attribute("color");
     if (!colorName.isEmpty()) {
@@ -311,13 +312,15 @@ void TupSerializer::loadPen(QPen &pen, const QDomElement &element)
     } else {
         color = QColor(Qt::transparent);
     }
+    pen.setColor(color);
+    */
 
     QDomNode node = element.firstChild();
     QDomElement brushElement = node.toElement();
     QBrush brush; 
     loadBrush(brush, brushElement);
 
-    pen.setColor(color);
+    // pen.setColor(color);
     pen.setBrush(brush);
 }
 
