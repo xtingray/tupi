@@ -155,7 +155,6 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     return;
                 }
 
-                
                 if (qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(item)) {
                     QDomDocument doc;
                     TupProjectRequest::Action action;
@@ -171,13 +170,9 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                                    frame->saveInitPen(itemIndex);
 
                                QPen pen = brushManager->pen();
-                               pen.setBrush(brushManager->pen().brush());
                                action = TupProjectRequest::Pen;
                                doc.appendChild(TupSerializer::pen(&pen, doc));
                     }
-
-                    tError() << "Tracing doc:";
-                    tError() << doc.toString();
 
                     TupProjectRequest event = TupRequestBuilder::createItemRequest(
                                               scene->currentSceneIndex(), currentLayer,

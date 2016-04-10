@@ -282,17 +282,43 @@ void TupSerializer::loadPen(QPen &pen, const QXmlAttributes &atts)
     pen.setJoinStyle(Qt::PenJoinStyle(atts.value("joinStyle").toInt()));
     pen.setWidthF(atts.value("width").toDouble());
     pen.setMiterLimit(atts.value("miterLimit").toInt());
-    
-    if (!atts.value("color").isEmpty()) {
-        QColor color(atts.value("color"));
+   
+    QColor color; 
+    QString colorName = atts.value("color");
+    if (!colorName.isEmpty()) {
+        color = QColor(colorName);
         color.setAlpha(atts.value("alpha").toInt());
+    } else {
+        color = QColor(Qt::transparent);
     }
+
+    pen.setColor(color);
 }
 
-void TupSerializer::loadPen(QPen &pen, const QDomElement &event)
+void TupSerializer::loadPen(QPen &pen, const QDomElement &element)
 {
-    Q_UNUSED(pen); 
-    Q_UNUSED(event);
+    pen.setCapStyle(Qt::PenCapStyle(element.attribute("capStyle").toInt()));
+    pen.setStyle(Qt::PenStyle(element.attribute("style").toInt()));
+    pen.setJoinStyle(Qt::PenJoinStyle(element.attribute("joinStyle").toInt()));
+    pen.setWidthF(element.attribute("width").toDouble());
+    pen.setMiterLimit(element.attribute("miterLimit").toInt());
+
+    QColor color;
+    QString colorName = element.attribute("color");
+    if (!colorName.isEmpty()) {
+        color = QColor(colorName);
+        color.setAlpha(element.attribute("alpha").toInt());
+    } else {
+        color = QColor(Qt::transparent);
+    }
+
+    QDomNode node = element.firstChild();
+    QDomElement brushElement = node.toElement();
+    QBrush brush; 
+    loadBrush(brush, brushElement);
+
+    pen.setColor(color);
+    pen.setBrush(brush);
 }
 
 QDomElement TupSerializer::font(const QFont *font, QDomDocument &doc)
