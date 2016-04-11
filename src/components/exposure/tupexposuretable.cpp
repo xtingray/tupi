@@ -642,13 +642,11 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         if (row > -1) {
             if (event->modifiers() == Qt::ControlModifier)
                 emit frameRemoved();
-                // emit frameRemoved(currentLayer(), currentFrame());
             else
                 setCurrentCell(row, currentColumn());
         } else {
             if (row == -1 && event->modifiers() == Qt::ControlModifier)
                 emit frameRemoved();
-                // emit frameRemoved(currentLayer(), currentFrame());
         }
 
         return;

@@ -63,20 +63,19 @@ bool TupCommandExecutor::createFrame(TupFrameResponse *response)
         if (layer) {
             if (response->mode() == TupProjectResponse::Do) {
                 TupFrame *frame = layer->createFrame(name, position);
-                if (!frame)
-                    return false;
-                // response->setArg(frame->frameName());
-                // response->setFrameIndex(layer->visualIndexOf(frame));
+                if (frame) {
+                    emit responsed(response);
+                    return true;
+                }
             }
 
             if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
                 bool success = layer->restoreFrame(position);
-                if (!success)
-                    return false;
+                if (success) {
+                    emit responsed(response);
+                    return true;
+                }
             }
-
-            emit responsed(response);
-            return true;
         }
     }
     
@@ -91,7 +90,6 @@ bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
     int realPosition = response->arg().toInt();
 
     TupScene *scene = m_project->sceneAt(sceneIndex);
-    
     if (scene) {
         scene->removeStoryBoardScene(position);
         TupLayer *layer = scene->layerAt(layerIndex);
@@ -100,7 +98,6 @@ bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
             if (frame) {
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
-                // response->setArg(frame->frameName());
                 scene->removeTweensFromFrame(layerIndex, realPosition);
                 
                 if (layer->removeFrame(position)) {
@@ -123,22 +120,15 @@ bool TupCommandExecutor::resetFrame(TupFrameResponse *response)
     int position = response->frameIndex();
    
     TupScene *scene = m_project->sceneAt(sceneIndex);
-   
     if (scene) {
         scene->resetStoryBoardScene(position);
         TupLayer *layer = scene->layerAt(layerIndex);
         if (layer) {
             TupFrame *frame = layer->frameAt(position);
             if (frame) {
-                /*
-                QDomDocument doc;
-                doc.appendChild(frame->toXml(doc));
-                response->setArg(frame->frameName());
-                */
                 if (layer->resetFrame(position)) {
-                    //response->setState(doc.toString(0));
+                    frame->updateRenderStatus(true);
                     emit responsed(response);
-
                     return true;
                 }
             }
@@ -156,26 +146,24 @@ bool TupCommandExecutor::moveFrame(TupFrameResponse *response)
     int newPosition = response->arg().toInt();
 
     TupScene *scene = m_project->sceneAt(sceneIndex);
-    if (!scene)
-        return false;
-   
-    scene->moveStoryBoardScene(position, newPosition); 
-    TupLayer *layer = scene->layerAt(layerIndex);
-    
-    if (layer) {
-        if (layer->moveFrame(position, newPosition)) {
-            emit responsed(response);
-            return true;
-        } else {
-            #ifdef K_DEBUG
-                QString msg = "TupCommandExecutor::moveFrame() - Error while moving frame";
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
-            #endif  
-            return false;
+    if (scene) {
+        scene->moveStoryBoardScene(position, newPosition); 
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            if (layer->moveFrame(position, newPosition)) {
+                emit responsed(response);
+                return true;
+            } else {
+                #ifdef K_DEBUG
+                    QString msg = "TupCommandExecutor::moveFrame() - Fatal error while moving frame!";
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif  
+                return false;
+            }
         }
     }
     
@@ -188,28 +176,26 @@ bool TupCommandExecutor::exchangeFrame(TupFrameResponse *response)
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();
     int newPosition = response->arg().toInt();
+
     TupScene *scene = m_project->sceneAt(sceneIndex);
-   
-    if (!scene)
-        return false;
-  
-    scene->moveStoryBoardScene(position, newPosition);
-    TupLayer *layer = scene->layerAt(layerIndex);
-   
-    if (layer) {
-        if (layer->exchangeFrame(position, newPosition)) {
-            emit responsed(response);
-            return true;
-        } else {
-            #ifdef K_DEBUG
-                QString msg = "TupCommandExecutor::exchangeFrame() - Error while exchanging frames";
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
-            #endif  
-            return false;
+    if (scene) {
+        scene->moveStoryBoardScene(position, newPosition);
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            if (layer->exchangeFrame(position, newPosition)) {
+                emit responsed(response);
+                return true;
+            } else {
+                #ifdef K_DEBUG
+                    QString msg = "TupCommandExecutor::exchangeFrame() - Error while exchanging frames";
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif  
+                return false;
+            }
         }
     }
    
@@ -222,29 +208,22 @@ bool TupCommandExecutor::lockFrame(TupFrameResponse *response)
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();
     bool lock = response->arg().toBool();
-    
-    TupScene *scene = m_project->sceneAt(sceneIndex);
-    
-    if (!scene)
-        return false;
-    
-    TupLayer *layer = scene->layerAt(layerIndex);
-    
-    if (layer) {
-        TupFrame *frame = layer->frameAt(position);
-        
-        if (! frame) 
-            return false;
-        
-        frame->setLocked(lock);
-        emit responsed(response);
 
-        return true;
+    TupScene *scene = m_project->sceneAt(sceneIndex);
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            TupFrame *frame = layer->frameAt(position);
+            if (frame) {
+                frame->setLocked(lock);
+                emit responsed(response);
+                return true;
+            }
+        }
     }
     
     return false;
 }
-
 
 bool TupCommandExecutor::renameFrame(TupFrameResponse *response)
 {
@@ -259,31 +238,22 @@ bool TupCommandExecutor::renameFrame(TupFrameResponse *response)
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();
-    QString newName= response->arg().toString();
+    QString newName = response->arg().toString();
 
-    QString oldName;
-    
     TupScene *scene = m_project->sceneAt(sceneIndex);
-    
-    if (!scene)
-        return false;
-    
-    TupLayer *layer = scene->layerAt(layerIndex);
-    
-    if (layer) {
-        TupFrame *frame = layer->frameAt(position);
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            TupFrame *frame = layer->frameAt(position);
+            if (frame) { 
+                QString oldName = frame->frameName();
+                if (oldName.compare(newName) != 0)
+                    frame->setFrameName(newName);
         
-        if (! frame) 
-            return false;
-        
-        oldName = frame->frameName();
-
-        if (oldName.compare(newName) != 0)
-            frame->setFrameName(newName);
-        
-        emit responsed(response);
-
-        return true;
+                emit responsed(response);
+                return true;
+            }
+        }
     }
     
     return false;
@@ -303,33 +273,31 @@ bool TupCommandExecutor::selectFrame(TupFrameResponse *response)
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();
-    // bool prioritary = response->arg().toBool();
+
+    if (sceneIndex < 0 || position < 0)
+        return false;
 
     TupScene *scene = m_project->sceneAt(sceneIndex);
-
-    if (!scene || sceneIndex < 0 || position < 0)
-        return false;
-    
-    TupLayer *layer = scene->layerAt(layerIndex);
-    
-    if (layer) {
-        if (position < layer->framesCount()) {
-            TupFrame *frame = layer->frameAt(position);
-            if (! frame) 
-                return false;
-        
-            emit responsed(response);
-            return true;
-        } else {
-            #ifdef K_DEBUG
-                QString msg = "TupCommandExecutor::selectFrame() - Invalid frame index -> " + QString::number(position);
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
-            #endif
-            return false;
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            if (position < layer->framesCount()) {
+                TupFrame *frame = layer->frameAt(position);
+                if (frame) {
+                    emit responsed(response);
+                    return true;
+                } else {
+                    #ifdef K_DEBUG
+                        QString msg = "TupCommandExecutor::selectFrame() - Invalid frame index -> " + QString::number(position);
+                        #ifdef Q_OS_WIN
+                           qDebug() << msg;
+                        #else
+                           tError() << msg;
+                        #endif
+                    #endif
+                    return false;
+                }
+            }
         }
     } 
     
@@ -342,24 +310,19 @@ bool TupCommandExecutor::setFrameVisibility(TupFrameResponse *response)
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();
     bool view = response->arg().toBool();
-    
     TupScene *scene = m_project->sceneAt(sceneIndex);
-    
-    if (!scene)
-        return false;
-    
-    TupLayer *layer = scene->layerAt(layerIndex);
-    
-    if (layer) {
-        TupFrame *frame = layer->frameAt(position);
-        
-        if (! frame) 
-            return false;
-        
-        frame->setVisible(view);
-        emit responsed(response);
 
-        return true;
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            TupFrame *frame = layer->frameAt(position);
+            if (frame) { 
+                frame->setVisible(view);
+                emit responsed(response);
+
+                return true;
+            }
+        }
     }
     
     return false;
@@ -371,19 +334,15 @@ bool TupCommandExecutor::expandFrame(TupFrameResponse *response)
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();
     int times = response->arg().toInt();
-    
-    TupScene *scene = m_project->sceneAt(sceneIndex);
-    
-    if (!scene)
-        return false;
-    
-    TupLayer *layer = scene->layerAt(layerIndex);
-    
-    if (layer) {
-        if (layer->expandFrame(position, times)) {
-            emit responsed(response);
 
-            return true;
+    TupScene *scene = m_project->sceneAt(sceneIndex);
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            if (layer->expandFrame(position, times)) {
+                emit responsed(response);
+                return true;
+            }
         }
     }
 
@@ -420,6 +379,7 @@ bool TupCommandExecutor::pasteFrame(TupFrameResponse *response)
                 frame->fromXml(copyFrame);
                 frame->setFrameName(name);
 
+                frame->updateRenderStatus(true);
                 response->setFrameState(frame->isEmpty());
                 emit responsed(response);
 

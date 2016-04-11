@@ -42,7 +42,7 @@ struct TupExposureSheet::Private
     TupExposureTable *currentTable;
     TupProjectActionBar *actionBar;
     QMenu *menu;
-    QString nameCopyFrame;
+    QString copyFrameName;
     // bool fromMenu;
     bool localRequest;
     int previousScene;
@@ -467,7 +467,7 @@ void TupExposureSheet::requestCopyCurrentFrame()
 
 void TupExposureSheet::requestPasteInCurrentFrame()
 {
-    if (k->nameCopyFrame.isEmpty()) {
+    if (k->copyFrameName.isEmpty()) {
         #ifdef K_DEBUG
             QString msg = "TupExposureSheet::requestPasteInCurrentFrame() - The copied frame name is empty!";
             #ifdef Q_OS_WIN
@@ -970,7 +970,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                 break;
                 case TupProjectRequest::Copy:
                  {
-                     k->nameCopyFrame = table->frameName(layerIndex, frameIndex);
+                     k->copyFrameName = table->frameName(layerIndex, frameIndex);
                  }
                 break;
                 case TupProjectRequest::Paste:
@@ -981,7 +981,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                              if (response->arg().toString().isEmpty())
                                  table->removeFrame(layerIndex, frameIndex, false);
                          } else {
-                             table->insertFrame(layerIndex, frameIndex, k->nameCopyFrame + "- copy", response->external());
+                             table->insertFrame(layerIndex, frameIndex, k->copyFrameName + "- copy", response->external());
                          }
                      }
                      */
@@ -990,6 +990,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                      if (response->frameIsEmpty())
                          frameStatus = TupExposureTable::Empty;
                      k->currentTable->updateFrameState(layerIndex, frameIndex, frameStatus);
+                     table->setFrameName(layerIndex, frameIndex, k->copyFrameName);
                  }
                 break;
         }

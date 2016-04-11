@@ -105,7 +105,7 @@ class TUPI_EXPORT TupPaintArea : public TupPaintAreaBase, public TupAbstractProj
         void goToFrame(int frameIndex, int layerIndex, int sceneIndex);
         void goToScene(int sceneIndex);
         void copyCurrentFrame();
-        void pasteDataOnCurrentFrame();
+        void pasteCurrentFrame();
         void copyFrameForward();
         void removeCurrentFrame();
         int currentSceneIndex();

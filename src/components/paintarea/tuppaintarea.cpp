@@ -53,7 +53,9 @@ struct TupPaintArea::Private
     QPointF oldPosition;
     QPointF position;
     bool menuOn;
-    QString frameCopy;
+    // QString frameCopy;
+    QString copyFrameName;
+    bool copyIsValid;
     bool canvasEnabled;
 };
 
@@ -76,6 +78,7 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
     k->currentSceneIndex = 0;
     k->deleteMode = false;
     k->menuOn = false;
+    k->copyIsValid = false;
 
     k->currentTool = tr("Pencil");
 
@@ -893,6 +896,8 @@ void TupPaintArea::copyItems()
                      QApplication::clipboard()->setPixmap(toPixmap);
             }
         }
+    } else {
+        copyCurrentFrame();
     }
 }
 
@@ -906,47 +911,41 @@ void TupPaintArea::pasteItems()
         #endif
     #endif
 
-    TupGraphicsScene* currentScene = graphicsScene();
+    if (!k->copiesXml.isEmpty()) {
+        TupGraphicsScene* currentScene = graphicsScene();
 
-    if (!k->menuOn)
-        k->position = viewPosition();
+        if (!k->menuOn)
+            k->position = viewPosition();
     
-    foreach (QString xml, k->copiesXml) {
-             TupLibraryObject::Type type = TupLibraryObject::Item;
-             int total = currentScene->currentFrame()->graphicItemsCount();
+        foreach (QString xml, k->copiesXml) {
+                 TupLibraryObject::Type type = TupLibraryObject::Item;
+                 int total = currentScene->currentFrame()->graphicItemsCount();
 
-             if (xml.startsWith("<svg")) {
-                 type = TupLibraryObject::Svg;
-                 total = currentScene->currentFrame()->svgItemsCount();
-             } 
+                 if (xml.startsWith("<svg")) {
+                     type = TupLibraryObject::Svg;
+                     total = currentScene->currentFrame()->svgItemsCount();
+                 } 
 
-             int init = xml.indexOf("pos=") + 6;
-             int end = xml.indexOf(")", init);
-             int n = end - init;
-             QString string = xml.mid(init, n);  
-             QStringList list = string.split(",");
-             int x = list.at(0).toFloat();
-             int y = list.at(1).toFloat();
-             QPoint point = QPoint(x, y);
+                 int init = xml.indexOf("pos=") + 6;
+                 int end = xml.indexOf(")", init);
+                 int n = end - init;
+                 QString string = xml.mid(init, n);  
+                 QStringList list = string.split(",");
+                 int x = list.at(0).toFloat();
+                 int y = list.at(1).toFloat();
+                 QPoint point = QPoint(x, y);
 
-             TupProjectRequest event = TupRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
-                                       currentScene->currentLayerIndex(),
-                                       currentScene->currentFrameIndex(),
-                                       total, point, k->spaceMode, type,   
-                                       TupProjectRequest::Add, xml);
-             emit requestTriggered(&event);
-
-             /* SQA: Pay attention to the point variable - Copy/Paste issue 
-             TupProjectRequest event = TupRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
-                                      currentScene->currentLayerIndex(), 
-                                      currentScene->currentFrameIndex(), 
-                                      total, point, k->spaceMode, type, 
-                                      TupProjectRequest::Add, xml);
-             emit requestTriggered(&event);
-             */
-     }
-
-     k->menuOn = false;
+                 TupProjectRequest event = TupRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
+                                           currentScene->currentLayerIndex(),
+                                           currentScene->currentFrameIndex(),
+                                           total, point, k->spaceMode, type,   
+                                           TupProjectRequest::Add, xml);
+                 emit requestTriggered(&event);
+        }
+        k->menuOn = false;
+    } else {
+        pasteCurrentFrame();
+    }
 }
 
 void TupPaintArea::multipasteObject(int pasteTotal)
@@ -1378,40 +1377,46 @@ void TupPaintArea::goOneFrameForward()
 void TupPaintArea::copyCurrentFrame()
 {
     TupGraphicsScene *gScene = graphicsScene();
+    int sceneIndex = gScene->currentSceneIndex();
+    int layerIndex = gScene->currentLayerIndex();
+    int frameIndex = gScene->currentFrameIndex();
 
-    TupScene *scene = k->project->sceneAt(gScene->currentSceneIndex());
+    k->copyFrameName = tr("Frame");
+    TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
-        TupLayer *layer = scene->layerAt(gScene->currentLayerIndex());
+        TupLayer *layer = scene->layerAt(layerIndex);
         if (layer) {
-            TupFrame *frame = layer->frameAt(gScene->currentFrameIndex());
+            TupFrame *frame = layer->frameAt(frameIndex);
             if (frame) {
-                QDomDocument doc;
-                doc.appendChild(frame->toXml(doc));
-                k->frameCopy = doc.toString(0);
+                k->copyFrameName = frame->frameName();
+                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Copy);
+                emit localRequestTriggered(&request);
+                k->copyIsValid = true;
             }
         }
     }
-
 }
 
-void TupPaintArea::pasteDataOnCurrentFrame()
+void TupPaintArea::pasteCurrentFrame()
 {
-    TupGraphicsScene *scene = graphicsScene();
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
-                                                                    scene->currentLayerIndex(), 
-                                                                    scene->currentFrameIndex(),
-                                                                    TupProjectRequest::Paste, k->frameCopy);
-    emit requestTriggered(&request);
+    if (k->copyIsValid) {
+        TupGraphicsScene *gScene = graphicsScene();
+        int sceneIndex = gScene->currentSceneIndex();
+        int layerIndex = gScene->currentLayerIndex();
+        int frameIndex = gScene->currentFrameIndex();
+
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Paste);
+        emit localRequestTriggered(&request);
+
+        tError() << "TupPaintArea::pasteCurrentFrame() - k->copyFrameName: " << k->copyFrameName;
+
+        request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Rename, k->copyFrameName);
+        emit requestTriggered(&request);
+    }
 }
 
 void TupPaintArea::copyFrameForward()
 {
-    /*
-    copyCurrentFrame();
-    goOneFrameForward();
-    pasteDataOnCurrentFrame();
-    */
-
     TupGraphicsScene *gScene = graphicsScene();
     int sceneIndex = gScene->currentSceneIndex();
     int layerIndex = gScene->currentLayerIndex();
