@@ -40,6 +40,7 @@
 #include "tupsvgitem.h"
 #include "tupproject.h"
 #include "tupprojectresponse.h"
+#include "tupinputdeviceinformation.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsItem>
@@ -126,6 +127,8 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         int framesCount();
         void setLibrary(TupLibrary *library);
         void resetCurrentTool(); 
+
+        TupInputDeviceInformation * inputDeviceInformation();
 
     // private slots:
     //  void updateObjectInformation(const QString &value);

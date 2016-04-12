@@ -159,6 +159,8 @@ void TupCanvasView::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space)
         k->spaceBar = false;
+
+    QGraphicsView::keyReleaseEvent(event);
 }
 
 void TupCanvasView::updateCenter(const QPoint point)

@@ -58,6 +58,7 @@ class TUPI_EXPORT TupBrushManager : public QObject
         QPen pen() const;        
         void setPen(const QPen &pen);
         void setPenColor(const QColor &color);
+        void setPenWidth(int width);
 
         QBrush brush() const; 
         void setBrush(const QBrush &brush);

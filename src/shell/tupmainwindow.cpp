@@ -286,13 +286,14 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connectWidgetToManager(animationTab);
         connectWidgetToLocalManager(animationTab);
         connect(animationTab, SIGNAL(modeHasChanged(TupProject::Mode)), this, SLOT(expandExposureView(TupProject::Mode))); 
-        connect(animationTab, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
-        connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenThickness(const QPen &)));
+        connect(animationTab, SIGNAL(colorChangedFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
+        // connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenWidth(const QPen &)));
         connect(animationTab, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize))); 
         connect(animationTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
         connect(animationTab, SIGNAL(contourColorChanged(const QColor &)), m_colorPalette, SLOT(updateContourColor(const QColor &))); 
         connect(animationTab, SIGNAL(fillColorChanged(const QColor &)), m_colorPalette, SLOT(updateFillColor(const QColor &)));
         connect(animationTab, SIGNAL(bgColorChanged(const QColor &)), m_colorPalette, SLOT(updateBgColor(const QColor &)));
+        connect(animationTab, SIGNAL(penWidthChanged(int)), this, SLOT(updatePenWidth(int)));
 
         animationTab->setAntialiasing(true);
 
@@ -1283,6 +1284,9 @@ void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
         // Updating color on the Pen module interface
         if (event->action() == TupPaintAreaEvent::ChangePenColor)
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
+
+        if (event->action() == TupPaintAreaEvent::ChangePenWidth)
+            m_penWidget->setPenWidth(qvariant_cast<int>(event->data()));
     } 
 }
 
@@ -1292,9 +1296,9 @@ void TupMainWindow::updatePenColor(const QColor &color)
     createPaintCommand(event);
 }
 
-void TupMainWindow::updatePenThickness(const QPen &pen)
+void TupMainWindow::updatePenWidth(int width)
 {
-    TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePen, pen);
+    TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePenWidth, width);
     createPaintCommand(event);
 }
 

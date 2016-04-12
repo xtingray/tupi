@@ -72,8 +72,6 @@
 #include <QMessageBox>
 #include <QBuffer>
 
-// class TupGraphicsScene;
-
 class TUPI_EXPORT TupCanvas : public QFrame
 {
     Q_OBJECT
@@ -126,10 +124,10 @@ class TUPI_EXPORT TupCanvas : public QFrame
    signals:
         void requestTriggered(const TupProjectRequest *event);
         void localRequestTriggered(const TupProjectRequest *event);
-        void updateColorFromFullScreen(const QColor &color);
-        void updatePenThicknessFromFullScreen(int size);
-        void updateOnionOpacityFromFullScreen(double opacity);
-        void updateZoomFactorFromFullScreen(qreal factor);
+        void colorChangedFromFullScreen(const QColor &color);
+        void penWidthChangedFromFullScreen(int size);
+        void onionOpacityChangedFromFullScreen(double opacity);
+        void zoomFactorChangedFromFullScreen(qreal factor);
         void callAction(int menu, int index);
         void goToFrame(int frame, int layer, int scene);
         void rightClick();

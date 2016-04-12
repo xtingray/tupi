@@ -905,6 +905,9 @@ void TupDocumentView::selectTool()
             if (toolName.compare(k->currentTool->name()) == 0)
                 return;
 
+            if (toolName.compare(tr("Pencil")) == 0)
+                disconnect(k->currentTool, SIGNAL(penWidthChanged(int)), this, SIGNAL(penWidthChanged(int)));
+
             if (k->currentTool->name().compare(tr("Papagayo Lip-sync")) == 0)
                 disconnect(k->currentTool, SIGNAL(importLipSync()), this, SLOT(importPapagayoLipSync()));
 
@@ -927,8 +930,10 @@ void TupDocumentView::selectTool()
         switch (tool->toolType()) {
                 case TupToolInterface::Brush: 
                      k->status->enableFullScreenFeature(true);
-                     if (toolName.compare(tr("Pencil"))==0 || toolName.compare(tr("PolyLine"))==0) {
+                     if (toolName.compare(tr("Pencil")) == 0 || toolName.compare(tr("PolyLine")) == 0) {
                          minWidth = 130;
+                         if (toolName.compare(tr("Pencil")) == 0)
+                             connect(k->currentTool, SIGNAL(penWidthChanged(int)), this, SIGNAL(penWidthChanged(int)));
                      } else if (toolName.compare(tr("Text"))==0) {
                                 minWidth = 350;
                      } else { 
@@ -1691,17 +1696,16 @@ void TupDocumentView::showFullScreen()
     updateNodesScale(scaleFactor);
 
     connect(this, SIGNAL(openColorDialog(const QColor &)), k->fullScreen, SLOT(colorDialog(const QColor &)));
-    connect(k->fullScreen, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SIGNAL(updateColorFromFullScreen(const QColor &)));
-    connect(k->fullScreen, SIGNAL(updatePenThicknessFromFullScreen(int)), this, SLOT(updatePenThickness(int)));
-    connect(k->fullScreen, SIGNAL(updateOnionOpacityFromFullScreen(double)), this, SLOT(updateOnionOpacity(double)));
-    connect(k->fullScreen, SIGNAL(updateZoomFactorFromFullScreen(qreal)), this, SLOT(updateNodesScale(qreal)));
+    connect(k->fullScreen, SIGNAL(colorChangedFromFullScreen(const QColor &)), this, SIGNAL(colorChangedFromFullScreen(const QColor &)));
+    connect(k->fullScreen, SIGNAL(penWidthChangedFromFullScreen(int)), this, SIGNAL(penWidthChanged(int)));
+    connect(k->fullScreen, SIGNAL(onionOpacityChangedFromFullScreen(double)), this, SLOT(updateOnionOpacity(double)));
+    connect(k->fullScreen, SIGNAL(zoomFactorChangedFromFullScreen(qreal)), this, SLOT(updateNodesScale(qreal)));
     connect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
     connect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
     connect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
     connect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
     connect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
     connect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
-    // connect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
     connect(k->fullScreen, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
     if (toolName.compare(tr("Object Selection")) == 0)
@@ -1710,12 +1714,14 @@ void TupDocumentView::showFullScreen()
     k->fullScreen->showFullScreen();
 }
 
+/*
 void TupDocumentView::updatePenThickness(int size) 
 {
     QPen pen = brushManager()->pen();
     pen.setWidth(size);
     emit updatePenFromFullScreen(pen);
 }
+*/
 
 void TupDocumentView::updateOnionOpacity(double opacity)
 {
@@ -1727,15 +1733,16 @@ void TupDocumentView::closeFullScreen()
 {
     if (k->fullScreenOn) {
         disconnect(this, SIGNAL(openColorDialog(const QColor &)), k->fullScreen, SLOT(colorDialog(const QColor &)));
-        disconnect(k->fullScreen, SIGNAL(updateColorFromFullScreen(const QColor &)), this, SIGNAL(updateColorFromFullScreen(const QColor &)));
-        disconnect(k->fullScreen, SIGNAL(updatePenThicknessFromFullScreen(int)), this, SLOT(updatePenThickness(int))); 
-        disconnect(k->fullScreen, SIGNAL(updateOnionOpacityFromFullScreen(double)), this, SLOT(updateOnionOpacity(double)));
-        disconnect(k->fullScreen, SIGNAL(updateZoomFactorFromFullScreen(qreal)), this, SLOT(updateNodesScale(qreal)));
+        disconnect(k->fullScreen, SIGNAL(colorChangedFromFullScreen(const QColor &)), this, SIGNAL(colorChangedFromFullScreen(const QColor &)));
+        disconnect(k->fullScreen, SIGNAL(penWidthChangedFromFullScreen(int)), this, SIGNAL(penWidthChanged(int)));
+        disconnect(k->fullScreen, SIGNAL(onionOpacityChangedFromFullScreen(double)), this, SLOT(updateOnionOpacity(double)));
+        disconnect(k->fullScreen, SIGNAL(zoomFactorChangedFromFullScreen(qreal)), this, SLOT(updateNodesScale(qreal)));
         disconnect(k->fullScreen, SIGNAL(callAction(int, int)), this, SLOT(loadPlugin(int, int)));
         disconnect(k->fullScreen, SIGNAL(requestTriggered(const TupProjectRequest *)), this, SIGNAL(requestTriggered(const TupProjectRequest *)));
         disconnect(k->fullScreen, SIGNAL(localRequestTriggered(const TupProjectRequest *)), this, SIGNAL(localRequestTriggered(const TupProjectRequest *)));
+        disconnect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
+        disconnect(k->fullScreen, SIGNAL(rightClick()), this, SLOT(fullScreenRightClick()));
         disconnect(k->fullScreen, SIGNAL(goToFrame(int, int, int)), this, SLOT(selectFrame(int, int, int)));
-        // disconnect(k->fullScreen, SIGNAL(goToScene(int)), this, SLOT(selectScene(int)));
         disconnect(k->fullScreen, SIGNAL(closeHugeCanvas()), this, SLOT(closeFullScreen()));
 
         k->fullScreen->close();
@@ -1799,13 +1806,6 @@ void TupDocumentView::postImage()
         emit requestExportImageToServer(frameIndex, sceneIndex, title, topics, description);
     }
 }
-
-/*
-void TupDocumentView::updateStatusBgColor(const QColor color)
-{
-    k->status->setBgColor(color);
-}
-*/
 
 void TupDocumentView::storyboardSettings()
 {

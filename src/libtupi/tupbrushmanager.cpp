@@ -84,6 +84,11 @@ void TupBrushManager::setPenColor(const QColor &color)
     emit penChanged(k->pen);
 }
 
+void TupBrushManager::setPenWidth(int width)
+{
+    return k->pen.setWidth(width);
+}
+
 QBrush TupBrushManager::brush() const
 {
     return k->brush;

@@ -64,6 +64,7 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         TupPenWidget(QWidget *parent = 0);
         ~TupPenWidget();
         QPen pen() const;
+        void setPenWidth(int width);
         
     private:
         void updatePenProperties();
@@ -77,7 +78,7 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         void setBrush(const QBrush brush);
         
     private slots:
-        void setStyle(int s);
+        void setStyle(int style);
         void setBrushStyle(QListWidgetItem *item);
 
         void enableRoundCapStyle();

@@ -87,9 +87,12 @@ class TUPI_PLUGIN PencilTool : public TupToolPlugin
         virtual QWidget *configurator();
         virtual void aboutToChangeTool();
         virtual void saveConfig();
-        virtual void keyPressEvent(QKeyEvent *event);
         virtual QCursor cursor() const;
         virtual void sceneResponse(const TupSceneResponse *event);
+
+    protected:
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
 
     private:
         void setupActions();
@@ -99,6 +102,7 @@ class TUPI_PLUGIN PencilTool : public TupToolPlugin
     signals:
         void closeHugeCanvas();
         void callForPlugin(int menu, int index);
+        void penWidthChanged(int width);
 
     private:
         struct Private;

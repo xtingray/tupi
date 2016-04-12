@@ -43,7 +43,6 @@
 #include "tupprojectloader.h"
 #include "tupitemfactory.h"
 #include "tuptoolplugin.h"
-#include "tupinputdeviceinformation.h"
 #include "tupbrushmanager.h"
 #include "tupframe.h"
 #include "tupitemtweener.h"
@@ -1876,3 +1875,9 @@ void TupGraphicsScene::resetCurrentTool()
 {
     k->tool->init(this);
 }
+
+TupInputDeviceInformation * TupGraphicsScene::inputDeviceInformation() 
+{
+    return k->inputInformation;
+}
+

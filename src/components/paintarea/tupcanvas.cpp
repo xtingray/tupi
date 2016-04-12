@@ -212,20 +212,20 @@ void TupCanvas::colorDialog(const QColor &current)
 {
     QColor color = QColorDialog::getColor(current, this);
     k->currentColor = color;
-    emit updateColorFromFullScreen(color);
+    emit colorChangedFromFullScreen(color);
 }
 
 void TupCanvas::colorDialog()
 {
     QColor color = QColorDialog::getColor(k->currentColor, this);
-    emit updateColorFromFullScreen(color);
+    emit colorChangedFromFullScreen(color);
 }
 
 void TupCanvas::penDialog()
 {
     QDesktopWidget desktop;
     TupPenDialog *dialog = new TupPenDialog(k->brushManager, this);
-    connect(dialog, SIGNAL(updatePen(int)), this, SIGNAL(updatePenThicknessFromFullScreen(int)));
+    connect(dialog, SIGNAL(updatePen(int)), this, SIGNAL(penWidthChangedFromFullScreen(int)));
 
     QApplication::restoreOverrideCursor();
 
@@ -250,7 +250,7 @@ void TupCanvas::onionDialog()
 void TupCanvas::setOnionOpacity(double opacity)
 {
     k->scene->setOnionFactor(opacity);
-    emit updateOnionOpacityFromFullScreen(opacity); 
+    emit onionOpacityChangedFromFullScreen(opacity); 
 }
 
 void TupCanvas::oneFrameBack()
@@ -386,14 +386,14 @@ void TupCanvas::wakeUpZoomIn()
 {
     graphicsView->scale(1.3, 1.3);
 
-    emit updateZoomFactorFromFullScreen(1.3);
+    emit zoomFactorChangedFromFullScreen(1.3);
 }
 
 void TupCanvas::wakeUpZoomOut()
 {
     graphicsView->scale(0.7, 0.7);
 
-    emit updateZoomFactorFromFullScreen(0.7);
+    emit zoomFactorChangedFromFullScreen(0.7);
 }
 
 void TupCanvas::undo()

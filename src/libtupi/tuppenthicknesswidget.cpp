@@ -58,13 +58,11 @@ TupPenThicknessWidget::~TupPenThicknessWidget()
 void TupPenThicknessWidget::render(int thickness)
 {
     k->thickness = thickness;
-    // k->opacity = 1.0; 
     update();
 }
 
 void TupPenThicknessWidget::render(double opacity)
 {
-    // k->thickness = 100;
     k->opacity = opacity;
     update();
 }
@@ -104,7 +102,6 @@ void TupPenThicknessWidget::paintEvent(QPaintEvent *)
      painter.fillRect(0, 0, width(), height(), QColor(255, 255, 255));
 
      QPen border(QColor(0, 0, 0));
-     // border.setWidth(0.5);
      border.setWidth(1);
      painter.setPen(border);
      painter.drawRect(0, 0, width(), height());

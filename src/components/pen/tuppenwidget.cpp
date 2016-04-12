@@ -215,9 +215,9 @@ void TupPenWidget::setThickness(int value)
     }
 }
 
-void TupPenWidget::setStyle(int s)
+void TupPenWidget::setStyle(int style)
 {
-    k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
+    k->pen.setStyle(Qt::PenStyle(k->style->itemData(style).toInt()));
     updatePenProperties();
 }
 
@@ -239,6 +239,18 @@ void TupPenWidget::setPenColor(const QColor color)
 {
     k->brush.setColor(color);
     k->thickPreview->setColor(color);
+}
+
+void TupPenWidget::setPenWidth(int width)
+{
+    k->pen.setWidth(width);
+    TCONFIG->beginGroup("PenParameters");
+    TCONFIG->setValue("Thickness", width);
+    k->thickPreview->render(width);
+
+    k->thickness->blockSignals(true);
+    k->thickness->setValue(width);
+    k->thickness->blockSignals(false);
 }
 
 void TupPenWidget::setBrush(const QBrush brush)

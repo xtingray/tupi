@@ -71,6 +71,11 @@ void TupPaintAreaCommand::undo()
                   k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->oldData));
                 }
                 break;
+           case TupPaintAreaEvent::ChangePenWidth:
+                {
+                  k->paintArea->brushManager()->setPenWidth(qvariant_cast<int>(k->oldData));
+                }
+                break;
            case TupPaintAreaEvent::ChangeBrush:
                 {
                   k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->oldData));
@@ -105,6 +110,12 @@ void TupPaintAreaCommand::redo()
                  {
                    k->oldData = k->paintArea->brushManager()->pen().color();
                    k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->event->data()));
+                 }
+                 break;
+            case TupPaintAreaEvent::ChangePenWidth:
+                 {
+                   k->oldData = k->paintArea->brushManager()->pen().width();
+                   k->paintArea->brushManager()->setPenWidth(qvariant_cast<int>(k->event->data()));
                  }
                  break;
             case TupPaintAreaEvent::ChangeBrush:

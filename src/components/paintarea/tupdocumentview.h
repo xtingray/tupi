@@ -132,7 +132,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void closeFullScreen();
         void loadPlugin(int menu, int index);
         // void updateStatusBgColor(const QColor color);
-        void updatePenThickness(int size);
+        // void updatePenThickness(int size);
         void updateOnionOpacity(double opacity);
         void setBackgroundDirection(int direction);
         void updateBackgroundShiftProperty(int shift);
@@ -193,8 +193,9 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void modeHasChanged(TupProject::Mode mode);
         void requestExportImageToServer(int frameIndex, int sceneIndex, const QString &title, const QString &topics, const QString &description);
         void openColorDialog(const QColor &);
-        void updateColorFromFullScreen(const QColor &color);
-        void updatePenFromFullScreen(const QPen &pen);
+        // void updateColorFromFullScreen(const QColor &color);
+        void colorChangedFromFullScreen(const QColor &color);
+        // void updatePenFromFullScreen(const QPen &pen);
         void updateStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void postStoryboard(int sceneIndex);
         // void projectHasChanged();
@@ -206,6 +207,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void contourColorChanged(const QColor &color);
         void fillColorChanged(const QColor &color);
         void bgColorChanged(const QColor &color);
+        void penWidthChanged(int width);
 
     private:
         void setupDrawActions();
