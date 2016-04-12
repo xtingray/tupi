@@ -70,6 +70,7 @@ struct SelectionTool::Private
 
     int currentLayer;
     int currentFrame;
+    TupFrame *frame;
 };
 
 SelectionTool::SelectionTool(): k(new Private), panel(0)
@@ -148,6 +149,7 @@ void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManage
     Q_UNUSED(brushManager);
 
     k->selectionFlag = false;
+    k->frame = currentFrame();
 
     // If Control key is pressed / allow multiple selection picking items one by one 
     if (input->keyModifiers() != Qt::ControlModifier) {
@@ -161,7 +163,7 @@ void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManage
         k->selectedObjects.clear();
     }
 
-    if (scene->currentFrame()->indexOf(scene->mouseGrabberItem()) != -1) {
+    if (k->frame->indexOf(scene->mouseGrabberItem()) != -1) {
         k->selectedObjects << scene->mouseGrabberItem();
     } else {
         if (scene->selectedItems().count() > 0)
@@ -169,6 +171,23 @@ void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManage
     }
 
     foreach (QGraphicsItem *item, k->selectedObjects) {
+             QDomDocument doc;
+             doc.appendChild(TupSerializer::properties(item, doc));
+             tError() << "SelectionTool::press() - init transformation xml: ";
+             tError() << doc.toString(); 
+
+             TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
+             int itemIndex = -1;
+             TupLibraryObject::Type type = TupLibraryObject::Item;
+             if (svg) {
+                 type = TupLibraryObject::Svg;
+                 itemIndex = k->frame->indexOf(svg);
+             } else {
+                 itemIndex = k->frame->indexOf(item);
+             }
+             if (itemIndex >= 0)
+                 k->frame->checkTransformationStatus(type, itemIndex);
+
              if (item && (dynamic_cast<TupAbstractSerializable* > (item))) {
                  if (item->group() != 0)
                      item = qgraphicsitem_cast<QGraphicsItem *>(item->group());
@@ -211,9 +230,6 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
-    // int position = -1;
-    // TupLibraryObject::Type type;
-
     k->selectedObjects = scene->selectedItems();
 
     if (k->selectedObjects.count() > 0) {
@@ -248,10 +264,10 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
                  }
         }
 
-        TupFrame *frame = currentFrame();
+        // TupFrame *frame = currentFrame();
         foreach (NodeManager *node, k->nodeManagers) {
                  if (node->isModified())
-                     requestTransformation(node->parentItem(), frame);
+                     requestTransformation(node->parentItem(), k->frame);
         }
         updateItemPosition();
     } else {

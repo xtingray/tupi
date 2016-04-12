@@ -204,32 +204,43 @@ void TupSvgItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     QGraphicsSvgItem::hoverLeaveEvent(event);
 }
 
+bool TupSvgItem::transformationIsNotEdited()
+{
+    return k->doList.isEmpty() && k->undoList.isEmpty();
+}
+
+void TupSvgItem::saveInitTransformation()
+{
+    QDomDocument doc;
+    doc.appendChild(TupSerializer::properties(this, doc));
+    k->doList << doc.toString();
+}
+
 void TupSvgItem::storeItemTransformation(const QString &properties)
 {
     k->doList << properties;
 }
 
-QString TupSvgItem::undoTransformation() const
+void TupSvgItem::undoTransformation()
 {
-    QString properties = "RESET";
-
-    if (!k->doList.isEmpty()) {
+    if (k->doList.count() > 1) {
         k->undoList << k-> doList.takeLast();
-        if (!k->doList.isEmpty())
-            properties = k->doList.last();
+        if (!k->doList.isEmpty()) {
+            QString properties = k->doList.last();
+            QDomDocument doc;
+            doc.setContent(properties);
+            TupSerializer::loadProperties(this, doc.documentElement());
+        }
     }
-
-    return properties;
 }
 
-QString TupSvgItem::redoTransformation() const
+void TupSvgItem::redoTransformation()
 {
-    QString properties = "";
-
     if (!k->undoList.isEmpty()) {
-        properties = k->undoList.takeLast();
+        QString properties = k->undoList.takeLast();
         k->doList << properties;
+        QDomDocument doc;
+        doc.setContent(properties);
+        TupSerializer::loadProperties(this, doc.documentElement());
     }
-
-    return properties;
 }

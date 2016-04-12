@@ -34,7 +34,6 @@
  ***************************************************************************/
 
 #include "tupcommandexecutor.h"
-#include "tupserializer.h"
 #include "tupscene.h"
 
 #include "tuppathitem.h"
@@ -900,8 +899,6 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
         #endif
     #endif
 
-    tError() << "TupCommandExecutor::transformItem() - Tracing transformation...";
-
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
     int frameIndex = response->frameIndex();
@@ -928,33 +925,10 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                             frame->storeItemTransformation(type, itemIndex, xml);
 
                         if (response->mode() == TupProjectResponse::Undo)
-                            xml = frame->undoTransformation(type, itemIndex);
+                            frame->undoTransformation(type, itemIndex);
 
                         if (response->mode() == TupProjectResponse::Redo)
-                            xml = frame->redoTransformation(type, itemIndex);
-
-                        if (xml.compare("RESET") == 0) {
-                            QTransform undo = item->transform();
-                            undo.reset();
-                            item->setTransform(undo);
-
-                            if (type == TupLibraryObject::Svg || type == TupLibraryObject::Image) {
-                                QSizeF itemSize = item->boundingRect().size();  
-                                QSize size = m_project->dimension();
-                                int w = (size.width() - itemSize.width())/2;
-                                int h = (size.height() - itemSize.height())/2;
-                                item->setPos(QPointF(w, h));
-                            } else {
-                                item->setPos(QPointF(0, 0));
-                            }
-
-                            item->setEnabled(true);
-                            // item->setFlags(QGraphicsItem::GraphicsItemFlags(3));
-                        } else {
-                            QDomDocument doc;
-                            doc.setContent(xml);
-                            TupSerializer::loadProperties(item, doc.documentElement());
-                        }
+                            frame->redoTransformation(type, itemIndex);
 
                         frame->updateRenderStatus(true);
                         response->setArg(xml);
@@ -996,33 +970,10 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                             frame->storeItemTransformation(type, itemIndex, xml);
 
                         if (response->mode() == TupProjectResponse::Undo)
-                            xml = frame->undoTransformation(type, itemIndex);
+                            frame->undoTransformation(type, itemIndex);
 
                         if (response->mode() == TupProjectResponse::Redo)
-                            xml = frame->redoTransformation(type, itemIndex);
-
-                        if (xml.compare("RESET") == 0) {
-                            QTransform undo = item->transform();
-                            undo.reset();
-                            item->setTransform(undo);
-
-                            if (type == TupLibraryObject::Svg || type == TupLibraryObject::Image) {
-                                QSizeF itemSize = item->boundingRect().size();
-                                QSize size = m_project->dimension();
-                                int w = (size.width() - itemSize.width())/2;
-                                int h = (size.height() - itemSize.height())/2;
-                                item->setPos(QPointF(w, h));
-                            } else {
-                                item->setPos(QPointF(0, 0));
-                            }
-
-                            item->setEnabled(true);
-                            // item->setFlags(QGraphicsItem::GraphicsItemFlags(3));
-                        } else {
-                            QDomDocument doc;
-                            doc.setContent(xml);
-                            TupSerializer::loadProperties(item, doc.documentElement());
-                        }
+                            frame->redoTransformation(type, itemIndex);
 
                         response->setArg(xml);
                         emit responsed(response);

@@ -74,9 +74,11 @@ class TUPI_EXPORT TupSvgItem : public QGraphicsSvgItem, public TupAbstractSerial
         void setLastTweenPos(QPointF point);
         QPointF lastTweenPos();
 
+        bool transformationIsNotEdited();
+        void saveInitTransformation();
         void storeItemTransformation(const QString &properties);
-        QString undoTransformation() const;
-        QString redoTransformation() const;
+        void undoTransformation();
+        void redoTransformation();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

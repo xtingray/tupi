@@ -154,23 +154,22 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
         void reloadSVGItem(const QString &id, TupLibraryObject *object);
         void updateZLevel(int zLevelIndex);
 
+        void checkTransformationStatus(TupLibraryObject::Type itemType, int index);
         void storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties);
-        QString undoTransformation(TupLibraryObject::Type itemType, int index) const;
-        QString redoTransformation(TupLibraryObject::Type itemType, int index) const;
+        void undoTransformation(TupLibraryObject::Type itemType, int index);
+        void redoTransformation(TupLibraryObject::Type itemType, int index);
 
         void renderView();
         bool renderIsPending();
         void updateRenderStatus(bool flag);
         QPixmap framePixmap() const;
 
-       bool brushIsNotEdited(int itemIndex);
-       void saveInitBrush(int itemIndex);
+       void checkBrushStatus(int itemIndex);
        void setBrushAtItem(int itemIndex, const QString &xml);
        void redoBrushAction(int itemIndex);
        void undoBrushAction(int itemIndex);
 
-       bool penIsNotEdited(int itemIndex);
-       void saveInitPen(int itemIndex);
+       void checkPenStatus(int itemIndex);
        void setPenAtItem(int itemIndex, const QString &xml);
        void redoPenAction(int itemIndex);
        void undoPenAction(int itemIndex);

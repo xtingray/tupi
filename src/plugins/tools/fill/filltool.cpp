@@ -159,15 +159,13 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
                     QDomDocument doc;
                     TupProjectRequest::Action action;
                     if (name() == tr("Internal Fill")) {
-                        if (frame->brushIsNotEdited(itemIndex))
-                            frame->saveInitBrush(itemIndex); 
+                        frame->checkBrushStatus(itemIndex); 
 
                         QBrush brush = brushManager->brush();
                         action = TupProjectRequest::Brush;
                         doc.appendChild(TupSerializer::brush(&brush, doc));
                     } else if (name() == tr("Line Fill")) {
-                               if (frame->penIsNotEdited(itemIndex))
-                                   frame->saveInitPen(itemIndex);
+                               frame->checkPenStatus(itemIndex);
 
                                QPen pen = brushManager->pen();
                                action = TupProjectRequest::Pen;

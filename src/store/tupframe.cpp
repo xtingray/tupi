@@ -1603,6 +1603,24 @@ void TupFrame::updateZLevel(int zLevelIndex)
     }
 }
 
+void TupFrame::checkTransformationStatus(TupLibraryObject::Type itemType, int index)
+{
+    if (itemType == TupLibraryObject::Svg) {
+        TupSvgItem *item = k->svg.at(index);
+        if (item) {
+            if (item->transformationIsNotEdited())
+                item->saveInitTransformation();
+        }
+        return;
+    }
+    
+    TupGraphicObject *object = k->graphics.at(index);
+    if (object) {
+        if (object->transformationIsNotEdited())
+            object->saveInitTransformation();
+    }
+}
+
 void TupFrame::storeItemTransformation(TupLibraryObject::Type itemType, int index, const QString &properties)
 {
     if (itemType == TupLibraryObject::Svg) {
@@ -1616,37 +1634,30 @@ void TupFrame::storeItemTransformation(TupLibraryObject::Type itemType, int inde
     }
 }
 
-QString TupFrame::undoTransformation(TupLibraryObject::Type itemType, int index) const
+void TupFrame::undoTransformation(TupLibraryObject::Type itemType, int index)
 {
-    QString properties = "";
     if (itemType == TupLibraryObject::Svg) {
         TupSvgItem *item = k->svg.at(index);
         if (item)
-            properties = item->undoTransformation(); 
+            item->undoTransformation(); 
     } else {
         TupGraphicObject *object = k->graphics.at(index); 
         if (object)
-            properties = object->undoTransformation();
+            object->undoTransformation();
     }
-
-    return properties;
 }
 
-QString TupFrame::redoTransformation(TupLibraryObject::Type itemType, int index) const
+void TupFrame::redoTransformation(TupLibraryObject::Type itemType, int index)
 {
-    QString properties = "";
-
     if (itemType == TupLibraryObject::Svg) {
         TupSvgItem *item = k->svg.at(index);
         if (item)
-            properties = item->redoTransformation();
+            item->redoTransformation();
     } else {
         TupGraphicObject *object = k->graphics.at(index);
         if (object)
-            properties = object->redoTransformation();
+            object->redoTransformation();
     }
-
-    return properties;
 }
 
 void TupFrame::renderView()
@@ -1689,16 +1700,11 @@ QPixmap TupFrame::framePixmap() const
     return k->framePixmap;
 }
 
-bool TupFrame::brushIsNotEdited(int itemIndex)
+void TupFrame::checkBrushStatus(int itemIndex)
 {
      TupGraphicObject *object = k->graphics.at(itemIndex);
-     return object->brushIsNotEdited(); 
-}
-
-void TupFrame::saveInitBrush(int itemIndex)
-{
-     TupGraphicObject *object = k->graphics.at(itemIndex);
-     return object->saveInitBrush();
+     if (object->brushIsNotEdited())
+         object->saveInitBrush();
 }
 
 void TupFrame::setBrushAtItem(int itemIndex, const QString &xml)
@@ -1719,16 +1725,11 @@ void TupFrame::undoBrushAction(int itemIndex)
     object->undoBrushAction();
 }
 
-bool TupFrame::penIsNotEdited(int itemIndex)
+void TupFrame::checkPenStatus(int itemIndex)
 {
      TupGraphicObject *object = k->graphics.at(itemIndex);
-     return object->penIsNotEdited();
-}
-
-void TupFrame::saveInitPen(int itemIndex)
-{
-     TupGraphicObject *object = k->graphics.at(itemIndex);
-     return object->saveInitPen();
+     if (object->penIsNotEdited())
+         object->saveInitPen();
 }
 
 void TupFrame::setPenAtItem(int itemIndex, const QString &xml)

@@ -82,9 +82,11 @@ class TUPI_EXPORT TupGraphicObject : public QObject, public TupAbstractSerializa
         void setItemZValue(int value);
         int itemZValue();
 
+        bool transformationIsNotEdited();
+        void saveInitTransformation();
         void storeItemTransformation(const QString &properties);
-        QString undoTransformation() const;
-        QString redoTransformation() const;
+        void undoTransformation();
+        void redoTransformation();
 
         bool brushIsNotEdited();
         void saveInitBrush();

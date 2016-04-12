@@ -47,10 +47,13 @@ struct TupGraphicObject::Private
     TupItemTweener *tween;
     TupFrame *frame;
     QPointF lastTweenPos;
+
     QStringList transformDoList;
     QStringList transformUndoList;
+
     QStringList brushDoList;
     QStringList brushUndoList;
+
     QStringList penDoList;
     QStringList penUndoList;
 };
@@ -238,34 +241,45 @@ int TupGraphicObject::itemZValue()
     return k->item->zValue();
 }
 
+bool TupGraphicObject::transformationIsNotEdited()
+{
+    return k->transformDoList.isEmpty() && k->transformUndoList.isEmpty();
+}
+
+void TupGraphicObject::saveInitTransformation()
+{
+    QDomDocument doc;
+    doc.appendChild(TupSerializer::properties(k->item, doc));
+    k->transformDoList << doc.toString();
+}
+
 void TupGraphicObject::storeItemTransformation(const QString &properties)
 {
     k->transformDoList << properties;
 }
 
-QString TupGraphicObject::undoTransformation() const
+void TupGraphicObject::undoTransformation()
 {
-    QString properties = "RESET"; 
-
-    if (!k->transformDoList.isEmpty()) {
+    if (k->transformDoList.count() > 1) {
         k->transformUndoList << k->transformDoList.takeLast();
-        if (!k->transformDoList.isEmpty())
-            properties = k->transformDoList.last();
+        if (!k->transformDoList.isEmpty()) {
+            QString properties = k->transformDoList.last();
+            QDomDocument doc;
+            doc.setContent(properties);
+            TupSerializer::loadProperties(k->item, doc.documentElement());
+        }
     }
-
-    return properties;
 }
 
-QString TupGraphicObject::redoTransformation() const
+void TupGraphicObject::redoTransformation()
 {
-    QString properties = "";
-
     if (!k->transformUndoList.isEmpty()) {
-        properties = k->transformUndoList.takeLast();
+        QString properties = k->transformUndoList.takeLast();
         k->transformDoList << properties;
+        QDomDocument doc;
+        doc.setContent(properties);
+        TupSerializer::loadProperties(k->item, doc.documentElement());
     }
-
-    return properties;
 }
 
 bool TupGraphicObject::brushIsNotEdited()
@@ -280,8 +294,6 @@ void TupGraphicObject::saveInitBrush()
         QDomDocument doc; 
         doc.appendChild(TupSerializer::brush(&brush, doc));
         k->brushDoList << doc.toString();
-        tError() << "TupGraphicObject::saveInitBrush() - brush:";
-        tError() << doc.toString();
     }
 }
 
