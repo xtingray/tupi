@@ -58,7 +58,7 @@ struct SelectionTool::Private
     QList<QGraphicsItem *> selectedObjects;
     QList<NodeManager*> nodeManagers;
     TupGraphicsScene *scene;
-    bool selectionFlag;
+    bool activeSelection;
     qreal scaleFactor;
     qreal realFactor;
     int nodeZValue;
@@ -94,15 +94,7 @@ void SelectionTool::init(TupGraphicsScene *scene)
     #endif
 
     k->targetIsIncluded = false; 
-
-    if (!k->nodeManagers.isEmpty()) {
-        foreach (NodeManager *nodeManager, k->nodeManagers) {
-                 nodeManager->parentItem()->setSelected(false);
-                 k->nodeManagers.removeAll(nodeManager);
-        }
-        k->nodeManagers.clear();
-        scene->drawCurrentPhotogram();
-    }
+    clearSelection();
 
     k->scene = scene;
     k->scene->clearSelection();
@@ -153,7 +145,7 @@ void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManage
 
     Q_UNUSED(brushManager);
 
-    k->selectionFlag = false;
+    k->activeSelection = false;
     k->frame = currentFrame();
 
     // If Control key is pressed / allow multiple selection picking items one by one 
@@ -236,7 +228,7 @@ void SelectionTool::release(const TupInputDeviceInformation *input, TupBrushMana
     k->selectedObjects = scene->selectedItems();
 
     if (k->selectedObjects.count() > 0) {
-        k->selectionFlag = true;
+        k->activeSelection = true;
         foreach (NodeManager *manager, k->nodeManagers) {
                  QGraphicsItem *item = manager->parentItem();
                  int parentIndex = k->selectedObjects.indexOf(item); 
@@ -355,7 +347,7 @@ TupFrame* SelectionTool::frameAt(int sceneIndex, int layerIndex, int frameIndex)
 void SelectionTool::setupActions()
 {
     k->targetIsIncluded = false;
-    k->selectionFlag = false;
+    k->activeSelection = false;
     k->scaleFactor = 1;
     k->realFactor = 1;
 
@@ -608,7 +600,7 @@ void SelectionTool::keyReleaseEvent(QKeyEvent *event)
 
 bool SelectionTool::selectionIsActive()
 {
-    return k->selectionFlag;
+    return k->activeSelection;
 }
 
 void SelectionTool::applyFlip(Settings::Flip flip)
@@ -931,3 +923,19 @@ void SelectionTool::requestTransformation(QGraphicsItem *item, TupFrame *frame)
         #endif
     }
 }
+
+void SelectionTool::clearSelection()
+{
+    if (!k->nodeManagers.isEmpty()) {
+        foreach (NodeManager *nodeManager, k->nodeManagers) {
+                 nodeManager->parentItem()->setSelected(false);
+                 k->nodeManagers.removeAll(nodeManager);
+        }
+        k->nodeManagers.clear();
+        k->selectedObjects.clear();
+        if (k->activeSelection)
+            k->activeSelection = false;
+        k->scene->drawCurrentPhotogram();
+    }
+}
+

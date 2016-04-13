@@ -122,6 +122,7 @@ class TUPI_EXPORT TupToolPlugin : public QObject, public TupToolInterface
         virtual void setCurrentItem(const QString &id);
 
         virtual void updateWorkSpaceContext();
+        virtual void clearSelection();
         
     signals:
         void requested(const TupProjectRequest *request);

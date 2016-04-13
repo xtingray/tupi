@@ -466,3 +466,17 @@ void NodesTool::updateZoomFactor(qreal scaleFactor)
 {
     k->realFactor = scaleFactor;
 }
+
+void NodesTool::clearSelection()
+{
+    if (k->scene->selectedItems().count() > 0) {
+        k->scene->clearSelection();
+        if (k->activeSelection)
+            k->activeSelection = false;
+        if (k->nodeGroup) {
+            k->nodeGroup->clear();
+            k->nodeGroup = 0;
+        }
+    }
+}
+

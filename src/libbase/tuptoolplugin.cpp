@@ -321,3 +321,7 @@ void TupToolPlugin::setCurrentItem(const QString &id)
 void TupToolPlugin::updateWorkSpaceContext()
 {
 }
+
+void TupToolPlugin::clearSelection()
+{
+}

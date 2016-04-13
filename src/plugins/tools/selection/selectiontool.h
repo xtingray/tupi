@@ -93,6 +93,7 @@ class TUPI_PLUGIN SelectionTool : public TupToolPlugin
 
         void resizeNodes(qreal scaleFactor);
         void updateZoomFactor(qreal scaleFactor);
+        void clearSelection();
 
     signals:
         void closeHugeCanvas();

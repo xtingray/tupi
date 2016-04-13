@@ -309,8 +309,12 @@ void TupDocumentView::setRotationAngle(int angle)
 
 void TupDocumentView::updateRotationVars(int angle)
 {
-    updateRotationAngleFromRulers(angle);
+    QString toolName = k->currentTool->name();
+    if (toolName.compare(tr("Object Selection")) == 0 || toolName.compare(tr("Nodes Selection")) == 0 
+        || toolName.compare(tr("PolyLine")) == 0)
+        k->currentTool->clearSelection();
 
+    updateRotationAngleFromRulers(angle);
     k->status->updateRotationAngle(angle);
 }
 

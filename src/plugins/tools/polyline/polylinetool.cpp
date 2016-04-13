@@ -434,10 +434,7 @@ void PolyLineTool::initEnv()
     if (!k->item)
         return;
 
-    if (k->nodeGroup) {
-        k->nodeGroup->clear();
-        k->nodeGroup = 0;
-    }
+    clearSelection();
 
     k->begin = true;
     k->path = QPainterPath();
@@ -611,3 +608,12 @@ void PolyLineTool::updateZoomFactor(qreal scaleFactor)
 {
     k->realFactor = scaleFactor;
 }
+
+void PolyLineTool::clearSelection()
+{
+    if (k->nodeGroup) {
+        k->nodeGroup->clear();
+        k->nodeGroup = 0;
+    }
+}
+

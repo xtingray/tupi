@@ -196,7 +196,7 @@ void TupPaintAreaBase::mousePressEvent(QMouseEvent * event)
     QGraphicsView::mousePressEvent(event);
 }
 
-void TupPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
+void TupPaintAreaBase::mouseMoveEvent(QMouseEvent *event)
 {
     if (!canPaint()) { 
         #ifdef K_DEBUG
