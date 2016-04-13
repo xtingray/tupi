@@ -53,6 +53,7 @@ struct PencilTool::Private
 
     bool resize;
     QGraphicsEllipseItem *penCircle;
+    int circleZValue;
     QPointF penCirclePos;
     int penWidth;
 };
@@ -94,6 +95,7 @@ void PencilTool::init(TupGraphicsScene *scene)
     k->brushManager = k->scene->brushManager();
     k->input = k->scene->inputDeviceInformation();
     k->resize = false;
+    k->circleZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
     foreach (QGraphicsView * view, scene->views())
              view->setDragMode(QGraphicsView::NoDrag);
 }
@@ -243,6 +245,7 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
         k->penCirclePos = k->input->pos();
 
         k->penCircle = new QGraphicsEllipseItem(k->penCirclePos.x() - radius, k->penCirclePos.y() - radius, diameter, diameter);
+        k->penCircle->setZValue(k->circleZValue);
         k->scene->addItem(k->penCircle);
         return;
     }

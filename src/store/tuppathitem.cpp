@@ -209,7 +209,6 @@ void TupPathItem::setPathFromString(const QString &route)
     QPainterPath qPath;
     TupSvg2Qt::svgpath2qtpath(route, qPath);
     setPath(qPath);
-
     doList << route;
 }
 

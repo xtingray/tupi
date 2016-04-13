@@ -95,7 +95,6 @@ void TupProjectActionBar::setup(Actions actions)
         button->setToolTip(tr("Insert frame"));
         // SQA: This short-cut has been moved to Zoom In feature
         button->setShortcut(QKeySequence(Qt::Key_9));
-        
         k->actions.addButton(button, InsertFrame);
         
         k->buttonLayout->addWidget(button);

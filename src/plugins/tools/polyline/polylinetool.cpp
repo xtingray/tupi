@@ -122,7 +122,7 @@ void PolyLineTool::init(TupGraphicsScene *scene)
     }
 
     k->cutterOn = false;
-    initEnv(false);
+    initEnv();
 }
 
 QStringList PolyLineTool::keys() const
@@ -429,19 +429,14 @@ void PolyLineTool::keyReleaseEvent(QKeyEvent *event)
         k->cutterOn = false;
 }
 
-void PolyLineTool::initEnv(bool postInit)
+void PolyLineTool::initEnv()
 {
     if (!k->item)
         return;
 
-    if (postInit) {
-        if (k->nodeGroup) { 
-            k->nodeGroup->clear();
-            k->nodeGroup = 0;
-        } 
-    } else {
-      if (k->nodeGroup)
-          k->nodeGroup = 0;
+    if (k->nodeGroup) {
+        k->nodeGroup->clear();
+        k->nodeGroup = 0;
     }
 
     k->begin = true;
@@ -529,25 +524,25 @@ void PolyLineTool::nodeChanged()
                 }
             }
 
-            if (position >= 0 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodeGroup->parentItem())) {
-                    QDomDocument doc;
-                    doc.appendChild(qgraphicsitem_cast<TupPathItem *>(k->nodeGroup->parentItem())->toXml(doc));
-                
+            if (position >= 0) {
+                TupPathItem *pathItem = qgraphicsitem_cast<TupPathItem *>(k->nodeGroup->parentItem());
+                if (pathItem) {
+                    QString path = pathItem->pathToString();
                     TupProjectRequest event = TupRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                                                 position, QPointF(), k->scene->spaceContext(), TupLibraryObject::Item, TupProjectRequest::EditNodes, 
-                                                                                 doc.toString());
+                                              position, QPointF(), k->scene->spaceContext(), TupLibraryObject::Item, TupProjectRequest::EditNodes, path);
                     emit requested(&event);
                     // k->nodeGroup->restoreItem();
-             } else {
-               #ifdef K_DEBUG
-                   QString msg = "PolyLineTool::nodeChanged() - Fatal Error: Invalid object index || No nodeGroup parent item";
-                   #ifdef Q_OS_WIN
-                       qDebug() << msg;
-                   #else
-                       tError() << msg;
-                   #endif
-               #endif
-               return;
+                }
+            } else {
+                #ifdef K_DEBUG
+                    QString msg = "PolyLineTool::nodeChanged() - Fatal Error: Invalid object index || No nodeGroup parent item -> " + QString::number(position);
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif
+                return;
              }
         } else {
           #ifdef K_DEBUG
@@ -588,12 +583,12 @@ QWidget *PolyLineTool::configurator()
 
 void PolyLineTool::aboutToChangeScene(TupGraphicsScene *)
 {
-    // initEnv(false);
+
 }
 
 void PolyLineTool::aboutToChangeTool()
 {
-    // initEnv(false);
+
 }
 
 void PolyLineTool::saveConfig()

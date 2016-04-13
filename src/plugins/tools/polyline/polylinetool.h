@@ -93,7 +93,8 @@ class TUPI_PLUGIN PolyLineTool : public TupToolPlugin
 
     private slots:
         void nodeChanged();
-        void initEnv(bool postInit = true);
+        // void initEnv(bool postInit = true);
+        void initEnv();
         
     private:
         void setupActions();

@@ -1334,6 +1334,20 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         else  
             goOneFrameForward();
     }
+
+    // Redundant shortcut for "Add Frame" feature (as 9)
+    if (event->key() == Qt::Key_Insert) {
+        TupGraphicsScene *gScene = graphicsScene();
+        int sceneIndex = gScene->currentSceneIndex();
+        int layerIndex = gScene->currentLayerIndex();
+        int frameIndex = gScene->currentFrameIndex() + 1;
+
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Add, tr("Frame"));
+        emit requestTriggered(&request);
+
+        request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Select);
+        emit localRequestTriggered(&request);
+    }
 }
 
 /*
@@ -1348,11 +1362,9 @@ void TupPaintArea::goOneFrameBack()
     TupGraphicsScene *scene = graphicsScene();
 
     if (scene->currentFrameIndex() > 0) {
-        TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene->currentSceneIndex(),
-                                                                        scene->currentLayerIndex(),
-                                                                        scene->currentFrameIndex() - 1,
-                                                                        TupProjectRequest::Select, "1");
-        emit requestTriggered(&request);
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene->currentSceneIndex(), scene->currentLayerIndex(),
+                                                                        scene->currentFrameIndex() - 1, TupProjectRequest::Select, "1");
+        emit localRequestTriggered(&request);
     }
 }
 
@@ -1367,7 +1379,6 @@ void TupPaintArea::goOneFrameForward()
                                                      scene->currentLayerIndex(),
                                                      frameIndex,
                                                      TupProjectRequest::Add, tr("Frame"));
-                                                     // TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
         emit requestTriggered(&request);
     }
 

@@ -61,8 +61,15 @@ void NodesTool::init(TupGraphicsScene *scene)
 {
     k->activeSelection = false;
     k->scene = scene;
-    if (k->scene->selectedItems().count() > 0)
+
+    if (k->scene->selectedItems().count() > 0) {
         k->scene->clearSelection();
+        if (k->nodeGroup) {
+            k->nodeGroup->clear();
+            k->nodeGroup = 0;
+        }
+    }
+
     k->baseZValue = (2*ZLAYER_LIMIT) + (k->scene->scene()->layersCount() * ZLAYER_LIMIT); 
 }
 
@@ -195,15 +202,13 @@ void NodesTool::release(const TupInputDeviceInformation *input, TupBrushManager 
                     QGraphicsItem *item = k->nodeGroup->parentItem();
                     int position = frame->indexOf(item);
                     if (position >= 0) {
-                        // if (qgraphicsitem_cast<QGraphicsPathItem *>(item)) {
-                            QString path = qgraphicsitem_cast<TupPathItem *>(item)->pathToString();
-                            TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(),
-                                                      k->currentLayer, k->currentFrame, position,
-                                                      QPointF(), scene->spaceContext(), TupLibraryObject::Item,
-                                                      TupProjectRequest::EditNodes, path);
-                            emit requested(&event);
-                            k->nodeGroup->clearChangedNodes();
-                        // }
+                        QString path = qgraphicsitem_cast<TupPathItem *>(item)->pathToString();
+                        TupProjectRequest event = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(),
+                                                  k->currentLayer, k->currentFrame, position,
+                                                  QPointF(), scene->spaceContext(), TupLibraryObject::Item,
+                                                  TupProjectRequest::EditNodes, path);
+                        emit requested(&event);
+                        k->nodeGroup->clearChangedNodes();
                     } else {
                         #ifdef K_DEBUG
                             QString msg = "NodesTool::release() - Fatal Error: Invalid position [ " + QString::number(position) + " ]";
@@ -229,6 +234,7 @@ void NodesTool::release(const TupInputDeviceInformation *input, TupBrushManager 
             k->nodeGroup = new TNodeGroup(selectedItem, scene, TNodeGroup::LineSelection, k->baseZValue);
             k->nodeGroup->show();
             k->activeSelection = true;
+
             k->nodeGroup->resizeNodes(k->realFactor);
             if (TupPathItem *path = qgraphicsitem_cast<TupPathItem *>(selectedItem)) {
                 if (path->isNotEdited())
@@ -400,6 +406,7 @@ void NodesTool::keyPressEvent(QKeyEvent *event)
 void NodesTool::setupActions()
 {
     k->activeSelection = false;
+
     TAction *nodes = new TAction(QPixmap(kAppProp->themeDir() + "icons/nodes.png"), tr("Nodes Selection"), this);
     nodes->setShortcut(QKeySequence(tr("N")));
     nodes->setToolTip(tr("Nodes Selection") + " - " + "N");
@@ -442,6 +449,14 @@ QCursor NodesTool::cursor() const
 
 void NodesTool::resizeNodes(qreal scaleFactor)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[NodesTool::resizeNodes()]";
+        #else
+            T_FUNCINFOX("tools");
+        #endif
+    #endif
+
     k->realFactor = scaleFactor;
     if (k->activeSelection)
         k->nodeGroup->resizeNodes(scaleFactor);

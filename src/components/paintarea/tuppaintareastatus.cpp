@@ -80,7 +80,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     QPushButton *resetWSButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/reset_workspace.png")), "");
     resetWSButton->setIconSize(QSize(16, 16));
     resetWSButton->setToolTip(tr("Reset WorkSpace"));
-    resetWSButton->setShortcut(QKeySequence(tr("+")));
+    resetWSButton->setShortcut(QKeySequence(Qt::Key_3));
     connect(resetWSButton, SIGNAL(clicked()), k->documentView, SLOT(resetWorkSpaceTransformations()));
 
     addPermanentWidget(resetWSButton);
@@ -88,7 +88,8 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     QPushButton *actionSafeAreaButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/safe_area.png")), "");
     actionSafeAreaButton->setIconSize(QSize(16, 16));
     actionSafeAreaButton->setToolTip(tr("Action Safe Area"));
-    actionSafeAreaButton->setShortcut(QKeySequence(tr("+")));
+    // SQA: pending shortcut
+    // actionSafeAreaButton->setShortcut(QKeySequence(tr(" ")));
     actionSafeAreaButton->setCheckable(true);
     connect(actionSafeAreaButton, SIGNAL(clicked()), k->documentView, SLOT(drawActionSafeArea()));
 
@@ -97,7 +98,8 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     QPushButton *gridButton = new QPushButton(QIcon(QPixmap(THEME_DIR + "icons/subgrid.png")), "");
     gridButton->setIconSize(QSize(16, 16));
     gridButton->setToolTip(tr("Show grid"));
-    gridButton->setShortcut(QKeySequence(tr("#")));
+    // SQA: pending shortcut
+    // gridButton->setShortcut(QKeySequence(tr(" ")));
     gridButton->setCheckable(true);
     connect(gridButton, SIGNAL(clicked()), k->documentView, SLOT(drawGrid()));
 

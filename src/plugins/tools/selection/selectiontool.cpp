@@ -94,12 +94,19 @@ void SelectionTool::init(TupGraphicsScene *scene)
     #endif
 
     k->targetIsIncluded = false; 
-    // qDeleteAll(k->nodeManagers);
-    k->nodeManagers.clear();
+
+    if (!k->nodeManagers.isEmpty()) {
+        foreach (NodeManager *nodeManager, k->nodeManagers) {
+                 nodeManager->parentItem()->setSelected(false);
+                 k->nodeManagers.removeAll(nodeManager);
+        }
+        k->nodeManagers.clear();
+        scene->drawCurrentPhotogram();
+    }
+
     k->scene = scene;
     k->scene->clearSelection();
     k->nodeZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
-    // removeTarget();
     initItems(scene);
 }
 
@@ -117,13 +124,11 @@ void SelectionTool::initItems(TupGraphicsScene *scene)
              view->setDragMode(QGraphicsView::RubberBandDrag);
 
     panel->enablePositionControls(false);
-    // removeTarget();
 }
 
 void SelectionTool::removeTarget()
 {
     if (k->targetIsIncluded) {
-        tError() << "SelectionTool::removeTarget() - Tracing target...";
         k->scene->removeItem(k->center);
         k->scene->removeItem(k->target1);
         k->scene->removeItem(k->target2);
@@ -173,8 +178,6 @@ void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManage
     foreach (QGraphicsItem *item, k->selectedObjects) {
              QDomDocument doc;
              doc.appendChild(TupSerializer::properties(item, doc));
-             tError() << "SelectionTool::press() - init transformation xml: ";
-             tError() << doc.toString(); 
 
              TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item);
              int itemIndex = -1;
