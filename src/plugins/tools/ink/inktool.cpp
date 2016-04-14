@@ -531,16 +531,18 @@ void InkTool::release(const TupInputDeviceInformation *input, TupBrushManager *b
 {
     scene->removeItem(k->item);
     QPointF currentPoint = input->pos();
-    qreal radius = brushManager->pen().width();
+    // qreal radius = brushManager->pen().width();
     // int size = k->configurator->borderSizeValue();
     // QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     if (k->firstPoint == currentPoint && k->inkPath.elementCount() == 1) {
+        qreal radius = brushManager->pen().width();
         QPointF distance((radius + 2)/2, (radius + 2)/2);
         QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         TupEllipseItem *blackEllipse = new TupEllipseItem(QRectF(k->connector - distance, QSize(radius + 2, radius + 2)));
         blackEllipse->setPen(inkPen);
-        blackEllipse->setBrush(brushManager->brush());
+        blackEllipse->setBrush(inkPen.brush());
+        // blackEllipse->setBrush(brushManager->brush());
         scene->includeObject(blackEllipse);
 
         QDomDocument doc;

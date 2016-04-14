@@ -126,6 +126,7 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     k->isDrawing = false;
 
     // SQA: This color should be a parameter in the Preferences interface
+    // setBackgroundBrush(QColor(90, 90, 90));
     setBackgroundBrush(Qt::gray);
 
     k->inputInformation = new TupInputDeviceInformation(this);

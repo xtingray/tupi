@@ -404,7 +404,7 @@ void TupDocumentView::setupDrawActions()
     ungroup->setDisabled(true);
     */
 
-    new TAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"), QKeySequence(tr("Ctrl+Shift+O")), 
+    new TAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Onion Skin"), QKeySequence(Qt::Key_U), 
                 this, SLOT(enableOnionFeature()), k->actionManager, "onion");
 
     new TAction(QPixmap(THEME_DIR + "icons/onion.png"), tr("Onion Skin Factor"), QKeySequence(tr("Ctrl+Shift+S")), 

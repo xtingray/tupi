@@ -159,8 +159,24 @@ void PencilTool::release(const TupInputDeviceInformation *input, TupBrushManager
             return;
 
         if (k->firstPoint == input->pos() && k->path.elementCount() == 1) {
-            qreal radius = ((qreal) brushManager->pen().width()) / ((qreal) 2);
-            k->path.addEllipse(input->pos().x(), input->pos().y(), radius, radius);
+            QPointF currentPoint = input->pos();
+            scene->removeItem(k->item);
+ 
+            qreal radius = brushManager->pen().width();
+            QPointF distance((radius + 2)/2, (radius + 2)/2);
+            QPen inkPen(brushManager->penColor(), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            TupEllipseItem *blackEllipse = new TupEllipseItem(QRectF(currentPoint - distance, QSize(radius + 2, radius + 2)));
+            blackEllipse->setPen(inkPen);
+            blackEllipse->setBrush(inkPen.brush());
+            scene->includeObject(blackEllipse);
+
+            QDomDocument doc;
+            doc.appendChild(blackEllipse->toXml(doc));
+            TupProjectRequest request = TupRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(),
+                                                                             0, currentPoint, scene->spaceContext(), TupLibraryObject::Item, TupProjectRequest::Add,
+                                                                             doc.toString());
+            emit requested(&request);
+            return;
         } else {
             double smoothness = k->configurator->smoothness();
             if (smoothness > 0)
@@ -267,6 +283,10 @@ void PencilTool::keyReleaseEvent(QKeyEvent *event)
     if (k->resize) {
         k->resize = false;
         k->scene->removeItem(k->penCircle);
+
+        TCONFIG->beginGroup("PenParameters");
+        TCONFIG->setValue("Thickness", k->penWidth);
+
         emit penWidthChanged(k->penWidth);
     }
 }

@@ -99,7 +99,7 @@ TupPaintAreaStatus::TupPaintAreaStatus(TupDocumentView *parent) : QStatusBar(par
     gridButton->setIconSize(QSize(16, 16));
     gridButton->setToolTip(tr("Show grid"));
     // SQA: pending shortcut
-    // gridButton->setShortcut(QKeySequence(tr(" ")));
+    gridButton->setShortcut(QKeySequence(Qt::Key_G));
     gridButton->setCheckable(true);
     connect(gridButton, SIGNAL(clicked()), k->documentView, SLOT(drawGrid()));
 
