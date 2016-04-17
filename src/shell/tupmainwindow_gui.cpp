@@ -422,7 +422,7 @@ void TupMainWindow::setupHelpActions()
 {
     new TAction(QPixmap(THEME_DIR + "icons/help_mode.png"), tr("Help Content"), QKeySequence(tr("F1")),
                 this, SLOT(showHelp()), m_actionManager, "help");
-    new TAction(QPixmap(THEME_DIR + "icons/today_tip.png"), tr("Tip of the day"), QKeySequence(tr("Ctrl+T")),
+    new TAction(QPixmap(THEME_DIR + "icons/tip.png"), tr("Tip of the day"), QKeySequence(tr("Ctrl+T")),
                 this, SLOT(showTipDialog()), m_actionManager, "tip_of_day");
     new TAction(QPixmap(THEME_DIR + "icons/about.png"), tr("About Tupi"), QKeySequence(tr("Ctrl+K")), 
                 this, SLOT(aboutTupi()), m_actionManager, "about_tupi");

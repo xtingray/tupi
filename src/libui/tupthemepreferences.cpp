@@ -33,12 +33,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tuppaintareaconfig.h"
+#include "tupthemepreferences.h"
 
-#include <QSpinBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QRadioButton>
 
 /**
  * This class handles the preferences dialog for the paint area settings.
@@ -46,65 +46,54 @@
  * @author David Cuadrado
 */
 
-struct TupPaintAreaConfig::Private
+struct TupThemePreferences::Private
 {
-    TColorButton *gridColor;
-    QSpinBox *gridSeparation;
+    QRadioButton *lightTheme;
+    QRadioButton *darkTheme;
 };
 
-TupPaintAreaConfig::TupPaintAreaConfig(QWidget *parent) : QWidget(parent),  k(new Private)
+TupThemePreferences::TupThemePreferences(QWidget *parent) : QWidget(parent),  k(new Private)
 {
     setupPage();
 }
 
-TupPaintAreaConfig::~TupPaintAreaConfig()
+TupThemePreferences::~TupThemePreferences()
 {
 }
 
-void TupPaintAreaConfig::setupPage()
+void TupThemePreferences::setupPage()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     QWidget *widget = new QWidget;
     QVBoxLayout *pageLayout = new QVBoxLayout;
 
-    QLabel *generalLabel = new QLabel(tr("Workspace Preferences"));
+    QLabel *generalLabel = new QLabel(tr("Theme Preferences"));
     QFont labelFont = font();
     labelFont.setBold(true);
     labelFont.setPointSize(labelFont.pointSize() + 3);
     generalLabel->setFont(labelFont);
     pageLayout->addWidget(generalLabel);
+
     pageLayout->addSpacing(15);
 
-    QLabel *startupLabel = new QLabel(tr("Grid Settings"));
-    labelFont = font();
-    labelFont.setBold(true);
-    startupLabel->setFont(labelFont);
-    pageLayout->addWidget(startupLabel);
+    k->lightTheme = new QRadioButton(tr("Light Theme"), this);
+    pageLayout->addWidget(k->lightTheme);
 
-    TCONFIG->beginGroup("PaintArea");
-    QString colorName = TCONFIG->value("GridColor").toString();
-    // QString colorName = TCONFIG->value("GridColor", "#0000b4").toString();
-    // QColor color = qvariant_cast<QColor>(TCONFIG->value("GridColor", QColor(0, 0, 180, 50)));
-    QColor color(colorName);
-    // int separation = TCONFIG->value("GridSeparation", 10).toInt();
-    int separation = TCONFIG->value("GridSeparation").toInt();
+    k->darkTheme = new QRadioButton(tr("Dark Theme"), this);
+    pageLayout->addWidget(k->darkTheme);
 
-    QGridLayout *gridForm = new QGridLayout;
+    TCONFIG->beginGroup("General");
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
+    if (themeName.compare("Light") == 0)
+        k->lightTheme->setChecked(true);
+    else
+        k->darkTheme->setChecked(true);
 
-    gridForm->addWidget(new QLabel(tr("Grid color:")), 0, 0, Qt::AlignLeft);
-    k->gridColor = new TColorButton;
-    k->gridColor->setColor(color);
-    gridForm->addWidget(k->gridColor, 0, 1, Qt::AlignLeft);
+    pageLayout->addSpacing(15);
 
-    gridForm->addWidget(new QLabel(tr("Grid separation:")), 1, 0, Qt::AlignLeft);
-    k->gridSeparation = new QSpinBox(this);
-    k->gridSeparation->setMinimum(5);
-    k->gridSeparation->setMaximum(30);
-    k->gridSeparation->setValue(separation);
-    gridForm->addWidget(k->gridSeparation, 1, 1, Qt::AlignLeft);
-
-    pageLayout->addLayout(gridForm);
+    QLabel *noteLabel = new QLabel(tr("Note: You must restart Tupi to apply theme changes"));
+    pageLayout->addWidget(noteLabel);
 
     widget->setLayout(pageLayout);
     layout->addWidget(widget);
@@ -112,22 +101,13 @@ void TupPaintAreaConfig::setupPage()
     layout->addStretch(3);
 }
 
-void TupPaintAreaConfig::saveValues()
+void TupThemePreferences::saveValues()
 {
-    TCONFIG->beginGroup("PaintArea");
-    TCONFIG->setValue("GridColor", k->gridColor->color().name());
-    TCONFIG->setValue("GridSeparation", k->gridSeparation->value());
+    TCONFIG->beginGroup("General");
+    if (k->lightTheme->isChecked())
+        TCONFIG->setValue("Theme", "Light");
+    else
+        TCONFIG->setValue("Theme", "Dark");
+
     TCONFIG->sync();
 }
-
-/*
-QColor TupPaintAreaConfig::gridColor() const
-{
-    return k->gridColor->color();
-}
-
-int TupPaintAreaConfig::gridSeparation() const
-{
-    return k->gridSeparation->value();
-}
-*/

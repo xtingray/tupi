@@ -33,13 +33,15 @@ macx {
 
 # HEADERS += tupthemeselector.h \
 HEADERS += tupabout.h \
-           tuppaintareaconfig.h \
-		   tupgeneralpreferences.h \
+           tupthemepreferences.h \
+           tuppaintareapreferences.h \
+           tupgeneralpreferences.h \
            tuppreferencesdialog.h
  
 # SOURCES += tupthemeselector.cpp \
 SOURCES += tupabout.cpp \
-           tuppaintareaconfig.cpp \
+           tupthemepreferences.cpp \
+           tuppaintareapreferences.cpp \
            tupgeneralpreferences.cpp \
            tuppreferencesdialog.cpp 
 

@@ -155,8 +155,12 @@ int main(int argc, char ** argv)
         kAppProp->setDataDir(xmlDir + "en/");
     else
         kAppProp->setDataDir(xmlDir + locale + "/");
-        
-    kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default/");
+
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
+    if (themeName.compare("Light") == 0) 
+        kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default/");
+    else
+        kAppProp->setThemeDir(kAppProp->shareDir() + "themes/dark/");
 
     // Setting the repository directory (where the projects are saved)
     application.createCache(TCONFIG->value("Cache").toString());

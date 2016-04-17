@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupcamerawidget.h"
+#include "tconfig.h"
 
 struct TupCameraWidget::Private
 {
@@ -59,6 +60,9 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
             TINIT;
         #endif
     #endif
+
+    TCONFIG->beginGroup("General");
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
 
     QDesktopWidget desktop;
     int desktopWidth = (40 * desktop.screenGeometry().width()) / 100;
@@ -115,8 +119,13 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     layout->addLayout(labelLayout, Qt::AlignCenter);
 
     k->progressBar = new QProgressBar(this); 
-    QString style = "QProgressBar { background-color: #DDDDDD; text-align: center; color: #FFFFFF; border-radius: 2px; } QProgressBar::chunk { background-color: #009500; border-radius: 2px; }";
-    k->progressBar->setStyleSheet(style);
+    QString style1 = "QProgressBar { background-color: #DDDDDD; text-align: center; color: #FFFFFF; border-radius: 2px; } ";
+    QString color = "#009500";
+    if (themeName.compare("Dark") == 0)
+        color = "#444444";
+    QString style2 = "QProgressBar::chunk { background-color: " + color + "; border-radius: 2px; }";
+
+    k->progressBar->setStyleSheet(style1 + style2);
     k->progressBar->setMaximumHeight(5);
     k->progressBar->setTextVisible(false);
     k->progressBar->setRange(1, 100);

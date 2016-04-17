@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupexposureheader.h"
+#include "tconfig.h"
 
 /**
  * @author Jorge Cuadrado
@@ -43,6 +44,9 @@ TupExposureHeader::TupExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizon
 {
     setSectionsClickable(true);
     setSectionsMovable(true);
+
+    TCONFIG->beginGroup("General");
+    themeName = TCONFIG->value("Theme", "Light").toString();
 
     connect(this, SIGNAL(sectionDoubleClicked(int)), this, SLOT(showTitleEditor(int)));
 
@@ -78,7 +82,6 @@ void TupExposureHeader::showTitleEditor(int section)
         QFont font = this->font();
         font.setPointSize(8);
         m_editor->setFont(font);
-        // QFont font("Arial", 8, QFont::Normal, false);
 
         int x = sectionViewportPosition(section);
         m_editor->setGeometry(x, 0, sectionSize(section), height());
@@ -211,11 +214,13 @@ void TupExposureHeader::paintSection(QPainter *painter, const QRect & rect, int 
     QString text = m_sections[section].title;
     QFont font = this->font();
     font.setPointSize(8);
-    // QFont font("Arial", 8, QFont::Normal, false);
     QFontMetrics fm(font);
 
     if (((section == m_currentSection) || (m_sections.size() == 1)) && m_sections[section].isVisible) { // Header selected
         QColor color(0, 136, 0, 40);
+        if (themeName.compare("Dark") == 0)
+            color = QColor(200, 220, 200);
+
         painter->fillRect(rect.normalized().adjusted(0, 0, 0, -1), color);
     }
 

@@ -125,9 +125,12 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     k->tool = 0;
     k->isDrawing = false;
 
-    // SQA: This color should be a parameter in the Preferences interface
-    // setBackgroundBrush(QColor(90, 90, 90));
-    setBackgroundBrush(Qt::gray);
+    TCONFIG->beginGroup("General");
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
+    if (themeName.compare("Light") == 0) 
+        setBackgroundBrush(Qt::gray);
+    else 
+        setBackgroundBrush(QColor(90, 90, 90));
 
     k->inputInformation = new TupInputDeviceInformation(this);
     k->brushManager = new TupBrushManager(this);

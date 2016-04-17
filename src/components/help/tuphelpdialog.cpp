@@ -36,11 +36,24 @@
 #include "tuphelpdialog.h"
 #include "tuphelpbrowser.h"
 #include "tuphelpwidget.h"
+#include "tconfig.h"
 
 #include <QHBoxLayout>
 
 TupHelpDialog::TupHelpDialog(const QString &path, QWidget *parent) : QFrame(parent)
 {
+    TCONFIG->beginGroup("General");
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
+    if (themeName.compare("Dark") == 0) {
+        QFile file(THEME_DIR + "config/help.qss");
+        if (file.exists()) {
+            file.open(QFile::ReadOnly);
+            QString styleSheet = QLatin1String(file.readAll());
+            if (styleSheet.length() > 0) 
+                setStyleSheet(styleSheet);
+        }
+    } 
+
     setWindowTitle(tr("Help Content"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_mode.png")));
 

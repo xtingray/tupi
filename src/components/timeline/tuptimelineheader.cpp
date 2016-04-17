@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tuptimelineheader.h"
+#include "tconfig.h"
 
 struct TupTimeLineHeader::Private
 {
@@ -45,13 +46,16 @@ struct TupTimeLineHeader::Private
     QLineEdit *editor;
     int editorSection;
     bool sectionOnMotion;
+    QString themeName;
 };
 
 TupTimeLineHeader::TupTimeLineHeader(QWidget * parent) : QHeaderView(Qt::Vertical, parent), k(new Private)
 {
+    TCONFIG->beginGroup("General");
+    k->themeName = TCONFIG->value("Theme", "Light").toString();
+
     setSectionsClickable(true);
     setSectionsMovable(true);
-
     setFixedWidth(115);
     // SQA: This code will be disabled until the "Lock layer" feature is implemented
     // setFixedWidth(140);
@@ -91,12 +95,14 @@ void TupTimeLineHeader::paintSection(QPainter * painter, const QRect & rect, int
 
     if (k->currentLayer == index) {
         QColor color(0, 136, 0, 40);
+        if (k->themeName.compare("Dark") == 0)
+            color = QColor(120, 120, 120, 80);
+
         painter->fillRect(rect, color);
     }
 
     QFont font = this->font();
     font.setPointSize(7);
-    // QFont font("Arial", 7, QFont::Normal, false);
     QFontMetrics fm(font);
 
     int y = rect.normalized().bottomLeft().y() - (1 + (rect.normalized().height() - fm.height())/2);
@@ -178,7 +184,6 @@ void TupTimeLineHeader::showTitleEditor(int index)
     if (index >= 0) {
         QFont font = this->font();
         font.setPointSize(7);
-        // QFont font("Arial", 7, QFont::Normal, false);
         k->editor->setFont(font);
         int x = sectionViewportPosition(index);
         k->editor->setGeometry(0, x, width(), sectionSize(index));
@@ -208,6 +213,7 @@ int TupTimeLineHeader::lastFrame(int index)
 {
     if (index > -1 && index < k->layers.count())
         return k->layers[index].lastFrame;
+
     return -1;
 }
 
@@ -255,5 +261,4 @@ bool TupTimeLineHeader::sectionIsMoving()
 {
     return k->sectionOnMotion;
 }
-
 

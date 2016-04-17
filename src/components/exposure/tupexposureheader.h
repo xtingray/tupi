@@ -103,6 +103,7 @@ class TUPI_EXPORT TupExposureHeader: public QHeaderView
         int m_editedSection;
         bool m_sectionOnMotion;
         int m_currentSection;
+        QString themeName;
 };
 
 #endif

@@ -52,7 +52,7 @@ TipDialog::TipDialog(QStringList &labels, TipDatabase *database, QWidget *parent
 void TipDialog::setupGUI()
 {
     setWindowTitle(tags.at(0));
-    setWindowIcon(QPixmap(THEME_DIR + "icons/today_tip.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/bubble.png"));
 
     int h;
     int s;

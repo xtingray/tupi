@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tupexposuretable.h"
+#include "tconfig.h"
 
 /**
  * @author Jorge Cuadrado
@@ -102,10 +103,21 @@ class TupExposureItemDelegate : public QItemDelegate
         TupExposureItemDelegate(QObject * parent = 0);
         ~TupExposureItemDelegate();
         virtual void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
-TupExposureItemDelegate::TupExposureItemDelegate(QObject * parent) :  QItemDelegate(parent)
+struct TupExposureItemDelegate::Private
 {
+    QString themeName;
+};
+
+TupExposureItemDelegate::TupExposureItemDelegate(QObject * parent) :  QItemDelegate(parent), k(new Private)
+{
+    TCONFIG->beginGroup("General");
+    k->themeName = TCONFIG->value("Theme", "Light").toString();
 }
 
 TupExposureItemDelegate::~TupExposureItemDelegate()
@@ -132,7 +144,11 @@ void TupExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
         int h = option.rect.bottomRight().y() - y - 2;
 
         if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Empty) && !item->data(TupExposureTable::IsLocked).toBool()) {
-            QPen pen(QColor(100, 100, 100, 30));
+            QColor color(100, 100, 100, 30);
+            if (k->themeName.compare("Dark") == 0)
+                color = QColor(90, 90, 90);
+
+            QPen pen(color);
             pen.setStyle(Qt::DashLine);
             painter->setPen(pen);
             painter->drawRect(x, y, w, h);
@@ -146,7 +162,17 @@ void TupExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
             path.lineTo(x + w, y + 4);
             path.lineTo(x + w - 8, y); 
 
-            painter->fillPath(path, QBrush(QColor(0, 102, 255, 80)));
+            QColor color(0, 102, 255, 80);
+            if (k->themeName.compare("Dark") == 0)
+                color = QColor(0, 0, 0, 50);
+
+            painter->fillPath(path, QBrush(color));
+
+            if (k->themeName.compare("Dark") == 0) {
+                QPen pen(QColor(100, 100, 100));
+                painter->setPen(pen);
+                painter->drawPath(path);
+            }
         }
     }
 }
@@ -158,12 +184,15 @@ struct TupExposureTable::Private
     TupExposureHeader *header;
     QMenu *menu;
     bool removingLayer;
-    // bool removingFrame;
     bool isLocalRequest;
+    QString themeName;
 };
 
 TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(new Private)
 {
+    TCONFIG->beginGroup("General");
+    k->themeName = TCONFIG->value("Theme", "Light").toString();
+
     k->isLocalRequest = false;
 
     TupExposureVerticalHeader *verticalHeader = new TupExposureVerticalHeader(this);
@@ -171,7 +200,6 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
 
     setItemDelegate(new TupExposureItemDelegate(this));
     k->removingLayer = false;
-    // k->removingFrame = false;
 
     QTableWidgetItem *prototype = new QTableWidgetItem();
     prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable);
@@ -443,6 +471,14 @@ void TupExposureTable::insertLayer(int index, const QString & name)
 void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString & name, bool external)
 {
     QTableWidgetItem *frame = new QTableWidgetItem;
+
+    QColor color(255, 255, 255);
+    if (k->themeName.compare("Dark") == 0) {
+        color = QColor(190, 190, 190);
+        frame->setForeground(Qt::white);
+    }
+
+    frame->setBackgroundColor(color);
     QFont font = this->font();
     font.setPointSize(7);
     frame->setFont(font);
@@ -472,10 +508,14 @@ void TupExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
     QTableWidgetItem * frame = item(frameIndex, logicalIndex);
     if (frame) {
         if (frame->data(TupExposureTable::IsEmpty).toInt() != Unset) {
-            if (locked)
+            if (locked) {
                 frame->setBackgroundColor(QColor(255, 0, 0, 90));
-            else
-                frame->setBackgroundColor(QColor(255, 255, 255));
+            } else {
+                QColor color(255, 255, 255);
+                if (k->themeName.compare("Dark") == 0)
+                    color = QColor(190, 190, 190);
+                frame->setBackgroundColor(color);
+            }
 
             frame->setData(IsLocked, locked);
         }

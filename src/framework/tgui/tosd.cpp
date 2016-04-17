@@ -34,11 +34,15 @@
  ***************************************************************************/
 
 #include "tosd.h"
+#include "tconfig.h"
 
 TOsd *TOsd::s_osd = 0;
 
 TOsd::TOsd(QWidget * parent) : QWidget(parent), m_timer(0)
 {
+    TCONFIG->beginGroup("General");
+    themeName = TCONFIG->value("Theme", "Light").toString();
+
     setFocusPolicy(Qt::NoFocus);
     m_palette = palette();
 
@@ -74,8 +78,6 @@ void TOsd::display(const QString &title, const QString &message, Level level, in
     htmlMessage.replace('\n', "<br/>");
     QString tail = title + "</b></font><br><font style=\"font-size:11px\">" + htmlMessage + "</font>";
 
-    //htmlMessage.replace('\n', "<br/>");
-
     QBrush background = palette().background();
     QBrush foreground = palette().foreground();
 
@@ -85,7 +87,10 @@ void TOsd::display(const QString &title, const QString &message, Level level, in
                 case Info:
                    {
                      QString logo = THEME_DIR + "icons/info_message.png";
-                     background = QColor(0xc1e2fb);
+                     if (themeName.compare("Dark") == 0)
+                         background = QColor(0, 80, 0);
+                     else
+                         background = QColor(0xc1e2fb);
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
                                          + tail);
                    }

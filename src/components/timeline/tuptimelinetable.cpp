@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tuptimelinetable.h"
+#include "tconfig.h"
 
 ////////// TupTimeLineTableItemDelegate ///////////
 
@@ -43,10 +44,21 @@ class TupTimeLineTableItemDelegate : public QItemDelegate
         TupTimeLineTableItemDelegate(QObject * parent = 0);
         ~TupTimeLineTableItemDelegate();
         virtual void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
-TupTimeLineTableItemDelegate::TupTimeLineTableItemDelegate(QObject * parent) : QItemDelegate(parent) // QAbstractItemDelegate(parent)
+struct TupTimeLineTableItemDelegate::Private
 {
+    QString themeName;
+};
+
+TupTimeLineTableItemDelegate::TupTimeLineTableItemDelegate(QObject *parent) : QItemDelegate(parent), k(new Private) 
+{
+    TCONFIG->beginGroup("General");
+    k->themeName = TCONFIG->value("Theme", "Light").toString();
 }
 
 TupTimeLineTableItemDelegate::~TupTimeLineTableItemDelegate()
@@ -76,7 +88,6 @@ void TupTimeLineTableItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         painter->save();
         
         bool sound = table->isSoundLayer(index.row());
-        
         if (!sound) {
             int counter = index.column() + 1;
             if (counter == 1 || counter % 5 == 0) 
@@ -91,7 +102,12 @@ void TupTimeLineTableItemDelegate::paint(QPainter *painter, const QStyleOptionVi
     // Selection!
     if (option.showDecorationSelected && (option.state & QStyle::State_Selected)) {
         painter->save();
-        painter->fillRect(option.rect, QColor(0, 136, 0, 180));
+
+        QColor color(0, 136, 0, 180);
+        if (k->themeName.compare("Dark") == 0)
+            color = QColor(80, 80, 80, 180);
+
+        painter->fillRect(option.rect, color);
         painter->restore();
     }
     
@@ -339,7 +355,6 @@ int TupTimeLineTable::layersCount()
 
 int TupTimeLineTable::lastFrameByLayer(int layerIndex)
 {
-    // if (layerIndex < 0) 
     if (layerIndex < 0 || layerIndex >= rowCount())
         return -1;
 
@@ -511,13 +526,11 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
         if (next >= 0) { 
             if (event->modifiers() == Qt::ControlModifier)
                 emit frameRemoved();
-                // emit frameRemoved(currentRow(), currentColumn()); 
             else
                 setCurrentCell(currentRow(), next);
         } else {
             if (next == -1 && event->modifiers() == Qt::ControlModifier)
                 emit frameRemoved();
-                // emit frameRemoved(currentRow(), currentColumn());
         }
         return;
     }
@@ -530,8 +543,8 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
     }
 
     if (event->key() == Qt::Key_Down) {
-        int limit = rowCount()-1;
-        int next = currentRow()+1;
+        int limit = rowCount() - 1;
+        int next = currentRow() + 1;
         if (next <= limit)
             setCurrentCell(next, currentColumn());
         return;

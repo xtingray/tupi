@@ -36,6 +36,7 @@
  ***************************************************************************/
 
 #include "tcolorcell.h"
+#include "tconfig.h"
 
 #include <QPainter>
 #include <QDebug>
@@ -47,10 +48,14 @@ struct TColorCell::Private
     bool enabled;
     bool checked;
     QSize size;
+    QString themeName;
 };
 
 TColorCell::TColorCell(FillType index, const QBrush &brush, const QSize &size) : k(new Private)
 {
+    TCONFIG->beginGroup("General");
+    k->themeName = TCONFIG->value("Theme", "Light").toString();
+
     k->index = index;
     k->enabled = true;
     k->checked = false;
@@ -78,11 +83,20 @@ void TColorCell::paintEvent(QPaintEvent *event)
 
     if (k->enabled) {
         if (k->checked) {
-            painter.setPen(QPen(QColor(200, 200, 200), 8, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            QColor borderColor1 = QColor(200, 200, 200); 
+            QColor borderColor2 = QColor(190, 190, 190);
+            QColor borderColor3 = QColor(150, 150, 150);
+            if (k->themeName.compare("Dark") == 0) {
+                borderColor1 = QColor(120, 120, 120);
+                borderColor2 = QColor(110, 110, 110);
+                borderColor3 = QColor(70, 70, 70);
+            }
+
+            painter.setPen(QPen(borderColor1, 8, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawRect(border);
-            painter.setPen(QPen(QColor(190, 190, 190), 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.setPen(QPen(borderColor2, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawRect(border);
-            painter.setPen(QPen(QColor(150, 150, 150), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.setPen(QPen(borderColor3, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawRect(border);
         } else {
             QRect frame = QRect(border.topLeft(), QSize(k->size.width()-1, k->size.height()-1));

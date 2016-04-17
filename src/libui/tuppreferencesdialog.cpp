@@ -36,7 +36,8 @@
 #include "tuppreferencesdialog.h"
 #include "tapplicationproperties.h"
 #include "tupgeneralpreferences.h"
-#include "tuppaintareaconfig.h"
+#include "tuppaintareapreferences.h"
+#include "tupthemepreferences.h"
 
 /**
  * This class handles the preferences dialog for Tupi.
@@ -46,19 +47,23 @@
 
 struct TupPreferencesDialog::Private
 {
-    TupGeneralPreferences *generalPreferences;
-    TupPaintAreaConfig *workspacePreferences;
+    TupGeneralPreferences *general;
+    TupThemePreferences *theme;
+    TupPaintAreaPreferences *workspace;
 };
 
 TupPreferencesDialog::TupPreferencesDialog(QWidget *parent) : TConfigurationDialog(parent), k(new Private)
 {
     setWindowTitle(tr("Tupi Preferences"));
 
-    k->generalPreferences = new TupGeneralPreferences;
-    addPage(k->generalPreferences, tr("General"), QPixmap(THEME_DIR + "icons/tupi_general_preferences.png"));
+    k->general = new TupGeneralPreferences;
+    addPage(k->general, tr("General"), QPixmap(THEME_DIR + "icons/tupi_general_preferences.png"));
 
-    k->workspacePreferences = new TupPaintAreaConfig;
-    addPage(k->workspacePreferences, tr("Workspace"), QIcon(THEME_DIR + "icons/tupi_workspace_properties.png"));
+    k->theme = new TupThemePreferences;
+    addPage(k->theme, tr("Theme"), QPixmap(THEME_DIR + "icons/tupi_theme_preferences.png"));
+
+    k->workspace = new TupPaintAreaPreferences;
+    addPage(k->workspace, tr("Workspace"), QIcon(THEME_DIR + "icons/tupi_workspace_preferences.png"));
 
     setCurrentItem(0);
 }
@@ -69,13 +74,14 @@ TupPreferencesDialog::~TupPreferencesDialog()
 
 void TupPreferencesDialog::apply()
 {
-    k->generalPreferences->saveValues();
-    k->workspacePreferences->saveValues();
+    k->general->saveValues();
+    k->theme->saveValues();
+    k->workspace->saveValues();
 
     accept();
 }
 
 QSize TupPreferencesDialog::sizeHint() const
 {
-    return QSize(600, 350);
+    return QSize(600, 430);
 }

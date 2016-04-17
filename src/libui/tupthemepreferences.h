@@ -33,29 +33,25 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPPAINTAREACONFIG_H
-#define TUPPAINTAREACONFIG_H
+#ifndef TUPTHEMEPREFERENCES_H
+#define TUPTHEMEPREFERENCES_H
 
 #include "tglobal.h"
 #include "tcolorbutton.h"
 #include "tconfig.h"
 
-// class TColorButton;
-
 /**
  * @author David Cuadrado
 */
-class TUPI_EXPORT TupPaintAreaConfig : public QWidget
+class TUPI_EXPORT TupThemePreferences : public QWidget
 {
     Q_OBJECT
 
     public:
-        TupPaintAreaConfig(QWidget *parent = 0);
-        ~TupPaintAreaConfig();
+        TupThemePreferences(QWidget *parent = 0);
+        ~TupThemePreferences();
 
         void saveValues();        
-        // QColor gridColor() const;
-        // int gridSeparation() const;
         
     private:
         void setupPage();

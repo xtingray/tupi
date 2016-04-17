@@ -103,8 +103,18 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         #endif
     #endif
 
-    // setStyleSheet("* { background-color: rgb(160,160,160); }");
-
+    TCONFIG->beginGroup("General");
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
+    if (themeName.compare("Dark") == 0) { 
+        QFile file(THEME_DIR + "config/ui.qss");
+        if (file.exists()) {
+            file.open(QFile::ReadOnly);
+            QString styleSheet = QLatin1String(file.readAll());
+            if (styleSheet.length() > 0)
+                setStyleSheet(styleSheet);
+        }
+    }
+        
     // Loading audio player plugin
     // TAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
 
@@ -852,8 +862,10 @@ void TupMainWindow::preferences()
     dialog->move((int) (desktop.screenGeometry().width() - dialog->width())/2 , 
                       (int) (desktop.screenGeometry().height() - dialog->height())/2);
 
-    if (dialog->exec() == QDialog::Accepted)
-        animationTab->updateWorkspace();
+    if (dialog->exec() == QDialog::Accepted) {
+        if (animationTab)
+            animationTab->updateWorkspace();
+    }
 }
 
 /**
@@ -1098,7 +1110,7 @@ void TupMainWindow::saveAs()
         QFile file(directory.filePath(name));
         if (!file.open(QIODevice::ReadWrite)) {
             file.remove();
-            TOsd::self()->display(tr("Error"), tr("You have no permission to create this file. Please, choose another path."), TOsd::Error);
+            TOsd::self()->display(tr("Error"), tr("Insufficient permissions. Please, pick another path."), TOsd::Error);
             return;
         }
         file.remove();

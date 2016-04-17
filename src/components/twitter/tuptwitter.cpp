@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tuptwitter.h"
+#include "tconfig.h"
 
 QString TupTwitter::NEWS_HOST = QString("http://www.maefloresta.com");
 QString TupTwitter::IS_HOST_UP_URL = QString("/updates/test.xml");
@@ -53,11 +54,14 @@ struct TupTwitter::Private
     QString word;
     QString url;
     bool update;
+    QString themeName;
 };
 
 TupTwitter::TupTwitter(QWidget *parent) : QWidget(parent), k(new Private)
 {
     k->update = false;
+    TCONFIG->beginGroup("General");
+    k->themeName = TCONFIG->value("Theme", "Light").toString();
 }
 
 void TupTwitter::start()
@@ -284,8 +288,15 @@ void TupTwitter::formatStatus(QByteArray array)
     html += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
     html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"file:tupi.css\">\n";
     html += "</head>\n";
-    html += "<body class=\"twitter_white\">\n";
-    html += "<div class=\"tupi_background1\">";
+
+    if (k->themeName.compare("Dark") == 0) {
+        html += "<body class=\"twitter_gray\">\n";
+        html += "<div class=\"tupi_background5\">";
+    } else {
+        html += "<body class=\"twitter_white\">\n";
+        html += "<div class=\"tupi_background1\">";
+    }
+
     html += "<center><img src=\"file:maefloresta.png\" alt=\"maefloresta\"/></center>\n";
     html += "<div class=\"twitter_headline\"><center>&nbsp;&nbsp;@maefloresta</center></div></div>\n";
     QString css = "twitter_tupi_version";  

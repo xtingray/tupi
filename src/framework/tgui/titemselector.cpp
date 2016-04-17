@@ -62,7 +62,7 @@ TItemSelector::TItemSelector(QWidget *parent) : QWidget(parent), k(new Private)
     controlBox->setSpacing(5);
 
     QToolButton *previousButton = new QToolButton;
-    previousButton->setIcon(QPixmap(THEME_DIR + "icons/unexport_scene.png"));
+    previousButton->setIcon(QPixmap(THEME_DIR + "icons/unselect_scene.png"));
     connect(previousButton, SIGNAL(clicked()), this, SLOT(removeCurrent()));
 
     controlBox->addWidget(previousButton);
