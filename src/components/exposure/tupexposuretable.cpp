@@ -472,13 +472,13 @@ void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString
 {
     QTableWidgetItem *frame = new QTableWidgetItem;
 
-    QColor color(240, 240, 240);
+    QColor color = Qt::transparent;
     if (k->themeName.compare("Dark") == 0) {
         color = QColor(190, 190, 190);
         frame->setForeground(Qt::white);
     }
-
     frame->setBackgroundColor(color);
+
     QFont font = this->font();
     font.setPointSize(7);
     frame->setFont(font);
@@ -511,7 +511,7 @@ void TupExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
             if (locked) {
                 frame->setBackgroundColor(QColor(255, 0, 0, 90));
             } else {
-                QColor color(240, 240, 240);
+                QColor color = Qt::transparent;
                 if (k->themeName.compare("Dark") == 0)
                     color = QColor(190, 190, 190);
                 frame->setBackgroundColor(color);
