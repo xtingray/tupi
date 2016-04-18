@@ -280,13 +280,29 @@ TupSoundLayer *TupScene::soundLayer(int position) const
 
 void TupScene::fromXml(const QString &xml)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupScene::fromXml()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    tError() << "TupScene::fromXml() - Loading Tupi scene as xml object...";
+
     QDomDocument document;
-    if (!document.setContent(xml))
+    if (!document.setContent(xml)) {
+        tError() << "TupScene::fromXml() - Error while processing XML file";
         return;
+    }
+
+    tError() << "TupScene::fromXml() - Tupi scene has been loaded successfully!";
 
     QDomElement root = document.documentElement();
     setSceneName(root.attribute("name", sceneName()));
     QDomNode n = root.firstChild();
+
+    tError() << "TupScene::fromXml() - Starting loop...";
 
     while (!n.isNull()) {
            QDomElement e = n.toElement();

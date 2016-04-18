@@ -522,6 +522,14 @@ void SelectionTool::saveConfig()
 
 void SelectionTool::keyPressEvent(QKeyEvent *event)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[SelectionTool::keyPressEvent()]";
+        #else
+            T_FUNCINFOX("tools");
+        #endif
+    #endif
+
     k->key = "NONE";
 
     if (event->key() == Qt::Key_F11 || event->key() == Qt::Key_Escape) {

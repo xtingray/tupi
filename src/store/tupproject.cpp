@@ -244,6 +244,14 @@ QString TupProject::dataDir() const
 
 TupScene *TupProject::createScene(QString name, int position, bool loaded)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupProject::createScene()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (position < 0 || position > k->scenes.count())
         return 0;
 

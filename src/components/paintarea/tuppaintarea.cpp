@@ -1265,8 +1265,6 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         #endif
     #endif
 
-    TupPaintAreaBase::keyPressEvent(event);
-
     if (event->key() == Qt::Key_Return) {
         emit newPerspective(4);
         return;
@@ -1303,23 +1301,6 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    if (k->currentTool.compare(tr("Rectangle")) == 0 
-        || k->currentTool.compare(tr("Ellipse")) == 0 
-        || k->currentTool.compare(tr("Line")) == 0) {
-        TupPaintAreaBase::keyPressEvent(event);
-        return;
-    }
-
-    QList<QGraphicsItem *> selected = scene()->selectedItems();
-    if (k->currentTool.compare(tr("Pencil")) != 0) {
-        if (k->currentTool.compare(tr("Object Selection")) == 0 || k->currentTool.compare(tr("Nodes Selection")) == 0) {
-            if (!selected.isEmpty()) {
-                TupPaintAreaBase::keyPressEvent(event);
-                return;
-            }
-        }
-    }
-
     if (event->key() == Qt::Key_PageUp) {
         if (event->modifiers() == Qt::ControlModifier)
             removeCurrentFrame();
@@ -1333,6 +1314,7 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
             copyFrameForward();
         else  
             goOneFrameForward();
+        return;
     }
 
     // Redundant shortcut for "Add Frame" feature (as 9)
@@ -1347,7 +1329,10 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
 
         request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Select);
         emit localRequestTriggered(&request);
+        return;
     }
+
+    TupPaintAreaBase::keyPressEvent(event);
 }
 
 /*

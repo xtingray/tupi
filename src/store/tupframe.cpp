@@ -216,7 +216,6 @@ double TupFrame::opacity()
 
 void TupFrame::fromXml(const QString &xml)
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupFrame::fromXml()]";
@@ -224,7 +223,6 @@ void TupFrame::fromXml(const QString &xml)
             T_FUNCINFO;
         #endif
     #endif
-    */
 
     QDomDocument document;
     if (!document.setContent(xml)) {    

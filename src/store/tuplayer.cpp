@@ -322,6 +322,14 @@ TupFrame *TupLayer::frameAt(int position) const
 
 void TupLayer::fromXml(const QString &xml)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLayer::fromXml()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QDomDocument document;
     if (!document.setContent(xml))
         return;
