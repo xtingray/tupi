@@ -1,4 +1,5 @@
-SUBDIRS += icons \
+SUBDIRS += config \
+           icons \
            cursors \
            images 
 

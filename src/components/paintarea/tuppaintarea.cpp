@@ -1561,3 +1561,14 @@ void TupPaintArea::resetWorkSpaceCenter(const QSize projectSize)
     }
 }
 
+void TupPaintArea::updateOnionColors()
+{
+    graphicsScene()->updateOnionColors();
+    updatePaintArea();
+}
+
+void TupPaintArea::updateOnionColorSchemeStatus(bool status)
+{
+    graphicsScene()->updateOnionColorSchemeStatus(status);
+}
+

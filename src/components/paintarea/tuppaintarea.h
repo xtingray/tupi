@@ -112,6 +112,8 @@ class TUPI_EXPORT TupPaintArea : public TupPaintAreaBase, public TupAbstractProj
         int currentLayerIndex();
         int currentFrameIndex();
         void resetWorkSpaceCenter(const QSize projectSize);
+        void updateOnionColors();
+        void updateOnionColorSchemeStatus(bool status);
 
     public slots:
         void setNextFramesOnionSkinCount(int n);

@@ -156,8 +156,13 @@ int main(int argc, char ** argv)
     else
         kAppProp->setDataDir(xmlDir + locale + "/");
 
-    QString themeName = TCONFIG->value("Theme", "Light").toString();
-    if (themeName.compare("Light") == 0) 
+    QString themeName = TCONFIG->value("Theme").toString();
+    if (themeName.length() == 0) {
+        themeName = "Light";
+        TCONFIG->setValue("Theme", themeName);
+    }
+
+    if (themeName.compare("Light") == 0)
         kAppProp->setThemeDir(kAppProp->shareDir() + "themes/default/");
     else
         kAppProp->setThemeDir(kAppProp->shareDir() + "themes/dark/");

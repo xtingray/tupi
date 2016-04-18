@@ -216,7 +216,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void createLateralToolBar();
         void updateRotationAngleFromRulers(int angle);
         double backgroundOpacity(TupFrame::FrameType type);
-        void updateOnionColorSchemeFlag(bool flag);
+        void updateOnionColorSchemeStatus(bool status);
 
         struct Private;
         Private *const k;

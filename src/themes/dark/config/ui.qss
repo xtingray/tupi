@@ -5,3 +5,7 @@ QWidget {
 QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QTableView, QListWidget, QTextEdit { 
     background: rgb(200,200,200) 
 }
+
+QGraphicsView {
+    background-color: rgb(80,80,80)
+}

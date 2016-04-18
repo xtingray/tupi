@@ -95,7 +95,9 @@ struct TupGraphicsScene::Private
     WorkSpace space;
     bool onionColorScheme;
 
-    QColor onionColor;
+    // QColor onionColor;
+    QColor pfOnionColor;
+    QColor nfOnionColor;
     QColor lOnionColor;
     QColor bOnionColor;
 
@@ -114,6 +116,7 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
 
+    k->onionColorScheme = false;
     k->framePosition.layer = -1;
     k->framePosition.frame = -1;
     k->spaceContext = TupProject::FRAMES_EDITION;
@@ -125,15 +128,9 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     k->tool = 0;
     k->isDrawing = false;
 
-    TCONFIG->beginGroup("General");
-    QString themeName = TCONFIG->value("Theme", "Light").toString();
-    if (themeName.compare("Light") == 0) 
-        setBackgroundBrush(Qt::gray);
-    else 
-        setBackgroundBrush(QColor(80, 80, 80));
-
     k->inputInformation = new TupInputDeviceInformation(this);
     k->brushManager = new TupBrushManager(this);
+    updateOnionColors();
 }
 
 TupGraphicsScene::~TupGraphicsScene()
@@ -222,18 +219,6 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
     if (photogram < 0 || !k->scene) 
         return;
 
-    TCONFIG->beginGroup("OnionParameters");
-    k->onionColorScheme = TCONFIG->value("OnionColorScheme", false).toBool();
-    QString pfOString = TCONFIG->value("PreviousFramesOnionColor", "#969696").toString();
-    QString nfOString = TCONFIG->value("NextFramesOnionColor", "#000000").toString();
-    QString lOnionString = TCONFIG->value("LayersOnionColor", "#008700").toString();
-    QString bOnionString = TCONFIG->value("BackgroundOnionColor", "#000000").toString();
-
-    QColor pfOnionColor = QColor(pfOString);  
-    QColor nfOnionColor = QColor(nfOString);
-    k->lOnionColor = QColor(lOnionString);
-    k->bOnionColor = QColor(bOnionString);
-
     k->space = space;
     cleanWorkSpace();
     // Painting the background
@@ -258,7 +243,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                          if (space == Animation) {
                              // Painting previous frames
                              if (k->onionSkin.previous > 0 && photogram > 0) {
-                                 k->onionColor = pfOnionColor;
+                                 // k->onionColor = pfOnionColor;
                                  int limit = photogram - k->onionSkin.previous;
                                  if (limit < 0) 
                                      limit = 0;
@@ -278,7 +263,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
 
                                               if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
                                                   QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-                                                  effect->setColor(pfOnionColor);
+                                                  effect->setColor(k->pfOnionColor);
                                                   item->setGraphicsEffect(effect);
                                               }
 
@@ -323,7 +308,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
                              // Painting next frames
                              if (k->onionSkin.next > 0 && framesCount > photogram + 1) {
                                  opacity = k->opacity + (opacityFactor*(maximum - 1));
-                                 k->onionColor = nfOnionColor;
+                                 // k->onionColor = nfOnionColor;
                                  int limit = photogram + k->onionSkin.next;
                                  if (limit >= framesCount)
                                      limit = framesCount - 1;
@@ -343,7 +328,7 @@ void TupGraphicsScene::drawPhotogram(int photogram, WorkSpace space)
 
                                               if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
                                                   QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-                                                  effect->setColor(nfOnionColor);
+                                                  effect->setColor(k->nfOnionColor);
                                                   item->setGraphicsEffect(effect);
                                               }
 
@@ -1885,3 +1870,21 @@ TupInputDeviceInformation * TupGraphicsScene::inputDeviceInformation()
     return k->inputInformation;
 }
 
+void TupGraphicsScene::updateOnionColors()
+{
+    TCONFIG->beginGroup("OnionParameters");
+    QString pfOString = TCONFIG->value("PreviousFramesOnionColor", "#969696").toString();
+    QString nfOString = TCONFIG->value("NextFramesOnionColor", "#000000").toString();
+    QString lOnionString = TCONFIG->value("LayersOnionColor", "#008700").toString();
+    QString bOnionString = TCONFIG->value("BackgroundOnionColor", "#000000").toString();
+
+    k->pfOnionColor = QColor(pfOString);
+    k->nfOnionColor = QColor(nfOString);
+    k->lOnionColor = QColor(lOnionString);
+    k->bOnionColor = QColor(bOnionString);
+}
+
+void TupGraphicsScene::updateOnionColorSchemeStatus(bool status)
+{
+    k->onionColorScheme = status;
+}

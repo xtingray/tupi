@@ -129,6 +129,8 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void resetCurrentTool(); 
 
         TupInputDeviceInformation * inputDeviceInformation();
+        void updateOnionColors();
+        void updateOnionColorSchemeStatus(bool status);
 
     // private slots:
     //  void updateObjectInformation(const QString &value);

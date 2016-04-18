@@ -1520,7 +1520,7 @@ void TupDocumentView::setSpaceContext()
                k->project->updateSpaceContext(TupProject::STATIC_BACKGROUND_EDITION);
                k->actionManager->enable("onion_color", false);
                k->dynamicPropertiesBar->setVisible(false);
-               updateOnionColorSchemeFlag(false);
+               updateOnionColorSchemeStatus(false);
                k->staticPropertiesBar->setVisible(true);
                k->motionMenu->setEnabled(false);
     } else if (mode == TupProject::DYNAMIC_BACKGROUND_EDITION) {
@@ -1540,7 +1540,7 @@ void TupDocumentView::setSpaceContext()
                    }
                }
                k->staticPropertiesBar->setVisible(false);
-               updateOnionColorSchemeFlag(false);
+               updateOnionColorSchemeStatus(false);
                k->dynamicPropertiesBar->setVisible(true);
                k->motionMenu->setEnabled(false);
     }
@@ -1568,22 +1568,21 @@ void TupDocumentView::activeOnionColorScheme()
 {
     if (k->onionPropertiesBar->isVisible()) {
         k->onionPropertiesBar->setVisible(false);
-        updateOnionColorSchemeFlag(false);
+        updateOnionColorSchemeStatus(false);
     } else {
         if (k->dynamicPropertiesBar->isVisible())
             k->dynamicPropertiesBar->setVisible(false);
         if (k->staticPropertiesBar->isVisible())
             k->staticPropertiesBar->setVisible(false);
-        updateOnionColorSchemeFlag(true);
+        updateOnionColorSchemeStatus(true);
     }
     k->paintArea->updatePaintArea();
 }
 
-void TupDocumentView::updateOnionColorSchemeFlag(bool flag)
+void TupDocumentView::updateOnionColorSchemeStatus(bool status)
 {
-    TCONFIG->beginGroup("OnionParameters");
-    TCONFIG->setValue("OnionColorScheme", flag);
-    k->onionPropertiesBar->setVisible(flag);
+    k->onionPropertiesBar->setVisible(status);
+    k->paintArea->updateOnionColorSchemeStatus(status);
 }
 
 TupProject *TupDocumentView::project()
@@ -2331,7 +2330,7 @@ void TupDocumentView::updatePreviousOnionColor(TColorCell::FillType)
         k->pOnionCell->setBrush(QBrush(color));
         TCONFIG->beginGroup("OnionParameters");
         TCONFIG->setValue("PreviousFramesOnionColor", color.name());
-        k->paintArea->updatePaintArea();
+        k->paintArea->updateOnionColors();
     }
 
     k->pOnionCell->setChecked(false);
@@ -2344,7 +2343,7 @@ void TupDocumentView::updateNextOnionColor(TColorCell::FillType)
         k->nOnionCell->setBrush(QBrush(color));
         TCONFIG->beginGroup("OnionParameters");
         TCONFIG->setValue("NextFramesOnionColor", color.name());
-        k->paintArea->updatePaintArea();
+        k->paintArea->updateOnionColors();
     }
 
     k->nOnionCell->setChecked(false);
@@ -2357,7 +2356,7 @@ void TupDocumentView::updateLayersOnionColor(TColorCell::FillType)
         k->lOnionCell->setBrush(QBrush(color));
         TCONFIG->beginGroup("OnionParameters");
         TCONFIG->setValue("LayersOnionColor", color.name());
-        k->paintArea->updatePaintArea();
+        k->paintArea->updateOnionColors();
     }
 
     k->lOnionCell->setChecked(false);
@@ -2370,7 +2369,7 @@ void TupDocumentView::updateBackgroundOnionColor(TColorCell::FillType)
         k->bOnionCell->setBrush(QBrush(color));
         TCONFIG->beginGroup("OnionParameters");
         TCONFIG->setValue("BackgroundOnionColor", color.name());
-        k->paintArea->updatePaintArea();
+        k->paintArea->updateOnionColors();
     }
 
     k->bOnionCell->setChecked(false);
