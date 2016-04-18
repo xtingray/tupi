@@ -130,7 +130,7 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     if (themeName.compare("Light") == 0) 
         setBackgroundBrush(Qt::gray);
     else 
-        setBackgroundBrush(QColor(90, 90, 90));
+        setBackgroundBrush(QColor(80, 80, 80));
 
     k->inputInformation = new TupInputDeviceInformation(this);
     k->brushManager = new TupBrushManager(this);
