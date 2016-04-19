@@ -59,9 +59,8 @@ TupPenWidget::TupPenWidget(QWidget *parent) : TupModuleWidgetBase(parent), k(new
     setWindowTitle(tr("Pen Properties"));
 
     TCONFIG->beginGroup("PenParameters");
-    int thicknessValue = TCONFIG->value("Thickness", -1).toInt();
-
-    if (thicknessValue <= 0)
+    int thicknessValue = TCONFIG->value("Thickness", 3).toInt();
+    if (thicknessValue > 100)
         thicknessValue = 3;
 
     k->thickPreview = new TupPenThicknessWidget(this);
