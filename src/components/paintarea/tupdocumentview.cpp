@@ -1981,6 +1981,7 @@ void TupDocumentView::cameraInterface()
         */
 
         QList<QSize> resolutions;    
+        resolutions << QSize(1920, 1080);
         resolutions << QSize(1280, 1024);
         resolutions << QSize(1280, 960);
         resolutions << QSize(1224, 768);
