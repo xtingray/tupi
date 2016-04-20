@@ -441,22 +441,22 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                     if (bg->staticRenderIsPending())
                         bg->renderStaticView();
 
-                    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(bg->staticRaster());
-                    item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                    item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                    item->setZValue(1);
+                    QGraphicsPixmapItem *staticBgImage = new QGraphicsPixmapItem(bg->staticRaster());
+                    staticBgImage->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                    staticBgImage->setFlag(QGraphicsItem::ItemIsMovable, false);
+                    staticBgImage->setZValue(1);
 
-                    item->setOpacity(frame->opacity());
+                    staticBgImage->setOpacity(frame->opacity());
 
                     if (k->space == Animation) {
                         if (k->spaceContext == TupProject::FRAMES_EDITION && k->onionColorScheme) {
                             QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
                             effect->setColor(k->bOnionColor);
-                            item->setGraphicsEffect(effect);
+                            staticBgImage->setGraphicsEffect(effect);
                         }
                     }
 
-                    addItem(item);
+                    addItem(staticBgImage);
                 }
             }
             return;
