@@ -36,6 +36,7 @@
 #include "tupcamerawindow.h"
 
 #include <QCameraExposure>
+#include <QCameraFocus>
 
 struct TupCameraWindow::Private
 {
@@ -58,6 +59,9 @@ TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camSize, const QSi
     k->camera->setCaptureMode(QCamera::CaptureStillImage);
     QCameraExposure *exposure = k->camera->exposure();
     exposure->setExposureMode(QCameraExposure::ExposureManual);
+    QCameraFocus *focus = k->camera->focus();
+    focus->setFocusMode(QCameraFocus::ManualFocus);
+    focus->setFocusPointMode(QCameraFocus::FocusPointCenter);
 
     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(error(QCamera::Error)));
     connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));
