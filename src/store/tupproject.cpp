@@ -108,6 +108,14 @@ TupProject::~TupProject()
  */
 void TupProject::loadLibrary(const QString &filename)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupProject::loadLibrary()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QFile file(filename);
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {

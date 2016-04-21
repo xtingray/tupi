@@ -82,12 +82,17 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
 
     k->currentTool = tr("Pencil");
 
+    setCurrentScene(0);
+    graphicsScene()->setCurrentFrame(0, 0);
+    graphicsScene()->setLibrary(project->library());
+
+    /*
     if (graphicsScene()->scene()) {
         graphicsScene()->setCurrentFrame(0, 0);
         graphicsScene()->setLibrary(project->library());
     }
-
     setCurrentScene(0);
+    */
 }
 
 TupPaintArea::~TupPaintArea()
@@ -111,7 +116,7 @@ void TupPaintArea::setCurrentScene(int index)
         #ifdef Q_OS_WIN
             qDebug() << "[TupPaintArea::setCurrentScene()]";
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << "scene index: " << index;
         #endif
     #endif
 

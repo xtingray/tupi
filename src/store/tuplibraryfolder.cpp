@@ -342,6 +342,14 @@ TupLibraryObject *TupLibraryFolder::getObject(const QString &id) const
 
 TupLibraryFolder *TupLibraryFolder::getFolder(const QString &id) const
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryFolder::getFolder()]";
+        #else
+            T_FUNCINFO << "folder id -> " << id;
+        #endif
+    #endif
+
     foreach (TupLibraryFolder *folder, k->folders) {
              if (folder->id().compare(id) == 0)
                  return folder;
@@ -454,10 +462,17 @@ LibraryObjects TupLibraryFolder::objects() const
 
 void TupLibraryFolder::fromXml(const QString &xml)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryFolder::fromXml()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     k->loadingProject = true;
 
     QDomDocument document;
-
     if (! document.setContent(xml))
         return;
     

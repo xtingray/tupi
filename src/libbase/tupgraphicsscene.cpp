@@ -936,6 +936,28 @@ void TupGraphicsScene::addSvgTweeningObjects(int indexLayer, int photogram)
 
 void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLevel)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupGraphicsScene::addLipSyncObjects()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    /*
+    if (!k->library) {
+        #ifdef K_DEBUG
+            QString msg = "TupGraphicsScene::addLipSyncObjects() - Fatal Error: Library pointer is NULL!";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tFatal() << msg;
+            #endif
+        #endif
+        return;
+    }
+    */
+
     if (layer->lipSyncCount() > 0) {
         Mouths mouths = layer->lipSyncList();
         for (int i=0; i<mouths.count(); i++) {
@@ -1695,6 +1717,14 @@ int TupGraphicsScene::framesCount()
 
 void TupGraphicsScene::setLibrary(TupLibrary *library)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupGraphicsScene::setLibrary()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     k->library = library;
 }
 
