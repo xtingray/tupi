@@ -1020,7 +1020,7 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupCommandExecutor::setPathItem()]";
-            qDebug() << response->arg().toString()
+            qDebug() << response->arg().toString();
         #else
             T_FUNCINFOX("items");
             SHOW_VAR(response->arg().toString());
@@ -1236,20 +1236,14 @@ bool TupCommandExecutor::setBrush(TupItemResponse *response)
                 if (frame) {
                     QGraphicsItem *item = frame->item(itemIndex);
                     if (item) {
-                        if (response->mode() == TupProjectResponse::Do) {
-                            tError() << "TupCommandExecutor::setBrush() - Do!";
+                        if (response->mode() == TupProjectResponse::Do)
                             frame->setBrushAtItem(itemIndex, xml);
-                        }
 
-                        if (response->mode() == TupProjectResponse::Redo) {
-                            tError() << "TupCommandExecutor::setBrush() - Redo!";
+                        if (response->mode() == TupProjectResponse::Redo)
                             frame->redoBrushAction(itemIndex);
-                        }
 
-                        if (response->mode() == TupProjectResponse::Undo) {
-                            tError() << "TupCommandExecutor::setBrush() - Undo!";
+                        if (response->mode() == TupProjectResponse::Undo)
                             frame->undoBrushAction(itemIndex);
-                        }
 
                         emit responsed(response);
                         return true;

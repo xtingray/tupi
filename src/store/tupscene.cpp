@@ -288,21 +288,22 @@ void TupScene::fromXml(const QString &xml)
         #endif
     #endif
 
-    tError() << "TupScene::fromXml() - Loading Tupi scene as xml object...";
-
     QDomDocument document;
     if (!document.setContent(xml)) {
-        tError() << "TupScene::fromXml() - Error while processing XML file";
+		#ifdef K_DEBUG
+            QString msg = "TupScene::fromXml() - Error while processing XML file";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif  
         return;
     }
-
-    tError() << "TupScene::fromXml() - Tupi scene has been loaded successfully!";
 
     QDomElement root = document.documentElement();
     setSceneName(root.attribute("name", sceneName()));
     QDomNode n = root.firstChild();
-
-    tError() << "TupScene::fromXml() - Starting loop...";
 
     while (!n.isNull()) {
            QDomElement e = n.toElement();

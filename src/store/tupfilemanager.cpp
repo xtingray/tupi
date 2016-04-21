@@ -243,9 +243,6 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
 
     TupPackageHandler packageHandler;
     if (packageHandler.importPackage(fileName)) {
-
-        tError() << "TupFileManager::load() - Loading project.tpp file...";
-
         QDir projectDir(packageHandler.importedProjectPath());
         QFile pfile(projectDir.path() + "/project.tpp");
 
@@ -271,38 +268,24 @@ bool TupFileManager::load(const QString &fileName, TupProject *project)
             return false;
         }
 
-        tError() << "TupFileManager::load() - Loading library.tpl file...";
-
         project->setDataDir(packageHandler.importedProjectPath());
         project->loadLibrary(projectDir.path() + "/library.tpl");
 
         QStringList scenes = projectDir.entryList(QStringList() << "*.tps", QDir::Readable | QDir::Files);
         if (scenes.count() > 0) {
             int index = 0;
-
-            tError() << "TupFileManager::load() - Loading scenes...";
-
             foreach (QString scenePath, scenes) {
-                     tError() << "TupFileManager::load() - Loading scene file -> " << scenePath;
-
                      scenePath = projectDir.path() + "/" + scenePath;
                      QFile file(scenePath);
-
+					 
                      if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                          QString xml = QString::fromLocal8Bit(file.readAll());
                          QDomDocument document;
                          if (! document.setContent(xml))
                              return false;
                          QDomElement root = document.documentElement();
-
-                         tError() << "TupFileManager::load() - Creating scene...";
-
                          TupScene *scene = project->createScene(root.attribute("name"), index, true);
-
-                         tError() << "TupFileManager::load() - Calling TupScene::fromXml()";
-
                          scene->fromXml(xml);
-
                          index += 1;
                          file.close();
                      } else {

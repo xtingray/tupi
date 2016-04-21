@@ -1404,8 +1404,6 @@ void TupPaintArea::pasteCurrentFrame()
         TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Paste);
         emit localRequestTriggered(&request);
 
-        tError() << "TupPaintArea::pasteCurrentFrame() - k->copyFrameName: " << k->copyFrameName;
-
         request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Rename, k->copyFrameName);
         emit requestTriggered(&request);
     }
