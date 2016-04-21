@@ -46,7 +46,6 @@
 #include "tupprojectloader.h"
 #include "tupscene.h"
 #include "tuplayer.h"
-#include "tupframescene.h"
 
 #include <QApplication>
 #include <QGraphicsItem>
@@ -81,9 +80,6 @@ struct TupFrame::Private
 
     int zLevelIndex;
     double opacity;
-
-    QPixmap framePixmap;
-    bool renderIsPending;
 };
 
 TupFrame::TupFrame() : k(new Private)
@@ -91,7 +87,6 @@ TupFrame::TupFrame() : k(new Private)
     k->type = Regular;
     k->isLocked = false;
     k->isVisible = true;
-    k->renderIsPending = true;
 }
 
 TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
@@ -99,7 +94,6 @@ TupFrame::TupFrame(TupLayer *parent) : QObject(parent), k(new Private)
     k->layer = parent;
     k->name = "Frame";
     k->type = Regular;
-    k->renderIsPending = true;
 
     k->isLocked = false;
     k->isVisible = true;
@@ -1656,46 +1650,6 @@ void TupFrame::redoTransformation(TupLibraryObject::Type itemType, int index)
         if (object)
             object->redoTransformation();
     }
-}
-
-void TupFrame::renderView()
-{
-    #ifdef K_DEBUG
-        #ifdef Q_OS_WIN
-            qDebug() << "[TupFrame::renderFrame()]";
-        #else
-            T_FUNCINFO;
-        #endif
-    #endif
-
-    QSize dimension = project()->dimension();
-
-    TupFrameScene frameScene(dimension, Qt::transparent, this);
-    QImage image(dimension, QImage::Format_ARGB32);
-    image.fill(Qt::transparent);
-    {
-        QPainter painter(&image);
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        frameScene.renderView(&painter);
-    }
-
-    k->framePixmap = QPixmap::fromImage(image);
-    k->renderIsPending = false;
-}
-
-bool TupFrame::renderIsPending()
-{
-    return k->renderIsPending;
-}
-
-void TupFrame::updateRenderStatus(bool flag)
-{
-    k->renderIsPending = flag;
-}
-
-QPixmap TupFrame::framePixmap() const
-{
-    return k->framePixmap;
 }
 
 void TupFrame::checkBrushStatus(int itemIndex)

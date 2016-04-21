@@ -137,7 +137,6 @@ bool TupCommandExecutor::createItem(TupItemResponse *response)
                         }
                     }
 
-                    frame->updateRenderStatus(true);
                     response->setFrameState(frame->isEmpty());
                     emit responsed(response);
                 } else {
@@ -292,7 +291,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                     if (type == TupLibraryObject::Svg) {
                         frame->removeSvg(response->itemIndex());
 
-                        frame->updateRenderStatus(true);
                         response->setFrameState(frame->isEmpty());
                         emit responsed(response);
                         return true;
@@ -304,7 +302,6 @@ bool TupCommandExecutor::removeItem(TupItemResponse *response)
                             // if (object->hasTween()) 
                             //     scene->removeTweenObject(layerIndex, object);
 
-                            frame->updateRenderStatus(true);
                             response->setFrameState(frame->isEmpty());
                             emit responsed(response);
                             return true;
@@ -432,7 +429,6 @@ bool TupCommandExecutor::moveItem(TupItemResponse *response)
                 TupFrame *frame = layer->frameAt(frameIndex);
                 if (frame) {
                     if (frame->moveItem(type, objectIndex, action)) {
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     }
@@ -930,7 +926,6 @@ bool TupCommandExecutor::transformItem(TupItemResponse *response)
                         if (response->mode() == TupProjectResponse::Redo)
                             frame->redoTransformation(type, itemIndex);
 
-                        frame->updateRenderStatus(true);
                         response->setArg(xml);
                         emit responsed(response);
                     
@@ -1057,7 +1052,6 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                         if (response->mode() == TupProjectResponse::Undo)
                             item->undoPath();
 
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     } else {
@@ -1105,7 +1099,6 @@ bool TupCommandExecutor::setPathItem(TupItemResponse *response)
                         if (response->mode() == TupProjectResponse::Undo)
                             item->undoPath();
 
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     } else {
@@ -1208,7 +1201,6 @@ bool TupCommandExecutor::setTween(TupItemResponse *response)
                     }
                 }
 
-                frame->updateRenderStatus(true);
                 emit responsed(response);
                 return true;
             }
@@ -1259,7 +1251,6 @@ bool TupCommandExecutor::setBrush(TupItemResponse *response)
                             frame->undoBrushAction(itemIndex);
                         }
 
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     }
@@ -1297,7 +1288,6 @@ bool TupCommandExecutor::setBrush(TupItemResponse *response)
                         if (response->mode() == TupProjectResponse::Undo)
                             frame->undoBrushAction(itemIndex);
 
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     } else {
@@ -1375,7 +1365,6 @@ bool TupCommandExecutor::setPen(TupItemResponse *response)
                         if (response->mode() == TupProjectResponse::Undo)
                             frame->undoPenAction(itemIndex);
 
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     }
@@ -1413,7 +1402,6 @@ bool TupCommandExecutor::setPen(TupItemResponse *response)
                         if (response->mode() == TupProjectResponse::Undo)
                             frame->undoPenAction(itemIndex);
 
-                        frame->updateRenderStatus(true);
                         emit responsed(response);
                         return true;
                     } else {

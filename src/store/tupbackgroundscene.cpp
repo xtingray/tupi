@@ -33,14 +33,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tupframescene.h"
+#include "tupbackgroundscene.h"
 
-struct TupFrameScene::Private
+struct TupBackgroundScene::Private
 {
     TupFrame *bg;
 };
 
-TupFrameScene::TupFrameScene(const QSize dimension, const QColor color, TupFrame *background) : QGraphicsScene(), k(new Private)
+TupBackgroundScene::TupBackgroundScene(const QSize dimension, const QColor color, TupFrame *background) : QGraphicsScene(), k(new Private)
 {
     setSceneRect(QRectF(QPointF(0,0), dimension));
     setBackgroundBrush(color);
@@ -48,7 +48,7 @@ TupFrameScene::TupFrameScene(const QSize dimension, const QColor color, TupFrame
     drawScene();
 }
 
-TupFrameScene::~TupFrameScene()
+TupBackgroundScene::~TupBackgroundScene()
 {
     clearFocus();
     clearSelection();
@@ -58,22 +58,24 @@ TupFrameScene::~TupFrameScene()
 
     foreach (QGraphicsItem *item, items())
              removeItem(item);
+
+    delete k;
 }
 
-void TupFrameScene::drawScene()
+void TupBackgroundScene::drawScene()
 {
     cleanWorkSpace();
     addFrame(k->bg);
     update();
 }
 
-void TupFrameScene::renderView(QPainter *painter)
+void TupBackgroundScene::renderView(QPainter *painter)
 {
     render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()),
            sceneRect().toRect(), Qt::IgnoreAspectRatio);
 }
 
-void TupFrameScene::cleanWorkSpace()
+void TupBackgroundScene::cleanWorkSpace()
 {
     foreach (QGraphicsItem *item, items()) {
              if (item->scene() == this)
@@ -81,13 +83,29 @@ void TupFrameScene::cleanWorkSpace()
     }
 }
 
-void TupFrameScene::addFrame(TupFrame *frame)
+void TupBackgroundScene::addFrame(TupFrame *frame)
 {
     if (frame) {
+        /*
+        QList<int> indexes = frame->itemIndexes();
+        for (int i = 0; i < indexes.size(); ++i) {
+             TupGraphicObject *object = frame->graphicAt(indexes.at(i));
+             addGraphicObject(object);
+        }
+        */
+
         for (int i = 0; i < frame->graphicItemsCount(); i++) {
              TupGraphicObject *object = frame->graphicAt(i);
              addGraphicObject(object);
         }
+
+        /*
+        indexes = frame->svgIndexes();
+        for (int i = 0; i < indexes.size(); ++i) {
+             TupSvgItem *object = frame->svgAt(indexes.at(i));
+             addSvgObject(object);
+        }
+        */
 
         for (int i = 0; i < frame->svgItemsCount(); i++) {
              TupSvgItem *object = frame->svgAt(i);
@@ -96,7 +114,7 @@ void TupFrameScene::addFrame(TupFrame *frame)
     }
 }
 
-void TupFrameScene::addGraphicObject(TupGraphicObject *object)
+void TupBackgroundScene::addGraphicObject(TupGraphicObject *object)
 {
     if (object) {
         QGraphicsItem *item = object->item();
@@ -105,7 +123,7 @@ void TupFrameScene::addGraphicObject(TupGraphicObject *object)
     }
 }
 
-void TupFrameScene::addSvgObject(TupSvgItem *svgItem)
+void TupBackgroundScene::addSvgObject(TupSvgItem *svgItem)
 {
     if (svgItem) {
         svgItem->setSelected(false);

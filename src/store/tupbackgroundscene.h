@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPFRAMESCENE_H
-#define TUPFRAMESCENE_H
+#ifndef TUPBACKGROUNDSCENE_H
+#define TUPBACKGROUNDSCENE_H
 
 #include "tglobal.h"
 #include "tupframe.h"
@@ -45,13 +45,13 @@
 #include <QGraphicsView>
 #include <QPainter>
 
-class TUPI_EXPORT TupFrameScene : public QGraphicsScene
+class TUPI_EXPORT TupBackgroundScene : public QGraphicsScene
 {
     Q_OBJECT
 
     public:
-        TupFrameScene(const QSize dimension, const QColor color, TupFrame *background);
-        ~TupFrameScene();
+        TupBackgroundScene(const QSize dimension, const QColor color, TupFrame *background);
+        ~TupBackgroundScene();
         void renderView(QPainter *painter);
 
     private:

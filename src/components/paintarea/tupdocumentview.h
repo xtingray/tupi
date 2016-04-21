@@ -137,7 +137,6 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void setBackgroundDirection(int direction);
         void updateBackgroundShiftProperty(int shift);
         void renderDynamicBackground();
-        void renderStaticBackground();
         void fullScreenRightClick();
         void cameraInterface();
         void insertPictureInFrame(int id, const QString path);
@@ -164,11 +163,6 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void sendStoryboard(TupStoryboard *storyboard, int sceneIndex);
         void updateStaticOpacity(double opacity);
         void updateDynamicOpacity(double opacity);
-        void activeOnionColorScheme();
-        void updatePreviousOnionColor(TColorCell::FillType);
-        void updateNextOnionColor(TColorCell::FillType);
-        void updateLayersOnionColor(TColorCell::FillType);
-        void updateBackgroundOnionColor(TColorCell::FillType);
 
         void updatePen(const QPen &pen);
         void updateBrush(const QBrush &brush);

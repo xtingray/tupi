@@ -345,7 +345,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                         guiScene->setCurrentFrame(response->layerIndex(), response->frameIndex());
 
                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                            guiScene->drawPhotogram(response->frameIndex(), TupGraphicsScene::Animation);
+                            guiScene->drawPhotogram(response->frameIndex(), true);
                         } else {
                             guiScene->cleanWorkSpace();
                             guiScene->drawSceneBackground(guiScene->currentFrameIndex());
@@ -1560,15 +1560,3 @@ void TupPaintArea::resetWorkSpaceCenter(const QSize projectSize)
              view->setSceneRect(0, 0, projectSize.width(), projectSize.height());
     }
 }
-
-void TupPaintArea::updateOnionColors()
-{
-    graphicsScene()->updateOnionColors();
-    updatePaintArea();
-}
-
-void TupPaintArea::updateOnionColorSchemeStatus(bool status)
-{
-    graphicsScene()->updateOnionColorSchemeStatus(status);
-}
-

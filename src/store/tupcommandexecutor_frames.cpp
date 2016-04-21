@@ -127,7 +127,6 @@ bool TupCommandExecutor::resetFrame(TupFrameResponse *response)
             TupFrame *frame = layer->frameAt(position);
             if (frame) {
                 if (layer->resetFrame(position)) {
-                    frame->updateRenderStatus(true);
                     emit responsed(response);
                     return true;
                 }
@@ -379,7 +378,6 @@ bool TupCommandExecutor::pasteFrame(TupFrameResponse *response)
                 frame->fromXml(copyFrame);
                 frame->setFrameName(name);
 
-                frame->updateRenderStatus(true);
                 response->setFrameState(frame->isEmpty());
                 emit responsed(response);
 

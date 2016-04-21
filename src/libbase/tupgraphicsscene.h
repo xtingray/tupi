@@ -70,7 +70,6 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
 
     public:
         enum Context { Current = 1, Previous, Next };
-        enum WorkSpace { Animation, Player };
 
         TupGraphicsScene();
         ~TupGraphicsScene();
@@ -80,7 +79,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void setCurrentScene(TupScene *scene);
         void drawCurrentPhotogram();
         
-        void drawPhotogram(int photogram, WorkSpace space);
+        void drawPhotogram(int photogram, bool drawContext);
         void drawSceneBackground(int photogram);
 
         void cleanWorkSpace();
@@ -91,7 +90,7 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         
         void setNextOnionSkinCount(int n);
         void setPreviousOnionSkinCount(int n);
-        
+
         void updateLayerVisibility(int layerIndex, bool visible);
         
         TupScene *scene() const;
@@ -125,12 +124,10 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         double opacity();
 
         int framesCount();
+
         void setLibrary(TupLibrary *library);
         void resetCurrentTool(); 
-
         TupInputDeviceInformation * inputDeviceInformation();
-        void updateOnionColors();
-        void updateOnionColorSchemeStatus(bool status);
 
     // private slots:
     //  void updateObjectInformation(const QString &value);
@@ -141,14 +138,12 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void showInfoWidget();
 
     private:
-        void addBackgroundFrame(TupFrame *frame);
-        void addBackgroundGraphicObject(TupGraphicObject *object, double opacity);
-        void addBackgroundSvgObject(TupSvgItem *svgItem, double opacity); 
+        void addFrame(TupFrame *frame, double opacity = 1.0, Context mode = Current);
+        void addGraphicObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity = 1.0, bool tweenInAdvance = false);
+        void processNativeObject(TupGraphicObject *object, TupFrame::FrameType frameType, double opacity, Context mode);
+        void processSVGObject(TupSvgItem *svg, TupFrame::FrameType frameType, double opacity, Context mode);
 
-        void addFrame(TupFrame *frame);
-        void addGraphicObject(TupGraphicObject *object, bool tweenInAdvance = false);
-        void addSvgObject(TupSvgItem *svgItem, bool tweenInAdvance = false);
-
+        void addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType frameType, double opacity = 1.0, bool tweenInAdvance = false);
         void addTweeningObjects(int indexLayer, int photogram);
         void addSvgTweeningObjects(int indexLayer, int photogram);
         void addLipSyncObjects(TupLayer *layer, int photogram, int zLevel);

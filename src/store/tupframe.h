@@ -159,11 +159,6 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
         void undoTransformation(TupLibraryObject::Type itemType, int index);
         void redoTransformation(TupLibraryObject::Type itemType, int index);
 
-        void renderView();
-        bool renderIsPending();
-        void updateRenderStatus(bool flag);
-        QPixmap framePixmap() const;
-
        void checkBrushStatus(int itemIndex);
        void setBrushAtItem(int itemIndex, const QString &xml);
        void redoBrushAction(int itemIndex);
