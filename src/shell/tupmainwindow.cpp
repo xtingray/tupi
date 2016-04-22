@@ -301,11 +301,12 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         animationTab->setWindowTitle(tr("Animation"));
         addWidget(animationTab);
 
+        tError() << "TupMainWindow::setWorkSpace() - FLAG X";
+
         connectWidgetToManager(animationTab);
         connectWidgetToLocalManager(animationTab);
         connect(animationTab, SIGNAL(modeHasChanged(TupProject::Mode)), this, SLOT(expandExposureView(TupProject::Mode))); 
         connect(animationTab, SIGNAL(colorChangedFromFullScreen(const QColor &)), this, SLOT(updatePenColor(const QColor &)));
-        // connect(animationTab, SIGNAL(updatePenFromFullScreen(const QPen &)), this, SLOT(updatePenWidth(const QPen &)));
         connect(animationTab, SIGNAL(projectSizeHasChanged(const QSize)), this, SLOT(resizeProjectDimension(const QSize))); 
         connect(animationTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
         connect(animationTab, SIGNAL(contourColorChanged(const QColor &)), m_colorPalette, SLOT(updateContourColor(const QColor &))); 
@@ -314,6 +315,8 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connect(animationTab, SIGNAL(penWidthChanged(int)), this, SLOT(updatePenWidth(int)));
 
         animationTab->setAntialiasing(true);
+
+        tError() << "TupMainWindow::setWorkSpace() - FLAG XX";
 
         int width = animationTab->workSpaceSize().width();
         int height = animationTab->workSpaceSize().height();
@@ -338,6 +341,8 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         } else if (proportion > 1.5 && proportion < 2) {
                    animationTab->setZoomPercent("75");
         }
+
+        tError() << "TupMainWindow::setWorkSpace() - FLAG XXX";
 
         // TupCamera Widget
         cameraWidget = new TupCameraWidget(m_projectManager->project(), isNetworked);
@@ -1312,12 +1317,28 @@ void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
 
 void TupMainWindow::updatePenColor(const QColor &color)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupMainWindow::updatePenColor()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePenColor, color);
     createPaintCommand(event);
 }
 
 void TupMainWindow::updatePenWidth(int width)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupMainWindow::updatePenWidth()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePenWidth, width);
     createPaintCommand(event);
 }

@@ -91,6 +91,8 @@ struct TupGraphicsScene::Private
     int layerOnProcess;
 
     int zLevel;
+
+    bool loadingProject;
 };
 
 TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -103,13 +105,13 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
         #endif
     #endif
 
+    k->loadingProject = true;
+
     setItemIndexMethod(QGraphicsScene::NoIndex);
 
     k->framePosition.layer = -1;
     k->framePosition.frame = -1;
     k->spaceContext = TupProject::FRAMES_EDITION;
-
-    // setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
     k->onionSkin.previous = 0;
@@ -186,7 +188,6 @@ void TupGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void TupGraphicsScene::drawCurrentPhotogram()
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupGraphicsScene::drawCurrentPhotogram()]";
@@ -194,7 +195,11 @@ void TupGraphicsScene::drawCurrentPhotogram()
             T_FUNCINFO;
         #endif
     #endif
-    */
+
+    if (k->loadingProject) {
+        tError() << "NOT PAINTING!";
+        return;
+    }
 
     TupLayer *layer = k->scene->layerAt(k->framePosition.layer);
     int frames = layer->framesCount();
@@ -1087,6 +1092,9 @@ void TupGraphicsScene::setNextOnionSkinCount(int n)
     */
 
     k->onionSkin.next = n;
+
+    tError() << "TupGraphicsScene::setNextOnionSkinCount() - Calling drawCurrentPhotogram()";
+
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
 }
@@ -1104,6 +1112,9 @@ void TupGraphicsScene::setPreviousOnionSkinCount(int n)
     */
 
     k->onionSkin.previous = n;
+
+    tError() << "TupGraphicsScene::setPreviousOnionSkinCount() - Calling drawCurrentPhotogram()";
+
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
 }
@@ -1176,6 +1187,8 @@ void TupGraphicsScene::setCurrentScene(TupScene *scene)
     cleanWorkSpace();
     k->scene = scene;
 
+    tError() << "TupGraphicsScene::setCurrentScene() - Calling drawCurrentPhotogram()";
+
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
     else
@@ -1209,6 +1222,8 @@ void TupGraphicsScene::setTool(TupToolPlugin *tool)
             T_FUNCINFO;
         #endif
     #endif
+
+    tError() << "TupGraphicsScene::setTool() - Calling drawCurrentPhotogram()";
 
     if (k->spaceContext == TupProject::FRAMES_EDITION) {
         drawCurrentPhotogram();
@@ -1697,6 +1712,9 @@ void TupGraphicsScene::setSpaceMode(TupProject::Mode mode)
 void TupGraphicsScene::setOnionFactor(double opacity)
 {
     k->opacity = opacity;
+
+    tError() << "TupGraphicsScene::setOnionFactor() - Calling drawCurrentPhotogram()";
+
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
 }
@@ -1740,3 +1758,10 @@ TupInputDeviceInformation * TupGraphicsScene::inputDeviceInformation()
 {
     return k->inputInformation;
 }
+
+void TupGraphicsScene::updateLoadingFlag(bool flag)
+{
+    tError() << "ENABLING PAINTING!";
+    k->loadingProject = flag;
+}
+

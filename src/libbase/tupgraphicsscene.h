@@ -129,6 +129,8 @@ class TUPI_EXPORT TupGraphicsScene : public QGraphicsScene
         void resetCurrentTool(); 
         TupInputDeviceInformation * inputDeviceInformation();
 
+        void updateLoadingFlag(bool flag);
+
     // private slots:
     //  void updateObjectInformation(const QString &value);
     //  void showInfoWidget();

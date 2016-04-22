@@ -69,8 +69,6 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
         #endif
     #endif
 
-    // graphicsScene()->setLibrary(project->library());
-
     setAccessibleName("WORKSPACE");
     k->project = project;
     k->canvasEnabled = false;
@@ -84,7 +82,6 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
 
     setCurrentScene(0);
     graphicsScene()->setCurrentFrame(0, 0);
-    // graphicsScene()->setLibrary(project->library());
 
     /*
     if (graphicsScene()->scene()) {
@@ -1193,6 +1190,8 @@ void TupPaintArea::updatePaintArea()
 
     if (k->spaceMode == TupProject::FRAMES_EDITION) {
         TupGraphicsScene* currentScene = graphicsScene();
+
+        tError() << "TupPaintArea::updatePaintArea() - Calling drawCurrentPhotogram()";
         currentScene->drawCurrentPhotogram();
     } else {
         paintBackground();
@@ -1562,4 +1561,9 @@ void TupPaintArea::resetWorkSpaceCenter(const QSize projectSize)
              view->centerOn(QPointF(centerX, centerY));
              view->setSceneRect(0, 0, projectSize.width(), projectSize.height());
     }
+}
+
+void TupPaintArea::updateLoadingFlag(bool flag)
+{
+    graphicsScene()->updateLoadingFlag(flag);
 }

@@ -215,12 +215,18 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     connect(brushManager(), SIGNAL(brushChanged(const QBrush &)), this, SLOT(updateBrush(const QBrush &)));
     connect(brushManager(), SIGNAL(bgColorChanged(const QColor &)), this, SLOT(updateBgColor(const QColor &)));
 
+    tError() << "TupDocumentView::TupDocumentView() - Flag 1A";
+
     // SQA: Find out why this timer instruction is required?
     QTimer::singleShot(500, this, SLOT(loadPlugins()));
+
+    tError() << "TupDocumentView::TupDocumentView() - Flag 1B";
 
     // SQA: Temporarily disabled  
     // if (!k->isNetworked)
     //     saveTimer();
+
+    k->paintArea->updateLoadingFlag(false);
 }
 
 TupDocumentView::~TupDocumentView()
@@ -1281,6 +1287,8 @@ void TupDocumentView::createToolBar()
 
     addToolBar(k->staticPropertiesBar);
     addToolBar(k->dynamicPropertiesBar);
+
+    tError() << "TupDocumentView::createToolBar() - FLAG 1";
 }
 
 void TupDocumentView::closeArea()
@@ -1737,6 +1745,14 @@ void TupDocumentView::updateUsersOnLine(const QString &login, int state)
 // SQA: This method must support multi-user notifications (pending)
 void TupDocumentView::updateStaticOpacity(double opacity)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupDocumentView::updateStaticOpacity()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     int sceneIndex = k->paintArea->currentSceneIndex();
     TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
@@ -1753,6 +1769,14 @@ void TupDocumentView::updateStaticOpacity(double opacity)
 // SQA: This method must support multi-user notifications (pending)
 void TupDocumentView::updateDynamicOpacity(double opacity)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupDocumentView::updateDynamicOpacity()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
    int sceneIndex = k->paintArea->currentSceneIndex();
    TupScene *scene = k->project->sceneAt(sceneIndex);
    if (scene) {
@@ -1895,6 +1919,8 @@ void TupDocumentView::cameraInterface()
 
 void TupDocumentView::resizeProjectDimension(const QSize dimension)
 {
+    tError() << "TupDocumentView::resizeProjectDimension() - FLAG XXX";
+
     k->paintArea->updateDimension(dimension);
 
     int width = k->wsDimension.width();
