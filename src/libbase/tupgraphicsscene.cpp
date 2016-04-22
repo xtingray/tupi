@@ -196,10 +196,8 @@ void TupGraphicsScene::drawCurrentPhotogram()
         #endif
     #endif
 
-    if (k->loadingProject) {
-        tError() << "NOT PAINTING!";
+    if (k->loadingProject)
         return;
-    }
 
     TupLayer *layer = k->scene->layerAt(k->framePosition.layer);
     int frames = layer->framesCount();
@@ -949,20 +947,6 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
         #endif
     #endif
 
-    /*
-    if (!k->library) {
-        #ifdef K_DEBUG
-            QString msg = "TupGraphicsScene::addLipSyncObjects() - Fatal Error: Library pointer is NULL!";
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-            #else
-                tFatal() << msg;
-            #endif
-        #endif
-        return;
-    }
-    */
-
     if (layer->lipSyncCount() > 0) {
         Mouths mouths = layer->lipSyncList();
         for (int i=0; i<mouths.count(); i++) {
@@ -1093,8 +1077,6 @@ void TupGraphicsScene::setNextOnionSkinCount(int n)
 
     k->onionSkin.next = n;
 
-    tError() << "TupGraphicsScene::setNextOnionSkinCount() - Calling drawCurrentPhotogram()";
-
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
 }
@@ -1112,8 +1094,6 @@ void TupGraphicsScene::setPreviousOnionSkinCount(int n)
     */
 
     k->onionSkin.previous = n;
-
-    tError() << "TupGraphicsScene::setPreviousOnionSkinCount() - Calling drawCurrentPhotogram()";
 
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
@@ -1187,8 +1167,6 @@ void TupGraphicsScene::setCurrentScene(TupScene *scene)
     cleanWorkSpace();
     k->scene = scene;
 
-    tError() << "TupGraphicsScene::setCurrentScene() - Calling drawCurrentPhotogram()";
-
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
     else
@@ -1222,8 +1200,6 @@ void TupGraphicsScene::setTool(TupToolPlugin *tool)
             T_FUNCINFO;
         #endif
     #endif
-
-    tError() << "TupGraphicsScene::setTool() - Calling drawCurrentPhotogram()";
 
     if (k->spaceContext == TupProject::FRAMES_EDITION) {
         drawCurrentPhotogram();
@@ -1713,8 +1689,6 @@ void TupGraphicsScene::setOnionFactor(double opacity)
 {
     k->opacity = opacity;
 
-    tError() << "TupGraphicsScene::setOnionFactor() - Calling drawCurrentPhotogram()";
-
     if (k->spaceContext == TupProject::FRAMES_EDITION)
         drawCurrentPhotogram();
 }
@@ -1743,9 +1717,6 @@ void TupGraphicsScene::setLibrary(TupLibrary *library)
         #endif
     #endif
 
-    // if (!library)
-    //     tError() << "TupGraphicsScene::setLibrary() - Library object is NULL!!!";
-
     k->library = library;
 }
 
@@ -1761,7 +1732,6 @@ TupInputDeviceInformation * TupGraphicsScene::inputDeviceInformation()
 
 void TupGraphicsScene::updateLoadingFlag(bool flag)
 {
-    tError() << "ENABLING PAINTING!";
     k->loadingProject = flag;
 }
 

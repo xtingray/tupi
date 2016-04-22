@@ -301,8 +301,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         animationTab->setWindowTitle(tr("Animation"));
         addWidget(animationTab);
 
-        tError() << "TupMainWindow::setWorkSpace() - FLAG X";
-
         connectWidgetToManager(animationTab);
         connectWidgetToLocalManager(animationTab);
         connect(animationTab, SIGNAL(modeHasChanged(TupProject::Mode)), this, SLOT(expandExposureView(TupProject::Mode))); 
@@ -315,8 +313,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connect(animationTab, SIGNAL(penWidthChanged(int)), this, SLOT(updatePenWidth(int)));
 
         animationTab->setAntialiasing(true);
-
-        tError() << "TupMainWindow::setWorkSpace() - FLAG XX";
 
         int width = animationTab->workSpaceSize().width();
         int height = animationTab->workSpaceSize().height();
@@ -341,8 +337,6 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         } else if (proportion > 1.5 && proportion < 2) {
                    animationTab->setZoomPercent("75");
         }
-
-        tError() << "TupMainWindow::setWorkSpace() - FLAG XXX";
 
         // TupCamera Widget
         cameraWidget = new TupCameraWidget(m_projectManager->project(), isNetworked);

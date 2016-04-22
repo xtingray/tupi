@@ -215,12 +215,8 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     connect(brushManager(), SIGNAL(brushChanged(const QBrush &)), this, SLOT(updateBrush(const QBrush &)));
     connect(brushManager(), SIGNAL(bgColorChanged(const QColor &)), this, SLOT(updateBgColor(const QColor &)));
 
-    tError() << "TupDocumentView::TupDocumentView() - Flag 1A";
-
     // SQA: Find out why this timer instruction is required?
     QTimer::singleShot(500, this, SLOT(loadPlugins()));
-
-    tError() << "TupDocumentView::TupDocumentView() - Flag 1B";
 
     // SQA: Temporarily disabled  
     // if (!k->isNetworked)
@@ -1287,8 +1283,6 @@ void TupDocumentView::createToolBar()
 
     addToolBar(k->staticPropertiesBar);
     addToolBar(k->dynamicPropertiesBar);
-
-    tError() << "TupDocumentView::createToolBar() - FLAG 1";
 }
 
 void TupDocumentView::closeArea()
@@ -1919,8 +1913,6 @@ void TupDocumentView::cameraInterface()
 
 void TupDocumentView::resizeProjectDimension(const QSize dimension)
 {
-    tError() << "TupDocumentView::resizeProjectDimension() - FLAG XXX";
-
     k->paintArea->updateDimension(dimension);
 
     int width = k->wsDimension.width();

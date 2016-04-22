@@ -37,8 +37,9 @@
 #define TUPPAINTAREAPREFERENCES_H
 
 #include "tglobal.h"
-// #include "tcolorbutton.h"
 #include "tconfig.h"
+
+#include <QWidget>
 
 /**
  * @author David Cuadrado

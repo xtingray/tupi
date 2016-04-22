@@ -1190,8 +1190,6 @@ void TupPaintArea::updatePaintArea()
 
     if (k->spaceMode == TupProject::FRAMES_EDITION) {
         TupGraphicsScene* currentScene = graphicsScene();
-
-        tError() << "TupPaintArea::updatePaintArea() - Calling drawCurrentPhotogram()";
         currentScene->drawCurrentPhotogram();
     } else {
         paintBackground();
