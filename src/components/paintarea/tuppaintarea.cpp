@@ -59,7 +59,7 @@ struct TupPaintArea::Private
     bool canvasEnabled;
 };
 
-TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintAreaBase(parent, project->dimension()), k(new Private)
+TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintAreaBase(parent, project->dimension(), project->library()), k(new Private)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -69,22 +69,22 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
         #endif
     #endif
 
+    // graphicsScene()->setLibrary(project->library());
+
     setAccessibleName("WORKSPACE");
-
-    k->canvasEnabled = false;
-
     k->project = project;
-    setBgColor(project->bgColor());
+    k->canvasEnabled = false;
     k->currentSceneIndex = 0;
     k->deleteMode = false;
     k->menuOn = false;
     k->copyIsValid = false;
-
     k->currentTool = tr("Pencil");
+
+    setBgColor(project->bgColor());
 
     setCurrentScene(0);
     graphicsScene()->setCurrentFrame(0, 0);
-    graphicsScene()->setLibrary(project->library());
+    // graphicsScene()->setLibrary(project->library());
 
     /*
     if (graphicsScene()->scene()) {

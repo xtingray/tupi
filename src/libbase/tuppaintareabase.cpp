@@ -77,6 +77,14 @@ struct TupPaintAreaBase::Private
 
 TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary *library) : QGraphicsView(parent), k(new Private)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupPaintAreaBase::TupPaintAreaBase()]";
+        #else
+            TINIT;
+        #endif
+    #endif
+
     k->scene = new TupGraphicsScene();
     k->scene->setLibrary(library);
 

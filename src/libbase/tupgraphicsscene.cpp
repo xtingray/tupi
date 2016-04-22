@@ -109,7 +109,7 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     k->framePosition.frame = -1;
     k->spaceContext = TupProject::FRAMES_EDITION;
 
-    setCurrentFrame(0, 0);
+    // setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
     k->onionSkin.previous = 0;
@@ -1724,6 +1724,9 @@ void TupGraphicsScene::setLibrary(TupLibrary *library)
             T_FUNCINFO;
         #endif
     #endif
+
+    // if (!library)
+    //     tError() << "TupGraphicsScene::setLibrary() - Library object is NULL!!!";
 
     k->library = library;
 }
