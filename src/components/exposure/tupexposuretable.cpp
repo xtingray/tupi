@@ -146,7 +146,7 @@ void TupExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
         if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Empty) && !item->data(TupExposureTable::IsLocked).toBool()) {
             QColor color(100, 100, 100, 30);
             if (k->themeName.compare("Dark") == 0)
-                color = QColor(90, 90, 90);
+                color = QColor(120, 120, 120);
 
             QPen pen(color);
             pen.setStyle(Qt::DashLine);
@@ -164,7 +164,7 @@ void TupExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
             QColor color(0, 102, 255, 80);
             if (k->themeName.compare("Dark") == 0)
-                color = QColor(0, 0, 0, 50);
+                color = QColor(0, 0, 0, 60);
 
             painter->fillPath(path, QBrush(color));
 
@@ -473,10 +473,8 @@ void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString
     QTableWidgetItem *frame = new QTableWidgetItem;
 
     QColor color = Qt::transparent;
-    if (k->themeName.compare("Dark") == 0) {
-        color = QColor(190, 190, 190);
-        frame->setForeground(Qt::white);
-    }
+    if (k->themeName.compare("Dark") == 0)
+        frame->setForeground(Qt::black);
     frame->setBackgroundColor(color);
 
     QFont font = this->font();
@@ -508,15 +506,11 @@ void TupExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
     QTableWidgetItem * frame = item(frameIndex, logicalIndex);
     if (frame) {
         if (frame->data(TupExposureTable::IsEmpty).toInt() != Unset) {
-            if (locked) {
+            QColor color = Qt::transparent;
+            if (locked)
                 frame->setBackgroundColor(QColor(255, 0, 0, 90));
-            } else {
-                QColor color = Qt::transparent;
-                if (k->themeName.compare("Dark") == 0)
-                    color = QColor(190, 190, 190);
-                frame->setBackgroundColor(color);
-            }
 
+            frame->setBackgroundColor(color);
             frame->setData(IsLocked, locked);
         }
     }
