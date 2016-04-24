@@ -981,20 +981,38 @@ bool TupProject::deleteDataDir()
                          dir.cd(subdir);
                          foreach (QString file, dir.entryList()) {
                                   QString absolute = dir.absolutePath() + "/" + file;
-
                                   if (!file.startsWith(".")) {
                                       QFileInfo finfo(absolute);
-                                      if (finfo.isFile())
-                                          QFile::remove(absolute);
+                                      if (finfo.isFile()) {
+                                          if (!QFile::remove(absolute)) {
+                                              #ifdef K_DEBUG
+                                                  QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove item! -> " + absolute;
+                                                  #ifdef Q_OS_WIN
+                                                      qDebug() << msg;
+                                                  #else
+                                                      tError() << msg;
+                                                  #endif
+                                              #endif		  
+										  }
+									  }
                                   }
                           }
                           dir.cdUp();
-                          dir.rmdir(subdir);
+                          if (!dir.rmdir(subdir)) {
+                              #ifdef K_DEBUG
+                                  QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove directory! -> " + subdir;
+                                  #ifdef Q_OS_WIN
+                                      qDebug() << msg;
+                                  #else
+                                      tError() << msg;
+                                  #endif
+                              #endif							  
+						  }
                      }
             }
         }
 
-        if (! dir.rmdir(dir.absolutePath())) {
+        if (!dir.rmdir(dir.absolutePath())) {
             #ifdef K_DEBUG
                 QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove project data directory! -> " + dataDir();
                 #ifdef Q_OS_WIN

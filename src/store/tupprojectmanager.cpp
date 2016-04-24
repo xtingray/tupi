@@ -513,7 +513,7 @@ void TupProjectManager::setOpen(bool isOpen)
 bool TupProjectManager::removeProjectPath(const QString &projectPath)
 {
     #ifdef K_DEBUG
-        qDebug() << "[TupProjectManager::removeProjectPath()] - path: " <<  projectPath;
+        qDebug() << "[TupProjectManager::removeProjectPath()] - Removing path: " <<  projectPath;
     #endif
 
     bool result = true;
@@ -534,6 +534,10 @@ bool TupProjectManager::removeProjectPath(const QString &projectPath)
         }
         result = dir.rmdir(projectPath);
     }
+	
+    #ifdef K_DEBUG
+        qDebug() << "[TupProjectManager::removeProjectPath()] - Result: " <<  result;
+    #endif
 
     return result;
 }
