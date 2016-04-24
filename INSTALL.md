@@ -34,7 +34,7 @@ Open a terminal (from Aplications -> Accesories) and type:
     % sudo apt-get install build-essential    [Press enter]
     % sudo apt-get install ruby    [Press enter]
     % sudo apt-get install libavcodec-dev libavformat-dev    [Press enter]
-    % udo apt-get install libqt4-gui qt4-qmake qt4-dev-tools    [Press enter]
+    % sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools    [Press enter]
     % sudo apt-get install zlib1g-dev    [Press enter]
     % sudo apt-get install libquazip0-dev    [Press enter]
     % sudo apt-get install qtmobility-dev    [Press enter]
