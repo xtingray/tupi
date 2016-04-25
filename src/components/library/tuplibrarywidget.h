@@ -148,6 +148,8 @@ class TUPI_EXPORT TupLibraryWidget : public TupModuleWidgetBase
         QString nameForClonedItem(QString &smallId, QString &extension, QString &path) const;
         QString verifyNameAvailability(QString &name, QString &extension, bool isCloningAction);
         void verifyFramesAvailability(int filesTotal);
+        void setDefaultPath(const QString &path);
+        void saveDefaultPath(const QString &dir);
 
         struct Private;
         Private *const k;

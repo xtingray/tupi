@@ -70,6 +70,8 @@ class TUPI_EXPORT TupPapagayoDialog : public QDialog
         void checkRecords();
 
     private:
+        void setDefaultPath(const QString &path);
+        void saveDefaultPath(const QString &dir);
         struct Private;
         Private *const k;
 };

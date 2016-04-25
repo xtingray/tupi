@@ -102,6 +102,9 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     QBoxLayout *presetsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
     QLabel *presetsLabel = new QLabel(tr("Presets") + " ");
 
+    TCONFIG->beginGroup("PaintArea");
+    int presetIndex = TCONFIG->value("DefaultFormat", 3).toInt();
+
     k->presets = new QComboBox();
     k->presets->addItem(tr("Free format"));
     k->presets->addItem(tr("520x380 - 24"));
@@ -110,6 +113,7 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     k->presets->addItem(tr("576 (PAL DV/DVD) - 25"));
     k->presets->addItem(tr("720 (HD) - 24"));
     k->presets->addItem(tr("1080 (Full HD) - 24"));
+
     connect(k->presets, SIGNAL(currentIndexChanged(int)), this, SLOT(setPresets(int)));
 
     presetsLayout->addWidget(presetsLabel);
@@ -146,6 +150,8 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     k->size = new TXYSpinBox(tr("Dimension"), infoContainer);
     k->size->setMinimum(50);
     k->size->setMaximum(15000);
+    k->size->setX(520);
+    k->size->setY(380);
 
     connect(k->size, SIGNAL(valuesHaveChanged()), this, SLOT(updateFormatCombo()));
 
@@ -174,7 +180,8 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     // addTab(netContainer, tr("Network"));
     enableNetOptions(false);
 
-    k->presets->setCurrentIndex(3);
+    if (presetIndex >= 0)
+        k->presets->setCurrentIndex(presetIndex);
 }
 
 TupNewProject::~TupNewProject()
@@ -299,6 +306,7 @@ void TupNewProject::ok()
 
     TCONFIG->beginGroup("PaintArea");
     TCONFIG->setValue("BackgroundDefaultColor", k->color.name());
+    TCONFIG->setValue("DefaultFormat", k->presets->currentIndex());
     TCONFIG->sync();
 
     TabDialog::ok();

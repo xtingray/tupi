@@ -155,6 +155,7 @@ class TupMainWindow : public TabbedMainWindow
          void setUndoRedoActions();
          void resetUI();
          void updateRecentProjectList();
+         void saveDefaultPath(const QString &dir);
 
     protected:
          /**

@@ -728,9 +728,10 @@ void TupMainWindow::setupLocalProject(TupProjectManagerParams *params)
 
 void TupMainWindow::openProject()
 {
-    const char *home = getenv("HOME");
+    TCONFIG->beginGroup("General");
+    QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
 
-    QString package = QFileDialog::getOpenFileName(this, tr("Open Tupi project"), home,
+    QString package = QFileDialog::getOpenFileName(this, tr("Open Tupi project"), path,
                       tr("Tupi Project Package (*.tup)"));
 
     if (package.isEmpty() || !package.endsWith(".tup")) 
@@ -798,11 +799,16 @@ void TupMainWindow::openProject(const QString &path)
             m_exposureSheet->updateLayerOpacity(0, 0);
             m_exposureSheet->initLayerVisibility();
             m_timeLine->initLayerVisibility();
+
+            int last = path.lastIndexOf("/");
+            QString dir = path.left(last);
+            saveDefaultPath(dir);
         } else {
             setUpdatesEnabled(true);
             TOsd::self()->display(tr("Error"), tr("Cannot open project!"), TOsd::Error);
         }
     }
+
     m_actionManager->enable("open_project", true);
     QApplication::restoreOverrideCursor();
 }
@@ -956,7 +962,9 @@ void TupMainWindow::showTipDialog()
 
 void TupMainWindow::importPalettes()
 {
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp palettes"), QDir::homePath(), tr("Gimp Palette (*.gpl *.txt *.css)"));
+    TCONFIG->beginGroup("General");
+    QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp palettes"), path, tr("Gimp Palette (*.gpl *.txt *.css)"));
 
     if (files.count() > 0) { 
         QStringList::ConstIterator file = files.begin();
@@ -995,10 +1003,16 @@ void TupMainWindow::importPalettes()
                file++;
         }
 
-        if (isOk)
+        if (isOk) {
+            path = files.at(0);
+            int last = path.lastIndexOf("/");
+            QString dir = path.left(last);
+            saveDefaultPath(dir);
+
             TOsd::self()->display(tr("Information"), tr("Gimp palette import was successful"), TOsd::Info);
-        else
+        } else {
             TOsd::self()->display(tr("Error"), tr("Gimp palette import was unsuccessful"), TOsd::Error);
+        }
     }
 }
 
@@ -1081,7 +1095,8 @@ void TupMainWindow::saveAs()
         #endif
     #endif
 
-    QString home = getenv("HOME");
+    TCONFIG->beginGroup("General");
+    QString home = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
     home.append("/" + projectName);
     isSaveDialogOpen = true;
 
@@ -1179,6 +1194,10 @@ void TupMainWindow::saveProject()
             name = name.left(indexDot);
 
             setWindowTitle(tr("Tupi: Open 2D Magic") +  " - " + name + " [ " + tr("by") +  " " +  author + " ]");
+
+            int last = m_fileName.lastIndexOf("/");
+            QString dir = m_fileName.left(last);
+            saveDefaultPath(dir);
         } else {
             TOsd::self()->display(tr("Error"), tr("Cannot save the project!"), TOsd::Error);
         }
@@ -1525,4 +1544,11 @@ void TupMainWindow::resizeProjectDimension(const QSize dimension)
     connectWidgetToManager(cameraWidget);
 
     playerTab->setCameraWidget(cameraWidget);
+}
+
+void TupMainWindow::saveDefaultPath(const QString &dir)
+{
+    TCONFIG->beginGroup("General");
+    TCONFIG->setValue("DefaultPath", dir);
+    TCONFIG->sync();
 }

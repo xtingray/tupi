@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "tuppapagayodialog.h"
+#include "tconfig.h"
 
 struct TupPapagayoDialog::Private
 {
@@ -97,21 +98,38 @@ TupPapagayoDialog::~TupPapagayoDialog()
 
 void TupPapagayoDialog::openFileDialog()
 {
-    QString file = QFileDialog::getOpenFileName(this, tr("Load Papagayo project"), QDir::homePath(), tr("Papagayo Project (*.pgo)"));
-    k->filePath->setText(file);
+    TCONFIG->beginGroup("General");
+    QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
+    QString file = QFileDialog::getOpenFileName(this, tr("Load Papagayo project"), path, tr("Papagayo Project (*.pgo)"));
+
+    if (!file.isEmpty()) {
+        k->filePath->setText(file);
+        setDefaultPath(file);
+    }
 }
 
 void TupPapagayoDialog::openImagesDialog()
 {
-    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the images directory..."), getenv("HOME"), 
-                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    k->imagesPath->setText(path);
+    TCONFIG->beginGroup("General");
+    QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the images directory..."), path, 
+                                                    QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!dir.isEmpty()) {
+        k->imagesPath->setText(dir);
+        saveDefaultPath(dir);
+    }
 }
 
 void TupPapagayoDialog::openSoundDialog()
 {
-    QString file = QFileDialog::getOpenFileName(this, tr("Load sound file"), QDir::homePath(), tr("Sound file (*.ogg *.wav *.mp3)"));
-    k->soundPath->setText(file);
+    TCONFIG->beginGroup("General");
+    QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
+    QString file = QFileDialog::getOpenFileName(this, tr("Load sound file"), path, tr("Sound file (*.ogg *.wav *.mp3)"));
+
+    if (!file.isEmpty()) {
+        k->soundPath->setText(file);
+        setDefaultPath(file);
+    }
 }
 
 void TupPapagayoDialog::checkRecords()
@@ -149,3 +167,16 @@ QString TupPapagayoDialog::getSoundFile() const
     return k->soundPath->text();
 }
 
+void TupPapagayoDialog::setDefaultPath(const QString &path)
+{
+    int last = path.lastIndexOf("/");
+    QString dir = path.left(last);
+    saveDefaultPath(dir);
+}
+
+void TupPapagayoDialog::saveDefaultPath(const QString &dir)
+{
+    TCONFIG->beginGroup("General");
+    TCONFIG->setValue("DefaultPath", dir);
+    TCONFIG->sync();
+}
