@@ -39,37 +39,44 @@
 struct TupItemPreview::Private
 {
     TupProxyItem *proxy;
+    QGraphicsTextItem *item;
 };
 
 TupItemPreview::TupItemPreview(QWidget *parent) : QWidget(parent), k(new Private)
 {
+    k->item = new QGraphicsTextItem;
     reset();
 }
 
 TupItemPreview::~TupItemPreview()
 {
+    if (k->item) {
+        delete k->item;
+        k->item = NULL;
+    }
+
+    if (k->proxy) {
+        delete k->proxy;
+        k->proxy = NULL;
+    }
+
     delete k;
 }
 
 void TupItemPreview::reset()
 {
-    k->proxy = 0;
-    QGraphicsTextItem *item = new QGraphicsTextItem(tr("Library is empty :("));
-    render(item);
+    k->proxy = NULL;
+    if (k->item) {
+        delete k->item;
+        k->item = NULL;
+    }
+
+    k->item = new QGraphicsTextItem(tr("Library is empty :("));
+    render(k->item);
 }
 
 QSize TupItemPreview::sizeHint() const
 {
-    /*
-    if (k->proxy) {
-        int maxY = k->proxy->boundingRect().size().height();
-        if (maxY < 100)
-            return k->proxy->boundingRect().size().toSize() + QSize(10, 110 - maxY);
-        else
-            return k->proxy->boundingRect().size().toSize() + QSize(10, 10);
-    }
-    */
-    
     return QWidget::sizeHint().expandedTo(QSize(100, 100));
 }
 

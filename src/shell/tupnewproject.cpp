@@ -126,7 +126,7 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     renderAndFps->setLayout(subLayout);
 
     TCONFIG->beginGroup("PaintArea");
-    QString colorName = TCONFIG->value("BackgroundDefaultColor", "#fff").toString();
+    QString colorName = TCONFIG->value("BackgroundDefaultColor", "#ffffff").toString();
 
     k->color = QColor(colorName);
     k->colorButton = new QPushButton();

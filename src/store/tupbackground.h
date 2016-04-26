@@ -59,6 +59,7 @@ class TUPI_EXPORT TupBackground : public QObject, public TupAbstractSerializable
         void setBgColor(const QColor color);
         TupFrame* staticFrame();
         TupFrame* dynamicFrame(); 
+        void clear();
         void renderDynamicView();
         QPixmap dynamicView(int frameIndex);
         void setDynamicDirection(int direction);

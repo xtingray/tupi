@@ -53,7 +53,6 @@ struct TupScreen::Private
     QTimer *playBackTimer;
 
     QList<TupSoundLayer *> sounds;
-  
     QList<QImage> photograms; 
     QList<photoArray> animationList;
     QList<bool> renderControl;
@@ -113,6 +112,12 @@ TupScreen::~TupScreen()
     k->timer->stop();
     k->playBackTimer->stop();
 
+    k->photograms.clear();
+    k->animationList.clear();
+    k->sounds.clear();
+    k->renderControl.clear();
+
+    delete k->soundPlayer;
     delete k->timer;
     delete k->playBackTimer;
     delete k;
@@ -209,7 +214,6 @@ void TupScreen::paintEvent(QPaintEvent *)
 
     QPainter painter;
     painter.begin(this);
-
     painter.drawImage(k->imagePos, k->currentPhotogram);
 
     // SQA: Border for the player. Useful for some tests
@@ -246,7 +250,7 @@ void TupScreen::play()
         }
 
         if (k->renderControl.at(k->currentSceneIndex))
-            k->timer->start(1000 / k->fps);
+            k->timer->start(1000/k->fps);
     }
 }
 

@@ -141,6 +141,7 @@ class TUPI_EXPORT TupFrame : public QObject, public TupAbstractSerializable
        
         int index() const;
        
+        void reset();
         void clear();
         int graphicItemsCount();
         int svgItemsCount();

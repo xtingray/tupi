@@ -166,6 +166,10 @@ TupCameraWidget::~TupCameraWidget()
             TEND;
         #endif
     #endif
+
+    delete k->screen;
+    k->screen = NULL;
+    delete k;
 }
 
 void TupCameraWidget::setDimensionLabel(const QSize dimension)

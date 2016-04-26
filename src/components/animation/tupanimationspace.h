@@ -65,13 +65,12 @@ class TUPI_EXPORT TupAnimationspace : public QMainWindow
         void keyPressEvent(QKeyEvent *event);
 
     signals:
-        void contextMenu(const QPoint &p);
+        void contextMenu(const QPoint &point);
         void newPerspective(int index);
 
     private:
-        TupCameraWidget *playerInterface;
-        QWidget *container;
-        bool playOn;
+        struct Private;
+        Private *const k;
 };
 
 #endif

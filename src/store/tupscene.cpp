@@ -711,6 +711,27 @@ void TupScene::reset(QString &name)
     k->layers.insert(0, layer);
 }
 
+void TupScene::clear()
+{
+    if (k->background) {
+        k->background->clear();
+        delete k->background;
+        k->background = NULL;
+    }
+
+    for (int i=0; i<k->layers.count(); i++) {
+         TupLayer *layer = k->layers.takeAt(i);
+         layer->clear();
+         delete layer;
+         layer = NULL;
+    }
+
+    k->layerCount = 1;
+    k->layers.clear();
+    k->tweeningGraphicObjects.clear();
+    k->tweeningSvgObjects.clear();
+}
+
 void TupScene::setStoryboard(TupStoryboard *storyboard)
 {
     k->storyboard = storyboard;

@@ -57,11 +57,14 @@ TupCameraWindow::TupCameraWindow(QCamera *input, const QSize &camSize, const QSi
     k->camera = input;
     k->imageCapture = imageCapture;
     k->camera->setCaptureMode(QCamera::CaptureStillImage);
+
+    /*
     QCameraExposure *exposure = k->camera->exposure();
     exposure->setExposureMode(QCameraExposure::ExposureManual);
     QCameraFocus *focus = k->camera->focus();
     focus->setFocusMode(QCameraFocus::ManualFocus);
     focus->setFocusPointMode(QCameraFocus::FocusPointCenter);
+    */
 
     connect(k->camera, SIGNAL(error(QCamera::Error)), this, SLOT(error(QCamera::Error)));
     connect(k->imageCapture, SIGNAL(imageSaved(int, const QString)), this, SLOT(imageSavedFromCamera(int, const QString)));

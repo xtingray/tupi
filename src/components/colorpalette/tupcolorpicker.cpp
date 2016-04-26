@@ -44,7 +44,7 @@ struct TupColorPicker::Private
     int pHeight;
 };
 
-TupColorPicker::TupColorPicker(QWidget* parent) : QFrame(parent), k(new Private)
+TupColorPicker::TupColorPicker(QWidget *parent) : QFrame(parent), k(new Private)
 {
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 

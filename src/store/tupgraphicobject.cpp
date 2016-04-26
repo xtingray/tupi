@@ -90,16 +90,7 @@ TupGraphicObject::~TupGraphicObject()
     #endif	
     */
 
-    /*
-    if (k->item)
-        delete k->item;
-
-    if (k->tween && k->frame->scene())
-        k->frame->scene()->removeTweenObject(this);
-    }
-
     delete k;
-    */
 }
 
 void TupGraphicObject::fromXml(const QString &xml)

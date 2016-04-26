@@ -45,7 +45,6 @@ TupBackground::TupBackground(TupScene *parent, const QSize size, const QColor co
     bgColor = color;
     noRender = true;
     dynamicBg = new TupFrame(this, "landscape_dynamic");
-    // dynamicBg->setDynamicFlag(true);
     dynamicBg->setDynamicDirection("0");
     dynamicBg->setDynamicShift("5");
 
@@ -149,6 +148,15 @@ TupFrame *TupBackground::staticFrame()
 TupFrame* TupBackground::dynamicFrame()
 {
     return dynamicBg;
+}
+
+void TupBackground::clear()
+{
+    if (staticBg)
+        staticBg->clear();
+
+    if (dynamicBg)
+        dynamicBg->clear();
 }
 
 void TupBackground::setDynamicOpacity(double opacity)
@@ -257,9 +265,8 @@ QPixmap TupBackground::dynamicView(int frameIndex)
     }
 
     QImage view = raster.copy(posX, posY, dimension.width(), dimension.height()); 
-    QPixmap pixmap = QPixmap::fromImage(view); 
 
-    return pixmap;
+    return QPixmap::fromImage(view);
 }
 
 bool TupBackground::rasterRenderIsPending()

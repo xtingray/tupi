@@ -374,7 +374,7 @@ bool TupCommandExecutor::pasteFrame(TupFrameResponse *response)
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
                 response->setArg(doc.toString(0));
-                frame->clear();
+                frame->reset();
                 frame->fromXml(copyFrame);
                 frame->setFrameName(name);
 

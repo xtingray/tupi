@@ -138,6 +138,13 @@ void TupProject::loadLibrary(const QString &filename)
  */
 void TupProject::clear()
 {
+    for (int i=0; i<k->scenes.count(); i++) {
+         TupScene *scene = k->scenes.takeAt(i);
+         scene->clear();
+         delete scene;
+         scene = NULL;
+    }
+
     k->scenes.clear();
     k->sceneCounter = 0;
 

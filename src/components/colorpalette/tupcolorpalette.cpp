@@ -114,6 +114,32 @@ TupColorPalette::~TupColorPalette()
             TEND;
         #endif
     #endif
+
+    delete k->paletteContainer;
+    k->paletteContainer = NULL;
+
+    delete k->colorForm;
+    k->colorForm = NULL;
+
+    delete k->colorPickerArea;
+    k->colorPickerArea = NULL;
+
+    delete k->luminancePicker;
+    k->luminancePicker = NULL;
+
+    delete k->gradientManager;
+    k->gradientManager = NULL;
+
+    delete k->contourColor;
+    k->contourColor = NULL;
+
+    delete k->fillColor;
+    k->fillColor = NULL;
+
+    delete k->bgColor;
+    k->bgColor = NULL;
+
+    delete k;
 }
 
 void TupColorPalette::setupColorDisplay()

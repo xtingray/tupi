@@ -218,11 +218,19 @@ void TupProjectManager::setupNewProject()
 
 void TupProjectManager::closeProject()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupProjectManager::closeProject()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (!k->handler)
         return;
 
     if (k->project->isOpen()) {
-        if (! k->handler->closeProject())
+        if (!k->handler->closeProject())
             return;
         k->project->clear();
     }

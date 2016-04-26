@@ -147,6 +147,7 @@ class TUPI_EXPORT TupScene : public QObject, public TupAbstractSerializable
 
         void removeTweensFromFrame(int layerIndex, int frameIndex);
         void reset(QString &name);
+        void clear();
 
         void setStoryboard(TupStoryboard *storyboard);
         TupStoryboard * storyboard();

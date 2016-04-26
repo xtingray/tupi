@@ -78,7 +78,6 @@ class TUPI_EXPORT TupScreen : public QFrame, public TupAbstractProjectResponseHa
         void setFPS(int fps);
         void resetPhotograms(int sceneIndex);
         void updateAnimationArea();
-        // void updatePhotograms(int sceneIndex);
 
     public slots:
         virtual void render();

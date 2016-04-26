@@ -57,7 +57,7 @@ class TUPI_EXPORT TupGraphicObject : public QObject, public TupAbstractSerializa
         
         TupGraphicObject(QGraphicsItem *item, TupFrame *parent);
         ~TupGraphicObject();
-        
+
         void setItem(QGraphicsItem *item);
         QGraphicsItem *item() const;
         

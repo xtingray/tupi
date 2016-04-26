@@ -93,6 +93,7 @@ struct TupGraphicsScene::Private
     int zLevel;
 
     bool loadingProject;
+    QGraphicsPixmapItem *dynamicBg;
 };
 
 TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
@@ -106,6 +107,7 @@ TupGraphicsScene::TupGraphicsScene() : QGraphicsScene(), k(new Private)
     #endif
 
     k->loadingProject = true;
+    k->dynamicBg = new QGraphicsPixmapItem;
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
 
@@ -353,12 +355,12 @@ void TupGraphicsScene::drawSceneBackground(int photogram)
                     bg->renderDynamicView();
 
                 QPixmap pixmap = bg->dynamicView(photogram);
-                QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
-                item->setZValue(0);
+                k->dynamicBg = new QGraphicsPixmapItem(pixmap);
+                k->dynamicBg->setZValue(0);
                 TupFrame *frame = bg->dynamicFrame();
                 if (frame) 
-                    item->setOpacity(frame->opacity());
-                addItem(item);
+                    k->dynamicBg->setOpacity(frame->opacity());
+                addItem(k->dynamicBg);
             } else {
                 #ifdef K_DEBUG
                     QString msg = "TupGraphicsScene::drawSceneBackground() - Dynamic background frame is empty";
@@ -994,6 +996,11 @@ void TupGraphicsScene::cleanWorkSpace()
         #endif
     #endif
     */
+
+    if (k->dynamicBg) {
+        delete k->dynamicBg;
+        k->dynamicBg = NULL;
+    }
 
     k->onionSkin.accessMap.clear();
 

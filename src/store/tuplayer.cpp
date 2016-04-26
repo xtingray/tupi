@@ -69,6 +69,8 @@ TupLayer::~TupLayer()
 {
     k->frames.clear();
     k->lipsyncList.clear();
+    k->tweeningGraphicObjects.clear();
+    k->tweeningSvgObjects.clear();
 
     delete k;
 }
@@ -226,9 +228,6 @@ bool TupLayer::resetFrame(int position)
     TupFrame *toReset = frameAt(position);
 
     if (toReset) {
-        // QString label = toReset->frameName();
-        // if (framesCounter() == 1)
-        //     label = tr("Frame") + " 1";
         TupFrame *frame = new TupFrame(this); 
         frame->setFrameName(tr("Frame"));
         k->frames.insert(position, frame);
@@ -236,6 +235,22 @@ bool TupLayer::resetFrame(int position)
     }
 
     return false;
+}
+
+void TupLayer::clear()
+{
+    for (int i=0; i<k->frames.count(); i++) {
+         TupFrame *frame = k->frames.takeAt(i);
+         frame->clear();
+         delete frame;
+         frame = NULL;
+    }
+    
+    k->name = "";
+    k->framesCounter = 0;
+    k->lipsyncList.clear();
+    k->tweeningGraphicObjects.clear();
+    k->tweeningSvgObjects.clear();
 }
 
 bool TupLayer::moveFrame(int from, int to)

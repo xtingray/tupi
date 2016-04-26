@@ -4,7 +4,7 @@ SUBDIRS += common \
            # scheme \
            selection \
            nodes \
-           text \
+           # text \
            geometric \
            # shift \
            fill \

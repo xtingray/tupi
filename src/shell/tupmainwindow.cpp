@@ -103,6 +103,8 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         #endif
     #endif
 
+    isNetworked = false;
+
     QFile file(THEME_DIR + "config/ui.qss");
     if (file.exists()) {
         file.open(QFile::ReadOnly);
@@ -587,14 +589,18 @@ void TupMainWindow::resetUI()
 
     if (internetOn) { 
         delete newsTab;
-        newsTab = 0;
+        newsTab = NULL;
     }
 
-    delete playerTab;
-    playerTab = 0;
+    if (playerTab) {
+        delete playerTab;
+        playerTab = NULL;
+    }
 
-    delete animationTab;
-    animationTab = 0;
+    if (animationTab) {
+        delete animationTab;
+        animationTab = NULL;
+    }
 
     m_exposureSheet->closeAllScenes();
     m_timeLine->closeAllScenes();

@@ -125,22 +125,44 @@ TupFrame::TupFrame(TupBackground *bg, const QString &label) : QObject(bg), k(new
 
 TupFrame::~TupFrame()
 {
+    /*
     k->objectIndexes.clear();
     k->svgIndexes.clear();
-
     k->graphics.clear();
     k->svg.clear();
+    */
 
     delete k;
 }
 
-void TupFrame::clear()
+void TupFrame::reset()
 {
     k->objectIndexes.clear();
     k->svgIndexes.clear();
 
     k->graphics.clear();
     k->svg.clear();
+}
+
+void TupFrame::clear()
+{
+    for (int i=0; i<k->graphics.count(); i++) {
+         TupGraphicObject *object = k->graphics.takeAt(i);
+         if (object) {
+             delete object;
+             object = NULL;
+         }
+    }
+
+    for (int i=0; i<k->svg.count(); i++) {
+         TupSvgItem *item = k->svg.takeAt(i);
+         if (item) {
+             delete item;
+             item = NULL;
+         }
+    }
+
+    reset();
 }
 
 void TupFrame::setFrameName(const QString &name)
