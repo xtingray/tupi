@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupiplugincommon
+
+macx {
+    CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
+}
 
 unix {
     !include(../../../../tupiglobal.pri){
@@ -17,10 +25,6 @@ target.path = /lib/
 #headers.commands = cp *.h $(INSTALL_ROOT)/include/plugincommon
 #headers.path = /include/plugincommon
 
-macx {
-    CONFIG += staticlib warn_on
-}
-
 HEADERS += buttonspanel.h \
            tweenmanager.h \
            stepsviewer.h \
@@ -33,13 +37,6 @@ SOURCES += buttonspanel.cpp \
            spinboxdelegate.cpp \
            target.cpp
 		   
-*:!macx {
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupiplugincommon 
-
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 

@@ -1,21 +1,18 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupimport
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tuppaletteimporter.h
 SOURCES += tuppaletteimporter.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib 
-TARGET = tupimport
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

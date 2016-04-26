@@ -1,10 +1,14 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupiexport
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tupexportwizard.h \
@@ -20,13 +24,6 @@ SOURCES += tupexportwizard.cpp \
            tupexportmodule.cpp \
            tupvideoproperties.cpp \
            tupexportwidget.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupiexport
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

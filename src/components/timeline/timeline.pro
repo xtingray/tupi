@@ -1,10 +1,14 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupitimeline
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tuptimeline.h \
@@ -20,13 +24,6 @@ SOURCES += tuptimeline.cpp \
            tupscenecontainer.cpp \
            # tuplayerindex.cpp \
            tuptimelineheader.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupitimeline
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

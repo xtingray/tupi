@@ -1,10 +1,14 @@
 QT += opengl core gui svg xml network multimedia
+TEMPLATE = lib
+TARGET = tupilibrary
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tuplibrarywidget.h \
@@ -23,13 +27,6 @@ SOURCES += tuplibrarywidget.cpp \
            tuplibrarydisplay.cpp \
            tupsoundplayer.cpp
            
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupilibrary
-
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 

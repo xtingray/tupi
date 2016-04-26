@@ -1,4 +1,6 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupihelp
 
 INSTALLS += help 
 help.files += help 
@@ -9,6 +11,8 @@ target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tuphelpwidget.h \
@@ -19,13 +23,6 @@ SOURCES += tuphelpwidget.cpp \
            tuphelpbrowser.cpp \
            tuphelpdialog.cpp
 		   
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupihelp
-
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 

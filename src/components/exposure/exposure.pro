@@ -1,10 +1,14 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupiexposure
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tupexposuresheet.h \
@@ -16,12 +20,6 @@ SOURCES += tupexposuresheet.cpp \
            tupexposureheader.cpp \ 
            tupexposuretable.cpp \
            tupscenetabwidget.cpp
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupiexposure
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

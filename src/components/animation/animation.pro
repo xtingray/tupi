@@ -1,10 +1,14 @@
 QT += opengl core gui svg xml network multimedia
+TEMPLATE = lib
+TARGET = tupianimation
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
-     CONFIG += staticlib warn_on
+    CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tupcamerawidget.h \
@@ -18,13 +22,6 @@ SOURCES += tupcamerawidget.cpp \
            tupscreen.cpp \
            tupcamerastatus.cpp \
            tupanimationspace.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupianimation 
 
 EXPORT_DIR = ../export
 include($$EXPORT_DIR/export.pri)

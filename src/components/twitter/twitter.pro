@@ -1,10 +1,14 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupitwitter
 
 INSTALLS += target
 target.path = /lib/
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tuptwitter.h \  
@@ -13,13 +17,6 @@ HEADERS += tuptwitter.h \
 SOURCES += tuptwitter.cpp \
            tuptwitterwidget.cpp
 		   
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupitwitter
-
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
 

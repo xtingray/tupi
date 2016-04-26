@@ -1,5 +1,7 @@
 QT += opengl core gui svg xml network
 QT += multimedia multimediawidgets printsupport
+TEMPLATE = lib
+TARGET = tupipaintarea
 
 INSTALLS += target
 target.path = /lib/
@@ -8,6 +10,8 @@ INCLUDEPATH += /usr/include/qt5/QtMultimedia /usr/include/qt5/QtMultimediaWidget
 
 macx {
     CONFIG += staticlib warn_on
+} else {
+    CONFIG += dll warn_on
 }
 
 HEADERS += tuppaintarea.h \
@@ -61,13 +65,6 @@ SOURCES += tuppaintarea.cpp \
            tupvideosurface.cpp \
            tuppapagayoimporter.cpp \
            tuppapagayodialog.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupipaintarea
 
 SHELL_DIR = ../../shell/
 INCLUDEPATH += $$SHELL_DIR

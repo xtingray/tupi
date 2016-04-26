@@ -1,4 +1,6 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupigui
 
 unix {
     !include(../../tupiglobal.pri) {
@@ -31,6 +33,10 @@ macx {
     CONFIG += plugin warn_on
 }
 
+*:!macx{
+    CONFIG += dll warn_on
+}
+
 # HEADERS += tupthemeselector.h \
 HEADERS += tupabout.h \
            tupthemepreferences.h \
@@ -45,12 +51,6 @@ SOURCES += tupabout.cpp \
            tupgeneralpreferences.cpp \
            tuppreferencesdialog.cpp 
 
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupigui
 
 STORE_DIR = ../store
 LIBTUPI_DIR = ../libtupi

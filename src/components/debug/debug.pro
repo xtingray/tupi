@@ -1,4 +1,6 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupidebug
 
 INSTALLS += target
 target.path = /lib/
@@ -14,9 +16,6 @@ HEADERS += tupdebugwidget.h \
 
 SOURCES += tupdebugwidget.cpp \
            tupdebugterm.cpp
-
-TEMPLATE = lib
-TARGET = tupidebug
 
 FRAMEWORK_DIR = "../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
