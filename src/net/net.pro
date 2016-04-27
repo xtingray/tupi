@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupinet
+
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += dll warn_on
+}
 
 unix {
     !include(../../tupiglobal.pri) {
@@ -18,10 +26,6 @@ contains("DEFINES", "ADD_HEADERS") {
     headers.target = .
     headers.commands = cp *.h $(INSTALL_ROOT)/include/tupinet
     headers.path = /include/tupinet/
-}
-
-macx {
-    CONFIG += plugin warn_on
 }
 
 HEADERS += tupnetprojectmanagerparams.h \
@@ -79,13 +83,6 @@ SOURCES += tupnetprojectmanagerparams.cpp \
            tupstoryboardupdatepackage.cpp \
            tupstoryboardexportpackage.cpp \
            tupstoryboardparser.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupinet 
 
 include(net_config.pri)
 

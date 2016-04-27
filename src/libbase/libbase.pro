@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupibase
+
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += dll warn_on
+}
 
 unix { 
     !include(../../tupiglobal.pri) {
@@ -18,10 +26,6 @@ contains("DEFINES", "ADD_HEADERS") {
     INSTALLS += headers 
     headers.commands = cp *.h $(INSTALL_ROOT)/include/tupibase
     headers.path = /include/tupibase
-}
-
-macx {
-    CONFIG += plugin warn_on
 }
 
 HEADERS += tupexportinterface.h \
@@ -48,12 +52,6 @@ SOURCES += tupexportpluginobject.cpp \
            tupguideline.cpp \
            tupanimationrenderer.cpp \
            tupwebhunter.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-TEMPLATE = lib
-TARGET = tupibase
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)

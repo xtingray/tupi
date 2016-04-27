@@ -106,11 +106,13 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
             case Qt::Key_Space:
                   if (event->modifiers()==Qt::ShiftModifier) {
+                      k->playerInterface->doStop();
                       k->playerInterface->doPlayBack();
                   } else {
                       if (!k->playOn) {
-                          k->playerInterface->doPlay();
                           k->playOn = true;
+                          k->playerInterface->doPlay();
+                          k->playOn = false;
                       } else {
                           k->playerInterface->doStop();
                           k->playOn = false;
@@ -118,6 +120,7 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event)
                   }
             break;
             case Qt::Key_Escape:
+                  k->playOn = false;
                   k->playerInterface->doStop();
             break;
             case Qt::Key_Right:
@@ -134,6 +137,7 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event)
             break;
             case Qt::Key_Return:
                   emit newPerspective(0);
+                  k->playOn = false;
                   k->playerInterface->doStop();
             break;
             case Qt::Key_1:

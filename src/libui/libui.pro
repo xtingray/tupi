@@ -2,6 +2,12 @@ QT += opengl core gui svg xml network
 TEMPLATE = lib
 TARGET = tupigui
 
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += dll warn_on
+}
+
 unix {
     !include(../../tupiglobal.pri) {
         error("Please configure first")
@@ -29,28 +35,17 @@ contains("DEFINES", "ADD_HEADERS") {
     headers.path = /include/tupigui
 }
 
-macx {
-    CONFIG += plugin warn_on
-}
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-# HEADERS += tupthemeselector.h \
 HEADERS += tupabout.h \
            tupthemepreferences.h \
            tuppaintareapreferences.h \
            tupgeneralpreferences.h \
            tuppreferencesdialog.h
  
-# SOURCES += tupthemeselector.cpp \
 SOURCES += tupabout.cpp \
            tupthemepreferences.cpp \
            tuppaintareapreferences.cpp \
            tupgeneralpreferences.cpp \
            tuppreferencesdialog.cpp 
-
 
 STORE_DIR = ../store
 LIBTUPI_DIR = ../libtupi

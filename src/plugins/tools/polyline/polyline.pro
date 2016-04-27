@@ -1,4 +1,7 @@
 QT += opengl core gui svg xml network
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tupipolylinetool
 
 unix {
     !include(../../../../tupiglobal.pri){
@@ -18,10 +21,6 @@ HEADERS += polylinetool.h \
 
 SOURCES += polylinetool.cpp \
            settings.cpp
-
-CONFIG += plugin warn_on
-TEMPLATE = lib
-TARGET = tupipolylinetool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

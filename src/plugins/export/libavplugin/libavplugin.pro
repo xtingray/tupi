@@ -1,4 +1,7 @@
 QT += opengl core gui svg xml network
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tupilibavplugin
 
 unix {
     !include(../../../../tupiglobal.pri) {
@@ -24,13 +27,8 @@ HEADERS += tlibavmoviegenerator.h \
 SOURCES += tlibavmoviegenerator.cpp \
            libavplugin.cpp
 
-CONFIG += plugin warn_on
-TEMPLATE = lib 
-TARGET = tupilibavplugin
-
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)
-# include(../export_config.pri)
 
 LIBBASE_DIR = ../../../libbase
 STORE_DIR = ../../../store

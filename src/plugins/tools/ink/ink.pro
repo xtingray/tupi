@@ -1,4 +1,7 @@
 QT += opengl core gui svg xml network
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tupiinktool
 
 unix {
     !include(../../../../tupiglobal.pri){
@@ -18,10 +21,6 @@ HEADERS += inktool.h \
 
 SOURCES += inktool.cpp \
            configurator.cpp
-
-CONFIG += plugin warn_on
-TEMPLATE = lib 
-TARGET = tupiinktool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

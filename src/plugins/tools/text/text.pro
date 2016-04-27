@@ -1,4 +1,7 @@
 QT += opengl core gui svg xml network
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tupitexttool
 
 unix {
     !include(../../../../tupiglobal.pri){
@@ -18,10 +21,6 @@ HEADERS += texttool.h \
 
 SOURCES += texttool.cpp \
            textconfigurator.cpp 
-
-CONFIG += plugin warn_on
-TEMPLATE = lib
-TARGET = tupitexttool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -1,4 +1,7 @@
 QT += opengl core gui svg xml network
+CONFIG += plugin
+TEMPLATE = lib
+TARGET = tupigeometrictool
 
 unix {
     !include(../../../../tupiglobal.pri){
@@ -18,10 +21,6 @@ HEADERS += geometrictool.h \
 
 SOURCES += geometrictool.cpp \
            settings.cpp
-
-CONFIG += plugin
-TEMPLATE = lib 
-TARGET = tupigeometrictool
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

@@ -1,19 +1,21 @@
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tupischemetool
+
 INSTALLS += target 
 target.path = /plugins/
 
 HEADERS += schemetool.h \
            configurator.h
+
 SOURCES += schemetool.cpp \
            configurator.cpp
-
-CONFIG += plugin warn_on
-TEMPLATE = lib 
-TARGET = tupischemetool
 
 INCLUDEPATH += ../../../libbase
 INCLUDEPATH += ../../../store
 INCLUDEPATH += ../../../libtupi
 INCLUDEPATH += = ../common
+
 LIBS += -L../../../libbase
 LIBS += -L../../../store
 LIBS += -L../../../libtupi

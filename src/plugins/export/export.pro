@@ -1,3 +1,6 @@
+CONFIG += ordered warn_on
+TEMPLATE = subdirs
+
 unix {
     !include(../../../tupiglobal.pri) {
         error("Please configure first")
@@ -25,6 +28,3 @@ contains(DEFINES, HAVE_THEORA) {
 contains(DEFINES, HAVE_APNG) {
          SUBDIRS += apngplugin
 }
-
-CONFIG += ordered warn_on 
-TEMPLATE = subdirs 

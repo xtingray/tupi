@@ -1,6 +1,8 @@
 QT += opengl core gui svg xml network
 QT += multimedia multimediawidgets printsupport
 QT += widgets
+CONFIG += warn_on
+TEMPLATE = app
 
 macx {
     CONFIG += console static
@@ -87,16 +89,13 @@ unix {
                tupcrashwidget.cpp 
 }
 		   		   
-CONFIG += warn_on
-TEMPLATE = app
-
 FRAMEWORK_DIR = ../framework
 include($$FRAMEWORK_DIR/framework.pri)
 
 unix {
-!include(../../tupiglobal.pri) {
-         error("Please run configure first")
-}
+    !include(../../tupiglobal.pri) {
+        error("Please run configure first")
+    }
 }
 
 win32 {

@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupi
+
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += dll warn_on
+}
 
 unix {
     !include(../../tupiglobal.pri) {
@@ -19,10 +27,6 @@ contains("DEFINES", "ADD_HEADERS") {
     headers.target = .
     headers.commands = cp *.h $(INSTALL_ROOT)/include/tupi
     headers.path = /include/tupi
-}
-
-macx {
-    CONFIG += plugin warn_on
 }
 
 HEADERS += tupgraphicalgorithm.h \
@@ -60,13 +64,6 @@ SOURCES += tupgraphicalgorithm.cpp \
            tupxmlparserbase.cpp \
            tupproxyitem.cpp \
            tuppenthicknesswidget.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupi
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)

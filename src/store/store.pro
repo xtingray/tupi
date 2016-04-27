@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupistore
+
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += dll warn_on
+}
 
 unix {
     !include(../../tupiglobal.pri) {
@@ -19,10 +27,6 @@ contains("DEFINES", "ADD_HEADERS") {
     headers.target = .
     headers.commands = cp *.h $(INSTALL_ROOT)/include/tupistore
     headers.path = /include/tupistore/
-}
-
-macx {
-    CONFIG += plugin warn_on
 }
 
 HEADERS += tuplayer.h \
@@ -118,13 +122,6 @@ SOURCES += tuplayer.cpp \
            tupbackground.cpp \
            tupstoryboard.cpp \
            tuplipsync.cpp
-
-*:!macx{
-    CONFIG += dll warn_on
-}
-
-TEMPLATE = lib
-TARGET = tupistore
 
 STORE_DIR = .
 

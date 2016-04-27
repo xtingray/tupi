@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupifwgui
+
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += warn_on dll
+}
 
 unix {
     !include(../tupconfig.pri) {
@@ -17,10 +25,6 @@ contains(DEFINES, ADD_HEADERS) {
     INSTALLS += headers 
     headers.files += *.h
     headers.path = /include/tupigui
-}
-
-macx {
-    CONFIG += plugin warn_on
 }
 
 HEADERS += taction.h \
@@ -142,14 +146,6 @@ SOURCES += taction.cpp \
            tcolorcell.cpp \
            tslider.cpp
 
-*:!macx{
-    CONFIG += warn_on dll
-}
-
-TEMPLATE = lib
-TARGET = tupifwgui
-QT += xml opengl
-
 INCLUDEPATH += ../tcore ../ ../../libbase
 
 RESOURCES += tgui_images.qrc
@@ -168,7 +164,3 @@ win32 {
     LIBS += -L../tcore/release/ -ltupifwcore
     INCLUDEPATH += ../tcore
 }
-
-# macx {
-#    LIBS += -lavcodec -lavformat -lavutil 
-# }

@@ -1,4 +1,7 @@
 QT += opengl core gui svg xml network
+CONFIG += plugin warn_on
+TEMPLATE = lib
+TARGET = tupiimageplugin
 
 unix {
     !include(../../../../tupiglobal.pri){
@@ -15,10 +18,6 @@ target.path = /plugins/
 
 HEADERS += imageplugin.h
 SOURCES += imageplugin.cpp
-
-CONFIG += plugin warn_on
-TEMPLATE = lib 
-TARGET = tupiimageplugin
 
 FRAMEWORK_DIR = "../../../framework"
 include($$FRAMEWORK_DIR/framework.pri)

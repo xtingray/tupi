@@ -1,4 +1,12 @@
 QT += opengl core gui svg xml network
+TEMPLATE = lib
+TARGET = tupifwcore
+
+macx {
+    CONFIG += plugin warn_on
+} else {
+    CONFIG += warn_on dll
+}
 
 unix {
     !include(../tupconfig.pri) {
@@ -17,10 +25,6 @@ contains("DEFINES", "ADD_HEADERS") {
     INSTALLS += headers 
     headers.files += *.h
     headers.path = /include/tupicore
-}
-
-macx {
-    CONFIG += plugin warn_on
 }
 
 HEADERS += talgorithm.h \
@@ -42,10 +46,3 @@ unix {
         SOURCES += tdebug.cpp
     }
 }
-
-*:!macx{
-    CONFIG += warn_on dll
-}
-
-TEMPLATE = lib
-TARGET = tupifwcore
