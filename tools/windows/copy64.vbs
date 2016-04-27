@@ -51,6 +51,7 @@ fileSystem.CopyFile sourceDir & "\plugins\tools\geometric\release\tupigeometrict
 fileSystem.CopyFile sourceDir & "\plugins\tools\ink\release\tupiinktool.dll", tupiDir & "\plugins\tupiinktool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\nodes\release\tupinodestool.dll", tupiDir & "\plugins\tupinodestool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\opacity\release\tupiopacitytool.dll", tupiDir & "\plugins\tupiopacitytool.dll"
+fileSystem.CopyFile sourceDir & "\plugins\tools\papagayo\release\tupipapagayotool.dll", tupiDir & "\plugins\tupipapagayotool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\pencil\release\tupipenciltool.dll", tupiDir & "\plugins\tupipenciltool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\polyline\release\tupipolylinetool.dll", tupiDir & "\plugins\tupipolylinetool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\position\release\tupipositiontool.dll", tupiDir & "\plugins\tupipositiontool.dll"
