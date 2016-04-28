@@ -66,7 +66,9 @@ TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, co
         #ifdef Q_OS_WIN
             qDebug() << "[TupLibraryFolder::createSymbol()]";
         #else
-            T_FUNCINFO << " - Creating symbol -> " << name;
+            T_FUNCINFO;
+            tWarning() << " - Creating symbol -> " << name;
+            tWarning() << " - type -> " << type;
         #endif
     #endif
 
@@ -121,12 +123,24 @@ TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, co
     else
         ret = addObject(folder, object);
 
-    object->saveData(k->project->dataDir());
+    bool success = object->saveData(k->project->dataDir());
+    if (success) {
+        if (loaded && ret)
+            TupProjectLoader::createSymbol(type, name, id(), data, k->project);
 
-    if (loaded && ret)
-        TupProjectLoader::createSymbol(type, name, id(), data, k->project);
+        return object;
+    }
 
-    return object;
+    #ifdef K_DEBUG
+        QString msg = "TupLibraryFolder::createSymbol() - [ Fatal Error ] - Object couldn't be saved!";
+        #ifdef Q_OS_WIN
+            qDebug() << msg;
+        #else
+            tError() << msg;
+        #endif
+    #endif
+
+    return 0;
 }
 
 bool TupLibraryFolder::addObject(TupLibraryObject *object)
@@ -483,7 +497,6 @@ void TupLibraryFolder::fromXml(const QString &xml)
            QDomElement e = domNode.toElement();
         
            if (!e.isNull()) {
-
                if (e.tagName() == "object") {
                    loadItem(id(), domNode);
                } else if (e.tagName() == "folder") {

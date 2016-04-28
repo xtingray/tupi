@@ -156,6 +156,7 @@ class TupMainWindow : public TabbedMainWindow
          void resetUI();
          void updateRecentProjectList();
          void saveDefaultPath(const QString &dir);
+         void resetExportWidget();
 
     protected:
          /**
@@ -280,6 +281,7 @@ class TupMainWindow : public TabbedMainWindow
           ToolView *timeView;
           ToolView *debugView;
           ToolView *exportView;
+          TupExportWidget *exportWidget;
 
           TupCameraWidget *cameraWidget;
           bool isSaveDialogOpen; 

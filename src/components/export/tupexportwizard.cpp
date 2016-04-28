@@ -221,6 +221,7 @@ void TupExportWizard::disableButton()
 
 void TupExportWizard::closeDialog()
 {
+    emit isDone();
     close();
 }
 

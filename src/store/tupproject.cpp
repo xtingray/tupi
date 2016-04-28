@@ -539,16 +539,17 @@ bool TupProject::createSymbol(int type, const QString &name, const QByteArray &d
             #endif
         #endif    
 
-    } else {        
-        #ifdef K_DEBUG
-            QString msg = "TupProject::createSymbol() - Object added successfully -> " + name;
-            #ifdef Q_OS_WIN
-                qWarning() << msg;
-            #else
-                tWarning() << msg;
-            #endif
-        #endif    
-    }
+        return false;
+    }         
+
+    #ifdef K_DEBUG
+        QString msg = "TupProject::createSymbol() - Object added successfully -> " + name;
+        #ifdef Q_OS_WIN
+            qWarning() << msg;
+        #else
+            tWarning() << msg;
+        #endif
+    #endif    
 
     return true;
 }

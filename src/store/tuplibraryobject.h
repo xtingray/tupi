@@ -86,7 +86,7 @@ class TUPI_EXPORT TupLibraryObject : public QObject, public TupAbstractSerializa
         bool loadDataFromPath(const QString &dataDir);
         bool loadData(const QString &path);
         
-        void saveData(const QString &dataDir);
+        bool saveData(const QString &dataDir);
         
     public:
         virtual void fromXml(const QString &xml);

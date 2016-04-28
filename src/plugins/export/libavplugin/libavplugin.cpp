@@ -51,8 +51,8 @@ QString LibavPlugin::key() const
 TupExportInterface::Formats LibavPlugin::availableFormats()
 {
     // SQA: MPEG codec was removed because it crashes. Check the issue.
-    // TupExportInterface::MPEG
-    return TupExportInterface::WEBM | TupExportInterface::OGV | TupExportInterface::SWF | TupExportInterface::AVI 
+    // TupExportInterface::MPEG 
+    return TupExportInterface::WEBM | TupExportInterface::SWF | TupExportInterface::AVI 
            | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
 }
 
@@ -62,11 +62,6 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
             case TupExportInterface::WEBM:
                  {
                    return TLibavMovieGenerator::WEBM;
-                 }
-                 break;
-            case TupExportInterface::OGV:
-                 {
-                   return TLibavMovieGenerator::OGV;
                  }
                  break;
             case TupExportInterface::SWF:

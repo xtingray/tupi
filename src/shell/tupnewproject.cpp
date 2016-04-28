@@ -132,7 +132,7 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     k->colorButton = new QPushButton();
     k->colorButton->setText(tr("Background"));
     k->colorButton->setToolTip(tr("Click here to change background color"));
-    k->colorButton->setStyleSheet("QPushButton { background-color: " + k->color.name() + " }");
+    k->colorButton->setStyleSheet("QPushButton { background-color: " + k->color.name() + "; color: black; }");
 
     connect(k->colorButton, SIGNAL(clicked()), this, SLOT(setBgColor()));
 	
@@ -330,11 +330,14 @@ void TupNewProject::setBgColor()
 
      if (k->color.isValid()) {
          k->colorButton->setText(k->color.name());
-         k->colorButton->setStyleSheet("QPushButton { background-color: " + k->color.name() + " }");
+         QString text = "white";
+         if (k->color.red() > 50 && k->color.green() > 50 && k->color.blue() > 50)
+             text = "black"; 
+         k->colorButton->setStyleSheet("QPushButton { background-color: " + k->color.name() + "; color: " + text + "; }");
      } else {
          k->color = QColor("#fff");
          k->colorButton->setText(tr("White"));
-         k->colorButton->setStyleSheet("QPushButton { background-color: #fff }");
+         k->colorButton->setStyleSheet("QPushButton { background-color: #fff }; color: black;");
      }
 }
 

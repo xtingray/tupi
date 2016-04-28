@@ -154,14 +154,6 @@ void TupFrame::clear()
          }
     }
 
-    for (int i=0; i<k->svg.count(); i++) {
-         TupSvgItem *item = k->svg.takeAt(i);
-         if (item) {
-             delete item;
-             item = NULL;
-         }
-    }
-
     reset();
 }
 

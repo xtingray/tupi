@@ -239,8 +239,12 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
             } else {
                 QString extension = item->text(2);
                 bool isSound = false;
+                bool isNative = false;
+
                 if ((extension.compare("OGG") == 0) || (extension.compare("MP3") == 0) || (extension.compare("WAV") == 0))
                     isSound = true; 
+                if (extension.compare("OBJ") == 0)
+                    isNative = true; 
 
                 if (extension.compare("SVG") == 0) {
                     QAction *edit = new QAction(tr("Edit with Inkscape"), this);
@@ -284,14 +288,17 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
                            menu->addAction(myPaintEdit);
                 }
 
-                if (!isSound) {
+                if (!isSound && !isNative) {
                     QAction *clone = new QAction(tr("Clone"), this);
                     connect(clone, SIGNAL(triggered()), this, SLOT(cloneItem()));
                     menu->addAction(clone);
                 }
 
-                QAction *exportObject = new QAction(tr("Export"), this);
-                connect(exportObject, SIGNAL(triggered()), this, SLOT(exportItem()));
+                if (!isNative) {
+                    QAction *exportObject = new QAction(tr("Export"), this);
+                    connect(exportObject, SIGNAL(triggered()), this, SLOT(exportItem()));
+                    menu->addAction(exportObject);
+                }
 
                 QAction *rename = new QAction(tr("Rename"), this);
                 connect(rename, SIGNAL(triggered()), this, SLOT(renameItem()));
@@ -299,7 +306,6 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
                 QAction *remove = new QAction(tr("Delete"), this);
                 connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
 
-                menu->addAction(exportObject);
                 menu->addAction(rename);
                 menu->addAction(remove);
                 menu->addSeparator();

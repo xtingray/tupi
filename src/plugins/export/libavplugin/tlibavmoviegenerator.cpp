@@ -164,11 +164,6 @@ void TLibavMovieGenerator::Private::chooseFileExtension(int format)
             case WEBM:
                  movieFile += ".webm";
                  break;
-#ifdef Q_OS_UNIX
-            case OGV:
-                 movieFile += ".ogv";
-                 break;
-#endif
             case SWF:
                  movieFile += ".swf";
                  break;

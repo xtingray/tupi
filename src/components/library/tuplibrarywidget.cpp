@@ -578,10 +578,19 @@ void TupLibraryWidget::cloneObject(QTreeWidgetItem* item)
 
 void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryWidget::exportObject()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QString id = item->text(3);
     TupLibraryObject *object = k->library->getObject(id);
     if (object) {
         QString path = object->dataPath();
+        tError() << "TupLibraryWidget::exportObject() - path: " << path;
         if (path.length() > 0) {
             QString fileExtension = object->extension();
             QString filter;
@@ -599,13 +608,15 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                 if (fileExtension.compare("SVG") == 0)
                     filter += "(*.svg)";
             } else if (object->type() == TupLibraryObject::Sound) {
-                      filter = tr("Sounds") + " ";
-                      if (fileExtension.compare("OGG") == 0)
-                          filter += "(*.ogg)";
-                      if (fileExtension.compare("MP3") == 0)
-                          filter += "(*.mp3)";
-                      if (fileExtension.compare("WAV") == 0)
-                          filter += "(*.wav)";
+                       filter = tr("Sounds") + " ";
+                       if (fileExtension.compare("OGG") == 0)
+                           filter += "(*.ogg)";
+                       if (fileExtension.compare("MP3") == 0)
+                           filter += "(*.mp3)";
+                       if (fileExtension.compare("WAV") == 0)
+                           filter += "(*.wav)";
+            } else if (object->type() == TupLibraryObject::Item) {
+                       tError() << "TupLibraryWidget::exportObject() - Processing ITEM!"; 
             }
 
             TCONFIG->beginGroup("General");

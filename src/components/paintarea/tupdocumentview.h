@@ -105,7 +105,6 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         QBrush fillBrush() const;
 
         TupPaintAreaCommand *createPaintCommand(const TupPaintAreaEvent *event);
-        void updatePaintArea();
         TupProject::Mode spaceContext();
         TupProject *project();
         int currentFramesTotal();
@@ -118,6 +117,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void updatePerspective();
         QColor projectBGColor() const;
         void updateWorkspace();
+        void updatePaintArea();
 
     private slots:
         void setNextOnionSkin(int n);
