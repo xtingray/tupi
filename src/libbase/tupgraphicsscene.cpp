@@ -142,8 +142,11 @@ TupGraphicsScene::~TupGraphicsScene()
     //          view->setScene(0);
 
     // SQA: Check if these instructions are actually required
-    // foreach (QGraphicsItem *item, items())
-    //          removeItem(item);
+    foreach (QGraphicsItem *item, items()) {
+             removeItem(item);
+             delete item; 
+             item = NULL;
+    }
 
     delete k;
 }

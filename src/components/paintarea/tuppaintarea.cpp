@@ -103,6 +103,7 @@ TupPaintArea::~TupPaintArea()
     #endif
 
     graphicsScene()->clear();
+    delete graphicsScene();
 
     delete k;
 }

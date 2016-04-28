@@ -167,8 +167,26 @@ TupCameraWidget::~TupCameraWidget()
         #endif
     #endif
 
-    delete k->screen;
-    k->screen = NULL;
+    if (k->cameraBar) {
+        delete k->cameraBar;
+        k->cameraBar = NULL;
+    }
+
+    if (k->progressBar) {
+       delete k->progressBar;
+       k->progressBar = NULL;
+    }
+
+    if (k->status) {
+        delete k->status;
+        k->status = NULL;
+    }
+
+    if (k->screen) {
+        delete k->screen;
+        k->screen = NULL;
+    }
+
     delete k;
 }
 

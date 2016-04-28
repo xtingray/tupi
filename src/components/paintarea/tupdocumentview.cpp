@@ -238,14 +238,23 @@ TupDocumentView::~TupDocumentView()
     // TCONFIG->beginGroup("General");
     // TCONFIG->setValue("AutoSave", k->autoSaveTime);
 
-    TCONFIG->beginGroup("OnionParameters");
-    TCONFIG->setValue("OnionColorScheme", false);
+    // TCONFIG->beginGroup("OnionParameters");
+    // TCONFIG->setValue("OnionColorScheme", false);
 
-    if (k->currentTool)
+    if (k->currentTool) 
         k->currentTool->saveConfig();
 
-    // delete k->configurationArea;
-    // delete k;
+    if (k->paintArea) {
+        delete k->paintArea;
+        k->paintArea = NULL;
+    }
+
+    if (k->configurationArea) {
+        delete k->configurationArea;
+        k->configurationArea = NULL;
+    }
+
+    delete k;
 }
 
 void TupDocumentView::setWorkSpaceSize(int width, int height)
