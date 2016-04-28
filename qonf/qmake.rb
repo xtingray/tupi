@@ -120,9 +120,8 @@ class QMake
         if recur
             options += "-recursive"
         end
-
         output = `#{@path} #{options} #{args}`
-        
+
         if output.strip.empty?
             return true
         end
