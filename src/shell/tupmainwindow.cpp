@@ -1426,21 +1426,12 @@ void TupMainWindow::exportProject()
     QDesktopWidget desktop;
 
     exportWidget = new TupExportWidget(m_projectManager->project(), this);
-    connect(exportWidget, SIGNAL(isDone()), this, SLOT(resetExportWidget()));
+    connect(exportWidget, SIGNAL(isDone()), animationTab, SLOT(updatePaintArea()));
     exportWidget->show();
     exportWidget->move((int) (desktop.screenGeometry().width() - exportWidget->width())/2, 
                       (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
 
     exportWidget->exec();
-}
-
-void TupMainWindow::resetExportWidget()
-{
-    animationTab->updatePaintArea();
-    if (exportWidget) {
-        delete exportWidget;
-        exportWidget = NULL;
-    }
 }
 
 void TupMainWindow::callSave()

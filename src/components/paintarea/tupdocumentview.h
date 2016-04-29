@@ -117,7 +117,6 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void updatePerspective();
         QColor projectBGColor() const;
         void updateWorkspace();
-        void updatePaintArea();
 
     private slots:
         void setNextOnionSkin(int n);
@@ -179,6 +178,7 @@ class TUPI_EXPORT TupDocumentView : public QMainWindow
         void importPapagayoLipSync();
         void resetWorkSpaceTransformations();
         void updateBgColor(const QColor color);
+        void updatePaintArea();
 
     signals:
         void requestTriggered(const TupProjectRequest *event);

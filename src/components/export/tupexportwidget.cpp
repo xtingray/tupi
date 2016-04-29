@@ -101,7 +101,6 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
 
         loadPlugins();
         k->pluginPage->selectFirstItem();
-
     } else {
         setWindowTitle(tr("Post Animation in Tupitube"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
