@@ -104,6 +104,7 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     #endif
 
     isNetworked = false;
+    exportWidget = NULL;
 
     QFile file(THEME_DIR + "config/ui.qss");
     if (file.exists()) {
@@ -600,6 +601,11 @@ void TupMainWindow::resetUI()
     if (animationTab) {
         delete animationTab;
         animationTab = NULL;
+    }
+
+    if (exportWidget) {
+        delete exportWidget; 
+        exportWidget = NULL;
     }
 
     m_exposureSheet->closeAllScenes();
