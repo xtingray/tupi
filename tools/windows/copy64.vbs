@@ -59,7 +59,6 @@ fileSystem.CopyFile sourceDir & "\plugins\tools\rotation\release\tupirotationtoo
 fileSystem.CopyFile sourceDir & "\plugins\tools\scale\release\tupiscaletool.dll", tupiDir & "\plugins\tupiscaletool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\selection\release\tupiselectiontool.dll", tupiDir & "\plugins\tupiselectiontool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\tools\shear\release\tupisheartool.dll", tupiDir & "\plugins\tupisheartool.dll"
-fileSystem.CopyFile sourceDir & "\plugins\tools\text\release\tupitexttool.dll", tupiDir & "\plugins\tupitexttool.dll"
 fileSystem.CopyFile sourceDir & "\plugins\export\imageplugin\release\tupiimageplugin.dll", tupiDir & "\plugins\tupiimageplugin.dll"
 fileSystem.CopyFile sourceDir & "\plugins\export\libavplugin\release\tupilibavplugin.dll", tupiDir & "\plugins\tupilibavplugin.dll"
 
