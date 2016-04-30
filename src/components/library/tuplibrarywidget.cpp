@@ -590,7 +590,6 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
     TupLibraryObject *object = k->library->getObject(id);
     if (object) {
         QString path = object->dataPath();
-        tError() << "TupLibraryWidget::exportObject() - path: " << path;
         if (path.length() > 0) {
             QString fileExtension = object->extension();
             QString filter;
@@ -615,8 +614,6 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                            filter += "(*.mp3)";
                        if (fileExtension.compare("WAV") == 0)
                            filter += "(*.wav)";
-            } else if (object->type() == TupLibraryObject::Item) {
-                       tError() << "TupLibraryWidget::exportObject() - Processing ITEM!"; 
             }
 
             TCONFIG->beginGroup("General");
