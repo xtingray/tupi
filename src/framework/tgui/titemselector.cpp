@@ -55,7 +55,7 @@ TItemSelector::TItemSelector(QWidget *parent) : QWidget(parent), k(new Private)
     controlBox->addStretch();
 
     QToolButton *nextButton = new QToolButton;
-    nextButton->setIcon(QPixmap(THEME_DIR + "icons/export_scene.png"));
+    nextButton->setIcon(QPixmap(THEME_DIR + "icons/select_scene.png"));
     connect(nextButton, SIGNAL(clicked()), this, SLOT(addCurrent()));
 
     controlBox->addWidget(nextButton);
