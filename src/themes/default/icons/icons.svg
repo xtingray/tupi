@@ -2851,9 +2851,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.0000001"
-     inkscape:cx="162.00199"
-     inkscape:cy="267.67426"
+     inkscape:zoom="8.0000004"
+     inkscape:cx="234.6729"
+     inkscape:cy="283.08118"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -8478,7 +8478,9 @@
     </g>
     <g
        id="g9311"
-       transform="translate(296.62784,-408.04243)">
+       transform="translate(296.62784,-408.04243)"
+       inkscape:export-xdpi="108.9"
+       inkscape:export-ydpi="108.9">
       <rect
          inkscape:export-ydpi="947"
          inkscape:export-xdpi="947"
@@ -8587,15 +8589,16 @@
          style="fill:none;stroke:#008700;stroke-width:0.97990197;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <g
-       id="g9387"
-       transform="translate(26.28323,-348.56044)">
+       id="g16267"
+       inkscape:export-xdpi="108.9"
+       inkscape:export-ydpi="108.9">
       <rect
          inkscape:export-ydpi="947"
          inkscape:export-xdpi="947"
          inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export.png"
          ry="0.15309671"
-         y="716.17627"
-         x="454.04117"
+         y="367.61584"
+         x="480.3244"
          height="24.141113"
          width="21.488243"
          id="rect4017-2"
@@ -8607,7 +8610,7 @@
          sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
          inkscape:connector-curvature="0"
          id="path4318-7-8-2-1-8-5"
-         d="m 460.47437,716.70688 0.26529,19.89652 1.81816,-0.18761 -0.34296,-19.70893 z m 1.98965,0 0.53058,19.89652 11.40734,-0.26528 -0.53058,-19.63124 z m 11.65653,0 0.60825,19.44365 1.79541,0.18761 -0.79587,-19.63123 z m -10.59538,1.59172 9.01976,0 0.26528,4.77517 -9.01975,0 z m 9.28504,5.83632 0.26529,4.77516 -9.01976,0.26529 -0.26528,-4.77517 z m -8.75447,6.1016 9.01976,0 0.26529,4.77516 -9.01976,0.26529 z"
+         d="m 483.0436,369.73815 0.26529,19.89652 1.81816,-0.18761 -0.34296,-19.70893 z m 1.98965,0 0.53058,19.89652 11.40734,-0.26528 -0.53058,-19.63124 z m 11.65653,0 0.60825,19.44365 1.79541,0.18761 -0.79587,-19.63123 z m -10.59538,1.59172 9.01976,0 0.26528,4.77517 -9.01975,0 z m 9.28504,5.83632 0.26529,4.77516 -9.01976,0.26529 -0.26528,-4.77517 z m -8.75447,6.1016 9.01976,0 0.26529,4.77516 -9.01976,0.26529 z"
          style="fill:#008700;fill-opacity:1;stroke:none" />
     </g>
     <g
@@ -13643,5 +13646,31 @@
        sodipodi:nodetypes="cccccccccccccc"
        inkscape:export-xdpi="173.66"
        inkscape:export-ydpi="173.66" />
+    <g
+       transform="translate(-274.19353,408.05079)"
+       id="g16267-9"
+       inkscape:export-xdpi="108.9"
+       inkscape:export-ydpi="108.9">
+      <rect
+         inkscape:export-ydpi="947"
+         inkscape:export-xdpi="947"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export.png"
+         ry="0.15309671"
+         y="367.61584"
+         x="480.3244"
+         height="24.141113"
+         width="21.488243"
+         id="rect4017-2-9"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+      <path
+         inkscape:export-ydpi="1220"
+         inkscape:export-xdpi="1220"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/export_button.png"
+         sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path4318-7-8-2-1-8-5-2"
+         d="m 483.0436,369.73815 0.26529,19.89652 1.81816,-0.18761 -0.34296,-19.70893 z m 1.98965,0 0.53058,19.89652 11.40734,-0.26528 -0.53058,-19.63124 z m 11.65653,0 0.60825,19.44365 1.79541,0.18761 -0.79587,-19.63123 z m -10.59538,1.59172 9.01976,0 0.26528,4.77517 -9.01975,0 z m 9.28504,5.83632 0.26529,4.77516 -9.01976,0.26529 -0.26528,-4.77517 z m -8.75447,6.1016 9.01976,0 0.26529,4.77516 -9.01976,0.26529 z"
+         style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    </g>
   </g>
 </svg>

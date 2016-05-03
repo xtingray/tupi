@@ -69,7 +69,7 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     // font.setPointSize(8);
 // #endif
 
-    QLabel *sceneNameText = new QLabel("<B>" + tr("Scene name") + ":</B> ");
+    QLabel *sceneNameText = new QLabel("<B>" + tr("Scene") + ":</B> ");
     // sceneNameText->setFont(font);
 
     k->scenes = new QComboBox();

@@ -72,7 +72,7 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
 
     if (isLocal) {
         setWindowTitle(tr("Export to Video"));
-        setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
+        setWindowIcon(QIcon(THEME_DIR + "icons/export_wi.png"));
 
         k->pluginPage = new TupPluginSelector();
         addPage(k->pluginPage);
