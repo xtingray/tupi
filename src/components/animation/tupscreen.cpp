@@ -500,36 +500,42 @@ void TupScreen::render()
          k->sounds << layer;
     }
 
-    TupAnimationRenderer renderer(k->project->bgColor(), k->library);
-    renderer.setScene(scene, k->project->dimension());
+    TupAnimationRenderer *renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
+    renderer->setScene(scene, k->project->dimension());
 
     QFont font = this->font();
     font.setPointSize(8);
 
-    QList<QImage> photogramList;
+    // QList<QImage> photogramList;
+    k->photograms.clear();
     int i = 1;
 
-    while (renderer.nextPhotogram()) {
+    while (renderer->nextPhotogram()) {
            QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
 
-           QPainter painter(&renderized);
-           painter.setRenderHint(QPainter::Antialiasing);
-           renderer.render(&painter);
+           QPainter *painter = new QPainter(&renderized);
+           painter->setRenderHint(QPainter::Antialiasing);
+           renderer->render(painter);
+           delete painter;
+           painter = NULL;
 
            if (k->isScaled) {
                QImage resized = renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
-               photogramList << resized;
+               k->photograms << resized;
            } else {
-               photogramList << renderized;
+               k->photograms << renderized;
            }
 
            emit isRendering(i); 
            i++;
     }
 
-    k->photograms = photogramList;
-    k->animationList.replace(k->currentSceneIndex, photogramList);
+    // k->photograms = photogramList;
+    k->animationList.replace(k->currentSceneIndex, k->photograms);
     k->renderControl.replace(k->currentSceneIndex, true);
+
+    delete renderer;
+    renderer = NULL;
 
     emit isRendering(0); 
 }
