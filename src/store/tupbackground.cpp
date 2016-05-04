@@ -189,25 +189,33 @@ void TupBackground::renderDynamicView()
         #endif
     #endif 
 	
-    TupBackgroundScene bgScene(dimension, bgColor, dynamicBg);
+    TupBackgroundScene *bgScene = new TupBackgroundScene(dimension, bgColor, dynamicBg);
     QImage image(dimension, QImage::Format_ARGB32);
     {
-        QPainter painter(&image);
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        bgScene.renderView(&painter);
+        QPainter *painter = new QPainter(&image);
+        painter->setRenderHint(QPainter::Antialiasing, true);
+        bgScene->renderView(painter);
+
+        delete painter;
+        painter = NULL;
     }
 
     int width = dimension.width();
     int height = dimension.height();
 
     QImage background(width*2, height*2, QImage::Format_ARGB32);
-    QPainter canvas(&background);
-    canvas.drawImage(0, 0, image);
-    canvas.drawImage(width, 0, image);
-    canvas.drawImage(0, height, image);
+    QPainter *canvas = new QPainter(&background);
+    canvas->drawImage(0, 0, image);
+    canvas->drawImage(width, 0, image);
+    canvas->drawImage(0, height, image);
     setDynamicRaster(background);
 
     noRender = false;
+
+    delete bgScene;
+    bgScene = NULL;
+    delete canvas;
+    canvas = NULL;
 }
 
 QPixmap TupBackground::dynamicView(int frameIndex)

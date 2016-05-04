@@ -491,11 +491,10 @@ void TupScreen::render()
         #endif
         return;
     }
-
     k->sounds.clear();
 
     int soundLayersTotal = scene->soundLayers().size();
-    for (int i = 0; i < soundLayersTotal; i++) {
+    for (int i=0; i<soundLayersTotal; i++) {
          TupSoundLayer *layer = scene->soundLayers().at(i);
          k->sounds << layer;
     }
@@ -503,10 +502,6 @@ void TupScreen::render()
     TupAnimationRenderer *renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
     renderer->setScene(scene, k->project->dimension());
 
-    QFont font = this->font();
-    font.setPointSize(8);
-
-    // QList<QImage> photogramList;
     k->photograms.clear();
     int i = 1;
 
@@ -530,7 +525,6 @@ void TupScreen::render()
            i++;
     }
 
-    // k->photograms = photogramList;
     k->animationList.replace(k->currentSceneIndex, k->photograms);
     k->renderControl.replace(k->currentSceneIndex, true);
 
