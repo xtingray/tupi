@@ -48,7 +48,6 @@ struct TupAnimationRenderer::Private
     QColor bgColor;
 
     Private() : scene(0), totalPhotograms(-1), currentPhotogram(0) {}
-
     ~Private() {
          delete scene;
     }
@@ -139,4 +138,3 @@ int TupAnimationRenderer::totalPhotograms() const
 {
     return k->totalPhotograms;
 }
-

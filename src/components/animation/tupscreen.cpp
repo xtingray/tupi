@@ -118,8 +118,12 @@ TupScreen::~TupScreen()
     k->renderControl.clear();
 
     delete k->soundPlayer;
+    k->soundPlayer = NULL;
     delete k->timer;
+    k->timer = NULL;
     delete k->playBackTimer;
+    k->playBackTimer = NULL;
+
     delete k;
 }
 
@@ -213,8 +217,8 @@ void TupScreen::paintEvent(QPaintEvent *)
     }
 
     QPainter painter;
-    painter.begin(this);
-    painter.drawImage(k->imagePos, k->currentPhotogram);
+    if (painter.begin(this))
+        painter.drawImage(k->imagePos, k->currentPhotogram);
 
     // SQA: Border for the player. Useful for some tests
     // painter.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
@@ -491,20 +495,22 @@ void TupScreen::render()
         #endif
         return;
     }
-    k->sounds.clear();
 
+    /* SQA: This code will be required for the sound feature. Do not remove. 
+    k->sounds.clear();
     int soundLayersTotal = scene->soundLayers().size();
     for (int i=0; i<soundLayersTotal; i++) {
          TupSoundLayer *layer = scene->soundLayers().at(i);
          k->sounds << layer;
     }
+    */
+
+    k->photograms.clear();
 
     TupAnimationRenderer *renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
     renderer->setScene(scene, k->project->dimension());
 
-    k->photograms.clear();
     int i = 1;
-
     while (renderer->nextPhotogram()) {
            QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
 
@@ -514,12 +520,10 @@ void TupScreen::render()
            delete painter;
            painter = NULL;
 
-           if (k->isScaled) {
-               QImage resized = renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
-               k->photograms << resized;
-           } else {
+           if (k->isScaled)
+               k->photograms << renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
+           else
                k->photograms << renderized;
-           }
 
            emit isRendering(i); 
            i++;
@@ -697,28 +701,31 @@ void TupScreen::updateFirstFrame()
         if (scene) { 
             setLipSyncSettings();
 
-            TupAnimationRenderer renderer(k->project->bgColor(), k->library);
-            renderer.setScene(scene, k->project->dimension());
-            renderer.renderPhotogram(0);
+            TupAnimationRenderer *renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
+            renderer->setScene(scene, k->project->dimension());
+            renderer->renderPhotogram(0);
 
             QImage firstFrame = QImage(k->project->dimension(), QImage::Format_RGB32);
 
-            QPainter painter(&firstFrame);
-            painter.setRenderHint(QPainter::Antialiasing);
-            renderer.render(&painter);
+            QPainter *painter = new QPainter(&firstFrame);
+            painter->setRenderHint(QPainter::Antialiasing);
+            renderer->render(painter);
 
-            if (k->isScaled) {
-                QImage resized = firstFrame.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
-                k->currentPhotogram = resized;
-            } else {
+            if (k->isScaled)
+                k->currentPhotogram = firstFrame.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
+            else
                 k->currentPhotogram = firstFrame;
-            }
 
             int x = (frameSize().width() - k->currentPhotogram.size().width()) / 2;
             int y = (frameSize().height() - k->currentPhotogram.size().height()) / 2;
             k->imagePos = QPoint(x, y);
 
             k->firstShoot = true;
+
+            delete painter;
+            painter = NULL;
+            delete renderer;
+            renderer = NULL;
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupScreen::updateFirstFrame() - [ Fatal Error ] - Null scene at index: " + QString::number(k->currentSceneIndex);
