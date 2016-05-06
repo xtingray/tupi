@@ -106,6 +106,14 @@ QMap<QString, TAction *> PolyLineTool::actions() const
 
 void PolyLineTool::init(TupGraphicsScene *scene)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[PolyLineTool::init()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (scene) {
         k->scene = scene;
     } else {
@@ -121,7 +129,6 @@ void PolyLineTool::init(TupGraphicsScene *scene)
         return;
     }
 
-    k->cutterOn = false;
     initEnv();
 }
 
@@ -140,12 +147,15 @@ void PolyLineTool::press(const TupInputDeviceInformation *input, TupBrushManager
         #endif
     #endif
 
+    tError() << "PolyLineTool::press() - begin: " << k->begin;
+
     if (k->cutterOn)
         return;
 
     scene->clearSelection();
 
     if (k->begin) { // This condition happens only in the beginning of the polyline 
+        tError() << "PolyLineTool::press() - Flag 1!";
         k->path = QPainterPath();
         k->path.moveTo(input->pos());
 
@@ -153,6 +163,7 @@ void PolyLineTool::press(const TupInputDeviceInformation *input, TupBrushManager
         k->item->setPen(brushManager->pen());
         k->item->setPath(k->path);
     } else { // This condition happens from the second point of the polyline and until the last one
+        tError() << "PolyLineTool::press() - Flag 2!";
         if (!scene->items().contains(k->item))
             scene->includeObject(k->item, true); // SQA: Polyline hack
 
@@ -431,14 +442,24 @@ void PolyLineTool::keyReleaseEvent(QKeyEvent *event)
 
 void PolyLineTool::initEnv()
 {
-    if (!k->item)
-        return;
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[PolyLineTool::initEnv()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    if (k->item) {
+        delete k->item;
+        k->item = NULL;
+    }
 
     clearSelection();
 
+    k->cutterOn = false;
     k->begin = true;
     k->path = QPainterPath();
-    k->item = 0;
 
     if (k->line1) {
         if (k->scene->items().contains(k->line1))
