@@ -147,15 +147,12 @@ void PolyLineTool::press(const TupInputDeviceInformation *input, TupBrushManager
         #endif
     #endif
 
-    tError() << "PolyLineTool::press() - begin: " << k->begin;
-
     if (k->cutterOn)
         return;
 
     scene->clearSelection();
 
     if (k->begin) { // This condition happens only in the beginning of the polyline 
-        tError() << "PolyLineTool::press() - Flag 1!";
         k->path = QPainterPath();
         k->path.moveTo(input->pos());
 
@@ -163,7 +160,6 @@ void PolyLineTool::press(const TupInputDeviceInformation *input, TupBrushManager
         k->item->setPen(brushManager->pen());
         k->item->setPath(k->path);
     } else { // This condition happens from the second point of the polyline and until the last one
-        tError() << "PolyLineTool::press() - Flag 2!";
         if (!scene->items().contains(k->item))
             scene->includeObject(k->item, true); // SQA: Polyline hack
 
@@ -451,11 +447,9 @@ void PolyLineTool::initEnv()
     #endif
 
     if (k->item) {
-        delete k->item;
-        k->item = NULL;
+        clearSelection();
+        k->item = 0;
     }
-
-    clearSelection();
 
     k->cutterOn = false;
     k->begin = true;
