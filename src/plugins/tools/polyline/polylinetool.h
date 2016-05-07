@@ -84,6 +84,7 @@ class TUPI_PLUGIN PolyLineTool : public TupToolPlugin
         void resizeNodes(qreal scaleFactor);
         void updateZoomFactor(qreal scaleFactor);
         void clearSelection();
+        void updatePos(QPointF pos);
 
     protected:
         virtual void itemResponse(const TupItemResponse *response);

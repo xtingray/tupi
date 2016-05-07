@@ -1295,7 +1295,8 @@ void TupGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     mouseMoved(event);
 
     if (k->tool) {
-        if (k->tool->name().compare(tr("Line")) == 0)
+        QString tool = k->tool->name();
+        if (tool.compare(tr("Line")) == 0 || tool.compare(tr("PolyLine")) == 0)
             k->tool->updatePos(event->scenePos());
     }
 }

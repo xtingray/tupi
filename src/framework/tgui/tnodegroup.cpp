@@ -252,14 +252,6 @@ void TNodeGroup::createNodes(QGraphicsPathItem *pathItem)
         QPainterPath path = pathItem->sceneMatrix().map(pathItem->path());
         saveParentProperties();
         int index = 0;
-
-        /*
-        int level = k->scene->items().count();
-        if (k->type != PositionTween && k->type != ComposedTween)
-            level += pathItem->zValue();
-        */
-
-        // k->level = k->scene->items().count();
         
         while (index < path.elementCount()) {
                QPainterPath::Element e = path.elementAt(index);

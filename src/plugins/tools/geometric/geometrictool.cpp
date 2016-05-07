@@ -96,18 +96,6 @@ void GeometricTool::init(TupGraphicsScene *scene)
     delete k->path;
     k->path = 0;
     k->proportion = false;
-
-    /*
-    foreach (QGraphicsView * view, scene->views()) {
-             view->setDragMode(QGraphicsView::NoDrag);
-             if (QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene())) {
-                 foreach (QGraphicsItem *item, scene->items()) {
-                          item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-                          item->setFlag(QGraphicsItem::ItemIsMovable, false);
-                 }
-             }
-    }
-    */
 }
 
 void GeometricTool::setupActions()

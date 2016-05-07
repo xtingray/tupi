@@ -913,13 +913,14 @@ void TupDocumentView::selectTool()
         QString toolName = tr("%1").arg(action->text());
 
         if (k->currentTool) {
-            if (toolName.compare(k->currentTool->name()) == 0)
+            QString currentName = k->currentTool->name();
+            if (toolName.compare(currentName) == 0)
                 return;
 
-            if (toolName.compare(tr("Pencil")) == 0)
+            if (currentName.compare(tr("Pencil")) == 0)
                 disconnect(k->currentTool, SIGNAL(penWidthChanged(int)), this, SIGNAL(penWidthChanged(int)));
 
-            if (k->currentTool->name().compare(tr("Papagayo Lip-sync")) == 0)
+            if (currentName.compare(tr("Papagayo Lip-sync")) == 0)
                 disconnect(k->currentTool, SIGNAL(importLipSync()), this, SLOT(importPapagayoLipSync()));
 
             k->currentTool->saveConfig();
