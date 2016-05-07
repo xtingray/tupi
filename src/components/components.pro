@@ -15,6 +15,6 @@ SUBDIRS += scenes \
            twitter \
            animation 
 		   
-unix {
+linux-g++ {
     SUBDIRS += debug
 }
