@@ -67,10 +67,15 @@
 
 #ifdef K_DEBUG
 #ifdef Q_OS_WIN
-#include <QDebug>
+  #include <QDebug>
 #else
-#include "tdebug.h"
-#include "tupdebugwidget.h"
+  #include "tdebug.h"
+#endif
+#endif
+
+#ifdef K_DEBUG
+#ifdef Q_OS_LINUX
+  #include "tupdebugwidget.h"
 #endif
 #endif
 
@@ -264,7 +269,7 @@ class TupMainWindow : public TabbedMainWindow
         TupScenesWidget *m_scenes;
         TupTimeLine *m_timeLine;
 
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_UNIX)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
         TupDebugWidget *m_debug;
 #endif
         // TupHelpWidget *m_helper;

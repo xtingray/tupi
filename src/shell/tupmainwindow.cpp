@@ -460,7 +460,7 @@ void TupMainWindow::newProject()
             setupLocalProject(wizard->parameters());
             createNewLocalProject();
         }
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     m_debug->setProjectStatus(true); 
 #endif
     }
@@ -634,7 +634,7 @@ void TupMainWindow::resetUI()
 
     resetMousePointer();
 
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     m_debug->setProjectStatus(false);
 #endif
 }
