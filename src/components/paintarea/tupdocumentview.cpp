@@ -739,6 +739,7 @@ void TupDocumentView::loadPlugins()
     tweenTools.clear();
 
     k->pencilAction->trigger();
+    k->paintArea->setFocus();
 }
 
 void TupDocumentView::loadPlugin(int menu, int index)
