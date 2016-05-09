@@ -97,7 +97,11 @@ TupTwitter::~TupTwitter()
         #endif
     #endif
 
-    // delete k;
+    delete k->manager;
+    k->manager = NULL;
+    delete k->reply;
+    k->reply = NULL;
+    delete k;
 }
 
 void TupTwitter::requestFile(QString target)

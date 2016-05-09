@@ -66,6 +66,8 @@ TupTwitterWidget::~TupTwitterWidget()
             TEND;
         #endif
     #endif
+
+    delete k;
 }
 
 void TupTwitterWidget::setSource(const QString &filePath)

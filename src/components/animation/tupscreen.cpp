@@ -41,6 +41,9 @@ struct TupScreen::Private
 {
     QWidget *container;
     QImage currentPhotogram;
+    QImage renderized;
+    QPainter *painter;
+
     QPoint imagePos;
     bool firstShoot;
     bool isScaled;
@@ -51,9 +54,11 @@ struct TupScreen::Private
     int fps;
     QTimer *timer;
     QTimer *playBackTimer;
+    TupAnimationRenderer *renderer;
 
     QList<TupSoundLayer *> sounds;
     QList<QImage> photograms; 
+    QList<QImage> newList;
     QList<photoArray> animationList;
     QList<bool> renderControl;
     QSize screenDimension;
@@ -112,6 +117,7 @@ TupScreen::~TupScreen()
     k->timer->stop();
     k->playBackTimer->stop();
 
+    k->newList.clear();
     k->photograms.clear();
     k->animationList.clear();
     k->sounds.clear();
@@ -123,6 +129,8 @@ TupScreen::~TupScreen()
     k->timer = NULL;
     delete k->playBackTimer;
     k->playBackTimer = NULL;
+    delete k->renderer;
+    k->renderer = NULL;
 
     delete k;
 }
@@ -142,10 +150,11 @@ void TupScreen::resetPhotograms(int sceneIndex)
     #endif
 
     if (sceneIndex > -1) {
-        if (k->renderControl.at(sceneIndex)) {
-            k->renderControl.replace(sceneIndex, false);
-            QList<QImage> photograms;
-            k->animationList.replace(sceneIndex, photograms);
+        if (!k->renderControl.isEmpty()) {
+            if (k->renderControl.at(sceneIndex)) {
+                k->renderControl.replace(sceneIndex, false);
+                k->animationList.replace(sceneIndex, k->newList);
+            }
         }
     } else {
         initPhotogramsArray();
@@ -166,8 +175,7 @@ void TupScreen::initPhotogramsArray()
     k->animationList.clear();
     for (int i=0; i < k->project->scenesCount(); i++) {
          k->renderControl.insert(i, false);
-         QList<QImage> photograms;
-         k->animationList.insert(i, photograms);
+         k->animationList.insert(i, k->newList);
     }
 }
 
@@ -293,13 +301,18 @@ void TupScreen::stop()
     #endif
 
     k->isPlaying = false;
-    k->soundPlayer->stop();
-   
-    if (k->timer->isActive())
-        k->timer->stop();
+    if (k->soundPlayer)
+        k->soundPlayer->stop();
+  
+    if (k->timer) {  
+        if (k->timer->isActive())
+            k->timer->stop();
+    }
 
-    if (k->playBackTimer->isActive())
-        k->playBackTimer->stop();
+    if (k->playBackTimer) {
+        if (k->playBackTimer->isActive())
+            k->playBackTimer->stop();
+    }
 
     foreach (TupSoundLayer *sound, k->sounds)
              sound->stop();
@@ -444,9 +457,8 @@ void TupScreen::sceneResponse(TupSceneResponse *event)
             case TupProjectRequest::Reset:
              {
                  k->renderControl.replace(index, false);
-                 QList<QImage> photograms;
-                 k->animationList.replace(index, photograms);
-                 k->photograms = photograms;
+                 k->animationList.replace(index, k->newList);
+                 k->photograms = k->newList;
              }
             break;
             case TupProjectRequest::Select:
@@ -507,23 +519,22 @@ void TupScreen::render()
 
     k->photograms.clear();
 
-    TupAnimationRenderer *renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
-    renderer->setScene(scene, k->project->dimension());
-
+    k->renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
+    k->renderer->setScene(scene, k->project->dimension());
     int i = 1;
-    while (renderer->nextPhotogram()) {
-           QImage renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
+    while (k->renderer->nextPhotogram()) {
+           k->renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
+           k->painter = new QPainter(&k->renderized);
+           k->painter->setRenderHint(QPainter::Antialiasing);
 
-           QPainter *painter = new QPainter(&renderized);
-           painter->setRenderHint(QPainter::Antialiasing);
-           renderer->render(painter);
-           delete painter;
-           painter = NULL;
+           k->renderer->render(k->painter);
+           delete k->painter;
+           k->painter = NULL;
 
            if (k->isScaled)
-               k->photograms << renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
+               k->photograms << k->renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
            else
-               k->photograms << renderized;
+               k->photograms << k->renderized;
 
            emit isRendering(i); 
            i++;
@@ -532,8 +543,8 @@ void TupScreen::render()
     k->animationList.replace(k->currentSceneIndex, k->photograms);
     k->renderControl.replace(k->currentSceneIndex, true);
 
-    delete renderer;
-    renderer = NULL;
+    delete k->renderer;
+    k->renderer = NULL;
 
     emit isRendering(0); 
 }
@@ -566,13 +577,6 @@ void TupScreen::resizeEvent(QResizeEvent *event)
     if (k->currentSceneIndex > -1) {
         k->currentFramePosition = 0;
         k->photograms = k->animationList.at(k->currentSceneIndex);
-        /*
-        if (k->timer->isActive() || k->playBackTimer->isActive()) {
-            stop();
-        }
-        */
-        // updateFirstFrame();
-        // update();
     } else {
         #ifdef K_DEBUG
             QString msg = "TupScreen::resizeEvent() - [ Error ] - Current index is invalid -> " + QString::number(k->currentSceneIndex);
@@ -701,20 +705,20 @@ void TupScreen::updateFirstFrame()
         if (scene) { 
             setLipSyncSettings();
 
-            TupAnimationRenderer *renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
-            renderer->setScene(scene, k->project->dimension());
-            renderer->renderPhotogram(0);
+            k->renderer = new TupAnimationRenderer(k->project->bgColor(), k->library);
+            k->renderer->setScene(scene, k->project->dimension());
+            k->renderer->renderPhotogram(0);
 
-            QImage firstFrame = QImage(k->project->dimension(), QImage::Format_RGB32);
+            k->renderized = QImage(k->project->dimension(), QImage::Format_RGB32);
 
-            QPainter *painter = new QPainter(&firstFrame);
+            QPainter *painter = new QPainter(&k->renderized);
             painter->setRenderHint(QPainter::Antialiasing);
-            renderer->render(painter);
+            k->renderer->render(painter);
 
             if (k->isScaled)
-                k->currentPhotogram = firstFrame.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
+                k->currentPhotogram = k->renderized.scaledToWidth(k->screenDimension.width(), Qt::SmoothTransformation);
             else
-                k->currentPhotogram = firstFrame;
+                k->currentPhotogram = k->renderized;
 
             int x = (frameSize().width() - k->currentPhotogram.size().width()) / 2;
             int y = (frameSize().height() - k->currentPhotogram.size().height()) / 2;
@@ -724,8 +728,9 @@ void TupScreen::updateFirstFrame()
 
             delete painter;
             painter = NULL;
-            delete renderer;
-            renderer = NULL;
+
+            delete k->renderer;
+            k->renderer = NULL;
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupScreen::updateFirstFrame() - [ Fatal Error ] - Null scene at index: " + QString::number(k->currentSceneIndex);
@@ -760,8 +765,7 @@ void TupScreen::addPhotogramsArray(int sceneIndex)
 
     if (sceneIndex > -1) {
         k->renderControl.insert(sceneIndex, false);
-        QList<QImage> photograms;
-        k->animationList.insert(sceneIndex, photograms);
+        k->animationList.insert(sceneIndex, k->newList);
     }
 }
 
@@ -800,4 +804,3 @@ void TupScreen::playLipSyncAt(int frame)
              }
     }
 }
-
