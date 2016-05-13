@@ -12,6 +12,9 @@ ArchitecturesInstallIn64BitMode=x64
 [Dirs]
 Name: "{app}\bin"
 Name: "{app}\bin\platforms"
+Name: "{app}\bin\imageformats"
+Name: "{app}\bin\mediaservice"
+Name: "{app}\bin\audio"
 Name: "{app}\data"
 Name: "{app}\data\help"
 Name: "{app}\data\help\css"
@@ -54,6 +57,9 @@ Name: "{app}\lib\libav"
 [Files]
 Source: "bin\*"; DestDir: "{app}\bin"
 Source: "bin\platforms\*"; DestDir: "{app}\bin\platforms"
+Source: "bin\imageformats\*"; DestDir: "{app}\bin\imageformats"
+Source: "bin\mediaservice\*"; DestDir: "{app}\bin\mediaservice"
+Source: "bin\audio\*"; DestDir: "{app}\bin\audio"
 Source: "data\help\css\*"; DestDir: "{app}\data\help\css"
 Source: "data\help\en\*"; DestDir: "{app}\data\help\en"
 Source: "data\help\es\*"; DestDir: "{app}\data\help\es"
@@ -99,4 +105,3 @@ Root: HKCR; Subkey: "Tupi2DMagic\shell\open\command"; ValueType: string; ValueNa
 
 [Icons]
 Name: "{group}\Tupi"; Filename: "{app}\bin\tupi.exe"; IconFilename: "{app}\bin\tupi.ico"
-

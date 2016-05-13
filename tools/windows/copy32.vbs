@@ -12,6 +12,9 @@ End If
 fileSystem.CreateFolder tupiDir
 fileSystem.CreateFolder tupiDir & "\bin"
 fileSystem.CreateFolder tupiDir & "\bin\platforms"
+fileSystem.CreateFolder tupiDir & "\bin\imageformats"
+fileSystem.CreateFolder tupiDir & "\bin\mediaservice"
+fileSystem.CreateFolder tupiDir & "\bin\audio"
 fileSystem.CreateFolder tupiDir & "\data"
 fileSystem.CreateFolder tupiDir & "\plugins"
 fileSystem.CreateFolder tupiDir & "\lib"
@@ -69,6 +72,9 @@ fileSystem.CopyFolder sourceDir & "\components\help\help", tupiDir & "\data\help
 fileSystem.CopyFolder sourceDir & "\components\colorpalette\palettes", tupiDir & "\data\palettes"
 fileSystem.CopyFolder sourceDir & "\themes", tupiDir & "\data\themes"
 fileSystem.CopyFolder "c:\devel\sources\qt5", tupiDir & "\lib\qt5"
+fileSystem.CopyFolder "c:\devel\sources\imageformats", tupiDir & "\bin\imageformats"
+fileSystem.CopyFolder "c:\devel\sources\mediaservice", tupiDir & "\bin\mediaservice"
+fileSystem.CopyFolder "c:\devel\sources\audio", tupiDir & "\bin\audio"
 fileSystem.CopyFolder "c:\devel\sources\libav", tupiDir & "\lib\libav"
 
 MsgBox "Copy is done! :D"
