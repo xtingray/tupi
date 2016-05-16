@@ -162,6 +162,7 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     
     k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap.png"), tr("Image"));
     k->itemType->addItem(QIcon(THEME_DIR + "icons/svg.png"), tr("Svg File"));
+    k->itemType->addItem(QIcon(THEME_DIR + "icons/drawing_object.png"), tr("Native Object"));
     k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap_array.png"), tr("Image Sequence"));
     k->itemType->addItem(QIcon(THEME_DIR + "icons/svg_array.png"), tr("Svg Sequence"));
     k->itemType->addItem(QIcon(THEME_DIR + "icons/sound_object.png"), tr("Sound File"));
@@ -614,6 +615,8 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                            filter += "(*.mp3)";
                        if (fileExtension.compare("WAV") == 0)
                            filter += "(*.wav)";
+            } else if (object->type() == TupLibraryObject::Item) {
+                       filter += "(*.obj)";
             }
 
             TCONFIG->beginGroup("General");
@@ -636,7 +639,10 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                 }
             }
 
-            if (!QFile::copy(path, target)) {
+            if (QFile::copy(path, target)) {
+                setDefaultPath(target);
+                TOsd::self()->display(tr("Info"), tr("Item exported successfully!"), TOsd::Info);
+            } else {
                 #ifdef K_DEBUG
                     QString msg = "TupLibraryWidget::exportObject() - Error: Object file couldn't be exported! [ " + id + " ]";
                     #ifdef Q_OS_WIN
@@ -646,9 +652,6 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                     #endif
                 #endif
                 return;
-            } else {
-                setDefaultPath(target);
-                TOsd::self()->display(tr("Info"), tr("Item exported successfully!"), TOsd::Info);
             }
         } else {
             #ifdef K_DEBUG
@@ -1117,6 +1120,67 @@ void TupLibraryWidget::importSvg(const QString &svgPath)
     }
 }
 
+void TupLibraryWidget::importNativeObjects()
+{
+    TCONFIG->beginGroup("General");
+    QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
+
+    QFileDialog dialog(this, tr("Import objects..."), path);
+    dialog.setNameFilter(tr("Native Objects") + " (*.obj)");
+    dialog.setFileMode(QFileDialog::ExistingFiles);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        QStringList files = dialog.selectedFiles();
+        int size = files.size();
+        for (int i = 0; i < size; ++i)
+             importNativeObject(files.at(i));
+
+        setDefaultPath(files.at(0));
+    }
+}
+
+void TupLibraryWidget::importNativeObject(const QString &object)
+{
+    if (object.isEmpty())
+        return;
+
+    QFile file(object);
+    QFileInfo fileInfo(file);
+
+    QString key = fileInfo.fileName().toLower();
+
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray data = file.readAll();
+        file.close();
+
+        #ifdef K_DEBUG
+            QString msg1 = "TupLibraryWidget::importNativeObject() - Inserting native object into project: " + k->project->projectName();
+            #ifdef Q_OS_WIN
+                qDebug() << msg1;
+            #else
+                tFatal() << msg1;
+            #endif
+        #endif
+
+
+        int i = 0;
+        int index = key.lastIndexOf(".");
+        QString name = key.mid(0, index);
+        QString extension = key.mid(index, key.length() - index);
+        while (k->library->exists(key)) {
+               i++;
+               key = name + "-" + QString::number(i) + extension;
+        }
+
+        TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, key,
+                                                       TupLibraryObject::Item, k->project->spaceContext(), data, QString(),
+                                                       k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+        emit requestTriggered(&request);
+    } else {
+        TOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(object), TOsd::Error);
+    }
+}
+
 void TupLibraryWidget::verifyFramesAvailability(int filesTotal)
 {
     TupScene *scene = k->project->sceneAt(k->currentFrame.scene);
@@ -1486,6 +1550,8 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/drawing_object.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item);
+                                 if (!k->isNetworked && !k->library->loadingProject())
+                                     insertObjectInWorkspace();
                                }
                             break;
                             case TupLibraryObject::Image:
@@ -1627,6 +1693,11 @@ void TupLibraryWidget::importLibraryObject()
 
     if (option.compare(tr("Svg Sequence")) == 0) {
         importSvgSequence();
+        return;
+    }
+
+    if (option.compare(tr("Native Object")) == 0) {
+        importNativeObjects();
         return;
     }
 

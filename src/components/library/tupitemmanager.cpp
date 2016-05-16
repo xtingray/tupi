@@ -294,11 +294,8 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
                     menu->addAction(clone);
                 }
 
-                if (!isNative) {
-                    QAction *exportObject = new QAction(tr("Export"), this);
-                    connect(exportObject, SIGNAL(triggered()), this, SLOT(exportItem()));
-                    menu->addAction(exportObject);
-                }
+                QAction *exportObject = new QAction(tr("Export"), this);
+                connect(exportObject, SIGNAL(triggered()), this, SLOT(exportItem()));
 
                 QAction *rename = new QAction(tr("Rename"), this);
                 connect(rename, SIGNAL(triggered()), this, SLOT(renameItem()));
@@ -306,6 +303,7 @@ void TupItemManager::mousePressEvent(QMouseEvent *event)
                 QAction *remove = new QAction(tr("Delete"), this);
                 connect(remove, SIGNAL(triggered()), this, SIGNAL(itemRemoved()));
 
+                menu->addAction(exportObject);
                 menu->addAction(rename);
                 menu->addAction(remove);
                 menu->addSeparator();

@@ -2360,9 +2360,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.828427"
-     inkscape:cx="384.88735"
-     inkscape:cy="345.1409"
+     inkscape:zoom="8"
+     inkscape:cx="441.03418"
+     inkscape:cy="260.92831"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -13421,5 +13421,13 @@
          d="m 483.0436,369.73815 0.26529,19.89652 1.81816,-0.18761 -0.34296,-19.70893 z m 1.98965,0 0.53058,19.89652 11.40734,-0.26528 -0.53058,-19.63124 z m 11.65653,0 0.60825,19.44365 1.79541,0.18761 -0.79587,-19.63123 z m -10.59538,1.59172 9.01976,0 0.26528,4.77517 -9.01975,0 z m 9.28504,5.83632 0.26529,4.77516 -9.01976,0.26529 -0.26528,-4.77517 z m -8.75447,6.1016 9.01976,0 0.26529,4.77516 -9.01976,0.26529 z"
          style="fill:#ffffff;fill-opacity:1;stroke:none" />
     </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 424.26407,786.40168 c 0,0 1.94454,-3.5356 2.38648,-3.2704 0.44194,0.2652 -0.17677,6.1872 0.53033,5.2149 0.70711,-0.9723 2.03294,-5.5685 2.03294,-5.5685 0.14731,1.53207 0.29463,3.06413 0.44194,4.5962 0.50087,-0.67763 0.91512,-1.22754 1.5026,-2.0329 0.58748,-0.80536 -0.55811,2.19637 2.20971,1.3258"
+       id="path7911"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csscczc"
+       inkscape:export-xdpi="177.97"
+       inkscape:export-ydpi="177.97" />
   </g>
 </svg>

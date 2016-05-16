@@ -814,9 +814,9 @@ bool TupProject::removeSymbolFromFrame(const QString &name, TupLibraryObject::Ty
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
-            tFatal() << msg;
+            T_FUNCINFO << msg;
         #endif
-    #endif    
+    #endif
     
     if (type == TupLibraryObject::Folder)
         return true;
@@ -964,6 +964,14 @@ bool TupProject::isOpen()
 
 bool TupProject::deleteDataDir()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupProject::deleteDataDir()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (QFile::exists(dataDir()) && !k->name.isEmpty()) {
         QDir dir(dataDir());
 
@@ -974,7 +982,7 @@ bool TupProject::deleteDataDir()
                      dir.remove(scene);
         }
 
-        if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg")) {            
+        if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg") || dir.exists("obj")) {
             #ifdef K_DEBUG
                 QString msg = "TupProject::deleteDataDir() - Removing directory -> " + dir.absolutePath();
                 #ifdef Q_OS_WIN
@@ -984,7 +992,7 @@ bool TupProject::deleteDataDir()
                 #endif
             #endif
 
-            foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg") {
+            foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg" << "obj") {
                      if (dir.exists(subdir)) {
                          dir.cd(subdir);
                          foreach (QString file, dir.entryList()) {
@@ -1001,8 +1009,8 @@ bool TupProject::deleteDataDir()
                                                       tError() << msg;
                                                   #endif
                                               #endif		  
-										  }
-									  }
+                                          }
+                                      }
                                   }
                           }
                           dir.cdUp();

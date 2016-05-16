@@ -69,6 +69,7 @@ TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, co
             T_FUNCINFO;
             tWarning() << " - Creating symbol -> " << name;
             tWarning() << " - type -> " << type;
+            tWarning() << " - size -> " << data.size();
         #endif
     #endif
 
@@ -544,6 +545,14 @@ void TupLibraryFolder::loadObjects(const QString &folder, const QString &xml)
 
 void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryFolder::loadItem()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QDomDocument objectDocument;
     objectDocument.appendChild(objectDocument.importNode(xml, true));
 
@@ -553,6 +562,7 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
     switch (object->type()) {
             case TupLibraryObject::Image:
             case TupLibraryObject::Svg:
+            case TupLibraryObject::Item:
             case TupLibraryObject::Sound:
             {
                  object->loadDataFromPath(k->project->dataDir());
@@ -615,6 +625,9 @@ void TupLibraryFolder::updatePaths(const QString &newPath)
 
              if (k->objects[oid]->type() == TupLibraryObject::Sound)
                  path = newPath + "/audio/" + filename;
+
+             if (k->objects[oid]->type() == TupLibraryObject::Item)
+                 path = newPath + "/obj/" + filename;
 
              k->objects[oid]->setDataPath(path);
 

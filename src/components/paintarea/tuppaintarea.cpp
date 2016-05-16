@@ -1097,20 +1097,19 @@ void TupPaintArea::addSelectedItemsToLibrary()
     foreach (QGraphicsItem *item, selected)
              dialog.addItem(item);
 
-    if (dialog.exec() != QDialog::Accepted)
-        return;
+    if (dialog.exec() == QDialog::Accepted) {
+        foreach (QGraphicsItem *item, selected) {
+            if (TupAbstractSerializable *itemSerializable = dynamic_cast<TupAbstractSerializable *>(item)) {
+                QString symName = dialog.symbolName(item) + ".obj";
 
-    foreach (QGraphicsItem *item, selected) {
-             if (TupAbstractSerializable *itemSerializable = dynamic_cast<TupAbstractSerializable *>(item)) {
-                 QString symName = dialog.symbolName(item) + ".obj";
+                QDomDocument doc;
+                doc.appendChild(itemSerializable->toXml(doc));
 
-                 QDomDocument doc;
-                 doc.appendChild(itemSerializable->toXml(doc));
-
-                 TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, 
-                                             symName, TupLibraryObject::Item, k->spaceMode, doc.toString().toLocal8Bit(), QString());
-                 emit requestTriggered(&request);
-             }
+                TupProjectRequest request = TupRequestBuilder::createLibraryRequest(TupProjectRequest::Add, 
+                                            symName, TupLibraryObject::Item, k->spaceMode, doc.toString().toLocal8Bit(), QString());
+                emit requestTriggered(&request);
+            }
+        }
     }
 }
 

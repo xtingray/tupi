@@ -164,7 +164,6 @@ void TupLibraryObject::fromXml(const QString &xml)
         }
 
         switch (k->type) {
-                case TupLibraryObject::Item:
                 case TupLibraryObject::Text:
                      {
                          QDomElement objectData = objectTag.firstChild().toElement();
@@ -204,6 +203,7 @@ void TupLibraryObject::fromXml(const QString &xml)
                 break;
                 case TupLibraryObject::Image:
                 case TupLibraryObject::Svg:
+                case TupLibraryObject::Item:
                 case TupLibraryObject::Sound:
                      {
                          k->dataPath = objectTag.attribute("path");
@@ -237,29 +237,17 @@ QDomElement TupLibraryObject::toXml(QDomDocument &doc) const
     
     switch (k->type) {
             case Text:
-            case Item:
             {
                  QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(k->data);
-            
                  if (item) {
                      if (TupAbstractSerializable *serializable = dynamic_cast<TupAbstractSerializable *>(item))
                          object.appendChild(serializable->toXml(doc));
                  }
-            }
-            break;
-            case Svg:
-            {
-                 QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(k->data);
-            
-                 if (item) {
-                     if (TupAbstractSerializable *serializable = dynamic_cast<TupAbstractSerializable *>(item))
-                         object.appendChild(serializable->toXml(doc));
-                 }
-
-                 object.setAttribute("path", finfo.fileName());
             }
             break;
             case Image:
+            case Svg:
+            case Item:
             case Sound:
             {
                  object.setAttribute("path", finfo.fileName());
@@ -279,23 +267,10 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
     k->rawData = data;
 
     switch (k->type) {
-            case TupLibraryObject::Item:
-            {
-                 TupItemFactory factory;
-                 QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
-                 setData(QVariant::fromValue(item));
-            }
-            break;
-            case TupLibraryObject::Text:
-            {
-                 setData(QString::fromLocal8Bit(data));
-            }
-            break;
             case TupLibraryObject::Image:
             {
                  QPixmap pixmap;
                  bool isOk = pixmap.loadFromData(data);
-
                  if (!isOk) {
                      #ifdef K_DEBUG
                          QString msg = "TupLibraryObject::loadRawData() - [ Fatal Error ] - Can't load image -> " + k->symbolName;
@@ -315,8 +290,19 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
             break;
             case TupLibraryObject::Svg:
             {
-                 QString item(data);
+                 setData(QVariant::fromValue(QString(data)));
+            }
+            break;
+            case TupLibraryObject::Item:
+            {
+                 TupItemFactory factory;
+                 QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
                  setData(QVariant::fromValue(item));
+            }
+            break;
+            case TupLibraryObject::Text:
+            {
+                 setData(QString::fromLocal8Bit(data));
             }
             break;
             case TupLibraryObject::Sound:
@@ -336,20 +322,27 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
 
 bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
 {
+    QString path = "";
+
     switch (k->type) {
             case TupLibraryObject::Image:
             {
-                 k->dataPath = dataDir + "/images/" + k->dataPath;
+                 path = "/images/";
             }
             break;
             case TupLibraryObject::Sound:
             {
-                 k->dataPath = dataDir + "/audio/" + k->dataPath;
+                 path = "/audio/";
             }
             break;
             case TupLibraryObject::Svg:
             {
-                 k->dataPath = dataDir + "/svg/" + k->dataPath;
+                 path = "/svg/";
+            }
+            break;
+            case TupLibraryObject::Item:
+            {
+                 path = "/obj/";
             }
             break;
             default: 
@@ -357,6 +350,7 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
     }
 
+    k->dataPath = dataDir + path + k->dataPath;
     loadData(k->dataPath);
     
     return true;
@@ -367,6 +361,7 @@ bool TupLibraryObject::loadData(const QString &path)
     switch (k->type) {
             case TupLibraryObject::Image:
             case TupLibraryObject::Svg:
+            case TupLibraryObject::Item:
             case TupLibraryObject::Sound:
             {
                  QFile file(path);
@@ -421,12 +416,6 @@ bool TupLibraryObject::loadData(const QString &path)
                  }
             }
             break;
-            /*
-            case TupLibraryObject::Sound:
-            {
-            }
-            break;
-            */
             default:
                  return false;
             break;
@@ -448,16 +437,19 @@ bool TupLibraryObject::saveData(const QString &dataDir)
     switch (k->type) {
             case TupLibraryObject::Item:
             {
-                 // SQA: This code must be included in the next release 
-                 /*
-                 QString saved = dataDir + "/obj/";
-                 if (!QFile::exists(saved)) {
+                 QString path = dataDir + "/obj/";
+                 if (!QFile::exists(path)) {
                      QDir dir;
-                     dir.mkpath(saved);
+                     dir.mkpath(path);
                  }
 
-                 QFile file(saved + k->symbolName);
-                 if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                 QFile file(path + k->symbolName);
+                 if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                     QTextStream out(&file);
+                     out << QString(k->rawData);
+                     k->dataPath = path + k->symbolName;
+                     return true;
+                 } else {
                      #ifdef K_DEBUG
                          QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Lack of permission to save file -> " + k->dataPath;
                          #ifdef Q_OS_WIN
@@ -468,14 +460,6 @@ bool TupLibraryObject::saveData(const QString &dataDir)
                      #endif
                      return false;
                  }
-
-                 QTextStream out(&file);
-                 out << qvariant_cast<QString>(k->data);
-
-                 k->dataPath = saved + k->symbolName;
-                 */
-
-                 return true;
             }
             case TupLibraryObject::Sound:
             {
@@ -492,17 +476,7 @@ bool TupLibraryObject::saveData(const QString &dataDir)
                      qint64 isOk = file.write(k->rawData);
                      file.close();
 
-                     if (isOk == -1) {
-                         #ifdef K_DEBUG
-                             QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Can't save file -> " + k->dataPath;
-                             #ifdef Q_OS_WIN
-                                 qDebug() << msg;
-                             #else
-                                 tError() << msg;
-                             #endif
-                         #endif
-                         return false;
-                     } else {
+                     if (isOk != -1) {
                          #ifdef K_DEBUG
                              QString msg = "TupLibraryObject::saveData() - Image file saved successfully -> " + k->dataPath;
                              #ifdef Q_OS_WIN
@@ -512,6 +486,16 @@ bool TupLibraryObject::saveData(const QString &dataDir)
                              #endif
                          #endif
                          return true;
+                     } else {
+                         #ifdef K_DEBUG
+                             QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Can't save file -> " + k->dataPath;
+                             #ifdef Q_OS_WIN
+                                 qDebug() << msg;
+                             #else
+                                 tError() << msg;
+                             #endif
+                         #endif
+                         return false;
                      }
                  } else {
                      #ifdef K_DEBUG
@@ -528,14 +512,19 @@ bool TupLibraryObject::saveData(const QString &dataDir)
             break;
             case TupLibraryObject::Svg:
             {
-                 QString saved = dataDir + "/svg/";
-                 if (!QFile::exists(saved)) {
+                 QString path = dataDir + "/svg/";
+                 if (!QFile::exists(path)) {
                      QDir dir;
-                     dir.mkpath(saved);
+                     dir.mkpath(path);
                  }
 
-                 QFile file(saved + k->symbolName);
-                 if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                 QFile file(path + k->symbolName);
+                 if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                     QTextStream out(&file);
+                     out << k->data.toString();
+                     k->dataPath = path + k->symbolName;
+                     return true;
+                 } else {
                      #ifdef K_DEBUG
                          QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Lack of permission to save file -> " + k->dataPath;
                          #ifdef Q_OS_WIN
@@ -546,23 +535,17 @@ bool TupLibraryObject::saveData(const QString &dataDir)
                      #endif
                      return false;
                  }
-
-                 QTextStream out(&file);
-                 out << qvariant_cast<QString>(k->data);
-
-                 k->dataPath = saved + k->symbolName;
-                 return true;
             }
             break;
             case TupLibraryObject::Image:
             {
-                 QString destination = dataDir + "/images/";
-                 if (!QFile::exists(destination)) {
+                 QString path = dataDir + "/images/";
+                 if (!QFile::exists(path)) {
                      QDir dir;
-                     dir.mkpath(destination);
+                     dir.mkpath(path);
 
                      #ifdef K_DEBUG
-                         QString msg = "TupLibraryObject::saveData() - Creating directory -> " + destination;
+                         QString msg = "TupLibraryObject::saveData() - Creating directory -> " + path;
                          #ifdef Q_OS_WIN
                              qWarning() << msg;
                          #else
@@ -571,36 +554,16 @@ bool TupLibraryObject::saveData(const QString &dataDir)
                      #endif
                  }
 
-                 k->dataPath = destination + k->symbolName;
+                 k->dataPath = path + k->symbolName;
 
                  QFile file(k->dataPath);
-                 if (!file.open(QIODevice::WriteOnly)) {
-                     #ifdef K_DEBUG
-                         QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Insufficient permissions to save file -> " + destination + k->symbolName;
-                         #ifdef Q_OS_WIN
-                             qDebug() << msg;
-                         #else
-                             tError() << msg;
-                         #endif
-                     #endif
-                     return false;
-                 } else {
+                 if (file.open(QIODevice::WriteOnly)) {
                      qint64 isOk = file.write(k->rawData);
                      file.close();
 
-                     if (isOk == -1) {
+                     if (isOk != -1) {
                          #ifdef K_DEBUG
-                             QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Can't save file -> " + destination + k->symbolName;
-                             #ifdef Q_OS_WIN
-                                 qDebug() << msg;
-                             #else
-                                 tError() << msg;
-                             #endif
-                         #endif
-                         return false;
-                     } else {
-                         #ifdef K_DEBUG
-                             QString msg = "TupLibraryObject::saveData() - Image file saved successfully -> " + destination + k->symbolName;
+                             QString msg = "TupLibraryObject::saveData() - Image file saved successfully -> " + path + k->symbolName;
                              #ifdef Q_OS_WIN
                                  qWarning() << msg;
                              #else
@@ -608,7 +571,27 @@ bool TupLibraryObject::saveData(const QString &dataDir)
                              #endif
                          #endif
                          return true;
+                     } else {
+                         #ifdef K_DEBUG
+                             QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Can't save file -> " + path + k->symbolName;
+                             #ifdef Q_OS_WIN
+                                 qDebug() << msg;
+                             #else
+                                 tError() << msg;
+                             #endif
+                         #endif
+                         return false;
                      }
+                 } else {
+                     #ifdef K_DEBUG
+                         QString msg = "TupLibraryObject::saveData() - [ Fatal Error ] - Insufficient permissions to save file -> " + path + k->symbolName;
+                         #ifdef Q_OS_WIN
+                             qDebug() << msg;
+                         #else
+                             tError() << msg;
+                         #endif
+                     #endif
+                     return false;
                  }
             }
             break;
