@@ -1,4 +1,4 @@
-## Tupi: Open 2D Magic
+## Tupi: 2D Magic
 
 Tupi is a desktop application focused on 2D vector-based content
 like images (PNG), storyboards (HTML) and animations (OGG, AVI, 
@@ -6,10 +6,6 @@ MPEG, etc).
 Its interface has been designed looking for provide a high level 
 experience of usability for artists and non artists, using as main 
 development resource the Qt framework. 
-
-Copying and distribution of this file, with or without modification,
-are permitted in any medium without royalty provided the copyright
-notice and this notice are preserved.
 
 See the files ./INSTALL* for building and installation instructions.
 

@@ -1390,7 +1390,7 @@
 <context>
     <name>TupCanvas</name>
     <message>
-        <source>Tupi: Open 2D Magic</source>
+        <source>Tupi: 2D Magic</source>
         <translation>Tupi: Magia 2D Lliure</translation>
     </message>
     <message>
@@ -2607,8 +2607,8 @@ Please, rename the project&apos;s file</source>
 <context>
     <name>TupMainWindow</name>
     <message>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupi: Magia 2D Livre</translation>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupi: Magia 2D</translation>
     </message>
     <message>
         <source>Opening a new document...</source>

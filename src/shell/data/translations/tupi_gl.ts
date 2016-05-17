@@ -1390,7 +1390,7 @@
 <context>
     <name>TupCanvas</name>
     <message>
-        <source>Tupi: Open 2D Magic</source>
+        <source>Tupi: 2D Magic</source>
         <translation>Tupí: Maxia 2D Libre</translation>
     </message>
     <message>
@@ -2787,8 +2787,8 @@ Please, rename the project&apos;s file</source>
         <translation>Desfacer</translation>
     </message>
     <message>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupí: Maxia 2D Libre</translation>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupí: Maxia 2D</translation>
     </message>
     <message>
         <source>Information</source>

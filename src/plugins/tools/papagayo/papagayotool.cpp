@@ -190,11 +190,11 @@ void PapagayoTool::aboutToChangeTool()
 
 void PapagayoTool::setupActions()
 {
-    TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/papagayo.png"), 
+    TAction *lipsync = new TAction(QPixmap(kAppProp->themeDir() + "icons/papagayo.png"), 
                                       tr("Papagayo Lip-sync"), this);
-    translater->setShortcut(QKeySequence(tr("Ctrl+Shift+P")));
+    lipsync->setShortcut(QKeySequence(tr("Ctrl+Shift+P")));
 
-    k->actions.insert(tr("Papagayo Lip-sync"), translater);
+    k->actions.insert(tr("Papagayo Lip-sync"), lipsync);
 }
 
 /* This method saves the settings of this plugin */
@@ -235,10 +235,10 @@ void PapagayoTool::removeCurrentLipSync(const QString &name)
 
 void PapagayoTool::updateOriginPoint(const QPointF &point)
 {
-    k->origin = point - k->mouthOffset;
-    k->mouth->setPos(k->origin);
+    k->origin = point;
+    k->mouth->setPos(k->origin - k->mouthOffset);
 
-    k->currentLipSync->updateMouthPosition(k->currentMouthIndex, k->origin);
+    k->currentLipSync->updateMouthPosition(k->currentMouthIndex, point);
 
     TupScene *scene = k->scene->scene();
     scene->updateLipSync(k->currentLipSync);

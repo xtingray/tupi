@@ -1925,8 +1925,8 @@
         <location filename="../src/components/paintarea/tupcanvas.cpp" line="71"/>
         <location filename="../src/components/paintarea/tupcanvas.pc.cpp" line="78"/>
         <location filename="../src/components/paintarea/tupcanvas.tablet.cpp" line="79"/>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupi: Open 2D Magic</translation>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupi: 2D Magic</translation>
     </message>
     <message>
         <location filename="../src/components/paintarea/tupcanvas.cpp" line="109"/>
@@ -3553,8 +3553,8 @@ Please, rename the project&apos;s file</source>
         <location filename="../src/shell/tupmainwindow.cpp" line="846"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1141"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1185"/>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupi: Open 2D Magic</translation>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupi: 2D Magic</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="224"/>

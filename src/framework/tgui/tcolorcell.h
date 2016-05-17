@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Project TUPI: Open 2D Magic                                           *
+ *   Project TUPI: 2D Magic                                                *
  *   Component: tupi.mobile                                                *
  *   Project Contact: info@maefloresta.com                                 *
  *   Project Website: http://www.maefloresta.com                           *

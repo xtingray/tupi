@@ -35,7 +35,7 @@ Depends: ${misc:Depends},
  libtheora0, 
  libquazip-qt5-1
 Description: 2D vectorial/animation tool
- Tupi: Open 2D Magic  is a design  and  authoring tool for digital 
+ Tupi: 2D Magic  is a design  and  authoring tool for digital 
  artists  interested  in  2D  Animation,  offering  an   interface 
  experience  focused  on 8-100 years old kids. It's source code is 
  based on the KTooN project.

@@ -130,7 +130,7 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     setObjectName("TupMainWindow_");
 
     // Naming the main frame...
-    setWindowTitle(tr("Tupi: Open 2D Magic"));
+    setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
@@ -239,7 +239,7 @@ void TupMainWindow::createNewNetProject(const QString &title, const QStringList 
 {
     isNetworked = true;
     projectName = title;
-    setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " " + tr("[ by %1 | net mode ]").arg(netUser));
+    setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " " + tr("[ by %1 | net mode ]").arg(netUser));
 
     if (m_viewChat) {
         removeToolView(m_viewChat);
@@ -622,7 +622,7 @@ void TupMainWindow::resetUI()
 
     setUpdatesEnabled(true);
 
-    setWindowTitle(tr("Tupi: Open 2D Magic"));
+    setWindowTitle(tr("Tupi: 2D Magic"));
 
     if (isNetworked) { 
         m_viewChat->expandDock(false);
@@ -725,7 +725,7 @@ void TupMainWindow::setupLocalProject(TupProjectManagerParams *params)
         m_projectManager->setParams(params);
         projectName = params->projectName();
         author = params->author();
-        setWindowTitle(tr("Tupi: Open 2D Magic") +  " - " + projectName + " [ " + tr("by") + " " + author + " ]");
+        setWindowTitle(tr("Tupi: 2D Magic") +  " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
 }
 
@@ -805,7 +805,7 @@ void TupMainWindow::openProject(const QString &path)
             if (author.length() <= 0)
                 author = "Anonymous";
 
-            setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
+            setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
             setWorkSpace();
 
             m_exposureSheet->updateLayerOpacity(0, 0);
@@ -1156,7 +1156,7 @@ void TupMainWindow::saveAs()
     if (isNetworked) {
         isNetworked = false;
         m_projectManager->setHandler(new TupLocalProjectManagerHandler, false);
-        setWindowTitle(tr("Tupi: Open 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
+        setWindowTitle(tr("Tupi: 2D Magic") + " - " + projectName + " [ " + tr("by") + " " + author + " ]");
     }
 
     saveProject();
@@ -1205,7 +1205,7 @@ void TupMainWindow::saveProject()
             int indexDot = name.lastIndexOf(".");
             name = name.left(indexDot);
 
-            setWindowTitle(tr("Tupi: Open 2D Magic") +  " - " + name + " [ " + tr("by") +  " " +  author + " ]");
+            setWindowTitle(tr("Tupi: 2D Magic") +  " - " + name + " [ " + tr("by") +  " " +  author + " ]");
 
             int last = m_fileName.lastIndexOf("/");
             QString dir = m_fileName.left(last);

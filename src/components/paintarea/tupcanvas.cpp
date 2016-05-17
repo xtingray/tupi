@@ -60,7 +60,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
         #endif
     #endif
 
-    setWindowTitle(tr("Tupi: Open 2D Magic"));
+    setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     k->hand = Right;

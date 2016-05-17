@@ -75,7 +75,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
                    const QPointF centerPoint, const QSize &screenSize, TupProject *project, double scaleFactor,
                    int angle, TupBrushManager *brushManager) : QFrame(parent, flags), k(new Private)
 {
-    setWindowTitle(tr("Tupi: Open 2D Magic"));
+    setWindowTitle(tr("Tupi: 2D Magic"));
     setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/animation_mode.png")));
 
     k->scene = scene;

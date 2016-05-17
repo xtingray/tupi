@@ -1309,7 +1309,7 @@
         <translation>Fotogramma %1</translation>
     </message>
     <message>
-        <source>Tupi: Open 2D Magic</source>
+        <source>Tupi: 2D Magic</source>
         <translation type="unfinished">Tupí: Magia 2D Open</translation>
     </message>
     <message>
@@ -2545,8 +2545,8 @@ Please, rename the project&apos;s file</source>
 <context>
     <name>TupMainWindow</name>
     <message>
-        <source>Tupi: Open 2D Magic</source>
-        <translation>Tupí: Magia 2D Open</translation>
+        <source>Tupi: 2D Magic</source>
+        <translation>Tupí: Magia 2D</translation>
     </message>
     <message>
         <source>[ by %1 | net mode ]</source>
