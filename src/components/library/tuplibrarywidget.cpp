@@ -592,10 +592,11 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
     if (object) {
         QString path = object->dataPath();
         if (path.length() > 0) {
+            TupLibraryObject::Type type = object->type();
             QString fileExtension = object->extension();
             QString filter;
 
-            if (object->type() == TupLibraryObject::Image) {
+            if (type == TupLibraryObject::Image) {
                 filter = tr("Images") + " ";
                 if (fileExtension.compare("PNG") == 0)
                     filter += "(*.png)"; 
@@ -607,7 +608,7 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                     filter += "(*.xpm)";
                 if (fileExtension.compare("SVG") == 0)
                     filter += "(*.svg)";
-            } else if (object->type() == TupLibraryObject::Sound) {
+            } else if (type == TupLibraryObject::Sound) {
                        filter = tr("Sounds") + " ";
                        if (fileExtension.compare("OGG") == 0)
                            filter += "(*.ogg)";
@@ -615,8 +616,8 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                            filter += "(*.mp3)";
                        if (fileExtension.compare("WAV") == 0)
                            filter += "(*.wav)";
-            } else if (object->type() == TupLibraryObject::Item) {
-                       filter += "(*.obj)";
+            } else if (type == TupLibraryObject::Item) {
+                       filter = tr("Native Objects") + " " + "(*.obj)";
             }
 
             TCONFIG->beginGroup("General");
@@ -624,6 +625,29 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
             QString target = QFileDialog::getSaveFileName(this, tr("Export object..."), defaultPath, filter);
             if (target.isEmpty())
                 return;
+
+            QString filename = target.toUpper();
+            if (type == TupLibraryObject::Image) {
+                if (fileExtension.compare("PNG") == 0 && !filename.endsWith(".PNG"))
+                    target += ".png";
+                if ((fileExtension.compare("JPG") == 0) && (!filename.endsWith(".JPG") || !filename.endsWith(".JPEG")))
+                    target += ".jpg";
+                if (fileExtension.compare("GIF") == 0 && !filename.endsWith(".GIF"))
+                    target += ".gif";
+                if (fileExtension.compare("XPM") == 0 && !filename.endsWith(".XPM"))
+                    target += ".xpm";
+                if (fileExtension.compare("SVG") == 0 && !filename.endsWith(".SVG"))
+                    target += ".svg";
+            } else if (type == TupLibraryObject::Sound) {
+                       if (fileExtension.compare("OGG") == 0 && !filename.endsWith(".OGG"))
+                           target += ".ogg";
+                       if (fileExtension.compare("MP3") == 0 && !filename.endsWith(".MP3"))
+                           target += ".mp3";
+                       if (fileExtension.compare("WAV") == 0 && !filename.endsWith(".WAV"))
+                           target += ".wav";
+            } else if (type == TupLibraryObject::Item && !filename.endsWith(".OBJ")) {
+                       target += ".obj";
+            }
 
             if (QFile::exists(target)) {
                 if (!QFile::remove(target)) {

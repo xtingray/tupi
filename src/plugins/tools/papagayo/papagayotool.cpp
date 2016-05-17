@@ -238,6 +238,9 @@ void PapagayoTool::updateOriginPoint(const QPointF &point)
     k->origin = point;
     k->mouth->setPos(k->origin - k->mouthOffset);
 
+    tError() << "PapagayoTool::frameResponse() - current frame: " << k->scene->currentFrameIndex();
+    tError() << "PapagayoTool::frameResponse() - mouth index: " << k->currentMouthIndex; 
+    
     k->currentLipSync->updateMouthPosition(k->currentMouthIndex, point);
 
     TupScene *scene = k->scene->scene();
@@ -312,8 +315,6 @@ void PapagayoTool::layerResponse(const TupLayerResponse *event)
 
 void PapagayoTool::frameResponse(const TupFrameResponse *event)
 {
-    Q_UNUSED(event);
-
     if (event->action() == TupProjectRequest::Select) {
         if (k->mode == TupToolPlugin::Edit) {
             int frameIndex = event->frameIndex();
