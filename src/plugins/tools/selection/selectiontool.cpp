@@ -93,10 +93,10 @@ void SelectionTool::init(TupGraphicsScene *scene)
         #endif
     #endif
 
-    k->targetIsIncluded = false; 
-    clearSelection();
-
     k->scene = scene;
+    k->targetIsIncluded = false; 
+
+    clearSelection();
     k->scene->clearSelection();
     k->nodeZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
     initItems(scene);
@@ -934,15 +934,18 @@ void SelectionTool::requestTransformation(QGraphicsItem *item, TupFrame *frame)
 
 void SelectionTool::clearSelection()
 {
-    if (!k->nodeManagers.isEmpty()) {
-        foreach (NodeManager *nodeManager, k->nodeManagers) {
-                 nodeManager->parentItem()->setSelected(false);
-                 k->nodeManagers.removeAll(nodeManager);
+    // if (!k->nodeManagers.isEmpty()) {
+    if (k->activeSelection) {
+        if (!k->nodeManagers.isEmpty()) {
+            foreach (NodeManager *nodeManager, k->nodeManagers) {
+                     nodeManager->parentItem()->setSelected(false);
+                     k->nodeManagers.removeAll(nodeManager);
+            }
+            k->nodeManagers.clear();
         }
-        k->nodeManagers.clear();
         k->selectedObjects.clear();
-        if (k->activeSelection)
-            k->activeSelection = false;
+        // if (k->activeSelection)
+        k->activeSelection = false;
         k->scene->drawCurrentPhotogram();
     }
 }
