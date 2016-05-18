@@ -934,6 +934,9 @@ void SelectionTool::requestTransformation(QGraphicsItem *item, TupFrame *frame)
 
 void SelectionTool::clearSelection()
 {
+    tError() << "SelectionTool::clearSelection() - k->activeSelection: " << k->activeSelection;
+    tError() << "SelectionTool::clearSelection() - k->nodeManagers size: " << k->nodeManagers.count();
+
     // if (!k->nodeManagers.isEmpty()) {
     if (k->activeSelection) {
         if (!k->nodeManagers.isEmpty()) {
