@@ -348,6 +348,7 @@ void SelectionTool::setupActions()
 {
     k->targetIsIncluded = false;
     k->activeSelection = false;
+    k->nodeManagers.clear();
     k->scaleFactor = 1;
     k->realFactor = 1;
 
@@ -391,12 +392,11 @@ void SelectionTool::aboutToChangeScene(TupGraphicsScene *scene)
         #endif
     #endif
 
-    init(scene);
+    clearSelection();
 }
 
 void SelectionTool::aboutToChangeTool()
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[SelectionTool::aboutToChangeTool()]";
@@ -404,7 +404,8 @@ void SelectionTool::aboutToChangeTool()
             T_FUNCINFOX("tools");
         #endif
     #endif
-    */
+
+    init(k->scene);
 }
 
 void SelectionTool::itemResponse(const TupItemResponse *response)
@@ -934,10 +935,6 @@ void SelectionTool::requestTransformation(QGraphicsItem *item, TupFrame *frame)
 
 void SelectionTool::clearSelection()
 {
-    tError() << "SelectionTool::clearSelection() - k->activeSelection: " << k->activeSelection;
-    tError() << "SelectionTool::clearSelection() - k->nodeManagers size: " << k->nodeManagers.count();
-
-    // if (!k->nodeManagers.isEmpty()) {
     if (k->activeSelection) {
         if (!k->nodeManagers.isEmpty()) {
             foreach (NodeManager *nodeManager, k->nodeManagers) {
@@ -947,7 +944,6 @@ void SelectionTool::clearSelection()
             k->nodeManagers.clear();
         }
         k->selectedObjects.clear();
-        // if (k->activeSelection)
         k->activeSelection = false;
         k->scene->drawCurrentPhotogram();
     }
