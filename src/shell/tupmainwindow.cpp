@@ -549,7 +549,7 @@ void TupMainWindow::resetUI()
     scenesView->expandDock(false);
     timeView->expandDock(false);
 
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && !defined(Q_OS_WIN)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     debugView->expandDock(false);
 #endif
 
