@@ -954,31 +954,32 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
 
     if (layer->lipSyncCount() > 0) {
         Mouths mouths = layer->lipSyncList();
-        for (int i=0; i<mouths.count(); i++) {
+        int total = mouths.count();
+        for (int i=0; i<total; i++) {
              TupLipSync *lipSync = mouths.at(i);
              int initFrame = lipSync->initFrame();
-
+             
              if ((photogram >= initFrame) && (photogram <= initFrame + lipSync->framesCount())) {
                  QString name = lipSync->name();
                  TupLibraryFolder *folder = k->library->getFolder(name);
                  if (folder) {
                      QList<TupVoice *> voices = lipSync->voices();
-                     int total = voices.count();
-                     for(int i=0; i < total; i++) {
-                         TupVoice *voice = voices.at(i);
+                     total = voices.count();
+                     for(int j=0; j<total; j++) {
+                         TupVoice *voice = voices.at(j);
                          int index = photogram - initFrame; 
                          if (voice->contains(index)) {
                              // Add image here
-                             QString phoneme = voice->getPhoneme(index);
-                             TupLibraryObject *image = folder->getObject(phoneme + lipSync->picExtension());
+                             TupPhoneme *phoneme = voice->getPhoneme(index);
+                             TupLibraryObject *image = folder->getObject(phoneme->value() + lipSync->picExtension());
                              if (image) {
                                  TupGraphicLibraryItem *item = new TupGraphicLibraryItem(image);
                                  if (item) {
-                                     QPointF pos = voice->mouthPos();
+                                     QPointF pos = phoneme->position();
                                      int wDelta = item->boundingRect().width()/2; 
                                      int hDelta = item->boundingRect().height()/2;
                                      item->setPos(pos.x()-wDelta, pos.y()-hDelta);
-                                     item->setToolTip(tr("lipsync:") + name + ":" + QString::number(i));
+                                     item->setToolTip(tr("lipsync:") + name + ":" + QString::number(j));
                                      item->setZValue(zLevel);
                                      addItem(item);
                                  }

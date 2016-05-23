@@ -58,12 +58,6 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     layout->addWidget(toolTitle);
     layout->addWidget(new TSeparator(Qt::Horizontal));
 
-    /*
-    QLabel *title = new QLabel(tr("Papagayo LipSync Files"));
-    title->setAlignment(Qt::AlignHCenter);
-    layout->addWidget(title);
-    */
-
     k->settingsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     k->settingsLayout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     k->settingsLayout->setMargin(0);
@@ -92,6 +86,8 @@ void Configurator::setPropertiesPanel()
     connect(k->settingsPanel, SIGNAL(selectMouth(const QString &, int)), this, SIGNAL(selectMouth(const QString &, int)));
     connect(k->settingsPanel, SIGNAL(closeLipSyncProperties()), this, SLOT(closeSettingsPanel())); 
     connect(k->settingsPanel, SIGNAL(initFrameHasChanged(int)), this, SIGNAL(initFrameHasChanged(int)));
+    connect(k->settingsPanel, SIGNAL(xPosChanged(int)), this, SIGNAL(xPosChanged(int)));
+    connect(k->settingsPanel, SIGNAL(yPosChanged(int)), this, SIGNAL(yPosChanged(int)));
 
     k->settingsLayout->addWidget(k->settingsPanel);
 
@@ -163,4 +159,9 @@ void Configurator::closePanels()
 void Configurator::updateInterfaceRecords()
 {
     k->settingsPanel->updateInterfaceRecords();
+}
+
+void Configurator::setPos(const QPointF &point)
+{
+    k->settingsPanel->setPos(point);
 }

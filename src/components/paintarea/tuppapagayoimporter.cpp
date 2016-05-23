@@ -43,8 +43,8 @@ struct TupPapagayoImporter::Private
     TupLipSync *lipsync;
 };
 
-TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &projectSize, 
-                                         const QSize &mouthSize, const QString &extension, int initFrame) : QObject(), k(new Private)
+TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &projectSize, const QString &extension, 
+                                         int initFrame) : QObject(), k(new Private)
 {
     k->framesCount = 0;
     k->isValid = true;
@@ -98,13 +98,15 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
                i++;
         }
 
-        int x = projectSize.width()/(voicesNumber+1) - (mouthSize.width()/2);
-        int y = projectSize.height()/2 - (mouthSize.height()/2); 
+        int x = projectSize.width()/(voicesNumber+1);
+        int y = projectSize.height()/2;
 
         for(int j=1; j<=voicesNumber; j++) {
             TupVoice *voice = new TupVoice(); 
             x = x*j;
-            voice->setMouthPos(QPoint(x, y));
+
+            QPointF point(x, y);
+            voice->setMouthPos(point);
             voice->setVoiceTitle(stream.readLine().trimmed());
             voice->setText(stream.readLine().trimmed());
             int numPhrases = stream.readLine().toInt();
@@ -114,7 +116,6 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
             for (int p = 0; p < numPhrases; p++) {
                  QString text = stream.readLine().trimmed();
                  int initFrame = stream.readLine().toInt();
-                 // int endFrame = stream.readLine().toInt();
                  stream.readLine();
                  TupPhrase *phrase = new TupPhrase(initFrame);
                  numWords = stream.readLine().toInt();
@@ -145,12 +146,12 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
 
                       for (int ph = 0; ph < numPhonemes-1; ph++) {
                            int total = frames.at(ph+1) - frames.at(ph);
-                           TupPhoneme *phoneme = new TupPhoneme(blocks.at(ph), total);
+                           TupPhoneme *phoneme = new TupPhoneme(blocks.at(ph), total, point);
                            word->addPhoneme(phoneme);
                       } // for ph
 
                       int total = (lastFrame - frames.at(numPhonemes-1)) + 1;
-                      TupPhoneme *phoneme = new TupPhoneme(blocks.at(numPhonemes-1), total);
+                      TupPhoneme *phoneme = new TupPhoneme(blocks.at(numPhonemes-1), total, point);
                       word->addPhoneme(phoneme);
 
                       if (w == numWords - 1) {

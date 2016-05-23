@@ -1982,7 +1982,6 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
 
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
                                                                               frameIndex, TupProjectRequest::Add, tr("Frame"));
-                                                                              // frameIndex, TupProjectRequest::Add, tr("Frame %1").arg(frameIndex + 1));
             emit requestTriggered(&request);
 
             request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
@@ -2046,8 +2045,8 @@ void TupDocumentView::importPapagayoLipSync()
                 QDir dir(imagesDir);
                 QStringList imagesList = dir.entryList(QStringList() << "*.png" << "*.jpg" << "*.jpeg" << "*.gif" << "*.svg");
                 if (imagesList.count() > 0) {
+                    /*
                     QSize mouthSize;
-                    QString extension = ".svg";
                     QString firstImage = imagesList.at(0);
                     QString pic = imagesDir + "/" + firstImage;
                     if (firstImage.endsWith(".svg")) {
@@ -2060,9 +2059,17 @@ void TupDocumentView::importPapagayoLipSync()
                         int dot = firstImage.lastIndexOf(".");
                         extension = firstImage.mid(dot);
                     }
+                    */
+
+                    QString extension = ".svg";
+                    QString firstImage = imagesList.at(0);
+                    if (!firstImage.endsWith(".svg")) {
+                        int dot = firstImage.lastIndexOf(".");
+                        extension = firstImage.mid(dot);
+                    }
 
                     int currentIndex = k->paintArea->currentFrameIndex();
-                    TupPapagayoImporter *parser = new TupPapagayoImporter(file, k->project->dimension(), mouthSize, extension, currentIndex);
+                    TupPapagayoImporter *parser = new TupPapagayoImporter(file, k->project->dimension(), extension, currentIndex);
                     if (parser->fileIsValid()) {
                         int layerIndex = k->paintArea->currentLayerIndex();
                         QString mouthPath = imagesDir;
@@ -2102,6 +2109,7 @@ void TupDocumentView::importPapagayoLipSync()
                         // Adding Papagayo project
                         parser->setSoundFile(soundKey);
                         QString xml = parser->file2Text();
+
                         request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::AddLipSync, xml);
                         emit requestTriggered(&request);
 

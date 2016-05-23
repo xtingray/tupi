@@ -49,7 +49,7 @@ class TUPI_EXPORT TupPapagayoImporter : public QObject
     Q_OBJECT
 
     public:
-        TupPapagayoImporter(const QString &file, const QSize &projectSize, const QSize &mouthSize, const QString &extension, int initFrame);
+        TupPapagayoImporter(const QString &file, const QSize &projectSize, const QString &extension, int initFrame);
         ~TupPapagayoImporter();
         void setSoundFile(const QString &soundFile);
         bool fileIsValid();
