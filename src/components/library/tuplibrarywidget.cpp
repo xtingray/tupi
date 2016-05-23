@@ -623,6 +623,7 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
             TCONFIG->beginGroup("General");
             QString defaultPath = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
             QString target = QFileDialog::getSaveFileName(this, tr("Export object..."), defaultPath + "/" + id , filter);
+
             if (target.isEmpty())
                 return;
 
