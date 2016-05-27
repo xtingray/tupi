@@ -2019,6 +2019,8 @@ void TupDocumentView::importPapagayoLipSync()
     dialog->show();
 
     if (dialog->exec() != QDialog::Rejected) {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
         QString file = dialog->getPGOFile();
         QFileInfo info(file);
         QString folder = info.fileName().toLower();
@@ -2035,6 +2037,7 @@ void TupDocumentView::importPapagayoLipSync()
                        tError() << msg;
                    #endif
             #endif
+            QApplication::restoreOverrideCursor();
             return;
         }
 
@@ -2045,22 +2048,6 @@ void TupDocumentView::importPapagayoLipSync()
                 QDir dir(imagesDir);
                 QStringList imagesList = dir.entryList(QStringList() << "*.png" << "*.jpg" << "*.jpeg" << "*.gif" << "*.svg");
                 if (imagesList.count() > 0) {
-                    /*
-                    QSize mouthSize;
-                    QString firstImage = imagesList.at(0);
-                    QString pic = imagesDir + "/" + firstImage;
-                    if (firstImage.endsWith(".svg")) {
-                        QSvgRenderer *renderer = new QSvgRenderer(pic);
-                        QRect rect = renderer->viewBox();
-                        mouthSize = rect.size();
-                    } else {
-                        QImage *image = new QImage(pic);
-                        mouthSize = image->size();
-                        int dot = firstImage.lastIndexOf(".");
-                        extension = firstImage.mid(dot);
-                    }
-                    */
-
                     QString extension = ".svg";
                     QString firstImage = imagesList.at(0);
                     if (!firstImage.endsWith(".svg")) {
@@ -2123,7 +2110,6 @@ void TupDocumentView::importPapagayoLipSync()
                                 int layersCount = scene->layersCount();
                                 for (int i = sceneFrames; i < lipSyncFrames; i++) {
                                      for (int j = 0; j < layersCount; j++) {
-                                          // request = TupRequestBuilder::createFrameRequest(sceneIndex, j, i, TupProjectRequest::Add, tr("Frame %1").arg(i + 1));
                                           request = TupRequestBuilder::createFrameRequest(sceneIndex, j, i, TupProjectRequest::Add, tr("Frame"));
                                           emit requestTriggered(&request);
                                      }
@@ -2183,6 +2169,7 @@ void TupDocumentView::importPapagayoLipSync()
                 #endif
             #endif
         }
+        QApplication::restoreOverrideCursor();
     }
 }
 

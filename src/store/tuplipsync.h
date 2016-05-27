@@ -49,11 +49,12 @@ class TUPI_EXPORT TupPhoneme : public QObject, public TupAbstractSerializable
 {
     public:
         TupPhoneme();
-        TupPhoneme(const QString &value, int duration, QPointF point);
+        // TupPhoneme(const QString &value, int duration, QPointF point);
+        TupPhoneme(const QString &value, QPointF point);
         ~TupPhoneme();
 
-        void setDuration(int duration);
-        int duration();
+        // void setDuration(int duration);
+        // int duration();
         void setValue(const QString &value);
         QString value() const;
         void setPos(QPointF point);
@@ -63,10 +64,10 @@ class TUPI_EXPORT TupPhoneme : public QObject, public TupAbstractSerializable
         virtual QDomElement toXml(QDomDocument &doc) const;
 
     private:
-        int frames;
+        // int frames;
         QString phoneme;
         QPointF pos;
-        bool posRef;
+        // bool posRef;
 };
 
 class TUPI_EXPORT TupWord : public QObject, public TupAbstractSerializable
