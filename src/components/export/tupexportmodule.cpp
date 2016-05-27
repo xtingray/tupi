@@ -62,8 +62,11 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
-    // path = getenv("HOME");
-    path = QDir::homePath();
+    TCONFIG->beginGroup("General");
+    path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
+
+    tError() << "TupExportModule::TupExportModule() - EXPORT PATH: " << path;
+    tError() << "TupExportWidget::output: " << output;
 
     ////////////////
 
@@ -103,6 +106,7 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
 
     QToolButton *button = new QToolButton;
     button->setIcon(QIcon(THEME_DIR + "icons/open.png"));
+    button->setToolTip(tr("Choose another path"));
 
     if (output == TupExportWidget::ImagesArray)
         connect(button, SIGNAL(clicked()), this, SLOT(chooseDirectory()));
@@ -206,7 +210,6 @@ void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
         filename += m_project->projectName();
         filename += extension;
     } else { // Images Array
-        // filename = getenv("HOME");
         filename = QDir::homePath();
 
         if (m_currentFormat == TupExportInterface::JPEG || m_currentFormat == TupExportInterface::SVG) {
@@ -217,12 +220,6 @@ void TupExportModule::setCurrentFormat(int currentFormat, const QString &value)
                 bgTransparency->setEnabled(true);
         }
     } 
-
-/*
-#ifdef Q_OS_WIN
-    filename.replace(QString("/"), QString("\\"));
-#endif
-*/
 
     m_filePath->setText(filename);
 }
@@ -240,10 +237,18 @@ void TupExportModule::enableTransparency(bool flag)
 
 void TupExportModule::chooseFile()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupExportModule::chooseFile()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QFileDialog dialog(this);
     dialog.setDirectory(filename);
     const char *filter = "Video File (*" + extension.toLocal8Bit() + ")";
-    filename = dialog.getSaveFileName(this, tr("Choose a file name..."), QString(), tr(filter));
+    filename = dialog.getSaveFileName(this, tr("Choose a file name..."), path, tr(filter));
 
     if (filename.length() > 0) {
         if (!filename.toLower().endsWith(extension)) 
@@ -255,6 +260,14 @@ void TupExportModule::chooseFile()
 
 void TupExportModule::chooseDirectory()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupExportModule::chooseDirectory()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QString dir = QDir::homePath();
     filename = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
                                                  QFileDialog::ShowDirsOnly
