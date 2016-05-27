@@ -57,7 +57,6 @@ class TUPI_EXPORT TupExportModule : public TupExportWizardPage
 
         bool isComplete() const;
         void reset();
-        void aboutToFinish();
 
     public slots:
         void exportIt();

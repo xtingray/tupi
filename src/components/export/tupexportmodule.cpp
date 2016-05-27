@@ -65,9 +65,6 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
     TCONFIG->beginGroup("General");
     path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
 
-    tError() << "TupExportModule::TupExportModule() - EXPORT PATH: " << path;
-    tError() << "TupExportWidget::output: " << output;
-
     ////////////////
 
     QHBoxLayout *prefixLayout = new QHBoxLayout;
@@ -181,11 +178,6 @@ void TupExportModule::reset()
 {
 }
 
-void TupExportModule::aboutToFinish()
-{
-    // exportIt();
-}
-
 void TupExportModule::setScenesIndexes(const QList<int> &indexes)
 {
     m_indexes = indexes;
@@ -245,16 +237,24 @@ void TupExportModule::chooseFile()
         #endif
     #endif
 
-    QFileDialog dialog(this);
-    dialog.setDirectory(filename);
-    const char *filter = "Video File (*" + extension.toLocal8Bit() + ")";
-    filename = dialog.getSaveFileName(this, tr("Choose a file name..."), path, tr(filter));
+    QFileDialog dialog(this, tr("Choose a video file..."), path);
+    dialog.setNameFilter(tr("Video File") + " (*" + extension.toLocal8Bit() + ")");
+    dialog.setFileMode(QFileDialog::AnyFile);
 
-    if (filename.length() > 0) {
-        if (!filename.toLower().endsWith(extension)) 
+    if (dialog.exec() == QDialog::Accepted) {
+        QStringList files = dialog.selectedFiles();
+        filename = files.at(0);
+
+        if (!filename.toLower().endsWith(extension))
             filename += extension;
 
         m_filePath->setText(filename);
+
+        int last = filename.lastIndexOf("/");
+        QString dir = filename.left(last);
+        TCONFIG->beginGroup("General");
+        TCONFIG->setValue("DefaultPath", dir);
+        TCONFIG->sync();
     }
 }
 
@@ -268,8 +268,7 @@ void TupExportModule::chooseDirectory()
         #endif
     #endif
 
-    QString dir = QDir::homePath();
-    filename = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
+    filename = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), path,
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
 
@@ -349,7 +348,6 @@ void TupExportModule::exportIt()
             name += extension;
 
         if (path.length() == 0) {
-            //path = getenv("HOME");
             path = QDir::homePath();
             filename = path + "/" + name;
         }
