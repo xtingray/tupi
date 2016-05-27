@@ -39,25 +39,14 @@ TupPhoneme::TupPhoneme() : QObject()
 {
 }
 
-TupPhoneme::TupPhoneme(const QString &value, int duration, QPointF point) : QObject()
+TupPhoneme::TupPhoneme(const QString &value, QPointF point) : QObject()
 {
     phoneme = value;
-    frames = duration;
     pos = point;
 }
 
 TupPhoneme::~TupPhoneme()
 {
-}
-
-void TupPhoneme::setDuration(int duration)
-{
-    frames = duration;
-}
-
-int TupPhoneme::duration()
-{
-    return frames;
 }
 
 void TupPhoneme::setValue(const QString &value)
@@ -89,7 +78,6 @@ void TupPhoneme::fromXml(const QString &xml)
         if (!e.isNull()) {
             if (e.tagName() == "phoneme") {
                 phoneme = e.attribute("value");
-                frames = e.attribute("duration").toInt();
                 QStringList xy = e.attribute("pos").split(",");
                 double x = xy.first().toDouble();
                 double y = xy.last().toDouble();
@@ -103,7 +91,6 @@ QDomElement TupPhoneme::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("phoneme");
     root.setAttribute("value", phoneme);
-    root.setAttribute("duration", frames);
     root.setAttribute("pos", QString::number(pos.x()) + "," + QString::number(pos.y()));
 
     return root;
@@ -183,7 +170,7 @@ void TupWord::fromXml(const QString &xml)
                        }
                        phoneme->fromXml(newDoc);
                        phonemes << phoneme;
-                       endIndex += phoneme->duration();
+                       endIndex++;
                    }
                }
 
@@ -351,36 +338,41 @@ void TupVoice::updateMouthPos(QPointF pos, int frame)
                  foreach (TupWord *word, wordList ) {
                           int initFrame = word->initFrame();
                           if (word->contains(index)) {
-                              int k = 0;
                               QList <TupPhoneme *> phonemeList = word->phonemesList();
-                              foreach (TupPhoneme *phoneme, phonemeList) {
-                                       int duration = phoneme->duration();
-                                       int first = initFrame;
-                                       int last = first + duration - 1;
-                                       if (index >= first && index <= last) {
-                                           phoneme->setPos(pos);
-                                           for (int index=k+1; index < phonemeList.count(); index++) {
-                                                TupPhoneme *p = phonemeList.at(index);
-                                                p->setPos(pos);
-                                           }
-                                           for (int index=j+1; index < wordList.count(); index++) {
-                                                TupWord *w = wordList.at(index);
-                                                foreach (TupPhoneme *p, w->phonemesList())
-                                                         p->setPos(pos);
-                                           }
-                                           for (int index=i+1; index < phrases.count(); index++) {                                       
-                                                TupPhrase *ph = phrases.at(index);
-                                                foreach (TupWord *w, ph->wordsList()) {
-                                                         foreach (TupPhoneme *p, w->phonemesList()) 
-                                                                  p->setPos(pos);
-                                                }
-                                           }
+                              int position = index - initFrame;
+                              TupPhoneme *phoneme = phonemeList.at(position);
+                              QPointF oldPos = phoneme->position();
+                              phoneme->setPos(pos);
 
-                                           return;
-                                       }
-                                       initFrame = last + 1;
-                                       k++;
+                              for (int n=position+1; n<phonemeList.count(); n++) {
+                                   TupPhoneme *p = phonemeList.at(n);
+                                   if (p->position() == oldPos)
+                                       p->setPos(pos);
+                                   else
+                                       return;
                               }
+                              for (int n=j+1; n<wordList.count(); n++) {
+                                   TupWord *w = wordList.at(n);
+                                   foreach (TupPhoneme *p, w->phonemesList()) {
+                                            if (p->position() == oldPos)
+                                                p->setPos(pos);
+                                            else
+                                                return;
+                                   }
+                              }
+                              for (int n=i+1; n<phrases.count(); n++) {
+                                   TupPhrase *ph = phrases.at(n);
+                                   foreach (TupWord *w, ph->wordsList()) {
+                                            foreach (TupPhoneme *p, w->phonemesList()) {
+                                                     if (p->position() == oldPos)
+                                                         p->setPos(pos);
+                                                     else
+                                                         return;
+                                            }
+                                   }
+                              }
+
+                              return;
                           }
                           j++;
                  }
@@ -427,36 +419,34 @@ TupPhoneme * TupVoice::getPhoneme(int frame)
                  int i = 0;
                  foreach (TupWord *word, phrase->wordsList()) {
                           int initFrame = word->initFrame();
+                          int index = frame - initFrame;
                           if (initFrame <= frame) {
                               if (word->contains(frame)) {
-                                  foreach (TupPhoneme *phoneme, word->phonemesList()) {
-                                           int duration = phoneme->duration();
-                                           int first = initFrame; 
-                                           int last = first + duration - 1;
-                                           if (frame >= first && frame <= last)
-                                               return phoneme;
-                                           initFrame = last + 1;
-                                  }
+                                  TupPhoneme *phoneme = word->phonemesList().at(index);
+                                  return phoneme;
                               }
                           } else {
                               int init = 0;
                               int endFrame = word->initFrame() - 1;
-                              TupPhoneme *phoneme;
-                              if (i == 0) {
-                                  phoneme = new TupPhoneme("rest", word->initFrame(), point);
-                              } else {
-                                  TupWord *p = phrase->wordsList().at(i-1);
-                                  init = p->endFrame() + 1;
-                                  QPointF pos = p->phonemesList().last()->position();
-                                  phoneme = new TupPhoneme("rest", (endFrame - init) + 1, pos);
+                              int total = word->initFrame();
+                              QPointF pos = point;
+
+                              if (i > 0) {
+                                  TupWord *prev = phrase->wordsList().at(i-1);
+                                  init = prev->endFrame() + 1;
+                                  pos = prev->phonemesList().last()->position();
+                                  total = (endFrame - init) + 1;
                               }
 
                               TupWord *w = new TupWord(init);
+                              for (int j=0; j<total; j++) {
+                                   TupPhoneme *phoneme = new TupPhoneme("rest", pos);
+                                   w->addPhoneme(phoneme);
+                              }
                               w->setEndFrame(endFrame);
-                              w->addPhoneme(phoneme);
                               phrase->insertWord(i, w);
-                              
-                              return phoneme;
+
+                              return w->phonemesList().at(0);
                           }
                           i++;
                  }

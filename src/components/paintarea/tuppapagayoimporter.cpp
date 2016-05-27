@@ -146,13 +146,17 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
 
                       for (int ph = 0; ph < numPhonemes-1; ph++) {
                            int total = frames.at(ph+1) - frames.at(ph);
-                           TupPhoneme *phoneme = new TupPhoneme(blocks.at(ph), total, point);
-                           word->addPhoneme(phoneme);
+                           for (int i=0; i<total; i++) {
+                                TupPhoneme *phoneme = new TupPhoneme(blocks.at(ph), point);
+                                word->addPhoneme(phoneme);
+                           }
                       } // for ph
 
                       int total = (lastFrame - frames.at(numPhonemes-1)) + 1;
-                      TupPhoneme *phoneme = new TupPhoneme(blocks.at(numPhonemes-1), total, point);
-                      word->addPhoneme(phoneme);
+                      for (int i=0; i<total; i++) {
+                           TupPhoneme *phoneme = new TupPhoneme(blocks.at(numPhonemes-1), point);
+                           word->addPhoneme(phoneme);
+                      }
 
                       if (w == numWords - 1) {
                           if (lastFrame > k->framesCount)

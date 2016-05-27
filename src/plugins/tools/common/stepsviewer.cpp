@@ -101,9 +101,10 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         // This list contains the (green) key points of the path 
         QList<QPointF> *keys = new QList<QPointF>();
 
-        // path().elementCount(): Returns the number of path elements in the painter path.
+        int total = path->path().elementCount();
+        // tError() << "Elements Count: " << total; // Returns the number of path elements in the painter path.
 
-        for (int i = 1; i < path->path().elementCount(); i++) {
+        for (int i = 1; i < total; i++) {
               QPainterPath::Element e  = path->path().elementAt(i);
               if (e.type != QPainterPath::CurveToElement) {
                   if ((e.type == QPainterPath::CurveToDataElement) &&
@@ -120,9 +121,13 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         QPointF controlKey = keys->at(0);
         int frames = 0;
 
+        // tError() << "points.size(): " << points.size();
+
         // Grouping dots by key points
         for (int i=0; i < points.size()-1; i++) {
              QPointF point = points.at(i);
+             // tError() << "Point: [" << point.x() << ", " << point.y() << "]";
+
              if (point == controlKey) {
                  if (frames == 1) {
                      if (control == 0) {
@@ -154,10 +159,6 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  k->minusButton->append(new TPushButton(this, "-", 3, control));
                  connect(k->minusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
 
-                 // SQA: Temporary code
-                 k->plusButton->at(control)->setDisabled(true);
-                 k->minusButton->at(control)->setDisabled(true);
-
                  setItem(control, 0, intervalItem);
                  setItem(control, 1, framesItem);
                  setCellWidget(control, 2, k->plusButton->at(control));
@@ -176,6 +177,14 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              frames++;
         }
     }
+
+    /*
+    for (int i=0; i<100; i++) {
+         qreal t = (qreal)i/(qreal)100; 
+         QPointF point = path->path().pointAtPercent(t);
+         tError() << "Point: [" << point.x() << ", " << point.y() << "]";
+    }
+    */
 }
 
 void StepsViewer::updatePath(int column, int row)
@@ -184,28 +193,26 @@ void StepsViewer::updatePath(int column, int row)
     int value = cell->text().toInt();
 
     if (column == 2)
-        value += 5;
+        value += 1;
     else
-        value -= 5;
+        value -= 1;
+
+    if (value < 0)
+        value = 1;
     
     cell->setText(QString::number(value));
 
-    // Make the points calculation right here!
+    // SQA: Make the points calculation right here!
 }
 
 QVector<TupTweenerStep *> StepsViewer::steps()
 {
     QVector<TupTweenerStep *> stepsVector;
-    // int count = 0;
 
     for (int i=0; i < k->dots->size(); i++) {
-         // TupTweenerStep *step = new TupTweenerStep(count);
          TupTweenerStep *step = new TupTweenerStep(i);
-
-         // QPointF point = k->dots->at(i); 
          step->setPosition(k->dots->at(i));
          stepsVector << step;
-         // count++;
     }
   
     return stepsVector;
