@@ -237,14 +237,10 @@ void TupExportModule::chooseFile()
         #endif
     #endif
 
-    QFileDialog dialog(this, tr("Choose a video file..."), path);
-    dialog.setNameFilter(tr("Video File") + " (*" + extension.toLocal8Bit() + ")");
-    dialog.setFileMode(QFileDialog::AnyFile);
+    filename = QFileDialog::getSaveFileName(this, tr("Export video as..."), path,
+                                            tr("Video File") + " (*" + extension.toLocal8Bit() + ")");
 
-    if (dialog.exec() == QDialog::Accepted) {
-        QStringList files = dialog.selectedFiles();
-        filename = files.at(0);
-
+    if (!filename.isEmpty()) {
         if (!filename.toLower().endsWith(extension))
             filename += extension;
 
