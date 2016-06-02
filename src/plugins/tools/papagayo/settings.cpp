@@ -54,6 +54,8 @@ struct Settings::Private
 
     QTextEdit *textArea;
 
+    // QString phoneme;
+    QLabel *phonemeLabel;
     QSpinBox *xPosField;
     QSpinBox *yPosField;
 
@@ -155,6 +157,10 @@ void Settings::setInnerForm()
     k->textArea = new QTextEdit;
     k->textArea->setReadOnly(true);
 
+    // k->phonemeLabel = new QLabel(tr("Current Phoneme") + ": " + k->phoneme);
+    k->phonemeLabel = new QLabel;
+    k->phonemeLabel->setAlignment(Qt::AlignHCenter);
+
     QLabel *mouthPosLabel = new QLabel(tr("Current Mouth Position") + ": ");
     mouthPosLabel->setAlignment(Qt::AlignHCenter);
 
@@ -204,6 +210,7 @@ void Settings::setInnerForm()
     innerLayout->addLayout(listLayout);
     innerLayout->addWidget(textLabel);
     innerLayout->addWidget(k->textArea);
+    innerLayout->addWidget(k->phonemeLabel);
     innerLayout->addWidget(mouthPosLabel);
     innerLayout->addLayout(xLayout);
     innerLayout->addLayout(yLayout);
@@ -293,4 +300,9 @@ void Settings::setPos(const QPointF &point)
 
     k->xPosField->blockSignals(false);
     k->yPosField->blockSignals(false);
+}
+
+void Settings::setPhoneme(const QString &phoneme)
+{
+    k->phonemeLabel->setText(tr("Current Phoneme") + ": " + "<b>" + phoneme + "</b>");
 }

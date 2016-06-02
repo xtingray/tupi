@@ -63,6 +63,7 @@ class TUPI_PLUGIN Settings : public QWidget
         void openLipSyncProperties(TupLipSync *lipsync);
         void updateInterfaceRecords();
 
+        void setPhoneme(const QString &phoneme);
         void setPos(const QPointF &point);
 
     private slots:

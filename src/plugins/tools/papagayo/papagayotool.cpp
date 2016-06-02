@@ -222,8 +222,22 @@ void PapagayoTool::editLipSyncSelection(const QString &name)
     k->configurator->openLipSyncProperties(k->currentLipSync);
 
     TupVoice *voice = k->currentLipSync->voices().at(0);
-    if (voice)
+    if (voice) {
+        TupPhoneme *phoneme = voice->getPhonemeAt(0);
+        if (phoneme) {
+            k->configurator->setPhoneme(phoneme->value());
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "PapagayoTool::editLipSyncSelection() - No lipsync phoneme at index 0";
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
+            #endif
+        }
         k->configurator->setPos(voice->mouthPos());
+    }
 }
 
 void PapagayoTool::removeCurrentLipSync(const QString &name)
@@ -290,6 +304,24 @@ void PapagayoTool::setTargetEnvironment()
     connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
     k->scene->addItem(k->target);
     k->targetIncluded = true;
+
+    TupVoice *voice = k->currentLipSync->voices().at(k->currentMouthIndex);
+    if (voice) {
+        int index = k->scene->currentFrameIndex() - k->currentLipSync->initFrame();
+        TupPhoneme *phoneme = voice->getPhonemeAt(index);
+        if (phoneme) {
+            k->configurator->setPhoneme(phoneme->value());
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "TupGraphicsScene::setTargetEnvironment() - No lipsync phoneme at frame " + QString::number(k->scene->currentFrameIndex()) + " - index: " + QString::number(index);
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
+            #endif
+        }
+    }
 
     k->configurator->setPos(k->origin);
 }

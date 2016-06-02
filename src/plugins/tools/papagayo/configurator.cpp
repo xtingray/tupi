@@ -165,3 +165,8 @@ void Configurator::setPos(const QPointF &point)
 {
     k->settingsPanel->setPos(point);
 }
+
+void Configurator::setPhoneme(const QString &phoneme)
+{
+    k->settingsPanel->setPhoneme(phoneme);
+}

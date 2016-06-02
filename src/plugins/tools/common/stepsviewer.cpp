@@ -82,6 +82,14 @@ QSize StepsViewer::sizeHint() const
 
 void StepsViewer::setPath(const QGraphicsPathItem *path)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[StepsViewer::setPath()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     // Set of key points which define the path 
     QPolygonF points = path->path().toFillPolygon();
 

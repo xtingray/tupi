@@ -113,24 +113,29 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
             int numPhonemes = 0;
             int numWords;
             QString str;
+            int firstFrame = 0;
+            int lastFrame = 0;
+
             for (int p = 0; p < numPhrases; p++) {
                  QString text = stream.readLine().trimmed();
-                 int initFrame = stream.readLine().toInt();
+                 int phInitFrame = stream.readLine().toInt();
+                 if (p == 0)
+                     phInitFrame = 0;
                  stream.readLine();
-                 TupPhrase *phrase = new TupPhrase(initFrame);
+                 TupPhrase *phrase = new TupPhrase(phInitFrame);
                  numWords = stream.readLine().toInt();
+
                  for (int w = 0; w < numWords; w++) {
                       QString str = stream.readLine().trimmed();
                       QStringList strList = str.split(' ', QString::SkipEmptyParts);
                       QString strWord; 
-                      int firstFrame = 0;
-                      int lastFrame = 0;
                       TupWord *word = 0;
                       if (strList.size() >= 4) {
                           strWord = strList.at(0);   
                           firstFrame = strList.at(1).toInt();
                           word = new TupWord(firstFrame);
                           lastFrame = strList.at(2).toInt();
+                          word->setEndFrame(lastFrame);
                           numPhonemes = strList.at(3).toInt();
                       }
                       QList<int> frames;
@@ -164,12 +169,14 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
                       }
                       phrase->addWord(word);
                  } // for w
+                 phrase->setEndFrame(k->framesCount);
                  voice->addPhrase(phrase); 
             }
             k->lipsync->addVoice(voice);
         }
         k->framesCount++;
         k->lipsync->setFramesCount(k->framesCount);
+        k->lipsync->verifyStructure();
     } else {
         k->isValid = false;
         #ifdef K_DEBUG

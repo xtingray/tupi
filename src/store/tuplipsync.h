@@ -102,6 +102,7 @@ class TUPI_EXPORT TupPhrase : public QObject, public TupAbstractSerializable
         ~TupPhrase();
         void setInitFrame(int index);
         int initFrame();
+        void setEndFrame(int index);
         int endFrame();
         void addWord(TupWord *word);
         void insertWord(int index, TupWord *word);
@@ -133,7 +134,8 @@ class TUPI_EXPORT TupVoice : public QObject, public TupAbstractSerializable
         int initFrame();
         int endFrame();
         void addPhrase(TupPhrase *phrase);
-        TupPhoneme * getPhoneme(int frame);
+        QList<TupPhrase *> getPhrases();
+        TupPhoneme * getPhonemeAt(int frame);
         bool contains(int frame);
 
         virtual void fromXml(const QString &xml);
@@ -171,6 +173,7 @@ class TUPI_EXPORT TupLipSync : public QObject, public TupAbstractSerializable
         TupVoice *voiceAt(int index);
         QList<TupVoice *> voices();
         void updateMouthPosition(int mouthIndex, QPointF point, int frame);
+        void verifyStructure();
 
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;

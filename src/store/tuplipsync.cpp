@@ -216,6 +216,11 @@ int TupPhrase::initFrame()
     return initIndex;
 }
 
+void TupPhrase::setEndFrame(int index)
+{
+    endIndex = index;
+}
+
 int TupPhrase::endFrame()
 {
     return endIndex;
@@ -412,11 +417,16 @@ void TupVoice::addPhrase(TupPhrase *phrase)
         phrases << phrase;
 }
 
-TupPhoneme * TupVoice::getPhoneme(int frame)
+QList<TupPhrase *> TupVoice::getPhrases()
+{
+    return phrases;
+}
+
+TupPhoneme * TupVoice::getPhonemeAt(int frame)
 {
     foreach (TupPhrase *phrase, phrases) {
              if (phrase->contains(frame)) {
-                 int i = 0;
+                 // int i = 0;
                  foreach (TupWord *word, phrase->wordsList()) {
                           int initFrame = word->initFrame();
                           int index = frame - initFrame;
@@ -425,7 +435,9 @@ TupPhoneme * TupVoice::getPhoneme(int frame)
                                   TupPhoneme *phoneme = word->phonemesList().at(index);
                                   return phoneme;
                               }
-                          } else {
+                          } 
+                          /*
+                            else {
                               int init = 0;
                               int endFrame = word->initFrame() - 1;
                               int total = word->initFrame();
@@ -449,6 +461,7 @@ TupPhoneme * TupVoice::getPhoneme(int frame)
                               return w->phonemesList().at(0);
                           }
                           i++;
+                         */
                  }
              }
     }
@@ -707,3 +720,63 @@ void TupLipSync::updateMouthPosition(int mouthIndex, QPointF point, int frame)
         voice->updateMouthPos(point, frame);
 }
 
+void TupLipSync::verifyStructure() 
+{
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLipSync::verifyStructure()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    for (int frame=0; frame < k->framesCount; frame++) {
+         bool found = false;
+         foreach (TupVoice *voice, k->voices) {
+             foreach (TupPhrase *phrase, voice->getPhrases()) {
+                 if (phrase->contains(frame)) {
+                     int i = -1;
+                     foreach (TupWord *word, phrase->wordsList()) {
+                         i++;
+                         int initFrame = word->initFrame();
+                         if (initFrame <= frame) {
+                             if (word->contains(frame)) {
+                                 found = true;
+                                 break;
+                             }
+                         } else {
+                             int init = 0;
+                             int endFrame = word->initFrame() - 1;
+                             int total = word->initFrame();
+                             QPointF pos = voice->mouthPos();
+
+                             if (i > 0) {
+                                 TupWord *prev = phrase->wordsList().at(i-1);
+                                 init = prev->endFrame() + 1;
+                                 pos = prev->phonemesList().last()->position();
+                                 total = (endFrame - init) + 1;
+                             }
+
+                             TupWord *w = new TupWord(init);
+                             for (int j=0; j<total; j++) {
+                                  TupPhoneme *phoneme = new TupPhoneme("rest", pos);
+                                  w->addPhoneme(phoneme);
+                             }
+                             w->setEndFrame(endFrame);
+                             phrase->insertWord(i, w);
+                             if (init < phrase->initFrame())
+                                 phrase->setInitFrame(init);
+
+                             found = true;
+                             break;
+                         }   
+                     }
+                 }
+                 if (found)
+                     break;
+             }
+             if (found)
+                 break;
+         }
+    }
+}

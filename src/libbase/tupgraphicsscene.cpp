@@ -970,20 +970,40 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
                          int index = photogram - initFrame; 
                          if (voice->contains(index)) {
                              // Add image here
-                             TupPhoneme *phoneme = voice->getPhoneme(index);
-                             TupLibraryObject *image = folder->getObject(phoneme->value() + lipSync->picExtension());
-                             if (image) {
-                                 TupGraphicLibraryItem *item = new TupGraphicLibraryItem(image);
-                                 if (item) {
-                                     QPointF pos = phoneme->position();
-                                     int wDelta = item->boundingRect().width()/2; 
-                                     int hDelta = item->boundingRect().height()/2;
-                                     item->setPos(pos.x()-wDelta, pos.y()-hDelta);
-                                     item->setToolTip(tr("lipsync:") + name + ":" + QString::number(j));
-                                     item->setZValue(zLevel);
-                                     addItem(item);
+                             TupPhoneme *phoneme = voice->getPhonemeAt(index);
+                             if (phoneme) {
+                                 TupLibraryObject *image = folder->getObject(phoneme->value() + lipSync->picExtension());
+                                 if (image) {
+                                     TupGraphicLibraryItem *item = new TupGraphicLibraryItem(image);
+                                     if (item) {
+                                         QPointF pos = phoneme->position();
+                                         int wDelta = item->boundingRect().width()/2; 
+                                         int hDelta = item->boundingRect().height()/2;
+                                         item->setPos(pos.x()-wDelta, pos.y()-hDelta);
+                                         item->setToolTip(tr("lipsync:") + name + ":" + QString::number(j));
+                                         item->setZValue(zLevel);
+                                         addItem(item);
+                                     }
                                  }
+                             } else {
+                                 #ifdef K_DEBUG
+                                     QString msg = "TupGraphicsScene::addLipSyncObjects() - No lipsync phoneme at frame " + QString::number(photogram) + " - index: " + QString::number(index);
+                                     #ifdef Q_OS_WIN
+                                         qDebug() << msg;
+                                     #else
+                                         tError() << msg;
+                                     #endif
+                                 #endif
                              }
+                         } else {
+                             #ifdef K_DEBUG
+                                 QString msg = "TupGraphicsScene::addLipSyncObjects() - No lipsync phoneme in voice at position: " + QString::number(j) + " - looking for index: " + QString::number(index);
+                                 #ifdef Q_OS_WIN
+                                     qDebug() << msg;
+                                 #else
+                                     tFatal() << msg;
+                                 #endif
+                             #endif
                          }
                      }
                  } 

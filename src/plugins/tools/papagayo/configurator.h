@@ -69,6 +69,7 @@ class TUPI_PLUGIN Configurator : public QFrame
         void resetUI();
         void closePanels();
 
+        void setPhoneme(const QString &phoneme);
         void setPos(const QPointF &point);
 
     private slots:
