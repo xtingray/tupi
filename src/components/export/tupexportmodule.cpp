@@ -49,6 +49,7 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
 
     output = outputFormat;
     transparency = false;
+    browserWasOpened = false;
 
     if (output == TupExportWidget::Animation) {
         setTag("ANIMATION");
@@ -241,6 +242,7 @@ void TupExportModule::chooseFile()
                                             tr("Video File") + " (*" + extension.toLocal8Bit() + ")");
 
     if (!filename.isEmpty()) {
+        browserWasOpened = true;
         if (!filename.toLower().endsWith(extension))
             filename += extension;
 
@@ -348,15 +350,17 @@ void TupExportModule::exportIt()
             filename = path + "/" + name;
         }
 
-        if (QFile::exists(filename)) {
-            QMessageBox::StandardButton reply;
-            reply = QMessageBox::question(this, tr("Warning!"),
-                                          tr("File exists. Overwrite it?"),
-                                          QMessageBox::Yes | QMessageBox::No);
+        if (!browserWasOpened) {
+            if (QFile::exists(filename)) {
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::question(this, tr("Warning!"),
+                                              tr("File exists. Overwrite it?"),
+                                              QMessageBox::Yes | QMessageBox::No);
 
-            if (reply == QMessageBox::No)
-                return;
-        } 
+                if (reply == QMessageBox::No)
+                    return;
+            } 
+        }
     }
 
     QDir directory(path);

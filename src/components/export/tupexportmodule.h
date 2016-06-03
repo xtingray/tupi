@@ -97,6 +97,7 @@ class TUPI_EXPORT TupExportModule : public TupExportWizardPage
         QString extension;
         QCheckBox *bgTransparency;
         bool transparency;
+        bool browserWasOpened; 
 };
 
 #endif
