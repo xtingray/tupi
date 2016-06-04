@@ -449,7 +449,7 @@ void TupLibraryWidget::removeCurrentItem()
             type = TupLibraryObject::Image;
         if (extension.compare("SVG")==0)
             type = TupLibraryObject::Svg;
-        if (extension.compare("OBJ")==0)
+        if (extension.compare("TOBJ")==0)
             type = TupLibraryObject::Item;
         if ((extension.compare("OGG") == 0) || (extension.compare("WAV") == 0) || (extension.compare("MP3") == 0))
             type = TupLibraryObject::Sound;
@@ -617,7 +617,7 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                        if (fileExtension.compare("WAV") == 0)
                            filter += "(*.wav)";
             } else if (type == TupLibraryObject::Item) {
-                       filter = tr("Native Objects") + " " + "(*.obj)";
+                       filter = tr("Native Objects") + " " + "(*.tobj)";
             }
 
             TCONFIG->beginGroup("General");
@@ -646,8 +646,8 @@ void TupLibraryWidget::exportObject(QTreeWidgetItem *item)
                            target += ".mp3";
                        if (fileExtension.compare("WAV") == 0 && !filename.endsWith(".WAV"))
                            target += ".wav";
-            } else if (type == TupLibraryObject::Item && !filename.endsWith(".OBJ")) {
-                       target += ".obj";
+            } else if (type == TupLibraryObject::Item && !filename.endsWith(".TOBJ")) {
+                       target += ".tobj";
             }
 
             if (QFile::exists(target)) {
@@ -1151,7 +1151,7 @@ void TupLibraryWidget::importNativeObjects()
     QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
 
     QFileDialog dialog(this, tr("Import objects..."), path);
-    dialog.setNameFilter(tr("Native Objects") + " (*.obj)");
+    dialog.setNameFilter(tr("Native Objects") + " (*.tobj)");
     dialog.setFileMode(QFileDialog::ExistingFiles);
 
     if (dialog.exec() == QDialog::Accepted) {
@@ -1555,7 +1555,7 @@ void TupLibraryWidget::libraryResponse(TupLibraryResponse *response)
                  TupLibraryObject *obj = k->library->getObject(id);
 
                  if (index < 0)
-                     extension = "OBJ"; 
+                     extension = "TOBJ"; 
 
                  QTreeWidgetItem *item;
                  if (folderName.length() > 0 && folderName.compare("library")!=0)
@@ -1823,7 +1823,7 @@ void TupLibraryWidget::refreshItem(QTreeWidgetItem *item)
                 TupLibraryObject::Type type = TupLibraryObject::Image;
                 if (extension.compare("SVG")==0)
                     type = TupLibraryObject::Svg;
-                if (extension.compare("OBJ")==0)
+                if (extension.compare("TOBJ")==0)
                     type = TupLibraryObject::Item;
 
                 k->project->updateSymbolId(type, oldId, newId);

@@ -104,7 +104,7 @@ void TupLibraryDialog::checkNames()
              TOsd::self()->display(tr("Error"), tr("Library object's name is missing!"), TOsd::Error);
              return;
          } else {
-             objects << name + ".obj";
+             objects << name + ".tobj";
          }
     }
 

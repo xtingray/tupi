@@ -1100,7 +1100,7 @@ void TupPaintArea::addSelectedItemsToLibrary()
     if (dialog.exec() == QDialog::Accepted) {
         foreach (QGraphicsItem *item, selected) {
             if (TupAbstractSerializable *itemSerializable = dynamic_cast<TupAbstractSerializable *>(item)) {
-                QString symName = dialog.symbolName(item) + ".obj";
+                QString symName = dialog.symbolName(item) + ".tobj";
 
                 QDomDocument doc;
                 doc.appendChild(itemSerializable->toXml(doc));
