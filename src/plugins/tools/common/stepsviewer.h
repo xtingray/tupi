@@ -65,11 +65,13 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
     public:
         StepsViewer(QWidget *parent = 0);
         ~StepsViewer();
-        void setPath(const QGraphicsPathItem *path);
+        void setPath(const QGraphicsPathItem *pathItem);
         
         QVector<TupTweenerStep *> steps();
         int totalSteps();
         void cleanRows();
+        QString intervals();
+
         virtual QSize sizeHint() const;
 
     private slots:

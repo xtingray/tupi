@@ -80,7 +80,7 @@ QSize StepsViewer::sizeHint() const
     return QSize(maximumWidth(), maximumHeight());
 }
 
-void StepsViewer::setPath(const QGraphicsPathItem *path)
+void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -91,7 +91,8 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
     #endif
 
     // Set of key points which define the path 
-    QPolygonF points = path->path().toFillPolygon();
+    QPainterPath path = pathItem->path();
+    QPolygonF points = path.toFillPolygon();
 
     if (points.count() > 2) {
         int count = 0; 
@@ -107,26 +108,26 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         setRowCount(0);
 
         // This list contains the (green) key points of the path 
-        QList<QPointF> *keys = new QList<QPointF>();
+        QList<QPointF> keys = QList<QPointF>();
 
-        int total = path->path().elementCount();
+        int total = path.elementCount();
         // tError() << "Elements Count: " << total; // Returns the number of path elements in the painter path.
 
         for (int i = 1; i < total; i++) {
-              QPainterPath::Element e  = path->path().elementAt(i);
+              QPainterPath::Element e = path.elementAt(i);
               if (e.type != QPainterPath::CurveToElement) {
                   if ((e.type == QPainterPath::CurveToDataElement) &&
-                      (path->path().elementAt(i-1).type == QPainterPath::CurveToElement))
+                      (path.elementAt(i-1).type == QPainterPath::CurveToElement))
                        continue;
 
                   QPointF point(e.x, e.y);
-                  keys->append(point); 
+                  keys.append(point); 
                   count++;
               }
         }
 
         int control = 0;
-        QPointF controlKey = keys->at(0);
+        QPointF controlKey = keys.at(0);
         int frames = 0;
 
         // tError() << "points.size(): " << points.size();
@@ -136,13 +137,14 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
              QPointF point = points.at(i);
              // tError() << "Point: [" << point.x() << ", " << point.y() << "]";
 
-             if (point == controlKey) {
+             // Only when a control point is detected, a new table item is added 
+             if (point == controlKey) { 
                  if (frames == 1) {
                      if (control == 0) {
                          k->dots->append(calculateDots(points.at(0), controlKey, 29));
                          frames = 30;
                      } else {
-                         k->dots->append(calculateDots(keys->at(control-1), controlKey, 29));
+                         k->dots->append(calculateDots(keys.at(control-1), controlKey, 29));
                          frames = 29; 
                      }
                  } else {
@@ -162,10 +164,16 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                  framesItem->setText(QString::number(frames));
                  framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
+                 k->frames << frames;
+
                  k->plusButton->append(new TPushButton(this, "+", 2, control)); 
                  connect(k->plusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
                  k->minusButton->append(new TPushButton(this, "-", 3, control));
                  connect(k->minusButton->at(control), SIGNAL(clicked(int, int)), this, SLOT(updatePath(int, int)));
+
+                 // SQA: Temporary code
+                 k->plusButton->at(control)->setDisabled(true);
+                 k->minusButton->at(control)->setDisabled(true);
 
                  setItem(control, 0, intervalItem);
                  setItem(control, 1, framesItem);
@@ -174,9 +182,9 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 
                  setRowHeight(control, 20);
 
-                 if (point != keys->last()) {
+                 if (point != keys.last()) {
                      control++;
-                     controlKey = keys->at(control);
+                     controlKey = keys.at(control);
                  }
                  frames = 0;
              }
@@ -189,7 +197,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
     /*
     for (int i=0; i<100; i++) {
          qreal t = (qreal)i/(qreal)100; 
-         QPointF point = path->path().pointAtPercent(t);
+         QPointF point = path.pointAtPercent(t);
          tError() << "Point: [" << point.x() << ", " << point.y() << "]";
     }
     */
@@ -231,6 +239,16 @@ int StepsViewer::totalSteps()
     return k->dots->count();
 }
 
+QString StepsViewer::intervals()
+{
+    QString output = ""; 
+    foreach(int interval, k->frames) 
+            output += QString::number(interval) + ",";
+
+    output.chop(1);
+    return output;
+}
+
 void StepsViewer::cleanRows()
 {
     k->points.clear();
@@ -244,7 +262,7 @@ void StepsViewer::cleanRows()
 
 QList<QPointF> StepsViewer::calculateDots(QPointF dot1, QPointF dot2, int total)
 {
-    QList<QPointF> result;
+    QList<QPointF> pathPoints;
 
     qreal m = (dot2.y() - dot1.y())/(dot2.x() - dot1.x());
     qreal b = dot1.y() - m*dot1.x();
@@ -257,8 +275,8 @@ QList<QPointF> StepsViewer::calculateDots(QPointF dot1, QPointF dot2, int total)
          QPointF dot;
          dot.setX(x);
          dot.setY(y);
-         result.append(dot);
+         pathPoints.append(dot);
     }
 
-    return result;
+    return pathPoints;
 }
