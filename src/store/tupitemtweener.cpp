@@ -62,6 +62,7 @@ struct TupItemTweener::Private
 
     // Position Tween
     QString path;
+    QString intervals;
 
     // Rotation Tween
     TupItemTweener::RotationType rotationType;
@@ -346,6 +347,7 @@ void TupItemTweener::fromXml(const QString &xml)
                            k->compPositionFrames = e.attribute("frames").toInt();
 
                            k->path = e.attribute("coords");
+                           k->intervals = e.attribute("intervals");
                        }
                        if (e.tagName() == "rotation") {
                            // tError() << "TupItemTweener::fromXml() - Processing rotation settings";
@@ -402,8 +404,10 @@ void TupItemTweener::fromXml(const QString &xml)
 
         } else {
 
-            if (k->type == TupItemTweener::Position)
+            if (k->type == TupItemTweener::Position) {
                 k->path = root.attribute("coords");
+                k->intervals = root.attribute("intervals");
+            }
 
             if (k->type == TupItemTweener::Rotation) {
                 k->rotationType = TupItemTweener::RotationType(root.attribute("rotationType").toInt()); 
@@ -525,6 +529,7 @@ QDomElement TupItemTweener::toXml(QDomDocument &doc) const
                  position.setAttribute("init", QString::number(k->compPositionInitFrame));
                  position.setAttribute("frames", QString::number(k->compPositionFrames));
                  position.setAttribute("coords", k->path);
+                 position.setAttribute("intervals", k->intervals);
                  settings.appendChild(position);
              }
         }
@@ -532,8 +537,10 @@ QDomElement TupItemTweener::toXml(QDomDocument &doc) const
         root.appendChild(settings); 
 
     } else { 
-        if (k->type == TupItemTweener::Position)
+        if (k->type == TupItemTweener::Position) {
             root.setAttribute("coords", k->path);
+            root.setAttribute("intervals", k->intervals);
+        }
 
         if (k->type == TupItemTweener::Rotation) {
             root.setAttribute("rotationType", k->rotationType);
@@ -603,6 +610,16 @@ QGraphicsPathItem *TupItemTweener::graphicsPath() const
     item->setPath(path);
 
     return item;
+}
+
+QList<int> TupItemTweener::intervals()
+{
+    QList<int> sections;
+    QStringList list = k->intervals.split(",");
+    foreach (QString section, list)
+             sections << section.toInt();
+
+    return sections;
 }
 
 QString TupItemTweener::tweenType()

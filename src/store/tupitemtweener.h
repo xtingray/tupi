@@ -105,6 +105,7 @@ class TUPI_EXPORT TupItemTweener : public QObject, public TupAbstractSerializabl
         QDomElement toXml(QDomDocument &doc) const;
 
         QGraphicsPathItem *graphicsPath() const;
+        QList<int> intervals();
         QString tweenType();
 
         TupItemTweener::RotationType tweenRotationType();

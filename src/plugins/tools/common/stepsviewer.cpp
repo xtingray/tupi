@@ -80,6 +80,11 @@ QSize StepsViewer::sizeHint() const
     return QSize(maximumWidth(), maximumHeight());
 }
 
+void StepsViewer::setIntervals(QList<int> frames)
+{
+    k->frames = frames;    
+}
+
 void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
 {
     #ifdef K_DEBUG
@@ -98,7 +103,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
         int count = 0; 
 
         k->points.clear();
-        k->frames.clear();
+        // k->frames.clear();
         k->points = points;
         k->dots->clear();
 
@@ -162,6 +167,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
                  QTableWidgetItem *framesItem = new QTableWidgetItem();
                  framesItem->setTextAlignment(Qt::AlignCenter);
                  framesItem->setText(QString::number(frames));
+                 // framesItem->setText(QString::number(k->frames.at(i)));
                  framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
                  k->frames << frames;
@@ -213,10 +219,14 @@ void StepsViewer::updatePath(int column, int row)
     else
         value -= 1;
 
-    if (value < 0)
+    if (value <= 0)
         value = 1;
-    
+
     cell->setText(QString::number(value));
+
+    tError() << "StepsViewer::updatePath() - row: " << row;
+    tError() << "StepsViewer::updatePath() - value: " << value; 
+    k->frames.replace(row, value);
 
     // SQA: Make the points calculation right here!
 }

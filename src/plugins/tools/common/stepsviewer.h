@@ -70,6 +70,7 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
         QVector<TupTweenerStep *> steps();
         int totalSteps();
         void cleanRows();
+        void setIntervals(QList<int> frames);
         QString intervals();
 
         virtual QSize sizeHint() const;

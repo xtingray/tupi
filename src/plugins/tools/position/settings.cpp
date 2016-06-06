@@ -192,6 +192,7 @@ void Settings::setParameters(TupItemTweener *currentTween)
 
     initStartCombo(currentTween->frames(), currentTween->initFrame());
 
+    k->stepViewer->setIntervals(currentTween->intervals());
     k->stepViewer->setPath(currentTween->graphicsPath());
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(k->stepViewer->totalSteps()));
 }
