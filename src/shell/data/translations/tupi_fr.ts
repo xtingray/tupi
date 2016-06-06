@@ -6126,7 +6126,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
         <location filename="../src/plugins/tools/opacity/tweener.cpp" line="230"/>
         <location filename="../src/plugins/tools/opacity/tweener.cpp" line="510"/>
         <source>Opacity Tween</source>
-        <translation>Opacité d&apos;interpolation</translation>
+        <translation>Interpolation d&apos;opacité</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/opacity/tweener.cpp" line="228"/>
