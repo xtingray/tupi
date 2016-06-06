@@ -6139,7 +6139,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
         <location filename="../src/plugins/tools/position/tweener.cpp" line="365"/>
         <location filename="../src/plugins/tools/position/tweener.cpp" line="756"/>
         <source>Position Tween</source>
-        <translation>Position d&apos;interpolation</translation>
+        <translation>Interpolation de position</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/position/tweener.cpp" line="363"/>
@@ -6152,7 +6152,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
         <location filename="../src/plugins/tools/rotation/tweener.cpp" line="261"/>
         <location filename="../src/plugins/tools/rotation/tweener.cpp" line="562"/>
         <source>Rotation Tween</source>
-        <translation>Rotation d&apos;interpolation</translation>
+        <translation>Interpolation de rotation</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/rotation/tweener.cpp" line="259"/>
@@ -6165,7 +6165,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
         <location filename="../src/plugins/tools/scale/tweener.cpp" line="255"/>
         <location filename="../src/plugins/tools/scale/tweener.cpp" line="550"/>
         <source>Scale Tween</source>
-        <translation>Échelle d&apos;interpolation</translation>
+        <translation>Interpolation d&apos;échelle</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/scale/tweener.cpp" line="253"/>
