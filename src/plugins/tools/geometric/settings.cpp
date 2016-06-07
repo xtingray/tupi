@@ -70,9 +70,9 @@ Settings::Settings(Settings::ToolType type, QWidget *parent) : QWidget(parent)
     QTextEdit *textArea = new QTextEdit; 
 
     // SQA: Check this code with several screen resolutions. It must looks good with everyone! 
-    QFont font = this->font();
-    font.setPointSize(8);
-    textArea->setFont(font);
+    // QFont font = this->font();
+    // font.setPointSize(8);
+    // textArea->setFont(font);
     // textArea->setFont(QFont("Arial", 8, QFont::Normal, false));
 
     if (type == Settings::Line) {

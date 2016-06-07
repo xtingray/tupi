@@ -66,14 +66,19 @@ TAnimWidget::TAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 {
     resize(px.width()/2, px.height());
 
-    QFont tfont("lucida", 10, QFont::Bold, false);
+    fontSize = 10;
+    #ifdef Q_OS_MAC
+        fontSize = 12;
+    #endif
+
+    QFont tfont("lucida", fontSize, QFont::Bold, false);
     QFontMetrics fontMetrics(tfont);
 
     m_textRect = QRectF(QPointF(20, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo(QSize(px.width(), 0)));
     m_counter = 0;
     m_lines = m_text.count("\n");
-    fontSize = fontMetrics.height();
-    m_end = (fontSize*m_lines) + height() - 100;
+    int size = fontMetrics.height();
+    m_end = (size*m_lines) + height() - 100;
 }
 
 TAnimWidget::TAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
@@ -91,7 +96,7 @@ void TAnimWidget::setBackgroundPixmap(const QPixmap &px)
     m_background = px;
 }
 
-void TAnimWidget::showEvent(QShowEvent * e)
+void TAnimWidget::showEvent(QShowEvent *event)
 {
     switch (m_type) {
             case AnimText:
@@ -105,13 +110,13 @@ void TAnimWidget::showEvent(QShowEvent * e)
              }
             break;
     }
-    QWidget::showEvent(e);
+    QWidget::showEvent(event);
 }
 
-void TAnimWidget::hideEvent(QHideEvent *e)
+void TAnimWidget::hideEvent(QHideEvent *event)
 {
     m_controller->stop();
-    QWidget::hideEvent(e);
+    QWidget::hideEvent(event);
 }
 
 void TAnimWidget::timerEvent(QTimerEvent *)
@@ -150,7 +155,7 @@ void TAnimWidget::paintEvent(QPaintEvent *)
             case AnimText:
              {
                  painter.setRenderHint(QPainter::TextAntialiasing, true);
-                 painter.setFont(QFont("lucida", 10, QFont::Bold, false));
+                 painter.setFont(QFont("lucida", fontSize, QFont::Bold, false));
                  painter.drawText(m_textRect, m_text);
              }
             break;

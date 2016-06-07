@@ -392,6 +392,8 @@ void SelectionTool::aboutToChangeScene(TupGraphicsScene *scene)
         #endif
     #endif
 
+    Q_UNUSED(scene);
+
     clearSelection();
 }
 

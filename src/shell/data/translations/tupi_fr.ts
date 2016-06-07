@@ -1083,7 +1083,7 @@
         <location filename="../src/plugins/tools/selection/settings.cpp" line="204"/>
         <location filename="../src/plugins/tools/selection/settings.cpp" line="293"/>
         <source>Show Tips</source>
-        <translation>Montrer les Astuces</translation>
+        <translation>Astuces</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selection/settings.cpp" line="205"/>
@@ -1191,7 +1191,7 @@
     <message>
         <location filename="../src/plugins/tools/selection/settings.cpp" line="288"/>
         <source>Show Tools</source>
-        <translation>Montrer les outils</translation>
+        <translation>Outils</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selection/settings.cpp" line="289"/>
@@ -3867,12 +3867,12 @@ SVP, renommer le fichier du projet</translation>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="956"/>
         <source>Previous tip</source>
-        <translation>Astuce précédente</translation>
+        <translation>Précédente</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="956"/>
         <source>Next tip</source>
-        <translation>Prochaine astuce</translation>
+        <translation>Prochaine</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="956"/>
@@ -4208,7 +4208,7 @@ SVP, renommer le fichier du projet</translation>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="386"/>
         <source>E&amp;xit</source>
-        <translation>Sortir</translation>
+        <translation>Quitter</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="386"/>
@@ -5200,7 +5200,7 @@ SVP, contacter l&apos;administrateur du serveur d&apos;animation pour obtenir un
     <message>
         <location filename="../src/libui/tuppreferencesdialog.cpp" line="66"/>
         <source>Workspace</source>
-        <translation>Espace de travail</translation>
+        <translation>Espace</translation>
     </message>
 </context>
 <context>

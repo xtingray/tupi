@@ -248,7 +248,7 @@ void TupMainWindow::setupMenu()
     m_windowMenu->addAction(m_actionManager->find("show_scenes"));
     m_windowMenu->addAction(m_actionManager->find("show_exposure"));
 
-#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_UNIX)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     m_windowMenu->addAction(m_actionManager->find("show_debug"));
 #endif
 

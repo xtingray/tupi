@@ -224,8 +224,8 @@ void StepsViewer::updatePath(int column, int row)
 
     cell->setText(QString::number(value));
 
-    tError() << "StepsViewer::updatePath() - row: " << row;
-    tError() << "StepsViewer::updatePath() - value: " << value; 
+    // tError() << "StepsViewer::updatePath() - row: " << row;
+    // tError() << "StepsViewer::updatePath() - value: " << value; 
     k->frames.replace(row, value);
 
     // SQA: Make the points calculation right here!

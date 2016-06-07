@@ -53,12 +53,13 @@ struct Settings::Private
 
 Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
 {
+/*    
 #ifndef Q_OS_MAC
     QFont font = this->font();
     font.setPointSize(8);
     setFont(font);
 #endif
-
+*/
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QLabel *toolTitle = new QLabel;

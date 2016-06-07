@@ -128,7 +128,14 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     QPalette palette = credits->palette();
     palette.setColor(QPalette::Foreground, QColor(50, 50, 50, 255));
     credits->setPalette(palette);
-    credits->setFont(QFont("verdana", 24));
+
+    /*
+    int size = 24;
+    #ifdef Q_OS_MAC
+        size = 46;
+    #endif
+    credits->setFont(QFont("verdana", size));
+    */
 
     // Acknowledgment Tab 
 

@@ -55,7 +55,7 @@ DefaultSettings::~DefaultSettings()
 void DefaultSettings::save(TMainWindow *window)
 {
     #ifdef K_DEBUG
-            QString msg = "DefaultSettings::save() - Saving UI settings...";
+            QString msg = "TMainWindow::DefaultSettings::save() - Saving UI settings...";
         #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
@@ -85,7 +85,7 @@ void DefaultSettings::save(TMainWindow *window)
                       settings.setValue("size", view->fixedSize());
                       settings.setValue("style", view->button()->toolButtonStyle());
                       settings.setValue("sensibility", view->button()->isSensible());
-                      settings.setValue("visible", view->isVisible() );
+                      settings.setValue("visible", view->isVisible());
                       settings.setValue("floating", view->isFloating());
                       settings.setValue("position", view->pos());
                       settings.endGroup();
@@ -102,7 +102,7 @@ void DefaultSettings::save(TMainWindow *window)
 void DefaultSettings::restore(TMainWindow *window)
 {
     #ifdef K_DEBUG
-	    QString msg = "DefaultSettings::restore() - Restoring UI settings...";
+	    QString msg = "TMainWindow::DefaultSettings::restore() - Restoring UI settings...";
         #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
@@ -244,6 +244,14 @@ void TMainWindow::addSpecialButton(TAction *action)
  */
 ToolView *TMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective, const QString &code, QKeySequence shortcut)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TMainWindow::addToolView()]";
+        #else
+            T_FUNCINFO << "- component: " << code;
+        #endif
+    #endif
+
     ToolView *toolView = new ToolView(widget->windowTitle(), widget->windowIcon(), code);
     toolView->setShortcut(shortcut);
     toolView->setWidget(widget);
@@ -272,6 +280,14 @@ ToolView *TMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int
 
 void TMainWindow::removeToolView(ToolView *view)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TMainWindow::removeToolView()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     bool findIt = false;
 
     foreach (TButtonBar *bar, m_buttonBars.values()) {
@@ -299,6 +315,14 @@ void TMainWindow::removeToolView(ToolView *view)
 
 void TMainWindow::enableToolViews(bool flag)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TMainWindow::enableToolViews()]";
+        #else
+            T_FUNCINFO << "- flag value: " << flag;
+        #endif
+    #endif
+
     foreach (TButtonBar *bar, m_buttonBars.values()) {
              QList<ToolView *> views = m_toolViews[bar];
              QList<ToolView *>::iterator it = views.begin();
@@ -343,6 +367,14 @@ void TMainWindow::moveToolView(ToolView *view, Qt::DockWidgetArea newPlace)
  */
 void TMainWindow::addToPerspective(QWidget *widget, int perspective)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TMainWindow::addToPerspective()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (QToolBar *bar = dynamic_cast<QToolBar*>(widget)) {
         if (toolBarArea(bar) == 0)
             addToolBar(bar);
@@ -362,6 +394,14 @@ void TMainWindow::addToPerspective(QWidget *widget, int perspective)
  */
 void TMainWindow::removeFromPerspective(QWidget *widget)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TMainWindow::removeFromPerspective()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     m_managedWidgets.remove(widget);
 }
 
@@ -580,6 +620,14 @@ void TMainWindow::relayoutToolView()
  */
 void TMainWindow::setCurrentPerspective(int workspace)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TMainWindow::setCurrentPerspective()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (workspace != 1)
         specialToolBar->setVisible(false);
     else
@@ -606,13 +654,10 @@ void TMainWindow::setCurrentPerspective(int workspace)
 
                       if (view->perspective() & workspace) {
                           bar->enable(view->button());
- 
-                          // if (view->button()->isChecked()) {
                           if (view->isChecked())
                               view->show(); 
                       } else {
                               bar->disable(view->button());
-                              // if (view->button()->isChecked() || view->isVisible())
                               if (view->isChecked() || view->isVisible())
                                   view->close();
                               hideButtonCount[bar]++;
@@ -645,7 +690,7 @@ void TMainWindow::setCurrentPerspective(int workspace)
     while (widgetIt.hasNext()) {
            widgetIt.next();
 
-           if (widgetIt.value() & workspace) 
+           if (widgetIt.value() & workspace)
                widgetIt.key()->show();
            else
                widgetIt.key()->hide();

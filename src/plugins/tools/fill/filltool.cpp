@@ -157,16 +157,14 @@ void FillTool::press(const TupInputDeviceInformation *input, TupBrushManager *br
 
                 if (qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(item)) {
                     QDomDocument doc;
-                    TupProjectRequest::Action action;
+                    TupProjectRequest::Action action = TupProjectRequest::Brush;
                     if (name() == tr("Internal Fill")) {
                         frame->checkBrushStatus(itemIndex); 
-
                         QBrush brush = brushManager->brush();
-                        action = TupProjectRequest::Brush;
+                        // action = TupProjectRequest::Brush;
                         doc.appendChild(TupSerializer::brush(&brush, doc));
                     } else if (name() == tr("Line Fill")) {
                                frame->checkPenStatus(itemIndex);
-
                                QPen pen = brushManager->pen();
                                action = TupProjectRequest::Pen;
                                doc.appendChild(TupSerializer::pen(&pen, doc));
