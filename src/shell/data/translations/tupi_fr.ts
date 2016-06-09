@@ -3872,7 +3872,7 @@ SVP, renommer le fichier du projet</translation>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="956"/>
         <source>Next tip</source>
-        <translation>Prochaine</translation>
+        <translation>Suivante</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="956"/>
