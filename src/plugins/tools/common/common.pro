@@ -28,13 +28,13 @@ target.path = /lib/
 HEADERS += buttonspanel.h \
            tweenmanager.h \
            stepsviewer.h \
-           spinboxdelegate.h \
+           # spinboxdelegate.h \
            target.h
 
 SOURCES += buttonspanel.cpp \
            tweenmanager.cpp \
            stepsviewer.cpp \
-           spinboxdelegate.cpp \
+           # spinboxdelegate.cpp \
            target.cpp
 		   
 FRAMEWORK_DIR = "../../../framework"

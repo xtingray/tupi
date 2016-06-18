@@ -84,6 +84,14 @@ bool TupCommandExecutor::createFrame(TupFrameResponse *response)
 
 bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupCommandExecutor::removeFrame()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
     int position = response->frameIndex();

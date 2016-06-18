@@ -38,7 +38,6 @@
 
 #include "tglobal.h"
 #include "tuptweenerstep.h"
-#include "spinboxdelegate.h"
 #include "tpushbutton.h"
 
 #include <QTableWidget>
@@ -49,8 +48,7 @@
 #include <QHeaderView>
 #include <QPainter>
 
-// class QGraphicsPathItem;
-// class TupTweenerStep;
+typedef QList<QPointF> Segment;
 
 /**
  * @author Jorge Cuadrado 
@@ -60,8 +58,6 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
 {
     Q_OBJECT
 
-    // friend class TupExposureVerticalHeader;
-
     public:
         StepsViewer(QWidget *parent = 0);
         ~StepsViewer();
@@ -69,17 +65,23 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
         
         QVector<TupTweenerStep *> steps();
         int totalSteps();
-        void cleanRows();
-        void setIntervals(QList<int> frames);
+        void clearInterface();
         QString intervals();
+        void loadPath(const QGraphicsPathItem *pathItem, QList<int> intervals);
 
         virtual QSize sizeHint() const;
 
+    signals:
+        void totalHasChanged(int total);
+
     private slots:
-        void updatePath(int column, int row);
+        void updatePathSection(int column, int row);
         
     private:
-        QList<QPointF> calculateDots(QPointF dot1, QPointF dot2, int total);
+        void calculateKeys();
+        void calculateGroups();
+        QList<QPointF> calculateSegmentPoints(QPointF begin, QPointF end, int total);
+        void addTableRow(int row, int frames);
         struct Private;
         Private *const k;
 

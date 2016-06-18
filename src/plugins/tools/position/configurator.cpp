@@ -232,9 +232,9 @@ void Configurator::activateMode(TupToolPlugin::EditMode mode)
     k->settingsPanel->activateMode(mode);
 }
 
-void Configurator::cleanData()
+void Configurator::clearData()
 {
-    k->settingsPanel->cleanData();
+    k->settingsPanel->clearData();
 }
 
 void Configurator::addTween(const QString &name)

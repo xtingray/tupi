@@ -49,7 +49,6 @@
 #include <QGraphicsPathItem>
 #include <QDir>
 
-// class QGraphicsPathItem;
 class TupItemTweener;
 
 /**
@@ -73,18 +72,16 @@ class TUPI_PLUGIN Settings : public QWidget
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point, QString &path);
         int totalSteps();
-        // void activatePathMode();
-        // void activateSelectionMode();
         void activateMode(TupToolPlugin::EditMode mode);
-        void cleanData();
+        void clearData();
         void notifySelection(bool flag);
         int startComboSize();
         QString currentTweenName() const;
         
     private slots:
         void emitOptionChanged(int option);
-        // void addTween();
         void applyTween();
+        void updateTotalLabel(int total);
         
     signals:
         void clickedCreatePath();

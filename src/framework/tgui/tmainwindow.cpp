@@ -244,6 +244,7 @@ void TMainWindow::addSpecialButton(TAction *action)
  */
 ToolView *TMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective, const QString &code, QKeySequence shortcut)
 {
+    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TMainWindow::addToolView()]";
@@ -251,6 +252,7 @@ ToolView *TMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int
             T_FUNCINFO << "- component: " << code;
         #endif
     #endif
+    */
 
     ToolView *toolView = new ToolView(widget->windowTitle(), widget->windowIcon(), code);
     toolView->setShortcut(shortcut);

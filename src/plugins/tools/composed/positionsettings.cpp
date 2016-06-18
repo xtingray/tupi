@@ -143,7 +143,7 @@ void PositionSettings::setParameters(int framesCount, int initFrame)
 {
     k->mode = TweenerPanel::Add;
 
-    k->stepViewer->cleanRows();
+    k->stepViewer->clearInterface();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 
     k->comboInit->setEnabled(false);
@@ -226,7 +226,7 @@ void PositionSettings::applyTween()
 
 void PositionSettings::resetTween()
 {
-    k->stepViewer->cleanRows();
+    k->stepViewer->clearInterface();
     k->totalLabel->setText(tr("Frames Total") + ": 0");
 }
 

@@ -330,11 +330,29 @@ void Tweener::aboutToChangeScene(TupGraphicsScene *scene)
 
 void Tweener::aboutToChangeTool()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[Tweener::aboutToChangeTool()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     resetGUI();
 }
 
 void Tweener::resetGUI()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[Tweener::resetGUI()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    k->configurator->clearData();
+
     if (k->editMode == TupToolPlugin::Selection) {
         clearSelection();
         disableSelection();
@@ -446,8 +464,10 @@ QString Tweener::pathToCoords()
     int offsetX = k->pathOffset.x();
     int offsetY = k->pathOffset.y();
 
-    for (int i=0; i < k->path->path().elementCount(); i++) {
-         QPainterPath::Element e = k->path->path().elementAt(i);
+    QPainterPath path = k->path->path();
+    int total = path.elementCount(); 
+    for (int i=0; i < total; i++) {
+         QPainterPath::Element e = path.elementAt(i);
          switch (e.type) {
              case QPainterPath::MoveToElement:
              {
@@ -516,7 +536,7 @@ void Tweener::applyReset()
     k->initLayer = k->scene->currentLayerIndex();
     k->initScene = k->scene->currentSceneIndex();
 
-    k->configurator->cleanData();
+    k->configurator->clearData();
 }
 
 /* This method applies to the project, the Tween created from this plugin */
@@ -575,7 +595,16 @@ void Tweener::applyTween()
                  TupLayer *layer = scene->layerAt(k->initLayer);
                  TupFrame *frame = layer->frameAt(k->currentTween->initFrame());
                  int objectIndex = frame->indexOf(item);
+
+                 /*
+                 QPainterPath path = k->path->path();
+                 QPolygonF points = path.toFillPolygon(); 
+                 QPointF point = points.at(0) - QPointF(item->boundingRect().width(), item->boundingRect().height());
+                 */
+
                  QPointF point = item->pos();
+                 tError() << "FIRST POINT: " << point;
+
                  TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item); 
 
                  if (svg) {
@@ -629,12 +658,16 @@ void Tweener::applyTween()
     }
 
     int framesNumber = framesCount();
-    int total = k->initFrame + k->configurator->totalSteps() - 1;
+    // int total = k->initFrame + k->configurator->totalSteps() - 1;
+    int total = k->initFrame + k->configurator->totalSteps();
     TupProjectRequest request;
+
+    tError() << "framesNumber: " << framesNumber;
+    tError() << "total: " << total;
 
     if (total > framesNumber) {
         int layersCount = k->scene->scene()->layersCount();
-        for (int i = framesNumber; i <= total; i++) {
+        for (int i = framesNumber; i < total; i++) {
              for (int j = 0; j < layersCount; j++) {
                   request = TupRequestBuilder::createFrameRequest(k->initScene, j, i, TupProjectRequest::Add, tr("Frame"));
                   emit requested(&request);
@@ -717,7 +750,7 @@ void Tweener::updateScene(TupGraphicsScene *scene)
 
            if (k->editMode == TupToolPlugin::Properties) {
                k->path = 0;
-               k->configurator->cleanData();
+               k->configurator->clearData();
                k->configurator->activateMode(TupToolPlugin::Selection);
                clearSelection();
                setSelection();

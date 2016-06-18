@@ -195,6 +195,14 @@ bool TupLayer::restoreFrame(int index)
 
 bool TupLayer::removeFrame(int position)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLayer::removeFrame()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     TupFrame *toRemove = frameAt(position);
 
     if (toRemove) {
