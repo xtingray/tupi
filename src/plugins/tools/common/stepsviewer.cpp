@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "stepsviewer.h"
+#include <QLineEdit>
 
 struct StepsViewer::Private
 {
@@ -423,7 +424,7 @@ void StepsViewer::addTableRow(int row, int frames)
     QTableWidgetItem *framesItem = new QTableWidgetItem();
     framesItem->setTextAlignment(Qt::AlignCenter);
     framesItem->setText(QString::number(frames));
-    framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
+    // framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
     k->plusButton->append(new TPushButton(this, "+", 2, row));
     connect(k->plusButton->at(row), SIGNAL(clicked(int, int)), this, SLOT(updatePathSection(int, int)));
@@ -476,6 +477,27 @@ void StepsViewer::calculateGroups()
              segment = QList<QPointF>();
         } else {
              segment << point;
+        }
+    }
+}
+
+void StepsViewer::commitData(QWidget *editor)
+{
+    QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
+
+    if (lineEdit) {
+        QString value = lineEdit->text();
+        bool ok;
+        int frames = value.toInt(&ok, 10);
+
+        if (ok) {
+            frames++;
+            value = QString::number(frames);
+            int row = currentRow();
+            int column = currentColumn();
+            QTableWidgetItem *cell = item(row, column);
+            cell->setText(value);
+            updatePathSection(column, row);
         }
     }
 }

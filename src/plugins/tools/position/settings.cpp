@@ -262,15 +262,10 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
     root.setAttribute("coords", path);
     root.setAttribute("intervals", k->stepViewer->intervals());
 
-    tError() << "Settings::tweenToXml() - intervals: " << k->stepViewer->intervals();
-
     foreach (TupTweenerStep *step, k->stepViewer->steps())
              root.appendChild(step->toXml(doc));
 
     doc.appendChild(root);
-
-    tError() << "TWEEN: "; 
-    tError() << doc.toString();
 
     return doc.toString();
 }

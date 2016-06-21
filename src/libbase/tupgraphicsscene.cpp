@@ -592,7 +592,6 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
 
 void TupGraphicsScene::addTweeningObjects(int layerIndex, int photogram)
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupGraphicsScene::addTweeningObjects()]";
@@ -600,10 +599,18 @@ void TupGraphicsScene::addTweeningObjects(int layerIndex, int photogram)
             T_FUNCINFO;
         #endif
     #endif
-    */
 
     QList<TupGraphicObject *> tweenList = k->scene->tweeningGraphicObjects(layerIndex);
     int total = tweenList.count();
+
+    #ifdef K_DEBUG
+        QString msg = "Tween list size: " + QString::number(total);
+        #ifdef Q_OS_WIN
+            qDebug() << msg;
+        #else
+            tWarning() << msg;
+        #endif
+    #endif
 
     for (int i=0; i < total; i++) {
          TupGraphicObject *object = tweenList.at(i);

@@ -97,12 +97,12 @@ class TUPI_PLUGIN Configurator : public QFrame
         void setCurrentTween(TupItemTweener *currentTween);
 
     public slots:
+        void editTween();
         void closeTweenProperties();
         
     private slots:
         void applyItem();
         void addTween(const QString &name);
-        void editTween();
         void removeTween();
         void removeTween(const QString &name);
         void updateTweenData(const QString &name);

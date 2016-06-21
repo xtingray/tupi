@@ -139,10 +139,12 @@ void Configurator::setPropertiesPanel()
 
 void Configurator::activePropertiesPanel(bool enable)
 {
-    if (enable)
+    if (enable) {
         k->settingsPanel->show();
-    else
+    } else {
+        k->settingsPanel->clearData();
         k->settingsPanel->hide();
+    }
 }
 
 void Configurator::setTweenManagerPanel()

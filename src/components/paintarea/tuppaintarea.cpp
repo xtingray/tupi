@@ -306,7 +306,9 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
 void TupPaintArea::frameResponse(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
-        QString msg = "TupPaintArea::frameResponse() - [" + QString::number(response->sceneIndex()) + ", " + QString::number(response->layerIndex()) + ", " + QString::number(response->frameIndex()) + "]";
+        QString msg = "TupPaintArea::frameResponse() - [" + QString::number(response->sceneIndex()) 
+                      + ", " + QString::number(response->layerIndex()) + ", " 
+                      + QString::number(response->frameIndex()) + "]";
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
@@ -329,8 +331,6 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
 
     if (!guiScene->isDrawing()) {
         switch (response->action()) {
-                // case TupProjectRequest::Add:
-                // case TupProjectRequest::Remove:
                 case TupProjectRequest::Exchange:
                     {
                         if (k->spaceMode == TupProject::FRAMES_EDITION)

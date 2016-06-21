@@ -582,6 +582,14 @@ bool TupScene::removeTween(const QString &name, TupItemTweener::Type type)
 
 void TupScene::removeTweensFromLayer(int layerIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupScene::removeTweensFromLayer()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     TupLayer *layer = layerAt(layerIndex);
     if (layer)
         layer->removeAllTweens();
@@ -589,6 +597,14 @@ void TupScene::removeTweensFromLayer(int layerIndex)
 
 void TupScene::removeTweensFromFrame(int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupScene::removeTweensFromFrame()]" << frameIndex;
+        #else
+            T_FUNCINFO << frameIndex;
+        #endif
+    #endif
+
     TupLayer *layer = layerAt(layerIndex);
     if (layer)
         layer->removeTweensFromFrame(frameIndex);

@@ -79,6 +79,7 @@ struct Tweener::Private
     QPointF itemObjectReference;
     QPointF pathOffset;
     QPointF firstNode;
+    QPointF objectPos;
 
     int baseZValue;
 };
@@ -87,6 +88,7 @@ Tweener::Tweener() : TupToolPlugin(), k(new Private)
 {
     setupActions();
 
+    k->isPathInScene = false;
     k->configurator = 0;
     k->path = 0;
     k->nodesGroup = 0;
@@ -114,22 +116,25 @@ void Tweener::init(TupGraphicsScene *scene)
         #endif
     #endif
 
-    if (k->nodesGroup) {
-        k->nodesGroup->clear();
-        delete k->nodesGroup;
-        k->nodesGroup = 0;
-    }
+    if (k->isPathInScene) {
+        if (k->nodesGroup) {
+            k->nodesGroup->clear();
+            delete k->nodesGroup;
+            k->nodesGroup = 0;
+        }
 
-    if (k->path) {
-        delete k->path;
-        k->path = 0;
+        if (k->path) {
+            delete k->path;
+            k->path = 0;
+        }
+
+        k->isPathInScene = false;
     }
 
     k->scene = scene;
     k->objects.clear();
     k->baseZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
 
-    k->isPathInScene = false;
     k->pathOffset = QPointF(0, 0); 
     k->firstNode = QPointF(0, 0);
     k->itemObjectReference = QPointF(0, 0);
@@ -274,8 +279,9 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
                     int distanceX = newPos.x() - oldPos.x();
                     int distanceY = newPos.y() - oldPos.y();
                     k->path->moveBy(distanceX, distanceY);
-
                     k->pathOffset = QPointF(distanceX, distanceY);
+
+                    // k->firstNode = newPos;
                 }
             } 
         }
@@ -367,6 +373,9 @@ void Tweener::resetGUI()
                 k->nodesGroup->clear();
                 k->nodesGroup = 0;
             }
+
+            delete k->path;
+            k->path = 0;
         }
         return;
     }
@@ -387,6 +396,14 @@ void Tweener::setupActions()
 
 void Tweener::setTweenPath()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[Tweener::setTweenPath()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (k->path) {
         k->pathOffset = QPointF(0, 0);
 
@@ -603,8 +620,6 @@ void Tweener::applyTween()
                  */
 
                  QPointF point = item->pos();
-                 tError() << "FIRST POINT: " << point;
-
                  TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(item); 
 
                  if (svg) {
@@ -662,9 +677,6 @@ void Tweener::applyTween()
     int total = k->initFrame + k->configurator->totalSteps();
     TupProjectRequest request;
 
-    tError() << "framesNumber: " << framesNumber;
-    tError() << "total: " << total;
-
     if (total > framesNumber) {
         int layersCount = k->scene->scene()->layersCount();
         for (int i = framesNumber; i < total; i++) {
@@ -696,6 +708,27 @@ void Tweener::updatePath()
             T_FUNCINFO;
         #endif
     #endif
+
+    QPainterPath::Element e = k->path->path().elementAt(0);
+    QPointF point = QPointF(e.x, e.y);
+    if (point != k->firstNode) {
+        int distanceX = point.x() - k->firstNode.x();
+        int distanceY = point.y() - k->firstNode.y();
+        k->firstNode = point;
+        k->pathOffset = QPointF(distanceX, distanceY);
+
+        if (k->objects.size() > 0) {
+            int i = 0;
+            foreach (QGraphicsItem *item, k->objects) {
+                     item->moveBy(distanceX, distanceY);
+                     if (i == 0) {
+                         QRectF rect = item->sceneBoundingRect();
+                         k->itemObjectReference = rect.center();
+                     }
+                     i++;
+            }
+        }
+    }
 
     k->configurator->updateSteps(k->path);
 }
@@ -816,6 +849,14 @@ void Tweener::setCurrentTween(const QString &name)
 
 void Tweener::setEditEnv()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[Tweener::setEditEnv()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     k->initFrame = k->currentTween->initFrame();
     k->initLayer = k->currentTween->initLayer();
     k->initScene = k->currentTween->initScene();
@@ -928,14 +969,17 @@ void Tweener::frameResponse(const TupFrameResponse *event)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[Tweener::frameResponse()]";
+            qDebug() << "[Tweener::frameResponse()] " << event->frameIndex();
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << event->frameIndex();
         #endif
     #endif
 
-    if (event->action() == TupProjectRequest::Remove && k->scene->currentLayerIndex() == event->layerIndex())
+    if (event->action() == TupProjectRequest::Remove && k->scene->currentLayerIndex() == event->layerIndex()) {
+        k->isPathInScene = false;
         init(k->scene);
+        return;
+    }
 
     if (event->action() == TupProjectRequest::Select) {
         if (k->initLayer != event->layerIndex() || k->initScene != event->sceneIndex()) {

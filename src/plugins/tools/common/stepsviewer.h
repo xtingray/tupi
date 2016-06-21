@@ -76,6 +76,9 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
 
     private slots:
         void updatePathSection(int column, int row);
+
+    protected slots:
+        void commitData(QWidget *editor);
         
     private:
         void calculateKeys();

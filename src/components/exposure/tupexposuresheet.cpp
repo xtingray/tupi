@@ -307,6 +307,7 @@ void TupExposureSheet::applyAction(int action)
                          k->currentTable->clearSelection();
                  } else {
                      // When the item deleted is not the last one
+                     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
                      for (int index=target+1; index <= lastFrame; index++) {
                           TupExposureTable::FrameType type;
@@ -322,8 +323,9 @@ void TupExposureSheet::applyAction(int action)
 
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene, layer, lastFrame, TupProjectRequest::Remove);
                      emit requestTriggered(&request);
-
                      selectFrame(layer, target);
+
+                     QApplication::restoreOverrideCursor();
                  }
 
                  // k->fromMenu = false;

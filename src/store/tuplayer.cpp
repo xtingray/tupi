@@ -206,8 +206,6 @@ bool TupLayer::removeFrame(int position)
     TupFrame *toRemove = frameAt(position);
 
     if (toRemove) {
-        // k->frames.removeAt(position);
-        // toRemove->setRepeat(toRemove->repeat()-1);
         k->undoFrames << k->frames.takeAt(position);
         k->framesCounter--;
 
