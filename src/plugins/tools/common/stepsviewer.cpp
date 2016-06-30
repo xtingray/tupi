@@ -47,6 +47,7 @@ struct StepsViewer::Private
     QPainterPath path;
     QList<QPointF> keys;
     QPolygonF points;
+    QList<QPointF> tweenPoints;
 };
 
 StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
@@ -149,6 +150,8 @@ void StepsViewer::loadPath(const QGraphicsPathItem *pathItem, QList<int> interva
          k->segments << segment;
          addTableRow(row, segment.count());
     }
+
+    loadTweenPoints();
 }
 
 void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
@@ -201,33 +204,59 @@ void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
              QList<QPointF> segment; 
 
              if (size > 2) {
-                 if (size < frames) {
-                     segment = block;
-                     k->frames.replace(row, segment.count());
-                     QTableWidgetItem *cell = item(row, 1);
-                     cell->setText(QString::number(segment.count()));
-                 } else {
-                     int delta = size/(frames-1);
-                     int pos = delta;
-                     if (row==0) {
-                         frames--;
-                         segment.append(block.at(0));
-                     } else {
-                         delta = size/frames;
+                 if (size < frames) { // There are less available points than path points
+                     int range = size;
+                     QList<QPointF> input = block;
+                     while (range < frames) {
+                            QList<QPointF> newBlock;
+                            for (int i=0; i<input.size()-1; i++) {
+                                 QPointF step = input.at(i+1) - input.at(i);
+                                 QPointF middle = input.at(i) + QPointF(step.x()/2, step.y()/2);
+                                 newBlock << input.at(i) << middle;
+                            }
+                            newBlock << input.last();
+                            range = newBlock.size();
+                            input = newBlock;
                      }
+                     size = input.size();
+                     block = input;
+                 } 
 
-                     if (frames > 2) {
-                         for (int i=1; i < frames; i++) { // calculating points set for the segment j
-                              segment << block.at(pos);
-                              pos += delta;
-                         }
-                     } else {
-                         if (row > 0)
-                             segment << block.at(pos);
-                     }
-
-                     segment << k->keys.at(row);
+                 if (row==0) {
+                     frames--;
+                     segment.append(block.at(0));
                  }
+
+                 int delta = size/frames;
+                 int pos = delta;
+                 if (frames > 2) {
+                     int modDelta = 0;
+                     int module = size % frames;
+                     if (module > 0)
+                         modDelta = frames/module;
+
+                     int modPos = 1;
+                     int modCounter = 1;
+
+                     for (int i=1; i < frames; i++) { // calculating points set for the segment j
+                          if (module > 0) {
+                              if (i == modPos && modCounter < module) {
+                                  pos++;
+                                  modPos += modDelta;
+                                  modCounter++;
+                              }
+                          }
+                          segment << block.at(pos);
+                          pos += delta;
+                     }
+                 } else {
+                     if (row > 0)
+                         segment << block.at(pos);
+                     else // when frames == 3
+                         segment << block.at(size/2);
+                 }
+
+                 segment << k->keys.at(row);
              } else {
                  QPointF init = block.at(0);
                  if (row == 0) {
@@ -246,15 +275,18 @@ void StepsViewer::setPath(const QGraphicsPathItem *pathItem)
              k->segments.replace(row, segment);
         }
     }
+
+    loadTweenPoints();
 }
 
+// +/- frames slot and text/input slot 
 void StepsViewer::updatePathSection(int column, int row)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[StepsViewer::updatePathSection()]";
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << " column: " <<  column << " - row: " << row;
         #endif
     #endif
 
@@ -267,9 +299,10 @@ void StepsViewer::updatePathSection(int column, int row)
     QList<QPointF> block = k->pointBlocks.at(row);
     int range = block.size();
 
-    if (column == 2)
+    if (column == 2) // Plus button clicked
         frames += 1;
-    else
+
+    if (column == 3) // Minus button clicked 
         frames -= 1;
 
     if (row == 0) {
@@ -284,32 +317,59 @@ void StepsViewer::updatePathSection(int column, int row)
     QList<QPointF> segment;
 
     if (range > 2) {
-        if (range < frames) {
-            segment = block;
-            k->frames.replace(row, segment.count());
-        } else {
-            int delta = range/(frames - 1);
-
-            int pos = delta;
-            if (row==0) {
-                frames--;
-                segment.append(block.at(0));
-            } else {
-                delta = range/frames;
+        if (range < frames) { // There are less available points than path points
+            int size = range;
+            QList<QPointF> input = block;
+            while (size < frames) {
+                   QList<QPointF> newBlock;
+                   for (int i=0; i<input.size()-1; i++) {
+                        QPointF step = input.at(i+1) - input.at(i);  
+                        QPointF middle = input.at(i) + QPointF(step.x()/2, step.y()/2); 
+                        newBlock << input.at(i) << middle;
+                   }
+                   newBlock << input.last();
+                   size = newBlock.size(); 
+                   input = newBlock;
             }
 
-            if (frames > 2) {
-                for (int i=1; i < frames; i++) { // calculating points set for the segment j
-                     segment << block.at(pos);
-                     pos += delta;
-                }
-            } else {
-                if (row > 0)
-                    segment << block.at(pos);
-            }
-
-            segment << k->keys.at(row);
+            range = input.size();
+            block = input;
         }
+
+        if (row==0) {
+            frames--;
+            segment.append(block.at(0));
+        }
+        int delta = range/frames;
+        int pos = delta;
+
+        if (frames > 2) {
+            int module = range % frames;
+            int modDelta = 0;  
+            if (module > 0)
+                modDelta = frames/module;
+            int modPos = 1;
+            int modCounter = 1;
+
+            for (int i=1; i < frames; i++) { // calculating points set for the segment j
+                 if (module > 0) {
+                     if (i == modPos && modCounter < module) {
+                         pos++;
+                         modCounter++;
+                         modPos += modDelta;
+                     }
+                 }
+                 segment << block.at(pos);
+                 pos += delta;
+            }
+        } else {
+            if (row > 0)
+                segment << block.at(pos);
+            else  // when frames == 3
+                segment << block.at(range/2);
+        }
+
+        segment << k->keys.at(row);
     } else {
         QPointF init = block.at(0);
         if (row == 0) {
@@ -327,6 +387,8 @@ void StepsViewer::updatePathSection(int column, int row)
 
     cell->setText(QString::number(segment.count()));
     k->segments.replace(row, segment);
+
+    loadTweenPoints();
 
     emit totalHasChanged(totalSteps());
 }
@@ -356,6 +418,20 @@ int StepsViewer::totalSteps()
     return total;
 }
 
+void StepsViewer::loadTweenPoints()
+{
+    k->tweenPoints.clear();
+    foreach (QList<QPointF> segment, k->segments) {
+             foreach (QPointF point, segment) 
+                      k->tweenPoints << point;
+    }
+}
+
+QList<QPointF> StepsViewer::tweenPoints()
+{
+    return k->tweenPoints;
+}
+
 QString StepsViewer::intervals()
 {
     QString output = ""; 
@@ -379,6 +455,7 @@ void StepsViewer::clearInterface()
     k->records = 0;
     k->frames.clear();
     k->segments.clear();
+    k->tweenPoints.clear();
 
     int size = rowCount() - 1;
     for (int i=size; i >= 0; i--)
@@ -424,7 +501,6 @@ void StepsViewer::addTableRow(int row, int frames)
     QTableWidgetItem *framesItem = new QTableWidgetItem();
     framesItem->setTextAlignment(Qt::AlignCenter);
     framesItem->setText(QString::number(frames));
-    // framesItem->setFlags(intervalItem->flags() & ~Qt::ItemIsEditable);
 
     k->plusButton->append(new TPushButton(this, "+", 2, row));
     connect(k->plusButton->at(row), SIGNAL(clicked(int, int)), this, SLOT(updatePathSection(int, int)));
@@ -483,6 +559,14 @@ void StepsViewer::calculateGroups()
 
 void StepsViewer::commitData(QWidget *editor)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[StepsViewer::commitData()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
 
     if (lineEdit) {
@@ -491,13 +575,21 @@ void StepsViewer::commitData(QWidget *editor)
         int frames = value.toInt(&ok, 10);
 
         if (ok) {
-            frames++;
             value = QString::number(frames);
             int row = currentRow();
             int column = currentColumn();
             QTableWidgetItem *cell = item(row, column);
             cell->setText(value);
             updatePathSection(column, row);
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "input value: " + value;
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tWarning() << msg;
+                #endif
+            #endif
         }
     }
 }

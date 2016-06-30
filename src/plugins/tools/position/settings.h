@@ -72,6 +72,7 @@ class TUPI_PLUGIN Settings : public QWidget
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point, QString &path);
         int totalSteps();
+        QList<QPointF> tweenPoints();
         void activateMode(TupToolPlugin::EditMode mode);
         void clearData();
         void notifySelection(bool flag);
@@ -89,6 +90,7 @@ class TUPI_PLUGIN Settings : public QWidget
         void clickedResetTween();
         void clickedApplyTween();
         void startingFrameChanged(int);
+        void framesTotalChanged();
         
     private:
         void setInnerForm();

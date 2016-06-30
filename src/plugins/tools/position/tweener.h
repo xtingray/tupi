@@ -94,6 +94,8 @@ class TUPI_PLUGIN Tweener : public TupToolPlugin
         void disableSelection();
         void removeTweenFromProject(const QString &name);
         void resetGUI();
+        void removeTweenPoints();
+        void paintTweenPoints();
 
     private:
         struct Private;
@@ -109,6 +111,7 @@ class TUPI_PLUGIN Tweener : public TupToolPlugin
         void updateMode(TupToolPlugin::Mode mode);
         void updateStartFrame(int index);
         void setCurrentTween(const QString &name);
+        void updateTweenPoints();
 
     public slots:
         void updatePath();

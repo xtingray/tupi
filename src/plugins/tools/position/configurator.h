@@ -86,6 +86,7 @@ class TUPI_PLUGIN Configurator : public QFrame
         void updateSteps(const QGraphicsPathItem *path);
         QString tweenToXml(int currentScene, int currentLayer, int currentFrame, QPointF point, QString &path);
         int totalSteps();
+        QList<QPointF> tweenPoints();
         void activateMode(TupToolPlugin::EditMode mode);
         void clearData();
         QString currentTweenName() const;
@@ -116,6 +117,7 @@ class TUPI_PLUGIN Configurator : public QFrame
         void clickedApplyTween();
         void startingFrameChanged(int);
         void getTweenData(const QString &);
+        void framesTotalChanged();
         
     private:
         struct Private;

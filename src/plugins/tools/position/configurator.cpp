@@ -132,6 +132,9 @@ void Configurator::setPropertiesPanel()
     connect(k->settingsPanel, SIGNAL(clickedApplyTween()), this, SLOT(applyItem()));
     connect(k->settingsPanel, SIGNAL(clickedResetTween()), this, SLOT(closeTweenProperties()));
 
+    connect(k->settingsPanel, SIGNAL(framesTotalChanged()), this, SIGNAL(framesTotalChanged()));
+
+
     k->settingsLayout->addWidget(k->settingsPanel);
 
     activePropertiesPanel(false);
@@ -227,6 +230,11 @@ QString Configurator::tweenToXml(int currentScene, int currentLayer, int current
 int Configurator::totalSteps()
 {
     return k->settingsPanel->totalSteps();
+}
+
+QList<QPointF> Configurator::tweenPoints()
+{
+    return k->settingsPanel->tweenPoints();
 }
 
 void Configurator::activateMode(TupToolPlugin::EditMode mode)

@@ -68,6 +68,7 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
         void clearInterface();
         QString intervals();
         void loadPath(const QGraphicsPathItem *pathItem, QList<int> intervals);
+        QList<QPointF> tweenPoints();
 
         virtual QSize sizeHint() const;
 
@@ -85,6 +86,7 @@ class TUPI_EXPORT StepsViewer : public QTableWidget
         void calculateGroups();
         QList<QPointF> calculateSegmentPoints(QPointF begin, QPointF end, int total);
         void addTableRow(int row, int frames);
+        void loadTweenPoints();
         struct Private;
         Private *const k;
 

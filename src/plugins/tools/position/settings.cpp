@@ -275,6 +275,11 @@ int Settings::totalSteps()
     return k->stepViewer->totalSteps();
 }
 
+QList<QPointF> Settings::tweenPoints()
+{
+    return k->stepViewer->tweenPoints();
+}
+
 void Settings::activateMode(TupToolPlugin::EditMode mode)
 {
     k->options->setCurrentIndex(mode);
@@ -342,4 +347,5 @@ QString Settings::currentTweenName() const
 void Settings::updateTotalLabel(int total)
 {
     k->totalLabel->setText(tr("Frames Total") + ": " + QString::number(total));
+    emit framesTotalChanged(); 
 }
