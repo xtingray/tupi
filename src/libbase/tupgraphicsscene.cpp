@@ -532,10 +532,17 @@ void TupGraphicsScene::addSvgObject(TupSvgItem *svgItem, TupFrame::FrameType fra
 
     if (svgItem) {
         svgItem->setSelected(false);
-        if (k->framePosition.layer == k->layerOnProcess && k->framePosition.frame == k->frameOnProcess)
-            k->onionSkin.accessMap.insert(svgItem, true);
-        else
-            k->onionSkin.accessMap.insert(svgItem, false);
+        if (frameType == TupFrame::Regular) {
+            if (k->framePosition.layer == k->layerOnProcess && k->framePosition.frame == k->frameOnProcess)
+                k->onionSkin.accessMap.insert(svgItem, true);
+            else
+                k->onionSkin.accessMap.insert(svgItem, false);
+        } else {
+            if (k->spaceContext == TupProject::STATIC_BACKGROUND_EDITION || k->spaceContext == TupProject::DYNAMIC_BACKGROUND_EDITION)
+                k->onionSkin.accessMap.insert(svgItem, true);
+            else
+                k->onionSkin.accessMap.insert(svgItem, false);
+        }
 
         TupLayer *layer = k->scene->layerAt(k->framePosition.layer);
         if (layer) {
