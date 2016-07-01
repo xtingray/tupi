@@ -336,7 +336,6 @@ bool TupCameraWidget::handleProjectResponse(TupProjectResponse *response)
 
 void TupCameraWidget::setFPS(int fps)
 {
-    // fps++;
     k->project->setFPS(fps);
     k->screen->setFPS(fps);
 }

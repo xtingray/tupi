@@ -71,6 +71,7 @@ class TUPI_EXPORT TupCameraStatus : public QFrame
         void sceneIndexChanged(int index);
 
     private:
+        void setDuration();
         struct Private;
         Private *const k;
 };
