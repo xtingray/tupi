@@ -43,10 +43,9 @@ struct TItemSelector::Private
 
 TItemSelector::TItemSelector(QWidget *parent) : QWidget(parent), k(new Private)
 {
-    QHBoxLayout *layout = new QHBoxLayout;
-
     k->available = new QListWidget;
 
+    QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(k->available);
 
     QVBoxLayout *controlBox = new QVBoxLayout;
@@ -84,7 +83,6 @@ TItemSelector::~TItemSelector()
 
 void TItemSelector::selectFirstItem() {
      if (k->available->item(0)) {
-         // k->available->item(0)->setSelected(true);
          k->available->setCurrentRow(0);
          emit changed();
      }
@@ -93,7 +91,6 @@ void TItemSelector::selectFirstItem() {
 void TItemSelector::addCurrent()
 {
     int row = k->available->currentRow();
-
     if (row >= 0) {
         QListWidgetItem *item = k->available->takeItem(row);
         k->selected->addItem(item);
@@ -137,20 +134,26 @@ void TItemSelector::downCurrent()
     }
 }
 
-
 void TItemSelector::setItems(const QStringList &items)
 {
     k->available->clear();
     addItems(items);
 }
 
-int TItemSelector::addItem(const QString &item)
+int TItemSelector::addItem(const QString &itemLabel)
 {
-    QListWidgetItem *it = new QListWidgetItem(item, k->available);
+    QListWidgetItem *item = new QListWidgetItem(itemLabel, k->available);
     int index = k->available->count()-1;
-    it->setData(4321, index);
+    item->setData(4321, index);
 
     return index;
+}
+
+void TItemSelector::addSelectedItem(const QString &itemLabel)
+{
+    QListWidgetItem *item = new QListWidgetItem(itemLabel, k->selected);
+    int index = k->selected->count()-1;
+    item->setData(4321, index);
 }
 
 void TItemSelector::addItems(const QStringList &items)

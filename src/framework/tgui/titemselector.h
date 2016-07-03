@@ -58,6 +58,7 @@ class T_GUI_EXPORT TItemSelector : public QWidget
         
         void setItems(const QStringList &items);
         int addItem(const QString &item);
+        void addSelectedItem(const QString &itemLabel);
         void addItems(const QStringList &items);
         
         QStringList selectedItems() const;

@@ -70,32 +70,37 @@ void TupSceneSelector::setScenes(const QList<TupScene *> &scenes)
     #endif
 
     m_selector->clear();
-    int pos = 1;
 
-    foreach (TupScene *scene, scenes) {
-             #ifdef K_DEBUG
-                 QString msg = "TupSceneSelector::setScenes() - Adding " + scene->sceneName();
-                 #ifdef Q_OS_WIN
-                     qWarning() << msg;
-                 #else
-                     tWarning("export") << msg;
+    if (scenes.count() > 1) {
+        int pos = 1;
+        foreach (TupScene *scene, scenes) {
+                 #ifdef K_DEBUG
+                     QString msg = "TupSceneSelector::setScenes() - Adding " + scene->sceneName();
+                     #ifdef Q_OS_WIN
+                         qWarning() << msg;
+                     #else
+                         tWarning("export") << msg;
+                     #endif
                  #endif
-             #endif
 
-             m_selector->addItem(QString("%1: ").arg(pos) + scene->sceneName());
-             pos++;
-    }
+                 m_selector->addItem(QString("%1: ").arg(pos) + scene->sceneName());
+                 pos++;
+        }
 
-    #ifdef K_DEBUG
-        QString msg = "TupSceneSelector::setScenes() - Available Scenes: " + QString::number(pos - 1);
-        #ifdef Q_OS_WIN
-            qWarning() << msg;
-        #else
-            tWarning() << msg;
+        #ifdef K_DEBUG
+            QString msg = "TupSceneSelector::setScenes() - Available Scenes: " + QString::number(pos - 1);
+            #ifdef Q_OS_WIN
+                qWarning() << msg;
+            #else
+                tWarning() << msg;
+            #endif
         #endif
-    #endif
 
-    m_selector->selectFirstItem();
+        m_selector->selectFirstItem();
+    } else {
+        TupScene *scene = scenes.first();
+        m_selector->addSelectedItem(QString("1: ") + scene->sceneName());
+    }
 }
 
 void TupSceneSelector::aboutToNextPage()
