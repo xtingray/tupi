@@ -40,6 +40,7 @@
 
 export PATH=/Users/xtingray/Qt/5.5/clang_64/bin:$PATH
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
+# export DYLD_FRAMEWORK_PATH=/Users/xtingray/Qt/5.5/clang_64/lib
 
 TUPI_GIT_REPOSITORY=$1
 INSTALLATION_PATH=$2
