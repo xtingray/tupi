@@ -176,17 +176,31 @@ void NodeManager::scale(float sx, float sy)
     syncNodesFromParent();
 }
 
-void NodeManager::rotate(double a)
+void NodeManager::rotate(double angle)
 {
+    /*
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[NodeManager::rotate()]";
+        #else
+            T_FUNCINFO;
+            tWarning() << "delta: " << angle;
+            tWarning() << "m_rotation: " << m_rotation;
+            tWarning() << "angle: " << (m_rotation - angle);
+        #endif
+    #endif
+    */
+
     QMatrix m = m_parent->matrix();
-    m.translate(m_anchor.x(),m_anchor.y());
-    m.rotate(m_rotation-a);
-    m.translate(-m_anchor.x(),-m_anchor.y());
+    m.translate(m_anchor.x(), m_anchor.y());
+    m.rotate(m_rotation - angle);
+    m.translate(-m_anchor.x(), -m_anchor.y());
+
     m_parent->setMatrix(m);
-    m_parent->setData(TupGraphicObject::Rotate, m_rotation - a);
+    m_parent->setData(TupGraphicObject::Rotate, m_rotation - angle);
 
     syncNodesFromParent();
-    m_rotation = a;
+    m_rotation = angle;
 }
 
 void NodeManager::show()

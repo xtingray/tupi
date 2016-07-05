@@ -207,34 +207,34 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             */
             
             switch (k->typeNode) {
-                    case TopLeft:
-                    {
-                         k->manager->setAnchor(parentSquare.bottomRight());
-                         rect.setTopLeft(newPos);
-                         break;
-                    }
-                    case TopRight:
-                    {
-                         k->manager->setAnchor(parentSquare.bottomLeft());
-                         rect.setTopRight(newPos);
-                         break;
-                    }
-                    case BottomRight:
-                    {
-                         k->manager->setAnchor(parentSquare.topLeft());
-                         rect.setBottomRight(newPos);
-                         break;
-                    }
-                    case BottomLeft:
-                    {
-                         k->manager->setAnchor(parentSquare.topRight());
-                         rect.setBottomLeft(newPos);
-                         break;
-                    }
-                    case Center:
-                    {
-                         break;
-                    }
+                case TopRight:
+                {
+                     k->manager->setAnchor(parentSquare.bottomLeft());
+                     rect.setTopRight(newPos);
+                     break;
+                }
+                case BottomRight:
+                {
+                     k->manager->setAnchor(parentSquare.topLeft());
+                     rect.setBottomRight(newPos);
+                     break;
+                }
+                case TopLeft:
+                {
+                     k->manager->setAnchor(parentSquare.bottomRight());
+                     rect.setTopLeft(newPos);
+                     break;
+                }
+                case BottomLeft:
+                {
+                     k->manager->setAnchor(parentSquare.topRight());
+                     rect.setBottomLeft(newPos);
+                     break;
+                }
+                case Center:
+                {
+                     break;
+                }
             };
             
             float sx = 1, sy = 1;
@@ -255,12 +255,46 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 }
             }
         } else if (k->action == Rotate) {
-                   QPointF p1 = newPos;
-                   QPointF p2 = k->parent->sceneBoundingRect().center();
-                   k->manager->setAnchor(k->parent->boundingRect().center());
-                
-                   double a = (180 * TupGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
-                   k->manager->rotate(a-45);
+                   QPointF pRef; 
+                   bool isCenter = false;
+                   switch (k->typeNode) {
+                       case TopRight:
+                       {
+                           pRef = k->parent->sceneBoundingRect().topRight();
+                           break;
+                       }
+                       case BottomRight:
+                       {
+                           pRef = k->parent->sceneBoundingRect().bottomRight();
+                           break;
+                       }
+                       case TopLeft:
+                       {
+                           pRef = k->parent->sceneBoundingRect().topLeft();
+                           break;
+                       }
+                       case BottomLeft:
+                       {
+                           pRef = k->parent->sceneBoundingRect().bottomLeft();
+                           break;
+                       }
+                       case Center:
+                       {
+                           isCenter = true;
+                           break;
+                       }
+                   };
+
+                   if (!isCenter) {
+                       QPointF p1 = newPos;
+                       QPointF p2 = k->parent->sceneBoundingRect().center();
+                       k->manager->setAnchor(k->parent->boundingRect().center());
+
+                       QLineF line(p2, p1);
+                       QLineF lineRef(p2, pRef);
+                       double angle = line.angle() - lineRef.angle();
+                       k->manager->rotate(angle);
+                   }
         }
     }
 

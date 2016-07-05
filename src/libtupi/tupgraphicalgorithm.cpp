@@ -48,7 +48,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define MAXPOINTS    1000        /* The most points you can have */
+#define MAXPOINTS 1000 /* The most points you can have */
 
 class FitVector
 {
@@ -121,7 +121,6 @@ double distance(const QPointF& p1, const QPointF&  p2)
 
     return sqrt( dx*dx + dy*dy );
 }
-
 
 FitVector computeLeftTangent(QPolygonF &points, int end)
 {

@@ -1389,9 +1389,11 @@ void TupGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
     #endif
     */
 
-    if (k->tool->toolType() == TupToolInterface::Brush) {
-        if (event->button() == Qt::RightButton) 
-            return;
+    if (k->tool) {
+        if (k->tool->toolType() == TupToolInterface::Brush) {
+            if (event->button() == Qt::RightButton) 
+                return;
+        }
     }
 
     if (currentFrame()) {

@@ -68,7 +68,7 @@ class TUPI_PLUGIN NodeManager : public QObject
         QPointF anchor() const;
         
         void scale(float sx, float sy);
-        void rotate(double a);
+        void rotate(double angle);
         
         void setPress(bool press);
         bool isPress();
