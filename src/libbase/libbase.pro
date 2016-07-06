@@ -36,22 +36,24 @@ HEADERS += tupexportinterface.h \
            tuptoolinterface.h \
            tuptoolplugin.h  \
            tuppaintareabase.h \
-           tuppaintarearotator.h \
+           # tuppaintarearotator.h \
            tupgraphicsscene.h \
            tupguideline.h \
            tupanimationrenderer.h \
-           tupwebhunter.h
+           tupwebhunter.h \
+           tuprotationdial.h
 
 SOURCES += tupexportpluginobject.cpp \
            tupmodulewidgetbase.cpp \
            tuppluginmanager.cpp \
            tuptoolplugin.cpp  \
            tuppaintareabase.cpp \
-           tuppaintarearotator.cpp \
+           # tuppaintarearotator.cpp \
            tupgraphicsscene.cpp \
            tupguideline.cpp \
            tupanimationrenderer.cpp \
-           tupwebhunter.cpp
+           tupwebhunter.cpp \
+           tuprotationdial.cpp
 
 FRAMEWORK_DIR = "../framework"
 include($$FRAMEWORK_DIR/framework.pri)

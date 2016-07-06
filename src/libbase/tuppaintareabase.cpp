@@ -37,9 +37,9 @@
 #include "tupbrushmanager.h"
 #include "tupinputdeviceinformation.h"
 #include "tuptextitem.h"
-#include "tuppaintarearotator.h"
 #include "tupgraphicsscene.h"
 #include "tupgraphicalgorithm.h"
+#include "tuprotationdial.h"
 
 // Tupi Framework 
 #include "tupscene.h"
@@ -58,7 +58,6 @@ struct TupPaintAreaBase::Private
     bool actionSafeAreaFlag;
     double angle;
 
-    TupPaintAreaRotator *rotator;
     QStringList copiesXml;
     TupGraphicsScene *scene;
 
@@ -73,6 +72,8 @@ struct TupPaintAreaBase::Private
 
     QPoint initPoint;
     QPoint centerPoint;
+
+    TupRotationDial *dial;
 };
 
 TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary *library) : QGraphicsView(parent), k(new Private)
@@ -103,7 +104,6 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     k->angle = 0;
     k->spaceBar = false;
 
-    k->rotator = new TupPaintAreaRotator(this, this);
     k->drawingRect = QRectF(QPointF(0, 0), dimension);
     k->centerPoint = k->drawingRect.center().toPoint();
 
@@ -114,6 +114,9 @@ TupPaintAreaBase::TupPaintAreaBase(QWidget *parent, QSize dimension, TupLibrary 
     setMouseTracking(true); 
 
     setRenderHints(QPainter::RenderHints(QPainter::Antialiasing));
+
+    k->dial = new TupRotationDial(parent);
+    connect(k->dial, SIGNAL(valueChanged(int)), this, SLOT(updateAngle(int)));
 }
 
 void TupPaintAreaBase::setBgColor(const QColor color)
@@ -227,33 +230,19 @@ void TupPaintAreaBase::mouseMoveEvent(QMouseEvent *event)
         k->initPoint = point;
     }
 
-    // Rotate WorkSpace
-    if (!k->scene->isDrawing() && event->buttons() == Qt::LeftButton 
-        && (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
-        setUpdatesEnabled(false);
-        setDragMode(QGraphicsView::NoDrag);
+    QGraphicsView::mouseMoveEvent(event);
 
-	QPointF p1 = event->pos();
-        QPointF p2 = k->drawingRect.center();
-        int angle = (int)(-(180 * TupGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI);
-        k->rotator->rotateTo(angle);
-        emit rotated(-angle);
-        setUpdatesEnabled(true);
-    } else {
-        QGraphicsView::mouseMoveEvent(event);
-
-        if (!k->scene->mouseGrabberItem() && k->scene->isDrawing()) { // HACK
-            QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
-            mouseEvent.setWidget(viewport());
-            mouseEvent.setScenePos(mapToScene(event->pos()));
-            mouseEvent.setScreenPos(event->globalPos());
-            mouseEvent.setButtons(event->buttons());
-            mouseEvent.setButton(event->button());
-            mouseEvent.setModifiers(event->modifiers());
-            mouseEvent.setAccepted(false);
-            // QApplication::sendEvent(k->scene, &mouseEvent);
-            k->scene->mouseMoved(&mouseEvent);
-        }
+    if (!k->scene->mouseGrabberItem() && k->scene->isDrawing()) { // HACK
+        QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
+        mouseEvent.setWidget(viewport());
+        mouseEvent.setScenePos(mapToScene(event->pos()));
+        mouseEvent.setScreenPos(event->globalPos());
+        mouseEvent.setButtons(event->buttons());
+        mouseEvent.setButton(event->button());
+        mouseEvent.setModifiers(event->modifiers());
+        mouseEvent.setAccepted(false);
+        // QApplication::sendEvent(k->scene, &mouseEvent);
+        k->scene->mouseMoved(&mouseEvent);
     }
 
     k->position = mapToScene(event->pos()); 
@@ -282,6 +271,15 @@ void TupPaintAreaBase::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space) {
         k->spaceBar = true;
+        return;
+    }
+
+    if (!k->scene->isDrawing() && (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
+        QDesktopWidget desktop;
+        k->dial->setAngle(k->angle);
+        k->dial->show();
+        k->dial->move((int) (desktop.screenGeometry().width() - k->dial->sizeHint().width())/2,
+                  (int) (desktop.screenGeometry().height() - k->dial->sizeHint().height())/2);
         return;
     }
 
@@ -599,3 +597,8 @@ void TupPaintAreaBase::updateGridParameters()
     k->gridSeparation = TCONFIG->value("GridSeparation").toInt();
 }
 
+void TupPaintAreaBase::updateAngle(int angle)
+{
+    setRotationAngle(angle);
+    emit rotated(angle);
+}

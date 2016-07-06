@@ -119,6 +119,9 @@ class TUPI_EXPORT TupPaintAreaBase : public QGraphicsView
         void scaled(qreal scaleFactor);
         void rotated(int angle);
 
+    private slots:
+        void updateAngle(int angle);
+
     public slots:
         void centerDrawingArea();
 
