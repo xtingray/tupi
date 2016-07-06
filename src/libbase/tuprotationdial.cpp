@@ -53,7 +53,7 @@ TupRotationDial::TupRotationDial(QWidget *parent) : QDialog(parent, Qt::Customiz
     QBoxLayout *layout = new QVBoxLayout(this);
     k->dial = new QDial;
     connect(k->dial, SIGNAL(valueChanged(int)), this, SLOT(updateAngle(int)));
-    k->dial->setRange(0, 359);
+    k->dial->setRange(0, 360);
     layout->addWidget(k->dial);
     k->label = new QLabel;
     k->label->setAttribute(Qt::WA_TranslucentBackground);

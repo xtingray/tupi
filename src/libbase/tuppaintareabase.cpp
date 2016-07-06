@@ -274,12 +274,12 @@ void TupPaintAreaBase::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    if (!k->scene->isDrawing() && (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
+    if (!k->scene->isDrawing() && (event->modifiers () == (Qt::AltModifier | Qt::ControlModifier))) {
         QDesktopWidget desktop;
         k->dial->setAngle(k->angle);
         k->dial->show();
         k->dial->move((int) (desktop.screenGeometry().width() - k->dial->sizeHint().width())/2,
-                  (int) (desktop.screenGeometry().height() - k->dial->sizeHint().height())/2);
+                      (int) (desktop.screenGeometry().height() - k->dial->sizeHint().height())/2);
         return;
     }
 
