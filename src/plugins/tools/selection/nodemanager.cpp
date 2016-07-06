@@ -169,7 +169,7 @@ void NodeManager::scale(float sx, float sy)
 {
     QMatrix m;
     m.translate(m_anchor.x(),m_anchor.y());
-    m.scale(sx,sy);
+    m.scale(sx, sy);
     m.translate(-m_anchor.x(),-m_anchor.y());
     m_parent->setMatrix(m, true);
 
