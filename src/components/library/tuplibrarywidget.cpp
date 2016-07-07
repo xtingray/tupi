@@ -1225,6 +1225,21 @@ void TupLibraryWidget::verifyFramesAvailability(int filesTotal)
     }
 }
 
+QStringList TupLibraryWidget::naturalSort(QStringList photograms)
+{ 
+    // Natural sort
+    QCollator coll;
+    coll.setNumericMode(true);
+    for (int i = photograms.size()-1; i >= 0; i--) {
+         for (int j = 1; j <= i; j++) {
+              if (coll.compare(photograms.at(j-1), photograms.at(j)) < 0)
+                  photograms.swap(j-1, j);
+         }
+    }
+
+    return photograms;
+}
+
 void TupLibraryWidget::importBitmapSequence()
 {
     TCONFIG->beginGroup("General");
@@ -1313,9 +1328,24 @@ void TupLibraryWidget::importBitmapSequence()
                 k->library->addFolder(folder);
 
                 // Natural sort
-                QCollator coll;
-                coll.setNumericMode(true);
-                std::sort(photograms.begin(), photograms.end(), [&](const QString& s1, const QString& s2){ return coll.compare(s1, s2) < 0; });
+                // QCollator coll;
+                // coll.setNumericMode(true);
+                // std::sort(photograms.begin(), photograms.end(), [&] (const QString& s1, const QString& s2){ return coll.compare(s1, s2) < 0; });
+
+                photograms = naturalSort(photograms);
+
+                /*
+                struct {
+                    bool operator()(const QString& record1, const QString& record2)
+                    {
+                        // Natural sort
+                        QCollator coll;
+                        coll.setNumericMode(true);
+                        return coll.compare(record1, record2) < 0;
+                    }
+                } compareStrings;
+                std::sort(photograms.begin(), photograms.end(), compareStrings);
+                */
 
                 int initFrame = k->currentFrame.frame;
                 int filesTotal = photograms.size();
@@ -1450,9 +1480,11 @@ void TupLibraryWidget::importSvgSequence()
                 k->library->addFolder(folder);
 
                 // Natural sort
-                QCollator coll;
-                coll.setNumericMode(true);
-                std::sort(photograms.begin(), photograms.end(), [&](const QString& s1, const QString& s2){ return coll.compare(s1, s2) < 0; });
+                // QCollator coll;
+                // coll.setNumericMode(true);
+                // std::sort(photograms.begin(), photograms.end(), [](const QString& s1, const QString& s2){ return coll.compare(s1, s2) < 0; });
+
+                photograms = naturalSort(photograms);
 
                 int initFrame = k->currentFrame.frame;
                 filesTotal = photograms.size();

@@ -152,6 +152,7 @@ class TUPI_EXPORT TupLibraryWidget : public TupModuleWidgetBase
         void setDefaultPath(const QString &path);
         void saveDefaultPath(const QString &dir);
         void importNativeObject(const QString &object);
+        QStringList naturalSort(QStringList photograms);
 
         struct Private;
         Private *const k;
