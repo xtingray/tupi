@@ -99,6 +99,7 @@ class TUPI_PLUGIN NodeManager : public QObject
         bool m_press;
         bool m_proportional;
         double m_rotation;
+        QList<QTransform> operations;
 };
 
 #endif

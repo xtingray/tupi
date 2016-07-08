@@ -167,11 +167,22 @@ QPointF NodeManager::anchor() const
 
 void NodeManager::scale(float sx, float sy)
 {
-    QMatrix m;
-    m.translate(m_anchor.x(),m_anchor.y());
-    m.scale(sx, sy);
-    m.translate(-m_anchor.x(),-m_anchor.y());
-    m_parent->setMatrix(m, true);
+    QTransform transform;
+    transform.translate(m_anchor.x(), m_anchor.y());
+    transform.scale(sx, sy);
+    transform.translate(-m_anchor.x(), -m_anchor.y());
+    m_parent->setTransform(transform, true);
+
+    /*
+    operations << transform;
+    m_parent->resetTransform();
+    foreach (QTransform op, operations) {
+        if (op.type() == QTransform::TxScale)
+            m_parent->setTransform(op, true);
+        else
+            m_parent->setTransform(op);
+    }
+    */
 
     syncNodesFromParent();
 }
@@ -191,14 +202,24 @@ void NodeManager::rotate(double angle)
     #endif
     */
 
-    QMatrix m = m_parent->matrix();
-    m.translate(m_anchor.x(), m_anchor.y());
-    m.rotate(m_rotation - angle);
-    m.translate(-m_anchor.x(), -m_anchor.y());
+    QTransform transform = m_parent->transform();
+    transform.translate(m_anchor.x(), m_anchor.y());
+    transform.rotate(m_rotation - angle);
+    transform.translate(-m_anchor.x(), -m_anchor.y());
+    m_parent->setTransform(transform);
 
-    m_parent->setMatrix(m);
+    /*
+    operations << transform; 
+    m_parent->resetTransform();
+    foreach (QTransform op, operations) {
+        if (op.type() == QTransform::TxScale)
+            m_parent->setTransform(op, true);
+        else
+            m_parent->setTransform(op);
+    }
+    */
+
     m_parent->setData(TupGraphicObject::Rotate, m_rotation - angle);
-
     syncNodesFromParent();
     m_rotation = angle;
 }
