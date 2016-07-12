@@ -35,8 +35,9 @@
 
 #include "node.h"
 #include "nodemanager.h"
-#include "tupgraphicalgorithm.h"
 #include "tupgraphicobject.h"
+
+#include <QTimer>
 
 /**
  * This class defines the data structure for a node, and all the methods required to manipulate it.
@@ -48,11 +49,11 @@ struct Node::Private
 {
     TypeNode typeNode;
     ActionNode action;
-    bool notChange;
     ActionNode generalState; 
     QGraphicsItem *parent;
     NodeManager *manager;
     QSizeF size;
+    QPointF oldPoint;
 };
 
 Node::Node(TypeNode node, ActionNode action, const QPointF &pos, NodeManager *manager, QGraphicsItem *parent, int zValue) : 
@@ -169,7 +170,8 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
         #endif
     #endif
 
-    k->manager->setPress(true);
+    k->oldPoint = event->scenePos();
+    k->manager->setPressedStatus(true);
     QGraphicsItem::mousePressEvent(event);
 }
 
@@ -185,122 +187,46 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     QGraphicsItem::mouseReleaseEvent(event);
     k->parent->setSelected(true);
-    k->manager->setPress(false);
+    k->manager->setPressedStatus(false);
 }
 
 void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF newPos(event->scenePos());
 
-    if (k->notChange) {
-        k->notChange = false;
+    if (k->typeNode == Center) {
+        if ((int)newPos.x() % 2 == 0) {
+            k->parent->moveBy(newPos.x() - scenePos().x(), newPos.y() - scenePos().y());
+            event->accept();
+        }
     } else {
         if (k->action == Scale) {
-            QRectF rect = k->parent->sceneBoundingRect();
-            QRectF parentRect  = k->parent->sceneBoundingRect();
-            QRectF parentSquare  = k->parent->boundingRect();
-            
-            // SQA: Lines for debugging purposes
-            /*
-            scene()->addRect(rect, QPen(Qt::red));
-            scene()->addRect(parentRect, QPen(Qt::green));
-            */
-            
-            switch (k->typeNode) {
-                case TopRight:
-                {
-                     k->manager->setAnchor(parentSquare.bottomLeft());
-                     rect.setTopRight(newPos);
-                     break;
-                }
-                case BottomRight:
-                {
-                     k->manager->setAnchor(parentSquare.topLeft());
-                     rect.setBottomRight(newPos);
-                     break;
-                }
-                case TopLeft:
-                {
-                     k->manager->setAnchor(parentSquare.bottomRight());
-                     rect.setTopLeft(newPos);
-                     break;
-                }
-                case BottomLeft:
-                {
-                     k->manager->setAnchor(parentSquare.topRight());
-                     rect.setBottomLeft(newPos);
-                     break;
-                }
-                case Center:
-                {
-                     break;
-                }
-            };
-            
-            float sx = 1, sy = 1;
-            sx = static_cast<float>(rect.width()) / static_cast<float>(parentRect.width());
-            sy = static_cast<float>(rect.height()) / static_cast<float>(parentRect.height());
+            QPointF center = k->parent->boundingRect().center();
+            QPointF distance = k->parent->mapToScene(center) - newPos;
 
-            if (k->manager->proportionalScale()) {
-                k->manager->scale(sx, sx);
-            } else {
-                if (sx > 0 && sy > 0) {
-                    k->manager->scale(sx, sy);
-                } else {
-                    if (sx > 0)
-                        k->manager->scale(sx, 1);
+            qreal w = k->parent->boundingRect().width() / 2;
+            qreal h = k->parent->boundingRect().height() / 2;
+            qreal sx = fabs(distance.x()) / w;
+            qreal sy = fabs(distance.y()) / h;
 
-                    if (sy > 0)
-                        k->manager->scale(1, sy);
-                }
-            }
+            if (k->manager->proportionalScale())
+                sy = sx;
+            k->manager->scale(sx, sy);
         } else if (k->action == Rotate) {
-                   QPointF pRef; 
-                   bool isCenter = false;
-                   switch (k->typeNode) {
-                       case TopRight:
-                       {
-                           pRef = k->parent->sceneBoundingRect().topRight();
-                           break;
-                       }
-                       case BottomRight:
-                       {
-                           pRef = k->parent->sceneBoundingRect().bottomRight();
-                           break;
-                       }
-                       case TopLeft:
-                       {
-                           pRef = k->parent->sceneBoundingRect().topLeft();
-                           break;
-                       }
-                       case BottomLeft:
-                       {
-                           pRef = k->parent->sceneBoundingRect().bottomLeft();
-                           break;
-                       }
-                       case Center:
-                       {
-                           isCenter = true;
-                           break;
-                       }
-                   };
+                   QPointF p1 = newPos;
+                   QPointF p2 = k->parent->sceneBoundingRect().center();
 
-                   if (!isCenter) {
-                       QPointF p1 = newPos;
-                       QPointF p2 = k->parent->sceneBoundingRect().center();
-                       k->manager->setAnchor(k->parent->boundingRect().center());
+                   QLineF line(p2, p1);
+                   QLineF lineRef(p2, k->oldPoint);
+                   qreal angle = lineRef.angle() - line.angle();
 
-                       QLineF line(p2, p1);
-                       QLineF lineRef(p2, pRef);
-                       double angle = line.angle() - lineRef.angle();
-                       k->manager->rotate(angle);
-                   }
+                   qreal rotation = k->parent->data(TupGraphicObject::Rotate).toReal() + angle;
+                   if (fabs(rotation) > 360)
+                       rotation = 0;
+
+                   k->manager->rotate(rotation);
+                   k->oldPoint = newPos;
         }
-    }
-
-    if (k->typeNode == Center) {
-        k->parent->moveBy(event->scenePos().x() - scenePos().x() , event->scenePos().y() - scenePos().y());
-        event->accept();
     }
 }
 

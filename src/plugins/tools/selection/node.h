@@ -39,17 +39,11 @@
 #include "tglobal.h"
 
 #include <QGraphicsItem>
-#include <QObject>
 #include <QPointF>
-#include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
-#include <QStyleOption>
-#include <QStyleOptionButton>
-#include <QApplication>
 #include <QCursor>
-#include <cmath> //atan
 
 class NodeManager;
 
@@ -85,10 +79,10 @@ class TUPI_PLUGIN Node : public QObject, public QGraphicsItem
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
         void keyReleaseEvent(QKeyEvent *event);
-        
+
     private:
         struct Private;
         Private *const k;

@@ -151,7 +151,7 @@ void SelectionTool::press(const TupInputDeviceInformation *input, TupBrushManage
     // If Control key is pressed / allow multiple selection picking items one by one 
     if (input->keyModifiers() != Qt::ControlModifier) {
         foreach (NodeManager *nodeManager, k->nodeManagers) {
-                 if (!nodeManager->isPress()) {
+                 if (!nodeManager->isPressed()) {
                      nodeManager->parentItem()->setSelected(false);
                      k->nodeManagers.removeAll(nodeManager);
                      scene->drawCurrentPhotogram();
