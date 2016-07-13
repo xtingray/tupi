@@ -37,7 +37,7 @@
 #include "nodemanager.h"
 #include "tupgraphicobject.h"
 
-#include <QTimer>
+#include <cmath> //fabs
 
 /**
  * This class defines the data structure for a node, and all the methods required to manipulate it.
