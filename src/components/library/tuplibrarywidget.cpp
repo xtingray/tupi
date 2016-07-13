@@ -1267,7 +1267,6 @@ void TupLibraryWidget::importBitmapSequence()
                      extension.compare("XPM")==0) {
                      imagesCounter++;
                      photograms << records.at(i).absoluteFilePath();
-                     tError() << "FILE: " << records.at(i).absoluteFilePath();
                  }
              }
         }
