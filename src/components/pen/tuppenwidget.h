@@ -64,7 +64,7 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         TupPenWidget(QWidget *parent = 0);
         ~TupPenWidget();
         QPen pen() const;
-        void setPenWidth(int width);
+        void setPenThickness(int thickness);
         
     private:
         void updatePenProperties();
@@ -73,7 +73,7 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         
     public slots:
         void init(int thickness);
-        void setThickness(int value);
+        void setThickness(int thickness);
         void setPenColor(const QColor color);
         void setBrush(const QBrush brush);
         
@@ -90,8 +90,6 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         void enableBevelJoinStyle();
         
     signals:
-        // void penChanged(const QPen &pen);
-        // void brushChanged(const QBrush &brush);
         void paintAreaEventTriggered(const TupPaintAreaEvent *e);
 
     private:

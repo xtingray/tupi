@@ -387,7 +387,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         m_colorPalette->setBgColor(project->bgColor());
 
         TCONFIG->beginGroup("PenParameters");
-        int thickness = TCONFIG->value("Thickness", -1).toInt();
+        int thickness = TCONFIG->value("Thickness", 3).toInt();
         m_penWidget->init(thickness);
         // m_penWidget->setThickness(thickness);
 
@@ -1345,7 +1345,7 @@ void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
 
         if (event->action() == TupPaintAreaEvent::ChangePenWidth)
-            m_penWidget->setPenWidth(qvariant_cast<int>(event->data()));
+            m_penWidget->setPenThickness(qvariant_cast<int>(event->data()));
     } 
 }
 

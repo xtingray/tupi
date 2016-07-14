@@ -204,12 +204,20 @@ TupPenWidget::~TupPenWidget()
     delete k;
 }
 
-void TupPenWidget::setThickness(int value)
+void TupPenWidget::setThickness(int thickness)
 {
-    if (value > 0) {
-        k->pen.setWidth(value);
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupPenWidget::setThickness()]";
+        #else
+            T_FUNCINFO << "thickness: " << thickness;
+        #endif
+    #endif
+
+    if (thickness > 0) {
+        k->pen.setWidth(thickness);
         TCONFIG->beginGroup("PenParameters");
-        TCONFIG->setValue("Thickness", value);
+        TCONFIG->setValue("Thickness", thickness);
         updatePenProperties();
     }
 }
@@ -240,15 +248,23 @@ void TupPenWidget::setPenColor(const QColor color)
     k->thickPreview->setColor(color);
 }
 
-void TupPenWidget::setPenWidth(int width)
+void TupPenWidget::setPenThickness(int thickness)
 {
-    k->pen.setWidth(width);
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupPenWidget::setPenThickness()]";
+        #else
+            T_FUNCINFO << "thickness: " << thickness;
+        #endif
+    #endif
+
+    k->pen.setWidth(thickness);
     TCONFIG->beginGroup("PenParameters");
-    TCONFIG->setValue("Thickness", width);
-    k->thickPreview->render(width);
+    TCONFIG->setValue("Thickness", thickness);
+    k->thickPreview->render(thickness);
 
     k->thickness->blockSignals(true);
-    k->thickness->setValue(width);
+    k->thickness->setValue(thickness);
     k->thickness->blockSignals(false);
 }
 
@@ -260,6 +276,14 @@ void TupPenWidget::setBrush(const QBrush brush)
 
 void TupPenWidget::init(int thickness)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupPenWidget::init()]";
+        #else
+            T_FUNCINFO << "thickness: " << thickness;
+        #endif
+    #endif
+
     blockSignals(true);
     setPenColor(QColor(0, 0, 0));
 
