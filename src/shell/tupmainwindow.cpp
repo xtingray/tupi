@@ -159,8 +159,8 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     }
 
     if (!content.isEmpty()) {
-        tError() << "Web Msg Content:";
-        tError() << content;
+        // tError() << "Web Msg Content:";
+        // tError() << content;
     } else {
         // Check if user wants to see a Tupi tip for every time he launches the program
         TCONFIG->beginGroup("General");
