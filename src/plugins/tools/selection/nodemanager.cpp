@@ -234,6 +234,21 @@ void NodeManager::rotate(double angle)
     k->parent->setData(TupGraphicObject::Rotate, k->rotation);
 }
 
+void NodeManager::horizontalFlip()
+{
+    scale(k->scaleX*(-1), k->scaleY);
+}
+
+void NodeManager::verticalFlip()
+{
+    scale(k->scaleX, k->scaleY*(-1));
+}
+
+void NodeManager::crossedFlip()
+{
+    scale(k->scaleX*(-1), k->scaleY*(-1));
+}
+
 void NodeManager::show()
 {
     foreach (Node *node, k->nodes) {

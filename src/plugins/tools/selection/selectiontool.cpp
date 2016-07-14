@@ -619,32 +619,19 @@ void SelectionTool::applyFlip(Settings::Flip flip)
     k->selectedObjects = k->scene->selectedItems();
 
     foreach (QGraphicsItem *item, k->selectedObjects) {
-             QRectF rect = item->sceneBoundingRect();
-             QPointF point = rect.topLeft();
-             QMatrix m;
-             m.translate(point.x(), point.y());
+             foreach (NodeManager *manager, k->nodeManagers) {
+                      if (flip == Settings::Horizontal)
+                          manager->horizontalFlip();
+                      else if (flip == Settings::Vertical)
+                               manager->verticalFlip();
+                      else if (flip == Settings::Crossed)
+                               manager->crossedFlip();
 
-             if (flip == Settings::Horizontal)
-                 m.scale(-1.0, 1.0);
-             else if (flip == Settings::Vertical)
-                      m.scale(1.0, -1.0);
-             else if (flip == Settings::Crossed)
-                      m.scale(-1.0, -1.0);
-
-             m.translate(-point.x(), -point.y());
-             item->setMatrix(m, true);
-             rect = item->sceneBoundingRect();
-             QPointF point2 = rect.topLeft();
-
-             QPointF result = point - point2;
-             item->moveBy(result.x(), result.y());
-
-             foreach (NodeManager *node, k->nodeManagers) {
-                      if (node->isModified()) {
+                      if (manager->isModified()) {
                           QDomDocument doc;
                           doc.appendChild(TupSerializer::properties(item, doc));
 
-                          TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(node->parentItem());
+                          TupSvgItem *svg = qgraphicsitem_cast<TupSvgItem *>(manager->parentItem());
                           int position = -1;
                           TupLibraryObject::Type type = TupLibraryObject::Item;
                           TupFrame *frame = currentFrame();
@@ -652,7 +639,7 @@ void SelectionTool::applyFlip(Settings::Flip flip)
                               type = TupLibraryObject::Svg;
                               position = frame->indexOf(svg);
                           } else {
-                              position = frame->indexOf(node->parentItem());
+                              position = frame->indexOf(manager->parentItem());
                           }
 
                           TupProjectRequest event = TupRequestBuilder::createItemRequest(

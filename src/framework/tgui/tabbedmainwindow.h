@@ -73,6 +73,7 @@ class T_GUI_EXPORT TabbedMainWindow : public TMainWindow
         void setTabWidget(QTabWidget *w);
         QTabWidget *tabWidget() const;
         void setCurrentTab(int index);
+        int tabCount(); 
 
     protected:
         virtual void setupTabWidget(QTabWidget *w);

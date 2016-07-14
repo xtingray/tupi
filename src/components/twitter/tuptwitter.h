@@ -40,15 +40,8 @@
 #include "tapplicationproperties.h"
 
 #include <QWidget>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QFile>
-#include <QByteArray>
-#include <QtGui>
 #include <QtNetwork>
-#include <QNetworkReply>
-#include <QDomDocument>
-#include <QEventLoop>
+#include <QByteArray>
 
 class TUPI_EXPORT TupTwitter : public QWidget
 {
@@ -67,15 +60,17 @@ class TUPI_EXPORT TupTwitter : public QWidget
         void pageReady();
 
     private:
-        void requestFile(QString target);
+        void requestFile(const QString &target);
         void checkSoftwareUpdates(QByteArray array);
         void formatStatus(QByteArray array);
+        void saveWebMsg(const QString &answer);
 
         static QString NEWS_HOST;
         static QString IS_HOST_UP_URL;
         static QString USER_TIMELINE_URL;
         static QString TUPI_VERSION_URL;
         static QString BROWSER_FINGERPRINT;
+        static QString TUPI_WEB_MSG;
 
         struct Private;
         Private *const k;

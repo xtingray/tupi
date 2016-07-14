@@ -103,6 +103,11 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         #endif
     #endif
 
+    // Naming the main frame...
+    setWindowTitle(tr("Tupi: 2D Magic"));
+    setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
+    setObjectName("TupMainWindow_");
+
     isNetworked = false;
     exportWidget = NULL;
 
@@ -127,12 +132,6 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     // Loading audio player plugin
     // TAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
 
-    setObjectName("TupMainWindow_");
-
-    // Naming the main frame...
-    setWindowTitle(tr("Tupi: 2D Magic"));
-    setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
-
     // Defining the render type for the drawings
     // m_renderType = Tupi::RenderType(TCONFIG->value("RenderType").toInt());
 
@@ -147,13 +146,29 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     setupMenu();
     setupToolBar();
 
-    // Check if user wants to see a Tupi tip for every time he launches the program
-    TCONFIG->beginGroup("General");
-    bool showTips = TCONFIG->value("ShowTipOfDay", true).toBool();
+    // SQA: Web announcement comes here
+    QString webMsgPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/webmsg.html";
+    QFile webMsgFile(webMsgPath);
+    QString content = "";
+    if (webMsgFile.exists()) {
+        if (webMsgFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&webMsgFile);
+            while (!in.atEnd())
+                   content += in.readLine();
+        }
+    }
 
-    // If option is enabled, then, show a little dialog with a nice tip
-    if (showTips)
-        QTimer::singleShot(0, this, SLOT(showTipDialog()));
+    if (!content.isEmpty()) {
+        tError() << "Web Msg Content:";
+        tError() << content;
+    } else {
+        // Check if user wants to see a Tupi tip for every time he launches the program
+        TCONFIG->beginGroup("General");
+        bool showTips = TCONFIG->value("ShowTipOfDay", true).toBool();
+        // If option is enabled, then, show a little dialog with a nice tip
+        if (showTips)
+            QTimer::singleShot(0, this, SLOT(showTipDialog()));
+    }
 
     // Time to load plugins... 
     TupPluginManager::instance()->loadPlugins();
@@ -388,41 +403,35 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
 void TupMainWindow::addTwitterPage()
 {
-    QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
-    if (QFile::exists(twitterPath)) {
-        #ifdef K_DEBUG
-            QString msg = "TupMainWindow::addTwitterPage() - Loading page -> " + twitterPath;
-            #ifdef Q_OS_WIN
-                qWarning() << msg;
-            #else
-                tWarning() << msg;
+    if (tabCount() == 2) {
+        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
+        if (QFile::exists(twitterPath)) {
+            #ifdef K_DEBUG
+                QString msg = "TupMainWindow::addTwitterPage() - Loading page -> " + twitterPath;
+                #ifdef Q_OS_WIN
+                    qWarning() << msg;
+                #else
+                    tWarning() << msg;
+                #endif
             #endif
-        #endif
 
-        internetOn = true;
-        newsTab = new TupTwitterWidget(this);
-        newsTab->setSource(twitterPath);
-        connect(newsTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
-        addWidget(newsTab);
-    } else {
-        #ifdef K_DEBUG
-            QString msg = "TupMainWindow::addTwitterPage() - Warning: Couldn't load page -> " + twitterPath;
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-            #else
-                tWarning() << msg;
+            internetOn = true;
+            newsTab = new TupTwitterWidget(this);
+            newsTab->setSource(twitterPath);
+            connect(newsTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
+            addWidget(newsTab);
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "TupMainWindow::addTwitterPage() - Warning: Couldn't load page -> " + twitterPath;
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tWarning() << msg;
+                #endif
             #endif
-        #endif
+        }
     }
 }
-
-/*
-void TupMainWindow::updateTabContext(int tab)
-{
-    if (tab == 0)
-        animationTab->updatePerspective();
-}
-*/
 
 /**
  * @if english

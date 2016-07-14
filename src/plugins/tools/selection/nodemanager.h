@@ -66,6 +66,9 @@ class TUPI_PLUGIN NodeManager : public QObject
         
         void scale(float sx, float sy);
         void rotate(double angle);
+        void horizontalFlip();
+        void verticalFlip();
+        void crossedFlip();
         
         void setPressedStatus(bool isPressed);
         bool isPressed();

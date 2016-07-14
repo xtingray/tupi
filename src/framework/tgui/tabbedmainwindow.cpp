@@ -157,6 +157,11 @@ void TabbedMainWindow::removeWidget(QWidget *widget, bool force)
     m_pages.removeAll(widget);
 }
 
+int TabbedMainWindow::tabCount()
+{
+    return m_pages.count();
+}
+
 /**
  * Close the current tab.
  */
