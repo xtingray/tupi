@@ -328,7 +328,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         connect(animationTab, SIGNAL(contourColorChanged(const QColor &)), m_colorPalette, SLOT(updateContourColor(const QColor &))); 
         connect(animationTab, SIGNAL(fillColorChanged(const QColor &)), m_colorPalette, SLOT(updateFillColor(const QColor &)));
         connect(animationTab, SIGNAL(bgColorChanged(const QColor &)), m_colorPalette, SLOT(updateBgColor(const QColor &)));
-        connect(animationTab, SIGNAL(penWidthChanged(int)), this, SLOT(updatePenWidth(int)));
+        connect(animationTab, SIGNAL(penWidthChanged(int)), this, SLOT(updatePenThickness(int)));
 
         animationTab->setAntialiasing(true);
 
@@ -1344,8 +1344,10 @@ void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
         if (event->action() == TupPaintAreaEvent::ChangePenColor)
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
 
-        if (event->action() == TupPaintAreaEvent::ChangePenWidth)
+        if (event->action() == TupPaintAreaEvent::ChangePenThickness) {
+            tError() << "TupMainWindow::createPaintCommand() - thickness: " << qvariant_cast<int>(event->data());
             m_penWidget->setPenThickness(qvariant_cast<int>(event->data()));
+        }
     } 
 }
 
@@ -1363,17 +1365,17 @@ void TupMainWindow::updatePenColor(const QColor &color)
     createPaintCommand(event);
 }
 
-void TupMainWindow::updatePenWidth(int width)
+void TupMainWindow::updatePenThickness(int thickness)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupMainWindow::updatePenWidth()]";
+            qDebug() << "[TupMainWindow::updatePenThickness()]";
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << "thickness: " << thickness;
         #endif
     #endif
 
-    TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePenWidth, width);
+    TupPaintAreaEvent *event = new TupPaintAreaEvent(TupPaintAreaEvent::ChangePenThickness, thickness);
     createPaintCommand(event);
 }
 

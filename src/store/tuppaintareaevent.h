@@ -51,7 +51,7 @@ class TUPI_EXPORT TupPaintAreaEvent
              None = 0,
              ChangePen,
              ChangePenColor,
-             ChangePenWidth,
+             ChangePenThickness,
              ChangeBrush,
              ChangeBgColor
           };

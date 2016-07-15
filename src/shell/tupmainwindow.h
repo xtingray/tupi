@@ -184,7 +184,7 @@ class TupMainWindow : public TabbedMainWindow
     public slots:
         void openProject(const QString &path);
         void updatePenColor(const QColor &color);
-        void updatePenWidth(int width);
+        void updatePenThickness(int thickness);
 
     private slots:
         void addTwitterPage();
