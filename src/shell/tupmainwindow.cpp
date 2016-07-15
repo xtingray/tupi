@@ -159,8 +159,16 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     }
 
     if (!content.isEmpty()) {
-        // tError() << "Web Msg Content:";
-        // tError() << content;
+        #ifdef K_DEBUG
+            QString msg = "TupMainWindow::TupMainWindow() - Web Msg Content:";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+                qDebug() << content;
+            #else
+                tWarning() << msg;
+                tWarning() << content;
+            #endif
+        #endif
     } else {
         // Check if user wants to see a Tupi tip for every time he launches the program
         TCONFIG->beginGroup("General");
@@ -1344,10 +1352,8 @@ void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
         if (event->action() == TupPaintAreaEvent::ChangePenColor)
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
 
-        if (event->action() == TupPaintAreaEvent::ChangePenThickness) {
-            tError() << "TupMainWindow::createPaintCommand() - thickness: " << qvariant_cast<int>(event->data());
+        if (event->action() == TupPaintAreaEvent::ChangePenThickness)
             m_penWidget->setPenThickness(qvariant_cast<int>(event->data()));
-        }
     } 
 }
 

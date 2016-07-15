@@ -96,6 +96,10 @@ void PencilTool::init(TupGraphicsScene *scene)
     k->input = k->scene->inputDeviceInformation();
     k->resize = false;
     k->circleZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
+
+    TCONFIG->beginGroup("PenParameters");
+    k->penWidth = TCONFIG->value("Thickness", 3).toInt();
+
     foreach (QGraphicsView * view, scene->views())
              view->setDragMode(QGraphicsView::NoDrag);
 }
@@ -253,6 +257,14 @@ void PencilTool::saveConfig()
 
 void PencilTool::keyPressEvent(QKeyEvent *event)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[PencilTool::keyPressEvent()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (event->modifiers() == Qt::ShiftModifier) {
         k->resize = true;
         k->input = k->scene->inputDeviceInformation();
@@ -278,6 +290,14 @@ void PencilTool::keyPressEvent(QKeyEvent *event)
 
 void PencilTool::keyReleaseEvent(QKeyEvent *event) 
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[PencilTool::keyReleaseEvent()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     Q_UNUSED(event);
 
     if (k->resize) {
