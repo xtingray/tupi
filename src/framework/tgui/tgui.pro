@@ -73,6 +73,7 @@ HEADERS += taction.h \
            themedocument.h \
            thememanager.h \
            tipdialog.h \
+           tupmsgdialog.h \
            ttoolbox.h \
            toolview.h \
            treelistwidget.h \
@@ -132,6 +133,7 @@ SOURCES += taction.cpp \
            themedocument.cpp \
            thememanager.cpp \
            tipdialog.cpp \
+           tupmsgdialog.cpp \
            ttoolbox.cpp \
            toolview.cpp \
            treelistwidget.cpp \

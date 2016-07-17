@@ -44,6 +44,7 @@
 
 // Tupi Framework
 #include "tipdialog.h"
+#include "tupmsgdialog.h"
 #include "tosd.h"
 // #include "taudioplayer.h"
 
@@ -149,26 +150,46 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
     // SQA: Web announcement comes here
     QString webMsgPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/webmsg.html";
     QFile webMsgFile(webMsgPath);
-    QString content = "";
+    QString fileContent = "";
     if (webMsgFile.exists()) {
         if (webMsgFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QTextStream in(&webMsgFile);
             while (!in.atEnd())
-                   content += in.readLine();
+                   fileContent += in.readLine();
         }
     }
 
-    if (!content.isEmpty()) {
-        #ifdef K_DEBUG
-            QString msg = "TupMainWindow::TupMainWindow() - Web Msg Content:";
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-                qDebug() << content;
-            #else
-                tWarning() << msg;
-                tWarning() << content;
-            #endif
-        #endif
+    // Processing web msg content
+    bool showWebMsg = false;
+    webContent = "";
+    if (!fileContent.isEmpty()) {
+        QDomDocument doc;
+        if (doc.setContent(fileContent)) {
+            QDomElement root = doc.documentElement();
+            QDomNode n = root.firstChild();
+            while (!n.isNull()) {
+                   QDomElement e = n.toElement();
+                   if (e.tagName() == "show") {
+                       QString flag = e.text();
+                       if (flag.compare("true") == 0)
+                           showWebMsg = true;
+                       else
+                           break;
+                   } else if (e.tagName() == "size") {
+                       QStringList numbers = e.text().split(",");
+                       if (numbers.size() == 2) {
+                           webMsgSize = QSize(numbers.at(0).toInt(), numbers.at(1).toInt());
+                       }
+                   } else if (e.tagName() == "text") {
+                       webContent = e.text();
+                   }
+                   n = n.nextSibling();
+            }
+        }
+    }
+
+    if (showWebMsg) {
+        QTimer::singleShot(0, this, SLOT(showWebMessage()));
     } else {
         // Check if user wants to see a Tupi tip for every time he launches the program
         TCONFIG->beginGroup("General");
@@ -1581,4 +1602,14 @@ void TupMainWindow::saveDefaultPath(const QString &dir)
     TCONFIG->beginGroup("General");
     TCONFIG->setValue("DefaultPath", dir);
     TCONFIG->sync();
+}
+
+void TupMainWindow::showWebMessage()
+{
+    TupMsgDialog *msgDialog = new TupMsgDialog(webContent, webMsgSize, this);
+    msgDialog->show();
+
+    QDesktopWidget desktop;
+    msgDialog->move((int) (desktop.screenGeometry().width() - msgDialog->width())/2 ,
+                    (int) (desktop.screenGeometry().height() - msgDialog->height())/2);
 }

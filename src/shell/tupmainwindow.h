@@ -230,6 +230,7 @@ class TupMainWindow : public TabbedMainWindow
         void updateUsersOnLine(const QString &login, int state);
         void importPapagayoLipSync();
         void hideTopPanels();
+        void showWebMessage();
 
     private:
         TupProjectManager *m_projectManager;
@@ -296,6 +297,8 @@ class TupMainWindow : public TabbedMainWindow
         QString projectName;
         QString author;
         QString netUser;
+        QString webContent;
+        QSize webMsgSize;
 
     signals:
         void responsed(TupProjectResponse *);

@@ -46,7 +46,7 @@ QString TupTwitter::NEWS_HOST = QString("http://www.maefloresta.com");
 QString TupTwitter::IS_HOST_UP_URL = QString("/updates/test.xml");
 QString TupTwitter::USER_TIMELINE_URL = QString("/updates/tweets.html");
 QString TupTwitter::TUPI_VERSION_URL = QString("/updates/current_version.xml");
-QString TupTwitter::TUPI_WEB_MSG = QString("/updates/web_msg.html");
+QString TupTwitter::TUPI_WEB_MSG = QString("/updates/web_msg.");
 QString TupTwitter::BROWSER_FINGERPRINT = QString("Tupi_Browser 1.0");
 
 struct TupTwitter::Private
@@ -63,6 +63,7 @@ struct TupTwitter::Private
     QString webMsg;
     bool update;
     QString themeName;
+    QString locale;
 };
 
 TupTwitter::TupTwitter(QWidget *parent) : QWidget(parent), k(new Private)
@@ -70,6 +71,16 @@ TupTwitter::TupTwitter(QWidget *parent) : QWidget(parent), k(new Private)
     k->update = false;
     TCONFIG->beginGroup("General");
     k->themeName = TCONFIG->value("Theme", "Light").toString();
+
+    k->locale = QString(QLocale::system().name()).left(2);
+    if (k->locale.length() < 2) {
+        k->locale = "en";
+    } else {
+        QList<QString> localeSupport;
+        localeSupport << "en" << "es" << "pt";
+        if (!localeSupport.contains(k->locale))
+            k->locale = "en";
+    }
 }
 
 void TupTwitter::start()
@@ -153,7 +164,7 @@ void TupTwitter::closeRequest(QNetworkReply *reply)
             } else {
                 if (answer.startsWith("<div")) { // Getting Twitter records 
                     formatStatus(array);
-                    requestFile(NEWS_HOST + TUPI_WEB_MSG);
+                    requestFile(NEWS_HOST + TUPI_WEB_MSG + k->locale + ".html");
                 } else {
                     if (answer.startsWith("<webmsg>")) { // Getting web msg
                         saveWebMsg(answer);
@@ -344,14 +355,6 @@ void TupTwitter::formatStatus(QByteArray array)
         file.close();
     }
 
-    /*
-    if (file.open(QIODevice::WriteOnly)) {
-        QByteArray data = html.toUtf8();
-        file.write(data, qstrlen(data));
-        file.close();
-    }
-    */
-
     #ifdef K_DEBUG
         msg = "TupTwitter::formatStatus() - Saving file -> " + twitterPath;
         #ifdef Q_OS_WIN
@@ -366,7 +369,8 @@ void TupTwitter::formatStatus(QByteArray array)
 
 void TupTwitter::saveWebMsg(const QString &answer)
 {
-    QFile file(QDir::homePath() + "/." + QCoreApplication::applicationName() + "/webmsg.html");
+    QString msgPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/webmsg.html";
+    QFile file(msgPath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
         out << answer;

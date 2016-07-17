@@ -33,108 +33,75 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tipdialog.h"
+#include "tupmsgdialog.h"
+#include "tapplicationproperties.h"
+#include "tseparator.h"
+#include "talgorithm.h"
 
-TipDialog::TipDialog(QStringList &labels, const QString &file, QWidget *parent) : QDialog(parent)
+#include <QVBoxLayout>
+#include <QPushButton>
+
+TupMsgDialog::TupMsgDialog(const QString &message, QSize dialogSize, QWidget *parent) : QDialog(parent)
 {
     setModal(true);
-    tags = labels;
-    m_database = new TipDatabase(file, parent);
+    msg = message;
+    size = dialogSize;
+    if (size == QSize(0, 0))
+        size = QSize(200, 100);
+
     setupGUI();
 }
 
-TipDialog::TipDialog(QStringList &labels, TipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
+TupMsgDialog::~TupMsgDialog()
 {
-    tags = labels;
-    setupGUI();
 }
 
-void TipDialog::setupGUI()
+void TupMsgDialog::setupGUI()
 {
-    setWindowTitle(tags.at(0));
+    setWindowTitle(tr("Breaking News!"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/bubble.png"));
 
-    /*
-    int h;
-    int s;
-    int v;
-    QColor baseColor = palette().base().color();
-    baseColor.getHsv(&h,&s,&v);
-    baseColor.setHsv(h, int(s*(71/76.0)), int(v*(67/93.0)));
-    */
-    
     QVBoxLayout *layout = new QVBoxLayout(this);
     textBrowser = new QTextBrowser;
     textBrowser->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
     textBrowser->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
     textBrowser->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     textBrowser->setOpenExternalLinks(true);
-
     QStringList path;
 #ifdef Q_OS_WIN
     QString resources = SHARE_DIR + "help/";
 #else
     QString resources = SHARE_DIR + "data/help/";
-#endif	
-
+#endif
     path << resources + "css";
     path << resources + "images";
     textBrowser->setSearchPaths(path);
-    
+
+    int index = TAlgorithm::random() % 3;
+    QString html = "<html>\n";
+    html += "<head>\n";
+    html += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=utf-8\">\n";
+    html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"file:tupi.css\" />\n";
+    html += "</head>\n";
+    html += "<body class=\"tip_background0" + QString::number(index) + "\">\n";
+    html += msg;
+    html += "\n</body>\n";
+    html += "</html>";
+
+    textBrowser->setHtml(html);
+
+    QPushButton *closeButton = new QPushButton(tr("Close"));
+    layout->addWidget(closeButton);
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    buttonLayout->addWidget(closeButton, 1, Qt::AlignHCenter);
+
     layout->addWidget(textBrowser);
     layout->addWidget(new TSeparator);
-    
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
-    
-    m_showOnStart = new QCheckBox(tags.at(1));
-    buttonLayout->addWidget(m_showOnStart);
-    connect(m_showOnStart, SIGNAL(clicked()), this, SLOT(setShowOnStart()));
-    
-    buttonLayout->addStretch(1);
-    
-    QPushButton *prevTip = new QPushButton(tags.at(2));
-    buttonLayout->addWidget(prevTip);
-    connect(prevTip, SIGNAL(clicked()), this, SLOT(showPrevTip()));
-    
-    QPushButton *nextTip = new QPushButton(tags.at(3));
-    buttonLayout->addWidget(nextTip);
-    connect(nextTip, SIGNAL(clicked()), this, SLOT(showNextTip()));
-    
-    QPushButton *close = new QPushButton(tags.at(4));
-    buttonLayout->addWidget(close);
-    connect(close, SIGNAL(clicked()), this, SLOT(accept()));
-    
     layout->addLayout(buttonLayout);
-    
+
     setAttribute(Qt::WA_DeleteOnClose, true);
-    
-    TCONFIG->beginGroup("General");
-    m_showOnStart->setChecked(qvariant_cast<bool>(TCONFIG->value("ShowTipOfDay", true)));
-    
-    showNextTip();
-}
 
-TipDialog::~TipDialog()
-{
+    setFixedSize(size);
 }
-
-void TipDialog::showPrevTip()
-{
-    m_database->prevTip();
-    Tip tip = m_database->tip();
-    textBrowser->setHtml(tip.text);
-}
-
-void TipDialog::showNextTip()
-{
-    m_database->nextTip();
-    Tip tip = m_database->tip();
-    textBrowser->setHtml(tip.text);
-}
-
-void TipDialog::setShowOnStart()
-{
-    TCONFIG->beginGroup("General");
-    TCONFIG->setValue("ShowTipOfDay", m_showOnStart->isChecked());
-}
-

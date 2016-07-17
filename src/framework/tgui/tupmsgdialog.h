@@ -33,96 +33,33 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tipdatabase.h"
+#ifndef TUPMSGDIALOG_H
+#define TUPMSGDIALOG_H
 
-struct TipDatabase::Private
+#include "tglobal.h"
+
+#include <QDialog>
+#include <QTextBrowser>
+
+/**
+ * @class TupMsgDialog
+ */
+
+class T_GUI_EXPORT TupMsgDialog : public QDialog
 {
-    QList<Tip> tips;
-    int currentTipIndex;
+    Q_OBJECT
+
+    public:
+        TupMsgDialog(const QString &message, QSize dialogSize, QWidget *parent = 0);
+        ~TupMsgDialog();
+        
+    private:
+        void setupGUI();
+        
+    private:
+        QString msg;
+        QSize size;
+        QTextBrowser *textBrowser;
 };
 
-TipDatabase::TipDatabase(const QString &file, QWidget *parent) : QWidget(parent), k(new Private)
-{
-    loadTips(file);
-    
-    if (!k->tips.isEmpty())
-        k->currentTipIndex = TAlgorithm::random() % k->tips.count();
-}
-
-TipDatabase::~TipDatabase()
-{
-    delete k;
-}
-
-Tip TipDatabase::tip() const
-{
-    if (k->currentTipIndex >= 0 && k->currentTipIndex < k->tips.count())
-        return k->tips[k->currentTipIndex];
-
-    return Tip();
-}
-
-void TipDatabase::nextTip()
-{
-    if (k->tips.isEmpty())
-        return ;
-
-    k->currentTipIndex += 1;
-
-    if (k->currentTipIndex >= (int) k->tips.count())
-        k->currentTipIndex = 0;
-}
-
-void TipDatabase::prevTip()
-{
-    if (k->tips.isEmpty())
-        return ;
-
-    k->currentTipIndex -= 1;
-
-    if (k->currentTipIndex < 0)
-        k->currentTipIndex = k->tips.count() - 1;
-}
-
-void TipDatabase::loadTips(const QString &filePath)
-{
-    QDomDocument doc;
-    QFile file(filePath);
-    
-    if (!file.open(QIODevice::ReadOnly))
-        return;
-    
-    if (!doc.setContent(&file)) {
-        file.close();
-        return;
-    }
-    file.close();
-    
-    QDomElement docElem = doc.documentElement();
-    QDomNode n = docElem.firstChild();
-
-    while(!n.isNull()) {
-        QDomElement e = n.toElement();
-
-        if(!e.isNull()) {
-            if (e.tagName() == "tip") {
-                int index = TAlgorithm::random() % 3;
-                Tip tip;
-                tip.text = "<html>\n";
-                tip.text += "<head>\n";
-                tip.text += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=utf-8\">\n";
-                tip.text += "<link rel=\"stylesheet\" type=\"text/css\" href=\"file:tupi.css\" />\n";
-                tip.text += "</head>\n";
-                tip.text += "<body class=\"tip_background0" + QString::number(index) + "\">\n";
-                tip.text += e.text();
-                tip.text += "\n</body>\n";
-                tip.text += "</html>";
-                k->tips << tip;
-            }
-        }
-        n = n.nextSibling();
-
-    }
-}
-
-
+#endif

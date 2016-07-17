@@ -278,4 +278,32 @@ a:hover {
      font-weight:bold;
 }
 
+.web_title {
+     color:#000000;
+     text-align:center;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:20px;
+     font-weight:bold;
+}
 
+.web_header {
+     color:#000000;
+     text-align:center;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:36px;
+     font-weight:bold;
+}
+
+.web_paragraph {
+     margin-left:10px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-jusify:inter-word;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:16px;
+     font-weight:normal;
+}
