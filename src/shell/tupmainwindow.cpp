@@ -320,10 +320,14 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         #endif
     #endif
 
-    // Downloading maefloresta Twitter status
-    TupTwitter *twitter = new TupTwitter();
-    twitter->start();
-    connect(twitter, SIGNAL(pageReady()), this, SLOT(addTwitterPage()));
+    TCONFIG->beginGroup("General");
+    bool getNews = TCONFIG->value("GetNews", true).toBool();
+    if (getNews) {
+        // Downloading maefloresta Twitter status
+        TupTwitter *twitter = new TupTwitter();
+        twitter->start();
+        connect(twitter, SIGNAL(pageReady()), this, SLOT(addTwitterPage()));
+    }
 
     if (m_projectManager->isOpen()) {
         if (TupMainWindow::requestType == NewLocalProject || TupMainWindow::requestType == NewNetProject)
