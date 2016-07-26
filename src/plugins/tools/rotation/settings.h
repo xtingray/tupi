@@ -97,8 +97,6 @@ class TUPI_PLUGIN Settings : public QWidget
     private:
         void setInnerForm();
         void activeInnerForm(bool enable);
-        void setClockForm();
-        void activeClockForm(bool enable); 
         void setRangeForm();
         void activeRangeForm(bool enable);
         void setEditMode();

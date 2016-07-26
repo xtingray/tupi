@@ -623,7 +623,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="82"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="83"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="68"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="88"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="87"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="85"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="86"/>
         <source>Name</source>
@@ -633,7 +633,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="92"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="93"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="78"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="98"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="97"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="95"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="96"/>
         <source>Options</source>
@@ -643,7 +643,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="93"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="94"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="79"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="99"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="98"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="96"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="97"/>
         <source>Select object</source>
@@ -653,7 +653,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="94"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="95"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="80"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="100"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="99"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="97"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="98"/>
         <source>Set Properties</source>
@@ -664,7 +664,7 @@
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="135"/>
         <location filename="../src/plugins/tools/papagayo/settings.cpp" line="105"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="120"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="140"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="139"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="137"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="138"/>
         <source>Starting at frame</source>
@@ -675,7 +675,7 @@
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="143"/>
         <location filename="../src/plugins/tools/papagayo/settings.cpp" line="240"/>
         <location filename="../src/plugins/tools/papagayo/settings.cpp" line="287"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="148"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="147"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="145"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="146"/>
         <source>Ending at frame</source>
@@ -692,8 +692,8 @@
         <location filename="../src/plugins/tools/position/settings.cpp" line="196"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="225"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="349"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="171"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="686"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="170"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="720"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="168"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="536"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="169"/>
@@ -748,7 +748,7 @@
     <message>
         <location filename="../src/plugins/tools/color/settings.cpp" line="231"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="219"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="324"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="309"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="218"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="219"/>
         <source>Loop</source>
@@ -757,7 +757,7 @@
     <message>
         <location filename="../src/plugins/tools/color/settings.cpp" line="240"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="228"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="333"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="318"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="227"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="228"/>
         <source>Loop with Reverse</source>
@@ -767,7 +767,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="290"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="275"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="174"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="370"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="372"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="277"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="277"/>
         <source>Save Tween</source>
@@ -777,7 +777,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="292"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="277"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="176"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="372"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="374"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="279"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="279"/>
         <source>Cancel Tween</source>
@@ -787,7 +787,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="362"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="341"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="333"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="448"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="455"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="349"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="345"/>
         <source>Update Tween</source>
@@ -797,7 +797,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="364"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="343"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="335"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="450"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="457"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="351"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="347"/>
         <source>Close Tween properties</source>
@@ -812,9 +812,11 @@
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="397"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="244"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="310"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="456"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="470"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="521"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="463"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="477"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="493"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="507"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="559"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="357"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="362"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="405"/>
@@ -828,7 +830,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="370"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="349"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="310"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="456"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="463"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="357"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="353"/>
         <source>You must select at least one object!</source>
@@ -837,7 +839,7 @@
     <message>
         <location filename="../src/plugins/tools/color/settings.cpp" line="375"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="354"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="470"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="477"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="362"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="358"/>
         <source>You must set Tween properties first!</source>
@@ -847,7 +849,7 @@
         <location filename="../src/plugins/tools/color/settings.cpp" line="431"/>
         <location filename="../src/plugins/tools/opacity/settings.cpp" line="397"/>
         <location filename="../src/plugins/tools/position/settings.cpp" line="244"/>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="521"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="559"/>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="405"/>
         <location filename="../src/plugins/tools/shear/settings.cpp" line="401"/>
         <source>Select objects for Tweening first!</source>
@@ -864,54 +866,64 @@
         <translation>Opacidade Final</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="180"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="179"/>
         <source>Continuous</source>
         <translation>Contínuo</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="181"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="180"/>
         <source>Partial</source>
         <translation>Parcial</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="185"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="184"/>
         <source>Type</source>
         <translation>Tipo</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="194"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="193"/>
         <source>Speed (Degrees/Frame)</source>
         <translation>Velocidade (Graus/Quadro)</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="260"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="229"/>
         <source>Direction</source>
         <translation>Direção</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="264"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="233"/>
         <source>Clockwise</source>
         <translation>Para a direita</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="265"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="234"/>
         <source>Counterclockwise</source>
         <translation>Para a esquerda</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="289"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="274"/>
         <source>Degrees Range</source>
         <translation>Intervalo de Graus</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="292"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="277"/>
         <source>Start at</source>
         <translation>Iniciar em</translation>
     </message>
     <message>
-        <location filename="../src/plugins/tools/rotation/settings.cpp" line="308"/>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="293"/>
         <source>Finish at</source>
         <translation>Terminar em</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="493"/>
+        <source>Angle range must be greater than 0!</source>
+        <translation>O intervalo do ângulo deve ser maior a 0!</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tools/rotation/settings.cpp" line="507"/>
+        <source>Angle range must be greater than Speed!</source>
+        <translation>O intervalo do ângulo deve ser maior que a Velocidade!</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/scale/settings.cpp" line="177"/>
@@ -3296,42 +3308,42 @@ Por favor, renomeie o ficheiro do projeto</translation>
 <context>
     <name>TupItemTweener</name>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="630"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="626"/>
         <source>Position Tween</source>
         <translation>Tween de Posição</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="633"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="629"/>
         <source>Rotation Tween</source>
         <translation>Tween de Rotação</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="636"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="632"/>
         <source>Scale Tween</source>
         <translation>Tween de Escala</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="639"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="635"/>
         <source>Shear Tween</source>
         <translation>Tween de Distorção</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="642"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="638"/>
         <source>Opacity Tween</source>
         <translation>Tween de Opacidade</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="645"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="641"/>
         <source>Coloring Tween</source>
         <translation>Tween de Cor</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="648"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="644"/>
         <source>Composed Tween</source>
         <translation>Tween Composto</translation>
     </message>
     <message>
-        <location filename="../src/store/tupitemtweener.cpp" line="651"/>
+        <location filename="../src/store/tupitemtweener.cpp" line="647"/>
         <source>Papagayo Lip-sync</source>
         <translation>Papagayo Lip-sync</translation>
     </message>
@@ -3751,217 +3763,217 @@ Por favor, renomeie o ficheiro do projeto</translation>
         <translation>[ por %1 | modo de rede ]</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="330"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="424"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1062"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1238"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="334"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="428"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1066"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1242"/>
         <source>Information</source>
         <translation>Informação</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="330"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="334"/>
         <source>Opening a new document...</source>
         <translation>A abrir um novo documento...</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="348"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1298"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="352"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1302"/>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="263"/>
         <source>Animation</source>
         <translation>Animação</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="403"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="407"/>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="271"/>
         <source>Player</source>
         <translation>Reprodutor</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="424"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="428"/>
         <source>Project &lt;b&gt;%1&lt;/b&gt; opened!</source>
         <translation>Projeto &lt;b&gt;%1&lt;/b&gt; aberto!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="539"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="543"/>
         <source>Question</source>
         <translation>Pergunta</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="541"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="545"/>
         <source>The document has been modified.</source>
         <translation>O documento foi modificado.</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="542"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="546"/>
         <source>Do you want to save the project?</source>
         <translation>Deseja guardar o projeto?</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="544"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="548"/>
         <source>Save</source>
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="545"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="549"/>
         <source>Discard</source>
         <translation>Descartar</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="546"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="550"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="766"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="846"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1197"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1246"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="770"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="850"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1201"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1250"/>
         <source>by</source>
         <translation>por</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="784"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="788"/>
         <source>Open Tupi project</source>
         <translation>Abrir projeto Tupi</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1017"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1021"/>
         <source>Import Gimp palettes</source>
         <translation>Importar paletas do GIMP</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1017"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1021"/>
         <source>Gimp Palette (*.gpl *.txt *.css)</source>
         <translation>Paleta do Gimp (*.gpl *.txt *.css)</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1062"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1066"/>
         <source>Gimp palette import was successful</source>
         <translation>Paleta do Gimp importada com sucesso</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1064"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1068"/>
         <source>Gimp palette import was unsuccessful</source>
         <translation>Importação da paleta do Gimp falhou</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1153"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1157"/>
         <source>Save Project As</source>
         <translation>Guardar Projeto Como</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1168"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1172"/>
         <source>Directory does not exist! Please, choose another path.</source>
         <translation>Diretório não existe! Por favor, escolha outro caminho.</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1183"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1187"/>
         <source>Insufficient permissions. Please, pick another path.</source>
         <translation>Permissões insuficientes. Por favor, escolha outro caminho.</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1238"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1242"/>
         <source>Project &lt;b&gt;%1&lt;/b&gt; saved</source>
         <translation>Projeto &lt;b&gt;%1&lt;/b&gt; gravado</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1508"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1512"/>
         <source>Import project package</source>
         <translation>Importar pacote de projeto</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1517"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1521"/>
         <source>Can&apos;t import project. File is empty!</source>
         <translation>Não é possível importar o projeto. Ficheiro está vazio!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1521"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1525"/>
         <source>Can&apos;t save the project. File doesn&apos;t exist!</source>
         <translation>Não é possível guardar o projeto. Ficheiro não existe!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1537"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1541"/>
         <source>Fatal Error</source>
         <translation>Erro Fatal</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1539"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1543"/>
         <source>The connection to the server has been lost.</source>
         <translation>A conexão com o servidor foi perdida.</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1540"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1544"/>
         <source>Please, try to connect again in a while</source>
         <translation>Por favor, tente conectar novamente daqui a pouco</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="858"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1064"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1168"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1183"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1252"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1517"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="862"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1068"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1172"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1187"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1256"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1521"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1525"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="858"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="862"/>
         <source>Cannot open project!</source>
         <translation>Não é possível abrir o projeto!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="785"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1154"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1509"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="789"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1158"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1513"/>
         <source>Tupi Project Package (*.tup)</source>
         <translation>Pacote de Projeto Tupi (*.tup)</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="108"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="286"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="663"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="766"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="846"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1197"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1246"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="667"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="770"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="850"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1201"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1250"/>
         <source>Tupi: 2D Magic</source>
         <translation>Tupi: Magia 2D</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="994"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="998"/>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="425"/>
         <source>Tip of the day</source>
         <translation>Dica do dia</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="994"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="998"/>
         <source>Show on start</source>
         <translation>Mostrar no início</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="994"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="998"/>
         <source>Previous tip</source>
         <translation>Dica anterior</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="994"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="998"/>
         <source>Next tip</source>
         <translation>Dica seguinte</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="994"/>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1542"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="998"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1546"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1252"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1256"/>
         <source>Cannot save the project!</source>
         <translation>Não é possível guardar o projeto!</translation>
     </message>
     <message>
-        <location filename="../src/shell/tupmainwindow.cpp" line="1299"/>
+        <location filename="../src/shell/tupmainwindow.cpp" line="1303"/>
         <source>New camera</source>
         <translation>Nova câmera</translation>
     </message>

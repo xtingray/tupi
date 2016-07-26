@@ -158,7 +158,7 @@ int main(int argc, char ** argv)
 
     QString themeName = TCONFIG->value("Theme").toString();
     if (themeName.length() == 0) {
-        themeName = "Light";
+        themeName = "Dark";
         TCONFIG->setValue("Theme", themeName);
     }
 

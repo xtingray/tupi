@@ -1937,6 +1937,14 @@ void TupLibraryWidget::executeSoftware(const QString &software, QString &path)
 
 void TupLibraryWidget::updateItemFromSaveAction()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryWidget::updateItemFromSaveAction()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     LibraryObjects collection = k->library->objects();
     QMapIterator<QString, TupLibraryObject *> i(collection);
     while (i.hasNext()) {
@@ -1963,6 +1971,14 @@ void TupLibraryWidget::updateItemFromSaveAction()
 
 void TupLibraryWidget::updateItem(const QString &name, const QString &extension, TupLibraryObject *object)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryWidget::updateItem()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     QString onEdition = name + "." + extension;
     QString onDisplay = k->currentItemDisplayed->text(1) + "." + k->currentItemDisplayed->text(2).toLower();
 
