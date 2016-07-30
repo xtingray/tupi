@@ -157,10 +157,22 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
                            }
                       } // for ph
 
-                      int total = (lastFrame - frames.at(numPhonemes-1)) + 1;
-                      for (int i=0; i<total; i++) {
-                           TupPhoneme *phoneme = new TupPhoneme(blocks.at(numPhonemes-1), point);
-                           word->addPhoneme(phoneme);
+                      if (!frames.isEmpty()) {
+                          int total = (lastFrame - frames.at(numPhonemes-1)) + 1;
+                          for (int i=0; i<total; i++) {
+                               TupPhoneme *phoneme = new TupPhoneme(blocks.at(numPhonemes-1), point);
+                               word->addPhoneme(phoneme);
+                          }
+                      } else {
+                          #ifdef K_DEBUG
+                              QString msg = "TupPapagayoImporter() - Fatal Error: frames size is less than numPhonemes -> ";
+                              msg += QString::number(frames.count()) + " < " + QString::number(numPhonemes);
+                              #ifdef Q_OS_WIN
+                                  qDebug() << msg;
+                              #else
+                                  tError() << msg;
+                              #endif
+                          #endif
                       }
 
                       if (w == numWords - 1) {

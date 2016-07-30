@@ -196,7 +196,7 @@ void Settings::setInnerForm()
     k->degreesPerFrame = new QSpinBox;
     k->degreesPerFrame->setEnabled(true);
     k->degreesPerFrame->setMinimum(1);
-    k->degreesPerFrame->setMaximum(359);
+    k->degreesPerFrame->setMaximum(360);
     k->degreesPerFrame->setValue(5);
 
     QVBoxLayout *speedLayout = new QVBoxLayout;
@@ -280,7 +280,7 @@ void Settings::setRangeForm()
     k->rangeStart = new QSpinBox;
     k->rangeStart->setEnabled(true);
     k->rangeStart->setMinimum(0);
-    k->rangeStart->setMaximum(359);
+    k->rangeStart->setMaximum(360);
     connect(k->rangeStart, SIGNAL(valueChanged(int)), this, SLOT(checkRange(int)));
 
     QHBoxLayout *startLayout = new QHBoxLayout;
@@ -296,7 +296,7 @@ void Settings::setRangeForm()
     k->rangeEnd = new QSpinBox;
     k->rangeEnd->setEnabled(true);
     k->rangeEnd->setMinimum(0);
-    k->rangeEnd->setMaximum(359);
+    k->rangeEnd->setMaximum(360);
     connect(k->rangeEnd, SIGNAL(valueChanged(int)), this, SLOT(checkRange(int)));
 
     QHBoxLayout *endLayout = new QHBoxLayout;
@@ -625,20 +625,29 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                double angle = start;
                bool token = false;
 
-               int distance = end - start; 
-               if (start > end)
-                   distance = (360 - start) + end;
+               int distance = 0;
+               if (direction == TupItemTweener::Clockwise) {
+                   if (start > end)
+                       distance = 360 - (start - end);
+                   else
+                       distance = end - start;
+               } else { // CounterClockwise
+                   if (start > end)
+                       distance = start - end;
+                   else
+                       distance = 360 - (end - start);
+               }
 
                int counter = 0; 
+               int go = distance;
+               int back = distance - (2*speed);
 
                for (int i=0; i < k->totalSteps; i++) {
                     TupTweenerStep *step = new TupTweenerStep(i);
                     step->setRotation(angle);
                     root.appendChild(step->toXml(doc));
 
-                    counter += speed;
-
-                    if (!token) {
+                    if (!token) { // going on initial direction
                         if (counter < distance) {
                             if (direction == TupItemTweener::Clockwise)
                                 angle += speed;
@@ -646,19 +655,21 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                                 angle -= speed;
 
                             if (end < start) {
-                                if (angle > 360)
+                                if (angle >= 360)
                                     angle = angle - 360;
                             }
                         }
-                    } else {
-                        if (direction == TupItemTweener::Clockwise)
-                            angle -= speed;
-                        else
-                            angle += speed;
+                    } else { // returning back
+                        if (counter < distance) {
+                            if (direction == TupItemTweener::Clockwise)
+                                angle -= speed;
+                            else
+                                angle += speed;
 
-                        if (end < start) {
-                            if (angle < 0)
-                                angle = 360 - angle;
+                            if (end < start) {
+                                if (angle < 0)
+                                    angle = 360 - abs(angle);
+                            }
                         }
                     }
 
@@ -666,10 +677,29 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                         if (counter >= distance) {
                             token = !token;
                             counter = 0;
-                        } 
+
+                            if (direction == TupItemTweener::Clockwise) {
+                                angle -= speed;
+                                if (angle < 0)
+                                    angle = 360 - abs(angle);
+                            } else {
+                                angle += speed;
+                                if (angle >= 360)
+                                    angle = angle - 360;
+                            }
+
+                            if (token)
+                                distance = back;
+                            else
+                                distance = go;
+                        } else {
+                            counter += speed;
+                        }
                     } else if (loop && counter >= distance) {
                                angle = start;
                                counter = 0;
+                    } else {
+                        counter += speed;
                     }
                }
     }
@@ -750,7 +780,7 @@ void Settings::checkRange(int index)
     int end = k->rangeEnd->value();
 
     if (start == end) {
-        if (k->rangeEnd->value() == 359)
+        if (k->rangeEnd->value() == 360)
             k->rangeStart->setValue(k->rangeStart->value() - 1);
         else
             k->rangeEnd->setValue(k->rangeEnd->value() + 1);
