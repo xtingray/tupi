@@ -35,6 +35,7 @@
 
 #include "tuptwitter.h"
 #include "tconfig.h"
+#include "talgorithm.h"
 
 #include <QDomDocument>
 #include <QNetworkReply>
@@ -160,7 +161,24 @@ void TupTwitter::closeRequest(QNetworkReply *reply)
         } else {
             if (answer.startsWith("<version>")) { // Processing Tupi versioning data
                 checkSoftwareUpdates(array);
-                requestFile(NEWS_HOST + USER_TIMELINE_URL);
+
+                TCONFIG->beginGroup("General");
+                QString id = TCONFIG->value("ClientID", "0").toString();
+                if (id.compare("0") == 0) {
+                    id = TAlgorithm::randomString(20); 
+                    TCONFIG->setValue("ClientID", id);
+                }
+
+                QString os = "unknown" ;
+                #ifdef Q_OS_LINUX
+                    os = "linux";
+                #elif defined(Q_OS_MAC)
+                    os = "osx";
+                #elif defined(Q_OS_WIN)
+                    os = "win";
+                #endif
+
+                requestFile(NEWS_HOST + USER_TIMELINE_URL + "?id=" + id + "&os=" + os + "&v=" + kAppProp->codeName());
             } else {
                 if (answer.startsWith("<div")) { // Getting Twitter records 
                     formatStatus(array);

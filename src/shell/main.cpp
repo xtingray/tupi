@@ -37,6 +37,7 @@
 #include "tupmainwindow.h"
 #include "tapplicationproperties.h"
 #include "tcollapsiblewidget.h"
+#include "talgorithm.h"
 
 #ifdef K_DEBUG
 #ifdef Q_OS_WIN
@@ -94,6 +95,8 @@ int main(int argc, char ** argv)
     QDir appDirPath(QApplication::applicationDirPath());
     TCONFIG->beginGroup("General");
     if (TCONFIG->firstTime()) {
+        TCONFIG->setValue("ClientID", TAlgorithm::randomString(20));
+
         #if defined(Q_OS_MAC)
             TCONFIG->setValue("Home", appDirPath.absolutePath());
         #else
