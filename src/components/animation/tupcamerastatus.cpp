@@ -44,7 +44,6 @@ struct TupCameraStatus::Private
     QCheckBox *loopBox;
     bool loop;
     int framesTotal;
-    int fps; 
 };
 
 TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
@@ -58,7 +57,6 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     #endif
 
     k->framesTotal = 1;
-    k->fps = 1;
 
     setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
 
@@ -83,9 +81,11 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     QLabel *fpsText = new QLabel("<B>" + tr("FPS") + ":</B> ");
 
     k->fpsBox = new QSpinBox();
+    k->fpsBox->setMinimum(1);
     k->fpsBox->setValue(24);
 
     connect(k->fpsBox, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
+    connect(k->fpsBox, SIGNAL(valueChanged(int)), this, SLOT(setDuration()));
 
     sceneInfoLayout->addWidget(fpsText, 1);
     sceneInfoLayout->addWidget(k->fpsBox, 1);
@@ -148,13 +148,20 @@ TupCameraStatus::~TupCameraStatus()
 
 void TupCameraStatus::setFPS(int frames)
 {
-    if (frames > 0 && frames < 101) {
-        k->fps = frames;
+    /*
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupScreen::setFPS()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+    */
+
+    if (frames > 0 && frames < 101)
         k->fpsBox->setValue(frames);
-    } else {
-        k->fps = frames;
+    else
         k->fpsBox->setValue(24);
-    }
 
     setDuration();
 }
@@ -201,6 +208,7 @@ bool TupCameraStatus::isLooping()
 
 void TupCameraStatus::setDuration()
 {
-    qreal duration = (qreal) k->framesTotal / (qreal) k->fps;
+    int fps = k->fpsBox->value();
+    qreal duration = (qreal) k->framesTotal / (qreal) fps;
     k->duration->setText(QString::number(duration, 'f', 2) + QString(" " + tr("secs")));
 }
