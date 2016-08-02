@@ -622,7 +622,7 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                else
                    root.setAttribute("rotateReverseLoop", "0");
 
-               double angle = start;
+               int angle = start;
                bool token = false;
 
                int distance = 0;
