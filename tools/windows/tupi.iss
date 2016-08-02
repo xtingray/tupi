@@ -1,13 +1,13 @@
 [Setup]
 AppName=Tupi
-AppVersion=0.2-7
+AppVersion=0.2-8
 DefaultDirName={pf}\Tupi
 DefaultGroupName=Tupi 2D Magic
 OutputDir=c:\devel\installer
 ChangesEnvironment=yes
 ChangesAssociations=yes
 ; Uncomment this line for 64bit installer
-ArchitecturesInstallIn64BitMode=x64
+; ArchitecturesInstallIn64BitMode=x64
 
 [Dirs]
 Name: "{app}\bin"
@@ -45,6 +45,7 @@ Name: "{app}\data\xml\da"
 Name: "{app}\data\xml\de"
 Name: "{app}\data\xml\en"
 Name: "{app}\data\xml\es"
+Name: "{app}\data\xml\fr"
 Name: "{app}\data\xml\gl"
 Name: "{app}\data\xml\pt"
 Name: "{app}\data\xml\ru"
@@ -84,6 +85,7 @@ Source: "data\xml\da\*"; DestDir: "{app}\data\xml\da"
 Source: "data\xml\de\*"; DestDir: "{app}\data\xml\de"
 Source: "data\xml\en\*"; DestDir: "{app}\data\xml\en"
 Source: "data\xml\es\*"; DestDir: "{app}\data\xml\es"
+Source: "data\xml\fr\*"; DestDir: "{app}\data\xml\fr"
 Source: "data\xml\gl\*"; DestDir: "{app}\data\xml\gl"
 Source: "data\xml\pt\*"; DestDir: "{app}\data\xml\pt"
 Source: "data\xml\ru\*"; DestDir: "{app}\data\xml\ru"
@@ -94,14 +96,63 @@ Source: "lib\qt5\*"; DestDir: "{app}\lib\qt5"
 Source: "lib\libav\*"; DestDir: "{app}\lib\libav"
 
 [Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "TUPI_HOME"; ValueData: "{app}"
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\lib;{app}\lib\qt5;{app}\lib\libav"
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "TUPI_SHARE"; ValueData: "{app}\data"
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "TUPI_PLUGIN"; ValueData: "{app}\plugins"
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "TUPI_HOME"; ValueData: "{app}"; Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\lib;{app}\lib\qt5;{app}\lib\libav";
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "TUPI_SHARE"; ValueData: "{app}\data"; Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: string; ValueName: "TUPI_PLUGIN"; ValueData: "{app}\plugins"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: ".tup"; ValueType: string; ValueName: ""; ValueData: "Tupi2DMagic"; Flags: uninsdeletevalue 
 Root: HKCR; Subkey: "Tupi2DMagic"; ValueType: string; ValueName: ""; ValueData: "Tupi 2D Magic"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "Tupi2DMagic\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\bin\tupi.ico,0" 
-Root: HKCR; Subkey: "Tupi2DMagic\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\tupi.exe"" ""%1""" 
+Root: HKCR; Subkey: "Tupi2DMagic\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\bin\tupi.ico,0"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "Tupi2DMagic\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\tupi.exe"" ""%1"""; Flags: uninsdeletekey
 
 [Icons]
 Name: "{group}\Tupi"; Filename: "{app}\bin\tupi.exe"; IconFilename: "{app}\bin\tupi.ico"
+
+[Code]
+const
+  EnvironmentKey = 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
+
+procedure RemovePath(Path: string);
+var
+  Paths: string;
+  P: Integer;
+begin
+  if not RegQueryStringValue(HKEY_LOCAL_MACHINE, EnvironmentKey, 'Path', Paths) then
+  begin
+    Log('PATH not found');
+  end
+    else
+  begin
+    Log(Format('PATH is [%s]', [Paths]));
+
+    P := Pos(';' + Uppercase(Path) + ';', ';' + Uppercase(Paths) + ';');
+    if P = 0 then
+    begin
+      Log(Format('Path [%s] not found in PATH', [Path]));
+    end
+      else
+    begin
+      Delete(Paths, P - 1, Length(Path) + 1);
+      Log(Format('Path [%s] removed from PATH => [%s]', [Path, Paths]));
+
+      if RegWriteStringValue(HKEY_LOCAL_MACHINE, EnvironmentKey, 'Path', Paths) then
+      begin
+        Log('PATH written');
+      end
+        else
+      begin
+        Log('Error writing PATH');
+      end;
+    end;
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+    RemovePath(ExpandConstant('{app}\lib'));
+    RemovePath(ExpandConstant('{app}\lib\qt5'));
+    RemovePath(ExpandConstant('{app}\lib\libav'));
+  end;
+end;
