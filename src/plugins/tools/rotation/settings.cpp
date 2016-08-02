@@ -668,7 +668,7 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
 
                             if (end < start) {
                                 if (angle < 0)
-                                    angle = 360 - abs(angle);
+                                    angle = 360 - std::abs(angle);
                             }
                         }
                     }
@@ -681,7 +681,7 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
                             if (direction == TupItemTweener::Clockwise) {
                                 angle -= speed;
                                 if (angle < 0)
-                                    angle = 360 - abs(angle);
+                                    angle = 360 - std::abs(angle);
                             } else {
                                 angle += speed;
                                 if (angle >= 360)
