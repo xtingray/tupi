@@ -48,7 +48,6 @@ struct TDoubleComboBox::Private
 TDoubleComboBox::TDoubleComboBox(double min, double max, QWidget *parent)
  : QComboBox(parent), k(new Private)
 {
-    
     k->validator = new QDoubleValidator(this);
     k->editor = new QLineEdit;
     k->editor->setValidator(k->validator);
