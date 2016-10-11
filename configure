@@ -36,7 +36,7 @@
 ###########################################################################
 
 hash ruby 2>&- || { echo >&2 "Fatal error: Package \"ruby\" is not installed on your system. Aborting..."; exit 1; }
-hash qmake 2>&- || { echo >&2 "Fatal error: Package \"qmake\" is not installed on your system. Aborting..."; exit 1; }
+hash qmake 2>&- || hash qmake-qt5 2>&- || { echo >&2 "Fatal error: Package \"qmake\" is not installed on your system. Aborting..."; exit 1; }
 
 export RUBYLIB=.:${RUBYLIB}
 ruby configure.rb $*
