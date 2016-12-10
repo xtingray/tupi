@@ -538,6 +538,7 @@ void TupDocumentView::loadPlugins()
                       connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));
                       action->setParent(plugin);
                       QString toolName = action->text();
+                      action->setCheckable(true);
 
                       switch (tool->toolType()) {
                               case TupToolInterface::Brush:
@@ -546,8 +547,12 @@ void TupDocumentView::loadPlugins()
                                    // if (toolName.compare(tr("Scheme")) == 0)
                                    //     k->schemeAction = action;
 
+
                                    if (toolName.compare(tr("Pencil")) == 0)
                                        k->pencilAction = action;
+
+
+
 
                                    if (toolName.compare(tr("Ink")) == 0)
                                        k->inkAction = action;
@@ -589,6 +594,8 @@ void TupDocumentView::loadPlugins()
                                        brushTools[7] = action;
                                    }
                                    */
+
+
                                  }
                                  break;
                               case TupToolInterface::Tweener:
@@ -717,6 +724,22 @@ void TupDocumentView::loadPlugins()
              }
     }
 
+    QActionGroup * actionGroup = new QActionGroup(this);
+    actionGroup->setExclusive(true);
+
+    actionGroup->addAction(k->pencilAction);
+    actionGroup->addAction(k->inkAction);
+    actionGroup->addAction(k->polyLineAction);
+    actionGroup->addAction(k->selectionAction);
+    actionGroup->addAction(k->nodesAction);
+    actionGroup->addAction(k->fillAction);
+    actionGroup->addAction(k->borderFillAction);
+
+    for (QAction * a : k->shapesMenu->actions())
+    actionGroup->addAction(a);
+
+
+
     k->toolbar->addAction(k->pencilAction);
     k->toolbar->addAction(k->inkAction);
     // SQA: Enable it only for debugging goals
@@ -734,6 +757,9 @@ void TupDocumentView::loadPlugins()
     k->toolbar->addAction(k->motionMenu->menuAction());
     k->toolbar->addSeparator();
     k->toolbar->addAction(k->miscMenu->menuAction());
+
+
+
 
     brushTools.clear();
     tweenTools.clear();
