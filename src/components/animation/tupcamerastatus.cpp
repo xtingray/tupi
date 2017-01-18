@@ -89,12 +89,14 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
 
     sceneInfoLayout->addWidget(fpsText, 1);
     sceneInfoLayout->addWidget(k->fpsBox, 1);
+
     sceneInfoLayout->addSpacing(20);
 
     QLabel *durationLabel = new QLabel("<B>" + tr("Duration") + ":</B> ");
     k->duration = new QLabel();
     sceneInfoLayout->addWidget(durationLabel, 1);
     sceneInfoLayout->addWidget(k->duration, 1);
+
     sceneInfoLayout->addSpacing(20);
 
     k->loopBox = new QCheckBox();

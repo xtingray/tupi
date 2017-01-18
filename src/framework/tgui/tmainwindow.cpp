@@ -55,7 +55,7 @@ DefaultSettings::~DefaultSettings()
 void DefaultSettings::save(TMainWindow *window)
 {
     #ifdef K_DEBUG
-            QString msg = "TMainWindow::DefaultSettings::save() - Saving UI settings...";
+        QString msg = "TMainWindow::DefaultSettings::save() - Saving UI settings [ " + qApp->applicationName() + " ]";
         #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
@@ -102,7 +102,7 @@ void DefaultSettings::save(TMainWindow *window)
 void DefaultSettings::restore(TMainWindow *window)
 {
     #ifdef K_DEBUG
-	    QString msg = "TMainWindow::DefaultSettings::restore() - Restoring UI settings...";
+	QString msg = "TMainWindow::DefaultSettings::restore() - Restoring UI settings [ " + qApp->applicationName() + " ]";
         #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
