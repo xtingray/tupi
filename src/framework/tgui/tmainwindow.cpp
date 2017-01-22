@@ -75,9 +75,12 @@ void DefaultSettings::save(TMainWindow *window)
              settings.beginGroup(bar->windowTitle());
              settings.setValue("autohide", bar->autohide());
              settings.endGroup();
+
+             /*
              settings.beginGroup(bar->windowTitle());
              settings.setValue("visible", bar->isVisible());
              settings.endGroup();
+             */
 
              foreach (ToolView *view, toolViews[bar]) {
                       settings.beginGroup(view->objectName());
@@ -157,9 +160,11 @@ void DefaultSettings::restore(TMainWindow *window)
              bar->setAutoHide(settings.value("autohide", false).toBool());
              settings.endGroup();
 
+             /*
              settings.beginGroup(bar->windowTitle());
              bar->setShouldBeVisible(settings.value("visible", true).toBool());
              settings.endGroup();
+             */
     }
 	
     foreach (ToolView *view, toHide) {
