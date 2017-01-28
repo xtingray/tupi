@@ -82,6 +82,8 @@ void Tweener::init(TupGraphicsScene *scene)
     if (tweenList.size() > 0) {
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
+    } else {
+        k->configurator->activeButtonsPanel(false);
     }
 
     int total = framesCount();

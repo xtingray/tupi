@@ -235,6 +235,7 @@ void TControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void TControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+    /* SQA: Check if this code is required for other features than Position tween
     foreach (QGraphicsItem *item, scene()->selectedItems()) {
              if (qgraphicsitem_cast<TControlNode*>(item)) {
                  if (!k->centralNode) { 
@@ -243,6 +244,7 @@ void TControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
                  }
              } 
     }
+    */
 
     setPos(event->scenePos());
     event->accept();

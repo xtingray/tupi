@@ -150,6 +150,8 @@ void Tweener::init(TupGraphicsScene *scene)
     if (tweenList.size() > 0) {
         k->configurator->loadTweenList(tweenList);
         setCurrentTween(tweenList.at(0));
+    } else {
+        k->configurator->activeButtonsPanel(false);
     }
 
     int total = framesCount();
@@ -904,29 +906,41 @@ void Tweener::setEditEnv()
 
     TupScene *scene = k->scene->scene();
     k->objects = scene->getItemsFromTween(k->currentTween->name(), TupItemTweener::Position);
-    QGraphicsItem *item = k->objects.at(0);
-    QRectF rect = item->sceneBoundingRect();
-    k->itemObjectReference = rect.center();
 
-    k->path = k->currentTween->graphicsPath();
-    k->path->setZValue(k->baseZValue);
+    if (!k->objects.isEmpty()) {
+        QGraphicsItem *item = k->objects.at(0);
+        QRectF rect = item->sceneBoundingRect();
+        k->itemObjectReference = rect.center();
 
-    QPainterPath::Element e = k->path->path().elementAt(0);
-    k->firstNode = QPointF(e.x, e.y);
+        k->path = k->currentTween->graphicsPath();
+        k->path->setZValue(k->baseZValue);
 
-    QPointF oldPos = QPointF(e.x, e.y);
-    QPointF newPos = rect.center();
+        QPainterPath::Element e = k->path->path().elementAt(0);
+        k->firstNode = QPointF(e.x, e.y);
 
-    int distanceX = newPos.x() - oldPos.x();
-    int distanceY = newPos.y() - oldPos.y();
-    k->path->moveBy(distanceX, distanceY);
-    k->pathOffset = QPointF(distanceX, distanceY);
+        QPointF oldPos = QPointF(e.x, e.y);
+        QPointF newPos = rect.center();
 
-    QColor color(55, 155, 55, 200);
-    QPen pen(QBrush(color), 2, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-    k->path->setPen(pen);
+        int distanceX = newPos.x() - oldPos.x();
+        int distanceY = newPos.y() - oldPos.y();
+        k->path->moveBy(distanceX, distanceY);
+        k->pathOffset = QPointF(distanceX, distanceY);
 
-    setTweenPath();
+        QColor color(55, 155, 55, 200);
+        QPen pen(QBrush(color), 2, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+        k->path->setPen(pen);
+
+        setTweenPath();
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "Tweener::setEditEnv() - Fatal Error: Position tween wasn't found -> " + k->currentTween->name();
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
+    }
 }
 
 int Tweener::framesCount()

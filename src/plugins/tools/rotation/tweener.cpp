@@ -115,6 +115,8 @@ void Tweener::init(TupGraphicsScene *scene)
         k->configurator->loadTweenList(tweenList);
         QString tweenName = tweenList.at(0);
         setCurrentTween(tweenName);
+    } else {
+        k->configurator->activeButtonsPanel(false);
     }
 
     int total = framesCount();

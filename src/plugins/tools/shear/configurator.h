@@ -70,6 +70,7 @@ class TUPI_PLUGIN Configurator : public QFrame
 
         int totalSteps();
         void activateMode(TupToolPlugin::EditMode mode);
+        void activeButtonsPanel(bool enable);
         void setCurrentTween(TupItemTweener *currentTween);
         QString currentTweenName() const;
         void notifySelection(bool flag);
@@ -105,7 +106,6 @@ class TUPI_PLUGIN Configurator : public QFrame
         void setTweenManagerPanel();
         void activeTweenManagerPanel(bool enable);
         void setButtonsPanel();
-        void activeButtonsPanel(bool enable);
 
         struct Private;
         Private *const k;

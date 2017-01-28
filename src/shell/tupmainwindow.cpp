@@ -1161,6 +1161,9 @@ void TupMainWindow::saveAs()
         return;
     }
 
+    if (!fileName.endsWith(".tup", Qt::CaseInsensitive))
+        fileName += ".tup";
+
     isSaveDialogOpen = false;
     int indexPath = fileName.lastIndexOf("/");
     int indexFile = fileName.length() - indexPath;
