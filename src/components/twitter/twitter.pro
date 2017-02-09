@@ -5,11 +5,7 @@ TARGET = tupitwitter
 INSTALLS += target
 target.path = /lib/
 
-macx {
-    CONFIG += staticlib warn_on
-} else {
-    CONFIG += dll warn_on
-}
+CONFIG += dll warn_on
 
 HEADERS += tuptwitter.h \  
            tuptwitterwidget.h

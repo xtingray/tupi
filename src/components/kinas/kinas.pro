@@ -1,9 +1,7 @@
 INSTALLS += target
 target.path = /lib/
 
-macx {
-    CONFIG += staticlib warn_on
-}
+CONFIG += dll warn_on
 
 HEADERS += tupseditor.h \
            tupsfunctionview.h \
@@ -11,9 +9,6 @@ HEADERS += tupseditor.h \
 SOURCES += tupseditor.cpp \
            tupsfunctionview.cpp \
            kinaswidget.cpp 
-*:!macx{
-    CONFIG += dll warn_on
-}
 
 TEMPLATE = lib
 TARGET = tupikinas

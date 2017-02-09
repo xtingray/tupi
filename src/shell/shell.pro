@@ -8,6 +8,7 @@ macx {
     CONFIG += console static
     ICON = ../../launcher/icons/tupi.icns
     QMAKE_INFO_PLIST = ./Info.plist
+    QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../,-rpath,@executable_path/../,-rpath,@executable_path/../Frameworks
     TARGET = ../../bin/Tupi
 
     INSTALLS += icons

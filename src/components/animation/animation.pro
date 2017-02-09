@@ -5,11 +5,7 @@ TARGET = tupianimation
 INSTALLS += target
 target.path = /lib/
 
-macx {
-    CONFIG += staticlib warn_on
-} else {
-    CONFIG += dll warn_on
-}
+CONFIG += dll warn_on
 
 HEADERS += tupcamerawidget.h \
            tupcamerabar.h \

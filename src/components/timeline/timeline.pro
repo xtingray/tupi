@@ -5,11 +5,7 @@ TARGET = tupitimeline
 INSTALLS += target
 target.path = /lib/
 
-macx {
-    CONFIG += staticlib warn_on
-} else {
-    CONFIG += dll warn_on
-}
+CONFIG += dll warn_on
 
 HEADERS += tuptimeline.h \
            tuptimelineruler.h \

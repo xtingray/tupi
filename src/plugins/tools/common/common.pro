@@ -2,11 +2,7 @@ QT += opengl core gui svg xml network
 TEMPLATE = lib
 TARGET = tupiplugincommon
 
-macx {
-    CONFIG += staticlib warn_on
-} else {
-    CONFIG += dll warn_on
-}
+CONFIG += dll warn_on
 
 unix {
     !include(../../../../tupiglobal.pri){

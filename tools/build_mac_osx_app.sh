@@ -38,20 +38,22 @@
 #Usage:
 # ./tools/build_mac_osx_app.sh /Users/username/tupi/sources/tupi /Users/username/tupi/installer
 
-export PATH=/Users/xtingray/Qt/5.5/clang_64/bin:$PATH
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
-# export DYLD_FRAMEWORK_PATH=/Users/xtingray/Qt/5.5/clang_64/lib
+QT_PATH=/Users/xtingray/Qt5.8.0
+export PATH=$QT_PATH/5.8/clang_64/bin:$PATH
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$QT_PATH/5.8/clang_64/lib:/usr/local/lib
+export DYLD_FRAMEWORK_PATH=$QT_PATH/5.8/clang_64/lib
 
 TUPI_GIT_REPOSITORY=$1
 INSTALLATION_PATH=$2
 INSTALLER_SCRIPT=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
 
 declare -a LIBS=('libtupigui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
-'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' 'libtupifwcore.dylib');
+'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' 'libtupifwcore.dylib' 'libtupicolorpalette.1.dylib' 'libtupipaintarea.1.dylib' \
+'libtupianimation.1.dylib' 'libtupipen.1.dylib' 'libtupihelp.1.dylib' 'libtupimport.1.dylib' 'libtupiexport.1.dylib' 'libtupiexposure.1.dylib' \
+'libtupitimeline.1.dylib' 'libtupilibrary.1.dylib' 'libtupiscenes.1.dylib' 'libtupitwitter.1.dylib' 'libtupiplugincommon.1.dylib');
 
 cd $TUPI_GIT_REPOSITORY
 
-# make uninstall
 make install
 
 cd $INSTALLATION_PATH
@@ -76,7 +78,7 @@ for lib in ${LIBS[@]}; do
     $INSTALLER_SCRIPT $INSTALLATION_PATH/Tupi.app/Contents/MacOS/Tupi $lib @executable_path/../Frameworks/$lib  \;
 done
 
-cp -r /Users/xtingray/Qt/MaintenanceTool.app/Contents/Resources/qt_menu.nib $INSTALLATION_PATH/Tupi.app/Contents/Resources
+cp -r $QT_PATH/MaintenanceTool.app/Contents/Resources/qt_menu.nib $INSTALLATION_PATH/Tupi.app/Contents/Resources
 
 cd $INSTALLATION_PATH
 
@@ -92,5 +94,5 @@ for lib in ${LIBS[@]}; do
     done
 done
 
-macdeployqt Tupi.app -no-strip -dmg
+macdeployqt Tupi.app -dmg
 

@@ -8,11 +8,7 @@ target.path = /lib/
 
 INCLUDEPATH += /usr/include/qt5/QtMultimedia /usr/include/qt5/QtMultimediaWidgets
 
-macx {
-    CONFIG += staticlib warn_on
-} else {
-    CONFIG += dll warn_on
-}
+CONFIG += dll warn_on
 
 HEADERS += tuppaintarea.h \
            tupconfigurationarea.h \
