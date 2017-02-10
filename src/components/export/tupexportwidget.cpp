@@ -71,7 +71,7 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
     k->project = project;
 
     if (isLocal) {
-        setWindowTitle(tr("Export to Video"));
+        setWindowTitle(tr("Export To Video"));
         setWindowIcon(QIcon(THEME_DIR + "icons/export_wi.png"));
 
         k->pluginPage = new TupPluginSelector();
@@ -81,13 +81,13 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
         k->scenesPage->setScenes(project->scenes());
         addPage(k->scenesPage);
 
-        k->animationExport = new TupExportModule(project, TupExportWidget::Animation, tr("Export to Video File"), this);
+        k->animationExport = new TupExportModule(project, TupExportWidget::Animation, tr("Export To Video File"), this);
         addPage(k->animationExport);
 
-        k->imagesArrayExport = new TupExportModule(project, TupExportWidget::ImagesArray, tr("Export to Image Sequence"), this);
+        k->imagesArrayExport = new TupExportModule(project, TupExportWidget::ImagesArray, tr("Export To Image Sequence"), this);
         addPage(k->imagesArrayExport);
 
-        k->animatedImageExport = new TupExportModule(project, TupExportWidget::AnimatedImage, tr("Export to Animated Image"), this);
+        k->animatedImageExport = new TupExportModule(project, TupExportWidget::AnimatedImage, tr("Export To Animated Image"), this);
         addPage(k->animatedImageExport);
 
         connect(k->pluginPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
@@ -102,7 +102,7 @@ TupExportWidget::TupExportWidget(TupProject *project, QWidget *parent, bool isLo
         loadPlugins();
         k->pluginPage->selectFirstItem();
     } else {
-        setWindowTitle(tr("Post Animation in Tupitube"));
+        setWindowTitle(tr("Post Animation In Tupitube"));
         setWindowIcon(QIcon(THEME_DIR + "icons/net_document.png"));
 
         k->scenesPage = new TupSceneSelector(this);

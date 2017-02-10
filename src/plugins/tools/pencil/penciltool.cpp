@@ -97,7 +97,7 @@ void PencilTool::init(TupGraphicsScene *scene)
     k->resize = false;
     k->circleZValue = (2*ZLAYER_LIMIT) + (scene->scene()->layersCount() * ZLAYER_LIMIT);
 
-    TCONFIG->beginGroup("PenParameters");
+    TCONFIG->beginGroup("BrushParameters");
     k->penWidth = TCONFIG->value("Thickness", 3).toInt();
 
     foreach (QGraphicsView * view, scene->views())
@@ -304,7 +304,7 @@ void PencilTool::keyReleaseEvent(QKeyEvent *event)
         k->resize = false;
         k->scene->removeItem(k->penCircle);
 
-        TCONFIG->beginGroup("PenParameters");
+        TCONFIG->beginGroup("BrushParameters");
         TCONFIG->setValue("Thickness", k->penWidth);
 
         emit penWidthChanged(k->penWidth);

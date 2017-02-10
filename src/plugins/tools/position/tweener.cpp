@@ -118,6 +118,8 @@ void Tweener::init(TupGraphicsScene *scene)
         #endif
     #endif
 
+    k->dots.clear();
+
     if (k->isPathInScene) {
         if (k->nodesGroup) {
             k->nodesGroup->clear();

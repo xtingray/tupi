@@ -350,7 +350,7 @@ void TupTwitter::formatStatus(QByteArray array)
         css = "twitter_tupi_update"; 
 
     html += "<div class=\"" + css + "\"><center>\n";
-    html += tr("Latest version") + ": <b>" + k->version + "</b> &nbsp;&nbsp;&nbsp;"; 
+    html += tr("Latest Version") + ": <b>" + k->version + "</b> &nbsp;&nbsp;&nbsp;"; 
     html += tr("Revision") + ": <b>" + k->revision + "</b> &nbsp;&nbsp;&nbsp;";
     html += tr("Code Name") + ": <b>" + k->codeName + "</b>";
 

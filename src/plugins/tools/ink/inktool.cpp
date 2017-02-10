@@ -107,7 +107,7 @@ void InkTool::init(TupGraphicsScene *scene)
     k->tolerance = 0;
     k->smoothness = 3;
 
-    TCONFIG->beginGroup("PenParameters");
+    TCONFIG->beginGroup("BrushParameters");
     int thickness = TCONFIG->value("Thickness", 3).toInt();
 
     k->widthVar = k->tolerance*thickness;

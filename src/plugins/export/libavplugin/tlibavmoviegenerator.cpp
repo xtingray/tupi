@@ -167,6 +167,9 @@ void TLibavMovieGenerator::Private::chooseFileExtension(int format)
             case SWF:
                  movieFile += ".swf";
                  break;
+            case MP4:
+                 movieFile += ".mp4";
+                 break;
             /* SQA: MPEG codec was removed because it crashes. Check the issue!
             case MPEG:
                  movieFile += ".mpg";

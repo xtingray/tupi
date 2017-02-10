@@ -59,7 +59,7 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
                setTag("ANIMATED_IMAGE");
     }
 
-    bgTransparency = new QCheckBox(tr("Enable background transparency"));
+    bgTransparency = new QCheckBox(tr("Enable Background Transparency"));
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
@@ -69,7 +69,7 @@ TupExportModule::TupExportModule(TupProject *project, TupExportWidget::OutputFor
     ////////////////
 
     QHBoxLayout *prefixLayout = new QHBoxLayout;
-    prefixLayout->addWidget(new QLabel(tr("Image name prefix: ")));
+    prefixLayout->addWidget(new QLabel(tr("Image Name Prefix: ")));
 
     QHBoxLayout *filePathLayout = new QHBoxLayout;
 

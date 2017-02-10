@@ -419,7 +419,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         m_colorPalette->init();
         m_colorPalette->setBgColor(project->bgColor());
 
-        TCONFIG->beginGroup("PenParameters");
+        TCONFIG->beginGroup("BrushParameters");
         int thickness = TCONFIG->value("Thickness", 3).toInt();
         m_brushWidget->init(thickness);
         // m_brushWidget->setThickness(thickness);

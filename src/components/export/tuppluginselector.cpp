@@ -35,7 +35,7 @@
 
 #include "tuppluginselector.h"
 
-TupPluginSelector::TupPluginSelector() : TupExportWizardPage(tr("Select plugin"))
+TupPluginSelector::TupPluginSelector() : TupExportWizardPage(tr("Select Plugin"))
 {
     setTag("PLUGIN");
     QWidget *container = new QWidget;
@@ -131,6 +131,11 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
         format->setData(3124, TupExportInterface::SWF);
     }
 
+    if (formats & TupExportInterface::MP4) {
+        QListWidgetItem *format = new QListWidgetItem(tr("MP4 Video"), m_formatList);
+        format->setData(3124, TupExportInterface::MP4);
+    }
+
     if (formats & TupExportInterface::AVI) {
         QListWidgetItem *format = new QListWidgetItem(tr("AVI Video"), m_formatList);
         format->setData(3124, TupExportInterface::AVI);
@@ -197,6 +202,9 @@ char const* TupPluginSelector::getFormatExtension(const QString format)
 
     if (format.compare(tr("Macromedia flash")) == 0)
         return ".swf";
+
+    if (format.compare(tr("MP4 Video")) == 0)
+        return ".mp4";
 
     if (format.compare(tr("AVI Video")) == 0)
         return ".avi";

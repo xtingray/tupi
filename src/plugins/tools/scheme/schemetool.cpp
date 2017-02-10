@@ -92,7 +92,7 @@ void SchemeTool::init(TupGraphicsScene *scene)
 {
     k->spacing = k->configurator->spacingValue();
 
-    TCONFIG->beginGroup("PenParameters");
+    TCONFIG->beginGroup("BrushParameters");
     int thickness = TCONFIG->value("Thickness", -1).toInt();
     k->tolerance = k->configurator->sizeToleranceValue()/(qreal)100;
 
