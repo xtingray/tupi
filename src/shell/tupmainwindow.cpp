@@ -421,8 +421,8 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
 
         TCONFIG->beginGroup("PenParameters");
         int thickness = TCONFIG->value("Thickness", 3).toInt();
-        m_penWidget->init(thickness);
-        // m_penWidget->setThickness(thickness);
+        m_brushWidget->init(thickness);
+        // m_brushWidget->setThickness(thickness);
 
         if (TupMainWindow::requestType == OpenLocalProject || TupMainWindow::requestType == OpenNetProject)
             TOsd::self()->display(tr("Information"), tr("Project <b>%1</b> opened!").arg(m_projectManager->project()->projectName()));
@@ -995,7 +995,7 @@ void TupMainWindow::aboutTupi()
 void TupMainWindow::showTipDialog()
 {
     QStringList labels;
-    labels << tr("Tip of the day") << tr("Show on start") << tr("Previous tip") << tr("Next tip") << tr("Close");
+    labels << tr("Tip Of The Day") << tr("Show On Start") << tr("Previous Tip") << tr("Next Tip") << tr("Close");
 
     TipDialog *tipDialog = new TipDialog(labels, DATA_DIR + "tips.xml", this);
     tipDialog->show();
@@ -1018,7 +1018,7 @@ void TupMainWindow::importPalettes()
 {
     TCONFIG->beginGroup("General");
     QString path = TCONFIG->value("DefaultPath", QDir::homePath()).toString();
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp palettes"), path, tr("Gimp Palette (*.gpl *.txt *.css)"));
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import Gimp Palettes"), path, tr("Gimp Palette (*.gpl *.txt *.css)"));
 
     if (files.count() > 0) { 
         QStringList::ConstIterator file = files.begin();
@@ -1378,10 +1378,10 @@ void TupMainWindow::createPaintCommand(const TupPaintAreaEvent *event)
 
         // Updating color on the Pen module interface
         if (event->action() == TupPaintAreaEvent::ChangePenColor)
-            m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
+            m_brushWidget->setPenColor(qvariant_cast<QColor>(event->data()));
 
         if (event->action() == TupPaintAreaEvent::ChangePenThickness)
-            m_penWidget->setPenThickness(qvariant_cast<int>(event->data()));
+            m_brushWidget->setPenThickness(qvariant_cast<int>(event->data()));
     } 
 }
 

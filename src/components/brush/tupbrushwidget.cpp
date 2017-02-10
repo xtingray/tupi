@@ -33,9 +33,9 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "tuppenwidget.h"
+#include "tupbrushwidget.h"
 
-struct TupPenWidget::Private
+struct TupBrushWidget::Private
 {
     TEditSpinBox *thickness;
 
@@ -54,11 +54,11 @@ struct TupPenWidget::Private
     TupPenThicknessWidget *thickPreview;
 };
 
-TupPenWidget::TupPenWidget(QWidget *parent) : TupModuleWidgetBase(parent), k(new Private)
+TupBrushWidget::TupBrushWidget(QWidget *parent) : TupModuleWidgetBase(parent), k(new Private)
 {
-    setWindowTitle(tr("Pen Properties"));
+    setWindowTitle(tr("Brush Properties"));
 
-    TCONFIG->beginGroup("PenParameters");
+    TCONFIG->beginGroup("BrushParameters");
     int thicknessValue = TCONFIG->value("Thickness", 3).toInt();
     if (thicknessValue > 100)
         thicknessValue = 3;
@@ -191,11 +191,11 @@ TupPenWidget::TupPenWidget(QWidget *parent) : TupModuleWidgetBase(parent), k(new
     setWindowIcon(QIcon(THEME_DIR + "icons/brush.png"));
 }
 
-TupPenWidget::~TupPenWidget()
+TupBrushWidget::~TupBrushWidget()
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[~TupPenWidget()]";
+            qDebug() << "[~TupBrushWidget()]";
         #else
             TEND;
         #endif
@@ -204,11 +204,11 @@ TupPenWidget::~TupPenWidget()
     delete k;
 }
 
-void TupPenWidget::setThickness(int thickness)
+void TupBrushWidget::setThickness(int thickness)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupPenWidget::setThickness()]";
+            qDebug() << "[TupBrushWidget::setThickness()]";
         #else
             T_FUNCINFO << "thickness: " << thickness;
         #endif
@@ -216,19 +216,19 @@ void TupPenWidget::setThickness(int thickness)
 
     if (thickness > 0) {
         k->pen.setWidth(thickness);
-        TCONFIG->beginGroup("PenParameters");
+        TCONFIG->beginGroup("BrushParameters");
         TCONFIG->setValue("Thickness", thickness);
         updatePenProperties();
     }
 }
 
-void TupPenWidget::setStyle(int style)
+void TupBrushWidget::setStyle(int style)
 {
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(style).toInt()));
     updatePenProperties();
 }
 
-void TupPenWidget::setBrushStyle(QListWidgetItem *item)
+void TupBrushWidget::setBrushStyle(QListWidgetItem *item)
 {
     if (item->toolTip().compare("TexturePattern") == 0) {
         k->brush = QBrush(QPixmap(THEME_DIR + "icons/brush_15.png"));
@@ -242,24 +242,24 @@ void TupPenWidget::setBrushStyle(QListWidgetItem *item)
     updatePenProperties();
 }
 
-void TupPenWidget::setPenColor(const QColor color)
+void TupBrushWidget::setPenColor(const QColor color)
 {
     k->brush.setColor(color);
     k->thickPreview->setColor(color);
 }
 
-void TupPenWidget::setPenThickness(int thickness)
+void TupBrushWidget::setPenThickness(int thickness)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupPenWidget::setPenThickness()]";
+            qDebug() << "[TupBrushWidget::setPenThickness()]";
         #else
             T_FUNCINFO << "thickness: " << thickness;
         #endif
     #endif
 
     k->pen.setWidth(thickness);
-    TCONFIG->beginGroup("PenParameters");
+    TCONFIG->beginGroup("BrushParameters");
     TCONFIG->setValue("Thickness", thickness);
     k->thickPreview->render(thickness);
 
@@ -268,17 +268,17 @@ void TupPenWidget::setPenThickness(int thickness)
     k->thickness->blockSignals(false);
 }
 
-void TupPenWidget::setBrush(const QBrush brush)
+void TupBrushWidget::setBrush(const QBrush brush)
 {
     k->brush = brush;
     k->thickPreview->setBrush(brush);
 }
 
-void TupPenWidget::init(int thickness)
+void TupBrushWidget::init(int thickness)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
-            qDebug() << "[TupPenWidget::init()]";
+            qDebug() << "[TupBrushWidget::init()]";
         #else
             T_FUNCINFO << "thickness: " << thickness;
         #endif
@@ -299,12 +299,12 @@ void TupPenWidget::init(int thickness)
     setThickness(thickness);
 }
 
-QPen TupPenWidget::pen() const
+QPen TupBrushWidget::pen() const
 {
     return k->pen;
 }
 
-void TupPenWidget::updatePenProperties()
+void TupBrushWidget::updatePenProperties()
 {
     k->pen.setBrush(k->brush);
 
@@ -312,13 +312,13 @@ void TupPenWidget::updatePenProperties()
     emit paintAreaEventTriggered(&event);
 }
 
-void TupPenWidget::updateBrushProperties()
+void TupBrushWidget::updateBrushProperties()
 {
     TupPaintAreaEvent event(TupPaintAreaEvent::ChangeBrush, k->brush);
     emit paintAreaEventTriggered(&event);
 }
 
-void TupPenWidget::addBrushesList()
+void TupBrushWidget::addBrushesList()
 {
     k->brushesList = new QListWidget(this);
     k->brushesList->setViewMode(QListView::IconMode);
@@ -442,7 +442,7 @@ void TupPenWidget::addBrushesList()
     connect(k->brushesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(setBrushStyle(QListWidgetItem *)));
 }
 
-void TupPenWidget::enableRoundCapStyle()
+void TupBrushWidget::enableRoundCapStyle()
 {
     if (!k->roundCapButton->isDown())
         k->roundCapButton->setChecked(true);
@@ -458,7 +458,7 @@ void TupPenWidget::enableRoundCapStyle()
     updatePenProperties();
 }
 
-void TupPenWidget::enableSquareCapStyle()
+void TupBrushWidget::enableSquareCapStyle()
 {
     if (!k->squareCapButton->isDown())
         k->squareCapButton->setChecked(true);
@@ -473,7 +473,7 @@ void TupPenWidget::enableSquareCapStyle()
     updatePenProperties();
 }
 
-void TupPenWidget::enableFlatCapStyle()
+void TupBrushWidget::enableFlatCapStyle()
 {
     if (!k->flatCapButton->isDown())
         k->flatCapButton->setChecked(true);
@@ -488,7 +488,7 @@ void TupPenWidget::enableFlatCapStyle()
     updatePenProperties();
 }
 
-void TupPenWidget::enableRoundJoinStyle()
+void TupBrushWidget::enableRoundJoinStyle()
 {
     if (!k->roundJoinButton->isDown())
         k->roundJoinButton->setChecked(true);
@@ -503,7 +503,7 @@ void TupPenWidget::enableRoundJoinStyle()
     updatePenProperties();
 }
 
-void TupPenWidget::enableMiterJoinStyle()
+void TupBrushWidget::enableMiterJoinStyle()
 {
     if (!k->miterJoinButton->isDown())
         k->miterJoinButton->setChecked(true);
@@ -518,7 +518,7 @@ void TupPenWidget::enableMiterJoinStyle()
     updatePenProperties();
 }
 
-void TupPenWidget::enableBevelJoinStyle()
+void TupBrushWidget::enableBevelJoinStyle()
 {
     if (!k->bevelJoinButton->isDown())
         k->bevelJoinButton->setChecked(true);

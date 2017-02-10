@@ -70,7 +70,7 @@ TupCameraStatus::TupCameraStatus(TupCameraWidget *camera, bool isNetworked, QWid
     sceneInfoLayout->addWidget(k->scenes, 1);
     sceneInfoLayout->addSpacing(20);
 
-    QLabel *label = new QLabel("<B>" + tr("Frames total") + ":</B> ");
+    QLabel *label = new QLabel("<B>" + tr("Frames Total") + ":</B> ");
     k->framesCount = new QLabel;
 
     sceneInfoLayout->addWidget(label, 1);

@@ -33,8 +33,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TUPPENWIDGET_H
-#define TUPPENWIDGET_H
+#ifndef TUPBRUSHWIDGET_H
+#define TUPBRUSHWIDGET_H
 
 #include "tglobal.h"
 #include "tupmodulewidgetbase.h"
@@ -56,13 +56,13 @@ class TupPaintAreaEvent;
  * @author David Cuadrado
 */
 
-class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
+class TUPI_EXPORT TupBrushWidget : public TupModuleWidgetBase
 {
     Q_OBJECT
 
     public:
-        TupPenWidget(QWidget *parent = 0);
-        ~TupPenWidget();
+        TupBrushWidget(QWidget *parent = 0);
+        ~TupBrushWidget();
         QPen pen() const;
         void setPenThickness(int thickness);
         
@@ -90,7 +90,7 @@ class TUPI_EXPORT TupPenWidget : public TupModuleWidgetBase
         void enableBevelJoinStyle();
         
     signals:
-        void paintAreaEventTriggered(const TupPaintAreaEvent *e);
+        void paintAreaEventTriggered(const TupPaintAreaEvent *event);
 
     private:
         struct Private;

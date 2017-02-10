@@ -10,7 +10,7 @@ SUBDIRS += scenes \
            import \
            help \
            # kinas \
-           pen \
+           brush \
            paintarea \
            twitter \
            animation 

@@ -92,14 +92,14 @@ void TupPaintAreaPreferences::setupPage()
 
     QGridLayout *gridForm = new QGridLayout;
 
-    gridForm->addWidget(new QLabel(tr("Grid color:")), 0, 0, Qt::AlignLeft);
+    gridForm->addWidget(new QLabel(tr("Grid Color:")), 0, 0, Qt::AlignLeft);
     k->gridColorButton = new QPushButton;
     k->gridColorButton->setText(k->gridColor.name());
     k->gridColorButton->setStyleSheet("* { background-color: " + k->gridColor.name() + " }");
     connect(k->gridColorButton, SIGNAL(clicked()), this, SLOT(setGridColor()));
     gridForm->addWidget(k->gridColorButton, 0, 1, Qt::AlignLeft);
 
-    gridForm->addWidget(new QLabel(tr("Grid separation:")), 1, 0, Qt::AlignLeft);
+    gridForm->addWidget(new QLabel(tr("Grid Separation:")), 1, 0, Qt::AlignLeft);
     k->gridSeparation = new QSpinBox(this);
     k->gridSeparation->setMinimum(5);
     k->gridSeparation->setMaximum(30);

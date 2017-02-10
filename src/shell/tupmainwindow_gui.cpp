@@ -75,12 +75,12 @@ void TupMainWindow::createGUI()
 
     // Adding the pen parameters widget to the left side of the interface 
 
-    m_penWidget = new TupPenWidget;
-    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Animation, "Pen", QKeySequence(tr("Shift+B")));
+    m_brushWidget = new TupBrushWidget;
+    penView = addToolView(m_brushWidget, Qt::LeftDockWidgetArea, Animation, "Pen", QKeySequence(tr("Shift+B")));
     m_actionManager->insert(penView->toggleViewAction(), "show_pen");
     addToPerspective(penView->toggleViewAction(), Animation);
 
-    connectWidgetToPaintArea(m_penWidget);
+    connectWidgetToPaintArea(m_brushWidget);
 
     // Adding the objects library widget to the left side of the interface
 
@@ -188,7 +188,7 @@ void TupMainWindow::setupMenu()
     // m_fileMenu->addAction(m_actionManager->find("exportprojectserver"));
 
     // Adding Option Open Recent	
-    m_recentProjectsMenu = new QMenu(tr("Open recent"), this);
+    m_recentProjectsMenu = new QMenu(tr("Open Recent"), this);
 
     TCONFIG->beginGroup("General");
     QString files = TCONFIG->value("Recents").toString();
@@ -328,45 +328,45 @@ void TupMainWindow::setMenuItemsContext(bool flag)
 
 void TupMainWindow::setupFileActions()
 {
-    TAction *newProject = new TAction(QPixmap(THEME_DIR + "icons/new.png"), tr("New project"), QKeySequence(tr("Ctrl+N")),
+    TAction *newProject = new TAction(QPixmap(THEME_DIR + "icons/new.png"), tr("New Project"), QKeySequence(tr("Ctrl+N")),
 				      this, SLOT(newProject()), m_actionManager);
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "new_project", "file");
 
-    TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open project"), QKeySequence(tr("Ctrl+O")), 
+    TAction *openFile = new TAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open Project"), QKeySequence(tr("Ctrl+O")), 
 				    this, SLOT(openProject()), m_actionManager);
     m_actionManager->insert(openFile, "open_project", "file");
     openFile->setStatusTip(tr("Load existent project"));
 
     // SQA: This code has been disabled temporary
     /*
-    TAction *openNetFile = new TAction(QPixmap(THEME_DIR + "icons/net_document.png"), tr("Open project from server..."), 
+    TAction *openNetFile = new TAction(QPixmap(THEME_DIR + "icons/net_document.png"), tr("Open Project From Server..."), 
 				       tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
-    TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export project to server..."), tr(""), this, 
+    TAction *importNetFile = new TAction(QPixmap(THEME_DIR + "icons/import_project.png"), tr("Export Project To Server..."), tr(""), this, 
 					 SLOT(importProjectToServer()), m_actionManager);
     m_actionManager->insert(importNetFile, "exportprojectserver", "file");
     */
 
-    TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
+    TAction *save = new TAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save Project" ),
 				QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
     m_actionManager->insert(save, "save_project", "file");
     save->setStatusTip(tr("Save current project in current location"));
 
-    TAction *saveAs = new TAction(QPixmap(THEME_DIR + "icons/save_as.png"), tr("Save project as..."),
+    TAction *saveAs = new TAction(QPixmap(THEME_DIR + "icons/save_as.png"), tr("Save Project As..."),
 				  QKeySequence(tr("Ctrl+Shift+S")), this, SLOT(saveAs()), m_actionManager);
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
     m_actionManager->insert(saveAs, "save_project_as", "file");
 
-    TAction *close = new TAction(QPixmap(THEME_DIR + "icons/close.png"), tr("Cl&ose project"), QKeySequence(tr("Ctrl+W")),
+    TAction *close = new TAction(QPixmap(THEME_DIR + "icons/close.png"), tr("Cl&ose Project"), QKeySequence(tr("Ctrl+W")),
 				 this, SLOT(closeProject()), m_actionManager);
     close->setStatusTip(tr("Close active project"));
     m_actionManager->insert(close, "close_project", "file");
 
     // Import Palette action
 
-    TAction *importPalette = new TAction(QPixmap(THEME_DIR + "icons/import.png"), tr("&Import GIMP palettes"),
+    TAction *importPalette = new TAction(QPixmap(THEME_DIR + "icons/import.png"), tr("&Import GIMP Palettes"),
 					 QKeySequence(tr("Shift+G")), this, SLOT(importPalettes()), m_actionManager);
     importPalette->setStatusTip(tr("Import palettes"));
     m_actionManager->insert(importPalette, "importGimpPalettes", "file");
@@ -383,8 +383,9 @@ void TupMainWindow::setupFileActions()
     m_actionManager->insert(exportProject, "export", "file");
 
     // Exit action
-    TAction *exit = new TAction(QPixmap(THEME_DIR + "icons/exit.png"), tr("E&xit"), QKeySequence(tr("Ctrl+Q")),
+    TAction *exit = new TAction(QPixmap(THEME_DIR + "icons/exit.png"), tr("Quit"), QKeySequence(tr("Ctrl+Q")),
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
+
     exit->setStatusTip(tr("Close application"));
     m_actionManager->insert(exit, "exit", "file");
 
@@ -422,7 +423,7 @@ void TupMainWindow::setupHelpActions()
 {
     new TAction(QPixmap(THEME_DIR + "icons/help_mode.png"), tr("Help Content"), QKeySequence(tr("F1")),
                 this, SLOT(showHelp()), m_actionManager, "help");
-    new TAction(QPixmap(THEME_DIR + "icons/tip.png"), tr("Tip of the day"), QKeySequence(tr("Ctrl+T")),
+    new TAction(QPixmap(THEME_DIR + "icons/tip.png"), tr("Tip Of The Day"), QKeySequence(tr("Ctrl+T")),
                 this, SLOT(showTipDialog()), m_actionManager, "tip_of_day");
     new TAction(QPixmap(THEME_DIR + "icons/about.png"), tr("About Tupi"), QKeySequence(tr("Ctrl+K")), 
                 this, SLOT(aboutTupi()), m_actionManager, "about_tupi");

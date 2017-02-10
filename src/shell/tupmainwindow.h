@@ -45,7 +45,7 @@
 // modules
 #include "tupexposuresheet.h"
 // #include "kinaswidget.h"
-#include "tuppenwidget.h"
+#include "tupbrushwidget.h"
 #include "tupcolorpalette.h"
 #include "tupsceneswidget.h"
 #include "tuplibrarywidget.h"
@@ -276,7 +276,7 @@ class TupMainWindow : public TabbedMainWindow
         // TupHelpWidget *m_helper;
         TupLibraryWidget *m_libraryWidget;
         TupColorPalette *m_colorPalette;
-        TupPenWidget *m_penWidget;
+        TupBrushWidget *m_brushWidget;
         ToolView *exposureView;
         ToolView *colorView;
         ToolView *penView;

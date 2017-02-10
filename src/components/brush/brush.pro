@@ -1,15 +1,15 @@
 QT += opengl core gui svg xml network
 TEMPLATE = lib
-TARGET = tupipen
+TARGET = tupibrush
 
 INSTALLS += target
 target.path = /lib/
 
 CONFIG += dll warn_on
 
-HEADERS += tuppenwidget.h 
+HEADERS += tupbrushwidget.h 
            # tuppenthicknesswidget.h
-SOURCES += tuppenwidget.cpp 
+SOURCES += tupbrushwidget.cpp 
            # tuppenthicknesswidget.cpp
 
 FRAMEWORK_DIR = "../../framework"

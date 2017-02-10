@@ -6,7 +6,7 @@ INCLUDEPATH += ../plugins/tools/selection
 COLORPALETTE_DIR = ../components/colorpalette
 ANIMATION_DIR = ../components/animation
 PAINTAREA_DIR = ../components/paintarea
-PEN_DIR = ../components/pen
+BRUSH_DIR = ../components/brush
 # KINAS_DIR = ../components/kinas 
 HELP_DIR = ../components/help 
 IMPORT_DIR = ../components/import 
@@ -25,7 +25,7 @@ NET_DIR = ../net
 include($$COLORPALETTE_DIR/colorpalette.pri)
 include($$PAINTAREA_DIR/paintarea.pri)
 include($$ANIMATION_DIR/animation.pri)
-include($$PEN_DIR/pen.pri)
+include($$BRUSH_DIR/brush.pri)
 # include($$KINAS_DIR/kinas.pri)
 include($$HELP_DIR/help.pri)
 include($$IMPORT_DIR/import.pri)

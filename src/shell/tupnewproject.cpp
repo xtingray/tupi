@@ -72,7 +72,7 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
 {
     setWindowIcon(QPixmap(THEME_DIR + "icons/new.png"));
 
-    setWindowTitle(tr("Create a new project"));
+    setWindowTitle(tr("Create New Project"));
     setModal(true);
 
     QFrame *infoContainer = new QFrame();
@@ -106,7 +106,7 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     int presetIndex = TCONFIG->value("DefaultFormat", 3).toInt();
 
     k->presets = new QComboBox();
-    k->presets->addItem(tr("Free format"));
+    k->presets->addItem(tr("Free Format"));
     k->presets->addItem(tr("520x380 - 24"));
     k->presets->addItem(tr("640x480 - 24"));
     k->presets->addItem(tr("480 (PAL DV/DVD) - 25"));
@@ -168,7 +168,7 @@ TupNewProject::TupNewProject(QWidget *parent) : TabDialog(parent), k(new Private
     // SQA: Code temporarily disabled
     // layout->addWidget(activeNetOptions, 5, 0, 1, 2, Qt::AlignLeft);
 
-    addTab(infoContainer, tr("Project info"));
+    addTab(infoContainer, tr("Project Info"));
 
     QFrame *netContainer = new QFrame();
     k->netLayout = new QBoxLayout(QBoxLayout::TopToBottom, netContainer);
