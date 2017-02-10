@@ -76,8 +76,8 @@ Settings::Settings(QWidget *parent) : QWidget(parent), k(new Private)
     nameLayout->addWidget(k->input);
 
     k->options = new TRadioButtonGroup(tr("Options"), Qt::Vertical);
-    k->options->addItem(tr("Select object"), 0);
-    k->options->addItem(tr("Set Properties"), 1);
+    k->options->addItem(tr("Select Object"), 0);
+    k->options->addItem(tr("Set Path Properties"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
     k->apply = new TImageButton(QPixmap(kAppProp->themeDir() + "icons/save.png"), 22);
