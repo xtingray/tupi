@@ -116,9 +116,14 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
 #endif
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
-    if (formats & TupExportInterface::WEBM) {
-        QListWidgetItem *format = new QListWidgetItem(tr("WEBM Video"), m_formatList);
-        format->setData(3124, TupExportInterface::WEBM);
+    if (formats & TupExportInterface::MP4) {
+        QListWidgetItem *format = new QListWidgetItem(tr("MP4 Video"), m_formatList);
+        format->setData(3124, TupExportInterface::MP4);
+    }
+
+    if (formats & TupExportInterface::GIF) {
+        QListWidgetItem *format = new QListWidgetItem(tr("Animated GIF"), m_formatList);
+        format->setData(3124, TupExportInterface::GIF);
     }
 
     if (formats & TupExportInterface::MPEG) {
@@ -126,19 +131,19 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
         format->setData(3124, TupExportInterface::MPEG);
     }
 
-    if (formats & TupExportInterface::SWF) {
-        QListWidgetItem *format = new QListWidgetItem(tr("Macromedia flash"), m_formatList);
-        format->setData(3124, TupExportInterface::SWF);
-    }
-
-    if (formats & TupExportInterface::MP4) {
-        QListWidgetItem *format = new QListWidgetItem(tr("MP4 Video"), m_formatList);
-        format->setData(3124, TupExportInterface::MP4);
-    }
-
     if (formats & TupExportInterface::AVI) {
         QListWidgetItem *format = new QListWidgetItem(tr("AVI Video"), m_formatList);
         format->setData(3124, TupExportInterface::AVI);
+    }
+
+    if (formats & TupExportInterface::WEBM) {
+        QListWidgetItem *format = new QListWidgetItem(tr("WEBM Video"), m_formatList);
+        format->setData(3124, TupExportInterface::WEBM);
+    }
+
+    if (formats & TupExportInterface::SWF) {
+        QListWidgetItem *format = new QListWidgetItem(tr("Macromedia Flash"), m_formatList);
+        format->setData(3124, TupExportInterface::SWF);
     }
 
     if (formats & TupExportInterface::ASF) {
@@ -151,14 +156,6 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
         QListWidgetItem *format = new QListWidgetItem(tr("QuickTime Video"), m_formatList);
         format->setData(3124, TupExportInterface::MOV);
     }
-
-    // SQA: The libav procedure to export animated GIF files must be implemented
-    /*
-    if (formats & TupExportInterface::GIF) {
-        QListWidgetItem *format = new QListWidgetItem(tr("Gif Image"), m_formatList);
-        format->setData(3124, TupExportInterface::GIF);
-    }
-    */
 
     if (formats & TupExportInterface::PNG) {
         QListWidgetItem *format = new QListWidgetItem(tr("PNG Image Sequence"), m_formatList);
@@ -200,7 +197,7 @@ char const* TupPluginSelector::getFormatExtension(const QString format)
     if (format.compare(tr("MPEG Video")) == 0)
         return ".mpg";
 
-    if (format.compare(tr("Macromedia flash")) == 0)
+    if (format.compare(tr("Macromedia Flash")) == 0)
         return ".swf";
 
     if (format.compare(tr("MP4 Video")) == 0)
@@ -218,7 +215,7 @@ char const* TupPluginSelector::getFormatExtension(const QString format)
     if (format.compare(tr("QuickTime Video")) == 0)
         return ".mov";
 
-    if (format.compare(tr("Gif Image")) == 0)
+    if (format.compare(tr("Animated GIF")) == 0)
         return ".gif";
 
     if (format.compare(tr("PNG Image Sequence")) == 0)

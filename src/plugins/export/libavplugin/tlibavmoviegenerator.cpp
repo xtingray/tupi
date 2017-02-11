@@ -215,7 +215,6 @@ bool TLibavMovieGenerator::Private::openVideo(AVCodec *codec, AVStream *st, cons
 
     /* allocate and init a re-usable frame */
     frame = av_frame_alloc();
-    // frame = avcodec_alloc_frame();
 
     if (!frame) {
         errorMsg = "There is no available memory to export your project as a video";
@@ -258,7 +257,8 @@ void TLibavMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint8
         iRGBIdx[2] = 0;
     }
  
-    for (int y = 0; y < (int) height; y++) {
+    // for (int y = 0; y < (int) height; y++) {
+    for (int y = 0; y < height; y++) {
          uint8_t *yline  = yplane + (y * width);
          uint8_t *uline  = uplane + ((y >> 1) * iHalfWidth);
          uint8_t *vline  = vplane + ((y >> 1) * iHalfWidth);
@@ -301,9 +301,16 @@ bool TLibavMovieGenerator::Private::writeVideoFrame(const QString &movieFile, co
     int w = c->width;
     int h = c->height;
 
+    tError() << "FILE: " << movieFile;
+
     if (movieFile.endsWith("gif", Qt::CaseInsensitive)) {
-        // c->pix_fmt = AV_PIX_FMT_RGB24;
-        // avpicture_fill((AVPicture *)frame, image.bits(), AV_PIX_FMT_RGB24, w, h);
+        // c->pix_fmt = PIX_FMT_RGB24;
+        // avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_RGB24, w, h);
+        // int size = avpicture_get_size(PIX_FMT_RGB24, w, h);
+        // uint8_t *pic_dat = (uint8_t *) av_malloc(size);
+        // RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
+        // pic_dat = (uint8_t *) image.bits(); 
+        avpicture_fill((AVPicture *)frame, (uint8_t *) image.bits(), PIX_FMT_RGB24, w, h);
     } else {
         int size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
         uint8_t *pic_dat = (uint8_t *) av_malloc(size);

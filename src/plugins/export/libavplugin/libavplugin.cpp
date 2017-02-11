@@ -59,6 +59,33 @@ TupExportInterface::Formats LibavPlugin::availableFormats()
 TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Format format)
 {
     switch (format) {
+            case TupExportInterface::MP4:
+                 {
+                   return TLibavMovieGenerator::MP4;
+                 }
+                 break;
+            case TupExportInterface::GIF:
+                 {
+                   return TLibavMovieGenerator::GIF;
+                 }
+                 break;
+            case TupExportInterface::AVI:
+                 {
+                   return TLibavMovieGenerator::AVI;
+                 }
+                 break;
+            /* SQA: MPEG codec was removed because it crashes. Check the issue
+            case TupExportInterface::MPEG:
+                 {
+                   return TLibavMovieGenerator::MPEG;
+                 }
+                 break;
+            */
+            case TupExportInterface::MOV:
+                 {
+                   return TLibavMovieGenerator::MOV;
+                 }
+                 break;
             case TupExportInterface::WEBM:
                  {
                    return TLibavMovieGenerator::WEBM;
@@ -69,36 +96,9 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
                    return TLibavMovieGenerator::SWF;
                  }
                  break;
-            case TupExportInterface::MP4:
-                 {
-                   return TLibavMovieGenerator::MP4;
-                 }
-                 break;
-            /* SQA: MPEG codec was removed because it crashes. Check the issue
-            case TupExportInterface::MPEG:
-                 {
-                   return TLibavMovieGenerator::MPEG;
-                 }
-                 break;
-            */
-            case TupExportInterface::AVI:
-                 {
-                   return TLibavMovieGenerator::AVI;
-                 }
-                 break;
-            case TupExportInterface::MOV:
-                 {
-                   return TLibavMovieGenerator::MOV;
-                 }
-                 break;
             case TupExportInterface::ASF:
                  {
                    return TLibavMovieGenerator::ASF;
-                 }
-                 break;
-            case TupExportInterface::GIF:
-                 {
-                   return TLibavMovieGenerator::GIF;
                  }
                  break;
             case TupExportInterface::PNG:

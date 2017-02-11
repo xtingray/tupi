@@ -753,7 +753,10 @@ void TupLipSync::verifyStructure()
                              if (i > 0) {
                                  TupWord *prev = phrase->wordsList().at(i-1);
                                  init = prev->endFrame() + 1;
-                                 pos = prev->phonemesList().last()->position();
+
+                                 if (!prev->phonemesList().isEmpty())
+                                     pos = prev->phonemesList().last()->position();
+
                                  total = (endFrame - init) + 1;
                              }
 
