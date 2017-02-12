@@ -754,8 +754,18 @@ void TupLipSync::verifyStructure()
                                  TupWord *prev = phrase->wordsList().at(i-1);
                                  init = prev->endFrame() + 1;
 
-                                 if (!prev->phonemesList().isEmpty())
+                                 if (!prev->phonemesList().isEmpty()) {
                                      pos = prev->phonemesList().last()->position();
+                                 } else {
+                                     #ifdef K_DEBUG
+                                         QString msg = "TupLipSync::verifyStructure() - Warning: Word(" + QString::number(i-1) + ") has NO phonemes!";
+                                         #ifdef Q_OS_WIN
+                                             qDebug() << msg;
+                                         #else
+                                             tError() << msg;
+                                         #endif
+                                     #endif
+                                 }
 
                                  total = (endFrame - init) + 1;
                              }

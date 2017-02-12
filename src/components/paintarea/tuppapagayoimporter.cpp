@@ -46,6 +46,7 @@ struct TupPapagayoImporter::Private
 TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &projectSize, const QString &extension, 
                                          int initFrame) : QObject(), k(new Private)
 {
+    int framesTotal = 0;
     k->framesCount = 0;
     k->isValid = true;
     QFile input(file);
@@ -86,6 +87,12 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
                        // FPS 
                        k->fps = line.trimmed().toInt();
                        k->lipsync->setFPS(k->fps);
+                   }
+                   break;
+                   case 3:
+                   {
+                       // Frames Total
+                       framesTotal = line.trimmed().toInt();
                    }
                    break;
                    case 4:
@@ -137,6 +144,16 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
                           lastFrame = strList.at(2).toInt();
                           word->setEndFrame(lastFrame);
                           numPhonemes = strList.at(3).toInt();
+                          #ifdef K_DEBUG
+                              if (numPhonemes == 0) {
+                                  QString msg = "TupPapagayoImporter::TupPapagayoImporter() - Warning: Word \"" +  strWord + "\" has NO phonemes associated! :(";
+                                  #ifdef Q_OS_WIN
+                                      qDebug() << msg;
+                                  #else
+                                      tError() << msg;
+                                  #endif
+                              }
+                          #endif
                       }
                       QList<int> frames;
                       QList<QString> blocks;
@@ -186,8 +203,15 @@ TupPapagayoImporter::TupPapagayoImporter(const QString &file, const QSize &proje
             }
             k->lipsync->addVoice(voice);
         }
+
         k->framesCount++;
-        k->lipsync->setFramesCount(k->framesCount);
+        if (framesTotal > k->framesCount) {
+            k->framesCount = framesTotal;
+            k->lipsync->setFramesCount(framesTotal);
+        } else {
+            k->lipsync->setFramesCount(k->framesCount);
+        }
+
         k->lipsync->verifyStructure();
     } else {
         k->isValid = false;

@@ -983,10 +983,11 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
                          TupVoice *voice = voices.at(j);
                          int index = photogram - initFrame; 
                          if (voice->contains(index)) {
-                             // Add image here
+                             // Adding phoneme image
                              TupPhoneme *phoneme = voice->getPhonemeAt(index);
                              if (phoneme) {
-                                 TupLibraryObject *image = folder->getObject(phoneme->value() + lipSync->picExtension());
+                                 QString imgName = phoneme->value() + lipSync->picExtension();
+                                 TupLibraryObject *image = folder->getObject(imgName);
                                  if (image) {
                                      TupGraphicLibraryItem *item = new TupGraphicLibraryItem(image);
                                      if (item) {
@@ -998,16 +999,50 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
                                          item->setZValue(zLevel);
                                          addItem(item);
                                      }
-                                 }
+                                 } else {
+                                     #ifdef K_DEBUG
+                                         QString msg = "TupGraphicsScene::addLipSyncObjects() - Warning: Can't find phoneme image -> " + imgName;
+                                         #ifdef Q_OS_WIN
+                                             qDebug() << msg;
+                                         #else
+                                             tError() << msg;
+                                         #endif
+                                     #endif
+                                 } 
                              } else {
                                  #ifdef K_DEBUG
-                                     QString msg = "TupGraphicsScene::addLipSyncObjects() - No lipsync phoneme at frame " + QString::number(photogram) + " - index: " + QString::number(index);
+                                     QString msg = "TupGraphicsScene::addLipSyncObjects() - Warning: No lipsync phoneme at frame " + QString::number(photogram) + " - index: " + QString::number(index);
                                      #ifdef Q_OS_WIN
                                          qDebug() << msg;
                                      #else
                                          tError() << msg;
                                      #endif
                                  #endif
+
+                                 // Adding rest phoneme to cover empty frame
+                                 QString imgName = "rest" + lipSync->picExtension();
+                                 TupLibraryObject *image = folder->getObject(imgName);
+                                 if (image) {
+                                     TupGraphicLibraryItem *item = new TupGraphicLibraryItem(image);
+                                     if (item) {
+                                         QPointF pos = voice->mouthPos();
+                                         int wDelta = item->boundingRect().width()/2;
+                                         int hDelta = item->boundingRect().height()/2;
+                                         item->setPos(pos.x()-wDelta, pos.y()-hDelta);
+                                         item->setToolTip(tr("lipsync:") + name + ":" + QString::number(j));
+                                         item->setZValue(zLevel);
+                                         addItem(item);
+                                     }
+                                 } else {
+                                     #ifdef K_DEBUG
+                                         QString msg = "TupGraphicsScene::addLipSyncObjects() - Warning: Can't find phoneme image -> " + imgName;
+                                         #ifdef Q_OS_WIN
+                                             qDebug() << msg;
+                                         #else
+                                             tError() << msg;
+                                         #endif
+                                     #endif
+                                 }
                              }
                          } else {
                              #ifdef K_DEBUG
