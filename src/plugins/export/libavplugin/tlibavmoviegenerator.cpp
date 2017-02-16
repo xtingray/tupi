@@ -257,7 +257,6 @@ void TLibavMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint8
         iRGBIdx[2] = 0;
     }
  
-    // for (int y = 0; y < (int) height; y++) {
     for (int y = 0; y < height; y++) {
          uint8_t *yline  = yplane + (y * width);
          uint8_t *uline  = uplane + ((y >> 1) * iHalfWidth);
@@ -304,12 +303,34 @@ bool TLibavMovieGenerator::Private::writeVideoFrame(const QString &movieFile, co
     tError() << "FILE: " << movieFile;
 
     if (movieFile.endsWith("gif", Qt::CaseInsensitive)) {
-        // c->pix_fmt = PIX_FMT_RGB24;
-        // avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_RGB24, w, h);
-        // int size = avpicture_get_size(PIX_FMT_RGB24, w, h);
-        // uint8_t *pic_dat = (uint8_t *) av_malloc(size);
-        // RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
-        // pic_dat = (uint8_t *) image.bits(); 
+        /*
+        c->pix_fmt = PIX_FMT_RGB24;
+        int size = avpicture_get_size(PIX_FMT_RGB24, w, h);
+        uint8_t *pic_dat = (uint8_t *) av_malloc(size);
+        RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
+
+        avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_RGB24, w, h);
+        */
+
+        // AVIOContext *pb = oc->pb;
+        // avio_w8(pb, 0x21);
+        // avio_w8(pb, 0xf9);
+        // avio_w8(pb, 0x04); /* block size */
+        // avio_w8(pb, 0x04); /* flags */
+
+        /*
+        int size = avpicture_get_size(PIX_FMT_RGB24, w, h);
+        uint8_t *pic_dat = (uint8_t *) av_malloc(size);
+
+        for (int y = 0; y < h; y++) {
+             for (int x=0; x<w; x++) {
+                  *pic_dat = (uint8_t) 25; 
+                  pic_dat++;
+             }
+        }
+        avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_RGB24, w, h);
+        */
+
         avpicture_fill((AVPicture *)frame, (uint8_t *) image.bits(), PIX_FMT_RGB24, w, h);
     } else {
         int size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
@@ -407,6 +428,15 @@ bool TLibavMovieGenerator::begin()
 
     k->fmt = av_guess_format(NULL, k->movieFile.toLocal8Bit().data(), NULL);
     if (!k->fmt) {
+        #ifdef K_DEBUG
+            QString msg = QString("") + "TLibavMovieGenerator::begin() - Can't guess format. Selecting MPEG by default...";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
+
         k->fmt = av_guess_format("mpeg", NULL, NULL);
     }
 
