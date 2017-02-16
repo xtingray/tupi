@@ -112,6 +112,7 @@ TupCanvas::TupCanvas(QWidget *parent, Qt::WindowFlags flags, TupGraphicsScene *s
 
     TImageButton *trash = new TImageButton(QPixmap(THEME_DIR + "icons/delete_big.png"), 50, this, true);
     trash->setToolTip(tr("Delete Selection"));
+    trash->setShortcut(QKeySequence(Qt::Key_Backspace));
     connect(trash, SIGNAL(clicked()), this, SLOT(wakeUpDeleteSelection()));
 
     TImageButton *nodes = new TImageButton(QPixmap(THEME_DIR + "icons/nodes_big.png"), 50, this, true);

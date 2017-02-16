@@ -1267,6 +1267,11 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         #endif
     #endif
 
+    if (event->key() == Qt::Key_Backspace) {
+        deleteItems();
+        return;
+    }
+
     if (event->key() == Qt::Key_Return) {
         emit newPerspective(4);
         return;
