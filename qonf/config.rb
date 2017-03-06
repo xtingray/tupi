@@ -111,7 +111,7 @@ class Config
         File.open("src/framework/tupconfig.pri", "w") { |f|
             # f << "# Generated automatically at #{Time.now}! PLEASE DO NOT EDIT!"<< $endl
             # f << "contains(DEFINES, HAVE_LIBAV){" << $endl
-            # f << "LIBS += -lavcodec -lavformat -lavutil" << $endl
+            # f << "LIBS += -lavcodec -lavformat -lavutil -lswscale" << $endl
             # f << "}" << $endl
             if @defines.include? 'ADD_HEADERS'
                f << "DEFINES += ADD_HEADERS" << $endl

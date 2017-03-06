@@ -45,6 +45,7 @@
 extern "C" {
 #include "libavutil/mathematics.h"
 #include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
 }
 #endif
 
@@ -69,12 +70,27 @@ struct TLibavMovieGenerator::Private
     void chooseFileExtension(int format);
     bool openVideo(AVCodec *codec, AVStream *st, const QString &errorDetail);
     void RGBtoYUV420P(const uint8_t *bufferRGB, uint8_t *bufferYUV, uint iRGBIncrement, bool bSwapRGB, int width, int height);
+
+    // Temporal method
+    void fill_yuv_image(AVFrame *pict, int frame_index, int width, int height);
+    AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height);
     bool writeVideoFrame(const QString &movieFile, const QImage &image);
     void closeVideo(AVStream *st);
 };
 
 static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCodecID codec_id, const QString &movieFile, int width, int height, int fps, const QString &errorDetail)
 {
+    /*
+    #ifdef K_DEBUG
+        QString msg = "TLibavMovieGenerator::addVideoStream() - codec_id: " + QString::number(codec_id);
+        #ifdef Q_OS_WIN
+            qWarning() << msg;
+        #else
+            tWarning() << msg;
+        #endif
+    #endif
+    */
+
     AVCodecContext *c;
     AVStream *st;
     QString errorMsg = "";
@@ -111,8 +127,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCod
         return 0;
     }
     st->id = oc->nb_streams-1;
-    c = st->codec;
 
+    c = st->codec;
     c->codec_id = codec_id;
 
     /* put sample parameters */
@@ -122,22 +138,17 @@ static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCod
     c->width = width;  
     c->height = height; 
 
-    c->time_base.den = fps;
-    c->time_base.num = 1;
     c->gop_size = 12;
 
+    c->time_base.num = 1;
+    c->time_base.den = fps;
+
     if (movieFile.endsWith("gif", Qt::CaseInsensitive)) {
-        #ifdef CANAIMA 
-            c->pix_fmt = PIX_FMT_RGB24;
-        #else
-            c->pix_fmt = AV_PIX_FMT_RGB24;
-        #endif
+        st->time_base.num = 1;
+        st->time_base.den = fps;
+        c->pix_fmt = AV_PIX_FMT_RGB24;
     } else {
-        #ifdef CANAIMA
-            c->pix_fmt = PIX_FMT_YUV420P;
-        #else
-            c->pix_fmt = AV_PIX_FMT_YUV420P;
-        #endif
+        c->pix_fmt = AV_PIX_FMT_YUV420P;
     }
 
     if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
@@ -154,7 +165,7 @@ static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCod
 
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= CODEC_FLAG_GLOBAL_HEADER;
-	
+
     return st;
 }
 
@@ -164,20 +175,29 @@ void TLibavMovieGenerator::Private::chooseFileExtension(int format)
             case WEBM:
                  movieFile += ".webm";
                  break;
+
+            /* SQA: Obsolete format
             case SWF:
                  movieFile += ".swf";
                  break;
+            */
+
             case MP4:
                  movieFile += ".mp4";
                  break;
+
             /* SQA: MPEG codec was removed because it crashes. Check the issue!
             case MPEG:
                  movieFile += ".mpg";
                  break;
             */
+
+            /* SQA: Obsolete format
             case ASF:
                  movieFile += ".asf";
                  break;
+            */
+
             case AVI:
                  movieFile += ".avi";
                  break;
@@ -275,6 +295,58 @@ void TLibavMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint8
     }
 }
 
+/* Prepare a dummy image. */
+void TLibavMovieGenerator::Private::fill_yuv_image(AVFrame *pict, int frame_index, int width, int height) 
+{
+    int x, y, i, ret;
+
+    /* when we pass a frame to the encoder, it may keep a reference to it
+     * internally;
+     * make sure we do not overwrite it here
+     */
+    ret = av_frame_make_writable(pict);
+    if (ret < 0)
+        exit(1);
+
+    i = frame_index;
+
+    /* Y */
+    for (y = 0; y < height; y++)
+        for (x = 0; x < width; x++)
+            pict->data[0][y * pict->linesize[0] + x] = x + y + i * 3;
+
+    /* Cb and Cr */
+    for (y = 0; y < height / 2; y++) {
+        for (x = 0; x < width / 2; x++) {
+            pict->data[1][y * pict->linesize[1] + x] = 128 + y + i * 2;
+            pict->data[2][y * pict->linesize[2] + x] = 64 + x + i * 5;
+        }
+    }
+}
+
+AVFrame *TLibavMovieGenerator::Private::alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
+{
+    AVFrame *picture;
+    int ret;
+
+    picture = av_frame_alloc();
+    if (!picture)
+        return NULL;
+
+    picture->format = pix_fmt;
+    picture->width  = width;
+    picture->height = height;
+
+    /* allocate the buffers for the frame data */
+    ret = av_frame_get_buffer(picture, 8);
+    if (ret < 0) {
+        fprintf(stderr, "Could not allocate frame data.\n");
+        exit(1);
+    }
+
+    return picture;
+}
+
 bool TLibavMovieGenerator::Private::writeVideoFrame(const QString &movieFile, const QImage &image)
 {
     #ifdef K_DEBUG
@@ -286,60 +358,28 @@ bool TLibavMovieGenerator::Private::writeVideoFrame(const QString &movieFile, co
         #endif
     #endif
 
-    int ret;
     AVCodecContext *c = video_st->codec;
+    int w = c->width;
+    int h = c->height;
 
-    /* encode the image */
-    AVPacket pkt;
     int got_output;
-
+    AVPacket pkt;
     av_init_packet(&pkt);
     pkt.data = NULL; // packet data will be allocated by the encoder
     pkt.size = 0;
 
-    int w = c->width;
-    int h = c->height;
-
-    tError() << "FILE: " << movieFile;
-
     if (movieFile.endsWith("gif", Qt::CaseInsensitive)) {
-        /*
-        c->pix_fmt = PIX_FMT_RGB24;
-        int size = avpicture_get_size(PIX_FMT_RGB24, w, h);
+        QImage img = image.convertToFormat(Format_RGB888);
+        avpicture_fill((AVPicture *)frame, img.bits(), AV_PIX_FMT_RGB24, w, h);
+    } else { 
+        int size = avpicture_get_size(AV_PIX_FMT_YUV420P, w, h);
         uint8_t *pic_dat = (uint8_t *) av_malloc(size);
         RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
-
-        avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_RGB24, w, h);
-        */
-
-        // AVIOContext *pb = oc->pb;
-        // avio_w8(pb, 0x21);
-        // avio_w8(pb, 0xf9);
-        // avio_w8(pb, 0x04); /* block size */
-        // avio_w8(pb, 0x04); /* flags */
-
-        /*
-        int size = avpicture_get_size(PIX_FMT_RGB24, w, h);
-        uint8_t *pic_dat = (uint8_t *) av_malloc(size);
-
-        for (int y = 0; y < h; y++) {
-             for (int x=0; x<w; x++) {
-                  *pic_dat = (uint8_t) 25; 
-                  pic_dat++;
-             }
-        }
-        avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_RGB24, w, h);
-        */
-
-        avpicture_fill((AVPicture *)frame, (uint8_t *) image.bits(), PIX_FMT_RGB24, w, h);
-    } else {
-        int size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
-        uint8_t *pic_dat = (uint8_t *) av_malloc(size);
-        RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
-        avpicture_fill((AVPicture *)frame, pic_dat, PIX_FMT_YUV420P, w, h);
+        avpicture_fill((AVPicture *)frame, pic_dat, AV_PIX_FMT_YUV420P, w, h);
+        frame->pts += av_rescale_q(1, video_st->codec->time_base, video_st->time_base);
     }
 
-    ret = avcodec_encode_video2(c, &pkt, frame, &got_output);
+    int ret = avcodec_encode_video2(c, &pkt, frame, &got_output);
     if (ret < 0) {
         errorMsg = "[1] Error while encoding the video of your project";
         #ifdef K_DEBUG
@@ -357,7 +397,6 @@ bool TLibavMovieGenerator::Private::writeVideoFrame(const QString &movieFile, co
     if (got_output) {
         if (c->coded_frame->key_frame)
             pkt.flags |= AV_PKT_FLAG_KEY;
-
         pkt.stream_index = video_st->index;
 
         /* Write the compressed frame to the media file. */
@@ -546,7 +585,8 @@ void TLibavMovieGenerator::handle(const QImage& image)
     #endif
 
     k->writeVideoFrame(k->movieFile, image);
-    k->frame->pts += av_rescale_q(1, k->video_st->codec->time_base, k->video_st->time_base);
+    // k->frame->pts += av_rescale_q(1, k->video_st->codec->time_base, k->video_st->time_base);
+    // k->frame->pts += av_rescale_q(1, k->video_st->time_base, k->video_st->time_base);
 }
 
 void TLibavMovieGenerator::end()

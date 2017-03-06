@@ -142,7 +142,7 @@ module RQonf
       Info.info << "Creating makefiles..." << $endl
 
       if RUBY_PLATFORM.downcase.include?("darwin")
-        qmakeLine = "'CONFIG += console warn_on' 'INCLUDEPATH += /usr/local/include LIBS += -L/usr/local/lib -lavcodec -lavutil -lavformat -framework CoreFoundation'"
+        qmakeLine = "'CONFIG += console warn_on' 'INCLUDEPATH += /usr/local/include LIBS += -L/usr/local/lib -lavcodec -lavutil -lavformat -lswscale -framework CoreFoundation'"
         @qmake.run(qmakeLine, true)
       else
         @qmake.run("", true)

@@ -10,6 +10,7 @@
         <libs>
             <lib path="-lavformat" />
             <lib path="-lavcodec" />
+            <lib path="-lswscale" />
         </libs>
         <includes>
             <include path="/usr/include/libavformat/" />

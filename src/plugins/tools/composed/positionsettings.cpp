@@ -244,7 +244,7 @@ void PositionSettings::setEditMode()
 {
     k->mode = TweenerPanel::Edit;
     k->closeButton->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
-    k->closeButton->setToolTip(tr("Close Tween properties"));
+    k->closeButton->setToolTip(tr("Close Tween Properties"));
 }
 
 /* This method transforms the path created into a QString representation */

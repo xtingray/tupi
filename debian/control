@@ -44,6 +44,6 @@ Description: 2D vectorial/animation tool
  with smoothness  support, basic  object library (for svg files and 
  raster images) and many others.
  Using its modules of Animation and Reproduction  you can export 2D
- projects to several formats as OGG, MPEG, AVI, MOV and SWF. 
+ projects to several formats as OGG, MPEG, AVI, and MOV. 
  Additionally, the  option of  exporting  Image arrays as output is 
  available.

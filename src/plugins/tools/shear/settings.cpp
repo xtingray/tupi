@@ -344,7 +344,7 @@ void Settings::setEditMode()
     k->mode = TupToolPlugin::Edit;
     k->apply->setToolTip(tr("Update Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "icons/close_properties.png"));
-    k->remove->setToolTip(tr("Close Tween properties"));
+    k->remove->setToolTip(tr("Close Tween Properties"));
 }
 
 void Settings::applyTween()

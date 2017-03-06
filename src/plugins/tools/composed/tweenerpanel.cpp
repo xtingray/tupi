@@ -418,7 +418,7 @@ void TweenerPanel::setEditMode()
 
     k->applyButton->setToolTip(tr("Update Tween"));
     k->closeButton->setIcon(QPixmap(kAppProp->themeDir() + "/"  + "icons/close_properties.png"));
-    k->closeButton->setToolTip(tr("Close Tween properties"));
+    k->closeButton->setToolTip(tr("Close Tween Properties"));
 }
 
 QString TweenerPanel::tweenToXml(int currentFrame, QPointF point)

@@ -57,19 +57,20 @@ class TUPI_EXPORT TupExportInterface
                NONE = 0,
                WEBM = 1 << 0,
                OGV  = 1 << 1,
-               SWF  = 1 << 2,
-               MP4  = 1 << 3,
-               MPEG = 1 << 4,
-               AVI  = 1 << 5,
-               ASF  = 1 << 6,
-               MOV  = 1 << 7,
-               GIF  = 1 << 8,
-               PNG  = 1 << 9,
-               JPEG = 1 << 10,
-               XPM  = 1 << 11,
-               SVG  = 1 << 12, 
-               SMIL = 1 << 13,
-               APNG = 1 << 14
+               MP4  = 1 << 2,
+               MPEG = 1 << 3,
+               AVI  = 1 << 4,
+               MOV  = 1 << 5,
+               GIF  = 1 << 6,
+               PNG  = 1 << 7,
+               JPEG = 1 << 8,
+               XPM  = 1 << 9,
+               SVG  = 1 << 10, 
+               APNG = 1 << 11
+               // SQA: Obsolete formats
+               // SWF  = 1 << 12,
+               // ASF  = 1 << 13,
+               // SMIL = 1 << 14,
              };
 
         Q_DECLARE_FLAGS(Formats, Format);

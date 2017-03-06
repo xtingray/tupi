@@ -61,6 +61,7 @@ class TUPI_PLUGIN TLibavMovieGenerator : public TMovieGenerator
     private:
         struct Private;
         Private *const k;
+
         QString errorDetail;
 };
 

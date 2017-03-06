@@ -141,15 +141,19 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
         format->setData(3124, TupExportInterface::WEBM);
     }
 
+    /* SQA: Obsolete format
     if (formats & TupExportInterface::SWF) {
         QListWidgetItem *format = new QListWidgetItem(tr("Macromedia Flash"), m_formatList);
         format->setData(3124, TupExportInterface::SWF);
     }
+    */
 
+    /* SQA: Obsolete format
     if (formats & TupExportInterface::ASF) {
         QListWidgetItem *format = new QListWidgetItem(tr("ASF Video"), m_formatList);
         format->setData(3124, TupExportInterface::ASF);
     }
+    */
 #endif
 
     if (formats & TupExportInterface::MOV) {
@@ -178,10 +182,12 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
         format->setFlags(Qt::NoItemFlags);
     }
 
+    /*
     if (formats & TupExportInterface::SMIL) {
         QListWidgetItem *format = new QListWidgetItem(tr("SMIL"), m_formatList);
         format->setData(3124, TupExportInterface::SMIL);
     }
+    */
 }
 
 char const* TupPluginSelector::getFormatExtension(const QString format) 
@@ -197,8 +203,10 @@ char const* TupPluginSelector::getFormatExtension(const QString format)
     if (format.compare(tr("MPEG Video")) == 0)
         return ".mpg";
 
+    /* SQA: Obsolete format
     if (format.compare(tr("Macromedia Flash")) == 0)
         return ".swf";
+    */
 
     if (format.compare(tr("MP4 Video")) == 0)
         return ".mp4";
@@ -206,11 +214,13 @@ char const* TupPluginSelector::getFormatExtension(const QString format)
     if (format.compare(tr("AVI Video")) == 0)
         return ".avi";
 
+    /* SQA: Obsolete formats
     if (format.compare(tr("RealMedia Video")) == 0) 
         return ".rm";
 
     if (format.compare(tr("ASF Video")) == 0)
         return ".asf";
+    */
 
     if (format.compare(tr("QuickTime Video")) == 0)
         return ".mov";
@@ -230,8 +240,10 @@ char const* TupPluginSelector::getFormatExtension(const QString format)
     if (format.compare(tr("SVG Image Sequence")) == 0)
         return ".svg";
 
+    /* SQA: Obsolete format
     if (format.compare(tr("SMIL")) == 0)
         return ".smil";
+    */
 
     return ".none";
 }

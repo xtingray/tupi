@@ -52,8 +52,12 @@ TupExportInterface::Formats LibavPlugin::availableFormats()
 {
     // SQA: MPEG codec was removed because it crashes. Check the issue.
     // TupExportInterface::MPEG 
-    return TupExportInterface::WEBM | TupExportInterface::SWF | TupExportInterface::MP4 | TupExportInterface::AVI 
-           | TupExportInterface::ASF | TupExportInterface::MOV | TupExportInterface::GIF;
+
+    // SQA: Obsolete formats
+    // | TupExportInterface::SWF | TupExportInterface::ASF
+
+    return TupExportInterface::WEBM | TupExportInterface::MP4 | TupExportInterface::AVI |
+           TupExportInterface::MOV | TupExportInterface::GIF;
 }
 
 TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Format format)
@@ -74,6 +78,7 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
                    return TLibavMovieGenerator::AVI;
                  }
                  break;
+
             /* SQA: MPEG codec was removed because it crashes. Check the issue
             case TupExportInterface::MPEG:
                  {
@@ -81,6 +86,7 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
                  }
                  break;
             */
+
             case TupExportInterface::MOV:
                  {
                    return TLibavMovieGenerator::MOV;
@@ -91,6 +97,8 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
                    return TLibavMovieGenerator::WEBM;
                  }
                  break;
+
+            /* SQA: Obsolete formats
             case TupExportInterface::SWF:
                  {
                    return TLibavMovieGenerator::SWF;
@@ -101,10 +109,12 @@ TMovieGeneratorInterface::Format LibavPlugin::videoFormat(TupExportInterface::Fo
                    return TLibavMovieGenerator::ASF;
                  }
                  break;
+            */
+
             case TupExportInterface::PNG:
             case TupExportInterface::JPEG:
             case TupExportInterface::XPM:
-            case TupExportInterface::SMIL:
+            // case TupExportInterface::SMIL:
             case TupExportInterface::NONE:
                  {
                    return TLibavMovieGenerator::NONE;
