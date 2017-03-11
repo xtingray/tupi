@@ -43,7 +43,6 @@ struct TupExposureSheet::Private
     TupProjectActionBar *actionBar;
     QMenu *menu;
     QString copyFrameName;
-    // bool fromMenu;
     bool localRequest;
     int previousScene;
     int previousLayer;
@@ -61,7 +60,6 @@ TupExposureSheet::TupExposureSheet(QWidget *parent, TupProject *project) : TupMo
 
     k->project = project;
     k->currentTable = 0;
-    // k->fromMenu = false;
     k->localRequest = false;
     k->previousScene = 0;
     k->previousLayer = 0;
@@ -69,23 +67,28 @@ TupExposureSheet::TupExposureSheet(QWidget *parent, TupProject *project) : TupMo
     setWindowTitle(tr("Exposure Sheet"));
     setWindowIcon(QPixmap(kAppProp->themeDir() + "icons/exposure_sheet.png"));
 
-    k->actionBar = new TupProjectActionBar(QString("Exposure"), 
-                                           TupProjectActionBar::InsertFrame |
-                                           TupProjectActionBar::ExtendFrame |
-                                           TupProjectActionBar::RemoveFrame | 
-                                           TupProjectActionBar::MoveFrameBackward |
-                                           TupProjectActionBar::MoveFrameForward | 
-                                           TupProjectActionBar::LockFrame |
-                                           TupProjectActionBar::Separator |
-                                           TupProjectActionBar::InsertLayer |
-                                           TupProjectActionBar::RemoveLayer |
-                                           // SQA: Refactor the TupProjectActionBar to handle separators in a clean way
-                                           // TupProjectActionBar::Separator |
-                                           TupProjectActionBar::InsertScene |
-                                           TupProjectActionBar::RemoveScene);
+    QList<TupProjectActionBar::Action> generalActions;
+    generalActions << TupProjectActionBar::InsertLayer << TupProjectActionBar::RemoveLayer;
+    generalActions << TupProjectActionBar::Separator;
+    generalActions << TupProjectActionBar::InsertScene << TupProjectActionBar::RemoveScene;
+
+    k->actionBar = new TupProjectActionBar(QString("Exposure"), generalActions);
 
     connect(k->actionBar, SIGNAL(actionSelected(int)), this, SLOT(applyAction(int)));
     addChild(k->actionBar, Qt::AlignCenter);
+
+    QList<TupProjectActionBar::Action> frameActions;
+    frameActions << TupProjectActionBar::InsertFrame << TupProjectActionBar::ExtendFrame << TupProjectActionBar::RemoveFrame;
+    frameActions << TupProjectActionBar::Separator;
+    frameActions << TupProjectActionBar::MoveFrameBackward << TupProjectActionBar::MoveFrameForward; 
+    frameActions << TupProjectActionBar::Separator;
+    frameActions << TupProjectActionBar::CopyFrame;
+    frameActions << TupProjectActionBar::PasteFrame;
+
+    TupProjectActionBar *framesBar = new TupProjectActionBar(QString("Exposure"), frameActions);
+
+    connect(framesBar, SIGNAL(actionSelected(int)), this, SLOT(applyAction(int)));
+    addChild(framesBar, Qt::AlignCenter);
 
     k->scenesContainer = new TupSceneTabWidget(this);
     connect(k->scenesContainer, SIGNAL(currentChanged(int)), this, SLOT(requestChangeScene(int)));
@@ -140,22 +143,10 @@ void TupExposureSheet::createMenu()
 
     k->menu->addMenu(insertMenu);
 
-    /*
-    QAction *removeOne = new QAction(QIcon(THEME_DIR + "icons/remove_frame.png"), tr("Remove frame"), this);
-    removeOne->setIconVisibleInMenu(true);
-    k->menu->addAction(removeOne);
-    connect(removeOne, SIGNAL(triggered()), this, SLOT(removeOne()));
-    */
-
     QAction *clearAction = new QAction(QIcon(THEME_DIR + "icons/new.png"), tr("Clear frame"), this);
     clearAction->setIconVisibleInMenu(true);
     k->menu->addAction(clearAction);
     connect(clearAction, SIGNAL(triggered()), this, SLOT(clearFrame()));
-
-    QAction *lockAction = new QAction(QIcon(THEME_DIR + "icons/padlock.png"), tr("Lock/Unlock frame"), this);
-    lockAction->setIconVisibleInMenu(true);
-    k->menu->addAction(lockAction);
-    connect(lockAction, SIGNAL(triggered()), this, SLOT(lockFrame()));
 
     QAction *copyAction = new QAction(QIcon(THEME_DIR + "icons/copy.png"), tr("Copy frame"), this);
     copyAction->setIconVisibleInMenu(true);
@@ -211,7 +202,6 @@ void TupExposureSheet::addScene(int sceneIndex, const QString &name)
     connect(scene, SIGNAL(frameUsed(int, int)), this, SLOT(insertFrame(int, int)));
     connect(scene, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(renameFrame(int, int, const QString &)));
     connect(scene, SIGNAL(frameSelected(int, int)), SLOT(selectFrame(int, int)));
-    // connect(scene, SIGNAL(frameRemoved(int, int)), SLOT(removeFrameCopy(int, int)));
     connect(scene, SIGNAL(frameRemoved()), SLOT(removeFrameCopy()));
     connect(scene, SIGNAL(frameCopied(int, int)), SLOT(copyFrameForward(int, int)));
     connect(scene, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestRenameLayer(int, const QString &)));
@@ -285,15 +275,10 @@ void TupExposureSheet::applyAction(int action)
                  if (k->currentTable->currentRow() > lastFrame)
                      return;
 
-                 // SQA: Check if this condition is really working
-                 if (k->currentTable->frameIsLocked(layer, target))
-                     k->actionBar->emitActionSelected(TupProjectActionBar::LockFrame);
-
                  if (k->currentTable->framesCountAtCurrentLayer() == 1) {
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene, layer, target, TupProjectRequest::Reset);
                      emit requestTriggered(&request);
 
-                     // k->fromMenu = false; 
                      return;
                  }
 
@@ -327,8 +312,6 @@ void TupExposureSheet::applyAction(int action)
 
                      QApplication::restoreOverrideCursor();
                  }
-
-                 // k->fromMenu = false;
                }
                break;
 
@@ -358,14 +341,15 @@ void TupExposureSheet::applyAction(int action)
                }
                break;
 
-            case TupProjectActionBar::LockFrame:
+            case TupProjectActionBar::CopyFrame:
                {
-                 bool locked = k->currentTable->frameIsLocked(k->currentTable->currentColumn(), k->currentTable->currentFrame());
+                 requestCopyCurrentFrame();
+               }
+               break;
 
-                 TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                            k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                            TupProjectRequest::Lock, !locked);
-                 emit requestTriggered(&request);
+            case TupProjectActionBar::PasteFrame:
+               {
+                 requestPasteInCurrentFrame();
                }
                break;
 
@@ -547,28 +531,9 @@ void TupExposureSheet::selectFrame(int layerIndex, int frameIndex)
     emit localRequestTriggered(&request);
 }
 
-// void TupExposureSheet::removeFrameCopy(int layerIndex, int frameIndex)
 void TupExposureSheet::removeFrameCopy()
 {
     k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
-
-    /*
-    int sceneIndex = k->scenesContainer->currentIndex();
-    TupProjectRequest request;
-
-    if (k->currentTable->framesCountAtCurrentLayer() == 1) {
-        request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Reset);
-        emit requestTriggered(&request);
-    } else {
-        request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Remove);
-        emit requestTriggered(&request);
-
-        if (frameIndex > 0) {
-            request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex - 1, TupProjectRequest::Select);
-            emit localRequestTriggered(&request);
-        }
-    }
-    */
 }
 
 void TupExposureSheet::copyFrameForward(int layerIndex, int frameIndex)
@@ -867,21 +832,17 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                      if (response->mode() == TupProjectResponse::Do) {
                          if (k->localRequest) {
                              k->localRequest = false;
-                             // table->removeFrame(layerIndex, frameIndex, k->fromMenu);
                              table->removeFrame(layerIndex, frameIndex);
                          } else {
-                             // int layer = k->currentTable->currentLayer();
                              int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
                              int target = frameIndex;
 
                              if (target == lastFrame) {
-                                 // table->removeFrame(layerIndex, target, k->fromMenu);
                                  table->removeFrame(layerIndex, target);
                                  if (target <= 0)
                                      k->currentTable->clearSelection();
                              } else {
                                  // When the item deleted is not the last one
-                                 // int layer = k->currentTable->currentLayer();
                                  TupScene *scene = k->project->sceneAt(sceneIndex);
                                  if (scene) {
                                      TupLayer *layer = scene->layerAt(layerIndex);
@@ -895,13 +856,11 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                                               QString label = k->currentTable->frameName(layerIndex, index);
                                               renameFrame(layerIndex, index - 1, label);
                                          }
-                                         // table->removeFrame(layerIndex, lastFrame, k->fromMenu);
                                          table->removeFrame(layerIndex, lastFrame);
                                      }
                                  }
                              }
                          }
-                         // k->fromMenu = false;
                          return;
                      }
 
@@ -909,14 +868,12 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                          int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
                          int target = frameIndex;
                          if (target == lastFrame) {
-                             // table->removeFrame(layerIndex, frameIndex, k->fromMenu);
                              table->removeFrame(layerIndex, frameIndex);
                              if (frameIndex > 0)
                                  frameIndex--;
                              table->selectFrame(layerIndex, frameIndex);
                          } else {
                              table->removeFrame(layerIndex, frameIndex);
-                             // table->removeFrame(layerIndex, frameIndex, k->fromMenu);
                          }
                      }
                  }
@@ -937,11 +894,6 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                  {
                      // No action required for this specific request
                      return;
-                 }
-                break;
-                case TupProjectRequest::Lock:
-                 {
-                     table->setLockFrame(layerIndex, frameIndex, response->arg().toBool());
                  }
                 break;
                 case TupProjectRequest::Rename:
@@ -977,17 +929,6 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                 break;
                 case TupProjectRequest::Paste:
                  {
-                     /* SQA: It seems this code never is required
-                     if (frameIndex >= table->usedFrames(layerIndex)) {
-                         if (response->mode() == TupProjectResponse::Undo) {
-                             if (response->arg().toString().isEmpty())
-                                 table->removeFrame(layerIndex, frameIndex, false);
-                         } else {
-                             table->insertFrame(layerIndex, frameIndex, k->copyFrameName + "- copy", response->external());
-                         }
-                     }
-                     */
-
                      TupExposureTable::FrameType frameStatus = TupExposureTable::Used;
                      if (response->frameIsEmpty())
                          frameStatus = TupExposureTable::Empty;
@@ -1086,14 +1027,6 @@ void TupExposureSheet::insertFrames(int n)
     }
 }
 
-/*
-void TupExposureSheet::removeOne()
-{
-    k->fromMenu = true;
-    k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
-}
-*/
-
 void TupExposureSheet::clearFrame()
 {
     #ifdef K_DEBUG
@@ -1112,11 +1045,6 @@ void TupExposureSheet::clearFrame()
     emit requestTriggered(&event);
 
     k->currentTable->updateFrameState(layer, frame, TupExposureTable::Empty);
-}
-
-void TupExposureSheet::lockFrame()
-{
-    k->actionBar->emitActionSelected(TupProjectActionBar::LockFrame);
 }
 
 void TupExposureSheet::updateFramesState()

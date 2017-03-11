@@ -143,7 +143,8 @@ void TupExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
         int w = option.rect.bottomRight().x() - x - 2;
         int h = option.rect.bottomRight().y() - y - 2;
 
-        if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Empty) && !item->data(TupExposureTable::IsLocked).toBool()) {
+        // if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Empty) && !item->data(TupExposureTable::IsLocked).toBool()) {
+        if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Empty)) {
             QColor color(100, 100, 100, 30);
             if (k->themeName.compare("Dark") == 0)
                 color = QColor(120, 120, 120);
@@ -154,7 +155,8 @@ void TupExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
             painter->drawRect(x, y, w, h);
         }
 
-        if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Used) && !item->data(TupExposureTable::IsLocked).toBool()) {
+        // if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Used) && !item->data(TupExposureTable::IsLocked).toBool()) {
+        if ((item->data(TupExposureTable::IsEmpty).toInt() == TupExposureTable::Used)) {
             QPainterPath path(QPointF(x, y));
             path.lineTo(x, y + h - 3);
             path.lineTo(x + 3, y + h);
@@ -334,10 +336,10 @@ QString TupExposureTable::frameName(int layerIndex, int frameIndex)
 void TupExposureTable::setFrameName(int layerIndex, int frameIndex, const QString &name)
 {
     QTableWidgetItem *frame = item(frameIndex, layerIndex);
-    QFont font = this->font();
-    font.setPointSize(7);
-    frame->setFont(font);
-    if (frame) {
+    if (frame) { 
+        QFont font = this->font();
+        font.setPointSize(7);
+        frame->setFont(font);
         if (frame->text() != name)
             frame->setText(name);
     }
@@ -348,6 +350,7 @@ void TupExposureTable::setLayerName(int layerIndex, const QString & name)
     k->header->setSectionTitle(k->header->logicalIndex(layerIndex), name);
 }
 
+/*
 bool TupExposureTable::frameIsLocked(int layerIndex, int frameIndex)
 {
     QTableWidgetItem *frame = item(frameIndex, layerIndex);
@@ -366,6 +369,7 @@ bool TupExposureTable::frameIsLocked(int layerIndex, int frameIndex)
 
     return false;
 }
+*/
 
 bool TupExposureTable::layerIndexIsValid(int layerIndex)
 {
@@ -500,6 +504,7 @@ void TupExposureTable::insertFrame(int layerIndex, int frameIndex, const QString
     }
 }
 
+/*
 void TupExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
 {
     int logicalIndex = k->header->logicalIndex(layerIndex);
@@ -515,6 +520,7 @@ void TupExposureTable::setLockFrame(int layerIndex, int frameIndex, bool locked)
         }
     }
 }
+*/
 
 void TupExposureTable::setLockLayer(int layerIndex, bool locked)
 {

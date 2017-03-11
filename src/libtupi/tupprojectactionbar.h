@@ -71,32 +71,28 @@ class TUPI_EXPORT TupProjectActionBar : public QWidget
             ExtendFrame = 1 << 3, 
             MoveFrameBackward = 1 << 4,
             MoveFrameForward = 1 << 5,
-            LockFrame = 1 << 6,
+            CopyFrame = 1 << 6,
+            PasteFrame = 1 << 7,
             
-            InsertLayer = 1 << 7,
-            RemoveLayer = 1 << 8,
-            MoveLayerUp = 1 << 9,
-            MoveLayerDown = 1 << 10,
-            LockLayer = 1 << 11,
+            InsertLayer = 1 << 8,
+            RemoveLayer = 1 << 9,
+            MoveLayerUp = 1 << 10,
+            MoveLayerDown = 1 << 11,
+            LockLayer = 1 << 12,
             
-            InsertScene = 1 << 12,
-            RemoveScene = 1 << 13,
-            MoveSceneUp = 1 << 14,
-            MoveSceneDown = 1 << 15,
-            LockScene = 1 << 16,
-            Separator = 1 << 17,
+            InsertScene = 1 << 13,
+            RemoveScene = 1 << 14,
+            MoveSceneUp = 1 << 15,
+            MoveSceneDown = 1 << 16,
+            LockScene = 1 << 17,
+            Separator = 1 << 18,
 
-            AllActions = InsertFrame | RemoveFrame | ExtendFrame | MoveFrameBackward | MoveFrameForward | LockFrame | InsertLayer | RemoveLayer 
-                                     | MoveLayerUp | MoveLayerDown | InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown,
-
-            FrameActions = InsertFrame | ExtendFrame | RemoveFrame | MoveFrameBackward | MoveFrameForward | LockFrame,
+            FrameActions = InsertFrame | ExtendFrame | RemoveFrame | MoveFrameBackward | MoveFrameForward | CopyFrame | PasteFrame,
             LayerActions = InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown | LockLayer,
             SceneActions = InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown
         };
         
-        Q_DECLARE_FLAGS(Actions, Action);
-        
-        TupProjectActionBar(const QString &container = QString(), Actions actions = NoAction, Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
+        TupProjectActionBar(const QString &container = QString(), QList<Action> actions = QList<Action>(), Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
         ~TupProjectActionBar();
         void setFixedSize(int s);
         
@@ -112,13 +108,11 @@ class TUPI_EXPORT TupProjectActionBar : public QWidget
         void actionSelected(int action);
         
     private:
-        void setup(Actions actions);
+        void setup(QList<Action> actions);
         
     private:
         struct Private;
         Private *const k;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(TupProjectActionBar::Actions);
 
 #endif

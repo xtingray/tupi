@@ -44,7 +44,6 @@
 #include "tupprojectactionbar.h"
 #include "tupproject.h"
 #include "tapplication.h"
-// #include "toptionaldialog.h"
 #include "tupprojectrequest.h"
 #include "tuprequestbuilder.h"
 #include "tupscene.h"
@@ -94,9 +93,6 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         virtual void itemResponse(TupItemResponse *response);
         virtual void libraryResponse(TupLibraryResponse *response);
 
-    // signals:
-    //     void newPerspective(int);
-
     public slots:
         void closeAllScenes();
         void applyAction(int action);
@@ -113,15 +109,11 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
 
         void insertFramesFromMenu(QAction *action);
         void copyTimeLineFromMenu(QAction *action);
-
-        // void removeOne();
         void clearFrame();
-        void lockFrame();
 
         void insertFrame(int layerIndex, int frameIndex);
         void renameFrame(int layerIndex, int frameIndex, const QString &name);
         void selectFrame(int layerIndex, int frameIndex);
-        // void removeFrameCopy(int layerIndex, int frameIndex);
         void removeFrameCopy();
         void copyFrameForward(int layerIndex, int frameIndex);
 

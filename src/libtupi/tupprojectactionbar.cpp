@@ -46,7 +46,7 @@ struct TupProjectActionBar::Private
     bool isAnimated;
 };
 
-TupProjectActionBar::TupProjectActionBar(const QString &container, Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent), k(new Private(orientation))
+TupProjectActionBar::TupProjectActionBar(const QString &container, QList<Action> actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent), k(new Private(orientation))
 {
     k->container = container;
     connect(&k->actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
@@ -63,7 +63,7 @@ void TupProjectActionBar::setFixedSize(int s)
     k->fixedSize = s;
 }
 
-void TupProjectActionBar::setup(Actions actions)
+void TupProjectActionBar::setup(QList<Action> actions)
 {
     QBoxLayout *mainLayout = 0;
     
@@ -90,200 +90,142 @@ void TupProjectActionBar::setup(Actions actions)
     k->buttonLayout->addStretch();
     int size = 16;
 
-    if (actions & InsertFrame) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
-        button->setToolTip(tr("Insert frame"));
-        // SQA: This short-cut has been moved to Zoom In feature
-        button->setShortcut(QKeySequence(Qt::Key_9));
-        k->actions.addButton(button, InsertFrame);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
+    foreach(Action action, actions) {
+        if (action == InsertFrame) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
+            button->setToolTip(tr("Insert frame"));
+            button->setShortcut(QKeySequence(Qt::Key_9));
+            k->actions.addButton(button, InsertFrame);
 
-    if (actions & ExtendFrame) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/extend_frame.png"), size);
-        button->setToolTip(tr("Extend frame"));
-        // button->setShortcut(QKeySequence());
-
-        k->actions.addButton(button, ExtendFrame);
-
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-
-    if (actions & RemoveFrame) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
-        button->setToolTip(tr("Remove frame"));
-        // SQA: This short-cut has been moved to Zoom Out feature
-        button->setShortcut(QKeySequence(Qt::Key_0));
-        
-        k->actions.addButton(button, RemoveFrame);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-
-    if (actions & MoveFrameBackward) {
-        TImageButton *button = 0;
-        if (k->container.compare("Exposure") == 0) {
-            button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
-        } else {
-            if (k->container.compare("TimeLine") == 0)
-                button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_backward.png"), size);
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
         }
-        
-        button->setToolTip(tr("Move frame backward"));
-        button->setShortcut(QKeySequence(tr("F8")));
 
-        k->actions.addButton(button, MoveFrameBackward);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-    
-    if (actions & MoveFrameForward) {
-        TImageButton *button = 0;
+        if (action == ExtendFrame) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/extend_frame.png"), size);
+            button->setToolTip(tr("Extend frame"));
+            // button->setShortcut(QKeySequence());
 
-        if (k->container.compare("Exposure") == 0) {
-            button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
-        } else {
-            if (k->container.compare("TimeLine") == 0)
-                button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_forward.png"), size);
+            k->actions.addButton(button, ExtendFrame);
+
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
         }
- 
-        button->setToolTip(tr("Move frame forward"));
-        button->setShortcut(QKeySequence(tr("F9")));
-        
-        k->actions.addButton(button, MoveFrameForward);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-    
-    if (actions & LockFrame) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/padlock.png"), size);
-        button->setToolTip(tr("Lock frame"));
-        button->setShortcut(QKeySequence(tr("F10")));
-        
-        k->actions.addButton(button, LockFrame);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
 
-    if (actions & LockLayer) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), 22);
-        button->setToolTip(tr("Lock layer"));
-        
-        k->actions.addButton(button, LockLayer);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
+        if (action == RemoveFrame) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
+            button->setToolTip(tr("Remove frame"));
+            // SQA: This short-cut has been moved to Zoom Out feature
+            button->setShortcut(QKeySequence(Qt::Key_0));
 
-    if (actions & Separator) {
-        k->buttonLayout->addSpacing(5);
-        k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
-    }
+            k->actions.addButton(button, RemoveFrame);
 
-    if (actions & InsertLayer) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
-        button->setToolTip(tr("Insert layer"));
-        button->setShortcut(QKeySequence(tr("F5")));
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
 
-        k->actions.addButton(button, InsertLayer);
+        if (action == MoveFrameBackward) {
+            TImageButton *button = 0;
+            if (k->container.compare("Exposure") == 0) {
+                button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
+            } else {
+                if (k->container.compare("TimeLine") == 0)
+                    button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_backward.png"), size);
+            }
 
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
+            button->setToolTip(tr("Move frame backward"));
+            button->setShortcut(QKeySequence(tr("F8")));
 
-    if (actions & RemoveLayer) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
-        button->setToolTip(tr("Remove layer"));
-        button->setShortcut(QKeySequence(tr("F6")));
+            k->actions.addButton(button, MoveFrameBackward);
 
-        k->actions.addButton(button, RemoveLayer);
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
 
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
+        if (action == MoveFrameForward) {
+            TImageButton *button = 0;
 
-    if (actions & MoveLayerUp) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
-        button->setToolTip(tr("Move layer up"));
-        button->setShortcut(QKeySequence(tr("F9")));
+            if (k->container.compare("Exposure") == 0) {
+                button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
+            } else {
+                if (k->container.compare("TimeLine") == 0)
+                    button = new TImageButton(QIcon(THEME_DIR + "icons/move_frame_forward.png"), size);
+            }
 
-        k->actions.addButton(button, MoveLayerUp);
+            button->setToolTip(tr("Move frame forward"));
+            button->setShortcut(QKeySequence(tr("F9")));
 
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(true);
-    }
+            k->actions.addButton(button, MoveFrameForward);
 
-    if (actions & MoveLayerDown) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
-        button->setToolTip(tr("Move layer down"));
-        button->setShortcut(QKeySequence(tr("F10")));
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
 
-        k->actions.addButton(button, MoveLayerDown);
+        if (action == CopyFrame) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/copy.png"), size);
+            button->setToolTip(tr("Copy frame"));
+            k->actions.addButton(button, CopyFrame);
 
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
 
-    if (actions & Separator) {
-        k->buttonLayout->addSpacing(5);
-        k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
-    }
+        if (action == PasteFrame) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/paste.png"), size);
+            button->setToolTip(tr("Paste frame"));
+            k->actions.addButton(button, PasteFrame);
 
-    if (actions & InsertScene) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size); 
-        button->setToolTip(tr("Insert scene"));
-        
-        k->actions.addButton(button, InsertScene);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-     
-    if (actions & RemoveScene) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);
-        button->setToolTip(tr("Remove scene"));
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
 
-        k->actions.addButton(button, RemoveScene);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
+        if (action == InsertLayer) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
+            button->setToolTip(tr("Insert layer"));
+            button->setShortcut(QKeySequence(tr("F5")));
 
-    if (actions & MoveSceneUp) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
-        button->setToolTip(tr("Move scene up"));
-        
-        k->actions.addButton(button, MoveSceneUp);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-     
-    if (actions & MoveSceneDown) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/move_scene_down.png"), size);
-        button->setToolTip( tr("Move scene down"));
-        
-        k->actions.addButton(button, MoveSceneDown);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-    
-    if (actions & LockScene) {
-        TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/lock_scene.png"), size);
-        button->setToolTip(tr("Lock scene"));
-        
-        k->actions.addButton(button, LockScene);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
+            k->actions.addButton(button, InsertLayer);
+
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
+
+        if (action == RemoveLayer) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
+            button->setToolTip(tr("Remove layer"));
+            button->setShortcut(QKeySequence(tr("F6")));
+
+            k->actions.addButton(button, RemoveLayer);
+
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
+
+        if (action == InsertScene) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);
+            button->setToolTip(tr("Insert scene"));
+
+            k->actions.addButton(button, InsertScene);
+
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
+
+        if (action == RemoveScene) {
+            TImageButton *button = new TImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);
+            button->setToolTip(tr("Remove scene"));
+
+            k->actions.addButton(button, RemoveScene);
+
+            k->buttonLayout->addWidget(button);
+            button->setAnimated(k->isAnimated);
+        }
+
+        if (action == Separator) {
+            k->buttonLayout->addSpacing(3);
+            k->buttonLayout->addWidget(new TSeparator(Qt::Vertical));
+            k->buttonLayout->addSpacing(3);
+        }
     }
 
     k->buttonLayout->addStretch();
@@ -297,43 +239,11 @@ void TupProjectActionBar::setup(Actions actions)
 
 void TupProjectActionBar::insertSeparator(int position)
 {
-    /*
-    Qt::Orientation sepOrientation = Qt::Vertical;
-    switch (k->orientation) {
-            case Qt::Vertical:
-            {
-                 sepOrientation = Qt::Horizontal;
-            }
-            break;
-            case Qt::Horizontal:
-            {
-                 sepOrientation = Qt::Vertical;
-            }
-            break;
-    }
-    */
-
     k->buttonLayout->insertWidget(position + 1, new TSeparator(Qt::Vertical), 1, Qt::AlignCenter);
 }
 
 void TupProjectActionBar::insertBlankSpace(int position)
 {
-    /*
-    Qt::Orientation sepOrientation = Qt::Vertical;
-    switch (k->orientation) {
-            case Qt::Vertical:
-            {
-                 sepOrientation = Qt::Horizontal;
-            }
-            break;
-            case Qt::Horizontal:
-            {
-                 sepOrientation = Qt::Vertical;
-            }
-            break;
-    }
-    */
-
     QWidget *widget = new QWidget();
     widget->setFixedSize(5,5);
    

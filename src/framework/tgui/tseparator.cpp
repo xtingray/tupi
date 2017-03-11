@@ -42,8 +42,7 @@ TSeparator::TSeparator(QWidget* parent) : QFrame(parent)
    setOrientation(Qt::Horizontal);
 }
 
-TSeparator::TSeparator(Qt::Orientation orientation, QWidget* parent)
-   : QFrame(parent)
+TSeparator::TSeparator(Qt::Orientation orientation, QWidget* parent) : QFrame(parent)
 {
    setLineWidth(1);
    setMidLineWidth(0);

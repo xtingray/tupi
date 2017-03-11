@@ -67,7 +67,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         enum Attribute
         {
           IsEmpty = 1000,
-          IsLocked
+          // IsLocked
         };
 
         enum FrameType 
@@ -91,7 +91,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
         void moveLayer(int oldPosLayer, int newPosLayer);
 
-        void setLockFrame(int layerIndex, int frameIndex, bool locked);
+        // void setLockFrame(int layerIndex, int frameIndex, bool locked);
         void setLockLayer(int layerIndex,  bool locked);
         void setLayerVisibility(int visualIndex, bool visibility);
         int usedFrames(int column) const;
@@ -100,7 +100,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void setFrameName(int layerIndex, int frameIndex,const QString & name);
         void setLayerName(int layerIndex, const QString & name);
 
-        bool frameIsLocked(int layerIndex, int frameIndex);
+        // bool frameIsLocked(int layerIndex, int frameIndex);
         void selectFrame(int layerIndex, int frameIndex);
         int layersCount();
         int framesCount();

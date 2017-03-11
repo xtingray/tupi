@@ -75,8 +75,10 @@ TupScenesWidget::~TupScenesWidget()
 
 void TupScenesWidget::setupButtons()
 {
-    TupProjectActionBar *bar = new TupProjectActionBar(QString("TimeLine"), 
-                              TupProjectActionBar::InsertScene | TupProjectActionBar::RemoveScene);
+    QList<TupProjectActionBar::Action> sceneActions;
+    sceneActions << TupProjectActionBar::InsertScene << TupProjectActionBar::RemoveScene;
+
+    TupProjectActionBar *bar = new TupProjectActionBar(QString("Scenes"), sceneActions);
     bar->button(TupProjectActionBar::InsertScene)->setIcon(QIcon(THEME_DIR + "icons/plus_sign.png"));
     bar->button(TupProjectActionBar::RemoveScene)->setIcon(QIcon(THEME_DIR + "icons/minus_sign.png"));
     bar->insertBlankSpace(1);

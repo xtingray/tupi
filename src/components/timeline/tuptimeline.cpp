@@ -65,18 +65,17 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
     k->library = k->project->library();
 
     // SQA: Pending to add the feature "Layer Opacity" as part of this action bar
-    
-    k->actionBar = new TupProjectActionBar(QString("TimeLine"), TupProjectActionBar::InsertLayer |
-                        TupProjectActionBar::RemoveLayer |
-                        TupProjectActionBar::Separator |
-                        TupProjectActionBar::InsertFrame |
-                        TupProjectActionBar::ExtendFrame |
-                        TupProjectActionBar::RemoveFrame |
-                        TupProjectActionBar::MoveFrameBackward |
-                        TupProjectActionBar::MoveFrameForward |
-                        TupProjectActionBar::LockFrame |
-                        TupProjectActionBar::InsertScene |
-                        TupProjectActionBar::RemoveScene);
+
+    QList<TupProjectActionBar::Action> allActions;
+    allActions << TupProjectActionBar::InsertFrame << TupProjectActionBar::ExtendFrame << TupProjectActionBar::RemoveFrame; 
+    allActions << TupProjectActionBar::MoveFrameBackward << TupProjectActionBar::MoveFrameForward;
+    allActions << TupProjectActionBar::CopyFrame << TupProjectActionBar::PasteFrame;
+    allActions << TupProjectActionBar::Separator;
+    allActions << TupProjectActionBar::InsertLayer << TupProjectActionBar::RemoveLayer;
+    allActions << TupProjectActionBar::Separator;
+    allActions << TupProjectActionBar::InsertScene << TupProjectActionBar::RemoveScene;
+
+    k->actionBar = new TupProjectActionBar(QString("TimeLine"), allActions);
 
     addChild(k->actionBar, Qt::AlignCenter);
     
@@ -554,14 +553,20 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
                  return true;
             }
             break;
-            case TupProjectActionBar::LockFrame:
+            case TupProjectActionBar::CopyFrame:
             {
-                 bool locked = framesTable(sceneIndex)->frameIsLocked(layerIndex, currentFrame);
+                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Copy);
+                emit localRequestTriggered(&request);
 
-                 TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Lock, !locked);
-                 emit requestTriggered(&request);
+                return true;
+            }
+            break;
+            case TupProjectActionBar::PasteFrame:
+            {
+                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Paste);
+                emit localRequestTriggered(&request);
 
-                 return true;
+                return true;
             }
             break;
             default:
