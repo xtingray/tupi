@@ -115,16 +115,18 @@ void TupPluginSelector::setFormats(TupExportInterface::Formats formats)
     }
 #endif
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
     if (formats & TupExportInterface::MP4) {
         QListWidgetItem *format = new QListWidgetItem(tr("MP4 Video"), m_formatList);
         format->setData(3124, TupExportInterface::MP4);
     }
 
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+    /* SQA: This code is temporarily disabled
     if (formats & TupExportInterface::GIF) {
         QListWidgetItem *format = new QListWidgetItem(tr("Animated GIF"), m_formatList);
         format->setData(3124, TupExportInterface::GIF);
     }
+    */
 
     if (formats & TupExportInterface::MPEG) {
         QListWidgetItem *format = new QListWidgetItem(tr("MPEG Video"), m_formatList);
