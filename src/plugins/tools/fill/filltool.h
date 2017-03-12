@@ -37,7 +37,7 @@
 #define FILLTOOLPLUGIN_H
 
 #include "tglobal.h"
-#include "tupsvgitem.h"
+// #include "tupsvgitem.h"
 #include "tupserializer.h"
 #include "tupitemconverter.h"
 #include "tuprequestbuilder.h"

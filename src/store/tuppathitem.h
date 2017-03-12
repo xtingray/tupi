@@ -36,7 +36,7 @@
 #ifndef TUPPATHITEM_H
 #define TUPPATHITEM_H
 
-#include "tglobal.h"
+// #include "tglobal.h"
 #include "tupabstractserializable.h"
 
 #include <QGraphicsPathItem>

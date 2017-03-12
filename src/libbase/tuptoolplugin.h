@@ -38,6 +38,7 @@
 
 #include "tglobal.h"
 #include "tuptoolinterface.h"
+#include "taction.h"
 #include "tupprojectresponse.h"
 
 #include <QObject>

@@ -36,8 +36,9 @@
 #ifndef TUPSVGITEM_H
 #define TUPSVGITEM_H
 
-#include "tupabstractserializable.h"
 #include "tglobal.h"
+#include "tupabstractserializable.h"
+// #include "tglobal.h"
 #include "tupitemtweener.h"
 #include "tupframe.h"
 

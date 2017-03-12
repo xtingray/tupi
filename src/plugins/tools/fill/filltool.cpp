@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "filltool.h"
+#include "tupsvgitem.h"
 
 struct FillTool::Private
 {

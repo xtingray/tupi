@@ -37,8 +37,8 @@
 #define TUPTOOLINTERFACE_H
 
 #include "tglobal.h"
-#include "tupframe.h"
-#include "taction.h"
+// #include "tupframe.h"
+// #include "taction.h"
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
 #include <QStringList>

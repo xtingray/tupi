@@ -37,7 +37,7 @@
 #define NODESTOOL_H
 
 #include "tglobal.h"
-#include "tuppathitem.h"
+// #include "tuppathitem.h"
 #include "tcontrolnode.h"
 #include "tnodegroup.h"
 #include "tuptoolplugin.h"
