@@ -129,17 +129,9 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
     palette.setColor(QPalette::Foreground, QColor(50, 50, 50, 255));
     credits->setPalette(palette);
 
-    /*
-    int size = 24;
-    #ifdef Q_OS_MAC
-        size = 46;
-    #endif
-    credits->setFont(QFont("verdana", size));
-    */
-
     // Acknowledgment Tab 
 
-    QString sponsorFile = QString() + "help/" + lang + "/thanks.html";
+    QString sponsorFile = QString() + "help/pages/thanks.html";
 #ifdef Q_OS_WIN
     QString sponsorPath = SHARE_DIR + sponsorFile;
 #else
@@ -155,7 +147,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 
     // Tupi Description Tab 
 
-    QString tupiFile = QString() + "help/" + lang + "/tupi_short.html";
+    QString tupiFile = QString() + "help/pages/tupi_short.html";
 #ifdef Q_OS_WIN
     QString tupiPath = SHARE_DIR + tupiFile;
 #else
@@ -171,7 +163,7 @@ TupAbout::TupAbout(QWidget *parent) : TabDialog(Cancel, parent)
 
     // 4: License Terms Tab
 
-    QString licenseFile = QString() + "help/" + lang + "/philosophy.html"; 
+    QString licenseFile = QString() + "help/pages/philosophy.html"; 
 #ifdef Q_OS_WIN
     QString licensePath = SHARE_DIR + licenseFile;
 #else

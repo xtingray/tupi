@@ -8,7 +8,7 @@ ANIMATION_DIR = ../components/animation
 PAINTAREA_DIR = ../components/paintarea
 BRUSH_DIR = ../components/brush
 # KINAS_DIR = ../components/kinas 
-HELP_DIR = ../components/help 
+# HELP_DIR = ../components/help 
 IMPORT_DIR = ../components/import 
 EXPORT_DIR = ../components/export 
 EXPOSURE_DIR = ../components/exposure 
@@ -27,7 +27,7 @@ include($$PAINTAREA_DIR/paintarea.pri)
 include($$ANIMATION_DIR/animation.pri)
 include($$BRUSH_DIR/brush.pri)
 # include($$KINAS_DIR/kinas.pri)
-include($$HELP_DIR/help.pri)
+# include($$HELP_DIR/help.pri)
 include($$IMPORT_DIR/import.pri)
 include($$EXPORT_DIR/export.pri)
 include($$EXPOSURE_DIR/exposure.pri)

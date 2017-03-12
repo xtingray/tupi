@@ -76,6 +76,7 @@
 #include <QDesktopWidget>
 #include <QThread>
 #include <QClipboard>
+#include <QDesktopServices>
 
 /**
  * This class defines the main window application.
@@ -453,6 +454,8 @@ void TupMainWindow::addTwitterPage()
             newsTab->setSource(twitterPath);
             connect(newsTab, SIGNAL(newPerspective(int)), this, SLOT(changePerspective(int)));
             addWidget(newsTab);
+
+            helpAction->setEnabled(true);
         } else {
             #ifdef K_DEBUG
                 QString msg = "TupMainWindow::addTwitterPage() - Warning: Couldn't load page -> " + twitterPath;
@@ -944,29 +947,7 @@ void TupMainWindow::preferences()
 
 void TupMainWindow::showHelp()
 {
-    QString lang = (QLocale::system().name()).left(2);
-    if (lang.length() < 2)
-        lang = "en";
-
-    QString cover = QString() + "help/" + lang + "/cover.html";
-
-#ifdef Q_OS_WIN
-    QString helpPath = SHARE_DIR + cover;
-#else
-    QString helpPath = SHARE_DIR + "data/" + cover;
-#endif
-
-    QFile file(helpPath);
-    if (!file.exists()) {
-        #ifdef Q_OS_WIN
-            helpPath = SHARE_DIR + "help/en/cover.html";
-        #else
-            helpPath = SHARE_DIR + "data/help/en/cover.html";
-        #endif
-    }
-
-    TupHelpDialog *dialog = new TupHelpDialog(helpPath);
-    dialog->showMaximized();
+    QDesktopServices::openUrl(QString("http://maefloresta.com/wiki"));
 }
 
 /**

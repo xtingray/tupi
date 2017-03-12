@@ -40,7 +40,6 @@
 #include "tupdocumentview.h"
 #include "tupanimationspace.h"
 #include "tuppreferencesdialog.h"
-#include "tuphelpdialog.h"
 
 // modules
 #include "tupexposuresheet.h"
@@ -51,8 +50,6 @@
 #include "tuplibrarywidget.h"
 #include "tuptimeline.h"
 #include "tupcamerawidget.h"
-#include "tuphelpwidget.h"
-#include "tuphelpbrowser.h"
 #include "tuptwitterwidget.h"
 #include "tupexportwidget.h"
 
@@ -299,6 +296,7 @@ class TupMainWindow : public TabbedMainWindow
         QString netUser;
         QString webContent;
         QSize webMsgSize;
+        TAction *helpAction;
 
     signals:
         void responsed(TupProjectResponse *);
