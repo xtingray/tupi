@@ -40,7 +40,7 @@
 
 QT_PATH=/Users/xtingray/Qt5.8.0
 export PATH=$QT_PATH/5.8/clang_64/bin:$PATH
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$QT_PATH/5.8/clang_64/lib:/usr/local/lib
+export DYLD_LIBRARY_PATH=/usr/local/lib:$DYLD_LIBRARY_PATH:$QT_PATH/5.8/clang_64/lib
 export DYLD_FRAMEWORK_PATH=$QT_PATH/5.8/clang_64/lib
 
 TUPI_GIT_REPOSITORY=$1
@@ -94,5 +94,5 @@ for lib in ${LIBS[@]}; do
     done
 done
 
-macdeployqt Tupi.app -dmg
+macdeployqt Tupi.app -dmg -libpath=/usr/local/lib
 
