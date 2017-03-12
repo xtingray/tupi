@@ -150,7 +150,7 @@ SOURCES += taction.cpp \
 
 INCLUDEPATH += ../tcore ../ ../../libbase
 
-RESOURCES += tgui_images.qrc
+# RESOURCES += tgui_images.qrc
 
 linux-g {
     TARGETDEPS += ../tcore/libtupifwcore.so
