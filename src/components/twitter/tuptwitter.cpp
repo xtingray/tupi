@@ -48,6 +48,7 @@ QString TupTwitter::IS_HOST_UP_URL = QString("/updates/test.xml");
 QString TupTwitter::USER_TIMELINE_URL = QString("/updates/tweets.html");
 QString TupTwitter::TUPI_VERSION_URL = QString("/updates/current_version.xml");
 QString TupTwitter::TUPI_WEB_MSG = QString("/updates/web_msg.");
+QString TupTwitter::TUPI_VIDEOS = QString("/updates/videos.xml");
 QString TupTwitter::BROWSER_FINGERPRINT = QString("Tupi_Browser 1.0");
 
 struct TupTwitter::Private
@@ -143,7 +144,7 @@ void TupTwitter::requestFile(const QString &target)
 void TupTwitter::closeRequest(QNetworkReply *reply)
 {
     #ifdef K_DEBUG
-        QString msg = "TupTwitter::closeRequest() - Closing request...";
+        QString msg = "TupTwitter::closeRequest() - Getting answer from request...";
         #ifdef Q_OS_WIN
             qWarning() << msg;
         #else
@@ -185,16 +186,23 @@ void TupTwitter::closeRequest(QNetworkReply *reply)
                     requestFile(NEWS_HOST + TUPI_WEB_MSG + k->locale + ".html");
                 } else {
                     if (answer.startsWith("<webmsg>")) { // Getting web msg
-                        saveWebMsg(answer);
+                        saveFile(answer, "webmsg.html");
+                        requestFile(NEWS_HOST + TUPI_VIDEOS);
                     } else {
-                        #ifdef K_DEBUG
-                            QString msg = "TupTwitter::closeRequest() - Network Error: Invalid data!";
-                            #ifdef Q_OS_WIN
-                                qDebug() << msg;
-                            #else
-                                tError() << msg;
+                        if (answer.startsWith("<youtube>")) { // Getting video list
+                            saveFile(answer, "videos.xml");
+                            k->reply->deleteLater();
+                            k->manager->deleteLater();
+                        } else {
+                            #ifdef K_DEBUG
+                                QString msg = "TupTwitter::closeRequest() - Network Error: Invalid data!";
+                                #ifdef Q_OS_WIN
+                                    qDebug() << msg;
+                                #else
+                                    tError() << msg;
+                                #endif
                             #endif
-                        #endif
+                        }
                     }
                 }
             }
@@ -385,16 +393,13 @@ void TupTwitter::formatStatus(QByteArray array)
     emit pageReady();
 }
 
-void TupTwitter::saveWebMsg(const QString &answer)
+void TupTwitter::saveFile(const QString &answer, const QString &fileName)
 {
-    QString msgPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/webmsg.html";
+    QString msgPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/" + fileName;
     QFile file(msgPath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
         out << answer;
         file.close();
     }
-
-    k->reply->deleteLater();
-    k->manager->deleteLater();
 }

@@ -125,11 +125,28 @@ void TipDatabase::loadVideos(const QString &videoPath)
     QDomDocument doc;
     QFile file(videoPath);
    
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
+        #ifdef K_DEBUG
+            QString msg = "TipDatabase::loadVideos() - Fatal Error: Insufficient permissions to read file -> " + videoPath;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return;
+    }
    
     if (!doc.setContent(&file)) {
         file.close();
+        #ifdef K_DEBUG
+            QString msg = "TipDatabase::loadVideos() - Fatal Error: Can't load XML file -> " + videoPath;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return;
     }
     file.close();
@@ -194,11 +211,28 @@ void TipDatabase::loadTips(const QString &tipPath)
     QDomDocument doc;
     QFile file(tipPath);
     
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
+        #ifdef K_DEBUG
+            QString msg = "TipDatabase::loadTips() - Fatal Error: Insufficient permissions to read file -> " + tipPath;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return;
+    }
     
     if (!doc.setContent(&file)) {
         file.close();
+        #ifdef K_DEBUG
+            QString msg = "TipDatabase::loadTips() - Fatal Error: Can't load XML file -> " + tipPath;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return;
     }
     file.close();

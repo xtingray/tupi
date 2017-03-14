@@ -63,7 +63,7 @@ class TUPI_EXPORT TupTwitter : public QWidget
         void requestFile(const QString &target);
         void checkSoftwareUpdates(QByteArray array);
         void formatStatus(QByteArray array);
-        void saveWebMsg(const QString &answer);
+        void saveFile(const QString &answer, const QString &fileName);
 
         static QString NEWS_HOST;
         static QString IS_HOST_UP_URL;
@@ -71,6 +71,7 @@ class TUPI_EXPORT TupTwitter : public QWidget
         static QString TUPI_VERSION_URL;
         static QString BROWSER_FINGERPRINT;
         static QString TUPI_WEB_MSG;
+        static QString TUPI_VIDEOS;
 
         struct Private;
         Private *const k;
