@@ -70,6 +70,11 @@ TupCameraBar::TupCameraBar(QWidget *parent) : QFrame(parent)
     m_mainLayout->addWidget(m_play);
     connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
 
+    m_pause = new TImageButton(QPixmap(THEME_DIR + "icons/pause.png"), 33, this, true);
+    m_pause->setToolTip(tr("Pause"));
+    m_mainLayout->addWidget(m_pause);
+    connect(m_pause, SIGNAL(clicked()), this, SIGNAL(pause()));
+
     m_stop = new TImageButton(QPixmap(THEME_DIR + "icons/stop.png"), 25, this, true);
     m_stop->setToolTip(tr("Stop"));
     m_mainLayout->addWidget(m_stop);
@@ -82,7 +87,6 @@ TupCameraBar::TupCameraBar(QWidget *parent) : QFrame(parent)
 
     setLayout(m_mainLayout);
 }
-
 
 TupCameraBar::~TupCameraBar()
 {

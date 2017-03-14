@@ -80,12 +80,13 @@ class TUPI_EXPORT TupScreen : public QFrame, public TupAbstractProjectResponseHa
         void updateAnimationArea();
 
     public slots:
-        virtual void render();
-        virtual void play();
-        virtual void playBack();
-        virtual void stop();
-        virtual void nextFrame();
-        virtual void previousFrame();
+        void render();
+        void play();
+        void playBack();
+        void pause();
+        void stop();
+        void nextFrame();
+        void previousFrame();
 
     private slots:
         void advance();
@@ -111,6 +112,7 @@ class TUPI_EXPORT TupScreen : public QFrame, public TupAbstractProjectResponseHa
         void resizeEvent(QResizeEvent *event);
 
     private:
+        void stopAnimation();
         void initPhotogramsArray();
         void addPhotogramsArray(int index);
         void updateFirstFrame();

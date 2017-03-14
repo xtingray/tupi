@@ -141,6 +141,7 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
 
     connect(k->cameraBar, SIGNAL(play()), this, SLOT(doPlay()));
     connect(k->cameraBar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
+    connect(k->cameraBar, SIGNAL(pause()), k->screen, SLOT(pause()));
     connect(k->cameraBar, SIGNAL(stop()), k->screen, SLOT(stop()));
     connect(k->cameraBar, SIGNAL(ff()), k->screen, SLOT(nextFrame()));
     connect(k->cameraBar, SIGNAL(rew()), k->screen, SLOT(previousFrame()));

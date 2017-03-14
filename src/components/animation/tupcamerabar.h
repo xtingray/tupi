@@ -62,12 +62,14 @@ class TUPI_EXPORT TupCameraBar : public QFrame
         TImageButton *m_rew;
         TImageButton *m_play;
         TImageButton *m_play_back;
+        TImageButton *m_pause;
         TImageButton *m_stop;
         TImageButton *m_ff;
 
     signals:
         void playBack();
         void play();
+        void pause();
         void stop();
         void ff();
         void rew();

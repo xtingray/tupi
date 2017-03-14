@@ -68,6 +68,8 @@ struct TupScreen::Private
     QMediaPlayer *soundPlayer;
 
     bool isPlaying;
+    bool playFlag;
+    bool playBackFlag;
 };
 
 TupScreen::TupScreen(TupProject *project, const QSize viewSize, bool isScaled, QWidget *parent) : QFrame(parent), k(new Private)
@@ -90,7 +92,10 @@ TupScreen::TupScreen(TupProject *project, const QSize viewSize, bool isScaled, Q
     k->currentSceneIndex = 0;
     k->currentFramePosition = 0;
     k->soundPlayer = new QMediaPlayer;
+
     k->isPlaying = false;
+    k->playFlag = false; 
+    k->playBackFlag = false;
 
     k->timer = new QTimer(this);
     k->playBackTimer = new QTimer(this);
@@ -191,14 +196,16 @@ void TupScreen::setFPS(int fps)
 
     k->fps = fps;
 
-    if (k->timer->isActive()) {
-        k->timer->stop();
-        play();
-    }
-
-    if (k->playBackTimer->isActive()) {
-        k->playBackTimer->stop();
-        playBack();
+    if (k->playFlag) {
+        if (k->timer->isActive()) {
+            k->timer->stop();
+            play();
+        }
+    } else {
+        if (k->playBackTimer->isActive()) {
+            k->playBackTimer->stop();
+            playBack();
+        }
     }
 }
 
@@ -214,7 +221,7 @@ void TupScreen::paintEvent(QPaintEvent *)
     #endif
     */
 
-    if (k->isPlaying)
+    if (k->isPlaying && k->playFlag)
         playLipSyncAt(k->currentFramePosition);
 
     if (!k->firstShoot) {
@@ -247,11 +254,21 @@ void TupScreen::play()
     if (k->photograms.count() == 1)
         return;
 
+    if (k->playFlag) {
+        if (k->soundPlayer)
+            k->soundPlayer->stop();
+        foreach (TupSoundLayer *sound, k->sounds)
+                 sound->stop();
+    }
+
+    if (k->playBackFlag) {
+        k->playBackFlag = false;
+        if (k->playBackTimer->isActive())
+            k->playBackTimer->stop();
+    }
+
     k->isPlaying = true;
-
-    if (k->playBackTimer->isActive())
-        stop();
-
+    k->playFlag = true;
     k->currentFramePosition = 0;
 
     if (!k->timer->isActive()) {
@@ -277,15 +294,55 @@ void TupScreen::playBack()
         #endif
     #endif
 
-    if (k->timer->isActive())
-        stop();
+    if (k->photograms.count() == 1)
+        return;
 
+    if (k->playFlag) {
+        if (k->soundPlayer)
+            k->soundPlayer->stop();
+        foreach (TupSoundLayer *sound, k->sounds)
+                 sound->stop();
+
+        k->playFlag = false;
+        if (k->timer->isActive())
+            k->timer->stop(); 
+    }
+
+    k->isPlaying = true;
+    k->playBackFlag = true;
     k->currentFramePosition = k->photograms.count() - 1;
 
     if (!k->playBackTimer->isActive()) {
-        if (!k->renderControl.at(k->currentSceneIndex))
+        if (!k->renderControl.at(k->currentSceneIndex)) {
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
             render();
-        k->playBackTimer->start(1000 / k->fps);
+            QApplication::restoreOverrideCursor();
+        }
+
+        if (k->renderControl.at(k->currentSceneIndex))
+            k->playBackTimer->start(1000 / k->fps);
+    }
+}
+
+void TupScreen::pause()
+{
+    #ifdef K_DEBUG
+        QString msg = "TupScreen::pause() - Pausing player!";
+        #ifdef Q_OS_WIN
+            qWarning() << msg;
+        #else
+            tWarning("camera") << msg;
+        #endif
+    #endif
+
+    if (k->isPlaying) {
+        stopAnimation();
+    } else {
+        k->isPlaying = true;
+        if (k->playFlag)
+            k->timer->start(1000 / k->fps);
+        else 
+            k->playBackTimer->start(1000 / k->fps);
     }
 }
 
@@ -300,25 +357,37 @@ void TupScreen::stop()
         #endif
     #endif
 
-    k->isPlaying = false;
-    if (k->soundPlayer)
-        k->soundPlayer->stop();
-  
-    if (k->timer) {  
-        if (k->timer->isActive())
-            k->timer->stop();
-    }
+    stopAnimation();
 
-    if (k->playBackTimer) {
-        if (k->playBackTimer->isActive())
-            k->playBackTimer->stop();
-    }
+    if (k->playFlag) 
+        k->currentFramePosition = 0;
+    else
+        k->currentFramePosition = k->photograms.count() - 1;
 
-    foreach (TupSoundLayer *sound, k->sounds)
-             sound->stop();
-	
-    k->currentFramePosition = 0;
     repaint();
+}
+
+void TupScreen::stopAnimation()
+{
+    k->isPlaying = false;
+
+    if (k->playFlag) {
+        if (k->soundPlayer)
+            k->soundPlayer->stop();
+
+        if (k->timer) {
+            if (k->timer->isActive())
+                k->timer->stop();
+        }
+
+        foreach (TupSoundLayer *sound, k->sounds)
+                 sound->stop();
+    } else {
+        if (k->playBackTimer) {
+            if (k->playBackTimer->isActive())
+                k->playBackTimer->stop();
+        }
+    }
 }
 
 void TupScreen::nextFrame()
@@ -330,6 +399,9 @@ void TupScreen::nextFrame()
             T_FUNCINFO;
         #endif
     #endif
+
+    if (k->isPlaying)
+        stopAnimation();
 
     if (!k->renderControl.at(k->currentSceneIndex))
         render();
@@ -353,6 +425,9 @@ void TupScreen::previousFrame()
         #endif
     #endif
     */
+
+    if (k->isPlaying)
+        stopAnimation();
 
     if (!k->renderControl.at(k->currentSceneIndex))
         render();
