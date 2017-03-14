@@ -42,6 +42,7 @@
 #include "tconfig.h"
 #include "tapplicationproperties.h"
 
+#include <QTabWidget>
 #include <QString>
 #include <QList>
 #include <QDialog>
@@ -68,24 +69,30 @@ class T_GUI_EXPORT TipDialog : public QDialog
     Q_OBJECT
 
     public:
-        TipDialog(QStringList &labels, const QString &file, QWidget *parent = 0);
-        TipDialog(QStringList &labels, TipDatabase *database, QWidget *parent = 0);
+        enum Tab { Animation = 0, Tip };
+        TipDialog(QStringList &labels, const QString &videos, const QString &tips, QWidget *parent = 0);
         ~TipDialog();
         
     private:
         void setupGUI();
+
+        void previousVideo();
+        void previousTip();
+        void nextVideo();
+        void nextTip();
         
     private slots:
-        void showPrevTip();
-        void showNextTip();
-        
-        void setShowOnStart();
+        void updateTabIndex(int index);
+        void showPreviousItem();
+        void showNextItem();
         
     private:
+        QTabWidget *tabWidget;
+        QTextBrowser *videoBrowser;
         QTextBrowser *textBrowser;
-        QCheckBox *m_showOnStart;
-        TipDatabase *m_database;
+        TipDatabase *recordsDatabase;
         QStringList tags;
+        int tabIndex;
 };
 
 #endif

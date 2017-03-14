@@ -35,35 +35,22 @@
 
 #include "tipdialog.h"
 
-TipDialog::TipDialog(QStringList &labels, const QString &file, QWidget *parent) : QDialog(parent)
+TipDialog::TipDialog(QStringList &labels, const QString &videos, const QString &tips, QWidget *parent) : QDialog(parent)
 {
     setModal(true);
     tags = labels;
-    m_database = new TipDatabase(file, parent);
-    setupGUI();
-}
-
-TipDialog::TipDialog(QStringList &labels, TipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
-{
-    tags = labels;
+    recordsDatabase = new TipDatabase(videos, tips, parent);
     setupGUI();
 }
 
 void TipDialog::setupGUI()
 {
+    tabIndex = 0;
     setWindowTitle(tags.at(0));
     setWindowIcon(QPixmap(THEME_DIR + "icons/bubble.png"));
 
-    /*
-    int h;
-    int s;
-    int v;
-    QColor baseColor = palette().base().color();
-    baseColor.getHsv(&h,&s,&v);
-    baseColor.setHsv(h, int(s*(71/76.0)), int(v*(67/93.0)));
-    */
-    
     QVBoxLayout *layout = new QVBoxLayout(this);
+
     textBrowser = new QTextBrowser;
     textBrowser->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
     textBrowser->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
@@ -80,27 +67,42 @@ void TipDialog::setupGUI()
     path << resources + "css";
     path << resources + "images";
     textBrowser->setSearchPaths(path);
+
+    tabWidget = new QTabWidget;
+
+    if (recordsDatabase->videosCount() > 0) {
+        videoBrowser = new QTextBrowser;
+        videoBrowser->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        videoBrowser->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+        videoBrowser->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        videoBrowser->setOpenExternalLinks(true);
+        videoBrowser->setSearchPaths(path);
+
+        tabWidget->addTab(videoBrowser, tr("Animations"));
+        connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateTabIndex(int)));
+        nextVideo();
+    }
+
+    tabWidget->addTab(textBrowser, tr("Tips"));
     
-    layout->addWidget(textBrowser);
+    layout->addWidget(tabWidget);
     layout->addWidget(new TSeparator);
     
     QHBoxLayout *buttonLayout = new QHBoxLayout;
-    
-    m_showOnStart = new QCheckBox(tags.at(1));
-    buttonLayout->addWidget(m_showOnStart);
-    connect(m_showOnStart, SIGNAL(clicked()), this, SLOT(setShowOnStart()));
-    
+
     buttonLayout->addStretch(1);
     
-    QPushButton *prevTip = new QPushButton(tags.at(2));
-    buttonLayout->addWidget(prevTip);
-    connect(prevTip, SIGNAL(clicked()), this, SLOT(showPrevTip()));
+    QPushButton *prevButton = new QPushButton(tags.at(1));
+    buttonLayout->addWidget(prevButton);
+    connect(prevButton, SIGNAL(clicked()), this, SLOT(showPreviousItem()));
+
+    QPushButton *nextButton = new QPushButton(tags.at(2));
+    buttonLayout->addWidget(nextButton);
+    connect(nextButton, SIGNAL(clicked()), this, SLOT(showNextItem()));
+
+    buttonLayout->addSpacing(100);
     
-    QPushButton *nextTip = new QPushButton(tags.at(3));
-    buttonLayout->addWidget(nextTip);
-    connect(nextTip, SIGNAL(clicked()), this, SLOT(showNextTip()));
-    
-    QPushButton *close = new QPushButton(tags.at(4));
+    QPushButton *close = new QPushButton(tags.at(3));
     buttonLayout->addWidget(close);
     connect(close, SIGNAL(clicked()), this, SLOT(accept()));
     
@@ -108,33 +110,66 @@ void TipDialog::setupGUI()
     
     setAttribute(Qt::WA_DeleteOnClose, true);
     
-    TCONFIG->beginGroup("General");
-    m_showOnStart->setChecked(qvariant_cast<bool>(TCONFIG->value("ShowTipOfDay", true)));
-    
-    showNextTip();
+    nextTip();
 }
 
 TipDialog::~TipDialog()
 {
 }
 
-void TipDialog::showPrevTip()
+void TipDialog::showPreviousItem()
 {
-    m_database->prevTip();
-    Tip tip = m_database->tip();
-    textBrowser->setHtml(tip.text);
+    if (tabWidget->count() == 2) {
+        if (tabIndex == Animation)
+            previousVideo();
+        else
+            previousTip();
+    } else {
+        previousTip();
+    }
 }
 
-void TipDialog::showNextTip()
+void TipDialog::previousVideo()
 {
-    m_database->nextTip();
-    Tip tip = m_database->tip();
-    textBrowser->setHtml(tip.text);
+    recordsDatabase->previousVideo();
+    QString video = recordsDatabase->video();
+    videoBrowser->setHtml(video);
 }
 
-void TipDialog::setShowOnStart()
+void TipDialog::previousTip()
 {
-    TCONFIG->beginGroup("General");
-    TCONFIG->setValue("ShowTipOfDay", m_showOnStart->isChecked());
+    recordsDatabase->prevTip();
+    QString tip = recordsDatabase->tip();
+    textBrowser->setHtml(tip);
 }
 
+void TipDialog::showNextItem()
+{
+    if (tabWidget->count() == 2) {
+        if (tabIndex == Animation)
+            nextVideo();
+        else
+            nextTip();
+    } else {
+        nextTip();
+    }
+}
+
+void TipDialog::nextVideo()
+{
+    recordsDatabase->nextVideo();
+    QString video = recordsDatabase->video();
+    videoBrowser->setHtml(video);
+}
+
+void TipDialog::nextTip()
+{
+    recordsDatabase->nextTip();
+    QString tip = recordsDatabase->tip();
+    textBrowser->setHtml(tip);
+}
+
+void TipDialog::updateTabIndex(int index)
+{
+    tabIndex = index;
+}

@@ -195,6 +195,7 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         // Check if user wants to see a Tupi tip for every time he launches the program
         TCONFIG->beginGroup("General");
         bool showTips = TCONFIG->value("ShowTipOfDay", true).toBool();
+
         // If option is enabled, then, show a little dialog with a nice tip
         if (showTips)
             QTimer::singleShot(0, this, SLOT(showTipDialog()));
@@ -976,9 +977,10 @@ void TupMainWindow::aboutTupi()
 void TupMainWindow::showTipDialog()
 {
     QStringList labels;
-    labels << tr("Tip Of The Day") << tr("Show On Start") << tr("Previous Tip") << tr("Next Tip") << tr("Close");
+    labels << tr("Tip Of The Day") << tr("Previous") << tr("Next") << tr("Close");
+    QString videos = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/videos.xml";
 
-    TipDialog *tipDialog = new TipDialog(labels, DATA_DIR + "tips.xml", this);
+    TipDialog *tipDialog = new TipDialog(labels, videos, DATA_DIR + "tips.xml", this);
     tipDialog->show();
 
     QDesktopWidget desktop;

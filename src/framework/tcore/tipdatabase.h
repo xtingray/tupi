@@ -46,16 +46,6 @@
 #include <QList>
 
 /**
- * @struct Tip
- * @author David Cuadrado
- */
-
-struct Tip
-{
-    QString text;
-};
-
-/**
  * @class TipDatabase
  * 
  * This class handles the tips database about the application
@@ -75,15 +65,21 @@ struct Tip
 class T_CORE_EXPORT TipDatabase : public QWidget
 {
     public:
-        TipDatabase(const QString &file, QWidget *parent=0);
+        TipDatabase(const QString &videoPath, const QString &tipPath, QWidget *parent=0);
         ~TipDatabase();
-        Tip tip() const;
+
+        QString video() const;
+        QString tip() const;
+        void nextVideo();
         void nextTip();
+        void previousVideo();
         void prevTip();
-        
+        int videosCount();
+
     private:
-        void loadTips(const QString &file);
-        
+        void loadVideos(const QString &videoPath);
+        void loadTips(const QString &tipPath);
+
     private:
         struct Private;
         Private *const k;
