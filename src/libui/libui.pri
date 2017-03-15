@@ -1,6 +1,6 @@
-ANIMATION_DIR = ../components/animation
+PLAYER_DIR = ../components/player
 INCLUDEPATH += $$LIBUI_DIR
-INCLUDEPATH += $$ANIMATION_DIR
+INCLUDEPATH += $$PLAYER_DIR
 
 unix {
     LIBS += -L$$LIBUI_DIR -ltupigui

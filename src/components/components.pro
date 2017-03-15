@@ -13,7 +13,7 @@ SUBDIRS += scenes \
            brush \
            paintarea \
            twitter \
-           animation 
+           player 
 		   
 linux-g++ {
     SUBDIRS += debug

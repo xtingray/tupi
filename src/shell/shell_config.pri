@@ -4,7 +4,7 @@ QT += xml opengl svg
 INCLUDEPATH += ../plugins/tools/selection
 
 COLORPALETTE_DIR = ../components/colorpalette
-ANIMATION_DIR = ../components/animation
+PLAYER_DIR = ../components/player
 PAINTAREA_DIR = ../components/paintarea
 BRUSH_DIR = ../components/brush
 # KINAS_DIR = ../components/kinas 
@@ -24,7 +24,7 @@ NET_DIR = ../net
 
 include($$COLORPALETTE_DIR/colorpalette.pri)
 include($$PAINTAREA_DIR/paintarea.pri)
-include($$ANIMATION_DIR/animation.pri)
+include($$PLAYER_DIR/player.pri)
 include($$BRUSH_DIR/brush.pri)
 # include($$KINAS_DIR/kinas.pri)
 # include($$HELP_DIR/help.pri)

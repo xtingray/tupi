@@ -1,6 +1,6 @@
 QT += opengl core gui svg xml network multimedia
 TEMPLATE = lib
-TARGET = tupianimation
+TARGET = tupiplayer
 
 INSTALLS += target
 target.path = /lib/
