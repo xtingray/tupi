@@ -41,10 +41,9 @@ include($$LIBTUPI_DIR/libtupi.pri)
 include($$LIBBASE_DIR/libbase.pri)
 include($$NET_DIR/net.pri)
 
-linux-g++ {
-contains(DEFINES, K_DEBUG) {
-    DEBUG_DIR = ../components/debug
-    include($$DEBUG_DIR/debug.pri)
-
-}
-}
+# linux-g++ {
+# contains(DEFINES, K_DEBUG) {
+#    DEBUG_DIR = ../components/debug
+#    include($$DEBUG_DIR/debug.pri)
+# }
+# }

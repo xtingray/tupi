@@ -145,6 +145,7 @@ void TupMainWindow::createGUI()
     connectWidgetToManager(m_timeLine);
     connectWidgetToLocalManager(m_timeLine);
 
+/* SQA: Debug visual component has been removed
 #if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     QDesktopWidget desktop;
     m_debug = new TupDebugWidget(this, desktop.screenGeometry().width());
@@ -152,6 +153,7 @@ void TupMainWindow::createGUI()
     m_actionManager->insert(debugView->toggleViewAction(), "show_debug");
     addToPerspective(debugView->toggleViewAction(), Animation);
 #endif
+*/
 
     // Adding the script editor to the bottom side, if kinas was enabled
     /*
@@ -248,9 +250,11 @@ void TupMainWindow::setupMenu()
     m_windowMenu->addAction(m_actionManager->find("show_scenes"));
     m_windowMenu->addAction(m_actionManager->find("show_exposure"));
 
+/* SQA: Debug visual component has been removed
 #if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     m_windowMenu->addAction(m_actionManager->find("show_debug"));
 #endif
+*/
 
     m_windowMenu->addSeparator();
 

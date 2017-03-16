@@ -67,7 +67,6 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         enum Attribute
         {
           IsEmpty = 1000,
-          // IsLocked
         };
 
         enum FrameType 
@@ -86,12 +85,10 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void insertLayer(int index, const QString &name);
         void insertFrame(int layerIndex, int frameIndex, const QString &name, bool external);
         void removeLayer(int layerIndex);
-        // void removeFrame(int layerIndex, int frameIndex, bool fromMenu);
         void removeFrame(int layerIndex, int frameIndex);
         void exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
         void moveLayer(int oldPosLayer, int newPosLayer);
 
-        // void setLockFrame(int layerIndex, int frameIndex, bool locked);
         void setLockLayer(int layerIndex,  bool locked);
         void setLayerVisibility(int visualIndex, bool visibility);
         int usedFrames(int column) const;
@@ -100,18 +97,21 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void setFrameName(int layerIndex, int frameIndex,const QString & name);
         void setLayerName(int layerIndex, const QString & name);
 
-        // bool frameIsLocked(int layerIndex, int frameIndex);
         void selectFrame(int layerIndex, int frameIndex);
         int layersCount();
         int framesCount();
         int framesCountAtCurrentLayer();
 
-        void setMenu(QMenu *menu);
+        void setMenuForAFrame(QMenu *menu);
+        void setMenuForSelection(QMenu *menu);
+        
         void notifyCellClicked(int frame, int layer);
         void reset();
 
         TupExposureTable::FrameType frameState(int layerIndex, int frameIndex);
         void updateFrameState(int layerIndex, int frameIndex, TupExposureTable::FrameType value);
+
+        QList<int> currentSelection();
 
     private slots:
         void markUsedFrames(int frameIndex,  int layerIndex);
@@ -134,15 +134,12 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void frameUsed(int layerIndex, int frameIndex);
         void frameRenamed(int layerIndex, int frameIndex,const QString & name);
         void frameSelected(int layerIndex, int frameIndex);
-        // void frameRemoved(int layerIndex, int frameIndex);
         void frameRemoved();
         void frameCopied(int layerIndex, int frameIndex);
 
         void layerNameChanged(int layerIndex, const QString & name);
         void layerMoved(int oldIndex, int newIndex);
         void layerVisibilityChanged(int visualIndexLayer, bool visibility);
-
-        // void newPerspective(int);
 
     private:
         bool layerIndexIsValid(int layerIndex);

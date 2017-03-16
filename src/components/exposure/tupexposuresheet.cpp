@@ -41,7 +41,8 @@ struct TupExposureSheet::Private
     TupSceneTabWidget *scenesContainer;
     TupExposureTable *currentTable;
     TupProjectActionBar *actionBar;
-    QMenu *menu;
+    QMenu *singleMenu;
+    QMenu *multipleMenu;
     QString copyFrameName;
     bool localRequest;
     int previousScene;
@@ -94,7 +95,8 @@ TupExposureSheet::TupExposureSheet(QWidget *parent, TupProject *project) : TupMo
     connect(k->scenesContainer, SIGNAL(currentChanged(int)), this, SLOT(requestChangeScene(int)));
     connect(k->scenesContainer, SIGNAL(updateLayerOpacity(double)), this, SLOT(requestUpdateLayerOpacity(double)));
     addChild(k->scenesContainer);
-    createMenu();
+    createMenuForAFrame();
+    createMenuForSelection();
 }
 
 TupExposureSheet::~TupExposureSheet()
@@ -110,9 +112,9 @@ TupExposureSheet::~TupExposureSheet()
     #endif
 }
 
-void TupExposureSheet::createMenu()
+void TupExposureSheet::createMenuForAFrame()
 {
-    k->menu = new QMenu(tr("actions"));
+    k->singleMenu = new QMenu(tr("actions"));
     QMenu *insertMenu = new QMenu(tr("Insert"));
 
     QAction *insertOne = new QAction(QIcon(THEME_DIR + "icons/add_frame.png"), tr("1 frame"), this); 
@@ -141,21 +143,26 @@ void TupExposureSheet::createMenu()
 
     connect(insertMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFramesFromMenu(QAction*)));
 
-    k->menu->addMenu(insertMenu);
+    k->singleMenu->addMenu(insertMenu);
+
+    QAction *removeAction = new QAction(QIcon(THEME_DIR + "icons/remove_frame.png"), tr("Remove frame"), this);
+    removeAction->setIconVisibleInMenu(true);
+    k->singleMenu->addAction(removeAction);
+    connect(removeAction, SIGNAL(triggered()), this, SLOT(removeFrame()));
 
     QAction *clearAction = new QAction(QIcon(THEME_DIR + "icons/new.png"), tr("Clear frame"), this);
     clearAction->setIconVisibleInMenu(true);
-    k->menu->addAction(clearAction);
+    k->singleMenu->addAction(clearAction);
     connect(clearAction, SIGNAL(triggered()), this, SLOT(clearFrame()));
 
     QAction *copyAction = new QAction(QIcon(THEME_DIR + "icons/copy.png"), tr("Copy frame"), this);
     copyAction->setIconVisibleInMenu(true);
-    k->menu->addAction(copyAction);
+    k->singleMenu->addAction(copyAction);
     connect(copyAction, SIGNAL(triggered()), this, SLOT(requestCopyCurrentFrame()));
 
     QAction *pasteAction = new QAction(QIcon(THEME_DIR + "icons/paste.png"), tr("Paste in frame"), this);
     pasteAction->setIconVisibleInMenu(true);
-    k->menu->addAction(pasteAction);
+    k->singleMenu->addAction(pasteAction);
     connect(pasteAction, SIGNAL(triggered()), this, SLOT(requestPasteInCurrentFrame()));
 
     QMenu *timeLineMenu = new QMenu(tr("Copy TL forward"));
@@ -182,8 +189,18 @@ void TupExposureSheet::createMenu()
 
     connect(timeLineMenu, SIGNAL(triggered(QAction *)), this, SLOT(copyTimeLineFromMenu(QAction*)));
 
-    k->menu->addMenu(timeLineMenu);
-    connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
+    k->singleMenu->addMenu(timeLineMenu);
+    connect(k->singleMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
+}
+
+void TupExposureSheet::createMenuForSelection()
+{
+    k->multipleMenu = new QMenu(tr("actions"));
+
+    QAction *removeAction = new QAction(QIcon(THEME_DIR + "icons/remove_frame.png"), tr("Remove frames"), this);
+    removeAction->setIconVisibleInMenu(true);
+    k->multipleMenu->addAction(removeAction);
+    connect(removeAction, SIGNAL(triggered()), this, SLOT(removeFrames()));
 }
 
 void TupExposureSheet::addScene(int sceneIndex, const QString &name)
@@ -197,12 +214,13 @@ void TupExposureSheet::addScene(int sceneIndex, const QString &name)
     #endif
 
     TupExposureTable *scene = new TupExposureTable;
-    scene->setMenu(k->menu);
+    scene->setMenuForAFrame(k->singleMenu);
+    scene->setMenuForSelection(k->multipleMenu);
 
     connect(scene, SIGNAL(frameUsed(int, int)), this, SLOT(insertFrame(int, int)));
     connect(scene, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(renameFrame(int, int, const QString &)));
     connect(scene, SIGNAL(frameSelected(int, int)), SLOT(selectFrame(int, int)));
-    connect(scene, SIGNAL(frameRemoved()), SLOT(removeFrameCopy()));
+    connect(scene, SIGNAL(frameRemoved()), SLOT(removeFrame()));
     connect(scene, SIGNAL(frameCopied(int, int)), SLOT(copyFrameForward(int, int)));
     connect(scene, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestRenameLayer(int, const QString &)));
     connect(scene, SIGNAL(layerMoved(int, int)), this, SLOT(moveLayer(int, int)));
@@ -288,7 +306,7 @@ void TupExposureSheet::applyAction(int action)
                      emit requestTriggered(&request);
                      if (target > 0)
                          selectFrame(layer, target-1);
-                     else 
+                     else
                          k->currentTable->clearSelection();
                  } else {
                      // When the item deleted is not the last one
@@ -510,7 +528,7 @@ void TupExposureSheet::insertFrame(int layerIndex, int frameIndex)
 
 void TupExposureSheet::renameFrame(int layerIndex, int frameIndex, const QString & name)
 {
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex() , layerIndex, frameIndex,
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), layerIndex, frameIndex,
                                                    TupProjectRequest::Rename, name);
     emit requestTriggered(&request);
 }
@@ -531,9 +549,32 @@ void TupExposureSheet::selectFrame(int layerIndex, int frameIndex)
     emit localRequestTriggered(&request);
 }
 
-void TupExposureSheet::removeFrameCopy()
+void TupExposureSheet::removeFrame()
 {
     k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
+}
+
+void TupExposureSheet::removeFrames()
+{
+    QList<int> coords = k->currentTable->currentSelection();
+    int scene = k->scenesContainer->currentIndex();
+
+    int frames = coords.count()/2;
+    int layer = coords.at(0);
+    int frame = coords.at(1);
+
+    k->currentTable->clearSelection();
+
+    for (int i=0; i<frames; i++) {
+         if (k->currentTable->framesCountAtCurrentLayer() == 1) {
+             TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene, layer, frame, TupProjectRequest::Reset);
+             emit requestTriggered(&request);
+             return;
+         } else {
+             TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene, layer, frame, TupProjectRequest::Remove);
+             emit requestTriggered(&request);
+         }
+    }
 }
 
 void TupExposureSheet::copyFrameForward(int layerIndex, int frameIndex)
@@ -882,6 +923,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                  {
                      table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Empty);
                      table->setFrameName(layerIndex, frameIndex, tr("Frame"));
+
                      return;
                  }
                 break;

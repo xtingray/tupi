@@ -506,9 +506,11 @@ void TupMainWindow::newProject()
             setupLocalProject(wizard->parameters());
             createNewLocalProject();
         }
+/* SQA: Debug visual component has been removed
 #if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     m_debug->setProjectStatus(true); 
 #endif
+*/
     }
 
     delete wizard;
@@ -595,9 +597,11 @@ void TupMainWindow::resetUI()
     scenesView->expandDock(false);
     timeView->expandDock(false);
 
+/* SQA: debug visual component has been removed
 #if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     debugView->expandDock(false);
 #endif
+*/
 
     setUpdatesEnabled(false);
     setMenuItemsContext(false);
@@ -680,9 +684,11 @@ void TupMainWindow::resetUI()
 
     resetMousePointer();
 
+/* SQA: Debug visual component has been removed
 #if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
     m_debug->setProjectStatus(false);
 #endif
+*/
 }
 
 /**

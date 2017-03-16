@@ -70,11 +70,13 @@
 #endif
 #endif
 
+/* SQA: Debug visual component has been removed
 #ifdef K_DEBUG
 #ifdef Q_OS_LINUX
   #include "tupdebugwidget.h"
 #endif
 #endif
+*/
 
 #include <QMainWindow>
 #include <QMenu>
@@ -267,9 +269,12 @@ class TupMainWindow : public TabbedMainWindow
         TupScenesWidget *m_scenes;
         TupTimeLine *m_timeLine;
 
+/* SQA: debug visual component has been removed
 #if defined(QT_GUI_LIB) && defined(K_DEBUG) && defined(Q_OS_LINUX)
         TupDebugWidget *m_debug;
 #endif
+*/
+
         // TupHelpWidget *m_helper;
         TupLibraryWidget *m_libraryWidget;
         TupColorPalette *m_colorPalette;
@@ -281,7 +286,7 @@ class TupMainWindow : public TabbedMainWindow
         ToolView *scenesView;  
         ToolView *helpView;
         ToolView *timeView;
-        ToolView *debugView;
+        // ToolView *debugView;
         ToolView *exportView;
         TupExportWidget *exportWidget;
 

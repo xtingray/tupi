@@ -53,7 +53,6 @@ struct TupPaintArea::Private
     QPointF oldPosition;
     QPointF position;
     bool menuOn;
-    // QString frameCopy;
     QString copyFrameName;
     bool copyIsValid;
     bool canvasEnabled;
@@ -82,14 +81,6 @@ TupPaintArea::TupPaintArea(TupProject *project, QWidget * parent) : TupPaintArea
 
     setCurrentScene(0);
     graphicsScene()->setCurrentFrame(0, 0);
-
-    /*
-    if (graphicsScene()->scene()) {
-        graphicsScene()->setCurrentFrame(0, 0);
-        graphicsScene()->setLibrary(project->library());
-    }
-    setCurrentScene(0);
-    */
 }
 
 TupPaintArea::~TupPaintArea()

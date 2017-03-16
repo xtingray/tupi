@@ -9,7 +9,7 @@ macx {
 
 INCLUDEPATH += .
 DEFINES += __STDC_CONSTANT_MACROS
-LIBS += -lavformat -lavcodec -lavutil -lswscale
+LIBS += -lavformat -lavcodec -lavutil #-lswscale
 
 # Input
 SOURCES += main.cpp

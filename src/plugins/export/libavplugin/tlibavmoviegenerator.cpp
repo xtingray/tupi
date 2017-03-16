@@ -45,7 +45,7 @@
 extern "C" {
 #include "libavutil/mathematics.h"
 #include "libavformat/avformat.h"
-#include "libswscale/swscale.h"
+// #include "libswscale/swscale.h"
 }
 #endif
 

@@ -14,7 +14,7 @@ SUBDIRS += scenes \
            paintarea \
            twitter \
            player 
-		   
-linux-g++ {
-    SUBDIRS += debug
-}
+  
+# linux-g++ {
+#     SUBDIRS += debug
+# }
