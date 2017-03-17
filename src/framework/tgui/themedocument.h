@@ -37,6 +37,7 @@
 #define THEMEDOCUMENT_H
 
 #include "tglobal.h"
+// #include "tdebug.h"
 
 #include <QMap>
 #include <QStringList>

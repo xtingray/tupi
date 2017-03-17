@@ -56,6 +56,10 @@
 #define TUPI_PLUGIN
 #endif
 
+#ifdef QT_GUI_LIB
+#include <QImage>
+#endif
+
 #ifdef K_DEBUG
 
 #ifdef Q_OS_WIN
