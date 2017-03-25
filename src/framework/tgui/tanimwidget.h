@@ -41,7 +41,7 @@
  * @brief Include this file if you need the class TAnimWidget
  */
 
-#include "tglobal.h"
+// #include "tglobal.h"
 #include "tapplication.h"
 
 #include <QPixmap>

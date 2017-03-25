@@ -49,8 +49,8 @@
  * @author David Cuadrado
 */
 
-// class TUPI_EXPORT TupAbstractSerializable
-class TupAbstractSerializable
+class TUPI_EXPORT TupAbstractSerializable
+// class TupAbstractSerializable
 {
     protected:
         TupAbstractSerializable() {};
