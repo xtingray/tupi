@@ -48,7 +48,7 @@ INSTALLATION_PATH=$2
 INSTALLER_SCRIPT=$TUPI_GIT_REPOSITORY/tools/update_dylib_path.rb
 
 declare -a LIBS=('libtupigui.dylib' 'libtupistore.dylib' 'libtupi.dylib' \
-'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' 'libtupifwcore.dylib' 'libtupicolorpalette.1.dylib' 'libtupipaintarea.1.dylib' \
+'libtupibase.dylib' 'libtupinet.dylib' 'libtupifwgui.dylib' 'libtupifwcore.dylib' 'libtupicolorpalette.1.dylib' 'libtupiworkspace.1.dylib' \
 'libtupiplayer.1.dylib' 'libtupibrush.1.dylib' 'libtupihelp.1.dylib' 'libtupimport.1.dylib' 'libtupiexport.1.dylib' 'libtupiexposure.1.dylib' \
 'libtupitimeline.1.dylib' 'libtupilibrary.1.dylib' 'libtupiscenes.1.dylib' 'libtupitwitter.1.dylib' 'libtupiplugincommon.1.dylib');
 
