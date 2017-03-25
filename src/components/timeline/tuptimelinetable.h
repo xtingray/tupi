@@ -88,7 +88,8 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         void setLayerName(int layerIndex, const QString &name);
         void selectFrame(int layerIndex, int frameIndex);
         bool frameIsLocked(int layerIndex, int frameIndex);
-        
+        QList<int> currentSelection();
+
     public slots:
         // Layers
         void insertLayer(int layerIndex, const QString &name);
@@ -104,7 +105,8 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         void insertFrame(int layerIndex);
         void selectFrame(int frameIndex);
         void setAttribute(int layerIndex, int frameIndex, TupTimeLineTableItem::Attributes att, bool value);
-        void removeFrame(int layerIndex, int position);
+        void removeFrame(int layerIndex, int frameIndex);
+        void removeFrameSelection(int layerIndex, int frameIndex, const QString &selection);
         void lockFrame(int layerIndex, int frameIndex, bool lock);
         void setItemSize(int w, int h);
         void exchangeFrame(int currentFrameIndex, int currentLayerIndex, int newFrameIndex, int newLayerIndex);

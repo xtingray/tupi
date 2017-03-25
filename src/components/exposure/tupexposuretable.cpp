@@ -183,7 +183,7 @@ struct TupExposureTable::Private
 {
     TupExposureHeader *header;
     QMenu *singleMenu;
-    QMenu *multipleMenu;
+    // QMenu *multipleMenu;
     bool removingLayer;
     bool isLocalRequest;
     QString themeName;
@@ -386,14 +386,10 @@ void TupExposureTable::selectFrame(int layerIndex, int frameIndex)
     setCurrentCell(frameIndex, layerIndex);
 }
 
-void TupExposureTable::setMenuForAFrame(QMenu *menu)
+void TupExposureTable::setSinglePopUpMenu(QMenu *single)
 {
-    k->singleMenu = menu;
-}
-
-void TupExposureTable::setMenuForSelection(QMenu *menu)
-{
-    k->multipleMenu = menu;
+    k->singleMenu = single;
+    // k->multipleMenu = multiple;
 }
 
 int TupExposureTable::currentLayer() const
@@ -577,16 +573,17 @@ void TupExposureTable::mousePressEvent(QMouseEvent * event)
         if (k->header->lastFrame(currentLayer()) >= frame) {
             int frames = selectedItems().count();
             if (frames == 1) {
-                if (k->singleMenu) {
-                    clearFocus();
+                if (k->singleMenu)
                     k->singleMenu->exec(event->globalPos());
-                }
+            }
+            /*
             } else if (frames > 1) {
                 if (k->multipleMenu) {
-                    clearFocus();
+                    // clearFocus();
                     k->multipleMenu->exec(event->globalPos());
                 }
             }
+            */
         } else {
             return;
         }
@@ -617,6 +614,11 @@ int TupExposureTable::framesCount()
 int TupExposureTable::framesCountAtCurrentLayer()
 {
     return k->header->lastFrame(currentLayer());
+}
+
+int TupExposureTable::framesCountAtLayer(int layer)
+{
+    return k->header->lastFrame(layer);
 }
 
 void TupExposureTable::keyPressEvent(QKeyEvent *event)
@@ -707,12 +709,22 @@ void TupExposureTable::reset()
 QList<int> TupExposureTable::currentSelection()
 {
     QList<int> coords;
-    QModelIndexList frames = selectedIndexes();
+    QModelIndexList selection = selectedIndexes();
+    QList<int> layers;
+    QList<int> frames;
 
-    foreach (QModelIndex cell, frames) { 
-        coords << cell.column();
-        coords << cell.row();
+    foreach (QModelIndex cell, selection) { 
+        int layer = cell.column();
+        int frame = cell.row();
+
+        if (!layers.contains(layer))
+            layers << layer;
+        if (!frames.contains(frame))
+            frames << frame;
     }
+    coords << layers.first() << layers.last() << frames.first() << frames.last();
+
+    tError() << "coords: " << coords;
 
     return coords;
 }

@@ -83,6 +83,8 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         bool removeLayer(TupLayerResponse *response);
         bool removeLipSync(TupLayerResponse *response);
         bool removeFrame(TupFrameResponse *response);
+        bool removeFrameSelection(TupFrameResponse *response);
+
         bool resetFrame(TupFrameResponse *response);
         
         bool removeItem(TupItemResponse *response);

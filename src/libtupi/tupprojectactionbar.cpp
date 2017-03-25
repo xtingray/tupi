@@ -265,7 +265,7 @@ void TupProjectActionBar::emitActionSelected(int action)
             bool ask = TCONFIG->value("ConfirmRemoveFrame", true).toBool();
 
             if (ask) {
-                TOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Confirmation"), this);
+                TOptionalDialog dialog(tr("Do you want to remove current selection?"), tr("Confirmation"), this);
                 dialog.setModal(true);
                 QDesktopWidget desktop;
                 dialog.move((int) (desktop.screenGeometry().width() - dialog.sizeHint().width())/2,

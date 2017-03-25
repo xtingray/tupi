@@ -99,6 +99,7 @@ void TupSceneSelector::setScenes(const QList<TupScene *> &scenes)
         m_selector->selectFirstItem();
     } else {
         TupScene *scene = scenes.first();
+        m_selector->addItem(QString("1: ") + scene->sceneName());
         m_selector->addSelectedItem(QString("1: ") + scene->sceneName());
     }
 }

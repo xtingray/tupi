@@ -74,74 +74,51 @@ class TUPI_EXPORT TupProjectRequest
         enum Action
         {
             None = 0,
-            /**
-             * Anade una parte, el tipo de data es nulo
-             */
             Add = 1,
-            /**
-             * Remueve una parte, el tipo de data es nulo
-             */
+            AddSelection = 2,
             Remove = -Add,
-            /**
-             * Reinicia los valores de un objeto
-             */
-            Reset = 2,
-            /**
-             * Intercambia del valor entre dos posiciones 
-             */
-            Exchange = 3,
-            /**
-             * Mueve una parte, el tipo de data es un entero que significa la nueva posicion
-             */
-            Move = 4,
-            /**
-             * Bloquea una parte, el tipo de data es booleano.
-             */
-            Lock = 5,
-            /**
-             * Renombra una parte, el tipo de data es una cadena de texto.
-             */
-            Rename = 6,
-            /**
-             * Selecciona una parte, el tipo de data es nulo
-             */
-            Select = 7,
-            /**
-             * Cambia la visibilidad
-             */
-            View = 8,
+            RemoveSelection = -AddSelection, 
+            Reset = 3,
+            Exchange = 4,
+            Move = 5,
+            Lock = 6,
+            Rename = 7,
+            Select = 8,
+            View = 9,
             
-            Group = 9,
+            Group = 10,
             Ungroup = -Group,
             
             // Items
-            Transform = 10,
-            Convert = 11,
-            EditNodes = 12,
-            Pen = 13,
-            Brush = 14,
-            InsertSymbolIntoFrame = 15,
-            RemoveSymbolFromFrame = 16,
+            Transform = 11,
+            Convert = 12,
+            EditNodes = 13,
+            Pen = 14,
+            Brush = 15,
+            InsertSymbolIntoFrame = 16,
+            RemoveSymbolFromFrame = 17,
 
-            SetTween = 17,
-            UpdateTween = 18,
-            RemoveTween = 19,
+            SetTween = 18,
+            UpdateTween = 19,
+            RemoveTween = 20,
             
             // frames
-            Update = 20,
-            Expand = 21,
-            Copy = 22,
-            Paste = 23,
+            Update = 21,
+            Expand = 22,
+            Copy = 23,
+            CopySelection = 24,
+            Paste = 25,
+            PasteSelection = 26,
 
             // scenes
-            GetInfo = 24, 
-            BgColor = 25,
+            GetInfo = 27, 
+            BgColor = 28,
 
             // layer
-            AddLipSync = 26,
-            UpdateLipSync = 27,
-            RemoveLipSync = 28,
-            UpdateOpacity = 29
+            AddLipSync = 29,
+            UpdateLipSync = 30,
+            RemoveLipSync = 31,
+            UpdateOpacity = 32 
         };
         
         enum Part

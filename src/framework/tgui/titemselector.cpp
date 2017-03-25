@@ -92,8 +92,8 @@ void TItemSelector::addCurrent()
 {
     int row = k->available->currentRow();
     if (row >= 0) {
-        QListWidgetItem *item = k->available->takeItem(row);
-        k->selected->addItem(item);
+        QListWidgetItem *item = k->available->currentItem();
+        addSelectedItem(item->text());
 
         emit changed();
     }
@@ -115,7 +115,7 @@ void TItemSelector::upCurrent()
     int row = k->selected->currentRow();
     if (row >= 0) {
         QListWidgetItem *item = k->selected->takeItem(row);
-        k->selected->insertItem(row-1,item);
+        k->selected->insertItem(row-1, item);
         k->selected->setCurrentItem(item);
 
         emit changed();
@@ -143,7 +143,7 @@ void TItemSelector::setItems(const QStringList &items)
 int TItemSelector::addItem(const QString &itemLabel)
 {
     QListWidgetItem *item = new QListWidgetItem(itemLabel, k->available);
-    int index = k->available->count()-1;
+    int index = k->available->count() - 1;
     item->setData(4321, index);
 
     return index;
@@ -152,7 +152,8 @@ int TItemSelector::addItem(const QString &itemLabel)
 void TItemSelector::addSelectedItem(const QString &itemLabel)
 {
     QListWidgetItem *item = new QListWidgetItem(itemLabel, k->selected);
-    int index = k->selected->count()-1;
+    QStringList params = itemLabel.split(":");
+    int index = params.at(0).toInt() - 1;
     item->setData(4321, index);
 }
 

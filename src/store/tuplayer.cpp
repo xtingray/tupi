@@ -324,7 +324,7 @@ TupFrame *TupLayer::frameAt(int position) const
     if (position < 0 || position >= k->frames.count()) {        
         #ifdef K_DEBUG
             QString msg1 = "TupLayer::frameAt() - Fatal Error: frame index out of bound : " + QString::number(position);
-            QString msg2 = "TupLayer::frameAt() - Fatal Error: index limit : " + QString::number(k->frames.count()-1);
+            QString msg2 = "TupLayer::frameAt() - Fatal Error: index limit at layer(" + QString::number(k->index) + ") : " + QString::number(k->frames.count()-1);
             #ifdef Q_OS_WIN
                 qDebug() << msg1;
                 qDebug() << msg2;

@@ -1,7 +1,7 @@
 QT += opengl core gui svg xml network
 QT += multimedia multimediawidgets printsupport
 TEMPLATE = lib
-TARGET = tupipaintarea
+TARGET = tupiworkspace
 
 INSTALLS += target
 target.path = /lib/

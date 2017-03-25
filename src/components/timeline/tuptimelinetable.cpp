@@ -182,7 +182,7 @@ struct TupTimeLineTable::Private
     int frameIndex;
 
     TupTimeLineRuler *ruler;
-    TupTimeLineHeader *layerColumn;
+    TupTimeLineHeader *layersColumn;
 
     bool removingLayer;
     bool removingFrame;
@@ -202,11 +202,11 @@ TupTimeLineTable::TupTimeLineTable(int sceneIndex, QWidget *parent) : QTableWidg
     k->removingLayer = false;
     k->removingFrame = false;
 
-    k->layerColumn = new TupTimeLineHeader;
-    connect(k->layerColumn, SIGNAL(nameChanged(int, const QString &)), this, SIGNAL(layerNameChanged(int, const QString &)));
-    connect(k->layerColumn, SIGNAL(headerSelectionChanged(int)), this, SLOT(frameSelectionFromLayerHeader(int)));
-    connect(k->layerColumn, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(visibilityChanged(int, bool)));
-    connect(k->layerColumn, SIGNAL(sectionMoved(int, int, int)), this, SLOT(requestLayerMove(int, int, int)));
+    k->layersColumn = new TupTimeLineHeader;
+    connect(k->layersColumn, SIGNAL(nameChanged(int, const QString &)), this, SIGNAL(layerNameChanged(int, const QString &)));
+    connect(k->layersColumn, SIGNAL(headerSelectionChanged(int)), this, SLOT(frameSelectionFromLayerHeader(int)));
+    connect(k->layersColumn, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(visibilityChanged(int, bool)));
+    connect(k->layersColumn, SIGNAL(sectionMoved(int, int, int)), this, SLOT(requestLayerMove(int, int, int)));
 
     setup();
 }
@@ -220,18 +220,19 @@ void TupTimeLineTable::setup()
 {
     setItemDelegate(new TupTimeLineTableItemDelegate(this));
     setSelectionBehavior(QAbstractItemView::SelectItems);
-    setSelectionMode(QAbstractItemView::SingleSelection);
+    // setSelectionMode(QAbstractItemView::SingleSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(requestFrameSelection(int, int, int, int)));
 
     setHorizontalHeader(k->ruler);
-    setVerticalHeader(k->layerColumn);
+    setVerticalHeader(k->layersColumn);
 
     setItemSize(10, 25);
     
     k->ruler->setSectionResizeMode(QHeaderView::Custom);
-    k->layerColumn->setSectionResizeMode(QHeaderView::Custom);
+    k->layersColumn->setSectionResizeMode(QHeaderView::Custom);
 }
 
 void TupTimeLineTable::frameSelectionFromRuler(int frameIndex)
@@ -241,8 +242,8 @@ void TupTimeLineTable::frameSelectionFromRuler(int frameIndex)
 
 void TupTimeLineTable::frameSelectionFromLayerHeader(int layerIndex)
 {
-    if (k->layerColumn->currentSectionIndex() != layerIndex)
-        k->layerColumn->updateSelection(layerIndex);
+    if (k->layersColumn->currentSectionIndex() != layerIndex)
+        k->layersColumn->updateSelection(layerIndex);
 
     emit frameSelected(layerIndex, currentColumn());
 }
@@ -251,7 +252,7 @@ void TupTimeLineTable::requestLayerMove(int logicalIndex, int oldLayerIndex, int
 {
     Q_UNUSED(logicalIndex);
 
-    if (!k->layerColumn->sectionIsMoving()) {
+    if (!k->layersColumn->sectionIsMoving()) {
         int distance = newLayerIndex - oldLayerIndex;
         if (distance > 0) {
             if (distance > 1)
@@ -280,20 +281,20 @@ bool TupTimeLineTable::isSoundLayer(int layerIndex)
     if (layerIndex < 0 && layerIndex >= rowCount())
         return false;
     
-    return k->layerColumn->isSound(layerIndex);
+    return k->layersColumn->isSound(layerIndex);
 }
 
 void TupTimeLineTable::insertLayer(int layerIndex, const QString &name)
 {
     insertRow(layerIndex);
-    k->layerColumn->insertSection(layerIndex, name);
+    k->layersColumn->insertSection(layerIndex, name);
     fixSize();
 }
 
 void TupTimeLineTable::insertSoundLayer(int layerIndex, const QString &name)
 {
     insertRow(layerIndex);
-    k->layerColumn->insertSection(layerIndex, name);
+    k->layersColumn->insertSection(layerIndex, name);
     fixSize();
 }
 
@@ -301,7 +302,7 @@ void TupTimeLineTable::removeLayer(int layerIndex)
 {
     k->removingLayer = true;
     removeRow(layerIndex);
-    k->layerColumn->removeSection(layerIndex);
+    k->layersColumn->removeSection(layerIndex);
 }
 
 void TupTimeLineTable::moveLayer(int oldLayerIndex, int newLayerIndex)
@@ -309,11 +310,11 @@ void TupTimeLineTable::moveLayer(int oldLayerIndex, int newLayerIndex)
     if (oldLayerIndex < 0 || oldLayerIndex >= rowCount() || newLayerIndex < 0 || newLayerIndex >= rowCount()) 
         return;
 
-    k->layerColumn->moveHeaderSection(oldLayerIndex, newLayerIndex, k->isLocalRequest);
+    k->layersColumn->moveHeaderSection(oldLayerIndex, newLayerIndex, k->isLocalRequest);
     if (k->isLocalRequest)
         k->isLocalRequest = false;
 
-    int framesTotal = k->layerColumn->lastFrame(oldLayerIndex); 
+    int framesTotal = k->layersColumn->lastFrame(oldLayerIndex); 
     for (int frameIndex = 0; frameIndex <= framesTotal; frameIndex++)
          exchangeFrame(frameIndex, oldLayerIndex, frameIndex, newLayerIndex);
 
@@ -333,14 +334,14 @@ void TupTimeLineTable::exchangeFrame(int currentFrameIndex, int currentLayerInde
 
 void TupTimeLineTable::setLayerVisibility(int layerIndex, bool isVisible)
 {
-    if (k->layerColumn)
-        k->layerColumn->setSectionVisibility(layerIndex, isVisible);
+    if (k->layersColumn)
+        k->layersColumn->setSectionVisibility(layerIndex, isVisible);
 }
 
 void TupTimeLineTable::setLayerName(int layerIndex, const QString &name)
 {
-    if (k->layerColumn)
-        k->layerColumn->setSectionTitle(layerIndex, name);
+    if (k->layersColumn)
+        k->layersColumn->setSectionTitle(layerIndex, name);
 }
 
 int TupTimeLineTable::currentLayer()
@@ -358,8 +359,8 @@ int TupTimeLineTable::lastFrameByLayer(int layerIndex)
     if (layerIndex < 0 || layerIndex >= rowCount())
         return -1;
 
-    if (k->layerColumn)
-        return k->layerColumn->lastFrame(layerIndex);
+    if (k->layersColumn)
+        return k->layersColumn->lastFrame(layerIndex);
 
     return -1;
 }
@@ -371,9 +372,9 @@ void TupTimeLineTable::insertFrame(int layerIndex)
     if (layerIndex < 0 || layerIndex >= rowCount())
         return;
 
-    k->layerColumn->updateLastFrame(layerIndex, true);
+    k->layersColumn->updateLastFrame(layerIndex, true);
   
-    int lastFrame = k->layerColumn->lastFrame(layerIndex); 
+    int lastFrame = k->layersColumn->lastFrame(layerIndex); 
 
     setAttribute(layerIndex, lastFrame, TupTimeLineTableItem::IsUsed, true);
     setAttribute(layerIndex, lastFrame, TupTimeLineTableItem::IsSound, false);
@@ -381,7 +382,7 @@ void TupTimeLineTable::insertFrame(int layerIndex)
 
 void TupTimeLineTable::updateLayerHeader(int layerIndex)
 {
-    k->layerColumn->updateSelection(layerIndex); 
+    k->layersColumn->updateSelection(layerIndex); 
 }
 
 void TupTimeLineTable::selectFrame(int frameIndex)
@@ -389,18 +390,40 @@ void TupTimeLineTable::selectFrame(int frameIndex)
     setCurrentItem(item(currentRow(), frameIndex));
 }
 
-void TupTimeLineTable::removeFrame(int layerIndex, int position)
+void TupTimeLineTable::removeFrame(int layerIndex, int frameIndex)
 {
-    Q_UNUSED(position);
+    Q_UNUSED(frameIndex);
 
     if (layerIndex < 0 || layerIndex >= rowCount())
         return;
 
     k->removingFrame = true;
     
-    setAttribute(layerIndex, k->layerColumn->lastFrame(layerIndex), TupTimeLineTableItem::IsUsed, false);
+    setAttribute(layerIndex, k->layersColumn->lastFrame(layerIndex), TupTimeLineTableItem::IsUsed, false);
 
-    k->layerColumn->updateLastFrame(layerIndex, false);
+    k->layersColumn->updateLastFrame(layerIndex, false);
+    viewport()->update();
+}
+
+void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, const QString &selection)
+{
+    if (layerIndex < 0 || layerIndex >= rowCount())
+        return;
+
+    QStringList params = selection.split(",");
+    int layers = params.at(0).toInt();
+    int frames = params.at(1).toInt();
+
+    int layersTotal = layerIndex + layers;
+    for (int i=layerIndex; i<layersTotal; i++) {
+         int framesTotal = frameIndex + frames;
+         for (int j=frameIndex; j<framesTotal; j++) {
+              setAttribute(i, k->layersColumn->lastFrame(i), TupTimeLineTableItem::IsUsed, false);
+              k->layersColumn->updateLastFrame(i, false);
+              tError() << "TupTimeLineTable::removeFrameSelection() - Layer: " << i << " - Frame: " << j;
+         }
+    }
+
     viewport()->update();
 }
 
@@ -452,7 +475,7 @@ void TupTimeLineTable::fixSize()
 
     int layerTotal = rowCount();
     for (int row = 0; row < layerTotal; row++)
-         k->layerColumn->resizeSection(row, k->rectHeight);
+         k->layersColumn->resizeSection(row, k->rectHeight);
 }
 
 void TupTimeLineTable::requestFrameSelection(int currentLayerIndex, int currentFrameIndex, int previousLayerIndex, int previousFrameIndex)
@@ -473,7 +496,7 @@ void TupTimeLineTable::requestFrameSelection(int currentLayerIndex, int currentF
             if (previousLayerIndex != rowCount() - 1) {
                 blockSignals(true);
                 setCurrentItem(item(previousLayerIndex - 1, currentColumn())); 
-                k->layerColumn->updateSelection(previousLayerIndex - 1);
+                k->layersColumn->updateSelection(previousLayerIndex - 1);
                 blockSignals(false);
             }
         }
@@ -575,4 +598,27 @@ void TupTimeLineTable::selectFrame(int layerIndex, int frameIndex)
     setCurrentCell(layerIndex, frameIndex);
     updateLayerHeader(layerIndex);
     blockSignals(false);
+}
+
+QList<int> TupTimeLineTable::currentSelection()
+{
+    QList<int> coords;
+    QModelIndexList selection = selectedIndexes();
+    QList<int> layers;
+    QList<int> frames;
+
+    foreach (QModelIndex cell, selection) {
+        int layer = cell.column();
+        int frame = cell.row();
+
+        if (!layers.contains(layer))
+            layers << layer;
+        if (!frames.contains(frame))
+            frames << frame;
+    }
+    coords << layers.first() << layers.last() << frames.first() << frames.last();
+
+    tError() << "TupTimeLineTable::currentSelection() - coords: " << coords;
+
+    return coords;
 }

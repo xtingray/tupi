@@ -11,7 +11,7 @@ SUBDIRS += scenes \
            help \
            # kinas \
            brush \
-           paintarea \
+           workspace \
            twitter \
            player 
   

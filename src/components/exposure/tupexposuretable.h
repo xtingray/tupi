@@ -101,9 +101,9 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         int layersCount();
         int framesCount();
         int framesCountAtCurrentLayer();
+        int framesCountAtLayer(int layer);
 
-        void setMenuForAFrame(QMenu *menu);
-        void setMenuForSelection(QMenu *menu);
+        void setSinglePopUpMenu(QMenu *single);
         
         void notifyCellClicked(int frame, int layer);
         void reset();
@@ -144,6 +144,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
     private:
         bool layerIndexIsValid(int layerIndex);
         bool frameIndexIsValid(int frameIndex);
+
         struct Private;
         Private *const k;
 };

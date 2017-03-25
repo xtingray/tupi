@@ -5,7 +5,7 @@ INCLUDEPATH += ../plugins/tools/selection
 
 COLORPALETTE_DIR = ../components/colorpalette
 PLAYER_DIR = ../components/player
-PAINTAREA_DIR = ../components/paintarea
+WORKSPACE_DIR = ../components/workspace
 BRUSH_DIR = ../components/brush
 # KINAS_DIR = ../components/kinas 
 # HELP_DIR = ../components/help 
@@ -23,7 +23,7 @@ LIBBASE_DIR = ../libbase
 NET_DIR = ../net
 
 include($$COLORPALETTE_DIR/colorpalette.pri)
-include($$PAINTAREA_DIR/paintarea.pri)
+include($$WORKSPACE_DIR/workspace.pri)
 include($$PLAYER_DIR/player.pri)
 include($$BRUSH_DIR/brush.pri)
 # include($$KINAS_DIR/kinas.pri)
