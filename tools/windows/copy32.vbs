@@ -42,7 +42,7 @@ fileSystem.CopyFile sourceDir & "\components\export\release\tupiexport.dll", tup
 fileSystem.CopyFile sourceDir & "\components\exposure\release\tupiexposure.dll", tupiDir & "\lib\tupiexposure.dll"
 fileSystem.CopyFile sourceDir & "\components\import\release\tupimport.dll", tupiDir & "\lib\tupimport.dll"
 fileSystem.CopyFile sourceDir & "\components\library\release\tupilibrary.dll", tupiDir & "\lib\tupilibrary.dll"
-fileSystem.CopyFile sourceDir & "\components\paintarea\release\tupipaintarea.dll", tupiDir & "\lib\tupipaintarea.dll"
+fileSystem.CopyFile sourceDir & "\components\workspace\release\tupiworkspace.dll", tupiDir & "\lib\tupiworkspace.dll"
 fileSystem.CopyFile sourceDir & "\components\brush\release\tupibrush.dll", tupiDir & "\lib\tupibrush.dll"
 fileSystem.CopyFile sourceDir & "\components\scenes\release\tupiscenes.dll", tupiDir & "\lib\tupiscenes.dll"
 fileSystem.CopyFile sourceDir & "\components\timeline\release\tupitimeline.dll", tupiDir & "\lib\tupitimeline.dll"
