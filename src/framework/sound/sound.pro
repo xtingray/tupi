@@ -24,9 +24,9 @@ HEADERS += taudioengineiface.h \
            taudioplayer.h
 SOURCES += taudioplayer.cpp
 
-INCLUDEPATH += ../tcore ../
-LIBS += -L../tcore -ltupifwcore
+INCLUDEPATH += ../core ../
+LIBS += -L../core -ltupifwcore
 
 linux-g{
-    TARGETDEPS += ../tcore/libtupifwcore.so
+    TARGETDEPS += ../core/libtupifwcore.so
 }

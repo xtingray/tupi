@@ -148,21 +148,21 @@ SOURCES += taction.cpp \
            tcolorcell.cpp \
            tslider.cpp
 
-INCLUDEPATH += ../tcore ../ ../../libbase
+INCLUDEPATH += ../core ../ ../../libbase
 
 # RESOURCES += tgui_images.qrc
 
 linux-g {
-    TARGETDEPS += ../tcore/libtupifwcore.so
+    TARGETDEPS += ../core/libtupifwcore.so
 }
 
 unix {
-    LIBS += -L../tcore -ltupifwcore
-    # INCLUDEPATH += ../tcore ../ ../../libbase
-    INCLUDEPATH += ../tcore
+    LIBS += -L../core -ltupifwcore
+    # INCLUDEPATH += ../core ../ ../../libbase
+    INCLUDEPATH += ../core
 }
 
 win32 {
-    LIBS += -L../tcore/release/ -ltupifwcore
-    INCLUDEPATH += ../tcore
+    LIBS += -L../core/release/ -ltupifwcore
+    INCLUDEPATH += ../core
 }

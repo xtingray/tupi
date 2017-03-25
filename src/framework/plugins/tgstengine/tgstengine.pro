@@ -9,8 +9,8 @@ TARGET = tgstengine
 INSTALLS += target 
 target.path = /lib/plugins/ 
 
-INCLUDEPATH += ../../ ../../tcore
-LIBS += -L../../tcore -ltupifwcore
+INCLUDEPATH += ../../ ../../core
+LIBS += -L../../core -ltupifwcore
 
 contains(DEFINES, HAVE_GST10){
     HEADERS += tgstengine.h 
@@ -18,5 +18,5 @@ contains(DEFINES, HAVE_GST10){
 }
 
 linux-g{
-    TARGETDEPS += ../../tcore/libtupifwcore.so
+    TARGETDEPS += ../../core/libtupifwcore.so
 }
