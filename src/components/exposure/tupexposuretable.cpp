@@ -713,18 +713,18 @@ QList<int> TupExposureTable::currentSelection()
     QList<int> layers;
     QList<int> frames;
 
-    foreach (QModelIndex cell, selection) { 
-        int layer = cell.column();
-        int frame = cell.row();
+    if (!selection.isEmpty()) {
+        foreach (QModelIndex cell, selection) { 
+            int layer = cell.column();
+            int frame = cell.row();
 
-        if (!layers.contains(layer))
-            layers << layer;
-        if (!frames.contains(frame))
-            frames << frame;
+            if (!layers.contains(layer))
+                layers << layer;
+            if (!frames.contains(frame))
+                frames << frame;
+        }
+        coords << layers.first() << layers.last() << frames.first() << frames.last();
     }
-    coords << layers.first() << layers.last() << frames.first() << frames.last();
-
-    tError() << "coords: " << coords;
 
     return coords;
 }

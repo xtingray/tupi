@@ -82,6 +82,54 @@ bool TupCommandExecutor::createFrame(TupFrameResponse *response)
     return false;
 }
 
+bool TupCommandExecutor::restoreFrameSelection(TupFrameResponse *response)
+{
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupCommandExecutor::restoreFrameSelection()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
+    QString selection = response->arg().toString();
+
+    QStringList params = selection.split(",");
+    int layers = params.at(0).toInt(); 
+    int frames = params.at(1).toInt();
+
+    TupScene *scene = m_project->sceneAt(sceneIndex);
+    if (scene) {
+        int layersTotal = layerIndex + layers;
+        for (int i=layerIndex; i<layersTotal; i++) {
+            TupLayer *layer = scene->layerAt(i);
+            if (layer) {
+                int framesTotal = frameIndex + frames;
+                for (int j=frameIndex; j<framesTotal; j++) {
+                    bool success = layer->restoreFrame(frameIndex);
+                    if (!success) {
+                        #ifdef K_DEBUG
+                            QString msg = "TupCommandExecutor::restoreFrameSelection() - Fatal Error: Can't restore frame at index: " + QString::number(frameIndex);
+                            #ifdef Q_OS_WIN
+                                qDebug() << msg;
+                            #else
+                                tError() << msg;
+                            #endif
+                        #endif
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    emit responsed(response);
+    return true;
+}
+
 bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
@@ -139,8 +187,6 @@ bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
     int layers = params.at(0).toInt();  
     int frames = params.at(1).toInt();
 
-    tError() << "frames: " << frames;
-
     TupScene *scene = m_project->sceneAt(sceneIndex);
     if (scene) {
         scene->removeStoryBoardScene(frameIndex);
@@ -149,21 +195,24 @@ bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
             TupLayer *layer = scene->layerAt(i);
             if (layer) {
                 int framesTotal = frameIndex + frames;
-                tError() << "frameIndex: " << frameIndex;
-                tError() << "framesTotal: " << framesTotal;
                 for (int j=frameIndex; j<framesTotal; j++) {
                      if (frameIndex < layer->framesCount()) {
                          TupFrame *frame = layer->frameAt(frameIndex);
                          if (frame) {
                              scene->removeTweensFromFrame(i, frameIndex);
-                             tError() << "TupCommandExecutor::removeFrameSelection() - Layer index: " << i;
-                             tError() << "TupCommandExecutor::removeFrameSelection() - Frame index: " << frameIndex;
                              if (layer->framesCount() == 1) {
                                  if (!layer->resetFrame(frameIndex))
                                      return false; 
                              } else {
                                  if (!layer->removeFrame(frameIndex)) {
-                                     tError() << "TupCommandExecutor::removeFrameSelection() - Fatal Error: Can't remove frame at index: " << frameIndex;
+                                     #ifdef K_DEBUG
+                                         QString msg = "TupCommandExecutor::removeFrameSelection() - Fatal Error: Can't remove frame at index: " + QString::number(frameIndex);
+                                         #ifdef Q_OS_WIN
+                                             qDebug() << msg;
+                                         #else
+                                             tError() << msg;
+                                         #endif
+                                     #endif
                                      return false;
                                  }
                              }
@@ -171,13 +220,9 @@ bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
                      }
                 }
             }
-            tError() << "END LAYER SIZE: " << layer->framesCount();
         }
     }
-
     emit responsed(response);
-
-    tError() << "TupCommandExecutor::removeFrameSelection() - Everything OK!";
 
     return true; 
 }
@@ -439,11 +484,11 @@ bool TupCommandExecutor::pasteFrame(TupFrameResponse *response)
             TupFrame *frame = layer->frameAt(position);
             if (frame) {
                 QString name = frame->frameName();
-                
                 QDomDocument doc;
                 doc.appendChild(frame->toXml(doc));
                 response->setArg(doc.toString(0));
                 frame->reset();
+
                 frame->fromXml(copyFrame);
                 frame->setFrameName(name);
 

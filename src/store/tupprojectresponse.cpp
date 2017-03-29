@@ -80,8 +80,9 @@ int TupProjectResponse::action() const
                         return TupProjectRequest::Add;
                      }
                 break;
-                case TupProjectRequest::Exchange:
+                case TupProjectRequest::RemoveSelection:
                      {
+                        return TupProjectRequest::RestoreSelection;
                      }
                 break;
                 case TupProjectRequest::InsertSymbolIntoFrame:
@@ -89,53 +90,9 @@ int TupProjectResponse::action() const
                         return TupProjectRequest::RemoveSymbolFromFrame;
                      }
                 break;
-                case TupProjectRequest::EditNodes:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Pen:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Brush:
-                     {
-                     }
-                break;
-                case TupProjectRequest::View:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Select:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Transform:
-                     {
-                     }
-                break;
-                case TupProjectRequest::SetTween:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Lock:
-                     {
-                     }
-                break;
                 case TupProjectRequest::Ungroup:
                      {
                         return TupProjectRequest::Group;
-                     }
-                break;
-                case TupProjectRequest::Rename:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Move:
-                     {
-                     }
-                break;
-                case TupProjectRequest::Convert:
-                     {
                      }
                 break;
                 case TupProjectRequest::Group:
@@ -143,18 +100,14 @@ int TupProjectResponse::action() const
                         return TupProjectRequest::Ungroup;
                      }
                 break;
-                case TupProjectRequest::Paste:
-                     {
-                     }
-                break;
                 default:
                      {
                         #ifdef K_DEBUG
-                            QString msg = "TupProjectResponse::action() : Fatal Error: Unhandled action -> " + QString::number(k->action);
+                            QString msg = "TupProjectResponse::action() : Warning : Unhandled action -> " + QString::number(k->action);
                             #ifdef Q_OS_WIN
                                 qDebug() << msg;
                             #else
-                                tError() << msg;
+                                tWarning() << msg;
                             #endif
                         #endif
                      }

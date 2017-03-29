@@ -380,6 +380,28 @@ void TupTimeLineTable::insertFrame(int layerIndex)
     setAttribute(layerIndex, lastFrame, TupTimeLineTableItem::IsSound, false);
 }
 
+void TupTimeLineTable::restoreFrameSelection(int layerIndex, int frameIndex, const QString &selection)
+{
+    if (layerIndex < 0 || layerIndex >= rowCount())
+        return;
+
+    QStringList params = selection.split(",");
+    int layers = params.at(0).toInt();
+    int frames = params.at(1).toInt();
+
+    int layersTotal = layerIndex + layers;
+    for (int i=layerIndex; i<layersTotal; i++) {
+         int framesTotal = frameIndex + frames;
+         for (int j=frameIndex; j<framesTotal; j++) {
+              tError() << "TupTimeLineTable::restoreFrameSelection() - Restoring frame at column: " << i << " and row: " << j;
+              setAttribute(i, j, TupTimeLineTableItem::IsUsed, true);
+              k->layersColumn->updateLastFrame(i, true);
+         }
+    }
+
+    viewport()->update();
+}
+
 void TupTimeLineTable::updateLayerHeader(int layerIndex)
 {
     k->layersColumn->updateSelection(layerIndex); 

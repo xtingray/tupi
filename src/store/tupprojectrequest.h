@@ -75,9 +75,9 @@ class TUPI_EXPORT TupProjectRequest
         {
             None = 0,
             Add = 1,
-            AddSelection = 2,
+            RestoreSelection = 2,
             Remove = -Add,
-            RemoveSelection = -AddSelection, 
+            RemoveSelection = -RestoreSelection, 
             Reset = 3,
             Exchange = 4,
             Move = 5,
@@ -106,19 +106,17 @@ class TUPI_EXPORT TupProjectRequest
             Update = 21,
             Expand = 22,
             Copy = 23,
-            CopySelection = 24,
-            Paste = 25,
-            PasteSelection = 26,
+            Paste = 24,
 
             // scenes
-            GetInfo = 27, 
-            BgColor = 28,
+            GetInfo = 25, 
+            BgColor = 26,
 
             // layer
-            AddLipSync = 29,
-            UpdateLipSync = 30,
-            RemoveLipSync = 31,
-            UpdateOpacity = 32 
+            AddLipSync = 27,
+            UpdateLipSync = 28,
+            RemoveLipSync = 29,
+            UpdateOpacity = 30 
         };
         
         enum Part

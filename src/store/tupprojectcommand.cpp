@@ -381,6 +381,11 @@ void TupProjectCommand::frameCommand()
                  k->executor->createFrame(response);
             }
             break;
+            case TupProjectRequest::RestoreSelection:
+            {
+                 k->executor->restoreFrameSelection(response);
+            }
+            break;
             case TupProjectRequest::Remove:
             {
                  k->executor->removeFrame(response);

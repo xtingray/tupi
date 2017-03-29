@@ -294,20 +294,27 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
 
     TupTimeLineTable *framesTable = this->framesTable(response->sceneIndex());
     if (framesTable) {
+        int layerIndex = response->layerIndex();
+        int frameIndex = response->frameIndex();
         switch (response->action()) {
                 case TupProjectRequest::Add:
                 {
-                     framesTable->insertFrame(response->layerIndex());
+                     framesTable->insertFrame(layerIndex);
+                }
+                break;
+                case TupProjectRequest::RestoreSelection:
+                {
+                     framesTable->restoreFrameSelection(layerIndex, frameIndex, response->arg().toString());
                 }
                 break;
                 case TupProjectRequest::Remove:
                 {
-                     framesTable->removeFrame(response->layerIndex(), response->frameIndex());
+                     framesTable->removeFrame(layerIndex, frameIndex);
                 }
                 break;
                 case TupProjectRequest::RemoveSelection:
                 {
-                     framesTable->removeFrameSelection(response->layerIndex(), response->frameIndex(), response->arg().toString());
+                     framesTable->removeFrameSelection(layerIndex, frameIndex, response->arg().toString());
                 }
                 break;
                 case TupProjectRequest::Move:
@@ -317,12 +324,12 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                 break;
                 case TupProjectRequest::Exchange:
                 {
-                     framesTable->exchangeFrame(response->frameIndex(), response->layerIndex(), response->arg().toInt(), response->layerIndex());
+                     framesTable->exchangeFrame(frameIndex, layerIndex, response->arg().toInt(), layerIndex);
                 }
                 break;
                 case TupProjectRequest::Lock:
                 {
-                     framesTable->lockFrame(response->layerIndex(), response->frameIndex(), response->arg().toBool());
+                     framesTable->lockFrame(layerIndex, frameIndex, response->arg().toBool());
                 }
                 break;
                 case TupProjectRequest::Rename:
@@ -331,10 +338,8 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                 break;
                 case TupProjectRequest::Select:
                 {
-                     int layerIndex = response->layerIndex();
                      k->selectedLayer = layerIndex;
-
-                     framesTable->selectFrame(layerIndex, response->frameIndex());
+                     framesTable->selectFrame(layerIndex, frameIndex);
                 }
                 break;
         }
