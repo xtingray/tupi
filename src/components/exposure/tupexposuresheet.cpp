@@ -886,8 +886,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                                  }
                              }
 
-                             TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Select);
-                             emit requestTriggered(&request);
+                             k->currentTable->selectFrame(layerIndex, frameIndex);
                          }
                      }
 

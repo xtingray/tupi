@@ -393,11 +393,14 @@ void TupTimeLineTable::restoreFrameSelection(int layerIndex, int frameIndex, con
     for (int i=layerIndex; i<layersTotal; i++) {
          int framesTotal = frameIndex + frames;
          for (int j=frameIndex; j<framesTotal; j++) {
-              tError() << "TupTimeLineTable::restoreFrameSelection() - Restoring frame at column: " << i << " and row: " << j;
               setAttribute(i, j, TupTimeLineTableItem::IsUsed, true);
               k->layersColumn->updateLastFrame(i, true);
          }
     }
+
+    blockSignals(true);
+    setCurrentItem(item(layerIndex, frameIndex));
+    blockSignals(false);
 
     viewport()->update();
 }
@@ -442,10 +445,15 @@ void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, cons
          for (int j=frameIndex; j<framesTotal; j++) {
               setAttribute(i, k->layersColumn->lastFrame(i), TupTimeLineTableItem::IsUsed, false);
               k->layersColumn->updateLastFrame(i, false);
-              tError() << "TupTimeLineTable::removeFrameSelection() - Layer: " << i << " - Frame: " << j;
          }
     }
 
+    int lastIndex = k->layersColumn->lastFrame(layerIndex);
+    if (lastIndex < frameIndex)
+        frameIndex = lastIndex;
+    blockSignals(true);
+    setCurrentItem(item(layerIndex, frameIndex));
+    blockSignals(false);
     viewport()->update();
 }
 
@@ -639,8 +647,6 @@ QList<int> TupTimeLineTable::currentSelection()
             frames << frame;
     }
     coords << layers.first() << layers.last() << frames.first() << frames.last();
-
-    tError() << "TupTimeLineTable::currentSelection() - coords: " << coords;
 
     return coords;
 }

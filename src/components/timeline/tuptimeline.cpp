@@ -282,7 +282,6 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
 
 void TupTimeLine::frameResponse(TupFrameResponse *response)
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupTimeLine::frameResponse()]";
@@ -290,7 +289,6 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
             T_FUNCINFO;
         #endif
     #endif
-    */
 
     TupTimeLineTable *framesTable = this->framesTable(response->sceneIndex());
     if (framesTable) {
