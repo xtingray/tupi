@@ -124,7 +124,19 @@ void TipDatabase::loadVideos(const QString &videoPath)
 {
     QDomDocument doc;
     QFile file(videoPath);
-   
+
+    if (!file.exists()) {
+		#ifdef K_DEBUG
+            QString msg = "TipDatabase::loadVideos() - Fatal Error: File doesn't exist -> " + videoPath;
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
+	    return;	
+	}
+	
     if (!file.open(QIODevice::ReadOnly)) {
         #ifdef K_DEBUG
             QString msg = "TipDatabase::loadVideos() - Fatal Error: Insufficient permissions to read file -> " + videoPath;

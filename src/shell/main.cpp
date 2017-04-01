@@ -86,6 +86,8 @@ int main(int argc, char ** argv)
 #endif
 #endif
 
+    qDebug() << "RAND: " << TAlgorithm::randomString(20);
+
     // Setting the current version for Tupi
     kAppProp->setVersion(VERSION);
     kAppProp->setCodeName(CODE_NAME);
