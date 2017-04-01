@@ -91,8 +91,6 @@ int main(int argc, char ** argv)
     kAppProp->setCodeName(CODE_NAME);
     kAppProp->setRevision(REVISION);
 
-    tError() << "Random ID: " << TAlgorithm::randomString(20);
-
     // Time to define global variables for Tupi
     QDir appDirPath(QApplication::applicationDirPath());
     TCONFIG->beginGroup("General");

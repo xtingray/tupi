@@ -59,37 +59,48 @@ int TAlgorithm::random()
         }
         if (fd >= 0)
             close(fd);
-    #else
-        QTime time = QTime::currentTime();
-        QDate date = QDate::currentDate(); 
-        // QString number = date.toString("d") + time.toString("ssmmhhsszzz");
-        QString number = date.toString("d") + time.toString("sszzz");
-        tError() << "TIME: " << number;
-        seed = number.toInt();
-        tError() << "SEED: " << seed;
-        qsrand(seed);
     #endif
+
+    #ifdef Q_OS_MAC
+        QString day = QDate::currentDate().toString("d");
+        seed = day + QTime::currentTime().toString("mmzzz");
+        qsrand(seed); 
+    #endif 
 
     return qrand();
 }
 
 QString TAlgorithm::randomString(int length)
 {
-    if (length <=0) 
+    QString str;
+
+    if (length <= 0) 
         return QString();
 
-    QString str; str.resize(length);
+    #ifdef Q_OS_LINUX
+        str.resize(length);
+        int i = 0;
+        while (length--) {
+            int r = random() % 62;
+            r += 48;
+            if (r > 57) 
+                r += 7;
+            if (r > 90) 
+                r += 6;
+            str[i++] = char(r);
+        }
+    #endif
 
-    int i = 0;
-    while (length--) {
-           int r = random() % 62;
-           r += 48;
-           if (r > 57) 
-               r += 7;
-           if (r > 90) 
-               r += 6;
-           str[i++] = char(r);
-    }
+    #ifdef Q_OS_MAC
+        QFile file("/dev/urandom");
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray bytes = file.read(20);
+            QByteArray hash2 = QCryptographicHash::hash(bytes, QCryptographicHash::Md5);
+            str = hash2.toHex();
+            str = str.left(20);
+        }
+        file.close();
+    #endif
 
     return str;
 }
