@@ -35,28 +35,42 @@
 
 #include "talgorithm.h"
 
+#ifdef Q_OS_LINUX
+#include <unistd.h>
+#include <sys/time.h>
+#include <fcntl.h>
+#endif
+
+// #include <cstdlib>
+// #include <cstdio>
+// #include <ctime>
+
+#include <QCryptographicHash>
+
 int TAlgorithm::random()
 {
-    static bool init = false;
+    unsigned int seed;
 
-    if (!init) {
-        unsigned int seed;
-        #ifdef Q_OS_LINUX
-               init = true;
-               int fd = open("/dev/urandom", O_RDONLY);
-               if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
-                   srand(getpid());
-                   seed = rand()+time(0);
-               }
-               if (fd >= 0) 
-                   close(fd);
-        #else
-               seed = ::time(0);
-        #endif
-        srand(seed);
-    }
+    #ifdef Q_OS_LINUX
+        int fd = open("/dev/urandom", O_RDONLY);
+        if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
+            srand(getpid());
+            seed = rand() + time(0);
+        }
+        if (fd >= 0)
+            close(fd);
+    #else
+        QTime time = QTime::currentTime();
+        QDate date = QDate::currentDate(); 
+        // QString number = date.toString("d") + time.toString("ssmmhhsszzz");
+        QString number = date.toString("d") + time.toString("sszzz");
+        tError() << "TIME: " << number;
+        seed = number.toInt();
+        tError() << "SEED: " << seed;
+        qsrand(seed);
+    #endif
 
-    return rand();
+    return qrand();
 }
 
 QString TAlgorithm::randomString(int length)
@@ -68,13 +82,13 @@ QString TAlgorithm::randomString(int length)
 
     int i = 0;
     while (length--) {
-           int r=random() % 62;
-           r+=48;
-           if (r>57) 
-               r+=7;
-           if (r>90) 
-               r+=6;
-           str[i++] =  char(r);
+           int r = random() % 62;
+           r += 48;
+           if (r > 57) 
+               r += 7;
+           if (r > 90) 
+               r += 6;
+           str[i++] = char(r);
     }
 
     return str;

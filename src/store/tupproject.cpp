@@ -301,7 +301,7 @@ bool TupProject::restoreScene(int position)
     return false;
 }
 
-bool TupProject::removeScene(int position)
+bool TupProject::removeScene(int pos)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -311,11 +311,11 @@ bool TupProject::removeScene(int position)
         #endif
     #endif        
     
-    TupScene *toRemove = sceneAt(position);
+    TupScene *toRemove = sceneAt(pos);
     if (toRemove) {
-        QString path = dataDir() + "/scene" + QString::number(position) + ".tps";
+        QString path = dataDir() + "/scene" + QString::number(pos) + ".tps";
         if (QFile::exists(path)) {
-            if (!QFile::remove(path)) {        
+            if (!QFile::remove(path)) {
                 #ifdef K_DEBUG
                     QString msg = "TupProject::removeScene() - Error removing file " + path;
                     #ifdef Q_OS_WIN
@@ -330,22 +330,52 @@ bool TupProject::removeScene(int position)
         }
 
         int total = k->sceneCounter - 1;
-        if (position < total) {
-            for (int i=position + 1; i<=total; i++) {
+        if (pos < total) {
+            for (int i=pos + 1; i<=total; i++) {
                  QString oldName = dataDir() + "/scene" + QString::number(i) + ".tps";  
                  QString newName = dataDir() + "/scene" + QString::number(i-1) + ".tps";
                  QFile::rename(oldName, newName); 
             }
         }
 
-        k->undoScenes << k->scenes.takeAt(position);
-        // k->scenes.removeAt(position);
+        k->undoScenes << k->scenes.takeAt(pos);
         k->sceneCounter--;
 
         return true;
     } 
 
     return false;
+}
+
+bool TupProject::resetScene(int pos, const QString &newName)
+{
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupProject::resetScene()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+   
+    TupScene *scene = sceneAt(pos);
+    if (scene) {
+        k->undoScenes << k->scenes.takeAt(pos);
+        scene->reset(newName);
+        return true;
+    }
+
+    return false;
+}
+
+QString TupProject::recoverScene(int pos) const
+{
+    TupScene *scene = k->undoScenes.takeLast();
+    if (scene) {
+        k->scenes[pos] = scene;
+        return scene->sceneName();
+    }
+
+    return "";
 }
 
 bool TupProject::moveScene(int position, int newPosition)

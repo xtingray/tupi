@@ -46,14 +46,14 @@ struct TupSceneTabWidget::Private
 
 TupSceneTabWidget::TupSceneTabWidget(QWidget *parent) : QFrame(parent), k(new Private)
 {
-   QVBoxLayout *layout = new QVBoxLayout(this);
-   layout->setMargin(1);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setMargin(1);
 
-   k->tabber = new QTabWidget;
-   connect(k->tabber, SIGNAL(currentChanged(int)), this, SIGNAL(currentChanged(int)));
-   layout->addWidget(k->tabber);
+    k->tabber = new QTabWidget;
+    connect(k->tabber, SIGNAL(currentChanged(int)), this, SIGNAL(currentChanged(int)));
+    layout->addWidget(k->tabber);
 
-   setLayout(layout);
+    setLayout(layout);
 }
 
 TupSceneTabWidget::~TupSceneTabWidget()
@@ -135,9 +135,6 @@ void TupSceneTabWidget::restoreScene(int index, const QString &name)
 
 void TupSceneTabWidget::removeScene(int index) 
 {
-    // k->tables.removeAt(index);
-    // k->opacityControl.removeAt(index);
-
     k->undoTables << k->tables.takeAt(index);
     k->undoOpacities << k->opacityControl.takeAt(index);
 
@@ -232,4 +229,3 @@ void TupSceneTabWidget::setLayerVisibility(int sceneIndex, int layerIndex, bool 
         #endif
     }
 }
-

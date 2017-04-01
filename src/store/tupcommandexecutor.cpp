@@ -64,19 +64,19 @@ bool TupCommandExecutor::createScene(TupSceneResponse *response)
         #endif
     #endif
 
-    int position = response->sceneIndex();
+    int pos = response->sceneIndex();
     QString name = response->arg().toString();
-    if (position < 0)
+    if (pos < 0)
         return false;
 
     if (response->mode() == TupProjectResponse::Do) {
-        TupScene *scene = m_project->createScene(name, position);
+        TupScene *scene = m_project->createScene(name, pos);
         if (!scene) 
             return false;
     }
 
     if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) { 
-        bool success = m_project->restoreScene(position);
+        bool success = m_project->restoreScene(pos);
         if (!success)
             return false;
     }
@@ -93,26 +93,23 @@ bool TupCommandExecutor::removeScene(TupSceneResponse *response)
         #else
             T_FUNCINFO;
         #endif
-    #endif	
+    #endif
 
-    int position = response->sceneIndex();
-    // int scenesCount = m_project->scenesCount();
-
-    TupScene *toRemove = m_project->sceneAt(position);
-
-    if (toRemove) {
+    int pos = response->sceneIndex();
+    TupScene *scene = m_project->sceneAt(pos);
+    if (scene) {
         QDomDocument document;
-        document.appendChild(toRemove->toXml(document));
+        document.appendChild(scene->toXml(document));
         response->setState(document.toString());
-        response->setArg(toRemove->sceneName());
+        response->setArg(scene->sceneName());
         
-        if (m_project->removeScene(position)) {
+        if (m_project->removeScene(pos)) {
             emit responsed(response);
             return true;
         } 
     } else {
         #ifdef K_DEBUG
-            QString msg = "TupCommandExecutor::removeScene() - Scene index doesn't exist -> " + QString::number(position);
+            QString msg = "TupCommandExecutor::removeScene() - Fatal Error: No scene at index -> " + QString::number(pos);
             #ifdef Q_OS_WIN
                 qDebug() << msg;
             #else
@@ -126,9 +123,9 @@ bool TupCommandExecutor::removeScene(TupSceneResponse *response)
 
 bool TupCommandExecutor::moveScene(TupSceneResponse *response)
 {
-    int position = response->sceneIndex();
-    int newPosition = response->arg().toInt();
-    if (m_project->moveScene(position, newPosition)) {
+    int pos = response->sceneIndex();
+    int newPos = response->arg().toInt();
+    if (m_project->moveScene(pos, newPos)) {
         emit responsed(response);
         return true;
     }
@@ -138,7 +135,7 @@ bool TupCommandExecutor::moveScene(TupSceneResponse *response)
 
 bool TupCommandExecutor::lockScene(TupSceneResponse *response)
 {
-    int position = response->sceneIndex();
+    int pos = response->sceneIndex();
     bool lock = response->arg().toBool();
 
     #ifdef K_DEBUG
@@ -150,34 +147,29 @@ bool TupCommandExecutor::lockScene(TupSceneResponse *response)
         #endif
     #endif  
 
-    TupScene *scene = m_project->sceneAt(position);
-    
-    if (!scene)
-        return false;
-    
-    scene->setLocked(lock);
-    
-    emit responsed(response);
+    TupScene *scene = m_project->sceneAt(pos);
+    if (scene) {
+        scene->setLocked(lock);
+        emit responsed(response);
+        return true;
+    }
 
-    return true;
+    return false;
 }
 
 bool TupCommandExecutor::renameScene(TupSceneResponse *response)
 {
-    int position = response->sceneIndex();
+    int pos = response->sceneIndex();
     QString newName = response->arg().toString();
-    TupScene *scene = m_project->sceneAt(position);
 
-    if (!scene)
-        return false;
-    
-    // TupProjectRequest request = TupRequestBuilder::createSceneRequest(position, TupProjectRequest::Rename, newName);
-    
-    scene->setSceneName(newName);
-    
-    emit responsed(response);
+    TupScene *scene = m_project->sceneAt(pos);
+    if (scene) {
+        scene->setSceneName(newName);
+        emit responsed(response);
+        return true;
+    }
 
-    return true;
+    return false;
 }
 
 void TupCommandExecutor::selectScene(TupSceneResponse *response)
@@ -187,33 +179,50 @@ void TupCommandExecutor::selectScene(TupSceneResponse *response)
 
 bool TupCommandExecutor::setSceneVisibility(TupSceneResponse *response)
 {
-    int position = response->sceneIndex();
+    int pos = response->sceneIndex();
     bool view = response->arg().toBool();
     
-    TupScene *scene = m_project->sceneAt(position);
-    
-    if (!scene)
-        return false;
-    
-    scene->setVisible(view);
-    emit responsed(response);
-    
-    return true;
+    TupScene *scene = m_project->sceneAt(pos);
+    if (scene) {
+        scene->setVisible(view);
+        emit responsed(response);
+        return true;
+    }
+
+    return false;
 }
 
 bool TupCommandExecutor::resetScene(TupSceneResponse *response)
 {
-    int position = response->sceneIndex();
-    QString name = response->arg().toString();
-    TupScene *scene = m_project->sceneAt(position);
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupCommandExecutor::resetScene()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
 
-    if (!scene)
-        return false;
+    int pos = response->sceneIndex();
+    QString newName = response->arg().toString();
 
-    scene->reset(name);
-    emit responsed(response);
+    TupScene *scene = m_project->sceneAt(pos);
+    if (scene) {
+        if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+            if (m_project->resetScene(pos, newName)) {
+                emit responsed(response);
+                return true;
+            }
+        }
 
-    return true;
+        if (response->mode() == TupProjectResponse::Undo) {
+            QString oldName = m_project->recoverScene(pos);
+            response->setArg(oldName);
+            emit responsed(response);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void TupCommandExecutor::setBgColor(TupSceneResponse *response)

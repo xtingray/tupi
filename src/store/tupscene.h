@@ -146,7 +146,7 @@ class TUPI_EXPORT TupScene : public QObject, public TupAbstractSerializable
         virtual QDomElement toXml(QDomDocument &doc) const;
 
         void removeTweensFromFrame(int layerIndex, int frameIndex);
-        void reset(QString &name);
+        void reset(const QString &name);
         void clear();
 
         void setStoryboard(TupStoryboard *storyboard);

@@ -511,13 +511,13 @@ void TupPaintArea::sceneResponse(TupSceneResponse *event)
                 {
                     /*
                     if (k->project->scenesCount() > 0)
-                        setCurrentScene(k->currentSceneIndex);
+                        setCurrentScene(event->sceneIndex() - 1);
                     */
                 }
                 break;
             case TupProjectRequest::Reset:
                 {
-                    setCurrentScene(0);
+                    setCurrentScene(event->sceneIndex());
                 }
                 break;
             case TupProjectRequest::BgColor:
@@ -557,7 +557,9 @@ void TupPaintArea::sceneResponse(TupSceneResponse *event)
 void TupPaintArea::itemResponse(TupItemResponse *response)
 {
     #ifdef K_DEBUG
-        QString msg = "TupPaintArea::itemResponse() - [" + QString::number(response->sceneIndex()) + ", " + QString::number(response->layerIndex()) + ", " + QString::number(response->frameIndex()) + "]";
+        QString msg = "TupPaintArea::itemResponse() - [" + QString::number(response->sceneIndex()) 
+                      + ", " + QString::number(response->layerIndex()) + ", " 
+                      + QString::number(response->frameIndex()) + "]";
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else

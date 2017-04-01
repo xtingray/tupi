@@ -258,6 +258,9 @@ void TupExposureSheet::applyAction(int action)
         return;
     }
 
+    // SQA: Refactor scene, layer and frame index variables. Set them before the switch
+    // i.e. int sceneIndex = k->scenesContainer->currentIndex();
+
     switch (action) {
             case TupProjectActionBar::InsertFrame:
                {
@@ -341,7 +344,8 @@ void TupExposureSheet::applyAction(int action)
                          int frames = coords.at(3) - coords.at(2) + 1;
                          QString selection = QString::number(layers) + "," + QString::number(frames);
 
-                         TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), coords.at(0), coords.at(2), TupProjectRequest::RemoveSelection, selection);
+                         TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
+                                                                        coords.at(0), coords.at(2), TupProjectRequest::RemoveSelection, selection);
                          emit requestTriggered(&request);
                      }
                  }
@@ -390,7 +394,7 @@ void TupExposureSheet::applyAction(int action)
                {
                  int layer = k->currentTable->columnCount();
                  TupProjectRequest request = TupRequestBuilder::createLayerRequest(k->scenesContainer->currentIndex(),
-                                                                                 layer, TupProjectRequest::Add, tr("Layer %1").arg(layer + 1));
+                                                                                   layer, TupProjectRequest::Add, tr("Layer %1").arg(layer + 1));
                  emit requestTriggered(&request);
 
                  int framesNum = k->currentTable->usedFrames(k->currentTable->currentColumn());
@@ -430,8 +434,20 @@ void TupExposureSheet::applyAction(int action)
 
             case TupProjectActionBar::RemoveScene:
                {
-                 TupProjectRequest request = TupRequestBuilder::createSceneRequest(k->scenesContainer->currentIndex(), TupProjectRequest::Remove);
-                 emit requestTriggered(&request);
+                 int scenesTotal = k->scenesContainer->count();
+                 int sceneIndex = k->scenesContainer->currentIndex();
+
+                 TupProjectRequest request;
+                 if (scenesTotal > 1) {
+                     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Remove);
+                     emit requestTriggered(&request);
+
+                     request = TupRequestBuilder::createFrameRequest(sceneIndex - 1, 0, 0, TupProjectRequest::Select);
+                     emit requestTriggered(&request);
+                 } else {
+                     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Reset, tr("Scene 1"));
+                     emit requestTriggered(&request);
+                 }
                }
                break;
     }
@@ -680,13 +696,19 @@ void TupExposureSheet::sceneResponse(TupSceneResponse *response)
            break;
            case TupProjectRequest::Reset:
             {
-                setScene(sceneIndex);
-                renameScene(sceneIndex, response->arg().toString());
+                if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                    setScene(sceneIndex);
+                    renameScene(sceneIndex, response->arg().toString());
 
-                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Select, "1");
-                emit requestTriggered(&request);
+                    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Select, "1");
+                    emit requestTriggered(&request);
 
-                k->currentTable->reset();
+                    k->currentTable->reset();
+                }
+
+                if (response->mode() == TupProjectResponse::Undo) {
+
+                }
             }
            break;
            case TupProjectRequest::Move:

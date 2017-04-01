@@ -710,7 +710,7 @@ TupBackground* TupScene::background()
     return k->background;
 }
 
-void TupScene::reset(QString &name)
+void TupScene::reset(const QString &name)
 {
     k->name = name;
 

@@ -660,8 +660,17 @@ bool TupTimeLine::requestSceneAction(int action, int sceneIndex, const QVariant 
             break;
             case TupProjectActionBar::RemoveScene:
             {
-                 request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Remove, arg);
-                 emit requestTriggered(&request);
+                 int scenesTotal = k->scenesContainer->count();
+                 if (scenesTotal > 1) {
+                     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Remove, arg);
+                     emit requestTriggered(&request);
+
+                     request = TupRequestBuilder::createFrameRequest(sceneIndex - 1, 0, 0, TupProjectRequest::Select);
+                     emit requestTriggered(&request);
+                 } else {
+                     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Reset, tr("Scene 1"));
+                     emit requestTriggered(&request);
+                 }
 
                  return true;
             }
