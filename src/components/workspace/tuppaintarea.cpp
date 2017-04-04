@@ -518,10 +518,8 @@ void TupPaintArea::sceneResponse(TupSceneResponse *event)
                 break;
             case TupProjectRequest::Remove:
                 {
-                    /*
                     if (k->project->scenesCount() > 0)
                         setCurrentScene(event->sceneIndex() - 1);
-                    */
                 }
                 break;
             case TupProjectRequest::Reset:

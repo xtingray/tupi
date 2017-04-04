@@ -75,7 +75,7 @@ int TAlgorithm::random()
 
         qsrand(seed);
     #endif
-	
+
     return qrand();
 }
 

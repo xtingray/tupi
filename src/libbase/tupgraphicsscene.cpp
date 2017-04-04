@@ -205,16 +205,27 @@ void TupGraphicsScene::drawCurrentPhotogram()
         return;
 
     TupLayer *layer = k->scene->layerAt(k->framePosition.layer);
-    int frames = layer->framesCount();
+    if (layer) {
+        int frames = layer->framesCount();
 
-    if (k->framePosition.frame >= frames)
-        k->framePosition.frame = frames - 1;
+        if (k->framePosition.frame >= frames)
+            k->framePosition.frame = frames - 1;
 
-    if (k->spaceContext == TupProject::FRAMES_EDITION) {
-        drawPhotogram(k->framePosition.frame, true);
+        if (k->spaceContext == TupProject::FRAMES_EDITION) {
+            drawPhotogram(k->framePosition.frame, true);
+        } else {
+            cleanWorkSpace();
+            drawSceneBackground(k->framePosition.frame);
+        }
     } else {
-        cleanWorkSpace();
-        drawSceneBackground(k->framePosition.frame);
+        #ifdef K_DEBUG
+            QString msg = "TupGraphicsScene::drawCurrentPhotogram() - Fatal error: Invalid layer index -> " + QString::number(k->framePosition.layer);
+            #ifdef Q_OS_WIN
+                qFatal() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
     }
 }
 
