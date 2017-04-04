@@ -34,6 +34,7 @@
  ***************************************************************************/
 
 #include "talgorithm.h"
+#include "tconfig.h"
 
 #ifdef Q_OS_LINUX
 #include <unistd.h>
@@ -63,7 +64,15 @@ int TAlgorithm::random()
     #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
         QString day = QDate::currentDate().toString("d");
         QString number = day + QTime::currentTime().toString("mmzzz");
-        seed = number.toInt();
+        int aux = number.toInt();
+
+        TCONFIG->beginGroup("General");
+        seed = TCONFIG->value("RandomSeed", aux).toInt();
+        if (seed == 0)
+            seed = aux;
+        seed *= aux;
+        TCONFIG->setValue("RandomSeed", seed); 
+
         qsrand(seed);
     #endif
 	
