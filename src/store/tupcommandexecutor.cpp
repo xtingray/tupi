@@ -220,6 +220,15 @@ bool TupCommandExecutor::resetScene(TupSceneResponse *response)
             emit responsed(response);
             return true;
         }
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupCommandExecutor::resetScene() - Fatal Error: No scene at index -> " + QString::number(pos);
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
     }
 
     return false;

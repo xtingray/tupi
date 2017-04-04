@@ -227,17 +227,16 @@ TupProjectCommand::~TupProjectCommand()
 
 void TupProjectCommand::redo()
 {
-    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupProjectCommand::redo()] - Executing REDO action...";
             qDebug() << "[TupProjectCommand::redo()] - k->response->part(): " << k->response->part();
         #else
-            T_FUNCINFO << "[TupProjectCommand::redo()] - Executing REDO action...";
-            T_FUNCINFO << k->response->part();
+            T_FUNCINFO;
+            tWarning() << "[TupProjectCommand::redo()] - Executing REDO action...";
+            tWarning() << k->response->part();
         #endif
     #endif
-    */
 	
     if (k->executed) {
         k->response->setMode(TupProjectResponse::Redo);

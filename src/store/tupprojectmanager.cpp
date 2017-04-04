@@ -429,6 +429,7 @@ void TupProjectManager::createCommand(const TupProjectRequest *request, bool add
             qDebug() << "[TupProjectManager::createCommand(()]";
         #else
             T_FUNCINFO;
+            tWarning() << request->xml();
         #endif
     #endif		
 

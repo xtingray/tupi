@@ -211,7 +211,7 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
     setRowCount(100);
 
     for (int i=0; i < 100; i++)
-         setRowHeight(i, 20);
+        setRowHeight(i, 20);
 
     k->header = new TupExposureHeader(this);
     connect(k->header, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(layerVisibilityChanged(int, bool)));

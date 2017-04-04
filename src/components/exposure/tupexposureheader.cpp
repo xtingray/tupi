@@ -144,17 +144,22 @@ void TupExposureHeader::moveHeaderSection(int position, int newPosition, bool is
 
 int TupExposureHeader::lastFrame(int section)
 {
-    return m_sections[section].lastFrame;
+    if (section < m_sections.count())
+        return m_sections[section].lastFrame;
+
+    return -1;
 }
 
 void TupExposureHeader::removeSection(int section)
 {
-    m_sections.removeAt(section);
+    if (section < m_sections.count())
+        m_sections.removeAt(section);
 }
 
 void TupExposureHeader::setLastFrame(int section, int num)
 {
-    m_sections[section].lastFrame = num;
+    if (section < m_sections.count())
+        m_sections[section].lastFrame = num;
 }
 
 void TupExposureHeader::mousePressEvent(QMouseEvent *event)

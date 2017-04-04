@@ -409,8 +409,8 @@ void TupExposureSheet::applyAction(int action)
             case TupProjectActionBar::RemoveLayer:
                {
                  TupProjectRequest request = TupRequestBuilder::createLayerRequest(k->scenesContainer->currentIndex(),
-                                                                                 k->currentTable->currentLayer(),
-                                                                                 TupProjectRequest::Remove);
+                                                                                   k->currentTable->currentLayer(),
+                                                                                   TupProjectRequest::Remove);
                  emit requestTriggered(&request);
                }
                break;
@@ -442,7 +442,7 @@ void TupExposureSheet::applyAction(int action)
                      request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Remove);
                      emit requestTriggered(&request);
 
-                     request = TupRequestBuilder::createFrameRequest(sceneIndex - 1, 0, 0, TupProjectRequest::Select);
+                     request = TupRequestBuilder::createFrameRequest(sceneIndex - 1, 0, 0, TupProjectRequest::Select, "1");
                      emit requestTriggered(&request);
                  } else {
                      request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Reset, tr("Scene 1"));
@@ -536,9 +536,9 @@ void TupExposureSheet::requestPasteInCurrentFrame()
 void TupExposureSheet::requestExpandCurrentFrame(int n)
 {
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(),
-                                                 k->currentTable->currentLayer(),
-                                                 k->currentTable->currentFrame(),
-                                                 TupProjectRequest::Expand, n);
+                                                   k->currentTable->currentLayer(),
+                                                   k->currentTable->currentFrame(),
+                                                   TupProjectRequest::Expand, n);
     emit requestTriggered(&request);
 }
 
@@ -612,7 +612,7 @@ void TupExposureSheet::copyFrameForward(int layerIndex, int frameIndex)
     request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Rename, frameName);
     emit requestTriggered(&request);
 
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Select);
+    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Select, "1");
     emit localRequestTriggered(&request);
 }
 
@@ -691,23 +691,33 @@ void TupExposureSheet::sceneResponse(TupSceneResponse *response)
            break;
            case TupProjectRequest::Remove:
             {
-                k->scenesContainer->removeScene(sceneIndex);
+                k->scenesContainer->removeScene(sceneIndex, true);
             }
            break;
            case TupProjectRequest::Reset:
             {
                 if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                    k->scenesContainer->removeScene(sceneIndex, true);
+                    addScene(sceneIndex, tr("Scene %1").arg(sceneIndex + 1));
+
                     setScene(sceneIndex);
-                    renameScene(sceneIndex, response->arg().toString());
+                    k->currentTable->insertLayer(0, tr("Layer 1"));
+                    k->currentTable->insertFrame(0, 0, tr("Frame"), false);
 
-                    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, 0, 0, TupProjectRequest::Select, "1");
-                    emit requestTriggered(&request);
-
-                    k->currentTable->reset();
+                    k->currentTable->blockSignals(true); 
+                    k->currentTable->selectFrame(0, 0);
+                    k->currentTable->blockSignals(false);
                 }
 
                 if (response->mode() == TupProjectResponse::Undo) {
+                    k->scenesContainer->removeScene(sceneIndex, false);
+                    k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
 
+                    setScene(sceneIndex);
+
+                    k->currentTable->blockSignals(true);
+                    k->currentTable->selectFrame(0, 0); 
+                    k->currentTable->blockSignals(false);
                 }
             }
            break;
@@ -1224,10 +1234,8 @@ void TupExposureSheet::copyTimeLine(int times)
          }
     }
 
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene,                                   
-                                                                      currentLayer,                                 
-                                                                      currentFrame,      
-                                                                      TupProjectRequest::Select, "1");
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene, currentLayer,
+                                                   currentFrame, TupProjectRequest::Select, "1");
     emit requestTriggered(&request);
 }
 

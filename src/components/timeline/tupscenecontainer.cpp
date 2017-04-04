@@ -51,6 +51,14 @@ TupSceneContainer::~TupSceneContainer()
 
 void TupSceneContainer::addScene(int sceneIndex, TupTimeLineTable *framesTable, const QString &sceneName)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupSceneContainer::addScene()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     k->scenes << framesTable; 
     QTabWidget::insertTab(sceneIndex, framesTable, sceneName);
 }
@@ -62,10 +70,19 @@ void TupSceneContainer::restoreScene(int sceneIndex, const QString &sceneName)
     QTabWidget::insertTab(sceneIndex, framesTable, sceneName);
 }
 
-void TupSceneContainer::removeScene(int sceneIndex)
+void TupSceneContainer::removeScene(int sceneIndex, bool withBackup)
 {
-    k->undoScenes << k->scenes.takeAt(sceneIndex);  
+    if (withBackup)
+        k->undoScenes << k->scenes.takeAt(sceneIndex);  
+    else
+        k->scenes.takeAt(sceneIndex);
+
     QTabWidget::removeTab(sceneIndex);
+}
+
+void TupSceneContainer::renameScene(int index, const QString &name)
+{
+    setTabText(index, name);
 }
 
 void TupSceneContainer::removeAllScenes()
@@ -89,9 +106,17 @@ TupTimeLineTable * TupSceneContainer::getTable(int index)
     return framesTable;
 }
 
-int TupSceneContainer::scenesCount()
+int TupSceneContainer::count()
 {
     return k->scenes.count();
+}
+
+bool TupSceneContainer::isTableIndexValid(int index)
+{
+    if (index > -1 && index < k->scenes.count())
+        return true;
+
+    return false;
 }
 
 #ifndef QT_NO_WHEELEVENT

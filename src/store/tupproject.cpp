@@ -360,8 +360,21 @@ bool TupProject::resetScene(int pos, const QString &newName)
     TupScene *scene = sceneAt(pos);
     if (scene) {
         k->undoScenes << k->scenes.takeAt(pos);
-        scene->reset(newName);
+
+        TupScene *basic = new TupScene(this, k->dimension, "#ffffff");
+        basic->setBasicStructure();
+        k->scenes.insert(pos, basic);
+
         return true;
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupProject::resetScene() - No scene at index -> " + QString::number(pos);
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
     }
 
     return false;

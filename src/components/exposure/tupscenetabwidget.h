@@ -62,7 +62,8 @@ class T_GUI_EXPORT TupSceneTabWidget : public QFrame
         ~TupSceneTabWidget();
         void addScene(int index, const QString &name, TupExposureTable *table = 0);
         void restoreScene(int index, const QString &name);
-        void removeScene(int index);
+        void removeScene(int index, bool withBackup);
+        // void removeCleanScene(int index);
         void renameScene(int index, const QString &name);
         TupExposureTable* getCurrentTable();
         TupExposureTable* getTable(int index);

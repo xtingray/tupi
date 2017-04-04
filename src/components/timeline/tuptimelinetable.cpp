@@ -218,9 +218,16 @@ TupTimeLineTable::~TupTimeLineTable()
 
 void TupTimeLineTable::setup()
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLineTable::setup()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     setItemDelegate(new TupTimeLineTableItemDelegate(this));
     setSelectionBehavior(QAbstractItemView::SelectItems);
-    // setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -286,6 +293,14 @@ bool TupTimeLineTable::isSoundLayer(int layerIndex)
 
 void TupTimeLineTable::insertLayer(int layerIndex, const QString &name)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLineTable::insertLayer()]";
+        #else
+            T_FUNCINFO << "name -> " << name << " - layerIndex -> " << layerIndex;
+        #endif
+    #endif
+
     insertRow(layerIndex);
     k->layersColumn->insertSection(layerIndex, name);
     fixSize();
@@ -300,6 +315,14 @@ void TupTimeLineTable::insertSoundLayer(int layerIndex, const QString &name)
 
 void TupTimeLineTable::removeLayer(int layerIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLineTable::removeLayer()]";
+        #else
+            T_FUNCINFO << "layerIndex -> " << layerIndex;
+        #endif
+    #endif
+
     k->removingLayer = true;
     removeRow(layerIndex);
     k->layersColumn->removeSection(layerIndex);

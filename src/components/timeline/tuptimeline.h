@@ -38,19 +38,9 @@
 
 #include "tglobal.h"
 #include "tupmodulewidgetbase.h"
-#include "tupscenecontainer.h"
-#include "tupprojectrequest.h"
-#include "tuplibraryobject.h"
-#include "tuptimelinetable.h"
-#include "tupprojectactionbar.h"
-#include "tuprequestbuilder.h"
 #include "tupproject.h"
-#include "tuplayer.h"
-#include "tuplibrary.h"
-
-#include <QStackedWidget>
-#include <QList>
-#include <QHeaderView>
+#include "tuptimelinetable.h"
+#include "tuprequestbuilder.h"
 
 /**
  * @author David Cuadrado
@@ -68,7 +58,7 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         
     private:
         TupTimeLineTable *framesTable(int sceneIndex);
-        
+ 
     protected:
         void sceneResponse(TupSceneResponse *response);
         void layerResponse(TupLayerResponse *response);
@@ -81,7 +71,6 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
     public slots:
         void addScene(int sceneIndex, const QString &name);
         void removeScene(int sceneIndex);
-        // void emitChangeFrameRequest(int sceneIndex, int layerIndex, int frameIndex);
 
     private slots:
         void requestCommand(int action);
@@ -89,7 +78,6 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         bool requestLayerAction(int action, int layerIndex = -1, int sceneIndex = -1, const QVariant &arg = QVariant());
         bool requestSceneAction(int action, int sceneIndex = -1, const QVariant &arg = QVariant());
         void selectFrame(int indexLayer, int indexFrame);
-        // void removeFrameCopy(int layerIndex, int frameIndex);
         void removeFrameCopy();
         void copyFrameForward(int layerIndex, int frameIndex);
         void requestLayerMove(int oldLayerIndex, int newLayerIndex);

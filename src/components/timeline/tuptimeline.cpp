@@ -34,6 +34,17 @@
  ***************************************************************************/
 
 #include "tuptimeline.h"
+#include "tupprojectactionbar.h"
+#include "tupscenecontainer.h"
+#include "tupprojectrequest.h"
+
+#include "tuplibraryobject.h"
+#include "tuplayer.h"
+#include "tuplibrary.h"
+
+#include <QStackedWidget>
+#include <QList>
+#include <QHeaderView>
 
 #define RETURN_IF_NOT_LIBRARY if (!k->library) return;
 
@@ -42,6 +53,7 @@ struct TupTimeLine::Private
     Private() : scenesContainer(0), actionBar(0), selectedLayer(-1), library(0) {}
     
     TupSceneContainer *scenesContainer;
+    TupTimeLineTable *currentTable;
     TupProjectActionBar *actionBar;
     int selectedLayer; 
     TupProject *project;
@@ -63,19 +75,20 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
 
     k->project = project;
     k->library = k->project->library();
+    k->currentTable = 0;
 
     // SQA: Pending to add the feature "Layer Opacity" as part of this action bar
 
-    QList<TupProjectActionBar::Action> allActions;
-    allActions << TupProjectActionBar::InsertFrame << TupProjectActionBar::ExtendFrame << TupProjectActionBar::RemoveFrame; 
-    allActions << TupProjectActionBar::MoveFrameBackward << TupProjectActionBar::MoveFrameForward;
-    allActions << TupProjectActionBar::CopyFrame << TupProjectActionBar::PasteFrame;
-    allActions << TupProjectActionBar::Separator;
-    allActions << TupProjectActionBar::InsertLayer << TupProjectActionBar::RemoveLayer;
-    allActions << TupProjectActionBar::Separator;
-    allActions << TupProjectActionBar::InsertScene << TupProjectActionBar::RemoveScene;
+    QList<TupProjectActionBar::Action> actions;
+    actions << TupProjectActionBar::InsertFrame << TupProjectActionBar::ExtendFrame << TupProjectActionBar::RemoveFrame; 
+    actions << TupProjectActionBar::MoveFrameBackward << TupProjectActionBar::MoveFrameForward;
+    actions << TupProjectActionBar::CopyFrame << TupProjectActionBar::PasteFrame;
+    actions << TupProjectActionBar::Separator;
+    actions << TupProjectActionBar::InsertLayer << TupProjectActionBar::RemoveLayer;
+    actions << TupProjectActionBar::Separator;
+    actions << TupProjectActionBar::InsertScene << TupProjectActionBar::RemoveScene;
 
-    k->actionBar = new TupProjectActionBar(QString("TimeLine"), allActions);
+    k->actionBar = new TupProjectActionBar(QString("TimeLine"), actions);
 
     addChild(k->actionBar, Qt::AlignCenter);
     
@@ -110,8 +123,25 @@ TupTimeLineTable *TupTimeLine::framesTable(int sceneIndex)
 
 void TupTimeLine::addScene(int sceneIndex, const QString &name)
 {
-    if (sceneIndex < 0 || sceneIndex > k->scenesContainer->count())
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLine::addScene()]";
+        #else
+            T_FUNCINFO << "sceneIndex -> " << sceneIndex;
+        #endif
+    #endif
+
+    if (sceneIndex < 0 || sceneIndex > k->scenesContainer->count()) {
+        #ifdef K_DEBUG
+            QString msg = "TupTimeLine::addScene() - Fatal error: invalid scene index -> " + QString::number(sceneIndex);
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
         return;
+    }
 
     TupTimeLineTable *framesTable = new TupTimeLineTable(sceneIndex, k->scenesContainer);
     framesTable->setItemSize(10, 20);
@@ -129,8 +159,16 @@ void TupTimeLine::addScene(int sceneIndex, const QString &name)
 
 void TupTimeLine::removeScene(int sceneIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLine::removeScene()]";
+        #else
+            T_FUNCINFO << "sceneIndex -> " << sceneIndex;
+        #endif
+    #endif
+
     if (sceneIndex >= 0 && sceneIndex < k->scenesContainer->count())
-        k->scenesContainer->removeScene(sceneIndex);
+        k->scenesContainer->removeScene(sceneIndex, true);
 }
 
 void TupTimeLine::closeAllScenes()
@@ -147,30 +185,57 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
             qDebug() << "[TupTimeLine::sceneResponse()]";
         #else
             T_FUNCINFO;
+            T_FUNCINFO << "response->action() -> " << response->action();
         #endif
     #endif
+
+    int sceneIndex = response->sceneIndex();
 
     switch (response->action()) {
             case TupProjectRequest::Add:
             {
                  if (response->mode() == TupProjectResponse::Do) {
-                     addScene(response->sceneIndex(), response->arg().toString());
+                     addScene(sceneIndex, response->arg().toString());
                      return;
                  } 
 
                  if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                     int sceneIndex = response->sceneIndex();
                      k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
                      TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
                      emit requestTriggered(&request);
-
                      return;
                  }
             }
             break;
             case TupProjectRequest::Remove:
             {
-                 removeScene(response->sceneIndex());
+                 removeScene(sceneIndex);
+            }
+            break;
+            case TupProjectRequest::Reset:
+            {
+                 if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                     k->scenesContainer->removeScene(sceneIndex, true);
+                     addScene(sceneIndex, tr("Scene %1").arg(sceneIndex + 1));
+
+                     k->currentTable = k->scenesContainer->getTable(sceneIndex);
+                     k->currentTable->insertLayer(0, tr("Layer 1"));
+                     k->currentTable->insertFrame(0);
+
+                     k->currentTable->blockSignals(true);
+                     k->currentTable->selectFrame(0, 0);
+                     k->currentTable->blockSignals(false);
+                 }
+
+                 if (response->mode() == TupProjectResponse::Undo) {
+                     k->scenesContainer->removeScene(sceneIndex, false);
+                     k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
+
+                     k->currentTable = k->scenesContainer->getTable(sceneIndex);
+                     k->currentTable->blockSignals(true);
+                     k->currentTable->selectFrame(0, 0);
+                     k->currentTable->blockSignals(false);
+                 }
             }
             break;
             case TupProjectRequest::Move:
@@ -185,17 +250,17 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
             break;
             case TupProjectRequest::Rename:
             {
-            
+                 k->scenesContainer->renameScene(sceneIndex, response->arg().toString());
             }
             break;
             case TupProjectRequest::Select:
             {
-                 k->scenesContainer->setCurrentIndex(response->sceneIndex());
+                 k->scenesContainer->setCurrentIndex(sceneIndex);
             }
             break;
             default:
                  #ifdef K_DEBUG
-                     QString msg = "TupTimeLine::sceneResponse : Unknown action :/";
+                     QString msg = "TupTimeLine::sceneResponse : Unknown action -> " + QString::number(response->action());
                      #ifdef Q_OS_WIN
                          qDebug() << msg;
                      #else

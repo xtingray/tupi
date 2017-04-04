@@ -126,6 +126,16 @@ SoundLayers TupScene::soundLayers() const
     return k->soundLayers;
 }
 
+void TupScene::setBasicStructure()
+{
+    k->layerCount++;
+    TupLayer *layer = new TupLayer(this, k->layerCount-1);
+    layer->setLayerName(tr("Layer 1"));
+    layer->createFrame(tr("Frame"), 0, false);
+
+    k->layers.insert(0, layer);
+}
+
 /**
  * Set the layers list, this function overwrites the old layers
  */
@@ -151,7 +161,6 @@ TupLayer *TupScene::createLayer(QString name, int position, bool loaded)
 
     k->layerCount++;
     TupLayer *layer = new TupLayer(this, k->layerCount-1);
-    // k->layerCount++;
     layer->setLayerName(name);
     k->layers.insert(position, layer);
 

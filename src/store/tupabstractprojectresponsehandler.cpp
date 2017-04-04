@@ -47,6 +47,15 @@ TupAbstractProjectResponseHandler::~TupAbstractProjectResponseHandler()
 
 bool TupAbstractProjectResponseHandler::handleResponse(TupProjectResponse *response)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupAbstractProjectResponseHandler::handleResponse()]";
+        #else
+            T_FUNCINFO; 
+            tWarning() << "response->part() : " << response->part();
+        #endif
+    #endif
+
     switch (response->part()) {
             case TupProjectRequest::Item:
             {

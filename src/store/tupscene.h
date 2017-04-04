@@ -95,6 +95,8 @@ class TUPI_EXPORT TupScene : public QObject, public TupAbstractSerializable
         int layersCount() const;
         SoundLayers soundLayers() const;
 
+        void setBasicStructure();
+
         TupLayer *layerAt(int position) const;
         TupSoundLayer *soundLayer(int position) const;
 

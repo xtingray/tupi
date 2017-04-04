@@ -133,15 +133,29 @@ void TupSceneTabWidget::restoreScene(int index, const QString &name)
     k->tabber->insertTab(index, frame, name);
 }
 
-void TupSceneTabWidget::removeScene(int index) 
+void TupSceneTabWidget::removeScene(int index, bool withBackup) 
 {
-    k->undoTables << k->tables.takeAt(index);
-    k->undoOpacities << k->opacityControl.takeAt(index);
+    if (withBackup) {
+        k->undoTables << k->tables.takeAt(index);
+        k->undoOpacities << k->opacityControl.takeAt(index);
+    } else {
+        k->tables.takeAt(index);
+    }
 
     blockSignals(true);
     k->tabber->removeTab(index);
     blockSignals(false);
 }
+
+/*
+void TupSceneTabWidget::removeCleanScene(int index)
+{
+    k->tables.takeAt(index);
+    blockSignals(true);
+    k->tabber->removeTab(index);
+    blockSignals(false);
+}
+*/
 
 void TupSceneTabWidget::renameScene(int index, const QString &name)
 {
@@ -200,6 +214,7 @@ bool TupSceneTabWidget::isTableIndexValid(int index)
 {
     if (index > -1 && index < k->tables.count())
         return true;
+
     return false;
 }
 

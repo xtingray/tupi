@@ -41,10 +41,6 @@
 #include <fcntl.h>
 #endif
 
-// #include <cstdlib>
-// #include <cstdio>
-// #include <ctime>
-
 #include <QDate>
 #include <QTime>
 #include <QSysInfo>
@@ -67,7 +63,7 @@ int TAlgorithm::random()
     #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
         QString day = QDate::currentDate().toString("d");
         QString number = day + QTime::currentTime().toString("mmzzz");
-		seed = number.toInt();
+        seed = number.toInt();
         qsrand(seed);
     #endif
 	
@@ -81,42 +77,7 @@ QString TAlgorithm::randomString(int length)
     if (length <= 0) 
         return QString();
 
-	/*
-    #ifdef Q_OS_LINUX
-        str.resize(length);
-        int i = 0;
-        while (length--) {
-            int r = random() % 62;
-            r += 48;
-            if (r > 57) 
-                r += 7;
-            if (r > 90) 
-                r += 6;
-            str[i++] = char(r);
-        }
-    #endif
-
-    #ifdef Q_OS_MAC
-        QFile file("/dev/urandom");
-        if (file.open(QIODevice::ReadOnly)) {
-            QByteArray bytes = file.read(length);
-            QByteArray hash2 = QCryptographicHash::hash(bytes, QCryptographicHash::Md5);
-            str = hash2.toHex();
-            str = str.left(length);
-        }
-        file.close();
-    #endif
-	
-	#ifdef Q_OS_WIN
-        QString date = QDate::currentDate().toString("ddddMMMMyyyy");
-        QString input = date + QTime::currentTime().toString("ssHHmmtzzz");	
-		QByteArray hash = QCryptographicHash::hash(input.toUtf8(), QCryptographicHash::Md5);
-        str = hash.toHex();
-        str = str.left(length);
-	#endif
-	*/
-	
-	QString date = QDate::currentDate().toString("ddddMMMMyyyy");
+    QString date = QDate::currentDate().toString("ddddMMMMyyyy");
     QString input = date + QSysInfo::prettyProductName() + QTime::currentTime().toString("ssHHmmtzzz");	
     QByteArray hash = QCryptographicHash::hash(input.toUtf8(), QCryptographicHash::Md5);
     str = hash.toHex();

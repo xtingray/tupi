@@ -105,7 +105,7 @@ void TupPaintArea::setCurrentScene(int index)
         #ifdef Q_OS_WIN
             qDebug() << "[TupPaintArea::setCurrentScene()]";
         #else
-            T_FUNCINFO << "scene index: " << index;
+            T_FUNCINFO << "Scene index: " << index;
         #endif
     #endif
 
@@ -133,6 +133,15 @@ void TupPaintArea::setCurrentScene(int index)
                 #endif
             }
         }
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupPaintArea::setCurrentScene() - No scenes available!";
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
     }
 }
 

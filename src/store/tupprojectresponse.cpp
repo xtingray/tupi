@@ -103,7 +103,7 @@ int TupProjectResponse::action() const
                 default:
                      {
                         #ifdef K_DEBUG
-                            QString msg = "TupProjectResponse::action() : Warning : Unhandled action -> " + QString::number(k->action);
+                            QString msg = "TupProjectResponse::action() - Warning : Returning action as itself UNDO action -> " + QString::number(k->action);
                             #ifdef Q_OS_WIN
                                 qDebug() << msg;
                             #else
