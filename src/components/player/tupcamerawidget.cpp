@@ -250,6 +250,11 @@ void TupCameraWidget::doPlayBack()
     k->screen->playBack();
 }
 
+void TupCameraWidget::doPause()
+{
+    k->screen->pause();
+}
+
 void TupCameraWidget::doStop()
 {
     k->screen->stop();

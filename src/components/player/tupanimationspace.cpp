@@ -105,24 +105,25 @@ void TupAnimationspace::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
             case Qt::Key_Space:
-                  if (event->modifiers()==Qt::ShiftModifier) {
-                      k->playerInterface->doStop();
-                      k->playerInterface->doPlayBack();
+                  k->playerInterface->doPause();
+
+                  /*
+                  if (!k->playOn) {
+                      k->playOn = true;
+                      k->playerInterface->doPlay();
+                      k->playOn = false;
                   } else {
-                      if (!k->playOn) {
-                          k->playOn = true;
-                          k->playerInterface->doPlay();
-                          k->playOn = false;
-                      } else {
-                          k->playerInterface->doStop();
-                          k->playOn = false;
-                      }
+                      k->playerInterface->doPause();
+                      k->playOn = false;
                   }
+                  */
             break;
+            /*
             case Qt::Key_Escape:
                   k->playOn = false;
                   k->playerInterface->doStop();
             break;
+            */
             case Qt::Key_Right:
                   k->playerInterface->nextFrame(); 
             break;

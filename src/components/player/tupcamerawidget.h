@@ -90,6 +90,7 @@ class TUPI_EXPORT TupCameraWidget : public QFrame
         void postDialog();
         void doPlay();
         void doPlayBack();
+        void doPause();
         void doStop();
         void nextFrame();
         void previousFrame();

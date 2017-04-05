@@ -254,12 +254,14 @@ void TupScreen::play()
     if (k->photograms.count() == 1)
         return;
 
+    /*
     if (k->playFlag) {
         if (k->soundPlayer)
             k->soundPlayer->stop();
         foreach (TupSoundLayer *sound, k->sounds)
                  sound->stop();
     }
+    */
 
     if (k->playBackFlag) {
         k->playBackFlag = false;
@@ -278,8 +280,10 @@ void TupScreen::play()
             QApplication::restoreOverrideCursor();
         }
 
-        if (k->renderControl.at(k->currentSceneIndex))
+        if (k->renderControl.at(k->currentSceneIndex)) {
+            k->soundPlayer->play();
             k->timer->start(1000/k->fps);
+        }
     }
 }
 
@@ -339,10 +343,12 @@ void TupScreen::pause()
         stopAnimation();
     } else {
         k->isPlaying = true;
-        if (k->playFlag)
+        if (k->playFlag) {
+            k->soundPlayer->play();
             k->timer->start(1000 / k->fps);
-        else 
+        } else {
             k->playBackTimer->start(1000 / k->fps);
+        }
     }
 }
 
@@ -373,7 +379,7 @@ void TupScreen::stopAnimation()
 
     if (k->playFlag) {
         if (k->soundPlayer)
-            k->soundPlayer->stop();
+            k->soundPlayer->pause();
 
         if (k->timer) {
             if (k->timer->isActive())
@@ -871,11 +877,11 @@ void TupScreen::playLipSyncAt(int frame)
 {
     int size = k->lipSyncRecords.count();
     for(int i=0; i<size; i++) {
-             QPair<int, QString> soundRecord = k->lipSyncRecords.at(i);
-             if (frame == soundRecord.first) {
-                 QString path = soundRecord.second;
-                 k->soundPlayer->setMedia(QUrl::fromLocalFile(soundRecord.second));
-                 k->soundPlayer->play();
-             }
+        QPair<int, QString> soundRecord = k->lipSyncRecords.at(i);
+        if (frame == soundRecord.first) {
+            QString path = soundRecord.second;
+            k->soundPlayer->setMedia(QUrl::fromLocalFile(soundRecord.second));
+            k->soundPlayer->play();
+        }
     }
 }
