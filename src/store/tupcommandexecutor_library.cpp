@@ -46,11 +46,11 @@
 bool TupCommandExecutor::createSymbol(TupLibraryResponse *response)
 {
     #ifdef K_DEBUG
-        QString msg = "TupCommandExecutor::createSymbol() - Creating object: " + response->arg().toString();
         #ifdef Q_OS_WIN
-            qDebug() << msg;
+            qDebug() << "TupCommandExecutor::createSymbol()";
         #else
-            tFatal() << msg;
+            T_FUNCINFO;
+            tFatal() << "Creating object: " + response->arg().toString();
         #endif
     #endif
 

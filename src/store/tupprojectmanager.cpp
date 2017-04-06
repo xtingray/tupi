@@ -522,7 +522,12 @@ void TupProjectManager::setOpen(bool isOpen)
 bool TupProjectManager::removeProjectPath(const QString &projectPath)
 {
     #ifdef K_DEBUG
-        qDebug() << "[TupProjectManager::removeProjectPath()] - Removing path: " <<  projectPath;
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupProjectManager::removeProjectPath()]";
+        #else
+            T_FUNCINFO;
+            tWarning() << "Removing project path: " << projectPath;
+        #endif
     #endif
 
     bool result = true;
@@ -533,8 +538,7 @@ bool TupProjectManager::removeProjectPath(const QString &projectPath)
             if (info.isDir()) {
                 QString path = info.absoluteFilePath();
                 result = removeProjectPath(path);
-            }
-            else {
+            } else {
                 result = QFile::remove(info.absoluteFilePath());
             }
 
@@ -545,7 +549,12 @@ bool TupProjectManager::removeProjectPath(const QString &projectPath)
     }
 	
     #ifdef K_DEBUG
-        qDebug() << "[TupProjectManager::removeProjectPath()] - Result: " <<  result;
+        QString msg = "[TupProjectManager::removeProjectPath()] - Result? -> " + QString::number(result);
+        #ifdef Q_OS_WIN
+            qWarning() << msg;
+        #else
+            tWarning() << msg;
+        #endif
     #endif
 
     return result;

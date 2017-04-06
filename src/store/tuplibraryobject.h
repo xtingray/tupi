@@ -65,6 +65,7 @@ class TUPI_EXPORT TupLibraryObject : public QObject, public TupAbstractSerializa
         };
         
         TupLibraryObject(QObject *parent = 0);
+        TupLibraryObject(const QString &name, const QString &folder, TupLibraryObject::Type type, QObject *parent = 0);
         ~TupLibraryObject();
         
         void setType(TupLibraryObject::Type type);
@@ -78,6 +79,9 @@ class TUPI_EXPORT TupLibraryObject : public QObject, public TupAbstractSerializa
         
         void setSymbolName(const QString &name);
         QString symbolName() const;
+
+        void setFolder(const QString &folder);
+        QString folder() const;
 
         QString smallId() const;
         QString extension() const;

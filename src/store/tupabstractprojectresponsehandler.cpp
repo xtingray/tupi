@@ -47,6 +47,7 @@ TupAbstractProjectResponseHandler::~TupAbstractProjectResponseHandler()
 
 bool TupAbstractProjectResponseHandler::handleResponse(TupProjectResponse *response)
 {
+    /*
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupAbstractProjectResponseHandler::handleResponse()]";
@@ -55,6 +56,7 @@ bool TupAbstractProjectResponseHandler::handleResponse(TupProjectResponse *respo
             tWarning() << "response->part() : " << response->part();
         #endif
     #endif
+    */
 
     switch (response->part()) {
             case TupProjectRequest::Item:

@@ -980,17 +980,18 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
     if (layer->lipSyncCount() > 0) {
         Mouths mouths = layer->lipSyncList();
         int total = mouths.count();
+
         for (int i=0; i<total; i++) {
              TupLipSync *lipSync = mouths.at(i);
              int initFrame = lipSync->initFrame();
-             
+
              if ((photogram >= initFrame) && (photogram <= initFrame + lipSync->framesCount())) {
                  QString name = lipSync->name();
                  TupLibraryFolder *folder = k->library->getFolder(name);
                  if (folder) {
                      QList<TupVoice *> voices = lipSync->voices();
-                     total = voices.count();
-                     for(int j=0; j<total; j++) {
+                     int voicesTotal = voices.count();
+                     for(int j=0; j<voicesTotal; j++) {
                          TupVoice *voice = voices.at(j);
                          int index = photogram - initFrame; 
                          if (voice->contains(index)) {
@@ -1022,7 +1023,8 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
                                  } 
                              } else {
                                  #ifdef K_DEBUG
-                                     QString msg = "TupGraphicsScene::addLipSyncObjects() - Warning: No lipsync phoneme at frame " + QString::number(photogram) + " - index: " + QString::number(index);
+                                     QString msg = "TupGraphicsScene::addLipSyncObjects() - Warning: No lipsync phoneme at frame " 
+                                                   + QString::number(photogram) + " - index: " + QString::number(index);
                                      #ifdef Q_OS_WIN
                                          qDebug() << msg;
                                      #else
@@ -1061,11 +1063,20 @@ void TupGraphicsScene::addLipSyncObjects(TupLayer *layer, int photogram, int zLe
                                  #ifdef Q_OS_WIN
                                      qDebug() << msg;
                                  #else
-                                     tFatal() << msg;
+                                     tWarning() << msg;
                                  #endif
                              #endif
                          }
                      }
+                 } else {
+                     #ifdef K_DEBUG
+                         QString msg = "TupGraphicsScene::addLipSyncObjects() - Folder with lipsync mouths is not available -> " + name;
+                         #ifdef Q_OS_WIN
+                             qDebug() << msg;
+                         #else
+                             tWarning() << msg;
+                         #endif
+                     #endif
                  } 
              }
         }

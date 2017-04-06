@@ -81,7 +81,7 @@ TupProject::TupProject(QObject *parent) : QObject(parent), k(new Private)
     k->bgColor = QColor("#fff");
     k->sceneCounter = 0;
     k->isOpen = false;
-    k->library = new TupLibrary("library", this);
+    k->library = new TupLibrary(".root", this);
     k->cachePath = "";
 }
 
@@ -98,7 +98,7 @@ TupProject::~TupProject()
         #endif
     #endif    
         
-    deleteDataDir();
+    // deleteDataDir(k->cachePath);
     k->scenes.clear();
     delete k;
 }
@@ -148,7 +148,7 @@ void TupProject::clear()
     k->scenes.clear();
     k->sceneCounter = 0;
 
-    deleteDataDir();
+    // deleteDataDir(k->cachePath);
 }
 
 /**
@@ -362,6 +362,7 @@ bool TupProject::resetScene(int pos, const QString &newName)
         k->undoScenes << k->scenes.takeAt(pos);
 
         TupScene *basic = new TupScene(this, k->dimension, "#ffffff");
+        basic->setSceneName(newName);
         basic->setBasicStructure();
         k->scenes.insert(pos, basic);
 
@@ -1005,88 +1006,51 @@ bool TupProject::isOpen()
     return k->isOpen;
 }
 
-bool TupProject::deleteDataDir()
+/*
+bool TupProject::deleteDataDir(const QString &path)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupProject::deleteDataDir()]";
         #else
             T_FUNCINFO;
+            tWarning() << "Removing project path: " << path;
         #endif
     #endif
 
-    if (QFile::exists(dataDir()) && !k->name.isEmpty()) {
-        QDir dir(dataDir());
-
-        if (dir.exists("project.tpp")) {
-            dir.remove("project.tpp");
-            dir.remove("library.tpl");
-            foreach (QString scene, dir.entryList(QStringList() << "scene*.tps", QDir::Files))
-                     dir.remove(scene);
-        }
-
-        if (dir.exists("audio") || dir.exists("video") || dir.exists("images") || dir.exists("svg") || dir.exists("obj")) {
-            #ifdef K_DEBUG
-                QString msg = "TupProject::deleteDataDir() - Removing directory -> " + dir.absolutePath();
-                #ifdef Q_OS_WIN
-                    qWarning() << msg;
-                #else
-                    tWarning() << msg;
-                #endif
-            #endif
-
-            foreach (QString subdir, QStringList() << "audio" << "video" << "images" << "svg" << "obj") {
-                     if (dir.exists(subdir)) {
-                         dir.cd(subdir);
-                         foreach (QString file, dir.entryList()) {
-                                  QString absolute = dir.absolutePath() + "/" + file;
-                                  if (!file.startsWith(".")) {
-                                      QFileInfo finfo(absolute);
-                                      if (finfo.isFile()) {
-                                          if (!QFile::remove(absolute)) {
-                                              #ifdef K_DEBUG
-                                                  QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove item! -> " + absolute;
-                                                  #ifdef Q_OS_WIN
-                                                      qDebug() << msg;
-                                                  #else
-                                                      tError() << msg;
-                                                  #endif
-                                              #endif		  
-                                          }
-                                      }
-                                  }
-                          }
-                          dir.cdUp();
-                          if (!dir.rmdir(subdir)) {
-                              #ifdef K_DEBUG
-                                  QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove directory! -> " + subdir;
-                                  #ifdef Q_OS_WIN
-                                      qDebug() << msg;
-                                  #else
-                                      tError() << msg;
-                                  #endif
-                              #endif							  
-						  }
-                     }
+    QDir dir(path);
+    if (dir.exists()) {
+        QStringList contentList = dir.entryList();
+        foreach (QString item, contentList) {
+            QString absolute = dir.absolutePath() + "/" + item;
+            QFileInfo itemInfo(absolute);
+            if (itemInfo.isFile()) {
+                tError() << "FILE: " << absolute;
+                // dir.remove(absolute); 
+            } else {
+                if (!absolute.endsWith(".")) {
+                    tError() << "DIR: " << absolute;
+                    // deleteDataDir(absolute);
+                }
             }
-        }
-
-        if (!dir.rmdir(dir.absolutePath())) {
-            #ifdef K_DEBUG
-                QString msg = "TupProject::deleteDataDir() - Fatal Error: Can't remove project data directory! -> " + dataDir();
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
-            #endif
-        }
-
+        } 
+        // dir.rmdir(path);
+        tError() << "path: " << path;
         return true;
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupProject::deleteDataDir() - Warning: directory doesn't exist -> " + path;
+            #ifdef Q_OS_WIN
+                qWarning() << msg;
+            #else
+                tWarning() << msg;
+            #endif
+        #endif
     }
 
     return false;
 }
+*/
 
 int TupProject::scenesCount() const
 {

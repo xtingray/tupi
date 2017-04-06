@@ -45,6 +45,7 @@ struct TupLibraryObject::Private
     QVariant data;
     QString dataPath;
     QString symbolName;
+    QString folder;
     QString smallId;
     QString extension;
     QByteArray rawData; 
@@ -52,6 +53,14 @@ struct TupLibraryObject::Private
 
 TupLibraryObject::TupLibraryObject(QObject *parent) : QObject(parent), k(new Private)
 {
+}
+
+TupLibraryObject::TupLibraryObject(const QString &name, const QString &folder, TupLibraryObject::Type type, 
+                                   QObject *parent) : QObject(parent), k(new Private)
+{
+    setSymbolName(name);
+    k->folder = folder;
+    k->type = type;
 }
 
 TupLibraryObject::~TupLibraryObject()
@@ -107,6 +116,16 @@ QString TupLibraryObject::symbolName() const
     return k->symbolName;
 }
 
+void TupLibraryObject::setFolder(const QString &folder)
+{
+    k->folder = folder;
+}
+
+QString TupLibraryObject::folder() const
+{
+    return k->folder;
+}
+
 QString TupLibraryObject::smallId() const
 {
     return k->smallId;
@@ -119,6 +138,15 @@ QString TupLibraryObject::extension() const
 
 void TupLibraryObject::fromXml(const QString &xml)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "TupLibraryObject::fromXml()";
+        #else
+            T_FUNCINFO;
+            tWarning() << xml;
+        #endif
+    #endif
+
     QDomDocument document;
     if (!document.setContent(xml)) {
         #ifdef K_DEBUG
@@ -322,6 +350,15 @@ bool TupLibraryObject::loadRawData(const QByteArray &data)
 
 bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "TupLibraryObject::loadDataFromPath()";
+        #else
+            T_FUNCINFO;
+            tWarning() << "Object path: " << dataDir;
+        #endif
+    #endif
+
     QString path = "";
 
     switch (k->type) {
@@ -350,6 +387,9 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
     }
 
+    if (!k->folder.isEmpty() && k->folder.compare(".root") != 0)
+        k->dataPath = k->folder + "/" + k->dataPath;
+
     k->dataPath = dataDir + path + k->dataPath;
     loadData(k->dataPath);
     
@@ -358,6 +398,15 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
 
 bool TupLibraryObject::loadData(const QString &path)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "TupLibraryObject::loadData()";
+        #else
+            T_FUNCINFO;
+            tWarning() << "Object path: " << path;;
+        #endif
+    #endif
+
     switch (k->type) {
             case TupLibraryObject::Image:
             case TupLibraryObject::Svg:
@@ -464,6 +513,8 @@ bool TupLibraryObject::saveData(const QString &dataDir)
             case TupLibraryObject::Sound:
             {
                  QString path = dataDir + "/audio/";
+                 if (k->folder.length() > 0)
+                     path += k->folder + "/";
                  if (!QFile::exists(path)) {
                      QDir dir;
                      dir.mkpath(path);
@@ -513,6 +564,8 @@ bool TupLibraryObject::saveData(const QString &dataDir)
             case TupLibraryObject::Svg:
             {
                  QString path = dataDir + "/svg/";
+                 if (k->folder.length() > 0)
+                     path += k->folder + "/";
                  if (!QFile::exists(path)) {
                      QDir dir;
                      dir.mkpath(path);
@@ -540,18 +593,22 @@ bool TupLibraryObject::saveData(const QString &dataDir)
             case TupLibraryObject::Image:
             {
                  QString path = dataDir + "/images/";
+                 if (k->folder.length() > 0)
+                     path += k->folder + "/";
+
                  if (!QFile::exists(path)) {
                      QDir dir;
-                     dir.mkpath(path);
-
-                     #ifdef K_DEBUG
-                         QString msg = "TupLibraryObject::saveData() - Creating directory -> " + path;
-                         #ifdef Q_OS_WIN
-                             qWarning() << msg;
-                         #else
-                             tWarning() << msg;
+                     if (!dir.mkpath(path)) { 
+                         #ifdef K_DEBUG
+                             QString msg = "TupLibraryObject::saveData() - Fatal error: Can't create path -> " + path;
+                             #ifdef Q_OS_WIN
+                                 qCritical() << msg;
+                             #else
+                                 tError() << msg;
+                             #endif
                          #endif
-                     #endif
+                         return false;
+                     }
                  }
 
                  k->dataPath = path + k->symbolName;

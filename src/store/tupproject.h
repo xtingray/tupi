@@ -95,7 +95,8 @@ class TUPI_EXPORT TupProject : public QObject, public TupAbstractSerializable
         QSize dimension() const;
         int fps() const;
 
-        bool deleteDataDir();
+        // bool deleteDataDir(const QString &path);
+
         void setDataDir(const QString &path);
         QString dataDir() const;
 

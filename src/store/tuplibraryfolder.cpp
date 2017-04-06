@@ -69,6 +69,7 @@ TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, co
             T_FUNCINFO;
             tWarning() << " - Creating symbol -> " << name;
             tWarning() << " - type -> " << type;
+            tWarning() << " - folder -> " << folder;
             tWarning() << " - size -> " << data.size();
         #endif
     #endif
@@ -98,10 +99,10 @@ TupLibraryObject *TupLibraryFolder::createSymbol(TupLibraryObject::Type type, co
         return 0;
     }
 
-    TupLibraryObject *object = new TupLibraryObject(this);
-    object->setSymbolName(name);
-    object->setParent(this);
-    object->setType(type);
+    TupLibraryObject *object = new TupLibraryObject(name, folder, type, this);
+    // object->setSymbolName(name);
+    // object->setParent(this);
+    // object->setType(type);
 
     if (!object->loadRawData(data)) {
         #ifdef K_DEBUG
@@ -524,22 +525,31 @@ void TupLibraryFolder::fromXml(const QString &xml)
 
 void TupLibraryFolder::loadObjects(const QString &folder, const QString &xml)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLibraryFolder::loadObjects()]";
+        #else
+            T_FUNCINFO;
+            tWarning() << "Folder: " << folder;
+        #endif
+    #endif
+
     QDomDocument document;
 
-    if (! document.setContent(xml))
+    if (!document.setContent(xml))
         return;
 
     QDomElement root = document.documentElement();
     QDomNode domNode = root.firstChild();
 
     while (!domNode.isNull()) {
-           QDomElement e = domNode.toElement();
+        QDomElement e = domNode.toElement();
     
-           if (!e.isNull()) {
-               if (e.tagName() == "object")
-                   loadItem(folder, domNode);
-           }
-           domNode = domNode.nextSibling();
+        if (!e.isNull()) {
+            if (e.tagName() == "object")
+                loadItem(folder, domNode);
+        }
+        domNode = domNode.nextSibling();
     }
 }
 
@@ -550,6 +560,7 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
             qDebug() << "[TupLibraryFolder::loadItem()]";
         #else
             T_FUNCINFO;
+            tWarning() << "Folder: " << folder;
         #endif
     #endif
 
@@ -557,6 +568,9 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
     objectDocument.appendChild(objectDocument.importNode(xml, true));
 
     TupLibraryObject *object = new TupLibraryObject(this);
+    if (folder.compare(".root") != 0)
+        object->setFolder(folder);
+
     object->fromXml(objectDocument.toString(0));
 
     switch (object->type()) {
@@ -572,7 +586,7 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
             break;
     }
 
-    if (folder.compare("library") == 0)
+    if (folder.compare(".root") == 0)
         addObject(object);
     else
         addObject(folder, object);
