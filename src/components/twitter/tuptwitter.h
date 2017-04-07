@@ -58,6 +58,7 @@ class TUPI_EXPORT TupTwitter : public QWidget
 
     signals:
         void pageReady();
+        void newUpdate(bool flag);
 
     private:
         void requestFile(const QString &target);

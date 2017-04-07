@@ -126,6 +126,8 @@ struct TupDocumentView::Private
     qreal nodesScaleFactor;
     qreal cacheScaleFactor;
 
+    QActionGroup *actionGroup;
+
     TAction *pencilAction;
     TAction *inkAction;
     // Note: Enable it only for debugging
@@ -164,6 +166,9 @@ TupDocumentView::TupDocumentView(TupProject *project, QWidget *parent, bool isNe
     k->nodesScaleFactor = 1;
 
     k->actionManager = new TActionManager(this);
+
+    k->actionGroup = new QActionGroup(this); 
+    k->actionGroup->setExclusive(true);
 
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
     QGridLayout *layout = new QGridLayout(frame);
@@ -234,12 +239,6 @@ TupDocumentView::~TupDocumentView()
             TEND;
         #endif
     #endif
-
-    // TCONFIG->beginGroup("General");
-    // TCONFIG->setValue("AutoSave", k->autoSaveTime);
-
-    // TCONFIG->beginGroup("OnionParameters");
-    // TCONFIG->setValue("OnionColorScheme", false);
 
     if (k->currentTool) 
         k->currentTool->saveConfig();
@@ -537,6 +536,9 @@ void TupDocumentView::loadPlugins()
                       action->setIconVisibleInMenu(true);
                       connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));
                       action->setParent(plugin);
+                      action->setCheckable(true);
+                      k->actionGroup->addAction(action);
+
                       QString toolName = action->text();
 
                       switch (tool->toolType()) {
@@ -562,6 +564,7 @@ void TupDocumentView::loadPlugins()
 
                                    if (toolName.compare(tr("PolyLine")) == 0) {
                                        k->polyLineAction = action;
+
                                        TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(action->parent());
                                        connect(k->paintArea, SIGNAL(closePolyLine()), tool, SLOT(initEnv()));
                                        connect(this, SIGNAL(closePolyLine()), tool, SLOT(initEnv()));
@@ -569,6 +572,7 @@ void TupDocumentView::loadPlugins()
 
                                    if (toolName.compare(tr("Line")) == 0) {
                                        brushTools[2] = action;
+
                                        TupToolPlugin *tool = qobject_cast<TupToolPlugin *>(action->parent());
                                        connect(k->paintArea, SIGNAL(closeLine()), tool, SLOT(endItem()));
                                        connect(this, SIGNAL(closeLine()), tool, SLOT(endItem()));
@@ -576,6 +580,7 @@ void TupDocumentView::loadPlugins()
 
                                    if (toolName.compare(tr("Rectangle")) == 0) {
                                        brushTools[0] = action;
+
                                        k->shapesMenu->setDefaultAction(action);
                                    }
 
@@ -595,6 +600,7 @@ void TupDocumentView::loadPlugins()
                                  {
                                    if (toolName.compare(tr("Position Tween")) == 0) {
                                        tweenTools[0] = action;
+
                                        k->motionMenu->setDefaultAction(action);
                                    }
 
@@ -637,14 +643,6 @@ void TupDocumentView::loadPlugins()
                                        k->borderFillAction = action;
                                  }
                                  break;
-                               /*
-                               case TupToolInterface::View:
-                                 {
-                                   if (toolName.compare(tr("Shift")) == 0)
-                                       k->shiftAction = action;
-                                 }
-                                 break;
-                               */
                                case TupToolInterface::LipSync:
                                  {
                                    if (toolName.compare(tr("Papagayo Lip-sync")) == 0)
@@ -954,6 +952,7 @@ void TupDocumentView::selectTool()
                              minWidth = 130;
                              k->shapesMenu->setDefaultAction(action);
                              k->shapesMenu->setActiveAction(action);
+
                              if (!action->icon().isNull())
                                  k->shapesMenu->menuAction()->setIcon(action->icon());
                          }
@@ -1056,7 +1055,8 @@ void TupDocumentView::selectToolFromMenu(QAction *action)
         if (tool) {
             if (tool->text().compare(k->currentTool->name()) == 0)
                 return;
-            tool->trigger(); // this line calls selectTool()
+            else
+                tool->trigger(); // this line calls selectTool()
         } else {
             tool = qobject_cast<TAction *>(menu->defaultAction());
             if (tool) {

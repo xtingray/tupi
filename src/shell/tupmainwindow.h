@@ -230,6 +230,7 @@ class TupMainWindow : public TabbedMainWindow
         void importPapagayoLipSync();
         void hideTopPanels();
         void showWebMessage();
+        void setUpdateFlag(bool flag);
 
     private:
         TupProjectManager *m_projectManager;

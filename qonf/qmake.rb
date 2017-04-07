@@ -48,12 +48,12 @@ class QMake
 
     # This method check if the current version of Qt is valid for Tupi compilation    
     def findQMake(minqtversion, verbose, qtdir)
-        path = "qmake"
         command = ""
+        ["qmake", "qmake-qt5"].each do |path|
 
-        Info.info << "Testing for #{path}... "
+            Info.info << "Testing for #{path}... "
 
-        IO.popen("which #{path}") { |result|
+            IO.popen("which #{path}") { |result|
                  if qtdir.length > 0
                     command = qtdir + "/bin/qmake"
                  else
@@ -62,12 +62,14 @@ class QMake
                        command = pathVar[0].chop
                     end
                  end
-
-                 if command.length == 0
-                    return false
-                 end
-        }
-
+            }
+            if command.length != 0
+                break
+            end
+        end
+        if command.length == 0
+            return false
+        end
         qtversion = ""
         version = []
 

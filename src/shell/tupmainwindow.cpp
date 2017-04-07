@@ -189,9 +189,15 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         }
     }
 
+    TCONFIG->beginGroup("General");
+    bool update = TCONFIG->value("NotifyUpdate", false).toBool();
+
     if (showWebMsg) {
         QTimer::singleShot(0, this, SLOT(showWebMessage()));
     } else {
+        if (update)
+            QDesktopServices::openUrl(QString("http://maefloresta.com/updates/tupi.html"));
+
         // Check if user wants to see a Tupi tip for every time he launches the program
         TCONFIG->beginGroup("General");
         bool showTips = TCONFIG->value("ShowTipOfDay", true).toBool();
@@ -209,6 +215,7 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
 
     if (TCONFIG->firstTime()) {
         TCONFIG->beginGroup("General");
+        TCONFIG->setValue("NotifyUpdate", false);
         TCONFIG->setValue("OpenLastProject", false);
         TCONFIG->setValue("ShowTipOfDay", true);
         TCONFIG->setValue("ConfirmRemoveFrame", true); 
@@ -329,6 +336,7 @@ void TupMainWindow::setWorkSpace(const QStringList &users)
         TupTwitter *twitter = new TupTwitter();
         twitter->start();
         connect(twitter, SIGNAL(pageReady()), this, SLOT(addTwitterPage()));
+        connect(twitter, SIGNAL(newUpdate(bool)), this, SLOT(setUpdateFlag(bool)));
     }
 
     if (m_projectManager->isOpen()) {
@@ -1608,4 +1616,11 @@ void TupMainWindow::showWebMessage()
     QDesktopWidget desktop;
     msgDialog->move((int) (desktop.screenGeometry().width() - msgDialog->width())/2 ,
                     (int) (desktop.screenGeometry().height() - msgDialog->height())/2);
+}
+
+void TupMainWindow::setUpdateFlag(bool flag)
+{
+    tError() << "Updating flag: " << flag;
+    TCONFIG->beginGroup("General");
+    TCONFIG->setValue("NotifyUpdate", flag);
 }

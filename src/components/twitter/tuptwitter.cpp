@@ -320,6 +320,8 @@ void TupTwitter::checkSoftwareUpdates(QByteArray array)
                }
                n = n.nextSibling();
         }
+
+        emit newUpdate(k->update);
     }
 }
 
