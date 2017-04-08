@@ -1620,7 +1620,6 @@ void TupMainWindow::showWebMessage()
 
 void TupMainWindow::setUpdateFlag(bool flag)
 {
-    tError() << "Updating flag: " << flag;
     TCONFIG->beginGroup("General");
     TCONFIG->setValue("NotifyUpdate", flag);
 }
