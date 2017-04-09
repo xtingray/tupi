@@ -221,7 +221,7 @@ void TupGraphicsScene::drawCurrentPhotogram()
         #ifdef K_DEBUG
             QString msg = "TupGraphicsScene::drawCurrentPhotogram() - Fatal error: Invalid layer index -> " + QString::number(k->framePosition.layer);
             #ifdef Q_OS_WIN
-                qFatal() << msg;
+                qDebug() << msg;
             #else
                 tError() << msg;
             #endif
