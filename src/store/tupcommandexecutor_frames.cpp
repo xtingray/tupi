@@ -175,6 +175,7 @@ bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
             qDebug() << "[TupCommandExecutor::removeFrameSelection()]";
         #else
             T_FUNCINFO;
+            tWarning() << "selection: " << response->arg().toString(); 
         #endif
     #endif
 

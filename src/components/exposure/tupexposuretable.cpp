@@ -386,6 +386,37 @@ void TupExposureTable::selectFrame(int layerIndex, int frameIndex)
     setCurrentCell(frameIndex, layerIndex);
 }
 
+void TupExposureTable::selectFrame(int layerIndex, int frameIndex, const QString &selection)
+{
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupExposureTable::selectFrame()]";
+        #else
+            T_FUNCINFO;
+            tWarning() << "selection -> " << selection;
+        #endif
+    #endif
+
+    if (k->header->currentSectionIndex() != layerIndex)
+        k->header->updateSelection(layerIndex);
+
+    QStringList coords = selection.split(",");
+    if (coords.count() == 4) {
+        int initLayer = coords.at(0).toInt();
+        int lastLayer = coords.at(1).toInt();
+        int initFrame = coords.at(2).toInt();
+        int lastFrame = coords.at(3).toInt();
+
+        selectionModel()->clearSelection();
+
+        QModelIndexList indexes;
+        for (int i=initLayer; i<=lastLayer; i++) {
+            for (int j=initFrame; j<=lastFrame; j++)
+                selectionModel()->select(model()->index(j, i), QItemSelectionModel::Select);
+        }
+    }
+}
+
 void TupExposureTable::setSinglePopUpMenu(QMenu *single)
 {
     k->singleMenu = single;
@@ -566,7 +597,7 @@ bool TupExposureTable::edit(const QModelIndex & index, EditTrigger trigger, QEve
     return false;
 }
 
-void TupExposureTable::mousePressEvent(QMouseEvent * event)
+void TupExposureTable::mousePressEvent(QMouseEvent *event)
 {
     int frame = rowAt(event->y());
     if (event->button() == Qt::RightButton) {
@@ -587,7 +618,7 @@ void TupExposureTable::mousePressEvent(QMouseEvent * event)
         } else {
             return;
         }
-    }
+    } 
 
     QTableWidget::mousePressEvent(event);
 }
@@ -709,9 +740,9 @@ void TupExposureTable::reset()
 QList<int> TupExposureTable::currentSelection()
 {
     QList<int> coords;
-    QModelIndexList selection = selectedIndexes();
     QList<int> layers;
     QList<int> frames;
+    QModelIndexList selection = selectedIndexes();
 
     if (!selection.isEmpty()) {
         foreach (QModelIndex cell, selection) { 

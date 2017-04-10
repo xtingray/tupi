@@ -87,6 +87,7 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         void setLayerVisibility(int layerIndex, bool isVisible);
         void setLayerName(int layerIndex, const QString &name);
         void selectFrame(int layerIndex, int frameIndex);
+        void selectFrame(int layerIndex, int frameIndex, const QString &selection);
         bool frameIsLocked(int layerIndex, int frameIndex);
         QList<int> currentSelection();
 

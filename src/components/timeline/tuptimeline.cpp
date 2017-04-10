@@ -401,8 +401,9 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                 break;
                 case TupProjectRequest::Select:
                 {
+                     QString selection = response->arg().toString();
                      k->selectedLayer = layerIndex;
-                     framesTable->selectFrame(layerIndex, frameIndex);
+                     framesTable->selectFrame(layerIndex, frameIndex, selection);
                 }
                 break;
         }
@@ -818,7 +819,6 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
                      for (int frame = currentLimit + 1; frame <= frameIndex; frame++) {
                           TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layer, frame,
                                                       TupProjectRequest::Add, tr("Frame"));
-                                                      // TupProjectRequest::Add, tr("Frame %1").arg(frame + 1));
                           emit requestTriggered(&request);
                      }
                 }
@@ -826,18 +826,30 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
                 for (int frame = lastFrame + 1; frame <= frameIndex; frame++) {
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frame,
                                                  TupProjectRequest::Add, tr("Frame"));
-                                                 // TupProjectRequest::Add, tr("Frame %1").arg(frame + 1));
                      emit requestTriggered(&request);
                 }
             }
+        }
 
-            TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex,
-                                                           frameIndex, TupProjectRequest::Select, "1");
-            emit requestTriggered(&request);
+        QString selection = "";
+        QList<int> coords = framesTable(sceneIndex)->currentSelection();
+
+        if (coords.count() == 4) {
+            if ((layerIndex >= coords.at(2) && layerIndex <= coords.at(3)) &&
+                (frameIndex >= coords.at(0) && frameIndex <= coords.at(1))) {
+                selection = QString::number(coords.at(2)) + "," + QString::number(coords.at(3)) + ","
+                            + QString::number(coords.at(0)) + "," + QString::number(coords.at(1));
+            } else {
+                selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + ","
+                            + QString::number(frameIndex) + "," + QString::number(frameIndex);
+            }
+        } else {
+            selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + ","
+                        + QString::number(frameIndex) + "," + QString::number(frameIndex);
         }
 
         TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex,
-                                                       frameIndex, TupProjectRequest::Select, "1");
+                                                       frameIndex, TupProjectRequest::Select, selection);
         emit requestTriggered(&request);
     }
 }

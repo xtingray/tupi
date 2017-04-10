@@ -572,11 +572,31 @@ void TupExposureSheet::selectFrame(int layerIndex, int frameIndex)
             qDebug() << "[TupExposureSheet::selectFrame()] - Frame: " << frameIndex;
         #else
             T_FUNCINFO;
+            tWarning() << "Layer -> " << layerIndex;
+            tWarning() << "Frame -> " << frameIndex; 
         #endif
     #endif
 
+    QList<QTableWidgetItem *> list = k->currentTable->selectedItems();
+    QString selection = "";
+    QList<int> coords = k->currentTable->currentSelection();
+
+    if (coords.count() == 4) {
+        if ((layerIndex >= coords.at(0) && layerIndex <= coords.at(1)) && 
+            (frameIndex >= coords.at(2) && frameIndex <= coords.at(3))) {
+            selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + "," 
+                        + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
+        } else {
+            selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + "," 
+                        + QString::number(frameIndex) + "," + QString::number(frameIndex);  
+        }
+    } else {
+        selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + ","
+                    + QString::number(frameIndex) + "," + QString::number(frameIndex);
+    }
+
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), layerIndex, 
-                                                   frameIndex, TupProjectRequest::Select, "1");
+                                                   frameIndex, TupProjectRequest::Select, selection);
     emit localRequestTriggered(&request);
 }
 
@@ -1049,7 +1069,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                 case TupProjectRequest::Select:
                  {
                      table->blockSignals(true);
-                     table->selectFrame(layerIndex, frameIndex);
+                     table->selectFrame(layerIndex, frameIndex, response->arg().toString());
                      table->blockSignals(false);
                      if (k->previousScene != sceneIndex || k->previousLayer != layerIndex) {
                          k->previousScene = sceneIndex;

@@ -653,23 +653,49 @@ void TupTimeLineTable::selectFrame(int layerIndex, int frameIndex)
     blockSignals(false);
 }
 
+void TupTimeLineTable::selectFrame(int layerIndex, int frameIndex, const QString &selection)
+{
+    blockSignals(true);
+    setCurrentCell(layerIndex, frameIndex);
+    updateLayerHeader(layerIndex);
+    blockSignals(false);
+
+    QStringList coords = selection.split(","); 
+    if (coords.count() == 4) {
+        int initLayer = coords.at(0).toInt();
+        int lastLayer = coords.at(1).toInt(); 
+        int initFrame = coords.at(2).toInt();
+        int lastFrame = coords.at(3).toInt();
+
+        selectionModel()->clearSelection();
+
+        QModelIndexList indexes;
+        for (int i=initLayer; i<=lastLayer; i++) {
+            for (int j=initFrame; j<=lastFrame; j++)
+                selectionModel()->select(model()->index(i, j), QItemSelectionModel::Select);
+        }
+    }
+}
+
 QList<int> TupTimeLineTable::currentSelection()
 {
-    QList<int> coords;
     QModelIndexList selection = selectedIndexes();
+    QList<int> coords;
     QList<int> layers;
     QList<int> frames;
 
-    foreach (QModelIndex cell, selection) {
-        int layer = cell.column();
-        int frame = cell.row();
+    if (!selection.isEmpty()) {
+        foreach (QModelIndex cell, selection) {
+            int layer = cell.column();
+            int frame = cell.row();
 
-        if (!layers.contains(layer))
-            layers << layer;
-        if (!frames.contains(frame))
-            frames << frame;
+            if (!layers.contains(layer))
+                layers << layer;
+            if (!frames.contains(frame))
+                frames << frame;
+        }
+        coords << layers.first() << layers.last() << frames.first() << frames.last();
     }
-    coords << layers.first() << layers.last() << frames.first() << frames.last();
 
     return coords;
 }
