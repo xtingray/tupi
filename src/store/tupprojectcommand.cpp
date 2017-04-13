@@ -385,11 +385,13 @@ void TupProjectCommand::frameCommand()
                  k->executor->restoreFrameSelection(response);
             }
             break;
+            /*
             case TupProjectRequest::Remove:
             {
                  k->executor->removeFrame(response);
             }
             break;
+            */
             case TupProjectRequest::RemoveSelection:
             {
                  k->executor->removeFrameSelection(response);
@@ -438,6 +440,11 @@ void TupProjectCommand::frameCommand()
             case TupProjectRequest::Paste:
             {
                  k->executor->pasteFrame(response);
+            }
+            break;
+            case TupProjectRequest::PasteSelection:
+            {
+                 k->executor->pasteFrameSelection(response);
             }
             break;
             default: 

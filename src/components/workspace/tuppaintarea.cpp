@@ -331,6 +331,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
 
     if (!guiScene->isDrawing()) {
         switch (response->action()) {
+                case TupProjectRequest::RemoveSelection:
                 case TupProjectRequest::Exchange:
                     {
                         if (k->spaceMode == TupProject::FRAMES_EDITION)
@@ -365,6 +366,14 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                     }
                     break;
                 default:
+                    #ifdef K_DEBUG
+                        QString msg = "TupPaintArea::frameResponse() - Action not recognized -> " + QString::number(response->action());
+                        #ifdef Q_OS_WIN
+                            qDebug() << msg;
+                        #else
+                            tWarning() << msg;
+                        #endif
+                    #endif
                     break;
         }
     } else {

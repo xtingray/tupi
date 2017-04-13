@@ -75,7 +75,7 @@ class TupProjectManager::Private
         QUndoStack *undoStack;
         TupCommandExecutor *commandExecutor;
         TupProjectManagerParams *params;
-        QString copyFrame;
+        QString frameData;
         bool isNetworked;
 };
 
@@ -378,34 +378,36 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
                         if (frame) {
                             QDomDocument doc;
                             doc.appendChild(frame->toXml(doc));
-                            k->copyFrame = doc.toString(0);
-                            response->setArg(k->copyFrame);
+                            k->frameData = doc.toString(0);
+                            response->setArg(k->frameData);
                         }
                     }
                 }
-            } else if (response->action() == TupProjectRequest::Paste) {
-                       response->setArg(k->copyFrame);
-                       TupProjectRequest request = TupRequestBuilder::fromResponse(response);
-                       handleProjectRequest(&request);
-                       return;
+            } else if (response->action() == TupProjectRequest::CopySelection) {
+                k->frameData = response->arg().toString();
+            } else if (response->action() == TupProjectRequest::Paste || response->action() == TupProjectRequest::PasteSelection) {
+                response->setArg(k->frameData);
+                TupProjectRequest request = TupRequestBuilder::fromResponse(response);
+                handleProjectRequest(&request);
+                return;
             } else if (response->action() == TupProjectRequest::UpdateOpacity) {
-                       double opacity = response->arg().toReal();
-                       TupScene *scene = k->project->sceneAt(k->sceneIndex);
-                       if (scene) {
-                           TupLayer *layer = scene->layerAt(k->layerIndex);
-                           if (layer) {
-                               layer->setOpacity(opacity);
-                           } else {
-                               #ifdef K_DEBUG
-                                   QString msg = "TupProjectManager::handleLocalRequest() - Fatal Error: Layer pointer is NULL [index = " +  QString::number(k->layerIndex) + "]";
-                                   #ifdef Q_OS_WIN
-                                       qDebug() << msg;
-                                   #else
-                                       tError() << msg;
-                                   #endif
-                               #endif
-                           }
-                       }
+                double opacity = response->arg().toReal();
+                TupScene *scene = k->project->sceneAt(k->sceneIndex);
+                if (scene) {
+                    TupLayer *layer = scene->layerAt(k->layerIndex);
+                    if (layer) {
+                        layer->setOpacity(opacity);
+                    } else {
+                        #ifdef K_DEBUG
+                            QString msg = "TupProjectManager::handleLocalRequest() - Fatal Error: Layer pointer is NULL [index = " +  QString::number(k->layerIndex) + "]";
+                            #ifdef Q_OS_WIN
+                                qDebug() << msg;
+                            #else
+                                tError() << msg;
+                            #endif
+                        #endif
+                    }
+                }
             }
         }
 

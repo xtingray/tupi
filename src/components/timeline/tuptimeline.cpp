@@ -370,11 +370,13 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                      framesTable->restoreFrameSelection(layerIndex, frameIndex, response->arg().toString());
                 }
                 break;
+                /*
                 case TupProjectRequest::Remove:
                 {
                      framesTable->removeFrame(layerIndex, frameIndex);
                 }
                 break;
+                */
                 case TupProjectRequest::RemoveSelection:
                 {
                      framesTable->removeFrameSelection(layerIndex, frameIndex, response->arg().toString());
@@ -576,6 +578,18 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::RemoveFrame:
             {
+                 QList<int> coords = framesTable(sceneIndex)->currentSelection();
+                 if (coords.count() == 4) {
+                     int frames = coords.at(1) - coords.at(0) + 1;
+                     int layers = coords.at(3) - coords.at(2) + 1;
+                     QString selection = QString::number(layers) + "," + QString::number(frames);
+
+                     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, coords.at(2), coords.at(0), 
+                                                                                       TupProjectRequest::RemoveSelection, selection);
+                     emit requestTriggered(&request);
+                 }
+
+                 /*
                  int frames = framesTable(sceneIndex)->selectedItems().count();
 
                  if (frames == 1) {
@@ -612,6 +626,7 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, coords.at(2), coords.at(0), TupProjectRequest::RemoveSelection, selection);
                      emit requestTriggered(&request);
                  }
+                 */
 
                  return true;
             }

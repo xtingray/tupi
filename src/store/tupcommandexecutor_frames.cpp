@@ -130,6 +130,7 @@ bool TupCommandExecutor::restoreFrameSelection(TupFrameResponse *response)
     return true;
 }
 
+/*
 bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
 {
     #ifdef K_DEBUG
@@ -167,6 +168,7 @@ bool TupCommandExecutor::removeFrame(TupFrameResponse *response)
     
     return false;
 }
+*/
 
 bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
 {
@@ -207,7 +209,9 @@ bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
                              } else {
                                  if (!layer->removeFrame(frameIndex)) {
                                      #ifdef K_DEBUG
-                                         QString msg = "TupCommandExecutor::removeFrameSelection() - Fatal Error: Can't remove frame at index: " + QString::number(frameIndex);
+                                         QString msg = "TupCommandExecutor::removeFrameSelection() - "
+                                                       "Fatal Error: Can't remove frame at index: " 
+                                                       + QString::number(frameIndex);
                                          #ifdef Q_OS_WIN
                                              qDebug() << msg;
                                          #else
@@ -503,3 +507,37 @@ bool TupCommandExecutor::pasteFrame(TupFrameResponse *response)
 
     return false;
 }
+
+bool TupCommandExecutor::pasteFrameSelection(TupFrameResponse *response)
+{
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupCommandExecutor::pasteFrameSelection()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
+    int sceneIndex = response->sceneIndex();
+    int layerIndex = response->layerIndex();
+    int position = response->frameIndex();
+    QString selection = response->arg().toString();
+
+    TupScene *scene = m_project->sceneAt(sceneIndex);
+    if (scene) {
+        TupLayer *layer = scene->layerAt(layerIndex);
+        if (layer) {
+            TupFrame *frame = layer->frameAt(position);
+            if (frame) {
+                tError() << "Selection: " << selection;
+                emit responsed(response);
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+

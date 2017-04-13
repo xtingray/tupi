@@ -414,8 +414,9 @@ void TupTimeLineTable::restoreFrameSelection(int layerIndex, int frameIndex, con
 
     int layersTotal = layerIndex + layers;
     for (int i=layerIndex; i<layersTotal; i++) {
-         int framesTotal = frameIndex + frames;
-         for (int j=frameIndex; j<framesTotal; j++) {
+         int initFrame = k->layersColumn->lastFrame(i) + 1;
+         int framesTotal = initFrame + frames;
+         for (int j=initFrame; j<framesTotal; j++) {
               setAttribute(i, j, TupTimeLineTableItem::IsUsed, true);
               k->layersColumn->updateLastFrame(i, true);
          }
