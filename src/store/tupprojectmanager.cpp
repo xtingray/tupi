@@ -75,7 +75,6 @@ class TupProjectManager::Private
         QUndoStack *undoStack;
         TupCommandExecutor *commandExecutor;
         TupProjectManagerParams *params;
-        QString frameData;
         bool isNetworked;
 };
 
@@ -119,7 +118,6 @@ void TupProjectManager::setParams(TupProjectManagerParams *params)
         delete k->params;
 
     k->params = params;
-
     k->handler->initialize(k->params);
 }
 
@@ -259,7 +257,7 @@ bool TupProjectManager::saveProject(const QString &fileName)
 bool TupProjectManager::loadProject(const QString &fileName)
 {
     if (! k->handler) {
-	    #ifdef K_DEBUG
+        #ifdef K_DEBUG
             QString msg = "TupProjectManager::loadProject() - Fatal Error: No project handler available!";
             #ifdef Q_OS_WIN
                 qDebug() << msg;
@@ -277,7 +275,7 @@ bool TupProjectManager::loadProject(const QString &fileName)
         k->project->setOpen(true);
         k->isModified = false;
     } else {
-	    #ifdef K_DEBUG
+        #ifdef K_DEBUG
             QString msg = "TupProjectManager::loadProject() - Fatal Error: Can't load project -> " + fileName;
             #ifdef Q_OS_WIN
                 qDebug() << msg;
@@ -369,6 +367,7 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
             k->layerIndex = response->layerIndex();
             k->frameIndex = response->frameIndex();
 
+            /*
             if (response->action() == TupProjectRequest::Copy) {
                 TupScene *scene = k->project->sceneAt(k->sceneIndex);
                 if (scene) {
@@ -378,19 +377,22 @@ void TupProjectManager::handleLocalRequest(const TupProjectRequest *request)
                         if (frame) {
                             QDomDocument doc;
                             doc.appendChild(frame->toXml(doc));
-                            k->frameData = doc.toString(0);
-                            response->setArg(k->frameData);
+                            k->frameSelection = doc.toString(0);
+                            response->setArg(k->frameSelection);
                         }
                     }
                 }
-            } else if (response->action() == TupProjectRequest::CopySelection) {
-                k->frameData = response->arg().toString();
-            } else if (response->action() == TupProjectRequest::Paste || response->action() == TupProjectRequest::PasteSelection) {
-                response->setArg(k->frameData);
+            if (response->action() == TupProjectRequest::CopySelection) {
+                k->frameSelection = response->arg().toString();
+            } else if (response->action() == TupProjectRequest::PasteSelection) {
+                response->setArg(k->frameSelection);
                 TupProjectRequest request = TupRequestBuilder::fromResponse(response);
                 handleProjectRequest(&request);
                 return;
             } else if (response->action() == TupProjectRequest::UpdateOpacity) {
+            */
+
+            if (response->action() == TupProjectRequest::UpdateOpacity) {
                 double opacity = response->arg().toReal();
                 TupScene *scene = k->project->sceneAt(k->sceneIndex);
                 if (scene) {
@@ -490,20 +492,6 @@ void TupProjectManager::emitResponse(TupProjectResponse *response)
 
     if (response->action() != TupProjectRequest::Select)
         k->isModified = true;
-
-    /*
-    if (response->action() != TupProjectRequest::Select) {
-        k->isModified = true;
-        if (static_cast<TupSceneResponse *>(response)) {
-            if (response->action() == TupProjectRequest::Remove)
-                emit projectHasChanged(true);
-            else
-                emit projectHasChanged(false);
-        } else {
-            emit projectHasChanged(false);
-        }
-    }
-    */
 
     if (!k->handler) {
         // SQA: Check if this is the right way to handle this condition 

@@ -340,6 +340,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                     break;
                 case TupProjectRequest::Select:
                 case TupProjectRequest::Paste:
+                case TupProjectRequest::PasteSelection:
                 case TupProjectRequest::Reset:
                     {
                         if (response->action() == TupProjectRequest::Select) {
@@ -359,12 +360,14 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                             guiScene->resetCurrentTool();
                     }
                     break;
+                /*
                 case TupProjectRequest::Lock:
                     {
                         if (guiScene->currentFrameIndex() == response->frameIndex())
                             viewport()->update();
                     }
                     break;
+                */
                 default:
                     #ifdef K_DEBUG
                         QString msg = "TupPaintArea::frameResponse() - Action not recognized -> " + QString::number(response->action());

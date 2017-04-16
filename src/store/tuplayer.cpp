@@ -88,7 +88,17 @@ void TupLayer::setFrames(const Frames &frames)
 
 void TupLayer::setFrame(int index, TupFrame *frame)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupLayer::setFrame()]";
+        #else
+            T_FUNCINFO;
+            tWarning() << "At index -> " << index;
+        #endif
+    #endif
+
     k->frames.insert(index, frame);
+    k->framesCounter++;
 }
 
 void TupLayer::setLayerName(const QString &name)

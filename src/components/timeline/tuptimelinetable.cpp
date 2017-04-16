@@ -412,6 +412,31 @@ void TupTimeLineTable::restoreFrameSelection(int layerIndex, int frameIndex, con
     int layers = params.at(0).toInt();
     int frames = params.at(1).toInt();
 
+    generateFrames(layerIndex, layers, frames);
+
+    blockSignals(true);
+    setCurrentItem(item(layerIndex, frameIndex));
+    blockSignals(false);
+
+    viewport()->update();
+}
+
+void TupTimeLineTable::pasteFrameSelection(int layerIndex, int frameIndex, int layers, int frames)
+{
+    if (layerIndex < 0 || layerIndex >= rowCount())
+        return;
+
+    generateFrames(layerIndex, layers, frames);
+
+    blockSignals(true);
+    setCurrentItem(item(layerIndex, frameIndex + (frames - 1)));
+    blockSignals(false);
+
+    viewport()->update();
+}
+
+void TupTimeLineTable::generateFrames(int layerIndex, int layers, int frames)
+{
     int layersTotal = layerIndex + layers;
     for (int i=layerIndex; i<layersTotal; i++) {
          int initFrame = k->layersColumn->lastFrame(i) + 1;
@@ -421,12 +446,6 @@ void TupTimeLineTable::restoreFrameSelection(int layerIndex, int frameIndex, con
               k->layersColumn->updateLastFrame(i, true);
          }
     }
-
-    blockSignals(true);
-    setCurrentItem(item(layerIndex, frameIndex));
-    blockSignals(false);
-
-    viewport()->update();
 }
 
 void TupTimeLineTable::updateLayerHeader(int layerIndex)
@@ -454,6 +473,7 @@ void TupTimeLineTable::removeFrame(int layerIndex, int frameIndex)
     viewport()->update();
 }
 
+/*
 void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, const QString &selection)
 {
     if (layerIndex < 0 || layerIndex >= rowCount())
@@ -480,7 +500,32 @@ void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, cons
     blockSignals(false);
     viewport()->update();
 }
+*/
 
+void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames)
+{
+    if (layerIndex < 0 || layerIndex >= rowCount())
+        return;
+
+    int layersTotal = layerIndex + layers;
+    for (int i=layerIndex; i<layersTotal; i++) {
+         int framesTotal = frameIndex + frames;
+         for (int j=frameIndex; j<framesTotal; j++) {
+              setAttribute(i, k->layersColumn->lastFrame(i), TupTimeLineTableItem::IsUsed, false);
+              k->layersColumn->updateLastFrame(i, false);
+         }
+    }
+
+    int lastIndex = k->layersColumn->lastFrame(layerIndex);
+    if (lastIndex < frameIndex)
+        frameIndex = lastIndex;
+    blockSignals(true);
+    setCurrentItem(item(layerIndex, frameIndex));
+    blockSignals(false);
+    viewport()->update();
+}
+
+/*
 void TupTimeLineTable::lockFrame(int layerIndex, int frameIndex, bool lock)
 {
     if (layerIndex < 0 || layerIndex >= rowCount())
@@ -509,6 +554,7 @@ bool TupTimeLineTable::frameIsLocked(int layerIndex, int frameIndex)
 
     return false;
 }
+*/
 
 void TupTimeLineTable::setAttribute(int layerIndex, int frameIndex, TupTimeLineTableItem::Attributes att, bool value)
 {

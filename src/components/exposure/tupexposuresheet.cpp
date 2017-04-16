@@ -43,10 +43,12 @@ struct TupExposureSheet::Private
     TupProjectActionBar *actionBar;
     QMenu *singleMenu;
     // QMenu *multipleMenu;
-    QString copyFrameName;
     bool localRequest;
     int previousScene;
     int previousLayer;
+
+    QList<QString> framesList;
+    QList<TupExposureTable::FrameType> statesList;
 };
 
 TupExposureSheet::TupExposureSheet(QWidget *parent, TupProject *project) : TupModuleWidgetBase(parent, "Exposure Sheet"), k(new Private)
@@ -158,12 +160,12 @@ void TupExposureSheet::createMenuForAFrame()
     QAction *copyAction = new QAction(QIcon(THEME_DIR + "icons/copy.png"), tr("Copy frame"), this);
     copyAction->setIconVisibleInMenu(true);
     k->singleMenu->addAction(copyAction);
-    connect(copyAction, SIGNAL(triggered()), this, SLOT(requestCopyCurrentFrame()));
+    connect(copyAction, SIGNAL(triggered()), this, SLOT(requestCopyFrameSelection()));
 
     QAction *pasteAction = new QAction(QIcon(THEME_DIR + "icons/paste.png"), tr("Paste in frame"), this);
     pasteAction->setIconVisibleInMenu(true);
     k->singleMenu->addAction(pasteAction);
-    connect(pasteAction, SIGNAL(triggered()), this, SLOT(requestPasteInCurrentFrame()));
+    connect(pasteAction, SIGNAL(triggered()), this, SLOT(requestPasteSelectionInCurrentFrame()));
 
     QMenu *timeLineMenu = new QMenu(tr("Copy TL forward"));
 
@@ -332,28 +334,13 @@ void TupExposureSheet::applyAction(int action)
 
             case TupProjectActionBar::CopyFrame:
                {
-                 int frames = k->currentTable->selectedItems().count();
-                 if (frames == 1) {
-                     requestCopyCurrentFrame();
-                 } else {
-                     QList<int> coords = k->currentTable->currentSelection();
-                     if (coords.count() == 4) {
-                         QString selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
-                                             + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
-
-                         TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(),
-                                                                        k->currentTable->currentLayer(),
-                                                                        k->currentTable->currentFrame(),
-                                                                        TupProjectRequest::CopySelection, selection);
-                         emit localRequestTriggered(&request);
-                     }
-                 }
+                 requestCopyFrameSelection();
                }
                break;
 
             case TupProjectActionBar::PasteFrame:
                {
-                   requestPasteInCurrentFrame();
+                 requestPasteSelectionInCurrentFrame();
                }
                break;
 
@@ -458,44 +445,29 @@ void TupExposureSheet::requestChangeScene(int sceneIndex)
     }
 }
 
-void TupExposureSheet::requestCopyCurrentFrame()
+void TupExposureSheet::requestCopyFrameSelection()
 {
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                                                      k->currentTable->currentLayer(), 
-                                                                      k->currentTable->currentFrame(), 
-                                                                      TupProjectRequest::Copy);
-    emit localRequestTriggered(&request);
+    QList<int> coords = k->currentTable->currentSelection();
+    if (coords.count() == 4) {
+        QString selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
+                            + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
+
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(),
+                                                       k->currentTable->currentLayer(),
+                                                       k->currentTable->currentFrame(),
+                                                       TupProjectRequest::CopySelection, selection);
+        emit requestTriggered(&request);
+    }
 }
 
-void TupExposureSheet::requestPasteInCurrentFrame()
+void TupExposureSheet::requestPasteSelectionInCurrentFrame()
 {
-    if (k->copyFrameName.isEmpty()) {
-        #ifdef K_DEBUG
-            QString msg = "TupExposureSheet::requestPasteInCurrentFrame() - The copied frame name is empty!";
-            #ifdef Q_OS_WIN
-                qDebug() << msg;
-            #else
-                tError() << msg;
-            #endif
-        #endif
-        return;
-    }
-
-    if (k->currentTable->usedFrames(k->currentTable->currentLayer()) <= k->currentTable->currentRow()) {
-        for(int i = k->currentTable->usedFrames(k->currentTable->currentLayer()); i <= k->currentTable->currentRow(); i++) {
-            insertFrame(k->currentTable->currentLayer(), i);
-
-            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                                         k->currentTable->currentLayer(), i, 
-                                                         TupProjectRequest::Paste);
-            emit localRequestTriggered(&request);
-        }
-    } else {
-            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(), 
-                                                         k->currentTable->currentLayer(), 
-                                                         k->currentTable->currentFrame(),
-                                                         TupProjectRequest::Paste);
-            emit localRequestTriggered(&request);
+    if (!k->framesList.isEmpty()) {
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(),
+                                                       k->currentTable->currentLayer(),
+                                                       k->currentTable->currentFrame(),
+                                                       TupProjectRequest::PasteSelection);
+        emit requestTriggered(&request);
     }
 }
 
@@ -846,86 +818,52 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
 
     int sceneIndex = response->sceneIndex();
     TupExposureTable *table = k->scenesContainer->getTable(sceneIndex);
+
     if (table) {
         int layerIndex = response->layerIndex();
         int frameIndex = response->frameIndex();
         switch (response->action()) {
                 case TupProjectRequest::Add:
-                 {
-                     if (response->mode() == TupProjectResponse::Do) {
-                         table->insertFrame(layerIndex, frameIndex, response->arg().toString(), response->external());
-                         if (layerIndex == 0 && frameIndex == 0) {
-                             setScene(sceneIndex);
-                             table->selectFrame(0, 0);
-                         }
-                         return;
-                     }
+                  {
+                      if (response->mode() == TupProjectResponse::Do) {
+                          table->insertFrame(layerIndex, frameIndex, response->arg().toString(), response->external());
+                          if (layerIndex == 0 && frameIndex == 0) {
+                              setScene(sceneIndex);
+                              table->selectFrame(0, 0);
+                          }
+                          return;
+                      }
 
-                     if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                         TupScene *scene = k->project->sceneAt(sceneIndex);
-                         if (scene) {
-                             TupLayer *layer = scene->layerAt(layerIndex);
-                             if (layer) {
-                                 TupFrame *frame = layer->frameAt(frameIndex);
-                                 if (frame) {
-                                     table->insertFrame(layerIndex, frameIndex, frame->frameName(), response->external());
-                                     if (!frame->isEmpty())
-                                         table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Used);
-                                 }
-                             }
-                         }
-                         return;
-                     }
-                 }
+                      if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                          TupScene *scene = k->project->sceneAt(sceneIndex);
+                          if (scene) {
+                              TupLayer *layer = scene->layerAt(layerIndex);
+                              if (layer) {
+                                  TupFrame *frame = layer->frameAt(frameIndex);
+                                  if (frame) {
+                                      table->insertFrame(layerIndex, frameIndex, frame->frameName(), response->external());
+                                      if (!frame->isEmpty())
+                                          table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Used);
+                                  }
+                              }
+                          }
+                          return;
+                      }
+                  }
                 break;
-                case TupProjectRequest::RestoreSelection:
-                 {
-                     if (response->mode() == TupProjectResponse::Undo) {
-                         QString selection = response->arg().toString();
-                         QStringList params = selection.split(",");
-                         int layers = params.at(0).toInt();  
-                         int frames = params.at(1).toInt();
-
-                         TupScene *scene = k->project->sceneAt(sceneIndex);
-                         if (scene) {
-                             int layersTotal = layerIndex + layers;
-                             for (int i=layerIndex; i<layersTotal; i++) {
-                                 TupLayer *layer = scene->layerAt(i);
-                                 if (layer) {
-                                     int framesTotal = frameIndex + frames;
-                                     for (int j=frameIndex; j<framesTotal; j++) {
-                                         TupFrame *frame = layer->frameAt(j);
-                                         if (frame) {
-                                             table->insertFrame(i, j, tr("Frame"), response->external());
-                                             if (!frame->isEmpty())
-                                                 table->updateFrameState(i, j, TupExposureTable::Used);
-                                         }
-                                     }
-                                 }
-                             }
-
-                             k->currentTable->selectFrame(layerIndex, frameIndex);
-                         }
-                     }
-
-                     return;
-                 }
-                break;
-                /*
                 case TupProjectRequest::Remove:
-                 {
+                  {
                      if (response->mode() == TupProjectResponse::Do) {
                          if (k->localRequest) {
                              k->localRequest = false;
                              table->removeFrame(layerIndex, frameIndex);
                          } else {
-                             int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
+                             int lastFrame = table->framesCountAtCurrentLayer() - 1;
                              int target = frameIndex;
-
                              if (target == lastFrame) {
                                  table->removeFrame(layerIndex, target);
                                  if (target <= 0)
-                                     k->currentTable->clearSelection();
+                                     table->clearSelection();
                              } else {
                                  // When the item deleted is not the last one
                                  TupScene *scene = k->project->sceneAt(sceneIndex);
@@ -937,7 +875,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                                               TupExposureTable::FrameType type = TupExposureTable::Empty;
                                               if (!frame->isEmpty())
                                                   type = TupExposureTable::Used;
-                                              k->currentTable->updateFrameState(layerIndex, index - 1, type);
+                                              table->updateFrameState(layerIndex, index - 1, type);
                                               QString label = k->currentTable->frameName(layerIndex, index);
                                               renameFrame(layerIndex, index - 1, label);
                                          }
@@ -951,7 +889,7 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                      }
 
                      if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                         int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
+                         int lastFrame = table->framesCountAtCurrentLayer() - 1;
                          int target = frameIndex;
                          if (target == lastFrame) {
                              table->removeFrame(layerIndex, frameIndex);
@@ -961,113 +899,151 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                          } else {
                              table->removeFrame(layerIndex, frameIndex);
                          }
+
+                         return;
                      }
-                 }
+                  }
                 break;
-                */
-                case TupProjectRequest::RemoveSelection: 
-                 {
-                     QString selection = response->arg().toString();
-                     QStringList params = selection.split(",");
-                     int layersTotal = params.at(0).toInt();
-                     int framesTotal = params.at(1).toInt();
+                case TupProjectRequest::RestoreSelection:
+                  {
+                      if (response->mode() == TupProjectResponse::Undo) {
+                          QString selection = response->arg().toString();
+                          QStringList params = selection.split(",");
+                          int layers = params.at(0).toInt();  
+                          int frames = params.at(1).toInt();
 
-                     int layerPos = layerIndex;
-                     int framePos;
-                     for (int i=0; i<layersTotal; i++) {
-                          framePos = frameIndex;
-                          for (int j=0; j<framesTotal; j++) {
-                              k->currentTable->removeFrame(layerPos, framePos);
-                              framePos++;
+                          TupScene *scene = k->project->sceneAt(sceneIndex);
+                          if (scene) {
+                              int layersTotal = layerIndex + layers;
+                              for (int i=layerIndex; i<layersTotal; i++) {
+                                  TupLayer *layer = scene->layerAt(i);
+                                  if (layer) {
+                                      int framesTotal = frameIndex + frames;
+                                      for (int j=frameIndex; j<framesTotal; j++) {
+                                          TupFrame *frame = layer->frameAt(j);
+                                          if (frame) {
+                                              table->insertFrame(i, j, tr("Frame"), response->external());
+                                              if (!frame->isEmpty())
+                                                  table->updateFrameState(i, j, TupExposureTable::Used);
+                                          }
+                                      }
+                                  }
+                              }
+
+                              table->selectFrame(layerIndex, frameIndex);
                           }
-                          layerPos++;
-                     }
+                      }
 
-                     int init = frameIndex + framesTotal;
-                     int lastIndex = k->currentTable->framesCountAtCurrentLayer() + framesTotal;
-                     layerPos = layerIndex;
-                     for (int i=0; i<layersTotal; i++) {
-                         framePos = frameIndex; 
-                         for (int j=init; j<lastIndex; j++) {
-                             QTableWidgetItem *item = k->currentTable->takeItem(j, layerPos);
-                             k->currentTable->setItem(framePos, layerPos, item);
-                             framePos++;
-                         }
-                         layerPos++;
-                     }
+                      return;
+                  }
+                break;
+                case TupProjectRequest::RemoveSelection: 
+                  {
+                      QString selection = response->arg().toString();
+                      QStringList params = selection.split(",");
+                      int layersTotal = params.at(0).toInt();
+                      int framesTotal = params.at(1).toInt();
 
-                     layerPos = layerIndex;
-                     for (int i=0; i<layersTotal; i++) {
-                         if (k->currentTable->framesCountAtLayer(layerPos) == 0)
-                             k->currentTable->insertFrame(layerPos, 0, tr("Frame"), false);
-                         layerPos++;
-                     }
-
-                     lastIndex = k->currentTable->framesCountAtLayer(layerIndex) - 1;
-                     if (lastIndex < frameIndex)
-                         k->currentTable->selectFrame(layerIndex, lastIndex);
-                     else
-                         k->currentTable->selectFrame(layerIndex, frameIndex);
-                 }
+                      removeBlock(table, layerIndex, frameIndex, layersTotal, framesTotal);
+                  }
                 break;
                 case TupProjectRequest::Reset:
-                 {
-                     table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Empty);
-                     table->setFrameName(layerIndex, frameIndex, tr("Frame"));
+                  {
+                      table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Empty);
+                      table->setFrameName(layerIndex, frameIndex, tr("Frame"));
 
-                     return;
-                 }
+                      return;
+                  }
                 break;
                 case TupProjectRequest::Exchange:
-                 {
-                     table->exchangeFrame(layerIndex, frameIndex, layerIndex, response->arg().toInt(), response->external());
-                 }
+                  {
+                      table->exchangeFrame(layerIndex, frameIndex, layerIndex, response->arg().toInt(), response->external());
+                  }
                 break;
                 case TupProjectRequest::Move:
-                 {
-                     // No action required for this specific request
-                     return;
-                 }
+                  {
+                      // No action required for this specific request
+                      return;
+                  }
                 break;
                 case TupProjectRequest::Rename:
-                 {
-                     table->setFrameName(layerIndex, frameIndex, response->arg().toString());
-                 }
+                  {
+                      table->setFrameName(layerIndex, frameIndex, response->arg().toString());
+                  }
                 break;
                 case TupProjectRequest::Select:
-                 {
-                     table->blockSignals(true);
-                     table->selectFrame(layerIndex, frameIndex, response->arg().toString());
-                     table->blockSignals(false);
-                     if (k->previousScene != sceneIndex || k->previousLayer != layerIndex) {
-                         k->previousScene = sceneIndex;
-                         k->previousLayer = layerIndex;
-                         updateLayerOpacity(sceneIndex, layerIndex);
-                     }
-                 }
+                  {
+                      table->blockSignals(true);
+                      table->selectFrame(layerIndex, response->arg().toString());
+                      table->blockSignals(false);
+                      if (k->previousScene != sceneIndex || k->previousLayer != layerIndex) {
+                          k->previousScene = sceneIndex;
+                          k->previousLayer = layerIndex;
+                          updateLayerOpacity(sceneIndex, layerIndex);
+                      }
+                  }
                 break;
                 case TupProjectRequest::Expand:
-                 {
-                     // SQA: It's very possible this feature will be deprecated. Please confirm!
-                     for(int i = 0; i < response->arg().toInt(); i++)
-                         table->insertFrame(layerIndex, frameIndex + i + 1, 
-                                            table->frameName(layerIndex, frameIndex), 
-                                            response->external());
-                 }
+                  {
+                      // SQA: It's very possible this feature will be deprecated. Please confirm!
+                      for(int i = 0; i < response->arg().toInt(); i++)
+                          table->insertFrame(layerIndex, frameIndex + i + 1, 
+                                             table->frameName(layerIndex, frameIndex), 
+                                             response->external());
+                  }
                 break;
-                case TupProjectRequest::Copy:
-                 {
-                     k->copyFrameName = table->frameName(layerIndex, frameIndex);
-                 }
+                case TupProjectRequest::CopySelection:
+                  {
+                      if (response->mode() == TupProjectResponse::Do) {
+                          QString selection = response->arg().toString();
+                          QStringList params = selection.split(",");
+
+                          if (params.count() == 4) {
+                              QList<int> coords;
+                              foreach(QString item, params) 
+                                  coords << item.toInt();
+
+                              k->framesList.clear();
+                              k->statesList.clear();
+                              for (int i=coords.at(0); i<=coords.at(1); i++) {
+                                  for (int j=coords.at(2); j<=coords.at(3); j++) {
+                                      k->framesList << table->frameName(i, j);
+                                      k->statesList << table->frameState(i, j);
+                                  }
+                              }
+                          }
+                      }
+                  }
                 break;
-                case TupProjectRequest::Paste:
-                 {
-                     TupExposureTable::FrameType frameStatus = TupExposureTable::Used;
-                     if (response->frameIsEmpty())
-                         frameStatus = TupExposureTable::Empty;
-                     k->currentTable->updateFrameState(layerIndex, frameIndex, frameStatus);
-                     table->setFrameName(layerIndex, frameIndex, k->copyFrameName);
-                 }
+                case TupProjectRequest::PasteSelection:
+                  {
+                      QString selection = response->arg().toString();
+                      QStringList params = selection.split(",");
+
+                      if (params.count() == 4) {
+                          QList<int> coords;
+                          foreach(QString item, params) 
+                              coords << item.toInt();
+
+                          int layersTotal = (coords.at(1) - coords.at(0)) + 1;
+                          int framesTotal = (coords.at(3) - coords.at(2)) + 1; 
+                          int layerLimit = layerIndex + layersTotal;
+                          int frameLimit = frameIndex + framesTotal;
+
+                          if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                              int index = 0;
+                              for (int i=layerIndex; i<layerLimit; i++) {
+                                  for (int j=frameIndex; j<frameLimit; j++) {
+                                      table->insertFrame(i, j, k->framesList.at(index), response->external());
+                                      table->updateFrameState(i, j, k->statesList.at(index));
+                                      index++;
+                                  }
+                              }
+                          } else {
+                              removeBlock(table, layerIndex, frameIndex, layersTotal, framesTotal);
+                          }
+                      }
+                  }
                 break;
         }
     } else {
@@ -1206,20 +1182,19 @@ void TupExposureSheet::copyTimeLine(int times)
     int framesCount = k->currentTable->usedFrames(k->currentTable->currentLayer());
 
     for (int i=0; i < times; i++) {
-         for (int j=0; j < framesCount; j++) {
-              TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene,
-                                                                                currentLayer,
-                                                                                j,
-                                                                                TupProjectRequest::Copy);
-              emit localRequestTriggered(&request);
-              int frameIndex = k->currentTable->usedFrames(currentLayer);
-              insertFrame(currentLayer, frameIndex);
+        for (int j=0; j < framesCount; j++) {
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene,
+                                                           currentLayer, j, TupProjectRequest::Copy); 
+            emit localRequestTriggered(&request);
 
-              request = TupRequestBuilder::createFrameRequest(currentScene,
-                                                              currentLayer, frameIndex,
-                                                              TupProjectRequest::Paste);
-              emit localRequestTriggered(&request);
-         }
+            int frameIndex = k->currentTable->usedFrames(currentLayer);
+            insertFrame(currentLayer, frameIndex);
+
+            request = TupRequestBuilder::createFrameRequest(currentScene,
+                                                           currentLayer, frameIndex,
+                                                           TupProjectRequest::Paste);
+            emit localRequestTriggered(&request);
+        }
     }
 
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(currentScene, currentLayer,
@@ -1357,4 +1332,45 @@ void TupExposureSheet::initLayerVisibility()
              }
          }
     }
+}
+
+void TupExposureSheet::removeBlock(TupExposureTable *table, int layerIndex, int frameIndex, 
+                                   int layersTotal, int framesTotal)
+{
+    int layerPos = layerIndex;
+    int framePos;
+    for (int i=0; i<layersTotal; i++) {
+        framePos = frameIndex;
+        for (int j=0; j<framesTotal; j++) {
+            table->removeFrame(layerPos, framePos);
+            framePos++;
+        }
+        layerPos++;
+    }
+
+    int init = frameIndex + framesTotal;
+    int lastIndex = table->framesCountAtCurrentLayer() + framesTotal;
+    layerPos = layerIndex;
+    for (int i=0; i<layersTotal; i++) {
+        framePos = frameIndex;
+        for (int j=init; j<lastIndex; j++) {
+            QTableWidgetItem *item = table->takeItem(j, layerPos);
+            table->setItem(framePos, layerPos, item);
+            framePos++;
+        }
+        layerPos++;
+    }
+
+    layerPos = layerIndex;
+    for (int i=0; i<layersTotal; i++) {
+        if (table->framesCountAtLayer(layerPos) == 0)
+            table->insertFrame(layerPos, 0, tr("Frame"), false);
+        layerPos++;
+    }
+
+    lastIndex = table->framesCountAtLayer(layerIndex) - 1;
+    if (lastIndex < frameIndex)
+        table->selectFrame(layerIndex, lastIndex);
+    else
+        table->selectFrame(layerIndex, frameIndex);
 }

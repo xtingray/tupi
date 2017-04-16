@@ -98,7 +98,8 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void setLayerName(int layerIndex, const QString & name);
 
         void selectFrame(int layerIndex, int frameIndex);
-        void selectFrame(int layerIndex, int frameIndex, const QString &selection);
+        // void selectFrame(int layerIndex, int frameIndex, const QString &selection);
+        void selectFrame(int layerIndex, const QString &selection);
 
         int layersCount();
         int framesCount();
@@ -125,6 +126,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
     protected:
         bool edit(const QModelIndex & index, EditTrigger trigger, QEvent *event);
         void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
         // void mouseReleaseEvent(QMouseEvent *event);
         void keyPressEvent(QKeyEvent *event);
         void enterEvent(QEvent *event);

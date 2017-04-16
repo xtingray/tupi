@@ -83,7 +83,7 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         bool removeScene(TupSceneResponse *response);
         bool removeLayer(TupLayerResponse *response);
         bool removeLipSync(TupLayerResponse *response);
-        // bool removeFrame(TupFrameResponse *response);
+        bool removeFrame(TupFrameResponse *response);
         bool removeFrameSelection(TupFrameResponse *response);
 
         bool resetFrame(TupFrameResponse *response);
@@ -122,7 +122,8 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         
         bool setTween(TupItemResponse *response);
         bool expandFrame(TupFrameResponse *response);
-        bool pasteFrame( TupFrameResponse *response);
+        bool copyFrameSelection(TupFrameResponse *response);
+        // bool pasteFrame( TupFrameResponse *response);
         bool pasteFrameSelection(TupFrameResponse *response);
         bool resetScene(TupSceneResponse *response);
 
@@ -133,7 +134,8 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         
     private:
         TupProject *m_project;
-        TupFrame *copyFrame;
+        QList<QString> selectionFramesCopy;
+        QStringList copyParams;
 };
 
 #endif

@@ -88,7 +88,7 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         void setLayerName(int layerIndex, const QString &name);
         void selectFrame(int layerIndex, int frameIndex);
         void selectFrame(int layerIndex, int frameIndex, const QString &selection);
-        bool frameIsLocked(int layerIndex, int frameIndex);
+        // bool frameIsLocked(int layerIndex, int frameIndex);
         QList<int> currentSelection();
 
     public slots:
@@ -105,17 +105,21 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         // Frames
         void insertFrame(int layerIndex);
         void restoreFrameSelection(int layerIndex, int frameIndex, const QString &selection);
+        void pasteFrameSelection(int layerIndex, int frameIndex, int layers, int frames);
         void selectFrame(int frameIndex);
         void setAttribute(int layerIndex, int frameIndex, TupTimeLineTableItem::Attributes att, bool value);
         void removeFrame(int layerIndex, int frameIndex);
-        void removeFrameSelection(int layerIndex, int frameIndex, const QString &selection);
-        void lockFrame(int layerIndex, int frameIndex, bool lock);
+        // void removeFrameSelection(int layerIndex, int frameIndex, const QString &selection);
+        void removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames);
+
+        // void lockFrame(int layerIndex, int frameIndex, bool lock);
         void setItemSize(int w, int h);
         void exchangeFrame(int currentFrameIndex, int currentLayerIndex, int newFrameIndex, int newLayerIndex);
         
     private:
         void setup();
-        
+        void generateFrames(int layerIndex, int layers, int frames);
+ 
     protected:
         void fixSize();
         void mousePressEvent(QMouseEvent *event);
@@ -130,9 +134,7 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         void requestLayerMove(int logicalIndex, int oldLayerIndex, int newLayerIndex);
         
     signals:
-        // void frameChanged(int sceneIndex, int layerIndex, int frameIndex);
         void frameSelected(int layerIndex, int frameIndex);
-        // void frameRemoved(int layerIndex, int frameIndex);
         void frameRemoved();
         void frameCopied(int layerIndex, int frameIndex);
         void visibilityChanged(int layerIndex, bool isVisible);

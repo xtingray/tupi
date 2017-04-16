@@ -224,7 +224,6 @@ TupExposureTable::TupExposureTable(QWidget * parent) : QTableWidget(parent), k(n
     connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(requestFrameSelection(int, int, int, int)));
 
     setSelectionBehavior(QAbstractItemView::SelectItems);
-    // setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     k->singleMenu = 0;
@@ -324,7 +323,7 @@ void TupExposureTable::setLayerName(int layerIndex, const QString & name)
 
 bool TupExposureTable::layerIndexIsValid(int layerIndex)
 {
-    if (layerIndex > 0 && layerIndex < columnCount())
+    if (layerIndex >= 0 && layerIndex < columnCount())
         return true;
 
     return false; 
@@ -332,7 +331,7 @@ bool TupExposureTable::layerIndexIsValid(int layerIndex)
 
 bool TupExposureTable::frameIndexIsValid(int frameIndex)
 {
-    if (frameIndex > 0 && frameIndex < rowCount())
+    if (frameIndex >= 0 && frameIndex < rowCount())
         return true;
 
     return false;  
@@ -386,7 +385,8 @@ void TupExposureTable::selectFrame(int layerIndex, int frameIndex)
     setCurrentCell(frameIndex, layerIndex);
 }
 
-void TupExposureTable::selectFrame(int layerIndex, int frameIndex, const QString &selection)
+// void TupExposureTable::selectFrame(int layerIndex, int frameIndex, const QString &selection)
+void TupExposureTable::selectFrame(int layerIndex, const QString &selection)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -599,9 +599,10 @@ bool TupExposureTable::edit(const QModelIndex & index, EditTrigger trigger, QEve
 
 void TupExposureTable::mousePressEvent(QMouseEvent *event)
 {
-    int frame = rowAt(event->y());
+    int frameIndex = rowAt(event->y());
+    int layerIndex = currentLayer();
     if (event->button() == Qt::RightButton) {
-        if (k->header->lastFrame(currentLayer()) >= frame) {
+        if (frameIndex <= k->header->lastFrame(layerIndex)) {
             int frames = selectedItems().count();
             if (frames == 1) {
                 if (k->singleMenu)
@@ -618,9 +619,26 @@ void TupExposureTable::mousePressEvent(QMouseEvent *event)
         } else {
             return;
         }
-    } 
+    } else {
+        for (int j=0; j<=layerIndex; j++) {
+             int top = k->header->lastFrame(layerIndex);
+             if (frameIndex >= top) {
+                 for (int i=top; i<=frameIndex; i++)
+                      emit frameUsed(j, i);
+             }
+        }
+    }
 
     QTableWidget::mousePressEvent(event);
+}
+
+void TupExposureTable::mouseMoveEvent(QMouseEvent *event)
+{
+    int frameIndex = rowAt(event->y());
+    if (frameIndex >= k->header->lastFrame(currentLayer()))
+        emit frameUsed(currentLayer(), frameIndex);
+
+    QTableWidget::mouseMoveEvent(event);
 }
 
 void TupExposureTable::commitData(QWidget *editor)

@@ -380,18 +380,16 @@ void TupProjectCommand::frameCommand()
                  k->executor->createFrame(response);
             }
             break;
-            case TupProjectRequest::RestoreSelection:
-            {
-                 k->executor->restoreFrameSelection(response);
-            }
-            break;
-            /*
             case TupProjectRequest::Remove:
             {
                  k->executor->removeFrame(response);
             }
             break;
-            */
+            case TupProjectRequest::RestoreSelection:
+            {
+                 k->executor->restoreFrameSelection(response);
+            }
+            break;
             case TupProjectRequest::RemoveSelection:
             {
                  k->executor->removeFrameSelection(response);
@@ -437,9 +435,16 @@ void TupProjectCommand::frameCommand()
                  k->executor->expandFrame(response);
             }
             break;
+            /*
             case TupProjectRequest::Paste:
             {
                  k->executor->pasteFrame(response);
+            }
+            break;
+            */
+            case TupProjectRequest::CopySelection:
+            {
+                 k->executor->copyFrameSelection(response);
             }
             break;
             case TupProjectRequest::PasteSelection:
@@ -660,6 +665,7 @@ void TupProjectCommand::itemCommand()
                  k->executor->setBrush(response);
             }
             break;
+            /*
             case TupProjectRequest::Select:
             {
             }
@@ -668,6 +674,7 @@ void TupProjectCommand::itemCommand()
             {
             }
             break;
+            */
             case TupProjectRequest::Transform:
             {
                  k->executor->transformItem(response);

@@ -86,6 +86,7 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void requestExpandCurrentFrame(int n);
         void insertFrames(int n);
         void copyTimeLine(int times);
+        void removeBlock(TupExposureTable *table, int layerIndex, int frameIndex, int layersTotal, int framesTotal);
 
     protected:
         virtual void sceneResponse(TupSceneResponse *response);
@@ -104,8 +105,8 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
 
     private slots: 
         void requestChangeScene(int index);
-        void requestCopyCurrentFrame();
-        void requestPasteInCurrentFrame();
+        void requestCopyFrameSelection();
+        void requestPasteSelectionInCurrentFrame();
         void requestUpdateLayerOpacity(double opacity);
 
         void insertFramesFromMenu(QAction *action);
