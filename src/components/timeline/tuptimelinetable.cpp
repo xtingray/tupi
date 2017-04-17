@@ -473,35 +473,6 @@ void TupTimeLineTable::removeFrame(int layerIndex, int frameIndex)
     viewport()->update();
 }
 
-/*
-void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, const QString &selection)
-{
-    if (layerIndex < 0 || layerIndex >= rowCount())
-        return;
-
-    QStringList params = selection.split(",");
-    int layers = params.at(0).toInt();
-    int frames = params.at(1).toInt();
-
-    int layersTotal = layerIndex + layers;
-    for (int i=layerIndex; i<layersTotal; i++) {
-         int framesTotal = frameIndex + frames;
-         for (int j=frameIndex; j<framesTotal; j++) {
-              setAttribute(i, k->layersColumn->lastFrame(i), TupTimeLineTableItem::IsUsed, false);
-              k->layersColumn->updateLastFrame(i, false);
-         }
-    }
-
-    int lastIndex = k->layersColumn->lastFrame(layerIndex);
-    if (lastIndex < frameIndex)
-        frameIndex = lastIndex;
-    blockSignals(true);
-    setCurrentItem(item(layerIndex, frameIndex));
-    blockSignals(false);
-    viewport()->update();
-}
-*/
-
 void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames)
 {
     if (layerIndex < 0 || layerIndex >= rowCount())
@@ -510,6 +481,8 @@ void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int 
     int layersTotal = layerIndex + layers;
     for (int i=layerIndex; i<layersTotal; i++) {
          int framesTotal = frameIndex + frames;
+         if (frames == (k->layersColumn->lastFrame(i) + 1))
+             frameIndex = 1;
          for (int j=frameIndex; j<framesTotal; j++) {
               setAttribute(i, k->layersColumn->lastFrame(i), TupTimeLineTableItem::IsUsed, false);
               k->layersColumn->updateLastFrame(i, false);
@@ -623,9 +596,15 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
     // tError() << "TupTimeLineTable::keyPressEvent() - event->key() -> " << event->key();
     // tError() << "TupTimeLineTable::keyPressEvent() - event->modifiers() -> " << event->modifiers();
 
+    // SQA: Check if this piece of code is obsolete 
     // Fn + Left/Right arrow
     if (event->key() == 16777232 || event->key() == 16777233)
         return;
+
+    if (event->key() == Qt::Key_Backspace) {
+        emit frameRemoved();
+        return;
+    }
 
     if (event->key() == Qt::Key_Return) {
         emit newPerspective(4);

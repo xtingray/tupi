@@ -87,6 +87,8 @@ class TUPI_EXPORT TupLayer : public QObject, public TupAbstractSerializable
         bool restoreFrame(int index);
         bool removeFrame(int position);
         bool resetFrame(int position);
+        bool restoreResettedFrame(int pos);
+        int resettedFramesCount();
         void clear();
 
         bool moveFrame(int from, int to);

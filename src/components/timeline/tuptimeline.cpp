@@ -372,11 +372,6 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                   framesTable->removeFrame(layerIndex, frameIndex);
               }
             break;
-            case TupProjectRequest::RestoreSelection:
-              {
-                  framesTable->restoreFrameSelection(layerIndex, frameIndex, response->arg().toString());
-              }
-            break;
             case TupProjectRequest::RemoveSelection:
               {
                   QString selection = response->arg().toString();
@@ -384,7 +379,10 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                   int layers = params.at(0).toInt();
                   int frames = params.at(1).toInt();
 
-                  framesTable->removeFrameSelection(layerIndex, frameIndex, layers, frames);
+                   if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo)
+                       framesTable->removeFrameSelection(layerIndex, frameIndex, layers, frames);
+                   else
+                       framesTable->restoreFrameSelection(layerIndex, frameIndex, selection);
               }
             break;
             case TupProjectRequest::Exchange:

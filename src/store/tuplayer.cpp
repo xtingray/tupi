@@ -42,6 +42,7 @@ struct TupLayer::Private
     TupScene *scene;
     Frames frames;
     Frames undoFrames;
+    Frames resettedFrames;
     Mouths lipsyncList;
     bool isVisible;
     QString name;
@@ -198,6 +199,16 @@ bool TupLayer::restoreFrame(int index)
             return true;
         }
         return false;
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupLayer::restoreFrame() - Fatal Error: "
+            "No available frames to restore index -> " + QString::number(index);
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
     }
 
     return false;
@@ -239,18 +250,49 @@ bool TupLayer::removeLipSync(const QString &name)
     return false;
 }
 
-bool TupLayer::resetFrame(int position)
+bool TupLayer::resetFrame(int pos)
 {
-    TupFrame *toReset = frameAt(position);
+    TupFrame *toReset = frameAt(pos);
 
     if (toReset) {
+        k->resettedFrames << k->frames.takeAt(pos); 
         TupFrame *frame = new TupFrame(this); 
         frame->setFrameName(tr("Frame"));
-        k->frames.insert(position, frame);
+        k->frames.insert(pos, frame);
+
         return true;
     }
 
     return false;
+}
+
+bool TupLayer::restoreResettedFrame(int pos)
+{
+    if (k->resettedFrames.count() > 0) {
+        TupFrame *frame = k->resettedFrames.takeLast();
+        if (frame) {
+            k->frames.removeAt(pos); 
+            k->frames.insert(pos, frame);
+            return true;
+        }
+    } else {
+        #ifdef K_DEBUG
+            QString msg = "TupLayer::restoreResettedFrame() - Fatal Error: "
+            "No available resetted frames to restore -> " + QString::number(k->resettedFrames.count());
+            #ifdef Q_OS_WIN
+                qDebug() << msg;
+            #else
+                tError() << msg;
+            #endif
+        #endif
+    }
+
+    return false;
+}
+
+int TupLayer::resettedFramesCount()
+{
+    return k->resettedFrames.count();
 }
 
 void TupLayer::clear()

@@ -672,6 +672,11 @@ int TupExposureTable::framesCountAtLayer(int layer)
 
 void TupExposureTable::keyPressEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_Backspace) {
+        emit frameRemoved();
+        return;
+    }
+
     if (event->key() == Qt::Key_Up || event->key() == Qt::Key_PageUp) {
         int row = currentRow()-1;
         if (row > -1) {

@@ -75,9 +75,8 @@ class TUPI_EXPORT TupProjectRequest
         {
             None = 0,
             Add = 1,
-            RestoreSelection = 2,
             Remove = -Add,
-            RemoveSelection = -RestoreSelection, 
+            RemoveSelection = 2, 
             Reset = 3,
             Exchange = 4,
             Move = 5,

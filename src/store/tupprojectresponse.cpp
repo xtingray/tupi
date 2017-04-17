@@ -80,11 +80,6 @@ int TupProjectResponse::action() const
                         return TupProjectRequest::Add;
                      }
                 break;
-                case TupProjectRequest::RemoveSelection:
-                     {
-                        return TupProjectRequest::RestoreSelection;
-                     }
-                break;
                 case TupProjectRequest::InsertSymbolIntoFrame:
                      {
                         return TupProjectRequest::RemoveSymbolFromFrame;
@@ -103,7 +98,7 @@ int TupProjectResponse::action() const
                 default:
                      {
                         #ifdef K_DEBUG
-                            QString msg = "TupProjectResponse::action() - Warning : Returning action as itself UNDO action -> " + QString::number(k->action);
+                            QString msg = "TupProjectResponse::action() - Returning same action as UNDO respoonse -> " + QString::number(k->action);
                             #ifdef Q_OS_WIN
                                 qDebug() << msg;
                             #else

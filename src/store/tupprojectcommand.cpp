@@ -385,11 +385,6 @@ void TupProjectCommand::frameCommand()
                  k->executor->removeFrame(response);
             }
             break;
-            case TupProjectRequest::RestoreSelection:
-            {
-                 k->executor->restoreFrameSelection(response);
-            }
-            break;
             case TupProjectRequest::RemoveSelection:
             {
                  k->executor->removeFrameSelection(response);
@@ -410,11 +405,13 @@ void TupProjectCommand::frameCommand()
                  k->executor->moveFrame(response);
             }
             break;
+            /*
             case TupProjectRequest::Lock:
             {
                  k->executor->lockFrame(response);
             }
             break;
+            */
             case TupProjectRequest::Rename:
             {
                  k->executor->renameFrame(response);

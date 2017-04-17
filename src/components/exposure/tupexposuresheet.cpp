@@ -904,14 +904,16 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                      }
                   }
                 break;
-                case TupProjectRequest::RestoreSelection:
+                case TupProjectRequest::RemoveSelection: 
                   {
-                      if (response->mode() == TupProjectResponse::Undo) {
-                          QString selection = response->arg().toString();
-                          QStringList params = selection.split(",");
-                          int layers = params.at(0).toInt();  
-                          int frames = params.at(1).toInt();
+                      QString selection = response->arg().toString();
+                      QStringList params = selection.split(",");
+                      int layers = params.at(0).toInt();
+                      int frames = params.at(1).toInt();
 
+                      if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                          removeBlock(table, layerIndex, frameIndex, layers, frames);
+                      } else {
                           TupScene *scene = k->project->sceneAt(sceneIndex);
                           if (scene) {
                               int layersTotal = layerIndex + layers;
@@ -933,24 +935,29 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                               table->selectFrame(layerIndex, frameIndex);
                           }
                       }
-
-                      return;
-                  }
-                break;
-                case TupProjectRequest::RemoveSelection: 
-                  {
-                      QString selection = response->arg().toString();
-                      QStringList params = selection.split(",");
-                      int layersTotal = params.at(0).toInt();
-                      int framesTotal = params.at(1).toInt();
-
-                      removeBlock(table, layerIndex, frameIndex, layersTotal, framesTotal);
                   }
                 break;
                 case TupProjectRequest::Reset:
                   {
-                      table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Empty);
-                      table->setFrameName(layerIndex, frameIndex, tr("Frame"));
+                      if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                          table->updateFrameState(layerIndex, frameIndex, TupExposureTable::Empty);
+                          table->setFrameName(layerIndex, frameIndex, tr("Frame"));
+                      } else {
+                          TupScene *scene = k->project->sceneAt(sceneIndex);
+                          if (scene) {
+                              TupLayer *layer = scene->layerAt(layerIndex);
+                              if (layer) {
+                                  TupFrame *frame = layer->frameAt(frameIndex);
+                                  if (frame) {
+                                      TupExposureTable::FrameType status = TupExposureTable::Used;
+                                      if (frame->isEmpty())
+                                          status = TupExposureTable::Empty;
+                                      table->updateFrameState(layerIndex, frameIndex, status);
+                                      table->setFrameName(layerIndex, frameIndex, frame->frameName());
+                                  }
+                              }
+                          }
+                      } 
 
                       return;
                   }

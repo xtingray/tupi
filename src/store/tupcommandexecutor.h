@@ -67,7 +67,7 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         bool createLayer(TupLayerResponse *response);
         bool addLipSync(TupLayerResponse *response);
         bool createFrame(TupFrameResponse *response);
-        bool restoreFrameSelection(TupFrameResponse *response);
+        // bool restoreFrameSelection(TupFrameResponse *response);
         
         bool createItem(TupItemResponse *response);
 
@@ -101,7 +101,7 @@ class TUPI_EXPORT TupCommandExecutor : public QObject
         
         bool lockScene(TupSceneResponse *response);
         bool lockLayer(TupLayerResponse *response);
-        bool lockFrame(TupFrameResponse *response);
+        // bool lockFrame(TupFrameResponse *response);
         
         bool renameScene(TupSceneResponse *response);
         bool renameLayer(TupLayerResponse *response);
