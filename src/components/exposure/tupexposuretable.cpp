@@ -695,7 +695,6 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         int framesCount = k->header->lastFrame(currentLayer());
         int next = currentRow() + 1;
         if (event->modifiers() == Qt::ControlModifier) {
-            tError() << "Copying frame from layer -> " << currentLayer() << ", frame -> " << currentRow();
             emit frameCopied(currentLayer(), currentFrame());
         } else {
             if (next >= framesCount)

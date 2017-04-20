@@ -393,8 +393,12 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
             case TupProjectRequest::Extend:
               {
                   int times = response->arg().toInt();
-                  for (int i=0; i<times; i++)
-                      framesTable->insertFrame(layerIndex);
+                  if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                      for (int i=0; i<times; i++)
+                          framesTable->insertFrame(layerIndex);
+                  } else {
+                      framesTable->removeFrameSelection(layerIndex, frameIndex, 1, times);
+                  }
               }
             break;
             case TupProjectRequest::Select:

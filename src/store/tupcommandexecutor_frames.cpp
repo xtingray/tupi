@@ -456,8 +456,17 @@ bool TupCommandExecutor::setFrameVisibility(TupFrameResponse *response)
 
 bool TupCommandExecutor::extendFrame(TupFrameResponse *response)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupCommandExecutor::extendFrame()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
+    int frameIndex = response->frameIndex();
     int pos = response->frameIndex();
     int times = response->arg().toInt();
 
@@ -465,7 +474,16 @@ bool TupCommandExecutor::extendFrame(TupFrameResponse *response)
     if (scene) {
         TupLayer *layer = scene->layerAt(layerIndex);
         if (layer) {
-            if (layer->extendFrame(pos, times)) {
+            if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                if (layer->extendFrame(pos, times)) {
+                    emit responsed(response);
+                    return true;
+                }
+            } else {
+                for (int i=0; i<times;i++) {
+                    if (!layer->removeFrame(frameIndex))
+                        return false;
+                }
                 emit responsed(response);
                 return true;
             }

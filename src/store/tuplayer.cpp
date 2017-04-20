@@ -214,20 +214,19 @@ bool TupLayer::restoreFrame(int index)
     return false;
 }
 
-bool TupLayer::removeFrame(int position)
+bool TupLayer::removeFrame(int pos)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
             qDebug() << "[TupLayer::removeFrame()]";
         #else
-            T_FUNCINFO;
+            T_FUNCINFO << "pos -> " << pos;
         #endif
     #endif
 
-    TupFrame *toRemove = frameAt(position);
-
+    TupFrame *toRemove = frameAt(pos);
     if (toRemove) {
-        k->undoFrames << k->frames.takeAt(position);
+        k->undoFrames << k->frames.takeAt(pos);
         k->framesCounter--;
 
         return true;

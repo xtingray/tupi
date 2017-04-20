@@ -977,22 +977,26 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                 break;
                 case TupProjectRequest::Extend:
                   {
-                      QString frameName = k->currentTable->frameName(layerIndex, frameIndex);
-                      TupExposureTable::FrameType state = k->currentTable->frameState(layerIndex, frameIndex);
                       int times = response->arg().toInt();
+                      if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                          QString frameName = k->currentTable->frameName(layerIndex, frameIndex);
+                          TupExposureTable::FrameType state = k->currentTable->frameState(layerIndex, frameIndex);
 
-                      for(int i=1; i<=times; i++) {
-                          table->insertFrame(layerIndex, frameIndex + i, frameName, response->external());
-                          table->updateFrameState(layerIndex, frameIndex + i, state);
+                          for (int i=1; i<=times; i++) {
+                              table->insertFrame(layerIndex, frameIndex + i, frameName, response->external());
+                              table->updateFrameState(layerIndex, frameIndex + i, state);
+                          }
+
+                          table->clearSelection();
+
+                          table->blockSignals(true);
+                          table->selectFrame(layerIndex, frameIndex + times);
+                          table->blockSignals(false);
+
+                          selectFrame(layerIndex, frameIndex + times);
+                      } else {
+                          removeBlock(table, layerIndex, frameIndex, 1, times);
                       }
-
-                      table->clearSelection();
-
-                      table->blockSignals(true);
-                      table->selectFrame(layerIndex, frameIndex + times);
-                      table->blockSignals(false);
-
-                      selectFrame(layerIndex, frameIndex + times);
                   }
                 break;
                 case TupProjectRequest::CopySelection:
