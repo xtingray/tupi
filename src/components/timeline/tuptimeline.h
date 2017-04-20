@@ -79,7 +79,7 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         bool requestSceneAction(int action, int sceneIndex = -1, const QVariant &arg = QVariant());
         void selectFrame(int indexLayer, int indexFrame);
         void removeFrameCopy();
-        void copyFrameForward(int layerIndex, int frameIndex);
+        void extendFrameForward(int layerIndex, int frameIndex);
         void requestLayerMove(int oldLayerIndex, int newLayerIndex);
 
         void requestLayerVisibilityAction(int layerIndex, bool isVisible);

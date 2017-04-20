@@ -354,16 +354,24 @@ bool TupLayer::exchangeFrame(int from, int to)
     return true;
 }
 
-bool TupLayer::expandFrame(int position, int size)
+bool TupLayer::extendFrame(int pos, int times)
 {
-    if (position < 0 || position >= k->frames.count())
+    if (pos < 0 || pos >= k->frames.count())
         return false;
 
-    TupFrame *toExpand = frameAt(position);
+    TupFrame *toExpand = frameAt(pos);
     if (toExpand) {
-        int limit = position + size;
-        for (int i = position + 1; i <= limit; i++)
-             k->frames.insert(i, toExpand);
+        QDomDocument doc;
+        doc.appendChild(toExpand->toXml(doc));
+        QString data = doc.toString();
+
+        for (int i=1; i<=times; i++) {
+            TupFrame *frame = new TupFrame(this);
+            frame->fromXml(data);
+            k->frames.insert(pos + i, frame);
+            k->framesCounter++;
+        }
+
         return true;
     }
 

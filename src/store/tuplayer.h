@@ -93,7 +93,7 @@ class TUPI_EXPORT TupLayer : public QObject, public TupAbstractSerializable
 
         bool moveFrame(int from, int to);
         bool exchangeFrame(int from, int to);
-        bool expandFrame(int position, int size);
+        bool extendFrame(int pos, int times);
         
         TupFrame *frameAt(int position) const;
 

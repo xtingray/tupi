@@ -103,7 +103,7 @@ class TUPI_EXPORT TupProjectRequest
             
             // frames
             Update = 21,
-            Expand = 22,
+            Extend = 22,
             Copy = 23,
             CopySelection = 24,
             Paste = 25,

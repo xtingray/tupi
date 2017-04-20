@@ -149,7 +149,7 @@ void TupTimeLine::addScene(int sceneIndex, const QString &name)
 
     connect(framesTable, SIGNAL(frameSelected(int, int)), this, SLOT(selectFrame(int, int)));
     connect(framesTable, SIGNAL(frameRemoved()), SLOT(removeFrameCopy()));
-    connect(framesTable, SIGNAL(frameCopied(int, int)), SLOT(copyFrameForward(int, int)));
+    connect(framesTable, SIGNAL(frameCopied(int, int)), SLOT(extendFrameForward(int, int)));
     connect(framesTable, SIGNAL(visibilityChanged(int, bool)), this, SLOT(requestLayerVisibilityAction(int, bool)));
     connect(framesTable, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestLayerRenameAction(int, const QString &))); 
     connect(framesTable, SIGNAL(layerMoved(int, int)), this, SLOT(requestLayerMove(int, int)));
@@ -390,8 +390,11 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                   framesTable->exchangeFrame(frameIndex, layerIndex, response->arg().toInt(), layerIndex);
               }
             break;
-            case TupProjectRequest::Rename:
+            case TupProjectRequest::Extend:
               {
+                  int times = response->arg().toInt();
+                  for (int i=0; i<times; i++)
+                      framesTable->insertFrame(layerIndex);
               }
             break;
             case TupProjectRequest::Select:
@@ -596,7 +599,7 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::ExtendFrame:
             {
-                copyFrameForward(layerIndex, currentFrame);
+                extendFrameForward(layerIndex, currentFrame);
                 return true;
             }
             break;
@@ -869,36 +872,20 @@ void TupTimeLine::removeFrameCopy()
     k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
 }
 
-void TupTimeLine::copyFrameForward(int layerIndex, int frameIndex)
+void TupTimeLine::extendFrameForward(int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupCommandExecutor::copyFrameSelection()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     int sceneIndex = k->scenesContainer->currentIndex();
-
-    QString frameName = tr("Frame");
-    TupScene *scene = k->project->sceneAt(sceneIndex);
-    if (scene) {
-        TupLayer *layer = scene->layerAt(layerIndex);
-        if (layer) {
-            TupFrame *frame = layer->frameAt(frameIndex);
-            if (frame)
-                frameName = frame->frameName();
-        }
-    }
-
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Copy);
-    emit localRequestTriggered(&request);
-
-    int target = frameIndex + 1;
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Add, "");
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
+                                                                      TupProjectRequest::Extend, 1);
     emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Paste);
-    emit localRequestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Rename, frameName);
-    emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Select);
-    emit localRequestTriggered(&request);
 }
 
 void TupTimeLine::requestSceneSelection(int sceneIndex)

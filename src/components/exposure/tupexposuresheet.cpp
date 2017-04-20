@@ -224,7 +224,7 @@ void TupExposureSheet::addScene(int sceneIndex, const QString &name)
     connect(scene, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(renameFrame(int, int, const QString &)));
     connect(scene, SIGNAL(frameSelected(int, int)), SLOT(selectFrame(int, int)));
     connect(scene, SIGNAL(frameRemoved()), SLOT(removeFrame()));
-    connect(scene, SIGNAL(frameCopied(int, int)), SLOT(copyFrameForward(int, int)));
+    connect(scene, SIGNAL(frameCopied(int, int)), SLOT(extendFrameForward(int, int)));
     connect(scene, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestRenameLayer(int, const QString &)));
     connect(scene, SIGNAL(layerMoved(int, int)), this, SLOT(moveLayer(int, int)));
     connect(scene, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(changeLayerVisibility(int, bool)));
@@ -284,7 +284,7 @@ void TupExposureSheet::applyAction(int action)
 
             case TupProjectActionBar::ExtendFrame:
                {
-                 copyFrameForward(k->currentTable->currentLayer(), k->currentTable->currentFrame());
+                 extendFrameForward(k->currentTable->currentLayer(), k->currentTable->currentFrame());
                }
                break;
 
@@ -471,12 +471,12 @@ void TupExposureSheet::requestPasteSelectionInCurrentFrame()
     }
 }
 
-void TupExposureSheet::requestExpandCurrentFrame(int n)
+void TupExposureSheet::requestExtendCurrentFrame(int times)
 {
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->scenesContainer->currentIndex(),
                                                    k->currentTable->currentLayer(),
                                                    k->currentTable->currentFrame(),
-                                                   TupProjectRequest::Expand, n);
+                                                   TupProjectRequest::Extend, times);
     emit requestTriggered(&request);
 }
 
@@ -543,35 +543,20 @@ void TupExposureSheet::removeFrame()
     k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
 }
 
-void TupExposureSheet::copyFrameForward(int layerIndex, int frameIndex)
+void TupExposureSheet::extendFrameForward(int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupExposureSheet::extendFrameForward()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     int sceneIndex = k->scenesContainer->currentIndex();
-    QString frameName = tr("Frame");
-
-    TupScene *scene = k->project->sceneAt(sceneIndex);
-    if (scene) {
-        TupLayer *layer = scene->layerAt(layerIndex);
-        if (layer) {
-            TupFrame *frame = layer->frameAt(frameIndex);
-            if (frame)
-                frameName = frame->frameName();
-        }
-    }
-
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex, TupProjectRequest::Copy);
-    emit localRequestTriggered(&request);
-
-    int target = frameIndex + 1;
-    insertFrame(layerIndex, target);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Paste);
-    emit localRequestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Rename, frameName);
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
+                                                                      TupProjectRequest::Extend, 1);
     emit requestTriggered(&request);
-
-    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, target, TupProjectRequest::Select, "1");
-    emit localRequestTriggered(&request);
 }
 
 void TupExposureSheet::changeLayerVisibility(int layerIndex, bool visibility)
@@ -949,10 +934,10 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                               if (layer) {
                                   TupFrame *frame = layer->frameAt(frameIndex);
                                   if (frame) {
-                                      TupExposureTable::FrameType status = TupExposureTable::Used;
+                                      TupExposureTable::FrameType state = TupExposureTable::Used;
                                       if (frame->isEmpty())
-                                          status = TupExposureTable::Empty;
-                                      table->updateFrameState(layerIndex, frameIndex, status);
+                                          state = TupExposureTable::Empty;
+                                      table->updateFrameState(layerIndex, frameIndex, state);
                                       table->setFrameName(layerIndex, frameIndex, frame->frameName());
                                   }
                               }
@@ -990,13 +975,24 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                       }
                   }
                 break;
-                case TupProjectRequest::Expand:
+                case TupProjectRequest::Extend:
                   {
-                      // SQA: It's very possible this feature will be deprecated. Please confirm!
-                      for(int i = 0; i < response->arg().toInt(); i++)
-                          table->insertFrame(layerIndex, frameIndex + i + 1, 
-                                             table->frameName(layerIndex, frameIndex), 
-                                             response->external());
+                      QString frameName = k->currentTable->frameName(layerIndex, frameIndex);
+                      TupExposureTable::FrameType state = k->currentTable->frameState(layerIndex, frameIndex);
+                      int times = response->arg().toInt();
+
+                      for(int i=1; i<=times; i++) {
+                          table->insertFrame(layerIndex, frameIndex + i, frameName, response->external());
+                          table->updateFrameState(layerIndex, frameIndex + i, state);
+                      }
+
+                      table->clearSelection();
+
+                      table->blockSignals(true);
+                      table->selectFrame(layerIndex, frameIndex + times);
+                      table->blockSignals(false);
+
+                      selectFrame(layerIndex, frameIndex + times);
                   }
                 break;
                 case TupProjectRequest::CopySelection:
@@ -1110,7 +1106,7 @@ void TupExposureSheet::libraryResponse(TupLibraryResponse *response)
     }
 }
 
-void TupExposureSheet::insertFrames(int n)
+void TupExposureSheet::insertFrames(int times)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -1126,16 +1122,16 @@ void TupExposureSheet::insertFrames(int n)
     int lastFrame = k->currentTable->framesCountAtCurrentLayer() - 1;
 
     if (target > lastFrame) {
-        for (int i=0; i<n; i++)
+        for (int i=0; i<times; i++)
              insertFrame(layer, k->currentTable->framesCountAtCurrentLayer());
         selectFrame(layer, k->currentTable->currentFrame() + 1);
     } else {
         int frame = k->currentTable->currentFrame() + 1; 
-        for (int i=0; i<n; i++)
+        for (int i=0; i<times; i++)
              insertFrame(layer, k->currentTable->framesCountAtCurrentLayer());
 
         for (int index=lastFrame; index >= target; index--) {
-             TupProjectRequest event = TupRequestBuilder::createFrameRequest(scene, layer, index, TupProjectRequest::Exchange, index + n);
+             TupProjectRequest event = TupRequestBuilder::createFrameRequest(scene, layer, index, TupProjectRequest::Exchange, index + times);
              emit requestTriggered(&event);
         }
 

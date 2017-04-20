@@ -454,7 +454,7 @@ bool TupCommandExecutor::setFrameVisibility(TupFrameResponse *response)
     return false;
 }
 
-bool TupCommandExecutor::expandFrame(TupFrameResponse *response)
+bool TupCommandExecutor::extendFrame(TupFrameResponse *response)
 {
     int sceneIndex = response->sceneIndex();
     int layerIndex = response->layerIndex();
@@ -465,7 +465,7 @@ bool TupCommandExecutor::expandFrame(TupFrameResponse *response)
     if (scene) {
         TupLayer *layer = scene->layerAt(layerIndex);
         if (layer) {
-            if (layer->expandFrame(pos, times)) {
+            if (layer->extendFrame(pos, times)) {
                 emit responsed(response);
                 return true;
             }
@@ -487,8 +487,6 @@ bool TupCommandExecutor::copyFrameSelection(TupFrameResponse *response)
 
     selectionFramesCopy.clear();
     int sceneIndex = response->sceneIndex();
-    // int layerIndex = response->layerIndex();
-    // int pos = response->frameIndex();
     QString selection = response->arg().toString();
     QStringList params = selection.split(",");
 

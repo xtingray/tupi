@@ -460,21 +460,36 @@ void TupTimeLineTable::selectFrame(int frameIndex)
 
 void TupTimeLineTable::removeFrame(int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLineTable::removeFrame()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     Q_UNUSED(frameIndex);
 
     if (layerIndex < 0 || layerIndex >= rowCount())
         return;
 
     k->removingFrame = true;
-    
     setAttribute(layerIndex, k->layersColumn->lastFrame(layerIndex), TupTimeLineTableItem::IsUsed, false);
-
     k->layersColumn->updateLastFrame(layerIndex, false);
+
     viewport()->update();
 }
 
 void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLineTable::removeFrameSelection()]";
+        #else
+            T_FUNCINFO;
+        #endif
+    #endif
+
     if (layerIndex < 0 || layerIndex >= rowCount())
         return;
 
@@ -492,9 +507,13 @@ void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int 
     int lastIndex = k->layersColumn->lastFrame(layerIndex);
     if (lastIndex < frameIndex)
         frameIndex = lastIndex;
+
+    /*
     blockSignals(true);
     setCurrentItem(item(layerIndex, frameIndex));
     blockSignals(false);
+    */
+
     viewport()->update();
 }
 

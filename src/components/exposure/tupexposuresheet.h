@@ -83,8 +83,8 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         Private * const k;
         void createMenuForAFrame();
         // void createMenuForSelection();
-        void requestExpandCurrentFrame(int n);
-        void insertFrames(int n);
+        void requestExtendCurrentFrame(int times);
+        void insertFrames(int times);
         void copyTimeLine(int times);
         void removeBlock(TupExposureTable *table, int layerIndex, int frameIndex, int layersTotal, int framesTotal);
 
@@ -117,7 +117,7 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void renameFrame(int layerIndex, int frameIndex, const QString &name);
         void selectFrame(int layerIndex, int frameIndex);
         void removeFrame();
-        void copyFrameForward(int layerIndex, int frameIndex);
+        void extendFrameForward(int layerIndex, int frameIndex);
 
         void requestRenameLayer(int layerIndex, const QString &name);
         void moveLayer(int oldIndex, int newIndex);

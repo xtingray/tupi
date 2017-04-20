@@ -427,9 +427,9 @@ void TupProjectCommand::frameCommand()
                  k->executor->setFrameVisibility(response);
             }
             break;
-            case TupProjectRequest::Expand:
+            case TupProjectRequest::Extend:
             {
-                 k->executor->expandFrame(response);
+                 k->executor->extendFrame(response);
             }
             break;
             /*
