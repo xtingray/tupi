@@ -1,6 +1,6 @@
 [Setup]
 AppName=Tupi
-AppVersion=0.2-8
+AppVersion=0.2.9
 DefaultDirName={pf}\Tupi
 DefaultGroupName=Tupi 2D Magic
 OutputDir=c:\devel\installer
@@ -62,12 +62,9 @@ Source: "bin\imageformats\*"; DestDir: "{app}\bin\imageformats"
 Source: "bin\mediaservice\*"; DestDir: "{app}\bin\mediaservice"
 Source: "bin\audio\*"; DestDir: "{app}\bin\audio"
 Source: "data\help\css\*"; DestDir: "{app}\data\help\css"
-Source: "data\help\en\*"; DestDir: "{app}\data\help\en"
-Source: "data\help\es\*"; DestDir: "{app}\data\help\es"
 Source: "data\help\examples\*"; DestDir: "{app}\data\help\examples"
-Source: "data\help\gl\*"; DestDir: "{app}\data\help\gl"
 Source: "data\help\images\*"; DestDir: "{app}\data\help\images"
-Source: "data\help\ru\*"; DestDir: "{app}\data\help\ru"
+Source: "data\help\pages\*"; DestDir: "{app}\data\help\pages"
 Source: "data\palettes\*"; DestDir: "{app}\data\palettes"
 Source: "data\storyboard\*"; DestDir: "{app}\data\storyboard"
 Source: "data\themes\default\config\*"; DestDir: "{app}\data\themes\default\config"
