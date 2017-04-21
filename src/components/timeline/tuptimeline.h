@@ -58,6 +58,7 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         
     private:
         TupTimeLineTable *framesTable(int sceneIndex);
+        void requestRemoveFrame(bool flag);
  
     protected:
         void sceneResponse(TupSceneResponse *response);

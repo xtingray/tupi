@@ -59,6 +59,7 @@ struct TupTimeLine::Private
     TupProject *project;
     TupLibrary *library;
     QString frameSelection;
+    bool doSelection;
 };
 
 TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidgetBase(parent, "TupTimeLine"), k(new Private)
@@ -77,6 +78,7 @@ TupTimeLine::TupTimeLine(TupProject *project, QWidget *parent) : TupModuleWidget
     k->project = project;
     k->library = k->project->library();
     k->currentTable = 0;
+    k->doSelection = false;
 
     // SQA: Pending to add the feature "Layer Opacity" as part of this action bar
 
@@ -198,9 +200,8 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
                  if (response->mode() == TupProjectResponse::Do) {
                      addScene(sceneIndex, response->arg().toString());
                      return;
-                 } 
-
-                 if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                 } else { 
+                 // if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
                      k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
                      TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
                      emit requestTriggered(&request);
@@ -226,9 +227,7 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
                      k->currentTable->blockSignals(true);
                      k->currentTable->selectFrame(0, 0);
                      k->currentTable->blockSignals(false);
-                 }
-
-                 if (response->mode() == TupProjectResponse::Undo) {
+                 } else {
                      k->scenesContainer->removeScene(sceneIndex, false);
                      k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
 
@@ -292,9 +291,8 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
                      if (response->mode() == TupProjectResponse::Do) {
                          framesTable->insertLayer(layerIndex, response->arg().toString());
                          return;
-                     }
-
-                     if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                     } else {
+                     // if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
                          TupScene *scene = k->project->sceneAt(sceneIndex);
                          if (scene) {
                              TupLayer *layer = scene->layerAt(layerIndex);
@@ -375,14 +373,17 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
             case TupProjectRequest::RemoveSelection:
               {
                   QString selection = response->arg().toString();
-                  QStringList params = selection.split(",");
-                  int layers = params.at(0).toInt();
-                  int frames = params.at(1).toInt();
+                  if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                      QStringList blocks = selection.split(":");
+                      QStringList params = blocks.at(0).split(",");
+                      int layers = params.at(0).toInt();
+                      int frames = params.at(1).toInt();
+                      framesTable->removeFrameSelection(layerIndex, frameIndex, layers, frames, k->doSelection);
+                   } else {
+                      framesTable->restoreFrameSelection(layerIndex, frameIndex, selection);
+                   }
 
-                   if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo)
-                       framesTable->removeFrameSelection(layerIndex, frameIndex, layers, frames);
-                   else
-                       framesTable->restoreFrameSelection(layerIndex, frameIndex, selection);
+                   k->doSelection = false;
               }
             break;
             case TupProjectRequest::Exchange:
@@ -609,17 +610,7 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::RemoveFrame:
             {
-                QList<int> coords = framesTable(sceneIndex)->currentSelection();
-                if (coords.count() == 4) {
-                    int frames = coords.at(1) - coords.at(0) + 1;
-                    int layers = coords.at(3) - coords.at(2) + 1;
-                    QString selection = QString::number(layers) + "," + QString::number(frames);
-
-                    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, coords.at(2), coords.at(0), 
-                                                                                      TupProjectRequest::RemoveSelection, selection);
-                    emit requestTriggered(&request);
-                }
-
+                requestRemoveFrame(true);
                 return true;
             }
             break;
@@ -873,7 +864,34 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
 
 void TupTimeLine::removeFrameCopy()
 {
-    k->actionBar->emitActionSelected(TupProjectActionBar::RemoveFrame);
+    requestRemoveFrame(false);
+}
+
+void TupTimeLine::requestRemoveFrame(bool flag)
+{
+    k->doSelection = flag;
+
+    int sceneIndex = k->scenesContainer->currentIndex();
+    QList<int> coords = framesTable(sceneIndex)->currentSelection();
+    if (coords.count() == 4) {
+        int frames = coords.at(1) - coords.at(0) + 1;
+        int layers = coords.at(3) - coords.at(2) + 1;
+
+        QString flags = "";
+        for (int i=coords.at(0); i<=coords.at(1); i++) {
+            int framesCount = framesTable(sceneIndex)->lastFrameByLayer(i) + 1;
+            if (framesCount > frames)
+                flags += "0,";
+            else
+                flags += "1,";
+        }
+        flags.chop(1);
+
+        QString selection = QString::number(layers) + "," + QString::number(frames) + ":" + flags;
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, coords.at(2), coords.at(0),
+                                                                          TupProjectRequest::RemoveSelection, selection);
+        emit requestTriggered(&request);
+    }
 }
 
 void TupTimeLine::extendFrameForward(int layerIndex, int frameIndex)

@@ -139,7 +139,8 @@ bool TupCommandExecutor::removeFrameSelection(TupFrameResponse *response)
     int frameIndex = response->frameIndex();
     QString selection = response->arg().toString();
 
-    QStringList params = selection.split(",");
+    QStringList blocks = selection.split(":");
+    QStringList params = blocks.at(0).split(",");
     int layers = params.at(0).toInt();  
     int frames = params.at(1).toInt();
 

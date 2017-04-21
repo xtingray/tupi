@@ -297,7 +297,17 @@ void TupExposureSheet::applyAction(int action)
                      int scene = k->scenesContainer->currentIndex();
                      int layers = coords.at(1) - coords.at(0) + 1;
                      int frames = coords.at(3) - coords.at(2) + 1;
-                     QString selection = QString::number(layers) + "," + QString::number(frames);
+
+                     QString flags = "";
+                     for (int i=coords.at(0); i<=coords.at(1); i++) {
+                         if (k->currentTable->framesCountAtLayer(i) > frames)
+                             flags += "0,";
+                         else
+                             flags += "1,";
+                     }
+                     flags.chop(1); 
+
+                     QString selection = QString::number(layers) + "," + QString::number(frames) + ":" + flags;
 
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(scene, coords.at(0), coords.at(2), 
                                                                                        TupProjectRequest::RemoveSelection, selection);
@@ -892,9 +902,12 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                 case TupProjectRequest::RemoveSelection: 
                   {
                       QString selection = response->arg().toString();
-                      QStringList params = selection.split(",");
+                      QStringList blocks = selection.split(":");
+
+                      QStringList params = blocks.at(0).split(",");
                       int layers = params.at(0).toInt();
                       int frames = params.at(1).toInt();
+                      QStringList flags = blocks.at(1).split(","); 
 
                       if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
                           removeBlock(table, layerIndex, frameIndex, layers, frames);
@@ -902,9 +915,12 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                           TupScene *scene = k->project->sceneAt(sceneIndex);
                           if (scene) {
                               int layersTotal = layerIndex + layers;
-                              for (int i=layerIndex; i<layersTotal; i++) {
+                              for (int i=layerIndex,index=0; i<layersTotal; i++,index++) {
                                   TupLayer *layer = scene->layerAt(i);
                                   if (layer) {
+                                      bool remove = flags.at(index).toInt();
+                                      if (remove)
+                                          table->removeFrame(i, 0);
                                       int framesTotal = frameIndex + frames;
                                       for (int j=frameIndex; j<framesTotal; j++) {
                                           TupFrame *frame = layer->frameAt(j);

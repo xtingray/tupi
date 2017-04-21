@@ -408,10 +408,17 @@ void TupTimeLineTable::restoreFrameSelection(int layerIndex, int frameIndex, con
     if (layerIndex < 0 || layerIndex >= rowCount())
         return;
 
-    QStringList params = selection.split(",");
+    QStringList blocks = selection.split(":");
+    QStringList params = blocks.at(0).split(",");
     int layers = params.at(0).toInt();
     int frames = params.at(1).toInt();
+    QStringList flags = blocks.at(1).split(",");
 
+    for (int i=layerIndex,index=0; i<layers; i++,index++) {
+        bool remove = flags.at(index).toInt();
+        if (remove)
+            removeFrame(i, 0);
+    }
     generateFrames(layerIndex, layers, frames);
 
     blockSignals(true);
@@ -480,7 +487,7 @@ void TupTimeLineTable::removeFrame(int layerIndex, int frameIndex)
     viewport()->update();
 }
 
-void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames)
+void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames, bool doSelection)
 {
     #ifdef K_DEBUG
         #ifdef Q_OS_WIN
@@ -495,10 +502,12 @@ void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int 
 
     int layersTotal = layerIndex + layers;
     for (int i=layerIndex; i<layersTotal; i++) {
+         int frameTarget = frameIndex;  
          int framesTotal = frameIndex + frames;
          if (frames == (k->layersColumn->lastFrame(i) + 1))
-             frameIndex = 1;
-         for (int j=frameIndex; j<framesTotal; j++) {
+             frameTarget = 1;
+
+         for (int j=frameTarget; j<framesTotal; j++) {
               setAttribute(i, k->layersColumn->lastFrame(i), TupTimeLineTableItem::IsUsed, false);
               k->layersColumn->updateLastFrame(i, false);
          }
@@ -508,11 +517,11 @@ void TupTimeLineTable::removeFrameSelection(int layerIndex, int frameIndex, int 
     if (lastIndex < frameIndex)
         frameIndex = lastIndex;
 
-    /*
-    blockSignals(true);
-    setCurrentItem(item(layerIndex, frameIndex));
-    blockSignals(false);
-    */
+    if (doSelection) {
+        blockSignals(true);
+        setCurrentItem(item(layerIndex, frameIndex));
+        blockSignals(false);
+    }
 
     viewport()->update();
 }

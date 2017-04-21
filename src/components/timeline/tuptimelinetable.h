@@ -109,7 +109,7 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
         void selectFrame(int frameIndex);
         void setAttribute(int layerIndex, int frameIndex, TupTimeLineTableItem::Attributes att, bool value);
         void removeFrame(int layerIndex, int frameIndex);
-        void removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames);
+        void removeFrameSelection(int layerIndex, int frameIndex, int layers, int frames, bool doSelection = false);
 
         // void lockFrame(int layerIndex, int frameIndex, bool lock);
         void setItemSize(int w, int h);
