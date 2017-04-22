@@ -387,9 +387,6 @@ bool TupLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
     }
 
-    if (!k->folder.isEmpty() && k->folder.compare(".root") != 0)
-        k->dataPath = k->folder + "/" + k->dataPath;
-
     k->dataPath = dataDir + path + k->dataPath;
     loadData(k->dataPath);
     

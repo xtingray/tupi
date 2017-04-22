@@ -568,9 +568,6 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
     objectDocument.appendChild(objectDocument.importNode(xml, true));
 
     TupLibraryObject *object = new TupLibraryObject(this);
-    if (folder.compare(".root") != 0)
-        object->setFolder(folder);
-
     object->fromXml(objectDocument.toString(0));
 
     switch (object->type()) {
@@ -586,7 +583,7 @@ void TupLibraryFolder::loadItem(const QString &folder, QDomNode xml)
             break;
     }
 
-    if (folder.compare(".root") == 0)
+    if (folder.compare("library") == 0)
         addObject(object);
     else
         addObject(folder, object);

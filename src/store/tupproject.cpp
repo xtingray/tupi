@@ -81,7 +81,7 @@ TupProject::TupProject(QObject *parent) : QObject(parent), k(new Private)
     k->bgColor = QColor("#fff");
     k->sceneCounter = 0;
     k->isOpen = false;
-    k->library = new TupLibrary(".root", this);
+    k->library = new TupLibrary("library", this);
     k->cachePath = "";
 }
 
