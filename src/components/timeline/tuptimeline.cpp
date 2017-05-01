@@ -826,10 +826,6 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
         int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
         QList<int> coords = framesTable(sceneIndex)->currentSelection();
 
-        tError() << "SELECTION: " << coords;
-        tError() << "frameIndex -> " << frameIndex;
-        tError() << "lastFrame -> " << lastFrame;
-
         if (frameIndex > lastFrame) {
             for (int frame = lastFrame + 1; frame <= frameIndex; frame++) {
                 TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frame,
