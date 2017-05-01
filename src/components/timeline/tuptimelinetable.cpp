@@ -619,6 +619,22 @@ void TupTimeLineTable::mousePressEvent(QMouseEvent *event)
     QTableWidget::mousePressEvent(event);
 }
 
+void TupTimeLineTable::mouseMoveEvent(QMouseEvent *event)
+{
+    int frameIndex = columnAt(event->y());
+    QList<int> selection = currentSelection();
+
+    for (int j=selection.at(0); j<=selection.at(1); j++) {
+        int top = k->layersColumn->lastFrame(j);
+        if (selection.at(3) >= top) {
+            for (int i=top; i<=selection.at(3); i++)
+                emit frameSelected(j, i);
+        }
+    }
+
+    QTableWidget::mouseMoveEvent(event);
+}
+
 void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
 {
     // tError() << "TupTimeLineTable::keyPressEvent() - event->key() -> " << event->key();
@@ -740,8 +756,8 @@ QList<int> TupTimeLineTable::currentSelection()
 
     if (!selection.isEmpty()) {
         foreach (QModelIndex cell, selection) {
-            int layer = cell.column();
-            int frame = cell.row();
+            int layer = cell.row();
+            int frame = cell.column();
 
             if (!layers.contains(layer))
                 layers << layer;

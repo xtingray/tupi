@@ -109,7 +109,7 @@ class TUPI_EXPORT TupItemTweener : public QObject, public TupAbstractSerializabl
         QString tweenType();
 
         TupItemTweener::RotationType tweenRotationType();
-        int tweenRotateSpeed();
+        double tweenRotateSpeed();
         bool tweenRotateLoop();
         TupItemTweener::RotateDirection tweenRotateDirection();
         int tweenRotateStartDegree();

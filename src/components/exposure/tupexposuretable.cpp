@@ -561,10 +561,11 @@ void TupExposureTable::markUsedFrames(int frameIndex, int layerIndex)
         #endif
     #endif
 
-    int layer = k->header->visualIndex(layerIndex);
+    // int layer = k->header->visualIndex(layerIndex);
     int lastFrame = k->header->lastFrame(layerIndex); 
 
     if (frameIndex >= lastFrame) {
+        /*
         for (int column=0; column<columnCount(); column++) {
              int used = usedFrames(column); 
              if (lastFrame >= used) {
@@ -572,8 +573,15 @@ void TupExposureTable::markUsedFrames(int frameIndex, int layerIndex)
                       emit frameUsed(column, frame);
              }
         }
+       */
 
-        emit frameSelected(layer, frameIndex);
+        int used = usedFrames(layerIndex);
+        if (lastFrame >= used) {
+            for (int frame=used; frame <= frameIndex; frame++)
+                emit frameUsed(layerIndex, frame);
+        }
+
+        emit frameSelected(layerIndex, frameIndex);
     } 
 }
 
@@ -607,7 +615,7 @@ void TupExposureTable::mousePressEvent(QMouseEvent *event)
                 if (k->singleMenu)
                     k->singleMenu->exec(event->globalPos());
             }
-            /*
+            /* SQA: PopUp menu for multiple selection
             } else if (frames > 1) {
                 if (k->multipleMenu) {
                     // clearFocus();
@@ -618,14 +626,6 @@ void TupExposureTable::mousePressEvent(QMouseEvent *event)
         } else {
             return;
         }
-    } else {
-        for (int j=0; j<=layerIndex; j++) {
-             int top = k->header->lastFrame(layerIndex);
-             if (frameIndex >= top) {
-                 for (int i=top; i<=frameIndex; i++)
-                      emit frameUsed(j, i);
-             }
-        }
     }
 
     QTableWidget::mousePressEvent(event);
@@ -633,9 +633,17 @@ void TupExposureTable::mousePressEvent(QMouseEvent *event)
 
 void TupExposureTable::mouseMoveEvent(QMouseEvent *event)
 {
-    int frameIndex = rowAt(event->y());
-    if (frameIndex >= k->header->lastFrame(currentLayer()))
-        emit frameUsed(currentLayer(), frameIndex);
+    int layerIndex = currentLayer();
+    int frameIndex = rowAt(event->y()); 
+    QList<int> layers = currentSelection();
+
+    for (int j=layers.at(0); j<=layerIndex; j++) {
+        int top = k->header->lastFrame(j);
+        if (frameIndex >= top) {
+            for (int i=top; i<=frameIndex; i++)
+                emit frameUsed(j, i);
+        }
+   }
 
     QTableWidget::mouseMoveEvent(event);
 }

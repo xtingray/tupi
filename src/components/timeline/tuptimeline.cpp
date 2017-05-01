@@ -812,14 +812,33 @@ void TupTimeLine::requestLayerRenameAction(int layerIndex, const QString &name)
 
 void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[TupTimeLine::selectFrame()]";
+        #else
+            T_FUNCINFO << "layerIndex, frameIndex -> (" << layerIndex << ", " << frameIndex << ")";
+        #endif
+    #endif
+
     int sceneIndex = k->scenesContainer->currentIndex();
     TupScene *scene = k->project->sceneAt(sceneIndex);
     if (scene) {
         int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
+        QList<int> coords = framesTable(sceneIndex)->currentSelection();
+
+        tError() << "SELECTION: " << coords;
+        tError() << "frameIndex -> " << frameIndex;
+        tError() << "lastFrame -> " << lastFrame;
 
         if (frameIndex > lastFrame) {
-            int totalFrames = scene->framesCount();
+            for (int frame = lastFrame + 1; frame <= frameIndex; frame++) {
+                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frame,
+                                            TupProjectRequest::Add, tr("Frame"));
+                emit requestTriggered(&request);
+            }
 
+            /*
+            int totalFrames = scene->framesCount();
             if (frameIndex > (totalFrames-1)) {
                 int layersCount = scene->layersCount();
                 for (int layer=0; layer < layersCount; layer++) {
@@ -830,23 +849,26 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
                           emit requestTriggered(&request);
                      }
                 }
-            } else {
+            } 
+            */
+
+            /*
+            else {
                 for (int frame = lastFrame + 1; frame <= frameIndex; frame++) {
                      TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frame,
                                                  TupProjectRequest::Add, tr("Frame"));
                      emit requestTriggered(&request);
                 }
-            }
+            } 
+            */
         }
 
         QString selection = "";
-        QList<int> coords = framesTable(sceneIndex)->currentSelection();
-
         if (coords.count() == 4) {
-            if ((layerIndex >= coords.at(2) && layerIndex <= coords.at(3)) &&
-                (frameIndex >= coords.at(0) && frameIndex <= coords.at(1))) {
-                selection = QString::number(coords.at(2)) + "," + QString::number(coords.at(3)) + ","
-                            + QString::number(coords.at(0)) + "," + QString::number(coords.at(1));
+            if ((layerIndex >= coords.at(0) && layerIndex <= coords.at(1)) &&
+                (frameIndex >= coords.at(2) && frameIndex <= coords.at(3))) {
+                selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
+                            + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
             } else {
                 selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + ","
                             + QString::number(frameIndex) + "," + QString::number(frameIndex);

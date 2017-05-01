@@ -67,7 +67,7 @@ struct TupItemTweener::Private
     // Rotation Tween
     TupItemTweener::RotationType rotationType;
     TupItemTweener::RotateDirection rotateDirection;
-    int rotateSpeed;
+    double rotateSpeed;
     int rotateLoop;
     int rotateReverseLoop;
     int rotateStartDegree;
@@ -357,7 +357,7 @@ void TupItemTweener::fromXml(const QString &xml)
                            k->compRotationFrames = e.attribute("frames").toInt();
 
                            k->rotationType = TupItemTweener::RotationType(root.attribute("rotationType").toInt());
-                           k->rotateSpeed = root.attribute("rotateSpeed").toInt();
+                           k->rotateSpeed = root.attribute("rotateSpeed").toDouble();
                            k->rotateDirection = TupItemTweener::RotateDirection(root.attribute("rotateDirection").toInt());
 
                            if (k->rotationType == TupItemTweener::Partial) {
@@ -409,7 +409,7 @@ void TupItemTweener::fromXml(const QString &xml)
 
             if (k->type == TupItemTweener::Rotation) {
                 k->rotationType = TupItemTweener::RotationType(root.attribute("rotationType").toInt()); 
-                k->rotateSpeed = root.attribute("rotateSpeed").toInt();
+                k->rotateSpeed = root.attribute("rotateSpeed").toDouble();
                 k->rotateDirection = TupItemTweener::RotateDirection(root.attribute("rotateDirection").toInt());
 
                 if (k->rotationType == TupItemTweener::Partial) {
@@ -656,7 +656,7 @@ TupItemTweener::RotationType TupItemTweener::tweenRotationType()
     return k->rotationType;
 }
 
-int TupItemTweener::tweenRotateSpeed()
+double TupItemTweener::tweenRotateSpeed()
 {
     return k->rotateSpeed;
 }

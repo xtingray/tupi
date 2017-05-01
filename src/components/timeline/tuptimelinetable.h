@@ -122,6 +122,8 @@ class TUPI_EXPORT TupTimeLineTable : public QTableWidget
     protected:
         void fixSize();
         void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+
         void keyPressEvent(QKeyEvent *event);
         void enterEvent(QEvent *event);
         void leaveEvent(QEvent *event);

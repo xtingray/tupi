@@ -205,6 +205,7 @@ void Settings::setInnerForm()
     k->comboIterations = new QSpinBox;
     k->comboIterations->setEnabled(true);
     k->comboIterations->setMinimum(1);
+    k->comboIterations->setMaximum(999);
 
     QLabel *iterationsLabel = new QLabel(tr("Iterations") + ": ");
     iterationsLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);

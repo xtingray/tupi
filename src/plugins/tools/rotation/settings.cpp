@@ -1,34 +1,34 @@
 /***************************************************************************
- *   Project TUPI: Magia 2D                                                *
- *   Project Contact: info@maefloresta.com                                 *
- *   Project Website: http://www.maefloresta.com                           *
- *   Project Leader: Gustav Gonzalez <info@maefloresta.com>                *
- *                                                                         *
- *   Developers:                                                           *
- *   2010:                                                                 *
- *    Gustavo Gonzalez / xtingray                                          *
- *                                                                         *
- *   KTooN's versions:                                                     * 
- *                                                                         *
- *   2006:                                                                 *
- *    David Cuadrado                                                       *
- *    Jorge Cuadrado                                                       *
- *   2003:                                                                 *
- *    Fernado Roldan                                                       *
- *    Simena Dinas                                                         *
- *                                                                         *
+ *   Project TUPI: Magia 2D                           *
+ *   Project Contact: info@maefloresta.com                   *
+ *   Project Website: http://www.maefloresta.com                    *
+ *   Project Leader: Gustav Gonzalez <info@maefloresta.com>         *
+ *                                             *
+ *   Developers:                                      *
+ *   2010:                                     *
+ *    Gustavo Gonzalez / xtingray                            *
+ *                                             *
+ *   KTooN's versions:                                * 
+ *                                             *
+ *   2006:                                     *
+ *    David Cuadrado                                  *
+ *    Jorge Cuadrado                                  *
+ *   2003:                                     *
+ *    Fernado Roldan                                  *
+ *    Simena Dinas                                    *
+ *                                             *
  *   Copyright (C) 2010 Gustav Gonzalez - http://www.maefloresta.com       *
- *   License:                                                              *
+ *   License:                                  *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
+ *   (at your option) any later version.                     *
+ *                                             *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
+ *   GNU General Public License for more details.                   *
+ *                                             *
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
@@ -60,7 +60,8 @@ struct Settings::Private
     QSpinBox *rangeStart;
     QSpinBox *rangeEnd;
 
-    QSpinBox *degreesPerFrame;
+    QDoubleSpinBox *degreesPerFrame;
+
     QCheckBox *rangeLoopBox;
     QCheckBox *reverseLoopBox;
     QLabel *totalLabel;
@@ -193,11 +194,13 @@ void Settings::setInnerForm()
     QLabel *speedLabel = new QLabel(tr("Speed (Degrees/Frame)") + ": ");
     speedLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    k->degreesPerFrame = new QSpinBox;
+    k->degreesPerFrame = new QDoubleSpinBox;
     k->degreesPerFrame->setEnabled(true);
-    k->degreesPerFrame->setMinimum(1);
+    k->degreesPerFrame->setDecimals(2);
+    k->degreesPerFrame->setMinimum(0.01);
     k->degreesPerFrame->setMaximum(360);
-    k->degreesPerFrame->setValue(5);
+    k->degreesPerFrame->setSingleStep(0.05);
+    k->degreesPerFrame->setValue(1);
 
     QVBoxLayout *speedLayout = new QVBoxLayout;
     speedLayout->setAlignment(Qt::AlignHCenter);
@@ -364,10 +367,10 @@ void Settings::setParameters(const QString &name, int framesCount, int initFrame
     k->rotationTypeCombo->setCurrentIndex(0);
     k->clockCombo->setCurrentIndex(0);
     k->rangeStart->setValue(0);
-    k->rangeEnd->setValue(0);
+    k->rangeEnd->setValue(10);
     k->rangeLoopBox->setChecked(false);
     k->reverseLoopBox->setChecked(false);
-    k->degreesPerFrame->setValue(1);
+    k->degreesPerFrame->setValue(1.0);
 
     k->apply->setToolTip(tr("Save Tween"));
     k->remove->setIcon(QPixmap(kAppProp->themeDir() + "icons/close.png"));
@@ -464,9 +467,9 @@ void Settings::applyTween()
         #ifdef K_DEBUG
             QString msg = "Settings::applyTween() - You must select at least one object!";
             #ifdef Q_OS_WIN
-                qDebug() << msg;
+         qDebug() << msg;
             #else
-                tError() << msg;
+         tError() << msg;
             #endif
         #endif
 
@@ -478,9 +481,9 @@ void Settings::applyTween()
         #ifdef K_DEBUG
             QString msg = "Settings::applyTween() - You must set Tween properties first!";
             #ifdef Q_OS_WIN
-                qDebug() << msg;
+         qDebug() << msg;
             #else
-                tError() << msg;
+         tError() << msg;
             #endif
         #endif
         return;
@@ -492,12 +495,12 @@ void Settings::applyTween()
         if (start == end) {
             TOsd::self()->display(tr("Info"), tr("Angle range must be greater than 0!"), TOsd::Error);
             #ifdef K_DEBUG
-                QString msg = "Settings::applyTween() - Angle range must be greater than 0!";
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
+         QString msg = "Settings::applyTween() - Angle range must be greater than 0!";
+         #ifdef Q_OS_WIN
+             qDebug() << msg;
+         #else
+             tError() << msg;
+         #endif
             #endif
             return;
         }
@@ -506,12 +509,12 @@ void Settings::applyTween()
         if (range < k->degreesPerFrame->value()) { 
             TOsd::self()->display(tr("Info"), tr("Angle range must be greater than Speed!"), TOsd::Error);
             #ifdef K_DEBUG
-                QString msg = "Settings::applyTween() - Angle range must be greater than Speed!";
-                #ifdef Q_OS_WIN
-                    qDebug() << msg;
-                #else
-                    tError() << msg;
-                #endif
+         QString msg = "Settings::applyTween() - Angle range must be greater than Speed!";
+         #ifdef Q_OS_WIN
+             qDebug() << msg;
+         #else
+             tError() << msg;
+         #endif
             #endif
             return;
         }
@@ -543,30 +546,30 @@ QString Settings::currentTweenName() const
 void Settings::emitOptionChanged(int option)
 {
     switch (option) {
-            case 0:
-            {
-                activeInnerForm(false);
-                emit clickedSelect();
+        case 0:
+        {
+            activeInnerForm(false);
+            emit clickedSelect();
+        }
+        break;
+        case 1:
+        {
+            if (k->selectionDone) {
+         activeInnerForm(true);
+         emit clickedDefineAngle();
+            } else {
+         k->options->setCurrentIndex(0);
+         TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
+         #ifdef K_DEBUG
+             QString msg = "Settings::emitOptionChanged() - You must set Tween properties first!";
+             #ifdef Q_OS_WIN
+                 qDebug() << msg;
+             #else
+                 tError() << msg;
+             #endif
+         #endif
             }
-            break;
-            case 1:
-            {
-                if (k->selectionDone) {
-                    activeInnerForm(true);
-                    emit clickedDefineAngle();
-                } else {
-                    k->options->setCurrentIndex(0);
-                    TOsd::self()->display(tr("Info"), tr("Select objects for Tweening first!"), TOsd::Info);
-                    #ifdef K_DEBUG
-                        QString msg = "Settings::emitOptionChanged() - You must set Tween properties first!";
-                        #ifdef Q_OS_WIN
-                            qDebug() << msg;
-                        #else
-                            tError() << msg;
-                        #endif
-                    #endif
-                }
-            }
+        }
     }
 }
 
@@ -586,124 +589,124 @@ QString Settings::tweenToXml(int currentScene, int currentLayer, int currentFram
 
     root.setAttribute("origin", QString::number(point.x()) + "," + QString::number(point.y()));
     root.setAttribute("rotationType", k->rotationType);
-    int speed = k->degreesPerFrame->value();
-    root.setAttribute("rotateSpeed", speed);
+    double speed = k->degreesPerFrame->value();
+
+    root.setAttribute("rotateSpeed", QString::number(speed));
 
     int direction = k->clockCombo->currentIndex();
     root.setAttribute("rotateDirection", direction);
 
     if (k->rotationType == TupItemTweener::Continuos) {
-        int angle = 0;
+        double angle = 0;
+        for (int i=0; i < k->totalSteps; i++) {
+            TupTweenerStep *step = new TupTweenerStep(i);
+            step->setRotation(angle);
+
+            root.appendChild(step->toXml(doc));
+            if (direction == TupItemTweener::Clockwise)
+         angle += speed;
+            else
+         angle -= speed;
+        }
+    } else if (k->rotationType == TupItemTweener::Partial) {
+        bool loop = k->rangeLoopBox->isChecked();
+        if (loop)
+            root.setAttribute("rotateLoop", "1");
+        else
+            root.setAttribute("rotateLoop", "0");
+
+        int start = k->rangeStart->value();
+        root.setAttribute("rotateStartDegree", start);
+
+        int end = k->rangeEnd->value();
+        root.setAttribute("rotateEndDegree", end);
+
+        bool reverse = k->reverseLoopBox->isChecked();
+        if (reverse)
+            root.setAttribute("rotateReverseLoop", "1");
+        else
+            root.setAttribute("rotateReverseLoop", "0");
+
+        double angle = start;
+        bool token = false;
+
+        double distance = 0;
+        if (direction == TupItemTweener::Clockwise) {
+            if (start > end)
+                distance = 360 - (start - end);
+            else
+                distance = end - start;
+        } else { // CounterClockwise
+            if (start > end)
+                distance = start - end;
+            else
+                distance = 360 - (end - start);
+        }
+
+        double counter = 0; 
+        double go = distance;
+        double back = distance - (2*speed);
+
         for (int i=0; i < k->totalSteps; i++) {
              TupTweenerStep *step = new TupTweenerStep(i);
              step->setRotation(angle);
              root.appendChild(step->toXml(doc));
-             if (direction == TupItemTweener::Clockwise)
-                 angle += speed;
-             else
-                 angle -= speed;
+
+             if (!token) { // going on initial direction
+                 if (counter < distance) {
+                     if (direction == TupItemTweener::Clockwise)
+                         angle += speed;
+                     else
+                         angle -= speed;
+
+                     if (end < start) {
+                         if (angle >= 360)
+                             angle = angle - 360;
+                     }
+                 }
+             } else { // returning back
+                 if (counter < distance) {
+                     if (direction == TupItemTweener::Clockwise)
+                         angle -= speed;
+                     else
+                         angle += speed;
+
+                     if (end < start) {
+                         if (angle < 0)
+                             angle = 360 - abs(angle);
+                     }
+                 }
+             }
+
+             if (reverse) {
+                 if (counter >= distance) {
+                     token = !token;
+                     counter = 0;
+
+                     if (direction == TupItemTweener::Clockwise) {
+                         angle -= speed;
+                         if (angle < 0)
+                             angle = 360 - abs(angle);
+                     } else {
+                         angle += speed;
+                         if (angle >= 360)
+                             angle = angle - 360;
+                     }
+
+                     if (token)
+                         distance = back;
+                     else
+                         distance = go;
+                 } else {
+                     counter += speed;
+                 }
+             } else if (loop && counter >= distance) {
+                 angle = start;
+                 counter = 0;
+             } else {
+                 counter += speed;
+             }
         }
-    } else if (k->rotationType == TupItemTweener::Partial) {
-               bool loop = k->rangeLoopBox->isChecked();
-               if (loop)
-                   root.setAttribute("rotateLoop", "1");
-               else
-                   root.setAttribute("rotateLoop", "0");
-
-               int start = k->rangeStart->value();
-               root.setAttribute("rotateStartDegree", start);
-
-               int end = k->rangeEnd->value();
-               root.setAttribute("rotateEndDegree", end);
-
-               bool reverse = k->reverseLoopBox->isChecked();
-               if (reverse)
-                   root.setAttribute("rotateReverseLoop", "1");
-               else
-                   root.setAttribute("rotateReverseLoop", "0");
-
-               int angle = start;
-               bool token = false;
-
-               int distance = 0;
-               if (direction == TupItemTweener::Clockwise) {
-                   if (start > end)
-                       distance = 360 - (start - end);
-                   else
-                       distance = end - start;
-               } else { // CounterClockwise
-                   if (start > end)
-                       distance = start - end;
-                   else
-                       distance = 360 - (end - start);
-               }
-
-               int counter = 0; 
-               int go = distance;
-               int back = distance - (2*speed);
-
-               for (int i=0; i < k->totalSteps; i++) {
-                    TupTweenerStep *step = new TupTweenerStep(i);
-                    step->setRotation(angle);
-                    root.appendChild(step->toXml(doc));
-
-                    if (!token) { // going on initial direction
-                        if (counter < distance) {
-                            if (direction == TupItemTweener::Clockwise)
-                                angle += speed;
-                            else
-                                angle -= speed;
-
-                            if (end < start) {
-                                if (angle >= 360)
-                                    angle = angle - 360;
-                            }
-                        }
-                    } else { // returning back
-                        if (counter < distance) {
-                            if (direction == TupItemTweener::Clockwise)
-                                angle -= speed;
-                            else
-                                angle += speed;
-
-                            if (end < start) {
-                                if (angle < 0)
-                                    angle = 360 - abs(angle);
-                                    // angle = 360 - std::abs(angle);
-                            }
-                        }
-                    }
-
-                    if (reverse) {
-                        if (counter >= distance) {
-                            token = !token;
-                            counter = 0;
-
-                            if (direction == TupItemTweener::Clockwise) {
-                                angle -= speed;
-                                if (angle < 0)
-                                    angle = 360 - abs(angle);
-                                    // angle = 360 - std::abs(angle);
-                            } else {
-                                angle += speed;
-                                if (angle >= 360)
-                                    angle = angle - 360;
-                            }
-
-                            if (token)
-                                distance = back;
-                            else
-                                distance = go;
-                        } else {
-                            counter += speed;
-                        }
-                    } else if (loop && counter >= distance) {
-                               angle = start;
-                               counter = 0;
-                    } else {
-                        counter += speed;
-                    }
-               }
     }
     doc.appendChild(root);
 
