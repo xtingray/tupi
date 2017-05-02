@@ -67,6 +67,7 @@ class TUPI_EXPORT Target : public QObject, public QGraphicsItem
         
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
         QRectF boundingRect() const;
+        void resizeNode(qreal factor);
 
     signals:
         void positionUpdated(const QPointF &point);

@@ -363,7 +363,9 @@ void TupDocumentView::updateNodesScale(qreal factor)
     if (k->currentTool) {
         k->nodesScaleFactor *= factor;
         QString toolName = k->currentTool->name();
-        if (toolName.compare(tr("Object Selection")) == 0 || toolName.compare(tr("Nodes Selection")) == 0 || toolName.compare(tr("PolyLine")) == 0)
+        if (toolName.compare(tr("Object Selection")) == 0 || toolName.compare(tr("Nodes Selection")) == 0 || 
+            toolName.compare(tr("PolyLine")) == 0 || toolName.compare(tr("Position Tween")) == 0 ||
+            toolName.compare(tr("Rotation Tween")) == 0)
             k->currentTool->resizeNodes(1 / k->nodesScaleFactor);
     }
 }
@@ -1024,7 +1026,9 @@ void TupDocumentView::selectTool()
         k->paintArea->setTool(tool);
         k->paintArea->viewport()->setCursor(action->cursor());
 
-        if (toolName.compare(tr("Object Selection"))==0 || toolName.compare(tr("Nodes Selection"))==0 || toolName.compare(tr("PolyLine"))==0)
+        if (toolName.compare(tr("Object Selection")) == 0 || toolName.compare(tr("Nodes Selection")) == 0 ||
+            toolName.compare(tr("PolyLine")) == 0 || toolName.compare(tr("Position Tween")) == 0 ||
+            toolName.compare(tr("Rotation Tween")) == 0)
             tool->updateZoomFactor(1 / k->nodesScaleFactor);
     } else {
         #ifdef K_DEBUG

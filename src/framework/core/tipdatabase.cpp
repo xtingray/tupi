@@ -181,8 +181,8 @@ void TipDatabase::loadVideos(const QString &videoPath)
                         }
                         if (e2.tagName() == "title") {
                             title = e2.text();
-                            if (title.length() > 35)
-                                title = title.left(35) + "...";
+                            if (title.length() > 40)
+                                title = title.left(40) + "...";
                         }
                     }
                     n1 = n1.nextSibling();

@@ -59,7 +59,6 @@ struct SelectionTool::Private
     QList<NodeManager*> nodeManagers;
     TupGraphicsScene *scene;
     bool activeSelection;
-    qreal scaleFactor;
     qreal realFactor;
     int nodeZValue;
     TupEllipseItem *center;
@@ -349,7 +348,6 @@ void SelectionTool::setupActions()
     k->targetIsIncluded = false;
     k->activeSelection = false;
     k->nodeManagers.clear();
-    k->scaleFactor = 1;
     k->realFactor = 1;
 
     TAction *select = new TAction(QPixmap(kAppProp->themeDir() + "icons/selection.png"), tr("Object Selection"), this);
@@ -584,8 +582,8 @@ void SelectionTool::keyPressEvent(QKeyEvent *event)
 
                    updateItemPosition();
                }
-    } else if (event->modifiers() == Qt::ShiftModifier) {
-               k->key = "SHIFT";
+    } else if (event->modifiers() == Qt::ControlModifier) {
+               k->key = "CONTROL";
                if (selectionIsActive()) {
                    foreach (NodeManager *nodeManager, k->nodeManagers)
                             nodeManager->setProportion(true);
@@ -601,7 +599,7 @@ void SelectionTool::keyReleaseEvent(QKeyEvent *event)
 {
     Q_UNUSED(event);
 
-    if (k->key.compare("SHIFT") == 0) {
+    if (k->key.compare("CONTROL") == 0) {
         if (selectionIsActive()) {
             foreach (NodeManager *nodeManager, k->nodeManagers)
                      nodeManager->setProportion(false);

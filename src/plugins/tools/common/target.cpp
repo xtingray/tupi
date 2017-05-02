@@ -116,3 +116,8 @@ void Target::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseMoveEvent(event);
 }
+
+void Target::resizeNode(qreal factor)
+{
+    setScale(factor);
+}

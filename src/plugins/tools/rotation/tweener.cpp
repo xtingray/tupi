@@ -68,6 +68,7 @@ struct Tweener::Private
 
     QPointF origin;
     Target *target;
+    qreal realFactor;
 
     TupToolPlugin::Mode mode;
     TupToolPlugin::EditMode editMode;
@@ -255,6 +256,8 @@ void Tweener::aboutToChangeTool()
 
 void Tweener::setupActions()
 {
+    k->realFactor = 1;
+
     TAction *translater = new TAction(QPixmap(kAppProp->themeDir() + "icons/rotation_tween.png"), 
                                       tr("Rotation Tween"), this);
     translater->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png", 0, 0));
@@ -594,14 +597,14 @@ void Tweener::addTarget()
         k->target = new Target(k->origin, k->baseZValue);
         connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
         k->scene->addItem(k->target);
-    } else {
-        if (k->mode == TupToolPlugin::Edit) {
-            QGraphicsItem *item = k->objects.at(0);
-            k->origin = item->mapToParent(k->currentTween->transformOriginPoint());
-            k->target = new Target(k->origin, k->baseZValue);
-            connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
-            k->scene->addItem(k->target);
-        }
+        k->target->resizeNode(k->realFactor);
+    } else if (k->mode == TupToolPlugin::Edit) {
+        QGraphicsItem *item = k->objects.at(0);
+        k->origin = item->mapToParent(k->currentTween->transformOriginPoint());
+        k->target = new Target(k->origin, k->baseZValue);
+        connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+        k->scene->addItem(k->target);
+        k->target->resizeNode(k->realFactor);
     }
 }
 
@@ -664,4 +667,16 @@ TupToolPlugin::Mode Tweener::currentMode()
 TupToolPlugin::EditMode Tweener::currentEditMode()
 {
     return k->editMode;
+}
+
+void Tweener::resizeNodes(qreal scaleFactor)
+{
+    k->realFactor = scaleFactor;
+    if (k->target)
+        k->target->resizeNode(scaleFactor);
+}
+
+void Tweener::updateZoomFactor(qreal scaleFactor)
+{
+    k->realFactor = scaleFactor;
 }

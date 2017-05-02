@@ -68,6 +68,7 @@ struct Tweener::Private
 
     TupItemTweener *currentTween;
     TNodeGroup *nodesGroup;
+    qreal realFactor;
 
     bool isPathInScene;
     int initFrame;
@@ -231,6 +232,7 @@ void Tweener::release(const TupInputDeviceInformation *input, TupBrushManager *b
             if (k->nodesGroup) {
                 k->nodesGroup->createNodes(k->path);
                 k->nodesGroup->show();
+                k->nodesGroup->resizeNodes(k->realFactor);
                 k->nodesGroup->expandAllNodes();
                 k->configurator->updateSteps(k->path);
                 QPainterPath::Element e = k->path->path().elementAt(0);
@@ -394,6 +396,8 @@ void Tweener::resetGUI()
 
 void Tweener::setupActions()
 {
+    k->realFactor = 1;
+
     TAction *action = new TAction(QPixmap(kAppProp->themeDir() + "icons/position_tween.png"), tr("Position Tween"), this);
     action->setCursor(QCursor(kAppProp->themeDir() + "cursors/tweener.png", 0 ,0));
     action->setShortcut(QKeySequence(tr("Shift+W")));
@@ -429,6 +433,7 @@ void Tweener::setTweenPath()
             k->nodesGroup->createNodes(k->path);
         }
         k->nodesGroup->show();
+        k->nodesGroup->resizeNodes(k->realFactor);
         k->nodesGroup->expandAllNodes();
 
         paintTweenPoints();
@@ -798,6 +803,7 @@ void Tweener::updateScene(TupGraphicsScene *scene)
                     k->scene->addItem(k->path);            
                     k->nodesGroup->createNodes(k->path);
                     k->nodesGroup->show();
+                    k->nodesGroup->resizeNodes(k->realFactor);
                     k->nodesGroup->expandAllNodes();
 
                     k->dots.clear();
@@ -1101,3 +1107,13 @@ void Tweener::updateTweenPoints()
     paintTweenPoints();
 }
 
+void Tweener::resizeNodes(qreal scaleFactor)
+{
+    k->realFactor = scaleFactor;
+    k->nodesGroup->resizeNodes(scaleFactor);
+}
+
+void Tweener::updateZoomFactor(qreal scaleFactor)
+{
+    k->realFactor = scaleFactor;
+}
