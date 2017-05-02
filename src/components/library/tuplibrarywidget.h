@@ -135,6 +135,7 @@ class TUPI_EXPORT TupLibraryWidget : public TupModuleWidgetBase
         void importBitmapSequence();
         void importSvgSequence();
         void importSound();
+        void openStore();
 
     signals:
         void requestCurrentGraphic();

@@ -156,6 +156,12 @@ TupLibraryWidget::TupLibraryWidget(QWidget *parent) : TupModuleWidgetBase(parent
     comboLayout->setMargin(0);
     comboLayout->setSpacing(0);
 
+    TImageButton *store = new TImageButton(QPixmap(THEME_DIR + "icons/store.png"), 22, buttons);
+    store->setToolTip(tr("Library Store"));
+    connect(store, SIGNAL(clicked()), this, SLOT(openStore()));
+    comboLayout->addWidget(store);
+    comboLayout->addSpacing(10);
+
     k->itemType = new QComboBox();
     k->itemType->setIconSize(QSize(15, 15));
     k->itemType->setMaximumWidth(120);
@@ -2149,4 +2155,9 @@ void TupLibraryWidget::saveDefaultPath(const QString &dir)
     TCONFIG->beginGroup("General");
     TCONFIG->setValue("DefaultPath", dir);
     TCONFIG->sync();
+}
+
+void TupLibraryWidget::openStore()
+{
+    QDesktopServices::openUrl(QString("http://maefloresta.com/store"));
 }

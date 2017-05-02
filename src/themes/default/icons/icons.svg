@@ -2935,9 +2935,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.2005209"
-     inkscape:cx="104.952"
-     inkscape:cy="1289.1511"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="270.48631"
+     inkscape:cy="264.01087"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2956,7 +2956,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -15025,6 +15025,111 @@
              style="fill:#ffffff;fill-opacity:0.15384617;stroke:none" />
         </g>
       </g>
+    </g>
+    <g
+       transform="translate(-195.88011,-12.940946)"
+       id="g8183"
+       inkscape:export-xdpi="58.889999"
+       inkscape:export-ydpi="58.889999">
+      <path
+         inkscape:export-ydpi="865.95496"
+         inkscape:export-xdpi="865.95496"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/dark/icons/rotation.png"
+         sodipodi:nodetypes="csssc"
+         inkscape:connector-curvature="0"
+         id="path4545-6-3-9-2-9-8-5-5-1-1"
+         d="m 474.21529,802.03444 c 1.69387,2.42737 0.60241,4.21774 -0.86713,5.01538 -1.4695,0.79765 -3.29653,0.27304 -4.08077,-1.1718 -0.78424,-1.44481 -0.22872,-3.26269 1.24081,-4.06033 1.06398,-0.57752 2.36387,-0.47635 3.30522,0.25727"
+         style="fill:#008700;fill-opacity:1;stroke:#008700;stroke-width:1.13367152;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5062-3-7-2-42"
+         d="m 467.14699,793.26584 21.78503,0.16397"
+         style="fill:none;stroke:#008700;stroke-width:1.36337221;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5062-3-7-0-7-6"
+         d="m 471.48963,786.96506 0.97521,12.40614"
+         style="fill:none;stroke:#008700;stroke-width:1.36337221;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5062-3-7-0-6-6-9"
+         d="m 477.82117,787.29637 0.0817,11.6842"
+         style="fill:none;stroke:#008700;stroke-width:1.36337221;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5062-3-7-0-6-3-5-2"
+         d="m 484.05544,786.87214 -0.74376,11.89802"
+         style="fill:none;stroke:#008700;stroke-width:1.36337221;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         inkscape:connector-curvature="0"
+         id="path5062-7-4-1"
+         d="m 465.24828,787.09583 24.38545,0.0573"
+         style="fill:none;stroke:#008700;stroke-width:2.04505825;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         inkscape:connector-curvature="0"
+         id="path5062-7-4-2-6"
+         d="m 468.04932,799.34204 20.05161,0.0266"
+         style="fill:none;stroke:#008700;stroke-width:2.04505825;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         inkscape:connector-curvature="0"
+         id="path5062-7-4-5-1"
+         d="m 466.10227,787.10915 1.83635,12.08506"
+         style="fill:none;stroke:#008700;stroke-width:2.04505825;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         inkscape:connector-curvature="0"
+         id="path5062-7-4-5-2-5"
+         d="m 489.74965,787.0169 -1.67289,12.2774"
+         style="fill:none;stroke:#008700;stroke-width:2.04505825;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:export-ydpi="486.3132"
+         inkscape:export-xdpi="486.3132"
+         inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/dark/icons/subgrid.png"
+         inkscape:connector-curvature="0"
+         id="path5062-7-4-1-8"
+         d="m 490.15187,787.00689 2.21795,-2.88731 4.42375,0.0287"
+         style="fill:none;stroke:#008700;stroke-width:2.04505825;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="865.95496"
+         inkscape:export-xdpi="865.95496"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/dark/icons/rotation.png"
+         sodipodi:nodetypes="csssc"
+         inkscape:connector-curvature="0"
+         id="path4545-6-3-9-2-9-8-5-5-1-1-2"
+         d="m 486.59101,802.03444 c 1.69387,2.42737 0.60241,4.21774 -0.86713,5.01538 -1.4695,0.79765 -3.29653,0.27304 -4.08077,-1.1718 -0.78424,-1.44481 -0.22872,-3.26269 1.24081,-4.06033 1.06398,-0.57752 2.36387,-0.47635 3.30522,0.25727"
+         style="fill:#008700;fill-opacity:1;stroke:#008700;stroke-width:1.13367152;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
   </g>
 </svg>

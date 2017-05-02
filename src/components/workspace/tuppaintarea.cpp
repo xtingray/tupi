@@ -1300,14 +1300,16 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    if (event->key() == Qt::Key_1) {
+    // if (event->key() == Qt::Key_1) {
+    if (event->key() == Qt::Key_Plus) {
         if (event->modifiers() == Qt::NoModifier) {
             emit zoomIn();
             return;
         }
     }
 
-    if (event->key() == Qt::Key_2) {
+    // if (event->key() == Qt::Key_2) {
+    if (event->key() == Qt::Key_Minus) {
         if (event->modifiers() == Qt::NoModifier) {
             emit zoomOut();
             return;
