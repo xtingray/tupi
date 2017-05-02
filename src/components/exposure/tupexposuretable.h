@@ -115,6 +115,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void updateFrameState(int layerIndex, int frameIndex, TupExposureTable::FrameType value);
 
         QList<int> currentSelection();
+        void updateSceneView(int layerIndex, int frameIndex);
 
     private slots:
         void markUsedFrames(int frameIndex,  int layerIndex);

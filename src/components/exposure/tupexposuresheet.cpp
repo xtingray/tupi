@@ -985,6 +985,8 @@ void TupExposureSheet::frameResponse(TupFrameResponse *response)
                       table->selectFrame(layerIndex, response->arg().toString());
                       table->blockSignals(false);
 
+                      table->updateSceneView(layerIndex, frameIndex);
+
                       if (k->previousScene != sceneIndex || k->previousLayer != layerIndex) {
                           k->previousScene = sceneIndex;
                           k->previousLayer = layerIndex;

@@ -789,3 +789,8 @@ QList<int> TupExposureTable::currentSelection()
 
     return coords;
 }
+
+void TupExposureTable::updateSceneView(int layerIndex, int frameIndex)
+{
+    scrollToItem(item(frameIndex, layerIndex));
+}
