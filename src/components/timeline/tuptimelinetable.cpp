@@ -446,11 +446,13 @@ void TupTimeLineTable::generateFrames(int layerIndex, int layers, int frames)
 {
     int layersTotal = layerIndex + layers;
     for (int i=layerIndex; i<layersTotal; i++) {
-         int initFrame = k->layersColumn->lastFrame(i) + 1;
-         int framesTotal = initFrame + frames;
-         for (int j=initFrame; j<framesTotal; j++) {
-              setAttribute(i, j, TupTimeLineTableItem::IsUsed, true);
-              k->layersColumn->updateLastFrame(i, true);
+         if (i < layersCount()) {
+             int initFrame = k->layersColumn->lastFrame(i) + 1;
+             int framesTotal = initFrame + frames;
+             for (int j=initFrame; j<framesTotal; j++) {
+                 setAttribute(i, j, TupTimeLineTableItem::IsUsed, true);
+                 k->layersColumn->updateLastFrame(i, true);
+             }
          }
     }
 }

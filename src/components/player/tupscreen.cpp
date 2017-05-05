@@ -364,6 +364,8 @@ void TupScreen::stop()
     else
         k->currentFramePosition = k->photograms.count() - 1;
 
+    emit frameChanged(k->currentFramePosition);
+
     repaint();
 }
 
@@ -411,6 +413,8 @@ void TupScreen::nextFrame()
     if (k->currentFramePosition == k->photograms.count())
         k->currentFramePosition = 0;
 
+    emit frameChanged(k->currentFramePosition);
+
     repaint();
 }
 
@@ -436,6 +440,8 @@ void TupScreen::previousFrame()
 
     if (k->currentFramePosition < 0)
         k->currentFramePosition = k->photograms.count() - 1;
+
+    emit frameChanged(k->currentFramePosition);
 
     repaint();
 }
@@ -463,6 +469,10 @@ void TupScreen::advance()
     if (k->currentFramePosition < k->photograms.count()) {
         repaint();
         k->currentFramePosition++;
+        // int frame = k->currentFramePosition;
+        // if (k->currentFramePosition == k->photograms.count())
+        //     frame--;
+        emit frameChanged(k->currentFramePosition);
     } else if (!k->cyclicAnimation) {
                stop();
     }

@@ -94,6 +94,7 @@ class TUPI_EXPORT TupCameraWidget : public QFrame
         void doStop();
         void nextFrame();
         void previousFrame();
+        void updateTimerPanel(int currentFrame);
 
     signals:
         void requestTriggered(const TupProjectRequest *event);

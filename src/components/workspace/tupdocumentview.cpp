@@ -1982,14 +1982,19 @@ void TupDocumentView::insertPictureInFrame(int id, const QString path)
 
     if (f.open(QIODevice::ReadOnly)) {
         if (id > 1) {
+            int layerIndex = k->paintArea->currentLayerIndex();
             int frameIndex = k->paintArea->currentFrameIndex() + 1;
 
-            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), 
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), layerIndex, 
                                                                               frameIndex, TupProjectRequest::Add, tr("Frame"));
             emit requestTriggered(&request);
 
-            request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), k->paintArea->currentLayerIndex(), frameIndex,
-                                                            TupProjectRequest::Select);
+            QString selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + ","
+                                + QString::number(frameIndex) + "," + QString::number(frameIndex);
+
+            request = TupRequestBuilder::createFrameRequest(k->paintArea->currentSceneIndex(), 
+                                                            layerIndex, frameIndex,
+                                                            TupProjectRequest::Select, selection);
             emit requestTriggered(&request);
         } 
 
@@ -2118,7 +2123,11 @@ void TupDocumentView::importPapagayoLipSync()
                                           emit requestTriggered(&request);
                                      }
                                 }
-                                request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentIndex, TupProjectRequest::Select, "1");
+
+                                QString selection = QString::number(layerIndex) + "," + QString::number(layerIndex) + ","
+                                                    + QString::number(currentIndex) + "," + QString::number(currentIndex);
+
+                                request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentIndex, TupProjectRequest::Select, selection);
                                 emit requestTriggered(&request);
                             }
                         }

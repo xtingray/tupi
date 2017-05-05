@@ -150,7 +150,7 @@ void TupTimeLine::addScene(int sceneIndex, const QString &name)
     framesTable->setItemSize(10, 20);
 
     connect(framesTable, SIGNAL(frameSelected(int, int)), this, SLOT(selectFrame(int, int)));
-    connect(framesTable, SIGNAL(frameRemoved()), SLOT(removeFrameCopy()));
+    connect(framesTable, SIGNAL(frameRemoved()), SLOT(removeFrame()));
     connect(framesTable, SIGNAL(frameCopied(int, int)), SLOT(extendFrameForward(int, int)));
     connect(framesTable, SIGNAL(visibilityChanged(int, bool)), this, SLOT(requestLayerVisibilityAction(int, bool)));
     connect(framesTable, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestLayerRenameAction(int, const QString &))); 
@@ -641,8 +641,8 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             {
                 QList<int> coords = framesTable(sceneIndex)->currentSelection();
                 if (coords.count() == 4) {
-                    QString selection = QString::number(coords.at(2)) + "," + QString::number(coords.at(3)) + ","
-                                        + QString::number(coords.at(0)) + "," + QString::number(coords.at(1));
+                    QString selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
+                                        + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
 
                     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame,
                                                                                       TupProjectRequest::CopySelection, selection);
@@ -880,7 +880,7 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
     }
 }
 
-void TupTimeLine::removeFrameCopy()
+void TupTimeLine::removeFrame()
 {
     requestRemoveFrame(false);
 }
@@ -892,8 +892,8 @@ void TupTimeLine::requestRemoveFrame(bool flag)
     int sceneIndex = k->scenesContainer->currentIndex();
     QList<int> coords = framesTable(sceneIndex)->currentSelection();
     if (coords.count() == 4) {
-        int frames = coords.at(1) - coords.at(0) + 1;
-        int layers = coords.at(3) - coords.at(2) + 1;
+        int layers = coords.at(1) - coords.at(0) + 1;
+        int frames = coords.at(3) - coords.at(2) + 1;
 
         QString flags = "";
         for (int i=coords.at(0); i<=coords.at(1); i++) {
@@ -906,7 +906,7 @@ void TupTimeLine::requestRemoveFrame(bool flag)
         flags.chop(1);
 
         QString selection = QString::number(layers) + "," + QString::number(frames) + ":" + flags;
-        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, coords.at(2), coords.at(0),
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, coords.at(0), coords.at(2),
                                                                           TupProjectRequest::RemoveSelection, selection);
         emit requestTriggered(&request);
     }

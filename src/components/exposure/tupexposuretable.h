@@ -89,7 +89,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
         void moveLayer(int oldPosLayer, int newPosLayer);
 
-        void setLockLayer(int layerIndex,  bool locked);
+        // void setLockLayer(int layerIndex,  bool locked);
         void setLayerVisibility(int visualIndex, bool visibility);
         int usedFrames(int column) const;
 
@@ -98,8 +98,8 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
         void setLayerName(int layerIndex, const QString & name);
 
         void selectFrame(int layerIndex, int frameIndex);
-        // void selectFrame(int layerIndex, int frameIndex, const QString &selection);
-        void selectFrame(int layerIndex, const QString &selection);
+        void selectFrame(int layerIndex, int frameIndex, const QString &selection);
+        void updateSelection(int layerIndex, int frameIndex);
 
         int layersCount();
         int framesCount();
@@ -150,6 +150,7 @@ class TUPI_EXPORT TupExposureTable : public QTableWidget
     private:
         bool layerIndexIsValid(int layerIndex);
         bool frameIndexIsValid(int frameIndex);
+        void markNextFrame(int frameIndex, int layerIndex);
 
         struct Private;
         Private *const k;

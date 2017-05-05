@@ -430,8 +430,9 @@ void Tweener::applyReset()
 
 void Tweener::applyTween()
 {
-    QString name = k->configurator->currentTweenName();
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
+    QString name = k->configurator->currentTweenName();
     if (name.length() == 0) {
         TOsd::self()->display(tr("Error"), tr("Tween name is missing!"), TOsd::Error);
         return;
@@ -547,12 +548,17 @@ void Tweener::applyTween()
         }
     }
 
+    QString selection = QString::number(k->initLayer) + "," + QString::number(k->initLayer) + ","
+                        + QString::number(k->initFrame) + "," + QString::number(k->initFrame);
+
     request = TupRequestBuilder::createFrameRequest(k->initScene, k->initLayer, k->initFrame,
-                                                    TupProjectRequest::Select, "1");
+                                                    TupProjectRequest::Select, selection);
     emit requested(&request);
 
     setCurrentTween(name);
     TOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), TOsd::Info);
+
+    QApplication::restoreOverrideCursor();
 }
 
 void Tweener::removeTweenFromProject(const QString &name)
@@ -599,12 +605,34 @@ void Tweener::addTarget()
         k->scene->addItem(k->target);
         k->target->resizeNode(k->realFactor);
     } else if (k->mode == TupToolPlugin::Edit) {
-        QGraphicsItem *item = k->objects.at(0);
-        k->origin = item->mapToParent(k->currentTween->transformOriginPoint());
-        k->target = new Target(k->origin, k->baseZValue);
-        connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
-        k->scene->addItem(k->target);
-        k->target->resizeNode(k->realFactor);
+        if (!k->objects.isEmpty()) {
+            QGraphicsItem *item = k->objects.at(0);
+            if (k->currentTween) {
+                k->origin = item->mapToParent(k->currentTween->transformOriginPoint());
+                k->target = new Target(k->origin, k->baseZValue);
+                connect(k->target, SIGNAL(positionUpdated(const QPointF &)), this, SLOT(updateOriginPoint(const QPointF &)));
+                k->scene->addItem(k->target);
+                k->target->resizeNode(k->realFactor);
+            } else {
+                #ifdef K_DEBUG
+                    QString msg = "Tweener::addTarget() - Current tween pointer is NULL!";
+                    #ifdef Q_OS_WIN
+                        qDebug() << msg;
+                    #else
+                        tError() << msg;
+                    #endif
+                #endif
+            }
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "Tweener::addTarget() - No objects has been selected for the current tween!";
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
+            #endif
+        }
     }
 }
 
@@ -615,20 +643,33 @@ void Tweener::updateMode(TupToolPlugin::Mode mode)
     if (k->mode == TupToolPlugin::Edit) {
         k->editMode = TupToolPlugin::Properties;
 
-        k->initScene = k->currentTween->initScene();
-        k->initLayer = k->currentTween->initLayer();
-        k->initFrame = k->currentTween->initFrame();
+        if (k->currentTween) {
+            k->initScene = k->currentTween->initScene();
+            k->initLayer = k->currentTween->initLayer();
+            k->initFrame = k->currentTween->initFrame();
 
-        if (k->initFrame != k->scene->currentFrameIndex() || k->initLayer != k->scene->currentLayerIndex()) {
-            TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene,
-                                                                              k->initLayer,
-                                                                              k->initFrame, TupProjectRequest::Select, "1");
-            emit requested(&request);
-        }
+            if (k->initFrame != k->scene->currentFrameIndex() || k->initLayer != k->scene->currentLayerIndex()) {
+                QString selection = QString::number(k->initLayer) + "," + QString::number(k->initLayer) + ","
+                                    + QString::number(k->initFrame) + "," + QString::number(k->initFrame);
 
-        if (k->objects.isEmpty()) {
-            k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), TupItemTweener::Rotation);
-            k->origin = k->currentTween->transformOriginPoint();
+                TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, k->initLayer, k->initFrame, 
+                                                                                  TupProjectRequest::Select, selection);
+                emit requested(&request);
+            }
+
+            if (k->objects.isEmpty()) {
+                k->objects = k->scene->scene()->getItemsFromTween(k->currentTween->name(), TupItemTweener::Rotation);
+                k->origin = k->currentTween->transformOriginPoint();
+            }
+        } else {
+            #ifdef K_DEBUG
+                QString msg = "Tweener::updateMode() - Current tween pointer is NULL!";
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tError() << msg;
+                #endif
+            #endif
         }
     }
 }

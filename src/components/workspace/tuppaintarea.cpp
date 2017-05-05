@@ -308,7 +308,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
     #ifdef K_DEBUG
         QString msg = "TupPaintArea::frameResponse() - [" + QString::number(response->sceneIndex()) 
                       + ", " + QString::number(response->layerIndex()) + ", " 
-                      + QString::number(response->frameIndex()) + "]";
+                      + QString::number(response->frameIndex()) + "] | request -> " + QString::number(response->action());
         #ifdef Q_OS_WIN
             qDebug() << msg;
         #else
@@ -338,6 +338,7 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                             guiScene->drawCurrentPhotogram();
                     }
                     break;
+                case TupProjectRequest::Add:
                 case TupProjectRequest::Select:
                 case TupProjectRequest::Paste:
                 case TupProjectRequest::PasteSelection:
@@ -360,14 +361,6 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
                             guiScene->resetCurrentTool();
                     }
                     break;
-                /*
-                case TupProjectRequest::Lock:
-                    {
-                        if (guiScene->currentFrameIndex() == response->frameIndex())
-                            viewport()->update();
-                    }
-                    break;
-                */
                 default:
                     #ifdef K_DEBUG
                         QString msg = "TupPaintArea::frameResponse() - Action not recognized -> " + QString::number(response->action());

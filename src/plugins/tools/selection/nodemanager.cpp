@@ -71,6 +71,7 @@ NodeManager::NodeManager(QGraphicsItem *parent, QGraphicsScene *scene, int zValu
     k->scaleY = k->parent->data(TupGraphicObject::ScaleY).toReal();
 
     // This condition is only for SVG objects
+    /*
     if (k->scaleX == 0) {
         k->scaleX = 1;
         k->parent->setData(TupGraphicObject::ScaleX, 1);
@@ -79,6 +80,7 @@ NodeManager::NodeManager(QGraphicsItem *parent, QGraphicsScene *scene, int zValu
         k->scaleY = 1;
         k->parent->setData(TupGraphicObject::ScaleY, 1);
     }
+    */
 
     QRectF rect = parent->sceneBoundingRect();
     Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, zValue);

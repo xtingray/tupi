@@ -278,8 +278,11 @@ void PapagayoTool::addTarget(const QString &id, int index)
     int initLayer = scene->getLipSyncLayerIndex(k->currentLipSync->name());
     int initFrame = k->currentLipSync->initFrame();
 
+    QString selection = QString::number(initLayer) + "," + QString::number(initLayer) + ","
+                        + QString::number(initFrame) + "," + QString::number(initFrame);
+
     TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, initLayer, initFrame,
-                                                                      TupProjectRequest::Select, "1");
+                                                                      TupProjectRequest::Select, selection);
     emit requested(&request);
 
     removeTarget();
@@ -398,7 +401,10 @@ void PapagayoTool::updateInitFrame(int index)
     k->configurator->updateInterfaceRecords();
 
     int initLayer = scene->getLipSyncLayerIndex(k->currentLipSync->name());
-    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, initLayer, index, TupProjectRequest::Select, "1");
+    QString selection = QString::number(initLayer) + "," + QString::number(initLayer) + ","
+                        + QString::number(index) + "," + QString::number(index);
+
+    TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, initLayer, index, TupProjectRequest::Select, selection);
     emit requested(&request);
 }
 

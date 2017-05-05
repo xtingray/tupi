@@ -457,10 +457,13 @@ void Tweener::setSelection()
 
     if (k->mode == TupToolPlugin::Edit) {
         if (k->initFrame != k->scene->currentFrameIndex()) {
+            QString selection = QString::number(k->initLayer) + "," + QString::number(k->initLayer) + ","
+                                + QString::number(k->initFrame) + "," + QString::number(k->initFrame);
+
             TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->currentTween->initScene(),
                                                                               k->currentTween->initLayer(),
                                                                               k->currentTween->initFrame(), 
-                                                                              TupProjectRequest::Select, "1");
+                                                                              TupProjectRequest::Select, selection);
             emit requested(&request);
         }
     }
@@ -593,6 +596,8 @@ void Tweener::applyTween()
         #endif
     #endif
 
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     QString name = k->configurator->currentTweenName();
     if (name.length() == 0) {
         TOsd::self()->display(tr("Error"), tr("Tween name is missing!"), TOsd::Error);
@@ -712,12 +717,17 @@ void Tweener::applyTween()
         }
     }
 
+    QString selection = QString::number(k->initLayer) + "," + QString::number(k->initLayer) + ","
+                        + QString::number(k->initFrame) + "," + QString::number(k->initFrame);
+
     request = TupRequestBuilder::createFrameRequest(k->initScene, k->initLayer, k->initFrame,
-                                                    TupProjectRequest::Select, "1");
+                                                    TupProjectRequest::Select, selection);
     emit requested(&request);
 
     setCurrentTween(name);
     TOsd::self()->display(tr("Info"), tr("Tween %1 applied!").arg(name), TOsd::Info);
+
+    QApplication::restoreOverrideCursor();
 
     /*
     // SQA: Debugging code
@@ -906,7 +916,10 @@ void Tweener::setEditEnv()
     k->initScene = k->currentTween->initScene();
 
     if (k->initFrame != k->scene->currentFrameIndex() || k->initLayer != k->scene->currentLayerIndex() || k->initScene != k->scene->currentSceneIndex()) {
-        TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, k->initLayer, k->initFrame, TupProjectRequest::Select, "1");
+        QString selection = QString::number(k->initLayer) + "," + QString::number(k->initLayer) + ","
+                            + QString::number(k->initFrame) + "," + QString::number(k->initFrame);
+
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(k->initScene, k->initLayer, k->initFrame, TupProjectRequest::Select, selection);
         emit requested(&request);
     }
 

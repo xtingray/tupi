@@ -106,6 +106,7 @@ class TUPI_EXPORT TupScreen : public QFrame, public TupAbstractProjectResponseHa
         void sceneChanged(const TupScene *newScene);
         void requestTriggered(const TupProjectRequest *event);
         void isRendering(int advance);
+        void frameChanged(int frame);
 
     protected:
         void paintEvent(QPaintEvent *event);

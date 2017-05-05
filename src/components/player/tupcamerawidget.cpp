@@ -35,6 +35,7 @@
 
 #include "tupcamerawidget.h"
 #include "tconfig.h"
+#include <QLineEdit>
 
 struct TupCameraWidget::Private
 {
@@ -49,6 +50,10 @@ struct TupCameraWidget::Private
     QSize playerDimension;
     QSize screenDimension;
     bool isScaled;
+
+    QLabel *currentFrameLabel;
+    QLineEdit *currentFrameBox;
+    QLabel *timerSecsLabel;
 };
 
 TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
@@ -115,8 +120,8 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     scaleLayout->addWidget(k->scaleLabel);
 
     layout->addWidget(titleWidget, 0, Qt::AlignCenter);
-    layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
     layout->addLayout(labelLayout, Qt::AlignCenter);
+    layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
 
     k->progressBar = new QProgressBar(this); 
     QString style1 = "QProgressBar { background-color: #DDDDDD; text-align: center; color: #FFFFFF; border-radius: 2px; } ";
@@ -133,6 +138,7 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
 
     k->screen = new TupScreen(k->project, k->playerDimension, k->isScaled);
     connect(k->screen, SIGNAL(isRendering(int)), this, SLOT(updateProgressBar(int)));
+    connect(k->screen, SIGNAL(frameChanged(int)), this, SLOT(updateTimerPanel(int)));
 
     layout->addWidget(k->screen, 0, Qt::AlignCenter);
 
@@ -145,6 +151,29 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     connect(k->cameraBar, SIGNAL(stop()), k->screen, SLOT(stop()));
     connect(k->cameraBar, SIGNAL(ff()), k->screen, SLOT(nextFrame()));
     connect(k->cameraBar, SIGNAL(rew()), k->screen, SLOT(previousFrame()));
+
+    font.setBold(true);
+    QLabel *timerFramesLabel = new QLabel(tr("Current Frame: "));
+    timerFramesLabel->setFont(font);
+    k->currentFrameBox = new QLineEdit("0");
+    k->currentFrameBox->setReadOnly(true);
+    k->currentFrameBox->setMaximumWidth(45);
+    k->currentFrameBox->setMaxLength(5);
+    QLabel *stopwatchLabel = new QLabel(tr("Timer: "));
+    stopwatchLabel->setFont(font);
+    k->timerSecsLabel = new QLabel("0.0");
+
+    QWidget *timerWidget = new QWidget();
+    QHBoxLayout *timerLayout = new QHBoxLayout(timerWidget);
+    timerLayout->setContentsMargins(0, 0, 0, 0);
+    timerLayout->setAlignment(Qt::AlignCenter);
+    timerLayout->addWidget(timerFramesLabel);
+    timerLayout->addWidget(k->currentFrameBox);
+    timerLayout->addSpacing(10);
+    timerLayout->addWidget(stopwatchLabel);
+    timerLayout->addWidget(k->timerSecsLabel);
+
+    layout->addWidget(timerWidget, 0, Qt::AlignCenter|Qt::AlignTop);
 
     k->status = new TupCameraStatus(this, isNetworked);
     k->status->setScenes(k->project); 
@@ -419,4 +448,17 @@ void TupCameraWidget::updateFirstFrame()
 void TupCameraWidget::updateProgressBar(int advance)
 {
     k->progressBar->setValue(advance);
+}
+
+void TupCameraWidget::updateTimerPanel(int currentFrame)
+{
+    QString space = "";
+    if (currentFrame < 10)
+        space = "    ";
+    else if (currentFrame < 100)
+        space = "   ";
+    else if (currentFrame < 1000)
+        space = "  ";
+        
+    k->currentFrameBox->setText(space + QString::number(currentFrame));
 }

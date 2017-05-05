@@ -567,16 +567,18 @@ bool TupCommandExecutor::pasteFrameSelection(TupFrameResponse *response)
             if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
                 int index = 0;
                 for (int i=layerIndex; i<layerLimit; i++) {
-                    TupLayer *layer = scene->layerAt(i);
-                    if (layer) {
-                        for (int j=pos; j<frameLimit; j++) {
-                            TupFrame *frame = new TupFrame(layer);
-                            frame->fromXml(selectionFramesCopy.at(index));
-                            layer->setFrame(j, frame);
-                            index++;
+                    if (i < scene->layersCount()) {
+                        TupLayer *layer = scene->layerAt(i);
+                        if (layer) {
+                            for (int j=pos; j<frameLimit; j++) {
+                                TupFrame *frame = new TupFrame(layer);
+                                frame->fromXml(selectionFramesCopy.at(index));
+                                layer->setFrame(j, frame);
+                                index++;
+                            }
+                        } else {
+                            return false;
                         }
-                    } else {
-                        return false;
                     }
                 }
             } else {

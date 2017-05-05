@@ -85,8 +85,9 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         // void createMenuForSelection();
         void requestExtendCurrentFrame(int times);
         void insertFrames(int times);
-        void copyTimeLine(int times);
-        void removeBlock(TupExposureTable *table, int layerIndex, int frameIndex, int layersTotal, int framesTotal);
+        // void copyTimeLine(int times);
+        void removeBlock(TupExposureTable *table, int layerIndex, int frameIndex, 
+                         int layersTotal, int framesTotal);
 
     protected:
         virtual void sceneResponse(TupSceneResponse *response);
@@ -110,7 +111,7 @@ class TUPI_EXPORT TupExposureSheet : public TupModuleWidgetBase
         void requestUpdateLayerOpacity(double opacity);
 
         void insertFramesFromMenu(QAction *action);
-        void copyTimeLineFromMenu(QAction *action);
+        // void copyTimeLineFromMenu(QAction *action);
         void clearFrame();
 
         void insertFrame(int layerIndex, int frameIndex);
