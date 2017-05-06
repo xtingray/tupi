@@ -51,9 +51,10 @@ struct TupCameraWidget::Private
     QSize screenDimension;
     bool isScaled;
 
-    QLabel *currentFrameLabel;
+    // QLabel *currentFrameLabel;
     QLineEdit *currentFrameBox;
-    QLabel *timerSecsLabel;
+    QLineEdit *timerSecsLabel;
+    // QLabel *timerSecsLabel;
 };
 
 TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
@@ -161,7 +162,10 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     k->currentFrameBox->setMaxLength(5);
     QLabel *stopwatchLabel = new QLabel(tr("Timer: "));
     stopwatchLabel->setFont(font);
-    k->timerSecsLabel = new QLabel("0.0");
+    k->timerSecsLabel = new QLineEdit("0.0");
+    k->timerSecsLabel->setReadOnly(true);
+    k->timerSecsLabel->setMaximumWidth(45);
+    k->timerSecsLabel->setMaxLength(5);
 
     QWidget *timerWidget = new QWidget();
     QHBoxLayout *timerLayout = new QHBoxLayout(timerWidget);
