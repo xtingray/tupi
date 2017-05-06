@@ -102,6 +102,13 @@ class TUPI_EXPORT TupCameraWidget : public QFrame
         // void requestForExportStoryboardToServer(const QString &title, const QString &topics, const QString &description, const QList<int> indexes);
 
     private:
+        void addVideoHeader();
+        void addProgressBar();
+        void addTimerPanel();
+        void addAnimationDisplay();
+        void addControlsBar();
+        void addStatusPanel(bool isNetworked);
+
         void setDimensionLabel(const QSize dimension);
         struct Private;
         Private *const k;

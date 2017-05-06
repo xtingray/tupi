@@ -35,10 +35,10 @@
 
 #include "tupcamerawidget.h"
 #include "tconfig.h"
-#include <QLineEdit>
 
 struct TupCameraWidget::Private
 {
+    QBoxLayout *layout;
     QFrame *container;
     TupScreen *screen;
     TupCameraBar *cameraBar;
@@ -51,10 +51,9 @@ struct TupCameraWidget::Private
     QSize screenDimension;
     bool isScaled;
 
-    // QLabel *currentFrameLabel;
-    QLineEdit *currentFrameBox;
-    QLineEdit *timerSecsLabel;
-    // QLabel *timerSecsLabel;
+    QLabel *currentFrameBox;
+    QLabel *timerSecsLabel;
+    double fpsDelta;
 };
 
 TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget *parent) : QFrame(parent), k(new Private)
@@ -67,9 +66,6 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
         #endif
     #endif
 
-    TCONFIG->beginGroup("General");
-    QString themeName = TCONFIG->value("Theme", "Light").toString();
-
     QDesktopWidget desktop;
     int desktopWidth = (40 * desktop.screenGeometry().width()) / 100;
     int desktopHeight = (40 * desktop.screenGeometry().height()) / 100;
@@ -78,117 +74,17 @@ TupCameraWidget::TupCameraWidget(TupProject *project, bool isNetworked, QWidget 
     k->project = project;
     setObjectName("TupCameraWidget_");
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    k->layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
-    QHBoxLayout *labelLayout = new QHBoxLayout;
-    labelLayout->setAlignment(Qt::AlignCenter);
-    labelLayout->setSpacing(0);
+    addVideoHeader();
+    addTimerPanel();
+    k->layout->addSpacing(10);
 
-    QFont font = this->font();
-    font.setBold(true);
-    QLabel *name = new QLabel(k->project->projectName() + ": ");
-    name->setFont(font);
+    addAnimationDisplay();
 
-    font.setBold(false);
-    QLabel *description = new QLabel(k->project->description());
-    description->setFont(font);
-
-    labelLayout->addWidget(name); 
-    labelLayout->addWidget(description);
-
-    QLabel *icon = new QLabel();
-    icon->setPixmap(QPixmap(THEME_DIR + "icons/player.png"));
-    QLabel *title = new QLabel(tr("Scene Preview"));
-    font.setBold(true);
-    title->setFont(font);
-    font.setBold(false);
-    k->scaleLabel = new QLabel;
-    k->scaleLabel->setFont(font);
-
-    setDimensionLabel(k->project->dimension());
-
-    QWidget *titleWidget = new QWidget();
-    QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-    titleLayout->setAlignment(Qt::AlignCenter);
-    titleLayout->addWidget(icon);
-    titleLayout->addWidget(title);
-
-    QWidget *scaleWidget = new QWidget();
-    QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
-    scaleLayout->setContentsMargins(0, 0, 0, 0);
-    scaleLayout->setAlignment(Qt::AlignCenter);
-    scaleLayout->addWidget(k->scaleLabel);
-
-    layout->addWidget(titleWidget, 0, Qt::AlignCenter);
-    layout->addLayout(labelLayout, Qt::AlignCenter);
-    layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
-
-    k->progressBar = new QProgressBar(this); 
-    QString style1 = "QProgressBar { background-color: #DDDDDD; text-align: center; color: #FFFFFF; border-radius: 2px; } ";
-    QString color = "#009500";
-    if (themeName.compare("Dark") == 0)
-        color = "#444444";
-    QString style2 = "QProgressBar::chunk { background-color: " + color + "; border-radius: 2px; }";
-
-    k->progressBar->setStyleSheet(style1 + style2);
-    k->progressBar->setMaximumHeight(5);
-    k->progressBar->setTextVisible(false);
-    k->progressBar->setRange(1, 100);
-    layout->addWidget(k->progressBar, 0, Qt::AlignCenter);
-
-    k->screen = new TupScreen(k->project, k->playerDimension, k->isScaled);
-    connect(k->screen, SIGNAL(isRendering(int)), this, SLOT(updateProgressBar(int)));
-    connect(k->screen, SIGNAL(frameChanged(int)), this, SLOT(updateTimerPanel(int)));
-
-    layout->addWidget(k->screen, 0, Qt::AlignCenter);
-
-    k->cameraBar = new TupCameraBar;
-    layout->addWidget(k->cameraBar, 0, Qt::AlignCenter);
-
-    connect(k->cameraBar, SIGNAL(play()), this, SLOT(doPlay()));
-    connect(k->cameraBar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
-    connect(k->cameraBar, SIGNAL(pause()), k->screen, SLOT(pause()));
-    connect(k->cameraBar, SIGNAL(stop()), k->screen, SLOT(stop()));
-    connect(k->cameraBar, SIGNAL(ff()), k->screen, SLOT(nextFrame()));
-    connect(k->cameraBar, SIGNAL(rew()), k->screen, SLOT(previousFrame()));
-
-    font.setBold(true);
-    QLabel *timerFramesLabel = new QLabel(tr("Current Frame: "));
-    timerFramesLabel->setFont(font);
-    k->currentFrameBox = new QLineEdit("0");
-    k->currentFrameBox->setReadOnly(true);
-    k->currentFrameBox->setMaximumWidth(45);
-    k->currentFrameBox->setMaxLength(5);
-    QLabel *stopwatchLabel = new QLabel(tr("Timer: "));
-    stopwatchLabel->setFont(font);
-    k->timerSecsLabel = new QLineEdit("0.0");
-    k->timerSecsLabel->setReadOnly(true);
-    k->timerSecsLabel->setMaximumWidth(45);
-    k->timerSecsLabel->setMaxLength(5);
-
-    QWidget *timerWidget = new QWidget();
-    QHBoxLayout *timerLayout = new QHBoxLayout(timerWidget);
-    timerLayout->setContentsMargins(0, 0, 0, 0);
-    timerLayout->setAlignment(Qt::AlignCenter);
-    timerLayout->addWidget(timerFramesLabel);
-    timerLayout->addWidget(k->currentFrameBox);
-    timerLayout->addSpacing(10);
-    timerLayout->addWidget(stopwatchLabel);
-    timerLayout->addWidget(k->timerSecsLabel);
-
-    layout->addWidget(timerWidget, 0, Qt::AlignCenter|Qt::AlignTop);
-
-    k->status = new TupCameraStatus(this, isNetworked);
-    k->status->setScenes(k->project); 
-    connect(k->status, SIGNAL(sceneIndexChanged(int)), this, SLOT(selectScene(int)));
-
-    updateFramesTotal(0);
-    k->status->setFPS(k->project->fps());
-    setLoop();
-
-    layout->addWidget(k->status, 0, Qt::AlignCenter|Qt::AlignTop);
-    setLayout(layout);
+    k->layout->addSpacing(10);
+    addControlsBar();
+    addStatusPanel(isNetworked);
 }
 
 TupCameraWidget::~TupCameraWidget()
@@ -222,6 +118,148 @@ TupCameraWidget::~TupCameraWidget()
     }
 
     delete k;
+}
+
+void TupCameraWidget::addVideoHeader()
+{
+    QHBoxLayout *labelLayout = new QHBoxLayout;
+    labelLayout->setAlignment(Qt::AlignCenter);
+    labelLayout->setSpacing(0);
+
+    QFont font = this->font();
+    font.setBold(true);
+    QLabel *name = new QLabel(k->project->projectName() + ": ");
+    name->setFont(font);
+
+    font.setBold(false);
+    QLabel *description = new QLabel(k->project->description());
+    description->setFont(font);
+
+    labelLayout->addWidget(name);
+    labelLayout->addWidget(description);
+
+    QLabel *icon = new QLabel();
+    icon->setPixmap(QPixmap(THEME_DIR + "icons/player.png"));
+    QLabel *title = new QLabel(tr("Scene Preview"));
+    font.setBold(true);
+    title->setFont(font);
+    font.setBold(false);
+    k->scaleLabel = new QLabel;
+    k->scaleLabel->setFont(font);
+
+    setDimensionLabel(k->project->dimension());
+
+    QWidget *titleWidget = new QWidget();
+    QHBoxLayout *titleLayout = new QHBoxLayout(titleWidget);
+    titleLayout->setContentsMargins(0, 0, 0, 0);
+    titleLayout->setAlignment(Qt::AlignCenter);
+    titleLayout->addWidget(icon);
+    titleLayout->addWidget(title);
+
+    QWidget *scaleWidget = new QWidget();
+    QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
+    scaleLayout->setContentsMargins(0, 0, 0, 0);
+    scaleLayout->setAlignment(Qt::AlignCenter);
+    scaleLayout->addWidget(k->scaleLabel);
+
+    k->layout->addWidget(titleWidget, 0, Qt::AlignCenter);
+    addProgressBar();
+    k->layout->addLayout(labelLayout, Qt::AlignCenter);
+    k->layout->addWidget(scaleWidget, 0, Qt::AlignCenter);
+}
+
+void TupCameraWidget::addProgressBar()
+{
+    TCONFIG->beginGroup("General");
+    QString themeName = TCONFIG->value("Theme", "Light").toString();
+
+    k->progressBar = new QProgressBar(this);
+    QString style1 = "QProgressBar { background-color: #DDDDDD; text-align: center; color: #FFFFFF; border-radius: 2px; } ";
+    QString color = "#009500";
+    if (themeName.compare("Dark") == 0)
+        color = "#444444";
+    QString style2 = "QProgressBar::chunk { background-color: " + color + "; border-radius: 2px; }";
+
+    k->progressBar->setStyleSheet(style1 + style2);
+    k->progressBar->setMaximumHeight(5);
+    k->progressBar->setTextVisible(false);
+    k->progressBar->setRange(1, 100);
+    k->layout->addWidget(k->progressBar, 0, Qt::AlignCenter);
+}
+
+void TupCameraWidget::addTimerPanel()
+{
+    QFont font = this->font();
+    font.setBold(true);
+
+    QLabel *timerFramesLabel = new QLabel(tr("Current Frame: "));
+    timerFramesLabel->setFont(font);
+    k->currentFrameBox = new QLabel("1");
+    k->currentFrameBox->setAlignment(Qt::AlignCenter);
+    k->currentFrameBox->setMinimumWidth(40);
+    QString style = "QLabel { background-color: #c8c8c8; border: 1px solid #777777; border-radius: 2px; }";
+    k->currentFrameBox->setStyleSheet(style);
+
+    QLabel *stopwatchLabel = new QLabel(tr("Timer: "));
+    stopwatchLabel->setFont(font);
+    k->timerSecsLabel = new QLabel("00.00");
+    k->timerSecsLabel->setAlignment(Qt::AlignCenter);
+    k->timerSecsLabel->setMinimumWidth(50);
+    k->timerSecsLabel->setStyleSheet(style);
+
+    QFrame *timerWidget = new QFrame(this);
+    timerWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+
+    QHBoxLayout *timerLayout = new QHBoxLayout(timerWidget);
+    timerLayout->setContentsMargins(10, 5, 10, 5);
+    timerLayout->setAlignment(Qt::AlignCenter);
+    timerLayout->addWidget(timerFramesLabel);
+    timerLayout->addWidget(k->currentFrameBox);
+    timerLayout->addSpacing(10);
+    timerLayout->addWidget(stopwatchLabel);
+    timerLayout->addWidget(k->timerSecsLabel);
+    
+    QLabel *secs = new QLabel(tr("secs"));
+    timerLayout->addWidget(secs);
+
+    k->layout->addWidget(timerWidget, 0, Qt::AlignCenter|Qt::AlignTop);
+}
+
+void TupCameraWidget::addAnimationDisplay()
+{
+    k->screen = new TupScreen(k->project, k->playerDimension, k->isScaled);
+    connect(k->screen, SIGNAL(isRendering(int)), this, SLOT(updateProgressBar(int)));
+    connect(k->screen, SIGNAL(frameChanged(int)), this, SLOT(updateTimerPanel(int)));
+
+    k->layout->addWidget(k->screen, 0, Qt::AlignCenter);
+}
+
+void TupCameraWidget::addControlsBar()
+{
+    k->cameraBar = new TupCameraBar;
+
+    connect(k->cameraBar, SIGNAL(play()), this, SLOT(doPlay()));
+    connect(k->cameraBar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
+    connect(k->cameraBar, SIGNAL(pause()), k->screen, SLOT(pause()));
+    connect(k->cameraBar, SIGNAL(stop()), k->screen, SLOT(stop()));
+    connect(k->cameraBar, SIGNAL(ff()), k->screen, SLOT(nextFrame()));
+    connect(k->cameraBar, SIGNAL(rew()), k->screen, SLOT(previousFrame()));
+
+    k->layout->addWidget(k->cameraBar, 0, Qt::AlignCenter);
+}
+
+void TupCameraWidget::addStatusPanel(bool isNetworked)
+{
+    k->status = new TupCameraStatus(this, isNetworked);
+    k->status->setScenes(k->project);
+    connect(k->status, SIGNAL(sceneIndexChanged(int)), this, SLOT(selectScene(int)));
+
+    updateFramesTotal(0);
+    int fps = k->project->fps();
+    k->fpsDelta = 1.0/fps;
+    k->status->setFPS(fps);
+    setLoop();
+    k->layout->addWidget(k->status, 0, Qt::AlignCenter|Qt::AlignTop);
 }
 
 void TupCameraWidget::setDimensionLabel(const QSize dimension)
@@ -377,6 +415,7 @@ void TupCameraWidget::setFPS(int fps)
 {
     k->project->setFPS(fps);
     k->screen->setFPS(fps);
+    k->fpsDelta = 1.0/fps;
 }
 
 void TupCameraWidget::setStatusFPS(int fps)
@@ -422,7 +461,9 @@ void TupCameraWidget::postDialog()
 
     if (exportWidget->isComplete() != QDialog::Rejected) {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), exportWidget->videoDescription(), k->status->getFPS(), exportWidget->videoScenes());
+        emit requestForExportVideoToServer(exportWidget->videoTitle(), exportWidget->videoTopics(), 
+                                           exportWidget->videoDescription(), k->status->getFPS(), 
+                                           exportWidget->videoScenes());
     }
 }
 
@@ -447,6 +488,7 @@ void TupCameraWidget::updateScenes(int sceneIndex)
 void TupCameraWidget::updateFirstFrame()
 {
     k->screen->updateAnimationArea();
+    k->currentFrameBox->setText("1");
 }
 
 void TupCameraWidget::updateProgressBar(int advance)
@@ -456,13 +498,7 @@ void TupCameraWidget::updateProgressBar(int advance)
 
 void TupCameraWidget::updateTimerPanel(int currentFrame)
 {
-    QString space = "";
-    if (currentFrame < 10)
-        space = "    ";
-    else if (currentFrame < 100)
-        space = "   ";
-    else if (currentFrame < 1000)
-        space = "  ";
-        
-    k->currentFrameBox->setText(space + QString::number(currentFrame));
+    k->currentFrameBox->setText(QString::number(currentFrame));
+    double time = k->fpsDelta * currentFrame;
+    k->timerSecsLabel->setText(QString::number(time, 'f', 2));
 }

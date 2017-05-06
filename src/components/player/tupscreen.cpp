@@ -94,7 +94,7 @@ TupScreen::TupScreen(TupProject *project, const QSize viewSize, bool isScaled, Q
     // k->soundPlayer = QList();
 
     k->isPlaying = false;
-    k->playFlag = false; 
+    k->playFlag = true; 
     k->playBackFlag = false;
 
     k->timer = new QTimer(this);
@@ -335,6 +335,9 @@ void TupScreen::pause()
     if (k->isPlaying) {
         stopAnimation();
     } else {
+        if (k->photograms.isEmpty())
+            render();
+
         k->isPlaying = true;
         if (k->playFlag) {
             for (int i=0; i<k->soundPlayer.count(); i++)
@@ -364,7 +367,10 @@ void TupScreen::stop()
     else
         k->currentFramePosition = k->photograms.count() - 1;
 
-    emit frameChanged(k->currentFramePosition);
+    if (k->currentFramePosition == 0)
+        emit frameChanged(1);
+    else
+        emit frameChanged(k->currentFramePosition);
 
     repaint();
 }
@@ -469,12 +475,9 @@ void TupScreen::advance()
     if (k->currentFramePosition < k->photograms.count()) {
         repaint();
         k->currentFramePosition++;
-        // int frame = k->currentFramePosition;
-        // if (k->currentFramePosition == k->photograms.count())
-        //     frame--;
         emit frameChanged(k->currentFramePosition);
     } else if (!k->cyclicAnimation) {
-               stop();
+        stop();
     }
 }
 
