@@ -1123,7 +1123,8 @@ void Tweener::updateTweenPoints()
 void Tweener::resizeNodes(qreal scaleFactor)
 {
     k->realFactor = scaleFactor;
-    k->nodesGroup->resizeNodes(scaleFactor);
+    if (k->nodesGroup)
+        k->nodesGroup->resizeNodes(scaleFactor);
 }
 
 void Tweener::updateZoomFactor(qreal scaleFactor)
