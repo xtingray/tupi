@@ -56,8 +56,8 @@ struct Node::Private
     QPointF oldPoint;
 };
 
-Node::Node(TypeNode node, ActionNode action, const QPointF &pos, NodeManager *manager, QGraphicsItem *parent, int zValue) : 
-           QGraphicsItem(0), k(new Private)
+Node::Node(TypeNode node, ActionNode action, const QPointF &pos, NodeManager *manager, 
+           QGraphicsItem *parent, int zValue) : QGraphicsItem(0), k(new Private)
 {
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, false);
@@ -195,10 +195,9 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF newPos(event->scenePos());
 
     if (k->typeNode == Center) {
-        if ((int)newPos.x() % 2 == 0) {
-            k->parent->moveBy(newPos.x() - scenePos().x(), newPos.y() - scenePos().y());
-            event->accept();
-        }
+        k->parent->moveBy(newPos.x() - scenePos().x(), newPos.y() - scenePos().y());
+        QGraphicsItem::mouseMoveEvent(event);
+        return;
     } else {
         if (k->action == Scale) {
             QPointF center = k->parent->boundingRect().center();

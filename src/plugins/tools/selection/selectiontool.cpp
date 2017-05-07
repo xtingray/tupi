@@ -554,10 +554,10 @@ void SelectionTool::keyPressEvent(QKeyEvent *event)
                } else {
                    int delta = 5;
 
-                   if (event->modifiers()==Qt::ShiftModifier)
+                   if (event->modifiers() == Qt::ShiftModifier)
                        delta = 1;
 
-                   if (event->modifiers()==Qt::ControlModifier)
+                   if (event->modifiers() == Qt::ControlModifier)
                        delta = 10;
 
                    k->selectedObjects = k->scene->selectedItems();

@@ -61,6 +61,14 @@ struct NodeManager::Private
 
 NodeManager::NodeManager(QGraphicsItem *parent, QGraphicsScene *scene, int zValue): k(new Private)
 {
+    #ifdef K_DEBUG
+        #ifdef Q_OS_WIN
+            qDebug() << "[NodeManager::NodeManager()]";
+        #else
+            TINIT;
+        #endif
+    #endif
+
     k->parent = parent;
     k->scene = scene;
     k->itemCenter = QPointF(0, 0);
@@ -71,16 +79,16 @@ NodeManager::NodeManager(QGraphicsItem *parent, QGraphicsScene *scene, int zValu
     k->scaleY = k->parent->data(TupGraphicObject::ScaleY).toReal();
 
     // This condition is only for SVG objects
-    /*
-    if (k->scaleX == 0) {
-        k->scaleX = 1;
-        k->parent->setData(TupGraphicObject::ScaleX, 1);
-    }
-    if (k->scaleY == 0) {
-        k->scaleY = 1;
-        k->parent->setData(TupGraphicObject::ScaleY, 1);
-    }
-    */
+    if (qgraphicsitem_cast<QGraphicsSvgItem *> (parent)) {
+        if (k->scaleX == 0) {
+            k->scaleX = 1;
+            k->parent->setData(TupGraphicObject::ScaleX, 1);
+        }
+        if (k->scaleY == 0) {
+            k->scaleY = 1;
+            k->parent->setData(TupGraphicObject::ScaleY, 1);
+        }
+    } 
 
     QRectF rect = parent->sceneBoundingRect();
     Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, zValue);
@@ -107,13 +115,13 @@ NodeManager::~NodeManager()
 void NodeManager::clear()
 {
     foreach (Node *node, k->nodes) {
-             if (node) {
-                 QGraphicsScene *scene = node->scene();
-                 if (scene)
-                     scene->removeItem(node);
-             }
-             delete node;
-             node = 0;
+        if (node) {
+            QGraphicsScene *scene = node->scene();
+            if (scene)
+                scene->removeItem(node);
+        }
+        delete node;
+        node = 0;
     }
     k->nodes.clear();
 }
@@ -148,7 +156,7 @@ void NodeManager::syncNodes(const QRectF &rect)
                        case Node::BottomLeft:
                        {
                             if ((*it)->scenePos() != rect.bottomLeft())
-                                (*it)->setPos(rect.bottomLeft() );
+                                (*it)->setPos(rect.bottomLeft());
                             break;
                        }
                        case Node::Center:
@@ -264,8 +272,8 @@ void NodeManager::crossedFlip()
 void NodeManager::show()
 {
     foreach (Node *node, k->nodes) {
-             if (!node->scene())
-                 k->scene->addItem(node);
+        if (!node->scene())
+            k->scene->addItem(node);
     }
 }
 
@@ -282,30 +290,30 @@ bool NodeManager::isPressed()
 void NodeManager::toggleAction()
 {
     foreach (Node *node, k->nodes) {
-             if (node->actionNode() == Node::Scale) {
-                 node->setAction(Node::Rotate);
-             } else if (node->actionNode() == Node::Rotate) {
-                        node->setAction(Node::Scale);
-             }
+        if (node->actionNode() == Node::Scale) {
+            node->setAction(Node::Rotate);
+        } else if (node->actionNode() == Node::Rotate) {
+            node->setAction(Node::Scale);
+        }
     }
 }
 
 void NodeManager::setActionNode(Node::ActionNode action)
 {
     foreach (Node *node, k->nodes)
-             node->setAction(action);
+        node->setAction(action);
 }
 
 void NodeManager::resizeNodes(qreal factor)
 {
     foreach (Node *node, k->nodes)
-             node->resize(factor);
+        node->resize(factor);
 }
 
 void NodeManager::setVisible(bool visible)
 {
     foreach (Node *node, k->nodes)
-             node->setVisible(visible);
+        node->setVisible(visible);
 }
 
 double NodeManager::rotation()
