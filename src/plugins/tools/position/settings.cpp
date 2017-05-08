@@ -296,7 +296,7 @@ void Settings::notifySelection(bool flag)
         #ifdef Q_OS_WIN
             qDebug() << "[Settings::notifySelection()]";
         #else
-            T_FUNCINFO << flag;
+            T_FUNCINFO << "selection is done? -> " << flag;
         #endif
     #endif
 

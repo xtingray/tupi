@@ -379,6 +379,7 @@ void Tweener::resetGUI()
     if (k->editMode == TupToolPlugin::Properties) {
         if (k->path) {
             k->scene->removeItem(k->path);
+            removeTweenPoints();
             k->isPathInScene = false;
             if (k->nodesGroup) {
                 k->nodesGroup->clear();
@@ -435,10 +436,9 @@ void Tweener::setTweenPath()
         k->nodesGroup->show();
         k->nodesGroup->resizeNodes(k->realFactor);
         k->nodesGroup->expandAllNodes();
-
-        paintTweenPoints();
     }
 
+    paintTweenPoints();
     k->editMode = TupToolPlugin::Properties;
     disableSelection();
 }
@@ -469,6 +469,7 @@ void Tweener::setSelection()
     }
 
     if (k->path) {
+        removeTweenPoints();
         k->scene->removeItem(k->path);
         k->isPathInScene = false;
         if (k->nodesGroup) {
