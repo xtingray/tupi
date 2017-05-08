@@ -48,16 +48,20 @@ struct TupRotationDial::Private
 TupRotationDial::TupRotationDial(QWidget *parent) : QDialog(parent, Qt::CustomizeWindowHint), k(new Private)
 {
     setModal(true);
+	#ifndef Q_OS_WIN
     setAttribute(Qt::WA_TranslucentBackground);
+	#endif
 
     QBoxLayout *layout = new QVBoxLayout(this);
     k->dial = new QDial;
     connect(k->dial, SIGNAL(valueChanged(int)), this, SLOT(updateAngle(int)));
     k->dial->setRange(0, 360);
     layout->addWidget(k->dial);
+	
     k->label = new QLabel;
     k->label->setAttribute(Qt::WA_TranslucentBackground);
     k->label->setAlignment(Qt::AlignHCenter);
+	
     QFont f = font();
     f.setBold(true);
     f.setPointSize(f.pointSizeF() + 5);
