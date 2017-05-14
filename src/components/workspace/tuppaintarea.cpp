@@ -226,13 +226,15 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
             if (activeSelection) {
                 menu->addSeparator();
                 menu->addAction(tr("Cut"), this, SLOT(cutItems()), QKeySequence(tr("Ctrl+X")));
-                menu->addAction(tr("Copy"), this, SLOT(copyItems()), QKeySequence(tr("Ctrl+C")));
+                // menu->addAction(tr("Copy"), this, SLOT(copyItems()), QKeySequence(tr("Ctrl+C")));
+                menu->addAction(tr("Copy"), this, SLOT(copyItems()));
             }
 
             if (!k->copiesXml.isEmpty()) {
                 if (!activeSelection)
                     menu->addSeparator();
-                menu->addAction(tr("Paste"), this, SLOT(pasteItems()), QKeySequence(tr("Ctrl+V")));
+                // menu->addAction(tr("Paste"), this, SLOT(pasteItems()), QKeySequence(tr("Ctrl+V")));
+                menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
 
                 QMenu *pasteMenu = new QMenu(tr("Paste in..."));
                 QAction *pasteFive = pasteMenu->addAction(tr("next 5 frames"), this, SLOT(pasteNextFive()));
@@ -251,7 +253,8 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
             }
 
             if (activeSelection) {
-                menu->addAction(tr("Delete"), this, SLOT(deleteItems()), QKeySequence(Qt::Key_Delete));
+                // menu->addAction(tr("Delete"), this, SLOT(deleteItems()), QKeySequence(Qt::Key_Delete));
+                menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
                 menu->addSeparator();
                 QMenu *order = new QMenu(tr("Send"));
 
@@ -1272,7 +1275,7 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
         #endif
     #endif
 
-    if (event->key() == Qt::Key_Backspace) {
+    if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
         deleteItems();
         return;
     }
@@ -1283,10 +1286,27 @@ void TupPaintArea::keyPressEvent(QKeyEvent *event)
     }
 
     if (event->modifiers() == Qt::ControlModifier) {
+        if (event->key() == Qt::Key_C) {
+            copyItems();
+            return;
+        }
+
+        if (event->key() == Qt::Key_X) {
+            copyItems();
+            deleteItems();
+            return;
+        }
+
+        if (event->key() == Qt::Key_V) {
+            pasteItems();
+            return;
+        }
+
         if (event->key() == Qt::Key_2) {
             emit newPerspective(1);
             return;
         }
+
         if (event->key() == Qt::Key_3) {
             emit newPerspective(2);
             return;

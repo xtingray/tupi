@@ -729,8 +729,8 @@ int TupExposureTable::framesCountAtLayer(int layer)
 
 void TupExposureTable::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Backspace) {
-        emit frameRemoved();
+    if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
+        emit selectionRemoved();
         return;
     }
 
@@ -738,12 +738,12 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         int row = currentRow()-1;
         if (row > -1) {
             if (event->modifiers() == Qt::ControlModifier)
-                emit frameRemoved();
+                emit selectionRemoved();
             else
                 setCurrentCell(row, currentColumn());
         } else {
             if (row == -1 && event->modifiers() == Qt::ControlModifier)
-                emit frameRemoved();
+                emit selectionRemoved();
         }
         return;
     }
@@ -752,12 +752,32 @@ void TupExposureTable::keyPressEvent(QKeyEvent *event)
         int framesCount = k->header->lastFrame(currentLayer());
         int next = currentRow() + 1;
         if (event->modifiers() == Qt::ControlModifier) {
-            emit frameCopied(currentLayer(), currentFrame());
+            emit frameExtended(currentLayer(), currentFrame());
         } else {
             if (next >= framesCount)
                 markNextFrame(next, currentColumn());
             else
                 setCurrentCell(next, currentColumn());
+        }
+        return;
+    }
+
+    if (event->key() == Qt::Key_C) {
+        if (event->modifiers() == Qt::ControlModifier)
+            emit selectionCopied();
+        return;
+    }
+
+    if (event->key() == Qt::Key_V) {
+        if (event->modifiers() == Qt::ControlModifier)
+            emit selectionPasted();
+        return;
+    }
+
+    if (event->key() == Qt::Key_X) {
+        if (event->modifiers() == Qt::ControlModifier) {
+            emit selectionCopied();
+            emit selectionRemoved();
         }
         return;
     }

@@ -385,16 +385,19 @@ void TupDocumentView::showPos(const QPointF &point)
 
 void TupDocumentView::setupDrawActions()
 {
-    new TAction(QPixmap(THEME_DIR + "icons/copy.png"), tr("Copy"), QKeySequence(tr("Ctrl+C")), 
+    new TAction(QPixmap(THEME_DIR + "icons/copy.png"), tr("Copy"), QKeySequence(), 
                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
 
-    new TAction(QPixmap(THEME_DIR + "icons/paste.png"), tr("Paste"), QKeySequence(tr("Ctrl+V")),
+    new TAction(QPixmap(THEME_DIR + "icons/paste.png"), tr("Paste"), QKeySequence(), 
                 k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
 
-    new TAction(QPixmap(THEME_DIR + "icons/cut.png"), tr("Cut"), QKeySequence(tr("Ctrl+X")),
-                k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
+    new TAction(QPixmap(THEME_DIR + "icons/cut.png"), tr("Cut"), QKeySequence(),
+                k->paintArea, SLOT(cutItems()), k->actionManager, "cut");
 
-    new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), QKeySequence(Qt::Key_Delete), 
+    // new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), QKeySequence(Qt::Key_Delete), 
+    //             k->paintArea, SLOT(deleteItems()), k->actionManager, "delete");
+
+    new TAction(QPixmap(THEME_DIR + "icons/delete.png"), tr("Delete"), QKeySequence(),
                 k->paintArea, SLOT(deleteItems()), k->actionManager, "delete");
    
     /* 

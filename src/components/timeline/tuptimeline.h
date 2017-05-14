@@ -78,8 +78,12 @@ class TUPI_EXPORT TupTimeLine : public TupModuleWidgetBase
         bool requestFrameAction(int action, int frameIndex = -1, int layerIndex = -1, int sceneIndex = -1, const QVariant &arg = QVariant());
         bool requestLayerAction(int action, int layerIndex = -1, int sceneIndex = -1, const QVariant &arg = QVariant());
         bool requestSceneAction(int action, int sceneIndex = -1, const QVariant &arg = QVariant());
+
         void selectFrame(int indexLayer, int indexFrame);
-        void removeFrame();
+        void requestCopyFrameSelection();
+        void requestPasteSelectionInCurrentFrame();
+        void removeFrameSelection();
+
         void extendFrameForward(int layerIndex, int frameIndex);
         void requestLayerMove(int oldLayerIndex, int newLayerIndex);
 

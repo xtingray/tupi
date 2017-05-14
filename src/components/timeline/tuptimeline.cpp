@@ -150,9 +150,12 @@ void TupTimeLine::addScene(int sceneIndex, const QString &name)
     framesTable->setItemSize(10, 20);
 
     connect(framesTable, SIGNAL(frameSelected(int, int)), this, SLOT(selectFrame(int, int)));
-    connect(framesTable, SIGNAL(frameRemoved()), SLOT(removeFrame()));
-    connect(framesTable, SIGNAL(frameCopied(int, int)), SLOT(extendFrameForward(int, int)));
+    connect(framesTable, SIGNAL(selectionCopied()), SLOT(requestCopyFrameSelection()));
+    connect(framesTable, SIGNAL(selectionPasted()), SLOT(requestPasteSelectionInCurrentFrame()));
+    connect(framesTable, SIGNAL(selectionRemoved()), SLOT(removeFrameSelection()));
+    connect(framesTable, SIGNAL(frameExtended(int, int)), SLOT(extendFrameForward(int, int)));
     connect(framesTable, SIGNAL(visibilityChanged(int, bool)), this, SLOT(requestLayerVisibilityAction(int, bool)));
+
     connect(framesTable, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestLayerRenameAction(int, const QString &))); 
     connect(framesTable, SIGNAL(layerMoved(int, int)), this, SLOT(requestLayerMove(int, int)));
     connect(framesTable, SIGNAL(newPerspective(int)), this, SIGNAL(newPerspective(int)));
@@ -639,6 +642,9 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
             break;
             case TupProjectActionBar::CopyFrame:
             {
+                requestCopyFrameSelection();
+
+                /*
                 QList<int> coords = framesTable(sceneIndex)->currentSelection();
                 if (coords.count() == 4) {
                     QString selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
@@ -648,17 +654,22 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
                                                                                       TupProjectRequest::CopySelection, selection);
                     emit requestTriggered(&request);
                 }
+                */
 
                 return true;
             }
             break;
             case TupProjectActionBar::PasteFrame:
             {
+                requestPasteSelectionInCurrentFrame();
+
+                /*
                 if (!k->frameSelection.isEmpty()) {
                     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame,
                                                                                       TupProjectRequest::PasteSelection);
                     emit requestTriggered(&request);
                 }
+                */
 
                 return true;
             }
@@ -880,7 +891,7 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
     }
 }
 
-void TupTimeLine::removeFrame()
+void TupTimeLine::removeFrameSelection()
 {
     requestRemoveFrame(false);
 }
@@ -966,3 +977,32 @@ void TupTimeLine::initLayerVisibility()
     }
 }
 
+void TupTimeLine::requestCopyFrameSelection()
+{
+    int sceneIndex = k->scenesContainer->currentIndex();
+    int layerIndex = framesTable(sceneIndex)->currentLayer();
+    int currentFrame = framesTable(sceneIndex)->currentColumn();
+
+    QList<int> coords = framesTable(sceneIndex)->currentSelection();
+    if (coords.count() == 4) {
+        QString selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
+                            + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
+
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame,
+                                                                          TupProjectRequest::CopySelection, selection);
+        emit requestTriggered(&request);
+    }
+}
+
+void TupTimeLine::requestPasteSelectionInCurrentFrame()
+{
+    if (!k->frameSelection.isEmpty()) {
+        int sceneIndex = k->scenesContainer->currentIndex();
+        int layerIndex = framesTable(sceneIndex)->currentLayer();
+        int currentFrame = framesTable(sceneIndex)->currentColumn();
+
+        TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame,
+                                                                          TupProjectRequest::PasteSelection);
+        emit requestTriggered(&request);
+    }
+}

@@ -623,7 +623,7 @@ void TupTimeLineTable::mousePressEvent(QMouseEvent *event)
 
 void TupTimeLineTable::mouseMoveEvent(QMouseEvent *event)
 {
-    int frameIndex = columnAt(event->y());
+    // int frameIndex = columnAt(event->y());
     QList<int> selection = currentSelection();
 
     for (int j=selection.at(0); j<=selection.at(1); j++) {
@@ -647,8 +647,28 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
     if (event->key() == 16777232 || event->key() == 16777233)
         return;
 
-    if (event->key() == Qt::Key_Backspace) {
-        emit frameRemoved();
+    if (event->key() == Qt::Key_C) {
+        if (event->modifiers() == Qt::ControlModifier)
+            emit selectionCopied();
+        return;
+    }
+
+    if (event->key() == Qt::Key_V) {
+        if (event->modifiers() == Qt::ControlModifier)
+            emit selectionPasted();
+        return;
+    }
+
+    if (event->key() == Qt::Key_X) {
+        if (event->modifiers() == Qt::ControlModifier) {
+            emit selectionCopied();
+            emit selectionRemoved();
+        }
+        return;
+    }
+
+    if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
+        emit selectionRemoved();
         return;
     }
 
@@ -662,7 +682,7 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
         int next = currentColumn()+1;
         if (next <= limit) { 
             if (event->modifiers() == Qt::ControlModifier)
-                emit frameCopied(currentRow(), currentColumn());
+                emit frameExtended(currentRow(), currentColumn());
             else
                 setCurrentCell(currentRow(), next);
         }
@@ -673,12 +693,12 @@ void TupTimeLineTable::keyPressEvent(QKeyEvent *event)
         int next = currentColumn()-1;
         if (next >= 0) { 
             if (event->modifiers() == Qt::ControlModifier)
-                emit frameRemoved();
+                emit selectionRemoved();
             else
                 setCurrentCell(currentRow(), next);
         } else {
             if (next == -1 && event->modifiers() == Qt::ControlModifier)
-                emit frameRemoved();
+                emit selectionRemoved();
         }
         return;
     }

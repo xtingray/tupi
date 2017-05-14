@@ -225,8 +225,11 @@ void TupExposureSheet::addScene(int sceneIndex, const QString &name)
     connect(scene, SIGNAL(frameUsed(int, int)), this, SLOT(insertFrame(int, int)));
     connect(scene, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(renameFrame(int, int, const QString &)));
     connect(scene, SIGNAL(frameSelected(int, int)), SLOT(selectFrame(int, int)));
-    connect(scene, SIGNAL(frameRemoved()), SLOT(removeFrame()));
-    connect(scene, SIGNAL(frameCopied(int, int)), SLOT(extendFrameForward(int, int)));
+    connect(scene, SIGNAL(selectionCopied()), SLOT(requestCopyFrameSelection())); 
+    connect(scene, SIGNAL(selectionPasted()), SLOT(requestPasteSelectionInCurrentFrame()));
+    connect(scene, SIGNAL(selectionRemoved()), SLOT(removeFrame()));
+    connect(scene, SIGNAL(frameExtended(int, int)), SLOT(extendFrameForward(int, int)));
+
     connect(scene, SIGNAL(layerNameChanged(int, const QString &)), this, SLOT(requestRenameLayer(int, const QString &)));
     connect(scene, SIGNAL(layerMoved(int, int)), this, SLOT(moveLayer(int, int)));
     connect(scene, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(changeLayerVisibility(int, bool)));
