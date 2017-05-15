@@ -196,7 +196,7 @@ TupMainWindow::TupMainWindow() : TabbedMainWindow(), m_projectManager(0), animat
         QTimer::singleShot(0, this, SLOT(showWebMessage()));
     } else {
         if (update)
-            QDesktopServices::openUrl(QString("http://maefloresta.com/portal/tupi.html"));
+            QDesktopServices::openUrl(QString("http://maefloresta.com/portal/updates"));
 
         // Check if user wants to see a Tupi tip for every time he launches the program
         TCONFIG->beginGroup("General");
