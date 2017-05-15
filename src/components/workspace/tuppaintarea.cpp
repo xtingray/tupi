@@ -273,20 +273,20 @@ void TupPaintArea::mousePressEvent(QMouseEvent *event)
 
                 QList<QGraphicsItem *> selected = scene()->selectedItems();
                 foreach (QGraphicsItem *item, selected) {
-                         QDomDocument dom;
-                         dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
-                         QDomElement root = dom.documentElement();
+                    QDomDocument dom;
+                    dom.appendChild(dynamic_cast<TupAbstractSerializable *>(item)->toXml(dom));
+                    QDomElement root = dom.documentElement();
 
-                         if (root.tagName() == "symbol") {
-                             QString key = root.attribute("id").toUpper();
-                             if (key.endsWith("JPG") || key.endsWith("PNG") || key.endsWith("GIF") || key.endsWith("XPM")) {
-                                 addItem->setEnabled(false);
-                                 break;
-                             }
-                         } else if (root.tagName() == "svg") {
-                                    addItem->setEnabled(false);
-                                    break;
-                         }
+                    if (root.tagName() == "symbol") {
+                       QString key = root.attribute("id").toUpper();
+                       if (key.endsWith("JPG") || key.endsWith("PNG") || key.endsWith("GIF") || key.endsWith("XPM")) {
+                           addItem->setEnabled(false);
+                           break;
+                       }
+                    } else if (root.tagName() == "svg") {
+                       addItem->setEnabled(false);
+                       break;
+                    }
                 }
             }
 
@@ -334,46 +334,46 @@ void TupPaintArea::frameResponse(TupFrameResponse *response)
 
     if (!guiScene->isDrawing()) {
         switch (response->action()) {
-                case TupProjectRequest::RemoveSelection:
-                case TupProjectRequest::Exchange:
-                    {
-                        if (k->spaceMode == TupProject::FRAMES_EDITION)
-                            guiScene->drawCurrentPhotogram();
-                    }
-                    break;
-                case TupProjectRequest::Add:
-                case TupProjectRequest::Select:
-                case TupProjectRequest::Paste:
-                case TupProjectRequest::PasteSelection:
-                case TupProjectRequest::Reset:
-                    {
-                        if (response->action() == TupProjectRequest::Select) {
-                            if (guiScene->currentFrameIndex() != response->frameIndex())
-                                emit frameChanged(response->frameIndex());
-                        }
-                        guiScene->setCurrentFrame(response->layerIndex(), response->frameIndex());
+            case TupProjectRequest::PasteSelection:
+            case TupProjectRequest::RemoveSelection:
+            case TupProjectRequest::Exchange:
+              {
+                  if (k->spaceMode == TupProject::FRAMES_EDITION)
+                      guiScene->drawCurrentPhotogram();
+              }
+            break;
+            case TupProjectRequest::Add:
+            case TupProjectRequest::Select:
+            case TupProjectRequest::Paste:
+            case TupProjectRequest::Reset:
+              {
+                  if (response->action() == TupProjectRequest::Select) {
+                      if (guiScene->currentFrameIndex() != response->frameIndex())
+                          emit frameChanged(response->frameIndex());
+                  }
+                  guiScene->setCurrentFrame(response->layerIndex(), response->frameIndex());
 
-                        if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                            guiScene->drawPhotogram(response->frameIndex(), true);
-                        } else {
-                            guiScene->cleanWorkSpace();
-                            guiScene->drawSceneBackground(guiScene->currentFrameIndex());
-                        }
+                  if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                      guiScene->drawPhotogram(response->frameIndex(), true);
+                  } else {
+                      guiScene->cleanWorkSpace();
+                      guiScene->drawSceneBackground(guiScene->currentFrameIndex());
+                  }
 
-                        if (guiScene->currentTool()->toolType() == TupToolInterface::Selection)
-                            guiScene->resetCurrentTool();
-                    }
-                    break;
-                default:
-                    #ifdef K_DEBUG
-                        QString msg = "TupPaintArea::frameResponse() - Action not recognized -> " + QString::number(response->action());
-                        #ifdef Q_OS_WIN
-                            qDebug() << msg;
-                        #else
-                            tWarning() << msg;
-                        #endif
-                    #endif
-                    break;
+                  if (guiScene->currentTool()->toolType() == TupToolInterface::Selection)
+                      guiScene->resetCurrentTool();
+              }
+            break;
+            default:
+              #ifdef K_DEBUG
+                  QString msg = "TupPaintArea::frameResponse() - Action not recognized -> " + QString::number(response->action());
+                  #ifdef Q_OS_WIN
+                      qDebug() << msg;
+                  #else
+                      tWarning() << msg;
+                  #endif
+              #endif
+            break;
         }
     } else {
         #ifdef K_DEBUG
@@ -407,90 +407,87 @@ void TupPaintArea::layerResponse(TupLayerResponse *response)
     int frameIndex = guiScene->currentFrameIndex();
 
     switch (response->action()) {
-            case TupProjectRequest::Add:
-                {
-                    if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                        if (k->spaceMode == TupProject::FRAMES_EDITION)
-                            guiScene->drawCurrentPhotogram();
-                    }
-                    return;
-                }
-            break;
-            case TupProjectRequest::Remove:
-                {
-                    TupScene *scene = k->project->sceneAt(k->currentSceneIndex);
+        case TupProjectRequest::Add:
+          {
+              if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
+                  if (k->spaceMode == TupProject::FRAMES_EDITION)
+                      guiScene->drawCurrentPhotogram();
+              }
+              return;
+          }
+        break;
+        case TupProjectRequest::Remove:
+          {
+              TupScene *scene = k->project->sceneAt(k->currentSceneIndex);
 
-                    if (scene->layersCount() > 1) {
-                        if (response->layerIndex() != 0)
-                            guiScene->setCurrentFrame(response->layerIndex() - 1, frameIndex);
-                        else
-                            guiScene->setCurrentFrame(response->layerIndex() + 1, frameIndex);
+              if (scene->layersCount() > 1) {
+                  if (response->layerIndex() != 0)
+                      guiScene->setCurrentFrame(response->layerIndex() - 1, frameIndex);
+                  else
+                      guiScene->setCurrentFrame(response->layerIndex() + 1, frameIndex);
 
-                        if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                            guiScene->drawCurrentPhotogram();
-                        } else {
-                            guiScene->cleanWorkSpace();
-                            guiScene->drawSceneBackground(frameIndex);
-                        }
-                    } else {
-                        if (scene->layersCount() == 1) {
-                            guiScene->setCurrentFrame(0, frameIndex);
-                            if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                                guiScene->drawCurrentPhotogram();
-                            } else {
-                                guiScene->cleanWorkSpace();
-                                guiScene->drawSceneBackground(frameIndex);
-                            }
-                        }
-                    }
+                  if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                      guiScene->drawCurrentPhotogram();
+                  } else {
+                      guiScene->cleanWorkSpace();
+                      guiScene->drawSceneBackground(frameIndex);
+                  }
+              } else {
+                  if (scene->layersCount() == 1) {
+                      guiScene->setCurrentFrame(0, frameIndex);
+                      if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                          guiScene->drawCurrentPhotogram();
+                      } else {
+                          guiScene->cleanWorkSpace();
+                          guiScene->drawSceneBackground(frameIndex);
+                      }
+                  }
+              }
 
-                    viewport()->update();
-                }
-            break;
-            case TupProjectRequest::UpdateOpacity:
-                {
-                    // if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                        guiScene->drawCurrentPhotogram();
-                        viewport()->update(scene()->sceneRect().toRect());
-                    // }
-                }
-            break;
-
-            case TupProjectRequest::TupProjectRequest::View:
-                {
-                    guiScene->updateLayerVisibility(response->layerIndex(), response->arg().toBool());
-                    if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                        guiScene->drawCurrentPhotogram();
-                    } else {
-                        guiScene->cleanWorkSpace();
-                        guiScene->drawSceneBackground(frameIndex);
-                    }
-                    viewport()->update(scene()->sceneRect().toRect());
-                }
-            break;
-            case TupProjectRequest::TupProjectRequest::Move:
-                {
-                    guiScene->setCurrentFrame(response->arg().toInt(), frameIndex);
-                    if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                        guiScene->drawCurrentPhotogram();
-                    } else {
-                        guiScene->cleanWorkSpace();
-                        guiScene->drawSceneBackground(frameIndex);
-                    }
-                    viewport()->update(scene()->sceneRect().toRect());
-                }
-            break;
-            default:
-                {
-                    if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                        guiScene->drawCurrentPhotogram();
-                    } else {
-                        guiScene->cleanWorkSpace();
-                        guiScene->drawSceneBackground(frameIndex);
-                    }
-                    viewport()->update(scene()->sceneRect().toRect());
-                }
-            break;
+              viewport()->update();
+          }
+        break;
+        case TupProjectRequest::UpdateOpacity:
+          {
+              guiScene->drawCurrentPhotogram();
+              viewport()->update(scene()->sceneRect().toRect());
+          }
+        break;
+        case TupProjectRequest::TupProjectRequest::View:
+          {
+              guiScene->updateLayerVisibility(response->layerIndex(), response->arg().toBool());
+              if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                  guiScene->drawCurrentPhotogram();
+              } else {
+                  guiScene->cleanWorkSpace();
+                  guiScene->drawSceneBackground(frameIndex);
+              }
+              viewport()->update(scene()->sceneRect().toRect());
+          }
+        break;
+        case TupProjectRequest::TupProjectRequest::Move:
+          {
+              guiScene->setCurrentFrame(response->arg().toInt(), frameIndex);
+              if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                  guiScene->drawCurrentPhotogram();
+              } else {
+                  guiScene->cleanWorkSpace();
+                  guiScene->drawSceneBackground(frameIndex);
+              }
+              viewport()->update(scene()->sceneRect().toRect());
+          }
+        break;
+        default:
+          {
+              if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                  guiScene->drawCurrentPhotogram();
+              } else {
+                  guiScene->cleanWorkSpace();
+                  guiScene->drawSceneBackground(frameIndex);
+              }
+              viewport()->update(scene()->sceneRect().toRect());
+          }
+          break;
     }
 
     guiScene->layerResponse(response);
@@ -515,45 +512,45 @@ void TupPaintArea::sceneResponse(TupSceneResponse *event)
     if (!guiScene->isDrawing()) {
         switch(event->action()) {
             case TupProjectRequest::Select:
-                {
-                    if (event->sceneIndex() >= 0) {
-                        if (k->project->scenesCount() == 1)
-                            setCurrentScene(0);
-                        else
-                            setCurrentScene(event->sceneIndex());
-                    }
-                }
-                break;
+              {
+                  if (event->sceneIndex() >= 0) {
+                      if (k->project->scenesCount() == 1)
+                          setCurrentScene(0);
+                      else
+                          setCurrentScene(event->sceneIndex());
+                  }
+              }
+            break;
             case TupProjectRequest::Remove:
-                {
-                    if (k->project->scenesCount() > 0)
-                        setCurrentScene(event->sceneIndex() - 1);
-                }
-                break;
+              {
+                  if (k->project->scenesCount() > 0)
+                      setCurrentScene(event->sceneIndex() - 1);
+              }
+            break;
             case TupProjectRequest::Reset:
-                {
-                    setCurrentScene(event->sceneIndex());
-                }
-                break;
+              {
+                  setCurrentScene(event->sceneIndex());
+              }
+            break;
             case TupProjectRequest::BgColor:
-                {
-                    QString colorName = event->arg().toString();
-                    QColor color(colorName);
-                    setBgColor(color);
-                }
-                break;
+              {
+                  QString colorName = event->arg().toString();
+                  QColor color(colorName);
+                  setBgColor(color);
+              }
+            break;
             default: 
-                {
-                    #ifdef K_DEBUG
-                        QString msg = "TupPaintArea::sceneResponse <- TupProjectRequest::Default";
-                        #ifdef Q_OS_WIN
-                            qDebug() << msg;
-                        #else
-                            tFatal() << msg;
-                        #endif
-                    #endif
-                }
-                break;
+              {
+                  #ifdef K_DEBUG
+                      QString msg = "TupPaintArea::sceneResponse <- TupProjectRequest::Default";
+                      #ifdef Q_OS_WIN
+                          qDebug() << msg;
+                      #else
+                          tFatal() << msg;
+                      #endif
+                  #endif
+              }
+            break;
         }
     } else {
         #ifdef K_DEBUG
@@ -589,48 +586,45 @@ void TupPaintArea::itemResponse(TupItemResponse *response)
     if (!guiScene->isDrawing()) {
         switch(response->action()) {
             case TupProjectRequest::Transform:
-                 {
-                     viewport()->update();
-                 }
-                 break;
+              {
+                  viewport()->update();
+              }
+            break;
+            case TupProjectRequest::Remove:
+              { 
+                  if (!k->deleteMode) {
+                      if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                          guiScene->drawCurrentPhotogram();
+                      } else {
+                          guiScene->cleanWorkSpace();
+                          guiScene->drawSceneBackground(guiScene->currentFrameIndex());
+                      }
 
-           case TupProjectRequest::Remove:
-                { 
-                     if (!k->deleteMode) {
-                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                             guiScene->drawCurrentPhotogram();
-                         } else {
-                             guiScene->cleanWorkSpace();
-                             guiScene->drawSceneBackground(guiScene->currentFrameIndex());
-                         }
+                      viewport()->update(scene()->sceneRect().toRect());
+                  } 
+              }
+            break;
+            case TupProjectRequest::Move:
+              {
+                  // Do nothing
+              }
+            break;
+            default:
+              {
+                  if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                      guiScene->drawCurrentPhotogram();
+                  } else {
+                      guiScene->cleanWorkSpace();
+                      guiScene->drawSceneBackground(guiScene->currentFrameIndex());
+                  }
 
-                         viewport()->update(scene()->sceneRect().toRect());
-                     } 
-                }
-                break;
+                  viewport()->update(scene()->sceneRect().toRect());
 
-           case TupProjectRequest::Move:
-                {
-                     // Do nothing
-                }
-                break;
-           default:
-                {
-                     if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                         guiScene->drawCurrentPhotogram();
-                     } else {
-                        guiScene->cleanWorkSpace();
-                        guiScene->drawSceneBackground(guiScene->currentFrameIndex());
-                     }
-
-                     viewport()->update(scene()->sceneRect().toRect());
-
-                     if (guiScene->currentTool()->toolType() != TupToolInterface::Tweener && k->currentTool.compare(tr("PolyLine")) != 0)
-                         guiScene->resetCurrentTool();
-                         // guiScene->currentTool()->init(graphicsScene());          
-                }
-                break;
-            }
+                  if (guiScene->currentTool()->toolType() != TupToolInterface::Tweener && k->currentTool.compare(tr("PolyLine")) != 0)
+                      guiScene->resetCurrentTool();
+              }
+            break;
+        }
     } else {
         #ifdef K_DEBUG
             QString msg = "TupPaintArea::itemResponse() - isDrawing() == true! - No action taken!";
@@ -668,34 +662,34 @@ void TupPaintArea::libraryResponse(TupLibraryResponse *request)
     if (!guiScene->isDrawing()) {
         int frameIndex = guiScene->currentFrameIndex();
         switch (request->action()) {
-                case TupProjectRequest::InsertSymbolIntoFrame:
-                    {
-                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                             guiScene->drawCurrentPhotogram();
-                         } else {
-                             guiScene->cleanWorkSpace();
-                             guiScene->drawSceneBackground(frameIndex);
-                         }
+            case TupProjectRequest::InsertSymbolIntoFrame:
+              {
+                  if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                      guiScene->drawCurrentPhotogram();
+                  } else {
+                      guiScene->cleanWorkSpace();
+                      guiScene->drawSceneBackground(frameIndex);
+                  }
 
-                         viewport()->update(scene()->sceneRect().toRect());
+                  viewport()->update(scene()->sceneRect().toRect());
 
-                         if (k->currentTool.compare(tr("Object Selection")) == 0)
-                             emit itemAddedOnSelection(guiScene);
-                     }
-                     break;
-                     case TupProjectRequest::Remove:
-                     case TupProjectRequest::RemoveSymbolFromFrame:
-                     {
-                         if (k->spaceMode == TupProject::FRAMES_EDITION) {
-                             guiScene->drawCurrentPhotogram();
-                         } else {
-                             guiScene->cleanWorkSpace();
-                             guiScene->drawSceneBackground(frameIndex);
-                         }
+                  if (k->currentTool.compare(tr("Object Selection")) == 0)
+                      emit itemAddedOnSelection(guiScene);
+              }
+            break;
+            case TupProjectRequest::Remove:
+            case TupProjectRequest::RemoveSymbolFromFrame:
+              {
+                  if (k->spaceMode == TupProject::FRAMES_EDITION) {
+                      guiScene->drawCurrentPhotogram();
+                  } else {
+                      guiScene->cleanWorkSpace();
+                      guiScene->drawSceneBackground(frameIndex);
+                  }
 
-                         viewport()->update(scene()->sceneRect().toRect());
-                     }
-                     break;
+                  viewport()->update(scene()->sceneRect().toRect());
+              }
+            break;
         } 
     } else {
         #ifdef K_DEBUG

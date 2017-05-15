@@ -60,12 +60,12 @@ class TUPI_EXPORT TupAnimationspace : public QMainWindow
 
     protected:
         void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
+        // void mouseMoveEvent(QMouseEvent *event);
+        // void mouseReleaseEvent(QMouseEvent *event);
         void keyPressEvent(QKeyEvent *event);
 
     signals:
-        void contextMenu(const QPoint &point);
+        // void contextMenu(const QPoint &point);
         void newPerspective(int index);
 
     private:

@@ -419,7 +419,7 @@ void TupScreen::nextFrame()
     if (k->currentFramePosition == k->photograms.count())
         k->currentFramePosition = 0;
 
-    emit frameChanged(k->currentFramePosition);
+    emit frameChanged(k->currentFramePosition + 1);
 
     repaint();
 }
@@ -447,7 +447,7 @@ void TupScreen::previousFrame()
     if (k->currentFramePosition < 0)
         k->currentFramePosition = k->photograms.count() - 1;
 
-    emit frameChanged(k->currentFramePosition);
+    emit frameChanged(k->currentFramePosition + 1);
 
     repaint();
 }
@@ -469,7 +469,7 @@ void TupScreen::advance()
 
     if (k->currentFramePosition == 0) {
         foreach (TupSoundLayer *sound, k->sounds)
-                 sound->play();
+            sound->play();
     }
 
     if (k->currentFramePosition < k->photograms.count()) {
@@ -498,7 +498,7 @@ void TupScreen::back()
         repaint();
         k->currentFramePosition--;
     } else if (!k->cyclicAnimation) {
-               stop();
+        stop();
     }
 }
 
@@ -523,40 +523,40 @@ void TupScreen::sceneResponse(TupSceneResponse *event)
     int index = event->sceneIndex();
 
     switch (event->action()) {
-            case TupProjectRequest::Add:
-             {
-                 addPhotogramsArray(index);
-             }
-            break;
-            case TupProjectRequest::Remove:
-             {
-                 if (index < 0)
-                     break;
+        case TupProjectRequest::Add:
+          {
+              addPhotogramsArray(index);
+          }
+        break;
+        case TupProjectRequest::Remove:
+          {
+              if (index < 0)
+                  break;
 
-                 k->renderControl.removeAt(index);
-                 k->animationList.removeAt(index);
+              k->renderControl.removeAt(index);
+              k->animationList.removeAt(index);
 
-                 if (index == k->project->scenesCount())
-                     index--;
+              if (index == k->project->scenesCount())
+                  index--;
 
-                 updateSceneIndex(index);
-             }
-            break;
-            case TupProjectRequest::Reset:
-             {
-                 k->renderControl.replace(index, false);
-                 k->animationList.replace(index, k->newList);
-                 k->photograms = k->newList;
-             }
-            break;
-            case TupProjectRequest::Select:
-             {
-                 updateSceneIndex(index);
-             }
-            break;
-            default: 
-            break;
-   }
+              updateSceneIndex(index);
+          }
+        break;
+        case TupProjectRequest::Reset:
+          {
+              k->renderControl.replace(index, false);
+              k->animationList.replace(index, k->newList);
+              k->photograms = k->newList;
+          }
+        break;
+        case TupProjectRequest::Select:
+          {
+              updateSceneIndex(index);
+          }
+        break;
+        default: 
+        break;
+    }
 }
 
 void TupScreen::projectResponse(TupProjectResponse *)

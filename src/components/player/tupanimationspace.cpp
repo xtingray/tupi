@@ -87,54 +87,53 @@ void TupAnimationspace::setCameraWidget(TupCameraWidget *playerUI)
 
 void TupAnimationspace::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button () == Qt::RightButton)
-        emit contextMenu(mapToGlobal(event->pos()));
-}
-
-void TupAnimationspace::mouseMoveEvent(QMouseEvent *event)
-{
     Q_UNUSED(event);
-}
-
-void TupAnimationspace::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
+    setFocus();
 }
 
 void TupAnimationspace::keyPressEvent(QKeyEvent *event) 
 {
     switch (event->key()) {
-            case Qt::Key_Space:
-                  k->playerInterface->doPause();
-            break;
-            case Qt::Key_Escape:
-                  k->playOn = false;
-                  k->playerInterface->doStop();
-            break;
-            case Qt::Key_Right:
-                  k->playerInterface->nextFrame(); 
-            break;
-            case Qt::Key_Left:
-                  k->playerInterface->previousFrame();
-            break;
-            case Qt::Key_Up:
-
-            break;
-            case Qt::Key_Down:
-
-            break;
-            case Qt::Key_Return:
+        case Qt::Key_Space:
+          {
+              k->playerInterface->doPause();
+          } 
+        break;
+        case Qt::Key_Escape:
+          {
+              setFocus();
+              k->playOn = false;
+              k->playerInterface->doStop();
+          }
+        break;
+        case Qt::Key_Right:
+          {
+              k->playerInterface->nextFrame(); 
+          }
+        break;
+        case Qt::Key_Left:
+          {
+              k->playerInterface->previousFrame();
+          }
+        break;
+        case Qt::Key_Return:
+          {
+              emit newPerspective(0);
+              k->playOn = false;
+              k->playerInterface->doStop();
+          }
+        break;
+        case Qt::Key_1:
+          {
+              if (event->modifiers() == Qt::ControlModifier)
                   emit newPerspective(0);
-                  k->playOn = false;
-                  k->playerInterface->doStop();
-            break;
-            case Qt::Key_1:
-                  if (event->modifiers() == Qt::ControlModifier)
-                      emit newPerspective(0);
-            break;
-            case Qt::Key_3:
-                  if (event->modifiers() == Qt::ControlModifier)
-                      emit newPerspective(2);
-            break;
+          }
+        break;
+        case Qt::Key_3:
+          {
+              if (event->modifiers() == Qt::ControlModifier)
+                  emit newPerspective(2);
+          }
+        break;
     }
 }

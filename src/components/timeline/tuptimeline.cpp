@@ -198,79 +198,80 @@ void TupTimeLine::sceneResponse(TupSceneResponse *response)
     int sceneIndex = response->sceneIndex();
 
     switch (response->action()) {
-            case TupProjectRequest::Add:
-            {
-                 if (response->mode() == TupProjectResponse::Do) {
-                     addScene(sceneIndex, response->arg().toString());
-                     return;
-                 } else { 
-                 // if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                     k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
-                     TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
-                     emit requestTriggered(&request);
-                     return;
-                 }
+        case TupProjectRequest::Add:
+        {
+            if (response->mode() == TupProjectResponse::Do) {
+                addScene(sceneIndex, response->arg().toString());
+                return;
+            } else { 
+                k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
+                TupProjectRequest request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Select);
+                emit requestTriggered(&request);
+                return;
             }
-            break;
-            case TupProjectRequest::Remove:
-            {
-                 removeScene(sceneIndex);
+        }
+        break;
+        case TupProjectRequest::Remove:
+        {
+            removeScene(sceneIndex);
+        }
+        break;
+        case TupProjectRequest::Reset:
+        {
+            if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
+                k->scenesContainer->removeScene(sceneIndex, true);
+                addScene(sceneIndex, tr("Scene %1").arg(sceneIndex + 1));
+
+                k->currentTable = k->scenesContainer->getTable(sceneIndex);
+                k->currentTable->insertLayer(0, tr("Layer 1"));
+                k->currentTable->insertFrame(0);
+
+                k->currentTable->blockSignals(true);
+                k->currentTable->selectFrame(0, 0);
+                k->currentTable->blockSignals(false);
+            } else {
+                k->scenesContainer->removeScene(sceneIndex, false);
+                k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
+
+                k->currentTable = k->scenesContainer->getTable(sceneIndex);
+                k->currentTable->blockSignals(true);
+                k->currentTable->selectFrame(0, 0);
+                k->currentTable->blockSignals(false);
             }
-            break;
-            case TupProjectRequest::Reset:
-            {
-                 if (response->mode() == TupProjectResponse::Do || response->mode() == TupProjectResponse::Redo) {
-                     k->scenesContainer->removeScene(sceneIndex, true);
-                     addScene(sceneIndex, tr("Scene %1").arg(sceneIndex + 1));
-
-                     k->currentTable = k->scenesContainer->getTable(sceneIndex);
-                     k->currentTable->insertLayer(0, tr("Layer 1"));
-                     k->currentTable->insertFrame(0);
-
-                     k->currentTable->blockSignals(true);
-                     k->currentTable->selectFrame(0, 0);
-                     k->currentTable->blockSignals(false);
-                 } else {
-                     k->scenesContainer->removeScene(sceneIndex, false);
-                     k->scenesContainer->restoreScene(sceneIndex, response->arg().toString());
-
-                     k->currentTable = k->scenesContainer->getTable(sceneIndex);
-                     k->currentTable->blockSignals(true);
-                     k->currentTable->selectFrame(0, 0);
-                     k->currentTable->blockSignals(false);
-                 }
-            }
-            break;
-            case TupProjectRequest::Move:
-            {
+        }
+        break;
+        /*
+        case TupProjectRequest::Move:
+        {
             
-            }
-            break;
-            case TupProjectRequest::Lock:
-            {
+        }
+        break;
+        case TupProjectRequest::Lock:
+        {
             
-            }
-            break;
-            case TupProjectRequest::Rename:
-            {
-                 k->scenesContainer->renameScene(sceneIndex, response->arg().toString());
-            }
-            break;
-            case TupProjectRequest::Select:
-            {
-                 k->scenesContainer->setCurrentIndex(sceneIndex);
-            }
-            break;
-            default:
-                 #ifdef K_DEBUG
-                     QString msg = "TupTimeLine::sceneResponse : Unknown action -> " + QString::number(response->action());
-                     #ifdef Q_OS_WIN
-                         qDebug() << msg;
-                     #else
-                         tFatal() << msg;
-                     #endif
-                 #endif
-            break;
+        }
+        break;
+        */
+        case TupProjectRequest::Rename:
+        {
+            k->scenesContainer->renameScene(sceneIndex, response->arg().toString());
+        }
+        break;
+        case TupProjectRequest::Select:
+        {
+            k->scenesContainer->setCurrentIndex(sceneIndex);
+        }
+        break;
+        default:
+            #ifdef K_DEBUG
+                QString msg = "TupTimeLine::sceneResponse : Unknown action -> " + QString::number(response->action());
+                #ifdef Q_OS_WIN
+                    qDebug() << msg;
+                #else
+                    tFatal() << msg;
+                #endif
+            #endif
+        break;
     }
 }
 
@@ -289,60 +290,61 @@ void TupTimeLine::layerResponse(TupLayerResponse *response)
     if (framesTable) {
         int layerIndex = response->layerIndex();
         switch (response->action()) {
-                case TupProjectRequest::Add:
-                {
-                     if (response->mode() == TupProjectResponse::Do) {
-                         framesTable->insertLayer(layerIndex, response->arg().toString());
-                         return;
-                     } else {
-                     // if (response->mode() == TupProjectResponse::Redo || response->mode() == TupProjectResponse::Undo) {
-                         TupScene *scene = k->project->sceneAt(sceneIndex);
-                         if (scene) {
-                             TupLayer *layer = scene->layerAt(layerIndex);
-                             if (layer) {
-                                 framesTable->insertLayer(layerIndex, layer->layerName());
-                                 QList<TupFrame *> frames = layer->frames();
-                                 int total = frames.count();
-                                 for(int i=0; i<total; i++)
-                                     framesTable->insertFrame(layerIndex);
-                             }
-                         }
-                         return; 
-                     }
+            case TupProjectRequest::Add:
+            {
+                if (response->mode() == TupProjectResponse::Do) {
+                    framesTable->insertLayer(layerIndex, response->arg().toString());
+                    return;
+                } else {
+                    TupScene *scene = k->project->sceneAt(sceneIndex);
+                    if (scene) {
+                        TupLayer *layer = scene->layerAt(layerIndex);
+                        if (layer) {
+                            framesTable->insertLayer(layerIndex, layer->layerName());
+                            QList<TupFrame *> frames = layer->frames();
+                            int total = frames.count();
+                            for (int i=0; i<total; i++)
+                                framesTable->insertFrame(layerIndex);
+                        }
+                    }
+                    return; 
                 }
-                break;
-                case TupProjectRequest::Remove:
-                {
-                     framesTable->removeLayer(layerIndex);
-                     if (framesTable->layersCount() == 0) {
-                         TupProjectRequest request = TupRequestBuilder::createLayerRequest(0, 0, TupProjectRequest::Add, tr("Layer %1").arg(1));
-                         emit requestTriggered(&request);
+            }
+            break;
+            case TupProjectRequest::Remove:
+            {
+                framesTable->removeLayer(layerIndex);
+                if (framesTable->layersCount() == 0) {
+                    TupProjectRequest request = TupRequestBuilder::createLayerRequest(0, 0, TupProjectRequest::Add, tr("Layer %1").arg(1));
+                    emit requestTriggered(&request);
 
-                         request = TupRequestBuilder::createFrameRequest(0, 0, 0, TupProjectRequest::Add, tr("Frame"));
-                         emit requestTriggered(&request);
-                     }
+                    request = TupRequestBuilder::createFrameRequest(0, 0, 0, TupProjectRequest::Add, tr("Frame"));
+                    emit requestTriggered(&request);
                 }
-                break;
-                case TupProjectRequest::Move:
-                {
-                     framesTable->moveLayer(layerIndex, response->arg().toInt());
-                }
-                break;
-                case TupProjectRequest::Lock:
-                {
-                     // SQA: Pending for implementation
-                }
-                break;
-                case TupProjectRequest::Rename:
-                {
-                     framesTable->setLayerName(layerIndex, response->arg().toString());
-                }
-                break;
-                case TupProjectRequest::View:
-                {
-                     framesTable->setLayerVisibility(layerIndex, response->arg().toBool());
-                }
-                break;
+            }
+            break;
+            case TupProjectRequest::Move:
+            {
+                framesTable->moveLayer(layerIndex, response->arg().toInt());
+            }
+            break;
+            /*
+            case TupProjectRequest::Lock:
+            {
+                // SQA: Pending for implementation
+            }
+            */
+            break;
+            case TupProjectRequest::Rename:
+            {
+                framesTable->setLayerName(layerIndex, response->arg().toString());
+            }
+            break;
+            case TupProjectRequest::View:
+            {
+                framesTable->setLayerVisibility(layerIndex, response->arg().toBool());
+            }
+            break;
         }
     }
 }
@@ -382,11 +384,11 @@ void TupTimeLine::frameResponse(TupFrameResponse *response)
                       int layers = params.at(0).toInt();
                       int frames = params.at(1).toInt();
                       framesTable->removeFrameSelection(layerIndex, frameIndex, layers, frames, k->doSelection);
-                   } else {
+                  } else {
                       framesTable->restoreFrameSelection(layerIndex, frameIndex, selection);
-                   }
+                  }
 
-                   k->doSelection = false;
+                  k->doSelection = false;
               }
             break;
             case TupProjectRequest::Exchange:
@@ -460,18 +462,18 @@ void TupTimeLine::libraryResponse(TupLibraryResponse *response)
 
     if (response->action() == TupProjectRequest::InsertSymbolIntoFrame) {
         switch (response->symbolType()) {
-                case TupLibraryObject::Sound:
-                {
-                     TupTimeLineTable *framesTable = this->framesTable(response->sceneIndex());
-                     if (framesTable) {
-                         framesTable->insertSoundLayer(response->layerIndex() + 1, response->arg().toString());
-                         framesTable->insertFrame(response->layerIndex() + 1);
-                     }
+            case TupLibraryObject::Sound:
+            {
+                TupTimeLineTable *framesTable = this->framesTable(response->sceneIndex());
+                if (framesTable) {
+                    framesTable->insertSoundLayer(response->layerIndex() + 1, response->arg().toString());
+                    framesTable->insertFrame(response->layerIndex() + 1);
                 }
-                break;
-                default:
-                    // Do nothing
-                break;
+            }
+            break;
+            default:
+                // Do nothing
+            break;
         };
     }
 }
@@ -582,101 +584,81 @@ bool TupTimeLine::requestFrameAction(int action, int frameIndex, int layerIndex,
     int currentFrame = framesTable(sceneIndex)->currentColumn();
 
     switch (action) {
-            case TupProjectActionBar::InsertFrame:
-            {
-                int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
-                if (currentFrame == lastFrame) {
-                    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, lastFrame + 1,
-                                                 TupProjectRequest::Add, tr("Frame"));
-                    emit requestTriggered(&request);
-                } else {
-                    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame + 1,
-                                                 TupProjectRequest::Add, tr("Frame"));
-                    emit requestTriggered(&request);
-                    int target = currentFrame + 2;
-                    for (int index=target; index <= lastFrame+1; index++) {
-                         target++;
-                         request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, index, TupProjectRequest::Rename, tr("Frame"));
-                         emit requestTriggered(&request);
-                    }
-                }
-
-                selectFrame(layerIndex, lastFrame + 1);
-                return true;
-            }
-            break;
-            case TupProjectActionBar::ExtendFrame:
-            {
-                extendFrameForward(layerIndex, currentFrame);
-                return true;
-            }
-            break;
-            case TupProjectActionBar::RemoveFrame:
-            {
-                requestRemoveFrame(true);
-                return true;
-            }
-            break;
-            case TupProjectActionBar::MoveFrameBackward:
-            {
-                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Exchange, currentFrame - 1);
+        case TupProjectActionBar::InsertFrame:
+        {
+            int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
+            if (currentFrame == lastFrame) {
+                request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, lastFrame + 1,
+                                             TupProjectRequest::Add, tr("Frame"));
                 emit requestTriggered(&request);
-
-                return true;
-            }
-            break;
-            case TupProjectActionBar::MoveFrameForward:
-            {
-                int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
-
-                if (currentFrame == lastFrame) {
-                    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, lastFrame + 1, TupProjectRequest::Add, tr("Frame"));
-                    emit requestTriggered(&request);
-                }
-
-                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Exchange, currentFrame + 1);
+            } else {
+                request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame + 1,
+                                             TupProjectRequest::Add, tr("Frame"));
                 emit requestTriggered(&request);
-
-                return true;
-            }
-            break;
-            case TupProjectActionBar::CopyFrame:
-            {
-                requestCopyFrameSelection();
-
-                /*
-                QList<int> coords = framesTable(sceneIndex)->currentSelection();
-                if (coords.count() == 4) {
-                    QString selection = QString::number(coords.at(0)) + "," + QString::number(coords.at(1)) + ","
-                                        + QString::number(coords.at(2)) + "," + QString::number(coords.at(3));
-
-                    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame,
-                                                                                      TupProjectRequest::CopySelection, selection);
+                int target = currentFrame + 2;
+                for (int index=target; index <= lastFrame+1; index++) {
+                    target++;
+                    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, index, TupProjectRequest::Rename, tr("Frame"));
                     emit requestTriggered(&request);
                 }
-                */
-
-                return true;
             }
-            break;
-            case TupProjectActionBar::PasteFrame:
-            {
-                requestPasteSelectionInCurrentFrame();
 
-                /*
-                if (!k->frameSelection.isEmpty()) {
-                    TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame,
-                                                                                      TupProjectRequest::PasteSelection);
-                    emit requestTriggered(&request);
-                }
-                */
+            selectFrame(layerIndex, lastFrame + 1);
+            return true;
+        }
+        break;
+        case TupProjectActionBar::ExtendFrame:
+        {
+            extendFrameForward(layerIndex, currentFrame);
+            return true;
+        }
+        break;
+        case TupProjectActionBar::RemoveFrame:
+        {
+            requestRemoveFrame(true);
+            return true;
+        }
+        break;
+        case TupProjectActionBar::MoveFrameBackward:
+        {
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Exchange, currentFrame - 1);
+            emit requestTriggered(&request);
 
-                return true;
+            return true;
+        }
+        break;
+        case TupProjectActionBar::MoveFrameForward:
+        {
+            int lastFrame = framesTable(sceneIndex)->lastFrameByLayer(layerIndex);
+
+            if (currentFrame == lastFrame) {
+                TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, lastFrame + 1, TupProjectRequest::Add, tr("Frame"));
+                emit requestTriggered(&request);
             }
-            break;
-            default:
-                 // Do nothing
-            break;
+
+            TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, currentFrame, TupProjectRequest::Exchange, currentFrame + 1);
+            emit requestTriggered(&request);
+
+            return true;
+        }
+        break;
+        case TupProjectActionBar::CopyFrame:
+        {
+            requestCopyFrameSelection();
+
+            return true;
+        }
+        break;
+        case TupProjectActionBar::PasteFrame:
+        {
+            requestPasteSelectionInCurrentFrame();
+
+            return true;
+        }
+        break;
+        default:
+            // Do nothing
+        break;
     }
     
     return false;
@@ -687,34 +669,34 @@ bool TupTimeLine::requestLayerAction(int action, int layerIndex, int sceneIndex,
     TupProjectRequest request;
 
     switch (action) {
-            case TupProjectActionBar::InsertLayer:
-            {
-                 int layerIndex = framesTable(sceneIndex)->layersCount();
-                 request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::Add, tr("Layer %1").arg(layerIndex + 1));
-                 emit requestTriggered(&request);
+        case TupProjectActionBar::InsertLayer:
+        {
+            int layerIndex = framesTable(sceneIndex)->layersCount();
+            request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::Add, tr("Layer %1").arg(layerIndex + 1));
+            emit requestTriggered(&request);
 
-                 if (layerIndex == 0) {
-                     request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Add, tr("Frame"));
-                     emit requestTriggered(&request);
-                 } else {
-                     int total = framesTable(sceneIndex)->lastFrameByLayer(layerIndex - 1);
-                     for (int j=0; j <= total; j++) {
-                          request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, j, TupProjectRequest::Add, tr("Frame"));
-                          emit requestTriggered(&request);
-                     }
-                 }
-
-                 return true;
+            if (layerIndex == 0) {
+                request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, 0, TupProjectRequest::Add, tr("Frame"));
+                emit requestTriggered(&request);
+            } else {
+                int total = framesTable(sceneIndex)->lastFrameByLayer(layerIndex - 1);
+                for (int j=0; j <= total; j++) {
+                    request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, j, TupProjectRequest::Add, tr("Frame"));
+                    emit requestTriggered(&request);
+                }
             }
-            break;
-            case TupProjectActionBar::RemoveLayer:
-            {
-                 request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::Remove, arg);
-                 emit requestTriggered(&request);
 
-                 return true;
-            }
-            break;
+            return true;
+        }
+        break;
+        case TupProjectActionBar::RemoveLayer:
+        {
+            request = TupRequestBuilder::createLayerRequest(sceneIndex, layerIndex, TupProjectRequest::Remove, arg);
+            emit requestTriggered(&request);
+
+            return true;
+        }
+        break;
     }
     
     return false;
@@ -725,60 +707,60 @@ bool TupTimeLine::requestSceneAction(int action, int sceneIndex, const QVariant 
     TupProjectRequest request;
 
     switch (action) {
-            case TupProjectActionBar::InsertScene:
-            {
-                 int sceneTarget = k->scenesContainer->count();
-                 request = TupRequestBuilder::createSceneRequest(sceneTarget, TupProjectRequest::Add, tr("Scene %1").arg(sceneTarget + 1));
-                 emit requestTriggered(&request);
+        case TupProjectActionBar::InsertScene:
+        {
+            int sceneTarget = k->scenesContainer->count();
+            request = TupRequestBuilder::createSceneRequest(sceneTarget, TupProjectRequest::Add, tr("Scene %1").arg(sceneTarget + 1));
+            emit requestTriggered(&request);
 
-                 request = TupRequestBuilder::createLayerRequest(sceneTarget, 0, TupProjectRequest::Add, tr("Layer 1"));
-                 emit requestTriggered(&request);
+            request = TupRequestBuilder::createLayerRequest(sceneTarget, 0, TupProjectRequest::Add, tr("Layer 1"));
+            emit requestTriggered(&request);
 
-                 request = TupRequestBuilder::createFrameRequest(sceneTarget, 0, 0, TupProjectRequest::Add, tr("Frame"));
-                 emit requestTriggered(&request);
+            request = TupRequestBuilder::createFrameRequest(sceneTarget, 0, 0, TupProjectRequest::Add, tr("Frame"));
+            emit requestTriggered(&request);
 
-                 request = TupRequestBuilder::createSceneRequest(sceneTarget, TupProjectRequest::Select);
-                 emit requestTriggered(&request);
+            request = TupRequestBuilder::createSceneRequest(sceneTarget, TupProjectRequest::Select);
+            emit requestTriggered(&request);
             
-                 return true;
-            }
-            break;
-            case TupProjectActionBar::RemoveScene:
-            {
-                 int scenesTotal = k->scenesContainer->count();
-                 if (scenesTotal > 1) {
-                     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Remove, arg);
-                     emit requestTriggered(&request);
+            return true;
+        }
+        break;
+        case TupProjectActionBar::RemoveScene:
+        {
+            int scenesTotal = k->scenesContainer->count();
+            if (scenesTotal > 1) {
+                request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Remove, arg);
+                emit requestTriggered(&request);
 
-                     request = TupRequestBuilder::createFrameRequest(sceneIndex - 1, 0, 0, TupProjectRequest::Select);
-                     emit requestTriggered(&request);
-                 } else {
-                     request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Reset, tr("Scene 1"));
-                     emit requestTriggered(&request);
-                 }
-
-                 return true;
+                request = TupRequestBuilder::createFrameRequest(sceneIndex - 1, 0, 0, TupProjectRequest::Select);
+                emit requestTriggered(&request);
+            } else {
+                request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Reset, tr("Scene 1"));
+                emit requestTriggered(&request);
             }
-            break;
-            case TupProjectActionBar::MoveSceneUp:
-            {
-                 request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Move, sceneIndex + 1);
-                 emit requestTriggered(&request);
 
-                 return true;
-            }
-            break;
-            case TupProjectActionBar::MoveSceneDown:
-            {
-                 request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Move, sceneIndex - 1);
-                 emit requestTriggered(&request);
+            return true;
+        }
+        break;
+        case TupProjectActionBar::MoveSceneUp:
+        {
+            request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Move, sceneIndex + 1);
+            emit requestTriggered(&request);
 
-                 return true;
-            }
-            break;
-            default:
-                 // Do nothing
-            break;
+            return true;
+        }
+        break;
+        case TupProjectActionBar::MoveSceneDown:
+        {
+            request = TupRequestBuilder::createSceneRequest(sceneIndex, TupProjectRequest::Move, sceneIndex - 1);
+            emit requestTriggered(&request);
+
+            return true;
+        }
+        break;
+        default:
+            // Do nothing
+        break;
     }
     
     return false;
@@ -843,31 +825,6 @@ void TupTimeLine::selectFrame(int layerIndex, int frameIndex)
                                             TupProjectRequest::Add, tr("Frame"));
                 emit requestTriggered(&request);
             }
-
-            /*
-            int totalFrames = scene->framesCount();
-            if (frameIndex > (totalFrames-1)) {
-                int layersCount = scene->layersCount();
-                for (int layer=0; layer < layersCount; layer++) {
-                     int currentLimit = framesTable(sceneIndex)->lastFrameByLayer(layer); 
-                     for (int frame = currentLimit + 1; frame <= frameIndex; frame++) {
-                          TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layer, frame,
-                                                      TupProjectRequest::Add, tr("Frame"));
-                          emit requestTriggered(&request);
-                     }
-                }
-            } 
-            */
-
-            /*
-            else {
-                for (int frame = lastFrame + 1; frame <= frameIndex; frame++) {
-                     TupProjectRequest request = TupRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frame,
-                                                 TupProjectRequest::Add, tr("Frame"));
-                     emit requestTriggered(&request);
-                }
-            } 
-            */
         }
 
         QString selection = "";
