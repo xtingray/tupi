@@ -687,13 +687,15 @@ void TupExposureTable::mouseMoveEvent(QMouseEvent *event)
     int frameIndex = rowAt(event->y()); 
     QList<int> layers = currentSelection();
 
-    for (int j=layers.at(0); j<=layerIndex; j++) {
-        int top = k->header->lastFrame(j);
-        if (frameIndex >= top) {
-            for (int i=top; i<=frameIndex; i++)
-                emit frameUsed(j, i);
+    if (!layers.isEmpty()) {
+        for (int j=layers.at(0); j<=layerIndex; j++) {
+            int top = k->header->lastFrame(j);
+            if (frameIndex >= top) {
+                for (int i=top; i<=frameIndex; i++)
+                    emit frameUsed(j, i);
+            }
         }
-   }
+    }
 
     QTableWidget::mouseMoveEvent(event);
 }
