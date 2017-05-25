@@ -94,9 +94,13 @@ int main(int argc, char ** argv)
     // Time to define global variables for Tupi
     QDir appDirPath(QApplication::applicationDirPath());
     TCONFIG->beginGroup("General");
-    if (TCONFIG->firstTime()) {
-        TCONFIG->setValue("ClientID", TAlgorithm::randomString(20));
 
+    if (TCONFIG->value("RandomSeed", 0).toDouble() == 0) {
+        TAlgorithm::random(); 
+        TCONFIG->setValue("ClientID", TAlgorithm::randomString(20));
+    }
+
+    if (TCONFIG->firstTime()) {
         #if defined(Q_OS_MAC)
             TCONFIG->setValue("Home", appDirPath.absolutePath());
         #else

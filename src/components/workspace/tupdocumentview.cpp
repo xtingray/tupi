@@ -1553,7 +1553,7 @@ void TupDocumentView::setDefaultOnionFactor()
 void TupDocumentView::setOnionFactor(double opacity)
 {
     TCONFIG->beginGroup("OnionParameters");
-    TCONFIG->setValue("OnionFactor", opacity);
+    TCONFIG->setValue("OnionFactor", QString::number(opacity, 'f', 2));
 
     k->paintArea->setOnionFactor(opacity);
 }

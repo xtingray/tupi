@@ -66,15 +66,15 @@ int TAlgorithm::random()
         QString number = day + QTime::currentTime().toString("mmzzz");
         int aux = number.toInt();
 
-        TCONFIG->beginGroup("General");
-        seed = TCONFIG->value("RandomSeed", aux).toInt();
-        if (seed == 0)
+        seed = TCONFIG->value("RandomSeed", 0).toInt();
+        if (seed = 0)
             seed = aux;
         seed *= aux;
-        TCONFIG->setValue("RandomSeed", seed); 
-
-        qsrand(seed);
     #endif
+
+    TCONFIG->beginGroup("General");
+    TCONFIG->setValue("RandomSeed", seed);
+    qsrand(seed);
 
     return qrand();
 }
