@@ -67,7 +67,7 @@ int TAlgorithm::random()
         int aux = number.toInt();
 
         seed = TCONFIG->value("RandomSeed", 0).toInt();
-        if (seed = 0)
+        if (seed == 0)
             seed = aux;
         seed *= aux;
     #endif
