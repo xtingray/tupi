@@ -1975,7 +1975,7 @@
         <location filename="../src/components/workspace/tupcanvas.pc.cpp" line="78"/>
         <location filename="../src/components/workspace/tupcanvas.tablet.cpp" line="79"/>
         <source>Tupi: 2D Magic</source>
-        <translation>Tupí: 2D Magic</translation>
+        <translation>Tupi: 2D Magic</translation>
     </message>
     <message>
         <location filename="../src/components/workspace/tupcanvas.cpp" line="139"/>
@@ -5192,7 +5192,7 @@ Por favor, contacte o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/libui/tuppreferencesdialog.cpp" line="57"/>
         <source>Tupi Preferences</source>
-        <translation>Preferências de Tupí</translation>
+        <translation>Preferências de Tupi</translation>
     </message>
     <message>
         <location filename="../src/libui/tuppreferencesdialog.cpp" line="60"/>
@@ -5602,7 +5602,7 @@ Por favor, contacte o administrador do servidor de animação para obter acesso.
     <message>
         <location filename="../src/libui/tupthemepreferences.cpp" line="95"/>
         <source>Note: You must restart Tupi to apply theme changes</source>
-        <translation>Nota: É necessário reiniciar Tupí para usar o tema escolhido</translation>
+        <translation>Nota: É necessário reiniciar Tupi para usar o tema escolhido</translation>
     </message>
 </context>
 <context>

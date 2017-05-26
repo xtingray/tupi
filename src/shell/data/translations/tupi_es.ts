@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/plugins/tools/scheme/configurator.cpp" line="48"/>
         <source>This tool is just a &lt;b&gt;proof-of-concept&lt;/b&gt; of the basic algorithm for the Tupi&apos;s free-tracing vectorial brushes</source>
-        <translation>Esta herramienta es una &lt;b&gt;prueba de concepto&lt;/b&gt; del algoritmo basico para soportar las brochas vectoriales de Tupí</translation>
+        <translation>Esta herramienta es una &lt;b&gt;prueba de concepto&lt;/b&gt; del algoritmo basico para soportar las brochas vectoriales de Tupi</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/scheme/configurator.cpp" line="58"/>
@@ -494,7 +494,7 @@
     <message>
         <location filename="../src/shell/tupcrashhandler.cpp" line="52"/>
         <source>Well, Tupi has crashed...</source>
-        <translation>Bueno, Tupí ha fallado...</translation>
+        <translation>Tupi ha fallado...</translation>
     </message>
     <message>
         <location filename="../src/shell/tupcrashhandler.cpp" line="53"/>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/shell/tupcrashhandler.cpp" line="54"/>
         <source>Re-launch Tupi</source>
-        <translation>Volver a ejecutar Tupí</translation>
+        <translation>Volver a ejecutar Tupi</translation>
     </message>
     <message>
         <location filename="../src/shell/tupcrashhandler.cpp" line="55"/>
@@ -1565,7 +1565,7 @@
     <message>
         <location filename="../src/libui/tupabout.cpp" line="59"/>
         <source>About Tupi</source>
-        <translation>Acerca de Tupí</translation>
+        <translation>Acerca de Tupi</translation>
     </message>
     <message>
         <location filename="../src/libui/tupabout.cpp" line="126"/>
@@ -1598,7 +1598,7 @@
     <message>
         <location filename="../src/components/workspace/tupbasiccamerainterface.cpp" line="61"/>
         <source>Tupi Camera Manager</source>
-        <translation>Gestor de Cámara de Tupí</translation>
+        <translation>Gestor de Cámara de Tupi</translation>
     </message>
     <message>
         <location filename="../src/components/workspace/tupbasiccamerainterface.cpp" line="61"/>
@@ -1776,7 +1776,7 @@
     <message>
         <location filename="../src/components/workspace/tupcamerainterface.cpp" line="63"/>
         <source>Tupi Camera Manager</source>
-        <translation>Gestor de Cámara de Tupí</translation>
+        <translation>Gestor de Cámara de Tupi</translation>
     </message>
     <message>
         <location filename="../src/components/workspace/tupcamerainterface.cpp" line="63"/>
@@ -1975,7 +1975,7 @@
         <location filename="../src/components/workspace/tupcanvas.pc.cpp" line="78"/>
         <location filename="../src/components/workspace/tupcanvas.tablet.cpp" line="79"/>
         <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Magia 2D Libre</translation>
+        <translation>Tupi: Magia 2D Libre</translation>
     </message>
     <message>
         <location filename="../src/components/workspace/tupcanvas.cpp" line="139"/>
@@ -2834,7 +2834,7 @@ Please, rename the project&apos;s file</source>
     <message>
         <location filename="../src/components/export/tupexportmodule.cpp" line="442"/>
         <source>Format problem. Tupi Internal error.</source>
-        <translation>Problema de formato. Error Interno de Tupí.</translation>
+        <translation>Problema de formato. Error Interno de Tupi.</translation>
     </message>
     <message>
         <location filename="../src/components/export/tupexportmodule.cpp" line="448"/>
@@ -3636,7 +3636,7 @@ Please, rename the project&apos;s file</source>
     <message>
         <location filename="../src/components/library/tuplibrarywidget.cpp" line="887"/>
         <source>Tupi library item</source>
-        <translation>Objeto de la biblioteca Tupí</translation>
+        <translation>Objeto de la biblioteca Tupi</translation>
     </message>
     <message>
         <location filename="../src/components/library/tuplibrarywidget.cpp" line="989"/>
@@ -3838,7 +3838,7 @@ Please, rename the project&apos;s file</source>
         <location filename="../src/shell/tupmainwindow.cpp" line="1201"/>
         <location filename="../src/shell/tupmainwindow.cpp" line="1250"/>
         <source>Tupi: 2D Magic</source>
-        <translation>Tupí: Magia 2D</translation>
+        <translation>Tupi: Magia 2D</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="295"/>
@@ -3917,7 +3917,7 @@ Please, rename the project&apos;s file</source>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="806"/>
         <source>Open Tupi project</source>
-        <translation>Abrir proyecto Tupí</translation>
+        <translation>Abrir proyecto Tupi</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow.cpp" line="807"/>
@@ -4332,7 +4332,7 @@ Please, rename the project&apos;s file</source>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="434"/>
         <source>About Tupi</source>
-        <translation>Acerca de Tupí</translation>
+        <translation>Acerca de Tupi</translation>
     </message>
     <message>
         <location filename="../src/shell/tupmainwindow_gui.cpp" line="434"/>
@@ -5190,7 +5190,7 @@ Please, contact the animation server admin to get access.</source>
     <message>
         <location filename="../src/libui/tuppreferencesdialog.cpp" line="57"/>
         <source>Tupi Preferences</source>
-        <translation>Preferencias de Tupí</translation>
+        <translation>Preferencias de Tupi</translation>
     </message>
     <message>
         <location filename="../src/libui/tuppreferencesdialog.cpp" line="60"/>
@@ -5600,7 +5600,7 @@ Please, contact the animation server admin to get access.</source>
     <message>
         <location filename="../src/libui/tupthemepreferences.cpp" line="95"/>
         <source>Note: You must restart Tupi to apply theme changes</source>
-        <translation>Nota: Debes reiniciar Tupí para activar el cambio de tema</translation>
+        <translation>Nota: Debes reiniciar Tupi para activar el cambio de tema</translation>
     </message>
 </context>
 <context>
