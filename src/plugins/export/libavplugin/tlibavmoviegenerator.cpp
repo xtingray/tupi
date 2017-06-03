@@ -133,6 +133,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, AVCodec **codec, enum AVCod
 
     /* put sample parameters */
     c->bit_rate = 6000000;
+    if (fps == 1)
+        c->bit_rate = 4000000;
 
     /* resolution must be a multiple of two */
     c->width = width;  
