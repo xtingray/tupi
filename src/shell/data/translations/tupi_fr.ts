@@ -1037,7 +1037,7 @@
     <message>
         <location filename="../src/plugins/tools/selection/settings.cpp" line="89"/>
         <source>Crossed Flip</source>
-        <translation>Symétrie Croisée</translation>
+        <translation>Inversion Croisée</translation>
     </message>
     <message>
         <location filename="../src/plugins/tools/selection/settings.cpp" line="101"/>
