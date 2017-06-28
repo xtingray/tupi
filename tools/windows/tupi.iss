@@ -1,6 +1,8 @@
 [Setup]
 AppName=Tupi
 AppVersion=0.2.9
+AppPublisher=MaeFloresta
+AppPublisherURL=http://www.maefloresta.com/
 DefaultDirName={pf}\Tupi
 DefaultGroupName=Tupi 2D Magic
 OutputDir=c:\devel\installer
