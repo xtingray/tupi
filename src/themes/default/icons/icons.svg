@@ -2945,9 +2945,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="185.69742"
-     inkscape:cy="1237.7058"
+     inkscape:zoom="0.67421875"
+     inkscape:cx="482.57765"
+     inkscape:cy="1016.6788"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -15208,6 +15208,64 @@
            inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/save_as.png"
            inkscape:export-xdpi="585.36584"
            inkscape:export-ydpi="585.36584" />
+      </g>
+    </g>
+    <g
+       id="g6361"
+       inkscape:export-filename="/home/xtingray/tupi/sources/tupi.flipbook/src/images/stop.png"
+       inkscape:export-xdpi="201.78999"
+       inkscape:export-ydpi="201.78999">
+      <rect
+         inkscape:export-ydpi="14974.03"
+         inkscape:export-xdpi="14974.03"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/opacity.png"
+         y="-242.39815"
+         x="180.23967"
+         height="53.52066"
+         width="53.52066"
+         id="rect6135-7-4-1-3-0"
+         style="fill:#ffffff;fill-opacity:0;stroke:none;stroke-opacity:1" />
+      <g
+         inkscape:export-ydpi="201.79135"
+         inkscape:export-xdpi="201.79135"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.flipbook/images/close_big.png"
+         transform="translate(362.40083,-359.23923)"
+         id="g15652-1">
+        <rect
+           style="fill:#ffffff;fill-opacity:0;stroke:none"
+           id="rect6135-6-6-0-1-7"
+           width="53.52066"
+           height="53.52066"
+           x="-182.16116"
+           y="116.84108"
+           inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/close.png"
+           inkscape:export-xdpi="14974.03"
+           inkscape:export-ydpi="14974.03" />
+        <g
+           id="g6928-5-9"
+           transform="matrix(8.9046644,0,0,8.9046644,75.997457,-95.957861)"
+           inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/close.png"
+           inkscape:export-xdpi="14974.03"
+           inkscape:export-ydpi="14974.03">
+          <path
+             inkscape:export-ydpi="1250.21"
+             inkscape:export-xdpi="1250.21"
+             inkscape:export-filename="/home/xtingray/tupi/sources/tupi/src/themes/default/icons/close_big.png"
+             sodipodi:nodetypes="ccccccccccccc"
+             inkscape:connector-curvature="0"
+             id="path3837-0-6-4"
+             d="m -27.022027,24.321944 c -0.451471,0.273334 -1.143411,0.615374 -1.457468,0.923064 0.615374,0.550598 1.23075,1.101197 1.846125,1.651795 l -2.009204,1.353835 c 0.354784,0.502015 1.083295,1.285272 1.747253,1.546819 0,0 1.064982,-2.003099 1.08785,-2.026174 0.24291,0.663958 0.485822,1.327916 0.728734,1.991872 0.548633,-0.338586 1.406446,-1.226821 1.748961,-1.94329 -0.806926,-0.419895 -1.410005,-0.79902 -2.216931,-1.218915 -0.06094,-0.01199 1.223533,-0.920808 1.937224,-1.360827 -0.104597,-0.307686 -0.552704,-0.821492 -1.138229,-1.232237 -0.457939,0.462108 -0.915879,0.924213 -1.373819,1.38632 -0.300164,-0.35742 -0.600329,-0.714842 -0.900496,-1.072262 z"
+             style="fill:#23a0ff;fill-opacity:1;stroke:none" />
+          <path
+             inkscape:export-ydpi="717"
+             inkscape:export-xdpi="717"
+             inkscape:export-filename="/media/windows/linux/xtingray/tupi/sources/tupi/src/themes/default/icons/close.png"
+             sodipodi:nodetypes="ccccc"
+             inkscape:connector-curvature="0"
+             id="path4103-9-3-8"
+             d="m -28.407783,28.315211 c 0.418156,0.464756 1.121703,1.051823 1.49909,1.210803 0.262072,-0.377669 0.870687,-1.631892 1.153146,-1.989178 0.259458,0.615011 0.559686,1.474643 0.778374,1.845035 0.328174,-0.114706 1.227125,-1.105982 1.412605,-1.383776"
+             style="fill:none;stroke:#ffffff;stroke-width:0.36900684;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.17788463" />
+        </g>
       </g>
     </g>
   </g>
