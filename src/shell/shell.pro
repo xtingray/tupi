@@ -34,6 +34,7 @@ unix:!mac {
                 target \
                 desktop \
                 icons \
+                html \
                 tupiman \
                 copyright
 
@@ -57,12 +58,17 @@ unix:!mac {
     icons.commands = cp ../../launcher/icons/tupi.png $(INSTALL_ROOT)/pixmaps
     icons.path = /pixmaps/
 
-    tupiman.target = ../components/help/man/tupi.1.gz
-    tupiman.commands = cp ../components/help/man/tupi.1.gz $(INSTALL_ROOT)/man1
+    html.target = html 
+    html.files = html 
+    html.commands = cp -r html $(INSTALL_ROOT)/share/tupi/data
+    html.path = /data/
+
+    tupiman.target = man/tupi.1.gz
+    tupiman.commands = cp man/tupi.1.gz $(INSTALL_ROOT)/man1
     tupiman.path = /man1/
 
-    copyright.target = ../components/help/man/copyright
-    copyright.commands = cp ../components/help/man/copyright $(INSTALL_ROOT)/share/doc/tupi
+    copyright.target = man/copyright
+    copyright.commands = cp man/copyright $(INSTALL_ROOT)/share/doc/tupi
     copyright.path = /tupi/
 
     target.path = /bin/

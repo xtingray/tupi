@@ -59,9 +59,9 @@ void TipDialog::setupGUI()
 
     QStringList path;
 #ifdef Q_OS_WIN
-    QString resources = SHARE_DIR + "help/";
+    QString resources = SHARE_DIR + "html/";
 #else
-    QString resources = SHARE_DIR + "data/help/";
+    QString resources = SHARE_DIR + "data/html/";
 #endif	
 
     path << resources + "css";

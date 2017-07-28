@@ -2945,9 +2945,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.67421875"
-     inkscape:cx="482.57765"
-     inkscape:cy="1016.6788"
+     inkscape:zoom="0.5"
+     inkscape:cx="901.51397"
+     inkscape:cy="1626.071"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -15267,6 +15267,67 @@
              style="fill:none;stroke:#ffffff;stroke-width:0.36900684;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.17788463" />
         </g>
       </g>
+    </g>
+    <g
+       id="g15716-7"
+       transform="matrix(0,1,-1,0,648.9901,-69.507292)"
+       inkscape:export-filename="/tmp/tip_h.png"
+       inkscape:export-xdpi="123"
+       inkscape:export-ydpi="123">
+      <rect
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         ry="3.1145082"
+         y="339.99005"
+         x="-180.96465"
+         height="34.00005"
+         width="121.66824"
+         id="rect3050-0-8"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.99703288;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         ry="2.6148601"
+         y="342.71732"
+         x="-177.84225"
+         height="28.545553"
+         width="115.4232"
+         id="rect3050-5-9-3"
+         style="fill:none;stroke:#c8c8c8;stroke-width:4.19346905;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         transform="matrix(1.5438425,0,0,1.5438425,-1172.2869,-660.76835)"
+         sodipodi:open="true"
+         sodipodi:end="6.2658845"
+         sodipodi:start="0"
+         d="m 688.21431,659.23718 a 6.6964288,6.6964288 0 0 1 -6.66746,6.69637 6.6964288,6.6964288 0 0 1 -6.72514,-6.63844 6.6964288,6.6964288 0 0 1 6.60929,-6.75379 6.6964288,6.6964288 0 0 1 6.78231,6.58001"
+         sodipodi:ry="6.6964288"
+         sodipodi:rx="6.6964288"
+         sodipodi:cy="659.23718"
+         sodipodi:cx="681.51788"
+         id="path3820-03-8"
+         style="fill:#e8e8e8;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="6582.8599"
+         inkscape:export-xdpi="6582.8599"
+         inkscape:export-filename="/home/xtingray/tupi/sources/tupi.mobile/images/tip.png"
+         transform="matrix(1.1512496,0,0,1.1512496,-904.72773,-401.95641)"
+         sodipodi:open="true"
+         sodipodi:end="6.2658845"
+         sodipodi:start="0"
+         d="m 688.21431,659.23718 a 6.6964288,6.6964288 0 0 1 -6.66746,6.69637 6.6964288,6.6964288 0 0 1 -6.72514,-6.63844 6.6964288,6.6964288 0 0 1 6.60929,-6.75379 6.6964288,6.6964288 0 0 1 6.78231,6.58001"
+         sodipodi:ry="6.6964288"
+         sodipodi:rx="6.6964288"
+         sodipodi:cy="659.23718"
+         sodipodi:cx="681.51788"
+         id="path3820-0-8-2"
+         style="fill:#ffffff;fill-opacity:1;stroke:#c0c0c0;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="arc" />
     </g>
   </g>
 </svg>

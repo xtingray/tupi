@@ -8,7 +8,6 @@ SUBDIRS += scenes \
            exposure \
            export \
            import \
-           help \
            # kinas \
            brush \
            workspace \
