@@ -67,7 +67,7 @@ fileSystem.CopyFile sourceDir & "\plugins\export\imageplugin\release\tupiimagepl
 fileSystem.CopyFile sourceDir & "\plugins\export\libavplugin\release\tupilibavplugin.dll", tupiDir & "\plugins\tupilibavplugin.dll"
 
 fileSystem.CopyFolder sourceDir & "\shell\data", tupiDir & "\data"
-fileSystem.CopyFolder sourceDir & "\components\help\help", tupiDir & "\data\help"
+fileSystem.CopyFolder sourceDir & "\shell\html", tupiDir & "\data\html"
 fileSystem.CopyFolder sourceDir & "\components\colorpalette\palettes", tupiDir & "\data\palettes"
 fileSystem.CopyFolder sourceDir & "\themes", tupiDir & "\data\themes"
 fileSystem.CopyFolder "c:\devel\sources\qt5", tupiDir & "\lib\qt5"
